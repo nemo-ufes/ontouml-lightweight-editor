@@ -121,15 +121,15 @@ public class OntoUMLElement {
 		    result += "Generalization Set" + " " + ((NamedElement)element).getName() + " ";
 		   
 		    if (genset.parent()!=null){
-		    	result += (genset.parent()).getName()+"{ ";
+		    	result += "{ ";
 			    EList<Generalization> genlist = ((RefOntoUML.GeneralizationSet)element).getGeneralization();		    
 			    int i=1;
 			    for(Generalization gen: genlist)
 			    {
 			    	if (gen.getSpecific()!=null)
 			    	{
-			    		if(i < genlist.size()) result += gen.getSpecific().getName()+", ";
-			    		else result += gen.getSpecific().getName() ;
+			    		if(i < genlist.size()) result += gen.getSpecific().getName()+"->"+gen.getGeneral().getName()+", ";
+			    		else result += gen.getSpecific().getName()+"->"+gen.getGeneral().getName() ;
 			    	}
 			    	i++;
 			    }

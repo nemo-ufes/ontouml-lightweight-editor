@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,6 +48,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.edit.provider.IDisposable;
+import org.eclipse.jface.window.Window;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
 
@@ -343,22 +345,52 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** Delete element from the model and every diagram in each it appears. */
 	public void delete(RefOntoUML.Element element)
 	{	
-		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
-		deletionList.add(element);		
-		//from diagrams & model
-		for(DiagramEditor diagramEditor: getDiagramEditors(element))
+		int response = JOptionPane.showConfirmDialog(frame, "Delete selected items from the model and all diagrams? \n\nWARNING: This action cannot be undone.", "Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
+		if(response==Window.OK)
 		{
-			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
-			cmd.run();
-		}		
-		// only from model
-		if(getDiagramEditors(element).size()==0)
-		{		
-			DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
-			cmd.run();
-		}		
+			ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
+			deletionList.add(element);		
+			//from diagrams & model
+			for(DiagramEditor diagramEditor: getDiagramEditors(element))
+			{
+				DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
+				cmd.run();
+			}
+			// only from model
+			if(getDiagramEditors(element).size()==0)
+			{		
+				DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
+				cmd.run();
+			}
+		}
 	}
-
+	
+	/** Delete elements from the model and every diagram in each they appear. */
+	public void delete(Collection<DiagramElement> diagramElementList)
+	{
+		int response = JOptionPane.showConfirmDialog(frame, "Delete selected items from the model and all diagrams? \n\nWARNING: This action cannot be undone.\n\n", "Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
+		if(response==Window.OK)
+		{
+			ArrayList<RefOntoUML.Element> deletionList = (ArrayList<RefOntoUML.Element>)ModelHelper.getElements(diagramElementList);			
+			if(deletionList.size()>0){
+				//from diagrams & model
+				for(DiagramEditor diagramEditor: getDiagramEditors(deletionList.get(0)))
+				{
+					DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
+					cmd.run();
+				}
+				// only from model
+				if(getDiagramEditors(deletionList.get(0)).size()==0)
+				{		
+					DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
+					cmd.run();
+				}
+			}else{
+				System.err.println("Deletion list for selection is empty! Check DiagramManager.delete() method.");
+			}
+		}
+	}
+	
 	/** Delete element from all diagrams in the project. (not from the model) */
 	public void deleteFromDiagrams(RefOntoUML.Element element)
 	{
@@ -544,7 +576,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			} else {
 				refreshDiagramElement((RefOntoUML.Element)(element).eContainer());
 			}
-		}			
+		}		
+		if (element instanceof RefOntoUML.Generalization){
+			if (redesign) { remakeDiagramElement((RefOntoUML.Element)element); }
+			else refreshDiagramElement((RefOntoUML.Element)element);
+		}
 	}
 	
 	/**

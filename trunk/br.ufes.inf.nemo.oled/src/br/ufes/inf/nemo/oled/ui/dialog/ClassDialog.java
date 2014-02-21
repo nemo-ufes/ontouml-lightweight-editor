@@ -7,21 +7,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
-import javax.swing.border.EmptyBorder;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class ClassDialog extends JDialog{
 
@@ -128,21 +128,31 @@ public class ClassDialog extends JDialog{
 		
 		classEdition = new ClassEditionPanel (diagramManager,classElement,element);
 		commentsEdition = new CommentsEditionPanel (diagramManager,classElement,element);		
-		attributesEdition = new AttributesEditionPanel(diagramManager,classElement,element);
+		attributesEdition = new AttributesEditionPanel(this,diagramManager,classElement,element);
 		constraintsEdition = new ConstraintEditionPanel(diagramManager,classElement,element);
 		relatedElements = new RelatedElementsPanel(diagramManager,classElement,element);
 		
-		tabbedPane.addTab("Class",classEdition);		
-		tabbedPane.addTab("Attributes",attributesEdition);
+		JPanel classPanel = new JPanel();
+		classPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		classPanel.setLayout(new BorderLayout(0,0));
+		classPanel.add(classEdition,BorderLayout.NORTH);
+		classPanel.add(attributesEdition,BorderLayout.CENTER);
+		
+		tabbedPane.addTab("Class",classPanel);		
 		tabbedPane.addTab("Comments",commentsEdition);
 		tabbedPane.addTab("Constraints",constraintsEdition);
 		tabbedPane.addTab("Related Elements",relatedElements);
 				
-		setSize(new Dimension(470, 450));
+		setSize(new Dimension(470, 460));
 		
 		classEdition.selectNameText();
 	}
 		
+	public void refreshAttributesData()
+	{		
+		attributesEdition.refreshData();		
+	}
+	
 	public static String getStereotype(EObject element)
 	{
 		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");

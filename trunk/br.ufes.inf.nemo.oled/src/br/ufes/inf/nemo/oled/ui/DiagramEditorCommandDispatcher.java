@@ -85,22 +85,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("REDRAW", new MethodCall(
 					DiagramEditor.class.getMethod("redraw")));
 
-			//			selectorMap.put("ZOOM_50", new MethodCall(
-			//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-			//					Scaling.SCALING_50));
-			//			
-			//			selectorMap.put("ZOOM_75", new MethodCall(
-			//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-			//					Scaling.SCALING_75));
-			//			
-			//			selectorMap.put("ZOOM_100", new MethodCall(
-			//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-			//					Scaling.SCALING_100));
-			//			
-			//			selectorMap.put("ZOOM_150", new MethodCall(
-			//					DiagramEditor.class.getMethod("setScaling", Scaling.class),
-			//					Scaling.SCALING_150));
-
 			selectorMap.put("ZOOM_IN", new MethodCall(
 					DiagramEditor.class.getMethod("zoomIn"))
 					);
@@ -376,9 +360,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		if (manager.isProjectLoaded()==false) return;
 
 		if(manager.getCurrentDiagramEditor()!=null) manager.getCurrentDiagramEditor().undo();
-
-		//FIXME - Do not rebuild the tree, only update it!			
-		ProjectBrowser.rebuildTree(manager.getCurrentProject());
 	}
 
 	public void find()
@@ -401,8 +382,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 		if(manager.getCurrentDiagramEditor()!=null) manager.getCurrentDiagramEditor().redo();
 
-		//FIXME - Do not rebuild the tree, only update it!			
-		ProjectBrowser.rebuildTree(manager.getCurrentProject());
 	}
 
 	public void enableAssistant()

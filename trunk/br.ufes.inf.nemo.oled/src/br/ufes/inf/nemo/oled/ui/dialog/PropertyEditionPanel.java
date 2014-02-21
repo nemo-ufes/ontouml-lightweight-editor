@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,15 +44,13 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 public class PropertyEditionPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JDialog owner;
+	private Component parent;
 	
 	@SuppressWarnings("unused")
 	private DiagramElement ownerDiagramElement;	
 	private Classifier ownerElement;
 	private Property property;
 	private DiagramManager diagramManager;
-	@SuppressWarnings("unused")
-	private JFrame parent;
 	
 	private JTextField nameField;
 	private JLabel lblMultiplicity;
@@ -78,13 +77,23 @@ public class PropertyEditionPanel extends JPanel {
 	private JTextField subsettedText;
 	private JTextField redefinedText;
 	
-	public PropertyEditionPanel(JDialog owner, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, RefOntoUML.Classifier ownerElem, final Property property)
+	public PropertyEditionPanel(JDialog parent, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, RefOntoUML.Classifier ownerElem, final Property property)
 	{
-		this.owner=owner;
+		this.parent=parent;
 		initData(diagramManager,ownerDiagramElement,ownerElem,property);
 		initGUI();		
 	}
 	
+	/**
+	 * @wbp.parser.constructor 
+	 */
+	public PropertyEditionPanel(JFrame parent, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, RefOntoUML.Classifier ownerElem, final Property property)
+	{
+		this.parent=parent;
+		initData(diagramManager,ownerDiagramElement,ownerElem,property);
+		initGUI();		
+	}
+		
 	public void initData(final DiagramManager diagramManager, DiagramElement ownerDiagramElement, RefOntoUML.Classifier ownerElem, final Property property)
 	{
 		this.diagramManager = diagramManager;
@@ -169,7 +178,10 @@ public class PropertyEditionPanel extends JPanel {
 		btnSubsetted.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				FeatureListDialog.open(owner,subsettedText, "Subsetted", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));						
+				if (parent instanceof JFrame)
+					FeatureListDialog.open((JFrame)parent,subsettedText, "Subsetted", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));
+				else
+					FeatureListDialog.open((JDialog)parent,subsettedText, "Subsetted", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));
 			}
 		});
 		
@@ -189,7 +201,10 @@ public class PropertyEditionPanel extends JPanel {
 		btnRedefined.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				FeatureListDialog.open(owner,redefinedText, "Redefined", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));						
+				if (parent instanceof JFrame)
+					FeatureListDialog.open((JFrame)parent,redefinedText, "Redefined", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));
+				else
+					FeatureListDialog.open((JDialog)parent,redefinedText, "Redefined", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));
 			}
 		});
 		
@@ -299,6 +314,8 @@ public class PropertyEditionPanel extends JPanel {
 		setLayout(groupLayout);
 		
 		setInitialData();
+		
+		setPreferredSize(new Dimension(450, 246));
 	}
 	
 	public static String getStereotype(EObject element)
@@ -365,9 +382,9 @@ public class PropertyEditionPanel extends JPanel {
 		
 		ArrayList<OntoUMLElement> list = new ArrayList<OntoUMLElement>();
 		OntoUMLElement value = null;
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
 		if (property.getType()!=null) value = new OntoUMLElement(property.getType(),"");
-		else value = new OntoUMLElement(null,"");
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());	    	
+		else value = new OntoUMLElement(null,"");			    	
     	for(RefOntoUML.Type t: refparser.getAllInstances(RefOntoUML.Type.class))
     	{
 			if(t instanceof RefOntoUML.Class || t instanceof RefOntoUML.DataType || t instanceof RefOntoUML.Association)
@@ -377,6 +394,7 @@ public class PropertyEditionPanel extends JPanel {
     		}	    					
     	}
     	if (((OntoUMLElement) value).getElement()==null) list.add((OntoUMLElement)value);
+    	else if (!refparser.getAllInstances(RefOntoUML.Type.class).contains(property.getType())) list.add((OntoUMLElement)value);    	
     	Collections.sort(list,new CustomComparator());	    	
     	typeCombo.setModel(new DefaultComboBoxModel(list.toArray()));
     	typeCombo.setSelectedItem(value);    	

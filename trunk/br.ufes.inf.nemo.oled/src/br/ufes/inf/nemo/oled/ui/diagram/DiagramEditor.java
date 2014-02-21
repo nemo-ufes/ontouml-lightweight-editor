@@ -364,9 +364,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Removes the elements selected. From the diagram and the model.
 	 */
 	public void deleteSelection() {
-		//TODO: Call a dialog before.
+				
 		Collection<DiagramElement> diagramElementsList = getSelectedElements();
-		execute(new DeleteElementCommand(this, ModelHelper.getElements(diagramElementsList), diagram.getProject(),true,true));
+		frame.getDiagramManager().delete(diagramElementsList);		
 	}
 	
 	/**
@@ -876,6 +876,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		repaint();
 	}
 
+	public boolean showGrid()
+	{
+		return diagram.isGridVisible();
+	}
+	
 	/**
 	 * Activates grid snapping.
 	 * @param flag true if snapping should be supported, false otherwise

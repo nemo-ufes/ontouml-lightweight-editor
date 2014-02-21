@@ -117,7 +117,7 @@ public class ClassEditionPanel extends JPanel {
 		
 		setInitialData();
 		
-		setSize(new Dimension(450, 103));
+		setPreferredSize(new Dimension(443, 98));
 	}
 	
 	public void setInitialData()

@@ -218,6 +218,8 @@ public class CommentsEditionPanel extends JPanel {
 	@SuppressWarnings("unchecked")
 	public void setInitialData()
 	{		
+		if (commentCombo.getItemCount()>0) commentCombo.removeAllItems();
+		
 		for(Comment c: element.getOwnedComment()){			
 			commentCombo.addItem(new CommentElement(c));			
 		}		
