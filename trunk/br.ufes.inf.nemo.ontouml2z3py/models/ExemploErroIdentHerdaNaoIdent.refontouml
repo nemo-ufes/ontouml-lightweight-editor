@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_TAQokZp8EeOnO8hBxmfDsg" name="Model">
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_VDqDsJp8EeOnO8hBxmfDsg" name="Aluno" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_fxRVkJp_EeOnO8hBxmfDsg" name="Pessoa" visibility="public">
+    <generalization xmi:id="_g22dkJp_EeOnO8hBxmfDsg" general="_VDqDsJp8EeOnO8hBxmfDsg"/>
+  </packagedElement>
+</RefOntoUML:Model>

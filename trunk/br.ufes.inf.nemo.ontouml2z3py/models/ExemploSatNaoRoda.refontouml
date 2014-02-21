@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_TAQokZp8EeOnO8hBxmfDsg" name="Model">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_zysKkJqBEeOnO8hBxmfDsg" name="Pessoa" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_x9rQEJqJEeOnO8hBxmfDsg" name="Aluno" visibility="public">
+    <generalization xmi:id="_5e8CEJqJEeOnO8hBxmfDsg" general="_zysKkJqBEeOnO8hBxmfDsg"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_zzydIJqJEeOnO8hBxmfDsg" name="Organizacao" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_18lVoJqJEeOnO8hBxmfDsg" name="Escola" visibility="public">
+    <generalization xmi:id="_6AM8EJqJEeOnO8hBxmfDsg" general="_zzydIJqJEeOnO8hBxmfDsg"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_3yhjkJqJEeOnO8hBxmfDsg" name="Matricula" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_B9OdAJqKEeOnO8hBxmfDsg" name="Mediation1" visibility="public" memberEnd="_B9OdAZqKEeOnO8hBxmfDsg _B9PEEpqKEeOnO8hBxmfDsg" navigableOwnedEnd="_B9OdAZqKEeOnO8hBxmfDsg _B9PEEpqKEeOnO8hBxmfDsg">
+    <ownedEnd xmi:id="_B9OdAZqKEeOnO8hBxmfDsg" name="aluno" type="_x9rQEJqJEeOnO8hBxmfDsg" association="_B9OdAJqKEeOnO8hBxmfDsg">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_GJj6kZqKEeOnO8hBxmfDsg" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_GJj6kJqKEeOnO8hBxmfDsg" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_B9PEEpqKEeOnO8hBxmfDsg" name="matricula" type="_3yhjkJqJEeOnO8hBxmfDsg" isReadOnly="true" association="_B9OdAJqKEeOnO8hBxmfDsg">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_GJj6k5qKEeOnO8hBxmfDsg" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_GJj6kpqKEeOnO8hBxmfDsg" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_HSt7AJqKEeOnO8hBxmfDsg" name="Mediation2" visibility="public" memberEnd="_HSt7AZqKEeOnO8hBxmfDsg _HSt7BJqKEeOnO8hBxmfDsg" navigableOwnedEnd="_HSt7AZqKEeOnO8hBxmfDsg _HSt7BJqKEeOnO8hBxmfDsg">
+    <ownedEnd xmi:id="_HSt7AZqKEeOnO8hBxmfDsg" name="escola" type="_18lVoJqJEeOnO8hBxmfDsg" association="_HSt7AJqKEeOnO8hBxmfDsg">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IkRpgZqKEeOnO8hBxmfDsg" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IkRpgJqKEeOnO8hBxmfDsg" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_HSt7BJqKEeOnO8hBxmfDsg" name="matricula" type="_3yhjkJqJEeOnO8hBxmfDsg" isReadOnly="true" association="_HSt7AJqKEeOnO8hBxmfDsg">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_IkSQkZqKEeOnO8hBxmfDsg" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_IkSQkJqKEeOnO8hBxmfDsg" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Model>
