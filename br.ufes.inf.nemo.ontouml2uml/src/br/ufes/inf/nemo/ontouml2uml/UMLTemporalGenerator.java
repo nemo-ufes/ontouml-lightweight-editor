@@ -1,0 +1,504 @@
+package br.ufes.inf.nemo.ontouml2uml;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.PackageableElement;
+import org.eclipse.uml2.uml.PrimitiveType;
+
+public class UMLTemporalGenerator {
+
+	// from pure UML
+	public org.eclipse.uml2.uml.Package umlRoot;	
+	public org.eclipse.uml2.uml.UMLFactory ufactory;
+	public HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap;
+	public String tlog = new String();
+	
+	// temporal inclusion
+	public HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier>> assocMap = new HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier> >();
+	public HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element>> attrMap = new HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element> >();
+	public int assoc_counter=0;
+	public int attr_counter=0;
+	
+	public UMLTemporalGenerator(org.eclipse.uml2.uml.Package umlRoot, org.eclipse.uml2.uml.UMLFactory ufactory, HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap)
+	{			
+		this.umlRoot=umlRoot;
+		this.ufactory = ufactory;
+		this.umap = umap;		
+	}
+	
+	public String getTemporalLog()
+	{
+		return tlog;
+	}
+	
+	public void outln(String text)
+	{
+		tlog += text+"\n";
+	}
+	
+	public void out(String text)
+	{
+		tlog += text;
+	}
+	
+	public void run()
+	{
+		outln("Including Temporal structure within UML...");
+		
+		ArrayList<Classifier> topLevels = new ArrayList<Classifier>();
+		getTopLevelTypes(umlRoot,topLevels);
+		
+		org.eclipse.uml2.uml.Class umlWorld = createWorldHierarchy(umlRoot);
+		
+		createWorldAccessibilityRelation(umlWorld);
+		
+		createExistenceRelations(umlWorld,topLevels);
+		
+		reifyAssociations(umlWorld, topLevels);
+		
+		ArrayList<org.eclipse.uml2.uml.Property> attributes = new ArrayList<org.eclipse.uml2.uml.Property>();
+		getAttributes(umlRoot,attributes);
+		reifyAttributes(umlWorld,attributes);
+		
+		createWorldOperations(umlWorld);
+		
+		createTopLevelExistenceOperations(umlWorld, topLevels);
+		
+		outln("Temporal structure inclusion finished.");
+	}
+	
+	public void createTopLevelExistenceOperations(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)
+	{
+		org.eclipse.uml2.uml.PrimitiveType pt = getPrimitiveBooleanType();
+		
+		EList<String> parameters = new BasicEList<String>();
+		parameters.add("w");
+		
+		EList<org.eclipse.uml2.uml.Type> typeParameters = new BasicEList<org.eclipse.uml2.uml.Type>();
+		typeParameters.add(umlWorld);
+		
+		for(Classifier c: topLevels)
+		{
+			if (c instanceof org.eclipse.uml2.uml.Class)
+			{
+				org.eclipse.uml2.uml.Class class_ = ((org.eclipse.uml2.uml.Class)c);				
+				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("existsIn", parameters, typeParameters, pt);
+				outln(op);				
+			}
+			if (c instanceof org.eclipse.uml2.uml.DataType && !(c instanceof org.eclipse.uml2.uml.PrimitiveType) && !(c instanceof org.eclipse.uml2.uml.Enumeration))
+			{
+				org.eclipse.uml2.uml.DataType class_ = ((org.eclipse.uml2.uml.DataType)c);				
+				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("existsIn", parameters, typeParameters, pt);
+				outln(op);
+			}
+		}
+	}
+	
+	public void outln(org.eclipse.uml2.uml.Operation op)
+	{
+		outln("UML:Operation :: "+"name="+op.getName()+", type="+op.getType().getName()+", lower="+op.getLower()+", upper="+op.getUpper()+"");		
+	}
+	
+	public void createWorldOperations(org.eclipse.uml2.uml.Class umlWorld)
+	{	
+		// previous() : Set(World)
+		org.eclipse.uml2.uml.Operation previousOp = umlWorld.createOwnedOperation("previous", null, null, umlWorld);
+		previousOp.setLower(0);
+		previousOp.setUpper(-1);
+		
+		outln(previousOp);
+
+		// previous() : World[0..1]
+		org.eclipse.uml2.uml.Operation directPreviousOp = umlWorld.createOwnedOperation("directPrevious", null, null, umlWorld);
+		directPreviousOp.setLower(0);
+		directPreviousOp.setUpper(1);
+		
+		outln(directPreviousOp);
+		
+		// next() : Set(World)
+		org.eclipse.uml2.uml.Operation nextOp = umlWorld.createOwnedOperation("next", null, null, umlWorld);
+		nextOp.setLower(0);
+		nextOp.setUpper(-1);
+		
+		outln(nextOp);
+		
+		// directNext() : Set(World)
+		org.eclipse.uml2.uml.Operation directNextOp = umlWorld.createOwnedOperation("directNext", null, null, umlWorld);
+		directNextOp.setLower(0);
+		directNextOp.setUpper(-1);
+		
+		outln(directNextOp);
+		
+		org.eclipse.uml2.uml.PrimitiveType pt = getPrimitiveBooleanType();
+		
+		// hasPrevious() : Boolean		
+		org.eclipse.uml2.uml.Operation hasPreviousOp = umlWorld.createOwnedOperation("hasPrevious", null, null, pt);
+		hasPreviousOp.setLower(1);
+		hasPreviousOp.setUpper(1);
+		
+		outln(hasPreviousOp);
+		
+		// hasNext() : Boolean		
+		org.eclipse.uml2.uml.Operation hasNextOp = umlWorld.createOwnedOperation("hasNext", null, null, pt);
+		hasNextOp.setLower(1);
+		hasNextOp.setUpper(1);
+		
+		// isTerminal() : Boolean		
+		org.eclipse.uml2.uml.Operation isTerminalOp = umlWorld.createOwnedOperation("isTerminal", null, null, pt);
+		isTerminalOp.setLower(1);
+		isTerminalOp.setUpper(1);
+		
+		outln(isTerminalOp);
+		
+		// isOrigin() : Boolean		
+		org.eclipse.uml2.uml.Operation isOriginOp = umlWorld.createOwnedOperation("isOrigin", null, null, pt);
+		isOriginOp.setLower(1);
+		isOriginOp.setUpper(1);
+		
+		outln(isOriginOp);
+	}
+	
+	public org.eclipse.uml2.uml.PrimitiveType getPrimitiveBooleanType()
+	{
+		ArrayList<PrimitiveType> ptList = new ArrayList<PrimitiveType>();
+		getPrimitiveBoolean(umlRoot, ptList);
+		org.eclipse.uml2.uml.PrimitiveType pt=null;
+		if(ptList.size()==0){
+			pt = ufactory.createPrimitiveType();
+			pt.setName("Boolean");
+			umlRoot.getPackagedElements().add(pt);
+		}else{
+			pt = ptList.get(0);
+		}	
+		return pt;
+	}
+	
+	private void getPrimitiveBoolean(org.eclipse.uml2.uml.Package umlRoot, ArrayList<org.eclipse.uml2.uml.PrimitiveType> ptList)
+	{
+		for(PackageableElement pe: umlRoot.getPackagedElements())
+		{
+			if (pe instanceof org.eclipse.uml2.uml.PrimitiveType){
+				org.eclipse.uml2.uml.PrimitiveType type = (org.eclipse.uml2.uml.PrimitiveType)pe;
+				if (type.getName().compareToIgnoreCase("boolean")==0) ptList.add(type);
+			}			
+			if (pe instanceof org.eclipse.uml2.uml.Package){
+				getPrimitiveBoolean((org.eclipse.uml2.uml.Package)pe,ptList);
+			}
+		}			
+	}
+	
+	public void getAttributes (org.eclipse.uml2.uml.Package umlRoot, ArrayList<org.eclipse.uml2.uml.Property> properties)
+	{
+		for(PackageableElement pe: umlRoot.getPackagedElements())
+		{
+			if (pe instanceof org.eclipse.uml2.uml.Class){
+				org.eclipse.uml2.uml.Class type = (org.eclipse.uml2.uml.Class)pe;
+				properties.addAll(type.getOwnedAttributes());
+			}
+			if (pe instanceof org.eclipse.uml2.uml.DataType){
+				org.eclipse.uml2.uml.DataType type = (org.eclipse.uml2.uml.DataType)pe;
+				properties.addAll(type.getOwnedAttributes());
+			}
+			if (pe instanceof org.eclipse.uml2.uml.Package){
+				getAttributes((org.eclipse.uml2.uml.Package)pe,properties);
+			}
+		}	
+	}
+	
+	public void reifyAttributes(org.eclipse.uml2.uml.Class umlWorld, ArrayList<org.eclipse.uml2.uml.Property> properties)
+	{
+		for(org.eclipse.uml2.uml.Property top: properties)
+		{
+			if(top.getAssociation()==null)
+			{
+				ArrayList<org.eclipse.uml2.uml.Element> tempList =  new ArrayList<org.eclipse.uml2.uml.Element>();
+								
+				//reify it into a class
+				org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)top.eContainer().eContainer();
+				org.eclipse.uml2.uml.Class reifiedAttr = null;
+				if (top.getName()==null || top.getName().isEmpty()) { top.setName("Attribute"+attr_counter); }
+				reifiedAttr = umlRoot.createOwnedClass(top.getName(), false);				
+				attr_counter++; 
+				
+				tempList.add(reifiedAttr);
+				
+				outln("UML:Class :: name="+reifiedAttr.getName()+", visibility="+reifiedAttr.getVisibility().getName()+", isAbstract="+reifiedAttr.isAbstract());
+				
+				//imitate first ternary link i.e., existence.
+				createExistenceRelation(umlWorld,reifiedAttr);
+				
+				//imitate second ternary link i.e., property representing the attribute 
+				boolean end1IsNavigable = true;
+				String end1Name = "attr"+attr_counter;
+				org.eclipse.uml2.uml.AggregationKind agg1 = top.getAggregation();
+				int end1Lower = top.getLower();
+				int end1Upper = top.getUpper();				
+				boolean end2IsNavigable = true;
+				org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+				String end2Name = ((org.eclipse.uml2.uml.NamedElement)top.eContainer()).getName();
+				if (end2Name==null) end2Name = "";
+				int end2Lower = 1;
+				int end2Upper = 1;
+				org.eclipse.uml2.uml.Association sourceRelation = ((org.eclipse.uml2.uml.Type)top.eContainer()).createAssociation(
+					end1IsNavigable, agg1, end1Name, end1Lower, end1Upper, reifiedAttr,
+					end2IsNavigable, agg2, end2Name, end2Lower, end2Upper
+				);
+				umlRoot.getPackagedElements().add(sourceRelation);		
+				
+				tempList.add(sourceRelation);				
+				
+				outln(sourceRelation);
+
+				//imitate third ternary link i.e., an attribute
+				org.eclipse.uml2.uml.Property attribute = ufactory.createProperty();
+				attribute.setName(top.getName());
+				attribute.setType(top.getType());
+				org.eclipse.uml2.uml.LiteralInteger lowerValue = ufactory.createLiteralInteger();
+				org.eclipse.uml2.uml.LiteralUnlimitedNatural upperValue = ufactory.createLiteralUnlimitedNatural();
+				lowerValue.setValue(top.getLower());
+				upperValue.setValue(top.getUpper());         
+				attribute.setUpperValue(upperValue);
+				attribute.setLowerValue(lowerValue);
+				attribute.setAggregation(top.getAggregation());
+				reifiedAttr.getOwnedAttributes().add(attribute);
+				
+				tempList.add(attribute);
+				
+				outln(attribute);
+				
+				RefOntoUML.Element key = getKey(top);
+				attrMap.put((RefOntoUML.Property)key, tempList);
+			}
+		}
+	}
+	
+	public void createExistenceRelation(org.eclipse.uml2.uml.Class umlWorld, org.eclipse.uml2.uml.Type class_)
+	{
+		boolean end1IsNavigable = true;
+		String end1Name = "worlds";
+		org.eclipse.uml2.uml.AggregationKind agg1 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		int end1Lower = 1;
+		int end1Upper = -1;				
+		boolean end2IsNavigable = true;
+		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		String end2Name = "exists";
+		int end2Lower = 0;
+		int end2Upper = -1;				
+		org.eclipse.uml2.uml.Association existenceRelation = class_.createAssociation(
+			end1IsNavigable, agg1, end1Name, end1Lower, end1Upper, (org.eclipse.uml2.uml.Type)umlWorld,
+			end2IsNavigable, agg2, end2Name, end2Lower, end2Upper
+		);
+		umlRoot.getPackagedElements().add(existenceRelation);
+		
+		outln(existenceRelation);
+	}
+	
+	public void reifyAssociations(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)
+	{
+		for(Classifier top: topLevels)
+		{
+			if(top instanceof org.eclipse.uml2.uml.Association)
+			{
+				ArrayList<Classifier> tempList =  new ArrayList<Classifier>();
+				
+				org.eclipse.uml2.uml.Association assoc = (org.eclipse.uml2.uml.Association)top;
+				
+				//reify it into a class
+				org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)top.eContainer();
+				org.eclipse.uml2.uml.Class reifiedAssoc = null;
+				if (assoc.getName()==null || assoc.getName().isEmpty()) { assoc.setName("Association"+assoc_counter); }
+				reifiedAssoc = umlRoot.createOwnedClass(assoc.getName(), false);				
+				assoc_counter++; 
+				
+				tempList.add(reifiedAssoc);
+				
+				outln("UML:Class :: name="+reifiedAssoc.getName()+", visibility="+reifiedAssoc.getVisibility().getName()+", isAbstract="+reifiedAssoc.isAbstract());
+				
+				//imitate first ternary link i.e., existence.
+				createExistenceRelation(umlWorld, reifiedAssoc);
+				
+				//imitate second ternary link i.e., association's source 
+				org.eclipse.uml2.uml.Association sourceRelation = createSideRelation(assoc.getMemberEnds().get(0), reifiedAssoc);				
+				
+				tempList.add(sourceRelation);				
+								
+				//imitate third ternary linki.e., association's target
+				org.eclipse.uml2.uml.Association targetRelation = createSideRelation(assoc.getMemberEnds().get(1), reifiedAssoc);				
+				
+				tempList.add(targetRelation);
+								
+				RefOntoUML.Element key = getKey(top);
+				assocMap.put((RefOntoUML.Association)key, tempList);
+
+				//if (key!=null) umap.remove(key);
+				//EcoreUtil.delete(top);
+			}
+		}		
+	}
+	
+	public org.eclipse.uml2.uml.Association createSideRelation(org.eclipse.uml2.uml.Property property, org.eclipse.uml2.uml.Class reifiedAssoc)
+	{
+		boolean end1IsNavigable = true;
+		String end1Name = "assoc"+assoc_counter;				
+		org.eclipse.uml2.uml.AggregationKind agg1 = property.getAggregation();
+		int end1Lower = property.getLower();
+		int end1Upper = property.getUpper();				
+		boolean end2IsNavigable = true;
+		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		String end2Name = property.getName();
+		if (end2Name==null) end2Name = "";
+		int end2Lower = 1;
+		int end2Upper = 1;
+
+		org.eclipse.uml2.uml.Association reifiedSideRelation = property.getType().createAssociation(
+			end1IsNavigable, agg1, end1Name, end1Lower, end1Upper, reifiedAssoc,
+			end2IsNavigable, agg2, end2Name, end2Lower, end2Upper
+		);
+		umlRoot.getPackagedElements().add(reifiedSideRelation);
+		
+		outln(reifiedSideRelation);
+		
+		return reifiedSideRelation;
+	}
+	
+    public RefOntoUML.Element getKey(org.eclipse.uml2.uml.Element value) 
+    {
+        for (Entry<RefOntoUML.Element,org.eclipse.uml2.uml.Element> entry : umap.entrySet()) 
+        {
+            if (value.equals(entry.getValue())) 
+            {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+    
+	public void createExistenceRelations(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)
+	{
+		for(Classifier top: topLevels)
+		{
+			if(top instanceof org.eclipse.uml2.uml.Class || (top instanceof org.eclipse.uml2.uml.DataType && 
+			 !(top instanceof org.eclipse.uml2.uml.PrimitiveType) && !(top instanceof org.eclipse.uml2.uml.Enumeration)))
+			{
+				createExistenceRelation(umlWorld, (org.eclipse.uml2.uml.Type)top);
+			}
+		}
+	}
+
+	public void outln(org.eclipse.uml2.uml.GeneralizationSet genSet)
+	{
+        out("UML:GeneralizationSet :: ");		
+        for  (org.eclipse.uml2.uml.Generalization g : genSet.getGeneralizations()) {        	 
+        	out(g.getSpecific().getName()+"->"+g.getGeneral().getName()+"  "); 
+        }	
+        out("isCovering="+genSet.isCovering()+", isDisjoint="+genSet.isDisjoint()+"\n");
+	}
+	
+	public void outln(org.eclipse.uml2.uml.Association association)
+	{		
+		org.eclipse.uml2.uml.Property p1 = association.getMemberEnds().get(0);
+		org.eclipse.uml2.uml.Property p2 = association.getMemberEnds().get(1);
+		
+		outln("UML:Association :: name="+association.getName()+", visibility="+association.getVisibility().getName()+", isAbstract="+association.isAbstract()+", isDerived="+association.isDerived());
+        outln(p1);
+        outln(p2);
+	}
+
+	public void outln(org.eclipse.uml2.uml.Property property)
+	{
+		outln("UML:Property :: "+"name="+property.getName()+", isDerived="+property.isDerived()+", lower="+property.getLower()+", upper="+property.getUpper()+
+	    ", type="+property.getType().getName()+", aggregationkind="+property.getAggregation().getName()+", visibility="+property.getVisibility().getName()+            
+	    ", isLeaf="+property.isLeaf()+", isStatic="+property.isStatic()+", isReadOnly="+property.isReadOnly());
+	}
+	
+	public void getTopLevelTypes(org.eclipse.uml2.uml.Package umlRoot, ArrayList<Classifier> result)
+	{		
+		for(PackageableElement pe: umlRoot.getPackagedElements())
+		{
+			if (pe instanceof org.eclipse.uml2.uml.Type){
+				org.eclipse.uml2.uml.Classifier type = (org.eclipse.uml2.uml.Classifier)pe;
+				if (type.getGeneralizations().size()==0) result.add(type);
+			}
+			if (pe instanceof org.eclipse.uml2.uml.Package){
+				getTopLevelTypes((org.eclipse.uml2.uml.Package)pe,result);
+			}
+		}	
+	}
+			
+	public org.eclipse.uml2.uml.Class createWorldHierarchy(org.eclipse.uml2.uml.Package umlRoot)
+	{
+		org.eclipse.uml2.uml.Class umlWorld = umlRoot.createOwnedClass("World", false);
+		org.eclipse.uml2.uml.Class umlCurrentWorld = umlRoot.createOwnedClass("Current World", false);
+		org.eclipse.uml2.uml.Class umlPastWorld = umlRoot.createOwnedClass("Past World", false);
+		org.eclipse.uml2.uml.Class umlCounterfactualWorld = umlRoot.createOwnedClass("Counterfactual World", false);
+		org.eclipse.uml2.uml.Class umlFutureWorld = umlRoot.createOwnedClass("FutureWorld", false);
+		
+		org.eclipse.uml2.uml.Generalization genCurrent = ufactory.createGeneralization();
+		genCurrent.setGeneral(umlWorld);
+		genCurrent.setSpecific(umlCurrentWorld);
+		
+		org.eclipse.uml2.uml.Generalization genPast = ufactory.createGeneralization();
+		genPast.setGeneral(umlWorld);
+		genPast.setSpecific(umlPastWorld);
+		
+		org.eclipse.uml2.uml.Generalization genFuture = ufactory.createGeneralization();
+		genFuture.setGeneral(umlWorld);
+		genFuture.setSpecific(umlFutureWorld);	
+		
+		org.eclipse.uml2.uml.Generalization genCounterfactual = ufactory.createGeneralization();
+		genCounterfactual.setGeneral(umlWorld);
+		genCounterfactual.setSpecific(umlCounterfactualWorld);
+		
+		org.eclipse.uml2.uml.GeneralizationSet genSet = ufactory.createGeneralizationSet();
+		genSet.getGeneralizations().add(genCurrent);
+		genSet.getGeneralizations().add(genPast);
+		genSet.getGeneralizations().add(genFuture);
+		genSet.getGeneralizations().add(genCounterfactual);
+		genSet.setIsDisjoint(true);
+		genSet.setIsCovering(true);
+		umlRoot.getPackagedElements().add(genSet);
+		
+		outln("UML:Class :: name="+umlWorld.getName()+", visibility="+umlWorld.getVisibility().getName()+", isAbstract="+umlWorld.isAbstract());
+		outln("UML:Class :: name="+umlCurrentWorld.getName()+", visibility="+umlCurrentWorld.getVisibility().getName()+", isAbstract="+umlCurrentWorld.isAbstract());
+		outln("UML:Class :: name="+umlPastWorld.getName()+", visibility="+umlPastWorld.getVisibility().getName()+", isAbstract="+umlPastWorld.isAbstract());
+		outln("UML:Class :: name="+umlFutureWorld.getName()+", visibility="+umlFutureWorld.getVisibility().getName()+", isAbstract="+umlFutureWorld.isAbstract());
+		outln("UML:Class :: name="+umlCounterfactualWorld.getName()+", visibility="+umlCounterfactualWorld.getVisibility().getName()+", isAbstract="+umlCounterfactualWorld.isAbstract());
+        outln("UML:Generalization :: "+genCurrent.getSpecific().getName()+"->"+genCurrent.getGeneral().getName());
+        outln("UML:Generalization :: "+genPast.getSpecific().getName()+"->"+genPast.getGeneral().getName());
+        outln("UML:Generalization :: "+genFuture.getSpecific().getName()+"->"+genFuture.getGeneral().getName());
+        outln("UML:Generalization :: "+genCounterfactual.getSpecific().getName()+"->"+genCounterfactual.getGeneral().getName());
+        outln(genSet);
+        
+		return umlWorld;
+	}
+	
+	public void createWorldAccessibilityRelation (org.eclipse.uml2.uml.Class umlWorld)
+	{
+		boolean end1IsNavigable = true;
+		String end1Name = "previous";
+		org.eclipse.uml2.uml.AggregationKind agg1 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		int end1Lower = 0;
+		int end1Upper = 1;
+		
+		boolean end2IsNavigable = true;
+		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		String end2Name = "next";
+		int end2Lower = 0;
+		int end2Upper = -1;
+		
+		org.eclipse.uml2.uml.Association worldAccessibility = umlWorld.createAssociation(
+			end1IsNavigable, agg1, end1Name, end1Lower, end1Upper, (org.eclipse.uml2.uml.Type)umlWorld,
+			end2IsNavigable, agg2, end2Name, end2Lower, end2Upper
+		);
+		
+		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)umlWorld.getOwner();
+		umlRoot.getPackagedElements().add(worldAccessibility);
+		
+		outln(worldAccessibility);
+	}
+}
