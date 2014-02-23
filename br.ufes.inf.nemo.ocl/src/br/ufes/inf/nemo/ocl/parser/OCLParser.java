@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.Environment;
@@ -230,15 +232,27 @@ public class OCLParser {
     
 	private String processTemporalOCL(String oclTemporalContent)
     {
+		//search for [*] pattern
+		Pattern p = Pattern.compile("\\[\\w+\\]");		
+    	Matcher m = p.matcher(oclTemporalContent);    	
+    	while (m.find()) 
+    	{ 
+    		int indexBegin = m.start();
+    		int indexEnd = m.end();
+    		if(indexBegin < 0) indexBegin = 0;
+    		if(indexEnd > oclTemporalContent.length()) indexEnd = oclTemporalContent.length();
+    		String worldVar = oclTemporalContent.substring(indexBegin+1, indexEnd-1);   		
+    		System.out.println(worldVar);    		
+    	}		
     	return oclTemporalContent;
     }
 
 	/** Parse temporal OCL constraints from text. */
 	public void parseTemporalOCL(String oclTemporalConstraints) throws ParserException
-	{
+	{		
 		if(isTemporalOCL){ 
 			oclTemporalConstraints = preProcessOCL(oclTemporalConstraints);
-			
+
 			processTemporalOCL(oclTemporalConstraints);
 			
 			OCLInput document = new OCLInput(oclTemporalConstraints);		
@@ -251,7 +265,7 @@ public class OCLParser {
 
     /** Parse temporal OCL Constraints from a File. */
     public void parseTemporalOCL(File temporalOCLFile) throws IOException, ParserException
-    {
+    {    	
     	if(isTemporalOCL){ 
     		String oclContent = FileUtil.readFile(temporalOCLFile.getAbsolutePath());
     		parseTemporalOCL(oclContent);
