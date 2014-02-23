@@ -24,6 +24,16 @@ public class UMLTemporalGenerator {
 	public int assoc_counter=0;
 	public int attr_counter=0;
 	
+	public HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier>> getAssociationsMap()
+	{
+		return assocMap;
+	}
+	
+	public HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element>> getAttributesMap()
+	{
+		return attrMap;
+	}
+	
 	public UMLTemporalGenerator(org.eclipse.uml2.uml.Package umlRoot, org.eclipse.uml2.uml.UMLFactory ufactory, HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap)
 	{			
 		this.umlRoot=umlRoot;

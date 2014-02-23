@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ontouml2uml;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -114,6 +115,18 @@ public class OntoUML2UML {
 	public static HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> getMap ()
 	{
 		return utransformer.getConverter().getMap();
+	}
+	
+	public static HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier>> getTempAssociationsMap()
+	{
+		if (tgenerator !=null) return tgenerator.getAssociationsMap();
+		else return null;
+	}
+
+	public static HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element>> getTempAttributesMap()
+	{
+		if (tgenerator !=null) return tgenerator.getAttributesMap();
+		else return null;
 	}
 	
 	public static String getLog ()

@@ -23,8 +23,8 @@ public class OCL2AlloyTests {
     	
     	try {
     		
-    		OCLParser parser = new OCLParser(refpath);
-    		parser.parse(new File(oclPath));
+    		OCLParser parser = new OCLParser(refpath,false);
+    		parser.parseStandardOCL(new File(oclPath));
 		
     		//testing OCL pretty printer 
     		//just to know the form which the constraints are printed for debug in Eclipse    		

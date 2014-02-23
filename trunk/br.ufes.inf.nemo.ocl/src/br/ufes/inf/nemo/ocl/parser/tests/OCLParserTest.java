@@ -19,8 +19,8 @@ public class OCLParserTest {
     	
     	try {
     		
-    		OCLParser parser = new OCLParser(refpath);
-    		parser.parse(new File(oclPath));
+    		OCLParser parser = new OCLParser(refpath,false);
+    		parser.parseStandardOCL(new File(oclPath));
 		
 		} catch (IOException e) {			
 			e.printStackTrace();
