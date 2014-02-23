@@ -150,7 +150,7 @@ public class OCL2OWL_SWRL {
 		OCLParser oclParser  = null;
 		
 		//create a ocl parser to create a referent uml model based on the ontouml model
-		oclParser = new OCLParser(ontoParser, null, null);
+		oclParser = new OCLParser(ontoParser, null, null,false);
 
 		while(true){
 			//if doesn't exist more tags, the of block is setted as the end of the oclRules
@@ -185,7 +185,7 @@ public class OCL2OWL_SWRL {
 			blockEnd = oclRules.indexOf("--@", blockBegin+3);
 			
 			//parse the ocl constraints
-			oclParser.parse(strBlockOclConstraints);
+			oclParser.parseStandardOCL(strBlockOclConstraints);
 			//parse the block of ocl rules
 			//OCLParser oclParser = null;
 			//try {
