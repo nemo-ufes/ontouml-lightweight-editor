@@ -7,18 +7,24 @@ import org.eclipse.emf.ecore.resource.Resource;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /**
- * This class transforms OntoUML models into UML models. It simply ignores the stereotypes of classes and relations.
+ * This class transforms OntoUML models into UML. It simply ignores the stereotypes of classes and relations.
  * The user can optionally ignore the package hierarchy or the derivation relationship in the transformation.
  * 
+ * Furthermore, the user can additionally transform OntoUML into a Temporal UML model that includes UFO's
+ * branching time structure. In this temporal UML model, each association of the OntoUML model is reified into a class.
+ * This reified class in turn and every other top level class of the model is additionally linked to the worlds in which they exist.
+ * Moreover, several world operations and existence operations were added to classes. This conversion is useful for
+ * the Temporal OCL extension developed which uses this temporal UML model (in background) for manipulation of OCL constructs.
+ *  
  * @author John Guerson
  *
  */
 public class OntoUML2UML {
-		 	  
-		
+		 	  		
 	public static String log = new String();
-	private static UMLTransformator utransformer;
-	private static OntoUML2UMLOption options = new OntoUML2UMLOption();
+	private static OntoUML2UMLOption options = new OntoUML2UMLOption();	
+	private static UMLTransformator utransformer; //pure UML	
+	private static UMLTemporalGenerator tgenerator; // temporal structure in UML
 	
 	public static Resource convertToUML (RefOntoUML.Package refmodel, String umlPath)
 	{
@@ -28,6 +34,16 @@ public class OntoUML2UML {
 	public static Resource convertToUML (OntoUMLParser refparser, String umlPath)
 	{
 		return convertToUML(refparser, umlPath, options);
+	}
+	
+	public static Resource convertToTemporalUML (OntoUMLParser refparser, String umlPath)
+	{
+		return convertToTemporalUML(refparser, umlPath, options);
+	}
+	
+	public static Resource convertToTemporalUML (RefOntoUML.Package refmodel, String umlPath)
+	{
+		return convertToTemporalUML(refmodel, umlPath, options);
 	}
 	
 	public static Resource convertToUML (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt)
@@ -58,6 +74,42 @@ public class OntoUML2UML {
 		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlmodel);		   
 		return umlResource;
 	}		
+	
+	public static Resource convertToTemporalUML (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt)
+	{
+		Resource umlResource = convertToUML(refmodel, umlPath, opt);
+		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)umlResource.getContents().get(0);
+		
+		tgenerator = new UMLTemporalGenerator(
+			umlRoot, 
+			utransformer.getConverter().ufactory, 
+			utransformer.getConverter().umap);
+		tgenerator.run();
+		
+		log += tgenerator.getTemporalLog();
+		
+		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);
+		
+		return umlResource;
+	}
+	
+	public static Resource convertToTemporalUML(OntoUMLParser refparser, String umlPath, OntoUML2UMLOption opt)
+	{
+		Resource umlResource = convertToUML(refparser, umlPath, opt);
+		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)umlResource.getContents().get(0);
+		
+		tgenerator = new UMLTemporalGenerator(
+			umlRoot, 
+			utransformer.getConverter().ufactory, 
+			utransformer.getConverter().umap);
+		tgenerator.run();
+		
+		log += tgenerator.getTemporalLog();
+		
+		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);
+		
+		return umlResource;   		
+	}
 	
 	public static HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> getMap ()
 	{

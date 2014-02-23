@@ -37,7 +37,7 @@ public class UMLTransformator {
 	
 	public org.eclipse.uml2.uml.Package run ()
     {
-		UMLElementConverter.outln("Running ontouml2uml...");
+		UMLElementConverter.outln("Translating OntoUML into pure UML...");
 		
         umlRootModel = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createPackage();                
         uconverter.DealNamedElement((RefOntoUML.NamedElement) refparser.getModel(), (org.eclipse.uml2.uml.NamedElement) umlRootModel);
@@ -62,7 +62,7 @@ public class UMLTransformator {
 
         TransformingGeneralizationSets();
             
-        UMLElementConverter.outln("Executed.");
+        UMLElementConverter.outln("Pure UML translation finished.");
         
         return umlRootModel;
     }
