@@ -366,18 +366,19 @@ public class AntiPatternResultDialog extends Dialog {
 	public WizardDialog getWizardDialog(final AntipatternOccurrence apOccur)
 	{
     	WizardDialog wizardDialog = null;    	
-    	if (apOccur instanceof RelRigOccurrence) wizardDialog = new WizardDialog(new Shell(), new RelRigWizard((RelRigOccurrence)apOccur));
-    	if (apOccur instanceof RelSpecOccurrence) wizardDialog = new WizardDialog(new Shell(), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
-    	if (apOccur instanceof WholeOverOccurrence) wizardDialog = new WizardDialog(new Shell(), new WholeOverWizard((WholeOverOccurrence)apOccur));
-    	if (apOccur instanceof PartOverOccurrence) wizardDialog = new WizardDialog(new Shell(), new PartOverWizard((PartOverOccurrence)apOccur));	
-    	if (apOccur instanceof RelOverOccurrence) wizardDialog = new WizardDialog(new Shell(), new RelOverWizard((RelOverOccurrence)apOccur));	
-    	if (apOccur instanceof RepRelOccurrence) wizardDialog = new WizardDialog(new Shell(), new RepRelWizard((RepRelOccurrence)apOccur));
-    	if (apOccur instanceof MultiDepOccurrence) wizardDialog = new WizardDialog(new Shell(), new MultiDepWizard((MultiDepOccurrence)apOccur));
-    	if (apOccur instanceof RelCompOccurrence) wizardDialog = new WizardDialog(new Shell(), new RelCompWizard((RelCompOccurrence)apOccur));
-    	if (apOccur instanceof ImpAbsOccurrence) wizardDialog = new WizardDialog(new Shell(), new ImpAbsWizard((ImpAbsOccurrence)apOccur));
-    	if (apOccur instanceof UndefFormalOccurrence) wizardDialog = new WizardDialog(new Shell(), new UndefFormalWizard((UndefFormalOccurrence)apOccur));
-    	if (apOccur instanceof HetCollOccurrence) wizardDialog = new WizardDialog(new Shell(), new HetCollWizard((HetCollOccurrence)apOccur));
-    	if (apOccur instanceof HomoFuncOccurrence) wizardDialog = new WizardDialog(new Shell(), new HomoFuncWizard((HomoFuncOccurrence)apOccur));
+    	Display d = Display.getDefault();
+    	if (apOccur instanceof RelRigOccurrence) wizardDialog = new WizardDialog(new Shell(d), new RelRigWizard((RelRigOccurrence)apOccur));
+    	if (apOccur instanceof RelSpecOccurrence) wizardDialog = new WizardDialog(new Shell(d), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
+    	if (apOccur instanceof WholeOverOccurrence) wizardDialog = new WizardDialog(new Shell(d), new WholeOverWizard((WholeOverOccurrence)apOccur));
+    	if (apOccur instanceof PartOverOccurrence) wizardDialog = new WizardDialog(new Shell(d), new PartOverWizard((PartOverOccurrence)apOccur));	
+    	if (apOccur instanceof RelOverOccurrence) wizardDialog = new WizardDialog(new Shell(d), new RelOverWizard((RelOverOccurrence)apOccur));	
+    	if (apOccur instanceof RepRelOccurrence) wizardDialog = new WizardDialog(new Shell(d), new RepRelWizard((RepRelOccurrence)apOccur));
+    	if (apOccur instanceof MultiDepOccurrence) wizardDialog = new WizardDialog(new Shell(d), new MultiDepWizard((MultiDepOccurrence)apOccur));
+    	if (apOccur instanceof RelCompOccurrence) wizardDialog = new WizardDialog(new Shell(d), new RelCompWizard((RelCompOccurrence)apOccur));
+    	if (apOccur instanceof ImpAbsOccurrence) wizardDialog = new WizardDialog(new Shell(d), new ImpAbsWizard((ImpAbsOccurrence)apOccur));
+    	if (apOccur instanceof UndefFormalOccurrence) wizardDialog = new WizardDialog(new Shell(d), new UndefFormalWizard((UndefFormalOccurrence)apOccur));
+    	if (apOccur instanceof HetCollOccurrence) wizardDialog = new WizardDialog(new Shell(d), new HetCollWizard((HetCollOccurrence)apOccur));
+    	if (apOccur instanceof HomoFuncOccurrence) wizardDialog = new WizardDialog(new Shell(d), new HomoFuncWizard((HomoFuncOccurrence)apOccur));
 
     	return wizardDialog;
 	}

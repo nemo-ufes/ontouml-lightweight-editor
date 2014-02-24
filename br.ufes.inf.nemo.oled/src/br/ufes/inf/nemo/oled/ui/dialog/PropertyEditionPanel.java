@@ -278,7 +278,8 @@ public class PropertyEditionPanel extends JPanel {
 		lblType = new JLabel("Type:");
 		
 		typeCombo = new JComboBox();
-				
+		typeCombo.setFocusable(false);
+		
 		if (property.getType()!=null){
 			typeCombo.setModel(new DefaultComboBoxModel(new String[] {property.getType().getName()}));
 		}
