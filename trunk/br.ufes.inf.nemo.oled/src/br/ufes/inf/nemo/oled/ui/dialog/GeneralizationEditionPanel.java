@@ -148,12 +148,14 @@ public class GeneralizationEditionPanel extends JPanel {
 		btnRemove.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				OntoUMLElement genSet = (OntoUMLElement)genSetList.getSelectedValue();
-				
-				((GeneralizationSet)genSet.getElement()).getGeneralization().remove(element);
-				element.getGeneralizationSet().remove(genSet.getElement());
-				
-				genSetModel.removeElement(genSetList.getSelectedValue());				
+				if (genSetModel.size()>0){
+					OntoUMLElement genSet = (OntoUMLElement)genSetList.getSelectedValue();
+					
+					((GeneralizationSet)genSet.getElement()).getGeneralization().remove(element);
+					element.getGeneralizationSet().remove(genSet.getElement());
+					
+					genSetModel.removeElement(genSetList.getSelectedValue());				
+				}
 			}
 		});
 		
@@ -168,20 +170,24 @@ public class GeneralizationEditionPanel extends JPanel {
 				{
 					if (!(element.getGeneralizationSet().contains(gs))) genSetList.add(new OntoUMLElement(gs,""));
 				}				
-				OntoUMLElement genSet = (OntoUMLElement) JOptionPane.showInputDialog(GeneralizationEditionPanel.this, 
-				        "To which generalization set do you want to include "+element.getSpecific().getName()+"->"+element.getGeneral().getName(),
-				        "Add",
-				        JOptionPane.QUESTION_MESSAGE, 
-				        null, 
-				        genSetList.toArray(), 
-				        genSetList.toArray()[0]
-				);
-				if(genSet!=null){
-					genSetModel.addElement(genSet);
-				
-					((GeneralizationSet)genSet.getElement()).getGeneralization().add(element);
-					element.getGeneralizationSet().add((GeneralizationSet)genSet.getElement());
-				}
+				if (genSetList.size()==0) {
+					JOptionPane.showMessageDialog(GeneralizationEditionPanel.this, "No Generalization Set exists in the model.", "Add", JOptionPane.INFORMATION_MESSAGE);
+				}else{
+					OntoUMLElement genSet = (OntoUMLElement) JOptionPane.showInputDialog(GeneralizationEditionPanel.this, 
+					        "To which generalization set do you want to include "+element.getSpecific().getName()+"->"+element.getGeneral().getName(),
+					        "Add",
+					        JOptionPane.QUESTION_MESSAGE, 
+					        null, 
+					        genSetList.toArray(), 
+					        genSetList.toArray()[0]
+					);
+					if(genSet!=null){
+						genSetModel.addElement(genSet);
+					
+						((GeneralizationSet)genSet.getElement()).getGeneralization().add(element);
+						element.getGeneralizationSet().add((GeneralizationSet)genSet.getElement());
+					}
+				}				
 			}
 		});
 		
