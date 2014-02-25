@@ -7,7 +7,6 @@ import org.eclipse.swt.widgets.Composite;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
-import br.ufes.inf.nemo.antipattern.wizard.hetcoll.HetCollWizard;
 
 public class HomoFuncRefactoringPage extends RefactoringPage {
 	
@@ -43,7 +42,7 @@ public class HomoFuncRefactoringPage extends RefactoringPage {
 	@Override
 	public IWizardPage getNextPage() 
 	{
-		((HetCollWizard)getWizard()).removeAllActions();
+		((HomoFuncWizard)getWizard()).removeAllActions();
 		
 		return super.getNextPage();
 	}

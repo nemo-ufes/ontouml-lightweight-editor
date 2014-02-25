@@ -2,11 +2,14 @@ package br.ufes.inf.nemo.antipattern.wizard.homofunc;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-
-import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+
+import RefOntoUML.AntiRigidSortalClass;
+import RefOntoUML.MixinClass;
+import RefOntoUML.SubstanceSortal;
+import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
 
 public class HomoFuncFirstPage extends HomoFuncPage {
 	
@@ -47,9 +50,26 @@ public class HomoFuncFirstPage extends HomoFuncPage {
 	public IWizardPage getNextPage() 
 	{	
 		if(btnYes.getSelection()){
-			
+			if (homoFunc.getWhole() instanceof SubstanceSortal){
+				
+//				//Action =============================
+//				HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+//				newAction.setCreateNewPart(dialog.getPartStereotype(), dialog.getPartName(), dialog.getComponentOfName(), 
+//					dialog.isShareable(), dialog.isEssential(), dialog.isImmutablePart(), dialog.isImmutableWhole(), dialog.isInseparable()); 
+//				getHomoFuncWizard().replaceAction(0,newAction);	
+//				//======================================
+				
+			}else if (homoFunc.getWhole() instanceof AntiRigidSortalClass){
+				
+				return ((HomoFuncWizard)getWizard()).getFifthPage();
+				
+			}else if (homoFunc.getWhole() instanceof MixinClass){
+				
+				return ((HomoFuncWizard)getWizard()).getSixthPage();
+			}
 		}
 		if(btnNo.getSelection()){
+			
 			return ((HomoFuncWizard)getWizard()).getSecondPage();
 		}
 		return super.getNextPage();

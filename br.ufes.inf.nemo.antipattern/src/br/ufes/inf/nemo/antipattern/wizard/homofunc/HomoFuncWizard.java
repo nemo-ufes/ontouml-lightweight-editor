@@ -11,7 +11,11 @@ public class HomoFuncWizard extends AntipatternWizard {
 
 	public HomoFuncFirstPage firstPage;
 	public HomoFuncSecondPage secondPage;
-			
+	public HomoFuncThirdPage thirdPage;
+	public HomoFuncFourthPage fourthPage;
+	public HomoFuncFifthPage fifthPage;
+	public HomoFuncSixthPage sixthPage;
+	
 	public HomoFuncWizard(HomoFuncOccurrence ap) {
 		super(ap,HomoFuncAntipattern.getAntipatternInfo().name);		
 	}
@@ -21,6 +25,10 @@ public class HomoFuncWizard extends AntipatternWizard {
 	{
 		firstPage = new HomoFuncFirstPage((HomoFuncOccurrence)ap);
 		secondPage = new HomoFuncSecondPage((HomoFuncOccurrence)ap);
+		thirdPage = new HomoFuncThirdPage((HomoFuncOccurrence)ap);
+		fourthPage = new HomoFuncFourthPage((HomoFuncOccurrence)ap);
+		fifthPage = new HomoFuncFifthPage((HomoFuncOccurrence)ap);
+		sixthPage = new HomoFuncSixthPage((HomoFuncOccurrence)ap);
 		
 		finishing = new FinishingPage();
 		options = new HomoFuncRefactoringPage(getAp());
@@ -36,6 +44,10 @@ public class HomoFuncWizard extends AntipatternWizard {
 		addPage(presentation);	
 		addPage(firstPage);		
 		addPage(secondPage);
+		addPage(thirdPage);
+		addPage(fourthPage);
+		addPage(fifthPage);
+		addPage(sixthPage);
 		addPage(options);
 		addPage(finishing);
 	}
@@ -52,7 +64,22 @@ public class HomoFuncWizard extends AntipatternWizard {
 	{
 		return secondPage;
 	}
-	
+	public HomoFuncThirdPage getThirdPage()
+	{
+		return thirdPage;
+	}
+	public HomoFuncFourthPage getFourthPage()
+	{
+		return fourthPage;
+	}
+	public HomoFuncFifthPage getFifthPage()
+	{
+		return fifthPage;
+	}
+	public HomoFuncSixthPage getSixthPage()
+	{
+		return sixthPage;
+	}
 	@Override
 	public boolean performFinish() {
 		for(AntiPatternAction<?> action: super.getAllActions())
