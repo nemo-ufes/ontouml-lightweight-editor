@@ -1,13 +1,16 @@
 package br.ufes.inf.nemo.common.ontoumlfixer;
 
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Fix {
 
 	private ArrayList<Object> deletedElements = new ArrayList<Object>();
-	private ArrayList<Object> addedElements = new ArrayList<Object>();
+	//private ArrayList<Object> addedElements = new ArrayList<Object>();
 	private ArrayList<Object> modifiedElements = new ArrayList<Object>();
 	private ArrayList<String> addedRules = new ArrayList<String>();
+	private HashMap<Object, Point> addedElements = new HashMap<Object,Point>();
 	
 	public void addAll(Fix fix)
 	{
@@ -35,7 +38,7 @@ public class Fix {
 	public String getAddedString()
 	{
 		String result = new String();
-		for(Object obj: addedElements){
+		for(Object obj: addedElements.keySet()){
 			result += obj.toString()+"\n";
 		}
 		return result;
@@ -91,7 +94,7 @@ public class Fix {
 		addedRules.add(rule);
 	}	
 	public void includeAdded(Object added){
-		if (!addedElements.contains(added)) addedElements.add(added);
+		if (!addedElements.keySet().contains(added)) addedElements.put(added,new Point(-1,-1));
 	}
 	public void includeDeleted(Object deleted){
 		if (!deletedElements.contains(deleted)) deletedElements.add(deleted);
@@ -118,13 +121,16 @@ public class Fix {
 	{
 		this.deletedElements = deletedElements;
 	}
+	@SuppressWarnings("unchecked")
 	public ArrayList<Object> getAdded() 
 	{
-		return addedElements;
+		return (ArrayList<Object>) addedElements.keySet();
 	}
 	public void setAdded(ArrayList<Object> addedElements) 
 	{
-		this.addedElements = addedElements;
+		for (Object object : addedElements) {
+			includeAdded(object);
+		}
 	}
 	public ArrayList<Object> getModified() 
 	{
@@ -145,10 +151,15 @@ public class Fix {
 	
 	public <T> ArrayList<T> getAddedByType(java.lang.Class<T> type){
 		ArrayList<T> added = new ArrayList<T>();
-		for (Object elem : this.addedElements) {
+		for (Object elem : this.addedElements.keySet()) {
 			if(type.isInstance(elem))
 				added.add(type.cast(elem));
 		}
 		return added;
 	}
+	
+	public void includeAdded(Object added, int x, int y){
+		if (!addedElements.keySet().contains(added)) addedElements.put(added,new Point(x,y));
+	}
+	
 }
