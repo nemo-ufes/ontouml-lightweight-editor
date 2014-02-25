@@ -62,10 +62,12 @@ import RefOntoUML.Type;
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
 import br.ufes.inf.nemo.common.ontoumlparser.MaterialInference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
+import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
@@ -102,6 +104,7 @@ import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.UMLSettingDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
+import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.DiagramElementFactoryImpl;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.AlloyHelper;
@@ -1981,10 +1984,53 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	@SuppressWarnings("unused")
 	public void deriveByUnion() 
 	{
+		Fix mainfix = new Fix();
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
 		List<DiagramElement> selected = activeEditor.getSelectedElements();
 		
+		
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
+		int j=0;
+		for (int i = 0; i < selected.size(); i++) {
+			
+			if (selected.get(i) instanceof ClassElement) {
+				j++;
+				ClassElement ce = (ClassElement) selected.get(i);
+				refontoList.add(ce.getClassifier());
+				//refontoList.add();
+			}
+			
+		}
+		if(refontoList.size()==2){
+			
+			ArrayList<String>stereotypes= DerivedByUnion.getInstance().inferStereotype(refontoList.get(0).eClass().getName(), refontoList.get(1).eClass().getName());
+			if(stereotypes.size()<2){
+				UmlProject project = getCurrentEditor().getProject();
+				OutcomeFixer of = new OutcomeFixer(project.getModel());
+				Classifier newElement = (Classifier)of.createClass( of.getClassStereotype(stereotypes.get(0)));
+				mainfix.includeAdded(newElement);
+				of.copyContainer(((ClassElement) selected.get(0)).getClassifier(), newElement);
+				Fix fix=of.createGeneralization((Classifier)refontoList.get(0), newElement);
+				Fix fixG2=of.createGeneralization((Classifier)refontoList.get(1), newElement);
+				ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+				generalizations.add((Generalization) fix.getAdded().get(0));
+				generalizations.add((Generalization) fixG2.getAdded().get(0));
+				Fix gs =  of.createGeneralizationSet(generalizations);
+				//((GeneralizationSet) gs.getAdded()).setIsCovering(true);
+				//((GeneralizationSet) gs.getAdded()).setIsDisjoint(true);
+				mainfix.addAll(fixG2);
+				mainfix.addAll(fix);
+				mainfix.addAll(gs);
+				updateOLED(mainfix);
+				//fix.includeAllAdded(added);
+				//ClassElement c = 
+			}
+			else{
+				
+			}
+		}
+		//refontoList.get(0).get
+		//System.out.println("");
 		// diagramElem instnaceof AssociationElement ... diagramElement.getRelationship();
 		// diagramEleme instanceof ClassElement ... diagramElement.getClassifier();
 		
@@ -1999,7 +2045,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		//String constraint = DerviedByUnion.getConstraints();
 		//getFrame().getInfoManager().getOcleditor().addText(constraint);
 		
-		System.out.println("derive by union");
+		//System.out.println("derive by union");
 		
 	}
 
