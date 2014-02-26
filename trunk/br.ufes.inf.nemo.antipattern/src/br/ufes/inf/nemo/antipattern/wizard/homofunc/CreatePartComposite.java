@@ -42,45 +42,8 @@ public class CreatePartComposite extends Composite {
 	private Button btnCreateNewPart;
 	private Button btnDeletePart;	
 	private List partsList;
-	public ArrayList<Part> parts = new ArrayList<Part>();
-	
-	private class Part
-	{
-		public String partStereotype;
-		public String partName;
-		public String componentOfName;
-		public boolean isShareable;
-		public boolean isEssential;
-		public boolean isImmutablePart;
-		public boolean isImmutableWhole;
-		public boolean isInseparable;
+	public ArrayList<PartElement> parts = new ArrayList<PartElement>();
 		
-		public Part(String partStereotype, String partName, String componentOfName, boolean isShareable, boolean isEssential, boolean isImmutablePart, boolean isImmutableWhole, boolean isInseparable)
-		{
-			this.partStereotype=partStereotype;
-			this.partName=partName;
-			this.componentOfName=componentOfName;
-			this.isEssential=isEssential;
-			this.isInseparable=isInseparable;
-			this.isImmutablePart=isImmutablePart;
-			this.isImmutableWhole=isImmutableWhole;
-			this.isShareable=isShareable;
-		}
-		
-		@Override
-		public String toString()
-		{
-			String result = partStereotype+" "+partName+" - <componentOf> "+componentOfName+" { ";
-			if (isEssential) result += "isEssential ";
-			if (isInseparable) result += "isInseparable ";
-			if (isImmutableWhole) result += "isImmutableWhole ";
-			if (isImmutablePart) result += "isImmutablePart ";
-			if (isShareable) result += "isShareable ";
-			result+= "}";
-			return result;
-		}
-	}
-	
 	public String getPartName()
 	{
 		return partNameField.getText();
@@ -196,7 +159,7 @@ public class CreatePartComposite extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {	
 				if (getPartStereotype() !=null && !getPartStereotype().isEmpty()){
-					Part newpart = new Part(getPartStereotype(), getPartName(), getComponentOfName(), 
+					PartElement newpart = new PartElement(getPartStereotype(), getPartName(), getComponentOfName(), 
 							isShareable(), isEssential(), isImmutablePart(), isImmutableWhole(), isInseparable());
 					parts.add(newpart);
 					if (!contains(partsList,newpart.toString())) partsList.add(newpart.toString());				
@@ -226,6 +189,11 @@ public class CreatePartComposite extends Composite {
 		});
 	}		
 	
+	public ArrayList<PartElement> getParts()
+	{
+		return parts;
+	}
+	
 	public void enableCreation(boolean value)
 	{
 		enableAll(value);
@@ -248,8 +216,8 @@ public class CreatePartComposite extends Composite {
 	
 	public void removePart(String part)
 	{
-		ArrayList<Part> deletion = new ArrayList<Part>();
-		for(Part p: parts) {
+		ArrayList<PartElement> deletion = new ArrayList<PartElement>();
+		for(PartElement p: parts) {
 			if (p.toString().compareToIgnoreCase(part)==0){
 				deletion.add(p);
 			}

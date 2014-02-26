@@ -2,18 +2,21 @@ package br.ufes.inf.nemo.antipattern.wizard.homofunc;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-
-import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+
+import RefOntoUML.Classifier;
+import RefOntoUML.Collective;
+import RefOntoUML.SubKind;
+import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
 
 public class HomoFuncFifthPage extends HomoFuncPage {
 
 	private Label lblByYourPrevious;
-	private Button btnCreateNewType;
-	private Button btnMakeTheIdentity;
-	private Button btnChangeTheStereotype;
+	private Button btnCreateNewIdentityProvider;
+	private Button btnMakeWholeProvider;
+	private Button btnChangeStereotypeProvider;
 
 	public HomoFuncFifthPage(HomoFuncOccurrence homoFunc) 
 	{
@@ -31,24 +34,68 @@ public class HomoFuncFifthPage extends HomoFuncPage {
 		
 		lblByYourPrevious = new Label(container, SWT.WRAP);
 		lblByYourPrevious.setBounds(10, 10, 554, 39);
-		lblByYourPrevious.setText("By your previous answer, we conclude that <FunctionalWhole> is a collection. The change could not be automatically made because the type inherits its identity principle from another type. Would like to:");
+		lblByYourPrevious.setText("By your previous answer, we conclude that "+homoFunc.getWhole().getName()+" is a collection. The change could not be automatically made because " +
+		"the type inherits its identity principle from another type. Would like to:");
 		
-		btnCreateNewType = new Button(container, SWT.RADIO);
-		btnCreateNewType.setBounds(10, 55, 554, 16);
-		btnCreateNewType.setText("Create new type to act as the identity provider");
+		btnCreateNewIdentityProvider = new Button(container, SWT.RADIO);
+		btnCreateNewIdentityProvider.setBounds(10, 55, 554, 16);
+		btnCreateNewIdentityProvider.setText("Create new type to act as the identity provider");
 		
-		btnMakeTheIdentity = new Button(container, SWT.RADIO);
-		btnMakeTheIdentity.setBounds(10, 77, 554, 16);
-		btnMakeTheIdentity.setText("Make <FunctionalWhole> the identity provider");
+		btnMakeWholeProvider = new Button(container, SWT.RADIO);
+		btnMakeWholeProvider.setBounds(10, 77, 554, 16);
+		btnMakeWholeProvider.setText("Make "+homoFunc.getWhole().getName()+" the identity provider");
 		
-		btnChangeTheStereotype = new Button(container, SWT.RADIO);
-		btnChangeTheStereotype.setBounds(10, 99, 554, 16);
-		btnChangeTheStereotype.setText("Change the stereotype of the identity provider");
+		btnChangeStereotypeProvider = new Button(container, SWT.RADIO);
+		btnChangeStereotypeProvider.setBounds(10, 99, 554, 16);
+		btnChangeStereotypeProvider.setText("Change the stereotype of the identity provider");
 	}
 	
 	@Override
 	public IWizardPage getNextPage() 
 	{			
-		return super.getNextPage();
+		if(btnCreateNewIdentityProvider.getSelection())
+		{
+			//Action =============================
+			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+			newAction.setCreateNewIdentityProvider(homoFunc.getWhole()); 
+			getHomoFuncWizard().replaceAction(0,newAction);	
+			//======================================
+		}
+		if(btnMakeWholeProvider.getSelection())
+		{
+			//Action =============================
+			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+			newAction.setChangeToCollective(homoFunc.getWhole()); 
+			getHomoFuncWizard().replaceAction(0,newAction);	
+			//======================================
+		}
+		if(btnChangeStereotypeProvider.getSelection())
+		{
+			Classifier identityProvider = homoFunc.getWholeIdentityProvider();
+			if (identityProvider !=null){
+				//Action =============================
+				HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+				newAction.setChangeToCollective(identityProvider); 
+				getHomoFuncWizard().replaceAction(0,newAction);	
+				//======================================				
+			}
+		}
+		
+		if(homoFunc.getPartEnd().getType() instanceof Collective){
+			return ((HomoFuncWizard)getWizard()).getSeventhPage();			
+		}
+		if(homoFunc.getPartEnd().getType() instanceof SubKind){
+			for(Classifier c: (((Classifier)homoFunc.getPartEnd().getType()).allParents())){
+				if (c instanceof Collective) return ((HomoFuncWizard)getWizard()).getSeventhPage();	
+			}				
+		}
+		
+		//Action =============================
+		HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+		newAction.setChangeToMemberOf(homoFunc.getPartEnd().getAssociation()); 
+		getHomoFuncWizard().replaceAction(1,newAction);	
+		//======================================
+		
+		return getHomoFuncWizard().getFinishing();
 	}
 }

@@ -635,6 +635,83 @@ public class OutcomeFixer {
 		return fixes;
 	}
 
+	/** Create a new part to the whole via componentOf */
+	public Fix createPartWithComponentOfTo(EObject whole, ClassStereotype partStereo, String partName, String componentOfName, boolean isEssential, boolean isInseparable, boolean isShareable, boolean isImmutablePart, boolean isImmutableWhole)
+	{
+		Fix fixes = new Fix();
+		// create part
+		RefOntoUML.PackageableElement part = createClass(partStereo);
+		part.setName(partName);
+		copyContainer(whole, part);
+		fixes.includeAdded(part);
+		// create new relationship
+		RefOntoUML.Relationship componentOf = createAssociationWithProperties(RelationStereotype.COMPONENTOF);
+		((Association)componentOf).getMemberEnd().get(0).setType((Type)whole);
+		((Association)componentOf).getMemberEnd().get(1).setType((Type)part);
+		((Association)componentOf).setName(componentOfName);
+		((Meronymic)componentOf).setIsEssential(isEssential);
+		((Meronymic)componentOf).setIsInseparable(isInseparable);
+		((Meronymic)componentOf).setIsShareable(isShareable);
+		((Meronymic)componentOf).setIsImmutablePart(isImmutablePart);
+		((Meronymic)componentOf).setIsImmutableWhole(isImmutableWhole);
+		copyContainer(whole, componentOf);
+		fixes.includeAdded(componentOf);
+		fixes.includeModified(whole.eContainer());		
+		return fixes;
+	}
+	
+	/** Create a sub-part (by specializing the part) and connect the whole to this sub-part with a componentOf */
+	public Fix createSubPartWithSubComponentOfTo(EObject whole, Property partEnd,ClassStereotype subpartStereo, String subpartName, String subcomponentOfName, boolean isEssential, boolean isInseparable, boolean isShareable, boolean isImmutablePart, boolean isImmutableWhole)
+	{
+		Fix fixes = new Fix();
+		// create sub-part
+		Fix fix = createSubTypeAs(partEnd.getType(), subpartStereo);
+		RefOntoUML.Type subpart= null;
+		for(Object obj: fix.getAdded()) { if(obj instanceof RefOntoUML.Class) subpart = (Classifier)obj; }		
+		fixes.addAll(fix);				
+		// create new relationship
+		RefOntoUML.Relationship subcomponentOf = createAssociationWithProperties(RelationStereotype.COMPONENTOF);
+		((Association)subcomponentOf).getMemberEnd().get(0).setType((Type)whole);
+		((Association)subcomponentOf).getMemberEnd().get(1).setType((Type)subpart);
+		((Association)subcomponentOf).setName(subcomponentOfName);
+		((Meronymic)subcomponentOf).setIsEssential(isEssential);
+		((Meronymic)subcomponentOf).setIsInseparable(isInseparable);
+		((Meronymic)subcomponentOf).setIsShareable(isShareable);
+		((Meronymic)subcomponentOf).setIsImmutablePart(isImmutablePart);
+		((Meronymic)subcomponentOf).setIsImmutableWhole(isImmutableWhole);
+		copyContainer(whole, subcomponentOf);
+		fixes.includeAdded(subcomponentOf);
+		fixes.includeModified(whole.eContainer());		
+		// add {subsets}
+		((Association)subcomponentOf).getMemberEnd().get(1).getSubsettedProperty().add(partEnd);
+		return fixes;
+	}
+	
+	/** Create a subsetted-componentOf relation to an existing sub-part. Suppose a partOf relation between a Whole and Part. And also a subtype of Part called SubPart. 
+	 *  This method link the Whole to the existing SubPart via componentOf relation */ 
+	public Fix createSubComponentOfToExistingSubPart(Classifier whole, Property partEnd, Type subpart, String subcomponentOfName, boolean isEssential, boolean isInseparable, boolean isShareable, boolean isImmutablePart, boolean isImmutableWhole) 
+	{
+		Fix fixes = new Fix();
+		// create new relationship
+		RefOntoUML.Relationship subcomponentOf = createAssociationWithProperties(RelationStereotype.COMPONENTOF);
+		((Association)subcomponentOf).getMemberEnd().get(0).setType((Type)whole);
+		((Association)subcomponentOf).getMemberEnd().get(1).setType((Type)subpart);
+		((Association)subcomponentOf).setName(subcomponentOfName);
+		((Meronymic)subcomponentOf).setIsEssential(isEssential);
+		((Meronymic)subcomponentOf).setIsInseparable(isInseparable);
+		((Meronymic)subcomponentOf).setIsShareable(isShareable);
+		((Meronymic)subcomponentOf).setIsImmutablePart(isImmutablePart);
+		((Meronymic)subcomponentOf).setIsImmutableWhole(isImmutableWhole);
+		copyContainer(whole, subcomponentOf);
+		fixes.includeAdded(subcomponentOf);
+		fixes.includeModified(whole.eContainer());		
+		// add {subsets}
+		((Association)subcomponentOf).getMemberEnd().get(1).getSubsettedProperty().add(partEnd);
+		
+		return fixes;
+	}
+
+	
 	/**
 	 * Create a subtype and connect it through a generalization to its type. It
 	 * also change the references in relation to point to the subtype instead of

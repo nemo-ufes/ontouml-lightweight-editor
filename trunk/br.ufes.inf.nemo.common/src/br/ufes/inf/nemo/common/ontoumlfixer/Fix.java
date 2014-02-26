@@ -121,11 +121,13 @@ public class Fix {
 	{
 		this.deletedElements = deletedElements;
 	}
-	@SuppressWarnings("unchecked")
 	public ArrayList<Object> getAdded() 
 	{
-		return (ArrayList<Object>) addedElements.keySet();
+		ArrayList<Object> added = new ArrayList<Object>();
+		added.addAll(addedElements.keySet());
+		return added;
 	}
+	
 	public void setAdded(ArrayList<Object> addedElements) 
 	{
 		for (Object object : addedElements) {
