@@ -42,45 +42,8 @@ public class CreateComponentOfComposite extends Composite {
 	private Button btnCreateNewPart;
 	private Button btnDeletePart;	
 	private List relationList;
-	public ArrayList<Relation> relations = new ArrayList<Relation>();
-	
-	private class Relation
-	{
-		public String typeStereotype;
-		public String typeName;
-		public String componentOfName;
-		public boolean isShareable;
-		public boolean isEssential;
-		public boolean isImmutablePart;
-		public boolean isImmutableWhole;
-		public boolean isInseparable;
+	public ArrayList<RelationElement> relations = new ArrayList<RelationElement>();
 		
-		public Relation(String typeStereotype, String typeName, String componentOfName, boolean isShareable, boolean isEssential, boolean isImmutablePart, boolean isImmutableWhole, boolean isInseparable)
-		{
-			this.typeStereotype=typeStereotype;
-			this.typeName=typeName;
-			this.componentOfName=componentOfName;
-			this.isEssential=isEssential;
-			this.isInseparable=isInseparable;
-			this.isImmutablePart=isImmutablePart;
-			this.isImmutableWhole=isImmutableWhole;
-			this.isShareable=isShareable;
-		}
-		
-		@Override
-		public String toString()
-		{
-			String result = typeStereotype+" "+typeName+" - <componentOf> "+componentOfName+" { ";
-			if (isEssential) result += "isEssential ";
-			if (isInseparable) result += "isInseparable ";
-			if (isImmutableWhole) result += "isImmutableWhole ";
-			if (isImmutablePart) result += "isImmutablePart ";
-			if (isShareable) result += "isShareable ";
-			result+= "}";
-			return result;
-		}
-	}
-	
 	public String getComponentOfName()
 	{
 		return componentOfNameField.getText();
@@ -203,7 +166,7 @@ public class CreateComponentOfComposite extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if (getType() !=null){
-					Relation newrelation = new Relation(getStereotype(getType()), getType().getName(), getComponentOfName(), 
+					RelationElement newrelation = new RelationElement(getType(), getComponentOfName(), 
 							isShareable(), isEssential(), isImmutablePart(), isImmutableWhole(), isInseparable());
 					relations.add(newrelation);
 					if (!contains(relationList,newrelation.toString())) relationList.add(newrelation.toString());				
@@ -233,6 +196,11 @@ public class CreateComponentOfComposite extends Composite {
 		});
 	}		
 	
+	public ArrayList<RelationElement> getRelations()
+	{
+		return relations;
+	}
+	
 	public void enableCreation(boolean value)
 	{
 		enableAll(value);
@@ -255,8 +223,8 @@ public class CreateComponentOfComposite extends Composite {
 	
 	public void removeRelation(String relation)
 	{
-		ArrayList<Relation> deletion = new ArrayList<Relation>();
-		for(Relation p: relations) {
+		ArrayList<RelationElement> deletion = new ArrayList<RelationElement>();
+		for(RelationElement p: relations) {
 			if (p.toString().compareToIgnoreCase(relation)==0){
 				deletion.add(p);
 			}

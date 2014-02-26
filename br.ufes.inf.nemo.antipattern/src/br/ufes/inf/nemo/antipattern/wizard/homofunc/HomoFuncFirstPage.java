@@ -7,7 +7,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import RefOntoUML.AntiRigidSortalClass;
+import RefOntoUML.Classifier;
+import RefOntoUML.Collective;
 import RefOntoUML.MixinClass;
+import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
 
@@ -50,22 +53,43 @@ public class HomoFuncFirstPage extends HomoFuncPage {
 	public IWizardPage getNextPage() 
 	{	
 		if(btnYes.getSelection()){
-			if (homoFunc.getWhole() instanceof SubstanceSortal){
+			if (homoFunc.getWhole() instanceof SubstanceSortal)
+			{				
+				//Action =============================
+				HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+				newAction.setChangeToCollective(homoFunc.getWhole()); 
+				getHomoFuncWizard().replaceAction(0,newAction);	
+				//======================================
 				
-//				//Action =============================
-//				HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-//				newAction.setCreateNewPart(dialog.getPartStereotype(), dialog.getPartName(), dialog.getComponentOfName(), 
-//					dialog.isShareable(), dialog.isEssential(), dialog.isImmutablePart(), dialog.isImmutableWhole(), dialog.isInseparable()); 
-//				getHomoFuncWizard().replaceAction(0,newAction);	
-//				//======================================
+				if(homoFunc.getPartEnd().getType() instanceof Collective){
+					return ((HomoFuncWizard)getWizard()).getSeventhPage();			
+				}
+				if(homoFunc.getPartEnd().getType() instanceof SubKind){
+					for(Classifier c: (((Classifier)homoFunc.getPartEnd().getType()).allParents())){
+						if (c instanceof Collective) return ((HomoFuncWizard)getWizard()).getSeventhPage();	
+					}				
+				}
 				
-			}else if (homoFunc.getWhole() instanceof AntiRigidSortalClass){
+				//Action =============================
+				newAction = new HomoFuncAction(homoFunc);
+				newAction.setChangeToMemberOf(homoFunc.getPartEnd().getAssociation()); 
+				getHomoFuncWizard().replaceAction(1,newAction);	
+				//======================================
 				
-				return ((HomoFuncWizard)getWizard()).getFifthPage();
+				return getHomoFuncWizard().getFinishing();				
+			}
+			if (homoFunc.getWhole() instanceof AntiRigidSortalClass || homoFunc.getWhole() instanceof SubKind)
+			{
+				Classifier identityProvider = homoFunc.getWholeIdentityProvider();
+				if (identityProvider!=null) {
+					return ((HomoFuncWizard)getWizard()).getFifthPage();	
+				}else{
+					return ((HomoFuncWizard)getWizard()).getSixthPage();
+				}				
+			}			
+			if (homoFunc.getWhole() instanceof MixinClass)
+			{	
 				
-			}else if (homoFunc.getWhole() instanceof MixinClass){
-				
-				return ((HomoFuncWizard)getWizard()).getSixthPage();
 			}
 		}
 		if(btnNo.getSelection()){

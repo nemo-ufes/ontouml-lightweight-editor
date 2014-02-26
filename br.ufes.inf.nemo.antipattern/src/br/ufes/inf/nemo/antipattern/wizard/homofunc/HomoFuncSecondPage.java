@@ -67,12 +67,13 @@ public class HomoFuncSecondPage extends HomoFuncPage {
 	{		
 		if(btnYes.getSelection()){
 			
-//			//Action =============================
-//			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-//			newAction.setCreateNewPart(dialog.getPartStereotype(), dialog.getPartName(), dialog.getComponentOfName(), 
-//				dialog.isShareable(), dialog.isEssential(), dialog.isImmutablePart(), dialog.isImmutableWhole(), dialog.isInseparable()); 
-//			getHomoFuncWizard().replaceAction(0,newAction);	
-//			//======================================
+			if(createPartComposite!=null){
+				//Action =============================
+				HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+				newAction.setCreateNewPart(createPartComposite.getParts(),true); 
+				getHomoFuncWizard().replaceAction(3,newAction);	
+				//======================================					
+			}
 			
 			return ((HomoFuncWizard)getWizard()).getThirdPage();
 		}

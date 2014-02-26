@@ -5,15 +5,23 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.AggregationKind;
+import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
+import RefOntoUML.Element;
+import RefOntoUML.Generalization;
 import RefOntoUML.Mode;
 import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
+import RefOntoUML.SubKind;
+import RefOntoUML.SubstanceSortal;
+import RefOntoUML.Type;
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class HomoFuncOccurrence extends AntipatternOccurrence {
@@ -29,6 +37,17 @@ public class HomoFuncOccurrence extends AntipatternOccurrence {
 	}
 
 	private Property partEnd;
+	
+	public Classifier getWholeIdentityProvider()
+	{
+		if (whole instanceof SubstanceSortal) return whole;
+		if (whole instanceof AntiRigidSortalClass || whole instanceof SubKind){
+			for(Classifier c: whole.allParents()){
+				if(c instanceof SubstanceSortal) return c;
+			}
+		}
+		return null;		
+	}
 	
 	public HomoFuncOccurrence(Association compOf, HomoFuncAntipattern ap) throws Exception {
 		super(ap);
@@ -91,4 +110,54 @@ public class HomoFuncOccurrence extends AntipatternOccurrence {
 		return parser.getStringRepresentation(whole);
 	}
 
+	//====================================
+	// OUTCOMING FIXES
+	//====================================
+	
+	public void changeToCollective(Element element) 
+	{
+		if(element instanceof SubstanceSortal)
+		{
+			fix.addAll(fixer.changeClassStereotypeTo(element, ClassStereotype.COLLECTIVE));
+		}
+		if(element instanceof AntiRigidSortalClass || element instanceof SubKind)
+		{
+			for(Generalization gen: ((Classifier)element).getGeneralization()){
+				fix.includeDeleted(gen);
+			}
+			fix.addAll(fixer.changeClassStereotypeTo(element, ClassStereotype.COLLECTIVE));
+		}
+	}
+
+	public void changeToMemberOf(Element element) {
+		fix.addAll(fixer.changeRelationStereotypeTo(element, RelationStereotype.MEMBEROF));		
+	}
+
+	public void changeToSubCollectionOf(Element element) {
+		fix.addAll(fixer.changeRelationStereotypeTo(element, RelationStereotype.SUBCOLLECTIONOF));		
+	}
+
+	public void createNewIdentityProvider(Element element) {
+		
+		for(Generalization gen: ((Classifier)element).getGeneralization()){
+			fix.includeDeleted(gen);
+		}
+		fix.addAll(fixer.createSuperTypeAs(element, ClassStereotype.COLLECTIVE));
+	}
+
+	public void createNewPartToWhole(String partStereotype, String partName, String componentOfName, boolean isEssential, boolean isInseparable, boolean isShareable, boolean isImmutablePart, boolean isImmutableWhole) 
+	{
+		fix.addAll(fixer.createPartWithComponentOfTo(whole, fixer.getClassStereotype(partStereotype),partName,componentOfName,isEssential,isInseparable,isShareable,isImmutablePart,isImmutableWhole));
+	}
+	
+	public void createNewSubPartToWhole(String partStereotype, String partName, String componentOfName, boolean isEssential, boolean isInseparable, boolean isShareable, boolean isImmutablePart, boolean isImmutableWhole)
+	{
+		fix.addAll(fixer.createSubPartWithSubComponentOfTo(whole, partEnd, fixer.getClassStereotype(partStereotype),partName,componentOfName,isEssential,isInseparable,isShareable,isImmutablePart,isImmutableWhole));
+	}
+
+	public void createSubComponentOfToExistingSubPart(Type subpart, String componentOfName, boolean isEssential, boolean isInseparable, boolean isShareable, boolean isImmutablePart, boolean isImmutableWhole) 
+	{
+		fix.addAll(fixer.createSubComponentOfToExistingSubPart(whole,partEnd,subpart, componentOfName,isEssential,isInseparable,isShareable,isImmutablePart,isImmutableWhole));
+	}
+	
 }

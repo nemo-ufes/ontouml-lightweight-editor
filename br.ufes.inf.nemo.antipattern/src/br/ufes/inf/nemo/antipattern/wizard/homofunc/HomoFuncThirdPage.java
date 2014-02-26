@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.antipattern.wizard.homofunc;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -41,7 +42,8 @@ public class HomoFuncThirdPage extends HomoFuncPage {
 		
 		lblYouCanAlso = new Label(container, SWT.WRAP);
 		lblYouCanAlso.setBounds(10, 10, 554, 31);
-		lblYouCanAlso.setText("You can also define new particular types of <FunctionalPart> which play different functions in the context of <FunctionalWhole>. Would like to do that?");
+		lblYouCanAlso.setText("You can also define new particular types of "+homoFunc.getPartEnd().getType().getName()+" which play different functions in the context " +
+		"of "+homoFunc.getWhole().getName()+". Would like to do that?");
 		
 		composite = new Composite(container, SWT.NONE);
 		composite.setLayout(new GridLayout(1, true));
@@ -49,7 +51,7 @@ public class HomoFuncThirdPage extends HomoFuncPage {
 		
 		btnCreateNewParts = new Button(container, SWT.RADIO);
 		btnCreateNewParts.setBounds(10, 76, 213, 16);
-		btnCreateNewParts.setText("Create new parts of <FuntionalPart>");		
+		btnCreateNewParts.setText("Create new parts of "+homoFunc.getPartEnd().getType().getName());		
 				
 		btnNewComponentOfs = new Button(container, SWT.RADIO);
 		btnNewComponentOfs.setBounds(229, 76, 335, 16);
@@ -126,36 +128,60 @@ public class HomoFuncThirdPage extends HomoFuncPage {
 	{		
 		if(btnCreateNewParts.getSelection()){
 			
-//			//Action =============================
-//			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-//			newAction.setCreateNewPart(dialog.getPartStereotype(), dialog.getPartName(), dialog.getComponentOfName(), 
-//				dialog.isShareable(), dialog.isEssential(), dialog.isImmutablePart(), dialog.isImmutableWhole(), dialog.isInseparable()); 
-//			getHomoFuncWizard().replaceAction(0,newAction);	
-//			//======================================
-			
 			CreatePartComposite createPartComposite = (CreatePartComposite)control;
+			if (createPartComposite!=null){				
+				//Action =============================
+				HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+				newAction.setCreateNewPart(createPartComposite.getParts(),false); 
+				getHomoFuncWizard().replaceAction(4,newAction);	
+				//======================================		
+			}			
+			
 			if (createPartComposite.parts.size()>=2){
 				
+				String message = "The creation of more than two sub-parts might have made a WholeOver/PartOver anti-patterns emerge. " +
+						"\n\n";
+				for(PartElement r: createPartComposite.parts){
+					message+=r.toString()+"\n";
+				}
+				message += "\nPlease, run a new search for the WholeOver/PartOver antipattern when finished.";
+				MessageDialog.openWarning(getShell(), "WARNING", message);		
+				
+				return ((HomoFuncWizard)getWizard()).getFinishing();
 			}else{
 				return ((HomoFuncWizard)getWizard()).getFinishing();
 			}			
 		}
 		if(btnNewComponentOfs.getSelection()){
 			
-//			//Action =============================
-//			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-//			newAction.setCreateNewPart(dialog.getPartStereotype(), dialog.getPartName(), dialog.getComponentOfName(), 
-//				dialog.isShareable(), dialog.isEssential(), dialog.isImmutablePart(), dialog.isImmutableWhole(), dialog.isInseparable()); 
-//			getHomoFuncWizard().replaceAction(0,newAction);	
-//			//======================================
-			
 			CreateComponentOfComposite createComponentOfComposite = (CreateComponentOfComposite)control;
+			if (createComponentOfComposite!=null){
+				//Action =============================
+				HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+				newAction.setCreateSubComponentOfToExistingSubPart(createComponentOfComposite.getRelations()); 
+				getHomoFuncWizard().replaceAction(4,newAction);	
+				//======================================		
+			}
+						
 			if (createComponentOfComposite.relations.size()>=2){
-				return ((HomoFuncWizard)getWizard()).getFourthPage();
+				String message = "The creation of more than two sub-parts might have made a WholeOver/PartOver anti-patterns emerge. " +
+						"\n\n";
+				for(RelationElement r: createComponentOfComposite.relations){
+					message+=r.toString()+"\n";
+				}
+				message +=  "\nPlease, run a new search for the WholeOver/PartOver antipattern when finished.";
+				MessageDialog.openWarning(getShell(), "WARNING", message);			
+					
+				return ((HomoFuncWizard)getWizard()).getFinishing();
 			}else{
 				return ((HomoFuncWizard)getWizard()).getFinishing();
 			}			
 		}
+		
+		if(btnNo.getSelection()){
+			return getHomoFuncWizard().getFinishing();
+		}
+				
 		return super.getNextPage();
 	}
 }
