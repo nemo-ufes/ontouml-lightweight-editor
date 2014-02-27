@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
 import RefOntoUML.AggregationKind;
+import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Association;
 import RefOntoUML.Category;
 import RefOntoUML.Characterization;
@@ -31,6 +32,7 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
+import RefOntoUML.MixinClass;
 import RefOntoUML.Mode;
 import RefOntoUML.MomentClass;
 import RefOntoUML.NamedElement;
@@ -44,6 +46,7 @@ import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
+import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
@@ -1405,6 +1408,54 @@ public class OntoUMLParser {
 	
 	public Property getCharacterizedEnd(Characterization c){
 		return getCharacterizingEnd(c).getOpposite();
+	}
+	
+	/** Get the identity provider for a given OntoUML class.
+	 *  If c is a Kind, Quantity or Collective, then he is the proper identity provider.
+	 *  If c is Phase or Role then search for the identity provider in all parents
+	 *  If c is a Category, roleMixin or Mixin: (i) search in children for the identity providers and (ii) search in parents for the identity providers.
+	 *  
+	 * @param c: Classifier
+	 * @return
+	 */
+	public ArrayList<Classifier> getIdentityProvider(Classifier c)
+	{
+		ArrayList<Classifier> result = new ArrayList<Classifier>();
+		if (c instanceof SubstanceSortal) result.add(c);
+		
+		if (c instanceof AntiRigidSortalClass || c instanceof SubKind)
+		{
+			for(Classifier p: c.allParents())
+			{
+				if(p instanceof SubstanceSortal) result.add(p);
+			}
+		}
+		
+		if (c instanceof MixinClass)
+		{
+			for(Classifier child: c.allChildren())
+			{
+				if(child instanceof SubstanceSortal) result.add(child);
+				if(child instanceof AntiRigidSortalClass || child instanceof SubKind){
+					for(Classifier childParent: child.allParents()){
+						if (childParent instanceof SubstanceSortal) result.add(childParent);
+					}
+				}
+			}
+			for(Classifier parent: c.allParents())
+			{
+				for(Classifier parentChild: parent.allChildren()){
+					if (parentChild instanceof SubstanceSortal) result.add(parentChild);
+					if (parentChild instanceof AntiRigidSortalClass || parentChild instanceof SubKind) {
+						for(Classifier p: parentChild.allParents()){
+							if (p instanceof SubstanceSortal) result.add(p);
+						}
+					}
+				}
+			}
+		}
+			
+		return result;		
 	}
 	
 }

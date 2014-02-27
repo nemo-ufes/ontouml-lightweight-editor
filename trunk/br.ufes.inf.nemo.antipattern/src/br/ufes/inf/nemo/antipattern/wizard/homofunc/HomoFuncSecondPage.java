@@ -36,7 +36,7 @@ public class HomoFuncSecondPage extends HomoFuncPage {
 		lblThroughYourPrevious.setText("Through your previous answer, we established that "+homoFunc.getWhole().getName()+" is indeed a functional complex. That indicates that there " +
 			"are other type parts which are not captured by the model. Would you like to define new parts, which are not instances of "+homoFunc.getPartEnd().getType().getName()+"?");
 		
-		createPartComposite = new CreatePartComposite(container, SWT.BORDER,homoFunc);
+		createPartComposite = new CreatePartComposite(container, SWT.BORDER,homoFunc,false);
 		createPartComposite.setBounds(10, 90, 564, 182);
 		
 		SelectionAdapter listener = new SelectionAdapter() {
@@ -46,8 +46,8 @@ public class HomoFuncSecondPage extends HomoFuncPage {
 	    };
 	    
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(221, 68, 69, 16);
-		btnYes.setText("Yes...");
+		btnYes.setBounds(10, 68, 64, 16);
+		btnYes.setText("Yes");
 		btnYes.addSelectionListener(listener);
 		
 		SelectionAdapter listener2 = new SelectionAdapter() {
@@ -57,8 +57,8 @@ public class HomoFuncSecondPage extends HomoFuncPage {
 	    };
 		    
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(296, 68, 64, 16);
-		btnNo.setText("No.");
+		btnNo.setBounds(80, 68, 64, 16);
+		btnNo.setText("No");
 		btnNo.addSelectionListener(listener2);				
 	}	
 	

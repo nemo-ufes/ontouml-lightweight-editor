@@ -25,7 +25,7 @@ public class CreateComponentOfComposite extends Composite {
 	public CreateComponentOfComposite(Composite parent, int style, HomoFuncOccurrence homoFunc) 
 	{
 		super(parent, style);
-		setSize(new Point(540, 157));
+		setSize(new Point(540, 149));
 		this.homoFunc=homoFunc;
 		createPartControl();
 	}
@@ -115,7 +115,7 @@ public class CreateComponentOfComposite extends Composite {
 		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		
 		lblType = new Label(this, SWT.NONE);
-		lblType.setText("Existing type:");
+		lblType.setText("Existing subpart:");
 		lblType.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblType.setBounds(10, 13, 122, 21);
 		

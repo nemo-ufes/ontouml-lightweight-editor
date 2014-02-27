@@ -2,9 +2,11 @@ package br.ufes.inf.nemo.antipattern.wizard.homofunc;
 
 import java.util.ArrayList;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -13,17 +15,25 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import RefOntoUML.Category;
+import RefOntoUML.Kind;
+import RefOntoUML.Mixin;
+import RefOntoUML.Phase;
+import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
+import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
-import org.eclipse.swt.graphics.Point;
 
 public class CreatePartComposite extends Composite {
 
 	public HomoFuncOccurrence homoFunc;
+	public boolean isSubpart;
 	
-	public CreatePartComposite(Composite parent, int style, HomoFuncOccurrence homoFunc) 
+	public CreatePartComposite(Composite parent, int style, HomoFuncOccurrence homoFunc, boolean isSubpart) 
 	{
 		super(parent, style);
-		setSize(new Point(538, 177));
+		this.isSubpart=isSubpart;
+		setSize(new Point(538, 164));
 		this.homoFunc=homoFunc;
 		createPartControl();
 	}
@@ -56,7 +66,10 @@ public class CreatePartComposite extends Composite {
 	
 	public String getPartStereotype()
 	{
-		return stereoCombo.getItem(stereoCombo.getSelectionIndex());
+		if(stereoCombo.getSelectionIndex()>0)
+			return stereoCombo.getItem(stereoCombo.getSelectionIndex());
+		else
+			return "";
 	}
 	 
 	public boolean isShareable()
@@ -105,12 +118,18 @@ public class CreatePartComposite extends Composite {
 		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		
 		label = new Label(this, SWT.NONE);
-		label.setText("Part stereotype:");
+		if(!isSubpart)
+			label.setText("Part stereotype:");
+		else
+			label.setText("Subart stereotype:");
 		label.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		label.setBounds(10, 13, 122, 21);
 		
 		label_1 = new Label(this, SWT.NONE);
-		label_1.setText("Part name:");
+		if(!isSubpart)
+			label_1.setText("Part name:");
+		else
+			label_1.setText("Subpart name:");
 		label_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		label_1.setBounds(10, 40, 122, 21);
 		
@@ -120,7 +139,25 @@ public class CreatePartComposite extends Composite {
 		lblComponentofName.setBounds(10, 67, 122, 21);
 		
 		stereoCombo = new Combo(this, SWT.NONE);
-		stereoCombo.setItems(new String[] {"Kind", "Collective", "Quantity", "SubKind", "Role", "Phase", "Mixin", "RoleMixin", "Category", "Relator", "Mode", "DataType"});
+		if(!isSubpart)
+			stereoCombo.setItems(new String[] {"Kind", "SubKind", "Role", "Phase", "Mixin", "RoleMixin", "Category"});
+		else {
+			if(homoFunc.getPartEnd().getType() instanceof Kind || homoFunc.getPartEnd().getType() instanceof SubKind){
+				stereoCombo.setItems(new String[] {"SubKind", "Role", "Phase"});
+			}else if (homoFunc.getPartEnd().getType() instanceof Role){
+				stereoCombo.setItems(new String[] {"Role"});
+			}else if (homoFunc.getPartEnd().getType() instanceof Phase){
+				stereoCombo.setItems(new String[] {"Role","Phase"});				
+			}else if (homoFunc.getPartEnd().getType() instanceof Category){
+				stereoCombo.setItems(new String[] {"Category","RoleMixin","Kind"});
+			}else if (homoFunc.getPartEnd().getType() instanceof Mixin){
+				stereoCombo.setItems(new String[] {"Category","RoleMixin","Mixin","Kind"});
+			}else if (homoFunc.getPartEnd().getType() instanceof RoleMixin){
+				stereoCombo.setItems(new String[] {"RoleMixin"});
+			}else{
+				stereoCombo.setItems(new String[] {"Kind", "Collective", "Quantity", "SubKind", "Role", "Phase", "Mixin", "RoleMixin", "Category", "Relator", "Mode", "DataType"});
+			}
+		}
 		stereoCombo.setBounds(138, 10, 256, 23);
 		
 		partNameField = new Text(this, SWT.BORDER);
@@ -158,7 +195,15 @@ public class CreatePartComposite extends Composite {
 		btnCreateNewPart.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {	
-				if (getPartStereotype() !=null && !getPartStereotype().isEmpty()){
+				if (getPartStereotype() !=null && !getPartStereotype().isEmpty())
+				{
+					//check admissible stereotypes
+					if(!(getPartStereotype().compareToIgnoreCase("Kind")==0))
+					{
+						String message = "by creating a part stereotyped as " + getPartStereotype()+", please notice that your model will be incomplete."+"\n\n";						
+						MessageDialog.openInformation(getShell(), "WARNING", message);	
+					}
+					
 					PartElement newpart = new PartElement(getPartStereotype(), getPartName(), getComponentOfName(), 
 							isShareable(), isEssential(), isImmutablePart(), isImmutableWhole(), isInseparable());
 					parts.add(newpart);
@@ -223,5 +268,5 @@ public class CreatePartComposite extends Composite {
 			}
 		}
 		parts.remove(part);
-	}			
+	}
 }

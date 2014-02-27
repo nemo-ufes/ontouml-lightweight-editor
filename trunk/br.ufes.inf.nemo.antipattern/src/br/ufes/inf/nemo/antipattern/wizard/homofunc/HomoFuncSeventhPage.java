@@ -57,7 +57,7 @@ public class HomoFuncSeventhPage extends HomoFuncPage {
 		{
 			//Action =============================
 			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-			newAction.setChangeToCollective(homoFunc.getPartEnd().getAssociation()); 
+			newAction.setChangeToSubCollectionOf(homoFunc.getPartEnd().getAssociation()); 
 			getHomoFuncWizard().replaceAction(1,newAction);	
 			//======================================
 		}
