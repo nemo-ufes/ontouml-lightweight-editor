@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Classifier;
 import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
@@ -14,13 +15,14 @@ public class HomoFuncAction extends AntiPatternAction<HomoFuncOccurrence>{
 	public ArrayList<PartElement> partList;
 	public ArrayList<RelationElement> relationList;
 	public RefOntoUML.Element element;
+	public ArrayList<RefOntoUML.Classifier> elemList;
 	
 	public HomoFuncAction(HomoFuncOccurrence ap) 
 	{
 		super(ap);
 	}
 
-	public enum Action { CHANGE_TO_COLLECTIVE, CHANGE_TO_MEMBEROF, CHANGE_TO_SUBCOLLECTIONOF, CREATE_NEW_IDENTITY_PROVIDER, 
+	public enum Action { CHANGE_TO_COLLECTIVE, CHANGE_ALL_TO_COLLECTIVE, CHANGE_TO_MEMBEROF, CHANGE_TO_SUBCOLLECTIONOF, CREATE_NEW_IDENTITY_PROVIDER, 
 		  				 CREATE_NEW_PART_TO_WHOLE, CREATE_NEW_SUBPART_TO_WHOLE, 
 		  				 CREATE_SUBCOMPONENTOF_TO_EXISTING_SUBPART }
 	
@@ -53,6 +55,11 @@ public class HomoFuncAction extends AntiPatternAction<HomoFuncOccurrence>{
 				ap.createSubComponentOfToExistingSubPart(relation.getType(),relation.componentOfName,relation.isEssential,relation.isInseparable,relation.isShareable,relation.isImmutablePart,relation.isImmutableWhole);
 			}
 		}
+		if(code==Action.CHANGE_ALL_TO_COLLECTIVE) {
+			for(Classifier element: elemList){
+				ap.changeToCollective(element);
+			}
+		}
 	}
 	
 	public void setChangeToCollective(RefOntoUML.Element element)
@@ -61,9 +68,15 @@ public class HomoFuncAction extends AntiPatternAction<HomoFuncOccurrence>{
 		this.element = element;
 	}
 	
+	public void setChangeAllToCollective(ArrayList<RefOntoUML.Classifier> elemList)
+	{
+		code = Action.CHANGE_ALL_TO_COLLECTIVE;
+		this.elemList=elemList;
+	}
+	
 	public void setChangeToSubCollectionOf(RefOntoUML.Element element)
 	{
-		code = Action.CHANGE_TO_MEMBEROF;
+		code = Action.CHANGE_TO_SUBCOLLECTIONOF;
 		this.element = element;
 	}
 	
@@ -135,6 +148,13 @@ public class HomoFuncAction extends AntiPatternAction<HomoFuncOccurrence>{
 				result+="Create new subsetted-componentOf to existing sub-part: ("+relation+")\n";
 			}		
 		}
+		if(code==Action.CHANGE_ALL_TO_COLLECTIVE)
+		{
+			for(Classifier c: elemList){
+				result+="Change <<"+getStereotype(c)+">> "+((NamedElement)c).getName()+" to <<Collective>>"+"\n";
+			}
+		}
 		return result;
 	}
 }
+	

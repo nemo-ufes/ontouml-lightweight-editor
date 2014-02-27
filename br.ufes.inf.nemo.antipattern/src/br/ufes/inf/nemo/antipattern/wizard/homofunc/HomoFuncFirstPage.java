@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.homofunc;
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
@@ -60,23 +62,7 @@ public class HomoFuncFirstPage extends HomoFuncPage {
 				newAction.setChangeToCollective(homoFunc.getWhole()); 
 				getHomoFuncWizard().replaceAction(0,newAction);	
 				//======================================
-				
-				if(homoFunc.getPartEnd().getType() instanceof Collective){
-					return ((HomoFuncWizard)getWizard()).getSeventhPage();			
-				}
-				if(homoFunc.getPartEnd().getType() instanceof SubKind){
-					for(Classifier c: (((Classifier)homoFunc.getPartEnd().getType()).allParents())){
-						if (c instanceof Collective) return ((HomoFuncWizard)getWizard()).getSeventhPage();	
-					}				
-				}
-				
-				//Action =============================
-				newAction = new HomoFuncAction(homoFunc);
-				newAction.setChangeToMemberOf(homoFunc.getPartEnd().getAssociation()); 
-				getHomoFuncWizard().replaceAction(1,newAction);	
-				//======================================
-				
-				return getHomoFuncWizard().getFinishing();				
+											
 			}
 			if (homoFunc.getWhole() instanceof AntiRigidSortalClass || homoFunc.getWhole() instanceof SubKind)
 			{
@@ -86,11 +72,34 @@ public class HomoFuncFirstPage extends HomoFuncPage {
 				}else{
 					return ((HomoFuncWizard)getWizard()).getSixthPage();
 				}				
-			}			
+			}
 			if (homoFunc.getWhole() instanceof MixinClass)
 			{	
+				ArrayList<Classifier> providers = homoFunc.getParser().getIdentityProvider(homoFunc.getWhole());
 				
+				//Action =============================
+				HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+				newAction.setChangeAllToCollective(providers); 
+				getHomoFuncWizard().replaceAction(0,newAction);	
+				//======================================
 			}
+			
+			if(homoFunc.getPartEnd().getType() instanceof Collective){
+				return ((HomoFuncWizard)getWizard()).getSeventhPage();			
+			}
+			if(homoFunc.getPartEnd().getType() instanceof SubKind){
+				for(Classifier c: (((Classifier)homoFunc.getPartEnd().getType()).allParents())){
+					if (c instanceof Collective) return ((HomoFuncWizard)getWizard()).getSeventhPage();	
+				}				
+			}
+			
+			//Action =============================
+			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+			newAction.setChangeToMemberOf(homoFunc.getPartEnd().getAssociation()); 
+			getHomoFuncWizard().replaceAction(1,newAction);	
+			//======================================
+			
+			return getHomoFuncWizard().getFinishing();	
 		}
 		if(btnNo.getSelection()){
 			
