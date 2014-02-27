@@ -113,7 +113,7 @@ public class OCLEditorPanel extends JPanel {
 		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
 	    type = type.replaceAll("Impl","");
 	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    type = type.replace("Association","");
+	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
 	    return type;
    }
    

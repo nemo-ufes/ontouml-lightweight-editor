@@ -204,6 +204,20 @@ public class OutcomeFixer {
 		return p;
 	}
 
+	/** Change a property multiplicity */		
+	public Fix changePropertyMultiplicity(Property property, int lower, int upper, boolean addToModified)
+	{
+		Fix fix = new Fix();	
+		LiteralInteger lowerBound = factory.createLiteralInteger();
+		lowerBound.setValue(lower);
+		LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
+		upperBound.setValue(upper);
+		property.setUpperValue(upperBound);
+		property.setLowerValue(lowerBound);		
+		if(addToModified) fix.includeModified(property);	
+		return fix;
+	}
+	
 	/**
 	 * Create default properties for this association.
 	 */
@@ -475,6 +489,21 @@ public class OutcomeFixer {
 		else if (element instanceof Mode) return ClassStereotype.MODE;
 		else if (element instanceof DataType) return ClassStereotype.DATATYPE;
 		else return ClassStereotype.KIND;
+	}
+
+	/** Get a default stereotype for a subclass of a given class */
+	public static ClassStereotype getDefaultSubtypeStereotype(Class type)
+	{
+		if (type instanceof Relator) return ClassStereotype.RELATOR;
+		if (type instanceof Mode) return ClassStereotype.MODE;
+		if (type instanceof DataType) return ClassStereotype.DATATYPE;
+		if (type instanceof Category) return ClassStereotype.CATEGORY;
+		if (type instanceof RoleMixin) return ClassStereotype.ROLEMIXIN;
+		if (type instanceof Mixin) return ClassStereotype.MIXIN;
+		if (type instanceof Phase) return ClassStereotype.PHASE;
+		if (type instanceof Role) return ClassStereotype.ROLE;
+		if (type instanceof Kind || type instanceof Collective || type instanceof Quantity || type instanceof SubKind) return ClassStereotype.SUBKIND;
+		else return null;
 	}
 
 	/** Get class stereotype */
@@ -769,14 +798,23 @@ public class OutcomeFixer {
 	}
 
 	/** Generate an OCL invariant */
-	public Fix generateOCLRule(String contextName, String invName, String invRule) 
+	public Fix generateOCLInvariant(String contextName, String invName, String invExpr) 
 	{
-		String oclRule = "context _'" + contextName + "'\n" + "inv " + invName+ " : " + invRule;
+		String oclRule = "context _'" + contextName + "'\n" + "inv " + invName+ " : " + invExpr;
 		Fix fix = new Fix();
 		fix.includeRule(oclRule);
 		return fix;
 	}
-
+	
+	/** Generate an OCL derivation */
+	public Fix generateOCLDerivation(String typeName, String propertyName, String propertyReturnType, String deriveExpr)
+	{
+		String oclRule = "context _'" + typeName+"::_'"+propertyName+"':" +propertyReturnType+ "\n" + "derive: " + deriveExpr;
+		Fix fix = new Fix();
+		fix.includeRule(oclRule);
+		return fix;
+	}
+	
 	/**
 	 * Create a default generalization set which is covering=true and
 	 * disjoint=true and its name is null
@@ -991,79 +1029,6 @@ public class OutcomeFixer {
 		return fix;
 	}
 
-	//return true if the name was fixed and false otherwise
-	public Fix fixPropertyName(Property p){
-		Fix fix = new Fix();		
-		if(p!=null && (p.getName()==null || p.getName().trim().isEmpty())){
-			String p1Name, p2Name;
-			
-			//if self-type relationship and both ends have null name, fix both ends of the relation
-			Property opposite = p.getOpposite();
-			if(opposite!=null && opposite.getType().equals(p.getType()) && (opposite.getName()==null || opposite.getName().trim().isEmpty())){
-				p1Name = p.getType().getName().trim().toLowerCase()+"_1";
-				p1Name.replaceAll("\\s+","");
-				p.setName(p1Name);
-				p2Name = p.getType().getName().trim().toLowerCase()+"_2";
-				p2Name.replaceAll("\\s+","");
-				p.getOpposite().setName(p2Name);
-				fix.includeAdded(p);
-				fix.includeAdded(p.getOpposite());
-			}
-			else{
-				p1Name = p.getType().getName().trim().toLowerCase();
-				p1Name.replaceAll("\\s+","");
-				p.setName(p1Name);
-				fix.includeAdded(p);
-			}			
-		}
-		
-		if(p!=null && p.getOpposite()!=null && p.getName()!=null && p.getOpposite().getName()!=null && p.getName().compareToIgnoreCase(p.getOpposite().getName())==0){
-			p.setName(p.getName()+"_1");
-			fix.includeAdded(p);
-		}
-		
-		return fix;
-	}
-	
-	public Fix changePropertyMultiplicity(Property property, int lower, int upper, boolean addToModified){
-		Fix fix = new Fix();
-	
-		LiteralInteger lowerBound = factory.createLiteralInteger();
-		lowerBound.setValue(lower);
-		LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
-		upperBound.setValue(upper);
-		property.setUpperValue(upperBound);
-		property.setLowerValue(lowerBound);
-		
-		if(addToModified){
-			fix.includeModified(property);
-		}
-		
-		return fix;
-	}
-	
-	public Fix subsetProperty(Property general, Property specific, SpecializationType option, boolean includeModified){
-		Fix fix = new Fix();
-		
-		if (option==SpecializationType.SUBSET)
-			specific.getSubsettedProperty().add(general);
-		
-		else if (option==SpecializationType.REDEFINE)
-			specific.getRedefinedProperty().add(general);
-		
-		else if (option==SpecializationType.SPECIALIZE && specific.getAssociation() instanceof Association && general.getAssociation() instanceof Association){	
-			Generalization g = (Generalization) createRelationship(RelationStereotype.GENERALIZATION);
-			g.setGeneral(general.getAssociation());
-			g.setSpecific(specific.getAssociation());
-			fix.includeAdded(g);
-		}
-		
-		if (includeModified && (option==SpecializationType.SUBSET || option==SpecializationType.REDEFINE))
-			fix.includeModified(specific);
-		
-		return fix;
-	}
-
 	/** Create new mediated types in the relator from a mapping containing the name and stereotype of the new mediated type. */
 	public Fix createNewMediatedTypes(Relator relator, HashMap<String,String> nameAndStereotypeMap) 
 	{
@@ -1098,7 +1063,7 @@ public class OutcomeFixer {
 		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
 	    type = type.replaceAll("Impl","");
 	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    type = type.replace("Association","");
+	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
 	    return type;
 	}	
 	
@@ -1232,6 +1197,7 @@ public class OutcomeFixer {
 		return fix;
 	}
 	
+	/** Create a middle part between a partOf relation i.e., Whole ->(memberOf)-> MiddelPart -> Part1,Part2,...,PartN*/
 	public Fix changeAllToOneSuperMember(ArrayList<Association> partOfList) 
 	{	
 		Fix fix = new Fix();
@@ -1275,26 +1241,58 @@ public class OutcomeFixer {
 		return fix;
 	}
 	
-	public static ClassStereotype getDefaultSubtypeStereotype(Class type){
-		if (type instanceof Relator)
-			return ClassStereotype.RELATOR;
-		if (type instanceof Mode)
-			return ClassStereotype.MODE;
-		if (type instanceof DataType)
-			return ClassStereotype.DATATYPE;
-		if (type instanceof Category)
-			return ClassStereotype.CATEGORY;
-		if (type instanceof RoleMixin)
-			return ClassStereotype.ROLEMIXIN;
-		if (type instanceof Mixin)
-			return ClassStereotype.MIXIN;
-		if (type instanceof Phase)
-			return ClassStereotype.PHASE;
-		if (type instanceof Role)
-			return ClassStereotype.ROLE;
-		if (type instanceof Kind || type instanceof Collective || type instanceof Quantity || type instanceof SubKind)
-			return ClassStereotype.SUBKIND;
-		else return null;
+	/**  This method gives a name for the property if it is (i) null or (ii) empty 
+	 *   Return true if the name was fixed and false otherwise */
+	public Fix fixPropertyName(Property p)
+	{
+		Fix fix = new Fix();		
+		
+		if(p!=null && (p.getName()==null || p.getName().trim().isEmpty()))
+		{
+			String p1Name, p2Name;
+			
+			//if self-type relationship and both ends have null name, fix both ends of the relation
+			Property opposite = p.getOpposite();
+			if(opposite!=null && opposite.getType().equals(p.getType()) && (opposite.getName()==null || opposite.getName().trim().isEmpty()))
+			{
+				p1Name = p.getType().getName().trim().toLowerCase()+"_1";
+				p1Name.replaceAll("\\s+","");
+				p.setName(p1Name);
+				p2Name = p.getType().getName().trim().toLowerCase()+"_2";
+				p2Name.replaceAll("\\s+","");
+				p.getOpposite().setName(p2Name);
+				fix.includeAdded(p);
+				fix.includeAdded(p.getOpposite());
+			} else{
+				p1Name = p.getType().getName().trim().toLowerCase();
+				p1Name.replaceAll("\\s+","");
+				p.setName(p1Name);
+				fix.includeAdded(p);
+			}			
+		}
+		
+		if(p!=null && p.getOpposite()!=null && p.getName()!=null && p.getOpposite().getName()!=null && p.getName().compareToIgnoreCase(p.getOpposite().getName())==0)
+		{
+			p.setName(p.getName()+"_1");
+			fix.includeAdded(p);
+		}		
+		return fix;
+	}
+		
+	public Fix subsetProperty(Property general, Property specific, SpecializationType option, boolean includeModified)
+	{
+		Fix fix = new Fix();		
+		if (option==SpecializationType.SUBSET) specific.getSubsettedProperty().add(general);		
+		else if (option==SpecializationType.REDEFINE) specific.getRedefinedProperty().add(general);		
+		else if (option==SpecializationType.SPECIALIZE && specific.getAssociation() instanceof Association && general.getAssociation() instanceof Association)
+		{	
+			Generalization g = (Generalization) createRelationship(RelationStereotype.GENERALIZATION);
+			g.setGeneral(general.getAssociation());
+			g.setSpecific(specific.getAssociation());
+			fix.includeAdded(g);
+		}		
+		if (includeModified && (option==SpecializationType.SUBSET || option==SpecializationType.REDEFINE)) fix.includeModified(specific);		
+		return fix;
 	}
 
 }

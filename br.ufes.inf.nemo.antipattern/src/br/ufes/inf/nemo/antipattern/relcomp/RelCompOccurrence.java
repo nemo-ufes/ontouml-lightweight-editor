@@ -163,7 +163,7 @@ public class RelCompOccurrence extends AntipatternOccurrence {
 		
 		rule +=")";
 		
-		Fix auxFix = fixer.generateOCLRule(context, "", rule);
+		Fix auxFix = fixer.generateOCLInvariant(context, "", rule);
 		fix.addAll(auxFix);
 		
 		return auxFix.getAddedRules().get(0);

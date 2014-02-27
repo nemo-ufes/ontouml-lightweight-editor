@@ -52,7 +52,7 @@ public abstract class OverlappingGroup {
 				invRule += " and ";
 		}
 		
-		overOccurrence.getFix().addAll(overOccurrence.getFixer().generateOCLRule(contextName, invName, invRule));
+		overOccurrence.getFix().addAll(overOccurrence.getFixer().generateOCLInvariant(contextName, invName, invRule));
 		
 		return true;
 	}

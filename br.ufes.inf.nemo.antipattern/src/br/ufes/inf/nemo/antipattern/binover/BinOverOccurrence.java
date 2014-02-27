@@ -123,7 +123,7 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 		
 		invRule += "(self)";
 
-		fix.addAll(fixer.generateOCLRule(contextName, invName, invRule));
+		fix.addAll(fixer.generateOCLInvariant(contextName, invName, invRule));
 		
 		return fix.getAddedRules().get(0);
 	}
@@ -145,7 +145,7 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 		
 		invRule += "(self))";
 
-		fix.addAll(fixer.generateOCLRule(contextName, invName, invRule));
+		fix.addAll(fixer.generateOCLInvariant(contextName, invName, invRule));
 		
 		return fix.getAddedRules().get(0);
 	}
@@ -169,7 +169,7 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 												"then x.oclAsType("+addQuotes(contextName)+")."+targetEndName+
 												"else Set{}))";
 		
-		fix.addAll(fixer.generateOCLRule(contextName, invName, invRule));
+		fix.addAll(fixer.generateOCLInvariant(contextName, invName, invRule));
 		
 		return fix.getAddedRules().get(0);
 	}
@@ -191,7 +191,7 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 		
 		invRule+="(self))";
 		
-		fix.addAll(fixer.generateOCLRule(contextName, invName, invRule));
+		fix.addAll(fixer.generateOCLInvariant(contextName, invName, invRule));
 		
 		return fix.getAddedRules().get(0);
 	}

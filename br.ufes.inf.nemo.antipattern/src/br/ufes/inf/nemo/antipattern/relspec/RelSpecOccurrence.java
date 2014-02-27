@@ -452,7 +452,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		
 		invName += "_"+general.getName();
 		
-		super.fix.addAll(fixer.generateOCLRule(contextName, invName, invRule));
+		super.fix.addAll(fixer.generateOCLInvariant(contextName, invName, invRule));
 	}
 
 	private void fixPropertyName(Property property) {

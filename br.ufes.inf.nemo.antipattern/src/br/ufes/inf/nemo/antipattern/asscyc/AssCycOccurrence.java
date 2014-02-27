@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.Generalization;
+import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
@@ -16,13 +17,14 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Association Cycle Anti-Pattern*/
 public class AssCycOccurrence extends AntipatternOccurrence{
-	public ArrayList<Relationship> getCycleRelationship() {
-		return cycleRelationship;
-	}
-
+	
 	ArrayList<Class> cycle;
 	ArrayList<Relationship> cycleRelationship;
 	public static int OPEN=0, CLOSED=1;
+	
+	public ArrayList<Relationship> getCycleRelationship() {
+		return cycleRelationship;
+	}
 	
 	public String generateCycleOcl(int type, OntoUMLParser parser) {
 		String rule, typeName;
@@ -170,11 +172,7 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 	private void setCycle(ArrayList<Class> cycle) {
 		this.cycle = cycle;
 	}
-	
-	public ArrayList<Relationship> getCycle_relationship() {
-		return cycleRelationship;
-	}
-	
+		
 	private void setCycleRelationship(ArrayList<Relationship> cycleRelationships) {
 		this.cycleRelationship = cycleRelationships;
 	}
@@ -222,62 +220,94 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 	public String getShortName() {
 		return (parser.getStringRepresentation(cycle.get(0))+" ... "+parser.getStringRepresentation(cycle.get(cycle.size()-1)));
 	}
-	
-	/*public String generateClosedCyclePredicate(OntoUMLParser mapper, int cardinality) {
-	String predicate, rules, name;
-	String typeName;
-	Association a;
-	Type last_source, last_target, source, target;
-			
-	typeName = mapper.getName(this.cycle.get(0));
-	
-	name = "closedCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
-	rules = "all w:World | #w." + typeName + ">=" + cardinality;
-	rules += "\n\tall w:World | all x:w."+typeName+" | ";
-	
-	a = (Association)this.cycleRelationship.get(0);
-	last_source = SourceTargetAssociation.getSourceAlloy(a);
-	last_target = SourceTargetAssociation.getTargetAlloy(a);
-	
-	if (last_source.equals(this.cycle.get(0)))
-		rules += "(x.(w."+mapper.getName(a)+"))";
-	
-	else {
-		rules += "((w."+mapper.getName(a)+").x)";
-		last_target = SourceTargetAssociation.getSourceAlloy(a);
-		last_source = SourceTargetAssociation.getTargetAlloy(a);
-	}
-	
-	for (int i = 1; i<cycleRelationship.size();i++) {
-		Relationship r = cycleRelationship.get(i);
-		 
-		if(r instanceof Association){
-			Association assoc = (Association)r;
-			source = SourceTargetAssociation.getSourceAlloy((Association)r);
-			target = SourceTargetAssociation.getTargetAlloy((Association)r);
-			r = (Association)r;
-			if( (source.equals(last_target)) ){
-				rules+=".(w."+mapper.getName(assoc)+")";
-				last_source = source;
-				last_target = target;
-			}
-			else {
-				rules+=".(~(w."+mapper.getName(assoc)+"))";
-				last_target = source;
-				last_source = target;
-			}
-			
-			name+="_"+mapper.getName(last_target);
-			
+
+	/*
+	public String generateClosedCyclePredicate(OntoUMLParser mapper, int cardinality) 
+	{
+		String predicate, rules, name;
+		String typeName;
+		Association a;
+		Type last_source, last_target, source, target;
+				
+		typeName = mapper.getName(this.cycle.get(0));
+		
+		name = "closedCycle_"+typeName+"_"+mapper.getName(cycle.get(1));
+		rules = "all w:World | #w." + typeName + ">=" + cardinality;
+		rules += "\n\tall w:World | all x:w."+typeName+" | ";
+		
+		a = (Association)this.cycleRelationship.get(0);
+		last_source = SourceTargetAssociation.getSourceAlloy(a);
+		last_target = SourceTargetAssociation.getTargetAlloy(a);
+		
+		if (last_source.equals(this.cycle.get(0)))
+			rules += "(x.(w."+mapper.getName(a)+"))";
+		
+		else {
+			rules += "((w."+mapper.getName(a)+").x)";
+			last_target = SourceTargetAssociation.getSourceAlloy(a);
+			last_source = SourceTargetAssociation.getTargetAlloy(a);
 		}
+		
+		for (int i = 1; i<cycleRelationship.size();i++) {
+			Relationship r = cycleRelationship.get(i);
+			 
+			if(r instanceof Association){
+				Association assoc = (Association)r;
+				source = SourceTargetAssociation.getSourceAlloy((Association)r);
+				target = SourceTargetAssociation.getTargetAlloy((Association)r);
+				r = (Association)r;
+				if( (source.equals(last_target)) ){
+					rules+=".(w."+mapper.getName(assoc)+")";
+					last_source = source;
+					last_target = target;
+				}
+				else {
+					rules+=".(~(w."+mapper.getName(assoc)+"))";
+					last_target = source;
+					last_source = target;
+				}
+				
+				name+="_"+mapper.getName(last_target);
+				
+			}
+		}
+		
+		rules += " = x";
+		
+		predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
+		predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
+		
+		return predicate;	
+	}*/
+	
+	
+	//==================
+	// OUTCOMING FIXES
+	//==================
+	
+	public void forbidCycle() 
+	{
+		for(Relationship rel: getCycleRelationship()){
+			Property src = ((Association)rel).getMemberEnd().get(0);
+			Property tgt = ((Association)rel).getMemberEnd().get(1);
+			fixer.fixPropertyName(src);
+			fixer.fixPropertyName(tgt);
+		}
+		fix.includeRule(generateCycleOcl(OPEN, parser));		
 	}
-	
-	rules += " = x";
-	
-	predicate = AlloyConstructor.AlloyParagraph(name, rules, AlloyConstructor.PRED);
-	predicate += AlloyConstructor.RunCheckCommand(name, "10", "1", AlloyConstructor.PRED)+"\n";
-	
-	return predicate;
-	
-}*/
+
+	public void deriveAssociation(Association assoc) {
+		
+	}
+
+	public void enforceCycle() 
+	{
+		for(Relationship rel: getCycleRelationship()){
+			Property src = ((Association)rel).getMemberEnd().get(0);
+			Property tgt = ((Association)rel).getMemberEnd().get(1);
+			fixer.fixPropertyName(src);
+			fixer.fixPropertyName(tgt);
+		}
+		fix.includeRule(generateCycleOcl(CLOSED, parser));
+	}
 }

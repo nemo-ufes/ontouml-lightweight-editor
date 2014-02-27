@@ -10,6 +10,7 @@ import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
 public class AssCycWizard extends AntipatternWizard {
 
 	public AssCycFirstPage firstPage;
+	public AssCycSecondPage secondPage;
 	
 	public AssCycWizard(AssCycOccurrence ap) {
 		super(ap,AssCycAntipattern.getAntipatternInfo().name);		
@@ -19,7 +20,8 @@ public class AssCycWizard extends AntipatternWizard {
 	public void addPages() 
 	{
 		firstPage = new AssCycFirstPage((AssCycOccurrence)ap);
-				
+		secondPage = new AssCycSecondPage((AssCycOccurrence)ap);
+		
 		finishing = new FinishingPage();
 		options = new AssCycRefactoringPage(getAp());
 		
@@ -32,7 +34,8 @@ public class AssCycWizard extends AntipatternWizard {
 		);
 			
 		addPage(presentation);	
-		addPage(firstPage);		
+		addPage(firstPage);	
+		addPage(secondPage);
 		addPage(options);
 		addPage(finishing);
 	}
@@ -44,6 +47,10 @@ public class AssCycWizard extends AntipatternWizard {
 	public AssCycFirstPage getFirstPage()
 	{
 		return firstPage;
+	}
+	public AssCycSecondPage getSecondPage()
+	{
+		return secondPage;
 	}
 	@Override
 	public boolean performFinish() {
