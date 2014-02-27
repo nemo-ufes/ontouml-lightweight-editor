@@ -1981,7 +1981,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 //		}	
 	}
 	
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "static-access" })
 	public void deriveByUnion() 
 	{
 		Fix mainfix = new Fix();
