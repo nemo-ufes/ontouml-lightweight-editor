@@ -26,6 +26,53 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		return cycleRelationship;
 	}
 	
+	public String generateDerivation(Association assoc)
+	{
+		String result = new String();
+		
+		int index = getCycleRelationship().indexOf(assoc);
+		Property src = assoc.getMemberEnd().get(0);
+		Property tgt = assoc.getMemberEnd().get(1);
+		
+		result+= "context _'"+src.getType().getName()+"'::"+tgt.getName()+":Set("+tgt.getType().getName()+")\n";
+		
+		result+= "derive: self";
+		
+//		beginAssoc = get association from which we will begin the navigation (from its target to source)
+//		endAssoc = get association from which we will end the navigation (from its target to source)
+//		Association endAssoc = null;
+//		Association beginAssoc = null;
+//		for(Relationship rel: getCycleRelationship())
+//		{
+//			if (((Association)rel).getMemberEnd().get(0).getType().equals(src.getType())){
+//				endAssoc=((Association)rel);
+//			}
+//			if (((Association)rel).getMemberEnd().get(1).getType().equals(src.getType())){
+//				beginAssoc=((Association)rel);
+//			}
+//		}		
+		
+		int endIndex = index+1;
+		int beginIndex = index-1;
+		if(endIndex<0) endIndex = getCycleRelationship().size()-1;
+		if(beginIndex<0) beginIndex = getCycleRelationship().size()-1;
+		
+		System.out.println("begin="+beginIndex+" until "+endIndex);
+		int i=0;
+		for(i=beginIndex; i!= endIndex; i++)
+		{
+			System.out.println("for i="+i);
+			if(i==getCycleRelationship().size()-1) i=0;
+			Association navigation = ((Association)getCycleRelationship().get(i));
+			result+="._'"+navigation.getMemberEnd().get(0).getName()+"'";
+			System.out.println("._'"+navigation.getMemberEnd().get(0).getName()+"'");
+		}
+		Association navigation = ((Association)getCycleRelationship().get(i));
+		result+="._'"+navigation.getMemberEnd().get(0).getName()+"'";
+		System.out.println("._'"+navigation.getMemberEnd().get(0).getName()+"'");
+		return result;		
+	}
+	
 	public String generateCycleOcl(int type, OntoUMLParser parser) {
 		String rule, typeName;
 		Association a;
@@ -297,7 +344,13 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 	}
 
 	public void deriveAssociation(Association assoc) {
-		
+		for(Relationship rel: getCycleRelationship()){
+			Property src = ((Association)rel).getMemberEnd().get(0);
+			Property tgt = ((Association)rel).getMemberEnd().get(1);
+			fixer.fixPropertyName(src);
+			fixer.fixPropertyName(tgt);
+		}
+		fix.includeRule(generateDerivation(assoc));
 	}
 
 	public void enforceCycle() 
