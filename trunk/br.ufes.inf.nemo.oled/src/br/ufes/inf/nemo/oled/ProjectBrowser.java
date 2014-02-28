@@ -16,8 +16,6 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.eclipse.emf.ecore.EObject;
-
 import br.ufes.inf.nemo.assistant.ModellingAssistant;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
@@ -38,15 +36,17 @@ public class ProjectBrowser extends JPanel{
 	
 	//Keeps track of the trees instantiated in order to not re-instantite them 
 	private static Map<UmlProject, ProjectBrowser> treeMap = new HashMap<UmlProject, ProjectBrowser>();
+	public static AppFrame frame;
 	
 	private JScrollPane scroll;
 	private ProjectTree tree; 
 	
-	//find feature
+	//Find in Tree Feature
 	private ArrayList<DefaultMutableTreeNode> resultFindList;	
 	private int indexActualFind=0;
 	private String oldText = new String();
 	
+	//Models
 	private UmlProject project;	
 	private OntoUMLParser refparser;	
 	private AlloySpecification alloySpec;
@@ -54,10 +54,10 @@ public class ProjectBrowser extends JPanel{
 	private AntiPatternList antipatterns;	
 	private InferenceList inferences;
 	private OntoUML2AlloyOptions refOptions;
-	private OCL2AlloyOptions oclOptions;
-	public static AppFrame frame;
+	private OCL2AlloyOptions oclOptions;	
 	private ModellingAssistant assistant;
-		
+	
+			
 	public void setProject(UmlProject project)
 	{
 		this.project = project;
@@ -238,34 +238,10 @@ public class ProjectBrowser extends JPanel{
 	 */
 	public static void refreshTree(UmlProject project)
 	{
-		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame,project);
-		
-		browser.tree.updateUI();		
-		
+		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame,project);		
+		browser.tree.updateUI();				
 		browser.validate();
 		browser.repaint();		
-	}
-	
-	/**
-	 * Update the Tree
-	 */
-	public static void rebuildTree(UmlProject project)
-	{
-		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame,project);
-				
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(project);
-		OntoUMLParser refparser = new OntoUMLParser(project.getModel());
-		
-		ArrayList<EObject> selected = (ArrayList<EObject>)browser.getTree().getModelCheckedElements();
-		refparser.selectThisElements(selected, true);
-		
-		browser.setParser(refparser);		
-		browser.setTree(new ProjectTree(frame, root,project,refparser));
-		browser.getTree().checkModelElements(selected, true);			
-		browser.getTree().updateUI();    	
-				
-		browser.validate();
-		browser.repaint();
 	}
 	
 	public void setTree(ProjectTree tree)
@@ -292,16 +268,22 @@ public class ProjectBrowser extends JPanel{
 		@Override
 		public void valueChanged(TreeSelectionEvent e) 
 		{
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();	
-			if (node.getUserObject() instanceof OntoUMLElement){
-				
-			}else if ((node.getUserObject() instanceof StructureDiagram) && !(((DefaultMutableTreeNode)node.getParent()).getUserObject() instanceof UmlProject)){
-				 StructureDiagram diagram = ((StructureDiagram)node.getUserObject());
-				 for(Component c: frame.getDiagramManager().getComponents()){
-					 if (c instanceof DiagramEditorWrapper){
-						 if (((DiagramEditorWrapper)c).getDiagram().equals(diagram)) frame.getDiagramManager().setSelectedComponent(c);
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
+			if(node!=null)
+			{
+				if (node.getUserObject() instanceof OntoUMLElement){
+					
+				}
+				else if (node.getUserObject()!=null && node.getParent() != null && (node.getUserObject() instanceof StructureDiagram) && !(((DefaultMutableTreeNode)node.getParent()).getUserObject() instanceof UmlProject))
+				{
+					 StructureDiagram diagram = ((StructureDiagram)node.getUserObject());
+					 for(Component c: frame.getDiagramManager().getComponents())
+					 {
+						 if (c instanceof DiagramEditorWrapper){
+							 if (((DiagramEditorWrapper)c).getDiagram().equals(diagram)) frame.getDiagramManager().setSelectedComponent(c);
+						 }
 					 }
-				 }
+				}
 			}
 		}		
 	 }

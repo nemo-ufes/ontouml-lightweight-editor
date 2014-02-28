@@ -128,7 +128,7 @@ public class OntoUMLParser {
 	{
 		// only add if it is not there already
 		if (this.elementsHash.get(obj)==null)
-		{
+		{			
 			if (obj instanceof RefOntoUML.Comment){
 				ParsingElement e = new ParsingElement(obj,true,"");
 				this.elementsHash.put(obj,e);
@@ -538,6 +538,14 @@ public class OntoUMLParser {
 			if(selected.contains(pe.getElement())) pe.setSelected(true);
 			else if (unselectOthers) pe.setSelected(false);
 		}
+	}
+	
+	public void unselectThisElements(ArrayList<EObject> unselected)
+	{
+		for (ParsingElement pe : elementsHash.values()) 
+		{
+			if(unselected.contains(pe.getElement())) pe.setSelected(false);
+		}		
 	}
 	
 	/**

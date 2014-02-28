@@ -449,7 +449,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{
 		if (manager.isProjectLoaded()==false) return;
 
-		manager.deriveRelations();
+		//manager.deriveRelations();
 	}
 
 	public void verifyModel() 

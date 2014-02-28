@@ -24,7 +24,6 @@ import java.util.List;
 
 import RefOntoUML.Association;
 import RefOntoUML.impl.AssociationImpl;
-import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
@@ -91,10 +90,7 @@ public class SetConnectionNavigabilityCommand extends BaseDiagramCommand {
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(connection);
-		notification.notifyChange(elements, ChangeType.CONNECTION_NAVEGABILITY_SET, redo ? NotificationType.REDO : NotificationType.DO);
-		
-		//FIXME every modification creates a new tree
-		ProjectBrowser.rebuildTree(project);		
+		notification.notifyChange(elements, ChangeType.CONNECTION_NAVEGABILITY_SET, redo ? NotificationType.REDO : NotificationType.DO);		
 	}
 
 	/**

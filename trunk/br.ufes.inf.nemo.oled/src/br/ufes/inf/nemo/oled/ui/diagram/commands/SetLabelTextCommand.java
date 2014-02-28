@@ -28,7 +28,6 @@ import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
@@ -73,20 +72,10 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		elements.add(label);
 		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, redo ? NotificationType.REDO : NotificationType.DO);
 		
-		ProjectBrowser.refreshTree(project);		
-			
 		if (parent instanceof ClassElement) 
 		{
 			Classifier element = (((ClassElement)parent).getClassifier());
-			
-			//Select the element in the Tree
-			ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
-			tree.selectModelElement(element);
-			
-			//Update the element from the auto completion of the OCL editor
-			//Update OntoUML Parser
-			ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(element);			
-			ProjectBrowser.getParserFor(project).updateElement(element);
+			ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(element, false);
 			
 		}else if (parent instanceof BaseConnection){
 			

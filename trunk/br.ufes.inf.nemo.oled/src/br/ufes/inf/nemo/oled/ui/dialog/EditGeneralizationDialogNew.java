@@ -32,9 +32,7 @@ import org.eclipse.emf.edit.command.DeleteCommand;
 
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -576,10 +574,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
  	 	 		
  	 	 		needsSaveGenSet = false; 	
  	 	 		
- 	 	 		// Guarantee that the GenSet is added to the parser in the current Project (UmlProject)
- 	 	 		OntoUMLParser ontoparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
- 	 	 		ontoparser.addElement(genSet);
- 	 	 		ProjectBrowser.rebuildTree(diagramManager.getCurrentProject());
+ 	 	 		diagramManager.updatedOLEDFromInclusion(genSet);
  	 		}
  	 		else
  	 		{
@@ -616,9 +611,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
 			populateChooseGenSetCombo();
 			
 			// Guarantee that the GenSet is removed in the parser in the current Project (UmlProject)
- 	 	 	OntoUMLParser ontoparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
- 	 	 	ontoparser.removeElement(genSet);
- 	 	 	ProjectBrowser.rebuildTree(diagramManager.getCurrentProject());
+ 	 	 	diagramManager.updateOLEDFromDeletion(genSet);			
 		}
 	}
 	
