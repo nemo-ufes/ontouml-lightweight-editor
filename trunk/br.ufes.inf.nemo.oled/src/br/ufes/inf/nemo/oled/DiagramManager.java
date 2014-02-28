@@ -332,7 +332,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		AddNodeCommand cmd = new AddNodeCommand(null,null,cmt,0,0,getCurrentProject(),eContainer);		
 		cmd.run();
 	}
-	
+
 	/** Add comment to the model (not to diagrams) */
 	public void addComment(RefOntoUML.Comment c, RefOntoUML.Element eContainer)
 	{
@@ -368,6 +368,25 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/** Delete element from the model and every diagram in each it appears. */
+	public void deleteUnsafely(RefOntoUML.Element element)
+	{	
+		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
+		deletionList.add(element);		
+		//from diagrams & model
+		for(DiagramEditor diagramEditor: getDiagramEditors(element))
+		{
+			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
+			cmd.run();
+		}
+		// only from model
+		if(getDiagramEditors(element).size()==0)
+		{		
+			DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
+			cmd.run();
+		}
+	}
+
+	/** Delete element from the model and every diagram in each it appears. */
 	public void delete(RefOntoUML.Element element)
 	{	
 		int response = JOptionPane.showConfirmDialog(frame, "Delete selected items from the model and all diagrams? \n\nWARNING: This action cannot be undone.", "Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
@@ -389,7 +408,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 	}
-	
+
 	/** Delete elements from the model and every diagram in each they appear. */
 	public void delete(Collection<DiagramElement> diagramElementList)
 	{
@@ -415,7 +434,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 	}
-	
+
 	/** Delete element from all diagrams in the project. (not from the model) */
 	public void deleteFromDiagrams(RefOntoUML.Element element)
 	{
@@ -554,12 +573,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void updatedOLEDFromInclusion(RefOntoUML.Element element)
 	{		
 		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
-				
+
 		// =================================
 		// OntoUML Parser
 		// =================================
 		ProjectBrowser.getParserFor(project).addElement(element);		
-		
+
 		// =================================
 		// Project Tree
 		// =================================		
@@ -573,7 +592,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		// =================================		
 		ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(element);
 	}
-	
+
 	/**
 	 * Update the application accordingly to the refontouml instance created
 	 * 
@@ -607,7 +626,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			else refreshDiagramElement((RefOntoUML.Element)element);
 		}
 	}
-	
+
 	/**
 	 * Update the application accordingly to the refontouml instance created
 	 * 
@@ -616,17 +635,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void updateOLEDFromDeletion(RefOntoUML.Element deletedElement)
 	{		
 		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
-		
+
 		// =================================
 		// OntoUML Parser
 		// =================================
 		ProjectBrowser.getParserFor(project).removeElement(deletedElement);
-		
+
 		// =================================
 		// OCL Completion
 		// =================================		
 		ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(deletedElement);			
-		
+
 		// =================================
 		// Project Tree
 		// =================================
@@ -635,7 +654,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		browser.getTree().removeCurrentNode();
 		browser.getTree().updateUI();
 	}
-	
+
 	/** Update OLED according to a Fix.  */
 	public void updateOLED (final Fix fix)
 	{
@@ -660,11 +679,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		for(Object obj: fix.getDeleted()) {
 			if (obj instanceof RefOntoUML.Relationship)
-				ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
+				ProjectBrowser.frame.getDiagramManager().deleteUnsafely((RefOntoUML.Element)obj);			
 		}
 		for(Object obj: fix.getDeleted()) {
 			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
-				ProjectBrowser.frame.getDiagramManager().delete((RefOntoUML.Element)obj);			
+				ProjectBrowser.frame.getDiagramManager().deleteUnsafely((RefOntoUML.Element)obj);			
 		}
 		for(String str: fix.getAddedRules()){
 			getFrame().getInfoManager().addConstraints(str+"\n");
@@ -2006,14 +2025,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 //			}    		
 //		}	
 	}
-	
+
 	@SuppressWarnings({ "unused", "static-access" })
 	public void deriveByUnion() 
 	{
 		Fix mainfix = new Fix();
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
 		List<DiagramElement> selected = activeEditor.getSelectedElements();
-		
+
 		
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
 		int j=0;
@@ -2059,20 +2078,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		//System.out.println("");
 		// diagramElem instnaceof AssociationElement ... diagramElement.getRelationship();
 		// diagramEleme instanceof ClassElement ... diagramElement.getClassifier();
-		
+
 		//eliminate associations and generalizations
-		
+
 		//Fix fix = DervideByUnion.run(refontoList);
-		
+
 		// double pos = calcular posição ... diagramElement.getAbsoluteX1, X2,
-		
+
 		//updateOLED(fix, double pos_new_Elem); // new method: we need to do this.
-		
+
 		//String constraint = DerviedByUnion.getConstraints();
 		//getFrame().getInfoManager().getOcleditor().addText(constraint);
-		
+
 		//System.out.println("derive by union");
-		
+
 	}
 
 }

@@ -77,7 +77,7 @@ public class NewGenericRelation extends WizardPageAssistant{
 		relationName.addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				if(trgMinCard.getText().isEmpty()){
+				if(relationName.getText().isEmpty()){
 					//					warning.setVisible(true);
 					setPageComplete(false);
 				}else{
@@ -125,6 +125,7 @@ public class NewGenericRelation extends WizardPageAssistant{
 		label_5.setText("...");
 		label_5.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		label_5.setBounds(406, 92, 8, 15);
+		setPageComplete(false);
 	}
 
 	@Override
@@ -225,7 +226,7 @@ public class NewGenericRelation extends WizardPageAssistant{
 	/* get operations */
 
 	public String getClassName(){
-		return srcClsName.getText();
+		return getCurrentClass();
 	}
 
 	public String getRelationName(){
@@ -257,12 +258,12 @@ public class NewGenericRelation extends WizardPageAssistant{
 	}
 
 	private int cardMinToInt(String card){
-		String s = card.substring(0, card.indexOf(".."));
-		return Integer.parseInt(s);
+		return Integer.parseInt(card);
 	}
 
 	private int cardMaxToInt(String card){
-		String s = card.substring(card.indexOf(".."));
-		return Integer.parseInt(s);
+		if(card.equals("*"))
+			return -1;
+		return Integer.parseInt(card);
 	}
 }

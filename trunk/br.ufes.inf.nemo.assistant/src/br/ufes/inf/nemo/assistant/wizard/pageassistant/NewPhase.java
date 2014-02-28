@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
-//TODO VALIDATE genSetName
+
 public class NewPhase extends WizardPageAssistant {
 	private Table table;
 
@@ -142,7 +142,6 @@ public class NewPhase extends WizardPageAssistant {
 										case SWT.FocusOut:
 											item.setText (column, text.getText ());
 											text.dispose ();
-											System.out.println("changed");
 											break;
 										case SWT.Traverse:
 											switch (e.detail) {
@@ -194,7 +193,7 @@ public class NewPhase extends WizardPageAssistant {
 			return false;
 		
 		//At least two Phases needs to be created
-		if(contPhases > 1){
+		if(contPhases >= 1){
 			return true;
 		}
 		return false;

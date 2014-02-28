@@ -93,6 +93,9 @@ public class WizardAssitant extends Wizard {
 		//Set currentNode
 		graph.setCurrentNode(nextNode);
 
+		//Execute all alterations in RefOntoUML object from the Manager Pattern 
+		graph.getManagerPattern().run(currentPage);
+		
 		//Special treats
 		if(nextPage instanceof Question){
 			PageTreater.treatPage(nextNode, (Question)nextPage);
@@ -101,9 +104,6 @@ public class WizardAssitant extends Wizard {
 		}else if(nextPage instanceof NewGenericRelation){
 			PageTreater.treatPage(nextNode, (NewGenericRelation)nextPage);
 		}
-
-		//Execute all alterations in RefOntoUML object from the Manager Pattern 
-		graph.getManagerPattern().run(currentPage);
 
 		if(graph.getCurrentNode().isEndNode()){
 			canFinish = true;
