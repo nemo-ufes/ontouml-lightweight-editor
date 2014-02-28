@@ -68,7 +68,7 @@ public class AssCycAction extends AntiPatternAction<AssCycOccurrence>{
 		
 		if(code==Action.DERIVE_ONE_ASSOCIATION)
 		{
-			result += "Create OCL derivation for association "+getStereotype(assoc)+" "+assoc.getName();
+			result += "Create OCL derivation for association "+getStereotype(assoc)+" "+(assoc).getName()+": "+(assoc).getMemberEnd().get(0).getType().getName()+"->"+(assoc).getMemberEnd().get(1).getType().getName();
 		}
 		if(code==Action.CYCLE_FORBIDDEN)
 		{
