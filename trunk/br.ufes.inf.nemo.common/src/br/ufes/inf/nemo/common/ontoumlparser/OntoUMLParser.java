@@ -1333,7 +1333,9 @@ public class OntoUMLParser {
 		for (EObject a : getAllInstances(Relationship.class)) {
 			if (a instanceof Generalization){
 				Generalization g = (Generalization)a;
-				if(g.getGeneral().equals(eObject) || g.getSpecific().equals(eObject)) relations.add(g);						
+				if(g.getGeneral()!=null && g.getSpecific()!=null){
+					if(g.getGeneral().equals(eObject) || g.getSpecific().equals(eObject)) relations.add(g);
+				}				
 			}else if (a instanceof Association){
 				Association assoc = (Association)a;
 				RefOntoUML.Type Src = assoc.getMemberEnd().get(0).getType();

@@ -397,7 +397,8 @@ public class TreePopupMenu extends JPopupMenu {
 		}
 		
     	// Delete 
-    	if (!tree.getModelRootNode().equals(node) && !tree.getDiagramRootNode().equals(node) && !tree.getRootNode().equals(node)){    		
+    	if (!tree.getModelRootNode().equals(node) && !tree.getDiagramRootNode().equals(node) && !tree.getRootNode().equals(node) && !(((OntoUMLElement)node.getUserObject()).getElement() instanceof Property)  
+    	){
     		add(deleteItem);
     		deleteItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete.png")));
     		deleteItem.addActionListener(new ActionListener() {				
