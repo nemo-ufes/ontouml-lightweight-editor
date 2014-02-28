@@ -57,6 +57,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Constraintx;
 import RefOntoUML.Generalization;
 import RefOntoUML.NamedElement;
+import RefOntoUML.Property;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
@@ -94,9 +95,9 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
 import br.ufes.inf.nemo.oled.ui.dialog.EcoreSettingDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
@@ -1309,10 +1310,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public ArrayList<DiagramEditor> getDiagramEditors(RefOntoUML.Element element)
 	{
 		ArrayList<DiagramEditor> list = new ArrayList<DiagramEditor>();
-		for(UmlDiagram d: currentProject.getDiagrams()){
-			if(d instanceof StructureDiagram){
-				StructureDiagram diagram = (StructureDiagram)d;				
-				DiagramElement elem = ModelHelper.getDiagramElement(element);
+		for(UmlDiagram d: currentProject.getDiagrams())
+		{
+			if(d instanceof StructureDiagram)
+			{
+				StructureDiagram diagram = (StructureDiagram)d;
+				DiagramElement elem=null;
+				if(element instanceof Property) elem = ModelHelper.getDiagramElement((RefOntoUML.Element)element.eContainer());
+				else elem = ModelHelper.getDiagramElement(element);
 				if (diagram.containsChild(elem)) {
 					DiagramEditor editor = getDiagramEditor(diagram);
 					if (editor==null){

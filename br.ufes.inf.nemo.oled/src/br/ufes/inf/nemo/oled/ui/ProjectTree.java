@@ -52,6 +52,7 @@ public class ProjectTree extends CheckboxTree {
 	private Toolkit toolkit = Toolkit.getDefaultToolkit();
 	public AppFrame frame;
 	public UmlProject project;
+	private TreeCheckingModel checkingModel;
 	
 	/**
 	 * Constructor.
@@ -80,7 +81,7 @@ public class ProjectTree extends CheckboxTree {
 		ProjectTreeCellRenderer ontoCellRenderer = new ProjectTreeCellRenderer();
 		setCellRenderer(ontoCellRenderer);
 				
-		TreeCheckingModel checkingModel = getCheckingModel();
+		checkingModel = getCheckingModel();
 		
 		drawModel(modelRootNode, project.getModel(), checkingModel, refparser);	
 		drawDiagram(diagramRootNode, (List<? extends UmlDiagram>)project.getDiagrams());
@@ -217,12 +218,84 @@ public class ProjectTree extends CheckboxTree {
 		if (object instanceof StructureDiagram)
 		{
 			return new DefaultMutableTreeNode(object);
-		}else if(object instanceof RefOntoUML.Element){
+			
+		}else if (object instanceof RefOntoUML.Package || object instanceof RefOntoUML.Generalization || object instanceof RefOntoUML.GeneralizationSet || object instanceof RefOntoUML.Comment || object instanceof RefOntoUML.Constraintx) 
+		{		
+			return new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),""));
+			
+		}else if (object instanceof RefOntoUML.Property)
+		{
 			String alias = new String();
-			if (ProjectBrowser.getParserFor(project)!=null) alias = ProjectBrowser.getParserFor(project).getAlias((RefOntoUML.Classifier)object);
-			else alias = "";
-		
-			return new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),alias));
+			OntoUMLParser refparser = ProjectBrowser.getParserFor(project);
+			if (refparser!=null) alias = refparser.getAlias((RefOntoUML.Property)object);
+			else alias = "";		
+			DefaultMutableTreeNode node = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),alias));
+			checkingModel.setPathEnabled(new TreePath(node.getPath()),false);
+			return node;
+			
+		}else if(object instanceof RefOntoUML.Classifier)
+		{
+			String alias = new String();
+			OntoUMLParser refparser = ProjectBrowser.getParserFor(project);
+			if (refparser!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
+			else alias = "";		
+			DefaultMutableTreeNode node = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),alias));
+			
+			for(Generalization g: ((RefOntoUML.Classifier) object).getGeneralization())
+			{
+				DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)g),""));
+				node.add(child);				
+			}
+				
+			if (object instanceof RefOntoUML.Class)
+			{				
+				for (Property o: ((RefOntoUML.Class)object).getOwnedAttribute())
+				{
+					if (ProjectBrowser.getParserFor(project)!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
+					else alias = "";		
+					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)o),alias));
+					node.add(child);
+				}			
+				for (Comment o: ((RefOntoUML.Class)object).getOwnedComment())
+				{
+					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)o),""));
+					node.add(child);
+				}
+			}		
+			
+			if (object instanceof RefOntoUML.DataType)
+			{				
+				for (Property o: ((RefOntoUML.DataType)object).getOwnedAttribute())
+				{
+					if (ProjectBrowser.getParserFor(project)!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
+					else alias = "";		
+					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)o),alias));
+					node.add(child);
+				}			
+				for (Comment o: ((RefOntoUML.DataType)object).getOwnedComment())
+				{
+					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)o),""));
+					node.add(child);
+				}
+			}		
+			
+			if (object instanceof RefOntoUML.Association){
+				for (RefOntoUML.Property o: ((RefOntoUML.Association)object).getMemberEnd())
+				{
+					if (ProjectBrowser.getParserFor(project)!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
+					else alias = "";		
+					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)o),alias));
+					node.add(child);
+					checkingModel.setPathEnabled(new TreePath(child.getPath()),false);
+				}
+				for (Comment o: ((RefOntoUML.Association)object).getOwnedComment())
+				{
+					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)o),""));
+					node.add(child);
+				}
+			}
+			
+			return node;
 		}else{
 			return new DefaultMutableTreeNode(object);
 		}
@@ -634,7 +707,7 @@ public class ProjectTree extends CheckboxTree {
             	DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode)(path.getLastPathComponent());
             	
             	// open diagram
-            	if (currentNode.getUserObject() instanceof StructureDiagram)
+            	if (currentNode.getUserObject() instanceof StructureDiagram && !currentNode.equals(diagramRootNode))
             	{
             		StructureDiagram diagram = (StructureDiagram)currentNode.getUserObject();
             		if (!ProjectTree.this.frame.getDiagramManager().isDiagramOpened(diagram)) {
