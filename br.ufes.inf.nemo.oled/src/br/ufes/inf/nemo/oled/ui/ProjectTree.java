@@ -28,6 +28,7 @@ import RefOntoUML.Package;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -120,7 +121,7 @@ public class ProjectTree extends CheckboxTree {
 	    	menu.show(e.getComponent(), e.getX(), e.getY());
 		}
 	}
-	
+		
 	 /** Remove the currently selected node. */
     public void removeCurrentNode() 
     {
@@ -141,7 +142,7 @@ public class ProjectTree extends CheckboxTree {
     
     /** Add child to the currently selected node. */
     public DefaultMutableTreeNode addObject(Object child) 
-    {
+    {    		
         DefaultMutableTreeNode parentNode = null;
         TreePath parentPath = getSelectionPath(); 
         if (parentPath == null) 
@@ -151,6 +152,27 @@ public class ProjectTree extends CheckboxTree {
             parentNode = (DefaultMutableTreeNode)(parentPath.getLastPathComponent());
         } 
         return addObject(parentNode, child, true);
+    }    
+       
+    @SuppressWarnings("rawtypes")
+	public DefaultMutableTreeNode getNode(EObject eobject)
+    {	
+		Enumeration e = modelRootNode.breadthFirstEnumeration();
+	    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)e.nextElement();
+	    while (e.hasMoreElements()) 
+	    {
+	    	EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
+	    	if (obj.equals(eobject)) { 
+	    		return node;	    		
+	    	}	    		
+	    	node = (DefaultMutableTreeNode)e.nextElement();
+	    }
+	    //last element
+	    EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
+	    if (obj.equals(eobject)){ 
+	    	return node;	
+	    }	  
+	    return null;
     }
     
     public DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent, Object child) 
@@ -158,9 +180,14 @@ public class ProjectTree extends CheckboxTree {
     	return addObject(parent, child, false);
     }
     
-    public DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent, Object child, boolean shouldBeVisible) 
+    private DefaultMutableTreeNode addObject(DefaultMutableTreeNode parent, Object child, boolean shouldBeVisible) 
     {
-		DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(child);		
+    	if(child instanceof EObject){
+    		DefaultMutableTreeNode node = getNode((EObject)child);
+    		if(node!=null) return node;
+    	}
+    	
+		DefaultMutableTreeNode childNode = createNode(child);		
 		
 		if (parent == null) parent = rootNode;		
 		
@@ -183,6 +210,22 @@ public class ProjectTree extends CheckboxTree {
 	
 	public DefaultMutableTreeNode getRootNode(){
 		return rootNode;
+	}
+	
+	private DefaultMutableTreeNode createNode(Object object)
+	{
+		if (object instanceof StructureDiagram)
+		{
+			return new DefaultMutableTreeNode(object);
+		}else if(object instanceof RefOntoUML.Element){
+			String alias = new String();
+			if (ProjectBrowser.getParserFor(project)!=null) alias = ProjectBrowser.getParserFor(project).getAlias((RefOntoUML.Classifier)object);
+			else alias = "";
+		
+			return new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),alias));
+		}else{
+			return new DefaultMutableTreeNode(object);
+		}
 	}
 	
 	private void drawDiagram(DefaultMutableTreeNode parent, List<? extends UmlDiagram> objectList)
@@ -339,6 +382,32 @@ public class ProjectTree extends CheckboxTree {
 	}
 	
 	/**
+	 * Get Unchecked Elements.
+	 * 
+	 * @param modeltree
+	 * @return
+	 */
+	public List<EObject> getModelUncheckedElements ()
+	{
+		List<EObject> uncheckedNodes = new ArrayList<EObject>();
+		List<EObject> checkedNodes = new ArrayList<EObject>();
+	    TreePath[] treepathList = getCheckingPaths();
+	    	
+	    for (TreePath treepath : treepathList) 
+	    {	    	
+	    	DefaultMutableTreeNode node = ((DefaultMutableTreeNode)treepath.getLastPathComponent());
+	    	if (node.getUserObject() instanceof OntoUMLElement)
+	    		checkedNodes.add(((OntoUMLElement)node.getUserObject()).getElement());	    		    	
+	    }
+		    
+		OntoUMLElement rootObject = (OntoUMLElement) modelRootNode.getUserObject();
+	    	    
+		initModelUncheckeNodes(rootObject.getElement(), checkedNodes, uncheckedNodes);
+    	    	
+	    return uncheckedNodes;
+	}
+	
+	/**
 	 * Check Node.
 	 * 
 	 * @param node
@@ -372,9 +441,45 @@ public class ProjectTree extends CheckboxTree {
     	}
 	}
 	
+	/**
+	 * Uncheck Node.
+	 * 
+	 * @param node
+	 * @param safe
+	 * @param modeltree
+	 */
+	@SuppressWarnings({ "rawtypes", "unused" })
+	public void uncheckNode(DefaultMutableTreeNode node, boolean safe)
+	{		
+		EObject childObject;		
+		removeCheckingPath(new TreePath(node.getPath()));		
+		
+		Object userobj = node.getUserObject();
+		Object obj=null;
+		if (userobj instanceof OntoUMLElement) obj = ((OntoUMLElement)userobj).getElement();
+		else if (userobj instanceof StructureDiagram) obj = ((StructureDiagram)userobj);
+		else if (userobj instanceof UmlProject) obj = ((UmlProject)userobj);
+		
+		//unselected children only if was different than Association, Diagram or Project
+    	if(safe && obj!=null && node.getChildCount()>0 && !(obj instanceof Association) && !(obj instanceof StructureDiagram) && !(obj instanceof UmlProject)) 
+    	{
+			Enumeration e = node.breadthFirstEnumeration();
+			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)e.nextElement();		
+			
+			while (e.hasMoreElements()) 
+	    	{
+				childNode = (DefaultMutableTreeNode)e.nextElement();
+				childObject = ((OntoUMLElement)childNode.getUserObject()).getElement();		    		
+				getCheckingModel().addCheckingPath(new TreePath(childNode.getPath()));				
+			}
+    	}
+	}
 	@SuppressWarnings("rawtypes")
 	public void selectModelElement(EObject element)
-	{		
+	{	
+		EObject rootEObj = ((OntoUMLElement)modelRootNode.getUserObject()).getElement();
+		if (rootEObj.equals(element)) { select(modelRootNode); return; }
+		
 		Enumeration e = modelRootNode.breadthFirstEnumeration();
 	    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)e.nextElement();
 	    while (e.hasMoreElements()) 
@@ -458,6 +563,34 @@ public class ProjectTree extends CheckboxTree {
 	    if (alreadyChecked.contains(obj)) { checkNode(node,true); }    	    	
 	}	
 	 
+	/**
+	 * Check this elements.
+	 * 
+	 * @param elements
+	 * @param modeltree
+	 */
+	@SuppressWarnings("rawtypes")
+	public void uncheckModelElements(List<EObject> elements, boolean safe) 
+	{			   
+		List<EObject> alreadyUnchecked = getModelUncheckedElements();		
+	    
+		alreadyUnchecked.removeAll(elements);
+		alreadyUnchecked.addAll(elements);		
+		
+	    Enumeration e = modelRootNode.breadthFirstEnumeration();
+	    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)e.nextElement();
+	    while (e.hasMoreElements()) 
+	    {
+	    	EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
+	    	if (alreadyUnchecked.contains(obj)) { uncheckNode(node,true); }	    			
+	    		    		
+	    	node = (DefaultMutableTreeNode)e.nextElement();	    
+	    }
+	    //last element
+	    EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
+	    if (alreadyUnchecked.contains(obj)) { uncheckNode(node,true); }    	    	
+	}	
+	
 	/**
 	 * Initialize Unchecked Nodes.
 	 */

@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.ui.popup;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
@@ -17,13 +18,18 @@ import RefOntoUML.NamedElement;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.OntoUMLElement;
 import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
+import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 public class TreePopupMenu extends JPopupMenu {
  
@@ -91,8 +97,7 @@ public class TreePopupMenu extends JPopupMenu {
     		add(refreshItem);
     		refreshItem.addActionListener(new ActionListener() {				
     			@Override
-    			public void actionPerformed(ActionEvent e) {
-    				//FIXME every modification creates a new tree
+    			public void actionPerformed(ActionEvent e) {    				
     				ProjectBrowser.refreshTree(frame.getDiagramManager().getCurrentProject());
     			}
     		});
@@ -126,6 +131,12 @@ public class TreePopupMenu extends JPopupMenu {
     						value = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename - "+((NamedElement)element).getName(),JOptionPane.INFORMATION_MESSAGE,null,null,((NamedElement)element).getName());    						
     						if(value!=null){
     							((NamedElement)element).setName(value);
+    							ArrayList<DiagramEditor> editors = ProjectBrowser.frame.getDiagramManager().getDiagramEditors(element);
+    							DiagramElement dElem = ModelHelper.getDiagramElement(element);
+    							if (dElem instanceof ClassElement){
+    								SetLabelTextCommand cmd = new SetLabelTextCommand((DiagramNotification)editors.get(0),((ClassElement)dElem).getMainLabel(),value,ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+    								cmd.run();
+    							}
     							frame.getDiagramManager().updateOLEDFromModification(element, false);
     						}
     					}    					
@@ -402,9 +413,7 @@ public class TreePopupMenu extends JPopupMenu {
     				}
     				else if (TreePopupMenu.this.element instanceof StructureDiagram)
     				{
-    					frame.getDiagramManager().removeDiagram((StructureDiagram)TreePopupMenu.this.element);
-    					// FIXME every modification creates a new tree
-    					ProjectBrowser.rebuildTree(frame.getDiagramManager().getCurrentProject());
+    					frame.getDiagramManager().removeDiagram((StructureDiagram)TreePopupMenu.this.element);    					
     				}
     			}
     		});

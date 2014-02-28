@@ -138,7 +138,6 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			addToDiagram(redo);
 			ModelHelper.addMapping(relationship, diagramElement);						
 		}
-
 		ProjectBrowser.frame.getDiagramManager().updatedOLEDFromInclusion(relationship);
 	}
 		

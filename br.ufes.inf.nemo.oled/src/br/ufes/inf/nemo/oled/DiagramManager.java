@@ -55,16 +55,12 @@ import org.eclipse.ocl.SemanticException;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Constraintx;
-import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
-import RefOntoUML.MaterialAssociation;
+import RefOntoUML.NamedElement;
 import RefOntoUML.Type;
-import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlparser.ComponentOfInference;
-import br.ufes.inf.nemo.common.ontoumlparser.MaterialInference;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
@@ -97,6 +93,8 @@ import br.ufes.inf.nemo.oled.ui.diagram.SelectionListener;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.ui.dialog.EcoreSettingDialog;
@@ -251,7 +249,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		frame.getMainToolBar().enableSaveButton(true);
 		diagram.setSaveNeeded(true);
 		createDiagramEditor(diagram);
-		ProjectBrowser.rebuildTree(project);
+		
+		//add the diagram from the browser
+		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
+		browser.getTree().addObject(browser.getTree().getDiagramRootNode(),diagram);
 	}
 
 	/**
@@ -267,7 +268,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			frame.getMainToolBar().enableSaveButton(true);
 			diagram.setSaveNeeded(true);
 			createDiagramEditor(diagram);
-			ProjectBrowser.rebuildTree(getCurrentProject());
+			
+			//add the diagram from the browser
+			ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
+			browser.getTree().addObject(browser.getTree().getDiagramRootNode(),diagram);			
 		}
 	}
 
@@ -284,6 +288,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram)) remove(c);
 			}
 		}		
+		
+		//remove the diagram from the browser
+		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
+		browser.getTree().removeCurrentNode();
 	}
 
 	/** Add relationship to the model (not to diagrams). */
@@ -345,6 +353,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return element;
 	}
 
+	/** Rename an element. It updates the application accordingly, including the diagrams in which the element appears */
+	public void rename(RefOntoUML.Element element, String text)
+	{
+		((NamedElement)element).setName(text);
+		ArrayList<DiagramEditor> editors = ProjectBrowser.frame.getDiagramManager().getDiagramEditors(element);
+		DiagramElement dElem = ModelHelper.getDiagramElement(element);
+		if (dElem instanceof ClassElement)
+		{
+			SetLabelTextCommand cmd = new SetLabelTextCommand((DiagramNotification)editors.get(0),((ClassElement)dElem).getMainLabel(),text,ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+			cmd.run();
+		}
+		frame.getDiagramManager().updateOLEDFromModification(element, false);
+	}
+	
 	/** Delete element from the model and every diagram in each it appears. */
 	public void delete(RefOntoUML.Element element)
 	{	
@@ -540,12 +562,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 		// =================================
 		// Project Tree
-		// =================================
-		// Do not rebuild the tree, we need to only update it without creating a new instance of it.
-		ProjectBrowser.rebuildTree(project);		
+		// =================================		
 		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
-		tree.selectModelElement(element);
-
+		tree.selectModelElement(element.eContainer());		
+		tree.addObject(element);		
+		tree.updateUI();
+		
 		// =================================
 		// OCL Completion
 		// =================================		
@@ -608,7 +630,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		// =================================
 		// Project Tree
 		// =================================
-		ProjectBrowser.rebuildTree(project);
+		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
+		browser.getTree().selectModelElement(deletedElement);
+		browser.getTree().removeCurrentNode();
+		browser.getTree().updateUI();
 	}
 	
 	/** Update OLED according to a Fix.  */
@@ -1427,56 +1452,57 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** 
 	 * Generate derived relations of the model 
 	 */
+	@Deprecated
 	public void deriveRelations() 
 	{
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
-		String result = new String();
-
-		ComponentOfInference d = new ComponentOfInference(refparser);
-		refparser = d.infer();
-
-		MaterialInference mi = new MaterialInference(refparser);
-		try {
-			refparser = mi.infer();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		ProjectBrowser.setParserFor(getCurrentProject(), refparser);
-		ProjectBrowser.rebuildTree(getCurrentProject());
-
-		ArrayList<componentOf> generatedCompositions = d.getInferredCompositions();
-		ArrayList<MaterialAssociation> generatedMaterials = mi.getInferredMaterials();
-		ArrayList<Derivation> generatedDerivations = mi.getInferredDerivations();
-
-		ArrayList<Association> allGenerated = new ArrayList<>();
-		allGenerated.addAll(generatedCompositions);
-		allGenerated.addAll(generatedMaterials);
-		allGenerated.addAll(generatedDerivations);
-
-		/*TODO: WE NEED TO KEEP these inferred relations in memory, because if the model is changed, we must deleted all of them and derive them again.
-		 * 		- Figure out where to keep them.
-		 * 		- Implement the method
-		 * */
-
-		if (generatedCompositions.size()>0 || generatedMaterials.size()>0){
-			int size = generatedCompositions.size()+generatedDerivations.size()+generatedMaterials.size();
-
-			result = 	"A total of "+size+" associations were inferred from the model:"+
-					"\n\t"+generatedCompositions.size()+" ComponentOf."+
-					"\n\t"+generatedMaterials.size()+" Materials."+
-					"\n\t"+generatedDerivations.size()+" Derivations."+
-					"\n\nDetails...";
-
-			for (Association a : allGenerated) {
-				result += "\n\t"+refparser.getStringRepresentation(a);
-			}
-		}
-		else result = "No association can be inferred from the model!";
-
-		ProjectBrowser.getInferences(getCurrentProject()).getInferredElements().addAll(allGenerated);
-
-		frame.getInfoManager().showOutputText(result, true, true);
+//		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
+//		String result = new String();
+//
+//		ComponentOfInference d = new ComponentOfInference(refparser);
+//		refparser = d.infer();
+//
+//		MaterialInference mi = new MaterialInference(refparser);
+//		try {
+//			refparser = mi.infer();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		ProjectBrowser.setParserFor(getCurrentProject(), refparser);
+//		ProjectBrowser.rebuildTree(getCurrentProject());
+//
+//		ArrayList<componentOf> generatedCompositions = d.getInferredCompositions();
+//		ArrayList<MaterialAssociation> generatedMaterials = mi.getInferredMaterials();
+//		ArrayList<Derivation> generatedDerivations = mi.getInferredDerivations();
+//
+//		ArrayList<Association> allGenerated = new ArrayList<>();
+//		allGenerated.addAll(generatedCompositions);
+//		allGenerated.addAll(generatedMaterials);
+//		allGenerated.addAll(generatedDerivations);
+//
+//		/*TODO: WE NEED TO KEEP these inferred relations in memory, because if the model is changed, we must deleted all of them and derive them again.
+//		 * 		- Figure out where to keep them.
+//		 * 		- Implement the method
+//		 * */
+//
+//		if (generatedCompositions.size()>0 || generatedMaterials.size()>0){
+//			int size = generatedCompositions.size()+generatedDerivations.size()+generatedMaterials.size();
+//
+//			result = 	"A total of "+size+" associations were inferred from the model:"+
+//					"\n\t"+generatedCompositions.size()+" ComponentOf."+
+//					"\n\t"+generatedMaterials.size()+" Materials."+
+//					"\n\t"+generatedDerivations.size()+" Derivations."+
+//					"\n\nDetails...";
+//
+//			for (Association a : allGenerated) {
+//				result += "\n\t"+refparser.getStringRepresentation(a);
+//			}
+//		}
+//		else result = "No association can be inferred from the model!";
+//
+//		ProjectBrowser.getInferences(getCurrentProject()).getInferredElements().addAll(allGenerated);
+//
+//		frame.getInfoManager().showOutputText(result, true, true);
 	}
 
 	/**
