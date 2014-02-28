@@ -75,12 +75,12 @@ public class AssCycFirstPage  extends AssCycPage {
 		
 		lblDerivedAssociation = new Label(composite, SWT.NONE);
 		lblDerivedAssociation.setBounds(10, 10, 530, 16);
-		lblDerivedAssociation.setText("Choose which association is derived...");
+		lblDerivedAssociation.setText("Choose which association is derived:");
 		
 		assocCombo = new Combo(composite, SWT.READ_ONLY);
-		assocCombo.setBounds(10, 32, 203, 23);		
+		assocCombo.setBounds(10, 32, 530, 23);		
 		for(Relationship rel: asscyc.getCycleRelationship()){
-			assocCombo.add(getStereotype(rel)+" "+((NamedElement)rel).getName());
+			assocCombo.add(getStereotype(rel)+" "+((NamedElement)rel).getName()+": "+((Association)rel).getMemberEnd().get(0).getType().getName()+"->"+((Association)rel).getMemberEnd().get(1).getType().getName());
 		}
 		
 		lblDerivedAssociation.setVisible(false);
@@ -106,12 +106,15 @@ public class AssCycFirstPage  extends AssCycPage {
 		}
 		if(btnYes.getSelection())
 		{
-			Association assoc = (Association)asscyc.getCycleRelationship().get(assocCombo.getSelectionIndex());
-			//Action =============================
-			AssCycAction newAction = new AssCycAction(asscyc);
-			newAction.setDeriveAssociation(assoc); 
-			getAssCycWizard().replaceAction(0,newAction);	
-			//======================================
+			if(assocCombo.getSelectionIndex()>=0)
+			{
+				Association assoc = (Association)asscyc.getCycleRelationship().get(assocCombo.getSelectionIndex());
+				//Action =============================
+				AssCycAction newAction = new AssCycAction(asscyc);
+				newAction.setDeriveAssociation(assoc); 
+				getAssCycWizard().replaceAction(0,newAction);	
+				//======================================
+			}				
 		}
 		
 		return getAssCycWizard().getFinishing();

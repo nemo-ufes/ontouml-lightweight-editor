@@ -16,6 +16,7 @@ public class AssCycSecondPage  extends AssCycPage {
 	private Button btnAlways;
 	private Button btnNever;
 	private Button btnPossibly;
+	private Label lblConsiderInstancesOf;
 
 	public AssCycSecondPage(AssCycOccurrence asscyc) 
 	{
@@ -31,7 +32,7 @@ public class AssCycSecondPage  extends AssCycPage {
 	
 		setControl(container);			
 		
-		Label lblConsiderInstancesOf = new Label(container, SWT.WRAP);
+		lblConsiderInstancesOf = new Label(container, SWT.WRAP);
 		lblConsiderInstancesOf.setBounds(10, 10, 554, 57);
 		lblConsiderInstancesOf.setText("Consider instances of t1 of <Type-1>, t2 of <Typ2-2>, t3 of <Type-3> and so on. If t1 is connected to t2 through <assoc-1> and t2 is connected to t3 through <assoc-2>, must t3 be connected to t1 through <assoc-3>?");
 		
@@ -64,7 +65,7 @@ public class AssCycSecondPage  extends AssCycPage {
 		{
 			//Action =============================
 			AssCycAction newAction = new AssCycAction(asscyc);
-			newAction.setCycleForbidden(); 
+			newAction.setCycleMandatory();
 			getAssCycWizard().replaceAction(0,newAction);	
 			//======================================
 		}
@@ -72,7 +73,7 @@ public class AssCycSecondPage  extends AssCycPage {
 		{
 			//Action =============================
 			AssCycAction newAction = new AssCycAction(asscyc);
-			newAction.setCycleMandatory();
+			newAction.setCycleForbidden(); 
 			getAssCycWizard().replaceAction(0,newAction);	
 			//======================================
 		}
