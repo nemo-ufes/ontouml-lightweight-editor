@@ -34,7 +34,7 @@ public class AssCycSecondPage  extends AssCycPage {
 		
 		lblConsiderInstancesOf = new Label(container, SWT.WRAP);
 		lblConsiderInstancesOf.setBounds(10, 10, 554, 57);
-		lblConsiderInstancesOf.setText("Consider instances of t1 of <Type-1>, t2 of <Typ2-2>, t3 of <Type-3> and so on. If t1 is connected to t2 through <assoc-1> and t2 is connected to t3 through <assoc-2>, must t3 be connected to t1 through <assoc-3>?");
+		lblConsiderInstancesOf.setText("Consider instances of t1 of <Type-1>, t2 of <Type-2>, t3 of <Type-3> and so on. If t1 is connected to t2 through <assoc-1> and t2 is connected to t3 through <assoc-2>, must t3 be connected to t1 through <assoc-3>?");
 		
 		btnAlways = new Button(container, SWT.RADIO);
 		btnAlways.setBounds(10, 73, 554, 16);
