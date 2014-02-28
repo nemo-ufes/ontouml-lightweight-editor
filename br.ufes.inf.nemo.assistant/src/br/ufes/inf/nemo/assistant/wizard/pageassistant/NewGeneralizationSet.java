@@ -76,6 +76,7 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 					isDisjoint.setSelection(genSetList.get(0).isDisjoint());
 					isComplete.setSelection(genSetList.get(0).isComplete());
 				}else{
+					canFinish = false;
 					cbGeneralizationSet.setItems(new String[0]);
 					isDisjoint.setSelection(false);
 					isComplete.setSelection(false);
@@ -192,6 +193,7 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 
 	@Override
 	public boolean canFlipToNextPage() {
+		System.out.println("saiu");
 		if(isEndPage)
 			return false;
 		if(canFinish)
@@ -208,9 +210,10 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		if(visible){
+			setPageComplete(false);
+			canFinish = false;
 			if(isListSpecifics){
 				className.setText("List of specifics");
-				listSpecifics = getClassList();
 			}else{
 				className.setText(getCurrentClass());	
 			}
@@ -273,11 +276,7 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		return isListSpecifics;
 	}
 	
-	private ArrayList<String[]> listSpecifics;
-	public void setListSpecifics(ArrayList<String[]> list){
-		listSpecifics = list;
-	}
 	public ArrayList<String[]> getListSpecifics(){
-		return listSpecifics;
+		return getClassList();
 	}
 }

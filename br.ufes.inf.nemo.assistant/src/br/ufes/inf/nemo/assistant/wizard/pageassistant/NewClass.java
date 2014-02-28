@@ -1,8 +1,7 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -37,9 +36,9 @@ public class NewClass extends WizardPageAssistant {
 		lblClassName.setText("Class Name");
 
 		tfClassName = new Text(container, SWT.BORDER);
-		tfClassName.addKeyListener(new KeyAdapter() {
+		tfClassName.addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
 			@Override
-			public void keyPressed(KeyEvent owner) {
+			public void focusLost(FocusEvent arg0) {
 				if(tfClassName.getText().isEmpty()){
 					warning.setVisible(true);
 					setPageComplete(false);
@@ -47,7 +46,6 @@ public class NewClass extends WizardPageAssistant {
 					warning.setVisible(false);
 					setPageComplete(true);
 				}
-				setCurrentClass(tfClassName.getText());
 			}
 		});
 		tfClassName.setBounds(110, 63, 180, 21);
@@ -102,19 +100,14 @@ public class NewClass extends WizardPageAssistant {
 		if(tfClassName.getText().isEmpty()){
 			return false;
 		}
-		setCurrentClass(tfClassName.getText());
+		if(canSetCurrentClass)
+			setCurrentClass(tfClassName.getText());
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "NewClass";
-//		String s;
-//		s = "Page: "+getName()+"{";
-//		s += "\nclass: "+getClassName();
-//		s += "\nstereotype: "+getStereotype();
-//		s += "\n}";
-//		return s;
 	}
 
 	/* get operations */
@@ -125,6 +118,15 @@ public class NewClass extends WizardPageAssistant {
 
 	public String getStereotype(){
 		return cbStereotypes.getItem(cbStereotypes.getSelectionIndex());
+	}
+
+	private boolean canSetCurrentClass = true;	
+	public void lockSetCurrentClass(boolean b) {
+		canSetCurrentClass = b;
+	}
+	
+	public boolean canSetCurrentClass(){
+		return canSetCurrentClass;
 	}
 
 } 

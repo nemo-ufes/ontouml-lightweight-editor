@@ -245,6 +245,8 @@ public class PatternOperator {
 			return UtilAssistant.getStringRepresentationStereotype(setRoleMixin);
 		case SUBKIND:
 			return UtilAssistant.getStringRepresentationStereotype(setSubkind);
+		case QUANTITY:
+			return UtilAssistant.getStringRepresentationStereotype(setQuantity);
 		}
 		return null;
 	}

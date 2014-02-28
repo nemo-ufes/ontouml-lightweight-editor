@@ -50,30 +50,24 @@ public class PageProcessor{
 
 	/* Process */
 	public void process(NewGenericRelation page) {
-		/*
-		 * source estah vindo com o nome cortado
-		 * exception no tratamento das cardinalidades (tem que fazer * virar -1)
-		 * */
-		
 		RelationStereotype stereotype = RelationStereotype.valueOf(page.getStereotype().toUpperCase());
 		String relName = page.getRelationName();
-		
+
 		Classifier source = patternOperator.getClassifierForClassName(page.getClassName());
 		Classifier target = patternOperator.getClassifierForStringRepresentationClass(page.getTargetClass());
-		
+
 		EObject rel = outcomeFixer.createRelationship(stereotype);
-		int l = 1;
 		((NamedElement) rel).setName(relName);
 		fix.includeAdded(rel);
 		// same container
 		outcomeFixer.copyContainer(source, rel);
 		fix.includeModified(source.eContainer());
-		
+
 		// creating and adding assoc ends...
 		Property srcProperty = outcomeFixer.createProperty(source, page.getSourceMinCardinality(), page.getSourceMaxCardinality(), source.getName().trim().toLowerCase());
 		Property tgtProperty = outcomeFixer.createProperty(target, page.getTargetMinCardinality(), page.getTargetMaxCardinality(), target.getName().trim().toLowerCase());
 		outcomeFixer.setEnds((Association) rel, srcProperty, tgtProperty);
-		
+
 		fix.includeModified(rel);
 	}
 
@@ -98,16 +92,25 @@ public class PageProcessor{
 	}
 
 	public void process(NewClass page) {
-		//Set the new name
-		source.setName(page.getClassName());
-		if(UtilAssistant.getStereotypeFromClassifier(source) != StereotypeOntoUMLEnum.valueOf(page.getStereotype().toUpperCase())){
-			//source.stereotype != page.stereotype
-			//change the source stereotype
-			Fix f = outcomeFixer.changeClassStereotypeTo(source, ClassStereotype.valueOf(page.getStereotype().toUpperCase()));
-			fix.addAll(f);
+		Classifier current = source;
+		if(page.canSetCurrentClass()){
+			//Set the new name
+			current.setName(page.getClassName());
+			if(UtilAssistant.getStereotypeFromClassifier(current) != StereotypeOntoUMLEnum.valueOf(page.getStereotype().toUpperCase())){
+				//source.stereotype != page.stereotype
+				//change the source stereotype
+				Fix f = outcomeFixer.changeClassStereotypeTo(current, ClassStereotype.valueOf(page.getStereotype().toUpperCase()));
+				fix.addAll(f);
+			}
+			//include all modifications
+			fix.includeModified(current);
+		}else{
+			//create a new Classifier
+			current = (Classifier) outcomeFixer.createClass(ClassStereotype.valueOf(page.getStereotype().toUpperCase()));
+			current.setName(page.getClassName());
+			outcomeFixer.copyContainer(source, current);
+			fix.includeAdded(current);
 		}
-		//include all modifications
-		fix.includeModified(source);
 	}
 
 	public void process(NewRelator page){
@@ -121,7 +124,7 @@ public class PageProcessor{
 
 			//general = page.getGeneral()
 			Classifier general = patternOperator.getClassifierForStringRepresentationClass(page.getGeneral());
-			
+
 			//for each specific in page.getListSpecifics()
 			ArrayList<String[]> specificsStringList = page.getListSpecifics();
 			for (String[] specificString : specificsStringList) {

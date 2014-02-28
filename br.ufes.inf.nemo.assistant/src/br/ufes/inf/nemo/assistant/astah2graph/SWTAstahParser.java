@@ -156,6 +156,9 @@ public class SWTAstahParser {
 			NewClass nc = new NewClass();
 			String stereotypes = aNode.getTaggedValue("stereotypes");
 			nc.setStereotypes(stereotypes.split(","));
+			if(aNode.getTaggedValue("setCurrentClass").equalsIgnoreCase("false")){
+				nc.lockSetCurrentClass(false);
+			}
 			node.setPage(nc);
 		}else if(window.equalsIgnoreCase("Action")){
 			NodeAction nodeAction = new NodeAction(graph);
