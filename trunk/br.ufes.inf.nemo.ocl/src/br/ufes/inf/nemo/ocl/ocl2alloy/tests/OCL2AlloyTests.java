@@ -23,7 +23,7 @@ public class OCL2AlloyTests {
     	
     	try {
     		
-    		OCLParser parser = new OCLParser(refpath,false);
+    		OCLParser parser = new OCLParser(refpath);
     		parser.parseStandardOCL(new File(oclPath));
 		
     		//testing OCL pretty printer 

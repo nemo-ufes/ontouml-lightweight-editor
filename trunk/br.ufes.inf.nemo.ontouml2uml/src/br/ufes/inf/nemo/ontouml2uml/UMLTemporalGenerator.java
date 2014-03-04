@@ -6,9 +6,12 @@ import java.util.Map.Entry;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.PrimitiveType;
+import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.Type;
 
 public class UMLTemporalGenerator {
 
@@ -16,13 +19,13 @@ public class UMLTemporalGenerator {
 	public org.eclipse.uml2.uml.Package umlRoot;	
 	public org.eclipse.uml2.uml.UMLFactory ufactory;
 	public HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap;
-	public String tlog = new String();
 	
 	// temporal inclusion
 	public HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier>> assocMap = new HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier> >();
 	public HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element>> attrMap = new HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element> >();
 	public int assoc_counter=0;
 	public int attr_counter=0;
+	public String tlog = new String();
 	
 	public HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier>> getAssociationsMap()
 	{
@@ -58,28 +61,59 @@ public class UMLTemporalGenerator {
 	
 	public void run()
 	{
-		outln("Including Temporal structure within UML...");
-		
+		outln("Generating temporal structure...");
+
 		ArrayList<Classifier> topLevels = new ArrayList<Classifier>();
 		getTopLevelTypes(umlRoot,topLevels);
-		
-		org.eclipse.uml2.uml.Class umlWorld = createWorldHierarchy(umlRoot);
-		
-		createWorldAccessibilityRelation(umlWorld);
-		
-		createExistenceRelations(umlWorld,topLevels);
-		
-		reifyAssociations(umlWorld, topLevels);
-		
+
+//		unnecessary since end-points in UML are owned attributes
+//		ArrayList<Association> assocList = new ArrayList<Association>();
+//		getAssociations(umlRoot,assocList);
+
 		ArrayList<org.eclipse.uml2.uml.Property> attributes = new ArrayList<org.eclipse.uml2.uml.Property>();
 		getAttributes(umlRoot,attributes);
-		reifyAttributes(umlWorld,attributes);
 		
+		// ===== World structure ==========		
+		org.eclipse.uml2.uml.Class umlWorld = createWorldHierarchy(umlRoot);				
+		createWorldAccessibilityRelation(umlWorld);		
 		createWorldOperations(umlWorld);
 		
+		// ===== Types existence operations ==========		
 		createTopLevelExistenceOperations(umlWorld, topLevels);
+		createTopLevelAllInstancesOperation(umlWorld, topLevels);
+
+		// ===== Temporal navigation operations ======		
+		//unnecessary since end-points in UML are owned attributes
+		//createTemporalNavigationOperations(umlWorld, assocList);
+
+		// ==== Temporal attributes access operations ==
+		createTemporalAttributeAccessOperations(umlWorld, attributes);
 		
-		outln("Temporal structure inclusion finished.");
+		// ===== Types existence ==========		
+		//createExistenceRelations(umlWorld,topLevels);
+				
+		// ===== Associations existence ===		
+		//reifyAssociations(umlWorld, topLevels);
+				
+		// ===== Attributes existence =====
+		//reifyAttributes(umlWorld,attributes);
+					
+		outln("Temporal generation finished.");
+	}
+	
+	@SuppressWarnings("unused")
+	private void getAssociations(org.eclipse.uml2.uml.Package umlRoot, ArrayList<Association> result)
+	{
+		for(PackageableElement pe: umlRoot.getPackagedElements())
+		{
+			if (pe instanceof org.eclipse.uml2.uml.Association){
+				org.eclipse.uml2.uml.Association assoc = (org.eclipse.uml2.uml.Association)pe;
+				result.add(assoc);
+			}			
+			if (pe instanceof org.eclipse.uml2.uml.Package){
+				getAssociations((org.eclipse.uml2.uml.Package)pe,result);
+			}
+		}			
 	}
 	
 	public void createTopLevelExistenceOperations(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)
@@ -104,6 +138,37 @@ public class UMLTemporalGenerator {
 			{
 				org.eclipse.uml2.uml.DataType class_ = ((org.eclipse.uml2.uml.DataType)c);				
 				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("existsIn", parameters, typeParameters, pt);
+				outln(op);
+			}
+		}
+	}
+	
+	public void createTopLevelAllInstancesOperation(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)
+	{		
+		EList<String> parameters = new BasicEList<String>();
+		parameters.add("w");
+		
+		EList<org.eclipse.uml2.uml.Type> typeParameters = new BasicEList<org.eclipse.uml2.uml.Type>();
+		typeParameters.add(umlWorld);
+		
+		for(Classifier c: topLevels)
+		{
+			if (c instanceof org.eclipse.uml2.uml.Class)
+			{
+				org.eclipse.uml2.uml.Class class_ = ((org.eclipse.uml2.uml.Class)c);				
+				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("allInstances", parameters, typeParameters, class_);
+				op.setLower(0);
+				op.setUpper(-1);
+				op.setIsStatic(true);
+				outln(op);				
+			}
+			if (c instanceof org.eclipse.uml2.uml.DataType && !(c instanceof org.eclipse.uml2.uml.PrimitiveType) && !(c instanceof org.eclipse.uml2.uml.Enumeration))
+			{
+				org.eclipse.uml2.uml.DataType class_ = ((org.eclipse.uml2.uml.DataType)c);				
+				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("allInstances", parameters, typeParameters, class_);
+				op.setLower(0);
+				op.setUpper(-1);
+				op.setIsStatic(true);
 				outln(op);
 			}
 		}
@@ -306,6 +371,92 @@ public class UMLTemporalGenerator {
 		umlRoot.getPackagedElements().add(existenceRelation);
 		
 		outln(existenceRelation);
+	}
+	
+	public void createTemporalAttributeAccessOperations(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Property> attrList)
+	{
+		for(Property attr: attrList)
+		{
+			EList<String> parameters = new BasicEList<String>();
+			parameters.add("w");
+			
+			EList<org.eclipse.uml2.uml.Type> typeParameters = new BasicEList<org.eclipse.uml2.uml.Type>();
+			typeParameters.add(umlWorld);
+			
+			Type owner = (Type)attr.eContainer();
+			Type type = attr.getType();
+			
+			if(attr.getName()!=null && !attr.getName().isEmpty() && owner != null)
+			{
+				if(owner instanceof org.eclipse.uml2.uml.Class){
+					org.eclipse.uml2.uml.Class class_ = (org.eclipse.uml2.uml.Class)owner;
+					org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation(attr.getName(), parameters, typeParameters, type);
+					op.setUpper(attr.getUpper());
+					op.setLower(attr.getLower());
+					outln(op);
+				}
+				if(owner instanceof org.eclipse.uml2.uml.DataType){
+					org.eclipse.uml2.uml.DataType class_ = (org.eclipse.uml2.uml.DataType)owner;
+					org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation(attr.getName(), parameters, typeParameters, type);
+					op.setUpper(attr.getUpper());
+					op.setLower(attr.getLower());
+					outln(op);					
+				}
+			}
+		}
+	}
+	
+	public void createTemporalNavigationOperations(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Association> assocList)
+	{
+		for(Association assoc: assocList)		
+		{			
+			EList<String> parameters = new BasicEList<String>();
+			parameters.add("w");
+			
+			EList<org.eclipse.uml2.uml.Type> typeParameters = new BasicEList<org.eclipse.uml2.uml.Type>();
+			typeParameters.add(umlWorld);
+			
+			Type src = assoc.getMemberEnds().get(0).getType();
+			Type tgt = assoc.getMemberEnds().get(1).getType();
+			
+			// tgtType::srcRoleName(w: World) : Set(srcType)
+			if(assoc.getMemberEnds().get(0).getName()!=null && !assoc.getMemberEnds().get(0).getName().isEmpty() && tgt != null)
+			{
+				if(tgt instanceof org.eclipse.uml2.uml.Class){
+					org.eclipse.uml2.uml.Class class_ = (org.eclipse.uml2.uml.Class)tgt;
+					org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation(assoc.getMemberEnds().get(0).getName(), parameters, typeParameters, src);
+					op.setUpper(assoc.getMemberEnds().get(0).getUpper());
+					op.setLower(assoc.getMemberEnds().get(0).getLower());
+					outln(op);
+				}
+				else if(tgt instanceof org.eclipse.uml2.uml.DataType){
+					org.eclipse.uml2.uml.DataType class_ = (org.eclipse.uml2.uml.DataType)tgt;
+					org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation(assoc.getMemberEnds().get(0).getName(), parameters, typeParameters, src);
+					op.setUpper(assoc.getMemberEnds().get(0).getUpper());
+					op.setLower(assoc.getMemberEnds().get(0).getLower());
+					outln(op);					
+				}
+			}			
+			
+			// srcType::tgtRoleName(w: World) : Set(tgtType)
+			if(assoc.getMemberEnds().get(1).getName()!=null && !assoc.getMemberEnds().get(1).getName().isEmpty() && src != null)
+			{
+				if(src instanceof org.eclipse.uml2.uml.Class){
+					org.eclipse.uml2.uml.Class class_ = (org.eclipse.uml2.uml.Class)src;
+					org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation(assoc.getMemberEnds().get(1).getName(), parameters, typeParameters, tgt);
+					op.setUpper(assoc.getMemberEnds().get(1).getUpper());
+					op.setLower(assoc.getMemberEnds().get(1).getLower());
+					outln(op);
+				}
+				else if(src instanceof org.eclipse.uml2.uml.DataType){
+					org.eclipse.uml2.uml.DataType class_ = (org.eclipse.uml2.uml.DataType)src;
+					org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation(assoc.getMemberEnds().get(1).getName(), parameters, typeParameters, tgt);
+					op.setUpper(assoc.getMemberEnds().get(1).getUpper());
+					op.setLower(assoc.getMemberEnds().get(1).getLower());
+					outln(op);
+				}
+			}			
+		}
 	}
 	
 	public void reifyAssociations(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)

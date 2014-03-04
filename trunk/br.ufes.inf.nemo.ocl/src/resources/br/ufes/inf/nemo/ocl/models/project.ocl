@@ -9,7 +9,7 @@ package project
 -- integrity rule in OCL (1)
 context University
 inv one_enrollment_per_student :
-    self.enrollments->collect(x | x.student)->asSet()
+    self.enrollments->collect(x | x.student)->asSet() 
     ->forAll(s: Student | s.enrollments->intersection(self.enrollments)->size()=1)
 
 -- integrity rule in OCL (2)

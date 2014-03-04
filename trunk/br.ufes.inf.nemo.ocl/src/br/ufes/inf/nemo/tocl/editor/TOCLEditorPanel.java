@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ocl.editor;
+package br.ufes.inf.nemo.tocl.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -46,13 +46,13 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
  * @author John Guerson
  */
 
-public class OCLEditorPanel extends JPanel {
+public class TOCLEditorPanel extends JPanel {
 
 	private static final long serialVersionUID = 1277358682337723759L;
 	
 	public Component parent;
 	public RSyntaxTextArea textArea;
-	public OCLSyntaxHighlight oclSyntaxHighlight;	
+	public TOCLSyntaxHighlight oclSyntaxHighlight;	
 	public CompletionProvider parentProvider;	
 	public AutoCompletion ac;
 	public RTextScrollPane scrollPane;
@@ -60,15 +60,15 @@ public class OCLEditorPanel extends JPanel {
 	public JMenuItem saveMenuItem;
 	public JMenuItem openMenuItem;
 	public JMenuItem parserMenuItem;
-	public ArrayList<OCLTemplateCompletion> modelCompletionList = new ArrayList<OCLTemplateCompletion>();
-	public ArrayList<OCLTemplateCompletion> oclCompletionList = new ArrayList<OCLTemplateCompletion>();
+	public ArrayList<TOCLTemplateCompletion> modelCompletionList = new ArrayList<TOCLTemplateCompletion>();
+	public ArrayList<TOCLTemplateCompletion> oclCompletionList = new ArrayList<TOCLTemplateCompletion>();
 	
    /**
     * Constructor
     * 
     * @param frame
     */
-   public OCLEditorPanel(Component parent)
+   public TOCLEditorPanel(Component parent)
    {
 	   this();
 	   
@@ -145,7 +145,7 @@ public class OCLEditorPanel extends JPanel {
 		   description = "<b>Property "+p.getName()+": "+p.getType().getName()+" ["+multiplicity+"] </b><br><br>" +
 		   	"Owner: "+owner;
 		   
-		   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+		   TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
 				p.getName(),p.toString().substring(0,p.toString().indexOf(" ")),
 				"_'"+p.getName()+"'",
 				p.getType().getName()+" ["+multiplicity+"]"
@@ -161,7 +161,7 @@ public class OCLEditorPanel extends JPanel {
 	   
 	   description = "<b>"+getStereotype(oc)+" "+oc.getName()+"</b>";
 			   
-	   OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+	   TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
 			oc.getName(),oc.toString().substring(0,oc.toString().indexOf(" ")),
 			"_'"+oc.getName()+"'",
 			null,
@@ -206,7 +206,7 @@ public class OCLEditorPanel extends JPanel {
 	   Iterator it = modelCompletionList.iterator();
 	   while(it.hasNext())
 	   {
-		   OCLTemplateCompletion tc = (OCLTemplateCompletion)it.next();
+		   TOCLTemplateCompletion tc = (TOCLTemplateCompletion)it.next();
 		   if (tc.getDefinitionString().equals(elem.toString().substring(0,elem.toString().indexOf(" "))))
 		   {
 			   it.remove();
@@ -226,7 +226,7 @@ public class OCLEditorPanel extends JPanel {
    public void createAutoComplete (CompletionProvider provider)
    {
 	    ac = new AutoCompletion(provider);	    
-	    ac.setListCellRenderer(new OCLCellRenderer());	    
+	    ac.setListCellRenderer(new TOCLCellRenderer());	    
 		ac.setParameterAssistanceEnabled(true);
 	    
 	    // Allow the completion popup to appear automatically, no need for ctrl+space.
@@ -242,7 +242,7 @@ public class OCLEditorPanel extends JPanel {
 	/**
 	 * Constructor.
 	 */
-	public OCLEditorPanel ()
+	public TOCLEditorPanel ()
 	{
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		
@@ -254,7 +254,7 @@ public class OCLEditorPanel extends JPanel {
 		textArea.setBackground(new Color(255, 255, 255));				
 		setTheme(textArea,"/br/ufes/inf/nemo/ocl/editor/themes/eclipse.xml");
 						
-		oclSyntaxHighlight = new OCLSyntaxHighlight();	    
+		oclSyntaxHighlight = new TOCLSyntaxHighlight();	    
 	    ((RSyntaxDocument)textArea.getDocument()).setSyntaxStyle(oclSyntaxHighlight);
 	    
 	    provider = createDefaultCompletionProvider();
@@ -466,7 +466,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "<b>context Type inv: boolean-expression </b><br><br>"+
 		"Invariant.";
 		
-		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+		TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
 			"inv","invariant",
 			"context ${Type}\ninv : ${true} ${cursor}\n",
 			null, description);		
@@ -476,7 +476,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "<b>context srcType::Property::tgtType derive: ocl-expression </b><br><br>"+
 		"Derivation constraint.";
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"derive","derivation",
 			"context ${Type}::${Property}:${propertyType}\nderive : ${cursor}\n",
 			null,description);		
@@ -486,7 +486,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "<b>context Type inv/derive: ocl-expression </b><br><br>"+
 		"Context declaration.";
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"context","context",
 			"context ${Type}\n${cursor}\n",
 			null, description);		
@@ -499,7 +499,7 @@ public class OCLEditorPanel extends JPanel {
 	{
 		String description = "<b>let var = ocl-expression in ocl-expression2</b>";
 		
-		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+		TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
 			"let","let-in",
 			"let ${varName} = ${oclexpression}\nin ${expression}${cursor}",
 			null,
@@ -509,7 +509,7 @@ public class OCLEditorPanel extends JPanel {
 		
 		description = "<b>if condition then ocl-expression else null endif</b>";
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"if","if-then-else",
 			"if ${oclexpression} then ${oclexpression}\nelse ${oclexpression} endif${cursor}",
 			null,
@@ -518,7 +518,6 @@ public class OCLEditorPanel extends JPanel {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 	}
-
 	
 	/** Object Completion */
 	public void createObjectCompletion()
@@ -526,7 +525,7 @@ public class OCLEditorPanel extends JPanel {
 		String description = "Operation <b>OclAny::=(object2 : OclSelf) : Boolean</b><br><br>"+
 		"True if self is the same object as object2. Infix operator.";
 
-		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+		TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
 			"=","=",
 			"= ${cursor}",
 			null, description);		
@@ -536,7 +535,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>OclAny::&lt&gt(object2 : OclSelf) : Boolean</b><br><br>"+
 		"True if self is a different object from object2. Infix operator.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"&lt&gt","<>",
 			"<> ${cursor}",
 			null, description);		
@@ -554,7 +553,7 @@ public class OCLEditorPanel extends JPanel {
 		"simply does not exist for the object. However, when casting to a supertype, any features additionally defined " +
 		"by the subtype are suppressed.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"oclAsType","oclAsType",
 			"oclAsType(${T})${cursor}",
 			null, description);		
@@ -564,7 +563,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>OclAny::oclIsKindOf(T)(type : AnyClassifier(T)) : Boolean</b><br><br>"+
 		"Evaluates to true if the type of self conforms to t. That is, self is of type t or a subtype of t.";
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"oclIsKindOf","oclIsKindOf",
 			"oclIsKindOf(${T})${cursor}",
 			null, description);		
@@ -573,7 +572,7 @@ public class OCLEditorPanel extends JPanel {
 		
 		description = "";
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"allInstances","allInstances",
 			"allInstances()${cursor}",
 			null,description);		
@@ -583,7 +582,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>OclAny::oclIsTypeOf(T)(type : AnyClassifier(T)) : Boolean</b><br><br>"+
 		"Evaluates to true if self is of the type t but not a subtype of t.";
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"oclIsTypeOf","oclIsTypeOf",
 			"oclIsTypeOf(${T})${cursor}",
 			null, description);		
@@ -593,7 +592,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>OclAny::oclIsUndefined() : Boolean</b><br><br>"+
 		"Evaluates to true if the self is equal to invalid or equal to null.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"oclIsUndefined","oclIsUndefined",
 			"oclIsUndefined()${cursor}",
 			null, description);		
@@ -607,7 +606,7 @@ public class OCLEditorPanel extends JPanel {
 		String description = "Operation <b>Collection(T)::size() : Integer</b><br><br>"+
 		"The number of elements in the collection self.";
 				
-		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+		TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
 			"size","size",
 			"size()${cursor}",
 			null,description);		
@@ -617,7 +616,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Collection(T)::includesAll(T2)(c2 : Collection(T2)) : Boolean</b><br><br>"+
 		"Does self contain all the elements of c2 ?";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"includesAll","includesAll",
 			"includesAll(${Collection(T)})${cursor}",
 			null,description);		
@@ -627,7 +626,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Collection(T)::excludesAll(T2)(c2 : Collection(T2)) : Boolean</b><br><br>"+
 		"Does self contain none of the elements of c2 ?";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"excludesAll","excludesAll",
 			"excludesAll(${Collection(T)})${cursor}",
 			null,description);		
@@ -637,7 +636,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Collection(T)::includes(object : OclAny) : Boolean</b><br><br>"+
 		"True if object is an element of self, false otherwise.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"includes","includes",
 			"includes(${Collection(T))${cursor}",
 			null, description);		
@@ -647,7 +646,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Collection(T)::excludes(object : OclAny) : Boolean</b><br><br>"+
 		"True if object is not an element of self, false otherwise.";
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"excludes","excludes",
 			"excludes(${object})${cursor}",
 			null, description);		
@@ -658,7 +657,7 @@ public class OCLEditorPanel extends JPanel {
 		"Is self the empty collection?"+"<br><br>"+ 
 		"Note: null->isEmpty() returns true in virtue of the implicit casting from null to Bag{}.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"isEmpty","isEmpty",
 			"isEmpty()${cursor}",
 			null,description);		
@@ -669,7 +668,7 @@ public class OCLEditorPanel extends JPanel {
 		"Is self not the empty collection?"+"<br><br>"+ 
 		"null->notEmpty() returns false in virtue of the implicit casting from null to Bag{}.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"notEmpty","notEmpty",
 			"notEmpty()${cursor}",
 			null,description);		
@@ -679,7 +678,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Collection(T)::asSet() : Set(T)</b><br><br>"+
 		"The Set containing all the elements from self, with duplicates removed.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"asSet","asSet",
 			"asSet()${cursor}",
 			null,description);		
@@ -689,7 +688,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Set(T)::union(s : Collection(T)) : Set(T)</b><br><br>"+
 		"The set consisting of all elements in self and all elements in s.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"union","union",
 			"union(${Collection(T)})${cursor}",
 			null, description);		
@@ -699,7 +698,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Set(T)::intersection(s : Collection(T)) : Set(T)</b><br><br>"+
 		"The intersection of self and s (i.e., the set of all elements that are in both self and s).";
 				
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"intersection","intersection",
 			"intersection${Collection(T)})${cursor}",
 			null,description);		
@@ -709,7 +708,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Set(T)::including(object : T) : Set(T)</b><br><br>"+
 		"The set containing all elements of self plus object.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"including","including",
 			"including(${object})${cursor}",
 			null,description);		
@@ -719,7 +718,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Set(T)::excluding(object : OclAny) : Set(T)</b><br><br>"+
 		"The set containing all elements of self without object.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"excluding","excluding",
 			"excluding(${object})${cursor}",
 			null,description);		
@@ -729,7 +728,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>UniqueCollection(T)::symmetricDifference(s : UniqueCollection(OclAny)) : Set(T)</b><br><br>"+
 		"The set containing all the elements that are in self or s, but not in both.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"symmetricDifference","symmetricDifference",
 			"symmetricDifference(${UniqueCollection(OclAny)})${cursor}",
 			null,description);		
@@ -739,7 +738,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Set(T)::-(s : UniqueCollection(OclAny)) : Set(T)</b><br><br>"+
 		"The elements of self, which are not in s.";
 				
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"-","-",
 			"- ${UniqueCollection(OclAny)} ${cursor}",
 			null,description);		
@@ -756,7 +755,7 @@ public class OCLEditorPanel extends JPanel {
 		"result in unpredictable results during evaluation. If an implementation is able to detect a lack of associativity " +
 		"or commutativity, the implementation may bypass the evaluation and return an invalid result.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"sum","sum",
 			"sum()${cursor}",
 			null,description);		
@@ -766,7 +765,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Collection(T)::product(T2)(c2 : Collection(T2)) : Set(Tuple(first : T, second : T2))</b><br><br>"+
 		"The cartesian product operation of self and c2.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"product","product",
 			"product(${Collection(T)})${cursor}",
 			null, description);		
@@ -778,7 +777,7 @@ public class OCLEditorPanel extends JPanel {
 		"this results in the same set as self. If the element type is a collection type, the result " +
 		"is the set containing all the elements of all the recursively flattened elements of self.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"flatten","flatten",
 			"flatten()${cursor}",
 			null, description);		
@@ -788,7 +787,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Collection(T)::count(object : OclAny) : Integer</b><br><br>"+
 		"The number of times that object occurs in the collection self.";
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"count","count",
 			"count(${object})${cursor}",
 			null, description);		
@@ -801,7 +800,7 @@ public class OCLEditorPanel extends JPanel {
 	{
 		String description = "Iteration <b>Collection(T)::exists(j : T, i : T | body : Lambda T() : Boolean) : Boolean</b>";
 		
-		OCLTemplateCompletion  c = new OCLTemplateCompletion(provider, 
+		TOCLTemplateCompletion  c = new TOCLTemplateCompletion(provider, 
 			"exists","exists",
 			"exists(${i,j:T} | ${body})${cursor}",
 			null,description);		
@@ -810,7 +809,7 @@ public class OCLEditorPanel extends JPanel {
 		
 		description = "Iteration <b>Collection(T)::forAll(i : T, j : T | body : Lambda T() : Boolean) : Boolean</b>";
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"forAll","forAll",
 			"forAll(${i,j:T} | ${body})${cursor}",
 			null,description);		
@@ -820,7 +819,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Iteration <b>Collection(T)::one(i : T | body : Lambda T() : Boolean) : Boolean</b><br><br>"+
 		"Results in true if there is exactly one element in the source collection for which body is true.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"one","one",
 			"one(${i:T} | ${body})${cursor}",
 			null,description);		
@@ -830,7 +829,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Iteration <b>Set(T)::select(i : T | body : Lambda T() : Boolean) : Set(T)</b><br><br>"+
 		"The subset of set for which expr is true.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"select","select",
 			"select(${i:T} | ${body})${cursor}",
 			null,description);		
@@ -840,7 +839,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Iteration <b>Set(T)::reject(i : T | body : Lambda T() : Boolean) : Set(T)</b><br><br>"+
 		"The subset of the source set for which body is false.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"reject","reject",
 			"reject(${i:T} | ${body})${cursor}",
 			null,description);		
@@ -850,7 +849,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Iteration <b>Bag(T)::closure(i : T | body : Lambda T() : Set(T)) : Set(T)</b><br><br>"+
 		"The closure of applying body transitively to every distinct element of the source collection";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"closure","closure",
 			"closure(${i:T} | ${body})${cursor}",
 			null,description);		
@@ -861,7 +860,7 @@ public class OCLEditorPanel extends JPanel {
 		"Results in true if body evaluates to a different value for each element in the source collection; " +
 		"otherwise, result is false.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"isUnique","isUnique",
 			"isUnique(${i:T} | ${body})${cursor}",
 			null,description);		
@@ -870,7 +869,7 @@ public class OCLEditorPanel extends JPanel {
 		
 		description = "Iteration <b>Bag(T)::collect(V)(i : T | body : Lambda T() : V) : Bag(V)</b>";
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"collect","collect",
 			"collect(${i:T} | ${body})${cursor}",
 			null,description);		
@@ -882,7 +881,7 @@ public class OCLEditorPanel extends JPanel {
 		"element for which body is true, one of them is returned. There must be at least one element fulfilling body, " +
 		"otherwise the result of this IteratorExp is null.";
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"any","any",
 			"any(${i:T} | ${body})${cursor}",
 			null,description);		
@@ -898,7 +897,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Real::floor() : Integer</b><br><br>"+
 		"The largest integer that is less than or equal to self.";
 
-		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+		TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
 			"max","max",
 			"max(${Integer})${cursor}",
 			null,description);		
@@ -908,7 +907,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Integer::min(i : OclSelf) : Integer</b><br><br>"+
 		"The minimum of self an i.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"min","min",
 			"min(${Integer})${cursor}",
 			null, description);		
@@ -918,7 +917,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Integer::abs() : Integer</b><br><br>"+
 		"The absolute value of self.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"abs","abs",
 			"abs()${cursor}",
 			null,description);		
@@ -928,7 +927,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Real::floor() : Integer</b><br><br>"+
 		"The largest integer that is less than or equal to self";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"floor","floor",
 			"floor()${cursor}",
 			null,description);		
@@ -938,7 +937,7 @@ public class OCLEditorPanel extends JPanel {
 		description = "Operation <b>Real::round() : Integer</b><br><br>"+
 		"The integer that is closest to self. When there are two such integers, the largest one.";
 
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"round","round",
 			"round()${cursor}",
 			null,description);		
@@ -1018,35 +1017,35 @@ public class OCLEditorPanel extends JPanel {
 	{
 		String description = new String();
 		
-		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
+		TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
 			"or","or",
 			"or ${OCLExpression} ${cursor}",
 			null,description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"and","and",
 			"and ${OCLExpression} ${cursor}",
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"not","not",
 			"not ${OCLExpression} ${cursor}",
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"implies","implies",
 			"implies ${OCLExpression} ${cursor}",
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		c = new OCLTemplateCompletion(provider, 
+		c = new TOCLTemplateCompletion(provider, 
 			"xor","xor",
 			"xor ${OCLExpression} ${cursor}",
 			null,description);		
