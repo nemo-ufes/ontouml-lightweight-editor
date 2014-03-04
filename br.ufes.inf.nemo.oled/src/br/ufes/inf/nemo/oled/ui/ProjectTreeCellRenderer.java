@@ -101,33 +101,29 @@ public class ProjectTreeCellRenderer extends DefaultTreeCellRenderer implements 
     		
     		if ((((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject()) instanceof UmlProject)
     		{
-				label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/packageview.png")));
+				label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/view.png")));
 				if (value.toString().contains("Package")) label.setText(value.toString().replaceFirst("Package ", ""));
 				if (value.toString().contains("Model")) label.setText(value.toString().replaceFirst("Model ", ""));
     		}else{
     			
 			    if (elementType.toLowerCase().equals("property"))
-	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/property.gif")));
-	    		else if (elementType.toLowerCase().equals("comment"))
-	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/note.png")));
-	    		else if (elementType.toLowerCase().equals("constraintx"))
-	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/ocleditor.png")));
+	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/property.gif")));
 	    		else
-	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/tree/"+elementType.toLowerCase()+".png")));
+	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/"+elementType.toLowerCase()+".png")));
 			    label.setText(value.toString());
     		}
 		}else if( ((DefaultMutableTreeNode)value).getUserObject() instanceof UmlProject ) 
 		{
-			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/new.png")));
+			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/oledproject.png")));
 			expanded = true;
 			label.setText(value.toString());
 			
 		}else if( ((DefaultMutableTreeNode)value).getUserObject() instanceof StructureDiagram ) 
 		{
 			if ((((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject()) instanceof UmlProject)
-				label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/packageview.png")));				
+				label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/view.png")));				
 			else 
-				label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/diagram.png")));
+				label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/diagram.png")));
 			expanded = true;
 			label.setText(value.toString());
 		}

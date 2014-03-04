@@ -122,7 +122,7 @@ public class AttributesEditionPanel extends JPanel {
 		btnCreate = new JButton("");
 		btnCreate.setFocusable(false);
 		btnCreate.setToolTipText("Add new attribute to this class");
-		btnCreate.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/cross.png")));
+		btnCreate.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/icons/x16/add.png")));
 		btnCreate.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -133,7 +133,7 @@ public class AttributesEditionPanel extends JPanel {
 		btnDelete = new JButton("");
 		btnDelete.setFocusable(false);
 		btnDelete.setToolTipText("Delete selected attribute");
-		btnDelete.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete.png")));
+		btnDelete.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/icons/x16/cross.png")));
 		btnDelete.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -144,7 +144,7 @@ public class AttributesEditionPanel extends JPanel {
 		btnUp = new JButton("");
 		btnUp.setFocusable(false);
 		btnUp.setToolTipText("Move up selected attribute");
-		btnUp.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/arrowup.png")));
+		btnUp.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/icons/x16/arrow_up.png")));
 		btnUp.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -155,7 +155,7 @@ public class AttributesEditionPanel extends JPanel {
 		btnDown = new JButton("");
 		btnDown.setFocusable(false);
 		btnDown.setToolTipText("Move down selected attribute");
-		btnDown.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/arrowdown.png")));
+		btnDown.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/icons/x16/arrow_down.png")));
 		btnDown.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -167,7 +167,7 @@ public class AttributesEditionPanel extends JPanel {
 		btnEdit.setEnabled(true);
 		btnEdit.setFocusable(false);
 		btnEdit.setToolTipText("Edit selected attribute");
-		btnEdit.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/edit.png")));
+		btnEdit.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/icons/x16/pencil.png")));
 		btnEdit.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

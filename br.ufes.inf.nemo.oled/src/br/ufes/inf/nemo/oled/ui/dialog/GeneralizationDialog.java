@@ -59,7 +59,7 @@ public class GeneralizationDialog extends JDialog{
 		else
 			setTitle(""+""+getStereotype(relationship)+" "+ ((Generalization)relationship).getSpecific().getName()+" -> null");
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/icons/x16/cog.png")));
 		
 		if (parent instanceof JFrame)
 			genEdition = new GeneralizationEditionPanel((JFrame)parent, diagramManager, genElement, (Generalization)relationship);

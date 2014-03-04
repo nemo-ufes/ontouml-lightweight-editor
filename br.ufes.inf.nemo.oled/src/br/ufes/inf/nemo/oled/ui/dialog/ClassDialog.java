@@ -54,7 +54,7 @@ public class ClassDialog extends JDialog{
 	public ClassDialog(final JFrame parent, final DiagramManager diagramManager, final ClassElement classElement, Classifier element, boolean modal) 
 	{
 		super(parent, modal);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/icons/x16/cog.png")));
 		
 		this.diagramManager = diagramManager;
 		this.classElement = classElement;		

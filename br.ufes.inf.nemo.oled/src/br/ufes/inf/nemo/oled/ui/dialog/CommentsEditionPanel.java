@@ -80,7 +80,7 @@ public class CommentsEditionPanel extends JPanel {
 		
 		btnCreate = new JButton("");
 		btnCreate.setToolTipText("Add a new comment to this class");
-		btnCreate.setIcon(new ImageIcon(CommentsEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/cross.png")));
+		btnCreate.setIcon(new ImageIcon(CommentsEditionPanel.class.getResource("/resources/icons/x16/add.png")));
 		btnCreate.setFocusable(false);
 		btnCreate.addActionListener(new ActionListener() {			
 			@Override
@@ -92,7 +92,7 @@ public class CommentsEditionPanel extends JPanel {
 		btnDelete = new JButton("");
 		btnDelete.setFocusable(false);
 		btnDelete.setToolTipText("Delete seletected comment");
-		btnDelete.setIcon(new ImageIcon(CommentsEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete.png")));
+		btnDelete.setIcon(new ImageIcon(CommentsEditionPanel.class.getResource("/resources/icons/x16/cross.png")));
 		btnDelete.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -103,7 +103,7 @@ public class CommentsEditionPanel extends JPanel {
 		btnSave = new JButton("");
 		btnSave.setFocusable(false);
 		btnSave.setToolTipText("Save selected comment");
-		btnSave.setIcon(new ImageIcon(CommentsEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/save.png")));
+		btnSave.setIcon(new ImageIcon(CommentsEditionPanel.class.getResource("/resources/icons/x16/disk.png")));
 		btnSave.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

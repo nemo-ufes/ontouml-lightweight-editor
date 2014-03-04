@@ -144,7 +144,7 @@ public class GeneralizationEditionPanel extends JPanel {
 		scrollPane = new JScrollPane(genSetList);
 		
 		btnRemove = new JButton("");
-		btnRemove.setIcon(new ImageIcon(GeneralizationEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete.png")));
+		btnRemove.setIcon(new ImageIcon(GeneralizationEditionPanel.class.getResource("/resources/icons/x16/cross.png")));
 		btnRemove.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -160,7 +160,7 @@ public class GeneralizationEditionPanel extends JPanel {
 		});
 		
 		btnAdd = new JButton("");
-		btnAdd.setIcon(new ImageIcon(GeneralizationEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/cross.png")));
+		btnAdd.setIcon(new ImageIcon(GeneralizationEditionPanel.class.getResource("/resources/icons/x16/add.png")));
 		btnAdd.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

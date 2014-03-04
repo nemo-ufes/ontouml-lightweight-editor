@@ -65,7 +65,7 @@ public class AttributeDialog extends JDialog {
 
 	public void initGUI()
 	{
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/settings.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/icons/x16/cog.png")));
 		
 		setTitle(getStereotype(attribute)+" "+attribute.getName()+": "+attribute.getType().getName());
 		

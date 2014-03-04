@@ -52,42 +52,42 @@ public final class SimulationAttibuteIconLoader {
 			attributeIconMap.put(item.toString(), item);
 		}
 	
-		urlMap.put(SimulationAttribute.COLOR_INHERIT, "resources/br/ufes/inf/nemo/oled/ui/simulation/magic.gif");
-		urlMap.put(SimulationAttribute.COLOR_BLACK, "resources/br/ufes/inf/nemo/oled/ui/simulation/black.gif");
-		urlMap.put(SimulationAttribute.COLOR_BLUE, "resources/br/ufes/inf/nemo/oled/ui/simulation/cornflowerblue.gif");
-		urlMap.put(SimulationAttribute.COLOR_YELLOW, "resources/br/ufes/inf/nemo/oled/ui/simulation/gold.gif");
-		urlMap.put(SimulationAttribute.COLOR_GRAY, "resources/br/ufes/inf/nemo/oled/ui/simulation/lightgray.gif");
-		urlMap.put(SimulationAttribute.COLOR_GREEN, "resources/br/ufes/inf/nemo/oled/ui/simulation/limegreen.gif");
-		urlMap.put(SimulationAttribute.COLOR_RED, "resources/br/ufes/inf/nemo/oled/ui/simulation/palevioletred.gif");
-		urlMap.put(SimulationAttribute.COLOR_WHITE, "resources/br/ufes/inf/nemo/oled/ui/simulation/white.gif");
+		urlMap.put(SimulationAttribute.COLOR_INHERIT, "resources/icons/x16/alloy/magic.gif");
+		urlMap.put(SimulationAttribute.COLOR_BLACK, "resources/icons/x16/alloy/black.gif");
+		urlMap.put(SimulationAttribute.COLOR_BLUE, "resources/icons/x16/alloy/cornflowerblue.gif");
+		urlMap.put(SimulationAttribute.COLOR_YELLOW, "resources/icons/x16/alloy/gold.gif");
+		urlMap.put(SimulationAttribute.COLOR_GRAY, "resources/icons/x16/alloy/lightgray.gif");
+		urlMap.put(SimulationAttribute.COLOR_GREEN, "resources/icons/x16/alloy/limegreen.gif");
+		urlMap.put(SimulationAttribute.COLOR_RED, "resources/icons/x16/alloy/palevioletred.gif");
+		urlMap.put(SimulationAttribute.COLOR_WHITE, "resources/icons/x16/alloy/white.gif");
 		
-		urlMap.put(SimulationAttribute.SHAPE_INHERIT, "resources/br/ufes/inf/nemo/oled/ui/simulation/box.gif");
-		urlMap.put(SimulationAttribute.SHAPE_BOX, "resources/br/ufes/inf/nemo/oled/ui/simulation/box.gif");
-		urlMap.put(SimulationAttribute.SHAPE_CIRCLE, "resources/br/ufes/inf/nemo/oled/ui/simulation/circle.gif");
-		urlMap.put(SimulationAttribute.SHAPE_DIAMOND, "resources/br/ufes/inf/nemo/oled/ui/simulation/diamond.gif");
-		urlMap.put(SimulationAttribute.SHAPE_DOUBLECIRCLE, "resources/br/ufes/inf/nemo/oled/ui/simulation/doublecircle.gif");
-		urlMap.put(SimulationAttribute.SHAPE_DOUBLEOCTAGON, "resources/br/ufes/inf/nemo/oled/ui/simulation/doubleoctagon.gif");
-		urlMap.put(SimulationAttribute.SHAPE_EGG, "resources/br/ufes/inf/nemo/oled/ui/simulation/egg.gif");
-		urlMap.put(SimulationAttribute.SHAPE_ELLISPSE, "resources/br/ufes/inf/nemo/oled/ui/simulation/ellipse.gif");
-		urlMap.put(SimulationAttribute.SHAPE_HEXAGON, "resources/br/ufes/inf/nemo/oled/ui/simulation/hexagon.gif");
-		urlMap.put(SimulationAttribute.SHAPE_HOUSE, "resources/br/ufes/inf/nemo/oled/ui/simulation/house.gif");
-		urlMap.put(SimulationAttribute.SHAPE_INVHOUSE, "resources/br/ufes/inf/nemo/oled/ui/simulation/invhouse.gif");
-		urlMap.put(SimulationAttribute.SHAPE_INVTRAPEZOID, "resources/br/ufes/inf/nemo/oled/ui/simulation/invtrapezium.gif");
-		urlMap.put(SimulationAttribute.SHAPE_INVTRIANGLE, "resources/br/ufes/inf/nemo/oled/ui/simulation/invtriangle.gif");
-		urlMap.put(SimulationAttribute.SHAPE_LINEDCIRCLE, "resources/br/ufes/inf/nemo/oled/ui/simulation/Mcircle.gif");
-		urlMap.put(SimulationAttribute.SHAPE_LINEDDIAMOND, "resources/br/ufes/inf/nemo/oled/ui/simulation/Mdiamond.gif");
-		urlMap.put(SimulationAttribute.SHAPE_LINEDSQUARE, "resources/br/ufes/inf/nemo/oled/ui/simulation/Msquare.gif");
-		urlMap.put(SimulationAttribute.SHAPE_OCTAGON, "resources/br/ufes/inf/nemo/oled/ui/simulation/octagon.gif");
-		urlMap.put(SimulationAttribute.SHAPE_PARALLELOGRAM, "resources/br/ufes/inf/nemo/oled/ui/simulation/parallelogram.gif");
-		urlMap.put(SimulationAttribute.SHAPE_TRAPEZOID, "resources/br/ufes/inf/nemo/oled/ui/simulation/trapezium.gif");
-		urlMap.put(SimulationAttribute.SHAPE_TRIANGLE, "resources/br/ufes/inf/nemo/oled/ui/simulation/triangle.gif");
-		urlMap.put(SimulationAttribute.SHAPE_TRIPLEOCTAGON, "resources/br/ufes/inf/nemo/oled/ui/simulation/tripleoctagon.gif");
+		urlMap.put(SimulationAttribute.SHAPE_INHERIT, "resources/icons/x16/alloy/box.gif");
+		urlMap.put(SimulationAttribute.SHAPE_BOX, "resources/icons/x16/alloy/box.gif");
+		urlMap.put(SimulationAttribute.SHAPE_CIRCLE, "resources/icons/x16/alloy/circle.gif");
+		urlMap.put(SimulationAttribute.SHAPE_DIAMOND, "resources/icons/x16/alloy/diamond.gif");
+		urlMap.put(SimulationAttribute.SHAPE_DOUBLECIRCLE, "resources/icons/x16/alloy/doublecircle.gif");
+		urlMap.put(SimulationAttribute.SHAPE_DOUBLEOCTAGON, "resources/icons/x16/alloy/doubleoctagon.gif");
+		urlMap.put(SimulationAttribute.SHAPE_EGG, "resources/icons/x16/alloy/egg.gif");
+		urlMap.put(SimulationAttribute.SHAPE_ELLISPSE, "resources/icons/x16/alloy/ellipse.gif");
+		urlMap.put(SimulationAttribute.SHAPE_HEXAGON, "resources/icons/x16/alloy/hexagon.gif");
+		urlMap.put(SimulationAttribute.SHAPE_HOUSE, "resources/icons/x16/alloy/house.gif");
+		urlMap.put(SimulationAttribute.SHAPE_INVHOUSE, "resources/bicons/x16/alloy/invhouse.gif");
+		urlMap.put(SimulationAttribute.SHAPE_INVTRAPEZOID, "resources/icons/x16/alloy/invtrapezium.gif");
+		urlMap.put(SimulationAttribute.SHAPE_INVTRIANGLE, "resources/icons/x16/alloy/invtriangle.gif");
+		urlMap.put(SimulationAttribute.SHAPE_LINEDCIRCLE, "resources/icons/x16/alloy/Mcircle.gif");
+		urlMap.put(SimulationAttribute.SHAPE_LINEDDIAMOND, "resources/icons/x16/alloy/Mdiamond.gif");
+		urlMap.put(SimulationAttribute.SHAPE_LINEDSQUARE, "resources/icons/x16/alloy/Msquare.gif");
+		urlMap.put(SimulationAttribute.SHAPE_OCTAGON, "resources/icons/x16/alloy/octagon.gif");
+		urlMap.put(SimulationAttribute.SHAPE_PARALLELOGRAM, "resources/icons/x16/alloy/parallelogram.gif");
+		urlMap.put(SimulationAttribute.SHAPE_TRAPEZOID, "resources/icons/x16/alloy/trapezium.gif");
+		urlMap.put(SimulationAttribute.SHAPE_TRIANGLE, "resources/icons/x16/alloy/triangle.gif");
+		urlMap.put(SimulationAttribute.SHAPE_TRIPLEOCTAGON, "resources/icons/x16/alloy/tripleoctagon.gif");
 		
-		urlMap.put(SimulationAttribute.STYLE_INHERIT, "resources/br/ufes/inf/nemo/oled/ui/simulation/solid.gif");
-		urlMap.put(SimulationAttribute.STYLE_BOLD, "resources/br/ufes/inf/nemo/oled/ui/simulation/bold.gif");
-		urlMap.put(SimulationAttribute.STYLE_DASHED, "resources/br/ufes/inf/nemo/oled/ui/simulation/dashed.gif");
-		urlMap.put(SimulationAttribute.STYLE_DOTTED, "resources/br/ufes/inf/nemo/oled/ui/simulation/dotted.gif");
-		urlMap.put(SimulationAttribute.STYLE_SOLID, "resources/br/ufes/inf/nemo/oled/ui/simulation/solid.gif");
+		urlMap.put(SimulationAttribute.STYLE_INHERIT, "resources/icons/x16/alloy/solid.gif");
+		urlMap.put(SimulationAttribute.STYLE_BOLD, "resources/icons/x16/alloy/bold.gif");
+		urlMap.put(SimulationAttribute.STYLE_DASHED, "resources/icons/x16/alloy/dashed.gif");
+		urlMap.put(SimulationAttribute.STYLE_DOTTED, "resources/icons/x16/alloy/dotted.gif");
+		urlMap.put(SimulationAttribute.STYLE_SOLID, "resources/icons/x16/alloy/solid.gif");
 
 	}
 

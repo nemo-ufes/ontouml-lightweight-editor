@@ -75,7 +75,7 @@ public class ConstraintEditionPanel extends JPanel {
 		
 		btnAdd = new JButton("");
 		btnAdd.setFocusable(false);
-		btnAdd.setIcon(new ImageIcon(ConstraintEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/cross.png")));
+		btnAdd.setIcon(new ImageIcon(ConstraintEditionPanel.class.getResource("/resources/icons/x16/add.png")));
 		btnAdd.setToolTipText("Add a new constraint to this class");
 		btnAdd.addActionListener(new ActionListener() {			
 			@Override
@@ -86,7 +86,7 @@ public class ConstraintEditionPanel extends JPanel {
 		
 		btnSave = new JButton("");
 		btnSave.setFocusable(false);
-		btnSave.setIcon(new ImageIcon(ConstraintEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/save.png")));
+		btnSave.setIcon(new ImageIcon(ConstraintEditionPanel.class.getResource("/resources/icons/x16/disk.png")));
 		btnSave.setToolTipText("Save selected constraint");
 		btnSave.addActionListener(new ActionListener() {			
 			@Override
@@ -97,7 +97,7 @@ public class ConstraintEditionPanel extends JPanel {
 		
 		btnDelete = new JButton("");
 		btnDelete.setFocusable(false);
-		btnDelete.setIcon(new ImageIcon(ConstraintEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete.png")));
+		btnDelete.setIcon(new ImageIcon(ConstraintEditionPanel.class.getResource("/resources/icons/x16/cross.png")));
 		btnDelete.setToolTipText("Delete seletected constraint");
 		btnDelete.addActionListener(new ActionListener() {			
 			@Override
@@ -124,7 +124,7 @@ public class ConstraintEditionPanel extends JPanel {
 		btnParse.setFocusable(false);
 		btnParse.setEnabled(false);
 		btnParse.setToolTipText("Parse selected constraint");
-		btnParse.setIcon(new ImageIcon(ConstraintEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/validate.png")));
+		btnParse.setIcon(new ImageIcon(ConstraintEditionPanel.class.getResource("/resources/icons/x16/accept.png")));
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(

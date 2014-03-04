@@ -75,7 +75,7 @@ public class ClosableTabPanel extends JPanel {
 		};
 
 		//Includes Icon on the label						
-		Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/br/ufes/inf/nemo/oled/ui/diagram.png"));
+		Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/diagram.png"));
 		label.setIcon(icon);
 		label.setIconTextGap(5);
 		label.setHorizontalTextPosition(SwingConstants.RIGHT);

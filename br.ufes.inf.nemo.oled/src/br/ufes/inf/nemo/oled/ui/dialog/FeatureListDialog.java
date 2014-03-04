@@ -175,7 +175,7 @@ public class FeatureListDialog extends JDialog {
 //		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
 //		setIconImage(icon);
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(FeatureListDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/edit.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(FeatureListDialog.class.getResource("/resources/icons/x16/pencil.png")));
 		
 		//Title
 		if (element instanceof Property)

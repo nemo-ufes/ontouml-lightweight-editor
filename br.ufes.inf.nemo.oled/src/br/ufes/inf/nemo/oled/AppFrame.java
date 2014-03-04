@@ -12,7 +12,6 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -486,8 +485,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public void showErrorMessageDialog(String title, String message)
 	{
 		JOptionPane.showMessageDialog(
-			this,message,title,JOptionPane.ERROR_MESSAGE,
-			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/delete-36x36.png"))
+			this,message,title,JOptionPane.ERROR_MESSAGE			
 		);	
 	}
 	
@@ -500,8 +498,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public void showWarningMessageDialog(String title, String message)
 	{
 		JOptionPane.showMessageDialog(
-			this,message,title,JOptionPane.WARNING_MESSAGE,
-			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/warning-36x36.png"))
+			this,message,title,JOptionPane.WARNING_MESSAGE			
 		);	
 	}
 	
@@ -514,8 +511,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public void showSuccessfulMessageDialog(String title, String message)
 	{
 		JOptionPane.showMessageDialog(
-			this,message,title,JOptionPane.INFORMATION_MESSAGE,
-			new ImageIcon(AppFrame.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/check-36x36.png"))
+			this,message,title,JOptionPane.INFORMATION_MESSAGE			
 		);
 	}
 	
