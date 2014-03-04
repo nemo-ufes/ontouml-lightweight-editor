@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 public final class VerificationResources {
 
 	private ResourceBundle validationResources =
-		ResourceBundle.getBundle("resources.br.ufes.inf.nemo.oled.ui.ontouml-constraints");
+		ResourceBundle.getBundle("resources.properties.ontouml-constraints");
 
 	private static VerificationResources instance = new VerificationResources();
 

@@ -35,7 +35,7 @@ import java.util.ResourceBundle;
 public final class ApplicationResources {
 
 	private ResourceBundle editorResources =
-		ResourceBundle.getBundle("resources.br.ufes.inf.nemo.oled.ui.ontouml-captions");
+		ResourceBundle.getBundle("resources.properties.ontouml-captions");
 
 	private static ApplicationResources instance = new ApplicationResources();
 

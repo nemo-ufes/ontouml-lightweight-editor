@@ -106,15 +106,16 @@ public class InfoManager extends JTabbedPane {
 		setBackground(UIManager.getColor("Panel.background"));
 					
 		addTab(" Warnings ",warnings);		
-//		setIconAt(indexOfComponent(warnings),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/warning.png")));
+		setIconAt(indexOfComponent(warnings),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/exclamation_octagon_fram.png")));
 		
 		addTab(" Errors ",errors);	
-//		setIconAt(indexOfComponent(errors),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/error.png")));
+		setIconAt(indexOfComponent(errors),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/cross_octagon.png")));
 		
 		addTab(" Output ",outputPane);	
 		setIconAt(indexOfComponent(outputPane),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/monitor.png")));
 		
 		addTab(" OCL Editor ",ocleditor);	
+		setIconAt(indexOfComponent(ocleditor),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/text-editor.png")));
 		
 		setTabPlacement(JTabbedPane.BOTTOM);				
 	}
