@@ -127,87 +127,80 @@ public final class IconLoader {
 		for (IconType iconType : IconType.values()) {
 			iconTypeMap.put(iconType.toString(), iconType);
 		}
-		urlMap.put(IconType.MOUSE_POINTER, "resources/br/ufes/inf/nemo/oled/ui/mousepointer.png");
-		urlMap.put(IconType.CLASS, "resources/br/ufes/inf/nemo/oled/ui/class.png");
-		urlMap.put(IconType.ASSOCIATION, "resources/br/ufes/inf/nemo/oled/ui/association.png");
-		urlMap.put(IconType.ASSOCIATION_ARROW, "resources/br/ufes/inf/nemo/oled/ui/association-arrow.png");
+		urlMap.put(IconType.MOUSE_POINTER, "resources/icons/x16/mousepointer.png");
 		
-		urlMap.put(IconType.AGGREGATION, "resources/br/ufes/inf/nemo/oled/ui/aggregation.png");
-		urlMap.put(IconType.AGGREGATION_C, "resources/br/ufes/inf/nemo/oled/ui/aggregation-c.png");
-		urlMap.put(IconType.AGGREGATION_M, "resources/br/ufes/inf/nemo/oled/ui/aggregation-m.png");
-		urlMap.put(IconType.AGGREGATION_Q, "resources/br/ufes/inf/nemo/oled/ui/aggregation-q.png");
-		urlMap.put(IconType.ANNOTATION, "resources/br/ufes/inf/nemo/oled/ui/annotation.png"); //CLEANUP
+		urlMap.put(IconType.CLASS, "resources/icons/x16/tree/class.png");
+		urlMap.put(IconType.ASSOCIATION, "resources/icons/x16/tree/association.png");
+		urlMap.put(IconType.ASSOCIATION_ARROW, "resources/icons/x16/tree/association-arrow.png");		
+		urlMap.put(IconType.AGGREGATION, "resources/icons/x16/tree/componentof.png");
+		urlMap.put(IconType.AGGREGATION_C, "resources/icons/x16/tree/subcollectionof.png");
+		urlMap.put(IconType.AGGREGATION_M, "resources/icons/x16/tree/memberof.png");
+		urlMap.put(IconType.AGGREGATION_Q, "resources/icons/x16/tree/subquantityof.png");
+		urlMap.put(IconType.ANNOTATION, "resources/icons/x16/tree/annotation.png");				
+		urlMap.put(IconType.INHERITANCE, "resources/icons/x16/tree/generalization.png");
+		urlMap.put(IconType.DERIVATION, "resources/icons/x16/tree/derivation.png");		
+		urlMap.put(IconType.RULE, "resources/icons/x16/tree/rule.png");
+		urlMap.put(IconType.NOTE, "resources/icons/x16/tree/note.png");
+		urlMap.put(IconType.NOTE_CONNECTOR, "resources/icons/x16/tree/note-connector.png");
 		
-		urlMap.put(IconType.COMPOSITION, "resources/br/ufes/inf/nemo/oled/ui/composition.png");
-		urlMap.put(IconType.INHERITANCE, "resources/br/ufes/inf/nemo/oled/ui/inheritance.png");
-		urlMap.put(IconType.DERIVATION, "resources/br/ufes/inf/nemo/oled/ui/derivation.png");
-		urlMap.put(IconType.RULE, "resources/br/ufes/inf/nemo/oled/ui/rule.png");
-		
-		urlMap.put(IconType.OUTPUT, "resources/br/ufes/inf/nemo/oled/ui/output.png");
-		urlMap.put(IconType.ERROR, "resources/br/ufes/inf/nemo/oled/ui/error.png");
-		urlMap.put(IconType.WARNING, "resources/br/ufes/inf/nemo/oled/ui/warning.png");
-		urlMap.put(IconType.OCLEDITOR, "resources/br/ufes/inf/nemo/oled/ui/ocleditor.png");
-		
-		urlMap.put(IconType.AUTO_SELECTION, "resources/br/ufes/inf/nemo/oled/ui/completion.png");		
-		urlMap.put(IconType.VALIDATE, "resources/br/ufes/inf/nemo/oled/ui/verify.png");		
-		urlMap.put(IconType.VERIFY_SETTINGS, "resources/br/ufes/inf/nemo/oled/ui/verifysettings.png");
-		urlMap.put(IconType.VERIFY_FILE, "resources/br/ufes/inf/nemo/oled/ui/verifyfile.png");		
-		urlMap.put(IconType.VERIFY, "resources/br/ufes/inf/nemo/oled/ui/validate.png");
-		urlMap.put(IconType.PARSE, "resources/br/ufes/inf/nemo/oled/ui/check.png");
-		
-		urlMap.put(IconType.VIEW, "resources/br/ufes/inf/nemo/oled/ui/view.png");
-		urlMap.put(IconType.DERIVERELATIONS, "resources/br/ufes/inf/nemo/oled/ui/derive-relations.png");
-		urlMap.put(IconType.GENERATE_ALLOY, "resources/br/ufes/inf/nemo/oled/ui/alloy.png");
-		urlMap.put(IconType.ANTIPATTERN, "resources/br/ufes/inf/nemo/oled/ui/antipattern.png");
-		urlMap.put(IconType.EA, "resources/br/ufes/inf/nemo/oled/ui/ea.jpg");
-		urlMap.put(IconType.NEMO, "resources/br/ufes/inf/nemo/oled/ui/window16.png");
-		urlMap.put(IconType.GENERATE_OWL, "resources/br/ufes/inf/nemo/oled/ui/owl.png");
-		urlMap.put(IconType.GENERATE_OWL_SETTINGS, "resources/br/ufes/inf/nemo/oled/ui/owlsettings.png");
-		urlMap.put(IconType.GENERATE_SBVR, "resources/br/ufes/inf/nemo/oled/ui/sbvr.png");
-		urlMap.put(IconType.GENERATE_TEXT, "resources/br/ufes/inf/nemo/oled/ui/text.gif");
-		urlMap.put(IconType.RECTILINEAR, "resources/br/ufes/inf/nemo/oled/ui/rectilinear.png");
-		urlMap.put(IconType.STRAIGHT, "resources/br/ufes/inf/nemo/oled/ui/straight.png");
-		urlMap.put(IconType.NOTE, "resources/br/ufes/inf/nemo/oled/ui/note.png");
-		urlMap.put(IconType.NOTE_CONNECTOR, "resources/br/ufes/inf/nemo/oled/ui/note-connector.png");
-		
-		urlMap.put(IconType.WINDOW, "resources/br/ufes/inf/nemo/oled/ui/window.png");
-		urlMap.put(IconType.PALETTE_OPEN, "resources/br/ufes/inf/nemo/oled/ui/palette_open.png");
-		urlMap.put(IconType.PALETTE_CLOSED, "resources/br/ufes/inf/nemo/oled/ui/palette_closed.png");
-		
-		urlMap.put(IconType.NEW, "resources/br/ufes/inf/nemo/oled/ui/new.png");
-		urlMap.put(IconType.OPEN, "resources/br/ufes/inf/nemo/oled/ui/open.png");
-		urlMap.put(IconType.SAVE, "resources/br/ufes/inf/nemo/oled/ui/save.png");
-		urlMap.put(IconType.CUT, "resources/br/ufes/inf/nemo/oled/ui/cut.png");
-		urlMap.put(IconType.COPY, "resources/br/ufes/inf/nemo/oled/ui/copy.png");
-		urlMap.put(IconType.PASTE, "resources/br/ufes/inf/nemo/oled/ui/paste.png");
-		urlMap.put(IconType.DELETE, "resources/br/ufes/inf/nemo/oled/ui/delete.png");
-		urlMap.put(IconType.EXCLUDE, "resources/br/ufes/inf/nemo/oled/ui/exclude.png");
-		urlMap.put(IconType.UNDO, "resources/br/ufes/inf/nemo/oled/ui/undo.png");
-		urlMap.put(IconType.REDO, "resources/br/ufes/inf/nemo/oled/ui/redo.png");
-		urlMap.put(IconType.ABOUT, "resources/br/ufes/inf/nemo/oled/ui/about.png");
-		urlMap.put(IconType.COPYRIGHTS, "resources/br/ufes/inf/nemo/oled/ui/copyrights.png");
-		
-		urlMap.put(IconType.IMPORT, "resources/br/ufes/inf/nemo/oled/ui/import.png");
-		urlMap.put(IconType.EXPORT, "resources/br/ufes/inf/nemo/oled/ui/export.png");
-		urlMap.put(IconType.PICTURE, "resources/br/ufes/inf/nemo/oled/ui/picture.png");
-		
-		urlMap.put(IconType.BACKGROUND_WELCOME, "resources/br/ufes/inf/nemo/oled/ui/bgwelcome.png");
-		urlMap.put(IconType.HEAD_WELCOME, "resources/br/ufes/inf/nemo/oled/ui/headwelcome.png");
-		urlMap.put(IconType.NEW_PROJECT, "resources/br/ufes/inf/nemo/oled/ui/newproject.png");
-		urlMap.put(IconType.NEW_DIAGRAM, "resources/br/ufes/inf/nemo/oled/ui/new_diagram.png");
-		urlMap.put(IconType.OPEN_PROJECT, "resources/br/ufes/inf/nemo/oled/ui/openproject.png");
-		urlMap.put(IconType.ISSUE_REPORT, "resources/br/ufes/inf/nemo/oled/ui/issue_report.png");		
-		urlMap.put(IconType.NEXT, "resources/br/ufes/inf/nemo/oled/ui/next.png");			
-		urlMap.put(IconType.PACKAGE, "resources/br/ufes/inf/nemo/oled/ui/package.png");
-		
-		urlMap.put(IconType.ADD, "resources/br/ufes/inf/nemo/oled/ui/add.png");
-		urlMap.put(IconType.REMOVE, "resources/br/ufes/inf/nemo/oled/ui/remove.png");
-		urlMap.put(IconType.GREEN_LIGHT, "resources/br/ufes/inf/nemo/oled/ui/greenlight.png");
-		urlMap.put(IconType.RED_LIGHT, "resources/br/ufes/inf/nemo/oled/ui/redlight.png");
-		urlMap.put(IconType.GREY_LIGHT, "resources/br/ufes/inf/nemo/oled/ui/greylight.png");
-		urlMap.put(IconType.ARROW_UP, "resources/br/ufes/inf/nemo/oled/ui/arrowup.png");
-		urlMap.put(IconType.ARROW_DOWN, "resources/br/ufes/inf/nemo/oled/ui/arrowdown.png");
+		urlMap.put(IconType.OUTPUT, "resources/icons/x16/monitor.png");
+		urlMap.put(IconType.ERROR, "resources/icons/x16/cross_octagon.png");
+		urlMap.put(IconType.WARNING, "resources/icons/x16/exclamation_octagon_fram.png");
+		urlMap.put(IconType.OCLEDITOR, "resources/icons/x16/text-editor.png");
+				
+		urlMap.put(IconType.VERIFY, "resources/icons/x16/spellcheck.png");
+		urlMap.put(IconType.PARSE, "resources/icons/x16/accept.png");
 
+		urlMap.put(IconType.WINDOW, "resources/icons/window.png");
+		urlMap.put(IconType.NEMO, "resources/icons/window16.png");
+		
+		urlMap.put(IconType.PALETTE_OPEN, "resources/icons/x16/palette_open.png");
+		urlMap.put(IconType.PALETTE_CLOSED, "resources/icons/x16/palette_closed.png");
+		
+		urlMap.put(IconType.EA, "resources/icons/x16/ea.jpg");		
+		urlMap.put(IconType.RECTILINEAR, "resources/icons/x16/rectilinear.png");
+		urlMap.put(IconType.STRAIGHT, "resources/icons/x16/straight.png");
+				
+		urlMap.put(IconType.ANTIPATTERN, "resources/icons/x16/target.png");
+		
+		urlMap.put(IconType.GENERATE_ALLOY, "resources/icons/x16/alloy/alloy.png");
+		
+		urlMap.put(IconType.GENERATE_OWL, "resources/icons/x16/owl.png");
+		urlMap.put(IconType.GENERATE_OWL_SETTINGS, "resources/icons/x16/owl.png");
+		
+		urlMap.put(IconType.GENERATE_SBVR, "resources/icons/x16/sbvr.png");
+		
+		urlMap.put(IconType.GENERATE_TEXT, "resources/icons/x16/text.gif");
+	
+		urlMap.put(IconType.NEW, "resources/icons/x16/page_2.png");
+		urlMap.put(IconType.OPEN, "resources/icons/x16/folder.png");
+		urlMap.put(IconType.SAVE, "resources/icons/x16/disk.png");
+		urlMap.put(IconType.CUT, "resources/icons/x16/cut.png");
+		urlMap.put(IconType.COPY, "resources/icons/x16/page_2_copy.png");
+		urlMap.put(IconType.PASTE, "resources/icons/x16/page_paste.png");		
+		urlMap.put(IconType.DELETE, "resources/icons/x16/cross.png");
+		urlMap.put(IconType.EXCLUDE, "resources/icons/x16/exclude.png");		
+		urlMap.put(IconType.UNDO, "resources/icons/x16/arrow_undo.png");
+		urlMap.put(IconType.REDO, "resources/icons/x16/arrow_redo.png");		
+		urlMap.put(IconType.ABOUT, "resources/icons/x16/exclamation.png");
+				
+		urlMap.put(IconType.EXPORT, "resources/icons/x16/page_white_get.png");
+		urlMap.put(IconType.IMPORT, "resources/icons/x16/page_white_put.png");
+		
+		urlMap.put(IconType.PICTURE, "resources/icons/x16/image_1.png");
+
+		urlMap.put(IconType.ARROW_UP, "resources/icons/x16/arrow_up.png");
+		urlMap.put(IconType.ARROW_DOWN, "resources/icons/x16/arrow_down.png");
+
+		urlMap.put(IconType.GREEN_LIGHT, "resources/icons/x16/greenlight.png");
+		urlMap.put(IconType.RED_LIGHT, "resources/icons/x16/redlight.png");
+		urlMap.put(IconType.GREY_LIGHT, "resources/icons/x16/greylight.png");
+		
+		urlMap.put(IconType.BACKGROUND_WELCOME, "resources/icons/bgwelcome.png");
+		urlMap.put(IconType.HEAD_WELCOME, "resources/icons/headwelcome.png");
+				
+		urlMap.put(IconType.ISSUE_REPORT, "resources/icons/x16/link.png");		
+		urlMap.put(IconType.NEXT, "resources/icons/x16/next.png");		
 	}
 
 	/**

@@ -214,7 +214,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		
 		diagramManager = new DiagramManager(this);
-		diagramManager.setTabPlacement(JTabbedPane.BOTTOM);
+		diagramManager.setTabPlacement(JTabbedPane.TOP);
 		infoManager= new InfoManager(this, null);		
 		projectBrowser = new ProjectBrowser(diagramManager.getFrame(),null);
 		toolManager = new ToolManager(this, diagramManager.getEditorDispatcher());

@@ -62,9 +62,6 @@ public class MainToolbar implements ActionListener {
 		createButton("copy");
 		createButton("paste");
 		toolbar.addSeparator();		
-		createButton("exclude");
-		createButton("delete");
-		toolbar.addSeparator();
 		createButton("undo");
 		createButton("redo");
 		toolbar.addSeparator();
@@ -76,17 +73,18 @@ public class MainToolbar implements ActionListener {
 		createButton("antipattern");
 		toolbar.addSeparator();		
 		createButton("generatealloy");
+		toolbar.addSeparator();
 		createButton("generateowlsettings");
-		createButton("generatesbvr");
+		toolbar.addSeparator();		
 		createButton("generatetext");
+		toolbar.addSeparator();
+		createButton("generatesbvr");
 		
 		enableButton("UNDO", false);
 		enableButton("REDO", false);
 		enableButton("CUT", false);
 		enableButton("COPY", false);
 		enableButton("PASTE", false);
-		enableButton("DELETE", true);
-		enableButton("EXCLUDE", true);
 		
 		toolbar.setFloatable(false);
 		toolbar.setMargin(new Insets(5,5,5,5));
