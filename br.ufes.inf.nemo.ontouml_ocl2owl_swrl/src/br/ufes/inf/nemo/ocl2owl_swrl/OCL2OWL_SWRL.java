@@ -150,7 +150,7 @@ public class OCL2OWL_SWRL {
 		OCLParser oclParser  = null;
 		
 		//create a ocl parser to create a referent uml model based on the ontouml model
-		oclParser = new OCLParser(ontoParser, null, null,false);
+		oclParser = new OCLParser(ontoParser, null, null);
 
 		while(true){
 			//if doesn't exist more tags, the of block is setted as the end of the oclRules

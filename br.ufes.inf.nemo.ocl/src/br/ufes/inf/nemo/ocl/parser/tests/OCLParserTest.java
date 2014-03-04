@@ -14,12 +14,12 @@ public class OCLParserTest {
 
     public static void main (String[] args)
     {    	
-    	String refpath = new File("src/br/ufes/inf/nemo/ocl/parser/tests/models/project.refontouml").getAbsolutePath();
-    	String oclPath = new File("src/br/ufes/inf/nemo/ocl/parser/tests/models/project.ocl").getAbsolutePath();
+    	String refpath = new File("src/resources/br/ufes/inf/nemo/ocl/models/project.refontouml").getAbsolutePath();
+    	String oclPath = new File("src/resources/br/ufes/inf/nemo/ocl/models/project.ocl").getAbsolutePath();
     	
     	try {
     		
-    		OCLParser parser = new OCLParser(refpath,false);
+    		OCLParser parser = new OCLParser(refpath);
     		parser.parseStandardOCL(new File(oclPath));
 		
 		} catch (IOException e) {			

@@ -344,6 +344,7 @@ public class OCLVisitor extends org.eclipse.ocl.utilities.AbstractVisitor <Strin
 	{			
 		String operTypeResult = oper.getType().getName();
 		String operName = oper.getName();
+		System.out.println(operName);
 		
 		if(operName.equals("allInstances")) { return sourceResult; }
 		

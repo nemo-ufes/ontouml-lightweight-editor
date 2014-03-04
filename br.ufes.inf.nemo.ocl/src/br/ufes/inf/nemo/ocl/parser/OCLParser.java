@@ -2,12 +2,9 @@ package br.ufes.inf.nemo.ocl.parser;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ocl.Environment;
@@ -32,8 +29,6 @@ import br.ufes.inf.nemo.ontouml2uml.OntoUML2UMLOption;
 
 public class OCLParser {
 
-	public boolean isTemporalOCL=false;
-	
 	// OntoUML
     public OntoUMLParser refparser;
     
@@ -45,11 +40,7 @@ public class OCLParser {
     
     // Pure UML
     public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> pureUmlMap;
-
-    // Temporal UML
-    public HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier>> tempUmlAssocMap = new HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier> >();
-	public HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element>> tempUmlAttrMap = new HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element> >();
-    
+        
     // OCL
     public org.eclipse.ocl.uml.OCL myOCL;
     public List<Constraint> umlconstraintsList;
@@ -66,11 +57,10 @@ public class OCLParser {
      * @param tempDirPath: Temporary Directory to store the background files needed fro parsing.
      * @param backgroundModelName: A name for the UML background model to be generated behind the scenes. If Null or empty the name will be "model" by default.
      */
-	public OCLParser (OntoUMLParser refparser, String tempDirPath, String backgroundModelName, boolean isTemporalOCL)
+	public OCLParser (OntoUMLParser refparser, String tempDirPath, String backgroundModelName)
     {	
     	if (refparser==null) return;
     	
-    	this.isTemporalOCL=isTemporalOCL;
     	this.refparser = refparser;
     	
     	if (tempDirPath==null) tempDirPath="";
@@ -81,14 +71,9 @@ public class OCLParser {
     	
     	if (tempDirPath.endsWith(File.separator)) umlPath += tempDirPath + backgroundModelName + ".uml";
     	else umlPath += tempDirPath + File.separator + backgroundModelName + ".uml";
-    	if (isTemporalOCL){
-    		umlResource = OntoUML2UML.convertToTemporalUML(refparser,umlPath,new OntoUML2UMLOption(true,false));
-    		tempUmlAssocMap = OntoUML2UML.getTempAssociationsMap();
-        	tempUmlAttrMap = OntoUML2UML.getTempAttributesMap();   
-    	}else{
-    		umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false));
-    	}
-    	
+
+    	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false));
+    	    	
     	pureUmlMap = OntoUML2UML.getMap();
     	logDetails = OntoUML2UML.getLog();
     	    	
@@ -118,11 +103,10 @@ public class OCLParser {
      * @param tempDirPath: Temporary Directory to store the background files needed fro parsing.
      * @param backgroundModelName: A name for the UML background model to be generated behind the scenes. If Null or empty the name will be "model" by default.
      */
-	public OCLParser (RefOntoUML.Package rootPackage, String tempDirPath, String backgroundModelName, boolean isTemporalOCL)
+	public OCLParser (RefOntoUML.Package rootPackage, String tempDirPath, String backgroundModelName)
     {	
     	if (rootPackage==null) return;
 
-    	this.isTemporalOCL=isTemporalOCL;
     	this.refparser = new OntoUMLParser(rootPackage);
     	
     	if (tempDirPath==null) tempDirPath="";
@@ -134,13 +118,7 @@ public class OCLParser {
     	if (tempDirPath.endsWith(File.separator)) umlPath += tempDirPath + backgroundModelName + ".uml";
     	else umlPath += tempDirPath + File.separator + backgroundModelName + ".uml";
     	
-    	if(isTemporalOCL){    		
-    		umlResource = OntoUML2UML.convertToTemporalUML(refparser,umlPath,new OntoUML2UMLOption(true,false));
-    		tempUmlAssocMap = OntoUML2UML.getTempAssociationsMap();
-        	tempUmlAttrMap = OntoUML2UML.getTempAttributesMap();
-    	}else{
-    		umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false));
-    	}
+   		umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false));
     	
     	pureUmlMap = OntoUML2UML.getMap();
     	logDetails = OntoUML2UML.getLog();
@@ -168,19 +146,13 @@ public class OCLParser {
      * It uses a OntoUML2UML transformation behind the scenes to orchestrate the constraints parsing.
      * 
       */
-    public OCLParser (String refAbsolutePath, boolean isTemporalOCL) throws IOException,ParserException,Exception
+    public OCLParser (String refAbsolutePath) throws IOException,ParserException,Exception
 	{ 			
-    	this.isTemporalOCL=isTemporalOCL;
     	this.refparser = new OntoUMLParser(refAbsolutePath);
 
-    	if(isTemporalOCL){    		
-    		umlResource = OntoUML2UML.convertToTemporalUML(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),new OntoUML2UMLOption(true,false));
-    		tempUmlAssocMap = OntoUML2UML.getTempAssociationsMap();
-        	tempUmlAttrMap = OntoUML2UML.getTempAttributesMap();
-    	}else{
-    		umlResource = OntoUML2UML.convertToUML(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),new OntoUML2UMLOption(true,false));
-    	}
-    	pureUmlMap = OntoUML2UML.getMap();
+   		umlResource = OntoUML2UML.convertToUML(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),new OntoUML2UMLOption(true,false));
+
+   		pureUmlMap = OntoUML2UML.getMap();
     	logDetails = OntoUML2UML.getLog();
 		
     	String umlPath = refAbsolutePath.replace(".refontouml" , ".uml");    	
@@ -230,72 +202,20 @@ public class OCLParser {
 		return oclContent;
 	}
     
-	private String processTemporalOCL(String oclTemporalContent)
-    {
-		//search for [*] pattern
-		Pattern p = Pattern.compile("\\[\\w+\\]");		
-    	Matcher m = p.matcher(oclTemporalContent);    	
-    	while (m.find()) 
-    	{ 
-    		int indexBegin = m.start();
-    		int indexEnd = m.end();
-    		if(indexBegin < 0) indexBegin = 0;
-    		if(indexEnd > oclTemporalContent.length()) indexEnd = oclTemporalContent.length();
-    		String worldVar = oclTemporalContent.substring(indexBegin+1, indexEnd-1);   		
-    		System.out.println(worldVar);    		
-    	}		
-    	return oclTemporalContent;
-    }
-
-	/** Parse temporal OCL constraints from text. */
-	public void parseTemporalOCL(String oclTemporalConstraints) throws ParserException
-	{		
-		if(isTemporalOCL){ 
-			oclTemporalConstraints = preProcessOCL(oclTemporalConstraints);
-
-			processTemporalOCL(oclTemporalConstraints);
-			
-			OCLInput document = new OCLInput(oclTemporalConstraints);		
-			umlconstraintsList = myOCL.parse(document);		
-			umlreflection = umlenv.getUMLReflection();
-		}else{
-			new Exception("This parser was created to parse standard OCL and not temporal OCL as you specified.");
-		}
-	}
-
-    /** Parse temporal OCL Constraints from a File. */
-    public void parseTemporalOCL(File temporalOCLFile) throws IOException, ParserException
-    {    	
-    	if(isTemporalOCL){ 
-    		String oclContent = FileUtil.readFile(temporalOCLFile.getAbsolutePath());
-    		parseTemporalOCL(oclContent);
-    	}else{
-    		new Exception("This parser was created to parse standard OCL and not temporal OCL as you specified.");
-    	}    	
-    }
-    
     /** Parse standard OCL Constraints from a File. */
     public void parseStandardOCL(File oclFile) throws IOException, ParserException
     {
-    	if(!isTemporalOCL){ 
-    		String oclContent = FileUtil.readFile(oclFile.getAbsolutePath());
-    		parseStandardOCL(oclContent);
-    	}else{
-    		new Exception("This parser was created to parse temporal OCL  and not OCL standard as you specified.");
-    	}
+   		String oclContent = FileUtil.readFile(oclFile.getAbsolutePath());
+   		parseStandardOCL(oclContent);
     }
     
 	/** Parse standard OCL constraints from text. */
 	public void parseStandardOCL(String oclStandardConstraints) throws ParserException
 	{
-		if(!isTemporalOCL){ 
-			oclStandardConstraints = preProcessOCL(oclStandardConstraints);        
-			OCLInput document = new OCLInput(oclStandardConstraints);		
-			umlconstraintsList = myOCL.parse(document);		
-			umlreflection = umlenv.getUMLReflection();
-		}else{
-			new Exception("This parser was created to parse temporal OCL  and not OCL standard as you specified.");
-		}
+		oclStandardConstraints = preProcessOCL(oclStandardConstraints);        
+		OCLInput document = new OCLInput(oclStandardConstraints);		
+		umlconstraintsList = myOCL.parse(document);		
+		umlreflection = umlenv.getUMLReflection();	
 	}
 
 	//Getters    

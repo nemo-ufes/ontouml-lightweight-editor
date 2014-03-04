@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ocl.editor;
+package br.ufes.inf.nemo.tocl.editor;
 
 import javax.swing.ImageIcon;
 import javax.swing.JList;
@@ -14,7 +14,7 @@ import org.fife.ui.autocomplete.VariableCompletion;
  * @author John Guerson
  */
 
-public class OCLCellRenderer extends CompletionCellRenderer {
+public class TOCLCellRenderer extends CompletionCellRenderer {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -28,13 +28,13 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("derivation")||
 			tc.getDefinitionString().equals("context")
 		   ){
-			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/constraint.gif")));
+			setIcon(new ImageIcon(TOCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/constraint.gif")));
 		}else
 		
 		if (tc.getDefinitionString().equals("if-then-else")||
 		    tc.getDefinitionString().equals("let-in"))
 		   {
-			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/expression.gif")));
+			setIcon(new ImageIcon(TOCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/expression.gif")));
 		}else
 			
 		if (tc.getDefinitionString().equals("=")||
@@ -44,11 +44,11 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("oclAsType")||
 			tc.getDefinitionString().equals("oclIsUndefined")			
 		   ){
-			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/operation.gif")));
+			setIcon(new ImageIcon(TOCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/operation.gif")));
 		}else
 		
 		if (tc.getDefinitionString().equals("allInstances")){
-			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/allInstances.gif")));
+			setIcon(new ImageIcon(TOCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/allInstances.gif")));
 		} else 
 			
 		if (tc.getDefinitionString().equals("forAll")||
@@ -61,7 +61,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("one")||
 			tc.getDefinitionString().equals("any")
 		   ){
-			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/operation.gif")));
+			setIcon(new ImageIcon(TOCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/operation.gif")));
 		}else
 		
 		if (tc.getDefinitionString().equals("size")||
@@ -84,7 +84,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("flatten")||
 			tc.getDefinitionString().equals("-")
 		   ){
-			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/operation.gif")));
+			setIcon(new ImageIcon(TOCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/operation.gif")));
 		}else
 		
 		if (tc.getDefinitionString().equals("or")||
@@ -110,11 +110,11 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 			tc.getDefinitionString().equals("floor")||
 			tc.getDefinitionString().equals("round")
 		   ){
-			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/operation.gif")));
+			setIcon(new ImageIcon(TOCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/operation.gif")));
 		}else
 		
 		if (tc.getDefinitionString().contains("Property")){
-			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/property.gif")));
+			setIcon(new ImageIcon(TOCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/property.gif")));
 		}else
 		
 		if ((tc.getDefinitionString().contains("Kind"))||
@@ -130,7 +130,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 		   (tc.getDefinitionString().contains("Category"))||
 		   (tc.getDefinitionString().contains("DataType")))
 		{
-			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/class.png")));
+			setIcon(new ImageIcon(TOCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/class.png")));
 		}
 			
 	}
