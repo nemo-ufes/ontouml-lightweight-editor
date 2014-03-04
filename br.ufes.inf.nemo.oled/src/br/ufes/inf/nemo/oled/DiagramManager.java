@@ -230,8 +230,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			frame.getStatusBar().clearStatus();			
 			currentProject=null;
 			addStartPanel();
-			frame.hideInfoManager();
-			frame.hideToolBox();
 		}
 
 		updateUI();
@@ -766,8 +764,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				saveCurrentProjectToFile(file);				
 
 				frame.setTitle("OLED - "+file.getName()+"");
-				//frame.showInfoManager();
-				frame.showToolBox();				
+							
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, ex.getMessage(),
 						getResourceString("error.readfile.title"),
@@ -815,8 +812,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 
 				frame.setTitle("OLED - "+file.getName()+"");
-				//frame.showInfoManager();
-				frame.showToolBox();
 
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, ex.getMessage(),
@@ -860,8 +855,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 
 				frame.setTitle("OLED - "+file.getName()+"");
-				//frame.showInfoManager();
-				frame.showToolBox();
 
 			}
 		} catch (Exception ex) {
@@ -1003,8 +996,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					newDiagram();
 
 					frame.setTitle("OLED - "+projectFile.getName()+"");
-					//frame.showInfoManager();
-					frame.showToolBox();
 
 					getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 

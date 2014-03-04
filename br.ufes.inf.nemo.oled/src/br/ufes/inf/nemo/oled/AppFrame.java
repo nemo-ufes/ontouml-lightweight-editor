@@ -15,17 +15,16 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
+
+import org.jdesktop.swingx.MultiSplitLayout;
+import org.jdesktop.swingx.MultiSplitPane;
 
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.MethodCall;
-import edu.mit.csail.sdg.alloy4.OurBorder;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
 
 public class AppFrame extends JFrame implements AppCommandListener {
@@ -41,10 +40,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	private transient ProjectBrowser projectBrowser;
 	private transient InfoManager infoManager;
 	private transient StatusBar statusBar;
-	
-	private transient JSplitPane toolArea = new JSplitPane();
-	private transient JSplitPane browserArea = new JSplitPane();
-	private transient JSplitPane editorArea = new JSplitPane();
 	
 	private transient Map<String, MethodCall> selectorMap = new HashMap<String, MethodCall>();
 	
@@ -78,35 +73,13 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		});
 
 		pack();
-		initSelectorMap();
-		
-		restoreDefaults();
-
+		initSelectorMap();	
 	}
 	
 	public void createSysOutInterceptor()
 	{
 		PrintStream interceptor = new Interceptor(System.out);
 		System.setOut(interceptor);
-	}
-    
-	/** Restore default sizes of the split panes. */
-	public void restoreDefaults() 
-	{
-        SwingUtilities.invokeLater(new Runnable() 
-        {
-            @Override
-            public void run() 
-            {            	        		
-        		editorArea.setDividerLocation(GetScreenWorkingHeight());
-        		browserArea.setDividerLocation(GetScreenWorkingWidth()-258);
-            }
-        });
-    }
-	
-	public void hideInfoManager()
-	{
-		editorArea.setDividerLocation(GetScreenWorkingHeight());
 	}
 	
 	public void setAlloyAnalyzer(SimpleGUICustom analyzer){
@@ -121,25 +94,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		mainMenu.addCommandListener(this);
 		mainMenu.addCommandListener(diagramManager.getEditorDispatcher());
 		setJMenuBar(mainMenu.getMenuBar());
-	}
-
-	/**  
-	 * Makes the border of SplitPanes to look nicer on Mac OS X
-	 */
-	public void nicerSplitPanesOnMac()
-	{
-      if (Main.onMac() && (toolArea.getUI() instanceof BasicSplitPaneUI)) {
-          boolean h = (toolArea.getOrientation() != JSplitPane.HORIZONTAL_SPLIT);
-          ((BasicSplitPaneUI)(toolArea.getUI())).getDivider().setBorder(new OurBorder(h,h,h,h));
-       }
-      if (Main.onMac() && (browserArea.getUI() instanceof BasicSplitPaneUI)) {
-          boolean h = (browserArea.getOrientation() != JSplitPane.HORIZONTAL_SPLIT);
-          ((BasicSplitPaneUI)(browserArea.getUI())).getDivider().setBorder(new OurBorder(h,h,h,h));
-       }
-       if (Main.onMac() && (editorArea.getUI() instanceof BasicSplitPaneUI)) {
-           boolean h = (editorArea.getOrientation() != JSplitPane.HORIZONTAL_SPLIT);
-           ((BasicSplitPaneUI)(editorArea.getUI())).getDivider().setBorder(new OurBorder(h,h,h,h));
-        }
 	}
 	
 	/**
@@ -197,56 +151,36 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	/**
 	 * Adds the main diagram manager (the tabbed pane which holds the diagrams)
 	 */
-	private void installManagers() {		
-		
-		toolArea.setContinuousLayout(true);
-		toolArea.setOneTouchExpandable(false);		
-		toolArea.setDividerSize(5);
-			
-		browserArea.setContinuousLayout(true);
-		browserArea.setOneTouchExpandable(true);		
-		browserArea.setDividerSize(7);
-		browserArea.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-		
-		editorArea.setContinuousLayout(true);
-		editorArea.setOneTouchExpandable(true);		
-		editorArea.setDividerSize(7);
-		editorArea.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		
+	private void installManagers() 
+	{		
 		diagramManager = new DiagramManager(this);
-		diagramManager.setTabPlacement(JTabbedPane.TOP);
-		infoManager= new InfoManager(this, null);		
+		diagramManager.setTabPlacement(JTabbedPane.BOTTOM);		
+		diagramManager.addStartPanel();
+		diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()-100));
+		
+		infoManager= new InfoManager(this, null);
+		infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,100));
+		
 		projectBrowser = new ProjectBrowser(diagramManager.getFrame(),null);
+		projectBrowser.setPreferredSize(new Dimension(230,250));
+		
 		toolManager = new ToolManager(this, diagramManager.getEditorDispatcher());
+		toolManager.setPreferredSize(new Dimension(230,250));
+		toolManager.getPalleteAccordion().setPreferredSize(new Dimension(230,250));
 		
-		editorArea.add(toolArea, JSplitPane.TOP);		
-		editorArea.add(infoManager,JSplitPane.BOTTOM);	
-		editorArea.setDividerLocation(GetScreenWorkingHeight());
+		//==========	
+			
+		String layoutDef = "(ROW weight=1.0 left (COLUMN middle.top middle.bottom) right)";
+		MultiSplitLayout.Node modelRoot = MultiSplitLayout.parseModel(layoutDef);
 		
-		browserArea.add(editorArea, JSplitPane.LEFT);
-		browserArea.add(projectBrowser, JSplitPane.RIGHT);
-		projectBrowser.setMinimumSize(new Dimension(230,250));	
-		browserArea.setDividerLocation(GetScreenWorkingWidth()-250);
-		browserArea.setResizeWeight(1);
-		
-		toolManager.setMinimumSize(new Dimension(0,0));	
-		toolManager.setPreferredSize(new Dimension(230,300));
-		toolArea.add(toolManager.getPalleteAccordion(), JSplitPane.LEFT);
-		toolArea.add(diagramManager, JSplitPane.RIGHT);
-		toolArea.setDividerLocation(0.0d);
-		toolArea.setResizeWeight(0);
-		
-		getContentPane().add(browserArea, BorderLayout.CENTER);
-        
-		//to end...
-		diagramManager.addStartPanel();		
-		editorArea.setDividerLocation(0.0d);
-	}
-
-	public void showToolBox()
-	{
-		toolArea.setDividerLocation(0.22d);
-	}
+		MultiSplitPane multiSplitPane = new MultiSplitPane();
+		multiSplitPane.getMultiSplitLayout().setModel(modelRoot);
+		multiSplitPane.add(toolManager.getPalleteAccordion(), "left");
+		multiSplitPane.add(projectBrowser, "right");
+		multiSplitPane.add(diagramManager, "middle.top");		
+		multiSplitPane.add(infoManager, "middle.bottom");
+		getContentPane().add(multiSplitPane, BorderLayout.CENTER);        
+	}	
 	
 	/**
 	 * Adds the status bar.
@@ -300,11 +234,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
 		}
-	}
-	
-	public void hideToolBox()
-	{
-		toolArea.setDividerLocation(0.0d);
 	}
 	
 	/**
@@ -561,11 +490,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public void focusOnOclEditor()
 	{		
 		infoManager.setSelectedIndex(3);		
-	}
-	
-	public void showInfoManager()
-	{		
-		editorArea.setDividerLocation(GetScreenWorkingHeight()-243);
 	}
 	
 	public boolean isFocusedOnOclEditor()
