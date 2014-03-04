@@ -17,7 +17,6 @@ import br.ufes.inf.nemo.oled.ui.ErrorTablePanel;
 import br.ufes.inf.nemo.oled.ui.OutputPane;
 import br.ufes.inf.nemo.oled.ui.WarningTablePanel;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
-import br.ufes.inf.nemo.oled.util.IconLoader;
 
 public class InfoManager extends JTabbedPane {
 
@@ -77,9 +76,9 @@ public class InfoManager extends JTabbedPane {
 			}
 		});
 		
-		JMenuItem parserMenuItem = new JMenuItem("Parse",new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/check.png")));
+		JMenuItem parserMenuItem = new JMenuItem("Parse");
 		JMenuItem openMenuItem = new JMenuItem("Open");
-		JMenuItem saveMenuItem = new JMenuItem("Save As...");		
+		JMenuItem saveMenuItem = new JMenuItem("Save As");		
 		ocleditor.getPopupMenu().add(parserMenuItem);
 		ocleditor.getPopupMenu().add(openMenuItem);
 		ocleditor.getPopupMenu().add(saveMenuItem);
@@ -107,16 +106,15 @@ public class InfoManager extends JTabbedPane {
 		setBackground(UIManager.getColor("Panel.background"));
 					
 		addTab(" Warnings ",warnings);		
-		setIconAt(indexOfComponent(warnings),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/warning.png")));
+//		setIconAt(indexOfComponent(warnings),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/warning.png")));
 		
 		addTab(" Errors ",errors);	
-		setIconAt(indexOfComponent(errors),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/error.png")));
+//		setIconAt(indexOfComponent(errors),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/error.png")));
 		
 		addTab(" Output ",outputPane);	
-		setIconAt(indexOfComponent(outputPane),IconLoader.getInstance().getIcon(getResourceString("editortoolbar.output.icon")));
+		setIconAt(indexOfComponent(outputPane),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/monitor.png")));
 		
 		addTab(" OCL Editor ",ocleditor);	
-		setIconAt(indexOfComponent(ocleditor),IconLoader.getInstance().getIcon(getResourceString("editortoolbar.ocleditor.icon")));
 		
 		setTabPlacement(JTabbedPane.BOTTOM);				
 	}
@@ -166,6 +164,7 @@ public class InfoManager extends JTabbedPane {
 		return errors;
 	}
 	
+	@SuppressWarnings("unused")
 	private String getResourceString(String property) {
 	    return ApplicationResources.getInstance().getString(property);
 	}

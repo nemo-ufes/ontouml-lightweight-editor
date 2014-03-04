@@ -113,7 +113,7 @@ public class AntiPatternResultDialog extends Dialog {
 		super(parentShell);		
 		this.result = result;
 		this.frame = frame;
-		setDefaultImage(new Image(Display.getDefault(),AntiPatternResultDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/antipattern-36x36.png")));		
+		setDefaultImage(new Image(Display.getDefault(),AntiPatternResultDialog.class.getResourceAsStream("/resources/icons/x16/target.png")));		
 	}
 	
 	@Override
@@ -245,7 +245,7 @@ public class AntiPatternResultDialog extends Dialog {
 	      TableEditor editor = new TableEditor(table);
 	      
 	      Button button = new Button(table, SWT.NONE);	   
-	      button.setImage(new Image(getShell().getDisplay(),AntiPatternResultDialog.class.getResourceAsStream("/resources/br/ufes/inf/nemo/oled/ui/fix.png")));	      
+	      button.setImage(new Image(getShell().getDisplay(),AntiPatternResultDialog.class.getResourceAsStream("/resources/icons/x16/hammer_screwdriver.png")));	      
 	      final AntipatternOccurrence apOccur = result.get(i);	      
 	      button.addListener(SWT.Selection,new Listener() {
 		        public void handleEvent(Event event) 

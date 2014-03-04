@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -73,8 +72,7 @@ public class AutoCompletionDialog extends JDialog {
 			if (ProjectBrowser.getProjectBrowserFor(frame,project)==null) return;       		    	
 		   	String msg = frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.ALL_ANCESTORS,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
-	   			frame,msg,"All ancestors",JOptionPane.INFORMATION_MESSAGE,
-	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png"))
+	   			frame,msg,"All ancestors",JOptionPane.INFORMATION_MESSAGE	   			
 	   		); 
 		}
 		if (rbAllAncestorsDescendants.isSelected())
@@ -82,8 +80,7 @@ public class AutoCompletionDialog extends JDialog {
 			if (ProjectBrowser.getProjectBrowserFor(frame,project)==null) return;       		    	
 		   	String msg = frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.COMPLETE_HIERARCHY,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
-	   			frame,msg,"All ancestors and descendants",JOptionPane.INFORMATION_MESSAGE,
-	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png"))
+	   			frame,msg,"All ancestors and descendants",JOptionPane.INFORMATION_MESSAGE	   			
 	   		);        				
 		}
 		if (rbAllAncestorsUntil.isSelected())
@@ -91,8 +88,7 @@ public class AutoCompletionDialog extends JDialog {
 			if (ProjectBrowser.getProjectBrowserFor(frame,project)==null) return;       		    	
 		   	String msg = frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.SORTAL_ANCESTORS,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
-	   			frame,msg,"All ancestors until a Substance Sortal",JOptionPane.INFORMATION_MESSAGE,
-	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png"))
+	   			frame,msg,"All ancestors until a Substance Sortal",JOptionPane.INFORMATION_MESSAGE	   			
 	   		); 
 		}
 		if (rbAllDescendants.isSelected())
@@ -100,8 +96,7 @@ public class AutoCompletionDialog extends JDialog {
 			if (ProjectBrowser.getProjectBrowserFor(frame,project)==null) return;       		    	
 		   	String msg = frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.ALL_DESCENDANTS,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
-	   			frame,msg,"All descendants",JOptionPane.INFORMATION_MESSAGE,
-	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png"))
+	   			frame,msg,"All descendants",JOptionPane.INFORMATION_MESSAGE	   			
 	   		); 
 		}
 		if (rbMandatory.isSelected())
@@ -109,8 +104,7 @@ public class AutoCompletionDialog extends JDialog {
 			if (ProjectBrowser.getProjectBrowserFor(frame,project)==null) return;       		    	
 		   	String msg = frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
-	   			frame,msg,"Only mandatory dependencies",JOptionPane.INFORMATION_MESSAGE,
-	   			new ImageIcon(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png"))
+	   			frame,msg,"Only mandatory dependencies",JOptionPane.INFORMATION_MESSAGE	   			
 	   		); 
 		}
 	}
@@ -125,7 +119,6 @@ public class AutoCompletionDialog extends JDialog {
 		this.frame = frame;
 		this.project = project;
 		
-		//setIconImage(Toolkit.getDefaultToolkit().getImage(AutoCompletionDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/completion36x36.png")));
 		setTitle("Complete selection");
 		setBounds(100, 100, 270, 258);
 		

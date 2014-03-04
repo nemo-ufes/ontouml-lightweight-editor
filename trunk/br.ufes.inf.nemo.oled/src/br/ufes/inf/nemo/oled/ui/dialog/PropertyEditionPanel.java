@@ -174,7 +174,7 @@ public class PropertyEditionPanel extends JPanel {
 		
 		btnSubsetted = new JButton("");
 		btnSubsetted.setPreferredSize(new Dimension(30, 25));
-		btnSubsetted.setIcon(new ImageIcon(PropertyEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/edit.png")));
+		btnSubsetted.setIcon(new ImageIcon(PropertyEditionPanel.class.getResource("/resources/icons/x16/pencil.png")));
 		btnSubsetted.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -197,7 +197,7 @@ public class PropertyEditionPanel extends JPanel {
 		
 		btnRedefined = new JButton("");
 		btnRedefined.setPreferredSize(new Dimension(30, 25));
-		btnRedefined.setIcon(new ImageIcon(PropertyEditionPanel.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/edit.png")));
+		btnRedefined.setIcon(new ImageIcon(PropertyEditionPanel.class.getResource("/resources/icons/x16/pencil.png")));
 		btnRedefined.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

@@ -187,7 +187,7 @@ public class AboutDialog extends JDialog {
 		
 		label = new JLabel("");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setIcon(new ImageIcon(AboutDialog.class.getResource("/resources/br/ufes/inf/nemo/oled/ui/nemo.png")));
+		label.setIcon(new ImageIcon(AboutDialog.class.getResource("/resources/icons/nemo.png")));
 		NorthPanel.add(label);
 	}
 }
