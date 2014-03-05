@@ -10,6 +10,7 @@
    <!-- Omitting baseFont will use a system-appropriate monospaced. -->
    <!--<baseFont family="..." size="13"/>-->
    
+   <baseFont family="Consolas" size="11"/>   
    <!--  General editor colors. -->
    <background color="ffffff"/>
    <caret color="ff0000"/>
