@@ -94,4 +94,8 @@ public class Combination {
 
         return output;
     }
+    
+    public static void main(String[] args) {
+    
+    }
 }

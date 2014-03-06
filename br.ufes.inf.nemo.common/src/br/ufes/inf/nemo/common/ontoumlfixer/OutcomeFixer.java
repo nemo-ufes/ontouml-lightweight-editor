@@ -36,6 +36,7 @@ import RefOntoUML.NamedElement;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Phase;
+import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.RefOntoUMLFactory;
@@ -51,15 +52,32 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
+import RefOntoUML.impl.AssociationImpl;
+import RefOntoUML.impl.CategoryImpl;
 import RefOntoUML.impl.CharacterizationImpl;
+import RefOntoUML.impl.CollectiveImpl;
 import RefOntoUML.impl.DataTypeImpl;
 import RefOntoUML.impl.DerivationImpl;
 import RefOntoUML.impl.DirectedBinaryAssociationImpl;
 import RefOntoUML.impl.FormalAssociationImpl;
+import RefOntoUML.impl.GeneralizationImpl;
+import RefOntoUML.impl.KindImpl;
 import RefOntoUML.impl.MaterialAssociationImpl;
 import RefOntoUML.impl.MediationImpl;
 import RefOntoUML.impl.MeronymicImpl;
+import RefOntoUML.impl.MixinImpl;
+import RefOntoUML.impl.ModeImpl;
+import RefOntoUML.impl.PhaseImpl;
+import RefOntoUML.impl.PrimitiveTypeImpl;
+import RefOntoUML.impl.QuantityImpl;
+import RefOntoUML.impl.RelatorImpl;
+import RefOntoUML.impl.RoleImpl;
+import RefOntoUML.impl.RoleMixinImpl;
+import RefOntoUML.impl.SubKindImpl;
 import RefOntoUML.impl.componentOfImpl;
+import RefOntoUML.impl.memberOfImpl;
+import RefOntoUML.impl.subCollectionOfImpl;
+import RefOntoUML.impl.subQuantityOfImpl;
 
 public class OutcomeFixer {
 
@@ -590,19 +608,29 @@ public class OutcomeFixer {
 	public Fix changeRelationStereotypeTo(EObject relationship, RelationStereotype newStereo) 
 	{
 		Fix fixes = new Fix();
-		// create new relationship
-		RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);		
-		copyPropertiesDatas(relationship, newRelationship,false);
-		fixes.includeAdded(newRelationship);
-		// the same container as
-		copyContainer(relationship, newRelationship);
-		fixes.includeModified(relationship.eContainer());
-		// change references
-		Fix references = changeModelReferences(relationship, newRelationship);
-		fixes.includeAllModified(references.getModified());
-		// delete relationship
-		EcoreUtil.delete(relationship, false);
-		fixes.includeDeleted(relationship);
+		
+			// create new relationship
+			RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);		
+			copyPropertiesDatas(relationship, newRelationship,false);
+			fixes.includeAdded(newRelationship);
+			// the same container as
+			copyContainer(relationship, newRelationship);
+			fixes.includeModified(relationship.eContainer());
+			// change references
+			Fix references = changeModelReferences(relationship, newRelationship);
+			fixes.includeAllModified(references.getModified());
+			
+			// copies name if associations
+			if(relationship instanceof Association && newRelationship instanceof Association){
+				((Association) newRelationship).setName(((Association) relationship).getName());	
+			}
+			
+			// delete relationship
+			EcoreUtil.delete(relationship, false);
+			fixes.includeDeleted(relationship);
+		
+			
+			
 		return fixes;
 	}
 
@@ -1293,6 +1321,64 @@ public class OutcomeFixer {
 		}		
 		if (includeModified && (option==SpecializationType.SUBSET || option==SpecializationType.REDEFINE)) fix.includeModified(specific);		
 		return fix;
+	}
+	
+	public static ClassStereotype getEnumClassStereotype(java.lang.Class<?> type){
+		if(type.equals(Relator.class) || type.equals(RelatorImpl.class))
+			return ClassStereotype.RELATOR;
+		if(type.equals(Mode.class) || type.equals(ModeImpl.class))
+				return ClassStereotype.MODE;
+		if(type.equals(DataType.class) || type.equals(DataTypeImpl.class))
+			return ClassStereotype.DATATYPE;
+		if(type.equals(Kind.class) || type.equals(KindImpl.class))
+			return ClassStereotype.KIND;
+		if(type.equals(Collective.class) || type.equals(CollectiveImpl.class))
+			return ClassStereotype.COLLECTIVE;
+		if(type.equals(Quantity.class) || type.equals(QuantityImpl.class))
+			return ClassStereotype.QUANTITY;
+		if(type.equals(SubKind.class) || type.equals(SubKindImpl.class))
+			return ClassStereotype.SUBKIND;
+		if(type.equals(Role.class) || type.equals(RoleImpl.class))
+			return ClassStereotype.ROLE;
+		if(type.equals(Phase.class) || type.equals(PhaseImpl.class))
+			return ClassStereotype.PHASE;
+		if(type.equals(Category.class) || type.equals(CategoryImpl.class))
+			return ClassStereotype.CATEGORY;
+		if(type.equals(RoleMixin.class) || type.equals(RoleMixinImpl.class))
+			return ClassStereotype.ROLEMIXIN;
+		if(type.equals(Mixin.class) || type.equals(MixinImpl.class))
+			return ClassStereotype.MIXIN;
+		if(type.equals(PrimitiveType.class) || type.equals(PrimitiveTypeImpl.class))
+			return ClassStereotype.PRIMITIVETYPE;
+		return null;
+	}
+	
+	public static RelationStereotype getEnumRelationStereotype(java.lang.Class<?> type){
+		
+		if(type.equals(Mediation.class) || type.equals(MediationImpl.class))
+			return RelationStereotype.MEDIATION;
+		if(type.equals(Characterization.class) || type.equals(CharacterizationImpl.class))
+			return RelationStereotype.CHARACTERIZATION;
+		if(type.equals(MaterialAssociation.class) || type.equals(MaterialAssociationImpl.class))
+			return RelationStereotype.MATERIAL;
+		if(type.equals(FormalAssociation.class) || type.equals(FormalAssociationImpl.class))
+			return RelationStereotype.FORMAL;
+		if(type.equals(componentOf.class) || type.equals(componentOfImpl.class))
+			return RelationStereotype.COMPONENTOF;
+		if(type.equals(memberOf.class) || type.equals(memberOfImpl.class))
+			return RelationStereotype.MEMBEROF;
+		if(type.equals(subCollectionOf.class) || type.equals(subCollectionOfImpl.class))
+			return RelationStereotype.SUBCOLLECTIONOF;
+		if(type.equals(subQuantityOf.class) || type.equals(subQuantityOfImpl.class))
+			return RelationStereotype.SUBQUANTITYOF;
+		if(type.equals(Derivation.class) || type.equals(DerivationImpl.class))
+			return RelationStereotype.DERIVATION;
+		if(type.equals(Generalization.class) || type.equals(GeneralizationImpl.class))
+			return RelationStereotype.GENERALIZATION;
+		if(type.equals(Association.class) || type.equals(AssociationImpl.class))
+			return RelationStereotype.ASSOCIATION;
+		
+		return null;
 	}
 
 }
