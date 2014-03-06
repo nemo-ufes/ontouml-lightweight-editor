@@ -10,13 +10,13 @@ import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import br.ufes.inf.nemo.ocl.editor.OCLEditorPanel;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.ErrorTablePanel;
 import br.ufes.inf.nemo.oled.ui.OutputPane;
 import br.ufes.inf.nemo.oled.ui.WarningTablePanel;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
+import br.ufes.inf.nemo.tocl.editor.TOCLEditorPanel;
 
 public class InfoManager extends JTabbedPane {
 
@@ -24,7 +24,7 @@ public class InfoManager extends JTabbedPane {
 	public static ErrorTablePanel errors;
 	public static WarningTablePanel warnings;
 	public static OutputPane outputPane;
-	public static OCLEditorPanel ocleditor;
+	public static TOCLEditorPanel ocleditor;
 	public AppFrame frame;
 	public UmlProject project;
 	
@@ -59,7 +59,7 @@ public class InfoManager extends JTabbedPane {
 		errors = new ErrorTablePanel(project);
 		warnings = new WarningTablePanel(project);
 		outputPane = new OutputPane();
-		ocleditor = new OCLEditorPanel(frame);
+		ocleditor = new TOCLEditorPanel(frame);
 		
 		ocleditor.addDocumentListener(new DocumentListener() {			
 			@Override
@@ -114,13 +114,13 @@ public class InfoManager extends JTabbedPane {
 		addTab(" Output ",outputPane);	
 		setIconAt(indexOfComponent(outputPane),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/monitor.png")));
 		
-		addTab(" OCL Editor ",ocleditor);	
+		addTab(" Temporal OCL Editor ",ocleditor);	
 		setIconAt(indexOfComponent(ocleditor),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/text-editor.png")));
 		
 		setTabPlacement(JTabbedPane.BOTTOM);				
 	}
 	
-	public br.ufes.inf.nemo.ocl.editor.OCLEditorPanel getOcleditor() {
+	public br.ufes.inf.nemo.tocl.editor.TOCLEditorPanel getOcleditor() {
 		return ocleditor;
 	}
 

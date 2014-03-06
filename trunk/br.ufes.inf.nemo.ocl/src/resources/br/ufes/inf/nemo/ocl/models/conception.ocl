@@ -4,8 +4,8 @@ import 'conception.uml'
 
 --context World
 --
----- fatherOf definition: The father of a person y is the person x who played  the role of Male-Procreator in the Conception in which y 
----- played the role of Offspring
+-- fatherOf definition: The father of a person y is the person x who played  the role of Male-Procreator in the Conception in which y 
+-- played the role of Offspring
 --inv: Person.allInstances(self)->forAll(ps | ps.children[self] = 
 --     self.previous()->collect(pw | Offspring.allInstances(pw)->select(f | f.conception[pw].male[pw] = ps)))
 --
@@ -51,4 +51,4 @@ import 'conception.uml'
 --     
 --inv: Teenager.allInstances(self)->forAll(p | 
 --     self.previous()->forAll(wp | p.existsIn(wp) implies not p.oclIsKindOf(Adult, wp)))
-
+--

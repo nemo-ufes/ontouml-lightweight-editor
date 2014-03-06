@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.ocl.parser.OCLParser;
+import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 
 /**
  * This class represents an OCL Model.
@@ -23,7 +23,7 @@ public class OCLDocument implements Serializable {
 	private String oclpath;	
 	
 	/** OCL Parser . */
-	private OCLParser oclparser;
+	private TOCLParser oclparser;
 		
 	/**
 	 * Creates an empty ocl model.
@@ -67,8 +67,8 @@ public class OCLDocument implements Serializable {
 	 * 
 	 * @param oclparser
 	 */
-	public void setParser(OCLParser oclparser) { this.oclparser = oclparser; }
-	public OCLParser getParser() { return oclparser; }
+	public void setParser(TOCLParser oclparser) { this.oclparser = oclparser; }
+	public TOCLParser getParser() { return oclparser; }
 	
 	/** Get OCL single String containing all Constraints. */
 	public String getOCLString() { return oclstring; }
@@ -91,6 +91,6 @@ public class OCLDocument implements Serializable {
 	public void setOCLPath (String path) { oclpath = path; }
 		
 	/** Get OCL Parser. */
-	public OCLParser getOCLParser () { return oclparser; }
+	public TOCLParser getOCLParser () { return oclparser; }
 }
 

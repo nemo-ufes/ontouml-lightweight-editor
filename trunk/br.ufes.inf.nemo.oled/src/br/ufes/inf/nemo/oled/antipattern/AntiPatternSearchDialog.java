@@ -310,7 +310,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/target.png")));
 		setTitle("Anti-Pattern Identification");
-		setBounds(100, 100, 845, 511);
+		setBounds(100, 100, 854, 511);
 		 
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setPreferredSize(new Dimension(180, 410));
@@ -337,14 +337,14 @@ public class AntiPatternSearchDialog extends JDialog {
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(panel_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panel_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 806, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 806, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblChooseWhichAntipattern, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE)
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-							.addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, 388, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
+							.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 403, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, 397, GroupLayout.PREFERRED_SIZE)))
 					.addGap(3))
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -356,11 +356,11 @@ public class AntiPatternSearchDialog extends JDialog {
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(rightPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
 						.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(45, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		
 		identifyButton = new JButton("Search");
@@ -472,7 +472,7 @@ public class AntiPatternSearchDialog extends JDialog {
        	});
 		
 		cbxMixRig = new JCheckBox(MixRigAntipattern.getAntipatternInfo().getAcronym()+": "+MixRigAntipattern.getAntipatternInfo().getName());		
-		cbxMixRig.setPreferredSize(new Dimension(210, 20));
+		cbxMixRig.setPreferredSize(new Dimension(220, 20));
 		cbxMixRig.setBackground(UIManager.getColor("Panel.background"));
 		lblMixRigRes = new JLabel("");
 		lblMixRigRes.setPreferredSize(new Dimension(120, 20));		
@@ -489,7 +489,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(lblMixRigRes);
 		
 		cbxMultiDep = new JCheckBox(MultiDepAntipattern.getAntipatternInfo().getAcronym()+": "+MultiDepAntipattern.getAntipatternInfo().getName());
-		cbxMultiDep.setPreferredSize(new Dimension(255, 20));
+		cbxMultiDep.setPreferredSize(new Dimension(265, 20));
 		cbxMultiDep.setBackground(UIManager.getColor("Panel.background"));
 		lblMultiDepRes = new JLabel("");
 		lblMultiDepRes.setPreferredSize(new Dimension(75, 20));
@@ -506,7 +506,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(lblMultiDepRes);
 		
 		cbxRelComp = new JCheckBox(RelCompAntipattern.getAntipatternInfo().getAcronym()+": "+RelCompAntipattern.getAntipatternInfo().getName());
-		cbxRelComp.setPreferredSize(new Dimension(215, 20));
+		cbxRelComp.setPreferredSize(new Dimension(225, 20));
 		cbxRelComp.setBackground(UIManager.getColor("Panel.background"));
 		lblRelCompRes = new JLabel("");
 		lblRelCompRes.setPreferredSize(new Dimension(115, 20));
@@ -523,7 +523,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(lblRelCompRes);
 		
 		cbxRelOver = new JCheckBox(RelOverAntipattern.getAntipatternInfo().getAcronym()+": "+RelOverAntipattern.getAntipatternInfo().getName());
-		cbxRelOver.setPreferredSize(new Dimension(287, 20));
+		cbxRelOver.setPreferredSize(new Dimension(297, 20));
 		cbxRelOver.setBackground(UIManager.getColor("Panel.background"));
 		lblRelOverRes = new JLabel("");
 		lblRelOverRes.setPreferredSize(new Dimension(43, 20));
@@ -548,7 +548,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(lblRelRigIco);
 		
 		cbxRelRig = new JCheckBox(RelRigAntipattern.getAntipatternInfo().getAcronym()+": "+RelRigAntipattern.getAntipatternInfo().getName());
-		cbxRelRig.setPreferredSize(new Dimension(245, 20));
+		cbxRelRig.setPreferredSize(new Dimension(255, 20));
 		cbxRelRig.setBackground(UIManager.getColor("Panel.background"));
 		rightPanel.add(cbxRelRig);
 		lblRelRigRes = new JLabel("");
@@ -557,7 +557,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(lblRelRigRes);
 		
 		cbxRelSpec = new JCheckBox(RelSpecAntipattern.getAntipatternInfo().getAcronym()+": "+RelSpecAntipattern.getAntipatternInfo().getName());
-		cbxRelSpec.setPreferredSize(new Dimension(215, 20));
+		cbxRelSpec.setPreferredSize(new Dimension(225, 20));
 		cbxRelSpec.setBackground(UIManager.getColor("Panel.background"));
 		lblRelSpecRes = new JLabel("");
 		lblRelSpecRes.setPreferredSize(new Dimension(115, 20));
@@ -574,7 +574,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(lblRelSpecRes);
 		
 		cbxRepRel = new JCheckBox(RepRelAntipattern.getAntipatternInfo().getAcronym()+": "+RepRelAntipattern.getAntipatternInfo().getName());
-		cbxRepRel.setPreferredSize(new Dimension(250, 20));
+		cbxRepRel.setPreferredSize(new Dimension(260, 20));
 		cbxRepRel.setBackground(UIManager.getColor("Panel.background"));
 		lblRepRelRes = new JLabel("");
 		lblRepRelRes.setPreferredSize(new Dimension(80, 20));
@@ -591,10 +591,10 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(lblRepRelRes);
 		
 		cbxUndefFormal = new JCheckBox(UndefFormalAntipattern.getAntipatternInfo().getAcronym()+": "+UndefFormalAntipattern.getAntipatternInfo().getName());	
-		cbxUndefFormal.setPreferredSize(new Dimension(300, 20));
+		cbxUndefFormal.setPreferredSize(new Dimension(320, 20));
 		cbxUndefFormal.setBackground(UIManager.getColor("Panel.background"));
 		lblUndefFormalRes = new JLabel("");
-		lblUndefFormalRes.setPreferredSize(new Dimension(30, 20));		
+		lblUndefFormalRes.setPreferredSize(new Dimension(20, 20));		
 		lblUndefFormalRes.setForeground(Color.BLUE);
 		lblUndefFormalIco = new JButton();
 		lblUndefFormalIco.setPreferredSize(new Dimension(20, 20));
@@ -608,7 +608,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(lblUndefFormalRes);
 		
 		cbxUndefPhase = new JCheckBox(UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+": "+UndefPhaseAntipattern.getAntipatternInfo().getName());
-		cbxUndefPhase.setPreferredSize(new Dimension(255, 20));
+		cbxUndefPhase.setPreferredSize(new Dimension(265, 20));
 		cbxUndefPhase.setBackground(UIManager.getColor("Panel.background"));
 		lblUndefPhaseRes = new JLabel("");
 		lblUndefPhaseRes.setPreferredSize(new Dimension(75, 20));		
@@ -634,7 +634,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(lblWholeOverIco);
 		
 		cbxWholeOver = new JCheckBox(WholeOverAntipattern.getAntipatternInfo().getAcronym()+": "+WholeOverAntipattern.getAntipatternInfo().getName());
-		cbxWholeOver.setPreferredSize(new Dimension(310, 20));
+		cbxWholeOver.setPreferredSize(new Dimension(320, 20));
 		cbxWholeOver.setBackground(UIManager.getColor("Panel.background"));
 		rightPanel.add(cbxWholeOver);
 		lblWholeOverRes = new JLabel("");
@@ -651,7 +651,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(lblPartOverIco);
 		
 		cbxPartOver = new JCheckBox(PartOverAntipattern.getAntipatternInfo().getAcronym()+": "+PartOverAntipattern.getAntipatternInfo().getName());
-		cbxPartOver.setPreferredSize(new Dimension(310, 20));
+		cbxPartOver.setPreferredSize(new Dimension(320, 20));
 		cbxPartOver.setBackground(UIManager.getColor("Panel.background"));
 		rightPanel.add(cbxPartOver);
 		lblPartOverRes = new JLabel("");
@@ -660,10 +660,10 @@ public class AntiPatternSearchDialog extends JDialog {
 		rightPanel.add(lblPartOverRes);
 		
 		cbxMultSort = new JCheckBox(MultSortAntipattern.getAntipatternInfo().getAcronym()+": "+MultSortAntipattern.getAntipatternInfo().getName());		
-		cbxMultSort.setPreferredSize(new Dimension(220, 20));
+		cbxMultSort.setPreferredSize(new Dimension(250, 20));
 		cbxMultSort.setBackground(UIManager.getColor("Panel.background"));
 		lblMultSortRes = new JLabel("");
-		lblMultSortRes.setPreferredSize(new Dimension(110, 20));		
+		lblMultSortRes.setPreferredSize(new Dimension(90, 20));		
 		lblMultSortRes.setForeground(Color.BLUE);
 		lblMultSortIco = new JButton();
 		lblMultSortIco.setPreferredSize(new Dimension(20, 20));
@@ -677,7 +677,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(lblMultSortRes);
 		
 		cbxHetColl = new JCheckBox(HetCollAntipattern.getAntipatternInfo().getAcronym()+": "+HetCollAntipattern.getAntipatternInfo().getName());		
-		cbxHetColl.setPreferredSize(new Dimension(220, 20));
+		cbxHetColl.setPreferredSize(new Dimension(230, 20));
 		cbxHetColl.setBackground(UIManager.getColor("Panel.background"));
 		lblHetCollRes = new JLabel("");
 		lblHetCollRes.setPreferredSize(new Dimension(110, 20));		
@@ -694,7 +694,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(lblHetCollRes);
 		
 		cbxMixIden = new JCheckBox(MixIdenAntipattern.getAntipatternInfo().getAcronym()+": "+MixIdenAntipattern.getAntipatternInfo().getName());	
-		cbxMixIden.setPreferredSize(new Dimension(220, 20));
+		cbxMixIden.setPreferredSize(new Dimension(230, 20));
 		cbxMixIden.setBackground(UIManager.getColor("Panel.background"));
 		lblMixIdenRes = new JLabel("");
 		lblMixIdenRes.setPreferredSize(new Dimension(110, 20));		
@@ -721,7 +721,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(lblAssCycIco);
 		
 		cbxAssCyc = new JCheckBox(AssCycAntipattern.getAntipatternInfo().getAcronym()+": "+AssCycAntipattern.getAntipatternInfo().getName());
-		cbxAssCyc.setPreferredSize(new Dimension(175, 20));
+		cbxAssCyc.setPreferredSize(new Dimension(185, 20));
 		cbxAssCyc.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxAssCyc);
 		lblAssCycRes = new JLabel("");		
@@ -738,7 +738,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(lblBinOverIco);
 		
 		cbxBinOver = new JCheckBox(BinOverAntipattern.getAntipatternInfo().getAcronym()+": "+BinOverAntipattern.getAntipatternInfo().getName());	
-		cbxBinOver.setPreferredSize(new Dimension(295, 20));
+		cbxBinOver.setPreferredSize(new Dimension(305, 20));
 		cbxBinOver.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxBinOver);
 		lblBinOverRes = new JLabel("");		
@@ -755,7 +755,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(lblDepPhaseIco);
 		
 		cbxDepPhase = new JCheckBox(DepPhaseAntipattern.getAntipatternInfo().getAcronym()+": "+DepPhaseAntipattern.getAntipatternInfo().getName());
-		cbxDepPhase.setPreferredSize(new Dimension(265, 20));
+		cbxDepPhase.setPreferredSize(new Dimension(275, 20));
 		cbxDepPhase.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxDepPhase);
 		lblDepPhaseRes = new JLabel("");		
@@ -772,7 +772,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(lblFreeRoleIco);
 		
 		cbxFreeRole = new JCheckBox(FreeRoleAntipattern.getAntipatternInfo().getAcronym()+": "+FreeRoleAntipattern.getAntipatternInfo().getName());	
-		cbxFreeRole.setPreferredSize(new Dimension(220, 20));
+		cbxFreeRole.setPreferredSize(new Dimension(230, 20));
 		cbxFreeRole.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxFreeRole);
 		lblFreeRoleRes = new JLabel("");		
@@ -789,7 +789,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(lblGSRigIco);
 		
 		cbxGSRig = new JCheckBox("GSRig: Generalization Set with Mixed Rigidity");		
-		cbxGSRig.setPreferredSize(new Dimension(290, 20));
+		cbxGSRig.setPreferredSize(new Dimension(300, 20));
 		cbxGSRig.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxGSRig);
 		lblGSRigRes = new JLabel("");
@@ -806,7 +806,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(lblHomoFuncIco);
 		
 		cbxHomoFunc = new JCheckBox(HomoFuncAntipattern.getAntipatternInfo().getAcronym()+": "+HomoFuncAntipattern.getAntipatternInfo().getName());	
-		cbxHomoFunc.setPreferredSize(new Dimension(290, 20));
+		cbxHomoFunc.setPreferredSize(new Dimension(300, 20));
 		cbxHomoFunc.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxHomoFunc);
 		lblHomoFuncRes = new JLabel("");
@@ -823,7 +823,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(lblImpAbsIco);
 		
 		cbxImpAbs = new JCheckBox(ImpAbsAntipattern.getAntipatternInfo().getAcronym()+": "+ImpAbsAntipattern.getAntipatternInfo().getName());		
-		cbxImpAbs.setPreferredSize(new Dimension(210, 20));
+		cbxImpAbs.setPreferredSize(new Dimension(220, 20));
 		cbxImpAbs.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxImpAbs);
 		lblImpAbsRes = new JLabel("");
@@ -840,7 +840,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(lblImpPartIco);
 				
 		cbxImpPart = new JCheckBox(ImpPartAntipattern.getAntipatternInfo().getAcronym()+": "+ImpPartAntipattern.getAntipatternInfo().getName());
-		cbxImpPart.setPreferredSize(new Dimension(240, 20));
+		cbxImpPart.setPreferredSize(new Dimension(250, 20));
 		cbxImpPart.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxImpPart);
 		lblImpPartRes = new JLabel("");

@@ -32,13 +32,12 @@ public class OCLParser {
 	// OntoUML
     public OntoUMLParser refparser;
     
-	// UML
+	// Pure UML
 	public Resource umlResource;		
 	public org.eclipse.ocl.uml.UMLEnvironment umlenv;                
     public String umlFile;
     public org.eclipse.uml2.uml.Package umlRoot;    
-    
-    // Pure UML
+    public String umlPath;
     public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> pureUmlMap;
         
     // OCL
@@ -65,7 +64,7 @@ public class OCLParser {
     	
     	if (tempDirPath==null) tempDirPath="";
     	
-    	String umlPath = new String();
+    	umlPath = new String();
     	
     	if (backgroundModelName == null || backgroundModelName.isEmpty()) backgroundModelName = "model";
     	
@@ -111,7 +110,7 @@ public class OCLParser {
     	
     	if (tempDirPath==null) tempDirPath="";
     	
-    	String umlPath = new String();
+    	umlPath = new String();
     	
     	if (backgroundModelName.isEmpty() || backgroundModelName ==null) backgroundModelName = "model";
     	
@@ -155,7 +154,7 @@ public class OCLParser {
    		pureUmlMap = OntoUML2UML.getMap();
     	logDetails = OntoUML2UML.getLog();
 		
-    	String umlPath = refAbsolutePath.replace(".refontouml" , ".uml");    	
+    	umlPath = refAbsolutePath.replace(".refontouml" , ".uml");    	
     	umlFile = umlPath.substring(umlPath.lastIndexOf(File.separator)+1);
     	
 		// this line was added due to a bug of Eclipse :
@@ -179,7 +178,7 @@ public class OCLParser {
      * the old UML binding do not allow the keyword import. Or if there is no package declaration, it should exist one.
      * And Any other processing before the parsing might be done here.
      */
-    private String preProcessOCL(String oclContent)
+    protected String preProcessOCL(String oclContent)
 	{	
     	analyzer = myOCL.createAnalyzer(oclContent);
         cstree = analyzer.parseConcreteSyntax();

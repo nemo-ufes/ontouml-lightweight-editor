@@ -259,7 +259,7 @@ public class PropertyEditionPanel extends JPanel {
 		optionsPanel.add(cbxDerived);
 		
 		cbxUnique = new JCheckBox("Unique");
-		cbxUnique.setPreferredSize(new Dimension(80, 20));
+		cbxUnique.setPreferredSize(new Dimension(100, 20));
 		optionsPanel.add(cbxUnique);
 		
 		cbxOrdered = new JCheckBox("Ordered");
@@ -267,7 +267,7 @@ public class PropertyEditionPanel extends JPanel {
 		optionsPanel.add(cbxOrdered);
 		
 		cbxReadOnly = new JCheckBox("Read Only");
-		cbxReadOnly.setPreferredSize(new Dimension(80, 20));
+		cbxReadOnly.setPreferredSize(new Dimension(100, 20));
 		optionsPanel.add(cbxReadOnly);
 		
 		lblName = new JLabel("Name:");

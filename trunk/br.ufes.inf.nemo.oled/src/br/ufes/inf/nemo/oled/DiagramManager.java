@@ -66,7 +66,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
-import br.ufes.inf.nemo.ocl.parser.OCLParser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.ElementType;
@@ -122,6 +121,7 @@ import br.ufes.inf.nemo.oled.util.VerificationHelper;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
 import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui.GlossaryGeneratorUI;
+import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
@@ -1574,23 +1574,23 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			// set parser from the editor view.
 			String name = ((RefOntoUML.Package)getCurrentProject().getResource().getContents().get(0)).getName();
 			if (name==null || name.isEmpty()) name = "model";
-			oclmodel.setParser( new OCLParser(refparser,getCurrentProject().getTempDir()+File.separator,name.toLowerCase()));
+			oclmodel.setParser( new TOCLParser(refparser,getCurrentProject().getTempDir()+File.separator,name.toLowerCase()));
 
-			oclmodel.getParser().parseStandardOCL(frame.getInfoManager().getConstraints());
+			oclmodel.getParser().parseTemporalOCL(frame.getInfoManager().getConstraints());
 
 			// set options from the parser
-			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new OCL2AlloyOptions(oclmodel.getOCLParser()));
+			//ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new OCL2AlloyOptions(oclmodel.getOCLParser()));
 
 			// show Message
 			String msg =  "Constraints are syntactically correct.\n";
-			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing OCL",msg);
+			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing temporal OCL",msg);
 
 		}catch(SemanticException e2){
-			frame.showErrorMessageDialog("OCL Semantic Error",  "OCL Parser : "+e2.getLocalizedMessage());    		
+			frame.showErrorMessageDialog("TOCL Semantic Error",  "TOCL Parser: "+e2.getLocalizedMessage());    		
 			e2.printStackTrace();	
 
 		}catch(ParserException e1){
-			frame.showErrorMessageDialog("OCL Parsing Error", "OCL Parser: "+e1.getLocalizedMessage());    			
+			frame.showErrorMessageDialog("TOCL Parsing Error", "TOCL Parser: "+e1.getLocalizedMessage());    			
 			e1.printStackTrace();    	
 
 		}catch(Exception e4){
