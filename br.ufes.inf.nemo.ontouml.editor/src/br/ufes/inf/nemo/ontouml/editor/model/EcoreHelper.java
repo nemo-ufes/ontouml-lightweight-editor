@@ -16,7 +16,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 
-import RefOntoUML.provider.RefOntoUMLItemProviderAdapterFactory;
+//import RefOntoUML.provider.RefOntoUMLItemProviderAdapterFactory;
 
 public class EcoreHelper {
 
@@ -36,7 +36,7 @@ public class EcoreHelper {
 		
 		adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
 		adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new RefOntoUMLItemProviderAdapterFactory());
+//		adapterFactory.addAdapterFactory(new RefOntoUMLItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 		
