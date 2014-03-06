@@ -144,4 +144,20 @@ public class CommonMixinSupertype extends OverlappingGroup {
 		return true;
 	}
 	
+	public boolean isHasOverlappingGS() {
+		return hasOverlappingGS;
+	}
+
+	public Classifier getClosestSupertpe() {
+		return closestSupertpe;
+	}
+
+	public ArrayList<Classifier> getCommonSupertypes() {
+		return commonSupertypes;
+	}
+
+	public ArrayList<GeneralizationSet> getGenSets() {
+		return genSets;
+	}
+	
 }

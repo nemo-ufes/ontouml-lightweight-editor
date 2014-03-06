@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XSYwfVuXEeOCwYvWfsRrew" name="DiorbertCorrea_PublicTender_English" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSYwfluXEeOCwYvWfsRrew" name="Anulled Tender" visibility="public">
+    <ownedComment xmi:id="_XSYwf1uXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Licita&#xe7;&#xe3;o impugnada que foi anulada por constata&#xe7;&#xe3;o de alguma irregularidade no processo de licita&#xe7;&#xe3;o."/>
+    <generalization xmi:id="_XSYwgFuXEeOCwYvWfsRrew" general="_XSZXiFuXEeOCwYvWfsRrew" generalizationSet="_XSfeHVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSYwgVuXEeOCwYvWfsRrew" name="Auction" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSYwgluXEeOCwYvWfsRrew" name="Auction for Public Tender" visibility="public">
+    <ownedComment xmi:id="_XSZXcFuXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Uma modalidade de licita&#xe7;&#xe3;o. Licita&#xe7;&#xe3;o entre quaisquer interessados para a venda de bens m&#xf3;veis inserv&#xed;veis para a Administra&#xe7;&#xe3;o ou de produtos legalmente apreendidos ou empenhados, ou para a aliena&#xe7;&#xe3;o de bens im&#xf3;veis previstas no art. 19 (Lei n&#xba; 8666/93), a quem oferecer o maior lance, igual ou superior ao valor da avalia&#xe7;&#xe3;o.&#xA;&#xA;Fonte:&#xA;&#xA;Lei n&#xba; 8666/93"/>
+    <ownedRule xmi:id="_XSZXcVuXEeOCwYvWfsRrew" name="C1" visibility="public" constrainedElement="_XSYwgluXEeOCwYvWfsRrew">
+      <specification xsi:type="RefOntoUML:OpaqueExpression" xmi:id="_XSZXcluXEeOCwYvWfsRrew">
+        <body>context _'Auction for Public Tender'&#xA;inv :  self.batch-&amp;gt;includesAll(self.serviceBatch-&amp;gt;asSet())</body>
+      </specification>
+    </ownedRule>
+    <generalization xmi:id="_XSZXc1uXEeOCwYvWfsRrew" general="_XSbMqFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XSZXdFuXEeOCwYvWfsRrew" name="Batch Group" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XSZXdVuXEeOCwYvWfsRrew" name="Batch in Auction" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSZXdluXEeOCwYvWfsRrew" name="Bidder" visibility="public">
+    <ownedComment xmi:id="_XSZXd1uXEeOCwYvWfsRrew" body="Definition=Sin&#xf4;nimo: Proponente"/>
+    <generalization xmi:id="_XSZXeFuXEeOCwYvWfsRrew" general="_XSZXhluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSZXeVuXEeOCwYvWfsRrew" name="Bidder Registration" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSZXeluXEeOCwYvWfsRrew" name="Bidder in Auction" visibility="public">
+    <generalization xmi:id="_XSZXe1uXEeOCwYvWfsRrew" general="_XSZXh1uXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XSZXfFuXEeOCwYvWfsRrew" general="_XSZXdluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSZXfVuXEeOCwYvWfsRrew" name="Bussiness Plan" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSZXfluXEeOCwYvWfsRrew" name="Bussiness Plan in Specific Proposal" visibility="public">
+    <generalization xmi:id="_XSZXf1uXEeOCwYvWfsRrew" general="_XSZXfVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSZXgFuXEeOCwYvWfsRrew" name="Call for Tender" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSZXgVuXEeOCwYvWfsRrew" name="Call for Tender Publication" visibility="public">
+    <generalization xmi:id="_XSZXgluXEeOCwYvWfsRrew" general="_XSbMrFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSZXg1uXEeOCwYvWfsRrew" name="Call for Tender Republication" visibility="public">
+    <generalization xmi:id="_XSZXhFuXEeOCwYvWfsRrew" general="_XSbMu1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XSZXhVuXEeOCwYvWfsRrew" name="Committee" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSZXhluXEeOCwYvWfsRrew" name="Company" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XSZXh1uXEeOCwYvWfsRrew" name="Company Participant of Public Auction" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSZXiFuXEeOCwYvWfsRrew" name="Completed Tender" visibility="public">
+    <ownedComment xmi:id="_XSZXiVuXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Licita&#xe7;&#xe3;o cujo processo licitat&#xf3;rio foi finalizado, seja pela publica&#xe7;&#xe3;o do vencedor da licita&#xe7;&#xe3;o ou pela suspens&#xe3;o do processo por falta de licitantes ou irregularidades."/>
+    <generalization xmi:id="_XSZXiluXEeOCwYvWfsRrew" general="_XSbzyVuXEeOCwYvWfsRrew" generalizationSet="_XSfeHluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSZXi1uXEeOCwYvWfsRrew" name="Concession Tender" visibility="public">
+    <generalization xmi:id="_XSZ-gFuXEeOCwYvWfsRrew" general="_XSbzyVuXEeOCwYvWfsRrew" generalizationSet="_XSfeH1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSZ-gVuXEeOCwYvWfsRrew" name="Construction Tender" visibility="public">
+    <generalization xmi:id="_XSZ-gluXEeOCwYvWfsRrew" general="_XSbzyVuXEeOCwYvWfsRrew" generalizationSet="_XSfeH1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSZ-g1uXEeOCwYvWfsRrew" name="Descri&#xe7;&#xe3;o de Quota de Explora&#xe7;&#xe3;o" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSZ-hFuXEeOCwYvWfsRrew" name="Disposal Tender" visibility="public">
+    <generalization xmi:id="_XSZ-hVuXEeOCwYvWfsRrew" general="_XSbzyVuXEeOCwYvWfsRrew" generalizationSet="_XSfeH1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSZ-hluXEeOCwYvWfsRrew" name="Economic Proposal" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSZ-h1uXEeOCwYvWfsRrew" name="Economic Proposal in Specific Proposal" visibility="public">
+    <generalization xmi:id="_XSZ-iFuXEeOCwYvWfsRrew" general="_XSZ-hluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSZ-iVuXEeOCwYvWfsRrew" name="Empty Tender" visibility="public">
+    <ownedComment xmi:id="_XSZ-iluXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Licita&#xe7;&#xe3;o que n&#xe3;o angariou nenhum interessado."/>
+    <generalization xmi:id="_XSZ-i1uXEeOCwYvWfsRrew" general="_XSbzy1uXEeOCwYvWfsRrew" generalizationSet="_XSfeIFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSZ-jFuXEeOCwYvWfsRrew" name="Failed Tender" visibility="public">
+    <ownedComment xmi:id="_XSZ-jVuXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Licita&#xe7;&#xe3;o que angariou interessados, por&#xe9;m nenhum dos interessados foi considerado habilitado a concorrer &#xe0; licita&#xe7;&#xe3;o."/>
+    <generalization xmi:id="_XSZ-jluXEeOCwYvWfsRrew" general="_XSbzy1uXEeOCwYvWfsRrew" generalizationSet="_XSfeIFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSZ-j1uXEeOCwYvWfsRrew" name="General Proposal" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSZ-kFuXEeOCwYvWfsRrew" name="Grant Committee" visibility="public">
+    <ownedComment xmi:id="_XSZ-kVuXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o: &#xA;&#xA;Comiss&#xe3;o  designada  para  execu&#xe7;&#xe3;o  deste procedimento licitat&#xf3;rio.&#xA;&#xA;Fonte:&#xA;&#xA;Anexo 3 - Termos e Defini&#xe7;&#xf5;es - Edital de Permiss&#xe3;o 001/2011&#xA;&#xA;Sin&#xf4;nimo:&#xA;&#xA;Comiss&#xe3;o de Licita&#xe7;&#xe3;o."/>
+    <generalization xmi:id="_XSZ-kluXEeOCwYvWfsRrew" general="_XSZXhVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSZ-k1uXEeOCwYvWfsRrew" name="Grant Committee Nomination" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSZ-lFuXEeOCwYvWfsRrew" name="Grant Committee Nomination Ordinance" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSZ-lVuXEeOCwYvWfsRrew" name="Homologation of Public Auction" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSZ-lluXEeOCwYvWfsRrew" name="Lease Tender" visibility="public">
+    <generalization xmi:id="_XSZ-l1uXEeOCwYvWfsRrew" general="_XSbzyVuXEeOCwYvWfsRrew" generalizationSet="_XSfeH1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSZ-mFuXEeOCwYvWfsRrew" name="Legal Representative" visibility="public">
+    <generalization xmi:id="_XSZ-mVuXEeOCwYvWfsRrew" general="_XSbz6VuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSZ-mluXEeOCwYvWfsRrew" name="Legal Representative in Tender Process" visibility="public">
+    <generalization xmi:id="_XSZ-m1uXEeOCwYvWfsRrew" general="_XSZ-mFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XSalkFuXEeOCwYvWfsRrew" name="Liga&#xe7;&#xe3;o" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSalkVuXEeOCwYvWfsRrew" name="Liga&#xe7;&#xe3;o Efetivada" visibility="public">
+    <generalization xmi:id="_XSalkluXEeOCwYvWfsRrew" general="_XSalkFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSalk1uXEeOCwYvWfsRrew" name="Linha de &#xd4;nibus em Implanta&#xe7;&#xe3;o" visibility="public">
+    <ownedAttribute xmi:id="_XSallFuXEeOCwYvWfsRrew" name="frequenciaMinimaViagens" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSallVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSallluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XSall1uXEeOCwYvWfsRrew" name="frotaOperacionalMinima" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSalmFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSalmVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSalmluXEeOCwYvWfsRrew" name="Nomination of Representative" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSalm1uXEeOCwYvWfsRrew" name="Permission Tender" visibility="public">
+    <ownedComment xmi:id="_XSalnFuXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Delega&#xe7;&#xe3;o, a t&#xed;tulo prec&#xe1;rio, mediante Licita&#xe7;&#xe3;o,da presta&#xe7;&#xe3;o do Servi&#xe7;o  de Transporte  Rodovi&#xe1;rio  Interestadual  de Passageiros,  feita  pela Uni&#xe3;o &#xe0; pessoa jur&#xed;dica que demonstre capacidade para seu desempenho, por sua conta e risco, sem car&#xe1;ter de exclusividade, por prazo determinado.&#xA;&#xA;Fonte:&#xA;&#xA;Anexo 3 - Termos e Defini&#xe7;&#xf5;es - Edital de Permiss&#xe3;o 001/2011"/>
+    <generalization xmi:id="_XSalnVuXEeOCwYvWfsRrew" general="_XSbzyVuXEeOCwYvWfsRrew" generalizationSet="_XSfeH1uXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XSalnluXEeOCwYvWfsRrew" name="term" visibility="private">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSaln1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSaloFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSaloVuXEeOCwYvWfsRrew" name="Permission Tender in Auction" visibility="public">
+    <generalization xmi:id="_XSaloluXEeOCwYvWfsRrew" general="_XSalm1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSalo1uXEeOCwYvWfsRrew" name="Permission Tender in External Phase" visibility="public">
+    <generalization xmi:id="_XSalpFuXEeOCwYvWfsRrew" general="_XSbz1FuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSalpVuXEeOCwYvWfsRrew" name="Plano de Outorga" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSalpluXEeOCwYvWfsRrew" name="Plano de Outorga com Subs&#xed;dio de Pesquisa Operacional" visibility="public">
+    <generalization xmi:id="_XSalp1uXEeOCwYvWfsRrew" general="_XSalpVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbMoFuXEeOCwYvWfsRrew" name="Plano de Outorga com Subs&#xed;dio de Pesquisa de Ativos e Custos" visibility="public">
+    <generalization xmi:id="_XSbMoVuXEeOCwYvWfsRrew" general="_XSalpVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbMoluXEeOCwYvWfsRrew" name="Power of Attorney" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSbMo1uXEeOCwYvWfsRrew" name="Projeto B&#xe1;sico" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSbMpFuXEeOCwYvWfsRrew" name="Proof of Fleet" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbMpVuXEeOCwYvWfsRrew" name="Proof of Fleet in General Proposal" visibility="public">
+    <generalization xmi:id="_XSbMpluXEeOCwYvWfsRrew" general="_XSbMpFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSbMp1uXEeOCwYvWfsRrew" name="Proposal" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSbMqFuXEeOCwYvWfsRrew" name="Public Auction" visibility="public">
+    <generalization xmi:id="_XSbMqVuXEeOCwYvWfsRrew" general="_XSYwgVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSbMqluXEeOCwYvWfsRrew" name="Public Hearing" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XSbMq1uXEeOCwYvWfsRrew" name="Publicador" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSbMrFuXEeOCwYvWfsRrew" name="Publication" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XSbMrVuXEeOCwYvWfsRrew" name="Publication Context" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbMrluXEeOCwYvWfsRrew" name="Published Call for Tender" visibility="public">
+    <ownedRule xmi:id="_XSbMr1uXEeOCwYvWfsRrew" name="C1" visibility="public" constrainedElement="_XSbMrluXEeOCwYvWfsRrew">
+      <specification xsi:type="RefOntoUML:OpaqueExpression" xmi:id="_XSbMsFuXEeOCwYvWfsRrew">
+        <body>&lt;b>context &lt;/b>_'Published Call for Tenderl'&#xA;&lt;b>inv &lt;/b>: self.oclAsType(_'Published Object').publication-&amp;gt;includesAll(self.publication-&amp;gt;asSet())</body>
+      </specification>
+    </ownedRule>
+    <ownedRule xmi:id="_XSbMsVuXEeOCwYvWfsRrew" name="C2" visibility="public" constrainedElement="_XSbMrluXEeOCwYvWfsRrew">
+      <specification xsi:type="RefOntoUML:OpaqueExpression" xmi:id="_XSbMsluXEeOCwYvWfsRrew">
+        <body>&lt;b>context &lt;/b>_'Published Call for Tenderl'&#xA;&lt;b>inv &lt;/b>: self.oclAsType(_'Published Object').republication-&amp;gt;includesAll(self.republication-&amp;gt;asSet())</body>
+      </specification>
+    </ownedRule>
+    <generalization xmi:id="_XSbMs1uXEeOCwYvWfsRrew" general="_XSbMtVuXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XSbMtFuXEeOCwYvWfsRrew" general="_XSZXgFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XSbMtVuXEeOCwYvWfsRrew" name="Published Object" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSbMtluXEeOCwYvWfsRrew" name="Purchase Tender" visibility="public">
+    <generalization xmi:id="_XSbMt1uXEeOCwYvWfsRrew" general="_XSbzyVuXEeOCwYvWfsRrew" generalizationSet="_XSfeH1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSbMuFuXEeOCwYvWfsRrew" name="Qualification" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbMuVuXEeOCwYvWfsRrew" name="Qualification in General Proposal" visibility="public">
+    <generalization xmi:id="_XSbMuluXEeOCwYvWfsRrew" general="_XSbMuFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSbMu1uXEeOCwYvWfsRrew" name="Republication" visibility="public">
+    <generalization xmi:id="_XSbzsFuXEeOCwYvWfsRrew" general="_XSbMrFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSbzsVuXEeOCwYvWfsRrew" name="Reuni&#xe3;o Participativa" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XSbzsluXEeOCwYvWfsRrew" name="Service Batch" visibility="public">
+    <ownedComment xmi:id="_XSbzs1uXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Conjunto de quotas de explora&#xe7;&#xe3;o delegadas a uma Permission&#xe1;ria, com viabilidade de explora&#xe7;&#xe3;o econ&#xf4;mica de forma aut&#xf4;noma."/>
+    <ownedAttribute xmi:id="_XSbztFuXEeOCwYvWfsRrew" name="lines" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSbztVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSbztluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XSbzt1uXEeOCwYvWfsRrew" name="companies" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSbzuFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSbzuVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XSbzuluXEeOCwYvWfsRrew" name="reserveFleet" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSbzu1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSbzvFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbzvVuXEeOCwYvWfsRrew" name="Service Batch in Auction" visibility="public">
+    <generalization xmi:id="_XSbzvluXEeOCwYvWfsRrew" general="_XSbzsluXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XSbzv1uXEeOCwYvWfsRrew" general="_XSZXdVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSbzwFuXEeOCwYvWfsRrew" name="Service Tender" visibility="public">
+    <generalization xmi:id="_XSbzwVuXEeOCwYvWfsRrew" general="_XSbzyVuXEeOCwYvWfsRrew" generalizationSet="_XSfeH1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSbzwluXEeOCwYvWfsRrew" name="Session of Public Auction" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSbzw1uXEeOCwYvWfsRrew" name="Specific Proposal" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbzxFuXEeOCwYvWfsRrew" name="Suspended Tender" visibility="public">
+    <generalization xmi:id="_XSbzxVuXEeOCwYvWfsRrew" general="_XSbz1FuXEeOCwYvWfsRrew" generalizationSet="_XSfeIVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbzxluXEeOCwYvWfsRrew" name="Tended With Winner" visibility="public">
+    <ownedComment xmi:id="_XSbzx1uXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Licita&#xe7;&#xe3;o finalizada em seu curso normal com a defini&#xe7;&#xe3;o de um vencedor v&#xe1;lido."/>
+    <generalization xmi:id="_XSbzyFuXEeOCwYvWfsRrew" general="_XSZXiFuXEeOCwYvWfsRrew" generalizationSet="_XSfeHVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSbzyVuXEeOCwYvWfsRrew" name="Tender" visibility="public">
+    <ownedComment xmi:id="_XSbzyluXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Contrata&#xe7;&#xe3;o de terceiros pela Administra&#xe7;&#xe3;o P&#xfa;blica que &#xe9; precedida de licita&#xe7;&#xe3;o.&#xA;&#xA;Fonte: &#xA;Lei 8.666/1993, Art. 2&#xba;."/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbzy1uXEeOCwYvWfsRrew" name="Tender Without Winner" visibility="public">
+    <ownedComment xmi:id="_XSbzzFuXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Licita&#xe7;&#xe3;o finalizada atrav&#xe9;s da suspens&#xe3;o do processo licitat&#xf3;rio."/>
+    <generalization xmi:id="_XSbzzVuXEeOCwYvWfsRrew" general="_XSZXiFuXEeOCwYvWfsRrew" generalizationSet="_XSfeHVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbzzluXEeOCwYvWfsRrew" name="Tender in Call for Tender" visibility="public">
+    <ownedComment xmi:id="_XSbzz1uXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Fase referente &#xe0; publica&#xe7;&#xe3;o do instrumento convocat&#xf3;rio, o qual constitui o meio de divulga&#xe7;&#xe3;o da exist&#xea;ncia da licita&#xe7;&#xe3;o e convoca&#xe7;&#xe3;o de interessados.&#xA;&#xA;Fonte:&#xA;&#xA;http://observatoriosocialdobrasil.org.br/informativo/8.pdf"/>
+    <ownedRule xmi:id="_XSbz0FuXEeOCwYvWfsRrew" name="C1" visibility="public" constrainedElement="_XSbzzluXEeOCwYvWfsRrew">
+      <specification xsi:type="RefOntoUML:OpaqueExpression" xmi:id="_XSbz0VuXEeOCwYvWfsRrew">
+        <body>context _'Tender in Call for Tender'&#xA;inv : self.oclAsType(_'Publication Context').publication-&amp;gt;includesAll(self.publication-&amp;gt;asSet())</body>
+      </specification>
+    </ownedRule>
+    <generalization xmi:id="_XSbz0luXEeOCwYvWfsRrew" general="_XSbMrVuXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XSbz01uXEeOCwYvWfsRrew" general="_XSbz1FuXEeOCwYvWfsRrew" generalizationSet="_XSfeIVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbz1FuXEeOCwYvWfsRrew" name="Tender in External Phase" visibility="public">
+    <ownedComment xmi:id="_XSbz1VuXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;A fase externa inicia-se com a divulga&#xe7;&#xe3;o ao p&#xfa;blico da licita&#xe7;&#xe3;o. Nesta fase os interessados em contratar com o poder p&#xfa;blico passam a fazer parte do procedimento. Suas subfases modificam-se conforme a modalidade licitat&#xf3;ria adotada, por este motivo, se faz necess&#xe1;rio oferecer ao leitor suas defini&#xe7;&#xf5;es, para que o mesmo compreenda as subfases fundamentais. &#xA;&#xA;Fonte:&#xA;&#xA;http://observatoriosocialdobrasil.org.br/informativo/8.pdf"/>
+    <generalization xmi:id="_XSbz1luXEeOCwYvWfsRrew" general="_XSbzyVuXEeOCwYvWfsRrew" generalizationSet="_XSfeHluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbz11uXEeOCwYvWfsRrew" name="Tender in Homologation Process" visibility="public">
+    <ownedComment xmi:id="_XSbz2FuXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;&#xc9; o ato de controle da autoridade hierarquicamente superior &#xe0; Comiss&#xe3;o de Licita&#xe7;&#xe3;o que analisa todo o procedimento, inclusive em sua fase interna, para verificar se encontra-se em conformidade com as exig&#xea;ncias legais. &#xA;Nesta subfase pode ocorrer a aprova&#xe7;&#xe3;o do procedimento (homologa&#xe7;&#xe3;o), ou a reprova&#xe7;&#xe3;o do procedimento (revoga&#xe7;&#xe3;o ou anula&#xe7;&#xe3;o). Se o procedimento estiver em ordem ocorre a homologa&#xe7;&#xe3;o. Se a autoridade competente verificar algum v&#xed;cio de ilegalidade, anular&#xe1; o procedimento ou determinar&#xe1; seu saneamento, se cab&#xed;vel.&#xA;A adjudica&#xe7;&#xe3;o &#xe9; o ato final do procedimento administrativo de licita&#xe7;&#xe3;o. Constitui o ato declarat&#xf3;rio, pelo qual a mesma autoridade p&#xfa;blica competente para homologar, atribui de maneira formal ao vencedor do certame o objeto da licita&#xe7;&#xe3;o.&#xA;&#xA;Fonte:&#xA;&#xA;http://observatoriosocialdobrasil.org.br/informativo/8.pdf"/>
+    <generalization xmi:id="_XSbz2VuXEeOCwYvWfsRrew" general="_XSbz1FuXEeOCwYvWfsRrew" generalizationSet="_XSfeIVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbz2luXEeOCwYvWfsRrew" name="Tender in Internal Phase" visibility="public">
+    <ownedComment xmi:id="_XSbz21uXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Depois de verificada a necessidade de aquisi&#xe7;&#xe3;o ou contrata&#xe7;&#xe3;o de obra ou de servi&#xe7;o pela Administra&#xe7;&#xe3;o, inicia-se o procedimento licitat&#xf3;rio com v&#xe1;rios procedimentos internos que culminam no edital ou convite.&#xA;A fase interna comp&#xf5;e-se por procedimentos formais, tais como elabora&#xe7;&#xe3;o do edital, defini&#xe7;&#xe3;o do tipo e modalidade de licita&#xe7;&#xe3;o (tudo executado por uma comiss&#xe3;o de licita&#xe7;&#xe3;o). &#xA;&#xA;Fonte:&#xA;&#xA;http://observatoriosocialdobrasil.org.br/informativo/8.pdf"/>
+    <generalization xmi:id="_XSbz3FuXEeOCwYvWfsRrew" general="_XSbzyVuXEeOCwYvWfsRrew" generalizationSet="_XSfeHluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbz3VuXEeOCwYvWfsRrew" name="Tender in Proposal Reviewing" visibility="public">
+    <ownedComment xmi:id="_XSbz3luXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;O julgamento baseia-se em crit&#xe9;rios objetivos e p&#xfa;blicos constantes no ato convocat&#xf3;rio (edital ou carta convite) e Lei 8.666/93 em seus arts. 43, 44 e 45. &#xA;&#xc9; realizado conforme o tipo de licita&#xe7;&#xe3;o, por isso a Lei 8.666/93 expressamente disp&#xf5;e que existem tipos de licita&#xe7;&#xe3;o apenas para atingir a finalidade do julgamento das propostas.&#xA;&#xA;Fonte:&#xA;&#xA;http://observatoriosocialdobrasil.org.br/informativo/8.pdf"/>
+    <generalization xmi:id="_XSbz31uXEeOCwYvWfsRrew" general="_XSbz1FuXEeOCwYvWfsRrew" generalizationSet="_XSfeIVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbz4FuXEeOCwYvWfsRrew" name="Tender in Qualification" visibility="public">
+    <ownedComment xmi:id="_XSbz4VuXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Nesta etapa, apura-se (de forma subjetiva) a idoneidade e capacidade dos licitantes para executar o objeto do futuro contrato atrav&#xe9;s da apresenta&#xe7;&#xe3;o das propostas e dos documentos elencados nos arts. 27 a 31 da Lei 8666/93. &#xA;Neste momento do procedimento ocorre a averigua&#xe7;&#xe3;o da habilita&#xe7;&#xe3;o jur&#xed;dica, qualifica&#xe7;&#xe3;o t&#xe9;cnica e financeira, regularidade fiscal e trabalhista dos participantes da licita&#xe7;&#xe3;o. Segue sinteticamente o que compreende estas &quot;condi&#xe7;&#xf5;es&quot;.&#xA;&#xA;Fonte:&#xA;&#xA;http://observatoriosocialdobrasil.org.br/informativo/8.pdf"/>
+    <generalization xmi:id="_XSbz4luXEeOCwYvWfsRrew" general="_XSbz1FuXEeOCwYvWfsRrew" generalizationSet="_XSfeIVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSbz41uXEeOCwYvWfsRrew" name="Warranty" visibility="public">
+    <ownedComment xmi:id="_XSbz5FuXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Um dos documentos necess&#xe1;rios para habilitar a Licitante  a  participar  da Licita&#xe7;&#xe3;o,  devendo  ser  executada  nas  hip&#xf3;teses  de descumprimento previstas no Edital de Permiss&#xe3;o.&#xA;&#xA;Fonte:&#xA;&#xA;Anexo 3 - Termos e Defini&#xe7;&#xf5;es - Edital de Permiss&#xe3;o 001/2011"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSbz5VuXEeOCwYvWfsRrew" name="Warranty in General Proposal" visibility="public">
+    <generalization xmi:id="_XSbz5luXEeOCwYvWfsRrew" general="_XSbz41uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XSbz51uXEeOCwYvWfsRrew" name="Winner of Public Auction" visibility="public" isAbstract="true">
+    <generalization xmi:id="_XSbz6FuXEeOCwYvWfsRrew" general="_XSZXh1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSbz6VuXEeOCwYvWfsRrew" name="Person" visibility="public">
+    <ownedAttribute xmi:id="_XSbz6luXEeOCwYvWfsRrew" name="CPF" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSbz61uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSbz7FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XSbz7VuXEeOCwYvWfsRrew" name="RG" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSbz7luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSbz71uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XScawFuXEeOCwYvWfsRrew" name="address" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k5luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XScawVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XScawluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XScaw1uXEeOCwYvWfsRrew" name="marital" visibility="private">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XScaxFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XScaxVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XScaxluXEeOCwYvWfsRrew" name="age" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XScax1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XScayFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XScayVuXEeOCwYvWfsRrew" name="nationality" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XScayluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XScay1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XScazFuXEeOCwYvWfsRrew" name="profession" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XScazVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XScazluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XScaz1uXEeOCwYvWfsRrew" name="name" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca0FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSca0VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSca0luXEeOCwYvWfsRrew" name="Permission Grant Contract" visibility="public">
+    <ownedComment xmi:id="_XSca01uXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Acordo ou conven&#xe7;&#xe3;o entre duas ou mais pessoas, para a execu&#xe7;&#xe3;o de outorga de permiss&#xe3;o, sob determinadas condi&#xe7;&#xf5;es.&#xA;&#xA;Fonte:&#xA;&#xA;Adaptado de dicion&#xe1;rio Michaellis da l&#xed;ngua portuguesa"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSca1FuXEeOCwYvWfsRrew" name="Permission Grant" visibility="public">
+    <ownedComment xmi:id="_XSca1VuXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Ato de outorga utilizado quando se tratar de presta&#xe7;&#xe3;o regular de servi&#xe7;os de transporte terrestre coletivo de passageiros desvinculados da explora&#xe7;&#xe3;o da infraestrutura&#xA;&#xA;Fonte: &#xA;&#xA;Lei n/ 10.233, de 05 de Junho de 2001. "/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSca1luXEeOCwYvWfsRrew" name="Permission&#xe1;ria" visibility="public">
+    <ownedComment xmi:id="_XSca11uXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;A empresa permission&#xe1;ria dos servi&#xe7;os delegados."/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSca2FuXEeOCwYvWfsRrew" name="Pessoa Jur&#xed;dica" visibility="public">
+    <ownedAttribute xmi:id="_XSca2VuXEeOCwYvWfsRrew" name="CNPJ" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca2luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSca21uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XSca3FuXEeOCwYvWfsRrew" name="atividade principal" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k5FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca3VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSca3luXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XSca31uXEeOCwYvWfsRrew" name="atividade secund&#xe1;ria" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k5FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca4FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSca4VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XSca4luXEeOCwYvWfsRrew" name="nome fantasia" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca41uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSca5FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSca5VuXEeOCwYvWfsRrew" name="Projeto B&#xe1;sico de Concess&#xe3;o" visibility="public">
+    <ownedComment xmi:id="_XSca5luXEeOCwYvWfsRrew" body="Definition=Descri&#xe7;&#xe3;o:&#xA;&#xA;Conjunto de elementos necess&#xe1;rios e suficientes, com grau de precis&#xe3;o adequado, para caracterizar a obra ou servi&#xe7;o, ou complexo de obras ou servi&#xe7;os, elaborado com base nas indica&#xe7;&#xf5;es dos estudos t&#xe9;cnicos preliminares, que assegurem a viabilidade t&#xe9;cnica e o adequado tratamento do impacto ambiental do empreendimento, e que possibilite a avalia&#xe7;&#xe3;o do custo da obra e a defini&#xe7;&#xe3;o do prazo de execu&#xe7;&#xe3;o."/>
+    <generalization xmi:id="_XSca51uXEeOCwYvWfsRrew" general="_XSbMo1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSca6FuXEeOCwYvWfsRrew" name="auctions" visibility="public" memberEnd="_XSca6VuXEeOCwYvWfsRrew _XSca7FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSca6VuXEeOCwYvWfsRrew" name="batch" visibility="public" type="_XSZXdVuXEeOCwYvWfsRrew" association="_XSca6FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca6luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSca61uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSca7FuXEeOCwYvWfsRrew" name="auction" visibility="public" type="_XSYwgVuXEeOCwYvWfsRrew" association="_XSca6FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca7VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSca7luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSca71uXEeOCwYvWfsRrew" name="auctions" visibility="public" memberEnd="_XSca8FuXEeOCwYvWfsRrew _XSca81uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSca8FuXEeOCwYvWfsRrew" name="serviceBatch" visibility="public" type="_XSbzvVuXEeOCwYvWfsRrew" association="_XSca71uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca8VuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSca8luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSca81uXEeOCwYvWfsRrew" name="auction for public tender" visibility="public" type="_XSYwgluXEeOCwYvWfsRrew" association="_XSca71uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca9FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSca9VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSca9luXEeOCwYvWfsRrew" name="conducts" visibility="public" memberEnd="_XSca91uXEeOCwYvWfsRrew _XSca-luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSca91uXEeOCwYvWfsRrew" name="grant committee" visibility="public" type="_XSZ-kFuXEeOCwYvWfsRrew" association="_XSca9luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca-FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSca-VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSca-luXEeOCwYvWfsRrew" name="auction for public tender" visibility="public" type="_XSYwgluXEeOCwYvWfsRrew" association="_XSca9luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca-1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSca_FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSca_VuXEeOCwYvWfsRrew" name="A_Proposal_AuctionforPublicTender" visibility="public" memberEnd="_XSca_luXEeOCwYvWfsRrew _XScbAVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSca_luXEeOCwYvWfsRrew" name="proposal" visibility="public" type="_XSbMp1uXEeOCwYvWfsRrew" association="_XSca_VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSca_1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XScbAFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XScbAVuXEeOCwYvWfsRrew" name="auction for public tender" visibility="public" type="_XSYwgluXEeOCwYvWfsRrew" association="_XSca_VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XScbAluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XScbA1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSdB0FuXEeOCwYvWfsRrew" name="A_PermissionGrant_AuctionforPublicTender" visibility="public" memberEnd="_XSdB0VuXEeOCwYvWfsRrew _XSdB1FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdB0VuXEeOCwYvWfsRrew" name="permission grant" visibility="public" type="_XSca1FuXEeOCwYvWfsRrew" association="_XSdB0FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdB0luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdB01uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdB1FuXEeOCwYvWfsRrew" name="auction for public tender" visibility="public" type="_XSYwgluXEeOCwYvWfsRrew" association="_XSdB0FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdB1VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdB1luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSdB11uXEeOCwYvWfsRrew" name="decides" visibility="public" memberEnd="_XSdB2FuXEeOCwYvWfsRrew _XSdB21uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdB2FuXEeOCwYvWfsRrew" name="permission tender in auction" visibility="public" type="_XSaloVuXEeOCwYvWfsRrew" association="_XSdB11uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdB2VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdB2luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdB21uXEeOCwYvWfsRrew" name="auction for public tender" visibility="public" type="_XSYwgluXEeOCwYvWfsRrew" association="_XSdB11uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdB3FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdB3VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XSdB3luXEeOCwYvWfsRrew" name="A_ServiceBatch_BatchGroup" visibility="public" memberEnd="_XSdo4FuXEeOCwYvWfsRrew _XSdo41uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdo4FuXEeOCwYvWfsRrew" name="service batch" visibility="public" type="_XSbzsluXEeOCwYvWfsRrew" association="_XSdB3luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdo4VuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdo4luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdo41uXEeOCwYvWfsRrew" name="batch group" visibility="public" type="_XSZXdFuXEeOCwYvWfsRrew" aggregation="composite" association="_XSdB3luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdo5FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdo5VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSdo5luXEeOCwYvWfsRrew" name="A_BidderRegistration_Bidder" visibility="public" memberEnd="_XSdo51uXEeOCwYvWfsRrew _XSdo6luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdo51uXEeOCwYvWfsRrew" name="bidder registration" visibility="public" type="_XSZXeVuXEeOCwYvWfsRrew" association="_XSdo5luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdo6FuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdo6VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdo6luXEeOCwYvWfsRrew" name="bidder" visibility="public" type="_XSZXdluXEeOCwYvWfsRrew" association="_XSdo5luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdo61uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdo7FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSdo7VuXEeOCwYvWfsRrew" name="A_TenderinCallforTender_BidderRegistration" visibility="public" memberEnd="_XSdo7luXEeOCwYvWfsRrew _XSdo8VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdo7luXEeOCwYvWfsRrew" name="tender in call for tender" visibility="public" type="_XSbzzluXEeOCwYvWfsRrew" association="_XSdo7VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdo71uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdo8FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdo8VuXEeOCwYvWfsRrew" name="bidder registration" visibility="public" type="_XSZXeVuXEeOCwYvWfsRrew" association="_XSdo7VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdo8luXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdo81uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSdo9FuXEeOCwYvWfsRrew" name="A_SpecificProposal_BussinessPlaninSpecificProposal" visibility="public" memberEnd="_XSdo9VuXEeOCwYvWfsRrew _XSdo-FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdo9VuXEeOCwYvWfsRrew" name="specific proposal" visibility="public" type="_XSbzw1uXEeOCwYvWfsRrew" isReadOnly="true" association="_XSdo9FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdo9luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdo91uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdo-FuXEeOCwYvWfsRrew" name="bussiness plan in specific proposal" visibility="public" type="_XSZXfluXEeOCwYvWfsRrew" association="_XSdo9FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdo-VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdo-luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSdo-1uXEeOCwYvWfsRrew" name="A_TenderinCallforTender_CallforTenderPublication" visibility="public" memberEnd="_XSdo_FuXEeOCwYvWfsRrew _XSdo_1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdo_FuXEeOCwYvWfsRrew" name="tender" visibility="public" type="_XSbzzluXEeOCwYvWfsRrew" association="_XSdo-1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdo_VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdo_luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdo_1uXEeOCwYvWfsRrew" name="publication" visibility="public" type="_XSZXgVuXEeOCwYvWfsRrew" association="_XSdo-1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdpAFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdpAVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSdpAluXEeOCwYvWfsRrew" name="publishes" visibility="public" memberEnd="_XSdpA1uXEeOCwYvWfsRrew _XSdpBluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdpA1uXEeOCwYvWfsRrew" name="callForTender" visibility="public" type="_XSbMrluXEeOCwYvWfsRrew" association="_XSdpAluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdpBFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdpBVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdpBluXEeOCwYvWfsRrew" name="publication" visibility="public" type="_XSZXgVuXEeOCwYvWfsRrew" association="_XSdpAluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdpB1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdpCFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSdpCVuXEeOCwYvWfsRrew" name="modifies" visibility="public" memberEnd="_XSdpCluXEeOCwYvWfsRrew _XSdpDVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdpCluXEeOCwYvWfsRrew" name="callForTender" visibility="public" type="_XSbMrluXEeOCwYvWfsRrew" association="_XSdpCVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdpC1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdpDFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdpDVuXEeOCwYvWfsRrew" name="republication" visibility="public" type="_XSZXg1uXEeOCwYvWfsRrew" association="_XSdpCVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdpDluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdpD1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSdpEFuXEeOCwYvWfsRrew" name="A_NominationofRepresentative_CompanyParticipantofPublicAuction" visibility="public" memberEnd="_XSdpEVuXEeOCwYvWfsRrew _XSdpFFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdpEVuXEeOCwYvWfsRrew" name="nomination of representative" visibility="public" type="_XSalmluXEeOCwYvWfsRrew" association="_XSdpEFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdpEluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdpE1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdpFFuXEeOCwYvWfsRrew" name="company participant of public auction" visibility="public" type="_XSZXh1uXEeOCwYvWfsRrew" association="_XSdpEFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdpFVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdpFluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSdpF1uXEeOCwYvWfsRrew" name="A_Linhade&#xd4;nibusemImplanta&#xe7;&#xe3;o_Descri&#xe7;&#xe3;odeQuotadeExplora&#xe7;&#xe3;o" visibility="public" memberEnd="_XSdpGFuXEeOCwYvWfsRrew _XSdpG1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdpGFuXEeOCwYvWfsRrew" name="linha de &#xf4;nibus em implanta&#xe7;&#xe3;o" visibility="public" type="_XSalk1uXEeOCwYvWfsRrew" association="_XSdpF1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdpGVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdpGluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdpG1uXEeOCwYvWfsRrew" name="descri&#xe7;&#xe3;o de quota de explora&#xe7;&#xe3;o" visibility="public" type="_XSZ-g1uXEeOCwYvWfsRrew" association="_XSdpF1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdpHFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdpHVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSdpHluXEeOCwYvWfsRrew" name="A_SpecificProposal_EconomicProposalinSpecificProposal" visibility="public" memberEnd="_XSdpH1uXEeOCwYvWfsRrew _XSdpIluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSdpH1uXEeOCwYvWfsRrew" name="specific proposal" visibility="public" type="_XSbzw1uXEeOCwYvWfsRrew" isReadOnly="true" association="_XSdpHluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSdpIFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSdpIVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSdpIluXEeOCwYvWfsRrew" name="economic proposal in specific proposal" visibility="public" type="_XSZ-h1uXEeOCwYvWfsRrew" association="_XSdpHluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeP8FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeP8VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeP8luXEeOCwYvWfsRrew" name="A_ServiceBatchinAuction_GeneralProposal" visibility="public" memberEnd="_XSeP81uXEeOCwYvWfsRrew _XSeP9luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeP81uXEeOCwYvWfsRrew" name="serviceBatch" visibility="public" type="_XSbzvVuXEeOCwYvWfsRrew" association="_XSeP8luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeP9FuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeP9VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeP9luXEeOCwYvWfsRrew" name="generalProposal" visibility="public" type="_XSZ-j1uXEeOCwYvWfsRrew" association="_XSeP8luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeP91uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeP-FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeP-VuXEeOCwYvWfsRrew" name="A_QualificationinGeneralProposal_GeneralProposal" visibility="public" memberEnd="_XSeP-luXEeOCwYvWfsRrew _XSeP_VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeP-luXEeOCwYvWfsRrew" name="qualification in general proposal" visibility="public" type="_XSbMuVuXEeOCwYvWfsRrew" association="_XSeP-VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeP-1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeP_FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeP_VuXEeOCwYvWfsRrew" name="general proposal" visibility="public" type="_XSZ-j1uXEeOCwYvWfsRrew" association="_XSeP-VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeP_luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeP_1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeQAFuXEeOCwYvWfsRrew" name="A_ProofofFleetinGeneralProposal_GeneralProposal" visibility="public" memberEnd="_XSeQAVuXEeOCwYvWfsRrew _XSeQBFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeQAVuXEeOCwYvWfsRrew" name="proof of fleet in general proposal" visibility="public" type="_XSbMpVuXEeOCwYvWfsRrew" association="_XSeQAFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQAluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQA1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeQBFuXEeOCwYvWfsRrew" name="general proposal" visibility="public" type="_XSZ-j1uXEeOCwYvWfsRrew" association="_XSeQAFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQBVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQBluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeQB1uXEeOCwYvWfsRrew" name="A_Proposal_GeneralProposal" visibility="public" memberEnd="_XSeQCFuXEeOCwYvWfsRrew _XSeQC1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeQCFuXEeOCwYvWfsRrew" name="proposal" visibility="public" type="_XSbMp1uXEeOCwYvWfsRrew" association="_XSeQB1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQCVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQCluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeQC1uXEeOCwYvWfsRrew" name="general proposal" visibility="public" type="_XSZ-j1uXEeOCwYvWfsRrew" association="_XSeQB1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQDFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQDVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeQDluXEeOCwYvWfsRrew" name="A_WarrantyinGeneralProposal_GeneralProposal" visibility="public" memberEnd="_XSeQD1uXEeOCwYvWfsRrew _XSeQEluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeQD1uXEeOCwYvWfsRrew" name="warranty in general proposal" visibility="public" type="_XSbz5VuXEeOCwYvWfsRrew" association="_XSeQDluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQEFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQEVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeQEluXEeOCwYvWfsRrew" name="general proposal" visibility="public" type="_XSZ-j1uXEeOCwYvWfsRrew" association="_XSeQDluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQE1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQFFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XSeQFVuXEeOCwYvWfsRrew" name="coordinates" visibility="public" memberEnd="_XSeQFluXEeOCwYvWfsRrew _XSeQGVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeQFluXEeOCwYvWfsRrew" name="permission tender" visibility="public" type="_XSalm1uXEeOCwYvWfsRrew" association="_XSeQFVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQF1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQGFuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeQGVuXEeOCwYvWfsRrew" name="grant committee" visibility="public" type="_XSZ-kFuXEeOCwYvWfsRrew" association="_XSeQFVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQGluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQG1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeQHFuXEeOCwYvWfsRrew" name="A_GrantCommitteeNomination_GrantCommittee" visibility="public" memberEnd="_XSeQHVuXEeOCwYvWfsRrew _XSeQIFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeQHVuXEeOCwYvWfsRrew" name="grant committee nomination" visibility="public" type="_XSZ-k1uXEeOCwYvWfsRrew" association="_XSeQHFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQHluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQH1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeQIFuXEeOCwYvWfsRrew" name="grant committee" visibility="public" type="_XSZ-kFuXEeOCwYvWfsRrew" association="_XSeQHFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQIVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQIluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeQI1uXEeOCwYvWfsRrew" name="A_PermissionTenderinExternalPhase_GrantCommitteeNomination" visibility="public" memberEnd="_XSeQJFuXEeOCwYvWfsRrew _XSeQJ1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeQJFuXEeOCwYvWfsRrew" name="permission tender in external phase" visibility="public" type="_XSalo1uXEeOCwYvWfsRrew" association="_XSeQI1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQJVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQJluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeQJ1uXEeOCwYvWfsRrew" name="grant committee nomination" visibility="public" type="_XSZ-k1uXEeOCwYvWfsRrew" association="_XSeQI1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQKFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQKVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeQKluXEeOCwYvWfsRrew" name="formalized by" visibility="public" memberEnd="_XSeQK1uXEeOCwYvWfsRrew _XSeQLluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeQK1uXEeOCwYvWfsRrew" name="grant committee nomination ordinance" visibility="public" type="_XSZ-lFuXEeOCwYvWfsRrew" association="_XSeQKluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQLFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQLVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeQLluXEeOCwYvWfsRrew" name="grant committee nomination" visibility="public" type="_XSZ-k1uXEeOCwYvWfsRrew" association="_XSeQKluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQL1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQMFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeQMVuXEeOCwYvWfsRrew" name="declares" visibility="public" memberEnd="_XSeQMluXEeOCwYvWfsRrew _XSeQNVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeQMluXEeOCwYvWfsRrew" name="winner of public auction" visibility="public" type="_XSbz51uXEeOCwYvWfsRrew" association="_XSeQMVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQM1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQNFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeQNVuXEeOCwYvWfsRrew" name="homologation of public auction" visibility="public" type="_XSZ-lVuXEeOCwYvWfsRrew" association="_XSeQMVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQNluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQN1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeQOFuXEeOCwYvWfsRrew" name="A_PublicAuction_HomologationofPublicAuction" visibility="public" memberEnd="_XSeQOVuXEeOCwYvWfsRrew _XSeQPFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeQOVuXEeOCwYvWfsRrew" name="public auction" visibility="public" type="_XSbMqFuXEeOCwYvWfsRrew" association="_XSeQOFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQOluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQO1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeQPFuXEeOCwYvWfsRrew" name="homologation of public auction" visibility="public" type="_XSZ-lVuXEeOCwYvWfsRrew" association="_XSeQOFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQPVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQPluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeQP1uXEeOCwYvWfsRrew" name="A_NominationofRepresentative_LegalRepresentative" visibility="public" memberEnd="_XSeQQFuXEeOCwYvWfsRrew _XSeQQ1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSeQQFuXEeOCwYvWfsRrew" name="nomination of representative" visibility="public" type="_XSalmluXEeOCwYvWfsRrew" association="_XSeQP1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQQVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQQluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSeQQ1uXEeOCwYvWfsRrew" name="legal representative" visibility="public" type="_XSZ-mFuXEeOCwYvWfsRrew" association="_XSeQP1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSeQRFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSeQRVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSeQRluXEeOCwYvWfsRrew" name="participates in" visibility="public" memberEnd="_XSe3AFuXEeOCwYvWfsRrew _XSe3A1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3AFuXEeOCwYvWfsRrew" name="session of public auction" visibility="public" type="_XSbzwluXEeOCwYvWfsRrew" association="_XSeQRluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3AVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3AluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3A1uXEeOCwYvWfsRrew" name="legal representative" visibility="public" type="_XSZ-mFuXEeOCwYvWfsRrew" association="_XSeQRluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3BFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3BVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3BluXEeOCwYvWfsRrew" name="presents" visibility="public" memberEnd="_XSe3B1uXEeOCwYvWfsRrew _XSe3CluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3B1uXEeOCwYvWfsRrew" name="proposal" visibility="public" type="_XSbMp1uXEeOCwYvWfsRrew" association="_XSe3BluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3CFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3CVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3CluXEeOCwYvWfsRrew" name="legal representative in tender process" visibility="public" type="_XSZ-mluXEeOCwYvWfsRrew" association="_XSe3BluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3C1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3DFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3DVuXEeOCwYvWfsRrew" name="A_PowerofAttorney_NominationofRepresentative" visibility="public" memberEnd="_XSe3DluXEeOCwYvWfsRrew _XSe3EVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3DluXEeOCwYvWfsRrew" name="power of attorney" visibility="public" type="_XSbMoluXEeOCwYvWfsRrew" association="_XSe3DVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3D1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3EFuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3EVuXEeOCwYvWfsRrew" name="nomination of representative" visibility="public" type="_XSalmluXEeOCwYvWfsRrew" association="_XSe3DVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3EluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3E1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XSe3FFuXEeOCwYvWfsRrew" name="apresenta" visibility="public" memberEnd="_XSe3FVuXEeOCwYvWfsRrew _XSe3GFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3FVuXEeOCwYvWfsRrew" name="projeto b&#xe1;sico" visibility="public" type="_XSbMo1uXEeOCwYvWfsRrew" association="_XSe3FFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3FluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3F1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3GFuXEeOCwYvWfsRrew" name="plano de outorga" visibility="public" type="_XSalpVuXEeOCwYvWfsRrew" association="_XSe3FFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3GVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3GluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3G1uXEeOCwYvWfsRrew" name="A_SpecificProposal_Proposal" visibility="public" memberEnd="_XSe3HFuXEeOCwYvWfsRrew _XSe3H1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3HFuXEeOCwYvWfsRrew" name="specific proposal" visibility="public" type="_XSbzw1uXEeOCwYvWfsRrew" association="_XSe3G1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3HVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3HluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3H1uXEeOCwYvWfsRrew" name="proposal" visibility="public" type="_XSbMp1uXEeOCwYvWfsRrew" association="_XSe3G1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3IFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3IVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3IluXEeOCwYvWfsRrew" name="A_SessionofPublicAuction_PublicAuction" visibility="public" memberEnd="_XSe3I1uXEeOCwYvWfsRrew _XSe3JluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3I1uXEeOCwYvWfsRrew" name="session of public auction" visibility="public" type="_XSbzwluXEeOCwYvWfsRrew" association="_XSe3IluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3JFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3JVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3JluXEeOCwYvWfsRrew" name="public auction" visibility="public" type="_XSbMqFuXEeOCwYvWfsRrew" association="_XSe3IluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3J1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3KFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3KVuXEeOCwYvWfsRrew" name="requests" visibility="public" memberEnd="_XSe3KluXEeOCwYvWfsRrew _XSe3LVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3KluXEeOCwYvWfsRrew" name="tender in internal phase" visibility="public" type="_XSbz2luXEeOCwYvWfsRrew" association="_XSe3KVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3K1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3LFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3LVuXEeOCwYvWfsRrew" name="publicHearing" visibility="public" type="_XSbMqluXEeOCwYvWfsRrew" association="_XSe3KVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3LluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3L1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3MFuXEeOCwYvWfsRrew" name="A_Publication_Publicador" visibility="public" memberEnd="_XSe3MVuXEeOCwYvWfsRrew _XSe3NFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3MVuXEeOCwYvWfsRrew" name="publication" visibility="public" type="_XSbMrFuXEeOCwYvWfsRrew" association="_XSe3MFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3MluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3M1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3NFuXEeOCwYvWfsRrew" name="publicador" visibility="public" type="_XSbMq1uXEeOCwYvWfsRrew" association="_XSe3MFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3NVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3NluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3N1uXEeOCwYvWfsRrew" name="A_PublicationContext_Publication" visibility="public" memberEnd="_XSe3OFuXEeOCwYvWfsRrew _XSe3O1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3OFuXEeOCwYvWfsRrew" name="context" visibility="public" type="_XSbMrVuXEeOCwYvWfsRrew" association="_XSe3N1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3OVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3OluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3O1uXEeOCwYvWfsRrew" name="publication" visibility="public" type="_XSbMrFuXEeOCwYvWfsRrew" association="_XSe3N1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3PFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3PVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3PluXEeOCwYvWfsRrew" name="publishes" visibility="public" memberEnd="_XSe3P1uXEeOCwYvWfsRrew _XSe3QluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3P1uXEeOCwYvWfsRrew" name="published" visibility="public" type="_XSbMtVuXEeOCwYvWfsRrew" association="_XSe3PluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3QFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3QVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3QluXEeOCwYvWfsRrew" name="publication" visibility="public" type="_XSbMrFuXEeOCwYvWfsRrew" association="_XSe3PluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3Q1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3RFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3RVuXEeOCwYvWfsRrew" name="modifies" visibility="public" memberEnd="_XSe3RluXEeOCwYvWfsRrew _XSe3SVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3RluXEeOCwYvWfsRrew" name="republication" visibility="public" type="_XSbMu1uXEeOCwYvWfsRrew" association="_XSe3RVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3R1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3SFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3SVuXEeOCwYvWfsRrew" name="modifiedObject" visibility="public" type="_XSbMtVuXEeOCwYvWfsRrew" association="_XSe3RVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3SluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3S1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3TFuXEeOCwYvWfsRrew" name="A_SpecificProposal_ServiceBatchinAuction" visibility="public" memberEnd="_XSe3TVuXEeOCwYvWfsRrew _XSe3UFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3TVuXEeOCwYvWfsRrew" name="propostaEspec&#xed;fica" visibility="public" type="_XSbzw1uXEeOCwYvWfsRrew" association="_XSe3TFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3TluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3T1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3UFuXEeOCwYvWfsRrew" name="ServiceBatch" visibility="public" type="_XSbzvVuXEeOCwYvWfsRrew" association="_XSe3TFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3UVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3UluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3U1uXEeOCwYvWfsRrew" name="A_PermissionGrant_TendedWithWinner" visibility="public" memberEnd="_XSe3VFuXEeOCwYvWfsRrew _XSe3V1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSe3VFuXEeOCwYvWfsRrew" name="permission grant" visibility="public" type="_XSca1FuXEeOCwYvWfsRrew" association="_XSe3U1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3VVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3VluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSe3V1uXEeOCwYvWfsRrew" name="tended with winner" visibility="public" type="_XSbzxluXEeOCwYvWfsRrew" association="_XSe3U1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSe3WFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSe3WVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSe3WluXEeOCwYvWfsRrew" name="formaliza" visibility="public" memberEnd="_XSfeEFuXEeOCwYvWfsRrew _XSfeE1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSfeEFuXEeOCwYvWfsRrew" name="permission grant" visibility="public" type="_XSca1FuXEeOCwYvWfsRrew" association="_XSe3WluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSfeEVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSfeEluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSfeE1uXEeOCwYvWfsRrew" name="permission grant contract" visibility="public" type="_XSca0luXEeOCwYvWfsRrew" association="_XSe3WluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSfeFFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSfeFVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSfeFluXEeOCwYvWfsRrew" name="participa em" visibility="public" memberEnd="_XSfeF1uXEeOCwYvWfsRrew _XSfeGluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSfeF1uXEeOCwYvWfsRrew" name="permission&#xe1;ria" visibility="private" type="_XSca1luXEeOCwYvWfsRrew" isReadOnly="true" association="_XSfeFluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSfeGFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSfeGVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSfeGluXEeOCwYvWfsRrew" name="permission grant" visibility="private" type="_XSca1FuXEeOCwYvWfsRrew" isReadOnly="true" association="_XSfeFluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSfeG1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSfeHFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XSfeHVuXEeOCwYvWfsRrew" name="gs-completedTender" visibility="public" isCovering="true" isDisjoint="true" generalization="_XSYwgFuXEeOCwYvWfsRrew _XSbzyFuXEeOCwYvWfsRrew _XSbzzVuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XSfeHluXEeOCwYvWfsRrew" name="gs-phaseTender" visibility="public" isCovering="true" isDisjoint="true" generalization="_XSZXiluXEeOCwYvWfsRrew _XSbz1luXEeOCwYvWfsRrew _XSbz3FuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XSfeH1uXEeOCwYvWfsRrew" name="gs-tenderType" visibility="public" isCovering="true" isDisjoint="true" generalization="_XSZ-gFuXEeOCwYvWfsRrew _XSZ-gluXEeOCwYvWfsRrew _XSZ-hVuXEeOCwYvWfsRrew _XSZ-l1uXEeOCwYvWfsRrew _XSalnVuXEeOCwYvWfsRrew _XSbMt1uXEeOCwYvWfsRrew _XSbzwVuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XSfeIFuXEeOCwYvWfsRrew" name="gs-tenderWithoutWinner" visibility="public" isCovering="true" isDisjoint="true" generalization="_XSZ-i1uXEeOCwYvWfsRrew _XSZ-jluXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XSfeIVuXEeOCwYvWfsRrew" name="gs-externalPhase" visibility="public" isCovering="true" isDisjoint="true" generalization="_XSbzxVuXEeOCwYvWfsRrew _XSbz01uXEeOCwYvWfsRrew _XSbz2VuXEeOCwYvWfsRrew _XSbz31uXEeOCwYvWfsRrew _XSbz4luXEeOCwYvWfsRrew"/>
+</RefOntoUML:Package>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XSuu3VuXEeOCwYvWfsRrew" name="MarcosSpecimille_Construction_English" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSuu3luXEeOCwYvWfsRrew" name="Agent" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSuu31uXEeOCwYvWfsRrew" name="Allocation" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XSuu4FuXEeOCwYvWfsRrew" name="Budget" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSuu4VuXEeOCwYvWfsRrew" name="Construction Work" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XSuu4luXEeOCwYvWfsRrew" name="Customer" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSuu41uXEeOCwYvWfsRrew" name="Employee" visibility="public">
+    <generalization xmi:id="_XSuu5FuXEeOCwYvWfsRrew" general="_XSuu6luXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSuu5VuXEeOCwYvWfsRrew" name="Organization" visibility="public">
+    <generalization xmi:id="_XSuu5luXEeOCwYvWfsRrew" general="_XSuu3luXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSuu51uXEeOCwYvWfsRrew" name="Organizational Customer" visibility="public">
+    <generalization xmi:id="_XSuu6FuXEeOCwYvWfsRrew" general="_XSuu5VuXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XSuu6VuXEeOCwYvWfsRrew" general="_XSuu4luXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSuu6luXEeOCwYvWfsRrew" name="Person" visibility="public">
+    <generalization xmi:id="_XSuu61uXEeOCwYvWfsRrew" general="_XSuu3luXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSuu7FuXEeOCwYvWfsRrew" name="Personal Customer" visibility="public">
+    <generalization xmi:id="_XSuu7VuXEeOCwYvWfsRrew" general="_XSuu6luXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XSuu7luXEeOCwYvWfsRrew" general="_XSuu4luXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSuu71uXEeOCwYvWfsRrew" name="Photo" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XSuu8FuXEeOCwYvWfsRrew" name="Stage" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XSuu8VuXEeOCwYvWfsRrew" name="Substage" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSuu8luXEeOCwYvWfsRrew" name="A_ConstructionWork_Allocation" visibility="public" memberEnd="_XSuu81uXEeOCwYvWfsRrew _XSuu9luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSuu81uXEeOCwYvWfsRrew" name="construction work" visibility="public" type="_XSuu4VuXEeOCwYvWfsRrew" association="_XSuu8luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSuu9FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSuu9VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSuu9luXEeOCwYvWfsRrew" name="allocation" visibility="public" type="_XSuu31uXEeOCwYvWfsRrew" association="_XSuu8luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSuu91uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSuu-FuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSuu-VuXEeOCwYvWfsRrew" name="A_Employee_Allocation" visibility="public" memberEnd="_XSuu-luXEeOCwYvWfsRrew _XSuu_VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSuu-luXEeOCwYvWfsRrew" name="employee" visibility="public" type="_XSuu41uXEeOCwYvWfsRrew" association="_XSuu-VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSuu-1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSuu_FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSuu_VuXEeOCwYvWfsRrew" name="allocation" visibility="public" type="_XSuu31uXEeOCwYvWfsRrew" association="_XSuu-VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSuu_luXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSuu_1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:subCollectionOf" xmi:id="_XSuvAFuXEeOCwYvWfsRrew" name="A_Stage_Budget" visibility="public" memberEnd="_XSuvAVuXEeOCwYvWfsRrew _XSuvBFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSuvAVuXEeOCwYvWfsRrew" name="stage" visibility="public" type="_XSuu8FuXEeOCwYvWfsRrew" association="_XSuvAFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSuvAluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSuvA1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSuvBFuXEeOCwYvWfsRrew" name="budget" visibility="public" type="_XSuu4FuXEeOCwYvWfsRrew" aggregation="composite" association="_XSuvAFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSuvBVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSuvBluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XSuvB1uXEeOCwYvWfsRrew" name="has" visibility="public" memberEnd="_XSuvCFuXEeOCwYvWfsRrew _XSvVsVuXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XSuvCFuXEeOCwYvWfsRrew" name="construction work" visibility="public" type="_XSuu4VuXEeOCwYvWfsRrew" association="_XSuvB1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSuvCVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSvVsFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSvVsVuXEeOCwYvWfsRrew" name="budget" visibility="public" type="_XSuu4FuXEeOCwYvWfsRrew" association="_XSuvB1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSvVsluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSvVs1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XSvVtFuXEeOCwYvWfsRrew" name="depicts" visibility="public" memberEnd="_XSvVtVuXEeOCwYvWfsRrew _XSvVuFuXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XSvVtVuXEeOCwYvWfsRrew" name="photo" visibility="public" type="_XSuu71uXEeOCwYvWfsRrew" association="_XSvVtFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSvVtluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSvVt1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSvVuFuXEeOCwYvWfsRrew" name="construction work" visibility="public" type="_XSuu4VuXEeOCwYvWfsRrew" association="_XSvVtFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSvVuVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSvVuluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XSvVu1uXEeOCwYvWfsRrew" name="requests" visibility="public" memberEnd="_XSvVvFuXEeOCwYvWfsRrew _XSvVv1uXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XSvVvFuXEeOCwYvWfsRrew" name="customer" visibility="public" type="_XSuu4luXEeOCwYvWfsRrew" association="_XSvVu1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSvVvVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSvVvluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSvVv1uXEeOCwYvWfsRrew" name="construction work" visibility="public" type="_XSuu4VuXEeOCwYvWfsRrew" association="_XSvVu1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSvVwFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSvVwVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:subCollectionOf" xmi:id="_XSvVwluXEeOCwYvWfsRrew" name="A_Substage_Stage" visibility="public" memberEnd="_XSvVw1uXEeOCwYvWfsRrew _XSvVxluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSvVw1uXEeOCwYvWfsRrew" name="substage" visibility="public" type="_XSuu8VuXEeOCwYvWfsRrew" association="_XSvVwluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSvVxFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSvVxVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSvVxluXEeOCwYvWfsRrew" name="stage" visibility="public" type="_XSuu8FuXEeOCwYvWfsRrew" aggregation="composite" association="_XSvVwluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSvVx1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSvVyFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Package>

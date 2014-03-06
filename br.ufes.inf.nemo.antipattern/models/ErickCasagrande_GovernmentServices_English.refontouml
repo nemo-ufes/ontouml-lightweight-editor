@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XTEtHVuXEeOCwYvWfsRrew" name="ErickCasagrande_GovernmentServices_English" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTEtHluXEeOCwYvWfsRrew" name="Admin Officer" visibility="public">
+    <generalization xmi:id="_XTEtH1uXEeOCwYvWfsRrew" general="_XTEtIVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTEtIFuXEeOCwYvWfsRrew" name="Admin Topic" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTEtIVuXEeOCwYvWfsRrew" name="Administration" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTEtIluXEeOCwYvWfsRrew" name="Document" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTEtI1uXEeOCwYvWfsRrew" name="Government Activity" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTEtJFuXEeOCwYvWfsRrew" name="Government Service" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XTEtJVuXEeOCwYvWfsRrew" name="Law" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Class" xmi:id="_XTEtJluXEeOCwYvWfsRrew" name="Life Event" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTEtJ1uXEeOCwYvWfsRrew" name="Place" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTEtKFuXEeOCwYvWfsRrew" name="Role" visibility="public">
+    <generalization xmi:id="_XTEtKVuXEeOCwYvWfsRrew" general="_XTEtI1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XTEtKluXEeOCwYvWfsRrew" name="Rule" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Class" xmi:id="_XTEtK1uXEeOCwYvWfsRrew" name="Service Goal" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTEtLFuXEeOCwYvWfsRrew" name="A_Document_AdminTopic" visibility="public" memberEnd="_XTEtLVuXEeOCwYvWfsRrew _XTEtLluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTEtLVuXEeOCwYvWfsRrew" name="document" visibility="private" type="_XTEtIluXEeOCwYvWfsRrew" isReadOnly="true" association="_XTEtLFuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTEtLluXEeOCwYvWfsRrew" name="admin topic" visibility="private" type="_XTEtIFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTEtLFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTEtL1uXEeOCwYvWfsRrew" name="A_Law_AdminTopic" visibility="public" memberEnd="_XTEtMFuXEeOCwYvWfsRrew _XTEtMVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTEtMFuXEeOCwYvWfsRrew" name="law" visibility="private" type="_XTEtJVuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTEtL1uXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTEtMVuXEeOCwYvWfsRrew" name="admin topic" visibility="private" type="_XTEtIFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTEtL1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTEtMluXEeOCwYvWfsRrew" name="A_Rule_AdminTopic" visibility="public" memberEnd="_XTEtM1uXEeOCwYvWfsRrew _XTEtNFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTEtM1uXEeOCwYvWfsRrew" name="rule" visibility="private" type="_XTEtKluXEeOCwYvWfsRrew" isReadOnly="true" association="_XTEtMluXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTEtNFuXEeOCwYvWfsRrew" name="admin topic" visibility="private" type="_XTEtIFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTEtMluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTFT8FuXEeOCwYvWfsRrew" name="A_LifeEvent_AdminTopic" visibility="public" memberEnd="_XTFT8VuXEeOCwYvWfsRrew _XTFT8luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTFT8VuXEeOCwYvWfsRrew" name="life event" visibility="private" type="_XTEtJluXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT8FuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTFT8luXEeOCwYvWfsRrew" name="admin topic" visibility="private" type="_XTEtIFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT8FuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTFT81uXEeOCwYvWfsRrew" name="A_GovernmentService_AdminTopic" visibility="public" memberEnd="_XTFT9FuXEeOCwYvWfsRrew _XTFT9VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTFT9FuXEeOCwYvWfsRrew" name="government service" visibility="private" type="_XTEtJFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT81uXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTFT9VuXEeOCwYvWfsRrew" name="admin topic" visibility="private" type="_XTEtIFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT81uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTFT9luXEeOCwYvWfsRrew" name="A_ServiceGoal_AdminTopic" visibility="public" memberEnd="_XTFT91uXEeOCwYvWfsRrew _XTFT-FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTFT91uXEeOCwYvWfsRrew" name="service goal" visibility="private" type="_XTEtK1uXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT9luXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTFT-FuXEeOCwYvWfsRrew" name="admin topic" visibility="private" type="_XTEtIFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT9luXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTFT-VuXEeOCwYvWfsRrew" name="A_Place_Administration" visibility="public" memberEnd="_XTFT-luXEeOCwYvWfsRrew _XTFT-1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTFT-luXEeOCwYvWfsRrew" name="place" visibility="private" type="_XTEtJ1uXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT-VuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTFT-1uXEeOCwYvWfsRrew" name="administration" visibility="private" type="_XTEtIVuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT-VuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTFT_FuXEeOCwYvWfsRrew" name="A_GovernmentService_Administration" visibility="public" memberEnd="_XTFT_VuXEeOCwYvWfsRrew _XTFT_luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTFT_VuXEeOCwYvWfsRrew" name="government service" visibility="private" type="_XTEtJFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT_FuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTFT_luXEeOCwYvWfsRrew" name="administration" visibility="private" type="_XTEtIVuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT_FuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTFT_1uXEeOCwYvWfsRrew" name="results from" visibility="public" memberEnd="_XTFUAFuXEeOCwYvWfsRrew _XTFUAVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTFUAFuXEeOCwYvWfsRrew" name="government service" visibility="private" type="_XTEtJFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT_1uXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTFUAVuXEeOCwYvWfsRrew" name="document" visibility="private" type="_XTEtIluXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFT_1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTFUAluXEeOCwYvWfsRrew" name="requires" visibility="public" memberEnd="_XTFUA1uXEeOCwYvWfsRrew _XTFUBFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTFUA1uXEeOCwYvWfsRrew" name="government service" visibility="private" type="_XTEtJFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFUAluXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTFUBFuXEeOCwYvWfsRrew" name="document" visibility="private" type="_XTEtIluXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFUAluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTFUBVuXEeOCwYvWfsRrew" name="A_GovernmentService_GovernmentActivity" visibility="public" memberEnd="_XTFUBluXEeOCwYvWfsRrew _XTFUB1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTFUBluXEeOCwYvWfsRrew" name="government service" visibility="private" type="_XTEtJFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFUBVuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTFUB1uXEeOCwYvWfsRrew" name="government activity" visibility="private" type="_XTEtI1uXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFUBVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTFUCFuXEeOCwYvWfsRrew" name="A_ServiceGoal_GovernmentService" visibility="public" memberEnd="_XTFUCVuXEeOCwYvWfsRrew _XTFUCluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTFUCVuXEeOCwYvWfsRrew" name="service goal" visibility="private" type="_XTEtK1uXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFUCFuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTFUCluXEeOCwYvWfsRrew" name="government service" visibility="private" type="_XTEtJFuXEeOCwYvWfsRrew" isReadOnly="true" association="_XTFUCFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+</RefOntoUML:Package>

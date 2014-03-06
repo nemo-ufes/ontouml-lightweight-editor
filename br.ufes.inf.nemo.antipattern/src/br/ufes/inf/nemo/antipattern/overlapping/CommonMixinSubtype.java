@@ -136,6 +136,10 @@ public class CommonMixinSubtype extends OverlappingGroup {
 		
 		return true;
 	}
+
+	public ArrayList<Classifier> getCommonSubtypes() {
+		return commonSubtypes;
+	}
 	
 //	
 //	private ClassStereotype defineDefaultStereotype(Classifier mixinSupertype, Classifier commonSubtype){

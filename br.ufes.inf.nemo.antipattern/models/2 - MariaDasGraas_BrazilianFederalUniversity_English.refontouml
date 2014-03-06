@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XTMB4FuXEeOCwYvWfsRrew" name="MariaDasGra&#xe7;as_BrazilianFederalUniversity_English" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XTMB4VuXEeOCwYvWfsRrew" name="ActiveClass" visibility="public">
+    <generalization xmi:id="_XTMB4luXEeOCwYvWfsRrew" general="_XTMB6VuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XTMB41uXEeOCwYvWfsRrew" name="ActiveCurriculum" visibility="public">
+    <generalization xmi:id="_XTMB5FuXEeOCwYvWfsRrew" general="_XTMB71uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XTMB5VuXEeOCwYvWfsRrew" name="ActiveProfessor" visibility="public">
+    <generalization xmi:id="_XTMB5luXEeOCwYvWfsRrew" general="_XTMCA1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTMB51uXEeOCwYvWfsRrew" name="Center" visibility="public">
+    <generalization xmi:id="_XTMB6FuXEeOCwYvWfsRrew" general="_XTMCAVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTMB6VuXEeOCwYvWfsRrew" name="Class" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTMB6luXEeOCwYvWfsRrew" name="ClassEnrollment" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTMB61uXEeOCwYvWfsRrew" name="Colegiado" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTMB7FuXEeOCwYvWfsRrew" name="Course" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTMB7VuXEeOCwYvWfsRrew" name="CourseCoordinator" visibility="public">
+    <generalization xmi:id="_XTMB7luXEeOCwYvWfsRrew" general="_XTMCA1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTMB71uXEeOCwYvWfsRrew" name="Curriculum" visibility="public">
+    <ownedComment xmi:id="_XTMB8FuXEeOCwYvWfsRrew" body="Definition=Matriz"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTMB8VuXEeOCwYvWfsRrew" name="Department" visibility="public">
+    <generalization xmi:id="_XTMB8luXEeOCwYvWfsRrew" general="_XTMCAVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTMB81uXEeOCwYvWfsRrew" name="DepartmentChief" visibility="public">
+    <generalization xmi:id="_XTMB9FuXEeOCwYvWfsRrew" general="_XTMCA1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTMB9VuXEeOCwYvWfsRrew" name="Discipline" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XTMB9luXEeOCwYvWfsRrew" name="EgressStudent" visibility="public">
+    <generalization xmi:id="_XTMB91uXEeOCwYvWfsRrew" general="_XTMCCVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTMB-FuXEeOCwYvWfsRrew" name="Enrollment" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTMB-VuXEeOCwYvWfsRrew" name="Higher Education Institution" visibility="public">
+    <generalization xmi:id="_XTMB-luXEeOCwYvWfsRrew" general="_XTMCAVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XTMB-1uXEeOCwYvWfsRrew" name="InactiveClass" visibility="public">
+    <generalization xmi:id="_XTMB_FuXEeOCwYvWfsRrew" general="_XTMB6VuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XTMB_VuXEeOCwYvWfsRrew" name="InactiveCurriculum" visibility="public">
+    <generalization xmi:id="_XTMB_luXEeOCwYvWfsRrew" general="_XTMB71uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XTMB_1uXEeOCwYvWfsRrew" name="InactiveProfessor" visibility="public">
+    <generalization xmi:id="_XTMCAFuXEeOCwYvWfsRrew" general="_XTMCA1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTMCAVuXEeOCwYvWfsRrew" name="Organization" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTMCAluXEeOCwYvWfsRrew" name="Person" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTMCA1uXEeOCwYvWfsRrew" name="Professor" visibility="public">
+    <generalization xmi:id="_XTMCBFuXEeOCwYvWfsRrew" general="_XTMCAluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTMCBVuXEeOCwYvWfsRrew" name="ProfessorMandate" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XTMCBluXEeOCwYvWfsRrew" name="RegularStudent" visibility="public">
+    <generalization xmi:id="_XTMCB1uXEeOCwYvWfsRrew" general="_XTMCCVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Class" xmi:id="_XTMCCFuXEeOCwYvWfsRrew" name="Semester" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTMCCVuXEeOCwYvWfsRrew" name="Student" visibility="public">
+    <generalization xmi:id="_XTMCCluXEeOCwYvWfsRrew" general="_XTMCAluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTMCC1uXEeOCwYvWfsRrew" name="StudentMandate" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XTMCDFuXEeOCwYvWfsRrew" name="SuspendedStudent" visibility="public">
+    <generalization xmi:id="_XTMCDVuXEeOCwYvWfsRrew" general="_XTMCCVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:DataType" xmi:id="_XTMCDluXEeOCwYvWfsRrew" name="Date" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:DataType" xmi:id="_XTMCD1uXEeOCwYvWfsRrew" name="Field" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:DataType" xmi:id="_XTMCEFuXEeOCwYvWfsRrew" name="Parity" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:DataType" xmi:id="_XTMCEVuXEeOCwYvWfsRrew" name="Year" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTMCEluXEeOCwYvWfsRrew" name="A_Department_Center" visibility="public" memberEnd="_XTMCE1uXEeOCwYvWfsRrew _XTMCFFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMCE1uXEeOCwYvWfsRrew" name="department" visibility="public" type="_XTMB8VuXEeOCwYvWfsRrew" association="_XTMCEluXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTMCFFuXEeOCwYvWfsRrew" name="center" visibility="public" type="_XTMB51uXEeOCwYvWfsRrew" aggregation="composite" association="_XTMCEluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTMCFVuXEeOCwYvWfsRrew" name="boundTo" visibility="public" memberEnd="_XTMCFluXEeOCwYvWfsRrew _XTMCGVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMCFluXEeOCwYvWfsRrew" name="course" visibility="public" type="_XTMB7FuXEeOCwYvWfsRrew" association="_XTMCFVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMCF1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMCGFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTMCGVuXEeOCwYvWfsRrew" name="center" visibility="public" type="_XTMB51uXEeOCwYvWfsRrew" association="_XTMCFVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMCGluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMCG1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTMCHFuXEeOCwYvWfsRrew" name="A_HigherEducationInstitution_Center" visibility="public" memberEnd="_XTMCHVuXEeOCwYvWfsRrew _XTMCHluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMCHVuXEeOCwYvWfsRrew" name="higher education institution" visibility="public" type="_XTMB-VuXEeOCwYvWfsRrew" aggregation="composite" association="_XTMCHFuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTMCHluXEeOCwYvWfsRrew" name="center" visibility="public" type="_XTMB51uXEeOCwYvWfsRrew" association="_XTMCHFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XTMCH1uXEeOCwYvWfsRrew" name="A_Semester_Class" visibility="public" memberEnd="_XTMosFuXEeOCwYvWfsRrew _XTMos1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMosFuXEeOCwYvWfsRrew" name="semester" visibility="public" type="_XTMCCFuXEeOCwYvWfsRrew" association="_XTMCH1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMosVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMosluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTMos1uXEeOCwYvWfsRrew" name="class" visibility="public" type="_XTMB6VuXEeOCwYvWfsRrew" association="_XTMCH1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMotFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMotVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTMotluXEeOCwYvWfsRrew" name="teaches" visibility="public" memberEnd="_XTMot1uXEeOCwYvWfsRrew _XTMouluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMot1uXEeOCwYvWfsRrew" name="professor" visibility="public" type="_XTMCA1uXEeOCwYvWfsRrew" association="_XTMotluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMouFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMouVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTMouluXEeOCwYvWfsRrew" name="class" visibility="public" type="_XTMB6VuXEeOCwYvWfsRrew" association="_XTMotluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMou1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMovFuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTMovVuXEeOCwYvWfsRrew" name="A_ClassEnrollment_Class" visibility="public" memberEnd="_XTMovluXEeOCwYvWfsRrew _XTMowVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMovluXEeOCwYvWfsRrew" name="classenrollment" visibility="public" type="_XTMB6luXEeOCwYvWfsRrew" association="_XTMovVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMov1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMowFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTMowVuXEeOCwYvWfsRrew" name="class" visibility="public" type="_XTMB6VuXEeOCwYvWfsRrew" association="_XTMovVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMowluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMow1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTMoxFuXEeOCwYvWfsRrew" name="provided trough" visibility="public" memberEnd="_XTMoxVuXEeOCwYvWfsRrew _XTMoyFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMoxVuXEeOCwYvWfsRrew" name="discipline" visibility="public" type="_XTMB9VuXEeOCwYvWfsRrew" association="_XTMoxFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMoxluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMox1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTMoyFuXEeOCwYvWfsRrew" name="class" visibility="public" type="_XTMB6VuXEeOCwYvWfsRrew" association="_XTMoxFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMoyVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMoyluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTMoy1uXEeOCwYvWfsRrew" name="A_Student_ClassEnrollment" visibility="public" memberEnd="_XTMozFuXEeOCwYvWfsRrew _XTMoz1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMozFuXEeOCwYvWfsRrew" name="student" visibility="public" type="_XTMCCVuXEeOCwYvWfsRrew" association="_XTMoy1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMozVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMozluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTMoz1uXEeOCwYvWfsRrew" name="classenrollment" visibility="public" type="_XTMB6luXEeOCwYvWfsRrew" association="_XTMoy1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMo0FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMo0VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTMo0luXEeOCwYvWfsRrew" name="coordinatedBy" visibility="public" memberEnd="_XTMo01uXEeOCwYvWfsRrew _XTMo1luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMo01uXEeOCwYvWfsRrew" name="coursecoordinator" visibility="public" type="_XTMB7VuXEeOCwYvWfsRrew" association="_XTMo0luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMo1FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMo1VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTMo1luXEeOCwYvWfsRrew" name="colegiado" visibility="public" type="_XTMB61uXEeOCwYvWfsRrew" association="_XTMo0luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMo11uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMo2FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTMo2VuXEeOCwYvWfsRrew" name="A_StudentMandate_Colegiado" visibility="public" memberEnd="_XTMo2luXEeOCwYvWfsRrew _XTMo21uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMo2luXEeOCwYvWfsRrew" name="studentmandate" visibility="public" type="_XTMCC1uXEeOCwYvWfsRrew" association="_XTMo2VuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTMo21uXEeOCwYvWfsRrew" name="colegiado" visibility="public" type="_XTMB61uXEeOCwYvWfsRrew" association="_XTMo2VuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTMo3FuXEeOCwYvWfsRrew" name="A_ProfessorMandate_Colegiado" visibility="public" memberEnd="_XTMo3VuXEeOCwYvWfsRrew _XTMo3luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMo3VuXEeOCwYvWfsRrew" name="professormandate" visibility="public" type="_XTMCBVuXEeOCwYvWfsRrew" association="_XTMo3FuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTMo3luXEeOCwYvWfsRrew" name="colegiado" visibility="public" type="_XTMB61uXEeOCwYvWfsRrew" association="_XTMo3FuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTMo31uXEeOCwYvWfsRrew" name="manages" visibility="public" memberEnd="_XTMo4FuXEeOCwYvWfsRrew _XTMo41uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMo4FuXEeOCwYvWfsRrew" name="coursecoordinator" visibility="public" type="_XTMB7VuXEeOCwYvWfsRrew" association="_XTMo31uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMo4VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMo4luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTMo41uXEeOCwYvWfsRrew" name="course" visibility="public" type="_XTMB7FuXEeOCwYvWfsRrew" association="_XTMo31uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMo5FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMo5VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTMo5luXEeOCwYvWfsRrew" name="organizes" visibility="public" memberEnd="_XTMo51uXEeOCwYvWfsRrew _XTMo6luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMo51uXEeOCwYvWfsRrew" name="curriculum" visibility="public" type="_XTMB71uXEeOCwYvWfsRrew" association="_XTMo5luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMo6FuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMo6VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTMo6luXEeOCwYvWfsRrew" name="course" visibility="public" type="_XTMB7FuXEeOCwYvWfsRrew" association="_XTMo5luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMo61uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMo7FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTMo7VuXEeOCwYvWfsRrew" name="A_Enrollment_Course" visibility="public" memberEnd="_XTMo7luXEeOCwYvWfsRrew _XTMo71uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMo7luXEeOCwYvWfsRrew" name="enrollment" visibility="public" type="_XTMB-FuXEeOCwYvWfsRrew" association="_XTMo7VuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTMo71uXEeOCwYvWfsRrew" name="course" visibility="public" type="_XTMB7FuXEeOCwYvWfsRrew" association="_XTMo7VuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTMo8FuXEeOCwYvWfsRrew" name="fullfiledBy" visibility="public" memberEnd="_XTMo8VuXEeOCwYvWfsRrew _XTMo9FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMo8VuXEeOCwYvWfsRrew" name="student" visibility="public" type="_XTMCCVuXEeOCwYvWfsRrew" association="_XTMo8FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMo8luXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMo81uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTMo9FuXEeOCwYvWfsRrew" name="curriculum" visibility="public" type="_XTMB71uXEeOCwYvWfsRrew" association="_XTMo8FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMo9VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMo9luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTMo91uXEeOCwYvWfsRrew" name="A_Discipline_Curriculum" visibility="public" memberEnd="_XTMo-FuXEeOCwYvWfsRrew _XTMo-VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMo-FuXEeOCwYvWfsRrew" name="discipline" visibility="public" type="_XTMB9VuXEeOCwYvWfsRrew" association="_XTMo91uXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTMo-VuXEeOCwYvWfsRrew" name="curriculum" visibility="public" type="_XTMB71uXEeOCwYvWfsRrew" aggregation="shared" association="_XTMo91uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTMo-luXEeOCwYvWfsRrew" name="offers" visibility="public" memberEnd="_XTMo-1uXEeOCwYvWfsRrew _XTMo_luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMo-1uXEeOCwYvWfsRrew" name="discipline" visibility="public" type="_XTMB9VuXEeOCwYvWfsRrew" association="_XTMo-luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMo_FuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMo_VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTMo_luXEeOCwYvWfsRrew" name="department" visibility="public" type="_XTMB8VuXEeOCwYvWfsRrew" association="_XTMo-luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTMo_1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTMpAFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XTMpAVuXEeOCwYvWfsRrew" name="A_Field_Discipline" visibility="public" memberEnd="_XTMpAluXEeOCwYvWfsRrew _XTMpA1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMpAluXEeOCwYvWfsRrew" name="field" visibility="public" type="_XTMCD1uXEeOCwYvWfsRrew" association="_XTMpAVuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTMpA1uXEeOCwYvWfsRrew" name="discipline" visibility="public" type="_XTMB9VuXEeOCwYvWfsRrew" association="_XTMpAVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTMpBFuXEeOCwYvWfsRrew" name="A_Student_Enrollment" visibility="public" memberEnd="_XTMpBVuXEeOCwYvWfsRrew _XTMpBluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTMpBVuXEeOCwYvWfsRrew" name="student" visibility="public" type="_XTMCCVuXEeOCwYvWfsRrew" association="_XTMpBFuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTMpBluXEeOCwYvWfsRrew" name="enrollment" visibility="public" type="_XTMB-FuXEeOCwYvWfsRrew" association="_XTMpBFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTMpB1uXEeOCwYvWfsRrew" name="A_ProfessorMandate_Professor" visibility="public" memberEnd="_XTNPwFuXEeOCwYvWfsRrew _XTNPwVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTNPwFuXEeOCwYvWfsRrew" name="professormandate" visibility="public" type="_XTMCBVuXEeOCwYvWfsRrew" association="_XTMpB1uXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTNPwVuXEeOCwYvWfsRrew" name="professor" visibility="public" type="_XTMCA1uXEeOCwYvWfsRrew" association="_XTMpB1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTNPwluXEeOCwYvWfsRrew" name="starts at" visibility="public" memberEnd="_XTNPw1uXEeOCwYvWfsRrew _XTNPxFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTNPw1uXEeOCwYvWfsRrew" name="date" visibility="public" type="_XTMCDluXEeOCwYvWfsRrew" association="_XTNPwluXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTNPxFuXEeOCwYvWfsRrew" name="semester" visibility="public" type="_XTMCCFuXEeOCwYvWfsRrew" association="_XTNPwluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTNPxVuXEeOCwYvWfsRrew" name="ends at" visibility="public" memberEnd="_XTNPxluXEeOCwYvWfsRrew _XTNPx1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTNPxluXEeOCwYvWfsRrew" name="date" visibility="public" type="_XTMCDluXEeOCwYvWfsRrew" association="_XTNPxVuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTNPx1uXEeOCwYvWfsRrew" name="semester" visibility="public" type="_XTMCCFuXEeOCwYvWfsRrew" association="_XTNPxVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTNPyFuXEeOCwYvWfsRrew" name="A_Year_Semester" visibility="public" memberEnd="_XTNPyVuXEeOCwYvWfsRrew _XTNPyluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTNPyVuXEeOCwYvWfsRrew" name="year" visibility="public" type="_XTMCEVuXEeOCwYvWfsRrew" association="_XTNPyFuXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTNPyluXEeOCwYvWfsRrew" name="semester" visibility="public" type="_XTMCCFuXEeOCwYvWfsRrew" association="_XTNPyFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTNPy1uXEeOCwYvWfsRrew" name="A_Parity_Semester" visibility="public" memberEnd="_XTNPzFuXEeOCwYvWfsRrew _XTNPzVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTNPzFuXEeOCwYvWfsRrew" name="parity" visibility="public" type="_XTMCEFuXEeOCwYvWfsRrew" association="_XTNPy1uXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTNPzVuXEeOCwYvWfsRrew" name="semester" visibility="public" type="_XTMCCFuXEeOCwYvWfsRrew" association="_XTNPy1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTNPzluXEeOCwYvWfsRrew" name="A_StudentMandate_Student" visibility="public" memberEnd="_XTNPz1uXEeOCwYvWfsRrew _XTNP0FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTNPz1uXEeOCwYvWfsRrew" name="studentmandate" visibility="public" type="_XTMCC1uXEeOCwYvWfsRrew" association="_XTNPzluXEeOCwYvWfsRrew"/>
+    <ownedEnd xmi:id="_XTNP0FuXEeOCwYvWfsRrew" name="student" visibility="public" type="_XTMCCVuXEeOCwYvWfsRrew" association="_XTNPzluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XTNP0VuXEeOCwYvWfsRrew" name="groups" visibility="public" memberEnd="_XTNP0luXEeOCwYvWfsRrew _XTNP1VuXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XTNP0luXEeOCwYvWfsRrew" name="student" visibility="public" type="_XTMCCVuXEeOCwYvWfsRrew" association="_XTNP0VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP01uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP1FuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTNP1VuXEeOCwYvWfsRrew" name="class" visibility="public" type="_XTMB6VuXEeOCwYvWfsRrew" association="_XTNP0VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP1luXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP11uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XTNP2FuXEeOCwYvWfsRrew" name="composedBy" visibility="public" memberEnd="_XTNP2VuXEeOCwYvWfsRrew _XTNP3FuXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XTNP2VuXEeOCwYvWfsRrew" name="professor" visibility="public" type="_XTMCA1uXEeOCwYvWfsRrew" association="_XTNP2FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP2luXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP21uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTNP3FuXEeOCwYvWfsRrew" name="colegiado" visibility="public" type="_XTMB61uXEeOCwYvWfsRrew" association="_XTNP2FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP3VuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP3luXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XTNP31uXEeOCwYvWfsRrew" name="A_Student_Colegiado" visibility="public" memberEnd="_XTNP4FuXEeOCwYvWfsRrew _XTNP41uXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XTNP4FuXEeOCwYvWfsRrew" name="student" visibility="public" type="_XTMCCVuXEeOCwYvWfsRrew" association="_XTNP31uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP4VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP4luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTNP41uXEeOCwYvWfsRrew" name="colegiado" visibility="public" type="_XTMB61uXEeOCwYvWfsRrew" association="_XTNP31uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP5FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP5VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XTNP5luXEeOCwYvWfsRrew" name="hasStudent" visibility="public" memberEnd="_XTNP51uXEeOCwYvWfsRrew _XTNP6luXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XTNP51uXEeOCwYvWfsRrew" name="student" visibility="public" type="_XTMCCVuXEeOCwYvWfsRrew" association="_XTNP5luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP6FuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP6VuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTNP6luXEeOCwYvWfsRrew" name="course" visibility="public" type="_XTMB7FuXEeOCwYvWfsRrew" association="_XTNP5luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP61uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP7FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Derivation" xmi:id="_XTNP7VuXEeOCwYvWfsRrew" name="A_A_Student_Colegiado_StudentMandate" memberEnd="_XTNP7luXEeOCwYvWfsRrew _XTNP8VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTNP7luXEeOCwYvWfsRrew" type="_XTNP31uXEeOCwYvWfsRrew" association="_XTNP7VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP71uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP8FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTNP8VuXEeOCwYvWfsRrew" type="_XTMCC1uXEeOCwYvWfsRrew" association="_XTNP7VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP8luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP81uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Derivation" xmi:id="_XTNP9FuXEeOCwYvWfsRrew" name="A_groups_ClassEnrollment" memberEnd="_XTNP9VuXEeOCwYvWfsRrew _XTNP-FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTNP9VuXEeOCwYvWfsRrew" type="_XTNP0VuXEeOCwYvWfsRrew" association="_XTNP9FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP9luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP91uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTNP-FuXEeOCwYvWfsRrew" type="_XTMB6luXEeOCwYvWfsRrew" association="_XTNP9FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP-VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP-luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Derivation" xmi:id="_XTNP-1uXEeOCwYvWfsRrew" name="A_composedBy_ProfessorMandate" memberEnd="_XTNP_FuXEeOCwYvWfsRrew _XTNP_1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTNP_FuXEeOCwYvWfsRrew" type="_XTNP2FuXEeOCwYvWfsRrew" association="_XTNP-1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNP_VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNP_luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTNP_1uXEeOCwYvWfsRrew" type="_XTMCBVuXEeOCwYvWfsRrew" association="_XTNP-1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNQAFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNQAVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Derivation" xmi:id="_XTNQAluXEeOCwYvWfsRrew" name="A_hasStudent_Enrollment" memberEnd="_XTNQA1uXEeOCwYvWfsRrew _XTNQBluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTNQA1uXEeOCwYvWfsRrew" type="_XTNP5luXEeOCwYvWfsRrew" association="_XTNQAluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNQBFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNQBVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTNQBluXEeOCwYvWfsRrew" type="_XTMB-FuXEeOCwYvWfsRrew" association="_XTNQAluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTNQB1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTNQCFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Package>

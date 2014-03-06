@@ -16,15 +16,18 @@ import br.ufes.inf.nemo.antipattern.overlapping.GeneralizationLine;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 import br.ufes.inf.nemo.antipattern.overlapping.SameType;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class BinOverOccurrence extends AntipatternOccurrence {
 
-	public enum BinaryPropertyValue {TRANSITIVE, NON_TRANSITIVE, INTRANSITIVE, 
-									 REFLEXIVE, IRREFLEXIVE, NON_REFLEXIVE, 
-									 SYMMETRIC, ASYMMETRIC, NON_SYMMETRIC,
-									 CYCLIC, ACYCLIC, NON_CYCLIC, 
-									 NONE};
+	public enum BinaryPropertyValue{REFLEXIVE, CO_REFLEXIVE, SHIFT_REFLEXIVE, QUASI_REFLEXIVE, ANTI_REFLEXIVE, NON_REFLEXIVE,
+									SYMMETRIC, ASYMMETRIC, ANTI_SYMMETRIC, NON_SYMMETRIC,
+									TRANSITIVE, CO_TRANSITIVE, OP_TRANSITIVE, NON_TRANSITIVE, ANTI_TRANSITIVE, NEGATIVELY_TRANSITIVE, SEMI_TRANSITIVE, QUASI_TRANSITIVE,
+									EUCLIDEAN, LEFT_EUCLIDEAN, WEAK_COMPLETE, STRONG_COMPLETE, WEAK_CONNECTED, STRONG_CONNECTED,
+									TRICHOTOMOUS, FERRERS, CYCLIC, ACYCLIC, NON_CYCLIC, 
+									NONE};
 									 
 	public enum BinaryProperty {Reflexivity, Symmetry, Transitivity, Cyclicity};
 	
@@ -105,96 +108,180 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 	public void makeEndsDisjoint(){
 		overlappingGroup.makeEndsDisjoint(this, new ArrayList<Property>(association.getMemberEnd()));
 	}
+	
+	public void changeStereotype(Class<? extends Association> newStereotype){
+		fix.addAll(fixer.changeRelationStereotypeTo(association, OutcomeFixer.getEnumRelationStereotype(newStereotype)));		
+	}
 		
-	public String generateReflexivityOCL(BinaryPropertyValue value){
+	public String generateOCL(BinaryPropertyValue value){
+		String context = "", invRule ="", property="", quotedContext="";
 		
-		String contextName = source.getName();
-		String invName = value.toString().toLowerCase();
-		
-		fix.addAll(fixer.fixPropertyName(targetEnd));
-		String targetEndName = addQuotes(targetEnd.getName()); 
-		
-		String invRule = "self."+targetEndName+"->asSet()";
+		if(overlappingGroup instanceof SameType){
+			context = source.getName();
+			quotedContext = addQuotes(context);
+			fix.addAll(fixer.fixPropertyName(targetEnd));
+			property = addQuotes(targetEnd.getName())+"->asSet()"; 
+		}
+		else if (overlappingGroup instanceof GeneralizationLine){
+			GeneralizationLine gl = (GeneralizationLine) overlappingGroup;
+			context = gl.getParent().getType().getName();
+			quotedContext = addQuotes(context);
+			fix.addAll(fixer.fixPropertyName(gl.getChild()));
+			property = addQuotes(gl.getChild().getName())+"->asSet().oclAsType("+quotedContext+")";
+		}
+		else if(overlappingGroup instanceof CommonSortalSupertype || overlappingGroup instanceof CommonMixinSupertype){
+			
+			if(overlappingGroup instanceof CommonMixinSupertype)
+				context = ((CommonMixinSupertype) overlappingGroup).getCommonSupertypes().get(0).getName();
+			else if (overlappingGroup instanceof CommonSortalSupertype)
+				context = ((CommonSortalSupertype) overlappingGroup).getCommonSupertypes().get(0).getName();
+			
+			quotedContext = addQuotes(context);
+			fix.addAll(fixer.fixPropertyName(targetEnd));
+			property = "oclAsType("+addQuotes(source.getName())+")."+addQuotes(targetEnd.getName())+"->asSet().oclAsType("+quotedContext+")"; 
+
+		}
+		else if(overlappingGroup instanceof CommonMixinSubtype){
+
+			ArrayList<Classifier> types = new ArrayList<Classifier>();
+			types.add(source);
+			types.add(target);
+			Fix aux = fixer.createSuperTypeInCommonTo(types, "commonSupertype");
+			fix.addAll(aux);
+			
+			context = fix.getAddedByType(RefOntoUML.Class.class).get(0).getName();
+			quotedContext = addQuotes(context);
+			
+			fix.addAll(fixer.fixPropertyName(targetEnd));
+			property = "oclAsType("+addQuotes(source.getName())+")."+addQuotes(targetEnd.getName())+"->asSet().oclAsType("+quotedContext+")"; 
+		}
 		
 		if(value==BinaryPropertyValue.REFLEXIVE)
-			invRule+="includes";
-		else if(value==BinaryPropertyValue.IRREFLEXIVE)
-			invRule+="excludes";
-		
-		invRule += "(self)";
+			invRule = quotedContext+".allInstances()->forAll(x : "+quotedContext+" | x."+property+"->includes(x))";
 
-		fix.addAll(fixer.generateOCLInvariant(contextName, invName, invRule));
+		else if(value==BinaryPropertyValue.CO_REFLEXIVE)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | x."+property+"->includes(y) implies x=y)";
 		
-		return fix.getAddedRules().get(0);
-	}
-	
-	public String generateSymmetryOCL(BinaryPropertyValue value){
+		else if(value==BinaryPropertyValue.SHIFT_REFLEXIVE)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | x."+property+"->includes(y) implies y."+property+"->includes(y))";
 		
-		String contextName = source.getName();
-		String invName = value.toString().toLowerCase();
+		else if(value==BinaryPropertyValue.QUASI_REFLEXIVE)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | (x."+property+"->includes(y) or y."+property+"->includes(x)) implies y."+property+"->includes(y))";
 		
-		fix.addAll(fixer.fixPropertyName(targetEnd));
-		String targetEndName = addQuotes(targetEnd.getName()); 
+		else if(value==BinaryPropertyValue.ANTI_REFLEXIVE)
+			invRule = quotedContext+".allInstances()->forAll(x : "+quotedContext+" | not x."+property+"->includes(x))";
 		
-		String invRule = "self."+targetEndName+"->asSet()->forAll( x | x.oclIsTypeOf("+addQuotes(contextName)+") implies x.oclAsType("+addQuotes(contextName)+")."+targetEndName+"->";
+		else if(value==BinaryPropertyValue.NON_REFLEXIVE)
+			invRule = "not ("+quotedContext+".allInstances()->forAll(x : "+quotedContext+" | x."+property+"->includes(x)) )";
 		
-		if(value==BinaryPropertyValue.SYMMETRIC)
-			invRule+="includes";
+		else if(value==BinaryPropertyValue.SYMMETRIC)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | x."+property+"->includes(y) implies y."+property+"->includes(x))";
+		
 		else if(value==BinaryPropertyValue.ASYMMETRIC)
-			invRule+="excludes";
-		
-		invRule += "(self))";
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | x."+property+"->includes(y) implies not y."+property+"->includes(x))";
 
-		fix.addAll(fixer.generateOCLInvariant(contextName, invName, invRule));
+		else if(value==BinaryPropertyValue.ANTI_SYMMETRIC)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | (x."+property+"->includes(y) and y."+property+"->includes(x)) implies x=y)";
 		
-		return fix.getAddedRules().get(0);
-	}
-	
-	public String generateTransitivivityOCL(BinaryPropertyValue value){
+		else if(value==BinaryPropertyValue.NON_SYMMETRIC)
+			invRule = "not ("+quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | x."+property+"->includes(y) implies y."+property+"->includes(x)))";
 		
-		String contextName = source.getName();
-		String invName = value.toString().toLowerCase();
+		else if(value==BinaryPropertyValue.TRANSITIVE)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | "+quotedContext+".allInstances()->forAll (z: "+quotedContext+" | " +
+					"(x."+property+"->includes(y) and y."+property+"->includes(z)) implies x."+property+"->includes(z)) )";
 		
-		fix.addAll(fixer.fixPropertyName(targetEnd));
-		String targetEndName = addQuotes(targetEnd.getName()); 
+		else if(value==BinaryPropertyValue.CO_TRANSITIVE)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | "+quotedContext+".allInstances()->forAll (z: "+quotedContext+" | " +
+					"(x."+property+"->includes(z) implies (x."+property+"->includes(y) or y."+property+"->includes(z)) )";
 		
-		String invRule = "self."+targetEndName+"->asSet()->";
+		else if(value==BinaryPropertyValue.OP_TRANSITIVE)
+			invRule = quotedContext+".allInstances()->forAll(x,z : "+quotedContext+" | x."+property+"->includes(z) implies "+quotedContext+".allInstances()->exists(y: "+quotedContext+" | x."+property+"->includes(y) and y."+property+"->includes(z) ))";
 		
-		if(value==BinaryPropertyValue.TRANSITIVE)
-			invRule+="includesAll";
-		else if(value==BinaryPropertyValue.INTRANSITIVE)
-			invRule+="excludesAll";
+		else if(value==BinaryPropertyValue.NEGATIVELY_TRANSITIVE)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | "+quotedContext+".allInstances()->forAll (z: "+quotedContext+" | " +
+					"(not x."+property+"->includes(y) and not y."+property+"->includes(z)) implies not x."+property+"->includes(z)) )";
 		
-		invRule+="( self->asSet()->closure( x | if x.oclIsTypeOf("+addQuotes(contextName)+") " +
-												"then x.oclAsType("+addQuotes(contextName)+")."+targetEndName+
-												"else Set{}))";
+		else if(value==BinaryPropertyValue.SEMI_TRANSITIVE)
+			invRule = quotedContext+".allInstances()->forAll(w,x : "+quotedContext+" | "+quotedContext+".allInstances()->forAll (y,z: "+quotedContext+" | " +
+					"(w."+property+"->includes(x) and x."+property+"->includes(y)) implies (w."+property+"->includes(z) or z."+property+"->includes(y)) ))";	
 		
-		fix.addAll(fixer.generateOCLInvariant(contextName, invName, invRule));
+		else if(value==BinaryPropertyValue.QUASI_TRANSITIVE)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | "+quotedContext+".allInstances()->forAll (z: "+quotedContext+" | " +
+					"(x."+property+"->includes(y) and y."+property+"->includes(z) and not y."+property+"->includes(x) and not z."+property+"->includes(y)) implies (x."+property+"->includes(z) and not z."+property+"->includes(x))) )";
 		
-		return fix.getAddedRules().get(0);
-	}
-	
-	public String generateCyclicityOCL(BinaryPropertyValue value){
+		else if(value==BinaryPropertyValue.ANTI_TRANSITIVE)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | "+quotedContext+".allInstances()->forAll (z: "+quotedContext+" | " +
+					"(x."+property+"->includes(y) and y."+property+"->includes(z)) implies not x."+property+"->includes(z)) )";
 		
-		String contextName = source.getName();
-		String invName = value.toString().toLowerCase();
+		else if(value==BinaryPropertyValue.NON_TRANSITIVE)
+			invRule = "not ("+quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | "+quotedContext+".allInstances()->forAll (z: "+quotedContext+" | " +
+					"(x."+property+"->includes(y) and y."+property+"->includes(z)) implies x."+property+"->includes(z)) ) )";
 		
-		fix.addAll(fixer.fixPropertyName(targetEnd));
-		String targetEndName = addQuotes(targetEnd.getName()); 
+		else if(value==BinaryPropertyValue.EUCLIDEAN)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | "+quotedContext+".allInstances()->forAll (z: "+quotedContext+" | " +
+					"(x."+property+"->includes(y) and x."+property+"->includes(z)) implies (y."+property+"->includes(z) and z."+property+"->includes(y)) ) )";
 		
-		String invRule = "self->asSet()->closure( x | x.oclAsType("+addQuotes(contextName)+")."+targetEndName+"->asSet())->";
+		else if(value==BinaryPropertyValue.LEFT_EUCLIDEAN)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | "+quotedContext+".allInstances()->forAll (z: "+quotedContext+" | " +
+					"(y."+property+"->includes(x) and z."+property+"->includes(x)) implies (y."+property+"->includes(z) and z."+property+"->includes(y)) ) )";
+
+		else if(value==BinaryPropertyValue.WEAK_COMPLETE)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | x<>y implies (x."+property+"->includes(y) or y."+property+"->includes(x)))";
 		
-		if(value==BinaryPropertyValue.CYCLIC)
-			invRule+="includes";
+		else if(value==BinaryPropertyValue.STRONG_COMPLETE)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | x."+property+"->includes(y) or y."+property+"->includes(x))";
+		
+		else if(value==BinaryPropertyValue.WEAK_CONNECTED)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | not (x."+property+"->includes(y) or y."+property+"->includes(x)) implies x=y)";
+		
+		else if(value==BinaryPropertyValue.STRONG_CONNECTED)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | x<>y implies (x."+property+"->includes(y) or y."+property+"->includes(x)) )";
+		
+		else if(value==BinaryPropertyValue.TRICHOTOMOUS)
+			invRule = quotedContext+".allInstances()->forAll(x,y : "+quotedContext+" | x."+property+"->includes(y) or y."+property+"->includes(x) or x=y)";
+		
 		else if(value==BinaryPropertyValue.ACYCLIC)
-			invRule+="excludes";
+			invRule = quotedContext+".allInstances()->forAll(x : "+quotedContext+" | not x->closure("+property+")->includes(x))";
 		
-		invRule+="(self))";
+		else if(value==BinaryPropertyValue.CYCLIC)
+			invRule = "not ("+quotedContext+".allInstances()->forAll(x : "+quotedContext+" | not x->closure("+property+")->includes(x)))";
 		
-		fix.addAll(fixer.generateOCLInvariant(contextName, invName, invRule));
+		else if(value==BinaryPropertyValue.FERRERS)
+			invRule = quotedContext+".allInstances()->forAll(w,x : "+quotedContext+" | "+quotedContext+".allInstances()->forAll (y,z: "+quotedContext+" | " +
+					"(w."+property+"->includes(x) and y."+property+"->includes(z)) implies (w."+property+"->includes(z) or x."+property+"->includes(y)) ) )";	
+		else
+			return null;
 		
+		fix.addAll(fixer.generateOCLInvariant(context, value.toString().toLowerCase(), invRule));
 		return fix.getAddedRules().get(0);
 	}
+	
+	public static boolean validCombination(BinaryPropertyValue reflexivity, BinaryPropertyValue symmetry, BinaryPropertyValue transitivity, BinaryPropertyValue cyclicity){
+		
+		boolean reflexiveAcyclic = reflexivity==BinaryPropertyValue.REFLEXIVE && cyclicity==BinaryPropertyValue.ACYCLIC;
+		boolean reflexiveIntransitive =  reflexivity==BinaryPropertyValue.REFLEXIVE && transitivity==BinaryPropertyValue.ANTI_TRANSITIVE;
+		boolean symmetricAcyclic = symmetry==BinaryPropertyValue.SYMMETRIC && cyclicity==BinaryPropertyValue.ACYCLIC;
+		boolean reflexiveNonCyclic = reflexivity==BinaryPropertyValue.REFLEXIVE && cyclicity==BinaryPropertyValue.NON_CYCLIC;
+		boolean irreflexiveSymmetricTransitive = reflexivity==BinaryPropertyValue.ANTI_REFLEXIVE && symmetry==BinaryPropertyValue.SYMMETRIC && transitivity==BinaryPropertyValue.TRANSITIVE;
+		boolean irreflexiveTransitiveCyclic = reflexivity==BinaryPropertyValue.ANTI_REFLEXIVE && transitivity==BinaryPropertyValue.TRANSITIVE && cyclicity==BinaryPropertyValue.CYCLIC;
+		boolean nonReflexiveTransitiveCyclic = reflexivity==BinaryPropertyValue.NON_REFLEXIVE && transitivity==BinaryPropertyValue.TRANSITIVE && cyclicity==BinaryPropertyValue.CYCLIC;
+		
+		return !(reflexiveAcyclic || reflexiveIntransitive || symmetricAcyclic || reflexiveNonCyclic || irreflexiveSymmetricTransitive || irreflexiveTransitiveCyclic || nonReflexiveTransitiveCyclic);
+	}
+
+	
+/****************************************************************************************************************************************************************************
+ * 																																											|
+ * 																																											| 
+ * 																																											|
+ * 																																											|
+ * 	OLD CODE	OLD CODE	OLD CODE	OLD CODE	OLD CODE	OLD CODE 	OLD CODE	OLD CODE	OLD CODE	OLD CODE	OLD CODE	OLD CODE	OLD CODE	OLD CODE	|
+ * 																																											| 
+ * 																																											|
+ * 																																											| 
+ * 																																											|
+ * 																																											|  
+ ***************************************************************************************************************************************************************************/ 
 		
 	/*This method returns an Alloy predicate which only generates model instances in which the association that characterizes the antipattern is REFLEXIVE*/
 	public String generateReflexivePredicate (int cardinality, OntoUMLParser parser) {
@@ -299,4 +386,6 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 			
 		return predicate;
 	}
+	
+	
 }

@@ -7,15 +7,18 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
-import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryProperty;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
 
 public class TransitivityPage extends BinOverPage {
 	
 	Button btnTransitive, btnIntransitive, btnNonTransitive;
+	private Label lblIncompatibility;
+	private Label lblCurrentValues;
 	
 	/**
 	 * Create the wizard.
@@ -60,6 +63,15 @@ public class TransitivityPage extends BinOverPage {
 		btnNonTransitive.setText("Nothing (Non-Transitive)");
 		btnNonTransitive.setBounds(10, 141, 554, 16);
 		
+		lblIncompatibility = new Label(container, SWT.WRAP);
+		lblIncompatibility.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		lblIncompatibility.setBounds(10, 163, 554, 16);
+		lblIncompatibility.setText(	"(One or more options disable due to incompatibility with your previous answers.)");
+		
+		lblCurrentValues = new Label(container, SWT.WRAP | SWT.RIGHT);
+		lblCurrentValues.setBounds(10, 256, 554, 15);
+		lblCurrentValues.setText("Reflexivity = , Symmetry = ");
+		
 		setPageComplete(false);
 		
 		SelectionAdapter listener = new SelectionAdapter() {
@@ -78,32 +90,72 @@ public class TransitivityPage extends BinOverPage {
 		btnNonTransitive.addSelectionListener(listener);
 	}
 	
-	
+	public void updateUI(){
+		
+		BinaryPropertyValue reflexivityValue = getBinOverWizard().reflexivity, 
+							symmetryValue = getBinOverWizard().symmetry;
+		
+		boolean transitiveAvailable = BinOverOccurrence.validCombination(reflexivityValue, symmetryValue, BinaryPropertyValue.TRANSITIVE, BinaryPropertyValue.NONE),
+				intransitiveAvailable = BinOverOccurrence.validCombination(reflexivityValue, symmetryValue, BinaryPropertyValue.ANTI_TRANSITIVE, BinaryPropertyValue.NONE),
+				nonTransitiveAvailable = BinOverOccurrence.validCombination(reflexivityValue, symmetryValue, BinaryPropertyValue.NON_TRANSITIVE, BinaryPropertyValue.NONE);
+		
+		if (!transitiveAvailable){
+			btnTransitive.setEnabled(false);
+			btnTransitive.setSelection(false);
+		}
+		else
+			btnTransitive.setEnabled(true);
+		
+		if (!intransitiveAvailable){
+			btnIntransitive.setEnabled(false);
+			btnIntransitive.setSelection(false);
+		}
+		else
+			btnIntransitive.setEnabled(true);
+		
+		if (!nonTransitiveAvailable){
+			btnNonTransitive.setEnabled(false);
+			btnNonTransitive.setSelection(false);
+		}
+		else
+			btnNonTransitive.setEnabled(true);
+		
+		lblCurrentValues.setText("Reflexivity = "+getBinOverWizard().reflexivity+", Symmetry = "+getBinOverWizard().symmetry);
+		
+		if(!transitiveAvailable || !intransitiveAvailable || !nonTransitiveAvailable){
+			lblIncompatibility.setVisible(true);
+			lblCurrentValues.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		}
+		else{
+			lblIncompatibility.setVisible(false);
+			lblCurrentValues.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		}
+	}
 	
 	@Override
 	public IWizardPage getNextPage(){
-		BinaryPropertyValue transitivityValue;
+		
 		
 		if(btnTransitive.getSelection())
-			transitivityValue = BinaryPropertyValue.TRANSITIVE;
+			getBinOverWizard().transitivity = BinaryPropertyValue.TRANSITIVE;
 		else if(btnIntransitive.getSelection())
-			transitivityValue = BinaryPropertyValue.INTRANSITIVE;
+			getBinOverWizard().transitivity = BinaryPropertyValue.ANTI_TRANSITIVE;
 		else if(btnNonTransitive.getSelection())
-			transitivityValue = BinaryPropertyValue.NON_TRANSITIVE;
+			getBinOverWizard().transitivity = BinaryPropertyValue.NON_TRANSITIVE;
 		else
-			transitivityValue = BinaryPropertyValue.NONE;
+			getBinOverWizard().transitivity = BinaryPropertyValue.NONE;
 		
-		getBinOverWizard().removeAllActions(0, BinOverAction.Action.SET_TRANSITIVITY);
+		getBinOverWizard().removeAllActions(0, BinOverAction.Action.SET_BINARY_PROPERTY);
 		BinOverAction action = new BinOverAction(binOver);
-		action.setTransitivity(transitivityValue);
+		action.setBinaryProperty(getBinOverWizard().transitivity);
 		getBinOverWizard().addAction(0, action);
 		
-		if (getBinOverWizard().possibleStereotypes(BinaryProperty.Transitivity, transitivityValue).contains(getBinOverWizard().getCurrentStereotype(this))){
+		if (getBinOverWizard().possibleStereotypes(getBinOverWizard().transitivity).contains(getBinOverWizard().getCurrentStereotype(this))){
 			getBinOverWizard().removeAllActions(3);
 			return getBinOverWizard().getCyclicityPage();
 		}
 		else
-			return getBinOverWizard().getTransitivityChangePage(transitivityValue);
+			return getBinOverWizard().getTransitivityChangePage(getBinOverWizard().transitivity);
 	}
 
 }

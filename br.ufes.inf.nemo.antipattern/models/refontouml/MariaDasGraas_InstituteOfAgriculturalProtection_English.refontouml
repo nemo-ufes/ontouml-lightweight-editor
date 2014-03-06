@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XSxK8FuXEeOCwYvWfsRrew" name="MariaDasGra&#xe7;as_InstituteOfAgriculturalProtection_English" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxK8VuXEeOCwYvWfsRrew" name="Administrative Department" visibility="public">
+    <generalization xmi:id="_XSxK8luXEeOCwYvWfsRrew" general="_XSxLEFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxK81uXEeOCwYvWfsRrew" name="Administrative Organization" visibility="public">
+    <generalization xmi:id="_XSxK9FuXEeOCwYvWfsRrew" general="_XSxLLFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSxK9VuXEeOCwYvWfsRrew" name="Administrative Structure" visibility="public">
+    <generalization xmi:id="_XSxK9luXEeOCwYvWfsRrew" general="_XSxLLVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxK91uXEeOCwYvWfsRrew" name="Administrative Support" visibility="public">
+    <generalization xmi:id="_XSxK-FuXEeOCwYvWfsRrew" general="_XSxLMluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxK-VuXEeOCwYvWfsRrew" name="Advisory" visibility="public">
+    <generalization xmi:id="_XSxK-luXEeOCwYvWfsRrew" general="_XSxK81uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSxK-1uXEeOCwYvWfsRrew" name="Allocated Department" visibility="public">
+    <generalization xmi:id="_XSxK_FuXEeOCwYvWfsRrew" general="_XSxLEFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSxK_VuXEeOCwYvWfsRrew" name="Allocated Office" visibility="public">
+    <generalization xmi:id="_XSxK_luXEeOCwYvWfsRrew" general="_XSxLDluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSxK_1uXEeOCwYvWfsRrew" name="Allocation Unit" visibility="public">
+    <generalization xmi:id="_XSxLAFuXEeOCwYvWfsRrew" general="_XSxLLFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLAVuXEeOCwYvWfsRrew" name="Ancillary Server" visibility="public">
+    <generalization xmi:id="_XSxLAluXEeOCwYvWfsRrew" general="_XSxLMluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XSxLA1uXEeOCwYvWfsRrew" name="Ancillary Service" visibility="public">
+    <generalization xmi:id="_XSxLBFuXEeOCwYvWfsRrew" general="_XSxLIVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLBVuXEeOCwYvWfsRrew" name="Animal Health Inspector" visibility="public">
+    <generalization xmi:id="_XSxLBluXEeOCwYvWfsRrew" general="_XSxLMluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSxLB1uXEeOCwYvWfsRrew" name="Assignment" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLCFuXEeOCwYvWfsRrew" name="Board" visibility="public">
+    <generalization xmi:id="_XSxLCVuXEeOCwYvWfsRrew" general="_XSxK81uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XSxLCluXEeOCwYvWfsRrew" name="Border Station" visibility="public">
+    <generalization xmi:id="_XSxLC1uXEeOCwYvWfsRrew" general="_XSxLPFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLDFuXEeOCwYvWfsRrew" name="Cartography Technician" visibility="public">
+    <generalization xmi:id="_XSxLDVuXEeOCwYvWfsRrew" general="_XSxLMluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XSxLDluXEeOCwYvWfsRrew" name="Central Office" visibility="public">
+    <generalization xmi:id="_XSxLD1uXEeOCwYvWfsRrew" general="_XSxLJluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLEFuXEeOCwYvWfsRrew" name="Department" visibility="public">
+    <generalization xmi:id="_XSxLEVuXEeOCwYvWfsRrew" general="_XSxK81uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSxLEluXEeOCwYvWfsRrew" name="Department Allocation" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLE1uXEeOCwYvWfsRrew" name="Diagnostic Laboratory" visibility="public">
+    <generalization xmi:id="_XSxLFFuXEeOCwYvWfsRrew" general="_XSxLKFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XSxLFVuXEeOCwYvWfsRrew" name="Finalistico" visibility="public">
+    <generalization xmi:id="_XSxLFluXEeOCwYvWfsRrew" general="_XSxLIVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLF1uXEeOCwYvWfsRrew" name="Laboratory Technician" visibility="public">
+    <generalization xmi:id="_XSxLGFuXEeOCwYvWfsRrew" general="_XSxLMluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLGVuXEeOCwYvWfsRrew" name="Land Development Technician" visibility="public">
+    <generalization xmi:id="_XSxLGluXEeOCwYvWfsRrew" general="_XSxLMluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XSxLG1uXEeOCwYvWfsRrew" name="Local Office" visibility="public">
+    <generalization xmi:id="_XSxLHFuXEeOCwYvWfsRrew" general="_XSxLJluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLHVuXEeOCwYvWfsRrew" name="Mobile Unit" visibility="public">
+    <generalization xmi:id="_XSxLHluXEeOCwYvWfsRrew" general="_XSxLKFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLH1uXEeOCwYvWfsRrew" name="Natural Resources Technician" visibility="public">
+    <generalization xmi:id="_XSxLIFuXEeOCwYvWfsRrew" general="_XSxLMluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XSxLIVuXEeOCwYvWfsRrew" name="Occupational Group" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XSxLIluXEeOCwYvWfsRrew" name="Occupational Structure" visibility="public" isAbstract="true">
+    <generalization xmi:id="_XSxLI1uXEeOCwYvWfsRrew" general="_XSxLPluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSxLJFuXEeOCwYvWfsRrew" name="Occupied Position" visibility="public">
+    <generalization xmi:id="_XSxLJVuXEeOCwYvWfsRrew" general="_XSxLMluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLJluXEeOCwYvWfsRrew" name="Office" visibility="public">
+    <generalization xmi:id="_XSxLJ1uXEeOCwYvWfsRrew" general="_XSxLKFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLKFuXEeOCwYvWfsRrew" name="Operational Organization" visibility="public">
+    <generalization xmi:id="_XSxLKVuXEeOCwYvWfsRrew" general="_XSxLLFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSxLKluXEeOCwYvWfsRrew" name="Operational Structure" visibility="public">
+    <generalization xmi:id="_XSxLK1uXEeOCwYvWfsRrew" general="_XSxLLVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSxLLFuXEeOCwYvWfsRrew" name="Organization" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XSxLLVuXEeOCwYvWfsRrew" name="Organizational Structure" visibility="public" isAbstract="true">
+    <generalization xmi:id="_XSxLLluXEeOCwYvWfsRrew" general="_XSxLPluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSxLL1uXEeOCwYvWfsRrew" name="Person" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLMFuXEeOCwYvWfsRrew" name="Plant Health Inspector" visibility="public">
+    <generalization xmi:id="_XSxLMVuXEeOCwYvWfsRrew" general="_XSxLMluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSxLMluXEeOCwYvWfsRrew" name="Position" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XSxLM1uXEeOCwYvWfsRrew" name="Regional Office" visibility="public">
+    <generalization xmi:id="_XSxLNFuXEeOCwYvWfsRrew" general="_XSxLJluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLNVuXEeOCwYvWfsRrew" name="Secao" visibility="public">
+    <generalization xmi:id="_XSxLNluXEeOCwYvWfsRrew" general="_XSxK81uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSxLN1uXEeOCwYvWfsRrew" name="Server" visibility="public">
+    <generalization xmi:id="_XSxLOFuXEeOCwYvWfsRrew" general="_XSxLL1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSxLOVuXEeOCwYvWfsRrew" name="Server Allocation" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XSxLOluXEeOCwYvWfsRrew" name="Service Station" visibility="public">
+    <generalization xmi:id="_XSxLO1uXEeOCwYvWfsRrew" general="_XSxLPFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLPFuXEeOCwYvWfsRrew" name="Station" visibility="public">
+    <generalization xmi:id="_XSxLPVuXEeOCwYvWfsRrew" general="_XSxLKFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XSxLPluXEeOCwYvWfsRrew" name="Structure" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XSxLP1uXEeOCwYvWfsRrew" name="Technical Admnistrative Support" visibility="public">
+    <generalization xmi:id="_XSxLQFuXEeOCwYvWfsRrew" general="_XSxLIVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLQVuXEeOCwYvWfsRrew" name="Technical Department" visibility="public">
+    <generalization xmi:id="_XSxLQluXEeOCwYvWfsRrew" general="_XSxLEFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSxLQ1uXEeOCwYvWfsRrew" name="Technical Support" visibility="public">
+    <generalization xmi:id="_XSxLRFuXEeOCwYvWfsRrew" general="_XSxLMluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XSxLRVuXEeOCwYvWfsRrew" name="PartAsses" visibility="public" memberEnd="_XSxLRluXEeOCwYvWfsRrew _XSxLSVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxLRluXEeOCwYvWfsRrew" name="advisory" visibility="public" type="_XSxK-VuXEeOCwYvWfsRrew" association="_XSxLRVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxLR1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxLSFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxLSVuXEeOCwYvWfsRrew" name="administrative structure" visibility="public" type="_XSxK9VuXEeOCwYvWfsRrew" aggregation="composite" association="_XSxLRVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxLSluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxLS1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XSxLTFuXEeOCwYvWfsRrew" name="PartDir" visibility="public" memberEnd="_XSxLTVuXEeOCwYvWfsRrew _XSxLUFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxLTVuXEeOCwYvWfsRrew" name="board" visibility="public" type="_XSxLCFuXEeOCwYvWfsRrew" association="_XSxLTFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxLTluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxLT1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxLUFuXEeOCwYvWfsRrew" name="administrative structure" visibility="public" type="_XSxK9VuXEeOCwYvWfsRrew" aggregation="composite" association="_XSxLTFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxLUVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxx8FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XSxx8VuXEeOCwYvWfsRrew" name="PartDepto" visibility="public" memberEnd="_XSxx8luXEeOCwYvWfsRrew _XSxx9VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxx8luXEeOCwYvWfsRrew" name="department" visibility="public" type="_XSxLEFuXEeOCwYvWfsRrew" association="_XSxx8VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxx81uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxx9FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxx9VuXEeOCwYvWfsRrew" name="administrative structure" visibility="public" type="_XSxK9VuXEeOCwYvWfsRrew" aggregation="composite" association="_XSxx8VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxx9luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxx91uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XSxx-FuXEeOCwYvWfsRrew" name="PartSupAdm" visibility="public" memberEnd="_XSxx-VuXEeOCwYvWfsRrew _XSxx_FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxx-VuXEeOCwYvWfsRrew" name="technical admnistrative support" visibility="public" type="_XSxLP1uXEeOCwYvWfsRrew" aggregation="composite" association="_XSxx-FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxx-luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxx-1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxx_FuXEeOCwYvWfsRrew" name="administrative support" visibility="public" type="_XSxK91uXEeOCwYvWfsRrew" association="_XSxx-FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxx_VuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxx_luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSxx_1uXEeOCwYvWfsRrew" name="MedDeptLot" visibility="public" memberEnd="_XSxyAFuXEeOCwYvWfsRrew _XSxyA1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyAFuXEeOCwYvWfsRrew" name="department allocation" visibility="public" type="_XSxLEluXEeOCwYvWfsRrew" association="_XSxx_1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyAVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyAluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyA1uXEeOCwYvWfsRrew" name="allocated department" visibility="public" type="_XSxK-1uXEeOCwYvWfsRrew" association="_XSxx_1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyBFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyBVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSxyBluXEeOCwYvWfsRrew" name="MedEscrLot" visibility="public" memberEnd="_XSxyB1uXEeOCwYvWfsRrew _XSxyCluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyB1uXEeOCwYvWfsRrew" name="department allocation" visibility="public" type="_XSxLEluXEeOCwYvWfsRrew" association="_XSxyBluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyCFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyCVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyCluXEeOCwYvWfsRrew" name="allocated office" visibility="public" type="_XSxK_VuXEeOCwYvWfsRrew" association="_XSxyBluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyC1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyDFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSxyDVuXEeOCwYvWfsRrew" name="UnitParaLot" visibility="public" memberEnd="_XSxyDluXEeOCwYvWfsRrew _XSxyEVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyDluXEeOCwYvWfsRrew" name="server allocation" visibility="public" type="_XSxLOVuXEeOCwYvWfsRrew" association="_XSxyDVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyD1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyEFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyEVuXEeOCwYvWfsRrew" name="allocation unit" visibility="public" type="_XSxK_1uXEeOCwYvWfsRrew" association="_XSxyDVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyEluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyE1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XSxyFFuXEeOCwYvWfsRrew" name="PartAuxServ" visibility="public" memberEnd="_XSxyFVuXEeOCwYvWfsRrew _XSxyGFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyFVuXEeOCwYvWfsRrew" name="ancillary service" visibility="public" type="_XSxLA1uXEeOCwYvWfsRrew" aggregation="composite" association="_XSxyFFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyFluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyF1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyGFuXEeOCwYvWfsRrew" name="ancillary server" visibility="public" type="_XSxLAVuXEeOCwYvWfsRrew" association="_XSxyFFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyGVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyGluXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XSxyG1uXEeOCwYvWfsRrew" name="PartTecSanInspAni" visibility="public" memberEnd="_XSxyHFuXEeOCwYvWfsRrew _XSxyH1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyHFuXEeOCwYvWfsRrew" name="finalistico" visibility="public" type="_XSxLFVuXEeOCwYvWfsRrew" aggregation="composite" association="_XSxyG1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyHVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyHluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyH1uXEeOCwYvWfsRrew" name="animal health inspector" visibility="public" type="_XSxLBVuXEeOCwYvWfsRrew" association="_XSxyG1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyIFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyIVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSxyIluXEeOCwYvWfsRrew" name="ServParaDesig" visibility="public" memberEnd="_XSxyI1uXEeOCwYvWfsRrew _XSxyJluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyI1uXEeOCwYvWfsRrew" name="server" visibility="public" type="_XSxLN1uXEeOCwYvWfsRrew" association="_XSxyIluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyJFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyJVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyJluXEeOCwYvWfsRrew" name="assignment" visibility="public" type="_XSxLB1uXEeOCwYvWfsRrew" association="_XSxyIluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyJ1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyKFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSxyKVuXEeOCwYvWfsRrew" name="CargoParaDesig" visibility="public" memberEnd="_XSxyKluXEeOCwYvWfsRrew _XSxyLVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyKluXEeOCwYvWfsRrew" name="occupied position" visibility="public" type="_XSxLJFuXEeOCwYvWfsRrew" association="_XSxyKVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyK1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyLFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyLVuXEeOCwYvWfsRrew" name="assignment" visibility="public" type="_XSxLB1uXEeOCwYvWfsRrew" association="_XSxyKVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyLluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyL1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XSxyMFuXEeOCwYvWfsRrew" name="PartTecCart" visibility="public" memberEnd="_XSxyMVuXEeOCwYvWfsRrew _XSxyNFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyMVuXEeOCwYvWfsRrew" name="finalistico" visibility="public" type="_XSxLFVuXEeOCwYvWfsRrew" aggregation="composite" association="_XSxyMFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyMluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyM1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyNFuXEeOCwYvWfsRrew" name="cartography technician" visibility="public" type="_XSxLDFuXEeOCwYvWfsRrew" association="_XSxyMFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyNVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyNluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XSxyN1uXEeOCwYvWfsRrew" name="PartSec" visibility="public" memberEnd="_XSxyOFuXEeOCwYvWfsRrew _XSxyO1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyOFuXEeOCwYvWfsRrew" name="secao" visibility="public" type="_XSxLNVuXEeOCwYvWfsRrew" association="_XSxyN1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyOVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyOluXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyO1uXEeOCwYvWfsRrew" name="department" visibility="public" type="_XSxLEFuXEeOCwYvWfsRrew" aggregation="composite" association="_XSxyN1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyPFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyPVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XSxyPluXEeOCwYvWfsRrew" name="PartLabDiag" visibility="public" memberEnd="_XSxyP1uXEeOCwYvWfsRrew _XSxyQluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyP1uXEeOCwYvWfsRrew" name="operational structure" visibility="public" type="_XSxLKluXEeOCwYvWfsRrew" aggregation="composite" association="_XSxyPluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyQFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyQVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyQluXEeOCwYvWfsRrew" name="diagnostic laboratory" visibility="public" type="_XSxLE1uXEeOCwYvWfsRrew" association="_XSxyPluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyQ1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyRFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XSxyRVuXEeOCwYvWfsRrew" name="PartTecSanInspVeg" visibility="public" memberEnd="_XSxyRluXEeOCwYvWfsRrew _XSxySVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyRluXEeOCwYvWfsRrew" name="plant health inspector" visibility="public" type="_XSxLMFuXEeOCwYvWfsRrew" association="_XSxyRVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyR1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxySFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxySVuXEeOCwYvWfsRrew" name="finalistico" visibility="public" type="_XSxLFVuXEeOCwYvWfsRrew" aggregation="composite" association="_XSxyRVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxySluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyS1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XSxyTFuXEeOCwYvWfsRrew" name="PartTecLab" visibility="public" memberEnd="_XSxyTVuXEeOCwYvWfsRrew _XSxyUFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyTVuXEeOCwYvWfsRrew" name="laboratory technician" visibility="public" type="_XSxLF1uXEeOCwYvWfsRrew" association="_XSxyTFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyTluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyT1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyUFuXEeOCwYvWfsRrew" name="finalistico" visibility="public" type="_XSxLFVuXEeOCwYvWfsRrew" aggregation="composite" association="_XSxyTFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyUVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyUluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XSxyU1uXEeOCwYvWfsRrew" name="PartTecRecNat" visibility="public" memberEnd="_XSxyVFuXEeOCwYvWfsRrew _XSxyV1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyVFuXEeOCwYvWfsRrew" name="natural resources technician" visibility="public" type="_XSxLH1uXEeOCwYvWfsRrew" association="_XSxyU1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyVVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyVluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyV1uXEeOCwYvWfsRrew" name="finalistico" visibility="public" type="_XSxLFVuXEeOCwYvWfsRrew" aggregation="composite" association="_XSxyU1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyWFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyWVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XSxyWluXEeOCwYvWfsRrew" name="PartTecDesFund" visibility="public" memberEnd="_XSxyW1uXEeOCwYvWfsRrew _XSxyXluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSxyW1uXEeOCwYvWfsRrew" name="land development technician" visibility="public" type="_XSxLGVuXEeOCwYvWfsRrew" association="_XSxyWluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyXFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSxyXVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSxyXluXEeOCwYvWfsRrew" name="finalistico" visibility="public" type="_XSxLFVuXEeOCwYvWfsRrew" aggregation="composite" association="_XSxyWluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSxyX1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZAFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XSyZAVuXEeOCwYvWfsRrew" name="PartPosto" visibility="public" memberEnd="_XSyZAluXEeOCwYvWfsRrew _XSyZBVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSyZAluXEeOCwYvWfsRrew" name="station" visibility="public" type="_XSxLPFuXEeOCwYvWfsRrew" association="_XSyZAVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZA1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZBFuXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZBVuXEeOCwYvWfsRrew" name="local office" visibility="public" type="_XSxLG1uXEeOCwYvWfsRrew" aggregation="composite" association="_XSyZAVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZBluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZB1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XSyZCFuXEeOCwYvWfsRrew" name="PartLocal" visibility="public" memberEnd="_XSyZCVuXEeOCwYvWfsRrew _XSyZDFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSyZCVuXEeOCwYvWfsRrew" name="regional office" visibility="public" type="_XSxLM1uXEeOCwYvWfsRrew" aggregation="composite" association="_XSyZCFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZCluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZC1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZDFuXEeOCwYvWfsRrew" name="local office" visibility="public" type="_XSxLG1uXEeOCwYvWfsRrew" association="_XSyZCFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZDVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZDluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XSyZD1uXEeOCwYvWfsRrew" name="PartUnitVol" visibility="public" memberEnd="_XSyZEFuXEeOCwYvWfsRrew _XSyZE1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSyZEFuXEeOCwYvWfsRrew" name="regional office" visibility="public" type="_XSxLM1uXEeOCwYvWfsRrew" aggregation="composite" association="_XSyZD1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZEVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZEluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZE1uXEeOCwYvWfsRrew" name="mobile unit" visibility="public" type="_XSxLHVuXEeOCwYvWfsRrew" association="_XSyZD1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZFFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZFVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XSyZFluXEeOCwYvWfsRrew" name="PartGO" visibility="public" memberEnd="_XSyZF1uXEeOCwYvWfsRrew _XSyZGluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSyZF1uXEeOCwYvWfsRrew" name="occupational structure" visibility="public" type="_XSxLIluXEeOCwYvWfsRrew" aggregation="composite" association="_XSyZFluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZGFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZGVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZGluXEeOCwYvWfsRrew" name="occupational group" visibility="public" type="_XSxLIVuXEeOCwYvWfsRrew" association="_XSyZFluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZG1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZHFuXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XSyZHVuXEeOCwYvWfsRrew" name="PartEscrit" visibility="public" memberEnd="_XSyZHluXEeOCwYvWfsRrew _XSyZIVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSyZHluXEeOCwYvWfsRrew" name="operational structure" visibility="public" type="_XSxLKluXEeOCwYvWfsRrew" aggregation="composite" association="_XSyZHVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZH1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZIFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZIVuXEeOCwYvWfsRrew" name="office" visibility="public" type="_XSxLJluXEeOCwYvWfsRrew" association="_XSyZHVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZIluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZI1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSyZJFuXEeOCwYvWfsRrew" name="ServParaLot" visibility="public" memberEnd="_XSyZJVuXEeOCwYvWfsRrew _XSyZKFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSyZJVuXEeOCwYvWfsRrew" name="server allocation" visibility="public" type="_XSxLOVuXEeOCwYvWfsRrew" association="_XSyZJFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZJluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZJ1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZKFuXEeOCwYvWfsRrew" name="server" visibility="public" type="_XSxLN1uXEeOCwYvWfsRrew" association="_XSyZJFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZKVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZKluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XSyZK1uXEeOCwYvWfsRrew" name="PartSupTec" visibility="public" memberEnd="_XSyZLFuXEeOCwYvWfsRrew _XSyZL1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSyZLFuXEeOCwYvWfsRrew" name="technical support" visibility="public" type="_XSxLQ1uXEeOCwYvWfsRrew" association="_XSyZK1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZLVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZLluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZL1uXEeOCwYvWfsRrew" name="technical admnistrative support" visibility="public" type="_XSxLP1uXEeOCwYvWfsRrew" aggregation="composite" association="_XSyZK1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZMFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZMVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XSyZMluXEeOCwYvWfsRrew" name="LotDeptoEscr" visibility="public" memberEnd="_XSyZM1uXEeOCwYvWfsRrew _XSyZNluXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XSyZM1uXEeOCwYvWfsRrew" name="allocated office" visibility="public" type="_XSxK_VuXEeOCwYvWfsRrew" association="_XSyZMluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZNFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZNVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZNluXEeOCwYvWfsRrew" name="allocated department" visibility="public" type="_XSxK-1uXEeOCwYvWfsRrew" association="_XSyZMluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZN1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZOFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XSyZOVuXEeOCwYvWfsRrew" name="ehLotadoEm" visibility="public" memberEnd="_XSyZOluXEeOCwYvWfsRrew _XSyZPVuXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XSyZOluXEeOCwYvWfsRrew" name="server" visibility="public" type="_XSxLN1uXEeOCwYvWfsRrew" association="_XSyZOVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZO1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZPFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZPVuXEeOCwYvWfsRrew" name="allocation unit" visibility="public" type="_XSxK_1uXEeOCwYvWfsRrew" association="_XSyZOVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZPluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZP1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XSyZQFuXEeOCwYvWfsRrew" name="ehDesignadoEm" visibility="public" memberEnd="_XSyZQVuXEeOCwYvWfsRrew _XSyZRFuXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XSyZQVuXEeOCwYvWfsRrew" name="server" visibility="public" type="_XSxLN1uXEeOCwYvWfsRrew" association="_XSyZQFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZQluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZQ1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZRFuXEeOCwYvWfsRrew" name="occupied position" visibility="public" type="_XSxLJFuXEeOCwYvWfsRrew" association="_XSyZQFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZRVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZRluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Derivation" xmi:id="_XSyZR1uXEeOCwYvWfsRrew" name="A_ehLotadoEm_ServerAllocation" memberEnd="_XSyZSFuXEeOCwYvWfsRrew _XSyZS1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSyZSFuXEeOCwYvWfsRrew" type="_XSyZOVuXEeOCwYvWfsRrew" association="_XSyZR1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZSVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZSluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZS1uXEeOCwYvWfsRrew" type="_XSxLOVuXEeOCwYvWfsRrew" association="_XSyZR1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZTFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZTVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Derivation" xmi:id="_XSyZTluXEeOCwYvWfsRrew" name="A_ehDesignadoEm_Assignment" memberEnd="_XSyZT1uXEeOCwYvWfsRrew _XSyZUluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSyZT1uXEeOCwYvWfsRrew" type="_XSyZQFuXEeOCwYvWfsRrew" association="_XSyZTluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZUFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZUVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZUluXEeOCwYvWfsRrew" type="_XSxLB1uXEeOCwYvWfsRrew" association="_XSyZTluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZU1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZVFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Derivation" xmi:id="_XSyZVVuXEeOCwYvWfsRrew" name="A_LotDeptoEscr_DepartmentAllocation" memberEnd="_XSyZVluXEeOCwYvWfsRrew _XSyZWVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSyZVluXEeOCwYvWfsRrew" type="_XSyZMluXEeOCwYvWfsRrew" association="_XSyZVVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZV1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZWFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSyZWVuXEeOCwYvWfsRrew" type="_XSxLEluXEeOCwYvWfsRrew" association="_XSyZVVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSyZWluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSyZW1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf">
+    <ownedEnd name="whole" type="_XSxLP1uXEeOCwYvWfsRrew" aggregation="composite"/>
+    <ownedEnd name="newPart" type="_XSxLAVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+</RefOntoUML:Package>

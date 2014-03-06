@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XSihYFuXEeOCwYvWfsRrew" name="ErickCasagrande_ProjectManagement_English" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSihYVuXEeOCwYvWfsRrew" name="Activity" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSihYluXEeOCwYvWfsRrew" name="Atomic" visibility="public">
+    <generalization xmi:id="_XSihY1uXEeOCwYvWfsRrew" general="_XSihYVuXEeOCwYvWfsRrew" generalizationSet="_XSihqFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XSihZFuXEeOCwYvWfsRrew" name="Composed" visibility="public">
+    <generalization xmi:id="_XSihZVuXEeOCwYvWfsRrew" general="_XSihYVuXEeOCwYvWfsRrew" generalizationSet="_XSihqFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSihZluXEeOCwYvWfsRrew" name="Financial Resource" visibility="public">
+    <generalization xmi:id="_XSihZ1uXEeOCwYvWfsRrew" general="_XSihdVuXEeOCwYvWfsRrew" generalizationSet="_XSihqVuXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XSihaFuXEeOCwYvWfsRrew" general="_XSihbFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSihaVuXEeOCwYvWfsRrew" name="Human Resource" visibility="public">
+    <generalization xmi:id="_XSihaluXEeOCwYvWfsRrew" general="_XSihdVuXEeOCwYvWfsRrew" generalizationSet="_XSihqVuXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XSiha1uXEeOCwYvWfsRrew" general="_XSihcFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSihbFuXEeOCwYvWfsRrew" name="Money" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XSihbVuXEeOCwYvWfsRrew" name="Performed Activity" visibility="public">
+    <generalization xmi:id="_XSihbluXEeOCwYvWfsRrew" general="_XSihYVuXEeOCwYvWfsRrew" generalizationSet="_XSihqluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XSihb1uXEeOCwYvWfsRrew" name="Performed Schedule" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSihcFuXEeOCwYvWfsRrew" name="Person" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XSihcVuXEeOCwYvWfsRrew" name="Planned Activity" visibility="public">
+    <generalization xmi:id="_XSihcluXEeOCwYvWfsRrew" general="_XSihYVuXEeOCwYvWfsRrew" generalizationSet="_XSihqluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XSihc1uXEeOCwYvWfsRrew" name="Planned Schedule" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XSihdFuXEeOCwYvWfsRrew" name="Project" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XSihdVuXEeOCwYvWfsRrew" name="Resource" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSihdluXEeOCwYvWfsRrew" name="Resource Allocation" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XSihd1uXEeOCwYvWfsRrew" name="A_Composed_Atomic" visibility="public" memberEnd="_XSiheFuXEeOCwYvWfsRrew _XSihe1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSiheFuXEeOCwYvWfsRrew" name="composed" visibility="public" type="_XSihZFuXEeOCwYvWfsRrew" aggregation="composite" association="_XSihd1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSiheVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSiheluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSihe1uXEeOCwYvWfsRrew" name="atomic" visibility="public" type="_XSihYluXEeOCwYvWfsRrew" association="_XSihd1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihfFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihfVuXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSihfluXEeOCwYvWfsRrew" name="A_ResourceAllocation_PerformedActivity" visibility="public" memberEnd="_XSihf1uXEeOCwYvWfsRrew _XSihgluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSihf1uXEeOCwYvWfsRrew" name="resource allocation" visibility="public" type="_XSihdluXEeOCwYvWfsRrew" association="_XSihfluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihgFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihgVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSihgluXEeOCwYvWfsRrew" name="performed activity" visibility="public" type="_XSihbVuXEeOCwYvWfsRrew" association="_XSihfluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihg1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihhFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XSihhVuXEeOCwYvWfsRrew" name="A_PerformedSchedule_PerformedActivity" visibility="public" memberEnd="_XSihhluXEeOCwYvWfsRrew _XSihiVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSihhluXEeOCwYvWfsRrew" name="performed schedule" visibility="public" type="_XSihb1uXEeOCwYvWfsRrew" association="_XSihhVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihh1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihiFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSihiVuXEeOCwYvWfsRrew" name="performed activity" visibility="public" type="_XSihbVuXEeOCwYvWfsRrew" association="_XSihhVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihiluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihi1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XSihjFuXEeOCwYvWfsRrew" name="A_Project_PerformedSchedule" visibility="public" memberEnd="_XSihjVuXEeOCwYvWfsRrew _XSihkFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSihjVuXEeOCwYvWfsRrew" name="project" visibility="public" type="_XSihdFuXEeOCwYvWfsRrew" association="_XSihjFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihjluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihj1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSihkFuXEeOCwYvWfsRrew" name="performed schedule" visibility="public" type="_XSihb1uXEeOCwYvWfsRrew" association="_XSihjFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihkVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihkluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XSihk1uXEeOCwYvWfsRrew" name="A_PlannedSchedule_PlannedActivity" visibility="public" memberEnd="_XSihlFuXEeOCwYvWfsRrew _XSihl1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSihlFuXEeOCwYvWfsRrew" name="planned schedule" visibility="public" type="_XSihc1uXEeOCwYvWfsRrew" association="_XSihk1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihlVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihlluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSihl1uXEeOCwYvWfsRrew" name="planned activity" visibility="public" type="_XSihcVuXEeOCwYvWfsRrew" association="_XSihk1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihmFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihmVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XSihmluXEeOCwYvWfsRrew" name="A_Project_PlannedSchedule" visibility="public" memberEnd="_XSihm1uXEeOCwYvWfsRrew _XSihnluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSihm1uXEeOCwYvWfsRrew" name="project" visibility="public" type="_XSihdFuXEeOCwYvWfsRrew" association="_XSihmluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihnFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihnVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSihnluXEeOCwYvWfsRrew" name="planned schedule" visibility="public" type="_XSihc1uXEeOCwYvWfsRrew" association="_XSihmluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihn1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihoFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSihoVuXEeOCwYvWfsRrew" name="A_ResourceAllocation_Resource" visibility="public" memberEnd="_XSiholuXEeOCwYvWfsRrew _XSihpVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSiholuXEeOCwYvWfsRrew" name="resource allocation" visibility="public" type="_XSihdluXEeOCwYvWfsRrew" association="_XSihoVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSiho1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihpFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSihpVuXEeOCwYvWfsRrew" name="resource" visibility="public" type="_XSihdVuXEeOCwYvWfsRrew" association="_XSihoVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihpluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihp1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XSihqFuXEeOCwYvWfsRrew" name="gs-atomicComposed" visibility="public" isCovering="true" isDisjoint="true" generalization="_XSihY1uXEeOCwYvWfsRrew _XSihZVuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XSihqVuXEeOCwYvWfsRrew" name="gs-recurso" visibility="public" isCovering="true" isDisjoint="true" generalization="_XSihZ1uXEeOCwYvWfsRrew _XSihaluXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XSihqluXEeOCwYvWfsRrew" name="gs-plannedPerformed" visibility="public" isCovering="true" isDisjoint="true" generalization="_XSihbluXEeOCwYvWfsRrew _XSihcluXEeOCwYvWfsRrew"/>
+</RefOntoUML:Package>

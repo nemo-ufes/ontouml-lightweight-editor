@@ -122,5 +122,25 @@ public class CommonSortalSupertype extends OverlappingGroup {
 			
 		return true;
 	}
+
+	public boolean isHasOverlappingGS() {
+		return hasOverlappingGS;
+	}
+
+	public Classifier getIdentityProvider() {
+		return identityProvider;
+	}
+
+	public Classifier getClosestSupertpe() {
+		return closestSupertpe;
+	}
+
+	public ArrayList<Classifier> getCommonSupertypes() {
+		return commonSupertypes;
+	}
+
+	public ArrayList<GeneralizationSet> getGenSets() {
+		return genSets;
+	}
 	
 }

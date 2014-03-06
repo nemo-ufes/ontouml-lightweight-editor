@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XS9YfluXEeOCwYvWfsRrew" name="VictorioCarvalho_ParkingLotManagement_English" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XS9Yf1uXEeOCwYvWfsRrew" name="Active Parking Spot Usage" visibility="public">
+    <generalization xmi:id="_XS9YgFuXEeOCwYvWfsRrew" general="_XS9_ZFuXEeOCwYvWfsRrew" generalizationSet="_XS_NbFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XS9YgVuXEeOCwYvWfsRrew" name="Bus/Truck" visibility="public">
+    <generalization xmi:id="_XS9YgluXEeOCwYvWfsRrew" general="_XS9_qluXEeOCwYvWfsRrew" generalizationSet="_XS_NbVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XS9Yg1uXEeOCwYvWfsRrew" name="Cash Payment" visibility="public">
+    <generalization xmi:id="_XS9YhFuXEeOCwYvWfsRrew" general="_XS9_aFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XS9YhVuXEeOCwYvWfsRrew" name="Company" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XS9YhluXEeOCwYvWfsRrew" name="Company Customer" visibility="public">
+    <generalization xmi:id="_XS9Yh1uXEeOCwYvWfsRrew" general="_XS9_MluXEeOCwYvWfsRrew" generalizationSet="_XS_NbluXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XS9YiFuXEeOCwYvWfsRrew" general="_XS9YhVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XS9YiVuXEeOCwYvWfsRrew" name="Credit Card Payment" visibility="public">
+    <generalization xmi:id="_XS9YiluXEeOCwYvWfsRrew" general="_XS9_aFuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XS9Yi1uXEeOCwYvWfsRrew" name="transactionID" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k7luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_MFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_MVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XS9_MluXEeOCwYvWfsRrew" name="Customer" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_M1uXEeOCwYvWfsRrew" name="Daily Reservation" visibility="public">
+    <generalization xmi:id="_XS9_NFuXEeOCwYvWfsRrew" general="_XS9_U1uXEeOCwYvWfsRrew" generalizationSet="_XS_Nb1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XS9_NVuXEeOCwYvWfsRrew" name="Debit Card Payment" visibility="public">
+    <generalization xmi:id="_XS9_NluXEeOCwYvWfsRrew" general="_XS9_aFuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XS9_N1uXEeOCwYvWfsRrew" name="transactionID" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k7luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_OFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_OVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XS9_OluXEeOCwYvWfsRrew" name="Expired Price Table" visibility="public">
+    <generalization xmi:id="_XS9_O1uXEeOCwYvWfsRrew" general="_XS9_bVuXEeOCwYvWfsRrew" generalizationSet="_XS_NcFuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XS9_PFuXEeOCwYvWfsRrew" name="finalValidityDate" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k6FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_PVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_PluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_P1uXEeOCwYvWfsRrew" name="Fractioneted Reservation" visibility="public">
+    <generalization xmi:id="_XS9_QFuXEeOCwYvWfsRrew" general="_XS9_U1uXEeOCwYvWfsRrew" generalizationSet="_XS_Nb1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_QVuXEeOCwYvWfsRrew" name="Income Generator Usage" visibility="public">
+    <generalization xmi:id="_XS9_QluXEeOCwYvWfsRrew" general="_XS9_ZFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XS9_Q1uXEeOCwYvWfsRrew" name="Light/SUV" visibility="public">
+    <generalization xmi:id="_XS9_RFuXEeOCwYvWfsRrew" general="_XS9_qluXEeOCwYvWfsRrew" generalizationSet="_XS_NbVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_RVuXEeOCwYvWfsRrew" name="Monthly Reservation" visibility="public">
+    <generalization xmi:id="_XS9_RluXEeOCwYvWfsRrew" general="_XS9_U1uXEeOCwYvWfsRrew" generalizationSet="_XS_Nb1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XS9_R1uXEeOCwYvWfsRrew" name="Motorcycle" visibility="public">
+    <generalization xmi:id="_XS9_SFuXEeOCwYvWfsRrew" general="_XS9_qluXEeOCwYvWfsRrew" generalizationSet="_XS_NbVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_SVuXEeOCwYvWfsRrew" name="Multiple Parking Reservation" visibility="public">
+    <generalization xmi:id="_XS9_SluXEeOCwYvWfsRrew" general="_XS9_U1uXEeOCwYvWfsRrew" generalizationSet="_XS_NcVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XS9_S1uXEeOCwYvWfsRrew" name="Parked Vehicle" visibility="public">
+    <generalization xmi:id="_XS9_TFuXEeOCwYvWfsRrew" general="_XS9_qluXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XS9_TVuXEeOCwYvWfsRrew" name="license plate" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_TluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_T1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XS9_UFuXEeOCwYvWfsRrew" name="Parking Company" visibility="public">
+    <generalization xmi:id="_XS9_UVuXEeOCwYvWfsRrew" general="_XS9YhVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XS9_UluXEeOCwYvWfsRrew" name="Parking Lot" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_U1uXEeOCwYvWfsRrew" name="Parking Reservation" visibility="public">
+    <ownedAttribute xmi:id="_XS9_VFuXEeOCwYvWfsRrew" name="endTime" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k71uXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_VVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_VluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XS9_V1uXEeOCwYvWfsRrew" name="startTime" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k71uXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_WFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_WVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XS9_WluXEeOCwYvWfsRrew" name="dateTimeReservation" visibility="private">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_W1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_XFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XS9_XVuXEeOCwYvWfsRrew" name="cost" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k8FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_XluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_X1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XS9_YFuXEeOCwYvWfsRrew" name="Parking Spot" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XS9_YVuXEeOCwYvWfsRrew" name="Parking Spot Provider" visibility="public">
+    <generalization xmi:id="_XS9_YluXEeOCwYvWfsRrew" general="_XS9_UluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Class" xmi:id="_XS9_Y1uXEeOCwYvWfsRrew" name="Parking Spot Type" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_ZFuXEeOCwYvWfsRrew" name="Parking Spot Usage" visibility="public">
+    <ownedAttribute xmi:id="_XS9_ZVuXEeOCwYvWfsRrew" name="entryTime" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k71uXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_ZluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_Z1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XS9_aFuXEeOCwYvWfsRrew" name="Payment" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XS9_aVuXEeOCwYvWfsRrew" name="Person" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XS9_aluXEeOCwYvWfsRrew" name="Personal Customer" visibility="public">
+    <generalization xmi:id="_XS9_a1uXEeOCwYvWfsRrew" general="_XS9_aVuXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XS9_bFuXEeOCwYvWfsRrew" general="_XS9_MluXEeOCwYvWfsRrew" generalizationSet="_XS_NbluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XS9_bVuXEeOCwYvWfsRrew" name="Price Table" visibility="public">
+    <ownedAttribute xmi:id="_XS9_bluXEeOCwYvWfsRrew" name="initialValidityDate" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k6FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_b1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_cFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XS9_cVuXEeOCwYvWfsRrew" name="dailyRate" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k8FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_cluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_c1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XS9_dFuXEeOCwYvWfsRrew" name="monthlyRate" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k8FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_dVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_dluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XS9_d1uXEeOCwYvWfsRrew" name="Price Table Used In Reservation" visibility="public">
+    <generalization xmi:id="_XS9_eFuXEeOCwYvWfsRrew" general="_XS9_bVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_eVuXEeOCwYvWfsRrew" name="ReservaTipoVaga" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_eluXEeOCwYvWfsRrew" name="Reservation of Parking Spot Type" visibility="public">
+    <generalization xmi:id="_XS9_e1uXEeOCwYvWfsRrew" general="_XS9_U1uXEeOCwYvWfsRrew" generalizationSet="_XS_NcluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_fFuXEeOCwYvWfsRrew" name="Reservation of Spefic Parking Spot" visibility="public">
+    <generalization xmi:id="_XS9_fVuXEeOCwYvWfsRrew" general="_XS9_U1uXEeOCwYvWfsRrew" generalizationSet="_XS_NcluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XS9_fluXEeOCwYvWfsRrew" name="Reserved Parking Spot" visibility="public">
+    <generalization xmi:id="_XS9_f1uXEeOCwYvWfsRrew" general="_XS9_YFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XS9_gFuXEeOCwYvWfsRrew" name="Reserved Parking Spot Type" visibility="public">
+    <generalization xmi:id="_XS9_gVuXEeOCwYvWfsRrew" general="_XS9_Y1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XS9_gluXEeOCwYvWfsRrew" name="Short Period Price" visibility="public">
+    <ownedAttribute xmi:id="_XS9_g1uXEeOCwYvWfsRrew" name="order" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_hFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_hVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XS9_hluXEeOCwYvWfsRrew" name="period" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_h1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_iFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XS9_iVuXEeOCwYvWfsRrew" name="rate" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k8FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_iluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_i1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XS9_jFuXEeOCwYvWfsRrew" name="repetitionNumber" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_jVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_jluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_j1uXEeOCwYvWfsRrew" name="Single Parking Reservation" visibility="public">
+    <generalization xmi:id="_XS9_kFuXEeOCwYvWfsRrew" general="_XS9_U1uXEeOCwYvWfsRrew" generalizationSet="_XS_NcVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_kVuXEeOCwYvWfsRrew" name="Specific Spot Usage" visibility="public">
+    <generalization xmi:id="_XS9_kluXEeOCwYvWfsRrew" general="_XS9_ZFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XS9_k1uXEeOCwYvWfsRrew" name="Terminated Parking Spot Usage" visibility="public">
+    <generalization xmi:id="_XS9_lFuXEeOCwYvWfsRrew" general="_XS9_ZFuXEeOCwYvWfsRrew" generalizationSet="_XS_NbFuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XS9_lVuXEeOCwYvWfsRrew" name="exitTime" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k71uXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS9_lluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS9_l1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_mFuXEeOCwYvWfsRrew" name="Usage Without Reservation" visibility="public">
+    <generalization xmi:id="_XS9_mVuXEeOCwYvWfsRrew" general="_XS9_ZFuXEeOCwYvWfsRrew" generalizationSet="_XS_Nc1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_mluXEeOCwYvWfsRrew" name="Usage of Multiple Parking Reservation" visibility="public">
+    <generalization xmi:id="_XS9_m1uXEeOCwYvWfsRrew" general="_XS9_nFuXEeOCwYvWfsRrew" generalizationSet="_XS_NdFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_nFuXEeOCwYvWfsRrew" name="Usage of Reservation" visibility="public">
+    <generalization xmi:id="_XS9_nVuXEeOCwYvWfsRrew" general="_XS9_ZFuXEeOCwYvWfsRrew" generalizationSet="_XS_Nc1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XS9_nluXEeOCwYvWfsRrew" name="Usage of Single Parking Reservation" visibility="public">
+    <generalization xmi:id="_XS9_n1uXEeOCwYvWfsRrew" general="_XS9_nFuXEeOCwYvWfsRrew" generalizationSet="_XS_NdFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XS9_oFuXEeOCwYvWfsRrew" name="Used Multiple Parking Reservation" visibility="public">
+    <generalization xmi:id="_XS9_oVuXEeOCwYvWfsRrew" general="_XS9_SVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XS9_oluXEeOCwYvWfsRrew" name="Used Parking Spot" visibility="public">
+    <generalization xmi:id="_XS9_o1uXEeOCwYvWfsRrew" general="_XS9_YFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XS9_pFuXEeOCwYvWfsRrew" name="Used Price Table" visibility="public">
+    <generalization xmi:id="_XS9_pVuXEeOCwYvWfsRrew" general="_XS9_bVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XS9_pluXEeOCwYvWfsRrew" name="Used Single Parking Reservation" visibility="public">
+    <generalization xmi:id="_XS9_p1uXEeOCwYvWfsRrew" general="_XS9_j1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_XS9_qFuXEeOCwYvWfsRrew" name="Valid Price Table" visibility="public">
+    <generalization xmi:id="_XS9_qVuXEeOCwYvWfsRrew" general="_XS9_bVuXEeOCwYvWfsRrew" generalizationSet="_XS_NcFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XS9_qluXEeOCwYvWfsRrew" name="Vehicle" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Class" xmi:id="_XS9_q1uXEeOCwYvWfsRrew" name="Vehicle Type" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XS9_rFuXEeOCwYvWfsRrew" name="A_ParkingReservation_Customer" visibility="public" memberEnd="_XS9_rVuXEeOCwYvWfsRrew _XS-mQluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS9_rVuXEeOCwYvWfsRrew" name="parking reservation" visibility="public" type="_XS9_U1uXEeOCwYvWfsRrew" association="_XS9_rFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mQFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mQVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mQluXEeOCwYvWfsRrew" name="customer" visibility="public" type="_XS9_MluXEeOCwYvWfsRrew" association="_XS9_rFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mQ1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mRFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XS-mRVuXEeOCwYvWfsRrew" name="A_Payment_IncomeGeneratorUsage" visibility="public" memberEnd="_XS-mRluXEeOCwYvWfsRrew _XS-mSVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mRluXEeOCwYvWfsRrew" name="payment" visibility="public" type="_XS9_aFuXEeOCwYvWfsRrew" association="_XS-mRVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mR1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mSFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mSVuXEeOCwYvWfsRrew" name="income generator usage" visibility="public" type="_XS9_QVuXEeOCwYvWfsRrew" association="_XS-mRVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mSluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mS1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XS-mTFuXEeOCwYvWfsRrew" name="A_UsedPriceTable_IncomeGeneratorUsage" visibility="public" memberEnd="_XS-mTVuXEeOCwYvWfsRrew _XS-mUFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mTVuXEeOCwYvWfsRrew" name="used price table" visibility="public" type="_XS9_pFuXEeOCwYvWfsRrew" association="_XS-mTFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mTluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mT1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mUFuXEeOCwYvWfsRrew" name="income generator usage" visibility="public" type="_XS9_QVuXEeOCwYvWfsRrew" association="_XS-mTFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mUVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mUluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XS-mU1uXEeOCwYvWfsRrew" name="A_ParkingSpotUsage_ParkedVehicle" visibility="public" memberEnd="_XS-mVFuXEeOCwYvWfsRrew _XS-mV1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mVFuXEeOCwYvWfsRrew" name="parking spot usage" visibility="public" type="_XS9_ZFuXEeOCwYvWfsRrew" association="_XS-mU1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mVVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mVluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mV1uXEeOCwYvWfsRrew" name="parked vehicle" visibility="public" type="_XS9_S1uXEeOCwYvWfsRrew" association="_XS-mU1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mWFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mWVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XS-mWluXEeOCwYvWfsRrew" name="A_ParkingLot_ParkingCompany" visibility="public" memberEnd="_XS-mW1uXEeOCwYvWfsRrew _XS-mXluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mW1uXEeOCwYvWfsRrew" name="parking lot" visibility="public" type="_XS9_UluXEeOCwYvWfsRrew" association="_XS-mWluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mXFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mXVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mXluXEeOCwYvWfsRrew" name="parking company" visibility="public" type="_XS9_UFuXEeOCwYvWfsRrew" aggregation="composite" association="_XS-mWluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mX1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mYFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XS-mYVuXEeOCwYvWfsRrew" name="A_ParkingSpot_ParkingLot" visibility="public" memberEnd="_XS-mYluXEeOCwYvWfsRrew _XS-mZVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mYluXEeOCwYvWfsRrew" name="parking spot" visibility="public" type="_XS9_YFuXEeOCwYvWfsRrew" association="_XS-mYVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mY1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mZFuXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mZVuXEeOCwYvWfsRrew" name="parking lot" visibility="public" type="_XS9_UluXEeOCwYvWfsRrew" aggregation="composite" association="_XS-mYVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mZluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mZ1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XS-maFuXEeOCwYvWfsRrew" name="A_PriceTable_ParkingLot" visibility="public" memberEnd="_XS-maVuXEeOCwYvWfsRrew _XS-mbFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-maVuXEeOCwYvWfsRrew" name="price table" visibility="public" type="_XS9_bVuXEeOCwYvWfsRrew" association="_XS-maFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-maluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-ma1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mbFuXEeOCwYvWfsRrew" name="parking lot" visibility="public" type="_XS9_UluXEeOCwYvWfsRrew" association="_XS-maFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mbVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mbluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XS-mb1uXEeOCwYvWfsRrew" name="A_ParkingSpotProvider_ParkingReservation" visibility="public" memberEnd="_XS-mcFuXEeOCwYvWfsRrew _XS-mc1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mcFuXEeOCwYvWfsRrew" name="parking spot provider" visibility="public" type="_XS9_YVuXEeOCwYvWfsRrew" association="_XS-mb1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mcVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mcluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mc1uXEeOCwYvWfsRrew" name="parking reservation" visibility="public" type="_XS9_U1uXEeOCwYvWfsRrew" association="_XS-mb1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mdFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mdVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XS-mdluXEeOCwYvWfsRrew" name="A_Payment_ParkingReservation" visibility="public" memberEnd="_XS-md1uXEeOCwYvWfsRrew _XS-meluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-md1uXEeOCwYvWfsRrew" name="payment" visibility="public" type="_XS9_aFuXEeOCwYvWfsRrew" association="_XS-mdluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-meFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-meVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-meluXEeOCwYvWfsRrew" name="parking reservation" visibility="public" type="_XS9_U1uXEeOCwYvWfsRrew" association="_XS-mdluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-me1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mfFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XS-mfVuXEeOCwYvWfsRrew" name="A_PriceTableUsedInReservation_ParkingReservation" visibility="public" memberEnd="_XS-mfluXEeOCwYvWfsRrew _XS-mgVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mfluXEeOCwYvWfsRrew" name="price table used in reservation" visibility="public" type="_XS9_d1uXEeOCwYvWfsRrew" association="_XS-mfVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mf1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mgFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mgVuXEeOCwYvWfsRrew" name="parking reservation" visibility="public" type="_XS9_U1uXEeOCwYvWfsRrew" association="_XS-mfVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mgluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mg1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XS-mhFuXEeOCwYvWfsRrew" name="A_ParkingSpotType_ParkingSpot" visibility="public" memberEnd="_XS-mhVuXEeOCwYvWfsRrew _XS-miFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mhVuXEeOCwYvWfsRrew" name="parking spot type" visibility="public" type="_XS9_Y1uXEeOCwYvWfsRrew" association="_XS-mhFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mhluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mh1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-miFuXEeOCwYvWfsRrew" name="parking spot" visibility="public" type="_XS9_YFuXEeOCwYvWfsRrew" association="_XS-mhFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-miVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-miluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XS-mi1uXEeOCwYvWfsRrew" name="A_ParkingSpotUsage_ParkingSpotProvider" visibility="public" memberEnd="_XS-mjFuXEeOCwYvWfsRrew _XS-mj1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mjFuXEeOCwYvWfsRrew" name="parking spot usage" visibility="public" type="_XS9_ZFuXEeOCwYvWfsRrew" association="_XS-mi1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mjVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mjluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mj1uXEeOCwYvWfsRrew" name="parking spot provider" visibility="public" type="_XS9_YVuXEeOCwYvWfsRrew" association="_XS-mi1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mkFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mkVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XS-mkluXEeOCwYvWfsRrew" name="A_VehicleType_ParkingSpotType" visibility="public" memberEnd="_XS-mk1uXEeOCwYvWfsRrew _XS-mlluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mk1uXEeOCwYvWfsRrew" name="supportedVehicleType" visibility="public" type="_XS9_q1uXEeOCwYvWfsRrew" association="_XS-mkluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mlFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mlVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mlluXEeOCwYvWfsRrew" name="parking spot type" visibility="public" type="_XS9_Y1uXEeOCwYvWfsRrew" association="_XS-mkluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-ml1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mmFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XS-mmVuXEeOCwYvWfsRrew" name="applicable to" visibility="public" memberEnd="_XS-mmluXEeOCwYvWfsRrew _XS-mnVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mmluXEeOCwYvWfsRrew" name="price table" visibility="public" type="_XS9_bVuXEeOCwYvWfsRrew" association="_XS-mmVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mm1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mnFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mnVuXEeOCwYvWfsRrew" name="parking spot type" visibility="public" type="_XS9_Y1uXEeOCwYvWfsRrew" association="_XS-mmVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mnluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mn1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XS-moFuXEeOCwYvWfsRrew" name="A_ShortPeriodPrice_PriceTable" visibility="public" memberEnd="_XS-moVuXEeOCwYvWfsRrew _XS-mpFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-moVuXEeOCwYvWfsRrew" name="short period price" visibility="public" type="_XS9_gluXEeOCwYvWfsRrew" association="_XS-moFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-moluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mo1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mpFuXEeOCwYvWfsRrew" name="price table" visibility="public" type="_XS9_bVuXEeOCwYvWfsRrew" association="_XS-moFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mpVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mpluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XS-mp1uXEeOCwYvWfsRrew" name="A_ReservedParkingSpotType_ReservationofParkingSpotType" visibility="public" memberEnd="_XS-mqFuXEeOCwYvWfsRrew _XS-mq1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mqFuXEeOCwYvWfsRrew" name="reserved parking spot type" visibility="public" type="_XS9_gFuXEeOCwYvWfsRrew" association="_XS-mp1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mqVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mqluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-mq1uXEeOCwYvWfsRrew" name="reservation of parking spot type" visibility="public" type="_XS9_eluXEeOCwYvWfsRrew" association="_XS-mp1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-mrFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mrVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XS-mrluXEeOCwYvWfsRrew" name="A_ReservedParkingSpot_ReservationofSpeficParkingSpot" visibility="public" memberEnd="_XS-mr1uXEeOCwYvWfsRrew _XS-msluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS-mr1uXEeOCwYvWfsRrew" name="reserved parking spot" visibility="public" type="_XS9_fluXEeOCwYvWfsRrew" association="_XS-mrluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-msFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-msVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS-msluXEeOCwYvWfsRrew" name="reservation of spefic parking spot" visibility="public" type="_XS9_fFuXEeOCwYvWfsRrew" association="_XS-mrluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS-ms1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS-mtFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XS_NUFuXEeOCwYvWfsRrew" name="A_UsedParkingSpot_SpecificSpotUsage" visibility="public" memberEnd="_XS_NUVuXEeOCwYvWfsRrew _XS_NVFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS_NUVuXEeOCwYvWfsRrew" name="used parking spot" visibility="public" type="_XS9_oluXEeOCwYvWfsRrew" association="_XS_NUFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS_NUluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS_NU1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS_NVFuXEeOCwYvWfsRrew" name="specific spot usage" visibility="public" type="_XS9_kVuXEeOCwYvWfsRrew" association="_XS_NUFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS_NVVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS_NVluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XS_NV1uXEeOCwYvWfsRrew" name="A_UsedMultipleParkingReservation_UsageofMultipleParkingReservation" visibility="public" memberEnd="_XS_NWFuXEeOCwYvWfsRrew _XS_NW1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS_NWFuXEeOCwYvWfsRrew" name="used multiple parking reservation" visibility="public" type="_XS9_oFuXEeOCwYvWfsRrew" association="_XS_NV1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS_NWVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS_NWluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS_NW1uXEeOCwYvWfsRrew" name="usage of multiple parking reservation" visibility="public" type="_XS9_mluXEeOCwYvWfsRrew" association="_XS_NV1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS_NXFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS_NXVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XS_NXluXEeOCwYvWfsRrew" name="A_UsedSingleParkingReservation_UsageofSingleParkingReservation" visibility="public" memberEnd="_XS_NX1uXEeOCwYvWfsRrew _XS_NYluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS_NX1uXEeOCwYvWfsRrew" name="used single parking reservation" visibility="public" type="_XS9_pluXEeOCwYvWfsRrew" association="_XS_NXluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS_NYFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS_NYVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS_NYluXEeOCwYvWfsRrew" name="usage of single parking reservation" visibility="public" type="_XS9_nluXEeOCwYvWfsRrew" association="_XS_NXluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS_NY1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS_NZFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XS_NZVuXEeOCwYvWfsRrew" name="A_VehicleType_Vehicle" visibility="public" memberEnd="_XS_NZluXEeOCwYvWfsRrew _XS_NaVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XS_NZluXEeOCwYvWfsRrew" name="vehicle type" visibility="public" type="_XS9_q1uXEeOCwYvWfsRrew" association="_XS_NZVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS_NZ1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS_NaFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XS_NaVuXEeOCwYvWfsRrew" name="vehicle" visibility="public" type="_XS9_qluXEeOCwYvWfsRrew" association="_XS_NZVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XS_NaluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XS_Na1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XS_NbFuXEeOCwYvWfsRrew" name="Phase" visibility="public" isCovering="true" isDisjoint="true" generalization="_XS9YgFuXEeOCwYvWfsRrew _XS9_lFuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XS_NbVuXEeOCwYvWfsRrew" name="VehicleType" visibility="public" isCovering="true" isDisjoint="true" generalization="_XS9YgluXEeOCwYvWfsRrew _XS9_RFuXEeOCwYvWfsRrew _XS9_SFuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XS_NbluXEeOCwYvWfsRrew" name="CustomerType" visibility="public" isCovering="true" isDisjoint="true" generalization="_XS9Yh1uXEeOCwYvWfsRrew _XS9_bFuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XS_Nb1uXEeOCwYvWfsRrew" name="BillingType" visibility="public" isCovering="true" isDisjoint="true" generalization="_XS9_NFuXEeOCwYvWfsRrew _XS9_QFuXEeOCwYvWfsRrew _XS9_RluXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XS_NcFuXEeOCwYvWfsRrew" name="Validity" visibility="public" isCovering="true" isDisjoint="true" generalization="_XS9_O1uXEeOCwYvWfsRrew _XS9_qVuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XS_NcVuXEeOCwYvWfsRrew" name="UsageAmount" visibility="public" isCovering="true" generalization="_XS9_SluXEeOCwYvWfsRrew _XS9_kFuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XS_NcluXEeOCwYvWfsRrew" name="RequirementType" visibility="public" isCovering="true" isDisjoint="true" generalization="_XS9_e1uXEeOCwYvWfsRrew _XS9_fVuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XS_Nc1uXEeOCwYvWfsRrew" name="PreviousReservation" visibility="public" isCovering="true" isDisjoint="true" generalization="_XS9_mVuXEeOCwYvWfsRrew _XS9_nVuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XS_NdFuXEeOCwYvWfsRrew" name="UsageType" visibility="public" isCovering="true" isDisjoint="true" generalization="_XS9_m1uXEeOCwYvWfsRrew _XS9_n1uXEeOCwYvWfsRrew"/>
+</RefOntoUML:Package>
