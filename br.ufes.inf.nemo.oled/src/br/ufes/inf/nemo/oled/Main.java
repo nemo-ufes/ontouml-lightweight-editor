@@ -139,7 +139,7 @@ public final class Main {
 	   int fontSize=11;
        String fontName="Tahoma";
        while(true) {
-           if (!hasFont(fontName)) { fontName="Arial"; fontSize = 12;} else break; 
+           if (!hasFont(fontName)) { fontName="Sans Serif"; fontSize = 11;} else break; 
            if (!hasFont(fontName)) { fontName="Verdana"; fontSize=10; } else break; 
            if (!hasFont(fontName)) { fontName="Courier New"; } else break; 
            if (!hasFont(fontName)) { fontName="Lucida Grande"; fontSize=10; } 

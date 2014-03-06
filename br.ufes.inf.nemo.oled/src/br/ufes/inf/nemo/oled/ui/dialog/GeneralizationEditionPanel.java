@@ -132,7 +132,7 @@ public class GeneralizationEditionPanel extends JPanel {
 		specificCombo.setPreferredSize(new Dimension(350, 20));
 		specificCombo.addItem(getStereotype(element.getSpecific())+" "+element.getSpecific().getName());
 		
-		JLabel lblThisGeneralizationParticipates = new JLabel("This generalization participates in the following generalization sets :");
+		JLabel lblThisGeneralizationParticipates = new JLabel("Participating generalization sets :");
 		
 		genSetModel = new DefaultListModel();
 		for(GeneralizationSet gs: element.getGeneralizationSet())
@@ -196,13 +196,13 @@ public class GeneralizationEditionPanel extends JPanel {
 			gl_genSetPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_genSetPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_genSetPanel.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(gl_genSetPanel.createParallelGroup(Alignment.TRAILING, false)
 						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 404, GroupLayout.PREFERRED_SIZE)
-						.addGroup(Alignment.TRAILING, gl_genSetPanel.createSequentialGroup()
-							.addComponent(lblThisGeneralizationParticipates)
+						.addGroup(gl_genSetPanel.createSequentialGroup()
+							.addComponent(lblThisGeneralizationParticipates, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
@@ -210,14 +210,13 @@ public class GeneralizationEditionPanel extends JPanel {
 			gl_genSetPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_genSetPanel.createSequentialGroup()
 					.addGap(12)
-					.addGroup(gl_genSetPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_genSetPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(lblThisGeneralizationParticipates, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnRemove, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addComponent(btnAdd))
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(gl_genSetPanel.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(lblThisGeneralizationParticipates, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnRemove, Alignment.LEADING)
+						.addComponent(btnAdd, Alignment.LEADING))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		genSetPanel.setLayout(gl_genSetPanel);
 		

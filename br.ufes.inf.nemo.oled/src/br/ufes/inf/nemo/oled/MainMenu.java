@@ -76,9 +76,9 @@ public class MainMenu implements ActionListener {
 		JMenuItem alloyItem = createMenuItem(simulationMenu, "generatealloy");
 		//alloyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 		
-		JMenuItem vizItem = createMenuItem(simulationMenu, "visualizer");
+		//JMenuItem vizItem = createMenuItem(simulationMenu, "visualizer");
 		//vizItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
-		vizItem.setEnabled(false);
+		//vizItem.setEnabled(false);
 		
 		JMenu transformMenu = createMenu("transformation");
 		menubar.add(transformMenu);
@@ -92,10 +92,10 @@ public class MainMenu implements ActionListener {
 		JMenuItem textItem = createMenuItem(transformMenu, "generatetext");
 		//textItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 
-		JMenuItem ecoreItem = createMenuItem(transformMenu, "generateecore");
+		//JMenuItem ecoreItem = createMenuItem(transformMenu, "generateecore");
 		//
 		
-		JMenuItem umlItem = createMenuItem(transformMenu, "generateuml");
+		//JMenuItem umlItem = createMenuItem(transformMenu, "generateuml");
 		//
 		
 		JMenu toolMenu = createMenu("tool");

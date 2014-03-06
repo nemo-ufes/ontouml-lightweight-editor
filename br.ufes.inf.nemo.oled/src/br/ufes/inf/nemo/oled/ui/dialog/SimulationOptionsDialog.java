@@ -97,7 +97,7 @@ public class SimulationOptionsDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SimulationOptionsDialog.class.getResource("/resources/icons/x16/cog.png")));
 		setTitle("Options");
-		setSize(new Dimension(611, 400));
+		setSize(new Dimension(635, 400));
 		
 		btnOk = new JButton("OK");	
 		btnOk.setPreferredSize(new Dimension(100, 25));

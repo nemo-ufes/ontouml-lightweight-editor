@@ -159,15 +159,15 @@ public class AssociationEditionPanel extends JPanel {
 		group.add(btnToSource);
 		btnToSource.setPreferredSize(new Dimension(80, 25));
 		
-		btnToDestination = new JRadioButton("To destination");
-		directionPanel.add(btnToDestination);
-		group.add(btnToDestination);
-		btnToDestination.setPreferredSize(new Dimension(100, 25));
-		
 		btnUndefined = new JRadioButton("Undefined");
 		directionPanel.add(btnUndefined);
 		group.add(btnUndefined);
-		btnUndefined.setPreferredSize(new Dimension(182, 25));
+		btnUndefined.setPreferredSize(new Dimension(100, 25));
+		
+		btnToDestination = new JRadioButton("To destination");
+		directionPanel.add(btnToDestination);
+		group.add(btnToDestination);
+		btnToDestination.setPreferredSize(new Dimension(180, 25));
 		
 		cbxEssential = new JCheckBox("Essential");		
 		cbxEssential.setPreferredSize(new Dimension(75, 20));

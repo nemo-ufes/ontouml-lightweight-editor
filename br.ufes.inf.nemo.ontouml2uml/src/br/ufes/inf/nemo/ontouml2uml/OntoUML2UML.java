@@ -24,8 +24,14 @@ public class OntoUML2UML {
 		 	  		
 	public static String log = new String();
 	private static OntoUML2UMLOption options = new OntoUML2UMLOption();	
-	private static UMLTransformator utransformer; //pure UML	
-	private static UMLTemporalGenerator tgenerator; // temporal structure in UML
+	private static UMLTransformator utransformer;		
+	private static org.eclipse.uml2.uml.Package umlRoot;
+	private static String umlPath = new String();
+	
+	private static UMLTemporalGenerator tgenerator; 
+	
+	public static org.eclipse.uml2.uml.Package getRoot() { return umlRoot; }
+	public static String getUmlPath() { return umlPath; }
 	
 	public static Resource convertToUML (RefOntoUML.Package refmodel, String umlPath)
 	{
@@ -47,6 +53,19 @@ public class OntoUML2UML {
 		return convertToTemporalUML(refmodel, umlPath, options);
 	}
 	
+	public static Resource includeTemporalStructure(org.eclipse.uml2.uml.Package umlRoot, String umlPath)
+	{	
+		tgenerator = new UMLTemporalGenerator(
+			umlRoot, 
+			utransformer.getConverter().ufactory, 
+			utransformer.getConverter().umap);
+		tgenerator.run();
+		
+		log += tgenerator.getTemporalLog();
+		
+		return OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
+	}
+	
 	public static Resource convertToUML (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt)
 	{
 		log="";
@@ -58,6 +77,7 @@ public class OntoUML2UML {
 		utransformer = new UMLTransformator(refparser,opt);			  
 		org.eclipse.uml2.uml.Package umlmodel = utransformer.run();	
    		   
+		OntoUML2UML.umlPath=umlPath;
 		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlmodel);		   
 		return umlResource;
 	}
@@ -72,6 +92,7 @@ public class OntoUML2UML {
 		utransformer = new UMLTransformator(refparser,opt);			  
 		org.eclipse.uml2.uml.Package umlmodel = utransformer.run();	
    		   
+		OntoUML2UML.umlPath=umlPath;
 		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlmodel);		   
 		return umlResource;
 	}		
@@ -79,7 +100,7 @@ public class OntoUML2UML {
 	public static Resource convertToTemporalUML (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt)
 	{
 		Resource umlResource = convertToUML(refmodel, umlPath, opt);
-		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)umlResource.getContents().get(0);
+		umlRoot = (org.eclipse.uml2.uml.Package)umlResource.getContents().get(0);
 		
 		tgenerator = new UMLTemporalGenerator(
 			umlRoot, 
@@ -97,7 +118,7 @@ public class OntoUML2UML {
 	public static Resource convertToTemporalUML(OntoUMLParser refparser, String umlPath, OntoUML2UMLOption opt)
 	{
 		Resource umlResource = convertToUML(refparser, umlPath, opt);
-		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)umlResource.getContents().get(0);
+		umlRoot = (org.eclipse.uml2.uml.Package)umlResource.getContents().get(0);
 		
 		tgenerator = new UMLTemporalGenerator(
 			umlRoot, 
