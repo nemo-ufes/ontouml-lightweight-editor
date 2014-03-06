@@ -76,6 +76,7 @@ import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.binover.BinOverWizard;
 import br.ufes.inf.nemo.antipattern.wizard.asscyc.AssCycWizard;
 import br.ufes.inf.nemo.antipattern.wizard.hetcoll.HetCollWizard;
 import br.ufes.inf.nemo.antipattern.wizard.homofunc.HomoFuncWizard;
@@ -367,6 +368,7 @@ public class AntiPatternResultDialog extends Dialog {
 	public WizardDialog getWizardDialog(final AntipatternOccurrence apOccur)
 	{
     	WizardDialog wizardDialog = null;    	
+
     	Display d = Display.getDefault();
     	if (apOccur instanceof RelRigOccurrence) wizardDialog = new WizardDialog(new Shell(d), new RelRigWizard((RelRigOccurrence)apOccur));
     	if (apOccur instanceof RelSpecOccurrence) wizardDialog = new WizardDialog(new Shell(d), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
@@ -381,6 +383,8 @@ public class AntiPatternResultDialog extends Dialog {
     	if (apOccur instanceof HetCollOccurrence) wizardDialog = new WizardDialog(new Shell(d), new HetCollWizard((HetCollOccurrence)apOccur));
     	if (apOccur instanceof HomoFuncOccurrence) wizardDialog = new WizardDialog(new Shell(d), new HomoFuncWizard((HomoFuncOccurrence)apOccur));
     	if (apOccur instanceof AssCycOccurrence) wizardDialog = new WizardDialog(new Shell(d), new AssCycWizard((AssCycOccurrence)apOccur));
+    	if (apOccur instanceof BinOverOccurrence) wizardDialog = new WizardDialog(new Shell(d), new BinOverWizard((BinOverOccurrence)apOccur));
+
 
     	return wizardDialog;
 	}
