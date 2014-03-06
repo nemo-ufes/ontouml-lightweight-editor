@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XTbTBluXEeOCwYvWfsRrew" name="JulioNardi_UFO-S" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XTbTB1uXEeOCwYvWfsRrew" name="Agent" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Class" xmi:id="_XTbTCFuXEeOCwYvWfsRrew" name="Customer Action" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Class" xmi:id="_XTbTCVuXEeOCwYvWfsRrew" name="Hired Provider Action" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XTbTCluXEeOCwYvWfsRrew" name="Hired Provider Claim" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XTbTC1uXEeOCwYvWfsRrew" name="Hired Provider Commitment" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Class" xmi:id="_XTbTDFuXEeOCwYvWfsRrew" name="Hired Provider Customer Interaction" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XTbTDVuXEeOCwYvWfsRrew" name="Hired Service Provider" visibility="public" isAbstract="true">
+    <generalization xmi:id="_XTbTDluXEeOCwYvWfsRrew" general="_XTbTHFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTbTD1uXEeOCwYvWfsRrew" name="Service Agreement" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XTbTEFuXEeOCwYvWfsRrew" name="Service Agreement Description" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XTbTEVuXEeOCwYvWfsRrew" name="Service Customer" visibility="public" isAbstract="true">
+    <generalization xmi:id="_XTbTEluXEeOCwYvWfsRrew" general="_XTbTHluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XTbTE1uXEeOCwYvWfsRrew" name="Service Customer Claim" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XTbTFFuXEeOCwYvWfsRrew" name="Service Customer Commitment" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Class" xmi:id="_XTbTFVuXEeOCwYvWfsRrew" name="Service Delivery" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Class" xmi:id="_XTbTFluXEeOCwYvWfsRrew" name="Service Negotiation" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Class" xmi:id="_XTbTF1uXEeOCwYvWfsRrew" name="Service Offer" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTbTGFuXEeOCwYvWfsRrew" name="Service Offering" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XTbTGVuXEeOCwYvWfsRrew" name="Service Offering Claim" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XTbTGluXEeOCwYvWfsRrew" name="Service Offering Commitment" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XTbTG1uXEeOCwYvWfsRrew" name="Service Offering Description" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XTbTHFuXEeOCwYvWfsRrew" name="Service Provider" visibility="public" isAbstract="true">
+    <generalization xmi:id="_XTbTHVuXEeOCwYvWfsRrew" general="_XTbTB1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_XTbTHluXEeOCwYvWfsRrew" name="Target Customer" visibility="public" isAbstract="true">
+    <generalization xmi:id="_XTbTH1uXEeOCwYvWfsRrew" general="_XTbTB1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XTbTIFuXEeOCwYvWfsRrew" name="Target Customer Community" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTbTIVuXEeOCwYvWfsRrew" name="motivated by" visibility="public" memberEnd="_XTbTIluXEeOCwYvWfsRrew _XTbTJVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTbTIluXEeOCwYvWfsRrew" name="service customer commitment" visibility="public" type="_XTbTFFuXEeOCwYvWfsRrew" association="_XTbTIVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTI1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTJFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTbTJVuXEeOCwYvWfsRrew" name="customer action" visibility="public" type="_XTbTCFuXEeOCwYvWfsRrew" association="_XTbTIVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTJluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTJ1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTbTKFuXEeOCwYvWfsRrew" name="A_ServiceDelivery_CustomerAction" visibility="public" memberEnd="_XTbTKVuXEeOCwYvWfsRrew _XTbTLFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTbTKVuXEeOCwYvWfsRrew" name="service delivery" visibility="public" type="_XTbTFVuXEeOCwYvWfsRrew" aggregation="composite" association="_XTbTKFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTKluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTK1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTbTLFuXEeOCwYvWfsRrew" name="customer action" visibility="public" type="_XTbTCFuXEeOCwYvWfsRrew" association="_XTbTKFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTLVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTLluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTbTL1uXEeOCwYvWfsRrew" name="participates in" visibility="public" memberEnd="_XTbTMFuXEeOCwYvWfsRrew _XTbTM1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTbTMFuXEeOCwYvWfsRrew" name="service customer" visibility="public" type="_XTbTEVuXEeOCwYvWfsRrew" association="_XTbTL1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTMVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTMluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTbTM1uXEeOCwYvWfsRrew" name="customer action" visibility="public" type="_XTbTCFuXEeOCwYvWfsRrew" association="_XTbTL1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTNFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTNVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTbTNluXEeOCwYvWfsRrew" name="motivated by" visibility="public" memberEnd="_XTbTN1uXEeOCwYvWfsRrew _XTbTOluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTbTN1uXEeOCwYvWfsRrew" name="hired provider commitment" visibility="public" type="_XTbTC1uXEeOCwYvWfsRrew" association="_XTbTNluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTOFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTOVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTbTOluXEeOCwYvWfsRrew" name="hired provider action" visibility="public" type="_XTbTCVuXEeOCwYvWfsRrew" association="_XTbTNluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTO1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTPFuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTbTPVuXEeOCwYvWfsRrew" name="A_ServiceDelivery_HiredProviderAction" visibility="public" memberEnd="_XTbTPluXEeOCwYvWfsRrew _XTbTQVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTbTPluXEeOCwYvWfsRrew" name="service delivery" visibility="public" type="_XTbTFVuXEeOCwYvWfsRrew" aggregation="composite" association="_XTbTPVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTP1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTQFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTbTQVuXEeOCwYvWfsRrew" name="hired provider action" visibility="public" type="_XTbTCVuXEeOCwYvWfsRrew" association="_XTbTPVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTQluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTQ1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTbTRFuXEeOCwYvWfsRrew" name="participates in" visibility="public" memberEnd="_XTbTRVuXEeOCwYvWfsRrew _XTbTSFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTbTRVuXEeOCwYvWfsRrew" name="hired service provider" visibility="public" type="_XTbTDVuXEeOCwYvWfsRrew" association="_XTbTRFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTRluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTR1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTbTSFuXEeOCwYvWfsRrew" name="hired provider action" visibility="public" type="_XTbTCVuXEeOCwYvWfsRrew" association="_XTbTRFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTSVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTSluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XTbTS1uXEeOCwYvWfsRrew" name="inheres in" visibility="public" memberEnd="_XTbTTFuXEeOCwYvWfsRrew _XTbTT1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTbTTFuXEeOCwYvWfsRrew" name="hired service provider" visibility="public" type="_XTbTDVuXEeOCwYvWfsRrew" association="_XTbTS1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTbTTVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTbTTluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTbTT1uXEeOCwYvWfsRrew" name="hired provider claim" visibility="public" type="_XTbTCluXEeOCwYvWfsRrew" association="_XTbTS1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5QFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5QVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb5QluXEeOCwYvWfsRrew" name="externally dependent on" visibility="public" memberEnd="_XTb5Q1uXEeOCwYvWfsRrew _XTb5RluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5Q1uXEeOCwYvWfsRrew" name="service customer" visibility="public" type="_XTbTEVuXEeOCwYvWfsRrew" association="_XTb5QluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5RFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5RVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5RluXEeOCwYvWfsRrew" name="hired provider claim" visibility="public" type="_XTbTCluXEeOCwYvWfsRrew" association="_XTb5QluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5R1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5SFuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTb5SVuXEeOCwYvWfsRrew" name="A_ServiceAgreement_HiredProviderClaim" visibility="public" memberEnd="_XTb5SluXEeOCwYvWfsRrew _XTb5TVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5SluXEeOCwYvWfsRrew" name="service agreement" visibility="public" type="_XTbTD1uXEeOCwYvWfsRrew" aggregation="composite" association="_XTb5SVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5S1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5TFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5TVuXEeOCwYvWfsRrew" name="hired provider claim" visibility="public" type="_XTbTCluXEeOCwYvWfsRrew" association="_XTb5SVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5TluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5T1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XTb5UFuXEeOCwYvWfsRrew" name="inheres in" visibility="public" memberEnd="_XTb5UVuXEeOCwYvWfsRrew _XTb5VFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5UVuXEeOCwYvWfsRrew" name="hired service provider" visibility="public" type="_XTbTDVuXEeOCwYvWfsRrew" association="_XTb5UFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5UluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5U1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5VFuXEeOCwYvWfsRrew" name="hired provider commitment" visibility="public" type="_XTbTC1uXEeOCwYvWfsRrew" association="_XTb5UFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5VVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5VluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb5V1uXEeOCwYvWfsRrew" name="externally dependent on" visibility="public" memberEnd="_XTb5WFuXEeOCwYvWfsRrew _XTb5W1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5WFuXEeOCwYvWfsRrew" name="service customer" visibility="public" type="_XTbTEVuXEeOCwYvWfsRrew" association="_XTb5V1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5WVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5WluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5W1uXEeOCwYvWfsRrew" name="hired provider commitment" visibility="public" type="_XTbTC1uXEeOCwYvWfsRrew" association="_XTb5V1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5XFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5XVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb5XluXEeOCwYvWfsRrew" name="motivated by" visibility="public" memberEnd="_XTb5X1uXEeOCwYvWfsRrew _XTb5YluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5X1uXEeOCwYvWfsRrew" name="hired provider customer interaction" visibility="public" type="_XTbTDFuXEeOCwYvWfsRrew" association="_XTb5XluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5YFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5YVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5YluXEeOCwYvWfsRrew" name="hired provider commitment" visibility="public" type="_XTbTC1uXEeOCwYvWfsRrew" association="_XTb5XluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5Y1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5ZFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTb5ZVuXEeOCwYvWfsRrew" name="A_ServiceAgreement_HiredProviderCommitment" visibility="public" memberEnd="_XTb5ZluXEeOCwYvWfsRrew _XTb5aVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5ZluXEeOCwYvWfsRrew" name="service agreement" visibility="public" type="_XTbTD1uXEeOCwYvWfsRrew" aggregation="composite" association="_XTb5ZVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5Z1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5aFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5aVuXEeOCwYvWfsRrew" name="hired provider commitment" visibility="public" type="_XTbTC1uXEeOCwYvWfsRrew" association="_XTb5ZVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5aluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5a1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb5bFuXEeOCwYvWfsRrew" name="motivated by" visibility="public" memberEnd="_XTb5bVuXEeOCwYvWfsRrew _XTb5cFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5bVuXEeOCwYvWfsRrew" name="service customer commitment" visibility="public" type="_XTbTFFuXEeOCwYvWfsRrew" association="_XTb5bFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5bluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5b1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5cFuXEeOCwYvWfsRrew" name="hired provider customer interaction" visibility="public" type="_XTbTDFuXEeOCwYvWfsRrew" association="_XTb5bFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5cVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5cluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTb5c1uXEeOCwYvWfsRrew" name="A_ServiceDelivery_HiredProviderCustomerInteraction" visibility="public" memberEnd="_XTb5dFuXEeOCwYvWfsRrew _XTb5d1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5dFuXEeOCwYvWfsRrew" name="service delivery" visibility="public" type="_XTbTFVuXEeOCwYvWfsRrew" aggregation="composite" association="_XTb5c1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5dVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5dluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5d1uXEeOCwYvWfsRrew" name="hired provider customer interaction" visibility="public" type="_XTbTDFuXEeOCwYvWfsRrew" association="_XTb5c1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5eFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5eVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb5eluXEeOCwYvWfsRrew" name="participates in" visibility="public" memberEnd="_XTb5e1uXEeOCwYvWfsRrew _XTb5fluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5e1uXEeOCwYvWfsRrew" name="service customer" visibility="public" type="_XTbTEVuXEeOCwYvWfsRrew" association="_XTb5eluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5fFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5fVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5fluXEeOCwYvWfsRrew" name="hired provider customer interaction" visibility="public" type="_XTbTDFuXEeOCwYvWfsRrew" association="_XTb5eluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5f1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5gFuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb5gVuXEeOCwYvWfsRrew" name="participates in" visibility="public" memberEnd="_XTb5gluXEeOCwYvWfsRrew _XTb5hVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5gluXEeOCwYvWfsRrew" name="hired service provider" visibility="public" type="_XTbTDVuXEeOCwYvWfsRrew" association="_XTb5gVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5g1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5hFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5hVuXEeOCwYvWfsRrew" name="hired provider customer interaction" visibility="public" type="_XTbTDFuXEeOCwYvWfsRrew" association="_XTb5gVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5hluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5h1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb5iFuXEeOCwYvWfsRrew" name="externally dependent on" visibility="public" memberEnd="_XTb5iVuXEeOCwYvWfsRrew _XTb5jFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5iVuXEeOCwYvWfsRrew" name="service customer claim" visibility="public" type="_XTbTE1uXEeOCwYvWfsRrew" association="_XTb5iFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5iluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5i1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5jFuXEeOCwYvWfsRrew" name="hired service provider" visibility="public" type="_XTbTDVuXEeOCwYvWfsRrew" association="_XTb5iFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5jVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5jluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTb5j1uXEeOCwYvWfsRrew" name="achieves" visibility="public" memberEnd="_XTb5kFuXEeOCwYvWfsRrew _XTb5k1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5kFuXEeOCwYvWfsRrew" name="service agreement" visibility="public" type="_XTbTD1uXEeOCwYvWfsRrew" association="_XTb5j1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5kVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5kluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5k1uXEeOCwYvWfsRrew" name="hired service provider" visibility="public" type="_XTbTDVuXEeOCwYvWfsRrew" association="_XTb5j1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5lFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5lVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb5lluXEeOCwYvWfsRrew" name="externally dependent on" visibility="public" memberEnd="_XTb5l1uXEeOCwYvWfsRrew _XTb5mluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5l1uXEeOCwYvWfsRrew" name="service customer commitment" visibility="public" type="_XTbTFFuXEeOCwYvWfsRrew" association="_XTb5lluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5mFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5mVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5mluXEeOCwYvWfsRrew" name="hired service provider" visibility="public" type="_XTbTDVuXEeOCwYvWfsRrew" association="_XTb5lluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5m1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5nFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTb5nVuXEeOCwYvWfsRrew" name="describes" visibility="public" memberEnd="_XTb5nluXEeOCwYvWfsRrew _XTb5oVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5nluXEeOCwYvWfsRrew" name="service agreement description" visibility="public" type="_XTbTEFuXEeOCwYvWfsRrew" association="_XTb5nVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5n1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5oFuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5oVuXEeOCwYvWfsRrew" name="service agreement" visibility="public" type="_XTbTD1uXEeOCwYvWfsRrew" association="_XTb5nVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5oluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5o1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb5pFuXEeOCwYvWfsRrew" name="conforms to" visibility="public" memberEnd="_XTb5pVuXEeOCwYvWfsRrew _XTb5qFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5pVuXEeOCwYvWfsRrew" name="service offering" visibility="public" type="_XTbTGFuXEeOCwYvWfsRrew" association="_XTb5pFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5pluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5p1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5qFuXEeOCwYvWfsRrew" name="service agreement" visibility="public" type="_XTbTD1uXEeOCwYvWfsRrew" association="_XTb5pFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5qVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5qluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTb5q1uXEeOCwYvWfsRrew" name="A_ServiceCustomerCommitment_ServiceAgreement" visibility="public" memberEnd="_XTb5rFuXEeOCwYvWfsRrew _XTb5r1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5rFuXEeOCwYvWfsRrew" name="service customer commitment" visibility="public" type="_XTbTFFuXEeOCwYvWfsRrew" association="_XTb5q1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5rVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5rluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5r1uXEeOCwYvWfsRrew" name="service agreement" visibility="public" type="_XTbTD1uXEeOCwYvWfsRrew" aggregation="composite" association="_XTb5q1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5sFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5sVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTb5sluXEeOCwYvWfsRrew" name="A_ServiceCustomerClaim_ServiceAgreement" visibility="public" memberEnd="_XTb5s1uXEeOCwYvWfsRrew _XTb5tluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5s1uXEeOCwYvWfsRrew" name="service customer claim" visibility="public" type="_XTbTE1uXEeOCwYvWfsRrew" association="_XTb5sluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5tFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5tVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5tluXEeOCwYvWfsRrew" name="service agreement" visibility="public" type="_XTbTD1uXEeOCwYvWfsRrew" aggregation="composite" association="_XTb5sluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5t1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5uFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTb5uVuXEeOCwYvWfsRrew" name="achieves" visibility="public" memberEnd="_XTb5uluXEeOCwYvWfsRrew _XTb5vVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5uluXEeOCwYvWfsRrew" name="service customer" visibility="public" type="_XTbTEVuXEeOCwYvWfsRrew" association="_XTb5uVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5u1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5vFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5vVuXEeOCwYvWfsRrew" name="service agreement" visibility="public" type="_XTbTD1uXEeOCwYvWfsRrew" association="_XTb5uVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5vluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5v1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb5wFuXEeOCwYvWfsRrew" name="results in" visibility="public" memberEnd="_XTb5wVuXEeOCwYvWfsRrew _XTb5xFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5wVuXEeOCwYvWfsRrew" name="service negotiation" visibility="public" type="_XTbTFluXEeOCwYvWfsRrew" association="_XTb5wFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5wluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5w1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5xFuXEeOCwYvWfsRrew" name="service agreement" visibility="public" type="_XTbTD1uXEeOCwYvWfsRrew" association="_XTb5wFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5xVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5xluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XTb5x1uXEeOCwYvWfsRrew" name="inheres in" visibility="public" memberEnd="_XTb5yFuXEeOCwYvWfsRrew _XTb5y1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5yFuXEeOCwYvWfsRrew" name="service customer commitment" visibility="public" type="_XTbTFFuXEeOCwYvWfsRrew" association="_XTb5x1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5yVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5yluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5y1uXEeOCwYvWfsRrew" name="service customer" visibility="public" type="_XTbTEVuXEeOCwYvWfsRrew" association="_XTb5x1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5zFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5zVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XTb5zluXEeOCwYvWfsRrew" name="inheres in" visibility="public" memberEnd="_XTb5z1uXEeOCwYvWfsRrew _XTb50luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5z1uXEeOCwYvWfsRrew" name="service customer claim" visibility="public" type="_XTbTE1uXEeOCwYvWfsRrew" association="_XTb5zluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb50FuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb50VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb50luXEeOCwYvWfsRrew" name="service customer" visibility="public" type="_XTbTEVuXEeOCwYvWfsRrew" association="_XTb5zluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb501uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb51FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb51VuXEeOCwYvWfsRrew" name="participates in" visibility="public" memberEnd="_XTb51luXEeOCwYvWfsRrew _XTb52VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb51luXEeOCwYvWfsRrew" name="service provider" visibility="public" type="_XTbTHFuXEeOCwYvWfsRrew" association="_XTb51VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb511uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb52FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb52VuXEeOCwYvWfsRrew" name="service negotiation" visibility="public" type="_XTbTFluXEeOCwYvWfsRrew" association="_XTb51VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb52luXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb521uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb53FuXEeOCwYvWfsRrew" name="participates in" visibility="public" memberEnd="_XTb53VuXEeOCwYvWfsRrew _XTb54FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb53VuXEeOCwYvWfsRrew" name="target customer" visibility="public" type="_XTbTHluXEeOCwYvWfsRrew" association="_XTb53FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb53luXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb531uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb54FuXEeOCwYvWfsRrew" name="service negotiation" visibility="public" type="_XTbTFluXEeOCwYvWfsRrew" association="_XTb53FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb54VuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb54luXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb541uXEeOCwYvWfsRrew" name="regards to" visibility="public" memberEnd="_XTb55FuXEeOCwYvWfsRrew _XTb551uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb55FuXEeOCwYvWfsRrew" name="service offering" visibility="public" type="_XTbTGFuXEeOCwYvWfsRrew" association="_XTb541uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb55VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb55luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb551uXEeOCwYvWfsRrew" name="service negotiation" visibility="public" type="_XTbTFluXEeOCwYvWfsRrew" association="_XTb541uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb56FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb56VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb56luXEeOCwYvWfsRrew" name="creates" visibility="public" memberEnd="_XTb561uXEeOCwYvWfsRrew _XTb57luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb561uXEeOCwYvWfsRrew" name="service offering" visibility="public" type="_XTbTGFuXEeOCwYvWfsRrew" association="_XTb56luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb57FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb57VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb57luXEeOCwYvWfsRrew" name="service offer" visibility="public" type="_XTbTF1uXEeOCwYvWfsRrew" association="_XTb56luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb571uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb58FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTb58VuXEeOCwYvWfsRrew" name="A_ServiceOfferingCommitment_ServiceOffering" visibility="public" memberEnd="_XTb58luXEeOCwYvWfsRrew _XTb59VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb58luXEeOCwYvWfsRrew" name="service offering commitment" visibility="public" type="_XTbTGluXEeOCwYvWfsRrew" association="_XTb58VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb581uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb59FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb59VuXEeOCwYvWfsRrew" name="service offering" visibility="public" type="_XTbTGFuXEeOCwYvWfsRrew" aggregation="composite" association="_XTb58VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb59luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb591uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTb5-FuXEeOCwYvWfsRrew" name="provides" visibility="public" memberEnd="_XTb5-VuXEeOCwYvWfsRrew _XTb5_FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb5-VuXEeOCwYvWfsRrew" name="service provider" visibility="public" type="_XTbTHFuXEeOCwYvWfsRrew" association="_XTb5-FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5-luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5-1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb5_FuXEeOCwYvWfsRrew" name="service offering" visibility="public" type="_XTbTGFuXEeOCwYvWfsRrew" association="_XTb5-FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb5_VuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb5_luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTb5_1uXEeOCwYvWfsRrew" name="A_ServiceOfferingClaim_ServiceOffering" visibility="public" memberEnd="_XTb6AFuXEeOCwYvWfsRrew _XTb6A1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb6AFuXEeOCwYvWfsRrew" name="service offering claim" visibility="public" type="_XTbTGVuXEeOCwYvWfsRrew" association="_XTb5_1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6AVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6AluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb6A1uXEeOCwYvWfsRrew" name="service offering" visibility="public" type="_XTbTGFuXEeOCwYvWfsRrew" aggregation="composite" association="_XTb5_1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6BFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6BVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTb6BluXEeOCwYvWfsRrew" name="describes" visibility="public" memberEnd="_XTb6B1uXEeOCwYvWfsRrew _XTb6CluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb6B1uXEeOCwYvWfsRrew" name="service offering description" visibility="public" type="_XTbTG1uXEeOCwYvWfsRrew" association="_XTb6BluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6CFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6CVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb6CluXEeOCwYvWfsRrew" name="service offering" visibility="public" type="_XTbTGFuXEeOCwYvWfsRrew" association="_XTb6BluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6C1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6DFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTb6DVuXEeOCwYvWfsRrew" name="offered to" visibility="public" memberEnd="_XTb6DluXEeOCwYvWfsRrew _XTb6EVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb6DluXEeOCwYvWfsRrew" name="target customer community" visibility="public" type="_XTbTIFuXEeOCwYvWfsRrew" association="_XTb6DVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6D1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6EFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb6EVuXEeOCwYvWfsRrew" name="service offering" visibility="public" type="_XTbTGFuXEeOCwYvWfsRrew" association="_XTb6DVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6EluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6E1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb6FFuXEeOCwYvWfsRrew" name="externally dependent on" visibility="public" memberEnd="_XTb6FVuXEeOCwYvWfsRrew _XTb6GFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb6FVuXEeOCwYvWfsRrew" name="service provider" visibility="public" type="_XTbTHFuXEeOCwYvWfsRrew" association="_XTb6FFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6FluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6F1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb6GFuXEeOCwYvWfsRrew" name="service offering claim" visibility="public" type="_XTbTGVuXEeOCwYvWfsRrew" association="_XTb6FFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6GVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6GluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XTb6G1uXEeOCwYvWfsRrew" name="inheres in" visibility="public" memberEnd="_XTb6HFuXEeOCwYvWfsRrew _XTb6H1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb6HFuXEeOCwYvWfsRrew" name="target customer community" visibility="public" type="_XTbTIFuXEeOCwYvWfsRrew" association="_XTb6G1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6HVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6HluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb6H1uXEeOCwYvWfsRrew" name="service offering claim" visibility="public" type="_XTbTGVuXEeOCwYvWfsRrew" association="_XTb6G1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6IFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6IVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XTb6IluXEeOCwYvWfsRrew" name="inheres in" visibility="public" memberEnd="_XTb6I1uXEeOCwYvWfsRrew _XTb6JluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb6I1uXEeOCwYvWfsRrew" name="service provider" visibility="public" type="_XTbTHFuXEeOCwYvWfsRrew" association="_XTb6IluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6JFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6JVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb6JluXEeOCwYvWfsRrew" name="service offering commitment" visibility="public" type="_XTbTGluXEeOCwYvWfsRrew" association="_XTb6IluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6J1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6KFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTb6KVuXEeOCwYvWfsRrew" name="externally dependent on" visibility="public" memberEnd="_XTb6KluXEeOCwYvWfsRrew _XTb6LVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb6KluXEeOCwYvWfsRrew" name="target customer community" visibility="public" type="_XTbTIFuXEeOCwYvWfsRrew" association="_XTb6KVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6K1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6LFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb6LVuXEeOCwYvWfsRrew" name="service offering commitment" visibility="public" type="_XTbTGluXEeOCwYvWfsRrew" association="_XTb6KVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6LluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6L1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XTb6MFuXEeOCwYvWfsRrew" name="A_TargetCustomerCommunity_TargetCustomer" visibility="public" memberEnd="_XTb6MVuXEeOCwYvWfsRrew _XTb6NFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTb6MVuXEeOCwYvWfsRrew" name="target customer community" visibility="public" type="_XTbTIFuXEeOCwYvWfsRrew" aggregation="composite" association="_XTb6MFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6MluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6M1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb6NFuXEeOCwYvWfsRrew" name="target customer" visibility="public" type="_XTbTHluXEeOCwYvWfsRrew" association="_XTb6MFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6NVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6NluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Package>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XTdwXFuXEeOCwYvWfsRrew" name="BrunoNandolpho_SoftwareRequirements" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XTdwXVuXEeOCwYvWfsRrew" name="AlternativeFlow" visibility="public">
+    <generalization xmi:id="_XTdwXluXEeOCwYvWfsRrew" general="_XTdwa1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XTdwX1uXEeOCwYvWfsRrew" name="Artifact" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XTdwYFuXEeOCwYvWfsRrew" name="BasicFlow" visibility="public">
+    <generalization xmi:id="_XTdwYVuXEeOCwYvWfsRrew" general="_XTdwa1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTdwYluXEeOCwYvWfsRrew" name="BusinessRule" visibility="public">
+    <generalization xmi:id="_XTdwY1uXEeOCwYvWfsRrew" general="_XTdwd1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTdwZFuXEeOCwYvWfsRrew" name="Class" visibility="public">
+    <generalization xmi:id="_XTdwZVuXEeOCwYvWfsRrew" general="_XTdwaVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTdwZluXEeOCwYvWfsRrew" name="ClassTestCase" visibility="public">
+    <generalization xmi:id="_XTdwZ1uXEeOCwYvWfsRrew" general="_XTeVgFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTdwaFuXEeOCwYvWfsRrew" name="Condition" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTdwaVuXEeOCwYvWfsRrew" name="EntityType" visibility="public">
+    <generalization xmi:id="_XTdwaluXEeOCwYvWfsRrew" general="_XTdwX1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XTdwa1uXEeOCwYvWfsRrew" name="EventFlow" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTdwbFuXEeOCwYvWfsRrew" name="FunctionalRequirement" visibility="public">
+    <generalization xmi:id="_XTdwbVuXEeOCwYvWfsRrew" general="_XTdwd1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTdwbluXEeOCwYvWfsRrew" name="Module" visibility="public">
+    <generalization xmi:id="_XTdwb1uXEeOCwYvWfsRrew" general="_XTdwX1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTdwcFuXEeOCwYvWfsRrew" name="NonFunctionalRequirement" visibility="public">
+    <generalization xmi:id="_XTdwcVuXEeOCwYvWfsRrew" general="_XTdwd1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTdwcluXEeOCwYvWfsRrew" name="Postcondition" visibility="public">
+    <generalization xmi:id="_XTdwc1uXEeOCwYvWfsRrew" general="_XTdwaFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTdwdFuXEeOCwYvWfsRrew" name="Precondition" visibility="public">
+    <generalization xmi:id="_XTdwdVuXEeOCwYvWfsRrew" general="_XTdwaFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTdwdluXEeOCwYvWfsRrew" name="Project" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTdwd1uXEeOCwYvWfsRrew" name="Requirement" visibility="public">
+    <generalization xmi:id="_XTdweFuXEeOCwYvWfsRrew" general="_XTdwX1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTdweVuXEeOCwYvWfsRrew" name="RequirementTestCase" visibility="public">
+    <generalization xmi:id="_XTdweluXEeOCwYvWfsRrew" general="_XTeVgFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTeVgFuXEeOCwYvWfsRrew" name="TestCase" visibility="public">
+    <generalization xmi:id="_XTeVgVuXEeOCwYvWfsRrew" general="_XTdwX1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTeVgluXEeOCwYvWfsRrew" name="UseCase" visibility="public">
+    <generalization xmi:id="_XTeVg1uXEeOCwYvWfsRrew" general="_XTdwX1uXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XTeVhFuXEeOCwYvWfsRrew" name="description" visibility="private">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVhVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVhluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XTeVh1uXEeOCwYvWfsRrew" name="identifier" visibility="private">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeViFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeViVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTeViluXEeOCwYvWfsRrew" name="UseCaseTestCase" visibility="public">
+    <generalization xmi:id="_XTeVi1uXEeOCwYvWfsRrew" general="_XTeVgFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeVjFuXEeOCwYvWfsRrew" name="regarding" visibility="public" memberEnd="_XTeVjVuXEeOCwYvWfsRrew _XTeVkFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeVjVuXEeOCwYvWfsRrew" name="basicflow" visibility="public" type="_XTdwYFuXEeOCwYvWfsRrew" association="_XTeVjFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVjluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVj1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeVkFuXEeOCwYvWfsRrew" name="alternativeflow" visibility="public" type="_XTdwXVuXEeOCwYvWfsRrew" association="_XTeVjFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVkVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVkluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeVk1uXEeOCwYvWfsRrew" name="A_UseCase_AlternativeFlow" visibility="public" memberEnd="_XTeVlFuXEeOCwYvWfsRrew _XTeVl1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeVlFuXEeOCwYvWfsRrew" name="usecase" visibility="public" type="_XTeVgluXEeOCwYvWfsRrew" aggregation="composite" association="_XTeVk1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVlVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVlluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeVl1uXEeOCwYvWfsRrew" name="alternativeflow" visibility="public" type="_XTdwXVuXEeOCwYvWfsRrew" association="_XTeVk1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVmFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVmVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeVmluXEeOCwYvWfsRrew" name="producedIn" visibility="public" memberEnd="_XTeVm1uXEeOCwYvWfsRrew _XTeVnluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeVm1uXEeOCwYvWfsRrew" name="project" visibility="public" type="_XTdwdluXEeOCwYvWfsRrew" association="_XTeVmluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVnFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVnVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeVnluXEeOCwYvWfsRrew" name="artifact" visibility="public" type="_XTdwX1uXEeOCwYvWfsRrew" association="_XTeVmluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVn1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVoFuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeVoVuXEeOCwYvWfsRrew" name="A_UseCase_BasicFlow" visibility="public" memberEnd="_XTeVoluXEeOCwYvWfsRrew _XTeVpVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeVoluXEeOCwYvWfsRrew" name="usecase" visibility="public" type="_XTeVgluXEeOCwYvWfsRrew" aggregation="composite" association="_XTeVoVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVo1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVpFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeVpVuXEeOCwYvWfsRrew" name="basicflow" visibility="public" type="_XTdwYFuXEeOCwYvWfsRrew" association="_XTeVoVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVpluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVp1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeVqFuXEeOCwYvWfsRrew" name="A_ClassTestCase_Class" visibility="public" memberEnd="_XTeVqVuXEeOCwYvWfsRrew _XTeVrFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeVqVuXEeOCwYvWfsRrew" name="classtestcase" visibility="public" type="_XTdwZluXEeOCwYvWfsRrew" association="_XTeVqFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVqluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVq1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeVrFuXEeOCwYvWfsRrew" name="class" visibility="public" type="_XTdwZFuXEeOCwYvWfsRrew" association="_XTeVqFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVrVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVrluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeVr1uXEeOCwYvWfsRrew" name="usedIn" visibility="public" memberEnd="_XTeVsFuXEeOCwYvWfsRrew _XTeVs1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeVsFuXEeOCwYvWfsRrew" name="usecase" visibility="public" type="_XTeVgluXEeOCwYvWfsRrew" association="_XTeVr1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVsVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVsluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeVs1uXEeOCwYvWfsRrew" name="entitytype" visibility="public" type="_XTdwaVuXEeOCwYvWfsRrew" association="_XTeVr1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVtFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVtVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeVtluXEeOCwYvWfsRrew" name="A_Postcondition_EventFlow" visibility="public" memberEnd="_XTeVt1uXEeOCwYvWfsRrew _XTeVuluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeVt1uXEeOCwYvWfsRrew" name="postcondition" visibility="public" type="_XTdwcluXEeOCwYvWfsRrew" association="_XTeVtluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVuFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVuVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeVuluXEeOCwYvWfsRrew" name="eventflow" visibility="public" type="_XTdwa1uXEeOCwYvWfsRrew" association="_XTeVtluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVu1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVvFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeVvVuXEeOCwYvWfsRrew" name="A_UseCase_EventFlow" visibility="public" memberEnd="_XTeVvluXEeOCwYvWfsRrew _XTeVwVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeVvluXEeOCwYvWfsRrew" name="usecase" visibility="public" type="_XTeVgluXEeOCwYvWfsRrew" aggregation="composite" association="_XTeVvVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVv1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVwFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeVwVuXEeOCwYvWfsRrew" name="flow" visibility="public" type="_XTdwa1uXEeOCwYvWfsRrew" association="_XTeVvVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVwluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVw1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeVxFuXEeOCwYvWfsRrew" name="A_Precondition_EventFlow" visibility="public" memberEnd="_XTeVxVuXEeOCwYvWfsRrew _XTeVyFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeVxVuXEeOCwYvWfsRrew" name="precondition" visibility="public" type="_XTdwdFuXEeOCwYvWfsRrew" association="_XTeVxFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVxluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVx1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeVyFuXEeOCwYvWfsRrew" name="eventflow" visibility="public" type="_XTdwa1uXEeOCwYvWfsRrew" association="_XTeVxFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVyVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVyluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeVy1uXEeOCwYvWfsRrew" name="alocatedFor" visibility="public" memberEnd="_XTeVzFuXEeOCwYvWfsRrew _XTeVz1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeVzFuXEeOCwYvWfsRrew" name="usecase" visibility="public" type="_XTeVgluXEeOCwYvWfsRrew" association="_XTeVy1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeVzVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeVzluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeVz1uXEeOCwYvWfsRrew" name="module" visibility="public" type="_XTdwbluXEeOCwYvWfsRrew" association="_XTeVy1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeV0FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeV0VuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeV0luXEeOCwYvWfsRrew" name="dependsOn" visibility="public" memberEnd="_XTeV01uXEeOCwYvWfsRrew _XTeV1luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeV01uXEeOCwYvWfsRrew" name="requirement" visibility="public" type="_XTdwd1uXEeOCwYvWfsRrew" association="_XTeV0luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeV1FuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeV1VuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeV1luXEeOCwYvWfsRrew" name="requirement" visibility="public" type="_XTdwd1uXEeOCwYvWfsRrew" association="_XTeV0luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeV11uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeV2FuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeV2VuXEeOCwYvWfsRrew" name="conflictsWith" visibility="public" memberEnd="_XTeV2luXEeOCwYvWfsRrew _XTeV3VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeV2luXEeOCwYvWfsRrew" name="requirement" visibility="public" type="_XTdwd1uXEeOCwYvWfsRrew" association="_XTeV2VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeV21uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeV3FuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeV3VuXEeOCwYvWfsRrew" name="requirement" visibility="public" type="_XTdwd1uXEeOCwYvWfsRrew" association="_XTeV2VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeV3luXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeV31uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeV4FuXEeOCwYvWfsRrew" name="fulfills" visibility="public" memberEnd="_XTeV4VuXEeOCwYvWfsRrew _XTeV5FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeV4VuXEeOCwYvWfsRrew" name="usecase" visibility="public" type="_XTeVgluXEeOCwYvWfsRrew" association="_XTeV4FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeV4luXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeV41uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeV5FuXEeOCwYvWfsRrew" name="requirement" visibility="public" type="_XTdwd1uXEeOCwYvWfsRrew" association="_XTeV4FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeV5VuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeV5luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeV51uXEeOCwYvWfsRrew" name="A_RequirementTestCase_Requirement" visibility="public" memberEnd="_XTeV6FuXEeOCwYvWfsRrew _XTeV61uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeV6FuXEeOCwYvWfsRrew" name="requirementtestcase" visibility="public" type="_XTdweVuXEeOCwYvWfsRrew" association="_XTeV51uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeV6VuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeV6luXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeV61uXEeOCwYvWfsRrew" name="requirement" visibility="public" type="_XTdwd1uXEeOCwYvWfsRrew" association="_XTeV51uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeV7FuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeV7VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XTeV7luXEeOCwYvWfsRrew" name="A_UseCaseTestCase_UseCase" visibility="public" memberEnd="_XTeV71uXEeOCwYvWfsRrew _XTeV8luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTeV71uXEeOCwYvWfsRrew" name="usecasetestcase" visibility="public" type="_XTeViluXEeOCwYvWfsRrew" association="_XTeV7luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeV8FuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeV8VuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTeV8luXEeOCwYvWfsRrew" name="usecase" visibility="public" type="_XTeVgluXEeOCwYvWfsRrew" association="_XTeV7luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTeV81uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTeV9FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Package>

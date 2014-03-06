@@ -109,7 +109,7 @@ public abstract class AntipatternWizard extends Wizard {
 	public FinishingPage getFinishing() {
 		canFinish=true;
 		finishing.addActions(getAllActions());
-		System.out.println("Actions size: "+getAllActions().size());
+		System.out.println("Finishing - Actions size: "+getAllActions().size());
 		for (AntiPatternAction<?> action : getAllActions()) {
 			System.out.println(action);
 		}

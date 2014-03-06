@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XTJl3VuXEeOCwYvWfsRrew" name="RenatoCabelino_PROVOntology_English" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTJl3luXEeOCwYvWfsRrew" name="Activity" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTJl31uXEeOCwYvWfsRrew" name="Aggregated Activity" visibility="public">
+    <generalization xmi:id="_XTKMcFuXEeOCwYvWfsRrew" general="_XTJl3luXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTKMcVuXEeOCwYvWfsRrew" name="Associated Aggregated Activity" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTKMcluXEeOCwYvWfsRrew" name="Associated Illustrative Activity" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTKMc1uXEeOCwYvWfsRrew" name="Bar Chart" visibility="public">
+    <generalization xmi:id="_XTKMdFuXEeOCwYvWfsRrew" general="_XTKMdVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTKMdVuXEeOCwYvWfsRrew" name="Chart" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTKMdluXEeOCwYvWfsRrew" name="Contract" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTKMd1uXEeOCwYvWfsRrew" name="Crime" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTKMeFuXEeOCwYvWfsRrew" name="Illustrative Activity" visibility="public">
+    <generalization xmi:id="_XTKMeVuXEeOCwYvWfsRrew" general="_XTJl3luXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTKMeluXEeOCwYvWfsRrew" name="Incident" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTKMe1uXEeOCwYvWfsRrew" name="Journalist" visibility="public">
+    <generalization xmi:id="_XTKMfFuXEeOCwYvWfsRrew" general="_XTKMf1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTKMfVuXEeOCwYvWfsRrew" name="National Region" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTKMfluXEeOCwYvWfsRrew" name="News Agency" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTKMf1uXEeOCwYvWfsRrew" name="Person" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTKMgFuXEeOCwYvWfsRrew" name="Region With Registered Crime" visibility="public">
+    <generalization xmi:id="_XTKMgVuXEeOCwYvWfsRrew" general="_XTKMfVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTKMgluXEeOCwYvWfsRrew" name="Uses" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTKMg1uXEeOCwYvWfsRrew" name="A_IllustrativeActivity_AggregatedActivity" visibility="public" memberEnd="_XTKMhFuXEeOCwYvWfsRrew _XTKMh1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKMhFuXEeOCwYvWfsRrew" name="illustrative activity" visibility="public" type="_XTKMeFuXEeOCwYvWfsRrew" association="_XTKMg1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMhVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMhluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKMh1uXEeOCwYvWfsRrew" name="aggregated activity" visibility="public" type="_XTJl31uXEeOCwYvWfsRrew" association="_XTKMg1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMiFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMiVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTKMiluXEeOCwYvWfsRrew" name="A_AssociatedAggregatedActivity_AggregatedActivity" visibility="public" memberEnd="_XTKMi1uXEeOCwYvWfsRrew _XTKMjluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKMi1uXEeOCwYvWfsRrew" name="associated aggregated activity" visibility="public" type="_XTKMcVuXEeOCwYvWfsRrew" association="_XTKMiluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMjFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMjVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKMjluXEeOCwYvWfsRrew" name="aggregated activity" visibility="public" type="_XTJl31uXEeOCwYvWfsRrew" association="_XTKMiluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMj1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMkFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTKMkVuXEeOCwYvWfsRrew" name="A_Journalist_AssociatedAggregatedActivity" visibility="public" memberEnd="_XTKMkluXEeOCwYvWfsRrew _XTKMlVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKMkluXEeOCwYvWfsRrew" name="journalist" visibility="public" type="_XTKMe1uXEeOCwYvWfsRrew" association="_XTKMkVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMk1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMlFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKMlVuXEeOCwYvWfsRrew" name="associated aggregated activity" visibility="public" type="_XTKMcVuXEeOCwYvWfsRrew" association="_XTKMkVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMlluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMl1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTKMmFuXEeOCwYvWfsRrew" name="A_IllustrativeActivity_AssociatedIllustrativeActivity" visibility="public" memberEnd="_XTKMmVuXEeOCwYvWfsRrew _XTKMnFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKMmVuXEeOCwYvWfsRrew" name="illustrative activity" visibility="public" type="_XTKMeFuXEeOCwYvWfsRrew" association="_XTKMmFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMmluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMm1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKMnFuXEeOCwYvWfsRrew" name="associated illustrative activity" visibility="public" type="_XTKMcluXEeOCwYvWfsRrew" association="_XTKMmFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMnVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMnluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTKMn1uXEeOCwYvWfsRrew" name="A_Journalist_AssociatedIllustrativeActivity" visibility="public" memberEnd="_XTKMoFuXEeOCwYvWfsRrew _XTKMo1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKMoFuXEeOCwYvWfsRrew" name="journalist" visibility="public" type="_XTKMe1uXEeOCwYvWfsRrew" association="_XTKMn1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMoVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMoluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKMo1uXEeOCwYvWfsRrew" name="associated illustrative activity" visibility="public" type="_XTKMcluXEeOCwYvWfsRrew" association="_XTKMn1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMpFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMpVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTKMpluXEeOCwYvWfsRrew" name="A_Uses_BarChart" visibility="public" memberEnd="_XTKMp1uXEeOCwYvWfsRrew _XTKMqluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKMp1uXEeOCwYvWfsRrew" name="uses" visibility="public" type="_XTKMgluXEeOCwYvWfsRrew" association="_XTKMpluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMqFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMqVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKMqluXEeOCwYvWfsRrew" name="bar chart" visibility="public" type="_XTKMc1uXEeOCwYvWfsRrew" association="_XTKMpluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMq1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMrFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTKMrVuXEeOCwYvWfsRrew" name="A_Journalist_Contract" visibility="public" memberEnd="_XTKMrluXEeOCwYvWfsRrew _XTKMsVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKMrluXEeOCwYvWfsRrew" name="journalist" visibility="public" type="_XTKMe1uXEeOCwYvWfsRrew" association="_XTKMrVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMr1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMsFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKMsVuXEeOCwYvWfsRrew" name="contract" visibility="public" type="_XTKMdluXEeOCwYvWfsRrew" association="_XTKMrVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMsluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMs1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTKMtFuXEeOCwYvWfsRrew" name="A_NewsAgency_Contract" visibility="public" memberEnd="_XTKMtVuXEeOCwYvWfsRrew _XTKMuFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKMtVuXEeOCwYvWfsRrew" name="news agency" visibility="public" type="_XTKMfluXEeOCwYvWfsRrew" association="_XTKMtFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMtluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMt1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKMuFuXEeOCwYvWfsRrew" name="contract" visibility="public" type="_XTKMdluXEeOCwYvWfsRrew" association="_XTKMtFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMuVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMuluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTKMu1uXEeOCwYvWfsRrew" name="A_Incident_Crime" visibility="public" memberEnd="_XTKMvFuXEeOCwYvWfsRrew _XTKMv1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKMvFuXEeOCwYvWfsRrew" name="incident" visibility="public" type="_XTKMeluXEeOCwYvWfsRrew" association="_XTKMu1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMvVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMvluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKMv1uXEeOCwYvWfsRrew" name="crime" visibility="public" type="_XTKMd1uXEeOCwYvWfsRrew" association="_XTKMu1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMwFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMwVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTKMwluXEeOCwYvWfsRrew" name="A_Uses_IllustrativeActivity" visibility="public" memberEnd="_XTKMw1uXEeOCwYvWfsRrew _XTKMxluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKMw1uXEeOCwYvWfsRrew" name="uses" visibility="public" type="_XTKMgluXEeOCwYvWfsRrew" association="_XTKMwluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMxFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMxVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKMxluXEeOCwYvWfsRrew" name="illustrative activity" visibility="public" type="_XTKMeFuXEeOCwYvWfsRrew" association="_XTKMwluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMx1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMyFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTKMyVuXEeOCwYvWfsRrew" name="A_RegionWithRegisteredCrime_Incident" visibility="public" memberEnd="_XTKMyluXEeOCwYvWfsRrew _XTKMzVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKMyluXEeOCwYvWfsRrew" name="region with registered crime" visibility="public" type="_XTKMgFuXEeOCwYvWfsRrew" association="_XTKMyVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMy1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMzFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKMzVuXEeOCwYvWfsRrew" name="incident" visibility="public" type="_XTKMeluXEeOCwYvWfsRrew" association="_XTKMyVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKMzluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKMz1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTKM0FuXEeOCwYvWfsRrew" name="A_Uses_RegionWithRegisteredCrime" visibility="public" memberEnd="_XTKM0VuXEeOCwYvWfsRrew _XTKM1FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTKM0VuXEeOCwYvWfsRrew" name="uses" visibility="public" type="_XTKMgluXEeOCwYvWfsRrew" association="_XTKM0FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKM0luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKM01uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTKM1FuXEeOCwYvWfsRrew" name="region with registered crime" visibility="public" type="_XTKMgFuXEeOCwYvWfsRrew" association="_XTKM0FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTKM1VuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTKM1luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Package>

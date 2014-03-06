@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.binover;
 
+import java.util.Arrays;
+
 import RefOntoUML.Association;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
@@ -7,7 +9,7 @@ import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 
 public class BinOverAction extends AntiPatternAction<BinOverOccurrence>{
 
-	private BinaryPropertyValue reflexivityValue, symmetryValue, transitivityValue, cyclicityValue;
+	private BinaryPropertyValue property;
 	private Class<? extends Association> newStereotype;
 	
 	public BinOverAction(BinOverOccurrence ap) 
@@ -15,41 +17,13 @@ public class BinOverAction extends AntiPatternAction<BinOverOccurrence>{
 		super(ap);
 	}
 
-	public enum Action { SET_REFLEXIVITY, SET_SYMMETRY, SET_TRANSITIVITY, SET_CYCLICITY, SET_DISJOINTNESS, CHANGE_STEREOTYPE }
+	public enum Action { SET_BINARY_PROPERTY, SET_DISJOINTNESS, CHANGE_STEREOTYPE }
 	
-	public void setReflexivity(BinaryPropertyValue value){
-		code = Action.SET_REFLEXIVITY;
-		if(value==BinaryPropertyValue.REFLEXIVE || value==BinaryPropertyValue.IRREFLEXIVE || value==BinaryPropertyValue.NON_REFLEXIVE)
-			reflexivityValue = value;
-		else
-			reflexivityValue = BinaryPropertyValue.NONE;
-	}
-	
-	public void setSymmetry(BinaryPropertyValue value){
-		code = Action.SET_SYMMETRY;
-		if(value==BinaryPropertyValue.SYMMETRIC || value==BinaryPropertyValue.ASYMMETRIC || value==BinaryPropertyValue.NON_SYMMETRIC)
-			symmetryValue = value;
-		else
-			symmetryValue = BinaryPropertyValue.NONE;
-	}
-	
-	public void setTransitivity(BinaryPropertyValue value){
-		code = Action.SET_TRANSITIVITY;
-		
-		if(value==BinaryPropertyValue.TRANSITIVE || value==BinaryPropertyValue.INTRANSITIVE || value==BinaryPropertyValue.NON_TRANSITIVE)
-			transitivityValue = value;
-		else
-			transitivityValue = BinaryPropertyValue.NONE;
-		
-	}
-	
-	public void setCyclicity(BinaryPropertyValue value){
-		code = Action.SET_CYCLICITY;
-		
-		if(value==BinaryPropertyValue.CYCLIC || value==BinaryPropertyValue.ACYCLIC || value==BinaryPropertyValue.NON_CYCLIC)
-			cyclicityValue = value;
-		else
-			cyclicityValue = BinaryPropertyValue.NONE;
+	public void setBinaryProperty(BinaryPropertyValue property){
+		if(property!=BinaryPropertyValue.NONE && Arrays.asList(BinaryPropertyValue.values()).contains(property)){
+			code=Action.SET_BINARY_PROPERTY;
+			this.property = property;
+		}
 	}
 	
 	public void setDisjointness(){
@@ -64,24 +38,23 @@ public class BinOverAction extends AntiPatternAction<BinOverOccurrence>{
 	@Override
 	public void run() 
 	{
-		
 		if(code==Action.SET_DISJOINTNESS)
 			ap.makeEndsDisjoint();
-		if(code==Action.SET_REFLEXIVITY)
-			ap.generateReflexivityOCL(reflexivityValue);
+		else if(code==Action.SET_BINARY_PROPERTY)
+			ap.generateOCL(property);
+		else if(code==Action.CHANGE_STEREOTYPE)
+			ap.changeStereotype(newStereotype);
 	}
 	
+	public BinaryPropertyValue getProperty() {
+		return property;
+	}
+
 	@Override
 	public String toString(){
 		String result = "";
-		if(code==Action.SET_REFLEXIVITY)
-			result = "Create OCL constraint: Enforce "+reflexivityValue;
-		else if(code==Action.SET_SYMMETRY)
-			result = "Create OCL constraint: Enforce "+symmetryValue;
-		else if(code==Action.SET_TRANSITIVITY)
-			result = "Create OCL constraint: Enforce "+transitivityValue;
-		else if(code==Action.SET_CYCLICITY)
-			result = "Create OCL constraint: Enforce "+cyclicityValue;
+		if(code==Action.SET_BINARY_PROPERTY)
+			result = "Create OCL constraint: Enforce "+property.toString().toLowerCase();
 		else if(code==Action.SET_DISJOINTNESS)
 			result = "Modify Model: Enforce disjointness between "+ap.getSource().getName()+" and "+ap.getTarget().getName();
 		else if(code==Action.CHANGE_STEREOTYPE)
@@ -89,22 +62,6 @@ public class BinOverAction extends AntiPatternAction<BinOverOccurrence>{
 					 BinOverWizard.getStereotypeName(newStereotype);
 		
 		return result;
-	}
-
-	public BinaryPropertyValue getReflexivityValue() {
-		return reflexivityValue;
-	}
-
-	public BinaryPropertyValue getSymmetryValue() {
-		return symmetryValue;
-	}
-
-	public BinaryPropertyValue getTransitivityValue() {
-		return transitivityValue;
-	}
-
-	public BinaryPropertyValue getCyclcityValue() {
-		return cyclicityValue;
 	}
 
 	public Class<? extends Association> getNewStereotype() {

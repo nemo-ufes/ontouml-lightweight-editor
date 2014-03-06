@@ -6,7 +6,6 @@ import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 
@@ -82,6 +81,18 @@ public class GeneralizationLine extends OverlappingGroup {
 		}
 		
 		return true;
+	}
+
+	public ArrayList<Property> getOrderedProperties() {
+		return orderedProperties;
+	}
+
+	public Property getParent() {
+		return parent;
+	}
+
+	public Property getChild() {
+		return child;
 	}
 	
 }

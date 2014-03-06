@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XSihrFuXEeOCwYvWfsRrew" name="ErnaniGaspar_PassagenderRailCharteredServiceOffering_English" visibility="public">
+  <ownedComment xmi:id="_XSihrVuXEeOCwYvWfsRrew" body="Ontology about the micro-domain of the Offering of Passenger Rail Chatered Services.&#xA;&#xA;This ontology describes the service offering, an specific subdomain of Passenger Rail Chartered Domain, which has two other variants: the touristic and commemorative  freigh, which are not in the scope of the model.&#xA;&#xA;The ontology is based on the paper published in EDOC 2013, from Nardi et al., about the services core ontology, UFO-S.&#xA;&#xA;Note that the &amp;lt;&amp;lt;partOf&amp;gt;&amp;gt; relation does not belong to OntoUML, but has been used with the same semantics of the one in Figure 1 of Nardi's paper."/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSihrluXEeOCwYvWfsRrew" name="Eventual Passenger Rail Chartered Service" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSihr1uXEeOCwYvWfsRrew" name="Interested Agent" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XSihsFuXEeOCwYvWfsRrew" name="PRCS Description" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XSihsVuXEeOCwYvWfsRrew" name="PRCS Offering Claim" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_XSihsluXEeOCwYvWfsRrew" name="PRCS Offering Commitment" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSihs1uXEeOCwYvWfsRrew" name="Railway Concessionaire" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XSihtFuXEeOCwYvWfsRrew" name="Railway Usage Agreement" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSihtVuXEeOCwYvWfsRrew" name="Regulatory Agency" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XSihtluXEeOCwYvWfsRrew" name="Regulatory Legislation" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XSiht1uXEeOCwYvWfsRrew" name="User Community of PRCS" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XSihuFuXEeOCwYvWfsRrew" name="User of PRCS" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XSihuVuXEeOCwYvWfsRrew" name="describes" visibility="public" memberEnd="_XSihuluXEeOCwYvWfsRrew _XSihvVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSihuluXEeOCwYvWfsRrew" name="prcs description" visibility="public" type="_XSihsFuXEeOCwYvWfsRrew" association="_XSihuVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihu1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihvFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSihvVuXEeOCwYvWfsRrew" name="eventual passenger rail chartered service" visibility="public" type="_XSihrluXEeOCwYvWfsRrew" association="_XSihuVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihvluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihv1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XSihwFuXEeOCwYvWfsRrew" name="A_PRCSOfferingCommitment_EventualPassengerRailCharteredService" visibility="public" memberEnd="_XSihwVuXEeOCwYvWfsRrew _XSihxFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSihwVuXEeOCwYvWfsRrew" name="prcs offering commitment" visibility="public" type="_XSihsluXEeOCwYvWfsRrew" association="_XSihwFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihwluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihw1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSihxFuXEeOCwYvWfsRrew" name="eventual passenger rail chartered service" visibility="public" type="_XSihrluXEeOCwYvWfsRrew" aggregation="composite" association="_XSihwFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSihxVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSihxluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSihx1uXEeOCwYvWfsRrew" name="offered to" visibility="public" memberEnd="_XSihyFuXEeOCwYvWfsRrew _XSjIcluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSihyFuXEeOCwYvWfsRrew" name="user community of prcs" visibility="public" type="_XSiht1uXEeOCwYvWfsRrew" association="_XSihx1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIcFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIcVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjIcluXEeOCwYvWfsRrew" name="eventual passenger rail chartered service" visibility="public" type="_XSihrluXEeOCwYvWfsRrew" association="_XSihx1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIc1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIdFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Association" xmi:id="_XSjIdVuXEeOCwYvWfsRrew" name="A_PRCSOfferingClaim_EventualPassengerRailCharteredService" visibility="public" memberEnd="_XSjIdluXEeOCwYvWfsRrew _XSjIeVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSjIdluXEeOCwYvWfsRrew" name="prcs offering claim" visibility="public" type="_XSihsVuXEeOCwYvWfsRrew" association="_XSjIdVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjId1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIeFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjIeVuXEeOCwYvWfsRrew" name="eventual passenger rail chartered service" visibility="public" type="_XSihrluXEeOCwYvWfsRrew" aggregation="composite" association="_XSjIdVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIeluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIe1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSjIfFuXEeOCwYvWfsRrew" name="regulates" visibility="public" memberEnd="_XSjIfVuXEeOCwYvWfsRrew _XSjIgFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSjIfVuXEeOCwYvWfsRrew" name="regulatory agency" visibility="public" type="_XSihtVuXEeOCwYvWfsRrew" association="_XSjIfFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIfluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIf1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjIgFuXEeOCwYvWfsRrew" name="eventual passenger rail chartered service" visibility="public" type="_XSihrluXEeOCwYvWfsRrew" association="_XSjIfFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIgVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIgluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSjIg1uXEeOCwYvWfsRrew" name="provides" visibility="public" memberEnd="_XSjIhFuXEeOCwYvWfsRrew _XSjIh1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSjIhFuXEeOCwYvWfsRrew" name="interested agent" visibility="public" type="_XSihr1uXEeOCwYvWfsRrew" association="_XSjIg1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIhVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIhluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjIh1uXEeOCwYvWfsRrew" name="eventual passenger rail chartered service" visibility="public" type="_XSihrluXEeOCwYvWfsRrew" association="_XSjIg1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIiFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIiVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSjIiluXEeOCwYvWfsRrew" name="A_RailwayUsageAgreement_InterestedAgent" visibility="public" memberEnd="_XSjIi1uXEeOCwYvWfsRrew _XSjIjluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSjIi1uXEeOCwYvWfsRrew" name="railway usage agreement" visibility="public" type="_XSihtFuXEeOCwYvWfsRrew" association="_XSjIiluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIjFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIjVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjIjluXEeOCwYvWfsRrew" name="interested agent" visibility="public" type="_XSihr1uXEeOCwYvWfsRrew" association="_XSjIiluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIj1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIkFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XSjIkVuXEeOCwYvWfsRrew" name="externally dependent in" visibility="public" memberEnd="_XSjIkluXEeOCwYvWfsRrew _XSjIlVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSjIkluXEeOCwYvWfsRrew" name="prcs offering claim" visibility="public" type="_XSihsVuXEeOCwYvWfsRrew" association="_XSjIkVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIk1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIlFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjIlVuXEeOCwYvWfsRrew" name="interested agent" visibility="public" type="_XSihr1uXEeOCwYvWfsRrew" association="_XSjIkVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIlluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIl1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XSjImFuXEeOCwYvWfsRrew" name="inhers in" visibility="public" memberEnd="_XSjImVuXEeOCwYvWfsRrew _XSjInFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSjImVuXEeOCwYvWfsRrew" name="prcs offering commitment" visibility="public" type="_XSihsluXEeOCwYvWfsRrew" association="_XSjImFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjImluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIm1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjInFuXEeOCwYvWfsRrew" name="interested agent" visibility="public" type="_XSihr1uXEeOCwYvWfsRrew" association="_XSjImFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjInVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjInluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Characterization" xmi:id="_XSjIn1uXEeOCwYvWfsRrew" name="inheres in" visibility="public" memberEnd="_XSjIoFuXEeOCwYvWfsRrew _XSjIo1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSjIoFuXEeOCwYvWfsRrew" name="user community of prcs" visibility="public" type="_XSiht1uXEeOCwYvWfsRrew" association="_XSjIn1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIoVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIoluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjIo1uXEeOCwYvWfsRrew" name="prcs offering claim" visibility="public" type="_XSihsVuXEeOCwYvWfsRrew" association="_XSjIn1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIpFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIpVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XSjIpluXEeOCwYvWfsRrew" name="externally dependent in" visibility="public" memberEnd="_XSjIp1uXEeOCwYvWfsRrew _XSjIqluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSjIp1uXEeOCwYvWfsRrew" name="user community of prcs" visibility="public" type="_XSiht1uXEeOCwYvWfsRrew" association="_XSjIpluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIqFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIqVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjIqluXEeOCwYvWfsRrew" name="prcs offering commitment" visibility="public" type="_XSihsluXEeOCwYvWfsRrew" association="_XSjIpluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIq1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIrFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XSjIrVuXEeOCwYvWfsRrew" name="A_RailwayUsageAgreement_RailwayConcessionaire" visibility="public" memberEnd="_XSjIrluXEeOCwYvWfsRrew _XSjIsVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSjIrluXEeOCwYvWfsRrew" name="railway usage agreement" visibility="public" type="_XSihtFuXEeOCwYvWfsRrew" association="_XSjIrVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIr1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIsFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjIsVuXEeOCwYvWfsRrew" name="railway concessionaire" visibility="public" type="_XSihs1uXEeOCwYvWfsRrew" association="_XSjIrVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIsluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIs1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XSjItFuXEeOCwYvWfsRrew" name="produces" visibility="public" memberEnd="_XSjItVuXEeOCwYvWfsRrew _XSjIuFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSjItVuXEeOCwYvWfsRrew" name="regulatory legislation" visibility="public" type="_XSihtluXEeOCwYvWfsRrew" association="_XSjItFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjItluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIt1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjIuFuXEeOCwYvWfsRrew" name="regulatory agency" visibility="public" type="_XSihtVuXEeOCwYvWfsRrew" association="_XSjItFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIuVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIuluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XSjIu1uXEeOCwYvWfsRrew" name="A_UserofPRCS_UserCommunityofPRCS" visibility="public" memberEnd="_XSjIvFuXEeOCwYvWfsRrew _XSjIv1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XSjIvFuXEeOCwYvWfsRrew" name="user of prcs" visibility="public" type="_XSihuFuXEeOCwYvWfsRrew" association="_XSjIu1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIvVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIvluXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XSjIv1uXEeOCwYvWfsRrew" name="user community of prcs" visibility="public" type="_XSiht1uXEeOCwYvWfsRrew" aggregation="composite" association="_XSjIu1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XSjIwFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XSjIwVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Package>

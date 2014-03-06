@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XTe-qluXEeOCwYvWfsRrew" name="RitaDeCassia_IaaS_English" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-q1uXEeOCwYvWfsRrew" name="Access Policy" visibility="public">
+    <generalization xmi:id="_XTe-rFuXEeOCwYvWfsRrew" general="_XTe-x1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTe-rVuXEeOCwYvWfsRrew" name="Administrative Vulnerability" visibility="public">
+    <generalization xmi:id="_XTe-rluXEeOCwYvWfsRrew" general="_XTe-4FuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTe-r1uXEeOCwYvWfsRrew" name="Agreed Function" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTe-sFuXEeOCwYvWfsRrew" name="Authentication" visibility="public">
+    <generalization xmi:id="_XTe-sVuXEeOCwYvWfsRrew" general="_XTe-q1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTe-sluXEeOCwYvWfsRrew" name="Authorization" visibility="public">
+    <generalization xmi:id="_XTe-s1uXEeOCwYvWfsRrew" general="_XTe-q1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-tFuXEeOCwYvWfsRrew" name="Availability" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTe-tVuXEeOCwYvWfsRrew" name="Certain Event" visibility="public">
+    <generalization xmi:id="_XTe-tluXEeOCwYvWfsRrew" general="_XTe-wluXEeOCwYvWfsRrew" generalizationSet="_XTfkSFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-t1uXEeOCwYvWfsRrew" name="Consumer" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTe-uFuXEeOCwYvWfsRrew" name="Consumer Organization" visibility="public">
+    <generalization xmi:id="_XTe-uVuXEeOCwYvWfsRrew" general="_XTe-t1uXEeOCwYvWfsRrew" generalizationSet="_XTfkSVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTe-uluXEeOCwYvWfsRrew" name="Consumer Person" visibility="public">
+    <generalization xmi:id="_XTe-u1uXEeOCwYvWfsRrew" general="_XTe-t1uXEeOCwYvWfsRrew" generalizationSet="_XTfkSVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTe-vFuXEeOCwYvWfsRrew" name="Contract" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTe-vVuXEeOCwYvWfsRrew" name="Data Processing" visibility="public">
+    <generalization xmi:id="_XTe-vluXEeOCwYvWfsRrew" general="_XTe-yVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTe-v1uXEeOCwYvWfsRrew" name="Data Storage" visibility="public">
+    <generalization xmi:id="_XTe-wFuXEeOCwYvWfsRrew" general="_XTe-yVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTe-wVuXEeOCwYvWfsRrew" name="Event" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-wluXEeOCwYvWfsRrew" name="Event" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-w1uXEeOCwYvWfsRrew" name="Hardware" visibility="public">
+    <generalization xmi:id="_XTe-xFuXEeOCwYvWfsRrew" general="_XTe-y1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTe-xVuXEeOCwYvWfsRrew" name="IT Infrastructure" visibility="public">
+    <generalization xmi:id="_XTe-xluXEeOCwYvWfsRrew" general="_XTe-yVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTe-x1uXEeOCwYvWfsRrew" name="IT Resource" visibility="public">
+    <generalization xmi:id="_XTe-yFuXEeOCwYvWfsRrew" general="_XTe-yVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-yVuXEeOCwYvWfsRrew" name="IT Service" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XTe-yluXEeOCwYvWfsRrew" name="IT Service Provider" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-y1uXEeOCwYvWfsRrew" name="IaaS" visibility="public">
+    <generalization xmi:id="_XTe-zFuXEeOCwYvWfsRrew" general="_XTe-yluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-zVuXEeOCwYvWfsRrew" name="IaaS Environment" visibility="public">
+    <generalization xmi:id="_XTe-zluXEeOCwYvWfsRrew" general="_XTe-yluXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XTe-z1uXEeOCwYvWfsRrew" general="_XTe-1FuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-0FuXEeOCwYvWfsRrew" name="Incident" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTe-0VuXEeOCwYvWfsRrew" name="Occurrence" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTe-0luXEeOCwYvWfsRrew" name="Process" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_XTe-01uXEeOCwYvWfsRrew" name="Provide Service" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XTe-1FuXEeOCwYvWfsRrew" name="Public Cloud" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-1VuXEeOCwYvWfsRrew" name="Software" visibility="public">
+    <generalization xmi:id="_XTe-1luXEeOCwYvWfsRrew" general="_XTe-y1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTe-11uXEeOCwYvWfsRrew" name="Techinical Vulnerability" visibility="public">
+    <generalization xmi:id="_XTe-2FuXEeOCwYvWfsRrew" general="_XTe-4FuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-2VuXEeOCwYvWfsRrew" name="Threat" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTe-2luXEeOCwYvWfsRrew" name="Uncertain Event" visibility="public">
+    <generalization xmi:id="_XTe-21uXEeOCwYvWfsRrew" general="_XTe-wluXEeOCwYvWfsRrew" generalizationSet="_XTfkSFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_XTe-3FuXEeOCwYvWfsRrew" name="User" visibility="public">
+    <generalization xmi:id="_XTe-3VuXEeOCwYvWfsRrew" general="_XTe-t1uXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XTe-3luXEeOCwYvWfsRrew" general="_XTe-uluXEeOCwYvWfsRrew"/>
+    <generalization xmi:id="_XTe-31uXEeOCwYvWfsRrew" general="_XTe-uFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTe-4FuXEeOCwYvWfsRrew" name="Vulnerability" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTe-4VuXEeOCwYvWfsRrew" name="A_Consumer_AccessPolicy" visibility="public" memberEnd="_XTe-4luXEeOCwYvWfsRrew _XTe-5VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTe-4luXEeOCwYvWfsRrew" name="consumer" visibility="public" type="_XTe-t1uXEeOCwYvWfsRrew" association="_XTe-4VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTe-41uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTe-5FuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTe-5VuXEeOCwYvWfsRrew" name="access policy" visibility="public" type="_XTe-q1uXEeOCwYvWfsRrew" association="_XTe-4VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTe-5luXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTe-51uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTe-6FuXEeOCwYvWfsRrew" name="A_ITService_AgreedFunction" visibility="public" memberEnd="_XTe-6VuXEeOCwYvWfsRrew _XTe-7FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTe-6VuXEeOCwYvWfsRrew" name="it service" visibility="public" type="_XTe-yVuXEeOCwYvWfsRrew" association="_XTe-6FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTe-6luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTe-61uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTe-7FuXEeOCwYvWfsRrew" name="agreed function" visibility="public" type="_XTe-r1uXEeOCwYvWfsRrew" association="_XTe-6FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTe-7VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTe-7luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfjoFuXEeOCwYvWfsRrew" name="A_Availability_AgreedFunction" visibility="public" memberEnd="_XTfjoVuXEeOCwYvWfsRrew _XTfjpFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfjoVuXEeOCwYvWfsRrew" name="availability" visibility="public" type="_XTe-tFuXEeOCwYvWfsRrew" association="_XTfjoFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjoluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjo1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfjpFuXEeOCwYvWfsRrew" name="agreed function" visibility="public" type="_XTe-r1uXEeOCwYvWfsRrew" association="_XTfjoFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjpVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjpluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfjp1uXEeOCwYvWfsRrew" name="A_Occurrence_Availability" visibility="public" memberEnd="_XTfjqFuXEeOCwYvWfsRrew _XTfjq1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfjqFuXEeOCwYvWfsRrew" name="occurrence" visibility="public" type="_XTe-0VuXEeOCwYvWfsRrew" association="_XTfjp1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjqVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjqluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfjq1uXEeOCwYvWfsRrew" name="availability" visibility="public" type="_XTe-tFuXEeOCwYvWfsRrew" association="_XTfjp1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjrFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjrVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XTfjrluXEeOCwYvWfsRrew" name="A_Contract_Consumer" visibility="public" memberEnd="_XTfjr1uXEeOCwYvWfsRrew _XTfjsluXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XTfjr1uXEeOCwYvWfsRrew" name="contract" visibility="public" type="_XTe-vFuXEeOCwYvWfsRrew" association="_XTfjrluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjsFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjsVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfjsluXEeOCwYvWfsRrew" name="consumer" visibility="public" type="_XTe-t1uXEeOCwYvWfsRrew" association="_XTfjrluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjs1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjtFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfjtVuXEeOCwYvWfsRrew" name="A_ITService_Contract" visibility="public" memberEnd="_XTfjtluXEeOCwYvWfsRrew _XTfjuVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfjtluXEeOCwYvWfsRrew" name="it service" visibility="public" type="_XTe-yVuXEeOCwYvWfsRrew" association="_XTfjtVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjt1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjuFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfjuVuXEeOCwYvWfsRrew" name="contract" visibility="public" type="_XTe-vFuXEeOCwYvWfsRrew" association="_XTfjtVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjuluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfju1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTfjvFuXEeOCwYvWfsRrew" name="A_ITResource_Contract" visibility="public" memberEnd="_XTfjvVuXEeOCwYvWfsRrew _XTfjwFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfjvVuXEeOCwYvWfsRrew" name="it resource" visibility="public" type="_XTe-x1uXEeOCwYvWfsRrew" association="_XTfjvFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjvluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjv1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfjwFuXEeOCwYvWfsRrew" name="contract" visibility="public" type="_XTe-vFuXEeOCwYvWfsRrew" association="_XTfjvFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjwVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjwluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfjw1uXEeOCwYvWfsRrew" name="A_Threat_Event" visibility="public" memberEnd="_XTfjxFuXEeOCwYvWfsRrew _XTfjx1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfjxFuXEeOCwYvWfsRrew" name="threat" visibility="public" type="_XTe-2VuXEeOCwYvWfsRrew" association="_XTfjw1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjxVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjxluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfjx1uXEeOCwYvWfsRrew" name="event" visibility="public" type="_XTe-wVuXEeOCwYvWfsRrew" association="_XTfjw1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjyFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjyVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfjyluXEeOCwYvWfsRrew" name="A_Vulnerability_Event" visibility="public" memberEnd="_XTfjy1uXEeOCwYvWfsRrew _XTfjzluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfjy1uXEeOCwYvWfsRrew" name="vulnerability" visibility="public" type="_XTe-4FuXEeOCwYvWfsRrew" association="_XTfjyluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjzFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfjzVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfjzluXEeOCwYvWfsRrew" name="event" visibility="public" type="_XTe-wVuXEeOCwYvWfsRrew" association="_XTfjyluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfjz1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj0FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTfj0VuXEeOCwYvWfsRrew" name="caused by" visibility="public" memberEnd="_XTfj0luXEeOCwYvWfsRrew _XTfj1VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfj0luXEeOCwYvWfsRrew" name="threat" visibility="public" type="_XTe-2VuXEeOCwYvWfsRrew" association="_XTfj0VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj01uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj1FuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfj1VuXEeOCwYvWfsRrew" name="event" visibility="public" type="_XTe-wluXEeOCwYvWfsRrew" association="_XTfj0VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj1luXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj11uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfj2FuXEeOCwYvWfsRrew" name="A_Occurrence_Event" visibility="public" memberEnd="_XTfj2VuXEeOCwYvWfsRrew _XTfj3FuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfj2VuXEeOCwYvWfsRrew" name="occurrence" visibility="public" type="_XTe-0VuXEeOCwYvWfsRrew" association="_XTfj2FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj2luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj21uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfj3FuXEeOCwYvWfsRrew" name="event" visibility="public" type="_XTe-wluXEeOCwYvWfsRrew" association="_XTfj2FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj3VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj3luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfj31uXEeOCwYvWfsRrew" name="A_Process_Hardware" visibility="public" memberEnd="_XTfj4FuXEeOCwYvWfsRrew _XTfj41uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfj4FuXEeOCwYvWfsRrew" name="process" visibility="public" type="_XTe-0luXEeOCwYvWfsRrew" association="_XTfj31uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj4VuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj4luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfj41uXEeOCwYvWfsRrew" name="hardware" visibility="public" type="_XTe-w1uXEeOCwYvWfsRrew" association="_XTfj31uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj5FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj5VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfj5luXEeOCwYvWfsRrew" name="A_ProvideService_ITService" visibility="public" memberEnd="_XTfj51uXEeOCwYvWfsRrew _XTfj6luXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfj51uXEeOCwYvWfsRrew" name="provide service" visibility="public" type="_XTe-01uXEeOCwYvWfsRrew" association="_XTfj5luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj6FuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj6VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfj6luXEeOCwYvWfsRrew" name="it service" visibility="public" type="_XTe-yVuXEeOCwYvWfsRrew" association="_XTfj5luXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj61uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj7FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfj7VuXEeOCwYvWfsRrew" name="A_Occurrence_ITService" visibility="public" memberEnd="_XTfj7luXEeOCwYvWfsRrew _XTfj8VuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfj7luXEeOCwYvWfsRrew" name="occurrence" visibility="public" type="_XTe-0VuXEeOCwYvWfsRrew" association="_XTfj7VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj71uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj8FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfj8VuXEeOCwYvWfsRrew" name="it service" visibility="public" type="_XTe-yVuXEeOCwYvWfsRrew" association="_XTfj7VuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj8luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj81uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XTfj9FuXEeOCwYvWfsRrew" name="A_Threat_ITService" visibility="public" memberEnd="_XTfj9VuXEeOCwYvWfsRrew _XTfj-FuXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XTfj9VuXEeOCwYvWfsRrew" name="threat" visibility="public" type="_XTe-2VuXEeOCwYvWfsRrew" association="_XTfj9FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj9luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj91uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfj-FuXEeOCwYvWfsRrew" name="it service" visibility="public" type="_XTe-yVuXEeOCwYvWfsRrew" association="_XTfj9FuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj-VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj-luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTfj-1uXEeOCwYvWfsRrew" name="A_IaaS_ITService" visibility="public" memberEnd="_XTfj_FuXEeOCwYvWfsRrew _XTfj_1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfj_FuXEeOCwYvWfsRrew" name="iaas" visibility="public" type="_XTe-y1uXEeOCwYvWfsRrew" association="_XTfj-1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfj_VuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfj_luXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfj_1uXEeOCwYvWfsRrew" name="it service" visibility="public" type="_XTe-yVuXEeOCwYvWfsRrew" association="_XTfj-1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkAFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkAVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTfkAluXEeOCwYvWfsRrew" name="has" visibility="public" memberEnd="_XTfkA1uXEeOCwYvWfsRrew _XTfkBluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfkA1uXEeOCwYvWfsRrew" name="vulnerability" visibility="public" type="_XTe-4FuXEeOCwYvWfsRrew" association="_XTfkAluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkBFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkBVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkBluXEeOCwYvWfsRrew" name="iaas" visibility="public" type="_XTe-y1uXEeOCwYvWfsRrew" association="_XTfkAluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkB1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkCFuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfkCVuXEeOCwYvWfsRrew" name="A_ProvideService_IaaSEnvironment" visibility="public" memberEnd="_XTfkCluXEeOCwYvWfsRrew _XTfkDVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfkCluXEeOCwYvWfsRrew" name="provide service" visibility="public" type="_XTe-01uXEeOCwYvWfsRrew" association="_XTfkCVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkC1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkDFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkDVuXEeOCwYvWfsRrew" name="iaas environment" visibility="public" type="_XTe-zVuXEeOCwYvWfsRrew" association="_XTfkCVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkDluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkD1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:FormalAssociation" xmi:id="_XTfkEFuXEeOCwYvWfsRrew" name="causes" visibility="public" memberEnd="_XTfkEVuXEeOCwYvWfsRrew _XTfkFFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfkEVuXEeOCwYvWfsRrew" name="threat" visibility="public" type="_XTe-2VuXEeOCwYvWfsRrew" association="_XTfkEFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkEluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkE1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkFFuXEeOCwYvWfsRrew" name="incident" visibility="public" type="_XTe-0FuXEeOCwYvWfsRrew" association="_XTfkEFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkFVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkFluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfkF1uXEeOCwYvWfsRrew" name="caused by" visibility="public" memberEnd="_XTfkGFuXEeOCwYvWfsRrew _XTfkG1uXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfkGFuXEeOCwYvWfsRrew" name="occurrence" visibility="public" type="_XTe-0VuXEeOCwYvWfsRrew" association="_XTfkF1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkGVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkGluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkG1uXEeOCwYvWfsRrew" name="incident" visibility="public" type="_XTe-0FuXEeOCwYvWfsRrew" association="_XTfkF1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkHFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkHVuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfkHluXEeOCwYvWfsRrew" name="A_Threat_Occurrence" visibility="public" memberEnd="_XTfkH1uXEeOCwYvWfsRrew _XTfkIluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfkH1uXEeOCwYvWfsRrew" name="threat" visibility="public" type="_XTe-2VuXEeOCwYvWfsRrew" association="_XTfkHluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkIFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkIVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkIluXEeOCwYvWfsRrew" name="occurrence" visibility="public" type="_XTe-0VuXEeOCwYvWfsRrew" association="_XTfkHluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkI1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkJFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_XTfkJVuXEeOCwYvWfsRrew" name="A_Software_Process" visibility="public" memberEnd="_XTfkJluXEeOCwYvWfsRrew _XTfkKVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfkJluXEeOCwYvWfsRrew" name="software" visibility="public" type="_XTe-1VuXEeOCwYvWfsRrew" association="_XTfkJVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkJ1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkKFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkKVuXEeOCwYvWfsRrew" name="process" visibility="public" type="_XTe-0luXEeOCwYvWfsRrew" association="_XTfkJVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkKluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkK1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XTfkLFuXEeOCwYvWfsRrew" name="explores" visibility="public" memberEnd="_XTfkLVuXEeOCwYvWfsRrew _XTfkMFuXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XTfkLVuXEeOCwYvWfsRrew" name="vulnerability" visibility="public" type="_XTe-4FuXEeOCwYvWfsRrew" association="_XTfkLFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkLluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkL1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkMFuXEeOCwYvWfsRrew" name="threat" visibility="public" type="_XTe-2VuXEeOCwYvWfsRrew" association="_XTfkLFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkMVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkMluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XTfkM1uXEeOCwYvWfsRrew" name="negatively affects" visibility="public" memberEnd="_XTfkNFuXEeOCwYvWfsRrew _XTfkN1uXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XTfkNFuXEeOCwYvWfsRrew" name="event" visibility="public" type="_XTe-wluXEeOCwYvWfsRrew" association="_XTfkM1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkNVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkNluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkN1uXEeOCwYvWfsRrew" name="availability" visibility="public" type="_XTe-tFuXEeOCwYvWfsRrew" association="_XTfkM1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkOFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkOVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XTfkOluXEeOCwYvWfsRrew" name="runs in" visibility="public" memberEnd="_XTfkO1uXEeOCwYvWfsRrew _XTfkPluXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XTfkO1uXEeOCwYvWfsRrew" name="software" visibility="public" type="_XTe-1VuXEeOCwYvWfsRrew" association="_XTfkOluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkPFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkPVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkPluXEeOCwYvWfsRrew" name="hardware" visibility="public" type="_XTe-w1uXEeOCwYvWfsRrew" association="_XTfkOluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkP1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkQFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" xmi:id="_XTfkQVuXEeOCwYvWfsRrew" name="A_IaaSEnvironment_ITService" visibility="public" memberEnd="_XTfkQluXEeOCwYvWfsRrew _XTfkRVuXEeOCwYvWfsRrew" isDerived="true">
+    <ownedEnd xmi:id="_XTfkQluXEeOCwYvWfsRrew" name="iaas environment" visibility="public" type="_XTe-zVuXEeOCwYvWfsRrew" association="_XTfkQVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkQ1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkRFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkRVuXEeOCwYvWfsRrew" name="it service" visibility="public" type="_XTe-yVuXEeOCwYvWfsRrew" association="_XTfkQVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkRluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkR1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTfkSFuXEeOCwYvWfsRrew" name="gs-event" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTe-tluXEeOCwYvWfsRrew _XTe-21uXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTfkSVuXEeOCwYvWfsRrew" name="gs-consumer" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTe-uVuXEeOCwYvWfsRrew _XTe-u1uXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:Derivation" xmi:id="_XTfkSluXEeOCwYvWfsRrew" name="A_runsin_Process" memberEnd="_XTfkS1uXEeOCwYvWfsRrew _XTfkTluXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfkS1uXEeOCwYvWfsRrew" type="_XTfkOluXEeOCwYvWfsRrew" association="_XTfkSluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkTFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkTVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkTluXEeOCwYvWfsRrew" type="_XTe-0luXEeOCwYvWfsRrew" association="_XTfkSluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkT1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkUFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Derivation" xmi:id="_XTfkUVuXEeOCwYvWfsRrew" name="A_negativelyaffects_Occurrence" memberEnd="_XTfkUluXEeOCwYvWfsRrew _XTfkVVuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfkUluXEeOCwYvWfsRrew" type="_XTfkM1uXEeOCwYvWfsRrew" association="_XTfkUVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkU1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkVFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkVVuXEeOCwYvWfsRrew" type="_XTe-0VuXEeOCwYvWfsRrew" association="_XTfkUVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkVluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkV1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Derivation" xmi:id="_XTfkWFuXEeOCwYvWfsRrew" name="A_A_IaaSEnvironment_ITService_ProvideService" memberEnd="_XTfkWVuXEeOCwYvWfsRrew _XTfkXFuXEeOCwYvWfsRrew">
+    <ownedEnd xmi:id="_XTfkWVuXEeOCwYvWfsRrew" type="_XTfkQVuXEeOCwYvWfsRrew" association="_XTfkWFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkWluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkW1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTfkXFuXEeOCwYvWfsRrew" type="_XTe-01uXEeOCwYvWfsRrew" association="_XTfkWFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTfkXVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTfkXluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Package>

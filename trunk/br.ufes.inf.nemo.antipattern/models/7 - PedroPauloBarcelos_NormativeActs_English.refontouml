@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_XTb6OVuXEeOCwYvWfsRrew" name="PedroPauloBarcelos_NormativeActs_English" visibility="public">
+  <ownedComment xmi:id="_XTb6OluXEeOCwYvWfsRrew" body="&lt;b>Acknowledgements&lt;/b>&#xA;This ontology was developed in the context of the Information and Knowledge Management Model Project (&#x201c;Modelo de Gest&#xe3;o da Informa&#xe7;&#xe3;o e do Conhecimento&#x201d;, MGIC, in Portuguese), a cooperation project between the Federal Fluminense University and the National Agency of Terrestrial Transportation (ANTT). The MGIC Ontology Team is composed by:&#xA;&#xA;&lt;ul>&#xA; &lt;li>PhD. Anilton S. Garcia (area coordinator)&lt;/li>&#xA; &lt;li>MSc. Carlos L. B. Azevedo&lt;/li>&#xA; &lt;li>Diorbert C. Pereira&lt;/li>&#xA; &lt;li>MSc. Ernani G. Santos&lt;/li>&#xA; &lt;li>MSc. Pedro Paulo F. Barcelos&lt;/li>&#xA; &lt;li>PhD. Renata S. S. Guizzardi&lt;/li>&#xA; &lt;li>Tiago P. Sales&lt;/li>&#xA;&lt;/ul>&#xA;&#xA;The authors of the paper would like to thank all the MGIC team, specially the Ontology Team members. We also would like to thank the ANTT staff. A special thank is given to Lucas Thom and John Guerson, scholarship students in the MGIC Ontology Team who contributed to the ontology development."/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTb6O1uXEeOCwYvWfsRrew" name="Article" visibility="public">
+    <ownedComment xmi:id="_XTb6PFuXEeOCwYvWfsRrew" body="Definition=pt: Artigo"/>
+    <ownedAttribute xmi:id="_XTb6PVuXEeOCwYvWfsRrew" name="number" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6PluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6P1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6QFuXEeOCwYvWfsRrew" name="Article component of Chapter" visibility="public">
+    <ownedComment xmi:id="_XTb6QVuXEeOCwYvWfsRrew" body="Definition=pt: Artigo componente de Cap&#xed;tulo"/>
+    <generalization xmi:id="_XTb6QluXEeOCwYvWfsRrew" general="_XTb6O1uXEeOCwYvWfsRrew" generalizationSet="_XTcgrluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6Q1uXEeOCwYvWfsRrew" name="Article component of Section" visibility="public">
+    <ownedComment xmi:id="_XTb6RFuXEeOCwYvWfsRrew" body="Definition=pt: Artigo componente de Se&#xe7;&#xe3;o"/>
+    <generalization xmi:id="_XTb6RVuXEeOCwYvWfsRrew" general="_XTb6O1uXEeOCwYvWfsRrew" generalizationSet="_XTcgrluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6RluXEeOCwYvWfsRrew" name="Article composed of Item" visibility="public">
+    <ownedComment xmi:id="_XTb6R1uXEeOCwYvWfsRrew" body="Definition=pt: Artigo composto por Incisos"/>
+    <generalization xmi:id="_XTb6SFuXEeOCwYvWfsRrew" general="_XTb6gFuXEeOCwYvWfsRrew" generalizationSet="_XTcgr1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6SVuXEeOCwYvWfsRrew" name="Article composed of Paragraph" visibility="public">
+    <ownedComment xmi:id="_XTb6SluXEeOCwYvWfsRrew" body="Definition=pt: Artigo composto por Par&#xe1;grafos"/>
+    <generalization xmi:id="_XTb6S1uXEeOCwYvWfsRrew" general="_XTb6gFuXEeOCwYvWfsRrew" generalizationSet="_XTcgr1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6TFuXEeOCwYvWfsRrew" name="Autonomous Decree" visibility="public">
+    <ownedComment xmi:id="_XTb6TVuXEeOCwYvWfsRrew" body="Definition=pt: Decreto Aut&#xf4;nomo"/>
+    <generalization xmi:id="_XTb6TluXEeOCwYvWfsRrew" general="_XTb6lVuXEeOCwYvWfsRrew" generalizationSet="_XTcgsFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XTb6T1uXEeOCwYvWfsRrew" name="Book" visibility="public">
+    <ownedComment xmi:id="_XTb6UFuXEeOCwYvWfsRrew" body="Definition=pt: Livro"/>
+    <generalization xmi:id="_XTb6UVuXEeOCwYvWfsRrew" general="_XTb6rluXEeOCwYvWfsRrew" generalizationSet="_XTcgsVuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XTb6UluXEeOCwYvWfsRrew" name="roman number" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6U1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6VFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTb6VVuXEeOCwYvWfsRrew" name="Brief" visibility="public">
+    <ownedComment xmi:id="_XTb6VluXEeOCwYvWfsRrew" body="Definition=pt: Ementa"/>
+    <ownedAttribute xmi:id="_XTb6V1uXEeOCwYvWfsRrew" name="text" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6WFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6WVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTb6WluXEeOCwYvWfsRrew" name="Caput" visibility="public">
+    <ownedComment xmi:id="_XTb6W1uXEeOCwYvWfsRrew" body="Definition=pt: Caput"/>
+    <ownedAttribute xmi:id="_XTb6XFuXEeOCwYvWfsRrew" name="text" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6XVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6XluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XTb6X1uXEeOCwYvWfsRrew" name="Chapter" visibility="public">
+    <ownedComment xmi:id="_XTb6YFuXEeOCwYvWfsRrew" body="Definition=pt: Cap&#xed;tulo"/>
+    <generalization xmi:id="_XTb6YVuXEeOCwYvWfsRrew" general="_XTb6rluXEeOCwYvWfsRrew" generalizationSet="_XTcgsVuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XTb6YluXEeOCwYvWfsRrew" name="roman number" visibility="private" isOrdered="true">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6Y1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6ZFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6ZVuXEeOCwYvWfsRrew" name="Chapter composed by Article" visibility="public">
+    <ownedComment xmi:id="_XTb6ZluXEeOCwYvWfsRrew" body="Definition=pt: Cap&#xed;tulo composto por Artigo"/>
+    <generalization xmi:id="_XTb6Z1uXEeOCwYvWfsRrew" general="_XTb6X1uXEeOCwYvWfsRrew" generalizationSet="_XTcgsluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6aFuXEeOCwYvWfsRrew" name="Chapter composed by Section" visibility="public">
+    <ownedComment xmi:id="_XTb6aVuXEeOCwYvWfsRrew" body="Definition=pt: Cap&#xed;tulo composto por Se&#xe7;&#xe3;o"/>
+    <generalization xmi:id="_XTb6aluXEeOCwYvWfsRrew" general="_XTb6X1uXEeOCwYvWfsRrew" generalizationSet="_XTcgsluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XTb6a1uXEeOCwYvWfsRrew" name="Charter" visibility="public">
+    <ownedComment xmi:id="_XTb6bFuXEeOCwYvWfsRrew" body="Definition=pt: T&#xed;tulo"/>
+    <generalization xmi:id="_XTb6bVuXEeOCwYvWfsRrew" general="_XTb6rluXEeOCwYvWfsRrew" generalizationSet="_XTcgsVuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XTb6bluXEeOCwYvWfsRrew" name="roman number" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6b1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6cFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6cVuXEeOCwYvWfsRrew" name="Complementary Law" visibility="public">
+    <ownedComment xmi:id="_XTb6cluXEeOCwYvWfsRrew" body="Definition=pt: Lei Complementar"/>
+    <generalization xmi:id="_XTb6c1uXEeOCwYvWfsRrew" general="_XTb62luXEeOCwYvWfsRrew" generalizationSet="_XTcgs1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6dFuXEeOCwYvWfsRrew" name="Component Book" visibility="public">
+    <ownedComment xmi:id="_XTb6dVuXEeOCwYvWfsRrew" body="Definition=pt: Livro Componente"/>
+    <generalization xmi:id="_XTb6dluXEeOCwYvWfsRrew" general="_XTb6T1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6d1uXEeOCwYvWfsRrew" name="Component Chapter" visibility="public">
+    <ownedComment xmi:id="_XTb6eFuXEeOCwYvWfsRrew" body="Definition=pt: Cap&#xed;tulo Componente"/>
+    <generalization xmi:id="_XTb6eVuXEeOCwYvWfsRrew" general="_XTb6X1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6eluXEeOCwYvWfsRrew" name="Component Charter" visibility="public">
+    <ownedComment xmi:id="_XTb6e1uXEeOCwYvWfsRrew" body="Definition=pt: T&#xed;tulo Componente"/>
+    <generalization xmi:id="_XTb6fFuXEeOCwYvWfsRrew" general="_XTb6a1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6fVuXEeOCwYvWfsRrew" name="Component Section" visibility="public">
+    <ownedComment xmi:id="_XTb6fluXEeOCwYvWfsRrew" body="Definition=pt: Se&#xe7;&#xe3;o Componente"/>
+    <generalization xmi:id="_XTb6f1uXEeOCwYvWfsRrew" general="_XTb7DVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6gFuXEeOCwYvWfsRrew" name="Composed Article" visibility="public">
+    <ownedComment xmi:id="_XTb6gVuXEeOCwYvWfsRrew" body="Definition=pt: Artigo Composto"/>
+    <generalization xmi:id="_XTb6gluXEeOCwYvWfsRrew" general="_XTb6O1uXEeOCwYvWfsRrew" generalizationSet="_XTcgtFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6g1uXEeOCwYvWfsRrew" name="Composed Item" visibility="public">
+    <ownedComment xmi:id="_XTb6hFuXEeOCwYvWfsRrew" body="Definition=pt: Inciso Composto"/>
+    <generalization xmi:id="_XTb6hVuXEeOCwYvWfsRrew" general="_XTb6tluXEeOCwYvWfsRrew" generalizationSet="_XTcgtVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6hluXEeOCwYvWfsRrew" name="Composed Letter" visibility="public">
+    <ownedComment xmi:id="_XTb6h1uXEeOCwYvWfsRrew" body="Definition=pt: Al&#xed;nea Composta"/>
+    <generalization xmi:id="_XTb6iFuXEeOCwYvWfsRrew" general="_XTb6yFuXEeOCwYvWfsRrew" generalizationSet="_XTcgtluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6iVuXEeOCwYvWfsRrew" name="Composed Paragraph" visibility="public">
+    <ownedComment xmi:id="_XTb6iluXEeOCwYvWfsRrew" body="Definition=pt: Par&#xe1;grafo Composto"/>
+    <generalization xmi:id="_XTb6i1uXEeOCwYvWfsRrew" general="_XTb68FuXEeOCwYvWfsRrew" generalizationSet="_XTcgt1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6jFuXEeOCwYvWfsRrew" name="Composed Section" visibility="public">
+    <ownedComment xmi:id="_XTb6jVuXEeOCwYvWfsRrew" body="Definition=pt: Se&#xe7;&#xe3;o Composta"/>
+    <generalization xmi:id="_XTb6jluXEeOCwYvWfsRrew" general="_XTb7DVuXEeOCwYvWfsRrew" generalizationSet="_XTcguFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6j1uXEeOCwYvWfsRrew" name="Constitution" visibility="public">
+    <ownedComment xmi:id="_XTb6kFuXEeOCwYvWfsRrew" body="Definition=pt: Constitui&#xe7;&#xe3;o"/>
+    <generalization xmi:id="_XTb6kVuXEeOCwYvWfsRrew" general="_XTb62luXEeOCwYvWfsRrew" generalizationSet="_XTcgs1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6kluXEeOCwYvWfsRrew" name="Constitution Amendment" visibility="public">
+    <ownedComment xmi:id="_XTb6k1uXEeOCwYvWfsRrew" body="Definition=pt: Emenda &#xe0; Constitui&#xe7;&#xe3;o"/>
+    <generalization xmi:id="_XTb6lFuXEeOCwYvWfsRrew" general="_XTb62luXEeOCwYvWfsRrew" generalizationSet="_XTcgs1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6lVuXEeOCwYvWfsRrew" name="Decree" visibility="public">
+    <ownedComment xmi:id="_XTb6lluXEeOCwYvWfsRrew" body="Definition=pt: Decreto"/>
+    <generalization xmi:id="_XTb6l1uXEeOCwYvWfsRrew" general="_XTb62luXEeOCwYvWfsRrew" generalizationSet="_XTcgs1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6mFuXEeOCwYvWfsRrew" name="Delegated Law" visibility="public">
+    <ownedComment xmi:id="_XTb6mVuXEeOCwYvWfsRrew" body="Definition=pt: Lei Delegada"/>
+    <generalization xmi:id="_XTb6mluXEeOCwYvWfsRrew" general="_XTb62luXEeOCwYvWfsRrew" generalizationSet="_XTcgs1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XTb6m1uXEeOCwYvWfsRrew" name="Discrimination Element" visibility="public" isAbstract="true">
+    <ownedComment xmi:id="_XTb6nFuXEeOCwYvWfsRrew" body="Definition=pt: Elemento de Composi&#xe7;&#xe3;o"/>
+    <ownedAttribute xmi:id="_XTb6nVuXEeOCwYvWfsRrew" name="text" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6nluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6n1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6oFuXEeOCwYvWfsRrew" name="Double Part" visibility="public">
+    <ownedComment xmi:id="_XTb6oVuXEeOCwYvWfsRrew" body="Definition=pt: Parte Dupla"/>
+    <generalization xmi:id="_XTb6oluXEeOCwYvWfsRrew" general="_XTb69luXEeOCwYvWfsRrew" generalizationSet="_XTcguVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6o1uXEeOCwYvWfsRrew" name="Duration Clause" visibility="public">
+    <ownedComment xmi:id="_XTb6pFuXEeOCwYvWfsRrew" body="Definition=pt: Cl&#xe1;usula de Vig&#xea;ncia"/>
+    <generalization xmi:id="_XTb6pVuXEeOCwYvWfsRrew" general="_XTb6O1uXEeOCwYvWfsRrew" generalizationSet="_XTcguluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTb6pluXEeOCwYvWfsRrew" name="Epigraph" visibility="public">
+    <ownedComment xmi:id="_XTb6p1uXEeOCwYvWfsRrew" body="Definition=pt: Ep&#xed;grafe"/>
+    <ownedAttribute xmi:id="_XTb6qFuXEeOCwYvWfsRrew" name="text" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6qVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6qluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6q1uXEeOCwYvWfsRrew" name="General Part" visibility="public">
+    <ownedComment xmi:id="_XTb6rFuXEeOCwYvWfsRrew" body="Definition=pt: Parte Geral"/>
+    <generalization xmi:id="_XTb6rVuXEeOCwYvWfsRrew" general="_XTb6oFuXEeOCwYvWfsRrew" generalizationSet="_XTcgu1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_XTb6rluXEeOCwYvWfsRrew" name="Grouping Element" visibility="public" isAbstract="true">
+    <ownedComment xmi:id="_XTb6r1uXEeOCwYvWfsRrew" body="Definition=pt: Elemento de Agrupamento"/>
+    <ownedAttribute xmi:id="_XTb6sFuXEeOCwYvWfsRrew" name="title" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6sVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6sluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6s1uXEeOCwYvWfsRrew" name="Handout" visibility="public">
+    <ownedComment xmi:id="_XTb6tFuXEeOCwYvWfsRrew" body="Definition=pt: Apostila"/>
+    <generalization xmi:id="_XTb6tVuXEeOCwYvWfsRrew" general="_XTb62luXEeOCwYvWfsRrew" generalizationSet="_XTcgs1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTb6tluXEeOCwYvWfsRrew" name="Item" visibility="public">
+    <ownedComment xmi:id="_XTb6t1uXEeOCwYvWfsRrew" body="Definition=pt: Inciso"/>
+    <generalization xmi:id="_XTb6uFuXEeOCwYvWfsRrew" general="_XTb6m1uXEeOCwYvWfsRrew" generalizationSet="_XTcgvFuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XTb6uVuXEeOCwYvWfsRrew" name="roman number" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6uluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6u1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6vFuXEeOCwYvWfsRrew" name="Item component of Article" visibility="public">
+    <ownedComment xmi:id="_XTb6vVuXEeOCwYvWfsRrew" body="Definition=pt: Inciso componente de Artigo"/>
+    <generalization xmi:id="_XTb6vluXEeOCwYvWfsRrew" general="_XTb6tluXEeOCwYvWfsRrew" generalizationSet="_XTcgvVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6v1uXEeOCwYvWfsRrew" name="Item component of Paragraph" visibility="public">
+    <ownedComment xmi:id="_XTb6wFuXEeOCwYvWfsRrew" body="Definition=pt: Inciso componente de Par&#xe1;grafo"/>
+    <generalization xmi:id="_XTb6wVuXEeOCwYvWfsRrew" general="_XTb6tluXEeOCwYvWfsRrew" generalizationSet="_XTcgvVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6wluXEeOCwYvWfsRrew" name="Legal Article" visibility="public">
+    <ownedComment xmi:id="_XTb6w1uXEeOCwYvWfsRrew" body="Definition=pt: Artigo Legal&#xA;&#xA;has associated rule"/>
+    <generalization xmi:id="_XTb6xFuXEeOCwYvWfsRrew" general="_XTb6O1uXEeOCwYvWfsRrew" generalizationSet="_XTcgvluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6xVuXEeOCwYvWfsRrew" name="Legislative Decree" visibility="public">
+    <ownedComment xmi:id="_XTb6xluXEeOCwYvWfsRrew" body="Definition=pt: Decreto Legislativo"/>
+    <generalization xmi:id="_XTb6x1uXEeOCwYvWfsRrew" general="_XTb62luXEeOCwYvWfsRrew" generalizationSet="_XTcgs1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTb6yFuXEeOCwYvWfsRrew" name="Letter" visibility="public">
+    <ownedComment xmi:id="_XTb6yVuXEeOCwYvWfsRrew" body="Definition=pt: Al&#xed;nea (ou Letra)"/>
+    <generalization xmi:id="_XTb6yluXEeOCwYvWfsRrew" general="_XTb6m1uXEeOCwYvWfsRrew" generalizationSet="_XTcgvFuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XTb6y1uXEeOCwYvWfsRrew" name="letter" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6zFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6zVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTb6zluXEeOCwYvWfsRrew" name="Letter Discriminator" visibility="public">
+    <ownedComment xmi:id="_XTb6z1uXEeOCwYvWfsRrew" body="Definition=pt: Item&#xA;&#xA;This is a case of contruct incompleteness, as the discrimination of Letters are defined byt no construct is create.&#xA;&#xA;&quot;O desdobramento das al&#xed;neas faz-se com n&#xfa;meros cardinais, seguidos&#xA;do ponto: 1.; 2.; etc.&quot;"/>
+    <generalization xmi:id="_XTb60FuXEeOCwYvWfsRrew" general="_XTb6m1uXEeOCwYvWfsRrew" generalizationSet="_XTcgvFuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XTb60VuXEeOCwYvWfsRrew" name="cardinal number" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb60luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb601uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb61FuXEeOCwYvWfsRrew" name="Multiple Part" visibility="public">
+    <ownedComment xmi:id="_XTb61VuXEeOCwYvWfsRrew" body="Definition=pt: Parte M&#xfa;ltipla"/>
+    <generalization xmi:id="_XTb61luXEeOCwYvWfsRrew" general="_XTb69luXEeOCwYvWfsRrew" generalizationSet="_XTcguVuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XTb611uXEeOCwYvWfsRrew" name="roman number" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb62FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb62VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTb62luXEeOCwYvWfsRrew" name="Normative Act" visibility="public">
+    <ownedAttribute xmi:id="_XTb621uXEeOCwYvWfsRrew" name="duration" visibility="private" type="_XTb7LluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb63FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb63VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XTb63luXEeOCwYvWfsRrew" name="hierarchy" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb631uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb64FuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XTb64VuXEeOCwYvWfsRrew" name="number" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb64luXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb641uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XTb65FuXEeOCwYvWfsRrew" name="publication date" visibility="private" type="_XTb7LluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb65VuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb65luXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb651uXEeOCwYvWfsRrew" name="Ordinance" visibility="public">
+    <ownedComment xmi:id="_XTb66FuXEeOCwYvWfsRrew" body="Definition=pt: Portaria"/>
+    <generalization xmi:id="_XTb66VuXEeOCwYvWfsRrew" general="_XTb62luXEeOCwYvWfsRrew" generalizationSet="_XTcgs1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb66luXEeOCwYvWfsRrew" name="Ordinary Article" visibility="public">
+    <ownedComment xmi:id="_XTb661uXEeOCwYvWfsRrew" body="Definition=pt: Artigo Ordin&#xe1;rio"/>
+    <generalization xmi:id="_XTb67FuXEeOCwYvWfsRrew" general="_XTb6O1uXEeOCwYvWfsRrew" generalizationSet="_XTcguluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb67VuXEeOCwYvWfsRrew" name="Ordinary Law" visibility="public">
+    <ownedComment xmi:id="_XTb67luXEeOCwYvWfsRrew" body="Definition=pt: Lei Ordin&#xe1;ria"/>
+    <generalization xmi:id="_XTb671uXEeOCwYvWfsRrew" general="_XTb62luXEeOCwYvWfsRrew" generalizationSet="_XTcgs1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTb68FuXEeOCwYvWfsRrew" name="Paragraph" visibility="public">
+    <ownedComment xmi:id="_XTb68VuXEeOCwYvWfsRrew" body="Definition=pt: Par&#xe1;grafo"/>
+    <generalization xmi:id="_XTb68luXEeOCwYvWfsRrew" general="_XTb6m1uXEeOCwYvWfsRrew" generalizationSet="_XTcgvFuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XTb681uXEeOCwYvWfsRrew" name="identification" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb69FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb69VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XTb69luXEeOCwYvWfsRrew" name="Part" visibility="public">
+    <ownedComment xmi:id="_XTb691uXEeOCwYvWfsRrew" body="Definition=pt: Parte"/>
+    <generalization xmi:id="_XTb6-FuXEeOCwYvWfsRrew" general="_XTb6rluXEeOCwYvWfsRrew" generalizationSet="_XTcgsVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_XTb6-VuXEeOCwYvWfsRrew" name="Preamble" visibility="public">
+    <ownedComment xmi:id="_XTb6-luXEeOCwYvWfsRrew" body="Definition=pt: Pre&#xe2;mbulo"/>
+    <ownedAttribute xmi:id="_XTb6-1uXEeOCwYvWfsRrew" name="text" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb6_FuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb6_VuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb6_luXEeOCwYvWfsRrew" name="Provisional Measure" visibility="public">
+    <ownedComment xmi:id="_XTb6_1uXEeOCwYvWfsRrew" body="Definition=pt: Medida Provis&#xf3;ria"/>
+    <generalization xmi:id="_XTb7AFuXEeOCwYvWfsRrew" general="_XTb62luXEeOCwYvWfsRrew" generalizationSet="_XTcgs1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7AVuXEeOCwYvWfsRrew" name="Regulatory Article" visibility="public">
+    <ownedComment xmi:id="_XTb7AluXEeOCwYvWfsRrew" body="Definition=pt: Artigo Regulamentar&#xA;&#xA;has associated rule"/>
+    <generalization xmi:id="_XTb7A1uXEeOCwYvWfsRrew" general="_XTb6O1uXEeOCwYvWfsRrew" generalizationSet="_XTcgvluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7BFuXEeOCwYvWfsRrew" name="Regulatory Decree" visibility="public">
+    <ownedComment xmi:id="_XTb7BVuXEeOCwYvWfsRrew" body="Definition=pt: Decreto Regulamentar"/>
+    <generalization xmi:id="_XTb7BluXEeOCwYvWfsRrew" general="_XTb6lVuXEeOCwYvWfsRrew" generalizationSet="_XTcgsFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7B1uXEeOCwYvWfsRrew" name="Resolution" visibility="public">
+    <ownedComment xmi:id="_XTb7CFuXEeOCwYvWfsRrew" body="Definition=pt: Resolu&#xe7;&#xe3;o"/>
+    <generalization xmi:id="_XTb7CVuXEeOCwYvWfsRrew" general="_XTb62luXEeOCwYvWfsRrew" generalizationSet="_XTcgs1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7CluXEeOCwYvWfsRrew" name="Revocation Clause" visibility="public">
+    <ownedComment xmi:id="_XTb7C1uXEeOCwYvWfsRrew" body="Definition=pt: Cl&#xe1;usula de Revoga&#xe7;&#xe3;o"/>
+    <generalization xmi:id="_XTb7DFuXEeOCwYvWfsRrew" general="_XTb6O1uXEeOCwYvWfsRrew" generalizationSet="_XTcguluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_XTb7DVuXEeOCwYvWfsRrew" name="Section" visibility="public">
+    <ownedComment xmi:id="_XTb7DluXEeOCwYvWfsRrew" body="Definition=pt: Se&#xe7;&#xe3;o"/>
+    <generalization xmi:id="_XTb7D1uXEeOCwYvWfsRrew" general="_XTb6rluXEeOCwYvWfsRrew" generalizationSet="_XTcgsVuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XTb7EFuXEeOCwYvWfsRrew" name="roman number" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7EVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7EluXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7E1uXEeOCwYvWfsRrew" name="Simple Article" visibility="public">
+    <ownedComment xmi:id="_XTb7FFuXEeOCwYvWfsRrew" body="Definition=pt: Artigo Simples"/>
+    <generalization xmi:id="_XTb7FVuXEeOCwYvWfsRrew" general="_XTb6O1uXEeOCwYvWfsRrew" generalizationSet="_XTcgtFuXEeOCwYvWfsRrew"/>
+    <ownedAttribute xmi:id="_XTb7FluXEeOCwYvWfsRrew" name="text" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4luXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7F1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7GFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7GVuXEeOCwYvWfsRrew" name="Simple Item" visibility="public">
+    <ownedComment xmi:id="_XTb7GluXEeOCwYvWfsRrew" body="Definition=pt: Inciso Simples"/>
+    <generalization xmi:id="_XTb7G1uXEeOCwYvWfsRrew" general="_XTb6tluXEeOCwYvWfsRrew" generalizationSet="_XTcgtVuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7HFuXEeOCwYvWfsRrew" name="Simple Letter" visibility="public">
+    <ownedComment xmi:id="_XTb7HVuXEeOCwYvWfsRrew" body="Definition=pt: Al&#xed;nea Simples"/>
+    <generalization xmi:id="_XTb7HluXEeOCwYvWfsRrew" general="_XTb6yFuXEeOCwYvWfsRrew" generalizationSet="_XTcgtluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7H1uXEeOCwYvWfsRrew" name="Simple Paragraph" visibility="public">
+    <ownedComment xmi:id="_XTb7IFuXEeOCwYvWfsRrew" body="Definition=pt: Par&#xe1;grafo Simples"/>
+    <generalization xmi:id="_XTb7IVuXEeOCwYvWfsRrew" general="_XTb68FuXEeOCwYvWfsRrew" generalizationSet="_XTcgt1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7IluXEeOCwYvWfsRrew" name="Simple Section" visibility="public">
+    <ownedComment xmi:id="_XTb7I1uXEeOCwYvWfsRrew" body="Definition=pt: Se&#xe7;&#xe3;o Simples"/>
+    <generalization xmi:id="_XTb7JFuXEeOCwYvWfsRrew" general="_XTb7DVuXEeOCwYvWfsRrew" generalizationSet="_XTcguFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7JVuXEeOCwYvWfsRrew" name="Singular Decree" visibility="public">
+    <ownedComment xmi:id="_XTb7JluXEeOCwYvWfsRrew" body="Definition=pt: Decreto Singular"/>
+    <generalization xmi:id="_XTb7J1uXEeOCwYvWfsRrew" general="_XTb6lVuXEeOCwYvWfsRrew" generalizationSet="_XTcgsFuXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7KFuXEeOCwYvWfsRrew" name="Special Part" visibility="public">
+    <ownedComment xmi:id="_XTb7KVuXEeOCwYvWfsRrew" body="Definition=pt: Parte Especial"/>
+    <generalization xmi:id="_XTb7KluXEeOCwYvWfsRrew" general="_XTb6oFuXEeOCwYvWfsRrew" generalizationSet="_XTcgu1uXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_XTb7K1uXEeOCwYvWfsRrew" name="Subsection" visibility="public">
+    <ownedComment xmi:id="_XTb7LFuXEeOCwYvWfsRrew" body="Definition=pt: Subse&#xe7;&#xe3;o"/>
+    <generalization xmi:id="_XTb7LVuXEeOCwYvWfsRrew" general="_XTb7IluXEeOCwYvWfsRrew"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:DataType" xmi:id="_XTb7LluXEeOCwYvWfsRrew" name="Date" visibility="public">
+    <ownedAttribute xmi:id="_XTb7L1uXEeOCwYvWfsRrew" name="day" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7MFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7MVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XTb7MluXEeOCwYvWfsRrew" name="month" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7M1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7NFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_XTb7NVuXEeOCwYvWfsRrew" name="year" visibility="private">
+      <type xsi:type="RefOntoUML:PrimitiveType" href="RefOntoUMLModels/EA_Model.refontouml#_XR2k4FuXEeOCwYvWfsRrew"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7NluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7N1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XTb7OFuXEeOCwYvWfsRrew" name="Chapter composed by Article - Article component of Chapter" visibility="public" memberEnd="_XTb7OVuXEeOCwYvWfsRrew _XTb7PFuXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTb7OVuXEeOCwYvWfsRrew" name="chapter composed by article" visibility="public" type="_XTb6ZVuXEeOCwYvWfsRrew" aggregation="composite" association="_XTb7OFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7OluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7O1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb7PFuXEeOCwYvWfsRrew" name="article component of chapter" visibility="public" type="_XTb6QFuXEeOCwYvWfsRrew" association="_XTb7OFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7PVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7PluXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:memberOf" xmi:id="_XTb7P1uXEeOCwYvWfsRrew" name="Simple Section - Article component of Section" visibility="public" memberEnd="_XTb7QFuXEeOCwYvWfsRrew _XTb7Q1uXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTb7QFuXEeOCwYvWfsRrew" name="simple section" visibility="public" type="_XTb7IluXEeOCwYvWfsRrew" aggregation="composite" association="_XTb7P1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7QVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7QluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb7Q1uXEeOCwYvWfsRrew" name="article component of section" visibility="public" type="_XTb6Q1uXEeOCwYvWfsRrew" association="_XTb7P1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7RFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7RVuXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTb7RluXEeOCwYvWfsRrew" name="Article composed of Clause - Clause component of Article" visibility="public" memberEnd="_XTb7R1uXEeOCwYvWfsRrew _XTb7SluXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTb7R1uXEeOCwYvWfsRrew" name="item component of article" visibility="public" type="_XTb6vFuXEeOCwYvWfsRrew" association="_XTb7RluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7SFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7SVuXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb7SluXEeOCwYvWfsRrew" name="article composed of item" visibility="public" type="_XTb6RluXEeOCwYvWfsRrew" aggregation="composite" association="_XTb7RluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7S1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7TFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTb7TVuXEeOCwYvWfsRrew" name="Article composed of Paragraph - Paragraph" visibility="public" memberEnd="_XTb7TluXEeOCwYvWfsRrew _XTb7UVuXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTb7TluXEeOCwYvWfsRrew" name="paragraph" visibility="public" type="_XTb68FuXEeOCwYvWfsRrew" association="_XTb7TVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7T1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7UFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb7UVuXEeOCwYvWfsRrew" name="article composed of paragraph" visibility="public" type="_XTb6SVuXEeOCwYvWfsRrew" aggregation="composite" association="_XTb7TVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7UluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7U1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:subCollectionOf" xmi:id="_XTb7VFuXEeOCwYvWfsRrew" name="Book - Component Charter" visibility="public" memberEnd="_XTb7VVuXEeOCwYvWfsRrew _XTb7WFuXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTb7VVuXEeOCwYvWfsRrew" name="component charter" visibility="public" type="_XTb6eluXEeOCwYvWfsRrew" association="_XTb7VFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7VluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7V1uXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb7WFuXEeOCwYvWfsRrew" name="book" visibility="public" type="_XTb6T1uXEeOCwYvWfsRrew" aggregation="composite" association="_XTb7VFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7WVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7WluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTb7W1uXEeOCwYvWfsRrew" name="Normative Act - Brief" visibility="public" memberEnd="_XTb7XFuXEeOCwYvWfsRrew _XTb7X1uXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutablePart="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTb7XFuXEeOCwYvWfsRrew" name="normative act" visibility="public" type="_XTb62luXEeOCwYvWfsRrew" aggregation="composite" association="_XTb7W1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7XVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7XluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb7X1uXEeOCwYvWfsRrew" name="brief" visibility="public" type="_XTb6VVuXEeOCwYvWfsRrew" association="_XTb7W1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7YFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7YVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTb7YluXEeOCwYvWfsRrew" name="Composed Article - Caput" visibility="public" memberEnd="_XTb7Y1uXEeOCwYvWfsRrew _XTb7ZluXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTb7Y1uXEeOCwYvWfsRrew" name="composed article" visibility="public" type="_XTb6gFuXEeOCwYvWfsRrew" aggregation="composite" association="_XTb7YluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7ZFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7ZVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTb7ZluXEeOCwYvWfsRrew" name="caput" visibility="public" type="_XTb6WluXEeOCwYvWfsRrew" association="_XTb7YluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7Z1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7aFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:subCollectionOf" xmi:id="_XTb7aVuXEeOCwYvWfsRrew" name="Chapter composed by Section - Component Section" visibility="public" memberEnd="_XTb7aluXEeOCwYvWfsRrew _XTcgUFuXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTb7aluXEeOCwYvWfsRrew" name="component section" visibility="public" type="_XTb6fVuXEeOCwYvWfsRrew" association="_XTb7aVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTb7a1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTb7bFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgUFuXEeOCwYvWfsRrew" name="chapter composed by section" visibility="public" type="_XTb6aFuXEeOCwYvWfsRrew" aggregation="composite" association="_XTb7aVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgUVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgUluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:subCollectionOf" xmi:id="_XTcgU1uXEeOCwYvWfsRrew" name="Charter - Component Chapter" visibility="public" memberEnd="_XTcgVFuXEeOCwYvWfsRrew _XTcgV1uXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgVFuXEeOCwYvWfsRrew" name="component chapter" visibility="public" type="_XTb6d1uXEeOCwYvWfsRrew" association="_XTcgU1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgVVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgVluXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgV1uXEeOCwYvWfsRrew" name="charter" visibility="public" type="_XTb6a1uXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgU1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgWFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgWVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:subCollectionOf" xmi:id="_XTcgWluXEeOCwYvWfsRrew" name="Part - Component Book" visibility="public" memberEnd="_XTcgW1uXEeOCwYvWfsRrew _XTcgXluXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgW1uXEeOCwYvWfsRrew" name="part" visibility="public" type="_XTb69luXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgWluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgXFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgXVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgXluXEeOCwYvWfsRrew" name="component book" visibility="public" type="_XTb6dFuXEeOCwYvWfsRrew" association="_XTcgWluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgX1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgYFuXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTcgYVuXEeOCwYvWfsRrew" name="Composed Item - Letter" visibility="public" memberEnd="_XTcgYluXEeOCwYvWfsRrew _XTcgZVuXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgYluXEeOCwYvWfsRrew" name="letter" visibility="public" type="_XTb6yFuXEeOCwYvWfsRrew" association="_XTcgYVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgY1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgZFuXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgZVuXEeOCwYvWfsRrew" name="composed item" visibility="public" type="_XTb6g1uXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgYVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgZluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgZ1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTcgaFuXEeOCwYvWfsRrew" name="Composed Letter - Letter Discriminator" visibility="public" memberEnd="_XTcgaVuXEeOCwYvWfsRrew _XTcgbFuXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgaVuXEeOCwYvWfsRrew" name="letter discriminator" visibility="public" type="_XTb6zluXEeOCwYvWfsRrew" association="_XTcgaFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgaluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcga1uXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgbFuXEeOCwYvWfsRrew" name="composed letter" visibility="public" type="_XTb6hluXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgaFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgbVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgbluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTcgb1uXEeOCwYvWfsRrew" name="Composed Paragraph - Clause component of Paragraph" visibility="public" memberEnd="_XTcgcFuXEeOCwYvWfsRrew _XTcgc1uXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgcFuXEeOCwYvWfsRrew" name="item component of paragraph" visibility="public" type="_XTb6v1uXEeOCwYvWfsRrew" association="_XTcgb1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgcVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgcluXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgc1uXEeOCwYvWfsRrew" name="composed paragraph" visibility="public" type="_XTb6iVuXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgb1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgdFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgdVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:subCollectionOf" xmi:id="_XTcgdluXEeOCwYvWfsRrew" name="Composed Section - Subsection" visibility="public" memberEnd="_XTcgd1uXEeOCwYvWfsRrew _XTcgeluXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgd1uXEeOCwYvWfsRrew" name="subsection" visibility="public" type="_XTb7K1uXEeOCwYvWfsRrew" association="_XTcgdluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgeFuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgeVuXEeOCwYvWfsRrew" value="2"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgeluXEeOCwYvWfsRrew" name="composed section" visibility="public" type="_XTb6jFuXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgdluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcge1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgfFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTcgfVuXEeOCwYvWfsRrew" name="Normative Act - Discrimination Element" visibility="public" memberEnd="_XTcgfluXEeOCwYvWfsRrew _XTcggVuXEeOCwYvWfsRrew" isDerived="true" isShareable="false" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgfluXEeOCwYvWfsRrew" name="normative act" visibility="public" type="_XTb62luXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgfVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgf1uXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcggFuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcggVuXEeOCwYvWfsRrew" name="discrimination element" visibility="public" type="_XTb6m1uXEeOCwYvWfsRrew" association="_XTcgfVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcggluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgg1uXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTcghFuXEeOCwYvWfsRrew" name="Normative Act - Duration Clause" visibility="public" memberEnd="_XTcghVuXEeOCwYvWfsRrew _XTcgiFuXEeOCwYvWfsRrew" isShareable="false" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcghVuXEeOCwYvWfsRrew" name="normative act" visibility="public" type="_XTb62luXEeOCwYvWfsRrew" aggregation="composite" association="_XTcghFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcghluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgh1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgiFuXEeOCwYvWfsRrew" name="duration clause" visibility="public" type="_XTb6o1uXEeOCwYvWfsRrew" association="_XTcghFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgiVuXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgiluXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTcgi1uXEeOCwYvWfsRrew" name="Normative Act - Epigraph" visibility="public" memberEnd="_XTcgjFuXEeOCwYvWfsRrew _XTcgj1uXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutablePart="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgjFuXEeOCwYvWfsRrew" name="normative act" visibility="public" type="_XTb62luXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgi1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgjVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgjluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgj1uXEeOCwYvWfsRrew" name="epigraph" visibility="public" type="_XTb6pluXEeOCwYvWfsRrew" association="_XTcgi1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgkFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgkVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTcgkluXEeOCwYvWfsRrew" name="Normative Act - Grouping Element" visibility="public" memberEnd="_XTcgk1uXEeOCwYvWfsRrew _XTcglluXEeOCwYvWfsRrew" isDerived="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgk1uXEeOCwYvWfsRrew" name="normative act" visibility="public" type="_XTb62luXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgkluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcglFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcglVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcglluXEeOCwYvWfsRrew" name="grouping element" visibility="public" type="_XTb6rluXEeOCwYvWfsRrew" association="_XTcgkluXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgl1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgmFuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTcgmVuXEeOCwYvWfsRrew" name="Normative Act - Revocation Clause" visibility="public" memberEnd="_XTcgmluXEeOCwYvWfsRrew _XTcgnVuXEeOCwYvWfsRrew" isShareable="false" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgmluXEeOCwYvWfsRrew" name="revocation clause" visibility="public" type="_XTb7CluXEeOCwYvWfsRrew" association="_XTcgmVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgm1uXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgnFuXEeOCwYvWfsRrew"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgnVuXEeOCwYvWfsRrew" name="normative act" visibility="public" type="_XTb62luXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgmVuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgnluXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgn1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTcgoFuXEeOCwYvWfsRrew" name="Normative Act - Ordinary Article" visibility="public" memberEnd="_XTcgoVuXEeOCwYvWfsRrew _XTcgpFuXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgoVuXEeOCwYvWfsRrew" name="ordinary article" visibility="public" type="_XTb66luXEeOCwYvWfsRrew" association="_XTcgoFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgoluXEeOCwYvWfsRrew" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgo1uXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgpFuXEeOCwYvWfsRrew" name="normative act" visibility="public" type="_XTb62luXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgoFuXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgpVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgpluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_XTcgp1uXEeOCwYvWfsRrew" name="Normative Act - Preamble" visibility="public" memberEnd="_XTcgqFuXEeOCwYvWfsRrew _XTcgq1uXEeOCwYvWfsRrew" isShareable="false" isEssential="true" isInseparable="true" isImmutablePart="true" isImmutableWhole="true">
+    <ownedEnd xmi:id="_XTcgqFuXEeOCwYvWfsRrew" name="preamble" visibility="public" type="_XTb6-VuXEeOCwYvWfsRrew" association="_XTcgp1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgqVuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgqluXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_XTcgq1uXEeOCwYvWfsRrew" name="normative act" visibility="public" type="_XTb62luXEeOCwYvWfsRrew" aggregation="composite" association="_XTcgp1uXEeOCwYvWfsRrew">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_XTcgrFuXEeOCwYvWfsRrew" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_XTcgrVuXEeOCwYvWfsRrew" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgrluXEeOCwYvWfsRrew" name="a-acoc_acos" visibility="public" isDisjoint="true" generalization="_XTb6QluXEeOCwYvWfsRrew _XTb6RVuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgr1uXEeOCwYvWfsRrew" name="ca-acoc_acop" visibility="public" isCovering="true" generalization="_XTb6SFuXEeOCwYvWfsRrew _XTb6S1uXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgsFuXEeOCwYvWfsRrew" name="typesOfDecree" visibility="public" isCovering="true" generalization="_XTb6TluXEeOCwYvWfsRrew _XTb7BluXEeOCwYvWfsRrew _XTb7J1uXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgsVuXEeOCwYvWfsRrew" name="typesOfGE" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6UVuXEeOCwYvWfsRrew _XTb6YVuXEeOCwYvWfsRrew _XTb6bVuXEeOCwYvWfsRrew _XTb6-FuXEeOCwYvWfsRrew _XTb7D1uXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgsluXEeOCwYvWfsRrew" name="c-ccba_ccbs" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6Z1uXEeOCwYvWfsRrew _XTb6aluXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgs1uXEeOCwYvWfsRrew" name="typesOfNA" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6c1uXEeOCwYvWfsRrew _XTb6kVuXEeOCwYvWfsRrew _XTb6lFuXEeOCwYvWfsRrew _XTb6l1uXEeOCwYvWfsRrew _XTb6mluXEeOCwYvWfsRrew _XTb6tVuXEeOCwYvWfsRrew _XTb6x1uXEeOCwYvWfsRrew _XTb66VuXEeOCwYvWfsRrew _XTb671uXEeOCwYvWfsRrew _XTb7AFuXEeOCwYvWfsRrew _XTb7CVuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgtFuXEeOCwYvWfsRrew" name="a-sa_ca" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6gluXEeOCwYvWfsRrew _XTb7FVuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgtVuXEeOCwYvWfsRrew" name="gs-itemComp" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6hVuXEeOCwYvWfsRrew _XTb7G1uXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgtluXEeOCwYvWfsRrew" name="l-cl_sl" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6iFuXEeOCwYvWfsRrew _XTb7HluXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgt1uXEeOCwYvWfsRrew" name="p-sp_cp" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6i1uXEeOCwYvWfsRrew _XTb7IVuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcguFuXEeOCwYvWfsRrew" name="s-ss_cs" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6jluXEeOCwYvWfsRrew _XTb7JFuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcguVuXEeOCwYvWfsRrew" name="p-dp_mp" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6oluXEeOCwYvWfsRrew _XTb61luXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcguluXEeOCwYvWfsRrew" name="or_rev_dur" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6pVuXEeOCwYvWfsRrew _XTb67FuXEeOCwYvWfsRrew _XTb7DFuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgu1uXEeOCwYvWfsRrew" name="gs-part" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6rVuXEeOCwYvWfsRrew _XTb7KluXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgvFuXEeOCwYvWfsRrew" name="typesOfDE" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6uFuXEeOCwYvWfsRrew _XTb6yluXEeOCwYvWfsRrew _XTb60FuXEeOCwYvWfsRrew _XTb68luXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgvVuXEeOCwYvWfsRrew" name="c-ccoa_ccop" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6vluXEeOCwYvWfsRrew _XTb6wVuXEeOCwYvWfsRrew"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_XTcgvluXEeOCwYvWfsRrew" name="a-la_ra" visibility="public" isCovering="true" isDisjoint="true" generalization="_XTb6xFuXEeOCwYvWfsRrew _XTb7A1uXEeOCwYvWfsRrew"/>
+</RefOntoUML:Package>

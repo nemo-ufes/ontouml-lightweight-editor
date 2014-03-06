@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
-import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryProperty;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
 
 public class ReflexivityPage extends BinOverPage {
@@ -75,32 +74,31 @@ public class ReflexivityPage extends BinOverPage {
 	
 	@Override
 	public IWizardPage getNextPage(){
-		BinaryPropertyValue reflexivityValue;
 		
 		if(btnReflexive.getSelection()){
-			reflexivityValue = BinaryPropertyValue.REFLEXIVE;
+			getBinOverWizard().reflexivity = BinaryPropertyValue.REFLEXIVE;
 		}
 		else if(btnIrreflexive.getSelection()) {
-			reflexivityValue = BinaryPropertyValue.IRREFLEXIVE;
+			getBinOverWizard().reflexivity = BinaryPropertyValue.ANTI_REFLEXIVE;
 		}
 		else if(btnNonReflexive.getSelection()) {
-			reflexivityValue = BinaryPropertyValue.NON_REFLEXIVE;
+			getBinOverWizard().reflexivity = BinaryPropertyValue.NON_REFLEXIVE;
 		}
 		else {
-			reflexivityValue = BinaryPropertyValue.NONE;
+			getBinOverWizard().reflexivity = BinaryPropertyValue.NONE;
 		}
 		
-		getBinOverWizard().removeAllActions(0, BinOverAction.Action.SET_REFLEXIVITY);
+		getBinOverWizard().removeAllActions(0, BinOverAction.Action.SET_BINARY_PROPERTY);
 		BinOverAction action = new BinOverAction(binOver);
-		action.setReflexivity(reflexivityValue);
+		action.setBinaryProperty(getBinOverWizard().reflexivity);
 		getBinOverWizard().addAction(0, action);
 		
-		if (getBinOverWizard().possibleStereotypes(BinaryProperty.Reflexivity, reflexivityValue).contains(binOver.getAssociation().getClass())){
+		if (getBinOverWizard().possibleStereotypes(getBinOverWizard().reflexivity).contains(binOver.getAssociation().getClass())){
 			getBinOverWizard().removeAllActions(1);
 			return getBinOverWizard().getSymmetryPage();
 		}
 		else{
-			return getBinOverWizard().getReflexivityChangePage(reflexivityValue);
+			return getBinOverWizard().getReflexivityChangePage(getBinOverWizard().reflexivity);
 		}
 	}
 

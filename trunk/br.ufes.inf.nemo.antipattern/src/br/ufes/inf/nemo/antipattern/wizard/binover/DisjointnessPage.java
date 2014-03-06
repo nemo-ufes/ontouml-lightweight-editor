@@ -47,11 +47,11 @@ public class DisjointnessPage extends BinOverPage {
 		styledText.setBackground(container.getBackground());
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 131, 93, 16);
+		btnYes.setBounds(10, 131, 554, 16);
 		btnYes.setText("Yes (Overlapping Ends)");
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 152, 93, 16);
+		btnNo.setBounds(10, 152, 554, 16);
 		btnNo.setText("No (Disjoint Ends)");
 		
 		setPageComplete(false);

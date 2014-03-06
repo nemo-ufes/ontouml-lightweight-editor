@@ -7,15 +7,16 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
-import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryProperty;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
 
 public class SymmetryPage extends BinOverPage {
 
 	Button btnSymmetric, btnAsymmetric, btnNonSymmetric;
+	private Label lblCurrentValues;
 	
 	/**
 	 * Create the wizard.
@@ -64,6 +65,10 @@ public class SymmetryPage extends BinOverPage {
 		btnNonSymmetric.setText("It does not imply, but it is possible (Non-symmetric)");
 		btnNonSymmetric.setBounds(10, 173, 554, 16);
 		
+		lblCurrentValues = new Label(container, SWT.WRAP | SWT.RIGHT);
+		lblCurrentValues.setBounds(10, 256, 554, 15);
+		lblCurrentValues.setText("Reflexivity = ");
+		
 		setPageComplete(false);
 		SelectionAdapter listener = new SelectionAdapter() {
 			@Override
@@ -81,30 +86,33 @@ public class SymmetryPage extends BinOverPage {
 		btnNonSymmetric.addSelectionListener(listener);
 	}
 
+	public void updateUI(){
+		lblCurrentValues.setText("Reflexivity = "+getBinOverWizard().reflexivity);
+	}
+	
 	@Override
 	public IWizardPage getNextPage(){
-		BinaryPropertyValue symmetryValue;
-		
+			
 		if(btnSymmetric.getSelection())
-			symmetryValue = BinaryPropertyValue.SYMMETRIC;
+			getBinOverWizard().symmetry = BinaryPropertyValue.SYMMETRIC;
 		else if(btnAsymmetric.getSelection())
-			symmetryValue = BinaryPropertyValue.ASYMMETRIC;
+			getBinOverWizard().symmetry = BinaryPropertyValue.ASYMMETRIC;
 		else if(btnNonSymmetric.getSelection())
-			symmetryValue = BinaryPropertyValue.NON_SYMMETRIC;
+			getBinOverWizard().symmetry = BinaryPropertyValue.NON_SYMMETRIC;
 		else
-			symmetryValue = BinaryPropertyValue.NONE;
+			getBinOverWizard().symmetry = BinaryPropertyValue.NONE;
 		
-		getBinOverWizard().removeAllActions(0, BinOverAction.Action.SET_SYMMETRY);
+		getBinOverWizard().removeAllActions(0, BinOverAction.Action.SET_BINARY_PROPERTY);
 		BinOverAction action = new BinOverAction(binOver);
-		action.setSymmetry(symmetryValue);
+		action.setBinaryProperty(getBinOverWizard().symmetry);
 		getBinOverWizard().addAction(0, action);
 			
-		if ( getBinOverWizard().possibleStereotypes(BinaryProperty.Symmetry, symmetryValue).contains(getBinOverWizard().getCurrentStereotype(this))){
+		if ( getBinOverWizard().possibleStereotypes(getBinOverWizard().symmetry).contains(getBinOverWizard().getCurrentStereotype(this))){
 			getBinOverWizard().removeAllActions(2);
 			return getBinOverWizard().getTransitivityPage();
 		}
 		else
-			return getBinOverWizard().getSymmetryChangePage(symmetryValue);
+			return getBinOverWizard().getSymmetryChangePage(getBinOverWizard().symmetry);
 		
 	}
 	
