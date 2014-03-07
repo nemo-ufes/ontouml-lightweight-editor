@@ -41,7 +41,7 @@ public class ActionProcessor {
 		if(!patternOperator.getSetKind().isEmpty() || !patternOperator.getSetQuantity().isEmpty() || !patternOperator.getSetCollective().isEmpty()){
 			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	/**
