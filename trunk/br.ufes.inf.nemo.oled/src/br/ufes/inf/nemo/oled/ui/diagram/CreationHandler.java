@@ -32,7 +32,6 @@ import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
-import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
@@ -73,11 +72,8 @@ public class CreationHandler implements EditorMode {
     cachedBounds = bounds;
   }
 
-  /**
-   * Sets the ElementType.
-   * @param stereotype the ElementType
-   */
-  public Node create(ElementType stereotype) {
+  
+  public Node createNode(ElementType stereotype) {
 	isDragging = false;
     elementType = stereotype;
     element = editor.getDiagram().getElementFactory().createNode(elementType);
@@ -91,7 +87,7 @@ public class CreationHandler implements EditorMode {
     return element;
   }
   
-  public Node create(RefOntoUML.Type type, EObject eContainer) {
+  public Node createNode(RefOntoUML.Type type, EObject eContainer) {
 	isDragging = true;
     elementType = ElementType.valueOf(type.eClass().getName().toUpperCase());
     
@@ -106,11 +102,7 @@ public class CreationHandler implements EditorMode {
     return element;
   }
   
-  /**
-   * Sets the ElementType.
-   * @param stereotype the ElementType
-   */
-  public Node createCloning(ElementType stereotype, RefOntoUML.Type type) {
+  public Node createNodeCloning(ElementType stereotype, RefOntoUML.Type type) {
     elementType = stereotype;
     element = editor.getDiagram().getElementFactory().createNode(elementType);
 
@@ -130,28 +122,25 @@ public class CreationHandler implements EditorMode {
     return element;
   }
   
-  /**
-   * Generic Methods to create a Node (by John) 
-   */
-  public void addNode(ElementType elementType, double x, double y)
-  {
-	  create(elementType);
-	  CompositeNode parent = editor.getDiagram();
-	  DiagramElement possibleParent = editor.getDiagram().getChildAt(x, y);
-	  if (isNestingCondition(possibleParent)) parent = (CompositeNode) possibleParent;
-	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), x, y, editor.getDiagram().getProject(), null);
-	  editor.execute(createCommand);
-  }
-  
-  public void addNode(UmlNode umlnode, double x, double y)
-  {
-	  CompositeNode parent = editor.getDiagram();
-	  DiagramElement possibleParent = editor.getDiagram().getChildAt(x, y);
-	  if (isNestingCondition(possibleParent)) parent = (CompositeNode) possibleParent;
-	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)umlnode).getClassifier(), x, y, editor.getDiagram().getProject(),null);
-	  editor.execute(createCommand);
-  }
-  
+//  public void addNode(ElementType elementType, double x, double y)
+//  {
+//	  createNode(elementType);
+//	  CompositeNode parent = editor.getDiagram();
+//	  DiagramElement possibleParent = editor.getDiagram().getChildAt(x, y);
+//	  if (isNestingCondition(possibleParent)) parent = (CompositeNode) possibleParent;
+//	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), x, y, editor.getDiagram().getProject(), null);
+//	  editor.execute(createCommand);
+//  }
+//  
+//  public void addNode(UmlNode umlnode, double x, double y)
+//  {
+//	  CompositeNode parent = editor.getDiagram();
+//	  DiagramElement possibleParent = editor.getDiagram().getChildAt(x, y);
+//	  if (isNestingCondition(possibleParent)) parent = (CompositeNode) possibleParent;
+//	  AddNodeCommand createCommand = new AddNodeCommand(editor, parent, ((ClassElement)umlnode).getClassifier(), x, y, editor.getDiagram().getProject(),null);
+//	  editor.execute(createCommand);
+//  }
+//  
   /**
    * {@inheritDoc}
    */

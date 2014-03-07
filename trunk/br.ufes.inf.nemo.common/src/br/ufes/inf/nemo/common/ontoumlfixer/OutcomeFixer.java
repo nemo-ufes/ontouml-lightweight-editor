@@ -486,7 +486,7 @@ public class OutcomeFixer {
 	public Fix deleteElement(EObject element) 
 	{
 		Fix fix = new Fix();
-		EcoreUtil.delete(element);
+		EcoreUtil.delete(element,true);
 		fix.includeDeleted(element);
 		return fix;
 	}
@@ -532,7 +532,7 @@ public class OutcomeFixer {
 		else if (stereo.compareToIgnoreCase("Collective")==0) return ClassStereotype.COLLECTIVE;
 		else if (stereo.compareToIgnoreCase("Quantity")==0) return ClassStereotype.QUANTITY;
 		else if (stereo.compareToIgnoreCase("Phase")==0) return ClassStereotype.PHASE;
-		else if (stereo.compareToIgnoreCase("Phase")==0) return ClassStereotype.ROLE;
+		else if (stereo.compareToIgnoreCase("Role")==0) return ClassStereotype.ROLE;
 		else if (stereo.compareToIgnoreCase("Category")==0) return ClassStereotype.CATEGORY;
 		else if (stereo.compareToIgnoreCase("Mixin")==0) return ClassStereotype.MIXIN;
 		else if (stereo.compareToIgnoreCase("RoleMixin")==0) return ClassStereotype.ROLEMIXIN;
@@ -607,30 +607,23 @@ public class OutcomeFixer {
 	/** Change a relationship stereotype */
 	public Fix changeRelationStereotypeTo(EObject relationship, RelationStereotype newStereo) 
 	{
-		Fix fixes = new Fix();
-		
-			// create new relationship
-			RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);		
-			copyPropertiesDatas(relationship, newRelationship,false);
-			fixes.includeAdded(newRelationship);
-			// the same container as
-			copyContainer(relationship, newRelationship);
-			fixes.includeModified(relationship.eContainer());
-			// change references
-			Fix references = changeModelReferences(relationship, newRelationship);
-			fixes.includeAllModified(references.getModified());
-			
-			// copies name if associations
-			if(relationship instanceof Association && newRelationship instanceof Association){
-				((Association) newRelationship).setName(((Association) relationship).getName());	
-			}
-			
-			// delete relationship
-			EcoreUtil.delete(relationship, false);
-			fixes.includeDeleted(relationship);
-		
-			
-			
+		Fix fixes = new Fix();		
+		// create new relationship
+		RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);		
+		copyPropertiesDatas(relationship, newRelationship,false);
+		fixes.includeAdded(newRelationship);
+		// the same container as
+		copyContainer(relationship, newRelationship);
+		fixes.includeModified(relationship.eContainer());
+		// change references
+		Fix references = changeModelReferences(relationship, newRelationship);
+		fixes.includeAllModified(references.getModified());		
+		// copies name if associations
+		if(relationship instanceof Association && newRelationship instanceof Association){
+			((Association) newRelationship).setName(((Association) relationship).getName());	
+		}		
+		// delete element
+		fixes.addAll(deleteElement(relationship));		
 		return fixes;
 	}
 
@@ -648,9 +641,8 @@ public class OutcomeFixer {
 		// change references
 		Fix references = changeModelReferences(relationship, newRelationship);
 		fixes.includeAllModified(references.getModified());
-		// delete relationship
-		EcoreUtil.delete(relationship, false);
-		fixes.includeDeleted(relationship);
+		// delete element
+		fixes.addAll(deleteElement(relationship));
 		//invert sides
 		if(invertSides){
 			if (relationship instanceof RefOntoUML.Association) fixes.addAll(invertEnds((RefOntoUML.Association)newRelationship));
@@ -1262,9 +1254,8 @@ public class OutcomeFixer {
 		{		
 			Fix references = changeModelReferences(assoc, rel);
 			fix.includeAllModified(references.getModified());
-			// delete relationship
-			EcoreUtil.delete(assoc, false);
-			fix.includeDeleted(assoc);
+			// delete element
+			fix.addAll(deleteElement(assoc));	
 		}
 		return fix;
 	}

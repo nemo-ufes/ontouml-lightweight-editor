@@ -131,6 +131,12 @@ public final class ClassElement extends AbstractCompositeNode implements
 		return cloned;
 	}
 
+	public void changeStereotypeTo(String stereotype)
+	{
+		ontoUmlStereotype = stereotype;
+		setupOntoUmlLabelSource();
+		invalidate();
+	}
 	
 	/***
 	 * Compares two elements, returns true if tey hold the same data, false otherwise

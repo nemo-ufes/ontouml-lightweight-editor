@@ -58,6 +58,7 @@ import RefOntoUML.Constraintx;
 import RefOntoUML.Generalization;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Property;
+import RefOntoUML.Relationship;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
@@ -352,18 +353,23 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return element;
 	}
 
-	/** Rename an element. It updates the application accordingly, including the diagrams in which the element appears */
-	public void rename(RefOntoUML.Element element, String text)
+	/** Rename an element. It updates the application accordingly, including the diagrams in which the element appears. It also shows a input dialog. */
+	public void rename(RefOntoUML.Element element)
 	{
-		((NamedElement)element).setName(text);
-		ArrayList<DiagramEditor> editors = ProjectBrowser.frame.getDiagramManager().getDiagramEditors(element);
-		DiagramElement dElem = ModelHelper.getDiagramElement(element);
-		if (dElem instanceof ClassElement)
-		{
-			SetLabelTextCommand cmd = new SetLabelTextCommand((DiagramNotification)editors.get(0),((ClassElement)dElem).getMainLabel(),text,ProjectBrowser.frame.getDiagramManager().getCurrentProject());
-			cmd.run();
-		}
-		frame.getDiagramManager().updateOLEDFromModification(element, false);
+		if (element instanceof NamedElement) {
+			String value = new String();    						
+			value = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename - "+((NamedElement)element).getName(),JOptionPane.INFORMATION_MESSAGE,null,null,((NamedElement)element).getName());    						
+			if(value!=null){
+				((NamedElement)element).setName(value);
+				ArrayList<DiagramEditor> editors = ProjectBrowser.frame.getDiagramManager().getDiagramEditors(element);
+				DiagramElement dElem = ModelHelper.getDiagramElement(element);
+				if (dElem instanceof ClassElement){
+					SetLabelTextCommand cmd = new SetLabelTextCommand((DiagramNotification)editors.get(0),((ClassElement)dElem).getMainLabel(),value,ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+					cmd.run();
+				}
+				frame.getDiagramManager().updateOLEDFromModification(element, false);
+			}
+		}   
 	}
 	
 	/** Delete element from the model and every diagram in each it appears. */
@@ -385,7 +391,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
-	/** Delete element from the model and every diagram in each it appears. */
+	/** Delete element from the model and every diagram in each it appears. It shows a message before deletion.*/
 	public void delete(RefOntoUML.Element element)
 	{	
 		int response = JOptionPane.showConfirmDialog(frame, "Delete selected items from the model and all diagrams? \n\nWARNING: This action cannot be undone.", "Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
@@ -408,7 +414,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
-	/** Delete elements from the model and every diagram in each they appear. */
+	/** Delete elements from the model and every diagram in each they appear. It shows a message before deletion. */
 	public void delete(Collection<DiagramElement> diagramElementList)
 	{
 		int response = JOptionPane.showConfirmDialog(frame, "Delete selected items from the model and all diagrams? \n\nWARNING: This action cannot be undone.\n\n", "Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
@@ -434,6 +440,32 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
+	/** Change class stereotype */ 
+	public void changeClassStereotype(Type type, String stereo) 
+	{		
+   		DiagramElement diagramElem = ModelHelper.getDiagramElement(type);
+   		OutcomeFixer fixer = new OutcomeFixer(ProjectBrowser.getParserFor(currentProject).getModel());
+   		Fix fix = fixer.changeClassStereotypeTo(type, fixer.getClassStereotype(stereo));
+   		
+   		if (diagramElem !=null && diagramElem instanceof ClassElement) {
+   			double x = ((ClassElement)diagramElem).getAbsoluteX1();
+   			double y = ((ClassElement)diagramElem).getAbsoluteY1();   	   		
+   	   		fix.setAddedPosition(fix.getAdded().get(0),x,y);
+   		}   		
+   		
+   		updateOLED(fix);
+	}
+	
+	/** Change relation stereotype */ 
+	public void changeRelationStereotype(Relationship type, String stereo) 
+	{	
+   		OutcomeFixer fixer = new OutcomeFixer(ProjectBrowser.getParserFor(currentProject).getModel());
+   		Fix fix = fixer.changeRelationStereotypeTo(type, fixer.getRelationshipStereotype(stereo)); 
+   		
+   		updateOLED(fix);
+   		   		
+   	}
+	
 	/** Delete element from all diagrams in the project. (not from the model) */
 	public void deleteFromDiagrams(RefOntoUML.Element element)
 	{
@@ -563,13 +595,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 	}
-
+	
 	/** 
 	 * Update the application accordingly to the refontouml instance created
 	 * 
 	 * @param element: added element on refontouml root instance.
 	 */
-	public void updatedOLEDFromInclusion(RefOntoUML.Element element)
+	public void updateOLEDFromInclusion(RefOntoUML.Element element)
 	{		
 		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
 
@@ -599,7 +631,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void updateOLEDFromModification(RefOntoUML.Element element, boolean redesign)
 	{
-		updatedOLEDFromInclusion(element);
+		updateOLEDFromInclusion(element);
 
 		// =================================
 		// Diagrams
@@ -658,33 +690,48 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void updateOLED (final Fix fix)
 	{
 		if (fix==null) return;
-		for(Object obj: fix.getAdded()) {
-			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType)
-				updatedOLEDFromInclusion((RefOntoUML.Element)obj);
+		for(Object obj: fix.getAdded()) 
+		{
+			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType) updateOLEDFromInclusion((RefOntoUML.Element)obj);
+			// add at specified position...
+			if (fix.getAddedPosition(obj).x!=-1 && fix.getAddedPosition(obj).y!=-1) 
+			{
+				AddNodeCommand cmd = new AddNodeCommand((DiagramNotification)getCurrentDiagramEditor(),getCurrentDiagramEditor().getDiagram(),(RefOntoUML.Element)obj,
+					fix.getAddedPosition(obj).x,fix.getAddedPosition(obj).y,
+					getCurrentProject(),(RefOntoUML.Element)((EObject)obj).eContainer());		
+				cmd.run();
+			}			
 		}
-		for(Object obj: fix.getAdded()) {
-			if (obj instanceof RefOntoUML.Relationship)
-				updatedOLEDFromInclusion((RefOntoUML.Element)obj);
+		for(Object obj: fix.getAdded()) 
+		{
+			if (obj instanceof RefOntoUML.Relationship) updateOLEDFromInclusion((RefOntoUML.Element)obj);
+			moveToDiagram((RefOntoUML.Element)obj, getCurrentDiagramEditor());
 		}				
-		for(Object obj: fix.getModified()){
-			if (obj instanceof RefOntoUML.Property){
+		for(Object obj: fix.getModified())
+		{
+			if (obj instanceof RefOntoUML.Property)
+			{
 				Association assoc= ((RefOntoUML.Property)obj).getAssociation();								
 				if (assoc!=null) remakeDiagramElement((RefOntoUML.Element)assoc);
 				else refreshDiagramElement((RefOntoUML.Element)((RefOntoUML.Element)obj).eContainer());
 			}							
-			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType){
+			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)			
+			{
 				refreshDiagramElement((Classifier)obj);
 			}
 		}
-		for(Object obj: fix.getDeleted()) {
+		for(Object obj: fix.getDeleted()) 
+		{
 			if (obj instanceof RefOntoUML.Relationship)
 				ProjectBrowser.frame.getDiagramManager().deleteUnsafely((RefOntoUML.Element)obj);			
 		}
-		for(Object obj: fix.getDeleted()) {
+		for(Object obj: fix.getDeleted()) 
+		{
 			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
 				ProjectBrowser.frame.getDiagramManager().deleteUnsafely((RefOntoUML.Element)obj);			
 		}
-		for(String str: fix.getAddedRules()){
+		for(String str: fix.getAddedRules())
+		{
 			getFrame().getInfoManager().addConstraints(str+"\n");
 		}
 		return ;
@@ -760,7 +807,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				setProjectFile(file);				
 
 				createEmptyCurrentProject();	
-
+				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 				saveCurrentProjectToFile(file);				
 
 				frame.setTitle("OLED - "+file.getName()+"");
@@ -1579,7 +1626,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			oclmodel.getParser().parseTemporalOCL(frame.getInfoManager().getConstraints());
 
 			// set options from the parser
-			//ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new OCL2AlloyOptions(oclmodel.getOCLParser()));
+			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new OCL2AlloyOptions(oclmodel.getOCLParser()));
 
 			// show Message
 			String msg =  "Constraints are syntactically correct.\n";

@@ -813,12 +813,12 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * @param elementType the ElementType that indicates what to create
 	 */
 	public void setCreationMode(ElementType elementType) {
-		creationHandler.create(elementType);
+		creationHandler.createNode(elementType);
 		editorMode = creationHandler;
 	}
 
 	public void setDragElementMode(RefOntoUML.Type type, EObject eContainer){		
-		creationHandler.create(type,eContainer);
+		creationHandler.createNode(type,eContainer);
 		editorMode = creationHandler;
 	}
 	

@@ -32,6 +32,7 @@ import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
@@ -75,6 +76,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		this.element = element;		
 		this.eContainer = eContainer;
 		this.diagramElement = (Node)ModelHelper.getDiagramElement(element);
+		if(this.diagramElement==null) this.diagramElement = ((DiagramEditor)this.notification).getCreationHandler().createNode((RefOntoUML.Type)element, eContainer);
 		absx = x;
 		absy = y;
 	}
@@ -118,10 +120,10 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		
 		if(addToDiagram && diagramElement !=null){						
 			addToDiagram(diagramElement,redo);
-			ModelHelper.addMapping(element, ((ClassElement)diagramElement));
+			if (ModelHelper.getDiagramElement(element)==null) ModelHelper.addMapping(element, ((ClassElement)diagramElement));
 		}
-
-		ProjectBrowser.frame.getDiagramManager().updatedOLEDFromInclusion(element);
+		
+		ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);		
 	}	
 	
 	/**
@@ -143,26 +145,52 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	
 	/**
 	 * Add a element to the model instance behind the scenes and updates the application accordingly.
+	 * It only adds the element if it does not exists in the container.
+	 * 
 	 * @param elem
 	 */
 	private void addToModel(RefOntoUML.Element element)
 	{
 		if(eContainer==null){
-			AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), element);
-			project.getEditingDomain().getCommandStack().execute(cmd);
+			
+			if (!(project.getModel().getPackagedElement().contains(element)))
+			{
+				AddCommand cmd = new AddCommand(project.getEditingDomain(), project.getModel().getPackagedElement(), element);
+				project.getEditingDomain().getCommandStack().execute(cmd);
+			}
+			
 		}else{
-			if (eContainer instanceof RefOntoUML.Package){
-				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Package)eContainer).getPackagedElement(), element);
-				project.getEditingDomain().getCommandStack().execute(cmd);
-			}else if (eContainer instanceof RefOntoUML.Element && element instanceof RefOntoUML.Comment){
-				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Element)eContainer).getOwnedComment(), element);
-				project.getEditingDomain().getCommandStack().execute(cmd);
-			}else if (eContainer instanceof RefOntoUML.Class && element instanceof RefOntoUML.Property){
-				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Class)eContainer).getOwnedAttribute(), element);
-				project.getEditingDomain().getCommandStack().execute(cmd);
-			}else if (eContainer instanceof RefOntoUML.DataType && element instanceof RefOntoUML.Property){
-				AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.DataType)eContainer).getOwnedAttribute(), element);
-				project.getEditingDomain().getCommandStack().execute(cmd);
+			if (eContainer instanceof RefOntoUML.Package)
+			{
+				if (!(((RefOntoUML.Package)eContainer).getPackagedElement().contains(element)))
+				{					
+					AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Package)eContainer).getPackagedElement(), element);
+					project.getEditingDomain().getCommandStack().execute(cmd);
+				}
+				
+			}else if (eContainer instanceof RefOntoUML.Element && element instanceof RefOntoUML.Comment)
+			{
+				if (!(((RefOntoUML.Element)eContainer).getOwnedComment().contains(element)))
+				{
+					AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Element)eContainer).getOwnedComment(), element);
+					project.getEditingDomain().getCommandStack().execute(cmd);
+				}
+				
+			}else if (eContainer instanceof RefOntoUML.Class && element instanceof RefOntoUML.Property)
+			{
+				if (!(((RefOntoUML.Class)eContainer).getOwnedAttribute().contains(element)))
+				{
+					AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Class)eContainer).getOwnedAttribute(), element);
+					project.getEditingDomain().getCommandStack().execute(cmd);
+				}
+				
+			}else if (eContainer instanceof RefOntoUML.DataType && element instanceof RefOntoUML.Property)
+			{
+				if (!(((RefOntoUML.DataType)eContainer).getOwnedAttribute().contains(element)))
+				{
+					AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.DataType)eContainer).getOwnedAttribute(), element);
+					project.getEditingDomain().getCommandStack().execute(cmd);
+				}
 			}			
 		}		
 	}	
