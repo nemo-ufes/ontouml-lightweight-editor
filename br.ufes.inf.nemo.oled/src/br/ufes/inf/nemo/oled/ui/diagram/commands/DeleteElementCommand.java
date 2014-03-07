@@ -224,12 +224,13 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	{
 		if(deleteFromDiagram) deleteFromDiagram(diagramElemList);			
 				
-		if(deleteFromModel) deleteFromModel(elemList);
-		
-		for(RefOntoUML.Element deletedElement: elemList)
-		{
-			ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(deletedElement);	
-		}				
+		if(deleteFromModel) {
+			deleteFromModel(elemList);
+			for(RefOntoUML.Element deletedElement: elemList)
+			{
+				ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(deletedElement);	
+			}
+		}						
 	}
 	
 	private void deleteFromDiagram(Collection<DiagramElement> diagramElemList)

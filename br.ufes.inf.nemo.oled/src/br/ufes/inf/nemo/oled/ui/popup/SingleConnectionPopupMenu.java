@@ -47,6 +47,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	final JMenuItem readNoIndicatorItem;
 	final JMenu visibilityMenu;
 	final JMenu readingDirectionMenu;
+//	RelationStereotypeChangeMenu changeMenu;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -172,6 +173,14 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		addSeparator();
 		
 		createMenuItem(this, "delete");
+		
+//		addSeparator();		
+//		if(!(((AssociationElement)con).getRelationship() instanceof RefOntoUML.Generalization))
+//		{	
+//			changeMenu = new RelationStereotypeChangeMenu(editor.getDiagramManager());
+//			add(changeMenu);
+//		}
+		
 		//addEditConnectionPropertiesMenu(menu, (UmlConnection) conn);				
 	}
 	
@@ -212,6 +221,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 				}	
 			}			
 		}
+		
+//		if(changeMenu!=null){			
+//			changeMenu.setElement(((AssociationElement)con).getRelationship());
+//		}
 	}		
 	
 	/**

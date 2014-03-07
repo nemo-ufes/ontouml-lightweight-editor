@@ -31,6 +31,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	final JMenuItem showAttrItem;
 	final JMenuItem showOperItem;
 	private DiagramEditor editor;
+//	private ClassStereotypeChangeMenu changeMenu;
 	
 	public SingleNodePopupMenu()
 	{
@@ -73,7 +74,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 				}				
 			}
 		});
-
+		
 		// FIXME: Trying to hide the stereotype displays a bug
 //		final JMenuItem showStereoItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showstereotype");
 //		showStereoItem.addActionListener(new ActionListener() {			
@@ -94,7 +95,11 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		
 		addSeparator();
 		
-		createMenuItem(this, "delete");		
+		createMenuItem(this, "delete");	
+		
+//		addSeparator();				
+//		changeMenu = new ClassStereotypeChangeMenu(editor.getDiagramManager());
+//		add(changeMenu);
 	}
 	
 	public void setNode (UmlNode node, DiagramEditor editor)
@@ -105,6 +110,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 			showAttrItem.setSelected(((ClassElement)node).showAttributes());
 			showOperItem.setSelected(((ClassElement)node).showOperations());
 		}
+//		if(changeMenu!=null) changeMenu.setElement(((ClassElement)node).getClassifier());		
 	}	
 	
 	/**

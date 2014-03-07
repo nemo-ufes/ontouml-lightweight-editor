@@ -118,7 +118,17 @@ public class ModelHelper {
 		DiagramElement result;
 		if (!initialized) initializeHelper();		
 		if (element==null || diagramElement==null) return false;		
-		result = mappings.put(element, diagramElement);		
+		if(mappings.get(element)==null){
+			result = mappings.put(element, diagramElement);
+		}else{
+			if(!mappings.get(element).equals(diagramElement)){
+				System.err.println("Trying to add a new diagram element to the ModelHelper.Map but there is already a diagram element there!");
+				System.err.println("Existent entry: "+mappings.get(element));
+				System.err.println("New entry: "+diagramElement);
+				System.err.println("==========================================");
+			}
+			result = null;			
+		}
 		if (result!=null) return true;
 		else return false;
 	}

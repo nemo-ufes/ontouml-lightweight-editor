@@ -358,7 +358,7 @@ public class AttributesEditionPanel extends JPanel {
 			}
 		}
 		if (classElement !=null) classElement.setShowAttributes(cbxVisible.isSelected());
-		diagramManager.updatedOLEDFromInclusion(element);
+		diagramManager.updateOLEDFromInclusion(element);
 		
 		transferDataTypes();	
 				
@@ -375,7 +375,7 @@ public class AttributesEditionPanel extends JPanel {
 				}else{				
 					((Class)element).getOwnedAttribute().add(property);
 				}
-				diagramManager.updatedOLEDFromInclusion(property);
+				diagramManager.updateOLEDFromInclusion(property);
 			}
 		}
 	}
@@ -397,6 +397,6 @@ public class AttributesEditionPanel extends JPanel {
 			}
 		}		
 		
-		for(Element element: createdList) diagramManager.updatedOLEDFromInclusion(element);		
+		for(Element element: createdList) diagramManager.updateOLEDFromInclusion(element);		
 	}
 }

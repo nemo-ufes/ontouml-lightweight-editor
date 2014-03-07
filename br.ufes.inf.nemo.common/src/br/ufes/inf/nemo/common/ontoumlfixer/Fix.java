@@ -1,8 +1,6 @@
 package br.ufes.inf.nemo.common.ontoumlfixer;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -153,20 +151,28 @@ public class Fix {
 		this.addedRules = addedRules;
 	}
 	
-	public <T> ArrayList<T> getAddedByType(java.lang.Class<T> type){
+	public <T> ArrayList<T> getAddedByType(java.lang.Class<T> type)
+	{
 		ArrayList<T> added = new ArrayList<T>();
-		for (Object elem : this.addedElements.keySet()) {
-			if(type.isInstance(elem))
-				added.add(type.cast(elem));
+		for (Object elem : this.addedElements.keySet())
+		{
+			if(type.isInstance(elem)) added.add(type.cast(elem));
 		}
 		return added;
 	}
 	
-	public void includeAdded(Object added, double x, double y){
+	public void includeAdded(Object added, double x, double y)
+	{
 		if (!addedElements.keySet().contains(added)) addedElements.put(added,new Point2D.Double(x,y));
 	}
 	
-	public Point2D.Double getPositionElement(Object element){
+	public Point2D.Double getAddedPosition(Object element)
+	{
 		return addedElements.get(element);
+	}
+	
+	public void setAddedPosition(Object added, double x, double y)
+	{
+		if (addedElements.keySet().contains(added)) { addedElements.get(added).x=x; addedElements.get(added).y=y; }
 	}
 }

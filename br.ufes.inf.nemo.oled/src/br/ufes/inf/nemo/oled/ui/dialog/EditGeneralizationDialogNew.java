@@ -574,7 +574,7 @@ public class EditGeneralizationDialogNew extends javax.swing.JDialog {
  	 	 		
  	 	 		needsSaveGenSet = false; 	
  	 	 		
- 	 	 		diagramManager.updatedOLEDFromInclusion(genSet);
+ 	 	 		diagramManager.updateOLEDFromInclusion(genSet);
  	 		}
  	 		else
  	 		{

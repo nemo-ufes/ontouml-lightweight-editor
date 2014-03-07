@@ -2,77 +2,31 @@ package br.ufes.inf.nemo.oled.ui.popup;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import RefOntoUML.Association;
 import RefOntoUML.Generalization;
-import RefOntoUML.NamedElement;
 import RefOntoUML.Property;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
-import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.OntoUMLElement;
 import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
-import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
-import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
-import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 public class TreePopupMenu extends JPopupMenu {
  
 	private static final long serialVersionUID = 1L;
-		
-	public JMenuItem deleteItem = new JMenuItem("Delete");
-	public JMenuItem autoCompleteItem = new JMenuItem("Complete selection");
-	public JMenuItem refreshItem = new JMenuItem("Refresh");
-	public JMenuItem addDiagramItem = new JMenuItem("Add Diagram");
-	public JMenuItem moveToDiagramItem = new JMenuItem("Move to Diagram");
-	public JMenuItem setNameItem = new JMenuItem("Rename...");
-	public JMenuItem invertEndPointsItem = new JMenuItem("Invert End Points");
-	
-	public JMenu addElementMenu = new JMenu("Add Element");
-	public JMenuItem packageItem = new JMenuItem("Package");
-	public JMenuItem kindItem = new JMenuItem("Kind");
-	public JMenuItem collectiveItem  = new JMenuItem("Collective");
-	public JMenuItem quantityItem = new JMenuItem("Quantity");
-	public JMenuItem subkindItem = new JMenuItem("SubKind");
-	public JMenuItem phaseItem = new JMenuItem("Phase");
-	public JMenuItem roleItem = new JMenuItem("Role");
-	public JMenuItem categoryItem = new JMenuItem("Category");
-	public JMenuItem rolemixinItem = new JMenuItem("RoleMixin");
-	public JMenuItem mixinItem = new JMenuItem("Mixin");	
-	public JMenuItem relatorItem = new JMenuItem("Relator");
-	public JMenuItem modeItem = new JMenuItem("Mode");	
-	public JMenuItem datatypeItem = new JMenuItem("DataType");
-		
-	public JMenu addRelationMenu = new JMenu("Add Relation");
-	public JMenuItem genItem = new JMenuItem("Generalization");
-	public JMenuItem mediationItem = new JMenuItem("Mediation");	
-	public JMenuItem materialItem = new JMenuItem("Material");
-	public JMenuItem formalItem = new JMenuItem("Formal");
-	public JMenuItem componentOfItem = new JMenuItem("ComponentOf");
-	public JMenuItem memberOfItem = new JMenuItem("MemberOf");
-	public JMenuItem associationItem = new JMenuItem("Association");
-	public JMenuItem characterizationItem = new JMenuItem("Characterization");
-	public JMenuItem subquantityOfItem = new JMenuItem("SubQuantityOf");
-	public JMenuItem subcollectionOfItem = new JMenuItem("SubCollectionOf");	
-	public JMenuItem derivationItem = new JMenuItem("Derivation");
-	
-	public JMenuItem addGenItem = new JMenuItem("Add Generalization");
-	
 	public Object element;
 	
     public TreePopupMenu(final AppFrame frame, final ProjectTree tree, Object element)
@@ -82,6 +36,7 @@ public class TreePopupMenu extends JPopupMenu {
     	
     	// Auto Complete Selection
     	if (tree.getModelRootNode().equals(node)){
+    		JMenuItem autoCompleteItem = new JMenuItem("Complete selection");
 	    	add(autoCompleteItem);	    	
 	    	autoCompleteItem.addActionListener(new ActionListener() {				
 				@Override
@@ -94,6 +49,7 @@ public class TreePopupMenu extends JPopupMenu {
     	
     	// Refresh Tree
     	if (tree.getRootNode().equals(node)){
+    		JMenuItem refreshItem = new JMenuItem("Refresh");
     		add(refreshItem);
     		refreshItem.addActionListener(new ActionListener() {				
     			@Override
@@ -105,6 +61,7 @@ public class TreePopupMenu extends JPopupMenu {
     	
     	//Add Diagram
     	if(tree.getDiagramRootNode().equals(node)){
+    		JMenuItem addDiagramItem = new JMenuItem("Add Diagram");
     		add(addDiagramItem);
     		addDiagramItem.addActionListener(new ActionListener() {				
     			@Override
@@ -114,35 +71,23 @@ public class TreePopupMenu extends JPopupMenu {
     		});
     	}
 
-		//Set name
+		//Rename
     	if (!tree.getModelRootNode().equals(node) && !tree.getDiagramRootNode().equals(node) && !tree.getRootNode().equals(node)){    		
     		if ( (!(TreePopupMenu.this.element instanceof StructureDiagram)) && !((RefOntoUML.Element)((OntoUMLElement)TreePopupMenu.this.element).getElement() instanceof Generalization) )    			 
     		{
+    			JMenuItem setNameItem = new JMenuItem("Rename");
     			add(setNameItem);    		
+    			setNameItem.addActionListener(new ActionListener() {				
+	    			@Override
+	    			public void actionPerformed(ActionEvent e) {
+	    				if (TreePopupMenu.this.element instanceof OntoUMLElement)
+	    				{    					
+	    					RefOntoUML.Element element = (RefOntoUML.Element)((OntoUMLElement)TreePopupMenu.this.element).getElement();    					
+	    					ProjectBrowser.frame.getDiagramManager().rename(element);					
+	    				}
+	    			}
+    			});
     		}
-    		setNameItem.addActionListener(new ActionListener() {				
-    			@Override
-    			public void actionPerformed(ActionEvent e) {
-    				if (TreePopupMenu.this.element instanceof OntoUMLElement)
-    				{    					
-    					RefOntoUML.Element element = (RefOntoUML.Element)((OntoUMLElement)TreePopupMenu.this.element).getElement();    					
-    					if (element instanceof NamedElement) {
-    						String value = new String();    						
-    						value = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename - "+((NamedElement)element).getName(),JOptionPane.INFORMATION_MESSAGE,null,null,((NamedElement)element).getName());    						
-    						if(value!=null){
-    							((NamedElement)element).setName(value);
-    							ArrayList<DiagramEditor> editors = ProjectBrowser.frame.getDiagramManager().getDiagramEditors(element);
-    							DiagramElement dElem = ModelHelper.getDiagramElement(element);
-    							if (dElem instanceof ClassElement){
-    								SetLabelTextCommand cmd = new SetLabelTextCommand((DiagramNotification)editors.get(0),((ClassElement)dElem).getMainLabel(),value,ProjectBrowser.frame.getDiagramManager().getCurrentProject());
-    								cmd.run();
-    							}
-    							frame.getDiagramManager().updateOLEDFromModification(element, false);
-    						}
-    					}    					
-    				}
-    			}
-    		});
     	}
     	
     	// Move To Diagram 	    		
@@ -151,6 +96,7 @@ public class TreePopupMenu extends JPopupMenu {
     		final OntoUMLElement ontoElement = ((OntoUMLElement)node.getUserObject());    		
     		if(ontoElement.getElement() instanceof RefOntoUML.Type || ontoElement.getElement() instanceof RefOntoUML.Generalization)
     		{
+    			JMenuItem moveToDiagramItem = new JMenuItem("Move to Diagram");
     			add(moveToDiagramItem);    			    			
     			moveToDiagramItem.addActionListener(new ActionListener() {				
         			@Override
@@ -169,7 +115,21 @@ public class TreePopupMenu extends JPopupMenu {
     		if(ontoElement.getElement() instanceof RefOntoUML.Package)
     		{
     			final RefOntoUML.Package eContainer = (RefOntoUML.Package)ontoElement.getElement();
+    			JMenu addElementMenu = new JMenu("Add Element");
     			add(addElementMenu);
+    			JMenuItem packageItem = new JMenuItem("Package");
+    			JMenuItem kindItem = new JMenuItem("Kind");
+    			JMenuItem collectiveItem  = new JMenuItem("Collective");
+    			JMenuItem quantityItem = new JMenuItem("Quantity");
+    			JMenuItem subkindItem = new JMenuItem("SubKind");
+    			JMenuItem phaseItem = new JMenuItem("Phase");
+    			JMenuItem roleItem = new JMenuItem("Role");
+    			JMenuItem categoryItem = new JMenuItem("Category");
+    			JMenuItem rolemixinItem = new JMenuItem("RoleMixin");
+    			JMenuItem mixinItem = new JMenuItem("Mixin");	
+    			JMenuItem relatorItem = new JMenuItem("Relator");
+    			JMenuItem modeItem = new JMenuItem("Mode");	
+    			JMenuItem datatypeItem = new JMenuItem("DataType");
     			addElementMenu.add(packageItem);
     	        packageItem.addActionListener(new ActionListener() {				
     	        	@Override
@@ -272,7 +232,18 @@ public class TreePopupMenu extends JPopupMenu {
     		if(ontoElement.getElement() instanceof RefOntoUML.Package)
     		{
     			final RefOntoUML.Package eContainer = (RefOntoUML.Package)ontoElement.getElement();
-    			add(addRelationMenu);    			    			
+    			JMenu addRelationMenu = new JMenu("Add Relation");
+    			add(addRelationMenu);    			
+    			JMenuItem mediationItem = new JMenuItem("Mediation");	
+    			JMenuItem materialItem = new JMenuItem("Material");
+    			JMenuItem formalItem = new JMenuItem("Formal");
+    			JMenuItem componentOfItem = new JMenuItem("ComponentOf");
+    			JMenuItem memberOfItem = new JMenuItem("MemberOf");
+    			JMenuItem associationItem = new JMenuItem("Association");
+    			JMenuItem characterizationItem = new JMenuItem("Characterization");
+    			JMenuItem subquantityOfItem = new JMenuItem("SubQuantityOf");
+    			JMenuItem subcollectionOfItem = new JMenuItem("SubCollectionOf");	
+    			JMenuItem derivationItem = new JMenuItem("Derivation");
     			addRelationMenu.add(materialItem);
     			materialItem.addActionListener(new ActionListener() {				
 	   	        	@Override
@@ -363,6 +334,7 @@ public class TreePopupMenu extends JPopupMenu {
     		if(ontoElement.getElement() instanceof RefOntoUML.Class || ontoElement.getElement() instanceof RefOntoUML.DataType)
     		{
     			final RefOntoUML.Type eContainer = (RefOntoUML.Type)ontoElement.getElement();
+    			JMenuItem addGenItem = new JMenuItem("Add Generalization");
     			add(addGenItem);    			
     			addGenItem.addActionListener(new ActionListener() {				
 	   	        	@Override
@@ -381,6 +353,7 @@ public class TreePopupMenu extends JPopupMenu {
     		if(ontoElement.getElement() instanceof RefOntoUML.Association)
     		{    			
     			final Association association = (Association)ontoElement.getElement();
+    			JMenuItem invertEndPointsItem = new JMenuItem("Invert End Points");
     			add(invertEndPointsItem);    			
     			invertEndPointsItem.addActionListener(new ActionListener() {				
 	   	        	@Override
@@ -396,6 +369,32 @@ public class TreePopupMenu extends JPopupMenu {
     		}
 		}
 		
+		// Change class stereotype 	    		
+		if (node.getUserObject() instanceof OntoUMLElement)
+		{
+    		OntoUMLElement ontoElement = ((OntoUMLElement)node.getUserObject());    		
+    		if(ontoElement.getElement() instanceof RefOntoUML.Class || ontoElement.getElement() instanceof RefOntoUML.DataType)
+    		{    			
+    			final Type type = (Type)ontoElement.getElement();
+    			ClassStereotypeChangeMenu changeMenu = new ClassStereotypeChangeMenu(frame.getDiagramManager());
+    			changeMenu.setElement(type);
+    			add(changeMenu);
+    		}
+		}
+		
+		// Change relation stereotype 	    		
+		if (node.getUserObject() instanceof OntoUMLElement)
+		{
+    		OntoUMLElement ontoElement = ((OntoUMLElement)node.getUserObject());    		
+    		if(ontoElement.getElement() instanceof RefOntoUML.Association)
+    		{    			
+    			final Association type = (Association)ontoElement.getElement();    			
+    			RelationStereotypeChangeMenu changeMenu = new RelationStereotypeChangeMenu(frame.getDiagramManager());
+    			changeMenu.setElement(type);
+    			add(changeMenu);
+    		}
+		}
+		
     	// Delete 
     	if (!tree.getModelRootNode().equals(node) && !tree.getDiagramRootNode().equals(node) && !tree.getRootNode().equals(node))
     	{
@@ -403,26 +402,27 @@ public class TreePopupMenu extends JPopupMenu {
     		{
     			//nothing
     		}else{
+    			JMenuItem deleteItem = new JMenuItem("Delete");
     			add(deleteItem);
-    		}
-    		deleteItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/cross.png")));
-    		deleteItem.addActionListener(new ActionListener() {				
-    			@Override
-    			public void actionPerformed(ActionEvent e) {			
-    							
-    				if (TreePopupMenu.this.element instanceof OntoUMLElement)
-    				{
-    					OntoUMLElement ontoElem = (OntoUMLElement) ((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).getUserObject();
-    					RefOntoUML.Element elemForDeletion = (RefOntoUML.Element)ontoElem.getElement();
-    					frame.getDiagramManager().delete(elemForDeletion);    					    					
-	    				tree.setSelectionPath(new TreePath(tree.getModelRootNode().getPath()));    					    					
-    				}
-    				else if (TreePopupMenu.this.element instanceof StructureDiagram)
-    				{
-    					frame.getDiagramManager().removeDiagram((StructureDiagram)TreePopupMenu.this.element);    					
-    				}
-    			}
-    		});
+    			deleteItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/cross.png")));
+        		deleteItem.addActionListener(new ActionListener() {				
+        			@Override
+        			public void actionPerformed(ActionEvent e) {			
+        							
+        				if (TreePopupMenu.this.element instanceof OntoUMLElement)
+        				{
+        					OntoUMLElement ontoElem = (OntoUMLElement) ((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).getUserObject();
+        					RefOntoUML.Element elemForDeletion = (RefOntoUML.Element)ontoElem.getElement();
+        					frame.getDiagramManager().delete(elemForDeletion);    					    					
+    	    				tree.setSelectionPath(new TreePath(tree.getModelRootNode().getPath()));    					    					
+        				}
+        				else if (TreePopupMenu.this.element instanceof StructureDiagram)
+        				{
+        					frame.getDiagramManager().removeDiagram((StructureDiagram)TreePopupMenu.this.element);    					
+        				}
+        			}
+        		});
+    		}    		
     	}    	
     }
 }
