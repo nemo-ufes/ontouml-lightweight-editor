@@ -1,6 +1,8 @@
 package br.ufes.inf.nemo.common.ontoumlfixer;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,7 +12,7 @@ public class Fix {
 	//private ArrayList<Object> addedElements = new ArrayList<Object>();
 	private ArrayList<Object> modifiedElements = new ArrayList<Object>();
 	private ArrayList<String> addedRules = new ArrayList<String>();
-	private HashMap<Object, Point> addedElements = new HashMap<Object,Point>();
+	private HashMap<Object,Point2D.Double> addedElements = new HashMap<Object,Point2D.Double>();
 	
 	public void addAll(Fix fix)
 	{
@@ -94,7 +96,7 @@ public class Fix {
 		addedRules.add(rule);
 	}	
 	public void includeAdded(Object added){
-		if (!addedElements.keySet().contains(added)) addedElements.put(added,new Point(-1,-1));
+		if (!addedElements.keySet().contains(added)) addedElements.put(added,new Point2D.Double(-1,-1));
 	}
 	public void includeDeleted(Object deleted){
 		if (!deletedElements.contains(deleted)) deletedElements.add(deleted);
@@ -160,8 +162,11 @@ public class Fix {
 		return added;
 	}
 	
-	public void includeAdded(Object added, int x, int y){
-		if (!addedElements.keySet().contains(added)) addedElements.put(added,new Point(x,y));
+	public void includeAdded(Object added, double x, double y){
+		if (!addedElements.keySet().contains(added)) addedElements.put(added,new Point2D.Double(x,y));
 	}
 	
+	public Point2D.Double getPositionElement(Object element){
+		return addedElements.get(element);
+	}
 }
