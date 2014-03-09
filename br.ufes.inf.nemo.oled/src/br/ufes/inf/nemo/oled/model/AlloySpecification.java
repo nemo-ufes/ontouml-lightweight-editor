@@ -6,9 +6,9 @@ import java.io.IOException;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2Alloy;
-import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
+import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 
 /**
  * 
@@ -130,7 +130,7 @@ public class AlloySpecification {
 	 * 
 	 * @return
 	 */
-	public String addConstraints(OntoUMLParser refparser, OCLDocument oclmodel, OCL2AlloyOptions oclOptions) throws IOException
+	public String addConstraints(OntoUMLParser refparser, OCLDocument oclmodel, TOCL2AlloyOption oclOptions) throws IOException
 	{
 		String result = new String();
 		result = "\n";

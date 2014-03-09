@@ -19,11 +19,11 @@
  */
 package br.ufes.inf.nemo.oled.ui;
 
+import java.awt.Cursor;
 import java.util.HashMap;
 import java.util.Map;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.MainMenu;
@@ -34,10 +34,11 @@ import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.dialog.AutoCompletionDialog;
-import br.ufes.inf.nemo.oled.ui.dialog.SimulationOptionsDialog;
+import br.ufes.inf.nemo.oled.ui.dialog.SimulationDialog;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.MethodCall;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
+import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 
 /**
  * This class receives BaseEditor related AppCommands and dispatches them to
@@ -333,19 +334,18 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void generatesAlloy()
 	{
 		if (manager.isProjectLoaded()==false) return;
-
+		manager.getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));	
+		
 		manager.parseOCL(false);
-		OCL2AlloyOptions oclOptions = ProjectBrowser.getOCLOptionsFor(manager.getCurrentProject());
+		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(manager.getCurrentProject());
 
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(manager.getCurrentProject());
-		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(manager.getCurrentProject());
+		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(manager.getCurrentProject());		
+		refOptions.check(refparser);
 
-		refOptions.openAnalyzer=true;    	
-		if (!refparser.getElementsWithIdentityMissing().isEmpty()) refOptions.identityPrinciple = false;    		    	
-		if (!refparser.getRelatorsWithInvalidAxiom().isEmpty()) refOptions.relatorAxiom = false;    	
-		if (!refparser.getWholesWithInvalidWeakSupplementation().isEmpty()) refOptions.weakSupplementationAxiom = false;
-
-		SimulationOptionsDialog.open(refOptions, oclOptions, manager.getFrame());
+		SimulationDialog.open(refOptions, oclOptions, manager.getFrame());
+		
+		manager.getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
 	public void manageAntiPatterns()

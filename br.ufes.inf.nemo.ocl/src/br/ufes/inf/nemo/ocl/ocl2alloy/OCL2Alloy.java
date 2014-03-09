@@ -26,7 +26,7 @@ public class OCL2Alloy {
 				
 		OCLVisitor myVisitor = new OCLVisitor(oclparser,oclparser.getOntoUMLParser());
 		
-		OCL2AlloyOptions opt = new OCL2AlloyOptions(oclparser);
+		OCL2AlloyOption opt = new OCL2AlloyOption(oclparser);
 		for(Constraint ct: opt.getConstraintList())
 		{	
 			try{
@@ -59,7 +59,7 @@ public class OCL2Alloy {
 		return result;
 	}	
 	
-	public static String convertToAlloy (OCLParser oclparser, OCL2AlloyOptions opt)
+	public static String convertToAlloy (OCLParser oclparser, OCL2AlloyOption opt)
 	{
 		String result = new String();			
 		log = new String();		
@@ -70,7 +70,6 @@ public class OCL2Alloy {
 		for(Constraint ct: opt.getConstraintList())
 		{	
 			try{
-		
 				myVisitor.stereotype = opt.getTransformationType(ct);
 				result += myVisitor.visitConstraint(ct);				
 				succeeds = true;
