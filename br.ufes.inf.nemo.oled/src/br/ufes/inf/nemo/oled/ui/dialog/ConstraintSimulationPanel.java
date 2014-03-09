@@ -18,9 +18,9 @@ import javax.swing.ScrollPaneConstants;
 
 import org.eclipse.uml2.uml.Constraint;
 
-import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOption;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
+import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 
 /**
  * @author John Guerson
@@ -31,7 +31,7 @@ public class ConstraintSimulationPanel extends JPanel {
 	private static final long serialVersionUID = 566520388850119106L;
 
 	@SuppressWarnings("unused")
-	private OCL2AlloyOption oclOptions;
+	private TOCL2AlloyOption oclOptions;
 	
 	private AppFrame frame;	
 	
@@ -43,7 +43,7 @@ public class ConstraintSimulationPanel extends JPanel {
 	private JLabel lblChooseWhichConstraints;
 	private JButton btndefault;
 
-	public ConstraintSimulationPanel (OCL2AlloyOption oclOptions,AppFrame frame)
+	public ConstraintSimulationPanel (TOCL2AlloyOption oclOptions,AppFrame frame)
 	{		
 		this();
 	
@@ -53,7 +53,7 @@ public class ConstraintSimulationPanel extends JPanel {
 		setOCLOptionPane(oclOptions,frame);
 	}
 	
-	public void setOCLOptionPane (OCL2AlloyOption oclOptions, AppFrame frame)
+	public void setOCLOptionPane (TOCL2AlloyOption oclOptions, AppFrame frame)
 	{
 		this.frame=frame;
 		ctpanel.removeAll();
@@ -69,9 +69,9 @@ public class ConstraintSimulationPanel extends JPanel {
 		for(Constraint ct : oclOptions.getConstraintList())
 		{
 			SingleConstraintPanel singleConstraint = new SingleConstraintPanel(ct,oclOptions.getConstraintType(ct),
-				ProjectBrowser.getOCLModelFor(frame.getDiagramManager().getCurrentProject()).getOCLParser().getUMLEnvironment());			
+			ProjectBrowser.getOCLModelFor(frame.getDiagramManager().getCurrentProject()).getOCLParser().getUMLEnvironment());			
 			singleConstraintsListPanel.add(singleConstraint);
-			ctpanel.add(singleConstraint);
+			ctpanel.add(singleConstraint);			
 		}		
 		
 		btnEnableAll.setEnabled(true);
@@ -97,11 +97,17 @@ public class ConstraintSimulationPanel extends JPanel {
 		return list;
 	}
 	
-	/**
-	 * Get a list of bitwidths from Options View.
-	 * 
-	 * @return
-	 */
+	public ArrayList<Integer> getWorldScopeListSelected()
+	{
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for(SingleConstraintPanel singleCt: singleConstraintsListPanel)
+		{
+			if (singleCt.checkEnforce.isSelected())
+				list.add((Integer)singleCt.worldSpinner.getValue());
+		}
+		return list;
+	}
+	
 	public ArrayList<Integer> getBitWidthListSelected()
 	{
 		ArrayList<Integer> list = new ArrayList<Integer>();
@@ -161,7 +167,7 @@ public class ConstraintSimulationPanel extends JPanel {
 	public ConstraintSimulationPanel() 
 	{
 		setBorder(BorderFactory.createTitledBorder("(Temporal) Constraints"));		
-		setPreferredSize(new Dimension(470, 260));
+		setPreferredSize(new Dimension(500, 260));
 		
 		ctpanel = new JPanel();		
 		ctpanel.setLayout(new GridLayout(4, 0, 0, 0));
@@ -208,7 +214,7 @@ public class ConstraintSimulationPanel extends JPanel {
 			}
 		});
 		
-		btndefault = new JButton("(Default)");
+		btndefault = new JButton("Default");
 		btndefault.setEnabled(false);
 		btndefault.addActionListener(new ActionListener() 
 		{
@@ -220,14 +226,14 @@ public class ConstraintSimulationPanel extends JPanel {
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 440, GroupLayout.PREFERRED_SIZE))
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(99)
+							.addGap(124)
 							.addComponent(btndefault)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnEnableAll, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
@@ -235,22 +241,22 @@ public class ConstraintSimulationPanel extends JPanel {
 							.addComponent(btnDisableAll, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(lblChooseWhichConstraints, GroupLayout.PREFERRED_SIZE, 440, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(lblChooseWhichConstraints, GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(5)
+					.addContainerGap()
 					.addComponent(lblChooseWhichConstraints)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(5)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnDisableAll, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnEnableAll, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btndefault, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
-					.addGap(107))
+					.addGap(6))
 		);
 		setLayout(groupLayout);
 	}			

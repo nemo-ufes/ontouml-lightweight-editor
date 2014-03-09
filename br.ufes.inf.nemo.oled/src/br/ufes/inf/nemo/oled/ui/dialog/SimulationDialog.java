@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
@@ -7,14 +8,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
-import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOption;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
@@ -39,7 +36,7 @@ public class SimulationDialog extends JDialog {
 	/**
 	 * Launch the Dialog.
 	 */
-	public static void open(OntoUML2AlloyOptions refOptions, OCL2AlloyOption oclOptions, AppFrame frame)
+	public static void open(OntoUML2AlloyOptions refOptions, TOCL2AlloyOption oclOptions, AppFrame frame)
 	{
 		try {
 			
@@ -61,7 +58,7 @@ public class SimulationDialog extends JDialog {
 	 * @param frame
 	 * @wbp.parser.constructor
 	 */
-	public SimulationDialog(OntoUML2AlloyOptions refOptions, OCL2AlloyOption oclOptions, AppFrame frame)
+	public SimulationDialog(OntoUML2AlloyOptions refOptions, TOCL2AlloyOption oclOptions, AppFrame frame)
 	{
 		this(frame);
 		this.frame = frame;		
@@ -75,11 +72,18 @@ public class SimulationDialog extends JDialog {
 	 * @param refOptions
 	 * @param oclOptions
 	 */
-	public void setOptionDialog (OntoUML2AlloyOptions refOptions, OCL2AlloyOption oclOptions)
+	public void setOptionDialog (OntoUML2AlloyOptions refOptions, TOCL2AlloyOption oclOptions)
 	{
 		modelSimulationPanel.setOntoUMLOptionsPane(refOptions,frame);				
 		constraintSimulationPanel.setOCLOptionPane(oclOptions,frame);
 
+		if (oclOptions.getConstraintList().size()>0) {
+			getContentPane().add(constraintSimulationPanel, BorderLayout.CENTER);
+			setSize(new Dimension(536, 530));
+		}else{
+			setSize(new Dimension(536, 258));
+		}		
+		
 		invalidate();
 	}
 	
@@ -93,7 +97,7 @@ public class SimulationDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SimulationDialog.class.getResource("/resources/icons/x16/cog.png")));
 		setTitle("Configuring Simulation");
-		setSize(new Dimension(876, 363));
+		setSize(new Dimension(536, 258));
 		
 		btnOk = new JButton("OK");	
 		btnOk.setPreferredSize(new Dimension(70, 25));
@@ -124,32 +128,11 @@ public class SimulationDialog extends JDialog {
 				
 		modelSimulationPanel = new ModelSimulationPanel();		
 		constraintSimulationPanel = new ConstraintSimulationPanel();
+		getContentPane().setLayout(new BorderLayout(5, 5));
 		
-		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(modelSimulationPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(constraintSimulationPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addComponent(btnpanel, GroupLayout.PREFERRED_SIZE, 822, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(modelSimulationPanel, GroupLayout.PREFERRED_SIZE, 260, GroupLayout.PREFERRED_SIZE)
-						.addComponent(constraintSimulationPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnpanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(45))
-		);
-		getContentPane().setLayout(groupLayout);		
+		getContentPane().add(modelSimulationPanel, BorderLayout.NORTH);
+		//getContentPane().add(constraintSimulationPanel, BorderLayout.CENTER);
+		getContentPane().add(btnpanel, BorderLayout.SOUTH);
 	}
 			
 	public void OkActionPerformed(ActionEvent event)
@@ -167,6 +150,7 @@ public class SimulationDialog extends JDialog {
 		oclOptions.setTransformationType(constraintSimulationPanel.getTransformationsTypesListSelected());
     	oclOptions.setCommandScope(constraintSimulationPanel.getScopesListSelected());    			
     	oclOptions.setBiwidth(constraintSimulationPanel.getBitWidthListSelected());
+    	oclOptions.setWorldScope(constraintSimulationPanel.getWorldScopeListSelected());
 		oclOptions.setConstraintList(constraintSimulationPanel.getConstraintListSelected());
     	
     	ProjectBrowser.setOCLOptionsFor(frame.getDiagramManager().getCurrentProject(), oclOptions);
