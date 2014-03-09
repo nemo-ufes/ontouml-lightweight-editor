@@ -7,7 +7,7 @@ import org.eclipse.ocl.ParserException;
 import org.eclipse.uml2.uml.Constraint;
 
 import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2Alloy;
-import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
+import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOption;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
 
 /**
@@ -32,7 +32,7 @@ public class OCL2AlloyTests {
     		
     		System.out.println("");
     		
-    		String result = OCL2Alloy.convertToAlloy(parser, new OCL2AlloyOptions(parser));
+    		String result = OCL2Alloy.convertToAlloy(parser, new OCL2AlloyOption(parser));
     	
     		System.out.println(result);
     		

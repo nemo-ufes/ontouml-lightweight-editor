@@ -59,12 +59,32 @@ public class MainMenu implements ActionListener {
 	public MainMenu(AppFrame frame) {
 		this.frame = frame;
 		menubar = new JMenuBar();
+		//File
 		createFileMenu();
+		//Edit
 		createEditMenu();
+		//Diagram
 		createDiagramMenu();
-		createViewMenu();		
+		//View
+		createViewMenu();
+		//Verification
+		createVerificationMenu();
+		//Simulation/Transformation/Tool
 		createTransformationMenu();
+		//Help
 		createHelpMenu();
+	}
+	
+	private void createVerificationMenu(){
+		JMenu projectMenu = new JMenu("Verification");
+		menubar.add(projectMenu);
+		
+		JMenuItem parseMenuItem = createMenuItem(projectMenu,"parseocl");
+		parseMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));		
+		
+		createMenuItem(projectMenu,"verify");
+		//JMenuItem verifyMenuItem = 
+		//verifyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 	}
 	
 	@SuppressWarnings("unused")

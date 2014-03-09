@@ -18,7 +18,7 @@ import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 /**
  * This class is the main class for parsing TOCL constraints over OntoUML models.
  * It uses a UML model in background to orchestrate the parsing.
- * 
+ *
  * @author John Guerson
  */
 
@@ -30,6 +30,7 @@ public class TOCLParser extends OCLParser{
             
     //TOCL
     public ArrayList<String> objectOperationParamList = new ArrayList<String>();
+    public ArrayList<String> constraintStereotypeList = new ArrayList<String>();
     
     /**
      * Constructor. 
@@ -139,6 +140,46 @@ public class TOCLParser extends OCLParser{
     	return result;
     }
     
+    public String processTempKeyword(String result)
+    {
+    	Pattern p = Pattern.compile("temp|inv|derive");
+		Matcher m = p.matcher(result);
+		int jump = 0;
+    	while (m.find()) 
+    	{ 
+    		int indexBegin = m.start();
+    		int indexEnd = m.end();
+    		
+    		if(indexBegin+(jump) < 0) indexBegin = 0;
+    		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
+    		    		
+    		if (result.substring(indexBegin+(jump),indexEnd+(jump)).equals("temp")){
+    			String left = result.substring(0,indexBegin+(jump))+"inv";
+        		String right = result.substring(indexEnd+(jump), result.length());
+        		result = left+right;
+        		jump  = jump -1;        		
+        		constraintStereotypeList.add("temp");        		
+    		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).equals("inv")){    			
+    			constraintStereotypeList.add("inv");
+    		}else{
+    			constraintStereotypeList.add("derive");
+    		}    		
+    	}
+    	return result;    	
+    }
+
+    public ArrayList<Integer> getTemporalConstraintsIndexes()
+    {
+    	ArrayList<Integer> indexes = new ArrayList<Integer>();
+    	int i=0;
+    	for(String stereo: constraintStereotypeList)
+    	{
+    		if(stereo=="temp") indexes.add(i);
+    		i++;
+    	}
+    	return indexes;
+    }
+    
 	private String processTemporalOCL(String oclTemporalContent)
     {
 		String result = new String();
@@ -159,6 +200,8 @@ public class TOCLParser extends OCLParser{
     	// navigations such as roleName[w] will become roleName(w)
 	    result = result.replaceAll("\\[","(");
 	    result = result.replaceAll("\\]",")");
+	    
+	    result = processTempKeyword(result);
 	    
     	return result;
     }

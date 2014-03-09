@@ -66,7 +66,6 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
-import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.ElementType;
@@ -123,6 +122,7 @@ import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
 import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui.GlossaryGeneratorUI;
 import br.ufes.inf.nemo.tocl.parser.TOCLParser;
+import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 import edu.mit.csail.sdg.alloy4.ConstMap;
 import edu.mit.csail.sdg.alloy4compiler.ast.Module;
 import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
@@ -1611,8 +1611,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void parseOCL(boolean showSuccesfullyMessage)
 	{
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());		
-		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }		
+		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }		
 		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
 
 		try {
@@ -1626,12 +1628,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			oclmodel.getParser().parseTemporalOCL(frame.getInfoManager().getConstraints());
 
 			// set options from the parser
-			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new OCL2AlloyOptions(oclmodel.getOCLParser()));
+			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new TOCL2AlloyOption(oclmodel.getOCLParser()));
 
 			// show Message
 			String msg =  "Constraints are syntactically correct.\n";
 			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing temporal OCL",msg);
-
+			
 		}catch(SemanticException e2){
 			frame.showErrorMessageDialog("TOCL Semantic Error",  "TOCL Parser: "+e2.getLocalizedMessage());    		
 			e2.printStackTrace();	
@@ -1643,7 +1645,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}catch(Exception e4){
 			frame.showErrorMessageDialog("Unexpected Error", e4.getLocalizedMessage());			
 			e4.printStackTrace();
-		}		
+		}
+		
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
 	/**
@@ -1736,7 +1740,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
 		OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
-		OCL2AlloyOptions oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
+		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
 		AlloySpecification alloySpec = ProjectBrowser.getAlloySpecFor(getCurrentProject());
 
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }

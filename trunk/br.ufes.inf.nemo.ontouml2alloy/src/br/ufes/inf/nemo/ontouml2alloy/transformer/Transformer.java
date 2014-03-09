@@ -402,7 +402,7 @@ public class Transformer {
 		for(RefOntoUML.Class c: ontoparser.getAllInstances(RefOntoUML.Class.class))		
 		{
 			// fact weak_supplementation_constraint { all w: World | all x: w.<RigidSortalName> | # ( x.(w.meronymicName1)+ x.(w.meronymicName2) + ...) >= 2 }			 
-			if ((c instanceof RigidSortalClass) && (options.weakSupplementationAxiom))
+			if ((c instanceof RigidSortalClass) && (options.weakSupplementation))
 			{				
 				FactDeclaration fact = WeakSupplementationAxiomRule.createFactDeclaration(ontoparser, factory, c);				
 				if (fact!=null) {
@@ -412,7 +412,7 @@ public class Transformer {
 			}			
 			
 			// fact relator_constraint { all w: World | all x: w.<RelatorName> | # ( x.(w.<associationName1>)+ x.(w.<associationName2>) + ...) >= 2 }
-			if ((c instanceof Relator) && (options.relatorAxiom))
+			if ((c instanceof Relator) && (options.relatorConstraint))
 			{			
 				FactDeclaration fact = RelatorAxiomRule.createFactDeclaration(ontoparser, factory, (Relator)c);			
 				if (fact!= null) {

@@ -17,7 +17,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2AlloyOptions;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.model.InferenceList;
@@ -28,6 +27,7 @@ import br.ufes.inf.nemo.oled.ui.OntoUMLElement;
 import br.ufes.inf.nemo.oled.ui.ProjectTree;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
+import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 
 public class ProjectBrowser extends JPanel{
 
@@ -53,10 +53,9 @@ public class ProjectBrowser extends JPanel{
 	private AntiPatternList antipatterns;	
 	private InferenceList inferences;
 	private OntoUML2AlloyOptions refOptions;
-	private OCL2AlloyOptions oclOptions;	
+	private TOCL2AlloyOption oclOptions;	
 //	private ModellingAssistant assistant;
-	
-			
+				
 	public void setProject(UmlProject project)
 	{
 		this.project = project;
@@ -72,7 +71,7 @@ public class ProjectBrowser extends JPanel{
 		alloySpec = new AlloySpecification(project.getTempDir()+File.separator+name.toLowerCase()+".als");
 		
 		oclmodel = new OCLDocument();
-		oclOptions = new OCL2AlloyOptions();
+		oclOptions = new TOCL2AlloyOption();
 		refOptions = new OntoUML2AlloyOptions();
 		antipatterns = new AntiPatternList();
 		inferences = new InferenceList();
@@ -188,12 +187,12 @@ public class ProjectBrowser extends JPanel{
 		return ProjectBrowser.getProjectBrowserFor(frame,project).oclmodel;
 	}
 	
-	public static void setOCLOptionsFor(UmlProject project, OCL2AlloyOptions oclOptions)
+	public static void setOCLOptionsFor(UmlProject project, TOCL2AlloyOption oclOptions)
 	{
 		ProjectBrowser.getProjectBrowserFor(frame,project).oclOptions = oclOptions;
 	}
 	
-	public static OCL2AlloyOptions getOCLOptionsFor(UmlProject project)
+	public static TOCL2AlloyOption getOCLOptionsFor(UmlProject project)
 	{
 		return ProjectBrowser.getProjectBrowserFor(frame,project).oclOptions;
 	}
