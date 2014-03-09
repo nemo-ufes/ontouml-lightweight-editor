@@ -45,6 +45,11 @@ public class ModelSimulationPanel extends JPanel {
 	private JLabel lblChooseWhichAxioms;
 
 	private JButton btndefault;
+	private JButton relatorInfoButton;
+	private JButton identityInfoButton;
+	private JButton AntiRigidInfoButton;
+
+	private JButton weakInfoButton;
 	
 	/**
 	 * Creates a View from OntoUML Options Model and the main frame application.
@@ -107,15 +112,13 @@ public class ModelSimulationPanel extends JPanel {
 	{
 		setBorder(BorderFactory.createTitledBorder("Model"));		
 		setBackground(UIManager.getColor("Panel.background"));
-		setPreferredSize(new Dimension(349, 273));
+		setPreferredSize(new Dimension(500, 177));
 		setSize(new Dimension(186, 228));
 		
 		JPanel panel = new JPanel();		
 		panel.setBorder(BorderFactory.createTitledBorder(""));
 		
-		lblChooseWhichAxioms = new JLabel("Choose which axioms do you want to enforce in simulation. ");
-		
-		JLabel lblTheCheckedOnes = new JLabel("The checked ones are recommented by default.");
+		lblChooseWhichAxioms = new JLabel("<html>Choose which axioms do you want to enforce in simulation.  <br>\r\nThe checked ones are recommented by default.</html>\r\n");
 		
 		btnEnableall = new JButton("Enable All");
 		btnEnableall.setPreferredSize(new Dimension(100, 25));
@@ -145,7 +148,7 @@ public class ModelSimulationPanel extends JPanel {
 			}
 		});
 		
-		btndefault = new JButton("(Default)");
+		btndefault = new JButton("Default");
 		btndefault.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
@@ -161,52 +164,47 @@ public class ModelSimulationPanel extends JPanel {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(12)
-					.addComponent(lblChooseWhichAxioms, GroupLayout.PREFERRED_SIZE, 315, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblTheCheckedOnes, GroupLayout.PREFERRED_SIZE, 317, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(50)
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(121)
 							.addComponent(btndefault)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnEnableall, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnDisableall, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(41, Short.MAX_VALUE))
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addGap(12)
+							.addComponent(lblChooseWhichAxioms, GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 468, Short.MAX_VALUE)))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(16)
+					.addGap(4)
 					.addComponent(lblChooseWhichAxioms)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblTheCheckedOnes, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+					.addGap(13)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnDisableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btndefault, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnEnableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btndefault, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
-					.addGap(26))
+						.addComponent(btnDisableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(123))
 		);
 
 		cbxRelator = new JCheckBox("Relator constraint");		
-		cbxRelator.setPreferredSize(new Dimension(180, 20));
-		cbxRelator.setToolTipText("<html>\r\nMark this option if in your model all relators mediate at least two distinct objects. <br>\r\nIf this is not true, leave this option unchecked. </html>\r\n\r\n");
+		cbxRelator.setPreferredSize(new Dimension(150, 20));
+		cbxRelator.setToolTipText("");
 				
 		cbxWeak = new JCheckBox("Weak supplementation");
-		cbxWeak.setPreferredSize(new Dimension(180, 20));
-		cbxWeak.setToolTipText("<html>\r\nMark this option if in your model all wholes have two or more parts. <br>\r\nIf this is not true, leave this option unchecked. </html>");
+		cbxWeak.setPreferredSize(new Dimension(150, 20));
+		cbxWeak.setToolTipText("");
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		lblStateWeak = new JButton("");
+		lblStateWeak = new JButton("");	
 		lblStateWeak.setHorizontalAlignment(SwingConstants.CENTER);		
 		lblStateWeak.setPreferredSize(new Dimension(30, 20));
 		lblStateWeak.setFocusable(false);
@@ -214,6 +212,17 @@ public class ModelSimulationPanel extends JPanel {
 		lblStateWeak.setContentAreaFilled(false);
 		lblStateWeak.setBorderPainted(false);
 		panel.add(lblStateWeak);
+		
+		weakInfoButton = new JButton("");
+		weakInfoButton.setToolTipText("<html>\r\nMark this option if in your model all wholes have two or more parts. <br>\r\nIf this is not true, leave this option unchecked. </html>");
+		weakInfoButton.setIcon(new ImageIcon(ModelSimulationPanel.class.getResource("/resources/icons/x16/help.png")));
+		weakInfoButton.setRolloverIcon(new ImageIcon(ModelSimulationPanel.class.getResource("/resources/icons/x16/help-rollover.png")));
+		weakInfoButton.setPreferredSize(new Dimension(30, 20));
+		weakInfoButton.setFocusable(false);
+		weakInfoButton.setOpaque(false);
+		weakInfoButton.setContentAreaFilled(false);
+		weakInfoButton.setBorderPainted(false);
+		panel.add(weakInfoButton);
 		panel.add(cbxWeak);
 		
 		lblSateRelator = new JButton("");		
@@ -224,6 +233,17 @@ public class ModelSimulationPanel extends JPanel {
 		lblSateRelator.setBorderPainted(false);
 		lblSateRelator.setFocusable(false);
 		panel.add(lblSateRelator);
+		
+		relatorInfoButton = new JButton("");
+		relatorInfoButton.setToolTipText("<html>\r\nMark this option if in your model all relators mediate at least two distinct objects. <br>\r\nIf this is not true, leave this option unchecked. </html>\r\n\r\n");
+		relatorInfoButton.setIcon(new ImageIcon(ModelSimulationPanel.class.getResource("/resources/icons/x16/help.png")));
+		relatorInfoButton.setRolloverIcon(new ImageIcon(ModelSimulationPanel.class.getResource("/resources/icons/x16/help-rollover.png")));
+		relatorInfoButton.setPreferredSize(new Dimension(30, 20));
+		relatorInfoButton.setFocusable(false);
+		relatorInfoButton.setOpaque(false);
+		relatorInfoButton.setContentAreaFilled(false);
+		relatorInfoButton.setBorderPainted(false);
+		panel.add(relatorInfoButton);
 		panel.add(cbxRelator);
 		
 		lblStateIdentity = new JButton("");		
@@ -234,10 +254,21 @@ public class ModelSimulationPanel extends JPanel {
 		lblStateIdentity.setFocusable(false);
 		lblStateIdentity.setContentAreaFilled(false);
 		lblStateIdentity.setBorderPainted(false);
+		
+		identityInfoButton = new JButton("");
+		identityInfoButton.setToolTipText("<html>\r\nMark this option if you want to visualize objects that does not have identity principle.<br>\r\nIf not, leave this option unchecked. </html>");
+		identityInfoButton.setIcon(new ImageIcon(ModelSimulationPanel.class.getResource("/resources/icons/x16/help.png")));
+		identityInfoButton.setRolloverIcon(new ImageIcon(ModelSimulationPanel.class.getResource("/resources/icons/x16/help-rollover.png")));
+		identityInfoButton.setFocusable(false);
+		identityInfoButton.setOpaque(false);
+		identityInfoButton.setContentAreaFilled(false);
+		identityInfoButton.setBorderPainted(false);
+		identityInfoButton.setPreferredSize(new Dimension(30, 20));
+		panel.add(identityInfoButton);
 		cbxIdentity = new JCheckBox("Identity principle");		
 		panel.add(cbxIdentity);
-		cbxIdentity.setToolTipText("<html>\r\nMark this option if you want to visualize objects that does not have identity principle.<br>\r\nIf not, leave this option unchecked. </html>");
-		cbxIdentity.setPreferredSize(new Dimension(180, 20));
+		cbxIdentity.setToolTipText("");
+		cbxIdentity.setPreferredSize(new Dimension(150, 20));
 		
 		lblStateAntirigidity = new JButton("");		
 		panel.add(lblStateAntirigidity);
@@ -248,11 +279,22 @@ public class ModelSimulationPanel extends JPanel {
 		lblStateAntirigidity.setContentAreaFilled(false);
 		lblStateAntirigidity.setBorderPainted(false);
 		lblStateAntirigidity.setFocusable(false);
+		
+		AntiRigidInfoButton = new JButton("");
+		AntiRigidInfoButton.setToolTipText("<html>\r\nMark this option if you want to enforce the visualization of anti-rigid objects.<br>\r\nIf not, leave this option unchecked. </html>\r\n");
+		AntiRigidInfoButton.setIcon(new ImageIcon(ModelSimulationPanel.class.getResource("/resources/icons/x16/help.png")));
+		AntiRigidInfoButton.setFocusable(false);
+		AntiRigidInfoButton.setOpaque(false);
+		AntiRigidInfoButton.setRolloverIcon(new ImageIcon(ModelSimulationPanel.class.getResource("/resources/icons/x16/help-rollover.png")));
+		AntiRigidInfoButton.setContentAreaFilled(false);
+		AntiRigidInfoButton.setBorderPainted(false);
+		AntiRigidInfoButton.setPreferredSize(new Dimension(30, 20));
+		panel.add(AntiRigidInfoButton);
 		cbxAntirigidity = new JCheckBox("Antirigidity visualization");		
 		panel.add(cbxAntirigidity);
-		cbxAntirigidity.setToolTipText("<html>\r\nMark this option if you want to enforce the visualization of anti-rigid objects.<br>\r\nIf not, leave this option unchecked. </html>\r\n");
+		cbxAntirigidity.setToolTipText("");
 		cbxAntirigidity.setFocusable(false);
-		cbxAntirigidity.setPreferredSize(new Dimension(180, 20));
+		cbxAntirigidity.setPreferredSize(new Dimension(150, 20));
 		setLayout(groupLayout);
 	}
 	
