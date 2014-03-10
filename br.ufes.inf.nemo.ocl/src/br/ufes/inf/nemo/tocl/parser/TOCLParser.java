@@ -142,7 +142,7 @@ public class TOCLParser extends OCLParser{
     
     public String processTempKeyword(String result)
     {
-    	Pattern p = Pattern.compile("temp|inv|derive");
+    	Pattern p = Pattern.compile("([^\\w])(temp|inv|derive)([^\\w])");
 		Matcher m = p.matcher(result);
 		int jump = 0;
     	while (m.find()) 
@@ -153,17 +153,19 @@ public class TOCLParser extends OCLParser{
     		if(indexBegin+(jump) < 0) indexBegin = 0;
     		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
     		    		
-    		if (result.substring(indexBegin+(jump),indexEnd+(jump)).equals("temp")){
-    			String left = result.substring(0,indexBegin+(jump))+"inv";
+    		if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("temp")){
+    			String left = result.substring(0,indexBegin+(jump));
+    			String middle = result.substring(indexBegin+(jump),indexEnd+(jump)).replace("temp","inv");
         		String right = result.substring(indexEnd+(jump), result.length());
-        		result = left+right;
-        		jump  = jump -1;        		
+        		result = left+middle+right;    			
+        		jump  = jump -1;
         		constraintStereotypeList.add("temp");        		
-    		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).equals("inv")){    			
+    		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("inv")){    			
     			constraintStereotypeList.add("inv");
-    		}else{
+    		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("derive")){
     			constraintStereotypeList.add("derive");
     		}    		
+    	
     	}
     	return result;    	
     }

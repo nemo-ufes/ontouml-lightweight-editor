@@ -127,7 +127,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 					Derivation d = ProjectBrowser.getParserFor(project).getDerivation((MaterialAssociation)r);
 					if(d!=null) {
 						elemDep2List.add(d);
-						diagramElemDep2List.add(ModelHelper.getDiagramElement(d));
+						diagramElemDep2List.add(ModelHelper.getDiagramElement(d,(DiagramEditor)notification));
 					}
 				}
 			}			

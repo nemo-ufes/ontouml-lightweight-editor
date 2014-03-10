@@ -722,7 +722,7 @@ public class ProjectTree extends CheckboxTree {
 
             		// open class 
             		if (element instanceof RefOntoUML.Class){
-            			DiagramElement diagramElement = ModelHelper.getDiagramElement(element);
+            			DiagramElement diagramElement = ModelHelper.getDiagramElement(element, frame.getDiagramManager().getCurrentDiagramEditor());
             			ClassDialog dialog = new ClassDialog(
             				(JFrame)ProjectTree.this.frame,
             				ProjectTree.this.frame.getDiagramManager(),
@@ -738,7 +738,7 @@ public class ProjectTree extends CheckboxTree {
             		else if (element instanceof RefOntoUML.Property){
             			Property p = (Property)element;
             			if (p.getAssociation()!=null){
-            				DiagramElement diagramElement = ModelHelper.getDiagramElement(p.getAssociation());
+            				DiagramElement diagramElement = ModelHelper.getDiagramElement(p.getAssociation(),frame.getDiagramManager().getCurrentDiagramEditor());
             				AssociationDialog dialog = new AssociationDialog(
         						(JFrame)ProjectTree.this.frame,
 	            				ProjectTree.this.frame.getDiagramManager(),
@@ -751,7 +751,7 @@ public class ProjectTree extends CheckboxTree {
 	            			if(p.getAssociation().getMemberEnd().get(0).equals(p)) dialog.selectTab(1);
 	            			else dialog.selectTab(2);
             			}else{
-            				DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)p.eContainer());
+            				DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)p.eContainer(),frame.getDiagramManager().getCurrentDiagramEditor());
 	            			ClassDialog dialog = new ClassDialog(
 	            				(JFrame)ProjectTree.this.frame,
 	            				ProjectTree.this.frame.getDiagramManager(),
@@ -767,7 +767,7 @@ public class ProjectTree extends CheckboxTree {
             		
             		// open associations
             		else if (element instanceof RefOntoUML.Association){
-            			DiagramElement diagramElement = ModelHelper.getDiagramElement(element);
+            			DiagramElement diagramElement = ModelHelper.getDiagramElement(element,frame.getDiagramManager().getCurrentDiagramEditor());
         				AssociationDialog dialog = new AssociationDialog(
     						(JFrame)ProjectTree.this.frame,
             				ProjectTree.this.frame.getDiagramManager(),
@@ -783,7 +783,7 @@ public class ProjectTree extends CheckboxTree {
             		else if (element instanceof RefOntoUML.Comment)
             		{
             			if (element.eContainer() instanceof RefOntoUML.Class){
-            				DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)element.eContainer());
+            				DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)element.eContainer(),frame.getDiagramManager().getCurrentDiagramEditor());
 	            			ClassDialog dialog = new ClassDialog(
 	            				(JFrame)ProjectTree.this.frame,
 	            				ProjectTree.this.frame.getDiagramManager(),
@@ -796,7 +796,7 @@ public class ProjectTree extends CheckboxTree {
 	            			if (element instanceof RefOntoUML.Comment) dialog.selectTab(1);
             			}
             			if (element.eContainer() instanceof RefOntoUML.Association){
-            				DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)element.eContainer());
+            				DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)element.eContainer(),frame.getDiagramManager().getCurrentDiagramEditor());
             				AssociationDialog dialog = new AssociationDialog(
         						(JFrame)ProjectTree.this.frame,
                 				ProjectTree.this.frame.getDiagramManager(),
@@ -814,7 +814,7 @@ public class ProjectTree extends CheckboxTree {
             			RefOntoUML.Element context = ((RefOntoUML.Constraintx)element).getConstrainedElement().get(0);
             			if (context instanceof RefOntoUML.Class)
             			{
-            				DiagramElement diagramElement = ModelHelper.getDiagramElement(context);
+            				DiagramElement diagramElement = ModelHelper.getDiagramElement(context,frame.getDiagramManager().getCurrentDiagramEditor());
 	            			ClassDialog dialog = new ClassDialog(
 	            				(JFrame)ProjectTree.this.frame,
 	            				ProjectTree.this.frame.getDiagramManager(),
@@ -828,7 +828,7 @@ public class ProjectTree extends CheckboxTree {
             			}
             		}else if (element instanceof RefOntoUML.Generalization)
             		{
-            			DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)element);
+            			DiagramElement diagramElement = ModelHelper.getDiagramElement((RefOntoUML.Element)element,frame.getDiagramManager().getCurrentDiagramEditor());
             			GeneralizationDialog dialog = new GeneralizationDialog(
             				(JFrame)ProjectTree.this.frame,
             				ProjectTree.this.frame.getDiagramManager(),

@@ -362,10 +362,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if(value!=null){
 				((NamedElement)element).setName(value);
 				ArrayList<DiagramEditor> editors = ProjectBrowser.frame.getDiagramManager().getDiagramEditors(element);
-				DiagramElement dElem = ModelHelper.getDiagramElement(element);
-				if (dElem instanceof ClassElement){
-					SetLabelTextCommand cmd = new SetLabelTextCommand((DiagramNotification)editors.get(0),((ClassElement)dElem).getMainLabel(),value,ProjectBrowser.frame.getDiagramManager().getCurrentProject());
-					cmd.run();
+				ArrayList<DiagramElement> dElemList = ModelHelper.getDiagramElements(element);
+				for(DiagramElement dElem: dElemList){
+					if (dElem instanceof ClassElement){
+						SetLabelTextCommand cmd = new SetLabelTextCommand((DiagramNotification)editors.get(0),((ClassElement)dElem).getMainLabel(),value,ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+						cmd.run();
+					}
 				}
 				frame.getDiagramManager().updateOLEDFromModification(element, false);
 			}
@@ -442,18 +444,19 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 	/** Change class stereotype */ 
 	public void changeClassStereotype(Type type, String stereo) 
-	{		
-   		DiagramElement diagramElem = ModelHelper.getDiagramElement(type);
+	{   		
    		OutcomeFixer fixer = new OutcomeFixer(ProjectBrowser.getParserFor(currentProject).getModel());
    		Fix fix = fixer.changeClassStereotypeTo(type, fixer.getClassStereotype(stereo));
-   		
-   		if (diagramElem !=null && diagramElem instanceof ClassElement) {
-   			double x = ((ClassElement)diagramElem).getAbsoluteX1();
-   			double y = ((ClassElement)diagramElem).getAbsoluteY1();   	   		
-   	   		fix.setAddedPosition(fix.getAdded().get(0),x,y);
+   	
+   		ArrayList<DiagramElement> diagramElemList = ModelHelper.getDiagramElements(type);
+   		for(DiagramElement diagramElem: diagramElemList){
+	   		if (diagramElem !=null && diagramElem instanceof ClassElement) {
+	   			double x = ((ClassElement)diagramElem).getAbsoluteX1();
+	   			double y = ((ClassElement)diagramElem).getAbsoluteY1();   	   		
+	   	   		fix.setAddedPosition(fix.getAdded().get(0),x,y);
+	   	   		updateOLED(fix);
+	   		}   		
    		}   		
-   		
-   		updateOLED(fix);
 	}
 	
 	/** Change relation stereotype */ 
@@ -551,12 +554,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{		
 		if (d!=null && !d.getDiagram().containsChild(element)) return;
 		if (d!=null) {
-			DiagramElement diagramElem = ModelHelper.getDiagramElement(element);
-			if(diagramElem!=null){				
-				ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-				list.add(diagramElem);
-				d.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
-			}			
+			ArrayList<DiagramElement> diagramElemList = ModelHelper.getDiagramElements(element);
+			for(DiagramElement diagramElem: diagramElemList){
+				if(diagramElem!=null){				
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					list.add(diagramElem);
+					d.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}			
+			}
 		}		
 	}
 
@@ -1377,19 +1382,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if(d instanceof StructureDiagram)
 			{
 				StructureDiagram diagram = (StructureDiagram)d;
-				DiagramElement elem=null;
-				if(element instanceof Property) elem = ModelHelper.getDiagramElement((RefOntoUML.Element)element.eContainer());
-				else elem = ModelHelper.getDiagramElement(element);
-				if (diagram.containsChild(elem)) {
-					DiagramEditor editor = getDiagramEditor(diagram);
-					if (editor==null){
-						editor = new DiagramEditor(frame, this, diagram);
-						editor.addEditorStateListener(this);
-						editor.addSelectionListener(this);
-						editor.addAppCommandListener(editorDispatcher);						
-					}
-					list.add(editor);
-				}
+				ArrayList<DiagramElement> elemList=null;
+				if(element instanceof Property) elemList = ModelHelper.getDiagramElements((RefOntoUML.Element)element.eContainer());
+				else elemList = ModelHelper.getDiagramElements(element);
+				for(DiagramElement elem: elemList){
+					if (diagram.containsChild(elem)) {
+						DiagramEditor editor = getDiagramEditor(diagram);
+						if (editor==null){
+							editor = new DiagramEditor(frame, this, diagram);
+							editor.addEditorStateListener(this);
+							editor.addSelectionListener(this);
+							editor.addAppCommandListener(editorDispatcher);						
+						}
+						list.add(editor);
+					}	
+				}				
 			}
 		}
 		return list;

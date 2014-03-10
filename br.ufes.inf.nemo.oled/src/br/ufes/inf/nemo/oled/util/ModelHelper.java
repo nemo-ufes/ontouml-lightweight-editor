@@ -51,6 +51,7 @@ import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.impl.RefOntoUMLPackageImpl;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
@@ -65,7 +66,7 @@ public class ModelHelper {
 	private static AdapterFactoryEditingDomain editingDomain; // TODO Cleanup
 	private static boolean initialized = false;
 	
-	private static HashMap<Element,DiagramElement> mappings;
+	private static HashMap<Element,ArrayList<DiagramElement>> mappings;
 
 	private ModelHelper() {
 	}
@@ -107,7 +108,7 @@ public class ModelHelper {
 		
 		//validator2 = RefOntoUMLValidator.INSTANCE;
 		
-		mappings = new HashMap<>();
+		mappings = new HashMap<Element, ArrayList<DiagramElement>>();
 		
 		initialized = true;
 	}
@@ -115,19 +116,20 @@ public class ModelHelper {
 	//Adds mapping from RefOntoUMLElement to DiagramElement (metamodel->concretemodel)
 	//Returns true if the element was successfully added;
 	public static boolean addMapping (Element element, DiagramElement diagramElement){
-		DiagramElement result;
+		ArrayList<DiagramElement> result;
 		if (!initialized) initializeHelper();		
 		if (element==null || diagramElement==null) return false;		
 		if(mappings.get(element)==null){
-			result = mappings.put(element, diagramElement);
+			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+			list.add(diagramElement);
+			result = mappings.put(element, list);
 		}else{
-			if(!mappings.get(element).equals(diagramElement)){
-				System.err.println("Trying to add a new diagram element to the ModelHelper.Map but there is already a diagram element there!");
-				System.err.println("Existent entry: "+mappings.get(element));
-				System.err.println("New entry: "+diagramElement);
-				System.err.println("==========================================");
+			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+			list.add(diagramElement);
+			if(!mappings.get(element).contains(diagramElement)){
+				mappings.get(element).add(diagramElement);
 			}
-			result = null;			
+			result = list;			
 		}
 		if (result!=null) return true;
 		else return false;
@@ -154,65 +156,90 @@ public class ModelHelper {
 		return succeeds;
 	}
 	
-	public static boolean removeMapping(Element element)
-	{
-		DiagramElement result;
-		if (!initialized) initializeHelper();		
-		if (element==null) return false;				
-		result = mappings.remove(element);		
-		if (result!=null) return true;
-		else return false;
-	}
-	
+//	public static boolean removeMapping(Element element)
+//	{
+//		ArrayList<DiagramElement> result;
+//		if (!initialized) initializeHelper();		
+//		if (element==null) return false;				
+//		result = mappings.remove(element);		
+//		if (result!=null) return true;
+//		else return false;
+//	}
+//	
 	public static boolean removeMapping(DiagramElement element)
 	{
-		DiagramElement result;		
+		boolean result = false;
 		if (!initialized) initializeHelper();		
 		if (element==null) return false;
-		Element elem = getElement(element);
-		if (elem!=null) {
-			result = mappings.remove(elem);
-			if (result!=null) return true;
+		if(mappings.get(element)!=null){
+			result = mappings.get(element).remove(element);
+			if (mappings.get(element).size()==0){
+				mappings.remove(element);
+			}
 		}		
-		return false;
+		return result;
 	}
 	
-	public static DiagramElement getDiagramElement (Element element){
+	public static DiagramElement getDiagramElement (Element element, DiagramEditor editor){
 		
 		if (!initialized)
 			initializeHelper();
 		
-		return mappings.get(element);
+		ArrayList<DiagramElement> result = new ArrayList<DiagramElement>();
+		
+		if(mappings.get(element)!=null && mappings.get(element).size()>0)
+		{
+			for(DiagramElement de: mappings.get(element)){
+				if (editor.getDiagram().containsChild(de)) result.add(de);
+			}			
+		}
+		if(result.size()>1){
+			System.err.println("This element has two Diagram Element counterparts in a same diagram editor!");
+			return null;
+		}else if(result.size()==0){
+			return null;
+		}else{
+			return result.get(0);
+		}
+	}
+	
+	public static ArrayList<DiagramElement> getDiagramElements (Element element){
+		
+		if (!initialized)
+			initializeHelper();
+		
+		if(mappings.get(element)!=null && mappings.get(element).size()>0)
+			return mappings.get(element);
+		else
+			return null;
 	}
 
-	public static HashMap<Element,DiagramElement> getMapping()
+	public static HashMap<Element,ArrayList<DiagramElement>> getMapping()
 	{
 		return mappings;
 	}
 	
     public static RefOntoUML.Element getElement(DiagramElement value) 
     {    	
-        for (Entry<RefOntoUML.Element,DiagramElement> entry : mappings.entrySet()) 
+        for (Entry<RefOntoUML.Element,ArrayList<DiagramElement>> entry : mappings.entrySet()) 
         {
-            if (value.equals(entry.getValue())) 
+            if (entry.getValue().contains(value)) 
             {
                 return entry.getKey();
             }
         }
         return null;
-    }
-	    
+    }	    
 	   
 	public static Collection<DiagramElement> getDiagramElements(Collection<Element> elements)
 	{
 		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();		
 		for(Element elem: elements){
-			DiagramElement dElem = mappings.get(elem);
-			if(dElem!=null) list.add(dElem);
+			ArrayList<DiagramElement> dElem =mappings.get(elem);
+			if(dElem!=null) list.addAll(dElem);
 		}
 		return list;
-	}
-	
+	}	
  
 	public static Collection<Element> getElements(Collection<DiagramElement> diagramElements)
 	{
@@ -226,13 +253,17 @@ public class ModelHelper {
 	
 	public static Collection<DiagramElement> getAllDiagramElements()
 	{
-		return mappings.values();
+		ArrayList<DiagramElement> result = new ArrayList<DiagramElement>();	
+		for(ArrayList<DiagramElement> l: mappings.values()){
+			result.addAll(l);
+		}
+		return result;
 	}
 	
 	public static String getAllDiagramElementsString()
 	{
 		String result = new String("Diagram Elements:");
-		for(DiagramElement elem: mappings.values()){
+		for(DiagramElement elem: getAllDiagramElements()){
 			result += elem.toString()+"\n";
 		}
 		return result;
