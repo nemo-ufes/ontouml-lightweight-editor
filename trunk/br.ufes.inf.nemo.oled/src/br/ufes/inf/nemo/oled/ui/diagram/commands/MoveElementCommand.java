@@ -81,7 +81,7 @@ public class MoveElementCommand extends BaseDiagramCommand {
 		for(DiagramElement elem: elements){			
 			if (elem instanceof Node){
 				Node node = (Node)elem;
-				for(Connection c: node.getConnections()){	
+				for(Connection c: node.getConnections()){					
 					resetRelatedConnectionPoints((DiagramEditor)notification, c);
 				}
 			}
