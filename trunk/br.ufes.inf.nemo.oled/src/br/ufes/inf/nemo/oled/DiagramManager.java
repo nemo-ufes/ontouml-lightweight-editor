@@ -576,7 +576,19 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}			
 			if (element instanceof RefOntoUML.Relationship) {
 				RefOntoUML.Relationship rel = (RefOntoUML.Relationship)element;
-				d.dragRelation(rel,rel.eContainer());
+				if (rel instanceof Association){
+					Type src = ((Association)rel).getMemberEnd().get(0).getType();
+					Type tgt = ((Association)rel).getMemberEnd().get(1).getType();				
+					if (d.getDiagram().containsChild(src) && d.getDiagram().containsChild(tgt)){				
+						d.dragRelation(rel,rel.eContainer());
+					}					
+				}else if (rel instanceof Generalization){
+					Generalization gen = (Generalization)rel;
+					if (d.getDiagram().containsChild(gen.getGeneral()) && d.getDiagram().containsChild(gen.getSpecific()))
+					{	
+						d.dragRelation(gen,gen.eContainer());
+					}
+				}
 			}
 		}	
 	}
@@ -692,20 +704,27 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (fix==null) return;
 		for(Object obj: fix.getAdded()) 
 		{
-			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType) updateOLEDFromInclusion((RefOntoUML.Element)obj);
-			// add at specified position...
-			if (fix.getAddedPosition(obj).x!=-1 && fix.getAddedPosition(obj).y!=-1) 
-			{
-				AddNodeCommand cmd = new AddNodeCommand((DiagramNotification)getCurrentDiagramEditor(),getCurrentDiagramEditor().getDiagram(),(RefOntoUML.Element)obj,
-					fix.getAddedPosition(obj).x,fix.getAddedPosition(obj).y,
-					getCurrentProject(),(RefOntoUML.Element)((EObject)obj).eContainer());		
-				cmd.run();
+			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType) {
+				updateOLEDFromInclusion((RefOntoUML.Element)obj);
+				// add at specified position...
+				if (fix.getAddedPosition(obj).x!=-1 && fix.getAddedPosition(obj).y!=-1) 
+				{
+					AddNodeCommand cmd = new AddNodeCommand((DiagramNotification)getCurrentDiagramEditor(),getCurrentDiagramEditor().getDiagram(),(RefOntoUML.Element)obj,
+						fix.getAddedPosition(obj).x,fix.getAddedPosition(obj).y,
+						getCurrentProject(),(RefOntoUML.Element)((EObject)obj).eContainer());		
+					cmd.run();
+				}
 			}			
 		}
 		for(Object obj: fix.getAdded()) 
 		{
-			if (obj instanceof RefOntoUML.Relationship) updateOLEDFromInclusion((RefOntoUML.Element)obj);
-			moveToDiagram((RefOntoUML.Element)obj, getCurrentDiagramEditor());
+			if (obj instanceof RefOntoUML.Relationship) {
+				updateOLEDFromInclusion((RefOntoUML.Element)obj);
+				moveToDiagram((RefOntoUML.Element)obj, getCurrentDiagramEditor());
+			}
+			if (obj instanceof RefOntoUML.GeneralizationSet){
+				updateOLEDFromInclusion((RefOntoUML.Element)obj);
+			}
 		}				
 		for(Object obj: fix.getModified())
 		{
@@ -719,6 +738,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			{
 				refreshDiagramElement((Classifier)obj);
 			}
+		}
+		for(Object obj: fix.getDeleted()) 
+		{
+			if (obj instanceof RefOntoUML.GeneralizationSet)
+				ProjectBrowser.frame.getDiagramManager().deleteUnsafely((RefOntoUML.Element)obj);			
 		}
 		for(Object obj: fix.getDeleted()) 
 		{

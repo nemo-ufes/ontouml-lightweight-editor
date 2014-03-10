@@ -118,7 +118,7 @@ public class InfoManager extends JTabbedPane {
 		addTab(" Output ",outputPane);	
 		setIconAt(indexOfComponent(outputPane),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/monitor.png")));
 		
-		addTab(" (Temporal) OCL Editor ",ocleditor);	
+		addTab(" Temporal OCL Editor ",ocleditor);	
 		setIconAt(indexOfComponent(ocleditor),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/text-editor.png")));
 		
 		setTabPlacement(JTabbedPane.BOTTOM);				
