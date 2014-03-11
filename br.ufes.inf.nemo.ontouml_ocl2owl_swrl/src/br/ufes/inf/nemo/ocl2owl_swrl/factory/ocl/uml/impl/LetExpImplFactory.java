@@ -46,6 +46,11 @@ public class LetExpImplFactory extends OCLExpressionImplFactory {
 		//the variable is solved and the and the returned arguments from the variableSolveMethod above are returned 
 		ArrayList<SWRLDArgument> retArgsX = this.variableFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, variableLeftSideOfImplies); 
 		
+		//esse trecho foi incluido para se adaptar ao exemplo da tabela 12 do meu tcc
+		if(retArgsX.size()>0){
+			referredArgument = retArgsX.get(retArgsX.size()-1);
+		}		
+		
 		//and a factory is created according to the IN class 
 		this.inFactory = (OCLExpressionImplFactory) Factory.constructor(in, this.m_NamedElementImpl);
 		//the IN is solved and the and the returned arguments from the inSolveMethod above are returned 

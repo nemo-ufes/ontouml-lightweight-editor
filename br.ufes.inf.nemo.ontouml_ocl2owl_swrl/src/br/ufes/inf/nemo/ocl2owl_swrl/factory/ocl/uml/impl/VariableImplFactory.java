@@ -54,6 +54,11 @@ public class VariableImplFactory extends TypedElementImplFactory {
 		//the atom is inserted in the antecedent or in the consequent
 		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, same0);
 		
-		return null;
+		//esse trecho foi incluido para se adaptar ao exemplo da tabela 12 do meu tcc
+		ArrayList<SWRLDArgument> retArgsZ = new ArrayList<SWRLDArgument>();
+		retArgsZ.add(varX);
+		return retArgsZ;
+		
+		//return null;
 	}
 }
