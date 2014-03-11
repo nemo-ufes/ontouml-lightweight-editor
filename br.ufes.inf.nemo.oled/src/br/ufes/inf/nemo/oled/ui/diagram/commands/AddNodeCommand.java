@@ -52,7 +52,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	private static final long serialVersionUID = -3148409380703192555L;
 	
 	private CompositeElement parent;
-	private Node diagramElement;
+	private DiagramElement diagramElement;
 	private double absx, absy;
 	
 	private RefOntoUML.Element element;
@@ -75,7 +75,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		if(notification==null) this.addToDiagram = false; else this.addToDiagram=true;
 		this.element = element;		
 		this.eContainer = eContainer;
-		this.diagramElement = (Node)ModelHelper.getDiagramElement(element,(DiagramEditor)notification);
+		this.diagramElement = ModelHelper.getDiagramElement(element,(DiagramEditor)notification);
 		if(this.diagramElement==null) this.diagramElement = ((DiagramEditor)this.notification).getCreationHandler().createNode((RefOntoUML.Type)element, eContainer);
 		absx = x;
 		absy = y;

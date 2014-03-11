@@ -32,9 +32,11 @@ import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
 import RefOntoUML.Element;
+import RefOntoUML.Generalization;
 import RefOntoUML.LiteralInteger;
 import RefOntoUML.LiteralUnlimitedNatural;
 import RefOntoUML.Meronymic;
+import RefOntoUML.NamedElement;
 import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.Relationship;
@@ -49,8 +51,10 @@ import RefOntoUML.impl.MediationImpl;
 import RefOntoUML.impl.MeronymicImpl;
 import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.impl.RefOntoUMLPackageImpl;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.OntoUMLElement;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
@@ -115,24 +119,62 @@ public class ModelHelper {
 	
 	//Adds mapping from RefOntoUMLElement to DiagramElement (metamodel->concretemodel)
 	//Returns true if the element was successfully added;
-	public static boolean addMapping (Element element, DiagramElement diagramElement){
-		ArrayList<DiagramElement> result;
-		if (!initialized) initializeHelper();		
-		if (element==null || diagramElement==null) return false;		
-		if(mappings.get(element)==null){
+	public static boolean addMapping (Element element, DiagramElement diagramElement)
+	{
+		if (!initialized) initializeHelper();
+		
+		if (element==null || diagramElement==null) return false;
+		
+		if(mappings.get(element)==null)
+		{
 			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 			list.add(diagramElement);
-			result = mappings.put(element, list);
-		}else{
-			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-			list.add(diagramElement);
-			if(!mappings.get(element).contains(diagramElement)){
+			System.out.println("First addition to ModelHelper.Map = "+diagramElement);
+			mappings.put(element, list);
+			return true;
+			
+		}else if(mappings.get(element)!=null)
+		{
+			if(!mappings.get(element).contains(diagramElement))
+			{
+				System.out.println("Addition to ModelHelper.Map = "+diagramElement);
 				mappings.get(element).add(diagramElement);
-			}
-			result = list;			
+				return true;
+			}			
 		}
-		if (result!=null) return true;
-		else return false;
+		return false;
+	}
+	
+	public static boolean removeMapping(DiagramElement element)
+	{
+		boolean result = false;
+		
+		if (!initialized) initializeHelper();
+		
+		if (element==null) return false;
+		
+		if(mappings.get(element)!=null)
+		{
+			result = mappings.get(element).remove(element);
+			if (mappings.get(element).size()==0){
+				mappings.remove(element);
+			}
+		}		
+		
+		return result;
+	}
+	
+	public static void printMap()
+	{
+		for(RefOntoUML.Element e: mappings.keySet())
+		{
+			if (e instanceof NamedElement) System.out.println("refonto = "+getStereotype(e)+" "+((NamedElement)e).getName());
+			else if (e instanceof Generalization) System.out.println("refonto = "+getStereotype(e)+" "+((Generalization)e).getGeneral()+"->"+((Generalization)e).getSpecific());
+			for(DiagramElement de: mappings.get(e)){
+				System.out.println("diagram = "+de);
+			}
+			System.out.println("======================");
+		}
 	}
 	
 	public static boolean addMapping (StructureDiagram diagram)
@@ -166,41 +208,48 @@ public class ModelHelper {
 //		else return false;
 //	}
 //	
-	public static boolean removeMapping(DiagramElement element)
-	{
-		boolean result = false;
-		if (!initialized) initializeHelper();		
-		if (element==null) return false;
-		if(mappings.get(element)!=null){
-			result = mappings.get(element).remove(element);
-			if (mappings.get(element).size()==0){
-				mappings.remove(element);
-			}
-		}		
-		return result;
-	}
-	
+	/**
+	 * If the element is not found in diagram "editor", the method searches for its diagram element without an editor attached to it.
+	 * We need that because the diagram element might be created without a diagram in the first place.
+	 * 
+	 */
 	public static DiagramElement getDiagramElement (Element element, DiagramEditor editor){
 		
-		if (!initialized)
-			initializeHelper();
+		if (!initialized) initializeHelper();
 		
-		ArrayList<DiagramElement> result = new ArrayList<DiagramElement>();
+		if(mappings.get(element)==null) return null;
 		
+		ArrayList<DiagramElement> found = new ArrayList<DiagramElement>();		
 		if(mappings.get(element)!=null && mappings.get(element).size()>0)
-		{
-			for(DiagramElement de: mappings.get(element)){
-				if (editor.getDiagram().containsChild(de)) result.add(de);
+		{			
+			for(DiagramElement de: mappings.get(element))
+			{					
+				if (editor.getDiagram().getChildren().contains(de)) { found.add(de); }				
 			}			
-		}
-		if(result.size()>1){
-			System.err.println("This element has two Diagram Element counterparts in a same diagram editor!");
+		}	
+		
+		if(found.size()>1)
+		{
+			System.err.println("ERROR: The refonto element: {"+new OntoUMLElement(element,"")+"} has 2 diagram elements for the same diagram editor.");
 			return null;
-		}else if(result.size()==0){
+					
+		}else if(found.size()==0)
+		{		
+			for(DiagramElement de: mappings.get(element))
+			{
+				boolean attachedToDiagram=false;
+				for(DiagramEditor d: ProjectBrowser.frame.getDiagramManager().getDiagramEditors()){
+					if(d.getDiagram().getChildren().contains(de)) attachedToDiagram =true;
+				}	
+				if (!attachedToDiagram) return de;
+			}
+			
+			System.err.println("ERROR: The refonto element: {"+new OntoUMLElement(element,"")+"} has 0 diagram elements attached ");						
 			return null;
-		}else{
-			return result.get(0);
-		}
+			
+		}else{			
+			return found.get(0);
+		}	
 	}
 	
 	public static ArrayList<DiagramElement> getDiagramElements (Element element){

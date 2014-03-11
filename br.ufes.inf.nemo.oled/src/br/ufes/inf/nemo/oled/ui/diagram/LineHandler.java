@@ -117,7 +117,7 @@ public class LineHandler implements EditorMode {
    */
   public void mouseReleased(EditorMouseEvent event) {
     double mx = event.getX(), my = event.getY();
-    DiagramElement target = editor.getDiagram().getChildAt(mx, my);    
+    DiagramElement target = editor.getDiagram().getChildAt(mx, my);	
     tmpPos.setLocation(mx, my);
     if(source !=null && target !=null){
     	UmlConnection conn = createConnection(editor, connectMethod, relationType, source, target, anchor, tmpPos); 
