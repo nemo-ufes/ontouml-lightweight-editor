@@ -654,25 +654,35 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		// =================================
 		// Diagrams
 		// =================================		
-		if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType){
-			refreshDiagramElement((Classifier)element);			
-		}
-		if (element instanceof RefOntoUML.Association){
-			if (redesign) { remakeDiagramElement((RefOntoUML.Element)element); }
-			else refreshDiagramElement((RefOntoUML.Element)element);
-		}
-		if (element instanceof RefOntoUML.Property){
-			Association assoc= ((RefOntoUML.Property)element).getAssociation();								
-			if (assoc!=null) {
-				if(redesign) remakeDiagramElement((RefOntoUML.Element)assoc);
-				else refreshDiagramElement((RefOntoUML.Element)assoc);
-			} else {
-				refreshDiagramElement((RefOntoUML.Element)(element).eContainer());
+		try{
+			if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType){
+				refreshDiagramElement((Classifier)element);			
 			}
-		}		
-		if (element instanceof RefOntoUML.Generalization){
-			if (redesign) { remakeDiagramElement((RefOntoUML.Element)element); }
-			else refreshDiagramElement((RefOntoUML.Element)element);
+			if (element instanceof RefOntoUML.Association){
+				if (redesign) { remakeDiagramElement((RefOntoUML.Element)element); }
+				else refreshDiagramElement((RefOntoUML.Element)element);
+			}
+			if (element instanceof RefOntoUML.Property){
+				Association assoc= ((RefOntoUML.Property)element).getAssociation();								
+				if (assoc!=null) {
+					if(redesign) remakeDiagramElement((RefOntoUML.Element)assoc);
+					else refreshDiagramElement((RefOntoUML.Element)assoc);
+				} else {
+					refreshDiagramElement((RefOntoUML.Element)(element).eContainer());
+				}
+			}		
+			if (element instanceof RefOntoUML.Generalization){
+				if (redesign) { remakeDiagramElement((RefOntoUML.Element)element); }
+				else refreshDiagramElement((RefOntoUML.Element)element);
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+			System.err.println(e.getLocalizedMessage());			
+			if (element instanceof NamedElement){				
+				getFrame().showErrorMessageDialog("Updating OLED from modification", "An error ocurred while updating "+ModelHelper.getStereotype(element)+" "+((NamedElement)element).getName()+ " in the diagram");
+			}else if (element instanceof Generalization){
+				getFrame().showErrorMessageDialog("Updating OLED from modification", "An error ocurred while updating "+ModelHelper.getStereotype(element)+" "+((Generalization)element).getGeneral()+ "->"+((Generalization)element).getSpecific()+" in the diagram");
+			}					
 		}
 	}
 
@@ -1667,11 +1677,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing temporal OCL",msg);
 			
 		}catch(SemanticException e2){
-			frame.showErrorMessageDialog("TOCL Semantic Error",  "TOCL Parser: "+e2.getLocalizedMessage());    		
+			frame.showErrorMessageDialog("Temporal OCL Semantic Error",  "Temporal OCL Parser: "+e2.getLocalizedMessage());    		
 			e2.printStackTrace();	
 
 		}catch(ParserException e1){
-			frame.showErrorMessageDialog("TOCL Parsing Error", "TOCL Parser: "+e1.getLocalizedMessage());    			
+			frame.showErrorMessageDialog("Temporal OCL Parsing Error", "Temporal OCL Parser: "+e1.getLocalizedMessage());    			
 			e1.printStackTrace();    	
 
 		}catch(Exception e4){

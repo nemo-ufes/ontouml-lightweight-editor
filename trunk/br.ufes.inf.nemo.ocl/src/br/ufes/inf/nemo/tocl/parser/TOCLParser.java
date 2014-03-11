@@ -140,6 +140,45 @@ public class TOCLParser extends OCLParser{
     	return result;
     }
     
+    public String processInLineComments(String result)
+    { 
+    	Pattern p = Pattern.compile("--.*\n");
+		Matcher m = p.matcher(result);
+		int jump = 0;
+    	while (m.find()) 
+    	{ 
+    		int indexBegin = m.start();
+    		int indexEnd = m.end();
+    		
+    		if(indexBegin+(jump) < 0) indexBegin = 0;
+    		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
+    		    		
+    		String left = result.substring(0,indexBegin+(jump));			
+    		String right = result.substring(indexEnd+(jump), result.length());
+    		result = left+right;
+    		jump = jump - result.substring(indexBegin+(jump),indexEnd+(jump)).length();
+    	}
+    	return result;    	    	    
+    }
+    
+    public String processMultiLineComments(String result)
+    { 
+    	Pattern p = Pattern.compile("/\\*(.*)\\*/");
+		Matcher m = p.matcher(result);
+		int jump = 0;
+    	while (m.find()) 
+    	{ 
+    		int indexBegin = m.start();
+    		int indexEnd = m.end();
+    		
+    		if(indexBegin+(jump) < 0) indexBegin = 0;
+    		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
+    		    		
+    		System.out.println(result.substring(indexBegin+(jump),indexEnd+(jump)));
+    	}
+    	return result;    	    	    
+    }
+    	 
     public String processTempKeyword(String result)
     {
     	Pattern p = Pattern.compile("([^\\w])(temp|inv|derive)([^\\w])");
@@ -186,6 +225,9 @@ public class TOCLParser extends OCLParser{
     {
 		String result = new String();
 		result = oclTemporalContent;
+		
+		result = processInLineComments(result);
+		result = processMultiLineComments(result);
 		
 		Pattern p = Pattern.compile("oclIsKindOf\\(\\s*\\w+\\s*,\\s*\\w+\\s*\\)");		
 		result = processObjectOperation(result, p);

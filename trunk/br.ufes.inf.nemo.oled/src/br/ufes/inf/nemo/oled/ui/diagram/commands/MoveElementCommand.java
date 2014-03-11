@@ -91,10 +91,12 @@ public class MoveElementCommand extends BaseDiagramCommand {
 
 	public void resetRelatedConnectionPoints(DiagramEditor notification, Connection con)
 	{
-		for(Connection c2: con.getConnections()) { 
-			c2.resetPoints();
-			c2.invalidate();
-		}	
+		if(con.getConnections()!=null){
+			for(Connection c2: con.getConnections()) { 
+				c2.resetPoints();
+				c2.invalidate();
+			}	
+		}
 	}
 	
 	/**
