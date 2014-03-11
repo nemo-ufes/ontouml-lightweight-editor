@@ -264,7 +264,7 @@ public class ModelHelper {
 		
 		if(mappings.get(element)!=null) return mappings.get(element);
 		
-		return null;
+		return new ArrayList<DiagramElement>();
 
 	}
 
@@ -299,7 +299,7 @@ public class ModelHelper {
 	{
 		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();		
 		for(Element elem: elements){
-			ArrayList<DiagramElement> dElem =mappings.get(elem);
+			ArrayList<DiagramElement> dElem = mappings.get(elem);
 			for(DiagramElement de: dElem){
 				if (editor.getDiagram().containsChild(de)) list.add(de);
 			}			

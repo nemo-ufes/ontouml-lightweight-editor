@@ -1,10 +1,13 @@
 package br.ufes.inf.nemo.common.ontoumlfixer;
 
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Fix {
+import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
+
+public class Fix implements Serializable {
 
 	private ArrayList<Object> deletedElements = new ArrayList<Object>();
 	//private ArrayList<Object> addedElements = new ArrayList<Object>();
@@ -175,4 +178,23 @@ public class Fix {
 	{
 		if (addedElements.keySet().contains(added)) { addedElements.get(added).x=x; addedElements.get(added).y=y; }
 	}
+	
+	@Override
+	public String toString() {
+		String result = new String();
+		result += "Added:";
+		for(Object elem: getAdded()){
+			result += "\n"+(new ParsingElement((RefOntoUML.Element)elem,true,"")).toString();
+		}
+		result += "\nModified:";
+		for(Object elem: getModified()){
+			result += "\n"+(new ParsingElement((RefOntoUML.Element)elem,true,"")).toString();
+		}
+		result += "\nDeleted:";
+		for(Object elem: getDeleted()){
+			result += "\n"+(new ParsingElement((RefOntoUML.Element)elem,true,"")).toString();
+		}
+		return result;
+	}
+	
 }

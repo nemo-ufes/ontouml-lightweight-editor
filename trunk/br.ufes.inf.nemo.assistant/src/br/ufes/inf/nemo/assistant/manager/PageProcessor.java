@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.assistant.manager;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -23,7 +24,12 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 
-public class PageProcessor{
+public class PageProcessor implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private OutcomeFixer outcomeFixer;
 
 	private Fix fix = new Fix();
@@ -31,6 +37,10 @@ public class PageProcessor{
 		return fix;
 	}
 
+	public void setFix(Fix f){
+		fix = f;
+	}
+	
 	private Classifier source;
 	public void setSourceClass(Classifier source) {
 		this.source = source; 
@@ -89,6 +99,8 @@ public class PageProcessor{
 			//add(phase)
 			fix.includeAdded(phase);
 		}
+		Fix f = outcomeFixer.deleteElement(source);
+		fix.addAll(f);
 	}
 
 	public void process(NewClass page) {
@@ -100,10 +112,12 @@ public class PageProcessor{
 				//source.stereotype != page.stereotype
 				//change the source stereotype
 				Fix f = outcomeFixer.changeClassStereotypeTo(current, ClassStereotype.valueOf(page.getStereotype().toUpperCase()));
+			//	current = (Classifier)f.getAdded().get(0);
 				fix.addAll(f);
 			}
 			//include all modifications
 			fix.includeModified(current);
+			
 		}else{
 			//create a new Classifier
 			current = (Classifier) outcomeFixer.createClass(ClassStereotype.valueOf(page.getStereotype().toUpperCase()));
@@ -137,8 +151,8 @@ public class PageProcessor{
 			}
 
 			//delete(source)
-			Fix f = outcomeFixer.deleteElement(source);
-			fix.addAll(f);
+//			Fix f = outcomeFixer.deleteElement(source);
+//			fix.addAll(f);
 
 			ArrayList<Generalization> genList = new ArrayList<>();
 

@@ -5,17 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Shell;
-
 import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
 import br.ufes.inf.nemo.assistant.graph.NodeAction;
 import br.ufes.inf.nemo.assistant.graph.NodeAssistant;
 import br.ufes.inf.nemo.assistant.manager.ManagerPattern;
 import br.ufes.inf.nemo.assistant.util.ActionEnum;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
-import br.ufes.inf.nemo.assistant.wizard.WizardAssitant;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewClass;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGeneralizationSet;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewGenericRelation;
@@ -33,22 +28,7 @@ import com.change_vision.jude.api.inf.model.IModel;
 import com.change_vision.jude.api.inf.model.IPackage;
 import com.change_vision.jude.api.inf.project.ProjectAccessor;
 
-public class SWTAstahParser {
-
-	public static void main(String[] args) {
-		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashTree = doParser("src/Patterns_NEMO.asta");
-
-		GraphAssistant graph = hashTree.get(StereotypeOntoUMLEnum.KIND);
-		graph.updateNodeList();
-		System.out.println(graph.toString());
-
-		WizardDialog wizardDialog = new WizardDialog(new Shell(),new WizardAssitant(graph));
-		if (wizardDialog.open() == Window.OK) {
-			System.out.println("Ok pressed");
-		} else {
-			System.out.println("Cancel pressed");
-		}
-	}
+public class AstahParser {
 
 	private static HashMap<StereotypeOntoUMLEnum, GraphAssistant> processParser(ProjectAccessor prjAccessor) throws Exception{
 		HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraphs = new HashMap<>();
@@ -204,7 +184,7 @@ public class SWTAstahParser {
 		//Set the page description
 		if(!aNode.getTaggedValue("description").isEmpty())
 			node.getPage().setDescription(aNode.getTaggedValue("description"));
-		
+
 		//Keep the last node in memory
 		_lastNode = node;			
 

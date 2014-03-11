@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
+import java.io.Serializable;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -8,15 +10,19 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class Question extends WizardPageAssistant {
+public class Question extends WizardPageAssistant  implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Create the wizard.
 	 */
 	public Question() {
 		super("Question");
-		setTitle("Wizard Page title");
-		setDescription("Wizard Page description");
+		setTitle("Question");
+		setDescription("User Question");
 	}
 
 	private Button btTrue;
@@ -55,13 +61,11 @@ public class Question extends WizardPageAssistant {
 
 	@Override
 	public boolean nextTrue() {
-		System.out.println("nextTrue: "+btTrue.getSelection());
 		return btTrue.getSelection();
 	}
 
 	@Override
 	public boolean nextFalse() {
-		System.out.println("nextFalse: "+btFalse.getSelection());
 		return btFalse.getSelection();
 	}
 
@@ -103,5 +107,11 @@ public class Question extends WizardPageAssistant {
 		String s;
 		s = "Question: "+question;
 		return s;
+	}
+
+	@Override
+	public void init() {
+		setTitle("Question");
+		setDescription("User Question");
 	}
 }

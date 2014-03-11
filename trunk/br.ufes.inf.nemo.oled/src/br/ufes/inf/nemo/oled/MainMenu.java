@@ -128,7 +128,7 @@ public class MainMenu implements ActionListener {
 
 		//Victor comentar
 		assistantItem.setSelected(false);
-		assistantItem.setEnabled(false);
+		assistantItem.setEnabled(true);
 		//assistantItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));		
 		
 	}

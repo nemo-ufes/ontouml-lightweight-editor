@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.assistant;
 
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -11,7 +12,6 @@ import org.eclipse.swt.widgets.Shell;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Package;
-import br.ufes.inf.nemo.assistant.astah2graph.SWTAstahParser;
 import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
@@ -20,6 +20,8 @@ import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 
 public class ModellingAssistant {
 
+	public static final String serializedObjectPath = "graph_assistant.ser";
+	
 	private HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraph;
 
 	/**
@@ -27,26 +29,41 @@ public class ModellingAssistant {
 	 * or by eclipse running.
 	 * */
 	public ModellingAssistant(RefOntoUML.Package root) {
-		String path = "Patterns_NEMO.asta";
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);	
-		if(is == null) {
-			//Runtime (eclipse)
-			hashGraph = SWTAstahParser.doParser("src/"+path);
-		}else{
-			//Running in .jar
-			hashGraph = SWTAstahParser.doParser(is);	
-		}
-
-		Iterator<GraphAssistant> graphs = hashGraph.values().iterator();
-		while(graphs.hasNext()){
-			GraphAssistant graph = graphs.next();
+		readBynaryFile();
+		
+		Iterator<GraphAssistant> graphIterator = hashGraph.values().iterator();
+		while(graphIterator.hasNext()){
+			GraphAssistant graph = graphIterator.next();
 			graph.getManagerPattern().setRefOntoUML(root);
 		}
+		
 		p = root;
 	}
-
 	Package p;
-
+	
+	@SuppressWarnings("unchecked")
+	private void readBynaryFile(){
+		try{
+			InputStream is = this.getClass().getClassLoader().getResourceAsStream(serializedObjectPath);
+			
+			ObjectInputStream in = null;
+			
+			if(is == null){
+				is = this.getClass().getClassLoader().getResourceAsStream("src/"+serializedObjectPath);
+				in = new ObjectInputStream(is);
+			}else{
+				in = new ObjectInputStream(is);
+			}
+			
+			hashGraph = (HashMap<StereotypeOntoUMLEnum, GraphAssistant>) in.readObject();
+			in.close();
+			is.close();
+		}catch(Exception i){
+			i.printStackTrace();
+			return;
+		}
+	}
+	
 	/**
 	 * Run the pattern for the elem.
 	 * Start and show the wizard
@@ -59,6 +76,8 @@ public class ModellingAssistant {
 				graph.updateNodeList();
 				graph.getManagerPattern().setClassSource(elem);
 
+				graph.getManagerPattern().setFix(new Fix());
+
 				Fix fix = null;
 
 				Display display = Display.getDefault();	    	
@@ -68,20 +87,20 @@ public class ModellingAssistant {
 				if (wizardDialog.open() == Window.OK) {
 					fix = graph.getManagerPattern().getFix();
 				}
-				System.out.println("REFonto: {");
-				UtilAssistant.printRefOntoUML(p);
-				System.out.println("}");
+//				System.out.println("REFonto: {");
+//				UtilAssistant.printRefOntoUML(p);
+//				System.out.println("}");
 				return fix;
 			}else{
-				System.out.println("stereotype not treated yet");
+//				System.out.println("stereotype not treated yet");
 			}
 		}catch(Exception e){
 			//e.printStackTrace();
-			System.out.println("pattern not treated yet");
+//			System.out.println("pattern not treated yet");
 		}
-		System.out.println("REFonto: {");
-		UtilAssistant.printRefOntoUML(p);
-		System.out.println("}");
+//		System.out.println("REFonto: {");
+//		UtilAssistant.printRefOntoUML(p);
+//		System.out.println("}");
 		return null;
 	}
 }
