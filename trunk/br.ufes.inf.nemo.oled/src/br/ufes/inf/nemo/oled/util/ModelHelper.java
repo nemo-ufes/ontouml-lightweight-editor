@@ -129,7 +129,7 @@ public class ModelHelper {
 		{
 			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 			list.add(diagramElement);
-			System.out.println("First addition to ModelHelper.Map = "+diagramElement);
+//			System.out.println("Add #0 to Map = "+diagramElement);
 			mappings.put(element, list);
 			return true;
 			
@@ -137,7 +137,7 @@ public class ModelHelper {
 		{
 			if(!mappings.get(element).contains(diagramElement))
 			{
-				System.out.println("Addition to ModelHelper.Map = "+diagramElement);
+//				System.out.println("Add #"+mappings.get(element).size()+" to Map = "+diagramElement);
 				mappings.get(element).add(diagramElement);
 				return true;
 			}			
@@ -145,25 +145,33 @@ public class ModelHelper {
 		return false;
 	}
 	
-	public static boolean removeMapping(DiagramElement element)
-	{
-		boolean result = false;
-		
+	public static boolean removeMapping(DiagramElement diagramElem)
+	{	
 		if (!initialized) initializeHelper();
 		
+		RefOntoUML.Element element = getElement(diagramElem);
 		if (element==null) return false;
 		
-		if(mappings.get(element)!=null)
+		if(element!=null)
 		{
-			result = mappings.get(element).remove(element);
-			if (mappings.get(element).size()==0){
-				mappings.remove(element);
+			if(mappings.get(element).indexOf(diagramElem)!=-1){
+//				System.out.println("Remove #"+mappings.get(element).indexOf(diagramElem)+" to Map = "+diagramElem);
+				mappings.get(element).remove(diagramElem);	
+				return true;
 			}
+			
+			if (mappings.get(element).size()==0)
+			{
+				System.err.println("ERROR: Trying to remove the Diagram Element {"+diagramElem+"} of the Map but the list is empty! We then will remove that entry.");
+				mappings.remove(element);
+				return false;
+			}			
 		}		
 		
-		return result;
+		return false;
 	}
 	
+	/** For test */
 	public static void printMap()
 	{
 		for(RefOntoUML.Element e: mappings.keySet())
@@ -213,7 +221,7 @@ public class ModelHelper {
 	 * We need that because the diagram element might be created without a diagram in the first place.
 	 * 
 	 */
-	public static DiagramElement getDiagramElement (Element element, DiagramEditor editor){
+	public static DiagramElement getDiagramElementByEditor (Element element, DiagramEditor editor){
 		
 		if (!initialized) initializeHelper();
 		
@@ -242,9 +250,7 @@ public class ModelHelper {
 					if(d.getDiagram().getChildren().contains(de)) attachedToDiagram =true;
 				}	
 				if (!attachedToDiagram) return de;
-			}
-			
-			System.err.println("ERROR: The refonto element: {"+new OntoUMLElement(element,"")+"} has 0 diagram elements attached ");						
+			}						
 			return null;
 			
 		}else{			
@@ -254,19 +260,18 @@ public class ModelHelper {
 	
 	public static ArrayList<DiagramElement> getDiagramElements (Element element){
 		
-		if (!initialized)
-			initializeHelper();
+		if (!initialized) initializeHelper();
 		
-		if(mappings.get(element)!=null && mappings.get(element).size()>0)
-			return mappings.get(element);
-		else
-			return null;
+		if(mappings.get(element)!=null) return mappings.get(element);
+		
+		return null;
+
 	}
 
-	public static HashMap<Element,ArrayList<DiagramElement>> getMapping()
-	{
-		return mappings;
-	}
+//	public static HashMap<Element,ArrayList<DiagramElement>> getMapping()
+//	{
+//		return mappings;
+//	}
 	
     public static RefOntoUML.Element getElement(DiagramElement value) 
     {    	
@@ -290,6 +295,18 @@ public class ModelHelper {
 		return list;
 	}	
  
+	public static Collection<DiagramElement> getDiagramElementsByEditor(Collection<Element> elements, DiagramEditor editor)
+	{
+		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();		
+		for(Element elem: elements){
+			ArrayList<DiagramElement> dElem =mappings.get(elem);
+			for(DiagramElement de: dElem){
+				if (editor.getDiagram().containsChild(de)) list.add(de);
+			}			
+		}
+		return list;
+	}	
+	
 	public static Collection<Element> getElements(Collection<DiagramElement> diagramElements)
 	{
 		ArrayList<Element> list = new ArrayList<Element>();		

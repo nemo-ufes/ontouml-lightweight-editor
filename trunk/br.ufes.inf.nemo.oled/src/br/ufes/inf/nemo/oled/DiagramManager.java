@@ -424,14 +424,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		{
 			ArrayList<RefOntoUML.Element> deletionList = (ArrayList<RefOntoUML.Element>)ModelHelper.getElements(diagramElementList);			
 			if(deletionList.size()>0){
+				ArrayList<DiagramEditor> editors = getDiagramEditors(deletionList.get(0));
 				//from diagrams & model
-				for(DiagramEditor diagramEditor: getDiagramEditors(deletionList.get(0)))
+				for(DiagramEditor diagramEditor: editors)
 				{
 					DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
 					cmd.run();
-				}
+				}	
 				// only from model
-				if(getDiagramEditors(deletionList.get(0)).size()==0)
+				if(editors.size()==0)
 				{		
 					DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
 					cmd.run();

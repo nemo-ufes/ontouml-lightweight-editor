@@ -90,7 +90,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		
 		this.eContainer = eContainer;
 		
-		diagramElement = ModelHelper.getDiagramElement(relationship,(DiagramEditor)notification);
+		diagramElement = ModelHelper.getDiagramElementByEditor(relationship,(DiagramEditor)notification);
 	}
 
 	/**
@@ -169,6 +169,7 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		
 		//add to diagram
 		parent.addChild(diagramElement);
+//		diagramElement.setParent((CompositeNode)parent);
 		
 		// bug in designing. not best solution, but works.
 		Relationship relationship = ((UmlConnection)diagramElement).getRelationship();		

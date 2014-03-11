@@ -346,8 +346,8 @@ public class LineHandler implements EditorMode {
 	  
 	  if(sourceType!=null && targetType!=null){
 		  
-		  DiagramElement source = ModelHelper.getDiagramElement(sourceType,editor);
-		  DiagramElement target = ModelHelper.getDiagramElement(targetType,editor);
+		  DiagramElement source = ModelHelper.getDiagramElementByEditor(sourceType,editor);
+		  DiagramElement target = ModelHelper.getDiagramElementByEditor(targetType,editor);
 	    
 		  if(source!=null && target !=null)
 		  {
