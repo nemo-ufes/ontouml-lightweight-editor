@@ -29,12 +29,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -2163,7 +2166,37 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				//ClassElement c = 
 			}
 			else{
-				
+				Object[] stereo;
+				stereo=  stereotypes.toArray();
+			
+				JFrame frame = new JFrame("Input Dialog Example 3");
+			    String favoritePizza = (String) JOptionPane.showInputDialog(frame, 
+			        "Choose between the possible options ?",
+			        "Favorite Pizza",
+			        JOptionPane.QUESTION_MESSAGE, 
+			        null, 
+			        stereo, 
+			        stereo[0]);
+				    UmlProject project = getCurrentEditor().getProject();
+					OutcomeFixer of = new OutcomeFixer(project.getModel());
+					Classifier newElement = (Classifier)of.createClass( of.getClassStereotype(favoritePizza));
+					mainfix.includeAdded(newElement);
+					of.copyContainer(((ClassElement) selected.get(0)).getClassifier(), newElement);
+					Fix fix=of.createGeneralization((Classifier)refontoList.get(0), newElement);
+					Fix fixG2=of.createGeneralization((Classifier)refontoList.get(1), newElement);
+					ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+					generalizations.add((Generalization) fix.getAdded().get(0));
+					generalizations.add((Generalization) fixG2.getAdded().get(0));
+					Fix gs =  of.createGeneralizationSet(generalizations);
+					//((GeneralizationSet) gs.getAdded()).setIsCovering(true);
+					//((GeneralizationSet) gs.getAdded()).setIsDisjoint(true);
+					mainfix.addAll(fixG2);
+					mainfix.addAll(fix);
+					mainfix.addAll(gs);
+					updateOLED(mainfix);
+			    // favoritePizza will be null if the user clicks Cancel
+			   
+			  
 			}
 		}
 		//refontoList.get(0).get
