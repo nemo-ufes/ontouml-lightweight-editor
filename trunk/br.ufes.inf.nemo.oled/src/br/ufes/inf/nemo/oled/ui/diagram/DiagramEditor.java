@@ -854,7 +854,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 		  
 		DiagramElement src = ModelHelper.getDiagramElement(source,this);
-		DiagramElement tgt = ModelHelper.getDiagramElement(target,this);
+		DiagramElement tgt = ModelHelper.getDiagramElement(target,this);		
 		if(src==null || tgt==null) return;
 		
 		lineHandler.createAndAddConnection(this, relationship, src, tgt, eContainer);
