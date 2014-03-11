@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Combo;
@@ -8,7 +10,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-public class NewGenericRelation extends WizardPageAssistant{
+public class NewGenericRelation extends WizardPageAssistant implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Text srcMinCard;
 	private Text srcMaxCard;
 	private Text relationName;
@@ -20,8 +26,8 @@ public class NewGenericRelation extends WizardPageAssistant{
 	 */
 	public NewGenericRelation() {
 		super("Create new generic relation");
-		setTitle("Create a new Generic Relation");
-		setDescription("NEWGENERICRELATION.description");
+		setTitle("New Relation");
+		setDescription("Creating a Relation between two classes");
 	}
 
 	/**
@@ -265,5 +271,11 @@ public class NewGenericRelation extends WizardPageAssistant{
 		if(card.equals("*"))
 			return -1;
 		return Integer.parseInt(card);
+	}
+
+	@Override
+	public void init() {
+		setTitle("New Relation");
+		setDescription("Creating a Relation between two classes");
 	}
 }

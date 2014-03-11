@@ -1,8 +1,15 @@
 package br.ufes.inf.nemo.assistant.graph;
 
+import java.io.Serializable;
+
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.WizardPageAssistant;
 
-public class NodeAssistant {
+public class NodeAssistant implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	protected GraphAssistant graph;
 
 	private NodeAssistant nextNode = null;
@@ -12,16 +19,12 @@ public class NodeAssistant {
 
 	private WizardPageAssistant page = null;
 
-	private boolean isEndNode = false;
-
 	public boolean isEndNode(){
-		return isEndNode;
-	}
-
-	public void isEndNode(boolean b){
-		isEndNode = b;
-		if(page != null)
-			page.setEndPage(b);
+		//return isEndNode;
+		if(nextNode == null && trueNode == null && falseNode == null){
+			return true;
+		}
+		return false;
 	}
 
 	public NodeAssistant(GraphAssistant graph){
@@ -38,6 +41,7 @@ public class NodeAssistant {
 	}
 	
 	public WizardPageAssistant getPage(){
+		page.init();
 		return page;
 	}
 
@@ -51,8 +55,6 @@ public class NodeAssistant {
 
 	public void setNextNode(NodeAssistant nextNode) {
 		this.nextNode = nextNode;
-		if(nextNode == null)
-			isEndNode(true);
 	}
 
 	public NodeAssistant getBackNode() {
@@ -74,8 +76,6 @@ public class NodeAssistant {
 
 	public void setTrueNode(NodeAssistant trueNode) {
 		this.trueNode = trueNode;
-		if(trueNode == null)
-			isEndNode(true);
 	}
 
 	public NodeAssistant getFalseNode() {
@@ -88,8 +88,6 @@ public class NodeAssistant {
 
 	public void setFalseNode(NodeAssistant falseNode) {
 		this.falseNode = falseNode;
-		if(falseNode == null)
-			isEndNode(true);
 	}
 
 	public GraphAssistant getGraph() {
@@ -107,7 +105,6 @@ public class NodeAssistant {
 	public boolean canGoTrue(){
 		return trueNode != null;
 	}
-	
 	
 	protected boolean isAction = false;
 	public boolean isAction(){

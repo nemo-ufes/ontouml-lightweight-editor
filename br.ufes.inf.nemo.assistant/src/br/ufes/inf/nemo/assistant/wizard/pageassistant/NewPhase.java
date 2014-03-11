@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
@@ -12,14 +13,18 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Label;
 
-public class NewPhase extends WizardPageAssistant {
+public class NewPhase extends WizardPageAssistant  implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Table table;
 
 	/**
@@ -27,8 +32,8 @@ public class NewPhase extends WizardPageAssistant {
 	 */
 	public NewPhase() {
 		super("Create new phase");
-		setTitle("Create new OntoUML Phases");
-		setDescription("NEWPHASE.description");
+		setTitle("New Phases");
+		setDescription("Creating new Phases");
 	}
 
 	private int contPhases = 0;
@@ -44,7 +49,7 @@ public class NewPhase extends WizardPageAssistant {
 		
 		Label lblNewLabel = new Label(container, SWT.NONE);
 		lblNewLabel.setBounds(2, 5, 96, 15);
-		lblNewLabel.setText("Create Phases to ");
+		lblNewLabel.setText("Creating Phases  ");
 		
 		Button btAddNewRow = new Button(container, SWT.NONE);
 		btAddNewRow.addSelectionListener(new SelectionAdapter() {
@@ -89,8 +94,9 @@ public class NewPhase extends WizardPageAssistant {
 		final TableEditor editor = new TableEditor (table);
 		
 		className = new Label(container, SWT.NONE);
-		className.setBounds(94, 5, 360, 15);
+		className.setBounds(408, 5, 46, 15);
 		className.setText("<currentClass>");
+		className.setVisible(false);
 		
 		btDeletePhase = new Button(container, SWT.NONE);
 		btDeletePhase.addSelectionListener(new SelectionAdapter() {
@@ -230,5 +236,11 @@ public class NewPhase extends WizardPageAssistant {
 		}
 		setClassList(list);
 		return list;
+	}
+
+	@Override
+	public void init() {
+		setTitle("New Phases");
+		setDescription("Creating new Phases");
 	}
 }

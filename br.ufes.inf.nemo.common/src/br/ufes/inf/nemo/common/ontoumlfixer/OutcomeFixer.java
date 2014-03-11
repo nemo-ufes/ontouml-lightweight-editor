@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.common.ontoumlfixer;
 
+import java.io.Serializable;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -79,7 +80,7 @@ import RefOntoUML.impl.memberOfImpl;
 import RefOntoUML.impl.subCollectionOfImpl;
 import RefOntoUML.impl.subQuantityOfImpl;
 
-public class OutcomeFixer {
+public class OutcomeFixer implements Serializable {
 
 	public enum SpecializationType {
 		SUBSET, REDEFINE, SPECIALIZE

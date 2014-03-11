@@ -171,9 +171,9 @@ public class CreationHandler implements EditorMode {
     
     
     //VICTOR COMENTAR
-//    if (!isDragging) {
-//    	editor.getDiagramManager().openModellingAssistant(elem);
-//    }
+    if (!isDragging) {
+    	editor.getDiagramManager().openModellingAssistant(elem);
+    }
   }
 
   /**

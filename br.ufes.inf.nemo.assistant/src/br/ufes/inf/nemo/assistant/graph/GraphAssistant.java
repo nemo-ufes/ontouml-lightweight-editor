@@ -1,12 +1,16 @@
 package br.ufes.inf.nemo.assistant.graph;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import br.ufes.inf.nemo.assistant.manager.ManagerPattern;
-import br.ufes.inf.nemo.assistant.wizard.WizardAssitant;
 
-public class GraphAssistant {
-	private WizardAssitant wizardAssistant;
+public class GraphAssistant implements Serializable {
+	/**
+	 * TODO change if some attribute was changed
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private ManagerPattern managerPattern;
 
 	private NodeAssistant startNode;
@@ -14,12 +18,6 @@ public class GraphAssistant {
 
 	private ArrayList<NodeAssistant> nodes = new ArrayList<NodeAssistant>();
 
-	public WizardAssitant getWizardAssistant() {
-		return wizardAssistant;
-	}
-	public void setWizardAssistant(WizardAssitant wizardAssistant) {
-		this.wizardAssistant = wizardAssistant;
-	}
 	public ManagerPattern getManagerPattern() {
 		return managerPattern;
 	}
@@ -47,6 +45,7 @@ public class GraphAssistant {
 	}
 	
 	public void updateNodeList() {
+		nodes = new ArrayList<>();
 		updateNode(startNode);
 		currentNode = startNode;
 	}
@@ -74,7 +73,7 @@ public class GraphAssistant {
 		s += "Total Nodes: "+nodes.size();
 		for(NodeAssistant node :nodes){
 			if(!node.isAction()){
-				s += "\n"+node.getPage().getName(); 
+				s += "\n"+node.getPage().getTitle(); 
 			}else{
 				s += "\nAction: "+((NodeAction)node).getAction().toString();
 			}

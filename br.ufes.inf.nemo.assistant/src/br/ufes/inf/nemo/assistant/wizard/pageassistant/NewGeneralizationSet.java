@@ -1,4 +1,5 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -16,15 +17,20 @@ import org.eclipse.swt.widgets.Shell;
 
 import br.ufes.inf.nemo.assistant.util.GeneralizationClass;
 
-public class NewGeneralizationSet extends WizardPageAssistant {
+public class NewGeneralizationSet extends WizardPageAssistant implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create the wizard.
 	 */
 	public NewGeneralizationSet() {
 		super("Create new GeneralizationSet");
-		setTitle("Create a new OntoUML class");
-		setDescription("NewGeneralizationSet.description");
+		setTitle("New GeneralizationSet");
+		setDescription("Creating a Generalization set and setting its meta-properties");
 	}
 
 	private boolean canFinish = false;
@@ -95,8 +101,10 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 		cbGeneralizationSet.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				canFinish = true;
-				setPageComplete(true);
+				if(!isEndPage){
+					canFinish = true;
+					setPageComplete(true);
+				}
 				//to prevent to be a new generalizationSet 
 				isDisjoint.setSelection(false);
 				isComplete.setSelection(false);
@@ -193,7 +201,6 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 
 	@Override
 	public boolean canFlipToNextPage() {
-		System.out.println("saiu");
 		if(isEndPage)
 			return false;
 		if(canFinish)
@@ -278,5 +285,11 @@ public class NewGeneralizationSet extends WizardPageAssistant {
 	
 	public ArrayList<String[]> getListSpecifics(){
 		return getClassList();
+	}
+
+	@Override
+	public void init() {
+		setTitle("New GeneralizationSet");
+		setDescription("Creating a Generalization set and setting its meta-properties");
 	}
 }

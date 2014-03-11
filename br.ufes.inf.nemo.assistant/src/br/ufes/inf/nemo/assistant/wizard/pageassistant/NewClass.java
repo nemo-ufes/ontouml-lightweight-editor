@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
+import java.io.Serializable;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.widgets.Combo;
@@ -9,7 +11,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-public class NewClass extends WizardPageAssistant {
+public class NewClass extends WizardPageAssistant implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Text tfClassName;
 
 	/**
@@ -17,8 +23,8 @@ public class NewClass extends WizardPageAssistant {
 	 */
 	public NewClass() {
 		super("Create new class");
-		setTitle("Create a new OntoUML class");
-		setDescription("NEWCLASS.description");
+		setTitle("New Class");
+		setDescription("Creating a new Class");
 	}
 
 	private Combo cbStereotypes;
@@ -74,16 +80,6 @@ public class NewClass extends WizardPageAssistant {
 			setPageComplete(true);
 	}
 
-	@Override
-	public void performHelp() {
-		Shell shell = new Shell(getShell());
-		shell.setText("My Custom Help !!");
-
-		Label label1 = new Label(shell, SWT.NONE);
-		label1.setText("NEWCLASS.help");
-		shell.open();
-	}
-
 	public void setStereotypes(String[] sts){
 		stereotypes = sts;
 	}
@@ -129,4 +125,22 @@ public class NewClass extends WizardPageAssistant {
 		return canSetCurrentClass;
 	}
 
+	@Override
+	public void performHelp() {
+		Shell shell = new Shell(getShell());
+		shell.setText("My Custom Help !!");
+
+		Label label1 = new Label(shell, SWT.NONE);
+		label1.setText("NEWCLASS.help");
+		
+		shell.open();
+	}
+
+	@Override
+	public void init() {
+		setTitle("New Class");
+		setDescription("Creating a new Class");
+		
+	}
+	
 } 

@@ -10,7 +10,18 @@ public abstract class WizardPageAssistant extends WizardPage {
 	protected WizardPageAssistant(String pageName) {
 		super(pageName);
 	}
+	
+	public WizardPageAssistant(){
+		super("");
+	}
+	
+	/**
+	 * 
+	 */
+	protected static final long serialVersionUID = 1L;
 
+	public abstract void init();
+	
 	public boolean nextTrue(){
 		return false;
 	}

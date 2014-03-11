@@ -20,7 +20,7 @@ public class WizardAssitant extends Wizard {
 	public WizardAssitant(GraphAssistant graph) {
 		super();
 		setNeedsProgressMonitor(false);
-		setHelpAvailable(true);
+		setHelpAvailable(false);
 
 		this.graph = graph;
 	}
@@ -32,7 +32,10 @@ public class WizardAssitant extends Wizard {
 			if(nodes.get(i).isAction()){
 				if(i==0){
 					//TODO se for outra action vai dar problema
-					addPage(nodes.get(0).getNextNode().getPage());
+					NodeAssistant nextNode = nodes.get(0).getNextNode();
+					WizardPageAssistant page = nextNode.getPage();
+					page.setEndPage(nextNode.isEndNode());
+					addPage(page);
 				}
 			}else{
 				addPage(nodes.get(i).getPage());
@@ -106,6 +109,7 @@ public class WizardAssitant extends Wizard {
 		}
 
 		if(graph.getCurrentNode().isEndNode()){
+			nextPage.setEndPage(true);
 			canFinish = true;
 		}
 

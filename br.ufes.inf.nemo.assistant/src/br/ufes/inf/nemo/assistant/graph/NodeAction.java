@@ -3,6 +3,10 @@ package br.ufes.inf.nemo.assistant.graph;
 import br.ufes.inf.nemo.assistant.util.ActionEnum;
 
 public class NodeAction extends NodeAssistant {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ActionEnum action;
 
 	public NodeAction(GraphAssistant graph) {

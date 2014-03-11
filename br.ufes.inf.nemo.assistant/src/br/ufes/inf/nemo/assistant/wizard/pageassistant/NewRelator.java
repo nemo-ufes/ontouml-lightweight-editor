@@ -344,4 +344,10 @@ public class NewRelator extends WizardPageAssistant {
 	public String getRelatorName(){
 		return relatorName.getText();
 	}
+
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 }
