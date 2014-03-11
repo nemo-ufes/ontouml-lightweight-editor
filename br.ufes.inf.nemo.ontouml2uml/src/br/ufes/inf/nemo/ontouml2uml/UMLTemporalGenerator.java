@@ -66,7 +66,10 @@ public class UMLTemporalGenerator {
 		ArrayList<Classifier> topLevels = new ArrayList<Classifier>();
 		getTopLevelTypes(umlRoot,topLevels);
 
-//		unnecessary since end-points in UML are owned attributes
+		ArrayList<Classifier> classes = new ArrayList<Classifier>();
+		getAllClasses(umlRoot,classes);
+
+		// unnecessary since end-points in UML are owned attributes
 //		ArrayList<Association> assocList = new ArrayList<Association>();
 //		getAssociations(umlRoot,assocList);
 
@@ -80,7 +83,7 @@ public class UMLTemporalGenerator {
 		
 		// ===== Types existence operations ==========		
 		createTopLevelExistenceOperations(umlWorld, topLevels);
-		createTopLevelAllInstancesOperation(umlWorld, topLevels);
+		createTopLevelAllInstancesOperation(umlWorld, classes);
 
 		// ===== Temporal navigation operations ======		
 		//unnecessary since end-points in UML are owned attributes
@@ -143,7 +146,7 @@ public class UMLTemporalGenerator {
 		}
 	}
 	
-	public void createTopLevelAllInstancesOperation(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)
+	public void createTopLevelAllInstancesOperation(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> classes)
 	{		
 		EList<String> parameters = new BasicEList<String>();
 		parameters.add("w");
@@ -151,7 +154,7 @@ public class UMLTemporalGenerator {
 		EList<org.eclipse.uml2.uml.Type> typeParameters = new BasicEList<org.eclipse.uml2.uml.Type>();
 		typeParameters.add(umlWorld);
 		
-		for(Classifier c: topLevels)
+		for(Classifier c: classes)
 		{
 			if (c instanceof org.eclipse.uml2.uml.Class)
 			{
@@ -590,7 +593,21 @@ public class UMLTemporalGenerator {
 			}
 		}	
 	}
-			
+	
+	public void getAllClasses(org.eclipse.uml2.uml.Package umlRoot, ArrayList<Classifier> result)
+	{		
+		for(PackageableElement pe: umlRoot.getPackagedElements())
+		{
+			if (pe instanceof org.eclipse.uml2.uml.Class || pe instanceof org.eclipse.uml2.uml.DataType){
+				org.eclipse.uml2.uml.Classifier type = (org.eclipse.uml2.uml.Classifier)pe;
+				result.add(type);
+			}
+			if (pe instanceof org.eclipse.uml2.uml.Package){
+				getTopLevelTypes((org.eclipse.uml2.uml.Package)pe,result);
+			}
+		}	
+	}
+	
 	public org.eclipse.uml2.uml.Class createWorldHierarchy(org.eclipse.uml2.uml.Package umlRoot)
 	{
 		org.eclipse.uml2.uml.Class umlWorld = umlRoot.createOwnedClass("World", false);
