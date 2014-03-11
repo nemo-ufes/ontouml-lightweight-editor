@@ -43,6 +43,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
@@ -108,15 +109,15 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		
 		// requested element for deletion
 		elemList.addAll(theElements);
-		diagramElemList.addAll(ModelHelper.getDiagramElements(elemList));		
-		
+		diagramElemList.addAll(ModelHelper.getDiagramElementsByEditor((elemList),(DiagramEditor)notification));		
+				
 		// init the dependecies of level 1 and 2.
 		for (Element elem : theElements) 
 		{			
 			// level 1 of dependency
 			ArrayList<Relationship> depList = ProjectBrowser.getParserFor(project).getDirectRelationships(elem);			
 			elemDep1List.addAll(depList);
-			diagramElemDep1List.addAll(ModelHelper.getDiagramElements(elemDep1List));			
+			diagramElemDep1List.addAll(ModelHelper.getDiagramElementsByEditor(elemDep1List,(DiagramEditor)notification));			
 			
 			// level 2 of dependency
 			// the case in which there is a material in depList. We must include the derivation too.
@@ -127,7 +128,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 					Derivation d = ProjectBrowser.getParserFor(project).getDerivation((MaterialAssociation)r);
 					if(d!=null) {
 						elemDep2List.add(d);
-						diagramElemDep2List.add(ModelHelper.getDiagramElement(d,(DiagramEditor)notification));
+						diagramElemDep2List.add(ModelHelper.getDiagramElementByEditor(d,(DiagramEditor)notification));
 					}
 				}
 			}			
@@ -276,16 +277,23 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		else if (element instanceof Node) detachNodeConnections((Node)element);
 				
 		// delete
-		if(element instanceof BaseConnection || element instanceof ClassElement) element.getParent().removeChild(element);			
-				
-		//notify
-		if (notification!=null) {
-			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-			list.add(element);
-			notification.notifyChange((List<DiagramElement>) list, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);			
-			UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)notification), this);
-			for (UndoableEditListener l : ((DiagramEditor)notification).editListeners)  l.undoableEditHappened(event);			
-		}		
+		if(element instanceof BaseConnection || element instanceof ClassElement) 
+		{
+			element.getParent().removeChild(element);
+//			element.setParent(null);
+		}
+		
+		if (element.getParent() instanceof StructureDiagram) {
+			DiagramEditor d = ((DiagramEditor)notification).getDiagramManager().getDiagramEditor((StructureDiagram)element.getParent());
+			//notify
+			if (d!=null) {
+				ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+				list.add(element);
+				d.notifyChange((List<DiagramElement>) list, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);			
+				UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)d), this);
+				for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
+			}	
+		}
 	}
 	
 	private void delete (RefOntoUML.Element elem)
