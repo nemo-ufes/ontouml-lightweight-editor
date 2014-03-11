@@ -31,6 +31,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
@@ -432,7 +433,13 @@ public class MainMenu implements ActionListener {
 	 * {@inheritDoc}
 	 */
 	public void actionPerformed(ActionEvent e) {
+		boolean showBugReport = true;
 		for (AppCommandListener l : listeners) {
+			//victor
+			if(e.getActionCommand().equals("ASSISTANT") && showBugReport){
+				JOptionPane.showMessageDialog(null, "Modeling Assistant v0.1 \nPlease report bug or improvements to:\nhttps://code.google.com/p/ontouml-lightweight-editor/issues/list");
+				showBugReport = false;
+			}
 			l.handleCommand(e.getActionCommand());
 		}
 	}
