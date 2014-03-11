@@ -23,6 +23,8 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLFunctionalObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLObjectCardinalityRestriction;
@@ -451,14 +453,24 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 	
 	public ArrayList<SWRLDArgument> solveIncludes(String ctStereotype, OWLDataFactory factory, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, ArrayList<SWRLDArgument> referredArgsX, ArrayList<SWRLDArgument> referredArgsY, Boolean leftSideOfImplies) {
-		//SWRLDArgument varX1 = referredArgsX.get(0);
-		SWRLDArgument varX1 = referredArgsX.get(referredArgsX.size()-1);
+		SWRLDArgument varX1 = null;
+		if((org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) || org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype))){
+			varX1 = referredArgsX.get(0);
+		}else{
+			varX1 = referredArgsX.get(referredArgsX.size()-1);
+		}
+		
 		SWRLDArgument varX2 = null;
 		if(referredArgsX.size()>1){
 			varX2 = referredArgsX.get(1);
 		}
-		//SWRLDArgument varY1 = referredArgsY.get(0);
-		SWRLDArgument varY1 = referredArgsY.get(referredArgsY.size()-1);
+		
+		SWRLDArgument varY1 = null;
+		if((org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) || org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype))){
+			varY1 = referredArgsY.get(0);
+		}else{
+			varY1 = referredArgsY.get(referredArgsY.size()-1);
+		}
 		SWRLDArgument varY2 = null;
 		if(referredArgsY.size()>1){
 			varY2 = referredArgsY.get(1);

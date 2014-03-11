@@ -85,6 +85,13 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		ArrayList<SWRLDArgument> retArgsY = this.bodyFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot, repeatNumber, leftSideOfImplies); 
 		SWRLDArgument varY = retArgsY.get(retArgsY.size()-1);//get the last
 		
+		if(retArgsY.size() > 0 && retArgsX.size() > 0 && (org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) || org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype))){
+			SWRLDArgument varY0 = retArgsY.get(0);
+			
+			retArgsX.set(0, varY0);
+		}
+		
+		
 		//SWRLDArgument varZ = null;
 		if(this.isUniqueIterator()){
 			//varZ =
@@ -130,12 +137,15 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		ArrayList<SWRLDArgument> retArgsY2 = this.bodyFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX2, operatorNot, repeatNumber, leftSideOfImplies); 
 		SWRLDArgument varY2 = retArgsY2.get(retArgsY2.size()-1);//pega o ultimo
 		
-		//var0 and var0_2 are always the same
-		SWRLSameIndividualAtom same0 = factory.getSWRLSameIndividualAtom((SWRLVariable)var0, (SWRLVariable)var0_2);
-		//antecedent.add(same0);
+		if(!org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) && !org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
+			//var0 and var0_2 are always the same
+			SWRLSameIndividualAtom same0 = factory.getSWRLSameIndividualAtom((SWRLVariable)var0, (SWRLVariable)var0_2);
+			//antecedent.add(same0);
+			
+			//and are inserted in the antecedent or in the consequent
+			this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, same0);
+		}
 		
-		//and are inserted in the antecedent or in the consequent
-		this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, same0);
 		/*
 		if(ctStereotype.equals(Tag.Derive.toString()) && leftSideOfImplies == false){
 			consequent.add(same0);
@@ -144,6 +154,9 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		}
 		*/
 		
+		if(retArgsY2.size() > 0 && (org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) || org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype))){
+			varX2 = retArgsY2.get(0);
+		}
 		//varX and varX_2 are always differents
 		SWRLDifferentIndividualsAtom diff = factory.getSWRLDifferentIndividualsAtom((SWRLVariable)varX, (SWRLVariable)varX2);
 		//antecedent.add(diff);

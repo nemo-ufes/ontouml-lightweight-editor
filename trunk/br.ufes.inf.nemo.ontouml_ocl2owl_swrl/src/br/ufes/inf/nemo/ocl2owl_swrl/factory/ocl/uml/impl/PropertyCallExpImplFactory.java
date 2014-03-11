@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
+import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
 import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Property;
@@ -13,9 +14,12 @@ import org.eclipse.uml2.uml.internal.impl.ClassImpl;
 import org.eclipse.uml2.uml.internal.impl.DataTypeImpl;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.eclipse.uml2.uml.internal.impl.PrimitiveTypeImpl;
+import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLDataProperty;
+import org.semanticweb.owlapi.model.OWLFunctionalObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -29,6 +33,7 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.Factory;
+import br.ufes.inf.nemo.ocl2owl_swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2owl_swrl.util.Util;
 
 /**
@@ -75,11 +80,20 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		Type propertyType = referredProperty.getType();
 		
 		ArrayList<SWRLDArgument> retArgsY = null;
-		if(propertyType.getClass().equals(PrimitiveTypeImpl.class) || propertyType.getClass().equals(DataTypeImpl.class)){//if the property is an attirbute
+		if(ctStereotype.equals(Tag.functional.toString())){
+			solveFunctional(propertyCallExpImpl, refParser, nameSpace, manager, factory, ontology);			
+		}else if(ctStereotype.equals(Tag.inversefunctional.toString())){
+			solveInverseFunctional(propertyCallExpImpl, refParser, nameSpace, manager, factory, ontology);			
+		}else if(propertyType.getClass().equals(PrimitiveTypeImpl.class) || propertyType.getClass().equals(DataTypeImpl.class)){//if the property is an attirbute
 			retArgsY = solveClassAttribute(ctStereotype, nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot, repeatNumber, leftSideOfImplies);
 		}else if(propertyType.getClass().equals(ClassImpl.class)){//if the property is an association
 			retArgsY = solveAssociation(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot, repeatNumber, leftSideOfImplies);
 		}
+		
+		if(Tag.isObjectPropertyTag(ctStereotype)){
+			return null;
+		}
+		
 		SWRLDArgument varY = retArgsY.get(retArgsY.size()-1);//get the last
 		
 		//the varX and varY are returned
@@ -89,6 +103,29 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		
 		return retArgsZ;
 	}
+	
+	public void solveInverseFunctional(PropertyCallExpImpl propertyCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2Owl_SwrlException {
+		//get the relation
+		OWLObjectProperty relation = this.getOWLObjectProperty(propertyCallExpImpl, nameSpace, refParser, factory);
+		
+		//set the relation as transition
+		OWLInverseFunctionalObjectPropertyAxiom invFunctional = factory.getOWLInverseFunctionalObjectPropertyAxiom(relation);
+		//apply changes in the owl manager
+		manager.applyChange(new AddAxiom(ontology, invFunctional));
+		
+	}
+
+	public void solveFunctional(PropertyCallExpImpl propertyCallExpImpl, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology) throws Ocl2Owl_SwrlException {
+		//get the relation
+		OWLObjectProperty relation = this.getOWLObjectProperty(propertyCallExpImpl, nameSpace, refParser, factory);
+		
+		//set the relation as transition
+		OWLFunctionalObjectPropertyAxiom functional = factory.getOWLFunctionalObjectPropertyAxiom(relation);
+		//apply changes in the owl manager
+		manager.applyChange(new AddAxiom(ontology, functional));
+		
+	}
+
 	
 	//verify if the source is about self
 	public Boolean initiatedBySelf(OCLExpressionImpl source){
@@ -149,8 +186,11 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 			nameVarY = Util.generateVarName(referredProperty, referredArgument);
 		}
 		if(repeatNumber>1){
-			//nameVarX+=repeatNumber;
-			nameVarY+=repeatNumber;
+			if(assocEndName.equals(assocEnd0Name)){
+				nameVarX+=repeatNumber;
+			}else{
+				nameVarY+=repeatNumber;
+			}			
 		}
 		
 		//variables are created to the source and the target class
@@ -373,10 +413,19 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		PropertyCallExpImpl propertyCallExpImpl = (PropertyCallExpImpl) this.m_NamedElementImpl;
 		//then, the referred property of the property call is got
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
+		Type refPropType = referredProperty.getType();
 		//get the association of the property
 		Association association = referredProperty.getAssociation();
+		Property memEnd1 = association.getMemberEnds().get(1);
+		Type memEnd1Type = memEnd1.getType();
+		
 		//generate the association name and the IRI
-		String iriRelationName = nameSpace + PropertyCallExpImplFactory.generateAssociationName(refParser, association);;
+		String iriRelationName = nameSpace;
+		if(refPropType != memEnd1Type){
+			iriRelationName += "INV.";
+		}
+		iriRelationName += PropertyCallExpImplFactory.generateAssociationName(refParser, association);
+		
 		IRI iriRelation = IRI.create(iriRelationName);
 		//get the OWL object property
 		OWLObjectProperty relation = factory.getOWLObjectProperty(iriRelation);
