@@ -18,13 +18,58 @@ public class DerivedByUnion extends DerivedType{
 		
 		value= new ArrayList<>();
 		value.add("Category");
-		tableValues.put("Kind"+"Subkind", value);
+		tableValues.put("Kind"+"SubKind", value);
+		
+		value= new ArrayList<>();
+		value.add("Category");
+		tableValues.put("SubKind"+"Kind", value);
+		
+		
+		value= new ArrayList<>();
+		value.add("Category");
+		tableValues.put("Kind"+"Category", value);
+		
+		value= new ArrayList<>();
+		value.add("Category");
+		tableValues.put("Category"+"Kind", value);
+		
+		value= new ArrayList<>();
+		value.add("Category");
+		tableValues.put("SubKind"+"Kind", value);
+		
+		value= new ArrayList<>();
+		value.add("SUBKIND");
+		value.add("CATEGORY");
+		tableValues.put("SubKind"+"SubKind", value);
+		
+		value= new ArrayList<>();
+		value.add("Category");
+		tableValues.put("Category"+"SubKind", value);
+		
+		value= new ArrayList<>();
+		value.add("Category");
+		tableValues.put("Category"+"Category", value);
+
+		value= new ArrayList<>();
+		value.add("MIXIN");
+		tableValues.put("Kind"+"Role", value);
+		
+		value= new ArrayList<>();
+		value.add("MIXIN");
+		tableValues.put("Kind"+"Phase", value);
+		
+		value= new ArrayList<>();
+		value.add("MIXIN");
+		tableValues.put("Kind"+"Role Mixin", value);
+		
 		
 	}
 
 
 	public static ArrayList<String> inferStereotype(String stereotype_1, String stereotype_2) {
 		// TODO Auto-generated method stub
+		System.out.println(tableValues);
+		
 		return tableValues.get(stereotype_1+stereotype_2);
 	}
 
