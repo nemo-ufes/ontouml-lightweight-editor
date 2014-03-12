@@ -1,14 +1,8 @@
 package br.ufes.inf.nemo.assistant.manager;
 
-import java.io.Serializable;
-
 import br.ufes.inf.nemo.assistant.util.ActionEnum;
 
-public class ActionProcessor implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class ActionProcessor{
 	private PatternOperator patternOperator;
 	
 	public ActionProcessor(PatternOperator operator) {

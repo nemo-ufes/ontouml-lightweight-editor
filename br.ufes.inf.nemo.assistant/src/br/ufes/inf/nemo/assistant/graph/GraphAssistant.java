@@ -11,7 +11,7 @@ public class GraphAssistant implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private ManagerPattern managerPattern;
+	private transient ManagerPattern managerPattern;
 
 	private NodeAssistant startNode;
 	private NodeAssistant currentNode;

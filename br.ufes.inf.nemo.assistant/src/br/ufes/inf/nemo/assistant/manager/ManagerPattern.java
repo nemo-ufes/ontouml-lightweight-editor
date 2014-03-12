@@ -1,7 +1,5 @@
 package br.ufes.inf.nemo.assistant.manager;
 
-import java.io.Serializable;
-
 import org.eclipse.jface.wizard.IWizardPage;
 
 import RefOntoUML.Classifier;
@@ -12,11 +10,7 @@ import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewPhase;
 import br.ufes.inf.nemo.assistant.wizard.pageassistant.NewRelator;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 
-public class ManagerPattern implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class ManagerPattern {
 	private RefOntoUML.Package root;
 	private Classifier source;
 

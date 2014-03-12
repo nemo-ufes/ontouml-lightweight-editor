@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.assistant.manager;
 
-import java.io.Serializable;
 import java.text.Normalizer;
 import java.util.ArrayList;
 
@@ -23,11 +22,7 @@ import br.ufes.inf.nemo.assistant.util.GeneralizationClass;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 
-public class PatternOperator implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class PatternOperator{
 	//elements
 	private ArrayList<RefOntoUML.Classifier> setClassifier = new ArrayList<>();
 	private ArrayList<RefOntoUML.Kind> setKind = new ArrayList<>();

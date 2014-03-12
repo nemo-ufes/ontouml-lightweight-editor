@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
-import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
 import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Property;
