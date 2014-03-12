@@ -11,6 +11,8 @@ import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Undefined Role Specialization
@@ -148,6 +150,44 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 	@Override
 	public String getShortName() {
 		return parser.getStringRepresentation(getDefinedRole());
+	}
+
+	// OUTCOMING FIXES ==========================================================
+	
+	public void createOCLDerivation(String oclDerive) {
+		fix.includeRule(oclDerive);
+	}
+
+	public void createNewMediation(Relator relator, Role role,String relatorEndMultip, String roleEndMultip) {
+		fix.addAll(fixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, role));
+		Mediation med = null;
+		for(Object obj: fix.getAdded()) { if (obj instanceof Mediation) med = (Mediation)obj; }
+		fix.addAll(fixer.changePropertyMultiplicity(med.getMemberEnd().get(0), relatorEndMultip));
+		fix.addAll(fixer.changePropertyMultiplicity(med.getMemberEnd().get(1), roleEndMultip));
+		for(Property p: getDefiningRelatorEnds()){
+			if (p.getType().equals(relator)){
+				med.getMemberEnd().get(0).getSubsettedProperty().add(p);
+			}				
+		}		
+	}
+
+	public void createSubRelatorWithMediation(Relator relator, Role role,String subRelatorName,String relatorEndMultip,String roleEndMultip) {
+		fix.addAll(fixer.createSubTypeAs(relator, ClassStereotype.RELATOR));
+		Relator subrelator = null;
+		for(Object obj: fix.getAdded()) { if (obj instanceof Relator) subrelator = (Relator)obj; }
+		subrelator.setName(subRelatorName);
+		if(subrelator!=null){
+			fix.addAll(fixer.createAssociationBetween(RelationStereotype.MEDIATION, "", subrelator, role));
+		}
+		Mediation med = null;
+		for(Object obj: fix.getAdded()) { if (obj instanceof Mediation) med = (Mediation)obj; }
+		fix.addAll(fixer.changePropertyMultiplicity(med.getMemberEnd().get(0), relatorEndMultip));
+		fix.addAll(fixer.changePropertyMultiplicity(med.getMemberEnd().get(1), roleEndMultip));
+		for(Property p: getDefiningRelatorEnds()){
+			if (p.getType().equals(relator)){
+				med.getMemberEnd().get(0).getSubsettedProperty().add(p);
+			}				
+		}		
 	}
 
 }

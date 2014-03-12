@@ -1655,7 +1655,6 @@ public class AntiPatternSearchDialog extends JDialog {
 		if(UndefFormalThread!=null) UndefFormalThread.interrupt();
 		if(UndefPhaseThread!=null) UndefPhaseThread.interrupt();
 		if(WholeOverThread!=null) WholeOverThread.interrupt();
-
 	}
 	
 	/**

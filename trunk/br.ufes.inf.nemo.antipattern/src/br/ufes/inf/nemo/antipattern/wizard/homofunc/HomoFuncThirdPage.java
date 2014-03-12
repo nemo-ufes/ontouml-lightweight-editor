@@ -92,7 +92,7 @@ public class HomoFuncThirdPage extends HomoFuncPage {
 		(composite3.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item3.setControl(composite3);		
 		
-//		//===========
+		//===========
 
 		Composite composite4 = new Composite (expandBar, SWT.NONE);
 		GridLayout layout4 = new GridLayout ();

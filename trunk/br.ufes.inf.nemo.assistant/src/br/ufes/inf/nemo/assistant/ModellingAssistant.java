@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -67,6 +69,31 @@ public class ModellingAssistant {
 		}
 	}
 	
+	public void bringToFront(final Shell shell) {
+	    shell.getDisplay().asyncExec(new Runnable() {
+	        public void run() {
+	            shell.forceActive();
+	        }
+	    });
+	}
+	
+	private class WizardDialogAssistant extends WizardDialog {
+
+		public WizardDialogAssistant(Shell parentShell, IWizard newWizard) 
+		{
+			super(parentShell, newWizard);
+		}
+		
+		@Override
+		public void create() 
+		{
+		    super.create();
+		    setShellStyle(SWT.TITLE);
+		    bringToFront(getShell());
+		    getShell().setText("Modeling Assistant");	    
+		}		
+	}
+	
 	/**
 	 * Run the pattern for the elem.
 	 * Start and show the wizard
@@ -83,10 +110,10 @@ public class ModellingAssistant {
 
 				Fix fix = null;
 
-				Display display = Display.getDefault();	    	
-				Shell shell = display.getActiveShell();
-				WizardDialog wizardDialog = new WizardDialog(shell,new WizardAssitant(graph));
-
+				Display display = Display.getDefault();				
+				Shell shell = display.getActiveShell();				
+				WizardDialogAssistant wizardDialog = new WizardDialogAssistant(shell,new WizardAssitant(graph));
+				wizardDialog.create();
 				if (wizardDialog.open() == Window.OK) {
 					fix = graph.getManagerPattern().getFix();
 				}
