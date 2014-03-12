@@ -55,7 +55,7 @@ public class ProjectBrowser extends JPanel{
 	private InferenceList inferences;
 	private OntoUML2AlloyOptions refOptions;
 	private TOCL2AlloyOption oclOptions;	
-	private ModellingAssistant assistant;
+//	private ModellingAssistant assistant;
 				
 	public void setProject(UmlProject project)
 	{
@@ -78,7 +78,7 @@ public class ProjectBrowser extends JPanel{
 		inferences = new InferenceList();
 		
 		//VICTOR comentar
-		assistant = new ModellingAssistant(project.getModel());
+//		assistant = new ModellingAssistant(project.getModel());
 	
 		scroll.setViewportView(tree);
 		
@@ -218,10 +218,10 @@ public class ProjectBrowser extends JPanel{
 		ProjectBrowser.getProjectBrowserFor(frame,project).antipatterns = antipatterns;
 	}
 	
-	public static ModellingAssistant getAssistantFor(UmlProject project)
-	{
-		return ProjectBrowser.getProjectBrowserFor(frame,project).assistant;
-	}	
+//	public static ModellingAssistant getAssistantFor(UmlProject project)
+//	{
+//		return ProjectBrowser.getProjectBrowserFor(frame,project).assistant;
+//	}	
 	
 	public static InferenceList getInferences(UmlProject project) {
 		return ProjectBrowser.getProjectBrowserFor(frame,project).inferences;
