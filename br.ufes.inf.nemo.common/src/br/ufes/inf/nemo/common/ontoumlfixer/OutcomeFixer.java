@@ -236,6 +236,35 @@ public class OutcomeFixer{
 		return fix;
 	}
 	
+	/** Change a property multiplicity from the format: 1..*, 0..*, 0..-1, 1, 3, and so on and so forth */	
+	public Fix changePropertyMultiplicity(Property property, String multiplicity) 
+	{
+		Fix fix = new Fix();	
+		String lower = "1";
+		String upper = "1";
+		if(multiplicity.contains("..")){
+			String[] array = multiplicity.split("\\.\\.");
+			lower = array[0].trim();
+			upper = array[1].trim();
+			if(lower.equals("*")) lower = "-1";
+			if(upper.equals("*")) upper = "-1";
+		}else{
+			if (multiplicity.equals("*")) multiplicity = "-1";
+			lower = multiplicity.trim();
+			upper = multiplicity.trim();
+		}
+		int lowerValue = Integer.parseInt(lower);
+		int upperValue = Integer.parseInt(upper);
+		LiteralInteger lowerBound = factory.createLiteralInteger();
+		lowerBound.setValue(lowerValue);
+		LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
+		upperBound.setValue(upperValue);
+		property.setUpperValue(upperBound);
+		property.setLowerValue(lowerBound);		
+		fix.includeModified(property);	
+		return fix;
+	}
+	
 	/**
 	 * Create default properties for this association.
 	 */
