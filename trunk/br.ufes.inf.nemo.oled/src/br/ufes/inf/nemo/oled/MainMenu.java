@@ -31,7 +31,6 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
@@ -229,10 +228,10 @@ public class MainMenu implements ActionListener {
 		menubar.add(editMenu);
 		
 		JMenuItem undoItem = createMenuItem(editMenu, "undo");
-		undoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
+//		undoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
 		
 		JMenuItem redoItem = createMenuItem(editMenu, "redo");
-		redoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
+//		redoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
 		
 		//editMenu.addSeparator();
 		
@@ -437,7 +436,7 @@ public class MainMenu implements ActionListener {
 		for (AppCommandListener l : listeners) {
 			//victor
 			if(e.getActionCommand().equals("ASSISTANT") && showBugReport){
-				JOptionPane.showMessageDialog(null, "Modeling Assistant v0.1 \nPlease report bug or improvements to:\nhttps://code.google.com/p/ontouml-lightweight-editor/issues/list");
+				frame.showInformationMessageDialog("Activating Modeling Assistant", "Modeling Assistant v0.1 \nPlease report bug or improvements to:\nhttps://code.google.com/p/ontouml-lightweight-editor/issues/list");
 				showBugReport = false;
 			}
 			l.handleCommand(e.getActionCommand());

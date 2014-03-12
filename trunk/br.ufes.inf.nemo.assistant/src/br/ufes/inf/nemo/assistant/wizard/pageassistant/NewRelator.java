@@ -99,7 +99,7 @@ public class NewRelator extends WizardPageAssistant {
 				validate();
 			}
 		});
-		btNewMediation.setBounds(441, 247, 123, 25);
+		btNewMediation.setBounds(429, 20, 123, 25);
 		btNewMediation.setText("Add new Mediation");
 
 		Label lblNameToRelator = new Label(container, SWT.NONE);
@@ -123,7 +123,7 @@ public class NewRelator extends WizardPageAssistant {
 				//TODO criar uma classe nova
 			}
 		});
-		btnAddNewClass.setBounds(340, 247, 95, 25);
+		btnAddNewClass.setBounds(8, 247, 95, 25);
 		btnAddNewClass.setText("Add new Class");
 		btnAddNewClass.setEnabled(false);
 
@@ -137,9 +137,14 @@ public class NewRelator extends WizardPageAssistant {
 				validate();
 			}
 		});
-		btDeleteMediation.setBounds(10, 247, 109, 25);
+		btDeleteMediation.setBounds(314, 20, 109, 25);
 		btDeleteMediation.setText("Delete Mediation");
 		btDeleteMediation.setEnabled(false);
+		
+		Button btnEditSelection = new Button(container, SWT.NONE);
+		btnEditSelection.setText("Edit Selection");
+		btnEditSelection.setEnabled(false);
+		btnEditSelection.setBounds(469, 247, 95, 25);
 
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
