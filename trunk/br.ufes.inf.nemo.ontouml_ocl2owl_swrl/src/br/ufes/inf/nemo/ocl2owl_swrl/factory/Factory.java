@@ -2,10 +2,22 @@ package br.ufes.inf.nemo.ocl2owl_swrl.factory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.ocl.uml.impl.*;
+import org.eclipse.ocl.uml.impl.BooleanLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.CollectionItemImpl;
+import org.eclipse.ocl.uml.impl.CollectionLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.EnumLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.ExpressionInOCLImpl;
+import org.eclipse.ocl.uml.impl.IntegerLiteralExpImpl;
+import org.eclipse.ocl.uml.impl.IteratorExpImpl;
+import org.eclipse.ocl.uml.impl.LetExpImpl;
+import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
+import org.eclipse.ocl.uml.impl.OperationCallExpImpl;
+import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
+import org.eclipse.ocl.uml.impl.TypeExpImpl;
+import org.eclipse.ocl.uml.impl.VariableExpImpl;
+import org.eclipse.ocl.uml.impl.VariableImpl;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.IRI;
@@ -17,14 +29,26 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLArgument;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
-import org.semanticweb.owlapi.model.SWRLIArgument;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import uk.ac.manchester.cs.owl.owlapi.SWRLObjectPropertyAtomImpl;
 import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.*;
-import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.*;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonImplemented;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonSupported;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.BooleanLiteralExpImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.CollectionItemImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.CollectionLiteralExpImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.EnumLiteralExpImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.IntegerLiteralExpImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.IteratorExpImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.LetExpImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.OperationCallExpImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.PropertyCallExpImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.TypeExpImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.VariableExpImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.VariableImplFactory;
 import br.ufes.inf.nemo.ocl2owl_swrl.tags.Tag;
 
 

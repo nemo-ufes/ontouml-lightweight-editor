@@ -52,7 +52,6 @@ public class BynaryAstah2Graph {
 		return hashGraph;
 	}
 
-	
 	public static void main(String[] args) {
 		BynaryAstah2Graph.serialize();
 		System.out.println("Finished");
@@ -61,9 +60,12 @@ public class BynaryAstah2Graph {
 //	public static void main(String[] args) {
 //		try{
 //			HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraph = BynaryAstah2Graph.deserialize();
+//			GraphAssistant graph = hashGraph.get(StereotypeOntoUMLEnum.KIND);
+//			System.out.println(graph.toString());
 //		}catch(Exception e ){
 //			e.printStackTrace();
 //		}
-//	System.out.println("Finished");
+//		
+//		System.out.println("Finished");
 //	}
 }

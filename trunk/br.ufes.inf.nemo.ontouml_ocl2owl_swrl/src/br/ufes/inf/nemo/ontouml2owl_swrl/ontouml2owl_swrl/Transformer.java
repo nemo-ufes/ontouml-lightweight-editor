@@ -55,7 +55,6 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import RefOntoUML.Association;
 import RefOntoUML.Characterization;
 import RefOntoUML.Class;
-import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.FormalAssociation;
@@ -75,7 +74,6 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
-import RefOntoUML.util.RefOntoUMLAdapterFactory;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2owl_swrl.OCL2OWL_SWRL;
 
@@ -325,14 +323,6 @@ public class Transformer {
 			e.printStackTrace();
 		}
 		return "";
-	}
-
-	private void processDisjointDataType() {
-		for (Classifier cls : hashDataProperty.keySet()) {
-			if(hashDataProperty.get(cls).size() > 1){
-				manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointDataPropertiesAxiom(hashDataProperty.get(cls))));
-			}
-		}
 	}
 
 	/**
@@ -962,7 +952,6 @@ public class Transformer {
 
 	private void processAssociation(Set<Association> lstAssociation, String stereotype) {
 		int match = 0;
-		boolean nameNull = false;
 
 		OWLObjectProperty prop = null;
 		OWLObjectProperty invProp = null;
@@ -978,9 +967,6 @@ public class Transformer {
 			prop = getObjectProperty(ass);
 			if(prop == null){
 				errors += "Warning: An unnamed Association from <"+getName(ass.getMemberEnd().get(0).getType())+"> (source class) to <"+getName(ass.getMemberEnd().get(1).getType())+"> (target class) was mapped to OWL <"+getObjectPropertyName(ass,stereotype)+">;\n";
-
-				//The name of the property is null
-				nameNull = true;
 
 				topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+stereotype));
 				invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+stereotype));
@@ -1048,8 +1034,6 @@ public class Transformer {
 			//Make the inverse property disjoint of the property
 			//			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
 
-			//clean the flag variables
-			nameNull = false;
 			match = 0;
 		}
 	}

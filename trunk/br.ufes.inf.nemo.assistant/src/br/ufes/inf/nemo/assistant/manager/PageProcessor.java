@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.assistant.manager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -24,11 +23,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 
-public class PageProcessor implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class PageProcessor{
 
 	private OutcomeFixer outcomeFixer;
 

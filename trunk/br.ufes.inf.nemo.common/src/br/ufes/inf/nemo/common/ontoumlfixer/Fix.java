@@ -1,13 +1,12 @@
 package br.ufes.inf.nemo.common.ontoumlfixer;
 
 import java.awt.geom.Point2D;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
 
-public class Fix implements Serializable {
+public class Fix{
 
 	private ArrayList<Object> deletedElements = new ArrayList<Object>();
 	//private ArrayList<Object> addedElements = new ArrayList<Object>();
