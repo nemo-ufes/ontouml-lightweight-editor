@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Shell;
 import RefOntoUML.Classifier;
 import RefOntoUML.Package;
 import br.ufes.inf.nemo.assistant.graph.GraphAssistant;
+import br.ufes.inf.nemo.assistant.manager.ManagerPattern;
 import br.ufes.inf.nemo.assistant.util.StereotypeOntoUMLEnum;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.assistant.wizard.WizardAssitant;
@@ -34,6 +35,8 @@ public class ModellingAssistant {
 		Iterator<GraphAssistant> graphIterator = hashGraph.values().iterator();
 		while(graphIterator.hasNext()){
 			GraphAssistant graph = graphIterator.next();
+			if(graph.getManagerPattern() == null)
+				graph.setManagerPattern(new ManagerPattern());
 			graph.getManagerPattern().setRefOntoUML(root);
 		}
 		
