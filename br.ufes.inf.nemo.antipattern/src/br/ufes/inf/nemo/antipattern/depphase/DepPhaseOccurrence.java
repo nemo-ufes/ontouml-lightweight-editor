@@ -9,22 +9,16 @@ import RefOntoUML.Mediation;
 import RefOntoUML.Phase;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
+import RefOntoUML.Role;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Relationally Dependent Phase
 public class DepPhaseOccurrence extends AntipatternOccurrence{
 
 	private Phase phase;
-	public Phase getPhase() {
-		return phase;
-	}
-
-	public ArrayList<Property> getRelatorEnds() {
-		return relatorEnds;
-	}
-
-
 	private ArrayList<Property> relatorEnds;
 	
 	public DepPhaseOccurrence(Phase phase, ArrayList<Property> relatorEnds, DepPhaseAntipattern ap) throws Exception {
@@ -52,6 +46,14 @@ public class DepPhaseOccurrence extends AntipatternOccurrence{
 		
 		this.relatorEnds = relatorEnds;
 		
+	}
+	
+	public Phase getPhase() {
+		return phase;
+	}
+
+	public ArrayList<Property> getRelatorEnds() {
+		return relatorEnds;
 	}
 
 	@Override
@@ -89,6 +91,38 @@ public class DepPhaseOccurrence extends AntipatternOccurrence{
 	@Override
 	public String getShortName() {
 		return parser.getStringRepresentation(getPhase());
+	}
+	
+	public void changeToRole(){
+		fix.addAll(fixer.changeClassStereotypeTo(phase, ClassStereotype.ROLE));
+	}
+	
+	public void separateRelationalDependencyOnSubtype(Property p){
+		String relatorName = p.getType().getName();
+		//creates a rule subtype for the phase and reconnected the given property to it
+		if(getRelatorEnds().contains(p)){
+			fix.addAll(fixer.createSubTypeAsInvolvingLink(phase, ClassStereotype.ROLE, p.getAssociation()));
+			fix.getAddedByType(Role.class).get(0).setName("RoleOf"+relatorName);
+		}
+	}
+	
+	public void separateRelationalDependencyOnSupertype(Property p){
+		Fix fixes = new Fix();
+		Classifier phaseParent = null;
+		String relatorName = p.getType().getName();
+		
+		if(phase.parents()!=null && phase.parents().size()>0);
+			phaseParent = phase.parents().get(0);
+		
+		//creates role supertype for the phase and reconnect the given property to it
+		if(getRelatorEnds().contains(p)){
+			fixes.addAll(fixer.addSuperTypeEnvolvingLink(phase, ClassStereotype.ROLE, p.getAssociation()));
+			fixes.getAddedByType(Role.class).get(0).setName("RoleOf"+relatorName);
+		}
+		
+		//creates a generalization from the created role to a parent of the phase
+		if (phaseParent instanceof Classifier)
+			fixer.createGeneralization(fixes.getAddedByType(Role.class).get(0), phaseParent);
 	}
 	
 }
