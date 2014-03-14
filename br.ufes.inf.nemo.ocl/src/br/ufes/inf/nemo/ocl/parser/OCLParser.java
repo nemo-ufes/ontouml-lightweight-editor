@@ -38,7 +38,7 @@ public class OCLParser {
     public String umlFile;
     public org.eclipse.uml2.uml.Package umlRoot;    
     public String umlPath;
-    public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> pureUmlMap;
+    public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap;
         
     // OCL
     public org.eclipse.ocl.uml.OCL myOCL;
@@ -73,7 +73,7 @@ public class OCLParser {
 
     	umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false));
     	    	
-    	pureUmlMap = OntoUML2UML.getMap();
+    	umap = OntoUML2UML.getStandardMap();
     	logDetails = OntoUML2UML.getLog();
     	    	
     	umlFile = umlPath.substring(umlPath.lastIndexOf(File.separator)+1);
@@ -119,7 +119,7 @@ public class OCLParser {
     	
    		umlResource = OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(true,false));
     	
-    	pureUmlMap = OntoUML2UML.getMap();
+    	umap = OntoUML2UML.getStandardMap();
     	logDetails = OntoUML2UML.getLog();
     	    	
     	umlFile = umlPath.substring(umlPath.lastIndexOf(File.separator)+1);
@@ -151,7 +151,7 @@ public class OCLParser {
 
    		umlResource = OntoUML2UML.convertToUML(refparser,refAbsolutePath.replace(".refontouml" , ".uml"),new OntoUML2UMLOption(true,false));
 
-   		pureUmlMap = OntoUML2UML.getMap();
+   		umap = OntoUML2UML.getStandardMap();
     	logDetails = OntoUML2UML.getLog();
 		
     	umlPath = refAbsolutePath.replace(".refontouml" , ".uml");    	
@@ -229,7 +229,7 @@ public class OCLParser {
     /** Get the OntoUML element related to the UML one. */
     public RefOntoUML.Element getOntoUMLElement(org.eclipse.uml2.uml.Element value) 
     {    	
-        for (Entry<RefOntoUML.Element,org.eclipse.uml2.uml.Element> entry : pureUmlMap.entrySet()) 
+        for (Entry<RefOntoUML.Element,org.eclipse.uml2.uml.Element> entry : umap.entrySet()) 
         {
             if (value.equals(entry.getValue())) 
             {

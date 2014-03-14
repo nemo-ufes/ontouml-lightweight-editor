@@ -25,12 +25,39 @@ import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 public class TOCLParser extends OCLParser{
 	
     // Temporal UML
-    public HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier>> tempUmlAssocMap = new HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier> >();
-	public HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element>> tempUmlAttrMap = new HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element> >();
-            
+    public HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> tmap = new HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element> >();
+	            
     //TOCL
-    public ArrayList<String> objectOperationParamList = new ArrayList<String>();
+    public ArrayList<String> oclIsKindOfList = new ArrayList<String>();
+    public ArrayList<String> oclIsTypeOfList = new ArrayList<String>();
     public ArrayList<String> constraintStereotypeList = new ArrayList<String>();
+    
+    public String getOclIsKindOfWorldParam(int index)
+    {
+    	int i = 0;
+    	for(String str: oclIsKindOfList)
+    	{
+    		if(i == index) {
+    			String array[] = str.split(",");
+    			return array[1];    		
+    		}
+    		i++;
+    	}
+    	return "<Unknown>";
+    }
+    
+    public String getOclIsTypeOfWorldParam(int index)
+    {
+    	int i = 0;
+    	for(String str: oclIsTypeOfList)
+    	{
+    		if(i == index) {
+    			String array[] = str.split(",");
+    			return array[1];    		
+    		}
+    	}
+    	return "<Unknown>";
+    }
     
     /**
      * Constructor. 
@@ -45,8 +72,7 @@ public class TOCLParser extends OCLParser{
     	super(refparser,tempDirPath,backgroundModelName);
     	
     	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath);
-    	tempUmlAssocMap = OntoUML2UML.getTempAssociationsMap();
-        tempUmlAttrMap = OntoUML2UML.getTempAttributesMap();    
+    	tmap = OntoUML2UML.getTemporalMap();
         
         //re-configuration
         org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());		
@@ -70,8 +96,7 @@ public class TOCLParser extends OCLParser{
 		super(rootPackage,tempDirPath,backgroundModelName);
 
 		umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath);
-   		tempUmlAssocMap = OntoUML2UML.getTempAssociationsMap();
-      	tempUmlAttrMap = OntoUML2UML.getTempAttributesMap();	
+   		tmap = OntoUML2UML.getTemporalMap();
       	
         //re-configuration
       	org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());		
@@ -94,8 +119,7 @@ public class TOCLParser extends OCLParser{
     	this.refparser = new OntoUMLParser(refAbsolutePath);
 
     	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath);
-   		tempUmlAssocMap = OntoUML2UML.getTempAssociationsMap();
-      	tempUmlAttrMap = OntoUML2UML.getTempAttributesMap();
+   		tmap = OntoUML2UML.getTemporalMap();
       	
         //re-configuration
       	org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());		
@@ -135,7 +159,11 @@ public class TOCLParser extends OCLParser{
     		result = left+right;    		
     		jump  = jump -1-worldVar.length();
     		
-    		objectOperationParamList.add(typeVar.trim()+","+worldVar.trim());    		
+    		if(result.substring(indexBegin+jump, indexEnd+jump).contains("oclIsKindOf")){
+    			oclIsKindOfList.add(typeVar.trim()+","+worldVar.trim());    			
+    		}else{
+    			oclIsTypeOfList.add(typeVar.trim()+","+worldVar.trim());
+    		} 
     	}
     	return result;
     }
@@ -174,7 +202,7 @@ public class TOCLParser extends OCLParser{
     		if(indexBegin+(jump) < 0) indexBegin = 0;
     		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
     		    		
-    		System.out.println(result.substring(indexBegin+(jump),indexEnd+(jump)));
+    		//System.out.println(result.substring(indexBegin+(jump),indexEnd+(jump)));
     	}
     	return result;    	    	    
     }
@@ -227,20 +255,13 @@ public class TOCLParser extends OCLParser{
 		result = oclTemporalContent;
 		
 		result = processInLineComments(result);
-		result = processMultiLineComments(result);
 		
-		Pattern p = Pattern.compile("oclIsKindOf\\(\\s*\\w+\\s*,\\s*\\w+\\s*\\)");		
+		Pattern p = Pattern.compile("oclIsKindOf\\((_')*\\s*\\w+\\s*'*,\\s*\\w+\\s*\\)");		
 		result = processObjectOperation(result, p);
 		
-		p = Pattern.compile("oclIsTypeOf\\(\\s*\\w+\\s*,\\s*\\w+\\s*\\)");		
+		p = Pattern.compile("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*,\\s*\\w+\\s*\\)");		
 		result = processObjectOperation(result, p);
-		
-    	p = Pattern.compile("oclIsKindOf\\(_'[\\s|\\w]*',\\s*\\w+\\s*\\)");		
-		result = processObjectOperation(result, p);
-		
-    	p = Pattern.compile("oclIsTypeOf\\(_'[\\s|\\w]*',\\s*\\w+\\s*\\)");		
-		result = processObjectOperation(result, p);
-		
+				
     	// navigations such as roleName[w] will become roleName(w)
 	    result = result.replaceAll("\\[","(");
 	    result = result.replaceAll("\\]",")");
@@ -262,9 +283,13 @@ public class TOCLParser extends OCLParser{
 			umlconstraintsList = myOCL.parse(document);
 		}catch(ParserException pe){
 			if (pe.getLocalizedMessage().contains("World")){
-				String message = pe.getLocalizedMessage().replace("(World)","[World]");
-				message = message.replace("operation", "association end-point ");
-				throw new ParserException(message);
+				if(!pe.getLocalizedMessage().contains("oclIsKindOf") && !pe.getLocalizedMessage().contains("oclIsTypeOf") &&
+				   !pe.getLocalizedMessage().contains("allIntances") && !pe.getLocalizedMessage().contains("existsIn"))
+				{					
+					String message = pe.getLocalizedMessage().replace("(World)","[World]");
+					message = message.replace("operation", "association end-point ");
+					throw new ParserException(message);
+				}					
 			}else{
 				throw new ParserException(pe.getLocalizedMessage());
 			}
@@ -279,4 +304,17 @@ public class TOCLParser extends OCLParser{
    		String oclContent = FileUtil.readFile(temporalOCLFile.getAbsolutePath());   		
    		parseTemporalOCL(oclContent);
     }    
+    
+    /** Get the OntoUML element related to the UML one. */
+    @Override
+    public RefOntoUML.Element getOntoUMLElement(org.eclipse.uml2.uml.Element value) 
+    {    	
+        for (RefOntoUML.Element key : tmap.keySet()) 
+        {
+        	for(org.eclipse.uml2.uml.Element elem: tmap.get(key)){
+        		if (elem.equals(value)) return key;
+        	}
+        }
+        return super.getOntoUMLElement(value);
+    }
 }

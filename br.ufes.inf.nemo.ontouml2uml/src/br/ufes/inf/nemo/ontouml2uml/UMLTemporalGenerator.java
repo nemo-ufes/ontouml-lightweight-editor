@@ -20,21 +20,15 @@ public class UMLTemporalGenerator {
 	public org.eclipse.uml2.uml.UMLFactory ufactory;
 	public HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap;
 	
-	// temporal inclusion
-	public HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier>> assocMap = new HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier> >();
-	public HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element>> attrMap = new HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element> >();
+	// temporal inclusion	
+	public HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> tmap = new HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>>();
 	public int assoc_counter=0;
 	public int attr_counter=0;
 	public String tlog = new String();
-	
-	public HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier>> getAssociationsMap()
+		
+	public HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> getMap()
 	{
-		return assocMap;
-	}
-	
-	public HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element>> getAttributesMap()
-	{
-		return attrMap;
+		return tmap;
 	}
 	
 	public UMLTemporalGenerator(org.eclipse.uml2.uml.Package umlRoot, org.eclipse.uml2.uml.UMLFactory ufactory, HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap)
@@ -349,8 +343,7 @@ public class UMLTemporalGenerator {
 				
 				outln(attribute);
 				
-				RefOntoUML.Element key = getKey(top);
-				attrMap.put((RefOntoUML.Property)key, tempList);
+				tmap.put(getKey(top), tempList);
 			}
 		}
 	}
@@ -397,6 +390,9 @@ public class UMLTemporalGenerator {
 					op.setUpper(attr.getUpper());
 					op.setLower(attr.getLower());
 					outln(op);
+					ArrayList<org.eclipse.uml2.uml.Element> list = new ArrayList<org.eclipse.uml2.uml.Element>();
+					list.add(op);
+					tmap.put(getKey(attr), list);
 				}
 				if(owner instanceof org.eclipse.uml2.uml.DataType){
 					org.eclipse.uml2.uml.DataType class_ = (org.eclipse.uml2.uml.DataType)owner;
@@ -468,7 +464,7 @@ public class UMLTemporalGenerator {
 		{
 			if(top instanceof org.eclipse.uml2.uml.Association)
 			{
-				ArrayList<Classifier> tempList =  new ArrayList<Classifier>();
+				ArrayList<org.eclipse.uml2.uml.Element> tempList =  new ArrayList<org.eclipse.uml2.uml.Element>();
 				
 				org.eclipse.uml2.uml.Association assoc = (org.eclipse.uml2.uml.Association)top;
 				
@@ -496,8 +492,7 @@ public class UMLTemporalGenerator {
 				
 				tempList.add(targetRelation);
 								
-				RefOntoUML.Element key = getKey(top);
-				assocMap.put((RefOntoUML.Association)key, tempList);
+				tmap.put(getKey(top), tempList);
 
 				//if (key!=null) umap.remove(key);
 				//EcoreUtil.delete(top);

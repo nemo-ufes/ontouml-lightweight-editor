@@ -5,9 +5,9 @@ import java.io.IOException;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl.ocl2alloy.OCL2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
+import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2Alloy;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 
 /**
@@ -135,11 +135,11 @@ public class AlloySpecification {
 		String result = new String();
 		result = "\n";
 		
-		result += OCL2Alloy.convertToAlloy(oclmodel.getOCLParser(), oclOptions);
+		result += TOCL2Alloy.convertToAlloy(oclmodel.getOCLParser(), oclOptions);
 		
 		FileUtil.writeToFile(result, alsPath);
 		
-		return OCL2Alloy.log;		
+		return TOCL2Alloy.log;		
 	}
 	
 	/** Get Log details for made operations. */

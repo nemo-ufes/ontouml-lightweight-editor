@@ -778,6 +778,114 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return ;
 	}
 
+	/** Parse TOCL constraints from TOCL editor */
+	public void parseOCL(boolean showSuccesfullyMessage)
+	{
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));		
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());		
+		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }		
+		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
+		try {
+			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
+			// set parser 
+			String name = ((RefOntoUML.Package)getCurrentProject().getResource().getContents().get(0)).getName();
+			if (name==null || name.isEmpty()) name = "model";
+			oclmodel.setParser( new TOCLParser(refparser,getCurrentProject().getTempDir()+File.separator,name.toLowerCase()));
+			//parsing...
+			oclmodel.getParser().parseTemporalOCL(frame.getInfoManager().getConstraints());
+			// set options 
+			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new TOCL2AlloyOption(oclmodel.getOCLParser()));
+			// show Message
+			String msg =  "Constraints are syntactically correct.\n";
+			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing temporal OCL",msg);			
+		}catch(SemanticException e2){
+			frame.showErrorMessageDialog("Temporal OCL Semantic Error",  "Temporal OCL Parser: "+e2.getLocalizedMessage());    		
+			e2.printStackTrace();	
+
+		}catch(ParserException e1){
+			frame.showErrorMessageDialog("Temporal OCL Parsing Error", "Temporal OCL Parser: "+e1.getLocalizedMessage());    			
+			e1.printStackTrace();    	
+
+		}catch(Exception e4){
+			frame.showErrorMessageDialog("Unexpected Error", e4.getLocalizedMessage());			
+			e4.printStackTrace();
+		}		
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+	}
+
+	/** Transform OntoUML into Alloy */
+	public void doOntoUML2Alloy()
+	{
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
+		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
+		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }
+		// complete mandatory dependencies
+		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
+		try {			
+			// transforming...
+			ProjectBrowser.getAlloySpecFor(getCurrentProject()).setAlloyModel(refparser,refOptions);
+		} catch (Exception e) {
+			frame.showErrorMessageDialog("Transforming OntoUML into Alloy",e.getLocalizedMessage());					
+			e.printStackTrace();
+		}
+	}
+	
+	/** Transform Temporal OCL into Alloy */
+	public void doTOCL2Alloy()
+	{
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
+		OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
+		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
+		AlloySpecification alloySpec = ProjectBrowser.getAlloySpecFor(getCurrentProject());
+		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }
+		if (oclmodel.getOCLParser()==null) { frame.showErrorMessageDialog("Error","Inexistent constraints. You need to first create constraints.");  return; }
+		try {						
+			// transforming...
+			String logMessage = alloySpec.addConstraints(refparser, oclmodel,oclOptions);
+			// log details 
+			if (!logMessage.isEmpty() && logMessage!=null)
+			{				
+				frame.showWarningMessageDialog("Transforming Temporal OCL into Alloy",logMessage);					
+			}
+		} catch (Exception e) {			
+			frame.showErrorMessageDialog("Transforming Temporal OCL into Alloy",e.getLocalizedMessage());					
+			e.printStackTrace();
+		}		
+	}
+	
+	/** Set Alloy Analyzer instance */
+	@Deprecated
+	public Thread createAlloyAnalyzer(final boolean visible)
+	{		
+		Thread t = new Thread(new Runnable() {					
+			@Override
+			public void run() {
+				try{
+					if(frame.getAlloyAnalyzer()==null) { String[] args = {""}; frame.setAlloyAnalyzer(new SimpleGUICustom(args,visible,"")); }
+				}catch(Exception e){
+					if(e.getLocalizedMessage().isEmpty()) frame.showErrorMessageDialog("Creating Alloy Analyzer Instance", "A unexpected error has occurred. Please, report this to developers.");
+					else frame.showErrorMessageDialog("Creating Alloy Analyzer Instance", e.getLocalizedMessage());
+					e.printStackTrace();
+				}	
+			}
+		});
+		t.start();
+		return t;
+	}
+	
+	/** Generates Text Description */
+	public void generateText() 
+	{
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+				UmlProject project = getCurrentProject();				
+				GlossaryGeneratorUI settings = new GlossaryGeneratorUI(ProjectBrowser.getParserFor(project));
+				settings.setVisible(true);				
+			}
+		});
+	}
+	
 	/**
 	 * Creates an editor for a given Diagram.
 	 * @param diagram the diagram to be edited by the editor
@@ -1650,99 +1758,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 		return msg;
 	}
-
-	/**
-	 * Parse OCL constraints from OCL editor
-	 */
-	public void parseOCL(boolean showSuccesfullyMessage)
-	{
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());		
-		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }		
-		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
-
-		try {
-			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());			
-
-			// set parser from the editor view.
-			String name = ((RefOntoUML.Package)getCurrentProject().getResource().getContents().get(0)).getName();
-			if (name==null || name.isEmpty()) name = "model";
-			oclmodel.setParser( new TOCLParser(refparser,getCurrentProject().getTempDir()+File.separator,name.toLowerCase()));
-
-			oclmodel.getParser().parseTemporalOCL(frame.getInfoManager().getConstraints());
-
-			// set options from the parser
-			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new TOCL2AlloyOption(oclmodel.getOCLParser()));
-
-			// show Message
-			String msg =  "Constraints are syntactically correct.\n";
-			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing temporal OCL",msg);
-			
-		}catch(SemanticException e2){
-			frame.showErrorMessageDialog("Temporal OCL Semantic Error",  "Temporal OCL Parser: "+e2.getLocalizedMessage());    		
-			e2.printStackTrace();	
-
-		}catch(ParserException e1){
-			frame.showErrorMessageDialog("Temporal OCL Parsing Error", "Temporal OCL Parser: "+e1.getLocalizedMessage());    			
-			e1.printStackTrace();    	
-
-		}catch(Exception e4){
-			frame.showErrorMessageDialog("Unexpected Error", e4.getLocalizedMessage());			
-			e4.printStackTrace();
-		}
-		
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-	}
-
-	/**
-	 * Transform model to Alloy
-	 */
-	public void transformsOntoUMLintoAlloy()
-	{
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
-		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
-
-		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
-
-		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
-
-		try {			
-			ProjectBrowser.getAlloySpecFor(getCurrentProject()).setAlloyModel(refparser,refOptions);
-
-		} catch (Exception e) {
-			frame.showErrorMessageDialog("Transforming OntoUML into Alloy",e.getLocalizedMessage());					
-			e.printStackTrace();
-		}
-	}	
-
-	public Thread initAlloyAnalyzer(final boolean visible)
-	{		
-		Thread t = new Thread(new Runnable(){					
-			@Override
-			public void run() {
-				try{
-					if(frame.getAlloyAnalyzer()==null){
-						String[] args = {""};
-						frame.setAlloyAnalyzer(new SimpleGUICustom(args,visible,""));
-					}
-				}catch(Exception e){
-					if(e.getLocalizedMessage().isEmpty())
-						frame.showErrorMessageDialog("Creating Alloy Analyzer Instance", "A unexpected error has occurred. Please, report this to developers.");
-					else
-						frame.showErrorMessageDialog("Creating Alloy Analyzer Instance", e.getLocalizedMessage());
-					e.printStackTrace();
-				}	
-			}
-		});
-		t.start();
-		return t;
-	}
-
-	/**
-	 * Open Alloy Analyzer
-	 */
-	public void openAlloyAnalyzer (final AlloySpecification alloymodel, final boolean showAnalyzer, final int cmdIndexToExecute) 
+	
+	/** Open Alloy Analyzer */
+	public void openAnalyzer (final AlloySpecification alloymodel, final boolean showAnalyzer, final int cmdIndexToExecute) 
 	{
 		if (alloymodel.getAlloyPath().isEmpty() || alloymodel.getAlloyPath()==null) return;
 
@@ -1779,45 +1797,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/**
-	 * Transform constraints to Alloy
-	 */
-	public void transformsOCLintoAlloy ()
-	{
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
-		OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
-		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
-		AlloySpecification alloySpec = ProjectBrowser.getAlloySpecFor(getCurrentProject());
-
-		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
-		if (oclmodel.getOCLParser()==null) { frame.showErrorMessageDialog("Error","It seems that you do not have any OCL constraints."); return; }
-
-		try {						
-			// Here the constraints are transformed into Alloy...
-			String logMessage = alloySpec.addConstraints(refparser, oclmodel,oclOptions);			
-
-			// show warnings 
-			if (!logMessage.isEmpty() && logMessage!=null)
-			{				
-				frame.showWarningMessageDialog("Transforming OCL into Alloy",logMessage);					
-			}
-
-		} catch (Exception e) {			
-			frame.showErrorMessageDialog("Transforming OCL into Alloy",e.getLocalizedMessage());					
-			e.printStackTrace();
-		}		
-	}
-
-	/**
 	 * Generates Alloy from OntoUML+OCL model
 	 * @throws InterruptedException 
 	 */
 	public void generatesAlloy()  
 	{									
-		transformsOntoUMLintoAlloy();
-		transformsOCLintoAlloy();
-		if (ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) 
-			openAlloyAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),true, -1);
-		else openAlloyAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),false, 0);	
+		doOntoUML2Alloy();
+		doTOCL2Alloy();
+		if (ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),true, -1);
+		else openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),false, 0);	
 		String umlpath = ProjectBrowser.getAlloySpecFor(getCurrentProject()).getAlloyPath().replace(".als", ".uml");
 		File umlfile = new File(umlpath);
 		umlfile.deleteOnExit();		
@@ -1933,21 +1921,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		{
 			frame.getInfoManager().showOutputText(result.toString(), true, true); 
 		}
-	}
-
-	/**
-	 * Generates a text description of the model 
-	 */
-	public void generateText() {
-
-		SwingUtilities.invokeLater(new Runnable() {			
-			@Override
-			public void run() {
-				UmlProject project = getCurrentProject();				
-				GlossaryGeneratorUI settings = new GlossaryGeneratorUI(ProjectBrowser.getParserFor(project));
-				settings.setVisible(true);				
-			}
-		});
 	}
 
 	private Editor getEditorForProject(UmlProject project, EditorNature nature)
