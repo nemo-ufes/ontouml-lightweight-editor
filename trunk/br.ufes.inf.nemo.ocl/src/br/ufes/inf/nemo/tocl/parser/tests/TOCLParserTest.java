@@ -27,7 +27,7 @@ public class TOCLParserTest {
 			e.printStackTrace();
 		}
     	
-    	System.out.println("OCL parsed");
+    	System.out.println("Temporal OCL parsed: /conception.refontouml and /conception.ocl");
     	
     	refpath = new File("src/resources/br/ufes/inf/nemo/ocl/models/project.refontouml").getAbsolutePath();
     	oclPath = new File("src/resources/br/ufes/inf/nemo/ocl/models/project.ocl").getAbsolutePath();
@@ -45,6 +45,6 @@ public class TOCLParserTest {
 			e.printStackTrace();
 		}    	
     	
-    	System.out.println("OCL parsed");
+    	System.out.println("Temporal OCL parsed: /project.refontouml and /project.ocl");
     }  
 }

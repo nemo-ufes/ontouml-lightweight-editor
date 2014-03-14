@@ -133,20 +133,14 @@ public class OntoUML2UML {
 		return umlResource;   		
 	}
 	
-	public static HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> getMap ()
+	public static HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> getStandardMap ()
 	{
 		return utransformer.getConverter().getMap();
 	}
 	
-	public static HashMap<RefOntoUML.Association, ArrayList<org.eclipse.uml2.uml.Classifier>> getTempAssociationsMap()
+	public static HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> getTemporalMap()
 	{
-		if (tgenerator !=null) return tgenerator.getAssociationsMap();
-		else return null;
-	}
-
-	public static HashMap<RefOntoUML.Property, ArrayList<org.eclipse.uml2.uml.Element>> getTempAttributesMap()
-	{
-		if (tgenerator !=null) return tgenerator.getAttributesMap();
+		if (tgenerator !=null) return tgenerator.getMap();
 		else return null;
 	}
 	

@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ocl.ocl2alloy;
+package br.ufes.inf.nemo.tocl.tocl2alloy;
 
 import org.eclipse.uml2.uml.Constraint;
 
@@ -7,73 +7,69 @@ import br.ufes.inf.nemo.ocl.ocl2alloy.exception.LiteralException;
 import br.ufes.inf.nemo.ocl.ocl2alloy.exception.OperationException;
 import br.ufes.inf.nemo.ocl.ocl2alloy.exception.StereotypeException;
 import br.ufes.inf.nemo.ocl.ocl2alloy.exception.TypeException;
-import br.ufes.inf.nemo.ocl.parser.OCLParser;
+import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 
-/**
- * @author John Guerson
- */
-
-public class OCL2Alloy {	
+public class TOCL2Alloy {
 	
 	public static String log;		
 	public static Boolean succeeds;
 	
-	public static String convertToAlloy(OCLParser oclparser)
+	public static String convertToAlloy(TOCLParser oclparser)
 	{
 		String result = new String();			
 		log = new String();		
 		succeeds = false;		
-		OCL2AlloyOption opt = new OCL2AlloyOption(oclparser);
-		OCL2AlloyVisitor myVisitor = new OCL2AlloyVisitor(oclparser,oclparser.getOntoUMLParser(), opt);				
+		TOCL2AlloyOption opt = new TOCL2AlloyOption(oclparser);
+		TOCL2AlloyVisitor myVisitor = new TOCL2AlloyVisitor(oclparser,oclparser.getOntoUMLParser(), opt);				
 		for(Constraint ct: opt.getConstraintList())
 		{	
 			try{				
 				result += myVisitor.visitConstraint(ct);		
 				succeeds = true;				
 			}catch(IteratorException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(LiteralException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(OperationException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(StereotypeException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(TypeException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
+				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
 			}			
 		}		
 		if (myVisitor.getLibrary()!=null && !myVisitor.getLibrary().isEmpty()) result += myVisitor.getLibrary();		
 		return result;
 	}	
 	
-	public static String convertToAlloy (OCLParser oclparser, OCL2AlloyOption opt)
+	public static String convertToAlloy (TOCLParser oclparser, TOCL2AlloyOption opt)
 	{
 		String result = new String();			
 		log = new String();		
 		succeeds = false;		
-		OCL2AlloyVisitor myVisitor = new OCL2AlloyVisitor(oclparser,oclparser.getOntoUMLParser(),opt);				
+		TOCL2AlloyVisitor myVisitor = new TOCL2AlloyVisitor(oclparser,oclparser.getOntoUMLParser(),opt);				
 		for(Constraint ct: opt.getConstraintList())
 		{	
 			try{
 				result += myVisitor.visitConstraint(ct);				
 				succeeds = true;				
 			}catch(IteratorException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(LiteralException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(OperationException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(StereotypeException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(TypeException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
+				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
 			}			
 		}				
 		if (myVisitor.getLibrary()!=null && !myVisitor.getLibrary().isEmpty()) result += myVisitor.getLibrary();		
 		return result;
 	}
 
-	public static String convertConstraintToAlloy (Constraint ct, String stereo, OCLParser oclparser)
+	public static String convertConstraintToAlloy (Constraint ct, String stereo, TOCLParser oclparser)
 	{
 		if (stereo.equalsIgnoreCase("SIMULATION")) stereo = "SIMULATE";
 		if (stereo.equalsIgnoreCase("ASSERTION")) stereo = "CHECK";
@@ -86,21 +82,21 @@ public class OCL2Alloy {
 		String result = new String();	
 		log = new String();		
 		succeeds = false;				
-		OCL2AlloyOption opt = new OCL2AlloyOption();
+		TOCL2AlloyOption opt = new TOCL2AlloyOption();
 		opt.getTransformationType().set(opt.getTransformationType().indexOf(ct),stereo);
-		OCL2AlloyVisitor myVisitor = new OCL2AlloyVisitor(oclparser, oclparser.getOntoUMLParser(), opt);		
+		TOCL2AlloyVisitor myVisitor = new TOCL2AlloyVisitor(oclparser, oclparser.getOntoUMLParser(), opt);		
 		try{						
 			result += myVisitor.visitConstraint(ct); succeeds = true;						
 		}catch(IteratorException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(LiteralException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(OperationException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(StereotypeException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(TypeException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
+			log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
 		}				
 		if (myVisitor.getLibrary()!=null && !myVisitor.getLibrary().isEmpty()) result += myVisitor.getLibrary();		
 		return result;
