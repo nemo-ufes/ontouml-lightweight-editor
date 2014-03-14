@@ -12,11 +12,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 
 public class FreeRoleIndependenceTable{
 
+	@SuppressWarnings("unused")
 	private FreeRoleOccurrence freeRole;
 	private Table table;
 	
@@ -30,14 +30,14 @@ public class FreeRoleIndependenceTable{
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		
-		String columnName1 = "Type";
+		String columnName1 = "Type Name";
 		TableColumn tableColumn1 = new TableColumn(table, SWT.CENTER);
-		tableColumn1.setWidth(50);
+		tableColumn1.setWidth(78);
 		tableColumn1.setText(columnName1);
 		
 		String columnName2 = "Stereotype";
 		TableColumn tableColumn2 = new TableColumn(table, SWT.CENTER);
-		tableColumn2.setWidth(70);
+		tableColumn2.setWidth(80);
 		tableColumn2.setText(columnName2);
 		
 		String columnName3 = "Mult. Relator End";
@@ -47,12 +47,12 @@ public class FreeRoleIndependenceTable{
 		
 		String columnName4 = "Mult. Mediated End";
 		TableColumn tableColumn4 = new TableColumn(table, SWT.CENTER);
-		tableColumn4.setWidth(110);
+		tableColumn4.setWidth(126);
 		tableColumn4.setText(columnName4);
 		
 		String columnName5 = "Create Material?";
 		TableColumn tableColumn5 = new TableColumn(table, SWT.CENTER);
-		tableColumn5.setWidth(90);
+		tableColumn5.setWidth(112);
 		tableColumn5.setText(columnName5);
 		
 		int tableWidth = 0;		
@@ -60,84 +60,84 @@ public class FreeRoleIndependenceTable{
 			tableWidth+=tc.getWidth();
 		}
 		
-		table.setSize(418, 117);
-		
-		fulfillLines();
+		table.setSize(497, 117);		
 	}
 		
-	public void fulfillLines(){
-	
-		for(Property p: freeRole.getDefiningRelatorEnds())
-		{
-			TableItem tableItem = new TableItem(table,SWT.NONE);	
-						
-			// Type
-			TableEditor editor = new TableEditor(table);
-		    editor.grabHorizontal = true;
-			editor.horizontalAlignment = SWT.CENTER;
-			tableItem.setText(0, p.getType().getName());
-			
-			// Stereotype
-			editor = new TableEditor(table);
-			Button checkButton = new Button(table, SWT.CHECK);
-			checkButton.pack();
-			editor.minimumWidth = checkButton.getSize().x;
-			editor.horizontalAlignment = SWT.CENTER;
-			editor.setEditor(checkButton, tableItem, 1);
-			tableItem.setData("1", checkButton);
-			
-			// Mult. Relator End
-			editor = new TableEditor(table);
-			Combo combo = new Combo(table, SWT.NONE);
-			combo.setItems(new String[] {"0..1", "1", "1..*", "0..*"});
-			combo.select(2);
-			combo.pack();
-			editor.grabHorizontal = true;
-			editor.horizontalAlignment = SWT.CENTER;
-			editor.setEditor(combo, tableItem, 2);
-			tableItem.setData("2", combo);
-			
-			// Mult. Mediated End
-			editor = new TableEditor(table);
-			combo = new Combo(table, SWT.NONE);
-			combo.setItems(new String[] {"0..1", "1", "1..*", "0..*"});
-			combo.select(2);	
-			combo.pack();
-			editor.grabHorizontal = true;
-			editor.horizontalAlignment = SWT.CENTER;
-			editor.setEditor(combo, tableItem, 3);
-			tableItem.setData("3", combo);
-			
-			// Create Material?
-			editor = new TableEditor(table);
-			checkButton = new Button(table, SWT.CHECK);
-			checkButton.pack();
-			editor.minimumWidth = checkButton.getSize().x;
-			editor.horizontalAlignment = SWT.CENTER;
-			editor.setEditor(checkButton, tableItem, 4);
-			tableItem.setData("4", checkButton);						
-		}
+	public void addLine()
+	{		
+		TableItem tableItem = new TableItem(table,SWT.NONE);	
+					
+		// Type Name
+		TableEditor editor = new TableEditor(table);
+		Text text = new Text(table, SWT.CHECK);
+		text.pack();
+		editor.minimumWidth = text.getSize().x;
+		editor.horizontalAlignment = SWT.CENTER;
+		editor.setEditor(text, tableItem, 0);
+		tableItem.setData("0", text);
+		
+		// Stereotype
+		editor = new TableEditor(table);
+		Combo combo = new Combo(table, SWT.NONE);
+		combo.setItems(new String[] {"Kind", "Collective", "Quantity", "SubKind","Phase", "Role", "Mixin", "Category", "RoleMixin"});
+		combo.select(2);
+		combo.pack();
+		editor.grabHorizontal = true;
+		editor.horizontalAlignment = SWT.CENTER;
+		editor.setEditor(combo, tableItem, 1);
+		tableItem.setData("1", combo);
+		
+		// Mult. Relator End
+		editor = new TableEditor(table);
+		combo = new Combo(table, SWT.NONE);
+		combo.setItems(new String[] {"0..1", "1", "1..*", "0..*"});
+		combo.select(2);
+		combo.pack();
+		editor.grabHorizontal = true;
+		editor.horizontalAlignment = SWT.CENTER;
+		editor.setEditor(combo, tableItem, 2);
+		tableItem.setData("2", combo);
+		
+		// Mult. Mediated End
+		editor = new TableEditor(table);
+		combo = new Combo(table, SWT.NONE);
+		combo.setItems(new String[] {"0..1", "1", "1..*", "0..*"});
+		combo.select(2);	
+		combo.pack();
+		editor.grabHorizontal = true;
+		editor.horizontalAlignment = SWT.CENTER;
+		editor.setEditor(combo, tableItem, 3);
+		tableItem.setData("3", combo);
+		
+		// Create Material?
+		editor = new TableEditor(table);
+		Button checkButton = new Button(table, SWT.CHECK);
+		checkButton.pack();
+		editor.minimumWidth = checkButton.getSize().x;
+		editor.horizontalAlignment = SWT.CENTER;
+		editor.setEditor(checkButton, tableItem, 4);
+		tableItem.setData("4", checkButton);
 	}
 	
 	public Table getTable() {
 		return table;
 	}
 	
-	public ArrayList<Boolean> getUse()
+	public ArrayList<String> getTypeNames()
 	{
-		ArrayList<Boolean> result = new ArrayList<Boolean>();		
+		ArrayList<String> result = new ArrayList<String>();		
 		for (TableItem ti : table.getItems()){	
-			Button button = (Button) ti.getData("1");			
-			result.add(button.getSelection());
+			Text text = (Text) ti.getData("0");			
+			result.add(text.getText());
 		}
 		return result;	
 	}
 	
-	public ArrayList<String> getMultRoleEnd()
+	public ArrayList<String> getMultMediatedEnd()
 	{
 		ArrayList<String> result = new ArrayList<String>();		
 		for (TableItem ti : table.getItems()){	
-			Combo combo = (Combo) ti.getData("4");
+			Combo combo = (Combo) ti.getData("3");
 			result.add(combo.getText());
 		}
 		return result;	
@@ -147,27 +147,27 @@ public class FreeRoleIndependenceTable{
 	{
 		ArrayList<String> result = new ArrayList<String>();		
 		for (TableItem ti : table.getItems()){	
-			Combo combo = (Combo) ti.getData("5");
+			Combo combo = (Combo) ti.getData("2");
 			result.add(combo.getText());
 		}
 		return result;	
 	}
 	
-	public ArrayList<String> getRelatorNames()
+	public ArrayList<String> getStereotypes()
 	{
 		ArrayList<String> result = new ArrayList<String>();		
 		for (TableItem ti : table.getItems()){	
-			Text text = (Text) ti.getData("3");			
-			result.add(text.getText());
+			Combo combo = (Combo) ti.getData("1");
+			result.add(combo.getText());
 		}
 		return result;	
 	}
 	
-	public ArrayList<Boolean> getSpecialize()
+	public ArrayList<Boolean> getCreateMaterial()
 	{
 		ArrayList<Boolean> result = new ArrayList<Boolean>();		
 		for (TableItem ti : table.getItems()){	
-			Button button = (Button) ti.getData("2");			
+			Button button = (Button) ti.getData("4");			
 			result.add(button.getSelection());
 		}
 		return result;	

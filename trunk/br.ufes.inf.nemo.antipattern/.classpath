@@ -20,12 +20,12 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.ocl_3.0.2.R30x_v201101110610.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.ocl.ecore_3.0.2.R30x_v201101110610.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.ocl.edit_3.0.2.R30x_v201101181635.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/refontouml/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.wb.swt_1.6.0.r36x201305212024.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.wb.swt.layout.grouplayout_1.6.0.r36x201305212046.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.wb.swt.widgets.baseline_1.6.0.r36x201305212028.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.jface_3.6.2.M20110210-1200.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt-win-x64/swt.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/refontouml/br.ufes.inf.nemo.ontouml.refontouml_1.1.0.201301111500.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

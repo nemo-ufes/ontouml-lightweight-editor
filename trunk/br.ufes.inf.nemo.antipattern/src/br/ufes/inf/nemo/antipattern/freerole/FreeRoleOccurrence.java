@@ -1,12 +1,15 @@
 package br.ufes.inf.nemo.antipattern.freerole;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
+import RefOntoUML.ObjectClass;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
@@ -188,6 +191,86 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 				med.getMemberEnd().get(0).getSubsettedProperty().add(p);
 			}				
 		}		
+	}
+
+	public static String getStereotype(EObject element)
+	{
+		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+	    type = type.replaceAll("Impl","");
+	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
+	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
+	    return type;
+	}
+		
+	
+	public void createDependentObjects(Role role, String typeName, String stereoName, String relatorEndMultip, String roleEndMultip, boolean createMaterial) 
+	{
+		// get the brand new relator created
+		RefOntoUML.Class relator = null;
+		for(Object obj: fix.getAdded()) { if(obj instanceof Relator) relator = (Relator)obj; }
+		
+		RefOntoUML.Class type = null;		
+		//search if the type already exists...
+		for(RefOntoUML.Class c: parser.getAllInstances(RefOntoUML.Class.class)){
+			if (getStereotype(c).compareToIgnoreCase(stereoName)==0){
+				if(c.getName().trim().compareToIgnoreCase(typeName)==0){
+					type = c;
+				}
+			}			
+		}
+		
+		if (type==null){
+			//create new type
+			type = (ObjectClass)fixer.createClass(fixer.getClassStereotype(stereoName));
+			fixer.copyContainer(role, type);
+			type.setName(typeName);
+			fix.includeAdded(type);
+			fix.includeModified(role.eContainer());
+		}
+		
+		//create new mediation
+		fix.addAll(fixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, type));
+		
+		//get the brand new material createad
+		RefOntoUML.Mediation mediation = null;
+		for(Object obj: fix.getAdded()) { if(obj instanceof Mediation) mediation = (Mediation)obj; }
+		
+		// change multiplicities...
+		fix.addAll(fixer.changePropertyMultiplicity(mediation.getMemberEnd().get(0), relatorEndMultip));
+		fix.addAll(fixer.changePropertyMultiplicity(mediation.getMemberEnd().get(1), roleEndMultip));
+		
+		if(createMaterial){
+			//create new material
+			fix.addAll(fixer.createAssociationBetween(RelationStereotype.MATERIAL, "", role, type));
+			
+			//get the brand new material createad
+			RefOntoUML.MaterialAssociation material = null;
+			for(Object obj: fix.getAdded()) { if(obj instanceof MaterialAssociation) material = (MaterialAssociation)obj; }
+			
+			//create new derivation		
+			fix.addAll(fixer.createAssociationBetween(RelationStereotype.DERIVATION, "", material, relator));
+		}
+	}
+
+	public void createNewRelatorWithMediation(Role role, String subRelatorName, String relatorEndMultip, String roleEndMultip) 
+	{
+		//create new relator
+		RefOntoUML.Type relator = (RefOntoUML.Type)fixer.createClass(ClassStereotype.RELATOR);
+		fixer.copyContainer(role, relator);
+		relator.setName(subRelatorName);
+		fix.includeAdded(relator);
+		fix.includeModified(role.eContainer());
+		//create new mediation
+		fix.addAll(fixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, role));
+		
+		//get the brand new material createad
+		RefOntoUML.Mediation mediation = null;
+		for(Object obj: fix.getAdded()) { if(obj instanceof Mediation) mediation = (Mediation)obj; }
+		
+		// change multiplicities...
+		fix.addAll(fixer.changePropertyMultiplicity(mediation.getMemberEnd().get(0), relatorEndMultip));
+		fix.addAll(fixer.changePropertyMultiplicity(mediation.getMemberEnd().get(1), roleEndMultip));
+		
 	}
 
 }

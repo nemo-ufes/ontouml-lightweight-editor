@@ -245,7 +245,7 @@ public class ModelDiagnostician {
 		{						
 			if(m.getMemberEnd().size()==2)
 			{
-				if(!(m.mode() instanceof Mode))
+				if(!(m.characterizing() instanceof Mode))
 				{
 					ArrayList<String> line = new ArrayList<String>();
 					errors++;
