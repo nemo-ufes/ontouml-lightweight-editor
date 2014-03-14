@@ -84,7 +84,7 @@ public class RubberbandSelector implements Selection {
       new Rectangle2D.Double(x, y, w, h), selectedElements);
     isDragging = false;
   }
-
+  
   /**
    * {@inheritDoc}
    */

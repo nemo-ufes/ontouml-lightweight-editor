@@ -20,7 +20,7 @@ public class FreeRolePage extends WizardPage {
 		setTitle(FreeRoleAntipattern.getAntipatternInfo().getName());		
 	}
 	
-	public FreeRoleWizard geFreeRoleWizard(){
+	public FreeRoleWizard getFreeRoleWizard(){
 		return (FreeRoleWizard)getWizard();
 	}
 

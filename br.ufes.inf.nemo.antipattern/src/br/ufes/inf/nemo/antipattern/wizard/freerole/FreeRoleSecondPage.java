@@ -45,7 +45,7 @@ public class FreeRoleSecondPage extends FreeRolePage {
 		//Action =============================
 		FreeRoleAction newAction = new FreeRoleAction(freeRole);
 		newAction.setCreateOCLDerivation(freeRole.getFreeRoles().get(index),styledText.getText()); 
-		geFreeRoleWizard().replaceAction(0,newAction);	
+		getFreeRoleWizard().replaceAction(index,newAction);	
 		//======================================
 		
 		if(index<freeRole.getFreeRoles().size()-1){

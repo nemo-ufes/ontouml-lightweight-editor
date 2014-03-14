@@ -223,6 +223,7 @@ public class MainMenu implements ActionListener {
 	/**
 	 * Creates the Edit mnu.
 	 */
+	@SuppressWarnings("unused")
 	private void createEditMenu() {
 		JMenu editMenu = createMenu("edit");
 		menubar.add(editMenu);

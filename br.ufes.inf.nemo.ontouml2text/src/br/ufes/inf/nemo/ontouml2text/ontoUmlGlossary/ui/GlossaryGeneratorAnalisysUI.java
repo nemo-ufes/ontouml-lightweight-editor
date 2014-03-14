@@ -1,38 +1,35 @@
 package br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
-
-import java.awt.BorderLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
-import javax.swing.JList;
-
-import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.OntoUmlGlossary;
-
-import javax.swing.ListSelectionModel;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
-import java.awt.Toolkit;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
+
+import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.OntoUmlGlossary;
 
 public class GlossaryGeneratorAnalisysUI extends JFrame {
 
+	@SuppressWarnings("unused")
 	private final OntoUmlGlossary ontoUmlGlossary;
 	private Integer missingDesc;
 	

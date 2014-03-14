@@ -17,13 +17,16 @@ public class FreeRoleAction extends AntiPatternAction<FreeRoleOccurrence>{
 	public String subRelatorName;
 	public String relatorEndMultip;
 	public String roleEndMultip;
+	public boolean createMaterial;
+	public String typeName;
+	public String stereoName;
 	
 	public FreeRoleAction(FreeRoleOccurrence ap) 
 	{
 		super(ap);
 	}
 
-	public enum Action { CREATE_OCL_DERIVATION, CREATE_NEW_MEDIATION, CREATE_SUBRELATOR_WITH_MEDIATION }
+	public enum Action { CREATE_OCL_DERIVATION, CREATE_NEW_MEDIATION, CREATE_SUBRELATOR_WITH_MEDIATION, CREATE_NEW_RELATOR_WITH_MEDIATION, CREATE_DEPENDENT_OBJETCS }
 	
 	@Override
 	public void run()
@@ -31,6 +34,8 @@ public class FreeRoleAction extends AntiPatternAction<FreeRoleOccurrence>{
 		if(code == Action.CREATE_OCL_DERIVATION) ap.createOCLDerivation(oclDerive);
 		if(code == Action.CREATE_NEW_MEDIATION) ap.createNewMediation(relator, role,relatorEndMultip,roleEndMultip);
 		if(code == Action.CREATE_SUBRELATOR_WITH_MEDIATION) ap.createSubRelatorWithMediation(relator,role,subRelatorName,relatorEndMultip,roleEndMultip);
+		if(code == Action.CREATE_NEW_RELATOR_WITH_MEDIATION) { ap.createNewRelatorWithMediation(role,subRelatorName,relatorEndMultip,roleEndMultip); }
+		if(code == Action.CREATE_DEPENDENT_OBJETCS) { ap.createDependentObjects(role, typeName,stereoName,relatorEndMultip,roleEndMultip,createMaterial); }
 	}
 	
 	public void setCreateOCLDerivation(Role role, String oclDerive)
@@ -59,6 +64,26 @@ public class FreeRoleAction extends AntiPatternAction<FreeRoleOccurrence>{
 		this.roleEndMultip=roleEndMultip;
 	}
 	
+	public void setCreateNewRelatorWithMediation(Role role, String newRelatorName, String relatorEndMultip, String roleEndMultip)
+	{
+		code = Action.CREATE_NEW_RELATOR_WITH_MEDIATION;
+		this.role = role;
+		this.relatorEndMultip=relatorEndMultip;
+		this.roleEndMultip=roleEndMultip;
+		this.subRelatorName = newRelatorName;
+	}
+	
+	public void setCreateDependentObjects(Role role, String typeName, String stereoName, String relatorMultiplicity, String mediatedMutiplicity, boolean createMaterial)
+	{
+		code = Action.CREATE_DEPENDENT_OBJETCS;		
+		this.role = role;
+		this.typeName = typeName;
+		this.stereoName = stereoName;
+		this.relatorEndMultip = relatorMultiplicity;
+		this.roleEndMultip = mediatedMutiplicity;
+		this.createMaterial = createMaterial;
+	}
+	
 	public static String getStereotype(EObject element)
 	{
 		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
@@ -74,14 +99,24 @@ public class FreeRoleAction extends AntiPatternAction<FreeRoleOccurrence>{
 		String result = new String();
 		
 		if(code == Action.CREATE_OCL_DERIVATION) {
-			result += "Create OCL Derivation rule for "+getStereotype(role)+" "+role.getName();
+			result += "Create OCL Derivation rule for <<role>> "+role.getName();
 		}
 		if(code == Action.CREATE_NEW_MEDIATION) {
-			result += "Create new <<mediation>> from "+getStereotype(relator)+" "+relator.getName()+" to "+getStereotype(role)+" "+role.getName();
+			result += "Create a <<mediation>> from <<relator>> "+relator.getName()+" to <<role>> "+role.getName();
 		}
 		if(code == Action.CREATE_SUBRELATOR_WITH_MEDIATION) {
-			result += "Create a Sub-"+getStereotype(relator)+" "+relator.getName()+"\n";
-			result += "Create new <<mediation>> from the Sub-"+getStereotype(relator)+" "+relator.getName()+" to "+getStereotype(role)+" "+role.getName();
+			result += "Create a sub <<relator>> "+relator.getName()+"\n";
+			result += "Create a <<mediation>> from the sub <<relator>> "+relator.getName()+" to the <<role>> "+role.getName();
+		}
+		if(code == Action.CREATE_NEW_RELATOR_WITH_MEDIATION){
+			result += "Create a <<relator>> "+subRelatorName+"\n";
+			result += "Create a <<mediation>> from the new <<relator>> "+subRelatorName+" to the <<role>> "+role.getName();
+		}
+		if(code == Action.CREATE_DEPENDENT_OBJETCS){
+			result += "Create a <<mediation>> from the new <<relator>> to the dependent object <<"+stereoName+">> "+typeName+"\n";
+			if(createMaterial){
+				result += "Create a <<material>> (with <<derivation>>) between the <<role>> "+role.getName()+" and the dependent object <<"+stereoName+">> "+typeName+"\n";
+			}
 		}
 		return result;
 	}

@@ -80,8 +80,10 @@ public class FreeRoleWizard extends AntipatternWizard {
 	{
 		return fifthPageList.get(index);
 	}
+	
 	@Override
 	public boolean performFinish() {
+	
 		for(AntiPatternAction<?> action: super.getAllActions())
 			action.run();
 		

@@ -60,7 +60,7 @@ public class FreeRoleFifthPage extends FreeRolePage {
 				//Action =============================
 				FreeRoleAction newAction = new FreeRoleAction(freeRole);
 				newAction.setCreateMediation((Relator)freeRole.getDefiningRelatorEnds().get(i).getType(),freeRole.getFreeRoles().get(index),relatorEndMultip,roleEndMultip); 
-				geFreeRoleWizard().replaceAction(i,newAction);	
+				getFreeRoleWizard().addAction(index,newAction);	
 				//======================================				
 			}
 			if(use && specialize){
@@ -69,7 +69,7 @@ public class FreeRoleFifthPage extends FreeRolePage {
 				//Action =============================
 				FreeRoleAction newAction = new FreeRoleAction(freeRole);
 				newAction.setCreateSubRelatorWithMediation((Relator)freeRole.getDefiningRelatorEnds().get(i).getType(),freeRole.getFreeRoles().get(index),relatorName,relatorEndMultip,roleEndMultip); 
-				geFreeRoleWizard().replaceAction(i,newAction);	
+				getFreeRoleWizard().addAction(index,newAction);	
 				//======================================
 			}
 			i++;
