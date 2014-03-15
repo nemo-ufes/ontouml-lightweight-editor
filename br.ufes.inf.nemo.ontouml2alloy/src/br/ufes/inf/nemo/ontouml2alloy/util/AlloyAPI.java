@@ -866,6 +866,79 @@ public class AlloyAPI {
 	}
 	
 	/**
+	 * Creates a specific Function Declaration in Alloy.
+	 * fun nameFunction [x: World.paramName] : set World.returnName {
+	 * 		x.(World.assocName)
+	 * }
+	 *  or  
+	 * fun nameFunction [x: World.paramName] : set World.returnName {
+	 * 		(World.assocName).x
+	 * }
+	 */
+	public static FunctionDeclaration createTemporalFunctionDeclaration (AlloyFactory factory, SignatureDeclaration world, boolean isSourceProperty, String functionName, String paramName, String returnName, String assocName, boolean materialIsTernary )
+	{
+		FunctionDeclaration fun = factory.createFunctionDeclaration();
+		fun.setName(functionName);
+		fun.setBlock(factory.createBlock());
+		
+		// set returnName
+		UnaryOperation uOp = factory.createUnaryOperation();
+		uOp.setOperator(UnaryOperator.SET);		
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(returnName);				
+		uOp.setExpression(vr);
+		fun.setType(uOp);
+	
+		// x: paramName
+		Declaration decl = factory.createDeclaration();				
+		Variable var = factory.createVariable();
+		var.setName("x");
+		var.setDeclaration(decl);	
+		vr = factory.createVariableReference();
+		vr.setVariable(paramName);
+		decl.setExpression(vr);		
+		fun.getParameter().add(decl);
+					
+		// if is Ternary Relation (like Materials) then is a binary operation ... else this is a predicate invocation
+		BinaryOperation bOp = factory.createBinaryOperation();		
+		PredicateInvocation pI = factory.createPredicateInvocation();
+		
+		// select13[World.assocName] (for ternary association)
+		if (materialIsTernary) { 
+			pI = factory.createPredicateInvocation();
+			pI.setPredicate("select13");
+			VariableReference vrf = factory.createVariableReference();
+			vrf.setVariable("World."+assocName);
+			pI.getParameter().add(vrf);			
+		}
+		// World.assocName (for binary ones)
+		else bOp = createBinaryOperation(factory,"World",BinaryOperator.JOIN,assocName);
+				
+		vr = factory.createVariableReference();
+		vr.setVariable("x");
+		
+		BinaryOperation bOp2 = factory.createBinaryOperation();				
+		if(!isSourceProperty)
+		{
+			// x.(World.assocName) or x.(select13[World.assocName])
+			if (!materialIsTernary) bOp2 = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN, "("+bOp.toString()+")");
+			else bOp2 = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN, "("+pI.toString()+")");
+		}
+		else
+		{
+			//  (World.assocName).x or (select13[World.assocName]).x
+			if (!materialIsTernary) bOp2 = createBinaryOperation(factory,"("+bOp.toString()+")",BinaryOperator.JOIN, vr.getVariable());
+			else bOp2 = createBinaryOperation(factory,"("+pI.toString()+")",BinaryOperator.JOIN, vr.getVariable());			
+		}	
+		
+		if(returnName.contains("World")) returnName = returnName.replace("World.", "");
+						
+		fun.getBlock().getExpression().add(bOp2);
+		
+		return fun;
+	}
+	
+	/**
 	 *	Creates a specific Imuttable Predicate Invocation.
 	 *  predName[typeName,assocName].
 	 *  For Example: immutable_source[Enrollment,enr].

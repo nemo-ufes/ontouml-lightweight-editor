@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -164,20 +163,21 @@ public class ModelSimulationPanel extends JPanel {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(121)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addGap(119)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btndefault)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnEnableall, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnDisableall, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 							.addGap(12)
-							.addComponent(lblChooseWhichAxioms, GroupLayout.DEFAULT_SIZE, 466, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblChooseWhichAxioms, GroupLayout.PREFERRED_SIZE, 466, GroupLayout.PREFERRED_SIZE))
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 468, Short.MAX_VALUE)))
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 468, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -202,7 +202,6 @@ public class ModelSimulationPanel extends JPanel {
 		cbxWeak = new JCheckBox("Weak supplementation");
 		cbxWeak.setPreferredSize(new Dimension(150, 20));
 		cbxWeak.setToolTipText("");
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		lblStateWeak = new JButton("");	
 		lblStateWeak.setHorizontalAlignment(SwingConstants.CENTER);		
@@ -211,7 +210,6 @@ public class ModelSimulationPanel extends JPanel {
 		lblStateWeak.setOpaque(false);
 		lblStateWeak.setContentAreaFilled(false);
 		lblStateWeak.setBorderPainted(false);
-		panel.add(lblStateWeak);
 		
 		weakInfoButton = new JButton("");
 		weakInfoButton.setToolTipText("<html>\r\nMark this option if in your model all wholes have two or more parts. <br>\r\nIf this is not true, leave this option unchecked. </html>");
@@ -222,8 +220,6 @@ public class ModelSimulationPanel extends JPanel {
 		weakInfoButton.setOpaque(false);
 		weakInfoButton.setContentAreaFilled(false);
 		weakInfoButton.setBorderPainted(false);
-		panel.add(weakInfoButton);
-		panel.add(cbxWeak);
 		
 		lblSateRelator = new JButton("");		
 		lblSateRelator.setHorizontalAlignment(SwingConstants.CENTER);
@@ -232,7 +228,6 @@ public class ModelSimulationPanel extends JPanel {
 		lblSateRelator.setContentAreaFilled(false);
 		lblSateRelator.setBorderPainted(false);
 		lblSateRelator.setFocusable(false);
-		panel.add(lblSateRelator);
 		
 		relatorInfoButton = new JButton("");
 		relatorInfoButton.setToolTipText("<html>\r\nMark this option if in your model all relators mediate at least two distinct objects. <br>\r\nIf this is not true, leave this option unchecked. </html>\r\n\r\n");
@@ -243,11 +238,8 @@ public class ModelSimulationPanel extends JPanel {
 		relatorInfoButton.setOpaque(false);
 		relatorInfoButton.setContentAreaFilled(false);
 		relatorInfoButton.setBorderPainted(false);
-		panel.add(relatorInfoButton);
-		panel.add(cbxRelator);
 		
-		lblStateIdentity = new JButton("");		
-		panel.add(lblStateIdentity);
+		lblStateIdentity = new JButton("");
 		lblStateIdentity.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStateIdentity.setPreferredSize(new Dimension(30, 20));
 		lblStateIdentity.setOpaque(false);
@@ -264,14 +256,11 @@ public class ModelSimulationPanel extends JPanel {
 		identityInfoButton.setContentAreaFilled(false);
 		identityInfoButton.setBorderPainted(false);
 		identityInfoButton.setPreferredSize(new Dimension(30, 20));
-		panel.add(identityInfoButton);
-		cbxIdentity = new JCheckBox("Identity principle");		
-		panel.add(cbxIdentity);
+		cbxIdentity = new JCheckBox("Identity principle");
 		cbxIdentity.setToolTipText("");
 		cbxIdentity.setPreferredSize(new Dimension(150, 20));
 		
-		lblStateAntirigidity = new JButton("");		
-		panel.add(lblStateAntirigidity);
+		lblStateAntirigidity = new JButton("");
 		
 		lblStateAntirigidity.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStateAntirigidity.setPreferredSize(new Dimension(30, 20));
@@ -289,12 +278,62 @@ public class ModelSimulationPanel extends JPanel {
 		AntiRigidInfoButton.setContentAreaFilled(false);
 		AntiRigidInfoButton.setBorderPainted(false);
 		AntiRigidInfoButton.setPreferredSize(new Dimension(30, 20));
-		panel.add(AntiRigidInfoButton);
-		cbxAntirigidity = new JCheckBox("Antirigidity visualization");		
-		panel.add(cbxAntirigidity);
+		cbxAntirigidity = new JCheckBox("Antirigidity visualization");
 		cbxAntirigidity.setToolTipText("");
 		cbxAntirigidity.setFocusable(false);
 		cbxAntirigidity.setPreferredSize(new Dimension(150, 20));
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(9)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblStateWeak, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(weakInfoButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(cbxWeak, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(lblSateRelator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(relatorInfoButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(cbxRelator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblStateIdentity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(identityInfoButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(cbxIdentity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(lblStateAntirigidity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(AntiRigidInfoButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(cbxAntirigidity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(5)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblStateWeak, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(weakInfoButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxWeak, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSateRelator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(relatorInfoButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxRelator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(5)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblStateIdentity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(identityInfoButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxIdentity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblStateAntirigidity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(AntiRigidInfoButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxAntirigidity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+		);
+		panel.setLayout(gl_panel);
 		setLayout(groupLayout);
 	}
 	

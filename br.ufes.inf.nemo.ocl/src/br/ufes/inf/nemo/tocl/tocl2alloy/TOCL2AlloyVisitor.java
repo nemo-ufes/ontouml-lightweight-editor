@@ -36,15 +36,15 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 			else if (classifier.getName().equalsIgnoreCase("PastWorld")) return "PastWorld";
 			else if (classifier.getName().equalsIgnoreCase("CounterfactualWorld")) return "CounterfactualWorld";
 			else if (classifier.getName().equalsIgnoreCase("FutureWorld")) return "FutureWorld";
-			
-			RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)((TOCLParser)oclparser).getOntoUMLElement(classifier);
-	    	String nameClassifier = refparser.getAlias(ontoClassifier);    	
+
 	    	if (classifier instanceof org.eclipse.ocl.uml.AnyType) return "univ";		
 			if (classifier instanceof org.eclipse.ocl.uml.VoidType) return "none";		
 			if (classifier instanceof org.eclipse.ocl.uml.PrimitiveType){ 
 				if (classifier.getName().compareToIgnoreCase("Integer")==0) return "Int";			
 			}    		
 			
+			RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)((TOCLParser)oclparser).getOntoUMLElement(classifier);
+	    	String nameClassifier = refparser.getAlias(ontoClassifier);    	
 	    	return nameClassifier;	    
 		}else{
 			return super.visitTypeExp(t);
@@ -72,11 +72,15 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 	        {
 				String argument = iter.next();
 				if(operName.equals("allInstances")) { return argument+"."+sourceResult; }
-				if(operName.equals("existsIn")) { return sourceResult+" in "+argument+"."+"exists"; }
+				if(operName.equals("existsIn")) { return sourceResult+" in "+argument+"."+"exists"; }				
 				if(ontoElement!=null){
 					String alias = refparser.getAlias(ontoElement);
-					return sourceResult+"."+alias+"["+argument+"]";
-				}		
+					if(ontoElement instanceof RefOntoUML.Property) { 
+						if(((RefOntoUML.Property)ontoElement).getAssociation()!=null) return sourceResult+"."+alias+"["+argument+"]";
+						else if (((RefOntoUML.Property)ontoElement).getType().getName().compareToIgnoreCase("Boolean")==0) { return "("+sourceResult + " in "+argument+"." + alias+ ")";}    	
+				    	else { return sourceResult + ".("+argument+"." + alias+ ")"; }
+					}
+				}				
 				if(operName.equals("oclIsKindOf")){
 					String worldParam = ((TOCLParser)oclparser).getOclIsKindOfWorldParam(oclIsKindOf_counter);
 					oclIsKindOf_counter++;
@@ -95,8 +99,8 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 	        	else if (sourceResult.equals("PastWorld")) return sourceResult;
 	        	else if (sourceResult.equals("CounterfactualWorld")) return sourceResult;
 	        	else return "World."+sourceResult;
-	        }        
-	        
+	        }       
+
 	        return super.handleOperationCallExp(operCallExp, sourceResult, argumentsResult);
 		}else{
 			return super.handleOperationCallExp(operCallExp, sourceResult, argumentsResult);	
@@ -109,17 +113,14 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
     {    	
 		if(opt.getConstraintType(currentConstraint).equalsIgnoreCase("temporal"))
 		{
-//	    	Property property = propCallExp.getReferredProperty();    	
-//			// if we are the qualifier of an association class call then we just return our name, because our source is null (implied)    	
-//			if (sourceResult == null) return property.getName();;
-//			if (!qualifierResults.isEmpty()) { } // no qualifier	
-//			
-//			StringBuffer result = new StringBuffer();
-//	    	RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getOntoUMLElement(property);
-//	    	String nameProperty = refparser.getAlias(ontoProperty);    	
-//	    	if (property.getAssociation()!=null) result.append(sourceResult + "." + nameProperty+ "[w]");    	
-//	    	else if (property.getType().getName().compareToIgnoreCase("Boolean")==0) { result.append(sourceResult + " in w." + nameProperty+ "");}    	
-//	    	else { result.append(sourceResult + ".(w." + nameProperty+ ")"); }
+			StringBuffer result = new StringBuffer();
+	    	Property property = propCallExp.getReferredProperty();    	
+
+	    	RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getOntoUMLElement(property);
+	    	String nameProperty = refparser.getAlias(ontoProperty);    	
+	    	if (property.getAssociation()!=null) result.append(sourceResult + "." + nameProperty);    	
+	    	else if (property.getType().getName().compareToIgnoreCase("Boolean")==0) { result.append("("+sourceResult + " in World." + nameProperty+ ")");}    	
+	    	else { result.append(sourceResult + ".(World." + nameProperty+ ")"); }
 	    	
 			return result.toString();
 		}else{
@@ -156,7 +157,7 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 			result.append("\t");
 			if (expr.getBodyExpression().toString().contains("self")){
 				if(ontoClassifier==null) result.append("all self: "+classifier.getName()+" | "); 
-				else result.append("all self: "+nameClassifier+" | ");
+				else result.append("all self: World."+nameClassifier+" | ");
 			}
 			
 			result.append(exprResult);
