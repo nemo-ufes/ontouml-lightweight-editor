@@ -57,12 +57,9 @@ public abstract class WizardPageAssistant extends WizardPage {
 		super.setVisible(visible);
 	}
 	
-	/**
-	 * Used to prevent the back button perform
-	 * */
 	@Override
-	public void setPreviousPage(IWizardPage page) {
-		super.setPreviousPage(null);
+	public IWizardPage getPreviousPage() {
+		return null;
 	}
 	
 	/**
