@@ -38,8 +38,12 @@ public class TOCLParser extends OCLParser{
     	for(String str: oclIsKindOfList)
     	{
     		if(i == index) {
-    			String array[] = str.split(",");
-    			return array[1];    		
+    			if(str.contains(",")){
+	    			String array[] = str.split(",");
+	    			return array[1];	    				
+    			}else{
+    				return "World";
+    			}
     		}
     		i++;
     	}
@@ -52,9 +56,14 @@ public class TOCLParser extends OCLParser{
     	for(String str: oclIsTypeOfList)
     	{
     		if(i == index) {
-    			String array[] = str.split(",");
-    			return array[1];    		
+    			if(str.contains(",")){
+	    			String array[] = str.split(",");
+	    			return array[1];	    				
+    			}else{
+    				return "World";
+    			}
     		}
+    		i++;
     	}
     	return "<Unknown>";
     }
@@ -130,13 +139,6 @@ public class TOCLParser extends OCLParser{
 		umlreflection = umlenv.getUMLReflection();
 	}
     
-    /**
-     * Patterns: oclIsKindOf(*,*), oclIsKindOf(_'*',*), "oclIsTypeOf(*,*)", "oclIsTypeOf(_'*',*)"
-     * 
-     * @param result: String result
-     * @param p: Pattern
-     * @return
-     */
     public String processObjectOperation (String result, Pattern p)
     {
 		Matcher m = p.matcher(result);
@@ -149,62 +151,48 @@ public class TOCLParser extends OCLParser{
     		if(indexBegin+(jump) < 0) indexBegin = 0;
     		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
     		
-    		String parameters = result.substring(indexBegin+12+(jump), indexEnd-1+(jump));    		
-    		String[] paramArray = parameters.split(",");
-    		String typeVar = paramArray[0];
-    		String worldVar = paramArray[1];
+    		String parameters = result.substring(indexBegin+12+(jump), indexEnd-1+(jump));
+    		String typeVar = new String();
+    		String worldVar = new String();
+    		if(parameters.contains(",")){
+    			String[] paramArray = parameters.split(",");
+    			typeVar = paramArray[0];
+    			worldVar = paramArray[1];
+    		}else{
+    			typeVar = parameters;
+    			worldVar = "";
+    		}
     		    		
     		String left = result.substring(0,indexBegin+12+typeVar.length()+(jump))+")";
     		String right = result.substring(indexEnd+(jump), result.length());
-    		result = left+right;    		
-    		jump  = jump -1-worldVar.length();
+    		result = left+right;
     		
-    		if(result.substring(indexBegin+jump, indexEnd+jump).contains("oclIsKindOf")){
-    			oclIsKindOfList.add(typeVar.trim()+","+worldVar.trim());    			
-    		}else{
-    			oclIsTypeOfList.add(typeVar.trim()+","+worldVar.trim());
-    		} 
+    		if(parameters.contains(",")) {
+    			jump  = jump -1-worldVar.length();
+    			if(result.substring(indexBegin+jump, indexEnd+jump).contains("oclIsKindOf")){
+        			oclIsKindOfList.add(typeVar.trim()+","+worldVar.trim());    			
+        		}else{
+        			oclIsTypeOfList.add(typeVar.trim()+","+worldVar.trim());
+        		} 
+    		} else {
+    			if(result.substring(indexBegin+jump, indexEnd+jump).contains("oclIsKindOf")){
+    				oclIsKindOfList.add(typeVar.trim());
+    			}else{
+    				oclIsTypeOfList.add(typeVar.trim());
+    			}
+    		}    		
     	}
     	return result;
     }
     
     public String processInLineComments(String result)
     { 
-    	Pattern p = Pattern.compile("--.*\n");
-		Matcher m = p.matcher(result);
-		int jump = 0;
-    	while (m.find()) 
-    	{ 
-    		int indexBegin = m.start();
-    		int indexEnd = m.end();
-    		
-    		if(indexBegin+(jump) < 0) indexBegin = 0;
-    		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
-    		    		
-    		String left = result.substring(0,indexBegin+(jump));			
-    		String right = result.substring(indexEnd+(jump), result.length());
-    		result = left+right;
-    		jump = jump - result.substring(indexBegin+(jump),indexEnd+(jump)).length();
-    	}
-    	return result;    	    	    
+    	return result.replaceAll("--.*\n","");    	    	    	    
     }
     
     public String processMultiLineComments(String result)
     { 
-    	Pattern p = Pattern.compile("/\\*(.*)\\*/");
-		Matcher m = p.matcher(result);
-		int jump = 0;
-    	while (m.find()) 
-    	{ 
-    		int indexBegin = m.start();
-    		int indexEnd = m.end();
-    		
-    		if(indexBegin+(jump) < 0) indexBegin = 0;
-    		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
-    		    		
-    		//System.out.println(result.substring(indexBegin+(jump),indexEnd+(jump)));
-    	}
-    	return result;    	    	    
+    	return result.replaceAll("(?s)/\\*.*?\\*/","");    	
     }
     	 
     public String processTempKeyword(String result)
@@ -255,11 +243,12 @@ public class TOCLParser extends OCLParser{
 		result = oclTemporalContent;
 		
 		result = processInLineComments(result);
+		result = processMultiLineComments(result);
 		
-		Pattern p = Pattern.compile("oclIsKindOf\\((_')*\\s*\\w+\\s*'*,\\s*\\w+\\s*\\)");		
+		Pattern p = Pattern.compile("oclIsKindOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
 		result = processObjectOperation(result, p);
 		
-		p = Pattern.compile("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*,\\s*\\w+\\s*\\)");		
+		p = Pattern.compile("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
 		result = processObjectOperation(result, p);
 				
     	// navigations such as roleName[w] will become roleName(w)

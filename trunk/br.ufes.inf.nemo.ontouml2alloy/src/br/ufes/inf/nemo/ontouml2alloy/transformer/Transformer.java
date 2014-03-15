@@ -875,7 +875,7 @@ public class Transformer {
 	}
 	
 	/**
-	 * Populates With Association Ends.
+	 * Populates With Association Ends, Subsetted and Redefined Properties
 	 */
 	protected void populatesWithAssociationEnds()
 	{		
@@ -918,7 +918,11 @@ public class Transformer {
 					if (derivation !=null) materialIsTernary = true; 
 				} 
 				
+				// for single snapshot
 				FunctionDeclaration fun = AlloyAPI.createFunctionDeclaration(factory, world, isSourceProperty, functionName, paramName, returnName, assocName, materialIsTernary);				
+				module.getParagraph().add(fun);		
+				// for all worlds
+				fun = AlloyAPI.createTemporalFunctionDeclaration(factory, world, isSourceProperty, functionName, paramName, returnName, assocName, materialIsTernary);				
 				module.getParagraph().add(fun);		
 				
 				// SubSetted properties

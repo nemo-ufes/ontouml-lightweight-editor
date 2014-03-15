@@ -166,7 +166,7 @@ public class ConstraintSimulationPanel extends JPanel {
 	 */
 	public ConstraintSimulationPanel() 
 	{
-		setBorder(BorderFactory.createTitledBorder("(Temporal) Constraints"));		
+		setBorder(BorderFactory.createTitledBorder("Constraints"));		
 		setPreferredSize(new Dimension(500, 260));
 		
 		ctpanel = new JPanel();		
