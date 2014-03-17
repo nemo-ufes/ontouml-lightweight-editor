@@ -19,7 +19,17 @@ public abstract class DepPhasePage extends WizardPage {
 		setTitle(DepPhaseAntipattern.getAntipatternInfo().getName());		
 	}
 	
-	public DepPhaseWizard getMultiDepWizard(){
+	protected String getRelatorList(){
+		String relatorList = "";
+		for (int i = 0; i < depPhase.getRelatorEnds().size(); i++) {
+			if(i!=0)
+				relatorList += ", ";
+			relatorList += "<"+depPhase.getRelatorEnds().get(i).getType().getName()+">";
+		}
+		return relatorList;
+	}
+	
+	public DepPhaseWizard getDepPhaseWizard(){
 		return (DepPhaseWizard)getWizard();
 	}
 }
