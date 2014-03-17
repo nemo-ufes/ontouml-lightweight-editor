@@ -606,6 +606,8 @@ public class OutcomeFixer{
 		return fixes;
 
 	}
+	
+	
 
 	/**
 	 * Add a common supertype to a list of subtypes. It creates a supertype and
@@ -811,6 +813,20 @@ public class OutcomeFixer{
 		// change reference in relation
 		if (!(relation instanceof Association)) return fixes;
 		fixes.addAll(changeReferencesInAssociation((Association)relation, (Type)type, (Type)subtype));		
+		return fixes;
+	}
+	
+	public Fix addSuperTypeEnvolvingLink(EObject element, ClassStereotype stereoSuperType, EObject relation){
+		Fix fixes = new Fix();
+		
+		//create subtype
+		fixes.addAll(addSuperType(element, stereoSuperType));
+		
+		//change reference in relation
+		if (!(relation instanceof Association)) 
+			return fixes;
+		
+		fixes.addAll(changeReferencesInAssociation((Association)relation, (Type)element, (Type)fixes.getAddedByType(Type.class)));
 		return fixes;
 	}
 
