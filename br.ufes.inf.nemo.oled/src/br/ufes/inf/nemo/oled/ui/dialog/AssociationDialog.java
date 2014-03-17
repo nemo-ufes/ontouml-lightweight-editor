@@ -7,11 +7,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -20,10 +24,6 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Relationship;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
-import javax.swing.border.EmptyBorder;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class AssociationDialog extends JDialog{
 
@@ -31,9 +31,7 @@ public class AssociationDialog extends JDialog{
 	
 	@SuppressWarnings("unused")
 	private AssociationElement assocElement;
-	@SuppressWarnings("unused")
 	private Relationship relationship;
-	@SuppressWarnings("unused")
 	private DiagramManager diagramManager;
 	@SuppressWarnings("unused")
 	private JFrame parent;
@@ -161,6 +159,8 @@ public class AssociationDialog extends JDialog{
 		end1Edition.transferPropertyData();
 		end2Edition.transferPropertyData();
 		commentsEdition.transferCommentsData();
+		if(getStereotype(relationship).compareTo((String) assocEdition.stereoCombo.getSelectedItem())!=0)
+			diagramManager.changeRelationStereotype(relationship, (String) assocEdition.stereoCombo.getSelectedItem());
 //		constraintsEdition.transferConstraintsData();
 	}	
 }

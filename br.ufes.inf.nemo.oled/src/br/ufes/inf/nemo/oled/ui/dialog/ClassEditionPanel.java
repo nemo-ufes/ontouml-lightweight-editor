@@ -19,6 +19,8 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.MixinClass;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
@@ -37,7 +39,7 @@ public class ClassEditionPanel extends JPanel {
 	private JPanel classPropPanel;
 	private JLabel lblStereo;
 	@SuppressWarnings("rawtypes")
-	private JComboBox stereoCombo;
+	protected JComboBox stereoCombo;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ClassEditionPanel(final DiagramManager diagramManager, final ClassElement classElement, RefOntoUML.Classifier element) 
@@ -129,7 +131,7 @@ public class ClassEditionPanel extends JPanel {
 		nameField.setText(element.getName());		
 		btnAbstract.setSelected(element.isIsAbstract());
 		stereoCombo.setSelectedItem(getStereotype(element).trim());
-		stereoCombo.setEnabled(false);
+		stereoCombo.setEnabled(true);
 	}
 	
 	public static String getStereotype(EObject element)
@@ -146,12 +148,21 @@ public class ClassEditionPanel extends JPanel {
 		nameField.selectAll();
 	}
 	
+	public Fix changeStereotype(){
+		Fix fix = new Fix();
+		if(getStereotype(element).compareTo((String) stereoCombo.getSelectedItem())!=0){
+			OutcomeFixer fixer = new OutcomeFixer(diagramManager.getCurrentProject().getModel());
+			fix.addAll(fixer.changeClassStereotypeTo(element, fixer.getClassStereotype((String) stereoCombo.getSelectedItem())));
+		}
+		return fix;
+	}
+	
 	public void transferClassData()
 	{
 		element.setName(nameField.getText());
 		if (element instanceof Collective) ((Collective) element).setIsExtensional(btnExtensional.isSelected());
 		element.setIsAbstract(btnAbstract.isSelected());
-				
-		diagramManager.updateOLEDFromModification(element,false);		
+	
+		diagramManager.updateOLEDFromModification(element,false);	
 	}
 }

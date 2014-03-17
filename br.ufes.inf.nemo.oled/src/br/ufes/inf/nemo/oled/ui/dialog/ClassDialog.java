@@ -29,9 +29,7 @@ public class ClassDialog extends JDialog{
 	
 	@SuppressWarnings("unused")
 	private ClassElement classElement;
-	@SuppressWarnings("unused")
 	private Classifier element;
-	@SuppressWarnings("unused")
 	private DiagramManager diagramManager;
 	@SuppressWarnings("unused")
 	private JFrame parent;
@@ -168,5 +166,7 @@ public class ClassDialog extends JDialog{
 		commentsEdition.transferCommentsData();
 		attributesEdition.transferAttributesData();		
 		constraintsEdition.transferConstraintsData();
+		if(getStereotype(element).compareTo((String) classEdition.stereoCombo.getSelectedItem())!=0)
+			diagramManager.changeClassStereotype(element, (String) classEdition.stereoCombo.getSelectedItem());
 	}
 }
