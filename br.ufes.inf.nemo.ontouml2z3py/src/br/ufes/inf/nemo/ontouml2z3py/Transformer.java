@@ -68,7 +68,7 @@ public class Transformer {
 			populatesWithAntiRigidityFormulas();
 			populatesWithAssociations();
 			
-			addSortalTopLevelDisjointnessFormula();
+			addTopLevelDisjointnessFormula();
 			//Crio fórmula que garante que todo elemento de mundo é instância de um tipo que provê identidade
 			addIdentityFormula(identityProviderTypes);	
 		} catch (IOException e) {
@@ -147,15 +147,20 @@ public class Transformer {
 	
 	
 	
-	//Os sortais topLevel sao disjoint. Isso vai nos permitir falar que é insatisfatível um modelo no qual haja um sortal que nao provê identidade sem herdar de um que proveja
-	private void addSortalTopLevelDisjointnessFormula(){
+	//Os topLevel sao disjoint. Isso vai nos permitir falar que é insatisfatível um modelo no qual haja um sortal que nao provê identidade sem herdar de um que proveja
+	private void addTopLevelDisjointnessFormula(){
 		List<FunctionCall> subClasses = new ArrayList<FunctionCall>();
+		FunctionCall fc1;
 		for(RefOntoUML.Classifier r: ontoparser.getTopLevelInstances(RefOntoUML.Classifier.class)){
-			if (r instanceof SortalClass){
-				FunctionCall fc1 = factory.createFunctionCall(getFunction(r.getName()), getConstants(new int[]{1, 2}));
+			if (r instanceof SortalClass || r instanceof Relator){
+				fc1 = factory.createFunctionCall(getFunction(r.getName()), getConstants(new int[]{1, 2}));
 				subClasses.add(fc1);
 			}
 		}
+		
+		//Adiciono o mundo também no disjointness para evitar que um mundo seja um elemento tb
+		fc1 = factory.createFunctionCall(getFunction("World"), getConstants(new int[]{2}));
+		subClasses.add(fc1);
 		addGeneralizationsetDisjointnessFormula(null, subClasses);
 	}
 	private void populatesWithRigidityFormulas(){
