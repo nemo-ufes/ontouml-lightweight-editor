@@ -273,7 +273,10 @@ public class TOCLParser extends OCLParser{
 		}catch(ParserException pe){
 			if (pe.getLocalizedMessage().contains("World")){
 				if(!pe.getLocalizedMessage().contains("oclIsKindOf") && !pe.getLocalizedMessage().contains("oclIsTypeOf") &&
-				   !pe.getLocalizedMessage().contains("allIntances") && !pe.getLocalizedMessage().contains("existsIn"))
+				   !pe.getLocalizedMessage().contains("allIntances") && !pe.getLocalizedMessage().contains("existsIn") &&
+				   !pe.getLocalizedMessage().contains("next") && !pe.getLocalizedMessage().contains("previous") &&
+				   !pe.getLocalizedMessage().contains("allNext") && !pe.getLocalizedMessage().contains("allPrevious") &&
+				   !pe.getLocalizedMessage().contains("hasNext") && !pe.getLocalizedMessage().contains("hasPrevious"))
 				{					
 					String message = pe.getLocalizedMessage().replace("(World)","[World]");
 					message = message.replace("operation", "association end-point ");

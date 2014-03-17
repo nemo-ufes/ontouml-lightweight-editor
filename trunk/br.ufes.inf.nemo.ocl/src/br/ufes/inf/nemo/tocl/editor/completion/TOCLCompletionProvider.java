@@ -12,22 +12,42 @@ public class TOCLCompletionProvider {
 
 	public DefaultCompletionProvider provider;	
 	public ArrayList<TOCLTemplateCompletion> objects = new ArrayList<TOCLTemplateCompletion>();
+	public ArrayList<TOCLTemplateCompletion> constraints = new ArrayList<TOCLTemplateCompletion>();
 	
 	public TOCLCompletionProvider(DefaultCompletionProvider provider)
 	{
 		this.provider = provider;				
 		objects.addAll(createObjectCompletion());
+		constraints.addAll(createConstraintCompletion());
 	}		
 
 	public DefaultCompletionProvider getProvider(){ return provider; }
 		
+	private ArrayList<TOCLTemplateCompletion> createConstraintCompletion()
+	{ 
+		String description = new String();
+		ArrayList<TOCLTemplateCompletion> oclCompletionList = new ArrayList<TOCLTemplateCompletion>();
+						
+		description = "<b>context TypeName <br>temp : true</b><br><br>"+
+		"Temporal constraint.";
+		
+		TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
+			"temp","temporal",
+			"context ${TypeName}\ntemp : ${true} ${cursor}\n",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+		
+		return oclCompletionList;
+	}
+	
 	/** Object Completion */
 	private ArrayList<TOCLTemplateCompletion> createObjectCompletion()
 	{ 
 		String description = new String();
 		ArrayList<TOCLTemplateCompletion> oclCompletionList = new ArrayList<TOCLTemplateCompletion>();
 				
-		description = "Operation <b>OclAny::oclIsKindOf(T)(type : AnyClassifier(T), w: World) : Boolean</b><br><br>"+
+		description = "Operation <b>OclAny::oclIsKindOf(type : AnyClassifier(T), w: World) : Boolean</b><br><br>"+
 		"Evaluates to true if the type of self conforms to t in w. That is, self is of type t or a subtype of t in the World w.";
 		
 		TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
@@ -46,7 +66,7 @@ public class TOCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>OclAny::oclIsTypeOf(T)(type : AnyClassifier(T), w: World) : Boolean</b><br><br>"+
+		description = "Operation <b>OclAny::oclIsTypeOf(type : AnyClassifier(T), w: World) : Boolean</b><br><br>"+
 		"Evaluates to true if self is of the type t but not a subtype of t in the World w.";
 		
 		c = new TOCLTemplateCompletion(provider, 
@@ -56,6 +76,76 @@ public class TOCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 				
+		description = "Operation <b>OclAny::existsIn(w: World) : Boolean</b><br><br>"+
+		"Evaluates to true if self exists in the World w.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"existsIn(w)","existsIn(w)",
+			"existsIn(${world})${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+		
+		description = "Operation <b>World::previous() : World</b><br><br>"+
+		"Returns the immediate previous world from the world self.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"previous()","previous()",
+			"previous()${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+				
+		description = "Operation <b>World::next() : Set(World)</b><br><br>"+
+		"Returns the immediate next worlds from the world self.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"next()","next()",
+			"next()${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+
+		description = "Operation <b>World::allNext() : Set(World)</b><br><br>"+
+		"Returns all the worlds after the world self.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"allNext()","allNext()",
+			"allNext()${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+				
+		description = "Operation <b>World::allPrevious() : Set(World)</b><br><br>"+
+		"Returns all the worlds before the world self.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"allPrevious()","allPrevious()",
+			"allPrevious()${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+				
+		description = "Operation <b>World::hasPrevious() : Boolean</b><br><br>"+
+		"Evaluates to true if the world self has an immediate previous world.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"hasPrevious()","hasPrevious()",
+			"hasPrevious()${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+		
+		description = "Operation <b>World::hasNext() : Boolean</b><br><br>"+
+		"Evaluates to true if the world self has at least one immediate next world.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"hasNext()","hasNext()",
+			"hasNext()${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+		
 		return oclCompletionList;
 	}	
 }

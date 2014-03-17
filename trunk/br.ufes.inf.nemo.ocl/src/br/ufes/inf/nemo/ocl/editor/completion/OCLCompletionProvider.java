@@ -47,7 +47,7 @@ public class OCLCompletionProvider {
 		String description = new String();
 		ArrayList<OCLTemplateCompletion> oclCompletionList = new ArrayList<OCLTemplateCompletion>();
 		
-		description = "<b>context Type inv: boolean-expression </b><br><br>"+
+		description = "<b>context TypeName <br>inv : true </b><br><br>"+
 		"Invariant.";
 		
 		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
@@ -57,17 +57,17 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "<b>context srcType::Property::tgtType derive: ocl-expression </b><br><br>"+
+		description = "<b>context TypeName :: PropertyName : ResultTypeName <br>derive: ...</b><br><br>"+
 		"Derivation constraint.";
 		
 		c = new OCLTemplateCompletion(provider, 
 			"derive","derivation",
-			"context ${Type}::${Property}:${propertyType}\nderive : ${cursor}\n",
+			"context ${TypeName}::${PropertyName}:${ResultTypeName}\nderive : ${cursor}\n",
 			null,description);		
 		provider.addCompletion(c); 
 		oclCompletionList.add(c);
 		
-		description = "<b>context Type inv/derive: ocl-expression </b><br><br>"+
+		description = "<b>context TypeName </b><br><br>"+
 		"Context declaration.";
 		
 		c = new OCLTemplateCompletion(provider, 

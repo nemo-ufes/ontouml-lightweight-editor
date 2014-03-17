@@ -42,7 +42,6 @@ public class ClassDialog extends JDialog{
 	private AttributesEditionPanel attributesEdition;
 	private ConstraintEditionPanel constraintsEdition;
 	private RelatedElementsPanel relatedElements;
-	private JButton btnApply;
 	
 	public void selectTab (int index)
 	{
@@ -92,25 +91,15 @@ public class ClassDialog extends JDialog{
 				dispose();
 			}
 		});
-			
-		btnApply = new JButton("Apply");
-		btnApply.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				okActionPerformed(e);				
-			}
-		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(117)
+					.addGap(155)
 					.addComponent(btnConfirm, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnCancel)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnApply, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-					.addGap(127))
+					.addGap(164))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -118,7 +107,6 @@ public class ClassDialog extends JDialog{
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCancel)
-						.addComponent(btnApply)
 						.addComponent(btnConfirm))
 					.addContainerGap(16, Short.MAX_VALUE))
 		);
