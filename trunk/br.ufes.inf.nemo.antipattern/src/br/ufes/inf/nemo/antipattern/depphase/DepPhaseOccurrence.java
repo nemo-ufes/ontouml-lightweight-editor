@@ -107,22 +107,25 @@ public class DepPhaseOccurrence extends AntipatternOccurrence{
 	}
 	
 	public void separateRelationalDependencyOnSupertype(Property p){
-		Fix fixes = new Fix();
-		Classifier phaseParent = null;
-		String relatorName = p.getType().getName();
-		
-		if(phase.parents()!=null && phase.parents().size()>0);
-			phaseParent = phase.parents().get(0);
-		
+			
 		//creates role supertype for the phase and reconnect the given property to it
 		if(getRelatorEnds().contains(p)){
+			Fix fixes = new Fix();
+			Classifier phaseParent = null;
+			String relatorName = p.getType().getName();
+			
+			if(phase.parents()!=null && phase.parents().size()>0);
+				phaseParent = phase.parents().get(0);
+			
 			fixes.addAll(fixer.addSuperTypeEnvolvingLink(phase, ClassStereotype.ROLE, p.getAssociation()));
 			fixes.getAddedByType(Role.class).get(0).setName("RoleOf"+relatorName);
+			
+			//creates a generalization from the created role to a parent of the phase
+			if (phaseParent instanceof Classifier)
+				fixer.createGeneralization(fixes.getAddedByType(Role.class).get(0), phaseParent);
 		}
 		
-		//creates a generalization from the created role to a parent of the phase
-		if (phaseParent instanceof Classifier)
-			fixer.createGeneralization(fixes.getAddedByType(Role.class).get(0), phaseParent);
+		
 	}
 	
 }
