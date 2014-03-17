@@ -728,7 +728,7 @@ public class ProjectTree extends CheckboxTree {
             				ProjectTree.this.frame.getDiagramManager(),
             				(ClassElement)diagramElement,
             				(RefOntoUML.Classifier)element,
-            				false
+            				true
             			);
             			dialog.setLocationRelativeTo(ProjectTree.this.frame);
             			dialog.setVisible(true);
@@ -744,7 +744,7 @@ public class ProjectTree extends CheckboxTree {
 	            				ProjectTree.this.frame.getDiagramManager(),
 	            				(AssociationElement)diagramElement,
 	            				(RefOntoUML.Relationship)p.getAssociation(),
-	            				false
+	            				true
 	            			);
             				dialog.setLocationRelativeTo(ProjectTree.this.frame);
 	            			dialog.setVisible(true);
@@ -757,7 +757,7 @@ public class ProjectTree extends CheckboxTree {
 	            				ProjectTree.this.frame.getDiagramManager(),
 	            				(ClassElement)diagramElement,
 	            				(RefOntoUML.Classifier)p.eContainer(),
-	            				false
+	            				true
 	            			);
 	            			dialog.setLocationRelativeTo(ProjectTree.this.frame);
 	            			dialog.setVisible(true);
@@ -773,7 +773,7 @@ public class ProjectTree extends CheckboxTree {
             				ProjectTree.this.frame.getDiagramManager(),
             				(AssociationElement)diagramElement,
             				(RefOntoUML.Relationship)element,
-            				false
+            				true
             			);
         				dialog.setLocationRelativeTo(ProjectTree.this.frame);
             			dialog.setVisible(true);
@@ -789,7 +789,7 @@ public class ProjectTree extends CheckboxTree {
 	            				ProjectTree.this.frame.getDiagramManager(),
 	            				(ClassElement)diagramElement,
 	            				(RefOntoUML.Classifier)element.eContainer(),
-	            				false
+	            				true
 	            			);
 	            			dialog.setLocationRelativeTo(ProjectTree.this.frame);
 	            			dialog.setVisible(true);
@@ -802,7 +802,7 @@ public class ProjectTree extends CheckboxTree {
                 				ProjectTree.this.frame.getDiagramManager(),
                 				(AssociationElement)diagramElement,
                 				(RefOntoUML.Relationship)element.eContainer(),
-                				false
+                				true
                 			);
             				dialog.setLocationRelativeTo(ProjectTree.this.frame);
                 			dialog.setVisible(true);                			 
@@ -820,7 +820,7 @@ public class ProjectTree extends CheckboxTree {
 	            				ProjectTree.this.frame.getDiagramManager(),
 	            				(ClassElement)diagramElement,
 	            				(RefOntoUML.Classifier)context,
-	            				false
+	            				true
 	            			);
 	            			dialog.setLocationRelativeTo(ProjectTree.this.frame);
 	            			dialog.setVisible(true);
@@ -834,7 +834,7 @@ public class ProjectTree extends CheckboxTree {
             				ProjectTree.this.frame.getDiagramManager(),
             				(GeneralizationElement)diagramElement,
             				(RefOntoUML.Generalization)element,
-            				false
+            				true
             			);
             			dialog.setLocationRelativeTo(ProjectTree.this.frame);
             			dialog.setVisible(true);
