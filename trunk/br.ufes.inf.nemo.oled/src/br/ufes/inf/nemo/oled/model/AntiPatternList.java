@@ -11,7 +11,6 @@ import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
-import br.ufes.inf.nemo.antipattern.imppart.ImpPartAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
@@ -44,7 +43,6 @@ public class AntiPatternList {
 	private HetCollAntipattern hetColl;
 	private HomoFuncAntipattern homoFunc;
 	private ImpAbsAntipattern impAbs;
-	private ImpPartAntipattern impPart;
 	private MixIdenAntipattern mixIden;
 	private MixRigAntipattern mixRig;
 	private MultiDepAntipattern multiDep;
@@ -64,7 +62,7 @@ public class AntiPatternList {
 	}
 	public AntiPatternList(AssCycAntipattern assCyc,
 			BinOverAntipattern binOver, DepPhaseAntipattern depPhase, FreeRoleAntipattern freeRole, GSRigAntipattern gsRig,
-			HetCollAntipattern hetColl, HomoFuncAntipattern homoFunc, ImpAbsAntipattern impAbs, ImpPartAntipattern impPart,
+			HetCollAntipattern hetColl, HomoFuncAntipattern homoFunc, ImpAbsAntipattern impAbs,
 			MixIdenAntipattern mixIden, MixRigAntipattern mixRig, MultiDepAntipattern multiDep, RelCompAntipattern relComp,
 			RelOverAntipattern relOver, RelRigAntipattern relRig, RelSpecAntipattern relSpec, RepRelAntipattern repRel,
 			UndefFormalAntipattern undefFormal, UndefPhaseAntipattern undefPhase, WholeOverAntipattern wholeOver,
@@ -78,7 +76,6 @@ public class AntiPatternList {
 		this.hetColl = hetColl;
 		this.homoFunc = homoFunc;
 		this.impAbs = impAbs;
-		this.impPart = impPart;
 		this.mixIden = mixIden;
 		this.mixRig = mixRig;
 		this.multiDep = multiDep;
@@ -109,7 +106,6 @@ public class AntiPatternList {
 		result.addAll(hetColl.getOccurrences());
 		result.addAll(homoFunc.getOccurrences());
 		result.addAll(impAbs.getOccurrences());
-		result.addAll(impPart.getOccurrences());
 		result.addAll(mixIden.getOccurrences());
 		result.addAll(mixRig.getOccurrences());
 		result.addAll(multiDep.getOccurrences());
@@ -184,12 +180,7 @@ public class AntiPatternList {
 	public void setImpAbs(ImpAbsAntipattern impAbs) {
 		this.impAbs = impAbs;
 	}
-	public ImpPartAntipattern getImpPart() {
-		return impPart;
-	}
-	public void setImpPart(ImpPartAntipattern impPart) {
-		this.impPart = impPart;
-	}
+	
 	public MixIdenAntipattern getMixIden() {
 		return mixIden;
 	}
