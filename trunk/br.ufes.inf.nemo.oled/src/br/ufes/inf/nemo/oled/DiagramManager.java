@@ -764,6 +764,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (fix==null) return;
 		for(Object obj: fix.getAdded()) 
 		{
+			System.out.println(fix.getAddedPosition(obj).x +" - "+ fix.getAddedPosition(obj).y);
 			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType) {
 				updateOLEDFromInclusion((RefOntoUML.Element)obj);
 				// add at specified position...
@@ -2144,96 +2145,58 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		Fix mainfix = new Fix();
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
 		List<DiagramElement> selected = activeEditor.getSelectedElements();
-
-		
-		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
 		int j=0;
+		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
 		for (int i = 0; i < selected.size(); i++) {
 			
 			if (selected.get(i) instanceof ClassElement) {
 				j++;
 				ClassElement ce = (ClassElement) selected.get(i);
 				refontoList.add(ce.getClassifier());
-				//refontoList.add();
-			}
-			
+			}		
 		}
 		if(refontoList.size()==2){
 			
 			ArrayList<String>stereotypes= DerivedByUnion.getInstance().inferStereotype(refontoList.get(0).eClass().getName(), refontoList.get(1).eClass().getName());
 			if(stereotypes.size()<2){
-				UmlProject project = getCurrentEditor().getProject();
-				OutcomeFixer of = new OutcomeFixer(project.getModel());
-				Classifier newElement = (Classifier)of.createClass( of.getClassStereotype(stereotypes.get(0)));
-				mainfix.includeAdded(newElement);
-				of.copyContainer(((ClassElement) selected.get(0)).getClassifier(), newElement);
-				Fix fix=of.createGeneralization((Classifier)refontoList.get(0), newElement);
-				Fix fixG2=of.createGeneralization((Classifier)refontoList.get(1), newElement);
-				ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-				generalizations.add((Generalization) fix.getAdded().get(0));
-				generalizations.add((Generalization) fixG2.getAdded().get(0));
-				Fix gs =  of.createGeneralizationSet(generalizations);
-				//((GeneralizationSet) gs.getAdded()).setIsCovering(true);
-				//((GeneralizationSet) gs.getAdded()).setIsDisjoint(true);
-				mainfix.addAll(fixG2);
-				mainfix.addAll(fix);
-				mainfix.addAll(gs);
-				updateOLED(mainfix);
-				//fix.includeAllAdded(added);
-				//ClassElement c = 
+				String name=DerivedByUnion.DefineNameDerivedType();
+				createDerivedType(stereotypes.get(0), mainfix, selected,name,refontoList);
 			}
 			else{
 				Object[] stereo;
 				stereo=  stereotypes.toArray();
-			
-				JFrame frame = new JFrame("Input Dialog Example 3");
-			    String favoritePizza = (String) JOptionPane.showInputDialog(frame, 
-			        "Choose between the possible options ?",
-			        "Favorite Pizza",
-			        JOptionPane.QUESTION_MESSAGE, 
-			        null, 
-			        stereo, 
-			        stereo[0]);
-				    UmlProject project = getCurrentEditor().getProject();
-					OutcomeFixer of = new OutcomeFixer(project.getModel());
-					Classifier newElement = (Classifier)of.createClass( of.getClassStereotype(favoritePizza));
-					mainfix.includeAdded(newElement);
-					of.copyContainer(((ClassElement) selected.get(0)).getClassifier(), newElement);
-					Fix fix=of.createGeneralization((Classifier)refontoList.get(0), newElement);
-					Fix fixG2=of.createGeneralization((Classifier)refontoList.get(1), newElement);
-					ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-					generalizations.add((Generalization) fix.getAdded().get(0));
-					generalizations.add((Generalization) fixG2.getAdded().get(0));
-					Fix gs =  of.createGeneralizationSet(generalizations);
-					//((GeneralizationSet) gs.getAdded()).setIsCovering(true);
-					//((GeneralizationSet) gs.getAdded()).setIsDisjoint(true);
-					mainfix.addAll(fixG2);
-					mainfix.addAll(fix);
-					mainfix.addAll(gs);
-					updateOLED(mainfix);
-			    // favoritePizza will be null if the user clicks Cancel
-			   
-			  
+				String name=DerivedByUnion.DefineNameDerivedType();
+				String stereotype= DerivedByUnion.selectStereotype(stereo);
+			    createDerivedType(stereotype, mainfix, selected,name,refontoList);
 			}
+			
 		}
-		//refontoList.get(0).get
-		//System.out.println("");
-		// diagramElem instnaceof AssociationElement ... diagramElement.getRelationship();
-		// diagramEleme instanceof ClassElement ... diagramElement.getClassifier();
-
-		//eliminate associations and generalizations
-
-		//Fix fix = DervideByUnion.run(refontoList);
-
-		// double pos = calcular posição ... diagramElement.getAbsoluteX1, X2,
-
-		//updateOLED(fix, double pos_new_Elem); // new method: we need to do this.
-
-		//String constraint = DerviedByUnion.getConstraints();
-		//getFrame().getInfoManager().getOcleditor().addText(constraint);
-
-		//System.out.println("derive by union");
-
+		
 	}
+	public void createDerivedType(String stereotype, Fix mainfix, List<DiagramElement> selected, String name, ArrayList<RefOntoUML.Element> refontoList){
+		
+		UmlProject project = getCurrentEditor().getProject();
+		OutcomeFixer of = new OutcomeFixer(project.getModel());
+		Classifier newElement = (Classifier)of.createClass( of.getClassStereotype(stereotype));
+		newElement.setName(name);
+		of.copyContainer(((ClassElement) selected.get(0)).getClassifier(), newElement);
+		Fix fix=of.createGeneralization((Classifier)refontoList.get(0), newElement);
+		Fix fixG2=of.createGeneralization((Classifier)refontoList.get(1), newElement);
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+		generalizations.add((Generalization) fix.getAdded().get(0));
+		generalizations.add((Generalization) fixG2.getAdded().get(0));
+		Fix gs =  of.createGeneralizationSet(generalizations);
+		mainfix.addAll(fixG2);
+		mainfix.addAll(fix);
+		mainfix.addAll(gs);
+		ClassElement position = (ClassElement) selected.get(0);
+		ClassElement position2 = (ClassElement) selected.get(1);
+		
+		mainfix.includeAdded(newElement, (position.getAbsoluteX1()+position2.getAbsoluteX1())/2, (position.getAbsoluteY1()+position2.getAbsoluteY1())/2);
+		updateOLED(mainfix);
+		
+	}
+	
+	
 
 }
