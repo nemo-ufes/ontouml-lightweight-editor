@@ -582,13 +582,13 @@ public class OutcomeFixer{
 		EObject newElem = (EObject) aux.getAdded().get(0);
 		fixes.addAll(aux);
 		// create a supertype for it
-		Fix aux2 = addSuperType(newElem, stereoSupertype);
+		Fix aux2 = createSuperType(newElem, stereoSupertype);
 		fixes.addAll(aux2);
 		return fixes;
 	}
 
 	/** Add a super-type with the given stereotype to the element */
-	public Fix addSuperType(EObject element, ClassStereotype stereoSuperType) 
+	public Fix createSuperType(EObject element, ClassStereotype stereoSuperType) 
 	{
 		Fix fixes = new Fix();
 		// create supertye
@@ -613,7 +613,7 @@ public class OutcomeFixer{
 	 * Add a common supertype to a list of subtypes. It creates a supertype and
 	 * all the generalizations linking a subtype to the common supertype.
 	 */
-	public Fix addCommonSuperType(ArrayList<Classifier> subtypes, ClassStereotype stereoSuperType) 
+	public Fix createCommonSuperType(ArrayList<Classifier> subtypes, ClassStereotype stereoSuperType) 
 	{
 		Fix fixes = new Fix();
 		// create supertye
@@ -816,11 +816,11 @@ public class OutcomeFixer{
 		return fixes;
 	}
 	
-	public Fix addSuperTypeEnvolvingLink(EObject element, ClassStereotype stereoSuperType, EObject relation){
+	public Fix createSuperTypeEnvolvingLink(EObject element, ClassStereotype stereoSuperType, EObject relation){
 		Fix fixes = new Fix();
 		
 		//create subtype
-		fixes.addAll(addSuperType(element, stereoSuperType));
+		fixes.addAll(createSuperType(element, stereoSuperType));
 		
 		//change reference in relation
 		if (!(relation instanceof Association)) 
