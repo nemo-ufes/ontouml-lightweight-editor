@@ -128,4 +128,23 @@ public class GSRigOccurrence extends AntipatternOccurrence{
 		return parser.getStringRepresentation(getGs());
 	}
 
+	// OUTCOMING FIXES ================================================
+	
+	public void deleteGenSet() {
+		fix.addAll(fixer.deleteElement(getGs()));		
+	}
+
+	public void createGenSetForRigids() {
+		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getRigidSpecifics()));				
+	}
+
+	public void createGenSetForAntiRigids() {
+		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getAntiRigidSpecifics()));		
+	}
+
+	public void createGenSetForBoth() {
+		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getAntiRigidSpecifics()));
+		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getRigidSpecifics()));
+	}
+
 }

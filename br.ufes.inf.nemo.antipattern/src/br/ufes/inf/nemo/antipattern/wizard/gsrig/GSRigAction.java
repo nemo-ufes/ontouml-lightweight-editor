@@ -41,11 +41,11 @@ public class GSRigAction  extends AntiPatternAction<GSRigOccurrence>{
 	@Override
 	public void run() 
 	{
-		if(code==Action.DELETE_GS);
-		if(code==Action.CREATE_GS_FOR_RIGIDS);
-		if(code==Action.CREATE_GS_FOR_ANTIRIGIDS);
-		if(code==Action.CREATE_GS_FOR_BOTH);
-	}
+		if(code==Action.DELETE_GS) ap.deleteGenSet();
+		if(code==Action.CREATE_GS_FOR_RIGIDS) ap.createGenSetForRigids();
+		if(code==Action.CREATE_GS_FOR_ANTIRIGIDS) ap.createGenSetForAntiRigids();
+		if(code==Action.CREATE_GS_FOR_BOTH) ap.createGenSetForBoth();
+	} 
 	
 	public static String getStereotype(EObject element)
 	{
