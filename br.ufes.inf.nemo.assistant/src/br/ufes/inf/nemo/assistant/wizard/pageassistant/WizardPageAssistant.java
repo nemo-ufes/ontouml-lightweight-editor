@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
 import java.util.ArrayList;
 
+import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 
@@ -47,6 +48,15 @@ public abstract class WizardPageAssistant extends WizardPage {
 	
 	public void setEndPage(boolean b){
 		isEndPage = b;
+	}
+
+	protected void enableFinish(boolean b){
+		IWizard w = this.getWizard();
+		IWizardPage [] pages = w.getPages();
+		for(int i = 0; i < pages.length; i++){
+			((WizardPage) pages[i]).setPageComplete(b);
+		}
+		this.setPageComplete(b);  // this is needed.  
 	}
 	
 	/**

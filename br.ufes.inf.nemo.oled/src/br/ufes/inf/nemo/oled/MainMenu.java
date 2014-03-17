@@ -128,7 +128,7 @@ public class MainMenu implements ActionListener {
 
 		//Victor comentar
 		assistantItem.setSelected(false);
-		assistantItem.setEnabled(true);
+		assistantItem.setEnabled(false);
 		//assistantItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));		
 		
 	}
@@ -437,7 +437,10 @@ public class MainMenu implements ActionListener {
 		for (AppCommandListener l : listeners) {
 			//victor
 			if(e.getActionCommand().equals("ASSISTANT") && showBugReport){
-				frame.showInformationMessageDialog("Activating Modeling Assistant", "Modeling Assistant v0.1 \nPlease report bug or improvements to:\nhttps://code.google.com/p/ontouml-lightweight-editor/issues/list");
+				if(isAssistantChecked())
+					frame.showInformationMessageDialog("Activating Modeling Assistant", "Modeling Assistant v0.1 \nPlease report bug or improvements to:\nhttps://code.google.com/p/ontouml-lightweight-editor/issues/list");
+				else
+					frame.showInformationMessageDialog("Deactivating Modeling Assistant", "If you found some bug, please, report for us:\nhttps://code.google.com/p/ontouml-lightweight-editor/issues/list");
 				showBugReport = false;
 			}
 			l.handleCommand(e.getActionCommand());

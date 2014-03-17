@@ -84,11 +84,9 @@ public class NewGenericRelation extends WizardPageAssistant implements Serializa
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				if(relationName.getText().isEmpty()){
-					//					warning.setVisible(true);
-					setPageComplete(false);
+					enableFinish(false);
 				}else{
-					//					warning.setVisible(false);
-					setPageComplete(true);
+					enableFinish(true);
 				}
 			}
 		});
@@ -131,7 +129,7 @@ public class NewGenericRelation extends WizardPageAssistant implements Serializa
 		label_5.setText("...");
 		label_5.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		label_5.setBounds(406, 92, 8, 15);
-		setPageComplete(false);
+		enableFinish(false);
 	}
 
 	@Override

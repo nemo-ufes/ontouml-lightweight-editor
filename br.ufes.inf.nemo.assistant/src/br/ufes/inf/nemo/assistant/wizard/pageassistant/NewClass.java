@@ -45,13 +45,7 @@ public class NewClass extends WizardPageAssistant implements Serializable {
 		tfClassName.addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
-				if(tfClassName.getText().isEmpty()){
-					warning.setVisible(true);
-					setPageComplete(false);
-				}else{
-					warning.setVisible(false);
-					setPageComplete(true);
-				}
+				enableFinish(false);
 			}
 		});
 		tfClassName.setBounds(110, 63, 180, 21);
@@ -77,7 +71,7 @@ public class NewClass extends WizardPageAssistant implements Serializable {
 		warning.setText("!");
 
 		if(isEndPage)
-			setPageComplete(true);
+			enableFinish(true);
 	}
 
 	public void setStereotypes(String[] sts){
@@ -120,7 +114,7 @@ public class NewClass extends WizardPageAssistant implements Serializable {
 	public void lockSetCurrentClass(boolean b) {
 		canSetCurrentClass = b;
 	}
-	
+
 	public boolean canSetCurrentClass(){
 		return canSetCurrentClass;
 	}
@@ -132,7 +126,7 @@ public class NewClass extends WizardPageAssistant implements Serializable {
 
 		Label label1 = new Label(shell, SWT.NONE);
 		label1.setText("NEWCLASS.help");
-		
+
 		shell.open();
 	}
 
@@ -140,7 +134,5 @@ public class NewClass extends WizardPageAssistant implements Serializable {
 	public void init() {
 		setTitle("New Class");
 		setDescription("Creating a new Class");
-		
 	}
-	
 } 

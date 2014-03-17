@@ -2,13 +2,12 @@ package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 
 import java.io.Serializable;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 public class Question extends WizardPageAssistant  implements Serializable{
 
@@ -39,31 +38,49 @@ public class Question extends WizardPageAssistant  implements Serializable{
 		btTrue = new Button(container, SWT.RADIO);
 		btTrue.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				setPageComplete(true);
+			public void widgetSelected(SelectionEvent chk) {
 				selected = true;
+				if(selected && ((Button)chk.getSource()).getSelection()){
+					if(canGoTrue){
+						canGoNext = true;
+						enableFinish(false);
+					}else{
+						canGoNext = false;
+						enableFinish(true);
+					}
+				}
 			}
 		});
 		btTrue.setBounds(10, 96, 90, 16);
 		btTrue.setText("True");
-
+		btTrue.setSelection(false);
+		
 		btFalse = new Button(container, SWT.RADIO);
 		btFalse.setBounds(10, 117, 90, 16);
 		btFalse.setText("False");
 		btFalse.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				setPageComplete(true);
+			public void widgetSelected(SelectionEvent chk) {
 				selected = true;
+				if(selected && ((Button)chk.getSource()).getSelection()){
+					if(canGoFalse){
+						canGoNext = true;
+						enableFinish(false);
+					}else{
+						canGoNext = false;
+						enableFinish(true);	
+					}
+				}
 			}
 		});
+		btFalse.setSelection(false);
 	}
-
+	
 	@Override
 	public boolean nextTrue() {
 		return btTrue.getSelection();
 	}
-
+	
 	@Override
 	public boolean nextFalse() {
 		return btFalse.getSelection();
@@ -71,35 +88,25 @@ public class Question extends WizardPageAssistant  implements Serializable{
 
 	@Override
 	public boolean canFlipToNextPage() {
-		return btTrue.getSelection() || btFalse.getSelection();
+		return (btTrue.getSelection() || btFalse.getSelection()) && canGoNext;
 	}
 
+	private boolean selected = false;
+	private boolean canGoNext = true;
 	private boolean canGoTrue = true;
 	private boolean canGoFalse = true;
-	private boolean selected = false;
 
 	public void setCanGoTrue(boolean b){
-		btTrue.setEnabled(false);
 		canGoTrue = b;
 	}
 
 	public void setCanGoFalse(boolean b){
-		btFalse.setEnabled(false);
 		canGoFalse = b;
 	}
-
 
 	private String question = "<Question>";
 	public void setQuestion(String question) {
 		this.question = question;
-	}
-
-	@Override
-	public void setVisible(boolean visible) {
-		super.setVisible(visible);
-		if((!canGoTrue || !canGoFalse) && !selected){
-			MessageDialog.openInformation(getShell(), "Warning", "There is just one options in this case, but you can finish the wizard.");
-		}
 	}
 
 	@Override
