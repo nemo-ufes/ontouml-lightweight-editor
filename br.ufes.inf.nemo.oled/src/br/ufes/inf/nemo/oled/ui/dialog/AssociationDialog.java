@@ -43,9 +43,6 @@ public class AssociationDialog extends JDialog{
 	private PropertyEditionPanel end1Edition;
 	private PropertyEditionPanel end2Edition;
 	private CommentsEditionPanel commentsEdition;
-//	private ConstraintEditionPanel constraintsEdition;
-//	private RelatedElementsPanel relatedElements;
-	private JButton btnApply;
 	
 	public void selectTab (int index)
 	{
@@ -95,34 +92,23 @@ public class AssociationDialog extends JDialog{
 				dispose();
 			}
 		});
-			
-		btnApply = new JButton("Apply");
-		btnApply.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				okActionPerformed(e);				
-			}
-		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(118)
+					.addGap(158)
 					.addComponent(btnConfirm, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnCancel)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnApply, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-					.addGap(128))
+					.addGap(162))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnConfirm)
 						.addComponent(btnCancel)
-						.addComponent(btnApply))
+						.addComponent(btnConfirm))
 					.addContainerGap(16, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);

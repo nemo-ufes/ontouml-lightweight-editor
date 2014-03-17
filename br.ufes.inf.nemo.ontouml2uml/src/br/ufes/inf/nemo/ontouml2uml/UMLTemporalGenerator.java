@@ -181,14 +181,14 @@ public class UMLTemporalGenerator {
 		// previous() : Set(World)
 		org.eclipse.uml2.uml.Operation previousOp = umlWorld.createOwnedOperation("previous", null, null, umlWorld);
 		previousOp.setLower(0);
-		previousOp.setUpper(-1);
+		previousOp.setUpper(1);
 		
 		outln(previousOp);
 
 		// previous() : World[0..1]
-		org.eclipse.uml2.uml.Operation directPreviousOp = umlWorld.createOwnedOperation("directPrevious", null, null, umlWorld);
+		org.eclipse.uml2.uml.Operation directPreviousOp = umlWorld.createOwnedOperation("allPrevious", null, null, umlWorld);
 		directPreviousOp.setLower(0);
-		directPreviousOp.setUpper(1);
+		directPreviousOp.setUpper(-1);
 		
 		outln(directPreviousOp);
 		
@@ -200,7 +200,7 @@ public class UMLTemporalGenerator {
 		outln(nextOp);
 		
 		// directNext() : Set(World)
-		org.eclipse.uml2.uml.Operation directNextOp = umlWorld.createOwnedOperation("directNext", null, null, umlWorld);
+		org.eclipse.uml2.uml.Operation directNextOp = umlWorld.createOwnedOperation("allNext", null, null, umlWorld);
 		directNextOp.setLower(0);
 		directNextOp.setUpper(-1);
 		

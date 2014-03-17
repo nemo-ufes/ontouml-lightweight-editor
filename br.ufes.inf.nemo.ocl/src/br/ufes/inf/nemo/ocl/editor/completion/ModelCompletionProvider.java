@@ -99,7 +99,7 @@ public class ModelCompletionProvider {
     public void addCompletion(RefOntoUML.Type oc)
     {
 	   String description = new String();
-	   description = "<b>"+getStereotype(oc)+" "+oc.getName()+"</b>";
+	   description = ""+getStereotype(oc)+" <b>"+oc.getName()+"</b>";
 			   
 	   ModelTemplateCompletion c = new ModelTemplateCompletion(provider, 
 			oc.getName(),oc.toString().substring(0,oc.toString().indexOf(" ")),

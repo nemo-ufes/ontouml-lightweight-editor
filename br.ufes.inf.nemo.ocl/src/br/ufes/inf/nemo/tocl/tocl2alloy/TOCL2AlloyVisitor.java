@@ -62,10 +62,10 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 			RefOntoUML.Element ontoElement = ((TOCLParser)oclparser).getOntoUMLElement(oper);
 			if(operName.equals("hasPrevious")) { return "(some next."+sourceResult+")"; }
 			if(operName.equals("hasNext")) { return "(some "+sourceResult+".next)"; }
-			if(operName.equals("directNext")) { return "("+sourceResult+".next)"; }
-			if(operName.equals("directPrevious")) { return "(next."+sourceResult+")"; }
-			if(operName.equals("previous")) { return "(^next."+sourceResult+")"; }
-			if(operName.equals("next")) { return "("+sourceResult+".^next)"; }
+			if(operName.equals("next")) { return "("+sourceResult+".next)"; }
+			if(operName.equals("previous")) { return "(next."+sourceResult+")"; }
+			if(operName.equals("allPrevious")) { return "(^next."+sourceResult+")"; }
+			if(operName.equals("allNext")) { return "("+sourceResult+".^next)"; }
 			if(operName.equals("isOrigin")) { return "(no next."+sourceResult+")"; }
 			if(operName.equals("isTerminal")) { return "(no "+sourceResult+".next)"; }		
 	        for (java.util.Iterator<String> iter = argumentsResult.iterator(); iter.hasNext();) 

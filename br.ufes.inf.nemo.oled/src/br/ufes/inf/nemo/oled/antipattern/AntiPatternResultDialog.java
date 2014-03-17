@@ -78,6 +78,7 @@ import br.ufes.inf.nemo.antipattern.wizard.depphase.DepPhaseWizard;
 import br.ufes.inf.nemo.antipattern.wizard.asscyc.AssCycWizard;
 import br.ufes.inf.nemo.antipattern.wizard.binover.BinOverWizard;
 import br.ufes.inf.nemo.antipattern.wizard.freerole.FreeRoleWizard;
+import br.ufes.inf.nemo.antipattern.wizard.gsrig.GSRigWizard;
 import br.ufes.inf.nemo.antipattern.wizard.hetcoll.HetCollWizard;
 import br.ufes.inf.nemo.antipattern.wizard.homofunc.HomoFuncWizard;
 import br.ufes.inf.nemo.antipattern.wizard.impabs.ImpAbsWizard;
@@ -385,6 +386,7 @@ public class AntiPatternResultDialog extends Dialog {
     	if (apOccur instanceof BinOverOccurrence) wizardDialog = new WizardDialog(new Shell(d), new BinOverWizard((BinOverOccurrence)apOccur));
     	if (apOccur instanceof DepPhaseOccurrence) wizardDialog = new WizardDialog(new Shell(d), new DepPhaseWizard((DepPhaseOccurrence)apOccur));
     	if (apOccur instanceof FreeRoleOccurrence) wizardDialog = new WizardDialog(new Shell(d), new FreeRoleWizard((FreeRoleOccurrence)apOccur));
+    	if (apOccur instanceof GSRigOccurrence) wizardDialog = new WizardDialog(new Shell(d), new GSRigWizard((GSRigOccurrence)apOccur));
 
     	return wizardDialog;
 	}
