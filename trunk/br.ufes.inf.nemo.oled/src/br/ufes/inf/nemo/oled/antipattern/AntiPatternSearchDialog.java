@@ -36,7 +36,6 @@ import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
-import br.ufes.inf.nemo.antipattern.imppart.ImpPartAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
@@ -79,7 +78,6 @@ public class AntiPatternSearchDialog extends JDialog {
 	private Thread HetCollThread;
 	private Thread HomoFuncThread;
 	private Thread ImpAbsThread;
-	private Thread ImpPartThread;
 	private Thread MixIdenThread;
 	private Thread MixRigThread;
 	private Thread MultiDepThread;
@@ -102,7 +100,6 @@ public class AntiPatternSearchDialog extends JDialog {
 	private JCheckBox cbxHetColl;
 	private JCheckBox cbxHomoFunc;
 	private JCheckBox cbxImpAbs;
-	private JCheckBox cbxImpPart;
 	private JCheckBox cbxMixIden;
 	private JCheckBox cbxMixRig;
 	private JCheckBox cbxMultiDep;
@@ -125,7 +122,6 @@ public class AntiPatternSearchDialog extends JDialog {
 	private JButton lblHetCollIco;
 	private JButton lblHomoFuncIco;
 	private JButton lblImpAbsIco;
-	private JButton lblImpPartIco;
 	private JButton lblMixIdenIco;
 	private JButton lblMixRigIco;
 	private JButton lblMultiDepIco;
@@ -152,7 +148,6 @@ public class AntiPatternSearchDialog extends JDialog {
 	private JLabel lblHetCollRes;
 	private JLabel lblHomoFuncRes;
 	private JLabel lblImpAbsRes;
-	private JLabel lblImpPartRes;
 	private JLabel lblMixIdenRes;
 	private JLabel lblMixRigRes;
 	private JLabel lblMultiDepRes;
@@ -187,7 +182,6 @@ public class AntiPatternSearchDialog extends JDialog {
 	public Boolean HetCollisSelected() { return cbxHetColl.isSelected(); }
 	public Boolean HomoFuncisSelected() { return cbxHomoFunc.isSelected(); }
 	public Boolean ImpAbsisSelected() { return cbxImpAbs.isSelected(); }
-	public Boolean ImpPartisSelected() { return cbxImpPart.isSelected(); }
 	public Boolean MixIdenisSelected() { return cbxMixIden.isSelected(); }
 	public Boolean MixRigisSelected() { return cbxMixRig.isSelected(); }
 	public Boolean MultiDepisSelected() { return cbxMultiDep.isSelected(); }
@@ -231,7 +225,6 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblHetCollRes.setText("");
 		lblHomoFuncRes.setText("");
 		lblImpAbsRes.setText("");
-		lblImpPartRes.setText("");
 		lblMixIdenRes.setText("");
 		lblMixRigRes.setText("");
 		lblMultiDepRes.setText("");
@@ -257,7 +250,6 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblHetCollIco.setVisible(show);
 		lblHomoFuncIco.setVisible(show);
 		lblImpAbsIco.setVisible(show);
-		lblImpPartIco.setVisible(show);
 		lblMixIdenIco.setVisible(show);
 		lblMixRigIco.setVisible(show);
 		lblMultiDepIco.setVisible(show);
@@ -283,7 +275,6 @@ public class AntiPatternSearchDialog extends JDialog {
 		cbxHetColl.setFont(new Font(cbxHetColl.getFont().getName(), Font.PLAIN, cbxHetColl.getFont().getSize()));
 		cbxHomoFunc.setFont(new Font(cbxHomoFunc.getFont().getName(), Font.PLAIN, cbxHomoFunc.getFont().getSize()));
 		cbxImpAbs.setFont(new Font(cbxImpAbs.getFont().getName(), Font.PLAIN, cbxImpAbs.getFont().getSize()));	
-		cbxImpPart.setFont(new Font(cbxImpPart.getFont().getName(), Font.PLAIN, cbxImpPart.getFont().getSize()));	
 		cbxMixIden.setFont(new Font(cbxMixIden.getFont().getName(), Font.PLAIN, cbxMixIden.getFont().getSize()));	
 		cbxMixRig.setFont(new Font(cbxMixRig.getFont().getName(), Font.PLAIN, cbxMixRig.getFont().getSize()));	
 		cbxMultiDep.setFont(new Font(cbxMultiDep.getFont().getName(), Font.PLAIN, cbxMultiDep.getFont().getSize()));
@@ -425,7 +416,6 @@ public class AntiPatternSearchDialog extends JDialog {
        			if (HetCollisSelected()) cbxHetColl.setSelected(false);
        			if (HomoFuncisSelected()) cbxHomoFunc.setSelected(false);
        			if (ImpAbsisSelected()) cbxImpAbs.setSelected(false);
-       			if (ImpPartisSelected()) cbxImpPart.setSelected(false);
        			if (MixIdenisSelected()) cbxMixIden.setSelected(false);
        			if (MixRigisSelected()) cbxMixRig.setSelected(false);
        			if (MultiDepisSelected()) cbxMultiDep.setSelected(false);
@@ -454,7 +444,6 @@ public class AntiPatternSearchDialog extends JDialog {
        			if (!HetCollisSelected()) cbxHetColl.setSelected(true);
        			if (!HomoFuncisSelected()) cbxHomoFunc.setSelected(true);
        			if (!ImpAbsisSelected()) cbxImpAbs.setSelected(true);
-       			if (!ImpPartisSelected()) cbxImpPart.setSelected(true);
        			if (!MixIdenisSelected()) cbxMixIden.setSelected(true);
        			if (!MixRigisSelected()) cbxMixRig.setSelected(true);
        			if (!MultiDepisSelected()) cbxMultiDep.setSelected(true);
@@ -470,23 +459,6 @@ public class AntiPatternSearchDialog extends JDialog {
        			if (!MultSortisSelected()) cbxMultSort.setSelected(true);
        		}
        	});
-		
-		cbxMixRig = new JCheckBox(MixRigAntipattern.getAntipatternInfo().getAcronym()+": "+MixRigAntipattern.getAntipatternInfo().getName());		
-		cbxMixRig.setPreferredSize(new Dimension(220, 20));
-		cbxMixRig.setBackground(UIManager.getColor("Panel.background"));
-		lblMixRigRes = new JLabel("");
-		lblMixRigRes.setPreferredSize(new Dimension(120, 20));		
-		lblMixRigRes.setForeground(Color.BLUE);
-		lblMixRigIco  = new JButton();
-		lblMixRigIco.setPreferredSize(new Dimension(20, 20));
-		lblMixRigIco.setOpaque(false);
-		lblMixRigIco.setContentAreaFilled(false);
-		lblMixRigIco.setBorderPainted(false);
-		lblMixRigIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
-		lblMixRigIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
-		rightPanel.add(lblMixRigIco);
-		rightPanel.add(cbxMixRig);
-		rightPanel.add(lblMixRigRes);
 		
 		cbxMultiDep = new JCheckBox(MultiDepAntipattern.getAntipatternInfo().getAcronym()+": "+MultiDepAntipattern.getAntipatternInfo().getName());
 		cbxMultiDep.setPreferredSize(new Dimension(265, 20));
@@ -511,6 +483,23 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblRelCompRes = new JLabel("");
 		lblRelCompRes.setPreferredSize(new Dimension(115, 20));
 		lblRelCompRes.setForeground(Color.BLUE);
+		lblPartOverIco = new JButton();
+		lblPartOverIco.setPreferredSize(new Dimension(20, 20));
+		lblPartOverIco.setOpaque(false);
+		lblPartOverIco.setContentAreaFilled(false);
+		lblPartOverIco.setBorderPainted(false);
+		lblPartOverIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
+		lblPartOverIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
+		rightPanel.add(lblPartOverIco);
+		
+		cbxPartOver = new JCheckBox(PartOverAntipattern.getAntipatternInfo().getAcronym()+": "+PartOverAntipattern.getAntipatternInfo().getName());
+		cbxPartOver.setPreferredSize(new Dimension(320, 20));
+		cbxPartOver.setBackground(UIManager.getColor("Panel.background"));
+		rightPanel.add(cbxPartOver);
+		lblPartOverRes = new JLabel("");
+		lblPartOverRes.setPreferredSize(new Dimension(20, 20));		
+		lblPartOverRes.setForeground(Color.BLUE);
+		rightPanel.add(lblPartOverRes);
 		lblRelCompIco = new JButton();
 		lblRelCompIco.setPreferredSize(new Dimension(20, 20));
 		lblRelCompIco.setOpaque(false);
@@ -641,75 +630,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblWholeOverRes.setPreferredSize(new Dimension(20, 20));		
 		lblWholeOverRes.setForeground(Color.BLUE);
 		rightPanel.add(lblWholeOverRes);
-		lblPartOverIco = new JButton();
-		lblPartOverIco.setPreferredSize(new Dimension(20, 20));
-		lblPartOverIco.setOpaque(false);
-		lblPartOverIco.setContentAreaFilled(false);
-		lblPartOverIco.setBorderPainted(false);
-		lblPartOverIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
-		lblPartOverIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
-		rightPanel.add(lblPartOverIco);
-		
-		cbxPartOver = new JCheckBox(PartOverAntipattern.getAntipatternInfo().getAcronym()+": "+PartOverAntipattern.getAntipatternInfo().getName());
-		cbxPartOver.setPreferredSize(new Dimension(320, 20));
-		cbxPartOver.setBackground(UIManager.getColor("Panel.background"));
-		rightPanel.add(cbxPartOver);
-		lblPartOverRes = new JLabel("");
-		lblPartOverRes.setPreferredSize(new Dimension(20, 20));		
-		lblPartOverRes.setForeground(Color.BLUE);
-		rightPanel.add(lblPartOverRes);
-		
-		cbxMultSort = new JCheckBox(MultSortAntipattern.getAntipatternInfo().getAcronym()+": "+MultSortAntipattern.getAntipatternInfo().getName());		
-		cbxMultSort.setPreferredSize(new Dimension(250, 20));
-		cbxMultSort.setBackground(UIManager.getColor("Panel.background"));
-		lblMultSortRes = new JLabel("");
-		lblMultSortRes.setPreferredSize(new Dimension(90, 20));		
-		lblMultSortRes.setForeground(Color.BLUE);
-		lblMultSortIco = new JButton();
-		lblMultSortIco.setPreferredSize(new Dimension(20, 20));
-		lblMultSortIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
-		lblMultSortIco.setOpaque(false);
-		lblMultSortIco.setContentAreaFilled(false);
-		lblMultSortIco.setBorderPainted(false);
-		lblMultSortIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
-		leftPanel.add(lblMultSortIco);
-		leftPanel.add(cbxMultSort);
-		leftPanel.add(lblMultSortRes);
-		
-		cbxHetColl = new JCheckBox(HetCollAntipattern.getAntipatternInfo().getAcronym()+": "+HetCollAntipattern.getAntipatternInfo().getName());		
-		cbxHetColl.setPreferredSize(new Dimension(230, 20));
-		cbxHetColl.setBackground(UIManager.getColor("Panel.background"));
-		lblHetCollRes = new JLabel("");
-		lblHetCollRes.setPreferredSize(new Dimension(110, 20));		
-		lblHetCollRes.setForeground(Color.BLUE);
-		lblHetCollIco = new JButton();
-		lblHetCollIco.setPreferredSize(new Dimension(20, 20));
-		lblHetCollIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
-		lblHetCollIco.setOpaque(false);
-		lblHetCollIco.setContentAreaFilled(false);
-		lblHetCollIco.setBorderPainted(false);
-		lblHetCollIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
-		leftPanel.add(lblHetCollIco);
-		leftPanel.add(cbxHetColl);
-		leftPanel.add(lblHetCollRes);
-		
-		cbxMixIden = new JCheckBox(MixIdenAntipattern.getAntipatternInfo().getAcronym()+": "+MixIdenAntipattern.getAntipatternInfo().getName());	
-		cbxMixIden.setPreferredSize(new Dimension(230, 20));
-		cbxMixIden.setBackground(UIManager.getColor("Panel.background"));
-		lblMixIdenRes = new JLabel("");
-		lblMixIdenRes.setPreferredSize(new Dimension(110, 20));		
-		lblMixIdenRes.setForeground(Color.BLUE);
 		leftPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		lblMixIdenIco = new JButton();
-		lblMixIdenIco.setPreferredSize(new Dimension(20, 20));
-		lblMixIdenIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
-		lblMixIdenIco.setOpaque(false);
-		lblMixIdenIco.setContentAreaFilled(false);
-		lblMixIdenIco.setBorderPainted(false);
-		lblMixIdenIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
-		leftPanel.add(lblMixIdenIco);
-		leftPanel.add(cbxMixIden);
-		leftPanel.add(lblMixIdenRes);
 		contentPanel.setLayout(gl_contentPanel);		
 		lblAssCycIco = new JButton();
 		lblAssCycIco.setPreferredSize(new Dimension(20, 20));
@@ -796,6 +717,23 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblGSRigRes.setPreferredSize(new Dimension(40, 20));		
 		lblGSRigRes.setForeground(Color.BLUE);		
 		leftPanel.add(lblGSRigRes);
+		lblHetCollIco = new JButton();
+		lblHetCollIco.setPreferredSize(new Dimension(20, 20));
+		lblHetCollIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
+		lblHetCollIco.setOpaque(false);
+		lblHetCollIco.setContentAreaFilled(false);
+		lblHetCollIco.setBorderPainted(false);
+		lblHetCollIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
+		leftPanel.add(lblHetCollIco);
+		
+		cbxHetColl = new JCheckBox(HetCollAntipattern.getAntipatternInfo().getAcronym()+": "+HetCollAntipattern.getAntipatternInfo().getName());		
+		cbxHetColl.setPreferredSize(new Dimension(230, 20));
+		cbxHetColl.setBackground(UIManager.getColor("Panel.background"));
+		leftPanel.add(cbxHetColl);
+		lblHetCollRes = new JLabel("");
+		lblHetCollRes.setPreferredSize(new Dimension(110, 20));		
+		lblHetCollRes.setForeground(Color.BLUE);
+		leftPanel.add(lblHetCollRes);
 		lblHomoFuncIco = new JButton();
 		lblHomoFuncIco.setPreferredSize(new Dimension(20, 20));
 		lblHomoFuncIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
@@ -830,23 +768,57 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblImpAbsRes.setPreferredSize(new Dimension(120, 20));		
 		lblImpAbsRes.setForeground(Color.BLUE);		
 		leftPanel.add(lblImpAbsRes);
-		lblImpPartIco = new JButton();
-		lblImpPartIco.setPreferredSize(new Dimension(20, 20));
-		lblImpPartIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
-		lblImpPartIco.setOpaque(false);
-		lblImpPartIco.setContentAreaFilled(false);
-		lblImpPartIco.setBorderPainted(false);
-		lblImpPartIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
-		leftPanel.add(lblImpPartIco);
-				
-		cbxImpPart = new JCheckBox(ImpPartAntipattern.getAntipatternInfo().getAcronym()+": "+ImpPartAntipattern.getAntipatternInfo().getName());
-		cbxImpPart.setPreferredSize(new Dimension(250, 20));
-		cbxImpPart.setBackground(UIManager.getColor("Panel.background"));
-		leftPanel.add(cbxImpPart);
-		lblImpPartRes = new JLabel("");
-		lblImpPartRes.setPreferredSize(new Dimension(90, 20));		
-		lblImpPartRes.setForeground(Color.BLUE);		
-		leftPanel.add(lblImpPartRes);
+		lblMixIdenIco = new JButton();
+		lblMixIdenIco.setPreferredSize(new Dimension(20, 20));
+		lblMixIdenIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
+		lblMixIdenIco.setOpaque(false);
+		lblMixIdenIco.setContentAreaFilled(false);
+		lblMixIdenIco.setBorderPainted(false);
+		lblMixIdenIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
+		leftPanel.add(lblMixIdenIco);
+		
+		cbxMixIden = new JCheckBox(MixIdenAntipattern.getAntipatternInfo().getAcronym()+": "+MixIdenAntipattern.getAntipatternInfo().getName());	
+		cbxMixIden.setPreferredSize(new Dimension(230, 20));
+		cbxMixIden.setBackground(UIManager.getColor("Panel.background"));
+		leftPanel.add(cbxMixIden);
+		lblMixIdenRes = new JLabel("");
+		lblMixIdenRes.setPreferredSize(new Dimension(110, 20));		
+		lblMixIdenRes.setForeground(Color.BLUE);
+		leftPanel.add(lblMixIdenRes);
+		lblMixRigIco  = new JButton();
+		leftPanel.add(lblMixRigIco);
+		lblMixRigIco.setPreferredSize(new Dimension(20, 20));
+		lblMixRigIco.setOpaque(false);
+		lblMixRigIco.setContentAreaFilled(false);
+		lblMixRigIco.setBorderPainted(false);
+		lblMixRigIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
+		lblMixRigIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
+		
+		cbxMixRig = new JCheckBox(MixRigAntipattern.getAntipatternInfo().getAcronym()+": "+MixRigAntipattern.getAntipatternInfo().getName());		
+		leftPanel.add(cbxMixRig);
+		cbxMixRig.setPreferredSize(new Dimension(220, 20));
+		cbxMixRig.setBackground(UIManager.getColor("Panel.background"));
+		lblMixRigRes = new JLabel("");
+		leftPanel.add(lblMixRigRes);
+		lblMixRigRes.setPreferredSize(new Dimension(120, 20));		
+		lblMixRigRes.setForeground(Color.BLUE);
+		lblMultSortIco = new JButton();
+		lblMultSortIco.setPreferredSize(new Dimension(20, 20));
+		lblMultSortIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
+		lblMultSortIco.setOpaque(false);
+		lblMultSortIco.setContentAreaFilled(false);
+		lblMultSortIco.setBorderPainted(false);
+		lblMultSortIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
+		leftPanel.add(lblMultSortIco);
+		
+		cbxMultSort = new JCheckBox(MultSortAntipattern.getAntipatternInfo().getAcronym()+": "+MultSortAntipattern.getAntipatternInfo().getName());		
+		cbxMultSort.setPreferredSize(new Dimension(250, 20));
+		cbxMultSort.setBackground(UIManager.getColor("Panel.background"));
+		leftPanel.add(cbxMultSort);
+		lblMultSortRes = new JLabel("");
+		lblMultSortRes.setPreferredSize(new Dimension(90, 20));		
+		lblMultSortRes.setForeground(Color.BLUE);
+		leftPanel.add(lblMultSortRes);
 				
 		JPanel buttonPane = new JPanel();
 		getContentPane().add(buttonPane, BorderLayout.CENTER);
@@ -949,7 +921,6 @@ public class AntiPatternSearchDialog extends JDialog {
 				 final HetCollAntipattern hetColl = new HetCollAntipattern(parser);
 				 final HomoFuncAntipattern homoFunc = new HomoFuncAntipattern(parser);
 				 final ImpAbsAntipattern impAbs = new ImpAbsAntipattern(parser);
-				 final ImpPartAntipattern impPart = new ImpPartAntipattern(parser);
 				 final MixIdenAntipattern mixIden = new MixIdenAntipattern(parser);
 				 final MixRigAntipattern mixRig = new MixRigAntipattern(parser);
 				 final MultiDepAntipattern multiDep = new MultiDepAntipattern(parser);
@@ -1183,32 +1154,6 @@ public class AntiPatternSearchDialog extends JDialog {
 					ImpAbsThread.start();	
 				}
 				
-				if (ImpPartisSelected())
-				{				
-					ImpPartThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying ImpPart... ");
-							impPart.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("ImpPart: "+impPart.getOccurrences().size()+" items found");	
-									
-									if (impPart.getOccurrences().size()>0) {
-										result += ImpPartAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impPart.getOccurrences().size()+" items found.\n";
-										totalOccurrences += impPart.getOccurrences().size();
-										lblImpPartRes.setText("("+impPart.getOccurrences().size()+")");	
-										cbxImpPart.setFont(new Font(cbxImpPart.getFont().getFontName(), Font.BOLD,cbxImpPart.getFont().getSize()));
-									}  
-								}
-							});
-						}
-					});
-					ImpPartThread.start();	
-				}
 				
 				if (MixIdenisSelected())
 				{				
@@ -1550,7 +1495,7 @@ public class AntiPatternSearchDialog extends JDialog {
 			
 				joinAll();
 				
-				AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, impPart, mixIden,
+				AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, mixIden,
 						   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver, partOver, multSort);
 
 				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
@@ -1587,7 +1532,6 @@ public class AntiPatternSearchDialog extends JDialog {
 		if (HetCollisSelected()) totalItemsSelected++;
 		if (HomoFuncisSelected()) totalItemsSelected++;
 		if (ImpAbsisSelected()) totalItemsSelected++;
-		if (ImpPartisSelected()) totalItemsSelected++;
 		if (MixIdenisSelected()) totalItemsSelected++;
 		if (MixRigisSelected()) totalItemsSelected++;
 		if (MultiDepisSelected()) totalItemsSelected++;
@@ -1614,7 +1558,6 @@ public class AntiPatternSearchDialog extends JDialog {
 			if(HetCollThread!=null) HetCollThread.join();
 			if(HomoFuncThread!=null) HomoFuncThread.join();
 			if(ImpAbsThread!=null) ImpAbsThread.join();
-			if(ImpPartThread!=null) ImpPartThread.join();
 			if(MixIdenThread!=null) MixIdenThread.join();
 			if(MixRigThread!=null) MixRigThread.join();
 			if(MultiDepThread!=null) MultiDepThread.join();
@@ -1643,7 +1586,6 @@ public class AntiPatternSearchDialog extends JDialog {
 		if(HetCollThread!=null) HetCollThread.interrupt();
 		if(HomoFuncThread!=null) HomoFuncThread.interrupt();
 		if(ImpAbsThread!=null) ImpAbsThread.interrupt();
-		if(ImpPartThread!=null) ImpPartThread.interrupt();
 		if(MixIdenThread!=null) MixIdenThread.interrupt();
 		if(MixRigThread!=null) MixRigThread.interrupt();
 		if(MultiDepThread!=null) MultiDepThread.interrupt();

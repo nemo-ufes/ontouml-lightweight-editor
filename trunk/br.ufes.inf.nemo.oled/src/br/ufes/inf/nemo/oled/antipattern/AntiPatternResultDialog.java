@@ -48,8 +48,6 @@ import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
-import br.ufes.inf.nemo.antipattern.imppart.ImpPartAntipattern;
-import br.ufes.inf.nemo.antipattern.imppart.ImpPartOccurrence;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
@@ -303,7 +301,6 @@ public class AntiPatternResultDialog extends Dialog {
 	    	  if  (element instanceof HetCollOccurrence) return HetCollAntipattern.getAntipatternInfo().getAcronym();
 	    	  if  (element instanceof HomoFuncOccurrence) return HomoFuncAntipattern.getAntipatternInfo().getAcronym();
 	    	  if  (element instanceof ImpAbsOccurrence) return ImpAbsAntipattern.getAntipatternInfo().getAcronym();
-	    	  if  (element instanceof ImpPartOccurrence) return ImpPartAntipattern.getAntipatternInfo().getAcronym();
 	    	  if  (element instanceof MixIdenOccurrence) return MixIdenAntipattern.getAntipatternInfo().getAcronym();
 	    	  if  (element instanceof MixRigOccurrence) return MixRigAntipattern.getAntipatternInfo().getAcronym();
 	    	  if  (element instanceof MultiDepOccurrence) return MultiDepAntipattern.getAntipatternInfo().getAcronym();
