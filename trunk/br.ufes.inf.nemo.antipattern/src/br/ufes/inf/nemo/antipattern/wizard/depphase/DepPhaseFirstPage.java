@@ -3,6 +3,8 @@ package br.ufes.inf.nemo.antipattern.wizard.depphase;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -12,8 +14,12 @@ public class DepPhaseFirstPage  extends DepPhasePage {
 
 	//GUI
 
+	private Button btnRelational;
+	private Button btnInstrinsic;
+
 	public DepPhaseFirstPage(DepPhaseOccurrence depPhase) {
 		super(depPhase);
+		setDescription("Phase: "+depPhase.getPhase().getName()+", Relator: "+getRelatorList());
 	}
 		
 	/**
@@ -24,8 +30,6 @@ public class DepPhaseFirstPage  extends DepPhasePage {
 		Composite container = new Composite(parent, SWT.NULL);
 
 		setControl(container);
-		
-		
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
 		styledText.setBounds(10, 10, 554, 173);
@@ -40,31 +44,46 @@ public class DepPhaseFirstPage  extends DepPhasePage {
 		styledText.setBackground(styledText.getParent().getBackground());
 		styledText.setJustify(true);
 		
-		Button btnInstrinsic = new Button(container, SWT.RADIO);
+		SelectionAdapter btnAdpater = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(btnInstrinsic.getSelection()==true || btnRelational.getSelection()==true){
+					setPageComplete(true);
+				}
+				else {
+					setPageComplete(false);
+				}
+			}
+		};
+		
+		btnInstrinsic = new Button(container, SWT.RADIO);
 		btnInstrinsic.setBounds(10, 189, 554, 16);
 		btnInstrinsic.setText("By intrinsic properties");
+		btnInstrinsic.addSelectionListener(btnAdpater);
 		
-		Button btnRelational = new Button(container, SWT.RADIO);
+		btnRelational = new Button(container, SWT.RADIO);
 		btnRelational.setBounds(10, 211, 554, 16);
 		btnRelational.setText("By relational properties");
+		btnRelational.addSelectionListener(btnAdpater);
 		
-		
+		setPageComplete(false);
 	}
 	
-	private String getRelatorList(){
-		String relatorList = "";
-		for (int i = 0; i < depPhase.getRelatorEnds().size(); i++) {
-			if(i!=0)
-				relatorList += ", ";
-			relatorList += "<"+depPhase.getRelatorEnds().get(i).getType().getName()+">";
-		}
-		return relatorList;
-	}
+	
 	
 	@Override
 	public IWizardPage getNextPage() 
 	{	
-		return null;
+		getDepPhaseWizard().removeAllActions();
+		
+		if(btnRelational.getSelection()==true){
+			DepPhaseAction action = new DepPhaseAction(depPhase);
+			action.setChangeToRole();
+			getDepPhaseWizard().addAction(0, action);
+			return getDepPhaseWizard().getFinishing();
+		}
+		
+		return getDepPhaseWizard().getSecondPage();
 	
 	}
 }
