@@ -832,7 +832,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		editorMode = lineHandler;
 	}
 
-	public void dragRelation(RefOntoUML.Relationship relationship, EObject eContainer)
+	public UmlConnection dragRelation(RefOntoUML.Relationship relationship, EObject eContainer)
 	{		
 		RelationType relationType = RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase());
 		lineHandler.setRelationType(relationType, getDiagram().getElementFactory().getConnectMethod(relationType));
@@ -844,20 +844,20 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			RefOntoUML.Association assoc = (RefOntoUML.Association)relationship;
 			source = assoc.getMemberEnd().get(0).getType();
 			target = assoc.getMemberEnd().get(1).getType();
-			if(source==null || target==null) return; 
+			if(source==null || target==null) return null; 
 		}
 		if(relationship instanceof RefOntoUML.Generalization){
 			RefOntoUML.Generalization gen = (RefOntoUML.Generalization)relationship;
 			target = gen.getGeneral();
 			source = gen.getSpecific();
-			if(source==null || target==null) return;		  
+			if(source==null || target==null) return null;		  
 		}
 		  
 		DiagramElement src = ModelHelper.getDiagramElementByEditor(source,this);
 		DiagramElement tgt = ModelHelper.getDiagramElementByEditor(target,this);		
-		if(src==null || tgt==null) return;
+		if(src==null || tgt==null) return null;
 		
-		lineHandler.createAndAddConnection(this, relationship, src, tgt, eContainer);
+		return lineHandler.createAndAddConnection(this, relationship, src, tgt, eContainer);
 	}
 		  
 	/**
@@ -974,6 +974,14 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			// we can only tell the selection handler to forget about the selection
 			selectionHandler.deselectAll();
 		}
+	}
+	
+	public void setLineStyle(UmlConnection connection, boolean setRectilinear){
+		if(setRectilinear){
+			execute(new ConvertConnectionTypeCommand(this, connection, new RectilinearConnection()));
+		}
+		else
+			execute(new ConvertConnectionTypeCommand(this, connection, new SimpleConnection()));
 	}
 
 	/**

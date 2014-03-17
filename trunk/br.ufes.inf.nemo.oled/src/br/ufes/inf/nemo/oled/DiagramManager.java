@@ -103,8 +103,12 @@ import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.UMLSettingDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.DiagramElementFactoryImpl;
+import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.AlloyHelper;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -446,19 +450,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 	/** Change class stereotype */ 
 	public void changeClassStereotype(Type type, String stereo) 
-	{   		
+	{   
+		ArrayList<DiagramElement> diagramElemList = ModelHelper.getDiagramElements(type);
+		
    		OutcomeFixer fixer = new OutcomeFixer(ProjectBrowser.getParserFor(currentProject).getModel());
    		Fix fix = fixer.changeClassStereotypeTo(type, fixer.getClassStereotype(stereo));
    	
-   		ArrayList<DiagramElement> diagramElemList = ModelHelper.getDiagramElements(type);
    		for(DiagramElement diagramElem: diagramElemList){
 	   		if (diagramElem !=null && diagramElem instanceof ClassElement) {
 	   			double x = ((ClassElement)diagramElem).getAbsoluteX1();
 	   			double y = ((ClassElement)diagramElem).getAbsoluteY1();   	   		
 	   	   		fix.setAddedPosition(fix.getAdded().get(0),x,y);
-	   	   		updateOLED(fix);
 	   		}   		
-   		}   		
+   		}
+   		updateOLED(fix);
 	}
 	
 	/** Change relation stereotype */ 
@@ -497,9 +502,33 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 *  This actually deletes the current diagramElement and creates another diagramElement, including it in the diagram.*/
 	public void remakeDiagramElement(RefOntoUML.Element element, DiagramEditor d)
 	{
-		if(element instanceof RefOntoUML.Relationship){
+		boolean isRectilinear = false;
+		boolean showName = false;
+		boolean showOntoUMLStereotype = false;
+		boolean showMultiplicities = false;
+		boolean showRoles = false;
+		ReadingDirection direction = ReadingDirection.UNDEFINED;
+		
+		if(element instanceof Association)
+		{
+			AssociationElement ae = (AssociationElement) ModelHelper.getDiagramElementByEditor(element, d);
+			isRectilinear = ae.isRectilinear();
+			showName = ae.showName();
+			showOntoUMLStereotype = ae.showOntoUmlStereotype();
+			showRoles = ae.showRoles();
+			showMultiplicities = ae.showMultiplicities();
+			direction = ae.getNameReadingDirection();
+			
 			deleteFromDiagram(element, d);
-			moveToDiagram(element, d); 
+			moveAssociationToDiagram((Association) element, d, isRectilinear, showName, showOntoUMLStereotype, showMultiplicities, showRoles, direction);
+		}
+			
+		else if(element instanceof Generalization){
+			GeneralizationElement ge = (GeneralizationElement) ModelHelper.getDiagramElementByEditor(element, d);
+			isRectilinear = ge.isRectilinear();
+			
+			deleteFromDiagram(element, d);
+			moveGeneralizationToDiagram((Generalization) element, d, isRectilinear);
 		}		
 	}
 
@@ -566,7 +595,31 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}		
 	}
-
+	
+	public void moveAssociationToDiagram(Association association, DiagramEditor d, 
+			boolean isRectilinear, boolean showName, boolean showOntoUMLStereotype, boolean showMultiplicities, boolean showRoles, ReadingDirection direction){
+		
+			Type src = ((Association)association).getMemberEnd().get(0).getType();
+			Type tgt = ((Association)association).getMemberEnd().get(1).getType();				
+			if (d.getDiagram().containsChild(src) && d.getDiagram().containsChild(tgt))	{			
+				AssociationElement conn = (AssociationElement) d.dragRelation(association,association.eContainer());
+				d.setLineStyle(conn, isRectilinear);
+				conn.setShowMultiplicities(showMultiplicities);
+				conn.setShowName(showName);
+				conn.setShowOntoUmlStereotype(showOntoUMLStereotype);
+				conn.setShowRoles(showRoles);
+				conn.setNameReadingDirection(direction);
+			}
+	}
+	
+	public void moveGeneralizationToDiagram(Generalization gen, DiagramEditor d, boolean isRectilinear){
+		
+		if (d.getDiagram().containsChild(gen.getGeneral()) && d.getDiagram().containsChild(gen.getSpecific()))
+		{	
+			UmlConnection conn = d.dragRelation(gen,gen.eContainer());
+			d.setLineStyle(conn, isRectilinear);
+		}
+	}
 	/** Move element to a Diagram */
 	public void moveToDiagram(RefOntoUML.Element element, DiagramEditor d)
 	{
@@ -581,22 +634,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				RefOntoUML.DataType oClass = (RefOntoUML.DataType)element;
 				d.setDragElementMode(oClass,oClass.eContainer());				
 			}			
-			if (element instanceof RefOntoUML.Relationship) {
-				RefOntoUML.Relationship rel = (RefOntoUML.Relationship)element;
-				if (rel instanceof Association){
-					Type src = ((Association)rel).getMemberEnd().get(0).getType();
-					Type tgt = ((Association)rel).getMemberEnd().get(1).getType();				
-					if (d.getDiagram().containsChild(src) && d.getDiagram().containsChild(tgt)){				
-						d.dragRelation(rel,rel.eContainer());
-					}					
-				}else if (rel instanceof Generalization){
-					Generalization gen = (Generalization)rel;
-					if (d.getDiagram().containsChild(gen.getGeneral()) && d.getDiagram().containsChild(gen.getSpecific()))
-					{	
-						d.dragRelation(gen,gen.eContainer());
-					}
-				}
-			}
+			
+			if(element instanceof Association)
+				moveAssociationToDiagram((Association) element, d, false, true, true, true, false, ReadingDirection.UNDEFINED);
+			
+			if(element instanceof Generalization)
+				moveGeneralizationToDiagram((Generalization) element, d, false);
 		}	
 	}
 
@@ -754,6 +797,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)			
 			{
 				refreshDiagramElement((Classifier)obj);
+			}
+			if (obj instanceof Generalization){
+				remakeDiagramElement((Generalization)obj);
 			}
 		}
 		for(Object obj: fix.getDeleted()) 

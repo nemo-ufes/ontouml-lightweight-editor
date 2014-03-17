@@ -40,8 +40,8 @@ public class AssociationEditionPanel extends JPanel {
 	private DiagramManager diagramManager;
 	
 	private JTextField nameField;
-	@SuppressWarnings("rawtypes")
-	private JComboBox stereoCombo;
+	@SuppressWarnings("rawtypes") 
+	protected JComboBox stereoCombo;
 	private JCheckBox cbxAbstract;
 	private JCheckBox cbxDerived;
 	private JPanel assocPanel;
@@ -252,7 +252,6 @@ public class AssociationEditionPanel extends JPanel {
 		
 		stereoCombo = new JComboBox();
 		stereoCombo.setModel(new DefaultComboBoxModel(new String[] {"Mediation", "componentOf", "memberOf", "subCollectionOf", "subQuantityOf", "Material", "Characterization", "Formal", "Association", "Derivation"}));
-		stereoCombo.setEnabled(false);
 		
 		cbxAbstract = new JCheckBox("Abstract");		
 		cbxDerived = new JCheckBox("Derived");
@@ -320,7 +319,7 @@ public class AssociationEditionPanel extends JPanel {
 		if (element instanceof Association) { cbxDerived.setSelected(((Association)element).isIsDerived()); cbxDerived.setEnabled(true); }
 		else { cbxDerived.setSelected(false); cbxDerived.setEnabled(false); }
 		stereoCombo.setSelectedItem(getStereotype(element).trim());
-		stereoCombo.setEnabled(false);
+		stereoCombo.setEnabled(true);
 		
 		if (element instanceof Meronymic){
 			Meronymic m = (Meronymic)element;
