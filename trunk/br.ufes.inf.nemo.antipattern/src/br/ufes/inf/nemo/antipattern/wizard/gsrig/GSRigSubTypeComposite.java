@@ -20,7 +20,7 @@ public class GSRigSubTypeComposite extends Composite{
 		this.gsrig = gsrig;
 				
 		subtypeTable = new GSRigSubTypeTable(this, SWT.V_SCROLL,gsrig);
-		subtypeTable.getTable().setBounds(10, 10, 494, 100);
+		subtypeTable.getTable().setBounds(10, 10, 524, 150);
 		
 		SelectionAdapter allRigidListener = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
@@ -35,16 +35,16 @@ public class GSRigSubTypeComposite extends Composite{
 	    };
 	    
 		btnAllRigid = new Button(this, SWT.NONE);
-		btnAllRigid.setBounds(510, 10, 80, 25);
+		btnAllRigid.setBounds(540, 10, 80, 25);
 		btnAllRigid.setText("All rigid");
 		btnAllRigid.addSelectionListener(allRigidListener);
 				    
 		btnAllAntirigid = new Button(this, SWT.NONE);
-		btnAllAntirigid.setBounds(510, 41, 80, 25);
+		btnAllAntirigid.setBounds(540, 41, 80, 25);
 		btnAllAntirigid.setText("All anti-rigid");
 		btnAllAntirigid.addSelectionListener(antiRigidListener);
 		
 //		Composite composite = new Composite(this, SWT.NONE);
-//		composite.setBounds(10, 10, 494, 100);
+//		composite.setBounds(10, 10, 524, 150);
 	}
 }
