@@ -117,7 +117,7 @@ public class DepPhaseOccurrence extends AntipatternOccurrence{
 			if(phase.parents()!=null && phase.parents().size()>0);
 				phaseParent = phase.parents().get(0);
 			
-			fixes.addAll(fixer.addSuperTypeEnvolvingLink(phase, ClassStereotype.ROLE, p.getAssociation()));
+			fixes.addAll(fixer.createSuperTypeEnvolvingLink(phase, ClassStereotype.ROLE, p.getAssociation()));
 			fixes.getAddedByType(Role.class).get(0).setName("RoleOf"+relatorName);
 			
 			//creates a generalization from the created role to a parent of the phase

@@ -98,7 +98,7 @@ public class CommonMixinSubtype extends OverlappingGroup {
 			partTypes.add((Classifier) mixinProperty.getType());
 		
 		//create common supertype and generalizationSet complete
-		fix1 = occurrence.getFixer().addCommonSuperType(partTypes, supertypeStereotype);
+		fix1 = occurrence.getFixer().createCommonSuperType(partTypes, supertypeStereotype);
 		createdGeneralizations = new ArrayList<Generalization>();
 		createdGeneralizations.addAll(fix1.getAddedByType(Generalization.class));
 		fix1.addAll(occurrence.getFixer().createGeneralizationSet(createdGeneralizations, false, true, "NewGS1"));
