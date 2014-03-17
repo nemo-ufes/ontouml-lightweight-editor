@@ -38,10 +38,13 @@ public class NewGeneralizationSet extends WizardPageAssistant implements Seriali
 	private Combo cbGeneralizationSet;
 	private Button isDisjoint;
 	private Button isComplete;
-	private Composite metaProperties;
+	private Composite generalizationSet;
 	private Label className;
 	private Button btnNewGeneralizationset;
-
+	private Label genSetMsg;
+	private Button btnNo;
+	private Button btnYes;
+	
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 
@@ -57,8 +60,8 @@ public class NewGeneralizationSet extends WizardPageAssistant implements Seriali
 		className.setText("<ClassName>");
 
 		Label lblSelectTheGeneral_1 = new Label(container, SWT.NONE);
-		lblSelectTheGeneral_1.setBounds(38, 50, 135, 15);
-		lblSelectTheGeneral_1.setText("Select the General class:");
+		lblSelectTheGeneral_1.setBounds(130, 47, 54, 15);
+		lblSelectTheGeneral_1.setText("General:");
 
 		cbGenerals = new Combo(container, SWT.READ_ONLY);
 		cbGenerals.addSelectionListener(new SelectionAdapter() {
@@ -87,71 +90,75 @@ public class NewGeneralizationSet extends WizardPageAssistant implements Seriali
 					isDisjoint.setSelection(false);
 					isComplete.setSelection(false);
 				}
-				metaProperties.setVisible(true);
+				//generalizationSet.setVisible(true);
 				btnNewGeneralizationset.setEnabled(true);
+				if(btnNo.getSelection()){
+					canFinish = true;
+				}
+				enableFinish(isEndPage);
 			}
 		});
 		cbGenerals.setBounds(203, 44, 204, 23);
 
-		Label lblSelectTheGeneralizationset = new Label(container, SWT.NONE);
-		lblSelectTheGeneralizationset.setBounds(38, 84, 156, 15);
-		lblSelectTheGeneralizationset.setText("Select the GeneralizationSet:");
+		generalizationSet = new Composite(container, SWT.BORDER);
+		generalizationSet.setBounds(74, 125, 425, 147);
+		generalizationSet.setVisible(false);
 
-		cbGeneralizationSet = new Combo(container, SWT.READ_ONLY);
-		cbGeneralizationSet.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				if(!isEndPage){
-					canFinish = true;
-					setPageComplete(true);
-				}
-				//to prevent to be a new generalizationSet 
-				isDisjoint.setSelection(false);
-				isComplete.setSelection(false);
+		Label lblSet = new Label(generalizationSet, SWT.NONE);
+		lblSet.setBounds(10, 76, 204, 15);
+		lblSet.setText("GeneralizationSet's meta-properties:");
 
-				String generalSelected = cbGenerals.getItem(cbGenerals.getSelectionIndex());
-				String genSetSelected = cbGeneralizationSet.getItem(cbGeneralizationSet.getSelectionIndex());
-
-				ArrayList<GeneralizationClass> genSetList = hashGeneralizationClasses.get(generalSelected);
-				if(!genSetList.isEmpty()){
-					for (GeneralizationClass genSet : genSetList) {
-						if(genSet.getGeneralizationName().equals(genSetSelected)){
-							isDisjoint.setSelection(genSet.isDisjoint());
-							isComplete.setSelection(genSet.isComplete());
-						}
-					}
-				}
-			}
-		});
-		cbGeneralizationSet.setEnabled(false);
-		cbGeneralizationSet.setBounds(203, 77, 204, 23);
-
-		metaProperties = new Composite(container, SWT.NONE);
-		metaProperties.setBounds(38, 125, 476, 123);
-		metaProperties.setVisible(false);
-
-		Label lblSet = new Label(metaProperties, SWT.NONE);
-		lblSet.setBounds(4, 10, 272, 15);
-		lblSet.setText("Set meta-properties from the GeneralizationSet:");
-
-		isDisjoint = new Button(metaProperties, SWT.CHECK);
-		isDisjoint.setBounds(305, 9, 93, 16);
+		isDisjoint = new Button(generalizationSet, SWT.CHECK);
+		isDisjoint.setBounds(31, 97, 93, 16);
 		isDisjoint.setText("Disjoint");
 
-		isComplete = new Button(metaProperties, SWT.CHECK);
-		isComplete.setBounds(305, 31, 93, 16);
+		isComplete = new Button(generalizationSet, SWT.CHECK);
+		isComplete.setBounds(31, 119, 93, 16);
 		isComplete.setText("Complete");
+		
+				Label lblSelectTheGeneralizationset = new Label(generalizationSet, SWT.NONE);
+				lblSelectTheGeneralizationset.setBounds(10, 16, 156, 15);
+				lblSelectTheGeneralizationset.setText("Select the GeneralizationSet:");
+				
+						cbGeneralizationSet = new Combo(generalizationSet, SWT.READ_ONLY);
+						cbGeneralizationSet.setBounds(31, 38, 204, 23);
+						cbGeneralizationSet.addSelectionListener(new SelectionAdapter() {
+							@Override
+							public void widgetSelected(SelectionEvent arg0) {
+								if(!isEndPage){
+									canFinish = true;
+									enableFinish(true);
+								}
+								//to prevent to be a new generalizationSet 
+								isDisjoint.setSelection(false);
+								isComplete.setSelection(false);
 
-		btnNewGeneralizationset = new Button(container, SWT.NONE);
+								String generalSelected = cbGenerals.getItem(cbGenerals.getSelectionIndex());
+								String genSetSelected = cbGeneralizationSet.getItem(cbGeneralizationSet.getSelectionIndex());
+
+								ArrayList<GeneralizationClass> genSetList = hashGeneralizationClasses.get(generalSelected);
+								if(!genSetList.isEmpty()){
+									for (GeneralizationClass genSet : genSetList) {
+										if(genSet.getGeneralizationName().equals(genSetSelected)){
+											isDisjoint.setSelection(genSet.isDisjoint());
+											isComplete.setSelection(genSet.isComplete());
+										}
+									}
+								}
+							}
+						});
+						cbGeneralizationSet.setEnabled(false);
+
+		btnNewGeneralizationset = new Button(generalizationSet, SWT.NONE);
+		btnNewGeneralizationset.setBounds(253, 36, 135, 25);
 		btnNewGeneralizationset.setEnabled(false);
-		btnNewGeneralizationset.setBounds(429, 77, 135, 25);
 		btnNewGeneralizationset.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				InputDialog dialog = new InputDialog(getShell(),"Creating a new GeneralizationSet","GeneralizationSet name:",null,null);
 				if( dialog.open() == IStatus.OK){ 
 					canFinish = true;
-					setPageComplete(true);
+					enableFinish(true);
 					String [] genSets = new String[cbGeneralizationSet.getItemCount()+1];
 					int i = 0;
 					for (; i < cbGeneralizationSet.getItemCount(); i++) {
@@ -172,6 +179,31 @@ public class NewGeneralizationSet extends WizardPageAssistant implements Seriali
 		});
 
 		btnNewGeneralizationset.setText("New GeneralizationSet");
+		
+		genSetMsg = new Label(container, SWT.NONE);
+		genSetMsg.setBounds(150, 82, 274, 15);
+		genSetMsg.setText("Would you like to create a new GeneralizationSet?");
+		
+		btnYes = new Button(container, SWT.RADIO);
+		btnYes.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				generalizationSet.setVisible(true);
+			}
+		});
+		btnYes.setBounds(220, 103, 54, 16);
+		btnYes.setText("Yes");
+		
+		btnNo = new Button(container, SWT.RADIO);
+		btnNo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				generalizationSet.setVisible(false);
+			}
+		});
+		btnNo.setBounds(280, 103, 54, 16);
+		btnNo.setText("No");
+		btnNo.setSelection(true);
 	}
 
 	@Override
@@ -217,7 +249,7 @@ public class NewGeneralizationSet extends WizardPageAssistant implements Seriali
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		if(visible){
-			setPageComplete(false);
+			enableFinish(false);
 			canFinish = false;
 			if(isListSpecifics){
 				className.setText("List of specifics");
@@ -277,6 +309,12 @@ public class NewGeneralizationSet extends WizardPageAssistant implements Seriali
 	private boolean isListSpecifics = false;
 	public void setIsListSpecifics(boolean isListSpecifics){
 		this.isListSpecifics = isListSpecifics;
+		if(isListSpecifics){
+			btnNo.setVisible(false);
+			btnYes.setVisible(false);
+			genSetMsg.setVisible(false);
+			generalizationSet.setVisible(true);
+		}
 	}
 	
 	public boolean isListSpecifics(){
@@ -287,6 +325,14 @@ public class NewGeneralizationSet extends WizardPageAssistant implements Seriali
 		return getClassList();
 	}
 
+	public boolean isGeneralization(){
+		return btnNo.getSelection();
+	}
+	
+	public boolean isGeneralizationSet(){
+		return btnYes.getSelection();
+	}
+	
 	@Override
 	public void init() {
 		setTitle("New GeneralizationSet");

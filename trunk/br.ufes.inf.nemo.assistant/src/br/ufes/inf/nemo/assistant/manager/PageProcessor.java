@@ -127,6 +127,23 @@ public class PageProcessor{
 	}
 
 	public void process(NewGeneralizationSet page) {
+		//if page.isGeneralization()
+		if(page.isGeneralization()){
+			//source.container = general.container
+			RefOntoUML.Classifier general = patternOperator.getClassifierForStringRepresentationClass(page.getGeneral()); 
+			outcomeFixer.copyContainer(general, source);
+			fix.includeModified(source);
+
+			//gen.general  = general
+			//gen.specific = source
+			Generalization gen = (Generalization) outcomeFixer.createRelationship(RelationStereotype.GENERALIZATION);
+			gen.setGeneral(general);
+			gen.setSpecific(source);
+			fix.includeAdded(gen);
+			return;
+		}
+		
+		//page.isGeneralizationSet()
 		if(page.isListSpecifics()){
 			//if page.isListSpecific
 			ArrayList<Classifier> specificList = new ArrayList<>();
@@ -144,10 +161,6 @@ public class PageProcessor{
 				fix.includeModified(specific);	
 				specificList.add(specific);
 			}
-
-			//delete(source)
-//			Fix f = outcomeFixer.deleteElement(source);
-//			fix.addAll(f);
 
 			ArrayList<Generalization> genList = new ArrayList<>();
 

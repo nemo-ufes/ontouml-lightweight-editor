@@ -21,7 +21,7 @@ public class NodeAssistant implements Serializable{
 
 	public boolean isEndNode(){
 		//return isEndNode;
-		if(nextNode == null && trueNode == null && falseNode == null){
+		if(nextNode == null && (trueNode == null || falseNode == null)){
 			return true;
 		}
 		return false;

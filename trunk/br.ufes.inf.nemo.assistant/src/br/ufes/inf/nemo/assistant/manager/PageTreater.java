@@ -67,7 +67,6 @@ public class PageTreater {
 			page.setCanGoTrue(false);
 		if(!node.canGoFalse())
 			page.setCanGoFalse(false);
-
 	}
 
 	public static void treatPage(NodeAssistant node, NewGenericRelation page){
