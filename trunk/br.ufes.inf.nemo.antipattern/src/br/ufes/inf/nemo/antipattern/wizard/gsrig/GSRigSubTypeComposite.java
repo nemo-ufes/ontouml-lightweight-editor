@@ -19,7 +19,7 @@ public class GSRigSubTypeComposite extends Composite{
 		super(parent,args);
 		this.gsrig = gsrig;
 				
-		subtypeTable = new GSRigSubTypeTable(this, SWT.V_SCROLL,gsrig);
+		subtypeTable = new GSRigSubTypeTable(this, SWT.V_SCROLL ,gsrig);
 		subtypeTable.getTable().setBounds(10, 10, 524, 150);
 		
 		SelectionAdapter allRigidListener = new SelectionAdapter() {

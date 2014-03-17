@@ -56,6 +56,8 @@ public class GSRigFourthPage extends GSRigPage {
 			//newAction.setChangeAllToComponentOf(assocList); 
 			getGSRigWizard().replaceAction(0,newAction);
 			//======================================
+			
+			return ((GSRigWizard)getWizard()).getFifthPage();
 		}
 		
 		if(btnCustom.getSelection()){

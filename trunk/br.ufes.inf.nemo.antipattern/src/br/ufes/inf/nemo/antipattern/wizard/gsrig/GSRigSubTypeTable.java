@@ -90,7 +90,7 @@ public class GSRigSubTypeTable {
 		
 		String columnName2 = "Current Stereotype";
 		TableColumn tableColumn2 = new TableColumn(table, SWT.CENTER);
-		tableColumn2.setWidth(110);
+		tableColumn2.setWidth(120);
 		tableColumn2.setText(columnName2);
 		
 		String columnName3 = "Current Rigidity";
