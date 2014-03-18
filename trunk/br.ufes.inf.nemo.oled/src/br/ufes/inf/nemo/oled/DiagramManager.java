@@ -28,7 +28,6 @@ import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -2140,10 +2139,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}	
 	}
 
-	@SuppressWarnings({ "unused", "static-access" })
+	@SuppressWarnings({ })
 	public void deriveByExclusion() {
 		System.out.println("sera?");
-		// TODO Auto-generated method stub
 		
 	}
 	

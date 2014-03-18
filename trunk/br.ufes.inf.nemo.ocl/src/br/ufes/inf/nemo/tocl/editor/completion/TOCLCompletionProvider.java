@@ -80,7 +80,7 @@ public class TOCLCompletionProvider {
 		"Evaluates to true if self exists in the World w.";
 		
 		c = new TOCLTemplateCompletion(provider, 
-			"existsIn(w)","existsIn(w)",
+			"existsIn","existsIn",
 			"existsIn(${world})${cursor}",
 			null, description);		
 		provider.addCompletion(c);
@@ -90,7 +90,7 @@ public class TOCLCompletionProvider {
 		"Returns the immediate previous world from the world self.";
 		
 		c = new TOCLTemplateCompletion(provider, 
-			"previous()","previous()",
+			"previous","previous",
 			"previous()${cursor}",
 			null, description);		
 		provider.addCompletion(c);
@@ -100,7 +100,7 @@ public class TOCLCompletionProvider {
 		"Returns the immediate next worlds from the world self.";
 		
 		c = new TOCLTemplateCompletion(provider, 
-			"next()","next()",
+			"next","next",
 			"next()${cursor}",
 			null, description);		
 		provider.addCompletion(c);
@@ -110,7 +110,7 @@ public class TOCLCompletionProvider {
 		"Returns all the worlds after the world self.";
 		
 		c = new TOCLTemplateCompletion(provider, 
-			"allNext()","allNext()",
+			"allNext","allNext",
 			"allNext()${cursor}",
 			null, description);		
 		provider.addCompletion(c);
@@ -120,7 +120,7 @@ public class TOCLCompletionProvider {
 		"Returns all the worlds before the world self.";
 		
 		c = new TOCLTemplateCompletion(provider, 
-			"allPrevious()","allPrevious()",
+			"allPrevious","allPrevious",
 			"allPrevious()${cursor}",
 			null, description);		
 		provider.addCompletion(c);
@@ -130,7 +130,7 @@ public class TOCLCompletionProvider {
 		"Evaluates to true if the world self has an immediate previous world.";
 		
 		c = new TOCLTemplateCompletion(provider, 
-			"hasPrevious()","hasPrevious()",
+			"hasPrevious","hasPrevious",
 			"hasPrevious()${cursor}",
 			null, description);		
 		provider.addCompletion(c);
@@ -140,7 +140,7 @@ public class TOCLCompletionProvider {
 		"Evaluates to true if the world self has at least one immediate next world.";
 		
 		c = new TOCLTemplateCompletion(provider, 
-			"hasNext()","hasNext()",
+			"hasNext","hasNext",
 			"hasNext()${cursor}",
 			null, description);		
 		provider.addCompletion(c);
