@@ -55,10 +55,10 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	private static final long serialVersionUID = 2093867102692070258L;
 	private JTextField filePathField;
 	private JButton browseBtn, btnUseDefaultOptions, btnImport;
-	private JCheckBox chckbxImportConstraints, chckbxIgnoreUnknownStereotypes, 
-		chckbxCreateDefaultClassassociation, chckbxGenerateAEndsNames,
-		chckbxGenerateAssocNames, chckbxShowWarningLog, chckbxIgnoreElementsWith,
-		chckbxGenerateCard;
+	private JCheckBox chckbxImportConstraints, chckbxImportComments,
+		chckbxIgnoreUnknownStereotypes, chckbxCreateDefaultClassassociation, 
+		chckbxGenerateAEndsNames, chckbxGenerateAssocNames, 
+		chckbxShowWarningLog, chckbxIgnoreElementsWith,	chckbxGenerateCard;
 	private JTabbedPane mainTabbedPane;
 	private JScrollPane treeScrollPane;
 	private CheckboxTree[] trees;
@@ -66,7 +66,6 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 	private JTextArea objDescription;
 	
 	DiagramManager diagManager;
-	private JCheckBox chckbxImportComments;
 	
 	
 	public ImportXMIDialog(JFrame owner, boolean modal, DiagramManager diagManager)
@@ -106,8 +105,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				chckbxImportConstraints = new JCheckBox("Import Constraints");
 				chckbxImportConstraints.setSelected(true);
 				chckbxImportComments = new JCheckBox("Import Comments");
-				chckbxImportComments.setSelected(true);
-				chckbxImportComments.setEnabled(false);
+				chckbxImportComments.setSelected(false);
 				
 				JLabel lblElements = new JLabel("Error Treatment");
 				chckbxIgnoreUnknownStereotypes = new JCheckBox("Ignore Elements with unknown stereotypes");
@@ -326,9 +324,38 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				{
 					setCursor(new Cursor(Cursor.WAIT_CURSOR));
 					Creator transfManager = new Creator();
-					Model model = transfManager.parse(filePathField.getText(), chckbxIgnoreUnknownStereotypes.isSelected(), 
-							chckbxCreateDefaultClassassociation.isSelected(), chckbxIgnoreElementsWith.isSelected(), 
-							chckbxGenerateAssocNames.isSelected(), chckbxGenerateAEndsNames.isSelected(), chckbxGenerateCard.isSelected());
+					Model model = transfManager.parse(filePathField.getText(), 
+							chckbxImportComments.isSelected(),
+							chckbxIgnoreUnknownStereotypes.isSelected(), 
+							chckbxCreateDefaultClassassociation.isSelected(), 
+							chckbxIgnoreElementsWith.isSelected(), 
+							chckbxGenerateAssocNames.isSelected(), 
+							chckbxGenerateAEndsNames.isSelected(), 
+							chckbxGenerateCard.isSelected());
+					
+//					TreeIterator<EObject> ti = model.eAllContents();
+//					while (ti.hasNext())
+//					{
+//						EObject el = ti.next();
+//						EObject parent = el.eContainer();
+//						while (parent != null)
+//						{
+//							if (((NamedElement)parent).getName() != null &&
+//									(((NamedElement)parent).getName().equals("Fiscalização") ||
+//									((NamedElement)parent).getName().equals("Infração") ||
+//									((NamedElement)parent).getName().equals("Veículo Ferroviário") ||
+//									((NamedElement)parent).getName().equals("Concessão Ferroviária") ||
+//									((NamedElement)parent).getName().equals("Obra em Concessão") ||
+//									((NamedElement)parent).getName().equals("Bem da Concessão") ||
+//									((NamedElement)parent).getName().equals("Seguro em Concessão") ||
+//									((NamedElement)parent).getName().equals("Transporte Ferroviário") ||
+//									((NamedElement)parent).getName().equals("Gestão Ambiental")))
+//							{
+//								SyntacticVerificator.elems.add((Element) el);
+//							}
+//							parent = parent.eContainer();
+//						}
+//					}
 					
 					int opt = JOptionPane.showConfirmDialog(this, "Parsing complete. Do you wish to filter the model now?");
 					if (opt == 0)

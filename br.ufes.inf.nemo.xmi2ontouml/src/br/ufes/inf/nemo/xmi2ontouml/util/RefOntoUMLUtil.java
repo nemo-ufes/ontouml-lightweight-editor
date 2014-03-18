@@ -38,6 +38,8 @@ import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 
 
 public class RefOntoUMLUtil {
+	
+//	private static Package root;
 	/**
 	 * Creates a CheckboxTree from a RefOntoUML.Model to serve
 	 * as a element selection to the XMI2RefOntoUML transformation.
@@ -131,6 +133,8 @@ public class RefOntoUMLUtil {
 		Collection<EObject> checkedNodes = new ArrayList<EObject>();
     	TreePath[] treepathList = modelTree.getCheckingPaths();
     	
+//    	root = (Package) ((ChckBoxTreeNodeElem)((DefaultMutableTreeNode)modelTree.getModel().getRoot()).getUserObject()).getElement();
+    	
     	for (TreePath treepath : treepathList) {
     		DefaultMutableTreeNode elemNode = (DefaultMutableTreeNode) treepath.getLastPathComponent();
     		ChckBoxTreeNodeElem checkBoxElemNode = (ChckBoxTreeNodeElem) elemNode.getUserObject();
@@ -206,6 +210,38 @@ public class RefOntoUMLUtil {
 					addDependentElementsToList(att.getType(), list);
 				}
 			}
+			
+//			//Completes the model for verification purposes
+//			if (element instanceof Role || element instanceof RoleMixin || element instanceof Phase || 
+//					element instanceof SubKind || element instanceof Relator || element instanceof Mode)
+//			{
+//				for (Generalization gen : ((Class) element).getGeneralization())
+//				{
+//					list.add(gen.getGeneral());
+//					addDependentElementsToList(gen.getGeneral(), list);
+//				}
+//				if (element instanceof Role || element instanceof RoleMixin || element instanceof Relator)
+//				{
+//					while (root.eAllContents().hasNext())
+//					{
+//						Element e = (Element) root.eAllContents().next();
+//						if (e instanceof Mediation && (((Association)e).getMemberEnd().get(0).getType().equals(element) ||
+//								((Association)e).getMemberEnd().get(1).getType().equals(element)))
+//						{
+//							list.add(e);
+//							addDependentElementsToList(e, list);
+//						}
+//					}
+//					for (Association assoc : ((Class) element).getAssociations())
+//					{
+//						if (assoc instanceof Mediation)
+//						{
+//							list.add(assoc);
+//							addDependentElementsToList(assoc, list);
+//						}
+//					}
+//				}
+//			}
 		}
 		else if (element instanceof DataType)
 		{
