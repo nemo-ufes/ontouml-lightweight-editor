@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
@@ -438,12 +439,14 @@ public class OutcomeFixer{
 		if (src.getType().equals(type)) {
 			src.setType((Type) newtype);
 			fixes.includeModified(src);
-			if (src.getName() != null && !src.getName().isEmpty()) newtype.setName(src.getName());
+			if (src.getName() == null || src.getName().isEmpty()) 
+				src.setName(newtype.getName().toLowerCase().trim());
 		}
 		if (tgt.getType().equals(type)) {
 			tgt.setType((Type) newtype);
 			fixes.includeModified(tgt);
-			if (tgt.getName() != null && !tgt.getName().isEmpty()) newtype.setName(tgt.getName());
+			if (tgt.getName() == null || tgt.getName().isEmpty()) 
+				tgt.setName(newtype.getName().toLowerCase().trim());
 		}
 		return fixes;
 	}
@@ -471,10 +474,16 @@ public class OutcomeFixer{
 		Fix fix = new Fix();
 		if (!(element instanceof Type)) return fix;
 		if (!(newElement instanceof Type)) return fix;
-		for (RefOntoUML.PackageableElement p : root.getPackagedElement()) 
+		
+		TreeIterator<EObject> iterator = root.eAllContents();
+		
+		while (iterator.hasNext()) 
 		{
-			if (p instanceof Association) fix.addAll(changeReferencesInAssociation((Association)p,(Type)element,(Type)newElement));			
-			if (p instanceof Generalization) fix.addAll(changeReferencesInGeneralization((Generalization)p, (Type)element, (Type)newElement));
+			EObject content = iterator.next();
+			if (content instanceof Association) 
+				fix.addAll(changeReferencesInAssociation((Association)content,(Type)element,(Type)newElement));			
+			if (content instanceof Generalization) 
+				fix.addAll(changeReferencesInGeneralization((Generalization)content, (Type)element, (Type)newElement));
 		}
 		return fix;
 	}
@@ -819,14 +828,14 @@ public class OutcomeFixer{
 	public Fix createSuperTypeEnvolvingLink(EObject element, ClassStereotype stereoSuperType, EObject relation){
 		Fix fixes = new Fix();
 		
-		//create subtype
+		//create supertype
 		fixes.addAll(createSuperType(element, stereoSuperType));
 		
 		//change reference in relation
 		if (!(relation instanceof Association)) 
 			return fixes;
 		
-		fixes.addAll(changeReferencesInAssociation((Association)relation, (Type)element, (Type)fixes.getAddedByType(Type.class)));
+		fixes.addAll(changeReferencesInAssociation((Association)relation, (Type)element, (Type)fixes.getAddedByType(Type.class).get(0)));
 		return fixes;
 	}
 
