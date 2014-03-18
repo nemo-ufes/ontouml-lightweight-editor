@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.Derivation;
+import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Phase;
 import RefOntoUML.Property;
@@ -20,6 +22,7 @@ public class DepPhaseOccurrence extends AntipatternOccurrence{
 
 	private Phase phase;
 	private ArrayList<Property> relatorEnds;
+	ArrayList<Relator> relators;
 	
 	public DepPhaseOccurrence(Phase phase, ArrayList<Property> relatorEnds, DepPhaseAntipattern ap) throws Exception {
 		super(ap);
@@ -45,6 +48,10 @@ public class DepPhaseOccurrence extends AntipatternOccurrence{
 		}
 		
 		this.relatorEnds = relatorEnds;
+		relators = new ArrayList<Relator>();
+		for (Property p : relatorEnds) {
+			relators.add((Relator) p.getType());
+		}
 		
 	}
 	
@@ -56,6 +63,9 @@ public class DepPhaseOccurrence extends AntipatternOccurrence{
 		return relatorEnds;
 	}
 
+	public ArrayList<Relator> getRelators(){
+		return relators;
+	}
 	@Override
 	public OntoUMLParser setSelected() {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
@@ -99,10 +109,20 @@ public class DepPhaseOccurrence extends AntipatternOccurrence{
 	
 	public void separateRelationalDependencyOnSubtype(Property p){
 		String relatorName = p.getType().getName();
+		Fix fixes = new Fix();
+		
 		//creates a rule subtype for the phase and reconnected the given property to it
 		if(getRelatorEnds().contains(p)){
-			fix.addAll(fixer.createSubTypeAsInvolvingLink(phase, ClassStereotype.ROLE, p.getAssociation()));
-			fix.getAddedByType(Role.class).get(0).setName("RoleOf"+relatorName);
+			fixes = fixer.createSubTypeAsInvolvingLink(phase, ClassStereotype.ROLE, p.getAssociation());
+			
+			Role createdRole = fixes.getAddedByType(Role.class).get(0);
+			createdRole.setName("RoleOf"+relatorName);
+			
+			for (MaterialAssociation material : getMaterials((Relator) p.getType())) {
+				fix.addAll(fixer.changeReferencesInAssociation(material, phase, createdRole));
+			}
+			
+			fix.addAll(fixes);
 		}
 	}
 	
@@ -118,14 +138,36 @@ public class DepPhaseOccurrence extends AntipatternOccurrence{
 				phaseParent = phase.parents().get(0);
 			
 			fixes.addAll(fixer.createSuperTypeEnvolvingLink(phase, ClassStereotype.ROLE, p.getAssociation()));
-			fixes.getAddedByType(Role.class).get(0).setName("RoleOf"+relatorName);
+			Role createdRole = fixes.getAddedByType(Role.class).get(0);
+			createdRole.setName("RoleOf"+relatorName);
 			
 			//creates a generalization from the created role to a parent of the phase
 			if (phaseParent instanceof Classifier)
-				fixer.createGeneralization(fixes.getAddedByType(Role.class).get(0), phaseParent);
+				fix.addAll(fixer.createGeneralization(createdRole, phaseParent));
+			
+			for (MaterialAssociation material : getMaterials((Relator) p.getType())) {
+				fix.addAll(fixer.changeReferencesInAssociation(material, phase, createdRole));
+			}
+			
+			fix.addAll(fixes);
 		}
-		
-		
 	}
+	
+	//get materials derived from relator r
+	public ArrayList<MaterialAssociation> getMaterials(Relator r){
+		ArrayList<MaterialAssociation> materials = new ArrayList<MaterialAssociation>();
+		for (Derivation derivation : parser.getAllInstances(Derivation.class)) {
+			MaterialAssociation material = OntoUMLParser.getMaterial(derivation);
+			Relator relator = OntoUMLParser.getRelator(derivation);
+			if(r.equals(relator) && 
+					(material.getMemberEnd().get(0).getType().equals(phase) || material.getMemberEnd().get(1).getType().equals(phase)))
+				materials.add(material);
+		}
+		return materials;
+	}
+	
+	
+	
+	
 	
 }
