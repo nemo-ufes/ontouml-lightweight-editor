@@ -195,6 +195,15 @@ public class TOCLParser extends OCLParser{
     	return result.replaceAll("(?s)/\\*.*?\\*/","");    	
     }
     	 
+    public String processPropertyInTemporalConstraints(String result)
+    {
+//    	String[] array = result.split("([^\\w])(temp|inv|derive)([^\\w])");
+//    	for(String str: array){
+//    		System.out.println("str = "+str);
+//    	}
+    	return result;
+    }
+    
     public String processTempKeyword(String result)
     {
     	Pattern p = Pattern.compile("([^\\w])(temp|inv|derive)([^\\w])");
@@ -242,19 +251,26 @@ public class TOCLParser extends OCLParser{
 		String result = new String();
 		result = oclTemporalContent;
 		
+		// remove comments...
 		result = processInLineComments(result);
 		result = processMultiLineComments(result);
 		
+		// remove world parameter and record it
 		Pattern p = Pattern.compile("oclIsKindOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
 		result = processObjectOperation(result, p);
 		
+		// remove world parameter and record it
 		p = Pattern.compile("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
 		result = processObjectOperation(result, p);
 				
-    	// navigations such as roleName[w] will become roleName(w)
+    	// navigations such as endName[w]/attrName[w] will become endName(w)/attrName(w)
 	    result = result.replaceAll("\\[","(");
 	    result = result.replaceAll("\\]",")");
+
+	    // in temporal constraints switch endName/attrName for endName()/attrName()
+	    result = processPropertyInTemporalConstraints(result);
 	    
+	    // record which constraints are temporal
 	    result = processTempKeyword(result);
 	    
     	return result;

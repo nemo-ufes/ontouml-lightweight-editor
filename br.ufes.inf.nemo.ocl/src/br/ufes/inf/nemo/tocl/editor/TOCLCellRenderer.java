@@ -28,13 +28,13 @@ public class TOCLCellRenderer extends OCLCellRenderer {
 		if (tc.getDefinitionString().equals("oclIsTypeOf(w)")||
 			tc.getDefinitionString().equals("oclIsKindOf(w)")||
 			tc.getDefinitionString().equals("allInstances(w)")||
-			tc.getDefinitionString().equals("existsIn(w)")||
-			tc.getDefinitionString().equals("next()")||
-			tc.getDefinitionString().equals("previous()")||
-			tc.getDefinitionString().equals("allPrevious()")||
-			tc.getDefinitionString().equals("allNext()")||
-			tc.getDefinitionString().equals("hasPrevious()")||
-			tc.getDefinitionString().equals("hasNext()")||
+			tc.getDefinitionString().equals("existsIn")||
+			tc.getDefinitionString().equals("next")||
+			tc.getDefinitionString().equals("previous")||
+			tc.getDefinitionString().equals("allPrevious")||
+			tc.getDefinitionString().equals("allNext")||
+			tc.getDefinitionString().equals("hasPrevious")||
+			tc.getDefinitionString().equals("hasNext")||
 			tc.getDefinitionString().equals("temporal")
 		   ){
 			setIcon(new ImageIcon(TOCLCellRenderer.class.getResource("/br/ufes/inf/nemo/tocl/editor/icons/operation.gif")));
