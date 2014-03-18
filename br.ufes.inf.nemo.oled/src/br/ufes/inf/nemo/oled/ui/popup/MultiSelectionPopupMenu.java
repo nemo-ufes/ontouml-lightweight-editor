@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -20,10 +21,14 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
 	
 	public MultiSelectionPopupMenu()
-	{		
+	{			
 		createMenuItem(this, "derivedunion");
+		createMenuItem(this, "derivedexclusion");
 		createMenuItem(this, "delete");	
+		
 	}
+	
+
 	
 	/**
 	 * Adds the specified AppCommandListener.
