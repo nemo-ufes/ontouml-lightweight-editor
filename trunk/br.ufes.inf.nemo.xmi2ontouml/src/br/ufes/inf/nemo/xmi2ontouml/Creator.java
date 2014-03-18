@@ -27,12 +27,14 @@ public class Creator
 
     public static String warningLog = "";
     
-    public void initVariables(String Read_File_Address, boolean ignoreUnknownStereotypes, boolean createDefaultElement, boolean ignoreErrorElem,
-    		boolean autoGenerateNamesAssoc, boolean autoGenerateNamesProp, boolean autoGenerateCard) throws Exception
+    public void initVariables(String Read_File_Address, boolean importComments, boolean ignoreUnknownStereotypes, 
+    		boolean createDefaultElement, boolean ignoreErrorElem, boolean autoGenerateNamesAssoc, 
+    		boolean autoGenerateNamesProp, boolean autoGenerateCard) throws Exception
     {
     	warningLog = "";
     	
     	XMI2RefElement.setIgnoreErrorElements(ignoreErrorElem);
+    	XMI2RefElement.setImportComments(importComments);
     	
     	if (createDefaultElement)
     		XMI2RefClassifier.setUnknownStereotypeOpt(0);
@@ -53,10 +55,12 @@ public class Creator
     	mapper = mapperFactory.createMapper(new File(Read_File_Address));
     }
     
-    public Model parse(String Read_File_Address, boolean ignoreUnknownStereotypes, boolean createDefaultElement, boolean ignoreErrorElem,
-    		boolean autoGenerateNamesAssoc, boolean autoGenerateNamesProp, boolean autoGenerateCard) throws Exception
+    public Model parse(String Read_File_Address, boolean importComments, boolean ignoreUnknownStereotypes, 
+    		boolean createDefaultElement, boolean ignoreErrorElem, boolean autoGenerateNamesAssoc, 
+    		boolean autoGenerateNamesProp, boolean autoGenerateCard) throws Exception
     {
-    	initVariables(Read_File_Address, ignoreUnknownStereotypes, createDefaultElement, ignoreErrorElem,
+    	initVariables(Read_File_Address, importComments,
+    			ignoreUnknownStereotypes, createDefaultElement, ignoreErrorElem,
     			autoGenerateNamesAssoc, autoGenerateNamesProp, autoGenerateCard);
         
         //Creates the root (model) and all sub elements recursively

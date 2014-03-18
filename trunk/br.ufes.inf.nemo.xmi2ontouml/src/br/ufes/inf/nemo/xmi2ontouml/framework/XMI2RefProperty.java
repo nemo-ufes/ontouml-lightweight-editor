@@ -49,13 +49,7 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 		property.setAggregation(AggregationKind.get((String)hashProp.get("aggregation")));
 		
 		//Structural Feature properties
-		if ((property.eContainer() instanceof Mediation && !(elemMap.get(hashProp.get("type")) instanceof Relator)) ||
-				(property.eContainer() instanceof Characterization && !(elemMap.get(hashProp.get("type")) instanceof Mode)) ||
-				(property.eContainer() instanceof Derivation && !(elemMap.get(hashProp.get("type")) instanceof MaterialAssociation)))
-			property.setIsReadOnly(true);
-			
-		else
-			property.setIsReadOnly(Boolean.parseBoolean((String)hashProp.get("isreadonly")));
+		property.setIsReadOnly(Boolean.parseBoolean((String)hashProp.get("isreadonly")));
 		
 		//Feature properties
 		property.setIsStatic(Boolean.parseBoolean((String)hashProp.get("isstatic")));
@@ -101,7 +95,7 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 			((Property)RefOntoUMLElement).setType((Type) elemMap.get((String)hashProp.get("type")));
 			
 			// Makes sure the Properties (memberEnds) are added in the correct order
-	    	// to be in accordance to the RefOntoUML metamodel
+	    	// to be in accordance to the OntoUML specification
 			Property property = (Property) RefOntoUMLElement;
 			Association association = property.getAssociation();
 			if (association != null)
@@ -127,6 +121,12 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 			    	}
 				}
 			}
+			//And also sets the readOnly property true for the following associations,
+			//accordingly to the OntoUML specification
+			if ((property.eContainer() instanceof Mediation && !(property.getType() instanceof Relator)) ||
+					(property.eContainer() instanceof Characterization && !(property.getType() instanceof Mode)) ||
+					(property.eContainer() instanceof Derivation && property.getType() instanceof Relator))
+				property.setIsReadOnly(true);
 			
 			if (autoGenerateNames && (((Property)RefOntoUMLElement).getName() == null) || ((Property)RefOntoUMLElement).getName().equals(""))
 				((Property)RefOntoUMLElement).setName(((Property)RefOntoUMLElement).getType().getName().toLowerCase());

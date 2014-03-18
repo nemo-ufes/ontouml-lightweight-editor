@@ -27,6 +27,8 @@ public abstract class XMI2RefElement
 	
 	protected static boolean ignoreErrorElements = true;
 	
+	private static boolean importComments = false;
+	
 	protected void commonTasks() throws Exception
 	{
 		if (!Mapper.getID(XMIElement).equals("") || this instanceof XMI2RefConstraint)
@@ -57,14 +59,17 @@ public abstract class XMI2RefElement
 	
 	protected void createSubElements() throws Exception
 	{
-        for (Object comment : Mapper.getElements(XMIElement, ElementType.COMMENT))
-        {
-        	XMI2RefComment xmi2refcomm = new XMI2RefComment(comment, Mapper);
-        	if (xmi2refcomm.RefOntoUMLElement != null)
-        	{
-        		RefOntoUMLElement.getOwnedComment().add((Comment) xmi2refcomm.getRefOntoUMLElement());
-        	}
-        }
+		if (isImportComments())
+		{
+	        for (Object comment : Mapper.getElements(XMIElement, ElementType.COMMENT))
+	        {
+	        	XMI2RefComment xmi2refcomm = new XMI2RefComment(comment, Mapper);
+	        	if (xmi2refcomm.RefOntoUMLElement != null)
+	        	{
+	        		RefOntoUMLElement.getOwnedComment().add((Comment) xmi2refcomm.getRefOntoUMLElement());
+	        	}
+	        }
+		}
 	}
 	
 	public static ElementMap getElemMap() {
@@ -93,5 +98,13 @@ public abstract class XMI2RefElement
 
 	public static void setIgnoreErrorElements(boolean ignoreErrorElements) {
 		XMI2RefElement.ignoreErrorElements = ignoreErrorElements;
+	}
+
+	public static boolean isImportComments() {
+		return importComments;
+	}
+
+	public static void setImportComments(boolean importComments) {
+		XMI2RefElement.importComments = importComments;
 	}
 }
