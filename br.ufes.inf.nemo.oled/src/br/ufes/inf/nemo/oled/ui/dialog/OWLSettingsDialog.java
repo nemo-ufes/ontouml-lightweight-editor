@@ -385,15 +385,15 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ComboBoxModel getMappingTypeComboModel()
 	{
-		MappingTypeComboItem simpleItem = new MappingTypeComboItem();
-		simpleItem.setDisplayName("Simple");
-		simpleItem.setValue("SIMPLE");
-		simpleItem.setDescription(ApplicationResources.getInstance().getString("dialog.owlsettings.simple"));
-		
 		MappingTypeComboItem rulesItem = new MappingTypeComboItem();
 		rulesItem.setDisplayName("OOTOS");
 		rulesItem.setValue("RULES");
 		rulesItem.setDescription(ApplicationResources.getInstance().getString("dialog.owlsettings.ontouml2owl"));
+		
+		MappingTypeComboItem simpleItem = new MappingTypeComboItem();
+		simpleItem.setDisplayName("Simple");
+		simpleItem.setValue("SIMPLE");
+		simpleItem.setDescription(ApplicationResources.getInstance().getString("dialog.owlsettings.simple"));
 		
 		MappingTypeComboItem reificationItem = new MappingTypeComboItem();
 		reificationItem.setDisplayName("Reification");
@@ -415,7 +415,7 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 		wormA2Item.setValue("WORM_VIEW_A2");
 		wormA2Item.setDescription(ApplicationResources.getInstance().getString("dialog.owlsettings.worm-view-a2"));
 		
-		return new DefaultComboBoxModel(new Object[] { simpleItem, rulesItem, reificationItem, wormA0Item, wormA1Item, wormA2Item });
+		return new DefaultComboBoxModel(new Object[] { rulesItem, simpleItem, reificationItem, wormA0Item, wormA1Item, wormA2Item });
 	}
 	
 	class MappingTypeComboItem

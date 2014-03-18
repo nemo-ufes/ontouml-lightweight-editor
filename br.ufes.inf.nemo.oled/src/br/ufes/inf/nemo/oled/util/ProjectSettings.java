@@ -9,7 +9,7 @@ public enum ProjectSettings {
 	OWL_ONTOLOGY_IRI("OWL_ONTOLOGY_IRI", ""),
 	OWL_GENERATE_FILE("OWL_GENERATE_FILE", "false"),
 	OWL_FILE_PATH("OWL_FILE_PATH", ""),
-	OWL_MAPPING_TYPE("OWL_MAPPING_TYPE", "SIMPLE");
+	OWL_MAPPING_TYPE("OWL_MAPPING_TYPE", "OOTOS");
 	
 	private final String propertyKey;
 	private final String defaultValue;
