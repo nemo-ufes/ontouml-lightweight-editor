@@ -512,6 +512,9 @@ public class Transformer {
 			prop = createAssociation(ass,stereotype);
 			invProp = createInverseAssociation(ass,stereotype);
 
+			//Set invProp inverse of prop
+			manager.applyChange(new AddAxiom(ontology, factory.getOWLInverseObjectPropertiesAxiom(invProp, prop)));
+			
 			//Set both property disjoints
 			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop, invProp)));
 
