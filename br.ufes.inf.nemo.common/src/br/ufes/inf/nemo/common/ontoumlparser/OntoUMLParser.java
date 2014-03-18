@@ -1468,4 +1468,28 @@ public class OntoUMLParser {
 		return result;		
 	}
 	
+	public static MaterialAssociation getMaterial(Derivation d){
+		Type source = d.getMemberEnd().get(0).getType();
+		Type target = d.getMemberEnd().get(1).getType();
+		
+		if(source instanceof MaterialAssociation)
+			return (MaterialAssociation) source;
+		if(target instanceof MaterialAssociation)
+			return (MaterialAssociation) target;
+		
+		return null;
+	}
+	
+	public static Relator getRelator(Derivation d){
+		Type source = d.getMemberEnd().get(0).getType();
+		Type target = d.getMemberEnd().get(1).getType();
+		
+		if(source instanceof Relator)
+			return (Relator) source;
+		if(target instanceof Relator)
+			return (Relator) target;
+		
+		return null;
+	}
+	
 }
