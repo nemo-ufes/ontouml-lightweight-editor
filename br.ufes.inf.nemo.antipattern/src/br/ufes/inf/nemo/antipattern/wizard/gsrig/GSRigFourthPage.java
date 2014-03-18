@@ -1,8 +1,12 @@
 package br.ufes.inf.nemo.antipattern.wizard.gsrig;
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -13,7 +17,8 @@ public class GSRigFourthPage extends GSRigPage {
 	private Button btnAll;
 	private Button btnCustom;
 	private StyledText styledText;
-	private GSRigSubTypeComposite rigSubTypeComposite;
+	private SubTypeComposite rigSubTypeComposite;
+	private ArrayList<String> antirigids = new ArrayList<String>();
 
 	public GSRigFourthPage(GSRigOccurrence gsrig) 
 	{
@@ -35,37 +40,57 @@ public class GSRigFourthPage extends GSRigPage {
 		styledText.setBackground(styledText.getParent().getBackground());
 		styledText.setJustify(true);
 		
+	    SelectionAdapter makeTableVisibleListener = new SelectionAdapter() {
+	      public void widgetSelected(SelectionEvent e) {
+	    	  if(btnAll.getSelection()){
+	    		  rigSubTypeComposite.setVisible(false);
+	    	  }
+	    	  if(btnCustom.getSelection()){
+	    		  rigSubTypeComposite.setVisible(true);
+	    	  }
+	      }
+	    };
+		    
 		btnAll = new Button(container, SWT.RADIO);
 		btnAll.setBounds(10, 141, 644, 16);
 		btnAll.setText("All rigidity meta-properties are correct.");
+		btnAll.addSelectionListener(makeTableVisibleListener);
 		
 		btnCustom = new Button(container, SWT.RADIO);
 		btnCustom.setBounds(10, 163, 644, 16);
 		btnCustom.setText("Fix rigidity meta-properties. (Clicking on this option enables the table)");
+		btnCustom.addSelectionListener(makeTableVisibleListener);
 		
-		rigSubTypeComposite = new GSRigSubTypeComposite(container, SWT.NONE, (GSRigOccurrence) gsrig);
-		rigSubTypeComposite.setBounds(0, 192, 654, 140);		
+		rigSubTypeComposite = new SubTypeComposite(container, SWT.NONE, (GSRigOccurrence) gsrig);
+		rigSubTypeComposite.setBounds(0, 192, 654, 140);
+		rigSubTypeComposite.setVisible(false);
 	}
 	
 	@Override
 	public IWizardPage getNextPage() 
 	{	
 		if(btnAll.getSelection()){
-			//Action =============================
-			GSRigAction newAction = new GSRigAction(gsrig);
-			//newAction.setChangeAllToComponentOf(assocList); 
-			getGSRigWizard().replaceAction(0,newAction);
-			//======================================
-			
+		
 			return ((GSRigWizard)getWizard()).getFifthPage();
 		}
 		
 		if(btnCustom.getSelection()){
+			
+			antirigids.clear();
+			
 			//Action =============================
 			GSRigAction newAction = new GSRigAction(gsrig);
-			//newAction.setChangeAllToComponentOf(assocList); 
+			newAction.setChangeSpecificsStereotypesTo(rigSubTypeComposite.getSubtypeTable().getNewStereotypes()); 
 			getGSRigWizard().replaceAction(0,newAction);
 			//======================================
+			
+			antirigids = rigSubTypeComposite.getSubtypeTable().getAntiRigids();
+			
+			if(!rigSubTypeComposite.getSubtypeTable().isNewStereotypesAllAntiRigid() && !rigSubTypeComposite.getSubtypeTable().isNewStereotypesAllRigid()){
+				GSRigFifthPage fifthPage = ((GSRigWizard)getWizard()).getFifthPage();
+				fifthPage.setAntirigids(antirigids);
+				return fifthPage;
+			}
 		}
 				
 		return ((GSRigWizard)getWizard()).getFinishing();

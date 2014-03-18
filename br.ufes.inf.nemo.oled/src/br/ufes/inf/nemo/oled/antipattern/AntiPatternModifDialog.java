@@ -45,7 +45,7 @@ public class AntiPatternModifDialog extends Dialog {
 		super(parentShell);
 		this.fix = fix;
 		this.frame = frame;
-		setDefaultImage(new Image(Display.getDefault(),AntiPatternModifDialog.class.getResourceAsStream("/resources/icons/x16/target.png")));	
+		setDefaultImage(new Image(Display.getDefault(),AntiPatternModifDialog.class.getResourceAsStream("/resources/icons/antipattern36.png")));	
 	}
 	
 	public static int openDialog(final Fix fix, final AppFrame frame)

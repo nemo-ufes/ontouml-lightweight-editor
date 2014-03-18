@@ -161,7 +161,7 @@ public final class IconLoader {
 		urlMap.put(IconType.RECTILINEAR, "resources/icons/x16/rectilinear.png");
 		urlMap.put(IconType.STRAIGHT, "resources/icons/x16/straight.png");
 				
-		urlMap.put(IconType.ANTIPATTERN, "resources/icons/x16/target.png");
+		urlMap.put(IconType.ANTIPATTERN, "resources/icons/antipattern16.png");
 		
 		urlMap.put(IconType.GENERATE_ALLOY, "resources/icons/x16/alloy/alloy.png");
 		

@@ -14,6 +14,7 @@ public class GSRigWizard extends AntipatternWizard {
 	public GSRigThirdPage thirdPage;
 	public GSRigFourthPage fourthPage;
 	public GSRigFifthPage fifthPage;
+	public GSRigSixthPage sixthPage;
 			
 	public GSRigWizard(GSRigOccurrence ap) {
 		super(ap,GSRigAntipattern.getAntipatternInfo().name);		
@@ -27,6 +28,7 @@ public class GSRigWizard extends AntipatternWizard {
 		thirdPage = new GSRigThirdPage((GSRigOccurrence)ap);
 		fourthPage = new GSRigFourthPage((GSRigOccurrence)ap);
 		fifthPage = new GSRigFifthPage((GSRigOccurrence)ap);
+		sixthPage = new GSRigSixthPage((GSRigOccurrence)ap);
 		
 		finishing = new FinishingPage();
 		options = new GSRigRefactoringPage(getAp());
@@ -45,6 +47,7 @@ public class GSRigWizard extends AntipatternWizard {
 		addPage(thirdPage);
 		addPage(fourthPage);
 		addPage(fifthPage);
+		addPage(sixthPage);
 		addPage(options);
 		addPage(finishing);
 	}
@@ -78,6 +81,11 @@ public class GSRigWizard extends AntipatternWizard {
 		return fifthPage;	
 	}
 	
+	public GSRigSixthPage getSixthPage()
+	{
+		return sixthPage;	
+	}
+	
 	@Override
 	public boolean performFinish() {
 		for(AntiPatternAction<?> action: super.getAllActions())
@@ -86,3 +94,4 @@ public class GSRigWizard extends AntipatternWizard {
 		return true;
 	}
 }
+

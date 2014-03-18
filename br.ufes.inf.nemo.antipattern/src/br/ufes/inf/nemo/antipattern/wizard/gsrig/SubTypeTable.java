@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -24,11 +26,13 @@ import RefOntoUML.RigidSortalClass;
 import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
 
-public class GSRigSubTypeTable {
+public class SubTypeTable {
 	
 	private GSRigOccurrence gsrig;
 	private Table table;
-
+	ArrayList<Combo> newStereoCombo = new ArrayList<Combo>();
+	ArrayList<Combo> newRigidityCombo = new ArrayList<Combo>();
+	
 	public void populatesRigid()
 	{
 		Classifier supertype = gsrig.getGs().getGeneralization().get(0).getGeneral();
@@ -74,7 +78,7 @@ public class GSRigSubTypeTable {
 	}
 	
 	@SuppressWarnings("unused")
-	public GSRigSubTypeTable (Composite parent, int args, GSRigOccurrence gsrig) 
+	public SubTypeTable (Composite parent, int args, GSRigOccurrence gsrig) 
 	{		
 		table = new Table(parent, args);
 		
@@ -143,7 +147,7 @@ public class GSRigSubTypeTable {
 			
 			// Current Stereotype
 			editor = new TableEditor(table);
-			Combo combo = new Combo(table, SWT.READ_ONLY);
+			final Combo combo = new Combo(table, SWT.READ_ONLY);
 			combo.setItems(new String[] {"Kind", "Collective", "Quantity", "SubKind","Phase", "Role", "Mixin", "Category", "RoleMixin"});			
 			combo.setText(getStereotype(c));	
 			combo.setEnabled(false);
@@ -155,39 +159,56 @@ public class GSRigSubTypeTable {
 			
 			// Current Rigidity
 			editor = new TableEditor(table);
-			combo = new Combo(table, SWT.READ_ONLY);
-			combo.setItems(new String[] {"Rigid", "Anti-Rigid"});
-			if (c instanceof AntiRigidMixinClass || c instanceof AntiRigidSortalClass) combo.select(1);
-			else combo.select(0);	
-			combo.setEnabled(false);
-			combo.pack();
+			final Combo combo2 = new Combo(table, SWT.READ_ONLY);
+			combo2.setItems(new String[] {"Rigid", "Anti-Rigid"});
+			if (c instanceof AntiRigidMixinClass || c instanceof AntiRigidSortalClass) combo2.select(1);
+			else combo2.select(0);	
+			combo2.setEnabled(false);
+			combo2.pack();
 			editor.grabHorizontal = true;
 			editor.horizontalAlignment = SWT.CENTER;
-			editor.setEditor(combo, tableItem, 2);
-			tableItem.setData("2", combo);
+			editor.setEditor(combo2, tableItem, 2);
+			tableItem.setData("2", combo2);
 			
 			// New Stereotype
 			editor = new TableEditor(table);
-			combo = new Combo(table, SWT.NONE);
-			combo.setItems(new String[] {"Kind", "Collective", "Quantity", "SubKind","Phase", "Role", "Mixin", "Category", "RoleMixin"});
-			combo.select(0);
-			combo.pack();
+			final Combo combo3 = new Combo(table, SWT.NONE);
+			combo3.setItems(new String[] {"Kind", "Collective", "Quantity", "SubKind","Phase", "Role", "Mixin", "Category", "RoleMixin"});
+			combo3.select(0);
+			combo3.pack();
 			editor.grabHorizontal = true;
 			editor.horizontalAlignment = SWT.CENTER;
-			editor.setEditor(combo, tableItem, 3);
-			tableItem.setData("3", combo);
+			editor.setEditor(combo3, tableItem, 3);
+			tableItem.setData("3", combo3);
+			newStereoCombo.add(combo3);
 			
 			// New Rigidity
 			editor = new TableEditor(table);
-			combo = new Combo(table, SWT.NONE);
-			combo.setItems(new String[] {"Rigid", "Anti-Rigid"});
-			combo.select(0);
-			combo.setEnabled(false);
-			combo.pack();
+			final Combo combo4 = new Combo(table, SWT.NONE);
+			combo4.setItems(new String[] {"Rigid", "Anti-Rigid"});
+			combo4.select(0);
+			combo4.setEnabled(false);
+			combo4.pack();
 			editor.grabHorizontal = true;
 			editor.horizontalAlignment = SWT.CENTER;
-			editor.setEditor(combo, tableItem, 4);
-			tableItem.setData("4", combo);
+			editor.setEditor(combo4, tableItem, 4);
+			tableItem.setData("4", combo4);
+			newRigidityCombo.add(combo4);
+		
+			SelectionAdapter listener = new SelectionAdapter() {
+			      public void widgetSelected(SelectionEvent e) {
+			    	  if (combo3.getText().compareToIgnoreCase("Role")==0||combo3.getText().compareToIgnoreCase("RoleMixin")==0||
+			   			   combo3.getText().compareToIgnoreCase("Phase")==0||combo3.getText().compareToIgnoreCase("Mixin")==0)
+			    	  {
+			    		  combo4.select(1);
+			    	  }else{
+			    		  combo4.select(0);
+			    	  }
+			      }
+			};
+			combo3.addSelectionListener(listener);
+		
+				    
 		}
 	}
 
@@ -210,11 +231,39 @@ public class GSRigSubTypeTable {
 		return result;
 	}
 	
+	public Boolean isNewStereotypesAllRigid()
+	{
+		boolean result=true;
+		for(String str: getNewStereotypes())
+		{
+			if(str.compareToIgnoreCase("Role")==0 || str.compareToIgnoreCase("Phase")==0 ||
+			   str.compareToIgnoreCase("RoleMixin")==0 || str.compareToIgnoreCase("Mixin")==0)			   
+			{
+				result = false;
+			}				
+		}
+		return result;
+	}
+	
+	public ArrayList<String> getAntiRigids()
+	{
+		ArrayList<String> result = new ArrayList<String>();		
+		for (TableItem ti : table.getItems()){	
+			Combo combo = (Combo) ti.getData("3");			
+			if(combo.getText().compareToIgnoreCase("Role")==0||combo.getText().compareToIgnoreCase("RoleMixin")==0||
+			   combo.getText().compareToIgnoreCase("Phase")==0||combo.getText().compareToIgnoreCase("Mixin")==0)
+			{
+				result.add(combo.getText()+" "+(ti.getText(0)));
+			}
+		}
+		return result;
+	}
+	
 	public ArrayList<String> getNewStereotypes()
 	{
 		ArrayList<String> result = new ArrayList<String>();		
 		for (TableItem ti : table.getItems()){	
-			Combo combo = (Combo) ti.getData("4");			
+			Combo combo = (Combo) ti.getData("3");			
 			result.add(combo.getText());
 		}
 		return result;	

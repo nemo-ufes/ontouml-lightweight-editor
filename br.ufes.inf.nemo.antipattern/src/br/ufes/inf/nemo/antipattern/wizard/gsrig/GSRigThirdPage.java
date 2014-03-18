@@ -41,21 +41,21 @@ public class GSRigThirdPage extends GSRigPage {
 		setControl(container);
 		
 		lblNowThatWe = new StyledText(container, SWT.WRAP | SWT.READ_ONLY);
-		lblNowThatWe.setBounds(10, 10, 614, 48);
+		lblNowThatWe.setBounds(10, 10, 644, 48);
 		lblNowThatWe.setText("Now that we established that all subtypes belong to the same generalization set, let's verify the rigidity of the GS's supertype. The options below are the possible rigidity options for <RigidSuperType>:");
 		lblNowThatWe.setBackground(lblNowThatWe.getParent().getBackground());
 		lblNowThatWe.setJustify(true);
 
 		btnRigid = new Button(container, SWT.RADIO);
-		btnRigid.setBounds(10, 68, 614, 16);
+		btnRigid.setBounds(10, 68, 644, 16);
 		btnRigid.setText("Rigid: if x instantiates it in a given moment, it must always do so in every possible ");
 		
 		btnAntiRigid = new Button(container, SWT.RADIO);
-		btnAntiRigid.setBounds(10, 90, 614, 16);
+		btnAntiRigid.setBounds(10, 90, 644, 16);
 		btnAntiRigid.setText("Anti-Rigid: if x instantiates it in a given moment, there is at least one possible situation in which x does not do so");
 		
 		btnSemiRigid = new Button(container, SWT.RADIO);
-		btnSemiRigid.setBounds(10, 111, 614, 16);
+		btnSemiRigid.setBounds(10, 111, 644, 16);
 		btnSemiRigid.setText("Semi-Rigid: the type may act as rigid for some individuals and anti-rigid for others");
 	}
 	
@@ -63,26 +63,19 @@ public class GSRigThirdPage extends GSRigPage {
 	public IWizardPage getNextPage() 
 	{	
 		if(btnRigid.getSelection()){
+			
 			return ((GSRigWizard)getWizard()).getFourthPage();
 		}
 		
 		if(btnAntiRigid.getSelection()){
-			//Action =============================
-			GSRigAction newAction = new GSRigAction(gsrig);
-			//newAction.setChangeAllToComponentOf(assocList); 
-			getGSRigWizard().replaceAction(0,newAction);
-			//======================================
+			
+			return ((GSRigWizard)getWizard()).getSixthPage();
 		}
 		
 		if(btnSemiRigid.getSelection())
 		{			
-			//Action =============================
-			GSRigAction newAction = new GSRigAction(gsrig);
-			//newAction.setChangeAllToComponentOf(assocList); 
-			getGSRigWizard().replaceAction(0,newAction);	
-			//======================================
+			//..................................
 			
-			return ((GSRigWizard)getWizard()).getFinishing();
 		}
 		
 		return ((GSRigWizard)getWizard()).getFinishing();
