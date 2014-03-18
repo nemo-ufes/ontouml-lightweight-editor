@@ -27,6 +27,8 @@ import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -2139,36 +2141,45 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	@SuppressWarnings({ "unused", "static-access" })
+	public void deriveByExclusion() {
+		System.out.println("sera?");
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@SuppressWarnings({ "unused", "static-access" })
 	public void deriveByUnion() 
 	{
 		Fix mainfix = new Fix();
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
 		List<DiagramElement> selected = activeEditor.getSelectedElements();
-		int j=0;
-		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
-		for (int i = 0; i < selected.size(); i++) {
-			
-			if (selected.get(i) instanceof ClassElement) {
-				j++;
-				ClassElement ce = (ClassElement) selected.get(i);
-				refontoList.add(ce.getClassifier());
-			}		
-		}
-		if(refontoList.size()==2){
-			
-			ArrayList<String>stereotypes= DerivedByUnion.getInstance().inferStereotype(refontoList.get(0).eClass().getName(), refontoList.get(1).eClass().getName());
-			if(stereotypes.size()<2){
-				String name=DerivedByUnion.DefineNameDerivedType();
-				createDerivedType(stereotypes.get(0), mainfix, selected,name,refontoList);
+		if(selected.size()==2  && selected.get(0) instanceof ClassElement && selected.get(1) instanceof ClassElement ){
+			int j=0;
+			ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
+			for (int i = 0; i < selected.size(); i++) {
+				
+				if (selected.get(i) instanceof ClassElement) {
+					j++;
+					ClassElement ce = (ClassElement) selected.get(i);
+					refontoList.add(ce.getClassifier());
+				}		
 			}
-			else{
-				Object[] stereo;
-				stereo=  stereotypes.toArray();
-				String name=DerivedByUnion.DefineNameDerivedType();
-				String stereotype= DerivedByUnion.selectStereotype(stereo);
-			    createDerivedType(stereotype, mainfix, selected,name,refontoList);
+			if(refontoList.size()==2){
+				
+				ArrayList<String>stereotypes= DerivedByUnion.getInstance().inferStereotype(refontoList.get(0).eClass().getName(), refontoList.get(1).eClass().getName());
+				if(stereotypes.size()<2){
+					String name=DerivedByUnion.DefineNameDerivedType();
+					createDerivedType(stereotypes.get(0), mainfix, selected,name,refontoList);
+				}
+				else{
+					Object[] stereo;
+					stereo=  stereotypes.toArray();
+					String name=DerivedByUnion.DefineNameDerivedType();
+					String stereotype= DerivedByUnion.selectStereotype(stereo);
+				    createDerivedType(stereotype, mainfix, selected,name,refontoList);
+				}
+				
 			}
-			
 		}
 		
 	}
@@ -2190,12 +2201,44 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		mainfix.addAll(gs);
 		ClassElement position = (ClassElement) selected.get(0);
 		ClassElement position2 = (ClassElement) selected.get(1);
-		
-		mainfix.includeAdded(newElement, (position.getAbsoluteX1()+position2.getAbsoluteX1())/2, (position.getAbsoluteY1()+position2.getAbsoluteY1())/2);
+		Point2D.Double firstpoint = new Point2D.Double();
+		Point2D.Double secondpoint = new Point2D.Double();
+		firstpoint.setLocation(position.getAbsoluteX1(),position.getAbsoluteY1());
+		secondpoint.setLocation(position2.getAbsoluteX1(),position2.getAbsoluteY1());
+		Point2D.Double newElementPosition= findPositionGeneralization(firstpoint, secondpoint);
+		mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
 		updateOLED(mainfix);
 		
 	}
 	
+	public Point2D.Double findPositionGeneralization(Point2D.Double point, Point2D.Double point2){
+		
+		Point2D.Double newpoint = new Point2D.Double();
+		if(Math.abs(point.getX()-point2.getX())>Math.abs(point.getY()-point2.getY())){	
+			if(point.getX()>point2.getX())
+				newpoint.x=(point.getX()+point2.getX())/2;
+			else
+				newpoint.x=(point2.getX()+point.getX())/2;
+			
+			if(point.getY()<point2.getY())
+				newpoint.y=point.getY()-110;
+			else
+				newpoint.y=point2.getY()-110;
+		}else{
+			if(point.getY()>point2.getY())
+				newpoint.y=(point.getY()+point2.getY())/2;
+			else
+				newpoint.y=(point2.getY()+point.getY())/2;
+			
+			if(point.getX()<point2.getX())
+				newpoint.x=point.getX()+150;
+			else
+				newpoint.x=point2.getX()+150;
+			
+		}
+		return newpoint;
+	}
+
 	
 
 }
