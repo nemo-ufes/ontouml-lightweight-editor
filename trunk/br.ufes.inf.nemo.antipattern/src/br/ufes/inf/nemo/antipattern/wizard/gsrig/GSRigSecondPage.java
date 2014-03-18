@@ -42,19 +42,19 @@ public class GSRigSecondPage extends GSRigPage {
 		setControl(container);
 		
 		lblWhichSubtypesHave = new Label(container, SWT.NONE);
-		lblWhichSubtypesHave.setBounds(10, 10, 554, 15);
+		lblWhichSubtypesHave.setBounds(10, 10, 644, 15);
 		lblWhichSubtypesHave.setText("Which subtypes have the same specialization criteria?");
 		
 		btnRigid = new Button(container, SWT.RADIO);
-		btnRigid.setBounds(10, 35, 554, 16);
+		btnRigid.setBounds(10, 35, 644, 16);
 		btnRigid.setText("Only the rigid subtypes");
 		
 		btnAntiRigid = new Button(container, SWT.RADIO);
-		btnAntiRigid.setBounds(10, 61, 554, 16);
+		btnAntiRigid.setBounds(10, 61, 644, 16);
 		btnAntiRigid.setText("Only the anti-rigid subtypes");
 		
 		btnMixed = new Button(container, SWT.RADIO);
-		btnMixed.setBounds(10, 83, 554, 16);
+		btnMixed.setBounds(10, 83, 644, 16);
 		btnMixed.setText("The rigid subtypes have one and the anti-rigid another");
 	}
 	

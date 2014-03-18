@@ -54,18 +54,18 @@ public class GSRigFirstPage extends GSRigPage {
 		"criteria you chose for creating it. Is it the same for all subtypes?\r\n");
 		
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		styledText.setBounds(10, 10, 554, 190);
+		styledText.setBounds(10, 10, 643, 173);
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 214, 554, 16);
+		btnYes.setBounds(10, 189, 643, 16);
 		btnYes.setText("Yes");
 		
 		btnNoMultiple = new Button(container, SWT.RADIO);
-		btnNoMultiple.setBounds(10, 236, 554, 16);
+		btnNoMultiple.setBounds(10, 211, 643, 16);
 		btnNoMultiple.setText("No, there are multiple criteria");
 		
 		btnNoCommon = new Button(container, SWT.RADIO);
-		btnNoCommon.setBounds(10, 258, 554, 16);
+		btnNoCommon.setBounds(10, 233, 643, 16);
 		btnNoCommon.setText("No, there is no common criteria");
 	}
 	

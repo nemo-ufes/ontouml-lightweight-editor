@@ -8,18 +8,20 @@ import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 
-public class GSRigSubTypeComposite extends Composite{
+public class SubTypeComposite extends Composite{
 
 	public GSRigOccurrence gsrig;
 	private Button btnAllAntirigid;
 	private Button btnAllRigid;
-	private GSRigSubTypeTable subtypeTable;
+	private SubTypeTable subtypeTable;
 	
-	public GSRigSubTypeComposite(Composite parent, int args, GSRigOccurrence gsrig) {
+	public SubTypeTable getSubtypeTable() { return subtypeTable; }
+	
+	public SubTypeComposite(Composite parent, int args, GSRigOccurrence gsrig) {
 		super(parent,args);
 		this.gsrig = gsrig;
 				
-		subtypeTable = new GSRigSubTypeTable(this, SWT.V_SCROLL ,gsrig);
+		subtypeTable = new SubTypeTable(this, SWT.V_SCROLL ,gsrig);
 		subtypeTable.getTable().setBounds(10, 10, 524, 150);
 		
 		SelectionAdapter allRigidListener = new SelectionAdapter() {

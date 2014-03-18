@@ -1,12 +1,14 @@
 package br.ufes.inf.nemo.antipattern.wizard.gsrig;
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
 
 public class GSRigFifthPage extends GSRigPage {
 	
@@ -14,10 +16,16 @@ public class GSRigFifthPage extends GSRigPage {
 	private Button btnDerived;
 	private Button btnEachRigid;
 	private Label lblConsideringThatThere;
-
+	private ArrayList<String> antirigids = new ArrayList<String>();
+	
 	public GSRigFifthPage(GSRigOccurrence gsrig) 
 	{
 		super(gsrig);		
+	}
+	
+	public void setAntirigids(ArrayList<String> antirigids)
+	{
+		this.antirigids = antirigids;
 	}
 	
 	/**
@@ -30,19 +38,19 @@ public class GSRigFifthPage extends GSRigPage {
 		setControl(container);
 		
 		lblConsideringThatThere = new Label(container, SWT.WRAP);
-		lblConsideringThatThere.setBounds(10, 10, 554, 36);
+		lblConsideringThatThere.setBounds(10, 10, 644, 36);
 		lblConsideringThatThere.setText("Considering that there are rigid and anti-rigid subtypes in the generalization set, it implies that there is one or more implicit rigid implicit subtype of <RigidSuperType>. Would you like to create:");
 		
 		btnIntentional = new Button(container, SWT.RADIO);
-		btnIntentional.setBounds(10, 53, 554, 16);
+		btnIntentional.setBounds(10, 53, 644, 16);
 		btnIntentional.setText("One common intentional subtype for all anti-rigid ones");
 		
 		btnDerived = new Button(container, SWT.RADIO);
-		btnDerived.setBounds(10, 75, 554, 16);
+		btnDerived.setBounds(10, 75, 644, 16);
 		btnDerived.setText("One common derived subtype for all anti-rigid ones, using negation");
 		
 		btnEachRigid = new Button(container, SWT.RADIO);
-		btnEachRigid.setBounds(10, 97, 554, 16);
+		btnEachRigid.setBounds(10, 97, 644, 16);
 		btnEachRigid.setText("One rigid subtype for each anti-rigid");
 	}
 	
@@ -52,24 +60,39 @@ public class GSRigFifthPage extends GSRigPage {
 		if(btnIntentional.getSelection()){
 			//Action =============================
 			GSRigAction newAction = new GSRigAction(gsrig);
-			//newAction.setChangeAllToComponentOf(assocList); 
-			getGSRigWizard().replaceAction(0,newAction);
+			if(antirigids.size()>0)
+				newAction.setCreateCommonSubtypeForAntiRigids(antirigids);
+			else
+				newAction.setCreateCommonSubtypeForAntiRigids();
+			getGSRigWizard().replaceAction(1,newAction);
 			//======================================
 		}
 		
 		if(btnDerived.getSelection()){
 			//Action =============================
 			GSRigAction newAction = new GSRigAction(gsrig);
-			//newAction.setChangeAllToComponentOf(assocList); 
-			getGSRigWizard().replaceAction(0,newAction);
+			newAction.setCreateDerivationByNegation(); 
+			getGSRigWizard().replaceAction(1,newAction);
+			//======================================
+			
+			//Action =============================
+			newAction = new GSRigAction(gsrig);
+			if(antirigids.size()>0)
+				newAction.setCreateCommonSubtypeForAntiRigids(antirigids);
+			else
+				newAction.setCreateCommonSubtypeForAntiRigids();
+			getGSRigWizard().replaceAction(2,newAction);
 			//======================================
 		}
 		
 		if(btnEachRigid.getSelection()){
 			//Action =============================
 			GSRigAction newAction = new GSRigAction(gsrig);
-			//newAction.setChangeAllToComponentOf(assocList); 
-			getGSRigWizard().replaceAction(0,newAction);
+			if(antirigids.size()>0)
+				newAction.setCreateRigidSubtypeForAntiRigids(antirigids);
+			else
+				newAction.setCreateRigidSubtypeForAntiRigids();
+			getGSRigWizard().replaceAction(1,newAction);
 			//======================================
 		}
 				
