@@ -312,6 +312,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			
 			selectorMap.put("DERIVED_BY_UNION", new MethodCall(
 					getClass().getMethod("derivedByUnion")));
+			
+			selectorMap.put("DERIVED_BY_EXCLUSION", new MethodCall(
+					getClass().getMethod("derivedByExclusion")));
 
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
@@ -374,6 +377,13 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		if (manager.isProjectLoaded()==false) return;
 		
 		manager.deriveByUnion();
+	}
+	
+	public void derivedByExclusion()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		
+		manager.deriveByExclusion();
 	}
 	
 	public void redo()
