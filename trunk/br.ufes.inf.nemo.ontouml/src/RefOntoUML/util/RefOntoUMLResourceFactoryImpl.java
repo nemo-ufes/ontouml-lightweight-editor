@@ -7,12 +7,8 @@
 package RefOntoUML.util;
 
 import org.eclipse.emf.common.util.URI;
-
 import org.eclipse.emf.ecore.resource.Resource;
-
-import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
-
-import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +17,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
  * @see RefOntoUML.util.RefOntoUMLResourceImpl
  * @generated
  */
-public class RefOntoUMLResourceFactoryImpl extends ResourceFactoryImpl {
+public class RefOntoUMLResourceFactoryImpl extends XMIResourceFactoryImpl {
 	/**
 	 * Creates an instance of the resource factory.
 	 * <!-- begin-user-doc -->
@@ -40,16 +36,16 @@ public class RefOntoUMLResourceFactoryImpl extends ResourceFactoryImpl {
 	 */
 	@Override
 	public Resource createResource(URI uri) {
-		XMLResource result = new RefOntoUMLResourceImpl(uri);
-		result.getDefaultSaveOptions().put(XMLResource.OPTION_EXTENDED_META_DATA, Boolean.TRUE);
-		result.getDefaultLoadOptions().put(XMLResource.OPTION_EXTENDED_META_DATA, Boolean.TRUE);
-
-		result.getDefaultSaveOptions().put(XMLResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
-
-		result.getDefaultLoadOptions().put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.TRUE);
-		result.getDefaultSaveOptions().put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.TRUE);
-
-		result.getDefaultLoadOptions().put(XMLResource.OPTION_USE_LEXICAL_HANDLER, Boolean.TRUE);
+		Resource result = new RefOntoUMLResourceImpl(uri);
+//		result.getDefaultSaveOptions().put(XMLResource.OPTION_EXTENDED_META_DATA, Boolean.TRUE);
+//		result.getDefaultLoadOptions().put(XMLResource.OPTION_EXTENDED_META_DATA, Boolean.TRUE);
+//
+//		result.getDefaultSaveOptions().put(XMLResource.OPTION_SCHEMA_LOCATION, Boolean.TRUE);
+//
+//		result.getDefaultLoadOptions().put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.TRUE);
+//		result.getDefaultSaveOptions().put(XMLResource.OPTION_USE_ENCODED_ATTRIBUTE_STYLE, Boolean.TRUE);
+//
+//		result.getDefaultLoadOptions().put(XMLResource.OPTION_USE_LEXICAL_HANDLER, Boolean.TRUE);
 		return result;
 	}
 

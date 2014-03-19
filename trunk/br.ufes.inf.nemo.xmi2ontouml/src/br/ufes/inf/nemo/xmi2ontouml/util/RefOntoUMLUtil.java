@@ -32,6 +32,7 @@ import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefElement;
 import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
@@ -169,32 +170,36 @@ public class RefOntoUMLUtil {
 			return;
 		
 		Package parent = (Package) element.eContainer();
-		while (parent != null && !list.contains(parent))
+		while (parent != null)
 		{
-			list.add(parent);
+			if (!list.contains(parent))
+				list.add(parent);
 			parent = (Package) parent.eContainer();
 		}
 		// Adds non selected classes participating in a selected association
 		if (element instanceof Association)
 		{
 			Association assoc = (Association) element;
-			if (assoc.getMemberEnd().size() < 2 || assoc.getMemberEnd().get(0).getType() == null || assoc.getMemberEnd().get(1).getType() == null)
+			
+			if (assoc.getMemberEnd().size() < 2)
 			{
 				System.out.println("Debug: removing association with error ("+assoc.getName()+")");
 				list.remove(assoc);
 			}
-			
 			else
 			{
-				if (!list.contains(assoc.getMemberEnd().get(0).getType()))
+				Type source = assoc.getMemberEnd().get(0).getType();
+				Type target = assoc.getMemberEnd().get(1).getType();
+				
+				if (source != null && !list.contains(source))
 				{
-					list.add(assoc.getMemberEnd().get(0).getType());
-					addDependentElementsToList(assoc.getMemberEnd().get(0).getType(), list);
+					list.add(source);
+					addDependentElementsToList(source, list);
 				}
-				if (!list.contains(assoc.getMemberEnd().get(1).getType()))
+				if (target != null && !list.contains(target))
 				{
-					list.add(assoc.getMemberEnd().get(1).getType());
-					addDependentElementsToList(assoc.getMemberEnd().get(0).getType(), list);
+					list.add(target);
+					addDependentElementsToList(target, list);
 				}
 			}
 		}
@@ -210,38 +215,6 @@ public class RefOntoUMLUtil {
 					addDependentElementsToList(att.getType(), list);
 				}
 			}
-			
-//			//Completes the model for verification purposes
-//			if (element instanceof Role || element instanceof RoleMixin || element instanceof Phase || 
-//					element instanceof SubKind || element instanceof Relator || element instanceof Mode)
-//			{
-//				for (Generalization gen : ((Class) element).getGeneralization())
-//				{
-//					list.add(gen.getGeneral());
-//					addDependentElementsToList(gen.getGeneral(), list);
-//				}
-//				if (element instanceof Role || element instanceof RoleMixin || element instanceof Relator)
-//				{
-//					while (root.eAllContents().hasNext())
-//					{
-//						Element e = (Element) root.eAllContents().next();
-//						if (e instanceof Mediation && (((Association)e).getMemberEnd().get(0).getType().equals(element) ||
-//								((Association)e).getMemberEnd().get(1).getType().equals(element)))
-//						{
-//							list.add(e);
-//							addDependentElementsToList(e, list);
-//						}
-//					}
-//					for (Association assoc : ((Class) element).getAssociations())
-//					{
-//						if (assoc instanceof Mediation)
-//						{
-//							list.add(assoc);
-//							addDependentElementsToList(assoc, list);
-//						}
-//					}
-//				}
-//			}
 		}
 		else if (element instanceof DataType)
 		{

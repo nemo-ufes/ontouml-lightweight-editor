@@ -7,8 +7,7 @@
 package RefOntoUML.util;
 
 import org.eclipse.emf.common.util.URI;
-
-import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -17,7 +16,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
  * @see RefOntoUML.util.RefOntoUMLResourceFactoryImpl
  * @generated
  */
-public class RefOntoUMLResourceImpl extends XMLResourceImpl {
+public class RefOntoUMLResourceImpl extends XMIResourceImpl {
+	
 	/**
 	 * Creates an instance of the resource.
 	 * <!-- begin-user-doc -->
