@@ -85,21 +85,21 @@ public class OCLCompletionProvider {
 	{
 		ArrayList<OCLTemplateCompletion> oclCompletionList = new ArrayList<OCLTemplateCompletion>();
 		
-		String description = "<b>let var = ocl-expression in ocl-expression2</b>";
+		String description = "<b>let var = true <br>in expression</b>";
 		
 		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
 			"let","let-in",
-			"let ${varName} = ${oclexpression}\nin ${expression}${cursor}",
+			"let ${varName} = ${expression}\nin ${expression}${cursor}",
 			null,
 			description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "<b>if condition then ocl-expression else null endif</b>";
+		description = "<b>if cond then expression <br>else expression <br>endif</b>";
 		
 		c = new OCLTemplateCompletion(provider, 
 			"if","if-then-else",
-			"if ${oclexpression} then ${oclexpression}\nelse ${oclexpression} endif${cursor}",
+			"if ${boolean-expression} then ${expression}\nelse ${expression} endif${cursor}",
 			null,
 			description);
 		
@@ -209,7 +209,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Collection(T)::includesAll(T2)(c2 : Collection(T2)) : Boolean</b><br><br>"+
+		description = "Operation <b>Collection(T)::includesAll(T2)(c2: Collection(T2)): Boolean</b><br><br>"+
 		"Does self contain all the elements of c2 ?";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -219,7 +219,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Collection(T)::excludesAll(T2)(c2 : Collection(T2)) : Boolean</b><br><br>"+
+		description = "Operation <b>Collection(T)::excludesAll(T2)(c2: Collection(T2)): Boolean</b><br><br>"+
 		"Does self contain none of the elements of c2 ?";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -229,7 +229,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Collection(T)::includes(object : OclAny) : Boolean</b><br><br>"+
+		description = "Operation <b>Collection(T)::includes(obj: OclAny): Boolean</b><br><br>"+
 		"True if object is an element of self, false otherwise.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -239,7 +239,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Collection(T)::excludes(object : OclAny) : Boolean</b><br><br>"+
+		description = "Operation <b>Collection(T)::excludes(obj: OclAny): Boolean</b><br><br>"+
 		"True if object is not an element of self, false otherwise.";
 		
 		c = new OCLTemplateCompletion(provider, 
@@ -249,7 +249,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Collection(T)::isEmpty() : Boolean</b><br><br>"+
+		description = "Operation <b>Collection(T)::isEmpty(): Boolean</b><br><br>"+
 		"Is self the empty collection?"+"<br><br>"+ 
 		"Note: null->isEmpty() returns true in virtue of the implicit casting from null to Bag{}.";
 
@@ -260,7 +260,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Collection(T)::notEmpty() : Boolean</b><br><br>"+
+		description = "Operation <b>Collection(T)::notEmpty(): Boolean</b><br><br>"+
 		"Is self not the empty collection?"+"<br><br>"+ 
 		"null->notEmpty() returns false in virtue of the implicit casting from null to Bag{}.";
 
@@ -271,7 +271,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Collection(T)::asSet() : Set(T)</b><br><br>"+
+		description = "Operation <b>Collection(T)::asSet(): Set(T)</b><br><br>"+
 		"The Set containing all the elements from self, with duplicates removed.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -281,7 +281,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Set(T)::union(s : Collection(T)) : Set(T)</b><br><br>"+
+		description = "Operation <b>Set(T)::union(s: Collection(T)): Set(T)</b><br><br>"+
 		"The set consisting of all elements in self and all elements in s.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -291,7 +291,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Set(T)::intersection(s : Collection(T)) : Set(T)</b><br><br>"+
+		description = "Operation <b>Set(T)::intersection(s: Collection(T)): Set(T)</b><br><br>"+
 		"The intersection of self and s (i.e., the set of all elements that are in both self and s).";
 				
 		c = new OCLTemplateCompletion(provider, 
@@ -301,7 +301,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Set(T)::including(object : T) : Set(T)</b><br><br>"+
+		description = "Operation <b>Set(T)::including(obj: T): Set(T)</b><br><br>"+
 		"The set containing all elements of self plus object.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -311,7 +311,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Set(T)::excluding(object : OclAny) : Set(T)</b><br><br>"+
+		description = "Operation <b>Set(T)::excluding(obj: OclAny): Set(T)</b><br><br>"+
 		"The set containing all elements of self without object.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -321,7 +321,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>UniqueCollection(T)::symmetricDifference(s : UniqueCollection(OclAny)) : Set(T)</b><br><br>"+
+		description = "Operation <b>UniqueCollection(T)::symmetricDifference(s: UniqueCollection(OclAny)): Set(T)</b><br><br>"+
 		"The set containing all the elements that are in self or s, but not in both.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -331,7 +331,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Set(T)::-(s : UniqueCollection(OclAny)) : Set(T)</b><br><br>"+
+		description = "Operation <b>Set(T)::-(s: UniqueCollection(OclAny)): Set(T)</b><br><br>"+
 		"The elements of self, which are not in s.";
 				
 		c = new OCLTemplateCompletion(provider, 
@@ -341,7 +341,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Collection(T)::sum() : T</b><br><br>"+
+		description = "Operation <b>Collection(T)::sum(): T</b><br><br>"+
 		
 		"The addition of all elements in self. Elements must be of an OclSummable type to provide " +
 		"the zero() and sum() operations. The sum operation must be both associative: a.sum(b).sum(c) = " +
@@ -358,7 +358,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Collection(T)::product(T2)(c2 : Collection(T2)) : Set(Tuple(first : T, second : T2))</b><br><br>"+
+		description = "Operation <b>Collection(T)::product(T2)(c2: Collection(T2)): Set(Tuple(first : T, second : T2))</b><br><br>"+
 		"The cartesian product operation of self and c2.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -368,7 +368,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Set(T)::flatten(T2)() : Set(T2)</b><br><br>"+
+		description = "Operation <b>Set(T)::flatten(): Set(T2)</b><br><br>"+
 		"Redefines the Collection operation. If the element type is not a collection type, " +
 		"this results in the same set as self. If the element type is a collection type, the result " +
 		"is the set containing all the elements of all the recursively flattened elements of self.";
@@ -380,7 +380,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Collection(T)::count(object : OclAny) : Integer</b><br><br>"+
+		description = "Operation <b>Collection(T)::count(obj: OclAny): Integer</b><br><br>"+
 		"The number of times that object occurs in the collection self.";
 		
 		c = new OCLTemplateCompletion(provider, 
@@ -398,7 +398,7 @@ public class OCLCompletionProvider {
 	{
 		ArrayList<OCLTemplateCompletion> oclCompletionList = new ArrayList<OCLTemplateCompletion>();
 
-		String description = "Iteration <b>Collection(T)::exists(j : T, i : T | body : Lambda T() : Boolean) : Boolean</b>";
+		String description = "Iteration <b>Collection(T)::exists(j:T,i:T | body:LambdaT():Boolean): Boolean</b>";
 		
 		OCLTemplateCompletion  c = new OCLTemplateCompletion(provider, 
 			"exists","exists",
@@ -407,7 +407,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Iteration <b>Collection(T)::forAll(i : T, j : T | body : Lambda T() : Boolean) : Boolean</b>";
+		description = "Iteration <b>Collection(T)::forAll(i:T,j:T | body:LambdaT():Boolean): Boolean</b>";
 		
 		c = new OCLTemplateCompletion(provider, 
 			"forAll","forAll",
@@ -416,7 +416,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Iteration <b>Collection(T)::one(i : T | body : Lambda T() : Boolean) : Boolean</b><br><br>"+
+		description = "Iteration <b>Collection(T)::one(i:T | body:LambdaT():Boolean): Boolean</b><br><br>"+
 		"Results in true if there is exactly one element in the source collection for which body is true.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -426,7 +426,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Iteration <b>Set(T)::select(i : T | body : Lambda T() : Boolean) : Set(T)</b><br><br>"+
+		description = "Iteration <b>Set(T)::select(i:T | body:LmbdaT():Boolean): Set(T)</b><br><br>"+
 		"The subset of set for which expr is true.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -436,7 +436,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Iteration <b>Set(T)::reject(i : T | body : Lambda T() : Boolean) : Set(T)</b><br><br>"+
+		description = "Iteration <b>Set(T)::reject(i:T | body:LambdaT():Boolean): Set(T)</b><br><br>"+
 		"The subset of the source set for which body is false.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -446,7 +446,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Iteration <b>Bag(T)::closure(i : T | body : Lambda T() : Set(T)) : Set(T)</b><br><br>"+
+		description = "Iteration <b>Bag(T)::closure(i:T | body:LambdaT():Set(T)): Set(T)</b><br><br>"+
 		"The closure of applying body transitively to every distinct element of the source collection";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -456,7 +456,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Iteration <b>Collection(T)::isUnique(i : T | body : Lambda T() : OclAny) : Boolean</b><br><br>"+
+		description = "Iteration <b>Collection(T)::isUnique(i:T | body:LambdaT():OclAny): Boolean</b><br><br>"+
 		"Results in true if body evaluates to a different value for each element in the source collection; " +
 		"otherwise, result is false.";
 
@@ -467,7 +467,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Iteration <b>Bag(T)::collect(V)(i : T | body : Lambda T() : V) : Bag(V)</b>";
+		description = "Iteration <b>Bag(T)::collect(V)(i:T | body:LambdaT():V): Bag(V)</b>";
 		
 		c = new OCLTemplateCompletion(provider, 
 			"collect","collect",
@@ -476,7 +476,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Iteration <b>Collection(T)::any(i : T | body : Lambda T() : Boolean) : T</b><br><br>"+
+		description = "Iteration <b>Collection(T)::any(i:T | body:LambdaT():Boolean): T</b><br><br>"+
 		"Returns any element in the source collection for which body evaluates to true. If there is more than one " +
 		"element for which body is true, one of them is returned. There must be at least one element fulfilling body, " +
 		"otherwise the result of this IteratorExp is null.";
@@ -497,7 +497,7 @@ public class OCLCompletionProvider {
 		ArrayList<OCLTemplateCompletion> oclCompletionList = new ArrayList<OCLTemplateCompletion>();
 		String description = new String();
 		
-		description = "Operation <b>Real::floor() : Integer</b><br><br>"+
+		description = "Operation <b>Real::floor(): Integer</b><br><br>"+
 		"The largest integer that is less than or equal to self.";
 
 		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
@@ -507,7 +507,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Integer::min(i : OclSelf) : Integer</b><br><br>"+
+		description = "Operation <b>Integer::min(i: OclSelf): Integer</b><br><br>"+
 		"The minimum of self an i.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -517,7 +517,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Integer::abs() : Integer</b><br><br>"+
+		description = "Operation <b>Integer::abs(): Integer</b><br><br>"+
 		"The absolute value of self.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -527,7 +527,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Real::floor() : Integer</b><br><br>"+
+		description = "Operation <b>Real::floor(): Integer</b><br><br>"+
 		"The largest integer that is less than or equal to self";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -537,7 +537,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Real::round() : Integer</b><br><br>"+
+		description = "Operation <b>Real::round(): Integer</b><br><br>"+
 		"The integer that is closest to self. When there are two such integers, the largest one.";
 
 		c = new OCLTemplateCompletion(provider, 
