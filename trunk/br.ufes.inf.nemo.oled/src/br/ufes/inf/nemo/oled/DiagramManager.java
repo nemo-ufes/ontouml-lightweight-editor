@@ -763,8 +763,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		if (fix==null) return;
 		for(Object obj: fix.getAdded()) 
-		{
-			System.out.println(fix.getAddedPosition(obj).x +" - "+ fix.getAddedPosition(obj).y);
+		{			
 			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType) {
 				updateOLEDFromInclusion((RefOntoUML.Element)obj);
 				// add at specified position...

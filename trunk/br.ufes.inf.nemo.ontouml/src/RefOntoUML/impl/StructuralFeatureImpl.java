@@ -466,6 +466,7 @@ public abstract class StructuralFeatureImpl extends FeatureImpl implements Struc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean lower_ge_0(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -491,6 +492,7 @@ public abstract class StructuralFeatureImpl extends FeatureImpl implements Struc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean upper_ge_lower(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -516,6 +518,7 @@ public abstract class StructuralFeatureImpl extends FeatureImpl implements Struc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean value_specification_no_side_effects(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -541,6 +544,7 @@ public abstract class StructuralFeatureImpl extends FeatureImpl implements Struc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean value_specification_constant(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant

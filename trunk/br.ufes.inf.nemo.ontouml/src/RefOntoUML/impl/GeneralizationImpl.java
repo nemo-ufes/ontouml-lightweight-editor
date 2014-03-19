@@ -229,6 +229,7 @@ public class GeneralizationImpl extends DirectedRelationshipImpl implements Gene
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean generalization_same_classifier(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant

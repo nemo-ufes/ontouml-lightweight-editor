@@ -14,6 +14,8 @@ public class GSRigAction  extends AntiPatternAction<GSRigOccurrence>{
 		
 	ArrayList<String> specificsNewStereotypes = new ArrayList<String>();
 	ArrayList<String> antirigids = new ArrayList<String>();
+	String supertypeStereo;	
+	boolean createNewSuperType=false;
 	
 	public GSRigAction(GSRigOccurrence ap) 
 	{
@@ -22,7 +24,7 @@ public class GSRigAction  extends AntiPatternAction<GSRigOccurrence>{
 
 	public enum Action { DELETE_GS, CREATE_GS_FOR_RIGIDS , CREATE_GS_FOR_ANTIRIGIDS, CREATE_GS_FOR_BOTH, CHANGE_SUPERTYPE_TO_MIXIN, 
 						 CREATE_OCL_DERIVATION_BY_NEGATION, CREATE_RIGID_SUBTYPE_FOR_ANTIRIGIDS, CREATE_COMMON_SUBTYPE_FOR_ANTIRIGIDS, 
-						 CHANGE_SPECIFICS_STEREOTYPES }
+						 CHANGE_SPECIFICS_STEREOTYPES, CHANGE_SUPERTYPE_AND_SPECIFICS_STEREOTYPES, CREATE_MIXIN_SUPERTYPE}
 	
 	public void setDeleteGS()
 	{
@@ -82,6 +84,19 @@ public class GSRigAction  extends AntiPatternAction<GSRigOccurrence>{
 		specificsNewStereotypes = newStereotypes;
 	}
 	
+	public void setChangeSupertypeAndRigidSpecificsStereotypesTo(String supertypeStereo, ArrayList<String> specificsStereo, boolean createNewSuperType)
+	{
+		code = Action.CHANGE_SUPERTYPE_AND_SPECIFICS_STEREOTYPES;
+		this.supertypeStereo=supertypeStereo;
+		this.specificsNewStereotypes = specificsStereo;
+		this.createNewSuperType=createNewSuperType;
+	}
+	
+	public void setCreateMixinSupertype()
+	{
+		code = Action.CREATE_MIXIN_SUPERTYPE;
+	}
+	
 	@Override
 	public void run() 
 	{
@@ -94,6 +109,8 @@ public class GSRigAction  extends AntiPatternAction<GSRigOccurrence>{
 		if(code==Action.CREATE_RIGID_SUBTYPE_FOR_ANTIRIGIDS) { if(antirigids.size()>0) ap.createRigidSubtypeForAntiRigidsFrom(antirigids); else ap.createRigidSubtypeForAntiRigids(ap.getAntiRigidSpecifics()); }		
 		if(code==Action.CREATE_COMMON_SUBTYPE_FOR_ANTIRIGIDS) { if(antirigids.size()>0) ap.createCommonSubtypeForAntiRigidsFrom(antirigids); else ap.createCommonSubtypeForAntiRigids(ap.getAntiRigidSpecifics());}
 		if(code==Action.CHANGE_SPECIFICS_STEREOTYPES) { ap.changeSpecificsStereotypes(specificsNewStereotypes); } 
+		if(code==Action.CHANGE_SUPERTYPE_AND_SPECIFICS_STEREOTYPES) { ap.changeSuperTypeAndSpecificsStereotypes(supertypeStereo,specificsNewStereotypes,createNewSuperType); }
+		if(code==Action.CREATE_MIXIN_SUPERTYPE) { ap.createNewMixinAsSuperType(); }
 	} 
 	
 	public static String getStereotype(EObject element)
@@ -215,6 +232,22 @@ public class GSRigAction  extends AntiPatternAction<GSRigOccurrence>{
 				result += "<<"+str+">>"+", ";
 			}
 			result += " respectively.";
+		}
+		if(code == Action.CHANGE_SUPERTYPE_AND_SPECIFICS_STEREOTYPES)
+		{
+			result += "Changing stereotype of supertype to <<"+supertypeStereo+">>\n";
+			if(createNewSuperType) result += "Create new supertype as <<"+getStereotype(ap.getGs().getGeneralization().get(0).getGeneral())+">>\n";
+			result += "Changing stereotypes of specific subtypes to: ";
+			for(String str: specificsNewStereotypes){
+				result += "<<"+str+">>"+", ";
+			}
+			result += " respectively.";
+		}
+		if(code == Action.CREATE_MIXIN_SUPERTYPE)
+		{
+			result += "Create new <<Mixin>> as the new supertype"+"\n";
+			result += "Create <<Generalization>> from all subtypes to the new Mixin created"+"\n";
+			result += "Fix the GeneralizationSet to these new Generalization created of the Mixin";
 		}
 		return result;
 	}

@@ -562,6 +562,24 @@ public class OutcomeFixer{
 		else return null;
 	}
 
+	public static ClassStereotype getClassStereotype(java.lang.Class<?> type)
+	{
+		if(type.equals(Relator.class) || type.equals(RelatorImpl.class)) return ClassStereotype.RELATOR;
+		if(type.equals(Mode.class) || type.equals(ModeImpl.class)) return ClassStereotype.MODE;
+		if(type.equals(DataType.class) || type.equals(DataTypeImpl.class)) return ClassStereotype.DATATYPE;
+		if(type.equals(Kind.class) || type.equals(KindImpl.class)) return ClassStereotype.KIND;
+		if(type.equals(Collective.class) || type.equals(CollectiveImpl.class)) return ClassStereotype.COLLECTIVE;
+		if(type.equals(Quantity.class) || type.equals(QuantityImpl.class)) return ClassStereotype.QUANTITY;
+		if(type.equals(SubKind.class) || type.equals(SubKindImpl.class)) return ClassStereotype.SUBKIND;
+		if(type.equals(Role.class) || type.equals(RoleImpl.class)) return ClassStereotype.ROLE;
+		if(type.equals(Phase.class) || type.equals(PhaseImpl.class)) return ClassStereotype.PHASE;
+		if(type.equals(Category.class) || type.equals(CategoryImpl.class)) return ClassStereotype.CATEGORY;
+		if(type.equals(RoleMixin.class) || type.equals(RoleMixinImpl.class)) return ClassStereotype.ROLEMIXIN;
+		if(type.equals(Mixin.class) || type.equals(MixinImpl.class)) return ClassStereotype.MIXIN;
+		if(type.equals(PrimitiveType.class) || type.equals(PrimitiveTypeImpl.class)) return ClassStereotype.PRIMITIVETYPE;
+		return null;
+	}
+
 	/** Get class stereotype */
 	public ClassStereotype getClassStereotype(String stereo) 
 	{
@@ -984,6 +1002,22 @@ public class OutcomeFixer{
 		return RelationStereotype.ASSOCIATION;
 	}
 	
+	public static RelationStereotype getRelationStereotype(java.lang.Class<?> type)
+	{		
+		if(type.equals(Mediation.class) || type.equals(MediationImpl.class)) return RelationStereotype.MEDIATION;
+		if(type.equals(Characterization.class) || type.equals(CharacterizationImpl.class)) return RelationStereotype.CHARACTERIZATION;
+		if(type.equals(MaterialAssociation.class) || type.equals(MaterialAssociationImpl.class)) return RelationStereotype.MATERIAL;
+		if(type.equals(FormalAssociation.class) || type.equals(FormalAssociationImpl.class)) return RelationStereotype.FORMAL;
+		if(type.equals(componentOf.class) || type.equals(componentOfImpl.class)) return RelationStereotype.COMPONENTOF;
+		if(type.equals(memberOf.class) || type.equals(memberOfImpl.class)) return RelationStereotype.MEMBEROF;
+		if(type.equals(subCollectionOf.class) || type.equals(subCollectionOfImpl.class)) return RelationStereotype.SUBCOLLECTIONOF;
+		if(type.equals(subQuantityOf.class) || type.equals(subQuantityOfImpl.class)) return RelationStereotype.SUBQUANTITYOF;
+		if(type.equals(Derivation.class) || type.equals(DerivationImpl.class)) return RelationStereotype.DERIVATION;
+		if(type.equals(Generalization.class) || type.equals(GeneralizationImpl.class)) return RelationStereotype.GENERALIZATION;
+		if(type.equals(Association.class) || type.equals(AssociationImpl.class)) return RelationStereotype.ASSOCIATION;		
+		return null;
+	}
+	
 	/** Set up the upper cardinality on relator's side */
 	public Fix setUpperCardinalityOnRelatorSide(Mediation m, int upper) 
 	{
@@ -1368,62 +1402,4 @@ public class OutcomeFixer{
 		return fix;
 	}
 	
-	public static ClassStereotype getEnumClassStereotype(java.lang.Class<?> type){
-		if(type.equals(Relator.class) || type.equals(RelatorImpl.class))
-			return ClassStereotype.RELATOR;
-		if(type.equals(Mode.class) || type.equals(ModeImpl.class))
-				return ClassStereotype.MODE;
-		if(type.equals(DataType.class) || type.equals(DataTypeImpl.class))
-			return ClassStereotype.DATATYPE;
-		if(type.equals(Kind.class) || type.equals(KindImpl.class))
-			return ClassStereotype.KIND;
-		if(type.equals(Collective.class) || type.equals(CollectiveImpl.class))
-			return ClassStereotype.COLLECTIVE;
-		if(type.equals(Quantity.class) || type.equals(QuantityImpl.class))
-			return ClassStereotype.QUANTITY;
-		if(type.equals(SubKind.class) || type.equals(SubKindImpl.class))
-			return ClassStereotype.SUBKIND;
-		if(type.equals(Role.class) || type.equals(RoleImpl.class))
-			return ClassStereotype.ROLE;
-		if(type.equals(Phase.class) || type.equals(PhaseImpl.class))
-			return ClassStereotype.PHASE;
-		if(type.equals(Category.class) || type.equals(CategoryImpl.class))
-			return ClassStereotype.CATEGORY;
-		if(type.equals(RoleMixin.class) || type.equals(RoleMixinImpl.class))
-			return ClassStereotype.ROLEMIXIN;
-		if(type.equals(Mixin.class) || type.equals(MixinImpl.class))
-			return ClassStereotype.MIXIN;
-		if(type.equals(PrimitiveType.class) || type.equals(PrimitiveTypeImpl.class))
-			return ClassStereotype.PRIMITIVETYPE;
-		return null;
-	}
-	
-	public static RelationStereotype getEnumRelationStereotype(java.lang.Class<?> type){
-		
-		if(type.equals(Mediation.class) || type.equals(MediationImpl.class))
-			return RelationStereotype.MEDIATION;
-		if(type.equals(Characterization.class) || type.equals(CharacterizationImpl.class))
-			return RelationStereotype.CHARACTERIZATION;
-		if(type.equals(MaterialAssociation.class) || type.equals(MaterialAssociationImpl.class))
-			return RelationStereotype.MATERIAL;
-		if(type.equals(FormalAssociation.class) || type.equals(FormalAssociationImpl.class))
-			return RelationStereotype.FORMAL;
-		if(type.equals(componentOf.class) || type.equals(componentOfImpl.class))
-			return RelationStereotype.COMPONENTOF;
-		if(type.equals(memberOf.class) || type.equals(memberOfImpl.class))
-			return RelationStereotype.MEMBEROF;
-		if(type.equals(subCollectionOf.class) || type.equals(subCollectionOfImpl.class))
-			return RelationStereotype.SUBCOLLECTIONOF;
-		if(type.equals(subQuantityOf.class) || type.equals(subQuantityOfImpl.class))
-			return RelationStereotype.SUBQUANTITYOF;
-		if(type.equals(Derivation.class) || type.equals(DerivationImpl.class))
-			return RelationStereotype.DERIVATION;
-		if(type.equals(Generalization.class) || type.equals(GeneralizationImpl.class))
-			return RelationStereotype.GENERALIZATION;
-		if(type.equals(Association.class) || type.equals(AssociationImpl.class))
-			return RelationStereotype.ASSOCIATION;
-		
-		return null;
-	}
-
 }

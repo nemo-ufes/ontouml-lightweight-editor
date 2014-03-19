@@ -202,6 +202,7 @@ public class PackageImportImpl extends DirectedRelationshipImpl implements Packa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean public_or_private(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant

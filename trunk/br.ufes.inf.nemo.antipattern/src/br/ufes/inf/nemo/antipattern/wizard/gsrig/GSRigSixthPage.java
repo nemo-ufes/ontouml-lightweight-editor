@@ -1,15 +1,22 @@
 package br.ufes.inf.nemo.antipattern.wizard.gsrig;
 
+import java.text.Normalizer;
+
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Composite;
-
-import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+
+import RefOntoUML.Classifier;
+import RefOntoUML.Collective;
+import RefOntoUML.Kind;
+import RefOntoUML.Quantity;
+import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
 
 public class GSRigSixthPage extends GSRigPage {
 	
@@ -87,12 +94,30 @@ public class GSRigSixthPage extends GSRigPage {
 	    btnYesAllSubtypes.addSelectionListener(listener2);  		
 	}
 	
+	public static String getStereotype(EObject element)
+	{
+		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
+	    type = type.replaceAll("Impl","");
+	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
+	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
+	    return type;
+	}
+	
 	@Override
 	public IWizardPage getNextPage() 
 	{	
-		if(btnYesAllSubtypes.getSelection()){
-			
-			return ((GSRigWizard)getWizard()).getThirdPage();
+		Classifier supertype = gsrig.getGs().getGeneralization().get(0).getGeneral();
+		boolean createNewSupertype = false;
+		if (supertype instanceof Kind || supertype instanceof Quantity || supertype instanceof Collective){
+			createNewSupertype = true;
+		}
+		if(btnYesAllSubtypes.getSelection())
+		{			
+			//Action =============================
+			GSRigAction newAction = new GSRigAction(gsrig);
+			newAction.setChangeSupertypeAndRigidSpecificsStereotypesTo(stereoCombo.getText(), rigidTableComposite.getRigidTable().getNewStereotypes(), createNewSupertype); 
+			getGSRigWizard().replaceAction(0,newAction);
+			//======================================
 		}
 				
 		return ((GSRigWizard)getWizard()).getFinishing();

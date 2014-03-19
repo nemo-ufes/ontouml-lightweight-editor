@@ -261,6 +261,7 @@ public class GeneralizationSetImpl extends PackageableElementImpl implements Gen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean generalization_same_classifier(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -286,6 +287,7 @@ public class GeneralizationSetImpl extends PackageableElementImpl implements Gen
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean maps_to_generalization_set(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant

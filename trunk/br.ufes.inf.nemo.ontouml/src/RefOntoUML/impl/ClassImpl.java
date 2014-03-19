@@ -205,6 +205,7 @@ public class ClassImpl extends ClassifierImpl implements RefOntoUML.Class {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean passive_class(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
