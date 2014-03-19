@@ -9,6 +9,11 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import RefOntoUML.Classifier;
+import RefOntoUML.Collective;
+import RefOntoUML.Kind;
+import RefOntoUML.Quantity;
+import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
 
 public class GSRigThirdPage extends GSRigPage {
@@ -73,9 +78,22 @@ public class GSRigThirdPage extends GSRigPage {
 		}
 		
 		if(btnSemiRigid.getSelection())
-		{			
-			//..................................
-			
+		{		
+			Classifier supertype = gsrig.getGs().getGeneralization().get(0).getGeneral();
+			if(supertype instanceof Kind || supertype instanceof Quantity || supertype instanceof Collective || supertype instanceof SubKind)
+			{
+				//Action =============================
+				GSRigAction newAction = new GSRigAction(gsrig);
+				newAction.setCreateMixinSupertype();
+				getGSRigWizard().replaceAction(0,newAction);
+				//======================================
+			}else{
+				//Action =============================
+				GSRigAction newAction = new GSRigAction(gsrig);
+				newAction.setChangeSuperTypeToMixin();
+				getGSRigWizard().replaceAction(0,newAction);
+				//======================================
+			}
 		}
 		
 		return ((GSRigWizard)getWizard()).getFinishing();

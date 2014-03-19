@@ -79,8 +79,6 @@ public class ChangeNodeCommand extends BaseDiagramCommand {
 		
 		if(desc.getObjectChanges().size() > 0)
 		{
-			System.out.println("Changes: " + desc.getObjectChanges().size());
-			
 			desc.applyAndReverse();	
 			
 			ChangeCommand cmd = new ChangeCommand(desc) { 
@@ -113,9 +111,7 @@ public class ChangeNodeCommand extends BaseDiagramCommand {
 		super.redo();
 		
 		if(desc.getObjectChanges().size() > 0)
-		{
-			System.out.println("Changes: " + desc.getObjectChanges().size());
-			
+		{	
 			desc.applyAndReverse();	
 			
 			ChangeCommand cmd = new ChangeCommand(desc) { 
@@ -145,8 +141,6 @@ public class ChangeNodeCommand extends BaseDiagramCommand {
 				
 		if(desc.getObjectChanges().size() > 0)
 		{
-			System.out.println("Changes: " + desc.getObjectChanges().size());
-
 			ChangeCommand cmd = new ChangeCommand(desc) { 
 				@Override
 				protected void doExecute() {}

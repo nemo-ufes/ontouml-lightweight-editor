@@ -94,6 +94,7 @@ public class RigidTable {
 			Combo combo = new Combo(table, SWT.READ_ONLY);
 			combo.setItems(new String[] {"Phase", "Role", "RoleMixin"});			
 			combo.setText(getStereotype(c));
+			combo.select(0);
 			combo.pack();
 			editor.grabHorizontal = true;
 			editor.horizontalAlignment = SWT.CENTER;

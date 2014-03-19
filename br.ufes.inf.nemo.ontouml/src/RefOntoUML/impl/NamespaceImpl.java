@@ -248,6 +248,7 @@ public abstract class NamespaceImpl extends NamedElementImpl implements Namespac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean members_distinguishable(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant

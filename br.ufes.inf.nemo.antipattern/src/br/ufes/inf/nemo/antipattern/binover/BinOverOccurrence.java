@@ -110,7 +110,7 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 	}
 	
 	public void changeStereotype(Class<? extends Association> newStereotype){
-		fix.addAll(fixer.changeRelationStereotypeTo(association, OutcomeFixer.getEnumRelationStereotype(newStereotype)));		
+		fix.addAll(fixer.changeRelationStereotypeTo(association, OutcomeFixer.getRelationStereotype(newStereotype)));		
 	}
 		
 	public String generateOCL(BinaryPropertyValue value){

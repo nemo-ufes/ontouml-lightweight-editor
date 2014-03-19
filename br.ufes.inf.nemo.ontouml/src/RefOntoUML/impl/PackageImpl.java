@@ -244,6 +244,7 @@ public class PackageImpl extends NamespaceImpl implements RefOntoUML.Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean elements_public_or_private(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant

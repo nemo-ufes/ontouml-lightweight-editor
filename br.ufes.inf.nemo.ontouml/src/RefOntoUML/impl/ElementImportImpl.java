@@ -279,6 +279,7 @@ public class ElementImportImpl extends DirectedRelationshipImpl implements Eleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean visibility_public_or_private(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -304,6 +305,7 @@ public class ElementImportImpl extends DirectedRelationshipImpl implements Eleme
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean imported_element_is_public(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant

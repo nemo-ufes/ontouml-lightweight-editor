@@ -31,11 +31,8 @@ public class GSRigOccurrence extends AntipatternOccurrence{
 		ArrayList<Classifier> result = new ArrayList<Classifier>();
 		for (Generalization g : gs.getGeneralization()) 
 		{	
-			if (parser.isSelected(g) && parser.isSelected(g.getSpecific()) && parser.isSelected(g.getGeneral()))
-			{				
-				Classifier specific = g.getSpecific();				
-				if(specific!=null) result.add(specific);
-			}
+			Classifier specific = g.getSpecific();				
+			if(specific!=null) result.add(specific);
 		}
 		return result;
 	}
@@ -336,6 +333,55 @@ public class GSRigOccurrence extends AntipatternOccurrence{
 				fix.addAll(fixer.changeClassStereotypeTo(c, fixer.getClassStereotype(stereo)));	
 			}
 			i++;
+		}
+	}
+
+	public void changeSuperTypeAndSpecificsStereotypes(String supertypeStereo, ArrayList<String> specificsNewStereotypes, boolean createNewSuperType) 
+	{
+		String currentStereo = getStereotype(getGs().getGeneralization().get(0).getGeneral());
+		
+		//change current supertype stereotype
+		fix.addAll(fixer.changeClassStereotypeTo(getGs().getGeneralization().get(0).getGeneral(), fixer.getClassStereotype(supertypeStereo)));
+		
+		if(createNewSuperType)
+		{
+			// create new supertype
+			PackageableElement newsupertype = fixer.createClass(fixer.getClassStereotype(currentStereo));
+			newsupertype.setName("NewSupertype");
+			fixer.copyContainer(getGs().getGeneralization().get(0).getSpecific(), newsupertype);
+			fix.includeAdded(newsupertype);
+			fix.includeModified(newsupertype.eContainer());
+			
+			//create generalization from old supertype to new supertype
+			Generalization newg = (Generalization) fixer.createRelationship(RelationStereotype.GENERALIZATION);
+			newg.setGeneral((Classifier)newsupertype);
+			newg.setSpecific((Classifier)getGs().getGeneralization().get(0).getGeneral());
+			fix.includeAdded(newg);	
+		}
+		
+		//change rigid specifics stereotypes
+		if(specificsNewStereotypes.size()!=getRigidSpecifics().size()) return;
+		int i=0;
+		for(Classifier c: getRigidSpecifics())
+		{
+			String stereo = specificsNewStereotypes.get(i);
+			if(getStereotype(c).compareToIgnoreCase(stereo)!=0){
+				fix.addAll(fixer.changeClassStereotypeTo(c, fixer.getClassStereotype(stereo)));	
+			}
+			i++;
+		}
+	}
+
+	public void createNewMixinAsSuperType() 
+	{
+		fix.addAll(fixer.createCommonSuperType(getSpecifics(), ClassStereotype.MIXIN));
+		//set the old generalization for these generalizations created
+		getGs().getGeneralization().clear();
+		for(Object obj: fix.getAdded()){
+			if(obj instanceof Generalization){
+				Generalization gen = (Generalization)obj;				
+				getGs().getGeneralization().add(gen);
+			}
 		}
 	}
 

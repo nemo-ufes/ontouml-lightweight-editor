@@ -29,6 +29,7 @@ abstract class DerivedType {
 	      return instance;
 	 }
 
+	@SuppressWarnings("unused")
 	public static String DefineNameDerivedType(){
 		
 		// a jframe here isn't strictly necessary, but it makes the example a little more real

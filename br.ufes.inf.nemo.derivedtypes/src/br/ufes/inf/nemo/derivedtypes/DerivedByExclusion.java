@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 
 
+@SuppressWarnings("unused")
 public class DerivedByExclusion extends DerivedType{
 
 	

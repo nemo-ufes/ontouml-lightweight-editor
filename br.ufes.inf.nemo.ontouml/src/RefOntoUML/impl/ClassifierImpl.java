@@ -487,6 +487,7 @@ public abstract class ClassifierImpl extends NamespaceImpl implements Classifier
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean no_cycles_in_generalization(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -512,6 +513,7 @@ public abstract class ClassifierImpl extends NamespaceImpl implements Classifier
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean generalization_hierarchies(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -537,6 +539,7 @@ public abstract class ClassifierImpl extends NamespaceImpl implements Classifier
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean specialize_type(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -562,6 +565,7 @@ public abstract class ClassifierImpl extends NamespaceImpl implements Classifier
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean maps_to_generalization_set(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -1114,6 +1118,7 @@ public abstract class ClassifierImpl extends NamespaceImpl implements Classifier
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean redefinition_context_valid(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -1139,6 +1144,7 @@ public abstract class ClassifierImpl extends NamespaceImpl implements Classifier
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unused")
 	public boolean redefinition_consistent(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
