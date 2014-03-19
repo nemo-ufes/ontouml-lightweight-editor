@@ -86,7 +86,7 @@ public class PaletteAccordion extends JPanel{
 		//createStaticRelationshipsPalette(editorDispatcher);
 		//createMiscellaneousPalette(editorDispatcher);
 		//createStaticRulesPalette(editorDispatcher);
-		
+		createPatternsPalette(editorDispatcher);
 		render();
 	}
 	
@@ -136,6 +136,54 @@ public class PaletteAccordion extends JPanel{
 		return paletteMap.get(openPalette);
 	}
 
+	private void createPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher)
+	{
+		Palette palette =  new Palette(this, "Derivation Types Patterns");
+		palette.createElement("staticpalette.classes", "select");
+		//palette.addSpacer(0,PALLETE_VSPACE);
+		palette.createElement("staticpalette.patterns", "derivationbyunion");
+//		palette.createElement("staticpalette.classes", "quantity");
+//		palette.createElement("staticpalette.classes", "collective");
+//		palette.createElement("staticpalette.classes", "subkind");
+//		//palette.addSpacer(0,PALLETE_VSPACE);
+//		palette.createElement("staticpalette.classes", "phase");
+//		palette.createElement("staticpalette.classes", "role");
+//		//palette.addSpacer(0,PALLETE_VSPACE);
+//		palette.createElement("staticpalette.classes", "category");
+//		palette.createElement("staticpalette.classes", "rolemixin");
+//		palette.createElement("staticpalette.classes", "mixin");
+//		//palette.addSpacer(0,PALLETE_VSPACE);
+//		palette.createElement("staticpalette.classes", "mode");
+//		palette.createElement("staticpalette.classes", "relator");
+//		//palette.addSpacer(0,PALLETE_VSPACE);
+//		palette.createElement("staticpalette.classes", "datatype");
+//		
+//		//palette.addSpacer(0,PALLETE_VSPACE);		
+//		
+//		palette.createElement("staticpalette.relations", "generalization");
+//		//palette.addSpacer(0,PALLETE_VSPACE);
+//		palette.createElement("staticpalette.relations", "material");
+//		palette.createElement("staticpalette.relations", "formal");
+//		//palette.addSpacer(0,PALLETE_VSPACE);
+//		palette.createElement("staticpalette.relations", "characterization");
+//		palette.createElement("staticpalette.relations", "mediation");
+//		palette.createElement("staticpalette.relations", "derivation");
+//		//palette.addSpacer(0,PALLETE_VSPACE);
+//		palette.createElement("staticpalette.relations", "componentof");
+//		palette.createElement("staticpalette.relations", "memberof");	
+//		palette.createElement("staticpalette.relations", "subcollectionof");
+//		palette.createElement("staticpalette.relations", "subquantityof");
+//		//palette.addSpacer(0,PALLETE_VSPACE);
+//		palette.createElement("staticpalette.relations", "association");
+		
+		palette.addCommandListener(editorDispatcher);
+		
+		paletteMap.put("Derivation Types Patterns", palette);
+
+		if(openPalette == null)
+			openPalette = "Derivation Types Patterns";
+	}
+	
 	private void createStaticClassesPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		Palette palette =  new Palette(this, "Elements");
