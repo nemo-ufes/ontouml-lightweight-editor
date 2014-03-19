@@ -348,7 +348,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/**
 	 * Cancels the current edit action.
 	 */
-	private void cancelEditing() {
+	public void cancelEditing() {
 				
 		if (captionEditor.isVisible()) {
 			captionEditor.hideEditor();
@@ -819,6 +819,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 	public void setDragElementMode(RefOntoUML.Type type, EObject eContainer){		
 		creationHandler.createNode(type,eContainer);
+		editorMode = creationHandler;
+	}
+		
+	public void setPatternCreationMode(){
+		creationHandler.setPattern(ElementType.UNION);
 		editorMode = creationHandler;
 	}
 	

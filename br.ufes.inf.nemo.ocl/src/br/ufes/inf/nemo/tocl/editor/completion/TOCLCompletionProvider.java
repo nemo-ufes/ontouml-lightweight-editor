@@ -97,7 +97,7 @@ public class TOCLCompletionProvider {
 		oclCompletionList.add(c);
 				
 		description = "Operation <b>World::next() : Set(World)</b><br><br>"+
-		"Returns the immediate next worlds from the world self.";
+		"Returns the immediate next world(s) from the world self.";
 		
 		c = new TOCLTemplateCompletion(provider, 
 			"next","next",

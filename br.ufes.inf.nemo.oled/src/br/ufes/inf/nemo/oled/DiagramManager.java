@@ -2178,8 +2178,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				}
 				
 			}
-		}
-		
+		}		
 	}
 	public void createDerivedType(String stereotype, Fix mainfix, List<DiagramElement> selected, String name, ArrayList<RefOntoUML.Element> refontoList){
 		
@@ -2235,6 +2234,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			
 		}
 		return newpoint;
+	}
+	
+	public void openDerivedTypePattern(double x, double y) {
+			
 	}
 
 	

@@ -114,7 +114,7 @@ public class OCLCompletionProvider {
 	{ 
 		ArrayList<OCLTemplateCompletion> oclCompletionList = new ArrayList<OCLTemplateCompletion>();
 		
-		String description = "Operation <b>OclAny::=(object2 : OclSelf) : Boolean</b><br><br>"+
+		String description = "Operation <b>OclAny::=(object2: OclSelf): Boolean</b><br><br>"+
 		"True if self is the same object as object2. Infix operator.";
 
 		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
@@ -124,7 +124,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c); 
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>OclAny::&lt&gt(object2 : OclSelf) : Boolean</b><br><br>"+
+		description = "Operation <b>OclAny::&lt&gt(object2: OclSelf): Boolean</b><br><br>"+
 		"True if self is a different object from object2. Infix operator.";
 
 		c = new OCLTemplateCompletion(provider, 
@@ -134,7 +134,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>OclAny::oclAsType(T)(type : AnyClassifier(T)) : T</b><br><br>"+
+		description = "Operation <b>OclAny::oclAsType(T)(type: AnyClassifier(T)): T</b><br><br>"+
 		
 		"Evaluates to self, where self is of the type identified by T. The type T may be any classifier " +
 		"defined in the OntoUML model; if the actual type of self at evaluation time does not conform to T, then " +
@@ -152,7 +152,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>OclAny::oclIsKindOf(T)(type : AnyClassifier(T)) : Boolean</b><br><br>"+
+		description = "Operation <b>OclAny::oclIsKindOf(T)(type: AnyClassifier(T)): Boolean</b><br><br>"+
 		"Evaluates to true if the type of self conforms to t. That is, self is of type t or a subtype of t.";
 		
 		c = new OCLTemplateCompletion(provider, 
@@ -162,7 +162,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "";
+		description = "Returns the set of all instances of a Classifier T.";
 		
 		c = new OCLTemplateCompletion(provider, 
 			"allInstances","allInstances",
@@ -171,7 +171,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>OclAny::oclIsTypeOf(T)(type : AnyClassifier(T)) : Boolean</b><br><br>"+
+		description = "Operation <b>OclAny::oclIsTypeOf(T)(type: AnyClassifier(T)): Boolean</b><br><br>"+
 		"Evaluates to true if self is of the type t but not a subtype of t.";
 		
 		c = new OCLTemplateCompletion(provider, 
@@ -181,8 +181,8 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>OclAny::oclIsUndefined() : Boolean</b><br><br>"+
-		"Evaluates to true if the self is equal to invalid or equal to null.";
+		description = "Operation <b>OclAny::oclIsUndefined(): Boolean</b><br><br>"+
+		"Evaluates to true if self is equal to invalid or equal to null.";
 
 		c = new OCLTemplateCompletion(provider, 
 			"oclIsUndefined","oclIsUndefined",
@@ -199,7 +199,7 @@ public class OCLCompletionProvider {
 	{
 		ArrayList<OCLTemplateCompletion> oclCompletionList = new ArrayList<OCLTemplateCompletion>();
 		
-		String description = "Operation <b>Collection(T)::size() : Integer</b><br><br>"+
+		String description = "Operation <b>Collection(T)::size(): Integer</b><br><br>"+
 		"The number of elements in the collection self.";
 				
 		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 

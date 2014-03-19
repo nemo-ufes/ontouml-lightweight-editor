@@ -56,6 +56,22 @@ public class CreationHandler implements EditorMode {
   
   public boolean isDragging =false;
 
+  public void setPattern(ElementType elementType) 
+  {
+	this.elementType = elementType;	
+	element = null;
+	tmpPos = new Point2D.Double();
+	cachedBounds = null;
+  }
+  
+  public void clear()
+  {
+	  element = null;
+	  elementType=null;
+	  tmpPos = new Point2D.Double();
+	  cachedBounds = null;
+  }
+  
   /**
    * Constructor.
    * @param editor the DiagramEditor
@@ -161,19 +177,27 @@ public class CreationHandler implements EditorMode {
     	parent = (CompositeNode) possibleParent;
     }
     
-    Classifier elem = ((ClassElement)element).getClassifier();
-    
-    AddNodeCommand addcmd = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), tmpPos.getX(), tmpPos.getY(), editor.getDiagram().getProject(),(RefOntoUML.Package)((ClassElement)element).getClassifier().eContainer());
-    editor.execute(addcmd);
-        
-    //move all its generalizations too
-    editor.getDiagramManager().moveGeneralizationsToDiagram(elem, elem.eContainer(), editor);
-    
-    
-    //VICTOR COMENTAR
-    if (!isDragging) {
-    	editor.getDiagramManager().openModellingAssistant(elem);
+    if(element!=null){
+	    Classifier elem = ((ClassElement)element).getClassifier();
+	    
+	    AddNodeCommand addcmd = new AddNodeCommand(editor, parent, ((ClassElement)element).getClassifier(), tmpPos.getX(), tmpPos.getY(), editor.getDiagram().getProject(),(RefOntoUML.Package)((ClassElement)element).getClassifier().eContainer());
+	    editor.execute(addcmd);
+	        
+	    //move all its generalizations too
+	    editor.getDiagramManager().moveGeneralizationsToDiagram(elem, elem.eContainer(), editor);
+	    	    
+	    //VICTOR COMENTAR
+	    if (!isDragging) {
+	    	editor.getDiagramManager().openModellingAssistant(elem);
+	    }
+    }else{	   
+    	// CASSIO : DERIVED TYPES PATTERNS
+    	editor.cancelEditing();
+    	if(elementType == ElementType.UNION){
+    		editor.getDiagramManager().openDerivedTypePattern(tmpPos.getX(),tmpPos.getY());
+    	}    	
     }
+    
   }
 
   /**
@@ -247,12 +271,11 @@ public class CreationHandler implements EditorMode {
    * @return the element bounds
    */
   private Rectangle2D getElementBounds(DrawingContext drawingContext) {
-    if (cachedBounds == null) {
-      element.recalculateSize(drawingContext);
-      cachedBounds = element.getAbsoluteBounds();
+    if (cachedBounds == null && element!=null) {
+       element.recalculateSize(drawingContext);
+       cachedBounds = element.getAbsoluteBounds();
     }
-    cachedBounds.setRect(tmpPos.getX(), tmpPos.getY(),
-      cachedBounds.getWidth(), cachedBounds.getHeight());
+    if(cachedBounds!=null)cachedBounds.setRect(tmpPos.getX(), tmpPos.getY(), cachedBounds.getWidth(), cachedBounds.getHeight());
     return cachedBounds;
   }
 
@@ -261,9 +284,12 @@ public class CreationHandler implements EditorMode {
    * @param drawingContext the drawing context
    */
   private void drawSilhouette(DrawingContext drawingContext) {
-    Rectangle2D bounds = getElementBounds(drawingContext);
-    drawingContext.drawRectangle(bounds.getX(), bounds.getY(),
-      bounds.getWidth(), bounds.getHeight(), null);
+	  if(drawingContext!=null){
+		  Rectangle2D bounds = getElementBounds(drawingContext);
+		  if(bounds!=null){
+			  drawingContext.drawRectangle(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), null);
+		  }
+	  }  
   }
 
   /**
@@ -275,4 +301,6 @@ public class CreationHandler implements EditorMode {
    * {@inheritDoc}
    */
   public void cancel() { }
+
+
 }

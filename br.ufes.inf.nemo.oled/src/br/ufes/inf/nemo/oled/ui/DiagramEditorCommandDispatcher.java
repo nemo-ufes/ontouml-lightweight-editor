@@ -225,7 +225,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("CREATE_NOTE_CONNECTION", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.NOTE_CONNECTOR));
-
+			
 			selectorMap.put("RESET_POINTS", new MethodCall(
 					DiagramEditor.class.getMethod("resetConnectionPoints")));
 
@@ -244,6 +244,10 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					RelationEndType.TARGET));
 
 			// Self-calls
+			
+			selectorMap.put("CREATE_DERIVATION_BY_UNION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternCreationMode")));
+			
 			selectorMap.put("SHOW_GRID", new MethodCall(
 					getClass().getMethod("showGrid")));
 
@@ -357,7 +361,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 		AntiPatternSearchDialog.open(manager.getFrame());		
 	}
-
+	
 	public void undo()
 	{		
 		if (manager.isProjectLoaded()==false) return;
