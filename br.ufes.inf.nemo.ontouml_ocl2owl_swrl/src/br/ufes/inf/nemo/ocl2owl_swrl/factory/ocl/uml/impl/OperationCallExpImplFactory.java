@@ -159,7 +159,13 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		
 		//the source is solved and the and the returned arguments from the sourceSolveMethod above are returned 
 		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, refArgAux, operatorNot, repeatNumber, sourceIsLeftSideOfImplies);
-		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//get the last
+		SWRLDArgument varX = null; 
+		if(retArgsX != null){
+			if(retArgsX.size()>0){
+				varX = retArgsX.get(retArgsX.size()-1);//get the last
+			}
+		}
+		
 
 		//esse trecho foi incluído para tratar uso variáveis (regra: 70/71)
 		if(source.getClass().equals(VariableExpImpl.class) && refArgAux != null){
