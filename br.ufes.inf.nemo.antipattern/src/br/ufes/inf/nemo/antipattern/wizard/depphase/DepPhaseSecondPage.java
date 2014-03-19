@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseOccurrence;
 
 public class DepPhaseSecondPage  extends DepPhasePage {
@@ -26,6 +27,7 @@ public class DepPhaseSecondPage  extends DepPhasePage {
 
 	public DepPhaseSecondPage(DepPhaseOccurrence depPhase) {
 		super(depPhase);
+		setTitle(DepPhaseAntipattern.getAntipatternInfo().getName());
 		setDescription("Phase: "+depPhase.getPhase().getName()+", Relator: "+getRelatorList());
 	}
 		

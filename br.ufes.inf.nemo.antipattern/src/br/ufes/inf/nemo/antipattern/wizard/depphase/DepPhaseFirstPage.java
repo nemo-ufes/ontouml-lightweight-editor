@@ -8,6 +8,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseOccurrence;
 
 public class DepPhaseFirstPage  extends DepPhasePage {
@@ -19,6 +20,7 @@ public class DepPhaseFirstPage  extends DepPhasePage {
 
 	public DepPhaseFirstPage(DepPhaseOccurrence depPhase) {
 		super(depPhase);
+		setTitle(DepPhaseAntipattern.getAntipatternInfo().getName());
 		setDescription("Phase: "+depPhase.getPhase().getName()+", Relator: "+getRelatorList());
 	}
 		
