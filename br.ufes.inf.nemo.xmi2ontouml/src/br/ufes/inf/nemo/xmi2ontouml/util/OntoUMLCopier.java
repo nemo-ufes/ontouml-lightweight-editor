@@ -73,12 +73,14 @@ public class OntoUMLCopier extends Copier
 						{
 							copyContainment(eReference, eObject, copyEObject);
 						}
-//						else if (eReference.getName().equals("generalizationSet"))
+//						else if (eReference.getName().equals("type") && eObject.eGet(eReference) != null)
 //						{
-//							@SuppressWarnings("unchecked") List<EObject> genSets = (List<EObject>)eObject.eGet(eReference);
-//							for (EObject eObj : genSets)
+//							EObject dependEObject = (EObject) eObject.eGet(eReference);
+//							copy(dependEObject);
+//							EObject parent = dependEObject.eContainer();
+//							while (parent != null && !objectsToCopy.contains(parent))
 //							{
-//								copy(eObj);
+//								copy(parent);
 //							}
 //						}
 					}

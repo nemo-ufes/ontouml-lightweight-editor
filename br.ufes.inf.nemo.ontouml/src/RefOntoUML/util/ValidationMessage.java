@@ -37,13 +37,21 @@ public class ValidationMessage
 	{
 		String description = null;
 		
-		if (constraintid.compareTo("SubstanceSortalConstraint2a") == 0)
+		if (constraintid.compareTo("SortalClassConstraint1") == 0)
 		{
-			description = "Every class must not have more than one Substance Sortal ancestor";
+			description = "Every non abstract Sortal must have a Substance Sortal ancestor (or be a Substance Sortal)";
 		}
 		else if (constraintid.compareTo("SubstanceSortalConstraint1") == 0)
 		{
 			description = "Every non abstract Sortal must have a Substance Sortal ancestor (or be a Substance Sortal)";
+		}
+		else if (constraintid.compareTo("SubstanceSortalConstraint2a") == 0)
+		{
+			description = "Every class must not have more than one Substance Sortal ancestor";
+		}
+		else if (constraintid.compareTo("SubstanceSortalConstraint2b") == 0)
+		{
+			description = "A Substance Sortal cannot have a Rigid Sortal parent";
 		}
 		else if (constraintid.compareTo("MixinClassConstraint1") == 0)
 		{
@@ -57,18 +65,6 @@ public class ValidationMessage
 		{
 			description = "A RigidSortalClass cannot have an Anti-Rigid parent (role, phase, roleMixin)";
 		}
-		else if (constraintid.compareTo("SubstanceSortalConstraint2b") == 0)
-		{
-			description = "A Substance Sortal cannot have a Rigid Sortal parent";
-		}
-		else if (constraintid.compareTo("SubstanceSortalConstraint2b") == 0)
-		{
-			description = "A Substance Sortal cannot have a Rigid Sortal parent";
-		}
-		else if (constraintid.compareTo("CollectiveConstraint1") == 0)
-		{
-			description = "All the parts of an extensional Collective are essential";
-		}
 		else if (constraintid.compareTo("CollectiveConstraint1") == 0)
 		{
 			description = "All the parts of an extensional Collective are essential";
@@ -81,13 +77,13 @@ public class ValidationMessage
 		{
 			description = "A Role must be connected (directly or indirectly) to a Mediation";
 		}
-		else if (constraintid.compareTo("CategoryConstraint1") == 0)
-		{
-			description = "A Category cannot have a RoleMixin parent";
-		}
 		else if (constraintid.compareTo("RoleMixinConstraint1") == 0)
 		{
 			description = "A RoleMixin must be connected (directly or indirectly) to a Mediation";
+		}
+		else if (constraintid.compareTo("CategoryConstraint1") == 0)
+		{
+			description = "A Category cannot have a RoleMixin parent";
 		}
 		else if (constraintid.compareTo("MixinConstraint1") == 0)
 		{
@@ -97,6 +93,10 @@ public class ValidationMessage
 		{
 			description = "An IntrinsicMoment must be connected (directly or indirectly) to a Characterization";
 		}
+//		else if (constraintid.compareTo("ModeConstraint1") == 0)
+//		{
+//			description = "A Mode must be connected (directly or indirectly) to a Characterization";
+//		}
 		else if (constraintid.compareTo("RelatorConstraint1") == 0)
 		{
 			description = "A Relator must be connected (directly or indirectly) to a Mediation";
@@ -225,6 +225,25 @@ public class ValidationMessage
 		{
 			description = "A MaterialAssociation must be derived";
 		}
+		
+		//UML Constraints
+		else if (constraintid.compareTo("LowerAndUpperBound") == 0)
+		{
+			description = "The upper value of an Attribute and/or Association End must not be smaller than the lower value";
+		}
+		else if (constraintid.compareTo("GeneralizationConstraint1") == 0)
+		{
+			description = "An Object Type must only specialize/generalize another Object Type";
+		}
+		else if (constraintid.compareTo("ClassAttributeConstraint1") == 0)
+		{
+			description = "An attribute must have a minimum value of 1";
+		}
+		else if (constraintid.compareTo("DataTypeAttributeConstraint1") == 0)
+		{
+			description = "An attribute must have a minimum value of 1";
+		}
+		
 		// Reference Structures Extension /////////////////////////////
 		else if (constraintid.compareTo("StructurationConstraint1") == 0)
 		{
