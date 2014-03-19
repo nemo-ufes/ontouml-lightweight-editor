@@ -99,7 +99,15 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 	        	else if (sourceResult.equals("PastWorld")) return sourceResult;
 	        	else if (sourceResult.equals("CounterfactualWorld")) return sourceResult;
 	        	else return "World."+sourceResult;
-	        }       
+	        }	        
+	        if(ontoElement!=null){
+				String alias = refparser.getAlias(ontoElement);
+				if(ontoElement instanceof RefOntoUML.Property){ 
+					if(((RefOntoUML.Property)ontoElement).getAssociation()!=null) return sourceResult+"."+alias;
+					else if (((RefOntoUML.Property)ontoElement).getType().getName().compareToIgnoreCase("Boolean")==0) { return "("+sourceResult + " in World." + alias+ ")";}    	
+			    	else { return sourceResult + ".(World." + alias+ ")"; }
+				}
+			}	
 
 	        return super.handleOperationCallExp(operCallExp, sourceResult, argumentsResult);
 		}else{

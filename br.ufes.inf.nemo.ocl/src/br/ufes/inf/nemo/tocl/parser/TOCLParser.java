@@ -31,43 +31,7 @@ public class TOCLParser extends OCLParser{
     public ArrayList<String> oclIsKindOfList = new ArrayList<String>();
     public ArrayList<String> oclIsTypeOfList = new ArrayList<String>();
     public ArrayList<String> constraintStereotypeList = new ArrayList<String>();
-    
-    public String getOclIsKindOfWorldParam(int index)
-    {
-    	int i = 0;
-    	for(String str: oclIsKindOfList)
-    	{
-    		if(i == index) {
-    			if(str.contains(",")){
-	    			String array[] = str.split(",");
-	    			return array[1];	    				
-    			}else{
-    				return "World";
-    			}
-    		}
-    		i++;
-    	}
-    	return "<Unknown>";
-    }
-    
-    public String getOclIsTypeOfWorldParam(int index)
-    {
-    	int i = 0;
-    	for(String str: oclIsTypeOfList)
-    	{
-    		if(i == index) {
-    			if(str.contains(",")){
-	    			String array[] = str.split(",");
-	    			return array[1];	    				
-    			}else{
-    				return "World";
-    			}
-    		}
-    		i++;
-    	}
-    	return "<Unknown>";
-    }
-    
+
     /**
      * Constructor. 
      * It uses a OntoUML2UML transformation behind the scenes to orchestrate the constraints parsing.
@@ -185,6 +149,42 @@ public class TOCLParser extends OCLParser{
     	return result;
     }
     
+    public String getOclIsKindOfWorldParam(int index)
+    {
+    	int i = 0;
+    	for(String str: oclIsKindOfList)
+    	{
+    		if(i == index) {
+    			if(str.contains(",")){
+	    			String array[] = str.split(",");
+	    			return array[1];	    				
+    			}else{
+    				return "World";
+    			}
+    		}
+    		i++;
+    	}
+    	return "<Unknown>";
+    }
+    
+    public String getOclIsTypeOfWorldParam(int index)
+    {
+    	int i = 0;
+    	for(String str: oclIsTypeOfList)
+    	{
+    		if(i == index) {
+    			if(str.contains(",")){
+	    			String array[] = str.split(",");
+	    			return array[1];	    				
+    			}else{
+    				return "World";
+    			}
+    		}
+    		i++;
+    	}
+    	return "<Unknown>";
+    }
+    
     public String processInLineComments(String result)
     { 
     	return result.replaceAll("--.*\n","");    	    	    	    
@@ -195,18 +195,47 @@ public class TOCLParser extends OCLParser{
     	return result.replaceAll("(?s)/\\*.*?\\*/","");    	
     }
     	 
-    public String processPropertyInTemporalConstraints(String result)
+    public HashMap<String,Integer> processTemporalProperty(String result)
     {
-//    	String[] array = result.split("([^\\w])(temp|inv|derive)([^\\w])");
-//    	for(String str: array){
-//    		System.out.println("str = "+str);
-//    	}
-    	return result;
+    	int char_added=0;
+    	Pattern p = Pattern.compile("\\.\\w+");
+    	Matcher m = p.matcher(result);
+    	StringBuffer sb = new StringBuffer();
+    	while (m.find()) 
+    	{ 
+    		int indexBegin = m.start();
+    		int indexEnd = m.end()+1;
+    		
+    		if(indexBegin < 0) indexBegin = 0;
+    		if(indexEnd > result.length()) indexEnd = result.length();
+    		
+    		String regex = "\\.\\w+[^\\(]";
+    		if(Pattern.matches(regex,result.subSequence(indexBegin, indexEnd)))  
+    		{  
+    		   m.appendReplacement(sb, result.subSequence(indexBegin, indexEnd-1)+"()"); 
+    		   char_added+=2;
+    		}
+    	}    	
+    	m.appendTail(sb);
+    	String str = sb.toString();
+    	m.reset();
+    	HashMap<String,Integer> map = new HashMap<String,Integer>();
+    	map.put(str,char_added);
+    	return map;
+    }
+    
+    public int countMatches(String regex, String text)
+    {
+    	Pattern pattern = Pattern.compile(regex);
+        Matcher  matcher = pattern.matcher(text);
+        int count = 0;
+        while (matcher.find()) { count++; }
+        return count;
     }
     
     public String processTempKeyword(String result)
     {
-    	Pattern p = Pattern.compile("([^\\w])(temp|inv|derive)([^\\w])");
+    	Pattern p = Pattern.compile("\\W(temp|inv|derive)\\W(\\s*\\w*\\s*):");
 		Matcher m = p.matcher(result);
 		int jump = 0;
     	while (m.find()) 
@@ -216,17 +245,41 @@ public class TOCLParser extends OCLParser{
     		
     		if(indexBegin+(jump) < 0) indexBegin = 0;
     		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
-    		    		
+    		
     		if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("temp")){
+    			
+    			// "temp" takes place to "inv"...
+    			// ==============================
     			String left = result.substring(0,indexBegin+(jump));
-    			String middle = result.substring(indexBegin+(jump),indexEnd+(jump)).replace("temp","inv");
+    			String middle = result.substring(indexBegin+(jump),indexEnd+(jump)).replaceFirst("temp","inv");
         		String right = result.substring(indexEnd+(jump), result.length());
-        		result = left+middle+right;    			
         		jump  = jump -1;
-        		constraintStereotypeList.add("temp");        		
-    		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("inv")){    			
+        		constraintStereotypeList.add("temp");
+        		
+        		// endName/attrName takes place to endName()/attrName()...
+    			// =======================================================
+        		String expression = new String();
+        		String therest = new String();
+        		if(right.indexOf(":")!=-1){
+        			expression = right.substring(0,right.indexOf(":"));
+        			therest = right.substring(right.indexOf(":"),right.length());
+        		}else{
+        			expression = right.substring(0,right.length());
+        		}
+        		HashMap<String,Integer>map = processTemporalProperty(expression);
+	        	for(String key: map.keySet()){	        		
+	        		expression = key;
+		            jump = jump + map.get(key);		            	        
+	        	}
+	        	
+        		result = left+middle+(expression+therest);        		        		
+        		
+    		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("inv")){
+    			
     			constraintStereotypeList.add("inv");
+    			
     		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("derive")){
+    			
     			constraintStereotypeList.add("derive");
     		}    		
     	
@@ -266,14 +319,12 @@ public class TOCLParser extends OCLParser{
     	// navigations such as endName[w]/attrName[w] will become endName(w)/attrName(w)
 	    result = result.replaceAll("\\[","(");
 	    result = result.replaceAll("\\]",")");
-
-	    // in temporal constraints switch endName/attrName for endName()/attrName()
-	    result = processPropertyInTemporalConstraints(result);
 	    
 	    // record which constraints are temporal
+	    // process temporal properties
 	    result = processTempKeyword(result);
-	    
-    	return result;
+    	
+	    return result;
     }
 
 	/** Parse temporal OCL constraints from text. */
@@ -293,12 +344,12 @@ public class TOCLParser extends OCLParser{
 				   !pe.getLocalizedMessage().contains("next") && !pe.getLocalizedMessage().contains("previous") &&
 				   !pe.getLocalizedMessage().contains("allNext") && !pe.getLocalizedMessage().contains("allPrevious") &&
 				   !pe.getLocalizedMessage().contains("hasNext") && !pe.getLocalizedMessage().contains("hasPrevious"))
-				{					
+				{
 					String message = pe.getLocalizedMessage().replace("(World)","[World]");
 					message = message.replace("operation", "association end-point ");
 					throw new ParserException(message);
 				}					
-			}else{
+			}else{				
 				throw new ParserException(pe.getLocalizedMessage());
 			}
 		}	
