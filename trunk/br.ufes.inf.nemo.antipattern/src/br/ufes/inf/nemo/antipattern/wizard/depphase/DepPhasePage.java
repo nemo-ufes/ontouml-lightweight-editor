@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.antipattern.wizard.depphase;
 
 import org.eclipse.jface.wizard.WizardPage;
 
-import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseOccurrence;
 
 public abstract class DepPhasePage extends WizardPage {
@@ -16,7 +15,7 @@ public abstract class DepPhasePage extends WizardPage {
 	{
 		super("DepPhasePage");		
 		this.depPhase = depPhase;		
-		setTitle(DepPhaseAntipattern.getAntipatternInfo().getName());		
+				
 	}
 	
 	protected String getRelatorList(){
