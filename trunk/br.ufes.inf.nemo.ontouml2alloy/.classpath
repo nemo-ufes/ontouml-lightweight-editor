@@ -10,6 +10,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/lpg.runtime.java_2.0.17.v201004271640.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.ocl_3.0.2.R30x_v201101110610.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.ocl.ecore_3.0.2.R30x_v201101110610.jar"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/refontouml/br.ufes.inf.nemo.ontouml.refontouml_1.1.0.201301111500.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

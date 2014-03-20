@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="libs/refontouml/br.ufes.inf.nemo.ontouml.refontouml_1.0.0.201209061023.jar"/>
 	<classpathentry kind="lib" path="libs/kepler/com.google.guava_11.0.2.v201303041551.jar"/>
 	<classpathentry kind="lib" path="libs/kepler/com.google.inject_3.0.0.v201203062045.jar"/>
 	<classpathentry kind="lib" path="libs/kepler/javax.inject_1.0.0.v20091030.jar"/>
@@ -43,5 +42,6 @@
 	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.xtext.essentialocl_3.3.0.v20130520-1503.jar"/>
 	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.xtext.oclinecore_3.3.0.v20130527-1543.jar"/>
 	<classpathentry kind="lib" path="libs/kepler/org.eclipse.ocl.examples.xtext.oclstdlib_3.3.0.v20130523-1559.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

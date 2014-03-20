@@ -14,7 +14,6 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
-import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.change.util.ChangeRecorder;
@@ -22,7 +21,6 @@ import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
@@ -63,7 +61,7 @@ import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 public class ModelHelper {
 
-	private static Diagnostician validator;
+//	private static Diagnostician validator;
 	private static ResourceSet resourceSet;
 	private static RefOntoUMLFactory factory;
 	private static ComposedAdapterFactory adapterFactory; // TODO Cleanup
@@ -92,7 +90,7 @@ public class ModelHelper {
 				
 		RefOntoUMLPackageImpl.init();
 
-		validator = Diagnostician.INSTANCE;
+//		validator = Diagnostician.INSTANCE;
 		
 		factory = RefOntoUMLFactory.eINSTANCE;
 		adapterFactory = new ComposedAdapterFactory(
@@ -464,15 +462,19 @@ public class ModelHelper {
 		return cloned;
 	}	  
 	  
-	public static boolean validate(RefOntoUML.Package model, DiagnosticChain diagnostics,
-			Map<Object, Object> context) {
-
-		if (!initialized) {
-			initializeHelper();
-		}
-				
-		return validator.validate(model, diagnostics, context);
-	}
+//	public static boolean validate(RefOntoUML.Package model, DiagnosticChain diagnostics,
+//			Map<Object, Object> context) {
+//
+//		if (!initialized) {
+//			initializeHelper();
+//		}
+//				
+//		return validator.validate(model, diagnostics, context);
+//	}
+//	
+	/**
+	 * 	TODO Os dois métodos a seguir poderiam estar em um util do Common
+	 */
 	
 	/**
 	 * Handles the objects name when showing the error message
