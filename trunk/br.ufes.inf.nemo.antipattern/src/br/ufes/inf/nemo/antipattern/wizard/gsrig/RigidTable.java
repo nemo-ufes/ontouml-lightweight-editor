@@ -50,6 +50,11 @@ public class RigidTable {
 		fulfillLines();
 	}
 	
+	public void enable(boolean value)
+	{
+		table.setEnabled(value);
+	}
+	
 	public void limitChoiceToRoleAndPhase()
 	{				
 		for (TableItem ti : table.getItems()){	

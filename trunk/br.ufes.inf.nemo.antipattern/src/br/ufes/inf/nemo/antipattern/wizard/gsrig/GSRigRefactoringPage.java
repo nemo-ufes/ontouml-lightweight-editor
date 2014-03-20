@@ -5,7 +5,13 @@ import java.text.Normalizer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.ExpandBar;
+import org.eclipse.swt.widgets.ExpandItem;
 import org.eclipse.swt.widgets.List;
 
 import RefOntoUML.Classifier;
@@ -20,7 +26,12 @@ public class GSRigRefactoringPage extends RefactoringPage {
 	
 	public GSRigOccurrence gsrig;
 	private List list;
-
+	private ExpandBar expandBar;
+	private SubTypeComposite subtypeComposite;
+	private RigidTableComposite rigidTableComposite;
+	private ExpandItem item3_1;
+	private ExpandItem item3;
+	
 	/**
 	 * Create the wizard.
 	 */
@@ -56,10 +67,84 @@ public class GSRigRefactoringPage extends RefactoringPage {
 				"Create both generalization set for rigid and anti-rgid types", 
 				"Change supertype to Mixin",  
 				"Create a new Mixin supertype for all subtypes",
-				"Change supertype and rigid subtypes stereotypes to anti-rigid",   
-				"Create a rigid subtype for each anti-rigid"});
+				"Change supertype and rigid subtypes stereotypes to anti-rigid",
+				"Change all subtypes to rigid or anti-rigid",
+				"Create a rigid subtype for each anti-rigid",
+				"Create a common subtype for anti-rigids",
+				"Create OCL derivation rule and a common subtype for anti-rigids"});
+		
 		list.select(0);
-		list.setBounds(10, 10, 644, 96);
+		list.setBounds(10, 10, 669, 96);
+
+		list.addSelectionListener(new SelectionAdapter() {
+		      public void widgetSelected(SelectionEvent e) {
+		    	  if(list.getSelectionIndex()==7){
+		    		  rigidTableComposite.enable(true);
+		    		  item3.setExpanded(true);
+		    		  subtypeComposite.enable(false);
+		    		  item3_1.setExpanded(false);
+		      	  }else if(list.getSelectionIndex()==8){
+		      		  subtypeComposite.enable(true);
+		      		  item3_1.setExpanded(true);
+		    		  rigidTableComposite.enable(false);
+		    		  item3.setExpanded(false);
+		    	  }else {
+		    		  subtypeComposite.enable(false);
+		    		  item3_1.setExpanded(false);
+		    		  rigidTableComposite.enable(false);
+		    		  item3.setExpanded(false);
+		    	  }
+		      }
+		});
+		expandBar = new ExpandBar(container, SWT.V_SCROLL | SWT.H_SCROLL);
+		expandBar.setBounds(10, 118, 669, 217);
+		
+		//===============================
+		
+		Composite composite3 = new Composite (expandBar, SWT.NONE);
+		GridLayout layout3 = new GridLayout ();
+		layout3.marginLeft = layout3.marginTop=3;
+		layout3.marginRight=layout3.marginBottom=3;
+		layout3.verticalSpacing = 3;
+		composite3.setLayout(layout3);
+		
+		rigidTableComposite = new RigidTableComposite(composite3, SWT.V_SCROLL,gsrig);
+		rigidTableComposite.enable(false);
+		GridData gd_styledText = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
+		gd_styledText.heightHint = 125;
+		gd_styledText.widthHint = 628;
+		rigidTableComposite.setLayoutData(gd_styledText);
+		rigidTableComposite.setVisible(true);
+		
+		item3 = new ExpandItem (expandBar, SWT.NONE, 0);
+		item3.setText("Change supertype and rigid subtypes stereotypes to anti-rigid");
+		item3.setHeight(composite3.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item3.setControl(composite3);
+		item3.setExpanded(false);
+		//===============================		
+		
+		composite3 = new Composite (expandBar, SWT.NONE);
+		layout3 = new GridLayout ();
+		layout3.marginLeft = layout3.marginTop=3;
+		layout3.marginRight=layout3.marginBottom=3;
+		layout3.verticalSpacing = 3;
+		composite3.setLayout(layout3);
+		
+		subtypeComposite = new SubTypeComposite(composite3, SWT.V_SCROLL,gsrig);
+		subtypeComposite.enable(false);
+		gd_styledText = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
+		gd_styledText.heightHint = 137;
+		gd_styledText.widthHint = 629;
+		subtypeComposite.setLayoutData(gd_styledText);
+		subtypeComposite.setVisible(true);
+		
+		item3_1 = new ExpandItem (expandBar, SWT.NONE, 1);
+		item3_1.setExpanded(true);
+		item3_1.setText("Change all subtypes to rigid or anti-rigid");
+		item3_1.setHeight(composite3.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item3_1.setControl(composite3);
+		item3_1.setExpanded(false);
+		//===============================
 	}
 	
 	public static String getStereotype(EObject element)
@@ -71,7 +156,6 @@ public class GSRigRefactoringPage extends RefactoringPage {
 	    return type;
 	}
 	
-	@SuppressWarnings("unused")
 	@Override
 	public IWizardPage getNextPage() 
 	{
@@ -122,17 +206,50 @@ public class GSRigRefactoringPage extends RefactoringPage {
 			getGSRigWizard().replaceAction(0,newAction);	
 			//======================================
 		}
-		if(list.getSelectionIndex()==7){		
+		if(list.getSelectionIndex()==7){			
 			Classifier supertype = gsrig.getGs().getGeneralization().get(0).getGeneral();
 			boolean createNewSupertype = false;
 			if (supertype instanceof Kind || supertype instanceof Quantity || supertype instanceof Collective){
 				createNewSupertype = true;
 			}
 			//Action =============================
-//			GSRigAction newAction = new GSRigAction(gsrig);
-//			newAction.setChangeSupertypeAndRigidSpecificsStereotypesTo(stereoCombo.getText(), rigidTableComposite.getRigidTable().getNewStereotypes(), createNewSupertype); 
-//			getGSRigWizard().replaceAction(0,newAction);
+			GSRigAction newAction = new GSRigAction(gsrig);
+			newAction.setChangeSupertypeAndRigidSpecificsStereotypesTo(rigidTableComposite.stereoCombo.getText(), rigidTableComposite.getRigidTable().getNewStereotypes(), createNewSupertype); 
+			getGSRigWizard().replaceAction(0,newAction);
 			//======================================			
+		}
+		if(list.getSelectionIndex()==8){						
+			//Action =============================
+			GSRigAction newAction = new GSRigAction(gsrig);
+			newAction.setChangeSpecificsStereotypesTo(subtypeComposite.getSubtypeTable().getNewStereotypes()); 
+			getGSRigWizard().replaceAction(0,newAction);
+			//======================================			
+		}
+		if(list.getSelectionIndex()==9){
+			//Action =============================
+			GSRigAction newAction = new GSRigAction(gsrig);
+			newAction.setCreateRigidSubtypeForAntiRigids(); 
+			getGSRigWizard().replaceAction(0,newAction);
+			//======================================	
+		}
+		if(list.getSelectionIndex()==10){
+			//Action =============================
+			GSRigAction newAction = new GSRigAction(gsrig);
+			newAction.setCreateCommonSubtypeForAntiRigids(); 
+			getGSRigWizard().replaceAction(0,newAction);
+			//======================================	
+		}
+		if(list.getSelectionIndex()==11){
+			//Action =============================
+			GSRigAction newAction = new GSRigAction(gsrig);
+			newAction.setCreateDerivationByNegation(); 
+			getGSRigWizard().replaceAction(0,newAction);
+			//======================================
+			//Action =============================
+			newAction = new GSRigAction(gsrig);
+			newAction.setCreateCommonSubtypeForAntiRigids(); 
+			getGSRigWizard().replaceAction(1,newAction);
+			//======================================
 		}
 		return ((GSRigWizard)getWizard()).getFinishing();	
 	}

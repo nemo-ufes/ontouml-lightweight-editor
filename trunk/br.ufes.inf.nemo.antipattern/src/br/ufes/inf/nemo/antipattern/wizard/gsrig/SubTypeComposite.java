@@ -49,4 +49,11 @@ public class SubTypeComposite extends Composite{
 //		Composite composite = new Composite(this, SWT.NONE);
 //		composite.setBounds(10, 10, 524, 150);
 	}
+	
+	public void enable(boolean value)
+	{
+		subtypeTable.getTable().setEnabled(value);
+		btnAllRigid.setEnabled(value);
+		btnAllAntirigid.setEnabled(value);
+	}
 }
