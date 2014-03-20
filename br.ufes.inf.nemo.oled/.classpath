@@ -20,7 +20,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ocl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2alloy"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2uml"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/refontouml/br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml_ocl2owl_swrl"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.emf.common_2.6.0.v20100914-1218.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.emf.ecore_2.6.1.v20100914-1218.jar"/>
@@ -59,6 +58,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.derivedtypes"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/multi-splitpane/MultiSplit.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.assistant"/>
-	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/refontouml/br.ufes.inf.nemo.ontouml.refontouml_1.1.0.201301111500.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/refontouml/br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
