@@ -1,22 +1,29 @@
 package br.ufes.inf.nemo.antipattern.mixrig;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Category;
 import RefOntoUML.Classifier;
 import RefOntoUML.Mixin;
+import RefOntoUML.Phase;
+import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class MixRigOccurrence extends AntipatternOccurrence {
 
 	Mixin mixin;
 	ArrayList<Classifier> subtypes;
-	boolean isRigid; 
+	boolean rigidSubtypes;
+	boolean antiRigidSubtypes; 
 	
 	public MixRigOccurrence(Mixin mixin, MixRigAntipattern ap) throws Exception {
 		super(ap);
@@ -37,20 +44,41 @@ public class MixRigOccurrence extends AntipatternOccurrence {
 		
 		boolean hasRigid = false;
 		boolean hasAntiRigid = false;
+		boolean hasSemiRigid = false;
 		
-		for (Classifier child : subtypes) {
+		for (Classifier child : subtypes) {	
 			if (child instanceof SubstanceSortal || child instanceof SubKind || child instanceof Category)
 				hasRigid = true;
-			else
+			else if( child instanceof Role || child instanceof Phase || child instanceof RoleMixin)
 				hasAntiRigid = true;
+			else if (child instanceof Mixin)
+				hasSemiRigid = true;
 		}
 		
-		if(hasRigid && hasAntiRigid)
+		if((hasRigid && !hasAntiRigid && !hasSemiRigid) || (hasAntiRigid && !hasRigid && !hasSemiRigid)){
+			this.rigidSubtypes=!hasAntiRigid;
+			this.antiRigidSubtypes = hasAntiRigid;
+		}
+		else 
 			throw new Exception("MixRig: Mixin has both rigid and anti-rigid subtypes.");
-		
-		this.isRigid=!hasAntiRigid;
 	}
 
+	public Mixin getMixin() {
+		return mixin;
+	}
+
+	public ArrayList<Classifier> getSubtypes() {
+		return subtypes;
+	}
+
+	public boolean rigidSubtypes() {
+		return rigidSubtypes;
+	}
+	
+	public boolean antiRigidSubtypes() {
+		return antiRigidSubtypes;
+	}
+	
 	@Override
 	public OntoUMLParser setSelected() {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
@@ -68,7 +96,7 @@ public class MixRigOccurrence extends AntipatternOccurrence {
 	public String toString(){
 		String result = "Mixin: "+super.parser.getStringRepresentation(this.mixin) + "\n";
 		
-		if (isRigid)
+		if (rigidSubtypes)
 			result += "Rigid";
 		else
 			result+="Anti-Rigid";
@@ -86,4 +114,23 @@ public class MixRigOccurrence extends AntipatternOccurrence {
 		return parser.getStringRepresentation(mixin);
 	}
 
+	public void changeMixinStereotype(){
+		if(rigidSubtypes())
+			fix.addAll(fixer.changeClassStereotypeTo(mixin, ClassStereotype.CATEGORY));
+		else
+			fix.addAll(fixer.changeClassStereotypeTo(mixin, ClassStereotype.ROLEMIXIN));
+		
+	}
+	
+	public void addExistingSubtypes(ArrayList<Classifier> existingSubtypes){
+		for (Classifier subtype : existingSubtypes) {
+			fix.addAll(fixer.createGeneralization(subtype, mixin));
+		}
+	}
+	
+	public void addNewSubtypes(HashMap<String, Class<?>> newSubtypes){
+		for (String name : newSubtypes.keySet()) {
+			fix.addAll(fixer.createSubTypeAs(mixin, OutcomeFixer.getClassStereotype(newSubtypes.get(name)), name));
+		}
+	}
 }
