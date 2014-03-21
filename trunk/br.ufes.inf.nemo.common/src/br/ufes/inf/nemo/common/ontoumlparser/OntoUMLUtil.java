@@ -108,7 +108,7 @@ public class OntoUMLUtil {
 		return subColl;
 	}
 	
-	public static subQuantityOf createQuantity (Classifier source, Classifier target){
+	public static subQuantityOf createSubQuantityOf (Classifier source, Classifier target){
 		subQuantityOf subQuan = factory.createsubQuantityOf();
 		addAssociationEnds(subQuan, source, target);
 		
