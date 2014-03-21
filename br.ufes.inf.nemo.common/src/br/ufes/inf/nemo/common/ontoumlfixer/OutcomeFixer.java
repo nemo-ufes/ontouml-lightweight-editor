@@ -708,6 +708,13 @@ public class OutcomeFixer{
 		return fixes;
 	}
 	
+	public Fix createSubTypeAs(EObject type, ClassStereotype subtypeStereo, String name){
+		Fix fix = createSubTypeAs(type, subtypeStereo);
+		fix.getAddedByType(Class.class).get(0).setName(name);
+		return fix;
+		
+	}
+	
 	/** Create a subtype and connect it through a generalization to its type. */
 	public Fix createSubTypeAs(EObject type, ClassStereotype subtypeStereo) 
 	{
@@ -1401,5 +1408,7 @@ public class OutcomeFixer{
 		if (includeModified && (option==SpecializationType.SUBSET || option==SpecializationType.REDEFINE)) fix.includeModified(specific);		
 		return fix;
 	}
+	
+	
 	
 }
