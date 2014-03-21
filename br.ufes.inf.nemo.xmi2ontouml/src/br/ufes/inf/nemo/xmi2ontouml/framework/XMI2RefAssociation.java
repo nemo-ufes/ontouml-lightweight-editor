@@ -186,10 +186,9 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 	    		EcoreUtil.remove(RefOntoUMLElement);
 //	    		elemMap.remove(Mapper.getID(XMIElement));
 	    	}
+			else if (RefOntoUMLElement instanceof MaterialAssociation)
+	    		createDerivation();
 		}
-    	
-    	if (RefOntoUMLElement instanceof MaterialAssociation)
-    		createDerivation();
 	}
 	
 	@Override

@@ -58,7 +58,7 @@ public class XMI2RefConstraint extends XMI2RefNamedElement
 		{
 			if (((Constraintx)RefOntoUMLElement).getConstrainedElement().size() == 0)
 			{
-				System.err.println("Debug: removing constraint with error ("+((Constraintx)RefOntoUMLElement).getName()+" | Container: "+((Namespace)RefOntoUMLElement.eContainer()).getName()+")");
+				System.err.println("Debug: removing constraint with error ("+((OpaqueExpression)((Constraintx)RefOntoUMLElement).getSpecification()).getBody().get(0)+" | Container: "+((Namespace)RefOntoUMLElement.eContainer()).getName()+")");
 				EcoreUtil.remove(RefOntoUMLElement);
 			}
 		}
