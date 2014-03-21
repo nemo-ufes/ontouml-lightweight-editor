@@ -8,7 +8,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 
-import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
+import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalAntipattern;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
 
@@ -28,7 +28,7 @@ public class UndefFormalRefactoringPage extends RefactoringPage {
 		super();	
 		this.uf = uf;
 				
-		setTitle(RepRelAntipattern.getAntipatternInfo().acronym+" Refactoring Options");
+		setTitle(UndefFormalAntipattern.getAntipatternInfo().acronym+" Refactoring Options");
 		setDescription("The follwing options can be used to refactor the Formal relationship: "+uf.getSource().getName()+" -> "+uf.getTarget().getName());
 	}
 
