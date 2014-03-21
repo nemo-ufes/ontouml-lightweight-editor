@@ -94,7 +94,7 @@ public class MapperEA implements Mapper {
 	
 	private void setID(Element element)
 	{
-		if (element.hasAttributeNS(XMINS, "id"))
+		if (element.hasAttributeNS(XMINS, "id") && !element.getNodeName().equals("Association"))
 		{
 			if (doc.getElementById(element.getAttributeNS(XMINS, "id")) == null)
 				element.setIdAttributeNS(XMINS, "id", true);
@@ -115,15 +115,6 @@ public class MapperEA implements Mapper {
 				}
 			}
     	}
-		// If it is a diagram element, adds to model2diagram map
-		else
-		{
-			if ((element.getTagName().equals("element") || element.getTagName().equals("connector") || element.getTagName().equals("attribute")) &&
-					element.hasAttributeNS(XMINS, "idref") && doc.getElementById(element.getAttributeNS(XMINS, "idref")) != null)
-			{
-				model2diagram.put(element.getAttributeNS(XMINS, "idref"), element);
-			}
-		}
 	}
 	
 	private void populateStereotypesMap(Element element)
@@ -155,15 +146,22 @@ public class MapperEA implements Mapper {
 	
 	private void removeNonUMLElements(Element element)
 	{
-		if (element.getNodeName().equals("element") && element.hasAttributeNS(XMINS, "idref"))
+		// If it is a diagram element, adds to model2diagram map
+		if ((element.getTagName().equals("element") || element.getTagName().equals("connector") || element.getTagName().equals("attribute")) &&
+				element.hasAttributeNS(XMINS, "idref") && doc.getElementById(element.getAttributeNS(XMINS, "idref")) != null)
 		{
-			String type = element.getAttributeNS(XMINS, "type");
-			if (type.equals("uml:UMLDiagram") || type.equals("uml:Text") || type.equals("uml:Boundary"))
+			model2diagram.put(element.getAttributeNS(XMINS, "idref"), element);
+			
+			if (element.getNodeName().equals("element"))
 			{
-				XMLDOMUtil.removeElement(doc.getElementById(element.getAttributeNS(XMINS, "idref")));
-				if (!ignoredElements.contains(element.getAttributeNS(XMINS, "idref")))
+				String type = element.getAttributeNS(XMINS, "type");
+				if (type.equals("uml:UMLDiagram") || type.equals("uml:Text") || type.equals("uml:Boundary"))
 				{
-					ignoredElements.add(element.getAttributeNS(XMINS, "idref"));
+					XMLDOMUtil.removeElement(doc.getElementById(element.getAttributeNS(XMINS, "idref")));
+					if (!ignoredElements.contains(element.getAttributeNS(XMINS, "idref")))
+					{
+						ignoredElements.add(element.getAttributeNS(XMINS, "idref"));
+					}
 				}
 			}
 		}
@@ -183,11 +181,13 @@ public class MapperEA implements Mapper {
 			{
 				if (childElem.getNodeName().equals("memberEnd") || childElem.getNodeName().equals("ownedEnd"))
 				{
+//					System.out.println("removing " + childElem.getNodeName());
 					XMLDOMUtil.removeElement(childElem);
 				}
 			}
 			
 			//Process Association part
+			
 			assocClassElemClone.setAttributeNS(XMINS, "type", "uml:Association");
 			assocClassElemClone.setAttributeNS(XMINS, "id", 
 					((Element)element.getParentNode()).getAttributeNS(XMINS, "idref"));
@@ -196,14 +196,14 @@ public class MapperEA implements Mapper {
 			for (Element childElem : XMLDOMUtil.getElementChilds(assocClassElemClone))
 			{
 				if (childElem.getNodeName().equals("ownedAttribute") || 
-						childElem.getNodeName().equals("generalization"))
+						childElem.getNodeName().equals("generalization") ||
+						hasDuplicateEnd(childElem))
 				{
+//					System.out.println("removing " + childElem.getNodeName());
 					XMLDOMUtil.removeElement(childElem);
 				}
 				else if (childElem.hasAttributeNS(XMINS, "id"))
-				{
 					childElem.setIdAttributeNS(XMINS, "id", true);
-				}
 			}
 			//For EA version 10, since it does not export the stereotype of the AssociationClass' Association
 			Element new_st = doc.createElementNS(OntoUML, "Material");
@@ -213,6 +213,32 @@ public class MapperEA implements Mapper {
 			assocClassElem.setIdAttributeNS(XMINS, "id", true);
 			assocClassElemClone.setIdAttributeNS(XMINS, "id", true);
 		}
+	}
+	
+	private boolean hasDuplicateEnd(Element childElem)
+	{
+		if (childElem.getNodeName().equals("ownedEnd"))
+		{
+			String typeIdRefChild = XMLDOMUtil.getFirstAppearanceOf(childElem, "type").getAttributeNS(XMINS, "idref");
+			for (Element e : XMLDOMUtil.getElementChildsByTagName((Element) childElem.getParentNode(), "ownedEnd"))
+			{
+				String typeIdRefSibling = XMLDOMUtil.getFirstAppearanceOf(e, "type").getAttributeNS(XMINS, "idref");
+				if (!childElem.getAttributeNS(XMINS, "id").equals(e.getAttributeNS(XMINS, "id")) && 
+						typeIdRefChild.equals(typeIdRefSibling))
+				{
+					for (Element e2 : XMLDOMUtil.getElementChildsByTagName((Element) childElem.getParentNode(), "memberEnd"))
+					{
+						if (e2.getAttributeNS(XMINS, "idref").equals(childElem.getAttributeNS(XMINS, "id")))
+						{
+//							System.out.println("removing " + e2.getNodeName());
+							XMLDOMUtil.removeElement(e2);
+						}
+					}
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
