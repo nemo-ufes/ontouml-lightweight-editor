@@ -15,6 +15,18 @@ public class UndefPhaseOccurrence extends AntipatternOccurrence {
 
 	Classifier general;
 	GeneralizationSet partition;
+	public Classifier getGeneral() {
+		return general;
+	}
+
+	public GeneralizationSet getPartition() {
+		return partition;
+	}
+
+	public ArrayList<Phase> getPhases() {
+		return phases;
+	}
+
 	ArrayList<Phase> phases;
 	
 	

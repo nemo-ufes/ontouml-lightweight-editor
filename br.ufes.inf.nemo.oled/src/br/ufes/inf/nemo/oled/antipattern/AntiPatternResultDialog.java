@@ -74,9 +74,9 @@ import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.depphase.DepPhaseWizard;
 import br.ufes.inf.nemo.antipattern.wizard.asscyc.AssCycWizard;
 import br.ufes.inf.nemo.antipattern.wizard.binover.BinOverWizard;
+import br.ufes.inf.nemo.antipattern.wizard.depphase.DepPhaseWizard;
 import br.ufes.inf.nemo.antipattern.wizard.freerole.FreeRoleWizard;
 import br.ufes.inf.nemo.antipattern.wizard.gsrig.GSRigWizard;
 import br.ufes.inf.nemo.antipattern.wizard.hetcoll.HetCollWizard;
@@ -91,6 +91,7 @@ import br.ufes.inf.nemo.antipattern.wizard.relrig.RelRigWizard;
 import br.ufes.inf.nemo.antipattern.wizard.relspec.RelSpecWizard;
 import br.ufes.inf.nemo.antipattern.wizard.reprel.RepRelWizard;
 import br.ufes.inf.nemo.antipattern.wizard.undefformal.UndefFormalWizard;
+import br.ufes.inf.nemo.antipattern.wizard.undefphase.UndefPhaseWizard;
 import br.ufes.inf.nemo.antipattern.wizard.wholeover.WholeOverWizard;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
@@ -389,7 +390,8 @@ public class AntiPatternResultDialog extends Dialog {
     	if (apOccur instanceof FreeRoleOccurrence) wizardDialog = new WizardDialog(new Shell(d), new FreeRoleWizard((FreeRoleOccurrence)apOccur));
     	if (apOccur instanceof GSRigOccurrence) wizardDialog = new WizardDialog(new Shell(d), new GSRigWizard((GSRigOccurrence)apOccur));
     	if (apOccur instanceof MixRigOccurrence) wizardDialog = new WizardDialog(new Shell(d), new MixRigWizard((MixRigOccurrence)apOccur));
-
+    	if (apOccur instanceof UndefPhaseOccurrence) wizardDialog = new WizardDialog(new Shell(d), new UndefPhaseWizard((UndefPhaseOccurrence)apOccur));
+    	
     	return wizardDialog;
 	}
 	
