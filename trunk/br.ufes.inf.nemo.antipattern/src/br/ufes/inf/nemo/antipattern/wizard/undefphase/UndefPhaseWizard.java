@@ -9,6 +9,10 @@ import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
 public class UndefPhaseWizard extends AntipatternWizard {
 
 	protected UndefPhaseFirstPage firstPage;
+	protected UndefPhaseSecondPage secondPage;
+	protected UndefPhaseThirdPage thirdPage;
+	protected UndefPhaseFourthPage fourthPage;
+	protected UndefPhaseFifthPage fifthPage;
 	
 	public UndefPhaseWizard(UndefPhaseOccurrence ap) {
 		super(ap, UndefPhaseAntipattern.getAntipatternInfo().name);	    
@@ -23,6 +27,10 @@ public class UndefPhaseWizard extends AntipatternWizard {
 		options = new UndefPhaseRefactoringPage((UndefPhaseOccurrence)ap);
 				
 		firstPage = new  UndefPhaseFirstPage((UndefPhaseOccurrence)ap);
+		secondPage = new  UndefPhaseSecondPage((UndefPhaseOccurrence)ap);
+		thirdPage = new  UndefPhaseThirdPage((UndefPhaseOccurrence)ap);
+		fourthPage = new  UndefPhaseFourthPage((UndefPhaseOccurrence)ap);
+		fifthPage = new  UndefPhaseFifthPage((UndefPhaseOccurrence)ap);
 				
 		presentation = new PresentationPage(
 			UndefPhaseAntipattern.getAntipatternInfo().name,
@@ -33,7 +41,11 @@ public class UndefPhaseWizard extends AntipatternWizard {
 		);
 		
 		addPage(presentation);		
-		addPage(firstPage);		
+		addPage(firstPage);
+		addPage(secondPage);
+		addPage(thirdPage);
+		addPage(fourthPage);
+		addPage(fifthPage);
 		addPage(options);
 		addPage(finishing);
 	}
@@ -44,8 +56,19 @@ public class UndefPhaseWizard extends AntipatternWizard {
 
 	public UndefPhaseFirstPage getFirstPage() {
 		return firstPage;
+	}	
+	public UndefPhaseSecondPage getSecondPage() {
+		return secondPage;
 	}
-	
+	public UndefPhaseThirdPage getThirdPage() {
+		return thirdPage;
+	}
+	public UndefPhaseFourthPage getFourthPage() {
+		return fourthPage;
+	}
+	public UndefPhaseFifthPage getFifthPage() {
+		return fifthPage;
+	}
 	@Override
 	public boolean performFinish() {
 		runAllActions();
