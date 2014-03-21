@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.common.ontoumlverificator;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -44,23 +43,15 @@ public class ModelDiagnostician {
 	public int getErrors() {return errors;}
 	public int getWarnings() {return warnings;}
 	
-	public static void main(String args[])
-	{	
-		ModelDiagnostician pv = new ModelDiagnostician();		
-		try {
-			System.out.println(pv.getWarningsMatrixFormat(new OntoUMLParser("src/br/ufes/inf/nemo/common/ontoumlverificator/NameTest.refontouml")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}			
-	}
-		
-	/**
-	 * Constructor
-	 */
-	public ModelDiagnostician () 
-	{
-		
-	}	
+//	public static void main(String args[])
+//	{	
+//		ModelDiagnostician pv = new ModelDiagnostician();		
+//		try {
+//			System.out.println(pv.getWarningsMatrixFormat(new OntoUMLParser("src/br/ufes/inf/nemo/common/ontoumlverificator/NameTest.refontouml")));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}			
+//	}
 		
 	/**
 	 * Get Element Name

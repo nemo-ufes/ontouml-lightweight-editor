@@ -61,9 +61,4 @@ public class ResourceUtil {
 	    
 	    return resource;		   	
 	}
-	
-	
-	
-
-	
 }
