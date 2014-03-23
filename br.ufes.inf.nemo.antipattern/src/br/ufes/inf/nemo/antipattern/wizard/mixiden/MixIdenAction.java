@@ -41,6 +41,7 @@ public class MixIdenAction extends AntiPatternAction<MixIdenOccurrence>{
 	@Override
 	public String toString(){
 		String result = new String();
+		
 		if(code==Action.CHANGE_MIXIN_STEREOTYPE) {
 			result += "Change Class: Change stereotype of <"+ap.getMixin().getName()+"> to ";
 			if(ap.isHasAntiRigid() && !ap.isHasRigid())
@@ -52,11 +53,15 @@ public class MixIdenAction extends AntiPatternAction<MixIdenOccurrence>{
 			
 			for (SortalToAdd subtype : newSubtypes){
 				if(subtype.newSortal()){
-					result+="Add Class: «"+getStereotypeName(subtype.getSortal().getClass())+"» "+subtype.getSortalName()+"\n";
+					result+="Add Class: «"+getStereotypeName(subtype.getSortalStereotype())+"» "+subtype.getSortalName()+"\n";
 					result+="Add Generalization: from "+subtype.getSortalName()+" to "+ap.getMixin().getName()+"\n";
 				}
 				else
 					result+="Add Generalization: from "+subtype.getSortalName()+" to "+ap.getMixin().getName()+"\n";
+				
+				if(subtype.newIdentityProvider()){
+					result+="Add Class: «"+getStereotypeName(subtype.getIdentityProviderStereotype())+"» "+subtype.getIdentityProviderName()+"\n";
+				}
 			}			
 		}
 		
