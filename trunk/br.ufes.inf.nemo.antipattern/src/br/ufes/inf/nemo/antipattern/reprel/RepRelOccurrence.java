@@ -18,9 +18,7 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 	private Classifier relator;
 	private ArrayList<Mediation> mediations, problematicMediations;
 	private ArrayList<Property> mediatedProperties, problematicMediatedProperties;
-	
-	public DuplicateRelators duplicateInstantiationPattern;
-	public DistinctRelators distinctInstantiationPatter;
+
 	
 	public ArrayList<Mediation> getMediations() {
 		return mediations;
@@ -53,8 +51,6 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 	{
 		super(ap);
 		this.setRelator(relator,parser);
-		duplicateInstantiationPattern = new DuplicateRelators(this);
-		distinctInstantiationPatter = new DistinctRelators(this);
 	}
 
 	/**
