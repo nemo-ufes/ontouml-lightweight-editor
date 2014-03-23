@@ -11,6 +11,9 @@ import RefOntoUML.Role;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class MixIdenOccurrence extends AntipatternOccurrence {
@@ -120,6 +123,69 @@ public class MixIdenOccurrence extends AntipatternOccurrence {
 	public String getShortName() {
 		return parser.getStringRepresentation(mixin);
 	}
-
+	
+	public void changeMixinStereotype(){
+		fix.addAll(fixer.createGeneralization(mixin, identityProvider));
+		
+		if(hasAntiRigid && !hasRigid)
+				fix.addAll(fixer.changeClassStereotypeTo(mixin, ClassStereotype.ROLE));
+		else
+			fix.addAll(fixer.changeClassStereotypeTo(mixin, ClassStereotype.SUBKIND));
+	}
+	
+	public void addSortals(ArrayList<SortalToAdd> list){
+		ArrayList<Classifier> createdClassifiers = new ArrayList<Classifier>();
+		
+		for (SortalToAdd sta : list) {
+			Classifier newSortal = null;
+			Classifier newIdentityProvider = null;
+			//sortal already exists
+			if(sta.existingSortal()){
+				fix.addAll(fixer.createGeneralization(sta.getSortal(), mixin));
+				newSortal = sta.getSortal();
+			} //new sortal
+			else{
+				//already created in previous iteration
+				for (Classifier classifier : createdClassifiers) {
+					if(classifier.getName().compareTo(sta.getSortalName())==0 && classifier.getClass().equals(sta.getSortalStereotype())){
+						newSortal = classifier;
+						break;
+					}
+				}
+				//creating now
+				if(newSortal==null){
+					Fix currentFix = fixer.createSubTypeAs(mixin, OutcomeFixer.getClassStereotype(sta.getSortalStereotype()), sta.getSortalName());
+					newSortal = currentFix.getAddedByType(Classifier.class).get(0);
+					createdClassifiers.add(newSortal);
+					fix.addAll(currentFix);
+				}				
+			}
+			
+			//identity provider already exists
+			if(sta.existingIdentityProvider()){
+				newIdentityProvider = sta.getIdentityProvider();
+			}//creating identity provider now
+			else {
+				for (Classifier classifier : createdClassifiers) {
+					if(classifier.getName().compareTo(sta.getIdentityProviderName())==0 && classifier.getClass().equals(sta.getIdentityProviderStereotype())){
+						newIdentityProvider = classifier;
+						break;
+					}
+				}
+				
+				if(newIdentityProvider==null){
+					newIdentityProvider = (Classifier) fixer.createClass(OutcomeFixer.getClassStereotype(sta.getIdentityProviderStereotype()));
+					newIdentityProvider.setName(sta.getIdentityProviderName());
+					createdClassifiers.add(newIdentityProvider);
+					fix.includeAdded(newIdentityProvider);
+				}
+			}
+			
+			if(!(newSortal instanceof SubstanceSortal) && !newSortal.allParents().contains(newIdentityProvider)){
+				fix.addAll(fixer.createGeneralization(newSortal, newIdentityProvider));
+			}
+		}
+		
+	}
 
 }

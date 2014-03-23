@@ -24,6 +24,14 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.NamedElement;
+import RefOntoUML.Phase;
+import RefOntoUML.Role;
+import RefOntoUML.SubKind;
+import RefOntoUML.SubstanceSortal;
+import RefOntoUML.impl.CollectiveImpl;
+import RefOntoUML.impl.KindImpl;
+import RefOntoUML.impl.QuantityImpl;
+import br.ufes.inf.nemo.antipattern.mixiden.SortalToAdd;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
@@ -121,7 +129,7 @@ public class AddSelectSortalComposite extends Composite {
 		
 		btnSaveInTable = new Button(this, SWT.NONE);
 		btnSaveInTable.setBounds(318, 71, 108, 25);
-		btnSaveInTable.setText("Add To Table");
+		btnSaveInTable.setText("Save In Table");
 		btnSaveInTable.addSelectionListener(btnSaveInTableListener);
 		
 		btnNew = new Button(this, SWT.NONE);
@@ -220,16 +228,17 @@ public class AddSelectSortalComposite extends Composite {
 		
 		@Override
 		public void widgetSelected(SelectionEvent event)  {
-			setAllStereotypeCombos();
-			btnSaveInTable.setEnabled(canSave());
+			
+			comboModificationAction();
 		}
+
+		
 	};
 	
 	private Listener keyUpListener = new Listener() {
         @Override
         public void handleEvent(Event arg0) {
-        	setAllStereotypeCombos();
-			btnSaveInTable.setEnabled(canSave());
+        	comboModificationAction();
         }
     };
 	
@@ -241,10 +250,10 @@ public class AddSelectSortalComposite extends Composite {
 			TableItem ti = table.getItem(selectedRow);
 			
 			comboClassifier.setText(ti.getText(0));
+			comboStereotype.setText(ti.getText(1));
 			comboIP.setText(ti.getText(3));
-			setAllStereotypeCombos();
-			
-			btnSaveInTable.setEnabled(canSave());
+			comboIPStereotype.setText(ti.getText(4));
+			comboModificationAction();
 		}
 	};
 	
@@ -510,7 +519,7 @@ public class AddSelectSortalComposite extends Composite {
 		}
 		
 		for (Class<?> stereotype : allowedIpsStereotypes) {
-			if(getStereotypeName(stereotype).compareTo(identityProviderName)==0){
+			if(getStereotypeName(stereotype).compareTo(identityProviderStereotypeName)==0){
 				identityProviderStereotype = stereotype;
 				break;
 			}
@@ -576,8 +585,72 @@ public class AddSelectSortalComposite extends Composite {
 		setDefaultEnabled();
 	}
 
-	private void setAllStereotypeCombos() {
+	private void comboModificationAction() {
+		int classifierIndex = comboClassifier.getSelectionIndex();
+		
 		setComboStereotypeFromComboType(comboStereotype, comboClassifier, existingClassifiers);
-		setComboStereotypeFromComboType(comboIPStereotype, comboIP, existingIps);
+		
+		//existing type selected
+		if(classifierIndex>=0 && classifierIndex<existingClassifiers.size()){
+			Classifier c = existingClassifiers.get(classifierIndex);
+			if(c instanceof SubstanceSortal){
+				comboIP.setText(comboClassifier.getText());
+				setComboStereotypeFromComboType(comboIPStereotype, comboIP, existingIps);
+				comboIPStereotype.setEnabled(false);
+				comboIP.setEnabled(false);
+			}
+			else if (c instanceof SubKind || c instanceof Role || c instanceof Phase){
+				Classifier parent = null;
+				for (Classifier c2 : c.allParents()) {
+					if(c2 instanceof SubstanceSortal){
+						parent = c2;
+						break;
+					}
+				}
+				if(parent!=null){
+					comboIP.setText(parent.getName());
+					setComboStereotypeFromComboType(comboIPStereotype, comboIP, existingIps);
+					comboIPStereotype.setEnabled(false);
+					comboIP.setEnabled(false);
+					
+				}
+				else{
+					comboIPStereotype.setEnabled(true);
+					comboIP.setEnabled(true);
+					setComboStereotypeFromComboType(comboIPStereotype, comboIP, existingIps);
+				}
+			}
+		}
+		//new type selected
+		else {
+			if (comboStereotype.getSelectionIndex()>=0 && comboStereotype.getSelectionIndex()<allowedStereotypes.size())
+			{
+			
+				if(comboStereotype.getText().compareTo(getStereotypeName(KindImpl.class))==0
+						|| comboStereotype.getText().compareTo(getStereotypeName(QuantityImpl.class))==0
+						|| comboStereotype.getText().compareTo(getStereotypeName(CollectiveImpl.class))==0)
+				{
+					comboIP.setText(comboClassifier.getText());
+					comboIPStereotype.setText(comboStereotype.getText());
+					autoSelectItem(comboIPStereotype);
+					comboIPStereotype.setEnabled(false);
+					comboIP.setEnabled(false);
+				}
+				else {
+					comboIPStereotype.setEnabled(true);
+					comboIP.setEnabled(true);
+					setComboStereotypeFromComboType(comboIPStereotype, comboIP, existingIps);
+				}
+			}
+			else {
+				comboIPStereotype.setEnabled(true);
+				comboIP.setEnabled(true);
+				setComboStereotypeFromComboType(comboIPStereotype, comboIP, existingIps);
+			}
+			
+		}
+		
+				
+		btnSaveInTable.setEnabled(canSave());
 	}
 }
