@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.antipattern.wizard.mixiden;
+package br.ufes.inf.nemo.antipattern.mixiden;
 
 import RefOntoUML.Classifier;
 
@@ -40,7 +40,7 @@ public class SortalToAdd {
 		this.sortalStereotype = sortal.getClass();
 	}
 	
-	private void setIdentityProviderFromName(String identityProviderName,	Class<?> identityProviderStereotype) {
+	private void setIdentityProviderFromName(String identityProviderName, Class<?> identityProviderStereotype) {
 		this.identityProvider = null;
 		this.identityProviderName = identityProviderName;
 		this.identityProviderStereotype = identityProviderStereotype;

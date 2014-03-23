@@ -4,6 +4,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
+import br.ufes.inf.nemo.antipattern.mixiden.SortalToAdd;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 
 public class MixIdenAction extends AntiPatternAction<MixIdenOccurrence>{
@@ -18,15 +19,12 @@ public class MixIdenAction extends AntiPatternAction<MixIdenOccurrence>{
 
 	@Override
 	public void run() {
-//		if(code==Action.CHANGE_MIXIN_STEREOTYPE){
-//			ap.changeMixinStereotype();
-//		}
-//		else if(code==Action.ADD_SUBTYPES) {
-//			if(existingSubtypes!=null && existingSubtypes.size()>0)
-//				ap.addExistingSubtypes(existingSubtypes);
-//			if(newTypes!=null && newTypes.keySet().size()>0)
-//				ap.addNewSubtypes(newTypes);
-//		}
+		if(code==Action.CHANGE_MIXIN_STEREOTYPE){
+			ap.changeMixinStereotype();
+		}
+		else if(code==Action.ADD_SUBTYPES) {
+			ap.addSortals(newSubtypes);
+		}
 	}
 	
 	public void setChangeMixinStereotype(){
@@ -48,6 +46,7 @@ public class MixIdenAction extends AntiPatternAction<MixIdenOccurrence>{
 				result += "«Role»";
 			else
 				result += "«Subkind»";
+			result+="\nAdd Generalization: from "+ap.getMixin()+" to "+ap.getIdentityProvider().getName()+"\n";
 		}
 		else if(code==Action.ADD_SUBTYPES){
 			
