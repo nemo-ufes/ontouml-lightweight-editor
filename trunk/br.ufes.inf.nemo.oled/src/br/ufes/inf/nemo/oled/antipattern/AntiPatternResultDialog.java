@@ -82,6 +82,7 @@ import br.ufes.inf.nemo.antipattern.wizard.gsrig.GSRigWizard;
 import br.ufes.inf.nemo.antipattern.wizard.hetcoll.HetCollWizard;
 import br.ufes.inf.nemo.antipattern.wizard.homofunc.HomoFuncWizard;
 import br.ufes.inf.nemo.antipattern.wizard.impabs.ImpAbsWizard;
+import br.ufes.inf.nemo.antipattern.wizard.mixiden.MixIdenWizard;
 import br.ufes.inf.nemo.antipattern.wizard.mixrig.MixRigWizard;
 import br.ufes.inf.nemo.antipattern.wizard.multidep.MultiDepWizard;
 import br.ufes.inf.nemo.antipattern.wizard.partover.PartOverWizard;
@@ -390,8 +391,9 @@ public class AntiPatternResultDialog extends Dialog {
     	if (apOccur instanceof FreeRoleOccurrence) wizardDialog = new WizardDialog(new Shell(d), new FreeRoleWizard((FreeRoleOccurrence)apOccur));
     	if (apOccur instanceof GSRigOccurrence) wizardDialog = new WizardDialog(new Shell(d), new GSRigWizard((GSRigOccurrence)apOccur));
     	if (apOccur instanceof MixRigOccurrence) wizardDialog = new WizardDialog(new Shell(d), new MixRigWizard((MixRigOccurrence)apOccur));
+    	if (apOccur instanceof MixIdenOccurrence) wizardDialog = new WizardDialog(new Shell(d), new MixIdenWizard((MixIdenOccurrence)apOccur));
     	if (apOccur instanceof UndefPhaseOccurrence) wizardDialog = new WizardDialog(new Shell(d), new UndefPhaseWizard((UndefPhaseOccurrence)apOccur));
-    	
+
     	return wizardDialog;
 	}
 	
