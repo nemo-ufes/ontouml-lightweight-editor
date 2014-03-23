@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.mixiden;
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -8,6 +10,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
@@ -21,16 +24,22 @@ public class MixIdenRefactoringPage extends RefactoringPage {
 	private AddSelectSortalComposite addSelectComposite;
 	private Label lblPleaseSelectExisting;
 	
-	private SelectionAdapter listener = new SelectionAdapter() {
+	private SelectionAdapter btnChangeStereotypeListener = new SelectionAdapter() {
 		
 		public void widgetSelected(SelectionEvent event) {
 			if(btnChangeStereotype.getSelection()){
-				setPageComplete(true);
-				addSelectComposite.setEnabled(false);
+				if(!isPageComplete()) setPageComplete(true);
+				addSelectComposite.setAllEnabled(false);
 			}
+		}
+	};
+	
+	private SelectionAdapter btnCreateOrSelectListener = new SelectionAdapter() {
+		
+		public void widgetSelected(SelectionEvent event) {
 			if(btnCreateOrSelect.getSelection()){
-				setPageComplete(true);
-				addSelectComposite.setEnabled(true);
+				if(!isPageComplete()) setPageComplete(true);
+				addSelectComposite.setAllEnabled(true);
 			}
 		}
 	};
@@ -76,18 +85,21 @@ public class MixIdenRefactoringPage extends RefactoringPage {
 		btnChangeStereotype = new Button(container, SWT.RADIO);
 		btnChangeStereotype.setBounds(10, 40, 554, 16);
 		btnChangeStereotype.setText("Change "+getMixIdenWizard().mixinName+" stereotype to «"+newStereotype+"»");
-		btnChangeStereotype.addSelectionListener(listener);
+		btnChangeStereotype.addSelectionListener(btnChangeStereotypeListener);
 		
 		btnCreateOrSelect = new Button(container, SWT.RADIO);
 		btnCreateOrSelect.setBounds(10, 62, 554, 16);
 		btnCreateOrSelect.setText("Create/Select subtypes with different identity principles");
-		btnCreateOrSelect.addSelectionListener(listener);
+		btnCreateOrSelect.addSelectionListener(btnCreateOrSelectListener);
 		
 		try {
+			ArrayList<Classifier> forbbidenTypes = new ArrayList<Classifier>(mixIden.getIdentityProvider().allChildren());
+			forbbidenTypes.add(mixIden.getIdentityProvider());
+			
 			addSelectComposite = new AddSelectSortalComposite(container, SWT.BORDER, mixIden.getParser(), 
-					getMixIdenWizard().allowedStereotypes(),getMixIdenWizard().identityProviderStereotypes());
+					getMixIdenWizard().allowedStereotypes(), getMixIdenWizard().identityProviderStereotypes(), forbbidenTypes);
 			addSelectComposite.setBounds(10, 111, 554, 255);
-			addSelectComposite.setEnabled(false);
+			addSelectComposite.setAllEnabled(false);
 			
 			lblPleaseSelectExisting = new Label(container, SWT.NONE);
 			lblPleaseSelectExisting.setText("Please select existing types or create new ones using the table below:");

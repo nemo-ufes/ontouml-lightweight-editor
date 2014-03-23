@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.mixiden;
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -9,6 +11,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
 
@@ -48,21 +51,24 @@ public class MixIdenSecondPage  extends MixIdenPage {
 		styledText.setJustify(true);
 		styledText.setBackground(styledText.getParent().getBackground());
 		
-		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 68, 39, 16);
-		btnYes.setText("Yes");
-		btnYes.addSelectionListener(listener);
-		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 46, 39, 16);
-		btnNo.setText("No");
-		btnNo.addSelectionListener(listener);
-
+		btnNo.setBounds(10, 46, 554, 16);
+		btnNo.setText("No, they are all out of scope");
+		btnNo.addSelectionListener(btnNoListener);
+		
+		btnYes = new Button(container, SWT.RADIO);
+		btnYes.setBounds(10, 68, 554, 16);
+		btnYes.setText("Yes");
+		btnYes.addSelectionListener(btnYesListener);
+		
 		try {
+			ArrayList<Classifier> forbbidenTypes = new ArrayList<Classifier>(mixIden.getIdentityProvider().allChildren());
+			forbbidenTypes.add(mixIden.getIdentityProvider());
+			
 			addSelect = new AddSelectSortalComposite(container, SWT.BORDER, mixIden.getParser(), 
-					getMixIdenWizard().allowedStereotypes(), getMixIdenWizard().identityProviderStereotypes());
+					getMixIdenWizard().allowedStereotypes(), getMixIdenWizard().identityProviderStereotypes(), forbbidenTypes);
 			addSelect.setBounds(10, 121, 554, 255);
-			addSelect.setEnabled(false);
+			addSelect.setAllEnabled(false);
 			
 			lblSelectExistingTypes = new Label(container, SWT.NONE);
 			lblSelectExistingTypes.setBounds(10, 100, 509, 15);
@@ -73,16 +79,22 @@ public class MixIdenSecondPage  extends MixIdenPage {
 		
 	}
 	
-	private SelectionAdapter listener = new SelectionAdapter() {
+	private SelectionAdapter btnNoListener = new SelectionAdapter() {
 		
 		public void widgetSelected(SelectionEvent event) {
 			if(btnNo.getSelection()){
-				setPageComplete(true);
-				addSelect.setEnabled(true);
+				if(!isPageComplete()) setPageComplete(true);
+				addSelect.setAllEnabled(false);
 			}
+		}
+	};
+	
+	private SelectionAdapter btnYesListener = new SelectionAdapter() {
+		
+		public void widgetSelected(SelectionEvent event) {
 			if(btnYes.getSelection()){
-				setPageComplete(true);
-				addSelect.setEnabled(false);
+				if(!isPageComplete()) setPageComplete(true);
+				addSelect.setAllEnabled(true);
 			}
 		}
 	};
@@ -92,8 +104,9 @@ public class MixIdenSecondPage  extends MixIdenPage {
 	{	
 		getMixIdenWizard().removeAllActions();
 
-		if(btnNo.getSelection()) {
+		if(btnYes.getSelection()) {
 			MixIdenAction action = new MixIdenAction(mixIden);
+			System.out.println("ROWS: "+addSelect.getNewSortalSubtypes().size());
 			action.setAddSubtypes(addSelect.getNewSortalSubtypes());
 			getMixIdenWizard().addAction(0, action);
 		}

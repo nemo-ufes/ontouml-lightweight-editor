@@ -2,7 +2,7 @@ package br.ufes.inf.nemo.antipattern.mixiden;
 
 import java.util.ArrayList;
 
-import RefOntoUML.Mixin;
+import RefOntoUML.MixinClass;
 import RefOntoUML.Package;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
@@ -13,16 +13,14 @@ public class MixIdenAntipattern extends Antipattern<MixIdenOccurrence> {
 
 	public MixIdenAntipattern(OntoUMLParser parser) throws NullPointerException {
 		super(parser);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public MixIdenAntipattern(Package pack) throws NullPointerException {
 		super(pack);
-		// TODO Auto-generated constructor stub
 	}
 	
 	private static final String oclQuery =	
-			"Mixin.allInstances()->select( m : Mixin |" +
+			"MixinClass.allInstances()->select( m : MixinClass |" +
 			"		m.children()->size()>1" +
 			"		and " +
 			"		m.children()->forAll(child1, child2 : Classifier | " +
@@ -43,11 +41,12 @@ public class MixIdenAntipattern extends Antipattern<MixIdenOccurrence> {
 
 	@Override
 	public ArrayList<MixIdenOccurrence> identify() {
-		ArrayList<Mixin> query_result;
 		
-		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, Mixin.class);
+		ArrayList<MixinClass> query_result;
 		
-		for (Mixin mixin : query_result) 
+		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, MixinClass.class);
+		
+		for (MixinClass mixin : query_result) 
 		{
 			try {
 				MixIdenOccurrence occurrence = new MixIdenOccurrence(mixin, this);

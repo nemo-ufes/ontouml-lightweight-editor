@@ -5,24 +5,30 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
-import RefOntoUML.Mixin;
+import RefOntoUML.MixinClass;
+import RefOntoUML.Phase;
+import RefOntoUML.Role;
+import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class MixIdenOccurrence extends AntipatternOccurrence {
 	
-	Mixin mixin;
+	MixinClass mixin;
 	ArrayList<Classifier> subtypes;
-	Classifier identityProvider; 
+	Classifier identityProvider;
+	private boolean hasRigid;
+	private boolean hasAntiRigid;
+	private boolean hasBoth; 
 	
-	public MixIdenOccurrence(Mixin mixin, MixIdenAntipattern ap) throws Exception {
+	public MixIdenOccurrence(MixinClass mixin, MixIdenAntipattern ap) throws Exception {
 		super(ap);
 		
 		if(mixin==null)
 			throw new NullPointerException("MixIden: null mixin provided.");
 		
-		if(!(mixin instanceof Mixin))
+		if(!(mixin instanceof MixinClass))
 			throw new NullPointerException("MixIden: mixin must be an instance of Mixin.");
 		
 		this.mixin = mixin;
@@ -49,7 +55,39 @@ public class MixIdenOccurrence extends AntipatternOccurrence {
 		if (identityProvider == null)
 			throw new Exception("MixIden: No identity provider for subtypes.");
 		
+		for (Classifier child : subtypes) {	
+			if (child instanceof SubstanceSortal || child instanceof SubKind)
+				hasRigid = true;
+			else if( child instanceof Role || child instanceof Phase)
+				hasAntiRigid = true;
+		}
 		
+		hasBoth = hasRigid && hasAntiRigid;
+		
+	}
+
+	public MixinClass getMixin() {
+		return mixin;
+	}
+
+	public ArrayList<Classifier> getSubtypes() {
+		return subtypes;
+	}
+
+	public Classifier getIdentityProvider() {
+		return identityProvider;
+	}
+	
+	public boolean isHasRigid() {
+		return hasRigid;
+	}
+
+	public boolean isHasAntiRigid() {
+		return hasAntiRigid;
+	}
+
+	public boolean isHasBoth() {
+		return hasBoth;
 	}
 
 	@Override
@@ -68,8 +106,8 @@ public class MixIdenOccurrence extends AntipatternOccurrence {
 	@Override
 	public String toString(){
 		String result = 
-				"Mixin: "+super.parser.getStringRepresentation(this.mixin) + "\n" +
-				"Identity Provider: "+super.parser.getStringRepresentation(this.identityProvider) + "\n" +
+				"MixinClass: "+super.parser.getStringRepresentation(this.mixin) + "\n" +
+				"Common Identity Provider: "+super.parser.getStringRepresentation(this.identityProvider) + "\n" +
 				"Subtypes: ";
 		
 		for (Classifier subtype : this.subtypes) {

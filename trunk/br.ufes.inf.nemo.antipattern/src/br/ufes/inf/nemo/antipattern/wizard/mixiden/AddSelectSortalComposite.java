@@ -56,14 +56,15 @@ public class AddSelectSortalComposite extends Composite {
 	private final String NEW = "New";
 	private int selectedRow;
 	private OntoUMLParser parser;
+	private boolean isEnabled;
 	
 	private ArrayList<Class<?>> allowedStereotypes;
 	private ArrayList<Classifier> existingClassifiers;	
 	
 	private ArrayList<Class<?>> allowedIpsStereotypes;
 	private ArrayList<Classifier> existingIps;	
-	
-	public AddSelectSortalComposite(Composite parent, int style, OntoUMLParser parser, ArrayList<Class<?>> allowedStereotypes, ArrayList<Class<?>> allowedIpsStereotypes) throws Exception {
+		
+	public AddSelectSortalComposite(Composite parent, int style, OntoUMLParser parser, ArrayList<Class<?>> allowedStereotypes, ArrayList<Class<?>> allowedIpsStereotypes, ArrayList<Classifier> forbiddenTypes) throws Exception {
 		super(parent, SWT.BORDER);
 		
 		if (parser==null)
@@ -77,8 +78,11 @@ public class AddSelectSortalComposite extends Composite {
 		this.allowedStereotypes = allowedStereotypes;
 		this.allowedIpsStereotypes = allowedIpsStereotypes;
 		this.enabledHashmap =  new HashMap<Object,Boolean>();
+		
 		this.existingClassifiers = getExistingClassifiersList(allowedStereotypes);
+		this.existingClassifiers.removeAll(forbiddenTypes);
 		this.existingIps = getExistingClassifiersList(allowedIpsStereotypes);
+		this.existingIps.removeAll(forbiddenTypes);
 		
 		table = new Table(this, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		table.setBounds(10, 102, 530, 113);
@@ -151,14 +155,16 @@ public class AddSelectSortalComposite extends Composite {
 		setComboStereotypeItems(comboStereotype,allowedStereotypes);
 		comboStereotype.setBounds(78, 37, 160, 21);
 		comboStereotype.addSelectionListener(combosListener);
+		comboStereotype.setEditable(false);
 		
 		comboIPStereotype = new CCombo(this, SWT.BORDER);
 		setComboStereotypeItems(comboIPStereotype,allowedIpsStereotypes);
 		comboIPStereotype.setBounds(380, 37, 160, 21);
 		comboIPStereotype.addSelectionListener(combosListener);
+		comboIPStereotype.setEditable(false);
 		
 		comboIP = new CCombo(this, SWT.BORDER);
-		setClassifierComboItems(existingClassifiers, comboIP);
+		setClassifierComboItems(existingIps, comboIP);
 		comboIP.setBounds(380, 10, 160, 21);
 		comboIP.addSelectionListener(combosListener);
 		comboIP.addListener(SWT.KeyUp, keyUpListener);
@@ -241,6 +247,7 @@ public class AddSelectSortalComposite extends Composite {
 			btnSaveInTable.setEnabled(canSave());
 		}
 	};
+	
     
 	private boolean canSave(){
 		return comboClassifier.getText()!=null && !comboClassifier.getText().trim().isEmpty() && 
@@ -254,8 +261,9 @@ public class AddSelectSortalComposite extends Composite {
 		if(existingClass==null || existingClass.size()==0 || combo==null)
 			return;
 		
-		for (Classifier classifier : existingClass)
-			combo.add(classifier.getName());
+		for (Classifier classifier : existingClass){
+				combo.add(classifier.getName());
+		}
 		
 		return;
 	}
@@ -289,20 +297,29 @@ public class AddSelectSortalComposite extends Composite {
 		}
 	}
 	
-	@Override
-	public void setEnabled(boolean b){
+
+	public void setAllEnabled(boolean b){
 		
-		if(b==false){
+		System.out.println("isEnabled: "+isEnabled);
+		System.out.println("b: "+b);
+		
+		if(isEnabled && b==false){
+			isEnabled = false;
 			saveAllEnabled();
 			setAllDisabled();
 		}
-		else{
+		else if(!isEnabled && b==true){
+			isEnabled = true;
 			if(hashContainAllComponents())
 				recoverAllEnabled();
 			else
 				setDefaultEnabled();
 		}
 		
+	}
+	
+	public boolean isAllEnabled(){
+		return isEnabled;
 	}
 	
 	private boolean hashContainAllComponents(){
@@ -314,20 +331,28 @@ public class AddSelectSortalComposite extends Composite {
 		btnSaveInTable.setEnabled(false);
 		btnDeleteFromTable.setEnabled(false);
 		btnNew.setEnabled(false);
+		
 		comboClassifier.setEnabled(false);
 		comboStereotype.setEnabled(false);
 		comboIP.setEnabled(false);
 		comboIPStereotype.setEnabled(false);
+		
+		table.setEnabled(false);
 	}
 	
 	private void setDefaultEnabled(){
 		btnSaveInTable.setEnabled(false);
 		btnDeleteFromTable.setEnabled(true);
 		btnNew.setEnabled(true);
+		
 		comboClassifier.setEnabled(true);
 		comboStereotype.setEnabled(true);
 		comboIP.setEnabled(true);
 		comboIPStereotype.setEnabled(true);
+		
+		table.setEnabled(true);
+		
+		this.isEnabled = true;
 	}
 	
 	private void saveAllEnabled(){
@@ -366,8 +391,8 @@ public class AddSelectSortalComposite extends Composite {
 			comboStereotype.setEnabled(false);
 			autoSelectItem(comboStereotype);
 		}
-		
-		comboStereotype.setEnabled(true);
+		else
+			comboStereotype.setEnabled(true);
 	}
 	
 	private void resetCombo(CCombo combo){
@@ -485,7 +510,7 @@ public class AddSelectSortalComposite extends Composite {
 		}
 		
 		for (Class<?> stereotype : allowedIpsStereotypes) {
-			if(getStereotypeName(stereotype).compareTo(sortalStereotypeName)==0){
+			if(getStereotypeName(stereotype).compareTo(identityProviderName)==0){
 				identityProviderStereotype = stereotype;
 				break;
 			}
