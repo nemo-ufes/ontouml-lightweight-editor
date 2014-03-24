@@ -59,7 +59,7 @@ public class CreateDataTypeComposite extends Composite {
 		
 		lblSource = new Label(this, SWT.NONE);
 		lblSource.setBounds(10, 80, 341, 15);
-		lblSource.setText(""+up.getGeneral().getName());
+		lblSource.setText("Atributes of "+up.getGeneral().getName()+":");
 		
 		typeList = new Combo(this, SWT.READ_ONLY);
 		typeList.setItems(new String[] {"Primitive type", "Data type", "Enumeration"});
@@ -106,11 +106,11 @@ public class CreateDataTypeComposite extends Composite {
 			 }
 		});		
 		
-		sourceTable = new AttrTable(this, SWT.BORDER, ((RefOntoUML.Class)up.getGeneral()).getOwnedAttribute());
-		sourceTable.getTable().setBounds(10, 106, 462, 97);
+		sourceTable = new AttrTable(this, SWT.BORDER | SWT.V_SCROLL , ((RefOntoUML.Class)up.getGeneral()).getOwnedAttribute());
+		sourceTable.getTable().setBounds(10, 106, 462, 136);
 		
 //		Composite composite = new Composite(this, SWT.NONE);
-//		composite.setBounds(10, 106, 462, 97);		
+//		composite.setBounds(10, 106, 462, 136);		
 	}
 
 	public void enable(boolean value)
@@ -128,13 +128,18 @@ public class CreateDataTypeComposite extends Composite {
 		btnSourceCreate.setEnabled(value);
 	}
 	
-	public HashMap<String,String> getSourceMapType()
+	public HashMap<String,String> getValues()
 	{
 		return sourceTable.getValues();
 	}
 	
-	public HashMap<String,String> getSourceMapStereo()
+	public HashMap<String,String> getStereotypes()
 	{
 		return sourceTable.getStereotypes();
+	}
+	
+	public HashMap<String,String> getCardinalities()
+	{
+		return sourceTable.getCardinalities();
 	}
 }

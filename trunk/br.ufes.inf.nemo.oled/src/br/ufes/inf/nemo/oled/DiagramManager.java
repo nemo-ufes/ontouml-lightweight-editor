@@ -785,6 +785,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if (obj instanceof RefOntoUML.GeneralizationSet){
 				updateOLEDFromInclusion((RefOntoUML.Element)obj);
 			}
+			if(obj instanceof RefOntoUML.Property){				
+				updateOLEDFromInclusion((RefOntoUML.Element)obj);
+			}
 		}				
 		for(Object obj: fix.getModified())
 		{

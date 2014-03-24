@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.antipattern.wizard.undefphase;
 
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
@@ -19,10 +20,9 @@ public class UndefPhaseRefactoringPage extends RefactoringPage {
 		this.up = up;
 				
 		setTitle(UndefPhaseAntipattern.getAntipatternInfo().acronym+" Refactoring Options");
-//		setDescription("The follwing options can be used to refactor the Formal relationship: "+up.getSource().getName()+" -> "+uf.getTarget().getName());
 	}
 
-	public UndefPhaseWizard getUndefFormalWizard(){
+	public UndefPhaseWizard getUndefPhaseWizard(){
 		return ( UndefPhaseWizard)getWizard();
 	}	
 	
@@ -31,6 +31,15 @@ public class UndefPhaseRefactoringPage extends RefactoringPage {
 		Composite container = new Composite(parent, SWT.NONE);
 				
 		setControl(container);
+	}
+	
+	@Override
+	public IWizardPage getNextPage() 
+	{
+		getUndefPhaseWizard().removeAllActions();
+		
+		
+		return getUndefPhaseWizard().getFinishing();		
 	}
 }
 		

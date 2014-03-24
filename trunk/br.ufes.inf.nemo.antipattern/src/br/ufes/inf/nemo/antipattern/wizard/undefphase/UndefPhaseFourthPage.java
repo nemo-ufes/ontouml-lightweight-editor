@@ -1,12 +1,18 @@
 package br.ufes.inf.nemo.antipattern.wizard.undefphase;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
+import java.util.ArrayList;
 
+import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+
+import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
 
 public class UndefPhaseFourthPage  extends UndefPhasePage{
 	
@@ -14,6 +20,7 @@ public class UndefPhaseFourthPage  extends UndefPhasePage{
 	private Label lblPhasesCanAlso;
 	private Button btnNo;
 	private Button btnYes;
+	private CreateModeComposite createModeComposite;
 	
 	/**
 	 * Create the wizard.
@@ -43,5 +50,43 @@ public class UndefPhaseFourthPage  extends UndefPhasePage{
 		btnYes = new Button(container, SWT.RADIO);
 		btnYes.setBounds(10, 102, 554, 16);
 		btnYes.setText("Yes");
+		
+		createModeComposite = new CreateModeComposite(container, SWT.NONE, (UndefPhaseOccurrence) up);
+		createModeComposite.setBounds(10, 134, 554, 215);
+		createModeComposite.setVisible(false);
+		SelectionAdapter listener = new SelectionAdapter() {
+		      public void widgetSelected(SelectionEvent e) {
+		    	  if(btnYes.getSelection()) createModeComposite.setVisible(true);
+		    	  if(btnNo.getSelection()) createModeComposite.setVisible(false);
+		      }
+		};				
+		btnNo.addSelectionListener(listener);
+		btnYes.addSelectionListener(listener);
+	}
+	
+	@Override
+	public IWizardPage getNextPage() {
+		if(btnYes.getSelection())
+		{
+			ArrayList<String> names = new ArrayList<String>();
+			ArrayList<String> cardinalities = new ArrayList<String>();
+			names.addAll(createModeComposite.getValues().keySet());
+			cardinalities.addAll(createModeComposite.getValues().values());
+			ArrayList<Classifier> phases = createModeComposite.getPhases();
+			
+			//Action =============================
+			UndefPhaseAction newAction = new UndefPhaseAction(up);			
+			newAction.setCreateModes(names, cardinalities,phases);
+			getUndefPhaseWizard().replaceAction(0,newAction);	
+			//======================================
+			
+			return getUndefPhaseWizard().getFinishing();
+		}
+		if(btnNo.getSelection())
+		{
+			return getUndefPhaseWizard().getFifthPage();
+		}
+		
+		return getUndefPhaseWizard().getFinishing();
 	}
 }

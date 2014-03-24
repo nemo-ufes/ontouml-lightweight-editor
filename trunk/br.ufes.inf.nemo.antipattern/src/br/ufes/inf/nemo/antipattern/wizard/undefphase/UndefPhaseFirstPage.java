@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.antipattern.wizard.undefphase;
 
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
@@ -62,5 +63,19 @@ public class UndefPhaseFirstPage extends UndefPhasePage{
 		btnNo = new Button(container, SWT.RADIO);
 		btnNo.setBounds(10, 220, 554, 16);
 		btnNo.setText("No");
+	}
+	
+	@Override
+	public IWizardPage getNextPage() {
+		if(btnYes.getSelection())
+		{
+			return getUndefPhaseWizard().getSecondPage();
+		}
+		if(btnNo.getSelection())
+		{
+			return getUndefPhaseWizard().getFourthPage();
+		}
+		
+		return getUndefPhaseWizard().getFinishing();
 	}
 }

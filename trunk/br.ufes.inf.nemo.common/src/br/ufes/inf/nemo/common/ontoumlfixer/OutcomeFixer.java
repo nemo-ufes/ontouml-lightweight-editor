@@ -237,6 +237,18 @@ public class OutcomeFixer{
 		return fix;
 	}
 	
+	public static String getPropertyMultiplicity(Property property)
+	{
+		String strUpper = new String();
+		String strLower = new String();
+		int upper = property.getUpper();
+		int lower = property.getLower();		
+		if(upper==-1) strUpper = "*";
+		if(lower==-1) strLower = "*";
+		if(upper==lower) return strUpper;
+		else return strLower+".."+strUpper;		
+	}
+	
 	/** Change a property multiplicity from the format: 1..*, 0..*, 0..-1, 1, 3, and so on and so forth */	
 	public Fix changePropertyMultiplicity(Property property, String multiplicity) 
 	{

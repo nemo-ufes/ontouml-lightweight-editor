@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 
 public class AttrTable  {
 
@@ -54,7 +55,7 @@ public class AttrTable  {
 			tableWidth+=tc.getWidth();
 		}
 			
-		table.setSize(240, 82);
+		table.setSize(388, 129);
 		
 		addExistentAttributes();
 	}
@@ -63,7 +64,7 @@ public class AttrTable  {
 		return properties;
 	}
 
-	public void addNewPrimitiveType(String str, String type, String cardinality)
+	public void addNewPrimitiveType(String str, String type, String mult)
 	{
 		TableItem item = new TableItem(table, SWT.NONE);
 		
@@ -78,19 +79,21 @@ public class AttrTable  {
 
 		item.setText(1,type);
 		
-		item.setText(2,"<<PrimitiveType>>");
+		item.setText(2,"(PrimitiveType)");
+		
+		item.setText(3,mult);
 		
 		getTable().select(getTable().getItemCount()-1);
 	}
 	
-	public void addNewDataType(String str, String type, String cardinality)
+	public void addNewDataType(String str, String type, String mult)
 	{
 		TableItem item = new TableItem(table, SWT.NONE);
 		
 		TableEditor editor = new TableEditor(table);
 	    editor.grabHorizontal = true;
 		editor.horizontalAlignment = SWT.CENTER;
-		item.setText(0,str);
+		item.setText(0,str);		
 		
 		editor = new TableEditor(table);			
 		editor.grabHorizontal = true;
@@ -98,11 +101,14 @@ public class AttrTable  {
 
 		item.setText(1,type);
 		
-		item.setText(2,"<<DataType>>");
+		item.setText(2,"(DataType)");
+		
+		item.setText(3,mult);
+		
 		getTable().select(getTable().getItemCount()-1);
 	}	
 	
-	public void addNewEnumeration(String str, String type, String cardinality)
+	public void addNewEnumeration(String str, String type, String mult)
 	{
 		TableItem item = new TableItem(table, SWT.NONE);
 		
@@ -117,7 +123,10 @@ public class AttrTable  {
 
 		item.setText(1,type);
 		
-		item.setText(2,"<<Enumeration>>");
+		item.setText(2,"(Enumeration)");
+		
+		item.setText(3,mult);
+		
 		getTable().select(getTable().getItemCount()-1);
 	}
 	
@@ -149,8 +158,11 @@ public class AttrTable  {
 			editor.horizontalAlignment = SWT.CENTER;
 			items[i].setText(1,properties.get(i).getType().getName());
 			
-			items[i].setText(2,"<<"+getStereotype(properties.get(i).getType())+">>");
+			items[i].setText(2,"("+getStereotype(properties.get(i).getType())+")");
 			
+			String mult = OutcomeFixer.getPropertyMultiplicity(properties.get(i));
+			items[i].setText(3,mult);
+						
 			attrMap.put(properties.get(i).getName(), properties.get(i).getType().getName());
 		}		
 	}
@@ -191,7 +203,22 @@ public class AttrTable  {
 			String type = ti.getText(2);			
 			if (name!= null && !name.isEmpty() && type!=null && !type.isEmpty()){
 				if (attrMap.get(name)==null){
-					map.put(name,type.replace("<<","").replace(">>",""));	
+					map.put(name,type.replace("(","").replace(")",""));	
+				}
+			}
+		}
+		return map;
+	}
+	
+	public HashMap<String,String>  getCardinalities()
+	{
+		HashMap<String,String> map = new HashMap<String,String>();
+		for (TableItem ti : table.getItems()){	
+			String name = ti.getText(0);
+			String mult = ti.getText(3);			
+			if (name!= null && !name.isEmpty() && mult!=null && !mult.isEmpty()){
+				if (attrMap.get(name)==null){
+					map.put(name,mult);	
 				}
 			}
 		}
