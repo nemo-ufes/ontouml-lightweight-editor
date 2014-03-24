@@ -10,10 +10,11 @@ import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 
 public class MixRigAction extends AntiPatternAction<MixRigOccurrence>{
 
-	public enum Action {CHANGE_MIXIN_STEREOTYPE, ADD_SUBTYPES};
+	public enum Action {CHANGE_MIXIN_STEREOTYPE, CHANGE_SUBSTYPES_STEREOTYPE, ADD_SUBTYPES};
 	
 	public ArrayList<Classifier> existingSubtypes;
 	public HashMap<String, Class<?>> newTypes;
+	public HashMap<Classifier, Class<?>> modifiedSubtypes;
 	
 	public MixRigAction(MixRigOccurrence ap) {
 		super(ap);
@@ -23,6 +24,9 @@ public class MixRigAction extends AntiPatternAction<MixRigOccurrence>{
 	public void run() {
 		if(code==Action.CHANGE_MIXIN_STEREOTYPE){
 			ap.changeMixinStereotype();
+		}
+		if(code==Action.CHANGE_SUBSTYPES_STEREOTYPE){
+			ap.changeSubtypesStereotype(modifiedSubtypes);
 		}
 		else if(code==Action.ADD_SUBTYPES) {
 			if(existingSubtypes!=null && existingSubtypes.size()>0)
@@ -34,14 +38,25 @@ public class MixRigAction extends AntiPatternAction<MixRigOccurrence>{
 	
 	public void setChangeMixinStereotype(){
 		code = Action.CHANGE_MIXIN_STEREOTYPE;
+		this.existingSubtypes = null;
+		this.newTypes = null;
+		this.modifiedSubtypes = null;
+	}
+	
+	public void setChangeSubtypesStereotype(HashMap<Classifier, Class<?>> modifiedSubtypes){
+		code = Action.CHANGE_SUBSTYPES_STEREOTYPE;
+		this.modifiedSubtypes = modifiedSubtypes;
+		this.existingSubtypes = null;
+		this.newTypes = null;
 	}
 	
 	public void setAddSubtypes(ArrayList<Classifier> existingSubtypes, HashMap<String, Class<?>> newTypes){
 		code = Action.ADD_SUBTYPES;
 		this.existingSubtypes = existingSubtypes;
 		this.newTypes = newTypes;
+		this.modifiedSubtypes = null;
 	}
-		
+	
 	@Override
 	public String toString(){
 		String result = new String();
@@ -52,6 +67,11 @@ public class MixRigAction extends AntiPatternAction<MixRigOccurrence>{
 			else
 				result += "«RoleMixin»";
 		}
+		else if(code==Action.CHANGE_SUBSTYPES_STEREOTYPE){
+			for (Classifier subtype : modifiedSubtypes.keySet()) {
+				result += "Change Class: Change stereotype of <"+ap.getMixin().getName()+"> to «"+getStereotypeName(modifiedSubtypes.get(subtype))+"»\n";
+			}
+		}
 		else if(code==Action.ADD_SUBTYPES){
 			
 			for (Classifier subtype : existingSubtypes)
@@ -61,7 +81,6 @@ public class MixRigAction extends AntiPatternAction<MixRigOccurrence>{
 				result+="Add Class: «"+getStereotypeName(newTypes.get(name))+"» "+name+"\n";;
 				result+="Add Generalization: from "+name+" to "+ap.getMixin().getName()+"\n";;
 			}
-			
 		}
 		
 		return result;

@@ -18,9 +18,11 @@ import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
 
 public class MixRigWizard extends AntipatternWizard {
-
+	
 	public MixRigFirstPage firstPage;
 	public MixRigSecondPage secondPage;
+	public MixRigThirdPage thirdPage;
+	
 	protected String subtypesRigidity, oppositeRigidity, mixinName;
 	
 	public MixRigWizard(MixRigOccurrence mixRig) {
@@ -44,6 +46,7 @@ public class MixRigWizard extends AntipatternWizard {
 	{
 		firstPage = new MixRigFirstPage(getAp());
 		secondPage = new MixRigSecondPage(getAp());
+		thirdPage = new MixRigThirdPage(getAp());
 		
 		finishing = new FinishingPage();
 		options = new MixRigRefactoringPage(getAp());
@@ -59,6 +62,7 @@ public class MixRigWizard extends AntipatternWizard {
 		addPage(presentation);	
 		addPage(firstPage);
 		addPage(secondPage);
+		addPage(thirdPage);
 		addPage(options);
 		addPage(finishing);
 	}
@@ -72,9 +76,13 @@ public class MixRigWizard extends AntipatternWizard {
 		return firstPage;
 	}
 	
-	public MixRigSecondPage getSecondPage()
-	{
+	public MixRigSecondPage getSecondPage() {
 		return secondPage;
+	}
+
+	public MixRigThirdPage getThirdPage()
+	{
+		return thirdPage;
 	}
 
 	@Override

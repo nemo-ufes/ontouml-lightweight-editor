@@ -19,7 +19,8 @@ import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
 
 public class MixIdenWizard extends AntipatternWizard {
-
+	
+	//TODO: ADD PAGE TO CHANGE THE CURRENT SUBTYPES IDENTITY PROVIDERS
 	public MixIdenFirstPage firstPage;
 	public MixIdenSecondPage secondPage;
 	protected String mixinName, mixinRigidity, mixinStereotype;
