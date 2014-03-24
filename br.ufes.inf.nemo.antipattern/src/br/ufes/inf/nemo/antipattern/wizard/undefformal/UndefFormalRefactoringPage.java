@@ -113,6 +113,8 @@ public class UndefFormalRefactoringPage extends RefactoringPage {
 	@Override
 	public IWizardPage getNextPage() 
 	{
+		(getUndefFormalWizard()).removeAllActions();	
+		
 		if (list.getSelectionIndex()==0){
 			// do nothing
 		}

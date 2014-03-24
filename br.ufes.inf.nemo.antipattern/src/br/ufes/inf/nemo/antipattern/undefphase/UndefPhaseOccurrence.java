@@ -4,11 +4,18 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Characterization;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import RefOntoUML.PackageableElement;
 import RefOntoUML.Phase;
+import RefOntoUML.Property;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class UndefPhaseOccurrence extends AntipatternOccurrence {
@@ -90,6 +97,95 @@ public class UndefPhaseOccurrence extends AntipatternOccurrence {
 	@Override
 	public String getShortName() {
 		return parser.getStringRepresentation(general);
+	}
+
+	//=======================================================
+	// OUTCOMING FIXES 
+	//======================================================
+	
+	public void createAttributes(ArrayList<String> names, ArrayList<String> type, ArrayList<String> stereotype, ArrayList<String> cardinalities) 
+	{
+		int i=0;
+		for(String attrName: names)
+		{
+			Fix partial = new Fix();
+			if (stereotype.get(i).equals("PrimitiveType")) partial.addAll(fixer.createAttribute(getGeneral(), attrName, ClassStereotype.PRIMITIVETYPE, type.get(i)));
+			if (stereotype.get(i).equals("DataType")) partial.addAll(fixer.createAttribute(getGeneral(), attrName, ClassStereotype.DATATYPE, type.get(i)));
+			
+			Property attr = null;
+			for(Object obj: partial.getAdded()){ if (obj instanceof Property) attr = (Property)obj; } 
+			fix.addAll(partial);
+			
+			//change cardinality
+			if(attr!=null){
+				fix.addAll(fixer.changePropertyMultiplicity(attr, cardinalities.get(i)));
+			}
+						
+			i++;
+		}	
+	}
+
+	public void createOclDerivationRules(String text) 
+	{
+		fix.includeRule(text);
+	}
+
+	public void createModes(ArrayList<String> names, ArrayList<String> cardinalities, ArrayList<Classifier> phases) 
+	{
+		int i=0;
+		for(String modeName: names)
+		{
+			//create mode
+			PackageableElement newmode = fixer.createClass(ClassStereotype.MODE);
+			newmode.setName(modeName);
+			fixer.copyContainer(phases.get(i),newmode);
+			fix.includeAdded(newmode);
+			
+			//create characterization from mode to phase
+			Fix partial = fixer.createAssociationBetween(RelationStereotype.CHARACTERIZATION, "", (Type)newmode, (Type)phases.get(i));
+			Characterization chr=null;
+			for(Object obj: partial.getAdded()) { if(obj instanceof Characterization) chr = (Characterization)obj; }
+			fix.addAll(partial);
+			
+			//change cardinality
+			if (chr!=null) {
+				fix.addAll(fixer.changePropertyMultiplicity(chr.getMemberEnd().get(0), cardinalities.get(i)));
+			}
+						
+			i++;
+		}		
+		
+		// include derivation by exclusion...
+		if(!phases.containsAll(getPhases()))
+		{
+			for(Classifier c: getPhases())
+			{
+				if(!phases.contains(c))
+				{
+					String rule = "context _'"+c.getName()+"' :: allInstances() : Set(_'"+c.getName()+")"+"\n"+					
+					"body : _'"+getGeneral().getName()+"'.allInstances()->select (x | not (";
+					int j=0;
+					for(Classifier c2: getPhases()){
+						if(!c2.equals(c)){
+							if(j==getPhases().size()-1) rule+="x.oclIsTypeOf(_'"+c2.getName()+"') ";
+							else rule+="x.oclIsTypeOf(_'"+c2.getName()+"') or ";
+						}
+						j++;
+					}
+					rule+=")\n";
+					fix.includeRule(rule);
+				}
+			}
+		}
+	}
+
+	public void changeStereotypes(ArrayList<String> stereotype) 
+	{	
+		int i=0;
+		for(String stereo: stereotype){
+			fix.addAll(fixer.changeClassStereotypeTo(getPhases().get(i), fixer.getClassStereotype(stereo)));
+			i++;
+		}		
 	}
 
 }

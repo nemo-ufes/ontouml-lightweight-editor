@@ -138,7 +138,7 @@ public class PaletteAccordion extends JPanel{
 
 	private void createPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
-		Palette palette =  new Palette(this, "Derivation Types Patterns");
+		Palette palette =  new Palette(this, "Derived Types Patterns");
 		palette.createElement("staticpalette.classes", "select");
 		//palette.addSpacer(0,PALLETE_VSPACE);
 		palette.createElement("staticpalette.patterns", "derivationbyunion");
@@ -178,10 +178,10 @@ public class PaletteAccordion extends JPanel{
 		
 		palette.addCommandListener(editorDispatcher);
 		
-		paletteMap.put("Derivation Types Patterns", palette);
+		paletteMap.put("Derived Types Patterns", palette);
 
 		if(openPalette == null)
-			openPalette = "Derivation Types Patterns";
+			openPalette = "Derived Types Patterns";
 	}
 	
 	private void createStaticClassesPalette(DiagramEditorCommandDispatcher editorDispatcher)
