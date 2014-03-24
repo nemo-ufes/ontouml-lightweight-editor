@@ -5,109 +5,112 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigOccurrence;
 
-public class MixRigSecondPage extends MixRigPage{
+public class MixRigThirdPage  extends MixRigPage {
 
 	//GUI
+	AddSelectTypeComposite addSelect;
 	private Button btnYes;
-	private Button btnNo;
-	private ChangeSubtypeRigidityComposite tableComposite;
+	private Button btnNo;	
 	
 	private SelectionAdapter listener = new SelectionAdapter() {
 		
 		public void widgetSelected(SelectionEvent event) {
-						
-			if (btnYes.getSelection()){
-				tableComposite.setEnabledToAllContents(false);
-				setPageComplete(true);
-			}
 			if(btnNo.getSelection()){
-				tableComposite.setEnabledToAllContents(true);
-				if(tableComposite.getModifiedSubtypes().size()>0)
+				addSelect.setEnabled(true);
+				if(addSelect.getSelectedClassifier().size()+addSelect.getNewClassifiers().size()>0)
+					setPageComplete(true);
+				else
+					setPageComplete(false);
+			}
+			if(btnYes.getSelection()){
+				setPageComplete(true);
+				addSelect.setEnabled(false);
+			}
+		}
+	};
+	
+	private SelectionAdapter addRemoveListener = new SelectionAdapter() {
+		
+		public void widgetSelected(SelectionEvent event) {
+			if(btnNo.getSelection()){
+				addSelect.setEnabled(true);
+				if(addSelect.getSelectedClassifier().size()+addSelect.getNewClassifiers().size()>0)
 					setPageComplete(true);
 				else
 					setPageComplete(false);
 			}
 		}
 	};
-	
-	private SelectionListener comboListener = new SelectionAdapter(){
-	
-		@Override
-		public void widgetSelected(SelectionEvent event) {
-        	System.out.println("Called composite listener");
-        	if(btnNo.getSelection()){
-        		System.out.println("No is Selected!");
-        		System.out.println("Modif. Subt: "+tableComposite.getModifiedSubtypes().size());
-        		if(tableComposite.getModifiedSubtypes().size()>0)
-        			setPageComplete(true);
-    			else
-    				setPageComplete(false);			
-        	}
-				
-		}
-	};
-	
-	public MixRigSecondPage(MixRigOccurrence mixRig) {
+		
+	private Label lblSelectExistingTypes;
+		
+	public MixRigThirdPage(MixRigOccurrence mixRig) {
 		super(mixRig);	
 	}
-		
+	
 	/**
 	 * Create contents of the wizard.
 	 * @param parent
 	 */
 	public void createControl(Composite parent) {
 		
-		
 		setTitle(MixRigAntipattern.getAntipatternInfo().getName());
 		setDescription("Mixin: "+mixRig.getMixin().getName()+"\r\nSubtypes: "+getSubtypeList(3));
 		
 		Composite container = new Composite(parent, SWT.NULL);
-		setControl(container);
+		setControl(container);	
 		
 		setPageComplete(false);
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
-		styledText.setBounds(10, 10, 554, 35);
-		styledText.setText(	"Is the rigidity meta-property of all subtypes of "+mixRig.getMixin().getName()+" correct? If not, use the table below to change the stereotype:");
+		styledText.setBounds(10, 10, 554, 30);
+		styledText.setText("Are all "+getMixRigWizard().oppositeRigidity+" subtypes of "+getMixRigWizard().mixinName+" OUT of the scope of the ontology?");
 		styledText.setJustify(true);
 		styledText.setBackground(styledText.getParent().getBackground());
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 51, 554, 16);
+		btnYes.setBounds(10, 46, 39, 16);
 		btnYes.setText("Yes");
 		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 73, 554, 16);
+		btnNo.setBounds(10, 68, 39, 16);
 		btnNo.setText("No");
 		btnNo.addSelectionListener(listener);
+
+		try {
+			addSelect = new AddSelectTypeComposite(container, SWT.BORDER, mixRig.getParser(), getMixRigWizard().allowedStereotypes(),addRemoveListener);
+			addSelect.setBounds(10, 121, 554, 255);
+			addSelect.setEnabled(false);
+			
+			lblSelectExistingTypes = new Label(container, SWT.NONE);
+			lblSelectExistingTypes.setBounds(10, 100, 509, 15);
+			lblSelectExistingTypes.setText("If No, please select existing types or create new ones using the table below:");
+		} catch (Exception e) {
+			System.out.println("ERROR!");
+		}
 		
-		tableComposite = new ChangeSubtypeRigidityComposite(container, SWT.NONE, mixRig, getMixRigWizard().allowedStereotypes(), comboListener);
-		tableComposite.setBounds(10, 103, 569, 168);
-		tableComposite.setEnabledToAllContents(false);
 	}
 	
 	@Override
 	public IWizardPage getNextPage() 
 	{	
 		getMixRigWizard().removeAllActions();
-		
-		if(btnYes.getSelection())
-			return getMixRigWizard().getThirdPage();
+
 		if(btnNo.getSelection()) {
 			MixRigAction action = new MixRigAction(mixRig);
-			action.setChangeSubtypesStereotype(tableComposite.getModifiedSubtypes());
+			action.setAddSubtypes(addSelect.getSelectedClassifier(), addSelect.getNewClassifiers());
 			getMixRigWizard().addAction(0, action);
-			return getMixRigWizard().getFinishing();
 		}
 		
-		return super.getNextPage();
+		return getMixRigWizard().getFinishing();
+	
 	}
 }

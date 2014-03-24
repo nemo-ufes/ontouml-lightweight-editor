@@ -137,9 +137,10 @@ public class AddSelectTypeComposite extends Composite {
 	 * @param <T>
 	 * @param parent
 	 * @param style
+	 * @param addRemoveListener 
 	 * @throws Exception 
 	 */
-	public AddSelectTypeComposite(Composite parent, int style, OntoUMLParser parser, ArrayList<Class<?>> allowedStereotypes) throws Exception {
+	public AddSelectTypeComposite(Composite parent, int style, OntoUMLParser parser, ArrayList<Class<?>> allowedStereotypes, SelectionAdapter addRemoveListener) throws Exception {
 		super(parent, SWT.BORDER);
 		
 		if (parser==null)
@@ -174,14 +175,16 @@ public class AddSelectTypeComposite extends Composite {
 		btnDeleteFromTable.setBounds(432, 72, 108, 25);
 		btnDeleteFromTable.setText("Delete From Table");
 		btnDeleteFromTable.addSelectionListener(btnDeleteToTableListener);
+		btnDeleteFromTable.addSelectionListener(addRemoveListener);
 		btnDeleteFromTable.setEnabled(true);
 		
 		btnAddToTable = new Button(this, SWT.NONE);
 		btnAddToTable.setBounds(318, 72, 108, 25);
 		btnAddToTable.setText("Add To Table");
 		btnAddToTable.addSelectionListener(btnAddToTableListener);
+		btnAddToTable.addSelectionListener(addRemoveListener);
 		btnAddToTable.setEnabled(false);
-		
+				
 		btnNew = new Button(this, SWT.NONE);
 		btnNew.setBounds(204, 72, 108, 25);
 		btnNew.setText("New");

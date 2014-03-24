@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.antipattern.mixrig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -132,5 +133,16 @@ public class MixRigOccurrence extends AntipatternOccurrence {
 		for (String name : newSubtypes.keySet()) {
 			fix.addAll(fixer.createSubTypeAs(mixin, OutcomeFixer.getClassStereotype(newSubtypes.get(name)), name));
 		}
+	}
+
+	public void changeSubtypesStereotype(HashMap<Classifier, Class<?>> modifiedSubtypes) {
+		
+		Iterator<Classifier> iterator = modifiedSubtypes.keySet().iterator();
+		
+		while(iterator.hasNext()){
+			Classifier subtype = iterator.next();
+			fix.addAll(fixer.changeClassStereotypeTo(subtype, OutcomeFixer.getClassStereotype(modifiedSubtypes.get(subtype))));
+		}
+		
 	}
 }
