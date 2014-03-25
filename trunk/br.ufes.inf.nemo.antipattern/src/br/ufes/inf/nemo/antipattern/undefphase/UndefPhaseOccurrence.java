@@ -14,6 +14,7 @@ import RefOntoUML.Property;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -183,9 +184,11 @@ public class UndefPhaseOccurrence extends AntipatternOccurrence {
 	{	
 		int i=0;
 		for(String stereo: stereotype){
-			fix.addAll(fixer.changeClassStereotypeTo(getPhases().get(i), fixer.getClassStereotype(stereo)));
+			if(OutcomeFixer.getStereotype(getPhases().get(i)).compareToIgnoreCase(stereo)!=0){		
+				fix.addAll(fixer.changeClassStereotypeTo(getPhases().get(i), fixer.getClassStereotype(stereo)));
+			}
 			i++;
-		}		
+		}
 	}
 
 }

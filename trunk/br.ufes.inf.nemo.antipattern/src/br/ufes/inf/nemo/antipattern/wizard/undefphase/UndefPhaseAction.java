@@ -97,7 +97,9 @@ public class UndefPhaseAction extends AntiPatternAction< UndefPhaseOccurrence>{
 		{
 			int i=0;
 			for(String str: stereotype){
-				result+="Change <<phase>> "+ap.getPhases().get(i).getName()+" to <<"+str+">>\n";
+				if(AttrTable.getStereotype(ap.getPhases().get(i)).compareToIgnoreCase(str)!=0){
+					result+="Change <<phase>> "+ap.getPhases().get(i).getName()+" to <<"+str+">>\n";
+				}
 				i++;
 			}
 		}
