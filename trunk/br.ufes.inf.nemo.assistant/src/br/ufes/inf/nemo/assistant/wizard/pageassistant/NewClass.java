@@ -3,7 +3,8 @@ package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 import java.io.Serializable;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -42,10 +43,10 @@ public class NewClass extends WizardPageAssistant implements Serializable {
 		lblClassName.setText("Class Name");
 
 		tfClassName = new Text(container, SWT.BORDER);
-		tfClassName.addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+		tfClassName.addModifyListener(new ModifyListener() {
 			@Override
-			public void focusLost(FocusEvent arg0) {
-				enableFinish(false);
+			public void modifyText(ModifyEvent arg0) {
+				enableFinish(isEndPage);
 			}
 		});
 		tfClassName.setBounds(110, 63, 180, 21);
@@ -69,9 +70,6 @@ public class NewClass extends WizardPageAssistant implements Serializable {
 		warning.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
 		warning.setBounds(294, 59, 17, 25);
 		warning.setText("!");
-
-		if(isEndPage)
-			enableFinish(true);
 	}
 
 	public void setStereotypes(String[] sts){
@@ -134,5 +132,13 @@ public class NewClass extends WizardPageAssistant implements Serializable {
 	public void init() {
 		setTitle("New Class");
 		setDescription("Creating a new Class");
+	}
+
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		if(visible){
+			enableFinish(isEndPage);
+		}
 	}
 } 

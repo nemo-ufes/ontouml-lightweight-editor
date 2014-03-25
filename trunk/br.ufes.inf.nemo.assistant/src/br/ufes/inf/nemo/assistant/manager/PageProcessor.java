@@ -36,11 +36,17 @@ public class PageProcessor{
 		fix = f;
 	}
 	
+	private Classifier startedClass;
 	private Classifier source;
-	public void setSourceClass(Classifier source) {
+	public void setSource(Classifier source) {
 		this.source = source; 
+		this.startedClass = source;
 	}
-
+	
+	public Classifier getStartedClass() {
+		return startedClass;
+	}
+	
 	private PatternOperator patternOperator;
 	public PageProcessor(PatternOperator operator) {
 		patternOperator = operator;

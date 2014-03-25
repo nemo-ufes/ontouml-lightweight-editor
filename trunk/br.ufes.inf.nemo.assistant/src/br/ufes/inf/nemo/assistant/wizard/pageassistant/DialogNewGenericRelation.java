@@ -3,7 +3,9 @@ package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -12,7 +14,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.layout.GridData;
 
 
 public class DialogNewGenericRelation extends TitleAreaDialog{
@@ -37,14 +38,14 @@ public class DialogNewGenericRelation extends TitleAreaDialog{
 	public void setTargetClasses(String[] targetClasses) {
 		this.targetClasses = targetClasses;
 	}
-	
+
 	private Text TrelationName;
 	private Text TsrcMinCard;
 	private Text TsrcMaxCard;
 	private Text TtrgMinCard;
 	private Text TtrgMaxCard;
 	private Combo cbClasses;
-	
+
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
@@ -57,7 +58,7 @@ public class DialogNewGenericRelation extends TitleAreaDialog{
 		Label srcClsNameMinCard;
 		Label srcClsName;
 		Label relationStereotype;
-		
+
 		srcClsName = new Label(container, SWT.NONE);
 		srcClsName.setBounds(185, 10, 359, 15);
 
@@ -97,7 +98,7 @@ public class DialogNewGenericRelation extends TitleAreaDialog{
 		if(targetClasses != null){
 			cbClasses.setItems(targetClasses);
 		}
-		
+
 		Label label_1 = new Label(container, SWT.NONE);
 		label_1.setText("min");
 		label_1.setFont(SWTResourceManager.getFont("Arial", 9, SWT.BOLD));
@@ -130,14 +131,10 @@ public class DialogNewGenericRelation extends TitleAreaDialog{
 		relationStereotype.setText("<relationStereotype>");
 
 		TrelationName = new Text(container, SWT.BORDER);
-		TrelationName.addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+		TrelationName.addModifyListener(new ModifyListener() {
 			@Override
-			public void focusLost(FocusEvent arg0) {
-				if(TrelationName.getText().isEmpty()){
-					addRelation.setEnabled(false);
-				}else{
-					addRelation.setEnabled(true);
-				}
+			public void modifyText(ModifyEvent arg0) {
+				addRelation.setEnabled(!TrelationName.getText().isEmpty());
 			}
 		});
 		TrelationName.setBounds(105, 103, 176, 21);
@@ -152,7 +149,7 @@ public class DialogNewGenericRelation extends TitleAreaDialog{
 		addRelation.setEnabled(false);
 		createButton(parent, IDialogConstants.CANCEL_ID,IDialogConstants.CANCEL_LABEL, false);
 	}
-	
+
 	@Override
 	protected void okPressed() {
 		//getting info from edits
@@ -161,18 +158,18 @@ public class DialogNewGenericRelation extends TitleAreaDialog{
 			srcMaxCard = -1;
 		else
 			srcMaxCard = Integer.parseInt(TsrcMaxCard.getText());
-		
+
 		trgMinCard = Integer.parseInt(TtrgMinCard.getText());
 		if(TtrgMaxCard.equals("*"))
 			trgMaxCard = -1;
 		else
 			trgMaxCard = Integer.parseInt(TtrgMaxCard.getText());
-		
+
 		relationName = TrelationName.getText();
 		targetClass  = cbClasses.getItem(cbClasses.getSelectionIndex());
 		super.okPressed();
 	}
-	
+
 	public String relationName = new String();
 	public String targetClass = new String();
 	public int srcMinCard;
@@ -187,7 +184,7 @@ public class DialogNewGenericRelation extends TitleAreaDialog{
 	public String getTargetClass() {
 		return targetClass;
 	}
-	
+
 	public int getSrcMinCard() {
 		return srcMinCard;
 	}

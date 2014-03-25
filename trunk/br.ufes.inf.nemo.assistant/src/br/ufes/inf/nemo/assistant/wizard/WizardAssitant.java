@@ -53,7 +53,7 @@ public class WizardAssitant extends Wizard {
 		}
 		super.addPage(page);
 	}
-	
+
 	private boolean canFinish = false;
 	@Override
 	public boolean performFinish() {
@@ -98,7 +98,7 @@ public class WizardAssitant extends Wizard {
 
 		//Execute all alterations in RefOntoUML object from the Manager Pattern 
 		graph.getManagerPattern().run(currentPage);
-		
+
 		//Special treats
 		if(nextPage instanceof Question){
 			PageTreater.treatPage(nextNode, (Question)nextPage);

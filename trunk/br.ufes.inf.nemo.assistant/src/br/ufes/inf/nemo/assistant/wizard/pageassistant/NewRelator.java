@@ -50,8 +50,6 @@ public class NewRelator extends WizardPageAssistant {
 
 		container.setLayout(null);
 
-		setPageComplete(false);
-
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 
 		table = new Table(container, SWT.BORDER | SWT.FULL_SELECTION);
@@ -233,5 +231,13 @@ public class NewRelator extends WizardPageAssistant {
 	
 	public String getRelatorName(){
 		return relatorName.getText();
+	}
+	
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+		if(visible){
+			enableFinish(false);
+		}
 	}
 }

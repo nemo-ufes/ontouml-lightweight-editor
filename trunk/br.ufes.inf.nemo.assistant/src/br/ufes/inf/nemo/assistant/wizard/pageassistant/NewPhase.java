@@ -40,17 +40,17 @@ public class NewPhase extends WizardPageAssistant  implements Serializable{
 	private int currentItemSelection;
 	private Button btDeletePhase;
 	private Label className;
-	
+
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 
 		setControl(container);
 		container.setLayout(null);
-		
+
 		Label lblNewLabel = new Label(container, SWT.NONE);
 		lblNewLabel.setBounds(2, 5, 96, 15);
 		lblNewLabel.setText("Creating Phases  ");
-		
+
 		Button btAddNewRow = new Button(container, SWT.NONE);
 		btAddNewRow.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -58,27 +58,23 @@ public class NewPhase extends WizardPageAssistant  implements Serializable{
 				TableItem item = new TableItem (table, SWT.NONE);
 				item.setText (0,"name phase");
 				item.setText (1,"existential rule");
-				
+
 				contPhases++;
-				if(contPhases > 0){
-					setPageComplete(true);
-				}else {
-					setPageComplete(false);
-				}
+				enableFinish(false);
 			}
 		});
 		btAddNewRow.setBounds(440, 256, 104, 25);
 		btAddNewRow.setText("Add new row");
-		
+
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		
+
 		table = new Table(container, SWT.BORDER | SWT.FULL_SELECTION);
 		table.setLocation(0, 35);
 		table.setSize(574, 215);
 		table.setLinesVisible (true);
 		table.setHeaderVisible (true);
 		table.setLayoutData(data);
-		
+
 		TableColumn column = new TableColumn (table, SWT.NONE);
 		column.setText ("Phase Name");
 		column.setWidth(574/2);
@@ -89,25 +85,21 @@ public class NewPhase extends WizardPageAssistant  implements Serializable{
 		TableItem item = new TableItem (table, SWT.NONE);
 		item.setText (0,"name phase");
 		item.setText (1,"existential rule");
-		
+
 		/* Select Row Listener */
 		final TableEditor editor = new TableEditor (table);
-		
+
 		className = new Label(container, SWT.NONE);
 		className.setBounds(408, 5, 46, 15);
 		className.setText("<currentClass>");
 		className.setVisible(false);
-		
+
 		btDeletePhase = new Button(container, SWT.NONE);
 		btDeletePhase.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				contPhases--;
-				if(contPhases > 0){
-					setPageComplete(true);
-				}else {
-					setPageComplete(false);
-				}
+				enableFinish(false);
 				table.remove(currentItemSelection);
 				btDeletePhase.setEnabled(false);
 			}
@@ -115,10 +107,10 @@ public class NewPhase extends WizardPageAssistant  implements Serializable{
 		btDeletePhase.setBounds(342, 256, 91, 25);
 		btDeletePhase.setText("Delete Phase");
 		btDeletePhase.setEnabled(false);
-		
+
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
-		
+
 		table.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event arg0) {
@@ -126,7 +118,7 @@ public class NewPhase extends WizardPageAssistant  implements Serializable{
 				btDeletePhase.setEnabled(true);
 			}
 		});
-		
+
 		table.addListener (SWT.MouseDown, new Listener () {
 			@Override
 			public void handleEvent (Event event) {
@@ -145,20 +137,20 @@ public class NewPhase extends WizardPageAssistant  implements Serializable{
 								@Override
 								public void handleEvent (final Event e) {
 									switch (e.type) {
-										case SWT.FocusOut:
+									case SWT.FocusOut:
+										item.setText (column, text.getText ());
+										text.dispose ();
+										break;
+									case SWT.Traverse:
+										switch (e.detail) {
+										case SWT.TRAVERSE_RETURN:
 											item.setText (column, text.getText ());
+											//FALL THROUGH
+										case SWT.TRAVERSE_ESCAPE:
 											text.dispose ();
-											break;
-										case SWT.Traverse:
-											switch (e.detail) {
-												case SWT.TRAVERSE_RETURN:
-													item.setText (column, text.getText ());
-													//FALL THROUGH
-												case SWT.TRAVERSE_ESCAPE:
-													text.dispose ();
-													e.doit = false;
-											}
-											break;
+											e.doit = false;
+										}
+										break;
 									}
 								}
 							};
@@ -179,25 +171,27 @@ public class NewPhase extends WizardPageAssistant  implements Serializable{
 				}
 			}
 		});
-	
 	}
 
 	@Override
 	public boolean next() {
 		return true;
 	}
-	
+
 	@Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
-		className.setText(getCurrentClass());
+		if(visible){
+			className.setText(getCurrentClass());
+			enableFinish(false);
+		}
 	}
-	
+
 	@Override
 	public boolean canFlipToNextPage() {
 		if(isEndPage)
 			return false;
-		
+
 		//At least two Phases needs to be created
 		if(contPhases >= 1){
 			return true;
@@ -217,13 +211,13 @@ public class NewPhase extends WizardPageAssistant  implements Serializable{
 		s += "\n}";
 		return s;
 	}
-	
+
 	/* get operations */
-	
+
 	public String getClassName(){
 		return className.getText();
 	}
-	
+
 	public ArrayList<String[]> getPhases(){
 		ArrayList<String[]> list = new ArrayList<>();
 		String[] row;
@@ -242,5 +236,6 @@ public class NewPhase extends WizardPageAssistant  implements Serializable{
 	public void init() {
 		setTitle("New Phases");
 		setDescription("Creating new Phases");
+		contPhases = 0;
 	}
 }

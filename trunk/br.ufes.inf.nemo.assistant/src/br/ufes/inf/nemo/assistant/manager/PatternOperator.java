@@ -36,7 +36,7 @@ public class PatternOperator{
 	private ArrayList<RefOntoUML.Mixin> setMixin = new ArrayList<>();
 	private ArrayList<RefOntoUML.Relator> setRelator = new ArrayList<>();
 	private ArrayList<RefOntoUML.GeneralizationSet> setGeneralizationSet = new ArrayList<>();
-
+	
 	public ArrayList<RefOntoUML.Kind> getSetKind() {
 		return setKind;
 	}
@@ -80,7 +80,7 @@ public class PatternOperator{
 	public ArrayList<RefOntoUML.GeneralizationSet> getSetGeneralizationSet() {
 		return setGeneralizationSet;
 	}
-
+	
 	public void updateLists(RefOntoUML.Package root) {
 		setClassifier = new ArrayList<>();
 		setKind = new ArrayList<>();
