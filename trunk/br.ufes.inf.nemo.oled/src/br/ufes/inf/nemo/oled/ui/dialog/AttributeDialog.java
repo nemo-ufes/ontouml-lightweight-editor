@@ -8,8 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -17,11 +22,6 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class AttributeDialog extends JDialog {
 
