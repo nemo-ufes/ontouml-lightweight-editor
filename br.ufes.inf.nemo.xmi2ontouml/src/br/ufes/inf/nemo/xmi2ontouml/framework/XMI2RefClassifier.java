@@ -6,6 +6,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.Mixin;
 import RefOntoUML.RoleMixin;
 import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public abstract class XMI2RefClassifier extends XMI2RefNamespace
 {	
@@ -16,7 +17,19 @@ public abstract class XMI2RefClassifier extends XMI2RefNamespace
 	 * Any other value will throw an exception and not produce the result model
 	 */
 	protected static int unknownStereotypeOpt = 0;
-
+	
+	public XMI2RefClassifier() {}
+	
+	public XMI2RefClassifier(Object XMIElement, XMIParser mapper)
+	{
+		super(XMIElement, mapper);
+	}
+	
+	public XMI2RefClassifier(Object XMIElement, XMIParser mapper, Classifier classf)
+	{
+		super(XMIElement, mapper, classf);
+	}
+	
 	@Override
 	protected void deal()
 	{
@@ -43,6 +56,7 @@ public abstract class XMI2RefClassifier extends XMI2RefNamespace
 			if (xmi2refgen.RefOntoUMLElement != null)
 			{
 				((Classifier)RefOntoUMLElement).getGeneralization().add((Generalization)xmi2refgen.getRefOntoUMLElement());
+				xmi2refgen.createSubElements();
 			}
 		}
 		

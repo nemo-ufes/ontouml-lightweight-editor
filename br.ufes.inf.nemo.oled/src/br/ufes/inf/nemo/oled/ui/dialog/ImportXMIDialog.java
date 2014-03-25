@@ -326,6 +326,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 					Creator transfManager = new Creator();
 					Model model = transfManager.parse(filePathField.getText(), 
 							chckbxImportComments.isSelected(),
+							chckbxImportConstraints.isSelected(),
 							chckbxIgnoreUnknownStereotypes.isSelected(), 
 							chckbxCreateDefaultClassassociation.isSelected(), 
 							chckbxIgnoreElementsWith.isSelected(), 

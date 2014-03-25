@@ -3,20 +3,13 @@ package br.ufes.inf.nemo.xmi2ontouml.framework;
 import java.util.List;
 
 import RefOntoUML.Comment;
-import RefOntoUML.Element;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public class XMI2RefComment extends XMI2RefElement
 {
-	public XMI2RefComment (Object XMIElement, Mapper mapper) throws Exception
+	public XMI2RefComment (Object XMIElement, XMIParser mapper) throws Exception
 	{
-		this.XMIElement = XMIElement;
-		this.Mapper = mapper;
-		this.RefOntoUMLElement = factory.createComment();
-		
-		this.hashProp = Mapper.getProperties(XMIElement);
-		
-		commonTasks();
+		super(XMIElement, mapper, factory.createComment());
 	}
 
 	@Override
@@ -36,7 +29,7 @@ public class XMI2RefComment extends XMI2RefElement
 		{
 			for (Object annotatedElement : (List<?>)hashProp.get("annotatedelement"))
 			{
-				((Comment)RefOntoUMLElement).getAnnotatedElement().add((Element)elemMap.get((String)annotatedElement));
+				((Comment)RefOntoUMLElement).getAnnotatedElement().add(elemMap.getElement(annotatedElement));
 			}
 		}
 		catch (NullPointerException | IllegalArgumentException e)

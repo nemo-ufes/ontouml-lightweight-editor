@@ -3,20 +3,17 @@ package br.ufes.inf.nemo.xmi2ontouml.framework;
 import RefOntoUML.Class;
 import RefOntoUML.Collective;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public class XMI2RefClass extends XMI2RefClassifier
 {
-	public XMI2RefClass (Object XMIElement, Mapper mapper) throws Exception
+	public XMI2RefClass (Object XMIElement, XMIParser mapper) throws Exception
 	{
-		this.XMIElement = XMIElement;
-		this.Mapper = mapper;
-		this.RefOntoUMLElement = solveStereotype(Mapper.getStereotype(this.XMIElement));
+		super(XMIElement, mapper);
 		
-		this.hashProp = Mapper.getProperties(XMIElement);
-		
-		commonTasks();
+		this.RefOntoUMLElement = solveStereotype(mapper.getStereotype(XMIElement));
+		deal();
 	}
 	
 	private Class solveStereotype(String stereotype) throws Exception
@@ -65,10 +62,10 @@ public class XMI2RefClass extends XMI2RefClassifier
     		String error;
     		
     		if (stereotype == null || stereotype == "")
-    			error = "Stereotype undefined for class "+Mapper.getName(XMIElement);
+    			error = "Stereotype undefined for class "+hashProp.get("name");
     		
     		else
-    			error = "Unknown Stereotype '"+stereotype+"' found in class "+Mapper.getName(XMIElement);
+    			error = "Unknown Stereotype '"+stereotype+"' found in class "+hashProp.get("name");
     		
     		throw new Exception(error);
     	}
@@ -104,6 +101,7 @@ public class XMI2RefClass extends XMI2RefClassifier
 			{
 //				listProperties.add(xmi2refprop);
 				((Class)RefOntoUMLElement).getOwnedAttribute().add((Property)xmi2refprop.getRefOntoUMLElement());
+				xmi2refprop.createSubElements();
 			}
 		}
 		

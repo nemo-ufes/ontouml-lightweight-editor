@@ -14,22 +14,21 @@ import RefOntoUML.Package;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.subQuantityOf;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public class XMI2RefAssociation extends XMI2RefClassifier
 {
 	protected static boolean autoGenerateNames = false;
 	
-	public XMI2RefAssociation (Object XMIElement, Mapper mapper) throws Exception
+	private Derivation derivation = null;
+	
+	public XMI2RefAssociation (Object XMIElement, XMIParser mapper) throws Exception
 	{
-		this.XMIElement = XMIElement;
-		this.Mapper = mapper;
-		this.RefOntoUMLElement = solveStereotype(Mapper.getStereotype(this.XMIElement));
+		super(XMIElement, mapper);
 		
-		this.hashProp = Mapper.getProperties(XMIElement);
-		
-		commonTasks();
+		this.RefOntoUMLElement = solveStereotype(mapper.getStereotype(XMIElement));
+		deal();
 	}
 	
 	private Association solveStereotype(String stereotype) throws Exception
@@ -72,10 +71,10 @@ public class XMI2RefAssociation extends XMI2RefClassifier
     		String error;
     		
     		if (stereotype == null || stereotype == "")
-    			error = "Stereotype undefined for class "+Mapper.getName(XMIElement);
+    			error = "Stereotype undefined for class "+hashProp.get("name");
     		
     		else
-    			error = "Unknown Stereotype '"+stereotype+"' found in class "+Mapper.getName(XMIElement);
+    			error = "Unknown Stereotype '"+stereotype+"' found in class "+hashProp.get("name");
     		
     		throw new Exception(error);
     	}
@@ -83,12 +82,12 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 	
 	private void createDerivation() throws Exception
 	{
-		String relatorID = Mapper.getRelatorfromMaterial(XMIElement);
+		Object relatorObj = hashProp.get("relator");
 		
-    	if (relatorID != null && relatorID != "")
+    	if (relatorObj != null)
     	{
-    		Derivation der = (Derivation) solveStereotype("derivation");
-    		Relator relator = (Relator) elemMap.get(relatorID);
+    		derivation = (Derivation) solveStereotype("derivation");
+    		Relator relator = (Relator) elemMap.getElement(relatorObj);
         	
         	Property prop1 = factory.createProperty();
         	prop1.setType((MaterialAssociation) RefOntoUMLElement);
@@ -110,16 +109,17 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 			lower2.setValue(1);
 			prop2.setLowerValue(lower2);
         	
-        	der.getOwnedEnd().add(prop1);
-        	der.getMemberEnd().add(prop1);
-        	der.getOwnedEnd().add(prop2);
-        	der.getMemberEnd().add(prop2);
+			derivation.getOwnedEnd().add(prop1);
+			derivation.getMemberEnd().add(prop1);
+			derivation.getOwnedEnd().add(prop2);
+			derivation.getMemberEnd().add(prop2);
         	
         	if (autoGenerateNames)
-        		der.setName("A_"+prop1.getType().getName().replace(" ", "")+"_"+prop2.getType().getName().replace(" ", ""));
+        		derivation.setName("A_"+prop1.getType().getName().replace(" ", "")+"_"+prop2.getType().getName().replace(" ", ""));
         	
-        	((Package)((MaterialAssociation)RefOntoUMLElement).eContainer()).getPackagedElement().add(der);
+        	((Package)((MaterialAssociation)RefOntoUMLElement).eContainer()).getPackagedElement().add(derivation);
     	}
+    	//TODO else { //missing relator warning }
 	}
 	
 	@Override
@@ -163,7 +163,7 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 		{
 	    	for (Object memberEnd : (List<?>)hashProp.get("memberend"))
 	    	{
-	    		((Association)RefOntoUMLElement).getMemberEnd().add((Property)elemMap.get((String)memberEnd));
+	    		((Association)RefOntoUMLElement).getMemberEnd().add((Property)elemMap.getElement(memberEnd));
 			}
 	    	
 	    	Association assoc = (Association) RefOntoUMLElement;
@@ -175,6 +175,7 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 		}
 		catch (NullPointerException | IllegalArgumentException e)
 		{
+			System.out.println("passou");
 			if (!ignoreErrorElements)
 				throw e;
 		}
@@ -199,9 +200,9 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 			XMI2RefProperty xmi2refprop = new XMI2RefProperty(prop, Mapper);
 			if (xmi2refprop.RefOntoUMLElement != null)
 			{
-	//			listProperties.add(xmi2refprop);		
 				((Association)RefOntoUMLElement).getOwnedEnd().add((Property)xmi2refprop.getRefOntoUMLElement());
 				((Property)xmi2refprop.getRefOntoUMLElement()).setAssociation((Association)RefOntoUMLElement);
+				xmi2refprop.createSubElements();
 			}
 		}
 		
@@ -242,5 +243,9 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 
 	public static void setAutoGenerateNames(boolean autoGenerateNames) {
 		XMI2RefAssociation.autoGenerateNames = autoGenerateNames;
+	}
+
+	public Derivation getDerivation() {
+		return derivation;
 	}
 }

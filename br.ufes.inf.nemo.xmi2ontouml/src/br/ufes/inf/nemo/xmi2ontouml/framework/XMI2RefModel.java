@@ -5,7 +5,8 @@ import java.util.List;
 
 import RefOntoUML.Model;
 import RefOntoUML.PrimitiveType;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
+import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public class XMI2RefModel extends XMI2RefPackage
 {
@@ -15,17 +16,18 @@ public class XMI2RefModel extends XMI2RefPackage
 	public static final PrimitiveType UNLIMITED_NATURAL_PRIMITIVE = createUnlimitedNaturalPrimitive();
 	
 	protected static List<XMI2RefConstraint> constraints = new ArrayList<XMI2RefConstraint>();
+	protected static List<XMI2RefDiagram> diagrams = new ArrayList<XMI2RefDiagram>();
 	
-	public XMI2RefModel (Object XMIElement, Mapper mapper) throws Exception
+	public XMI2RefModel (Object XMIElement, XMIParser mapper) throws Exception
 	{
-		//When creating a new Model, resets the elemMap and the constraints list
+		super(XMIElement, mapper, factory.createModel());
+		
+		//When creating a new Model, resets the elemMap and the constraints and diagrams list
 		elemMap = new ElementMap();
 		constraints = new ArrayList<XMI2RefConstraint>();
+		diagrams = new ArrayList<XMI2RefDiagram>();
 		
-		this.XMIElement = XMIElement;
-		this.Mapper = mapper;
-		this.hashProp = Mapper.getProperties(XMIElement);
-		this.RefOntoUMLElement = factory.createModel();
+		elemMap.put(XMIElement, this);
 		
 		Model model = (Model) this.RefOntoUMLElement;
 		
@@ -41,7 +43,7 @@ public class XMI2RefModel extends XMI2RefPackage
 		model.getPackagedElement().add(UNLIMITED_NATURAL_PRIMITIVE);
 		elemMap.put("UnlimitedNatural", new XMI2RefPrimitiveType(UNLIMITED_NATURAL_PRIMITIVE));
 		
-		commonTasks();
+		createSubElements();
 	}
 	
 	@Override
@@ -50,6 +52,18 @@ public class XMI2RefModel extends XMI2RefPackage
 		super.deal();
 		
 		((Model)RefOntoUMLElement).setViewpoint((String)hashProp.get("viewpoint"));
+	}
+	
+	@Override
+	protected void createSubElements() throws Exception
+	{
+		super.createSubElements();
+		
+		for (Object diag : this.Mapper.getElements(XMIElement, ElementType.DIAGRAM))
+		{
+			@SuppressWarnings("unused")
+			XMI2RefDiagram xmi2refdiag = new XMI2RefDiagram(diag, Mapper);
+		}
 	}
 	
 	private static PrimitiveType createIntegerPrimitive()
@@ -83,5 +97,10 @@ public class XMI2RefModel extends XMI2RefPackage
 	public static List<XMI2RefConstraint> getConstraints()
 	{
 		return constraints;
+	}
+	
+	public static List<XMI2RefDiagram> getDiagrams()
+	{
+		return diagrams;
 	}
 }

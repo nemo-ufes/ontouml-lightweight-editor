@@ -24,7 +24,7 @@ public class OntoUMLCopier extends Copier
 	/**
 	 * List of objects that will be copied.
 	 */
-	protected Collection<?> objectsToCopy;
+	private Collection<?> objectsToCopy;
 	
 	/**
 	 * Creates an instance.
@@ -157,5 +157,14 @@ public class OntoUMLCopier extends Copier
 				copyEObject.eSet(getTarget(eReference), childEObject == null ? null : copy(childEObject));
 			}
 		}
+	}
+	
+	public enum complementKind
+	{
+		NONE,
+		ASSOCIATIONS,
+		SUPERTYPES,
+		ATTRIBUTE_TYPES,
+		ALL,
 	}
 }

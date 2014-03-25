@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.xmi2ontouml.mapper.impl;
+package br.ufes.inf.nemo.xmi2ontouml.xmiparser.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,13 +22,13 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import br.ufes.inf.nemo.xmi2ontouml.Creator;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
 import br.ufes.inf.nemo.xmi2ontouml.util.XMLDOMUtil;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 
 
-public class MapperAstah implements Mapper {
+public class MapperAstah implements XMIParser {
 	
 	private final String[] ASSOCIATION_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Association"};
 	private final String[] CLASS_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Class"};
@@ -43,9 +43,9 @@ public class MapperAstah implements Mapper {
 	private final String[] PRIMITIVE_TAG_PATH = {"UML:Primitive"};
 	private final String[] ATTRIBUTE_TAG_PATH = {"UML:Classifier.feature", "UML:Attribute"};
 	private final String[] CONNECTION_TAG_PATH = {"UML:Association.connection", "UML:AssociationEnd"};
-	private final String[] DIAGRAM_TAG_PATH = {"JUDE:Diagram"};
-	private final String[] DIAGCLA_TAG_PATH = {"JUDE:Diagram.presentations", "JUDE:ClassifierPresentation"};
-	private final String[] DIAGASS_TAG_PATH = {"JUDE:Diagram.presentations", "JUDE:AssociationPresentation"};
+//	private final String[] DIAGRAM_TAG_PATH = {"JUDE:Diagram"};
+//	private final String[] DIAGCLA_TAG_PATH = {"JUDE:Diagram.presentations", "JUDE:ClassifierPresentation"};
+//	private final String[] DIAGASS_TAG_PATH = {"JUDE:Diagram.presentations", "JUDE:AssociationPresentation"};
 
 	Document doc;
 	
@@ -96,7 +96,7 @@ public class MapperAstah implements Mapper {
     
     // Retorna o elemento principal de um modelo UML, o UML:Model. Sup�e que o XMI � bem formado e s� possui
     // uma tag to tipo UML:Model
-    public Object getModelElement() {
+    public Object getRoot() {
 		return doc.getElementsByTagName("UML:Model").item(0);
     }
 	
@@ -153,7 +153,7 @@ public class MapperAstah implements Mapper {
 				elemList = getChildsByTagName(parent, PACKAGE_TAG_PATH);
 				break;
 			case PRIMITIVE:
-				Element model = (Element) getModelElement();
+				Element model = (Element) getRoot();
 				if (parent == model) {
 					elemList = getChildsByTagName((Element)model.getParentNode(), PRIMITIVE_TAG_PATH);
 				}
@@ -532,61 +532,11 @@ public class MapperAstah implements Mapper {
 		genIdList.removeAll(brokenRefs);
 		hashProp.put("generalization", genIdList);
 	}
-	
-	@Override
-	public String getID(Object elem) {
-    	return ((Element)elem).getAttribute("xmi.id");
-    }
     
-	@Override
-    public String getName(Object elem) {
-    	try {
-			return URLDecoder.decode(((Element)elem).getAttribute("name"), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			Creator.warningLog += "Name could not be decoded in " + ((Element)elem).getAttribute("name") + "\n";
-		}
-		return "";
-    }
-    
-	@Override
-    public ElementType getType(Object element) {
+    private ElementType getType(Object element) {
     	String type = ((Element)element).getNodeName();
     	return ElementType.get(type.replace("UML:", ""));
     }
-	
-	@Override
-    public String getPath(Object element) {
-		String elementPath = getName(element);
-		for (Node elem = (Node) element; getType(elem) != ElementType.MODEL; elem = elem.getParentNode()) {
-			if (elem instanceof Element && 
-					(getType(elem) == ElementType.CLASS ||
-					getType(elem) == ElementType.ASSOCIATION ||
-					getType(elem) == ElementType.PACKAGE)) {
-				elementPath = getName(elem) + " -> " + elementPath;
-			}
-		}
-    	return elementPath;
-    }
-    
-	@Override
-    public Object getElementById(String id) {
-    	return doc.getElementById(id);
-    }
-	
-	@Override
-	public String getRelatorfromMaterial(Object element) {
-		Element elem = (Element) element;
-		
-		if (elem.getNodeName().equalsIgnoreCase("UML:Association") &&
-				getStereotype(elem).equalsIgnoreCase("material")) {
-			HashMap<String, Object> hashProp = new HashMap<String, Object>();
-			getExtendedProperties(elem, hashProp);
-			if (hashProp.containsKey("relator")) {
-				return getRelatorID(elem, (String)hashProp.get("relator"));
-			}
-		}
-		return null;
-	}
 	
 	public String getRelatorID(Element elem, String name) {
 		Node parent = elem.getParentNode();
@@ -602,32 +552,32 @@ public class MapperAstah implements Mapper {
 		return null;
 	}
 
-	@Override
-	public List<Object> getDiagramList() {
-		NodeList extensions = doc.getElementsByTagName("XMI.extension");
-		List<Object> diagramList = new ArrayList<Object>();
-		for (int i = 0 ; i < extensions.getLength(); i++) {
-			Element diagram = XMLDOMUtil.getChild((Element)extensions.item(i), "JUDE:Diagram");
-			if (diagram != null) {
-				diagramList = getChildsByTagName((Element)extensions.item(i), DIAGRAM_TAG_PATH);
-			}
-		}
-		Object[] diagramArray = diagramList.toArray();
-		Arrays.sort(diagramArray, new AstahComparator());
-		return Arrays.asList(diagramArray);
-	}
+//	@Override
+//	public List<Object> getDiagramList() {
+//		NodeList extensions = doc.getElementsByTagName("XMI.extension");
+//		List<Object> diagramList = new ArrayList<Object>();
+//		for (int i = 0 ; i < extensions.getLength(); i++) {
+//			Element diagram = XMLDOMUtil.getChild((Element)extensions.item(i), "JUDE:Diagram");
+//			if (diagram != null) {
+//				diagramList = getChildsByTagName((Element)extensions.item(i), DIAGRAM_TAG_PATH);
+//			}
+//		}
+//		Object[] diagramArray = diagramList.toArray();
+//		Arrays.sort(diagramArray, new AstahComparator());
+//		return Arrays.asList(diagramArray);
+//	}
 
-	@Override
-	public List<String> getDiagramElements(Object diagram) {
-		List<String> diagElemIDList = new ArrayList<String>();
-		List<Object> diagElemList = getChildsByTagName((Element)diagram, DIAGCLA_TAG_PATH);
-		diagElemList.addAll(getChildsByTagName((Element)diagram, DIAGASS_TAG_PATH));
-		for (Object diagElem : diagElemList) {
-			Element semanticElement = XMLDOMUtil.getChild((Element)diagElem, "JUDE:UPresentation.semanticModel");
-			diagElemIDList.add(((Element)semanticElement.getChildNodes().item(1)).getAttribute("xmi.idref"));
-		}
-		return diagElemIDList;
-	}
+//	@Override
+//	public List<String> getDiagramElements(Object diagram) {
+//		List<String> diagElemIDList = new ArrayList<String>();
+//		List<Object> diagElemList = getChildsByTagName((Element)diagram, DIAGCLA_TAG_PATH);
+//		diagElemList.addAll(getChildsByTagName((Element)diagram, DIAGASS_TAG_PATH));
+//		for (Object diagElem : diagElemList) {
+//			Element semanticElement = XMLDOMUtil.getChild((Element)diagElem, "JUDE:UPresentation.semanticModel");
+//			diagElemIDList.add(((Element)semanticElement.getChildNodes().item(1)).getAttribute("xmi.idref"));
+//		}
+//		return diagElemIDList;
+//	}
 	
 	class AstahComparator implements Comparator<Object> {
 
@@ -636,10 +586,19 @@ public class MapperAstah implements Mapper {
 			Element elem1 = (Element) arg0;
 			Element elem2 = (Element) arg1;
 			
-			String name1 = getName(elem1);
-			String name2 = getName(elem2);
+			String name1;
+			String name2;
+			try {
+				name1 = URLDecoder.decode(((Element)elem1).getAttribute("name"), "UTF-8");
+				name2 = URLDecoder.decode(((Element)elem2).getAttribute("name"), "UTF-8");
+				
+				return name1.compareToIgnoreCase(name2);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-			return name1.compareToIgnoreCase(name2);
+			return 0;
 		}
 		
 	}

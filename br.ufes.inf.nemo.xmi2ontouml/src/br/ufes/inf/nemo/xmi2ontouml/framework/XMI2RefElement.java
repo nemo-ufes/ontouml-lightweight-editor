@@ -2,14 +2,11 @@ package br.ufes.inf.nemo.xmi2ontouml.framework;
 
 import java.util.Map;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
-
 import RefOntoUML.Comment;
 import RefOntoUML.Element;
 import RefOntoUML.RefOntoUMLFactory;
-import br.ufes.inf.nemo.xmi2ontouml.Creator;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public abstract class XMI2RefElement
 {
@@ -21,7 +18,7 @@ public abstract class XMI2RefElement
 	
 	protected Element RefOntoUMLElement;
 	
-	protected Mapper Mapper;
+	protected XMIParser Mapper;
 	
 	protected Map<String, Object> hashProp;
 	
@@ -29,28 +26,35 @@ public abstract class XMI2RefElement
 	
 	private static boolean importComments = false;
 	
-	protected void commonTasks() throws Exception
+	public XMI2RefElement() {}
+	
+	public XMI2RefElement(Object XMIElement, XMIParser mapper)
 	{
-		if (!Mapper.getID(XMIElement).equals("") || this instanceof XMI2RefConstraint)
+		this.XMIElement = XMIElement;
+		this.Mapper = mapper;
+		
+		this.hashProp = Mapper.getProperties(XMIElement);
+		
+		elemMap.put(XMIElement, this);
+		
+		if ((hashProp.get("xmi:id") == null && hashProp.get("id") == null) && 
+				!(this instanceof XMI2RefConstraint) &&
+				!(this instanceof XMI2RefModel))
 		{
-			elemMap.put(Mapper.getID(XMIElement), this);
-			deal();
-			createSubElements();
-        }
-		else
-		{
-			String error = "Element with no ID found.\n" +
-        			"Element Type: " + RefOntoUMLElement.getClass() + ".\n" +
-        			"Element Name: " + hashProp.get("Name") + ".\n" +
-        			"Element Path: " + Mapper.getPath(XMIElement)+".\n\n";
-        	
-        	if (!ignoreErrorElements)
-        		throw new Exception(error);
-        	
-        	System.err.println("Debug: removing class without ID ("+hashProp.get("Name")+")");
-    		Creator.warningLog += error;
-    		EcoreUtil.remove(RefOntoUMLElement);
+			System.err.println("Element with no ID found.\n"+
+					"Element Name: " +hashProp.get("name") + "\n"+
+					"Type: "+this.getClass() + "\n"+
+					"Node: "+XMIElement);
 		}
+	}
+	
+	public XMI2RefElement(Object XMIElement, XMIParser mapper, Element refOntoUMLElement)
+	{
+		this(XMIElement, mapper);
+		
+		this.RefOntoUMLElement = refOntoUMLElement;
+		
+		deal();
 	}
 	
 	protected abstract void deal();

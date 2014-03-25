@@ -2,20 +2,14 @@ package br.ufes.inf.nemo.xmi2ontouml.framework;
 
 import RefOntoUML.Enumeration;
 import RefOntoUML.EnumerationLiteral;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public class XMI2RefEnumeration extends XMI2RefDatatype
 {
-	public XMI2RefEnumeration(Object XMIElement, Mapper mapper) throws Exception
+	public XMI2RefEnumeration(Object XMIElement, XMIParser mapper) throws Exception
 	{
-		this.XMIElement = XMIElement;
-		this.Mapper = mapper;
-		this.RefOntoUMLElement = factory.createEnumeration();
-		
-		this.hashProp = Mapper.getProperties(XMIElement);
-		
-		commonTasks();
+		super(XMIElement, mapper, factory.createEnumeration());
 	}
 	
 	@Override
@@ -27,6 +21,7 @@ public class XMI2RefEnumeration extends XMI2RefDatatype
 			if (xmi2refenumlit.RefOntoUMLElement != null)
 			{
 				((Enumeration)RefOntoUMLElement).getOwnedLiteral().add((EnumerationLiteral)xmi2refenumlit.getRefOntoUMLElement());
+				xmi2refenumlit.createSubElements();
 			}
 		}
 		

@@ -6,19 +6,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public class XMI2RefGeneralizationSet extends XMI2RefNamedElement
 {
-	public XMI2RefGeneralizationSet (Object XMIElement, Mapper mapper) throws Exception
+	public XMI2RefGeneralizationSet (Object XMIElement, XMIParser mapper) throws Exception
 	{
-		this.XMIElement = XMIElement;
-		this.Mapper = mapper;
-		this.RefOntoUMLElement = factory.createGeneralizationSet();
-		
-		this.hashProp = Mapper.getProperties(XMIElement);
-		
-		commonTasks();
+		super(XMIElement, mapper, factory.createGeneralizationSet());
 	}
 	
 	@Override
@@ -38,7 +32,7 @@ public class XMI2RefGeneralizationSet extends XMI2RefNamedElement
 	    	for (Object gen : (List<?>)hashProp.get("generalization"))
 	    	{
 	    		// Only one of those properties must be set, since they are EOposite.
-	    		((GeneralizationSet)RefOntoUMLElement).getGeneralization().add((Generalization)elemMap.get((String)gen));
+	    		((GeneralizationSet)RefOntoUMLElement).getGeneralization().add((Generalization)elemMap.getElement(gen));
 //				((Generalization)gen).getGeneralizationSet().add(((GeneralizationSet)RefOntoUMLElement));
 			}
 		}
