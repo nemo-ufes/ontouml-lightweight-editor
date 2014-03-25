@@ -3,7 +3,8 @@ package br.ufes.inf.nemo.assistant.wizard.pageassistant;
 import java.io.Serializable;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -80,14 +81,10 @@ public class NewGenericRelation extends WizardPageAssistant implements Serializa
 		label_2.setText("...");
 
 		relationName = new Text(container, SWT.BORDER);
-		relationName.addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+		relationName.addModifyListener(new ModifyListener() {
 			@Override
-			public void focusLost(FocusEvent arg0) {
-				if(relationName.getText().isEmpty()){
-					enableFinish(false);
-				}else{
-					enableFinish(true);
-				}
+			public void modifyText(ModifyEvent arg0) {
+				enableFinish(!relationName.getText().isEmpty());
 			}
 		});
 		relationName.setBounds(124, 99, 176, 21);
@@ -129,7 +126,6 @@ public class NewGenericRelation extends WizardPageAssistant implements Serializa
 		label_5.setText("...");
 		label_5.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		label_5.setBounds(406, 92, 8, 15);
-		enableFinish(false);
 	}
 
 	@Override
@@ -173,6 +169,7 @@ public class NewGenericRelation extends WizardPageAssistant implements Serializa
 				cbClasses.setItems(targetClasses);
 				cbClasses.select(0);
 			}
+			enableFinish(false);
 		}
 	}
 

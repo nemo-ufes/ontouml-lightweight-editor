@@ -73,13 +73,13 @@ public class PageTreater {
 		ManagerPattern mp = node.getGraph().getManagerPattern();
 		ArrayList<Classifier> classes = new ArrayList<>();
 		Classifier _source = mp.getClassSource();
-		PatternOperator po = mp.getPatternOperator();
+		PatternOperator patternOperator = mp.getPatternOperator();
 
 
 		//Get all classes of these stereotypes
 		for (String stereotype : page.getTargetStereptypes()) {
 			StereotypeOntoUMLEnum stereotypeEnum = StereotypeOntoUMLEnum.valueOf(stereotype.toUpperCase());
-			ArrayList<? extends Classifier> lst = po.getAllInstancesOf(stereotypeEnum);
+			ArrayList<? extends Classifier> lst = patternOperator.getAllInstancesOf(stereotypeEnum);
 			classes.addAll(lst);
 		}
 

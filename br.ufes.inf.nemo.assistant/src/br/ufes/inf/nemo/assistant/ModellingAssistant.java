@@ -26,6 +26,7 @@ public class ModellingAssistant {
 	public static final String serializedObjectPath = "graph_assistant.ser";
 	
 	private HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraph;
+	private Package currentRoot;
 
 	/**
 	 * Instantiating the class and runner the SWTAstahParser or by .jar execution
@@ -41,10 +42,8 @@ public class ModellingAssistant {
 				graph.setManagerPattern(new ManagerPattern());
 			graph.getManagerPattern().setRefOntoUML(root);
 		}
-		
-		p = root;
+		currentRoot = root;
 	}
-	Package p;
 	
 	@SuppressWarnings("unchecked")
 	private void readBynaryFile(){
@@ -69,7 +68,7 @@ public class ModellingAssistant {
 		}
 	}
 	
-	public void bringToFront(final Shell shell) {
+	private void bringToFront(final Shell shell) {
 	    shell.getDisplay().asyncExec(new Runnable() {
 	        public void run() {
 	            shell.forceActive();
@@ -117,9 +116,10 @@ public class ModellingAssistant {
 				if (wizardDialog.open() == Window.OK) {
 					fix = graph.getManagerPattern().getFix();
 				}
-//				System.out.println("REFonto: {");
-//				UtilAssistant.printRefOntoUML(p);
-//				System.out.println("}");
+				
+				System.out.println("REFonto: {");
+				UtilAssistant.printRefOntoUML(currentRoot);
+				System.out.println("}");
 				return fix;
 			}else{
 //				System.out.println("stereotype not treated yet");

@@ -19,6 +19,7 @@ public class ManagerPattern {
 	private PatternOperator patternOperator;
 	private ActionProcessor actionProcessor;
 
+	
 	/**
 	 * Create a ManagerPattern with a RefOntoUML root
 	 * */
@@ -64,7 +65,7 @@ public class ManagerPattern {
 	public void run(IWizardPage page) {
 		patternOperator.updateLists(root);
 		pageProcessor.setRootPackage(root);
-		pageProcessor.setSourceClass(source);
+		pageProcessor.setSource(source);
 		
 		if(page instanceof NewRelator){
 			pageProcessor.process((NewRelator)page);
@@ -101,5 +102,9 @@ public class ManagerPattern {
 	public ActionProcessor getActionProcessor(){
 		patternOperator.updateLists(root);
 		return actionProcessor;
+	}
+
+	public Classifier getStartedClass() {
+		return pageProcessor.getStartedClass();
 	}
 }
