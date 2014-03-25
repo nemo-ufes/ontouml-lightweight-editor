@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.ui.dialog;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -22,8 +24,6 @@ import javax.swing.border.LineBorder;
 
 import org.eclipse.ocl.uml.UMLEnvironment;
 import org.eclipse.uml2.uml.Constraint;
-import java.awt.FlowLayout;
-import javax.swing.ImageIcon;
 
 /**
  * @author John Guerson

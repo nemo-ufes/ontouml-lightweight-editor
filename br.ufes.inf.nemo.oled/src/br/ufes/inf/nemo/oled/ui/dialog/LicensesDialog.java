@@ -71,7 +71,7 @@ public class LicensesDialog extends JDialog {
 		this.frame = frame;
 		
 		choices = new JComboBox();
-		choices.setModel(new DefaultComboBoxModel(new String[] {"Alloy", "Kodkod", "JavaCup", "SAT4J", "ZChaff", "MiniSat","AutoComplete","RSyntaxTextArea"}));
+		choices.setModel(new DefaultComboBoxModel(new String[] {"TinyUML","Alloy", "Kodkod", "JavaCup", "SAT4J", "ZChaff", "MiniSat","AutoComplete","RSyntaxTextArea","LEDIcons"}));
 		choices.setPreferredSize(new Dimension(150, 20));
 		choices.addActionListener(new ActionListener() 
 		{
@@ -122,7 +122,7 @@ public class LicensesDialog extends JDialog {
 		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
 		setIconImage(icon);
 		
-		choices.setSelectedIndex(1);		
+		choices.setSelectedIndex(0);		
 		setLicense((String)choices.getSelectedItem());
 		
 		repaint();
