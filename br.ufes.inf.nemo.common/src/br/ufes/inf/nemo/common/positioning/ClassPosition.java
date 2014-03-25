@@ -31,4 +31,16 @@ public class ClassPosition {
 		}
 		return newpoint;
 	}
+	
+	public static Point2D.Double findPositionGeneralizationMember(Point2D.Double point, Point2D.Double point2){
+
+		Point2D.Double newpoint = new Point2D.Double();
+		newpoint.y=point2.y;
+		if(point.getX()>point2.getX()){	
+			newpoint.x=point.getX()+150;
+		}else{
+			newpoint.x=point.getX()-150;
+		}
+		return newpoint;
+	}
 }
