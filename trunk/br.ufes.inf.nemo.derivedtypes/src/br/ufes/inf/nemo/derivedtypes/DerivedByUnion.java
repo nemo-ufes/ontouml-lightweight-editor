@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 @SuppressWarnings("unused")
 public class DerivedByUnion extends DerivedType{
 
-	
+	public static DerivedByUnion instance = new DerivedByUnion();
 	
 	public DerivedByUnion(){
 		
@@ -330,6 +330,17 @@ public class DerivedByUnion extends DerivedType{
 		tableValues.put("RoleMixin"+"RoleMixin", value);
 		
 
+	}
+
+	@Override
+	public ArrayList<String> inferStereotype(String stereotype_1,
+			String stereotype_2) {
+		// TODO Auto-generated method stub
+		return tableValues.get(stereotype_1+stereotype_2);
+	}
+	
+	public static DerivedByUnion  getInstance(){
+		return instance;
 	}
 
 	

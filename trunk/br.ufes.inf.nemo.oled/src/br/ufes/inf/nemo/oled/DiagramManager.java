@@ -67,6 +67,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
+import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.ElementType;
@@ -2143,100 +2144,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 	@SuppressWarnings({ })
 	public void deriveByExclusion() {
-		System.out.println("sera?");
-		
+		DiagramEditor activeEditor = getCurrentDiagramEditor();
+		UmlProject project = getCurrentEditor().getProject();
+		Fix fix = DerivedTypesOperations.createExclusionDerivation(activeEditor, project);
+		updateOLED(fix);
 	}
 	
-	@SuppressWarnings({ "unused", "static-access" })
+	@SuppressWarnings({ })
 	public void deriveByUnion() 
 	{
-		Fix mainfix = new Fix();
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
-		List<DiagramElement> selected = activeEditor.getSelectedElements();
-		if(selected.size()==2  && selected.get(0) instanceof ClassElement && selected.get(1) instanceof ClassElement ){
-			int j=0;
-			ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
-			for (int i = 0; i < selected.size(); i++) {
-				
-				if (selected.get(i) instanceof ClassElement) {
-					j++;
-					ClassElement ce = (ClassElement) selected.get(i);
-					refontoList.add(ce.getClassifier());
-				}		
-			}
-			if(refontoList.size()==2){
-				
-				ArrayList<String>stereotypes= DerivedByUnion.getInstance().inferStereotype(refontoList.get(0).eClass().getName(), refontoList.get(1).eClass().getName());
-				if(stereotypes.size()<2){
-					String name=DerivedByUnion.DefineNameDerivedType();
-					createDerivedType(stereotypes.get(0), mainfix, selected,name,refontoList);
-				}
-				else{
-					Object[] stereo;
-					stereo=  stereotypes.toArray();
-					String name=DerivedByUnion.DefineNameDerivedType();
-					String stereotype= DerivedByUnion.selectStereotype(stereo);
-				    createDerivedType(stereotype, mainfix, selected,name,refontoList);
-				}
-				
-			}
-		}		
-	}
-	public void createDerivedType(String stereotype, Fix mainfix, List<DiagramElement> selected, String name, ArrayList<RefOntoUML.Element> refontoList){
-		
 		UmlProject project = getCurrentEditor().getProject();
-		OutcomeFixer of = new OutcomeFixer(project.getModel());
-		Classifier newElement = (Classifier)of.createClass( of.getClassStereotype(stereotype));
-		newElement.setName(name);
-		of.copyContainer(((ClassElement) selected.get(0)).getClassifier(), newElement);
-		Fix fix=of.createGeneralization((Classifier)refontoList.get(0), newElement);
-		Fix fixG2=of.createGeneralization((Classifier)refontoList.get(1), newElement);
-		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-		generalizations.add((Generalization) fix.getAdded().get(0));
-		generalizations.add((Generalization) fixG2.getAdded().get(0));
-		Fix gs =  of.createGeneralizationSet(generalizations);
-		mainfix.addAll(fixG2);
-		mainfix.addAll(fix);
-		mainfix.addAll(gs);
-		ClassElement position = (ClassElement) selected.get(0);
-		ClassElement position2 = (ClassElement) selected.get(1);
-		Point2D.Double firstpoint = new Point2D.Double();
-		Point2D.Double secondpoint = new Point2D.Double();
-		firstpoint.setLocation(position.getAbsoluteX1(),position.getAbsoluteY1());
-		secondpoint.setLocation(position2.getAbsoluteX1(),position2.getAbsoluteY1());
-		Point2D.Double newElementPosition= findPositionGeneralization(firstpoint, secondpoint);
-		mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
-		updateOLED(mainfix);
-		
+		Fix fix = DerivedTypesOperations.createUnionDerivation(activeEditor, project);
+		updateOLED(fix);		
 	}
 	
-	public Point2D.Double findPositionGeneralization(Point2D.Double point, Point2D.Double point2){
-		
-		Point2D.Double newpoint = new Point2D.Double();
-		if(Math.abs(point.getX()-point2.getX())>Math.abs(point.getY()-point2.getY())){	
-			if(point.getX()>point2.getX())
-				newpoint.x=(point.getX()+point2.getX())/2;
-			else
-				newpoint.x=(point2.getX()+point.getX())/2;
-			
-			if(point.getY()<point2.getY())
-				newpoint.y=point.getY()-110;
-			else
-				newpoint.y=point2.getY()-110;
-		}else{
-			if(point.getY()>point2.getY())
-				newpoint.y=(point.getY()+point2.getY())/2;
-			else
-				newpoint.y=(point2.getY()+point.getY())/2;
-			
-			if(point.getX()<point2.getX())
-				newpoint.x=point.getX()+150;
-			else
-				newpoint.x=point2.getX()+150;
-			
-		}
-		return newpoint;
-	}
 	
 	public void openDerivedTypePattern(double x, double y) {
 			
