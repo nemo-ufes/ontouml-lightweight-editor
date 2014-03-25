@@ -102,13 +102,13 @@ public class DerivedTypesOperations {
 		//mainfix.addAll(fixG2);
 		mainfix.addAll(fix);
 		mainfix.addAll(gs);
-		ClassElement position = (ClassElement) selected.get(0);
-		ClassElement position2 = (ClassElement) selected.get(1);
+		ClassElement position = pai;
+		ClassElement position2 = filho;
 		Point2D.Double firstpoint = new Point2D.Double();
 		Point2D.Double secondpoint = new Point2D.Double();
 		firstpoint.setLocation(position.getAbsoluteX1(),position.getAbsoluteY1());
 		secondpoint.setLocation(position2.getAbsoluteX1(),position2.getAbsoluteY1());
-		Point2D.Double newElementPosition= ClassPosition.findPositionGeneralization(firstpoint, secondpoint);
+		Point2D.Double newElementPosition= ClassPosition.findPositionGeneralizationMember(firstpoint, secondpoint);
 		mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
 		return mainfix;
 
@@ -123,7 +123,7 @@ public class DerivedTypesOperations {
 		List<GeneralizationElement> gen = new ArrayList<GeneralizationElement>();
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
 		int pos=0;
-		int pos2=0;
+		int pos2=1;
 		ArrayList<String> stereotypes = new ArrayList<String>();
 		if(selected.size()==3){
 			for (int i = 0; i < selected.size(); i++) {
@@ -136,24 +136,31 @@ public class DerivedTypesOperations {
 					Element e= ge.getGeneralization().getGeneral();
 					gen.add((GeneralizationElement) ge);
 					//refontoList.add((Element) selected.get(i));
-					if(e.equals(classList.get(1))){
+					if(e.equals(refontoList.get(1))){
 						pos=1;
+						pos2=0;
 					}
 				}
 			}
 
 			if(gen.size()==1 && classList.size()==2){
 				if(pos==1){
-					stereotypes= DerivedByExclusion.getInstance().inferStereotype(refontoList.get(1).eClass().getName() , refontoList.get(0).eClass().getName());
+					stereotypes= DerivedByExclusion.getInstance().inferStereotype(refontoList.get(pos).eClass().getName() , refontoList.get(pos2).eClass().getName());
 					pos2=0;
 				}else{
-					stereotypes= DerivedByExclusion.getInstance().inferStereotype(refontoList.get(0).eClass().getName() , refontoList.get(1).eClass().getName());
+					stereotypes= DerivedByExclusion.getInstance().inferStereotype(refontoList.get(pos).eClass().getName() , refontoList.get(pos2).eClass().getName());
 					pos2=1;
 				}
 				String name = DefineNameDerivedType();
+				
 				if(stereotypes.size()==1)
 					return createDerivedTypeExclusion(stereotypes.get(0), mainfix, selected, name, classList.get(pos), classList.get(pos2),gen.get(0), project);
-
+				else{
+					Object[] stereo;
+					stereo=  stereotypes.toArray();
+					String stereotype= selectStereotype(stereo);
+					return createDerivedTypeExclusion(stereotype, mainfix, selected, name, classList.get(pos), classList.get(pos2),gen.get(0), project);
+				}
 			}
 
 		}

@@ -20,11 +20,49 @@ public class DerivedByExclusion extends DerivedType{
 		value= new ArrayList<>();
 		value.add("SUBKIND");
 		tableValues.put("Kind"+"SubKind", value);
-
+		
 		value= new ArrayList<>();
 		value.add("SUBKIND");
-		tableValues.put("SubKind"+"Kind", value);
+		tableValues.put("SubKind"+"SubKind", value);
 
+		value= new ArrayList<>();
+		value.add("KIND");
+		value.add("SUBKIND");
+		value.add("CATEGORY");
+		tableValues.put("Category"+"Kind", value);
+
+		value= new ArrayList<>();
+		value.add("KIND");
+		value.add("SUBKIND");
+		value.add("CATEGORY");
+		tableValues.put("Category"+"SubKind", value);
+		
+		value= new ArrayList<>();
+		value.add("KIND");
+		value.add("SUBKIND");
+		value.add("CATEGORY");
+		tableValues.put("Category"+"Category", value);
+		
+		value= new ArrayList<>();
+		value.add("ROLE");
+		value.add("PHASE");
+		value.add("MIXIN");
+		value.add("ROLE MIXIN");
+		tableValues.put("Mixin"+"Kind", value);
+		
+		value= new ArrayList<>();
+		value.add("ROLE");
+		value.add("PHASE");
+		value.add("MIXIN");
+		value.add("ROLE MIXIN");
+		tableValues.put("Mixin"+"SubKind", value);
+		
+		value= new ArrayList<>();
+		value.add("ROLE");
+		value.add("PHASE");
+		value.add("MIXIN");
+		value.add("ROLE MIXIN");
+		tableValues.put("Mixin"+"Category", value);
 	}
 
 	@Override
