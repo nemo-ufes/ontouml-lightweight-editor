@@ -8,22 +8,16 @@ import RefOntoUML.Constraintx;
 import RefOntoUML.Element;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Namespace;
-import RefOntoUML.OpaqueExpression;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
+import RefOntoUML.StringExpression;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public class XMI2RefConstraint extends XMI2RefNamedElement
 {
-	public XMI2RefConstraint (Object XMIElement, Mapper mapper) throws Exception
+	public XMI2RefConstraint (Object XMIElement, XMIParser mapper) throws Exception
 	{
-		this.XMIElement = XMIElement;
-		this.Mapper = mapper;
-		this.RefOntoUMLElement = factory.createConstraintx();
-		
-		this.hashProp = Mapper.getProperties(XMIElement);
+		super(XMIElement, mapper, factory.createConstraintx());
 		
 		XMI2RefModel.getConstraints().add(this);
-		
-		commonTasks();
 	}
 	
 	@Override
@@ -31,8 +25,10 @@ public class XMI2RefConstraint extends XMI2RefNamedElement
 	{
 		super.deal();
 		
-		OpaqueExpression exp = factory.createOpaqueExpression();
-		exp.getBody().add((String)hashProp.get("body"));
+//		OpaqueExpression exp = factory.createOpaqueExpression();
+//		exp.getBody().add((String)hashProp.get("body"));
+		StringExpression exp = factory.createStringExpression();
+		exp.setSymbol((String)hashProp.get("body"));
 		
 		((Constraintx)RefOntoUMLElement).setSpecification(exp);
 		
@@ -47,7 +43,7 @@ public class XMI2RefConstraint extends XMI2RefNamedElement
 		{
 			for (Object constrainedElement : (List<?>)hashProp.get("constrainedelement"))
 			{
-				((Constraintx)RefOntoUMLElement).getConstrainedElement().add((Element)elemMap.get((String)constrainedElement));
+				((Constraintx)RefOntoUMLElement).getConstrainedElement().add(elemMap.getElement(constrainedElement));
 			}
 		}
 		catch (NullPointerException | IllegalArgumentException e)
@@ -58,7 +54,8 @@ public class XMI2RefConstraint extends XMI2RefNamedElement
 		{
 			if (((Constraintx)RefOntoUMLElement).getConstrainedElement().size() == 0)
 			{
-				System.err.println("Debug: removing constraint with error ("+((OpaqueExpression)((Constraintx)RefOntoUMLElement).getSpecification()).getBody().get(0)+" | Container: "+((Namespace)RefOntoUMLElement.eContainer()).getName()+")");
+//				System.err.println("Debug: removing constraint with error ("+((OpaqueExpression)((Constraintx)RefOntoUMLElement).getSpecification()).getBody().get(0)+" | Container: "+((Namespace)RefOntoUMLElement.eContainer()).getName()+")");
+				System.err.println("Debug: removing constraint with error ("+((StringExpression)((Constraintx)RefOntoUMLElement).getSpecification()).getSymbol()+" | Container: "+((Namespace)RefOntoUMLElement.eContainer()).getName()+")");
 				EcoreUtil.remove(RefOntoUMLElement);
 			}
 		}
@@ -68,7 +65,8 @@ public class XMI2RefConstraint extends XMI2RefNamedElement
 	{
 		String rule = new String();
 		
-		String body = ((OpaqueExpression)((Constraintx)RefOntoUMLElement).getSpecification()).getBody().get(0)
+//		String body = ((OpaqueExpression)((Constraintx)RefOntoUMLElement).getSpecification()).getBody().get(0)
+		String body = ((StringExpression)((Constraintx)RefOntoUMLElement).getSpecification()).getSymbol()
 				.replace("<b>", "")
 				.replace("</b>", "")
 				.replace("&lt;", "<")

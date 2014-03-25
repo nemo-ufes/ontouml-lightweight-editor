@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.xmi2ontouml.mapper.impl;
+package br.ufes.inf.nemo.xmi2ontouml.xmiparser.impl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,13 +18,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import br.ufes.inf.nemo.xmi2ontouml.Creator;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
 import br.ufes.inf.nemo.xmi2ontouml.util.OntoUMLError;
 import br.ufes.inf.nemo.xmi2ontouml.util.XMLDOMUtil;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 
-public class MapperEA implements Mapper {
+public class MapperEA implements XMIParser {
 	
 	// FIXED NAMESPACES
 	private final String XMLNS = "http://www.w3.org/2000/xmlns/";
@@ -75,6 +75,7 @@ public class MapperEA implements Mapper {
         preProcessXMI(doc.getDocumentElement());
 	}
 	
+	//######## Start pre-processing methods ########
 	private void preProcessXMI(Element element)
 	{
 		List<Element> childList = XMLDOMUtil.getElementChilds(element);
@@ -85,6 +86,8 @@ public class MapperEA implements Mapper {
     		populateStereotypesMap(child);
     		
     		removeNonUMLElements(child);
+    		
+    		reverseAggregation(child);
     		
     		separateAssociationClass(child);
     		
@@ -167,9 +170,30 @@ public class MapperEA implements Mapper {
 		}
 	}
 	
+	private void reverseAggregation(Element element)
+	{
+		if (element.getNodeName().equals("type") && element.hasAttribute("aggregation") &&
+				(element.getAttribute("aggregation").equals("composition") ||
+				element.getAttribute("aggregation").equals("shared")))
+		{
+			String aggType = element.getAttribute("aggregation");
+			Element connectorElem = (Element) element.getParentNode().getParentNode();
+			Element assocElem = doc.getElementById(connectorElem.getAttributeNS(XMINS, "idref"));
+			
+			for (Element ownedEnd : XMLDOMUtil.getElementChildsByTagName(assocElem, "ownedEnd"))
+			{
+				if (ownedEnd.getAttribute("aggregation").equals("none"))
+					ownedEnd.setAttribute("aggregation", aggType);
+				else
+					ownedEnd.setAttribute("aggregation", "none");
+			}
+		}
+	}
+	
 	private void separateAssociationClass(Element element)
 	{
-		if (element.getNodeName().equals("extendedProperties") && element.hasAttribute("associationclass"))
+		if (element.getNodeName().equals("extendedProperties") && element.hasAttribute("associationclass") &&
+				XMLDOMUtil.getFirstAppearanceOf((Element)element.getParentNode(), "properties").hasAttribute("stereotype"))
 		{
 			Element assocClassElem = doc.getElementById(element.getAttribute("associationclass"));
 			Element assocClassElemClone = (Element) assocClassElem.cloneNode(true);
@@ -187,19 +211,19 @@ public class MapperEA implements Mapper {
 			}
 			
 			//Process Association part
-			
 			assocClassElemClone.setAttributeNS(XMINS, "type", "uml:Association");
 			assocClassElemClone.setAttributeNS(XMINS, "id", 
 					((Element)element.getParentNode()).getAttributeNS(XMINS, "idref"));
 			assocClassElemClone.setAttribute("name", ((Element)element.getParentNode()).getAttribute("name"));
 			assocClassElemClone.setAttribute("relator", assocClassElem.getAttributeNS(XMINS, "id"));
+			//EA sometimes export twice the same end
+			eliminateDuplicateEnds(assocClassElemClone);
+			
 			for (Element childElem : XMLDOMUtil.getElementChilds(assocClassElemClone))
 			{
 				if (childElem.getNodeName().equals("ownedAttribute") || 
-						childElem.getNodeName().equals("generalization") ||
-						hasDuplicateEnd(childElem))
+						childElem.getNodeName().equals("generalization"))
 				{
-//					System.out.println("removing " + childElem.getNodeName());
 					XMLDOMUtil.removeElement(childElem);
 				}
 				else if (childElem.hasAttributeNS(XMINS, "id"))
@@ -215,34 +239,39 @@ public class MapperEA implements Mapper {
 		}
 	}
 	
-	private boolean hasDuplicateEnd(Element childElem)
+	private void eliminateDuplicateEnds(Element elem)
 	{
-		if (childElem.getNodeName().equals("ownedEnd"))
+		List<Element> ownedEnds = XMLDOMUtil.getElementChildsByTagName(elem, "ownedEnd");
+		if (ownedEnds.size() > 2)
 		{
-			String typeIdRefChild = XMLDOMUtil.getFirstAppearanceOf(childElem, "type").getAttributeNS(XMINS, "idref");
-			for (Element e : XMLDOMUtil.getElementChildsByTagName((Element) childElem.getParentNode(), "ownedEnd"))
+			List<String> excludedTypes = new ArrayList<String>();
+			Map<String, Element> nodes = new HashMap<String, Element>();
+			for (Element ownedEnd : ownedEnds)
 			{
-				String typeIdRefSibling = XMLDOMUtil.getFirstAppearanceOf(e, "type").getAttributeNS(XMINS, "idref");
-				if (!childElem.getAttributeNS(XMINS, "id").equals(e.getAttributeNS(XMINS, "id")) && 
-						typeIdRefChild.equals(typeIdRefSibling))
+				String typeIdRefChild = XMLDOMUtil.getFirstAppearanceOf(ownedEnd, "type").getAttributeNS(XMINS, "idref");
+				if (!nodes.containsKey(typeIdRefChild))
+					nodes.put(typeIdRefChild, ownedEnd);
+				
+				else if (!excludedTypes.contains(typeIdRefChild))
 				{
-					for (Element e2 : XMLDOMUtil.getElementChildsByTagName((Element) childElem.getParentNode(), "memberEnd"))
+					for (Element memberEnd : XMLDOMUtil.getElementChildsByTagName(elem, "memberEnd"))
 					{
-						if (e2.getAttributeNS(XMINS, "idref").equals(childElem.getAttributeNS(XMINS, "id")))
+						if (memberEnd.getAttributeNS(XMINS, "idref").equals(nodes.get(typeIdRefChild).getAttributeNS(XMINS, "id")))
 						{
-//							System.out.println("removing " + e2.getNodeName());
-							XMLDOMUtil.removeElement(e2);
+							XMLDOMUtil.removeElement(memberEnd);
+							break;
 						}
 					}
-					return true;
+					XMLDOMUtil.removeElement(nodes.get(typeIdRefChild));
+					excludedTypes.add(typeIdRefChild);
 				}
 			}
 		}
-		return false;
 	}
-
+	//######## End pre-processing methods ########
+	
 	@Override
-	public Object getModelElement() {
+	public Object getRoot() {
 		return doc.getElementsByTagNameNS(UMLNS, "Model").item(0);
 	}
 
@@ -273,34 +302,29 @@ public class MapperEA implements Mapper {
 		List<Element> elemList = new ArrayList<Element>();
 		Element elem = (Element) element;
 		
-		switch (type) {
-//			case ANNOTATION:
-//				if (getType(elem) == ElementType.ASSOCIATION)
-//				{
-//					return Arrays.asList(getAnnotations(elem).toArray());
-//				}
-//				break;
+		switch (type)
+		{
 			case ASSOCIATION:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ASSOCIATION, this);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:Association");
 				break;
 			case CLASS:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.CLASS, this);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:Class");
 				break;
 			case COMMENT:
 				if (getType(elem) != ElementType.COMMENT)
 				{
 					createDescriptionNode(elem);
 				}
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.COMMENT, this);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:Comment");
 				break;
 			case CONSTRAINT:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.CONSTRAINT, this);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:Constraint");
 				
-				Element diagElem = model2diagram.get(elem.getAttributeNS(XMINS, "id"));
-				if (diagElem != null)
+				Element eaElem = model2diagram.get(elem.getAttributeNS(XMINS, "id"));
+				if (eaElem != null)
 				{
-					Element constraints = XMLDOMUtil.getFirstAppearanceOf(diagElem, "constraints");
-					constraints = (constraints == null ? XMLDOMUtil.getFirstAppearanceOf(diagElem, "Constraints") : constraints);
+					Element constraints = XMLDOMUtil.getFirstAppearanceOf(eaElem, "constraints");
+					constraints = (constraints == null ? XMLDOMUtil.getFirstAppearanceOf(eaElem, "Constraints") : constraints);
 					
 					if (constraints != null)
 						for (Element e : XMLDOMUtil.getElementChilds(constraints))
@@ -311,38 +335,81 @@ public class MapperEA implements Mapper {
 				}
 				break;
 			case DATATYPE:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.DATATYPE, this);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:DataType");
 				break;
 			case DEPENDENCY:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.DEPENDENCY, this);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:Dependency");
+				break;
+			case DIAGRAM:
+				NodeList diagrams = doc.getElementsByTagName("diagrams");
+				if (diagrams != null)
+				{
+					for (Element diag : XMLDOMUtil.getElementChildsByTagName((Element) diagrams.item(0), "diagram"))
+					{
+		    			Element properties = XMLDOMUtil.getChild(diag, "properties");
+		    			if (!properties.getAttribute("type").equals("Package") &&
+		    					!properties.getAttribute("type").equals("Custom"))
+		    			{
+		    				elemList.add(diag);
+		    			}
+					}
+				}
+				Element[] diagramArray = elemList.toArray(new Element[]{});
+				Arrays.sort(diagramArray, new EAComparator());
+				elemList = Arrays.asList(diagramArray);
+				break;
+			case DIAGRAMELEMENT:
+				Element elements = XMLDOMUtil.getFirstAppearanceOf(elem, "elements");
+				if (elements != null)
+				{
+					for (Element diagElem : XMLDOMUtil.getElementChilds(elements))
+					{
+						if (!ignoredElements.contains(diagElem.getAttribute("subject")))
+						{
+							if (doc.getElementById(diagElem.getAttribute("subject")) == null)
+							{
+								System.err.println("Reference to a inexistent element " +
+										"in diagram " + ((Element)elem.getElementsByTagName
+										("properties").item(0)).getAttribute("name") + " found.");
+								continue;
+							}
+							else
+							{
+								elemList.add(diagElem);
+//								if (doc.getElementById(diagElem.getAttribute("subject")).hasAttribute("relator"))
+//									elemList.add("derivation" + elem.getAttribute("relator"));
+							}
+						}
+					}
+				}
 				break;
 			case ENUMERATION:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ENUMERATION, this);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:Enumeration");
 				break;
 			case ENUMLITERAL:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.ENUMLITERAL, this);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:EnumerationLiteral");
 				break;
 			case GENERALIZATION:
 				if (getType(elem) != ElementType.ASSOCIATION)
 				{
-					elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.GENERALIZATION, this);
+					elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:Generalization");
 				}
 				break;
 			case GENERALIZATIONSET:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.GENERALIZATIONSET, this);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:GeneralizationSet");
 				break;
 			case PACKAGE:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.PACKAGE, this);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:Package");
 				break;
 			case PRIMITIVE:
-				Element model = (Element) getModelElement();
+				Element model = (Element) getRoot();
 				if (elem == model) {
 					elemList = getPrimitives();
 				}
-				elemList.addAll(XMLDOMUtil.getElementChildsByType(elem, ElementType.PRIMITIVE, this));
+				elemList.addAll(XMLDOMUtil.getElementChildsByType(elem, "uml:PrimitiveType"));
 				break;
 			case PROPERTY:
-				elemList = XMLDOMUtil.getElementChildsByType(elem, ElementType.PROPERTY, this);
+				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:Property");
 				break;
 			default:
 				break;
@@ -350,11 +417,6 @@ public class MapperEA implements Mapper {
 		
 		return Arrays.asList(elemList.toArray());
 	}
-	
-//	private List<String> getAnnotations(Element elem)
-//	{
-//		return new ArrayList<String>();
-//	}
 	
 	private List<Element> getPrimitives() {
 		List<Element> elemList = new ArrayList<Element>();
@@ -421,14 +483,14 @@ public class MapperEA implements Mapper {
     	
     	// Specific Properties
     	if (getType(elem) == ElementType.PROPERTY) {
-    		reverseComposition(hashProp, elem);
+//    		reverseComposition(hashProp, elem);
     		List<Element> childList = XMLDOMUtil.getElementChilds(elem);
         	for (Element childElem : childList) {
         		if (childElem.getNodeName().equals("type")) {
         			if (childElem.hasAttribute("href"))
         				hashProp.put("type", childElem.getAttribute("href").split("#")[1]);
         			else
-        				hashProp.put("type", childElem.getAttributeNS(XMINS, "idref"));
+        				hashProp.put("type", doc.getElementById(childElem.getAttributeNS(XMINS, "idref")));
             	} else if (childElem.getNodeName().equals("lowerValue")) {
             		hashProp.put("lower", childElem.getAttribute("value"));
             	} else if (childElem.getNodeName().equals("upperValue")) {
@@ -441,37 +503,44 @@ public class MapperEA implements Mapper {
     	} else if (getType(elem) == ElementType.ASSOCIATION)
     	{
     		List<Element> memberEndsAux = XMLDOMUtil.getElementChildsByTagName(elem, "memberEnd");
-    		List<String> memberEnds = new ArrayList<String>();
+    		List<Element> memberEnds = new ArrayList<Element>();
     		for (Element memberEnd : memberEndsAux) {
-    			memberEnds.add(memberEnd.getAttributeNS(XMINS, "idref"));
+    			memberEnds.add(doc.getElementById(memberEnd.getAttributeNS(XMINS, "idref")));
     		}
+    		if (elem.hasAttribute("relator"))
+    			hashProp.put("relator", doc.getElementById(elem.getAttribute("relator")));
     		hashProp.put("memberend", memberEnds);
+    		
+    	} else if (getType(elem) == ElementType.GENERALIZATION)
+    	{
+    		Element general = doc.getElementById(elem.getAttribute("general"));
+    		hashProp.put("general", general);
     		
     	} else if (getType(elem) == ElementType.GENERALIZATIONSET) {
     		List<Element> generalizationsAux = XMLDOMUtil.getElementChildsByTagName(elem, "generalization");
-    		List<String> generalizations = new ArrayList<String>();
+    		List<Element> generalizations = new ArrayList<Element>();
     		for (Element generalization : generalizationsAux) {
-    			generalizations.add(generalization.getAttributeNS(XMINS, "idref"));
+    			generalizations.add(doc.getElementById(generalization.getAttributeNS(XMINS, "idref")));
     		}
     		hashProp.put("generalization", generalizations);
     		
     	} else if (getType(elem) == ElementType.COMMENT) {
     		List<Element> commentsAux = XMLDOMUtil.getElementChildsByTagName(elem, "annotatedElement");
-    		List<String> comments = new ArrayList<String>();
+    		List<Element> comments = new ArrayList<Element>();
     		for (Element comment : commentsAux) {
-    			comments.add(comment.getAttributeNS(XMINS, "idref"));
+    			comments.add(doc.getElementById(comment.getAttributeNS(XMINS, "idref")));
     		}
     		hashProp.put("annotatedelement", comments);
     		
     	} else if (getType(elem) == ElementType.CONSTRAINT) {
-    		List<String> constraints = new ArrayList<String>();
+    		List<Element> constraints = new ArrayList<Element>();
     		String body = new String();
     		if (elem.getTagName().equals("ownedRule"))
     		{
 	    		List<Element> constraintsAux = XMLDOMUtil.getElementChildsByTagName(elem, "constrainedElement");
 	    		for (Element constraint : constraintsAux)
 	    		{
-	    			constraints.add(constraint.getAttributeNS(XMINS, "idref"));
+	    			constraints.add(doc.getElementById(constraint.getAttributeNS(XMINS, "idref")));
 	    		}
 	    		
 	    		Element e = XMLDOMUtil.getFirstAppearanceOf(elem, "specification");
@@ -480,7 +549,8 @@ public class MapperEA implements Mapper {
     		}
     		else
     		{
-    			constraints.add(((Element)elem.getParentNode().getParentNode()).getAttributeNS(XMINS, "idref"));
+    			constraints.add(doc.getElementById(
+    					((Element)elem.getParentNode().getParentNode()).getAttributeNS(XMINS, "idref")));
     			if (elem.hasAttribute("notes"))
     				body = elem.getAttribute("notes");
     			if (elem.hasAttribute("description"))
@@ -490,145 +560,17 @@ public class MapperEA implements Mapper {
     		hashProp.put("constrainedelement", constraints);
     		hashProp.put("body", body);
     	}
+    	else if (getType(elem) == ElementType.DIAGRAM)
+    	{
+    		hashProp.put("name", XMLDOMUtil.getFirstAppearanceOf(elem, "properties").getAttribute("name"));
+    	}
     	
 		return hashProp;
 	}
-	
-	private void reverseComposition(HashMap<String, Object> hashProp, Element elem) {
-		String aggregation = elem.getAttribute("aggregation");
-		if (aggregation.equals("composite") || aggregation.equals("shared")) {
-			hashProp.put("aggregation", "none");
-			
-		} else if (aggregation.equals("none")) {
-			Element packagedAssoc = (Element) doc.getElementById(elem.getAttribute("association"));
-			if (packagedAssoc == null)
-			{
-				packagedAssoc = (Element) elem.getParentNode();
-			}
-			List<Element> memberEnds = XMLDOMUtil.getElementChildsByTagName(packagedAssoc, "memberEnd");
-			for (Element memberEnd : memberEnds) {
-				Element ownedEnd = doc.getElementById(memberEnd.getAttributeNS(XMINS, "idref"));
-				String aggregation2 = ownedEnd.getAttribute("aggregation");
-				if (!ownedEnd.equals(elem) && 
-						aggregation2.equals("shared") ||
-						aggregation2.equals("composite")) {
-					hashProp.put("aggregation", aggregation2);
-				}
-			}
-		}
-	}
 
-	@Override
-	public String getID(Object element) {
-		Element elem = (Element) element;
-		if (getType(elem) == ElementType.MODEL) {
-			return "Model_ID_"+elem.getAttribute("name");
-		}
-		else if (elem.getNodeName().equals("constraint"))
-			return (elem.getAttribute("name")+elem.getAttribute("description")).replace(" ", "_");
-		
-		else if (elem.getNodeName().equals("Constraint"))
-			return (elem.getAttribute("name")+elem.getAttribute("notes")).replace(" ", "_");
-		
-		return elem.getAttributeNS(XMINS, "id");
-	}
-
-	@Override
-	public String getName(Object element) {
-		Element elem = (Element) element;
-		if (elem.getNodeName().equals("diagram")) {
-			elem = XMLDOMUtil.getFirstAppearanceOf(elem, "properties");
-		}
-		return elem.getAttribute("name");
-	}
-
-	@Override
-	public ElementType getType(Object element) {
+	private ElementType getType(Object element) {
 		Element elem = (Element) element;
 		return ElementType.get(elem.getAttributeNS(XMINS, "type").replace("uml:", ""));
-	}
-	
-	@Override
-    public String getPath(Object element) {
-		String elementPath = getName(element);
-		for (Node elem = (Node) element; getType(elem) != ElementType.MODEL; elem = elem.getParentNode()) {
-			if (elem instanceof Element && 
-					(getType(elem) == ElementType.CLASS ||
-					getType(elem) == ElementType.ASSOCIATION ||
-					getType(elem) == ElementType.PACKAGE)) {
-				elementPath = getName(elem) + " -> " + elementPath;
-			}
-		}
-    	return elementPath;
-    }
-
-	@Override
-	public Object getElementById(String id) {
-		if (id.contains("Model_ID_")) {
-			return getModelElement();
-		}
-		return doc.getElementById(id);
-	}
-
-	@Override
-	public String getRelatorfromMaterial(Object element) {
-		return ((Element)element).getAttribute("relator");
-	}
-
-	@Override
-	public List<Object> getDiagramList() {
-		List<Element> diagramList = new ArrayList<Element>();
-		NodeList diagrams = doc.getElementsByTagName("diagrams");
-		if (diagrams != null) {
-			for (Node child = diagrams.item(0).getFirstChild(); child != null; child = child.getNextSibling()) {
-	    		if (child instanceof Element) {
-	    			Element properties = XMLDOMUtil.getChild((Element)child, "properties");
-	    			if (!properties.getAttribute("type").equals("Package") &&
-	    					!properties.getAttribute("type").equals("Custom"))
-	    			{
-	    				diagramList.add((Element)child);
-	    			}
-	    		}
-			}
-		}
-		Object[] diagramArray = diagramList.toArray();
-		Arrays.sort(diagramArray, new EAComparator());
-		return Arrays.asList(diagramArray);
-	}
-
-	@Override
-	public List<String> getDiagramElements(Object diagram) throws Exception {
-		List<String> diagElemIDList = new ArrayList<String>();
-		Element elements = XMLDOMUtil.getFirstAppearanceOf((Element)diagram, "elements");
-		if (elements != null) {
-			List<Element> diagElemList = XMLDOMUtil.getElementChilds(elements);
-	
-			for (Object diagElem : diagElemList) {
-				if (this.ignoredElements.contains(((Element)diagElem).getAttribute("subject")))
-					continue;
-				if (getElementById(((Element)diagElem).getAttribute("subject")) == null) {
-					throw new Exception("XMI file is invalid. Reference to a inexistent element " +
-							"in diagram " + ((Element)((Element)diagram).getElementsByTagName
-							("properties").item(0)).getAttribute("name") + " found.");
-				}
-				Element elem = doc.getElementById(((Element)diagElem).getAttribute("subject"));
-				ElementType type = getType(elem);
-				if (type == ElementType.CLASS ||
-						type == ElementType.ASSOCIATION ||
-						type == ElementType.DATATYPE ||
-						type == ElementType.PRIMITIVE ||
-						type == ElementType.ENUMERATION)
-				{
-					diagElemIDList.add(((Element)diagElem).getAttribute("subject"));
-					if (elem.hasAttribute("relator"))
-					{
-						diagElemIDList.add("derivation" + elem.getAttribute("relator"));
-					}
-				}
-			}
-		}
-		
-		return diagElemIDList;
 	}
 	
 	class EAComparator implements Comparator<Object> {
@@ -638,12 +580,33 @@ public class MapperEA implements Mapper {
 			Element elem1 = (Element) arg0;
 			Element elem2 = (Element) arg1;
 			
-			String name1 = getName(elem1);
-			String name2 = getName(elem2);
+			String name1 = XMLDOMUtil.getFirstAppearanceOf(elem1, "properties").getAttribute("name");
+			String name2 = XMLDOMUtil.getFirstAppearanceOf(elem2, "properties").getAttribute("name");
 			
 			return name1.compareToIgnoreCase(name2);
 		}
-		
 	}
-
+	
+//	private void reverseComposition(HashMap<String, Object> hashProp, Element elem) {
+//	String aggregation = elem.getAttribute("aggregation");
+//	if (aggregation.equals("composite") || aggregation.equals("shared")) {
+//		hashProp.put("aggregation", "none");
+//		
+//	} else if (aggregation.equals("none")) {
+//		Element packagedAssoc = (Element) doc.getElementById(elem.getAttribute("association"));
+//		if (packagedAssoc == null)
+//		{
+//			packagedAssoc = (Element) elem.getParentNode();
+//		}
+//		List<Element> memberEnds = XMLDOMUtil.getElementChildsByTagName(packagedAssoc, "memberEnd");
+//		for (Element memberEnd : memberEnds) {
+//			Element ownedEnd = doc.getElementById(memberEnd.getAttributeNS(XMINS, "idref"));
+//			String aggregation2 = ownedEnd.getAttribute("aggregation");
+//			if (!ownedEnd.equals(elem) && 
+//					aggregation2.equals("shared") ||
+//					aggregation2.equals("composite")) {
+//				hashProp.put("aggregation", aggregation2);
+//			}
+//		}
+//	}
 }

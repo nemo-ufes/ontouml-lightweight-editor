@@ -2,24 +2,21 @@ package br.ufes.inf.nemo.xmi2ontouml.framework;
 
 import RefOntoUML.DataType;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public class XMI2RefDatatype extends XMI2RefClassifier
 {
-	public XMI2RefDatatype (Object XMIElement, Mapper mapper) throws Exception
+	public XMI2RefDatatype() {}
+	
+	public XMI2RefDatatype (Object XMIElement, XMIParser mapper) throws Exception
 	{
-		this.XMIElement = XMIElement;
-		this.Mapper = mapper;
-		this.RefOntoUMLElement = factory.createDataType();
-		
-		this.hashProp = Mapper.getProperties(XMIElement);
-		
-		commonTasks();
+		super(XMIElement, mapper, factory.createDataType());
 	}
 	
-	public XMI2RefDatatype()
+	public XMI2RefDatatype (Object XMIElement, XMIParser mapper, DataType datatype) throws Exception
 	{
+		super(XMIElement, mapper, datatype);
 	}
 	
 	@Override
@@ -35,11 +32,7 @@ public class XMI2RefDatatype extends XMI2RefClassifier
 	}
 
 	@Override
-	public void dealReferences()
-	{
-		// TODO Auto-generated method stub
-		
-	}
+	public void dealReferences() {}
 	
 	@Override
 	protected void createSubElements() throws Exception

@@ -13,15 +13,16 @@ package br.ufes.inf.nemo.xmi2ontouml.util;
  *
  */
 
-public enum ElementType {
-	
-//	ANNOTATION,
+public enum ElementType
+{
 	ASSOCIATION,
 	ASSOCIATIONCLASS,
 	CLASS,
 	COMMENT,
 	DATATYPE,
 	DEPENDENCY,
+	DIAGRAM,
+	DIAGRAMELEMENT,
 	ENUMERATION,
 	ENUMLITERAL,
     GENERALIZATION,
@@ -34,11 +35,6 @@ public enum ElementType {
     
     public static ElementType get(String type) 
     {
-//    	if (type.equalsIgnoreCase("annotation")) 
-//		{
-//			return ElementType.ANNOTATION;
-//		}
-//    	else if (type.equalsIgnoreCase("association")) 
     	if (type.equalsIgnoreCase("association")) 
 		{
 			return ElementType.ASSOCIATION;
@@ -66,7 +62,15 @@ public enum ElementType {
 		else if (type.equalsIgnoreCase("dependency")) 
 		{
 			return ElementType.DEPENDENCY;
-		} 
+		}
+		else if (type.equalsIgnoreCase("diagram")) 
+		{
+			return ElementType.DIAGRAM;
+		}
+		else if (type.equalsIgnoreCase("diagramelement")) 
+		{
+			return ElementType.DIAGRAMELEMENT;
+		}
 		else if (type.equalsIgnoreCase("enumeration") || type.equalsIgnoreCase("enum")) 
 		{
 			return ElementType.ENUMERATION;
@@ -103,70 +107,74 @@ public enum ElementType {
 			return null;
 	}
     
-    public static String name(ElementType type) 
+    @Override
+    public String toString() 
     {
-//    	if (type.equals(ElementType.ANNOTATION)) 
-//		{
-//			return "Annotation";
-//		}
-//    	else if (type.equals(ElementType.ASSOCIATION)) 
-    	if (type.equals(ElementType.ASSOCIATION)) 
+    	if (this.equals(ElementType.ASSOCIATION)) 
 		{
 			return "Association";
 		}
-		else if (type.equals(ElementType.ASSOCIATIONCLASS)) 
+		else if (this.equals(ElementType.ASSOCIATIONCLASS)) 
 		{
 			return "AssociationClass";
 		} 
-		else if (type.equals(ElementType.CLASS)) 
+		else if (this.equals(ElementType.CLASS)) 
 		{
 			return "Class";
 		} 
-		else if (type.equals(ElementType.COMMENT)) 
+		else if (this.equals(ElementType.COMMENT)) 
 		{
 			return "Comment";
 		}
-		else if (type.equals(ElementType.CONSTRAINT)) 
+		else if (this.equals(ElementType.CONSTRAINT)) 
 		{
 			return "Constraint";
 		}
-		else if (type.equals(ElementType.DATATYPE)) 
+		else if (this.equals(ElementType.DATATYPE)) 
 		{
 			return "DataType";
 		} 
-		else if (type.equals(ElementType.DEPENDENCY)) 
+		else if (this.equals(ElementType.DEPENDENCY)) 
 		{
 			return "Dependency";
 		} 
-		else if (type.equals(ElementType.ENUMERATION)) 
+		else if (this.equals(ElementType.DIAGRAM)) 
+		{
+			return "Diagram";
+		} 
+		else if (this.equals(ElementType.DIAGRAMELEMENT)) 
+		{
+			return "DiagramElement";
+		} 
+		else if (this.equals(ElementType.ENUMERATION)) 
 		{
 			return "Enumeration";
 		} 
-		else if (type.equals(ElementType.ENUMLITERAL)) 
+		else if (this.equals(ElementType.ENUMLITERAL)) 
 		{
 			return "EnumerationLiteral";
 		} 
-		else if (type.equals(ElementType.GENERALIZATION)) 
+		else if (this.equals(ElementType.GENERALIZATION)) 
 		{
 			return "Generalization";
 		} 
-		else if (type.equals(ElementType.GENERALIZATIONSET)) 
+		else if (this.equals(ElementType.GENERALIZATIONSET)) 
 		{
 			return "GeneralizationSet";
 		} 
-		else if (type.equals(ElementType.MODEL)) 
+		else if (this.equals(ElementType.MODEL)) 
 		{
 			return "Model";
 		} 
-		else if (type.equals(ElementType.PACKAGE)) 
+		else if (this.equals(ElementType.PACKAGE)) 
 		{
 			return "Package";
 		} 
-		else if (type.equals(ElementType.PRIMITIVE)) 
+		else if (this.equals(ElementType.PRIMITIVE)) 
 		{
 			return "PrimitiveType";
 		} 
-		else if (type.equals(ElementType.PROPERTY)) 
+		else if (this.equals(ElementType.PROPERTY)) 
 		{
 			return "Property";
 		} 

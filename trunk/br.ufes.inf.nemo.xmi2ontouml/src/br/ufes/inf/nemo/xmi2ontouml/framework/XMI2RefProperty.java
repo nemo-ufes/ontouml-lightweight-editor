@@ -16,8 +16,8 @@ import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.xmi2ontouml.Creator;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2ontouml.util.OntoUMLError;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public class XMI2RefProperty extends XMI2RefNamedElement
 {
@@ -25,15 +25,9 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 	
 	protected static boolean autoGenerateCardinality = true;
 	
-	public XMI2RefProperty (Object XMIElement, Mapper mapper) throws Exception
+	public XMI2RefProperty (Object XMIElement, XMIParser mapper) throws Exception
 	{
-		this.XMIElement = XMIElement;
-		this.Mapper = mapper;
-		this.RefOntoUMLElement = factory.createProperty();
-		
-		this.hashProp = Mapper.getProperties(XMIElement);
-		
-		commonTasks();
+		super(XMIElement, mapper, factory.createProperty());
 	}
 
 	@Override
@@ -92,7 +86,7 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 	{
 		try
 		{
-			((Property)RefOntoUMLElement).setType((Type) elemMap.get((String)hashProp.get("type")));
+			((Property)RefOntoUMLElement).setType((Type) elemMap.getElement(hashProp.get("type")));
 			
 			// Makes sure the Properties (memberEnds) are added in the correct order
 	    	// to be in accordance to the OntoUML specification
@@ -128,7 +122,7 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 					(property.eContainer() instanceof Derivation && property.getType() instanceof Relator))
 				property.setIsReadOnly(true);
 			
-			if (autoGenerateNames && (((Property)RefOntoUMLElement).getName() == null) || ((Property)RefOntoUMLElement).getName().equals(""))
+			if (autoGenerateNames && (((Property)RefOntoUMLElement).getName() == null || ((Property)RefOntoUMLElement).getName().equals("")))
 				((Property)RefOntoUMLElement).setName(((Property)RefOntoUMLElement).getType().getName().toLowerCase());
 		}
 		catch (NullPointerException | IllegalArgumentException e)
@@ -142,7 +136,7 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 		{
 			if (((Property)RefOntoUMLElement).getType() == null && RefOntoUMLElement.eContainer() instanceof Association && ignoreErrorElements)
 			{
-				System.out.println("Debug: removing property with error ("+((Property)RefOntoUMLElement).getName()+" | Container: "+RefOntoUMLElement.eContainer()+")");
+				System.err.println("Debug: removing property with error ("+((Property)RefOntoUMLElement).getName()+" | Container: "+RefOntoUMLElement.eContainer()+")");
 	    		EcoreUtil.remove(RefOntoUMLElement);
 			}
 		}

@@ -9,7 +9,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
@@ -25,7 +24,9 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Class;
+import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
+import RefOntoUML.Derivation;
 import RefOntoUML.Element;
 import RefOntoUML.Model;
 import RefOntoUML.Package;
@@ -34,8 +35,11 @@ import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefElement;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
+import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefAssociation;
+import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefDiagram;
+import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefDiagramElement;
+import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefModel;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 
 public class RefOntoUMLUtil {
@@ -95,7 +99,7 @@ public class RefOntoUMLUtil {
 	 * @return the CheckboxTree with the elements organized by diagram.
 	 * @throws Exception 
 	 */	
-	public static CheckboxTree createSelectionTreeByDiagram(Mapper mapper, Model model) throws Exception {
+	public static CheckboxTree createSelectionTreeByDiagram(XMIParser mapper, Model model) throws Exception {
 		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(new ChckBoxTreeNodeElem(model));
 		CheckboxTree modelTree = new CheckboxTree(rootNode);
 		modelTree.setCellRenderer(new OntoUMLTreeCellRenderer());
@@ -108,21 +112,26 @@ public class RefOntoUMLUtil {
 			}
 		}
 		
-		List<Object> diagramList = mapper.getDiagramList();
-    	for (Object diagram : diagramList) {
+    	for (XMI2RefDiagram diagram : XMI2RefModel.getDiagrams()) {
     		DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(
-    				new ChckBoxTreeNodeElem(mapper.getName(diagram)));
+    				new ChckBoxTreeNodeElem(diagram.getName()));
     		rootNode.add(newNode);
-    		List<String> elemIdList = mapper.getDiagramElements(diagram);
-    		for (String id : elemIdList) {
-    			try {
-    				DefaultMutableTreeNode newElemNode = new DefaultMutableTreeNode(
-    					new ChckBoxTreeNodeElem((Element) XMI2RefElement.getElemMap().get(id)));
-    				newNode.add(newElemNode);
-    			} catch (NullPointerException npe) {
-    				continue;
+    		for (XMI2RefDiagramElement diagramElem : diagram.getDiagElemList())
+    		{
+    			if (diagramElem.getSubjectElement() instanceof Classifier)
+    			{
+					DefaultMutableTreeNode newElemNode = new DefaultMutableTreeNode(
+						new ChckBoxTreeNodeElem(diagramElem.getSubjectElement()));
+					newNode.add(newElemNode);
+					if (diagramElem.getSubject() instanceof XMI2RefAssociation &&
+							((XMI2RefAssociation)diagramElem.getSubject()).getDerivation() != null)
+					{
+						Derivation der = ((XMI2RefAssociation)diagramElem.getSubject()).getDerivation();
+						DefaultMutableTreeNode newElemNode2 = new DefaultMutableTreeNode(
+								new ChckBoxTreeNodeElem(der));
+						newNode.add(newElemNode2);
+					}
     			}
-    			
     		}
     	}
     	

@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.xmi2ontouml.mapper;
+package br.ufes.inf.nemo.xmi2ontouml.xmiparser;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,17 +13,17 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import br.ufes.inf.nemo.xmi2ontouml.mapper.impl.MapperAstah;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.impl.MapperEA;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.impl.MapperAstah;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.impl.MapperEA;
 
 
-public class MapperFactory {
+public class XMIParserFactory {
 	
 	//private final String XMI_NS = "http://schema.omg.org/spec/XMI/2.1";
 	
 	private File xmiFile;
 	
-	public Mapper createMapper(File file) throws Exception
+	public XMIParser createMapper(File file) throws Exception
 	{
 		xmiFile = file;
 		
@@ -60,7 +60,7 @@ public class MapperFactory {
 	
 	//Read the DOM Document and look for the program or the exporter
 	//of the XMI
-	private Mapper identifyExporter(Document doc) throws Exception
+	private XMIParser identifyExporter(Document doc) throws Exception
 	{
 		Element root = doc.getDocumentElement();
 		NamedNodeMap nnm = root.getAttributes();

@@ -6,8 +6,6 @@ import java.util.List;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
-
 public class XMLDOMUtil {
 	
 	/**
@@ -25,10 +23,13 @@ public class XMLDOMUtil {
 		return null;
 	}
 	
-	public static List<Element> getElementChildsByType (Element elem, ElementType type, Mapper typeGetter) {
+	public static List<Element> getElementChildsByType (Element elem, String type) {
 		List<Element> elemList = new ArrayList<Element>();
 		for (Node child = elem.getFirstChild(); child != null; child = child.getNextSibling()) {
-    		if (child instanceof Element && typeGetter.getType(child) == type) {
+    		if (child instanceof Element && (
+    				((Element) child).getAttribute("xmi:type").equals(type) || 
+    				((Element) child).getAttribute("type").equals(type)))
+    		{
 				elemList.add((Element)child);
 			}
 		}

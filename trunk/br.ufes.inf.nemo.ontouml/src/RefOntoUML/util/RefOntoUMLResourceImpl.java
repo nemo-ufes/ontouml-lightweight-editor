@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
  * The <b>Resource </b> associated with the package.
  * <!-- end-user-doc -->
  * @see RefOntoUML.util.RefOntoUMLResourceFactoryImpl
- * @generated
  */
 public class RefOntoUMLResourceImpl extends XMIResourceImpl {
 	

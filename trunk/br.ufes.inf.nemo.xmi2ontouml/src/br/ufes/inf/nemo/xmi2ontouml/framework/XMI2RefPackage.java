@@ -3,25 +3,24 @@ package br.ufes.inf.nemo.xmi2ontouml.framework;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import br.ufes.inf.nemo.xmi2ontouml.Creator;
-import br.ufes.inf.nemo.xmi2ontouml.mapper.Mapper;
 import br.ufes.inf.nemo.xmi2ontouml.util.ElementType;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 public class XMI2RefPackage extends XMI2RefNamespace
 {
-	public XMI2RefPackage (Object XMIElement, Mapper mapper) throws Exception
+	public XMI2RefPackage (Object XMIElement, XMIParser mapper)
 	{
-		this.XMIElement = XMIElement;
-		this.Mapper = mapper;
-		this.RefOntoUMLElement = factory.createPackage();
-		
-		this.hashProp = Mapper.getProperties(XMIElement);
-		
-		commonTasks();
+		super(XMIElement, mapper, factory.createPackage());
 	}
 	
-	public XMI2RefPackage()
+	public XMI2RefPackage (Object XMIElement, XMIParser mapper, Package pack)
 	{
+		super(XMIElement, mapper, pack);
 	}
+	
+//	public XMI2RefPackage()
+//	{
+//	}
 
 	@Override
 	public void dealReferences()
@@ -70,11 +69,12 @@ public class XMI2RefPackage extends XMI2RefNamespace
 	{
 		for (Object elem : this.Mapper.getElements(XMIElement, elementType))
 		{
-			XMI2RefElement xmi2RefElem = (XMI2RefElement) type.getConstructor(Object.class, Mapper.class).newInstance(elem, Mapper);
+			XMI2RefElement xmi2RefElem = (XMI2RefElement) type.getConstructor(Object.class, XMIParser.class).newInstance(elem, Mapper);
 			if (xmi2RefElem.RefOntoUMLElement != null)
 			{
 				PackageableElement refOntoElem = (PackageableElement) xmi2RefElem.RefOntoUMLElement;
 				((Package)RefOntoUMLElement).getPackagedElement().add(refOntoElem);
+				xmi2RefElem.createSubElements();
 			}
         }
     }

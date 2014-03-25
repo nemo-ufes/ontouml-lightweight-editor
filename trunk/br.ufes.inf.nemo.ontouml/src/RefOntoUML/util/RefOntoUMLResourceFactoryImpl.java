@@ -15,14 +15,12 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
  * The <b>Resource Factory</b> associated with the package.
  * <!-- end-user-doc -->
  * @see RefOntoUML.util.RefOntoUMLResourceImpl
- * @generated
  */
 public class RefOntoUMLResourceFactoryImpl extends XMIResourceFactoryImpl {
 	/**
 	 * Creates an instance of the resource factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public RefOntoUMLResourceFactoryImpl() {
 		super();
@@ -32,7 +30,6 @@ public class RefOntoUMLResourceFactoryImpl extends XMIResourceFactoryImpl {
 	 * Creates an instance of the resource.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	@Override
 	public Resource createResource(URI uri) {
