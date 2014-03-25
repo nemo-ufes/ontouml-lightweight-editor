@@ -2,9 +2,6 @@ package br.ufes.inf.nemo.derivedtypes;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 
 abstract class DerivedType {
 
