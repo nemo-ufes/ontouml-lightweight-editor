@@ -25,6 +25,7 @@ public class DerivedTypesOperations {
 
 
 
+	@SuppressWarnings("unused")
 	public static Fix createUnionDerivation(DiagramEditor activeEditor, UmlProject project){
 
 		Fix mainfix = new Fix();
@@ -160,6 +161,7 @@ public class DerivedTypesOperations {
 	}
 
 
+	@SuppressWarnings("unused")
 	public static String DefineNameDerivedType(){
 
 		// a jframe here isn't strictly necessary, but it makes the example a little more real
