@@ -163,17 +163,16 @@ public class UndefPhaseOccurrence extends AntipatternOccurrence {
 			{
 				if(!phases.contains(c))
 				{
-					String rule = "context _'"+c.getName()+"' :: allInstances() : Set(_'"+c.getName()+")"+"\n"+					
-					"body : _'"+getGeneral().getName()+"'.allInstances()->select (x | not (";
+					String rule = "context _'"+getGeneral().getName()+"'"+"\ninv: ";					
 					int j=0;
 					for(Classifier c2: getPhases()){
 						if(!c2.equals(c)){
-							if(j==getPhases().size()-1) rule+="x.oclIsTypeOf(_'"+c2.getName()+"') ";
-							else rule+="x.oclIsTypeOf(_'"+c2.getName()+"') or ";
+							if(j==getPhases().size()-1) rule+="not self.oclIsTypeOf(_'"+c2.getName()+"') ";
+							else rule+="not self.oclIsTypeOf(_'"+c2.getName()+"') and ";
 						}
 						j++;
 					}
-					rule+=")\n";
+					rule+="implies self.oclIsTypeOf(_'"+c.getName()+"')\n";
 					fix.includeRule(rule);
 				}
 			}
