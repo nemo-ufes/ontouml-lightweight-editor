@@ -61,7 +61,7 @@ public class ChangeStereoTable {
 			// Stereotype
 			editor = new TableEditor(table);
 			Combo combo = new Combo(table, SWT.READ_ONLY);
-			combo.setItems(new String[] {"SubKind","Role"});			
+			combo.setItems(new String[] {"Phase","SubKind","Role"});			
 			combo.select(0);
 			combo.pack();
 			editor.grabHorizontal = true;
@@ -75,6 +75,15 @@ public class ChangeStereoTable {
 		return table;
 	}
 		
+	public boolean isAllPhase()
+	{				
+		for (TableItem ti : table.getItems()){	
+			Combo combo = (Combo) ti.getData("1");
+			if(combo.getText().compareToIgnoreCase("Phase")!=0) return false;
+		}
+		return true;
+	}
+	
 	public ArrayList<String> getStereotypes()
 	{
 		ArrayList<String> result = new ArrayList<String>();		
