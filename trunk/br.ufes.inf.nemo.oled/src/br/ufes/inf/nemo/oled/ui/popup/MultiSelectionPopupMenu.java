@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.ui.popup;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -18,16 +20,23 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 
 	private static final long serialVersionUID = 1L;
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
+	@SuppressWarnings("unused")
+	private ArrayList<DiagramElement> selected = new ArrayList<DiagramElement>();
 	
 	public MultiSelectionPopupMenu()
 	{			
+		createMenuItem(this, "creategenset");
+		this.addSeparator();
 		createMenuItem(this, "derivedunion");
 		createMenuItem(this, "derivedexclusion");
+		this.addSeparator();		
 		createMenuItem(this, "delete");	
-		
 	}
 	
-
+	public void setSelectedElements(ArrayList<DiagramElement> selected)
+	{
+		this.selected = selected;		
+	}
 	
 	/**
 	 * Adds the specified AppCommandListener.

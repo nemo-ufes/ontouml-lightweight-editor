@@ -130,6 +130,7 @@ public class TreePopupMenu extends JPopupMenu {
     			JMenuItem relatorItem = new JMenuItem("Relator");
     			JMenuItem modeItem = new JMenuItem("Mode");	
     			JMenuItem datatypeItem = new JMenuItem("DataType");
+    			JMenuItem genSetItem = new JMenuItem("Generalization Set");
     			addElementMenu.add(packageItem);
     	        packageItem.addActionListener(new ActionListener() {				
     	        	@Override
@@ -209,6 +210,12 @@ public class TreePopupMenu extends JPopupMenu {
         				frame.getDiagramManager().addElement(ElementType.DATATYPE,eContainer);
         			}
         		});
+        		addElementMenu.add(genSetItem);
+        		genSetItem.addActionListener(new ActionListener() {				
+        			public void actionPerformed(ActionEvent e) {
+        				frame.getDiagramManager().addElement(ElementType.GENERALIZATIONSET,eContainer);
+        			}
+        		});
         		packageItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/package.png")));
                 kindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/kind.png")));
                 quantityItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/quantity.png")));
@@ -222,6 +229,7 @@ public class TreePopupMenu extends JPopupMenu {
                 modeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/mode.png")));
                 relatorItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/relator.png")));
                 datatypeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/datatype.png")));
+                genSetItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/generalization.png")));
     		}
 		}
 		

@@ -27,6 +27,9 @@ package br.ufes.inf.nemo.oled.model;
  * @version 1.0
  */
 public enum ElementType {
+  // OntoUML types
   KIND, QUANTITY, COLLECTIVE, SUBKIND, PHASE, ROLE, 
-  CATEGORY, ROLEMIXIN, MIXIN, MODE, RELATOR, DATATYPE, NOTE, PACKAGE, UNION 
+  CATEGORY, ROLEMIXIN, MIXIN, MODE, RELATOR, DATATYPE, NOTE, PACKAGE, GENERALIZATIONSET, 
+  // OntoUML derived types
+  UNION 
 }

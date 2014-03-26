@@ -298,9 +298,11 @@ public class ModelHelper {
 		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();		
 		for(Element elem: elements){
 			ArrayList<DiagramElement> dElem = mappings.get(elem);
-			for(DiagramElement de: dElem){
-				if (editor.getDiagram().containsChild(de)) list.add(de);
-			}			
+			if(dElem!=null){
+				for(DiagramElement de: dElem){
+					if (editor.getDiagram().containsChild(de)) list.add(de);
+				}
+			}
 		}
 		return list;
 	}	
