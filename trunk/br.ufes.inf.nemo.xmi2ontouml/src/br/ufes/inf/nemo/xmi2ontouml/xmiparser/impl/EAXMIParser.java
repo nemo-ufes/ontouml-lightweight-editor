@@ -24,7 +24,7 @@ import br.ufes.inf.nemo.xmi2ontouml.util.XMLDOMUtil;
 import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 
-public class MapperEA implements XMIParser {
+public class EAXMIParser implements XMIParser {
 	
 	// FIXED NAMESPACES
 	private final String XMLNS = "http://www.w3.org/2000/xmlns/";
@@ -43,7 +43,7 @@ public class MapperEA implements XMIParser {
 	
 	List<String> ignoredElements = new ArrayList<String>();
 	
-	public MapperEA(String inputPath) throws Exception {
+	public EAXMIParser(String inputPath) throws Exception {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         docBuilderFactory.setNamespaceAware(true);
         DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
@@ -564,12 +564,22 @@ public class MapperEA implements XMIParser {
     	{
     		hashProp.put("name", XMLDOMUtil.getFirstAppearanceOf(elem, "properties").getAttribute("name"));
     	}
+    	else if (getType(elem) == ElementType.DIAGRAMELEMENT)
+    	{
+    		hashProp.put("subject", doc.getElementById(elem.getAttribute("subject")));
+    	}
     	
 		return hashProp;
 	}
 
-	private ElementType getType(Object element) {
+	private ElementType getType(Object element)
+	{
 		Element elem = (Element) element;
+		if (elem.getNodeName().equals("diagram"))
+			return ElementType.DIAGRAM;
+		else if (elem.getNodeName().equals("element") && 
+				elem.getParentNode().getParentNode().getNodeName().equals("diagram"))
+			return ElementType.DIAGRAMELEMENT;
 		return ElementType.get(elem.getAttributeNS(XMINS, "type").replace("uml:", ""));
 	}
 	
