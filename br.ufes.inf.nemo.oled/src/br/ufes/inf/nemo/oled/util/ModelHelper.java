@@ -44,6 +44,7 @@ import RefOntoUML.impl.DataTypeImpl;
 import RefOntoUML.impl.DerivationImpl;
 import RefOntoUML.impl.DirectedBinaryAssociationImpl;
 import RefOntoUML.impl.FormalAssociationImpl;
+import RefOntoUML.impl.GeneralizationImpl;
 import RefOntoUML.impl.MaterialAssociationImpl;
 import RefOntoUML.impl.MediationImpl;
 import RefOntoUML.impl.MeronymicImpl;
@@ -374,6 +375,15 @@ public class ModelHelper {
 	//Pseudo clone
 	public static Relationship clone(Relationship relationship) {
 		Relationship cloned = (Relationship) factory.create(relationship.eClass());
+		
+		if(cloned instanceof GeneralizationImpl)
+		{
+			Generalization generalization = (Generalization) relationship;
+			
+			((Generalization)cloned).getGeneralizationSet().addAll(generalization.getGeneralizationSet());
+			((Generalization)cloned).setGeneral(generalization.getGeneral());
+			((Generalization)cloned).setSpecific(generalization.getSpecific());
+		}
 		
 		if(cloned instanceof AssociationImpl)
 		{

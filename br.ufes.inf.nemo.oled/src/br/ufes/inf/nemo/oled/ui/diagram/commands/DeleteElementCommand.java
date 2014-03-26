@@ -30,6 +30,8 @@ import org.eclipse.emf.edit.command.DeleteCommand;
 
 import RefOntoUML.Derivation;
 import RefOntoUML.Element;
+import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Relationship;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
@@ -268,6 +270,10 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		for(Element elem: elemList) {
 			if (elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType) delete(elem);			
 		}
+		
+		for(Element elem: elemList) {
+			if (elem instanceof RefOntoUML.GeneralizationSet) delete(elem);
+		}
 	}
 	
 	private void delete (DiagramElement element)
@@ -298,6 +304,15 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	
 	private void delete (RefOntoUML.Element elem)
 	{
+		// generalization sets have dependencies with generalizations... solving this here before delete the generalization set
+		if (elem instanceof RefOntoUML.GeneralizationSet){
+			ArrayList<Generalization> gens = new ArrayList<Generalization>(); 
+			for(Generalization gen: ((GeneralizationSet)elem).getGeneralization()){				
+				if(gen!=null)gens.add(gen);				
+			}			
+			((GeneralizationSet)elem).getGeneralization().removeAll(gens);
+		}
+		
 		DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), elem);
 		project.getEditingDomain().getCommandStack().execute(cmd);		
 	}

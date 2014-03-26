@@ -661,7 +661,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	
 	/** Create a generalization set from selected diagram elements */
 	public GeneralizationSet createGeneralizationSetFrom(Collection<DiagramElement> diagramElementsList) 
-	{
+	{		
 		// retain only generalizations from selected
 		ArrayList<Generalization> gens = new ArrayList<Generalization>();
 		for(DiagramElement dElem: diagramElementsList){
@@ -685,7 +685,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			g.getGeneralizationSet().add(((GeneralizationSet)newgenset));
 		}
 		//update application accordingly
-		updateOLEDFromModification(((GeneralizationSet)newgenset),false);
+		updateOLEDFromModification(((GeneralizationSet)newgenset),false);		
 		return (GeneralizationSet)newgenset;
 	}
 	
