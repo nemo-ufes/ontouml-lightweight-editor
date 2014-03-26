@@ -319,6 +319,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			
 			selectorMap.put("DERIVED_BY_EXCLUSION", new MethodCall(
 					getClass().getMethod("derivedByExclusion")));
+			
+			selectorMap.put("CREATE_GEN_SET", new MethodCall(
+					DiagramEditor.class.getMethod("createGeneralizationSet")));
 
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();

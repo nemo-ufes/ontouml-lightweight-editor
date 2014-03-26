@@ -19,9 +19,12 @@
  */
 package br.ufes.inf.nemo.oled.ui.diagram;
 
+import java.util.ArrayList;
+
 import javax.swing.JPopupMenu;
 
 import br.ufes.inf.nemo.oled.draw.Connection;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Selection;
 import br.ufes.inf.nemo.oled.ui.popup.MultiSelectionPopupMenu;
 import br.ufes.inf.nemo.oled.ui.popup.SingleConnectionPopupMenu;
@@ -60,6 +63,7 @@ public class ContextMenusBuilder {
 	 */
 	public JPopupMenu setContext(Selection selection) {
 		if (selection.getElements().size() > 1) {
+			multiSelectinoPopup.setSelectedElements((ArrayList<DiagramElement>) selection.getElements());
 			return multiSelectinoPopup;
 		} else {
 			UmlDiagramElement elem = (UmlDiagramElement) selection.getElement();

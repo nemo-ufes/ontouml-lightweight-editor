@@ -53,6 +53,9 @@ import javax.swing.undo.UndoManager;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Association;
+import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.Connection;
@@ -85,9 +88,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.ResetConnectionPointsCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.ResizeElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetConnectionNavigabilityCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
-import br.ufes.inf.nemo.oled.ui.dialog.AssociationDialog;
-import br.ufes.inf.nemo.oled.ui.dialog.ClassDialog;
-import br.ufes.inf.nemo.oled.ui.dialog.EditGeneralizationDialogNew;
+import br.ufes.inf.nemo.oled.ui.dialog.DialogCaller;
 import br.ufes.inf.nemo.oled.ui.popup.DiagramPopupMenu;
 import br.ufes.inf.nemo.oled.ui.popup.ToolboxPopupMenu;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
@@ -367,6 +368,15 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 				
 		Collection<DiagramElement> diagramElementsList = getSelectedElements();
 		frame.getDiagramManager().delete(diagramElementsList);		
+	}
+	
+	public void createGeneralizationSet()
+	{
+		Collection<DiagramElement> diagramElementsList = getSelectedElements();
+		GeneralizationSet genSet = frame.getDiagramManager().createGeneralizationSetFrom(diagramElementsList);		
+		DialogCaller.callGeneralizationSetDialog(frame, diagramManager, genSet,true);
+		deselectAll();
+		cancelEditing();
 	}
 	
 	/**
@@ -930,6 +940,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 	}
 
+	public void deselectAll()
+	{
+		selectionHandler.deselectAll();
+	}
+	
 	public void selectAll()
 	{		
 		selectionHandler.selectAll();
@@ -1180,22 +1195,15 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void editProperties(DiagramElement element) {
 		if (element instanceof ClassElement) {
 			ClassElement classElement = (ClassElement) element;			
-			ClassDialog dialog2 = new ClassDialog(frame,diagramManager,classElement,classElement.getClassifier(),true);
-			dialog2.setLocationRelativeTo(frame);
-			dialog2.setVisible(true);
+			DialogCaller.callClassDialog(frame,diagramManager,classElement.getClassifier(),true);			
 			redraw();
 		} else if (element instanceof AssociationElement) {
 			AssociationElement association = (AssociationElement) element;
-			AssociationDialog dialog = new AssociationDialog(frame,diagramManager,association,association.getRelationship(),true);
-			dialog.setLocationRelativeTo(frame);
-			dialog.setVisible(true);
+			DialogCaller.callAssociationDialog(frame,diagramManager,(Association)association.getRelationship(),true);
 			redraw();
 		} else if (element instanceof GeneralizationElement) {
-			GeneralizationElement generalization = (GeneralizationElement) element;
-			EditGeneralizationDialogNew dialog = new EditGeneralizationDialogNew(frame,
-					generalization, diagramManager, true);
-			dialog.setLocationRelativeTo(frame);
-			dialog.setVisible(true);
+			Generalization generalization = ((GeneralizationElement)element).getGeneralization();
+			DialogCaller.callGeneralizationDialog(frame, diagramManager, generalization, true);			
 			redraw();
 		}
 	}

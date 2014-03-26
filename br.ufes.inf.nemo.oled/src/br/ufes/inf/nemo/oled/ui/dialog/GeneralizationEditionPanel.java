@@ -171,7 +171,7 @@ public class GeneralizationEditionPanel extends JPanel {
 					if (!(element.getGeneralizationSet().contains(gs))) genSetList.add(new OntoUMLElement(gs,""));
 				}				
 				if (genSetList.size()==0) {
-					JOptionPane.showMessageDialog(GeneralizationEditionPanel.this, "No Generalization Set exists in the model.", "Add", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(GeneralizationEditionPanel.this, "No generalization set left in the model.", "Add", JOptionPane.INFORMATION_MESSAGE);
 				}else{
 					OntoUMLElement genSet = (OntoUMLElement) JOptionPane.showInputDialog(GeneralizationEditionPanel.this, 
 					        "To which generalization set do you want to include "+element.getSpecific().getName()+"->"+element.getGeneral().getName(),

@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.eclipse.emf.edit.command.AddCommand;
 
+import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
@@ -76,7 +77,10 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		this.element = element;		
 		this.eContainer = eContainer;
 		this.diagramElement = ModelHelper.getDiagramElementByEditor(element,(DiagramEditor)notification);
-		if(this.diagramElement==null) this.diagramElement = ((DiagramEditor)this.notification).getCreationHandler().createNode((RefOntoUML.Type)element, eContainer);
+		if(this.diagramElement==null) {
+			if(!(element instanceof GeneralizationSet))
+				this.diagramElement = ((DiagramEditor)this.notification).getCreationHandler().createNode((RefOntoUML.Type)element, eContainer);
+		}
 		absx = x;
 		absy = y;
 	}

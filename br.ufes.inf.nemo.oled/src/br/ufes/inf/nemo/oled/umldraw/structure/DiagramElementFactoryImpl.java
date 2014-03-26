@@ -341,6 +341,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 	  if (elementType.equals(ElementType.MODE)) { type = factory.createMode();}
 	  if (elementType.equals(ElementType.RELATOR)) { type = factory.createRelator();  }
 	  if (elementType.equals(ElementType.DATATYPE)) { type = factory.createDataType();  }	  
+	  if (elementType.equals(ElementType.GENERALIZATIONSET)) { type = factory.createGeneralizationSet();  }
 	  type.setName(ModelHelper.getStereotype(type)+nextElementCount(elementType)); 
 	  type.setVisibility(VisibilityKind.PUBLIC);	  	
 	  return type;			  

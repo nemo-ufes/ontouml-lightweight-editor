@@ -56,7 +56,9 @@ import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Constraintx;
 import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
 import RefOntoUML.NamedElement;
+import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
@@ -349,7 +351,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public RefOntoUML.PackageableElement addElement(ElementType stereotype, RefOntoUML.Package eContainer)
 	{
 		RefOntoUML.PackageableElement element = elementFactory.createElement(stereotype);		
-
+				
 		//to add only in the model do exactly as follow		
 		AddNodeCommand cmd = new AddNodeCommand(null,null,element,0,0,getCurrentProject(),eContainer);		
 		cmd.run();
@@ -657,6 +659,36 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
+	/** Create a generalization set from selected diagram elements */
+	public GeneralizationSet createGeneralizationSetFrom(Collection<DiagramElement> diagramElementsList) 
+	{
+		// retain only generalizations from selected
+		ArrayList<Generalization> gens = new ArrayList<Generalization>();
+		for(DiagramElement dElem: diagramElementsList){
+			if (dElem instanceof GeneralizationElement){
+				Generalization gen = ((GeneralizationElement)dElem).getGeneralization();
+				if(gen!=null)gens.add(gen);
+			}
+		}
+		if(gens.size()<=1) return null; 
+		//create default gen set
+		EObject eContainer = null;
+		if(gens.size()>1) eContainer = gens.get(0).getSpecific().eContainer();	
+		else eContainer = getCurrentProject().getModel();
+		PackageableElement newgenset = addElement(ElementType.GENERALIZATIONSET, (RefOntoUML.Package)eContainer);
+		// init data of generalization set
+		((GeneralizationSet)newgenset).setIsCovering(true);
+		((GeneralizationSet)newgenset).setIsDisjoint(true);
+		((GeneralizationSet)newgenset).setName("gs");
+		for(Generalization g: gens){
+			((GeneralizationSet)newgenset).getGeneralization().add(g);
+			g.getGeneralizationSet().add(((GeneralizationSet)newgenset));
+		}
+		//update application accordingly
+		updateOLEDFromModification(((GeneralizationSet)newgenset),false);
+		return (GeneralizationSet)newgenset;
+	}
+	
 	/** 
 	 * Update the application accordingly to the refontouml instance created
 	 * 
@@ -718,6 +750,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				if (redesign) { remakeDiagramElement((RefOntoUML.Element)element); }
 				else refreshDiagramElement((RefOntoUML.Element)element);
 			}
+			if(element instanceof RefOntoUML.GeneralizationSet){
+				for(Generalization gen: ((RefOntoUML.GeneralizationSet) element).getGeneralization()) updateOLEDFromModification(gen,false);
+			}
+			
 		}catch (Exception e){
 			e.printStackTrace();
 			System.err.println(e.getLocalizedMessage());			
@@ -2161,7 +2197,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void openDerivedTypePattern(double x, double y) {
 			
 	}
-
 	
 
 }

@@ -16,10 +16,10 @@ import RefOntoUML.StringExpression;
 
 public class OntoUMLElement {
 	
-	private EObject element;
-	private String name;
-	private String type;
-	private String uniqueName="";	
+	protected EObject element;
+	protected String name;
+	protected String type;
+	protected String uniqueName="";	
 	
 	/** 
 	 * Create a CheckBox Tree Node Element from Element.
