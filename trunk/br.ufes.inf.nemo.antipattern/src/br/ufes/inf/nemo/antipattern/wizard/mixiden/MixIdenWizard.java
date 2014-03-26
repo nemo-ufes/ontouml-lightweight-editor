@@ -1,16 +1,8 @@
 package br.ufes.inf.nemo.antipattern.wizard.mixiden;
 
-import java.util.ArrayList;
-
 import RefOntoUML.Category;
 import RefOntoUML.Mixin;
 import RefOntoUML.RoleMixin;
-import RefOntoUML.impl.CollectiveImpl;
-import RefOntoUML.impl.KindImpl;
-import RefOntoUML.impl.PhaseImpl;
-import RefOntoUML.impl.QuantityImpl;
-import RefOntoUML.impl.RoleImpl;
-import RefOntoUML.impl.SubKindImpl;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
