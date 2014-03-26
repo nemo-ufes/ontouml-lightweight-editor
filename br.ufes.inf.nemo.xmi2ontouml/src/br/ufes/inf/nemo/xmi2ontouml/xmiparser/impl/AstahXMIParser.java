@@ -28,7 +28,7 @@ import br.ufes.inf.nemo.xmi2ontouml.xmiparser.XMIParser;
 
 
 
-public class MapperAstah implements XMIParser {
+public class AstahXMIParser implements XMIParser {
 	
 	private final String[] ASSOCIATION_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Association"};
 	private final String[] CLASS_TAG_PATH = {"UML:Namespace.ownedElement", "UML:Class"};
@@ -49,7 +49,7 @@ public class MapperAstah implements XMIParser {
 
 	Document doc;
 	
-	public MapperAstah(String read_file_address) throws Exception
+	public AstahXMIParser(String read_file_address) throws Exception
 	{
 		try {
 			// Creates an instance of the parser that will read the XMI

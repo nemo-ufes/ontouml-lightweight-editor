@@ -13,8 +13,8 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import br.ufes.inf.nemo.xmi2ontouml.xmiparser.impl.MapperAstah;
-import br.ufes.inf.nemo.xmi2ontouml.xmiparser.impl.MapperEA;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.impl.AstahXMIParser;
+import br.ufes.inf.nemo.xmi2ontouml.xmiparser.impl.EAXMIParser;
 
 
 public class XMIParserFactory {
@@ -79,14 +79,14 @@ public class XMIParserFactory {
 		if (version.equals("1.1")) {
 			exporter = doc.getElementsByTagName("XMI.exporter").item(0).getFirstChild().getNodeValue();
 			if (exporter.contains("Jomt")) {
-				return new MapperAstah(xmiFile.getAbsolutePath());
+				return new AstahXMIParser(xmiFile.getAbsolutePath());
 			}
 			
 		} else if (version.equals("2.1")) {
 			Node documentation = doc.getElementsByTagName("xmi:Documentation").item(0);
 			exporter = ((Element)documentation).getAttribute("exporter");
 			if (exporter.contains("Enterprise Architect")) {
-				return new MapperEA(xmiFile.getAbsolutePath());
+				return new EAXMIParser(xmiFile.getAbsolutePath());
 			}
 		}
 

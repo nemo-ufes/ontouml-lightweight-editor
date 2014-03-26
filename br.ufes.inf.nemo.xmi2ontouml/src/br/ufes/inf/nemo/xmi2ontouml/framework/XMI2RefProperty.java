@@ -1,13 +1,12 @@
 package br.ufes.inf.nemo.xmi2ontouml.framework;
 
-import java.util.List;
-
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Characterization;
 import RefOntoUML.Derivation;
+import RefOntoUML.DirectedBinaryAssociation;
 import RefOntoUML.LiteralUnlimitedNatural;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
@@ -90,37 +89,35 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 			
 			// Makes sure the Properties (memberEnds) are added in the correct order
 	    	// to be in accordance to the OntoUML specification
-			Property property = (Property) RefOntoUMLElement;
-			Association association = property.getAssociation();
-			if (association != null)
+			Property prop = (Property) RefOntoUMLElement;
+			if (prop.getAssociation() != null && prop.getAssociation() instanceof DirectedBinaryAssociation)
 			{
-				List<Property> memberEnds = association.getMemberEnd();
-				if (memberEnds.size() == 2 && memberEnds.get(0).getType() != null && memberEnds.get(1).getType() != null)
+				DirectedBinaryAssociation dbassoc = (DirectedBinaryAssociation) prop.getAssociation();
+				if (dbassoc.getMemberEnd().size() == 2 && dbassoc.sourceEnd().getType() != null && dbassoc.targetEnd().getType() != null)
 				{
-					if ((association instanceof Mediation && !(memberEnds.get(0).getType() instanceof Relator)) ||
-			    			(association instanceof Characterization && !(memberEnds.get(0).getType() instanceof Mode)) ||
-			    			(association instanceof Derivation && !(memberEnds.get(0).getType() instanceof MaterialAssociation)) ||
-			    			memberEnds.get(1).getAggregation() == AggregationKind.COMPOSITE ||
-			    			memberEnds.get(1).getAggregation() == AggregationKind.SHARED)
+					if ((dbassoc instanceof Mediation && !(((Mediation)dbassoc).relator() instanceof Relator)) ||
+			    			(dbassoc instanceof Characterization && !(((Characterization)dbassoc).characterizing() instanceof Mode)) ||
+			    			(dbassoc instanceof Derivation && !(((Derivation)dbassoc).material() instanceof MaterialAssociation)) ||
+			    			dbassoc.targetEnd().getAggregation() == AggregationKind.COMPOSITE ||
+			    			dbassoc.targetEnd().getAggregation() == AggregationKind.SHARED)
 					{
-						if (memberEnds.get(0) == property)
+						if (dbassoc.sourceEnd() == prop)
 						{
-							association.getMemberEnd().remove(property);
-							association.getMemberEnd().add(1, property);
+							dbassoc.getMemberEnd().remove(prop);
+							dbassoc.getMemberEnd().add(1, prop);
 						} else
 						{
-							association.getMemberEnd().remove(property);
-							association.getMemberEnd().add(0, property);
+							dbassoc.getMemberEnd().remove(prop);
+							dbassoc.getMemberEnd().add(0, prop);
 						}
 			    	}
 				}
+				
+				//And also sets the readOnly property true for the following associations,
+				//accordingly to the OntoUML specification
+				if (dbassoc instanceof Mediation || dbassoc instanceof Characterization || dbassoc instanceof Derivation)
+					dbassoc.targetEnd().setIsReadOnly(true);
 			}
-			//And also sets the readOnly property true for the following associations,
-			//accordingly to the OntoUML specification
-			if ((property.eContainer() instanceof Mediation && !(property.getType() instanceof Relator)) ||
-					(property.eContainer() instanceof Characterization && !(property.getType() instanceof Mode)) ||
-					(property.eContainer() instanceof Derivation && property.getType() instanceof Relator))
-				property.setIsReadOnly(true);
 			
 			if (autoGenerateNames && (((Property)RefOntoUMLElement).getName() == null || ((Property)RefOntoUMLElement).getName().equals("")))
 				((Property)RefOntoUMLElement).setName(((Property)RefOntoUMLElement).getType().getName().toLowerCase());
@@ -136,8 +133,13 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 		{
 			if (((Property)RefOntoUMLElement).getType() == null && RefOntoUMLElement.eContainer() instanceof Association && ignoreErrorElements)
 			{
-				System.err.println("Debug: removing property with error ("+((Property)RefOntoUMLElement).getName()+" | Container: "+RefOntoUMLElement.eContainer()+")");
+				Association assoc = (Association) RefOntoUMLElement.eContainer();
+				String source = assoc.getMemberEnd().get(0).getType() == null ? null : assoc.getMemberEnd().get(0).getType().getName();
+				String target = assoc.getMemberEnd().get(1).getType() == null ? null : assoc.getMemberEnd().get(1).getType().getName();
+				System.err.println("Debug: removing association with missing end ("+assoc.getName()+
+						" <<"+assoc.getClass().toString().replace("class RefOntoUML.impl.", "")+">>"+" | "+ "Links: "+source+" -> "+target+")");
 	    		EcoreUtil.remove(RefOntoUMLElement);
+	    		EcoreUtil.remove(assoc);
 			}
 		}
 	}

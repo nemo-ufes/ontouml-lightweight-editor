@@ -39,7 +39,8 @@ public abstract class XMI2RefElement
 		
 		if ((hashProp.get("xmi:id") == null && hashProp.get("id") == null) && 
 				!(this instanceof XMI2RefConstraint) &&
-				!(this instanceof XMI2RefModel))
+				!(this instanceof XMI2RefModel) &&
+				!(this instanceof XMI2RefDiagramElement))
 		{
 			System.err.println("Element with no ID found.\n"+
 					"Element Name: " +hashProp.get("name") + "\n"+

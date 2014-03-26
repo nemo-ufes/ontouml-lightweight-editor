@@ -31,11 +31,11 @@ import RefOntoUML.Element;
 import RefOntoUML.Model;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
-import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefAssociation;
+import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefClassifier;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefDiagram;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefDiagramElement;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefModel;
@@ -104,29 +104,31 @@ public class RefOntoUMLUtil {
 		CheckboxTree modelTree = new CheckboxTree(rootNode);
 		modelTree.setCellRenderer(new OntoUMLTreeCellRenderer());
 		
-		for (PackageableElement pel : model.getPackagedElement()) {
-			if (pel instanceof PrimitiveType) {
-				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(
-	    				new ChckBoxTreeNodeElem(pel));
-	    		rootNode.add(newNode);
-			}
-		}
+//		for (PackageableElement pel : model.getPackagedElement()) {
+//			if (pel instanceof PrimitiveType) {
+//				DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(
+//	    				new ChckBoxTreeNodeElem(pel));
+//	    		rootNode.add(newNode);
+//			}
+//		}
 		
-    	for (XMI2RefDiagram diagram : XMI2RefModel.getDiagrams()) {
+    	for (XMI2RefDiagram diagram : XMI2RefModel.getDiagrams())
+    	{
     		DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(
     				new ChckBoxTreeNodeElem(diagram.getName()));
     		rootNode.add(newNode);
-    		for (XMI2RefDiagramElement diagramElem : diagram.getDiagElemList())
+    		for (XMI2RefDiagramElement XMI2RefdiagElem : diagram.getDiagElemList())
     		{
-    			if (diagramElem.getSubjectElement() instanceof Classifier)
+    			if (XMI2RefdiagElem.getSubject() instanceof XMI2RefClassifier)
     			{
+    				Classifier classf = (Classifier) XMI2RefdiagElem.getSubjectElement();
 					DefaultMutableTreeNode newElemNode = new DefaultMutableTreeNode(
-						new ChckBoxTreeNodeElem(diagramElem.getSubjectElement()));
+						new ChckBoxTreeNodeElem(classf));
 					newNode.add(newElemNode);
-					if (diagramElem.getSubject() instanceof XMI2RefAssociation &&
-							((XMI2RefAssociation)diagramElem.getSubject()).getDerivation() != null)
+					if (XMI2RefdiagElem.getSubject() instanceof XMI2RefAssociation &&
+							((XMI2RefAssociation)XMI2RefdiagElem.getSubject()).getDerivation() != null)
 					{
-						Derivation der = ((XMI2RefAssociation)diagramElem.getSubject()).getDerivation();
+						Derivation der = ((XMI2RefAssociation)XMI2RefdiagElem.getSubject()).getDerivation();
 						DefaultMutableTreeNode newElemNode2 = new DefaultMutableTreeNode(
 								new ChckBoxTreeNodeElem(der));
 						newNode.add(newElemNode2);

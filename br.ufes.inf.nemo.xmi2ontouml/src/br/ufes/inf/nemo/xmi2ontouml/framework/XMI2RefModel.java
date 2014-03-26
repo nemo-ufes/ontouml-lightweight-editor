@@ -61,8 +61,8 @@ public class XMI2RefModel extends XMI2RefPackage
 		
 		for (Object diag : this.Mapper.getElements(XMIElement, ElementType.DIAGRAM))
 		{
-			@SuppressWarnings("unused")
 			XMI2RefDiagram xmi2refdiag = new XMI2RefDiagram(diag, Mapper);
+			xmi2refdiag.createSubElements();
 		}
 	}
 	

@@ -113,6 +113,7 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 			derivation.getMemberEnd().add(prop1);
 			derivation.getOwnedEnd().add(prop2);
 			derivation.getMemberEnd().add(prop2);
+			derivation.targetEnd().setIsReadOnly(true);
         	
         	if (autoGenerateNames)
         		derivation.setName("A_"+prop1.getType().getName().replace(" ", "")+"_"+prop2.getType().getName().replace(" ", ""));
@@ -161,12 +162,12 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 	{
 		try
 		{
+			Association assoc = (Association) RefOntoUMLElement;
 	    	for (Object memberEnd : (List<?>)hashProp.get("memberend"))
 	    	{
-	    		((Association)RefOntoUMLElement).getMemberEnd().add((Property)elemMap.getElement(memberEnd));
+	    		assoc.getMemberEnd().add((Property)elemMap.getElement(memberEnd));
 			}
 	    	
-	    	Association assoc = (Association) RefOntoUMLElement;
 	    	if (autoGenerateNames && (assoc.getName() == null || assoc.getName().equals("")) &&
 	    			assoc.getMemberEnd().get(0) != null && assoc.getMemberEnd().get(1) != null)
 	    	{
@@ -175,7 +176,6 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 		}
 		catch (NullPointerException | IllegalArgumentException e)
 		{
-			System.out.println("passou");
 			if (!ignoreErrorElements)
 				throw e;
 		}
@@ -185,7 +185,6 @@ public class XMI2RefAssociation extends XMI2RefClassifier
 	    	{
 				System.err.println("Debug: removing association with error ("+((Association)RefOntoUMLElement).getName()+")");
 	    		EcoreUtil.remove(RefOntoUMLElement);
-//	    		elemMap.remove(Mapper.getID(XMIElement));
 	    	}
 			else if (RefOntoUMLElement instanceof MaterialAssociation)
 	    		createDerivation();
