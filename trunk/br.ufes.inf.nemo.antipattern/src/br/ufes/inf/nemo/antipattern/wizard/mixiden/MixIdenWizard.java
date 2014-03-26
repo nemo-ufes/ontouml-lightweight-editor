@@ -23,6 +23,7 @@ public class MixIdenWizard extends AntipatternWizard {
 	//TODO: ADD PAGE TO CHANGE THE CURRENT SUBTYPES IDENTITY PROVIDERS
 	public MixIdenFirstPage firstPage;
 	public MixIdenSecondPage secondPage;
+	public MixIdenThirdPage thirdPage;
 	protected String mixinName, mixinRigidity, mixinStereotype;
 	
 	public MixIdenWizard(MixIdenOccurrence mixIden) {
@@ -49,6 +50,7 @@ public class MixIdenWizard extends AntipatternWizard {
 	{
 		firstPage = new MixIdenFirstPage(getAp());
 		secondPage = new MixIdenSecondPage(getAp());
+		thirdPage = new MixIdenThirdPage(getAp());
 		
 		finishing = new FinishingPage();
 		options = new MixIdenRefactoringPage(getAp());
@@ -64,6 +66,7 @@ public class MixIdenWizard extends AntipatternWizard {
 		addPage(presentation);	
 		addPage(firstPage);
 		addPage(secondPage);
+		addPage(thirdPage);
 		addPage(options);
 		addPage(finishing);
 	}
@@ -81,37 +84,18 @@ public class MixIdenWizard extends AntipatternWizard {
 	{
 		return secondPage;
 	}
+	
+	public MixIdenThirdPage getThirdPage()
+	{
+		return thirdPage;
+	}
 
 	@Override
 	public boolean performFinish() {
 		runAllActions();
 		return true;
 	}
-	public ArrayList<Class<?>> allowedStereotypes(){
-		ArrayList<Class<?>> allowedStereotypes = new ArrayList<Class<?>>();
-		
-		if(getAp().getMixin() instanceof RoleMixin || getAp().getMixin() instanceof Mixin){
-			allowedStereotypes.add(RoleImpl.class);
-			allowedStereotypes.add(PhaseImpl.class);
-		}
-		
-		if(getAp().getMixin() instanceof Category || getAp().getMixin() instanceof Mixin){
-			allowedStereotypes.add(KindImpl.class);
-			allowedStereotypes.add(CollectiveImpl.class);
-			allowedStereotypes.add(QuantityImpl.class);
-			allowedStereotypes.add(SubKindImpl.class);
-		}
-		
-		return allowedStereotypes;
-	}
 	
-	public ArrayList<Class<?>> identityProviderStereotypes(){
-		ArrayList<Class<?>> identityProviderStereotypes = new ArrayList<Class<?>>();
-
-		identityProviderStereotypes.add(KindImpl.class);
-		identityProviderStereotypes.add(CollectiveImpl.class);
-		identityProviderStereotypes.add(QuantityImpl.class);
-		
-		return identityProviderStereotypes;
-	}
+	
+	
 }

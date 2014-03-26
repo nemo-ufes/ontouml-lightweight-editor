@@ -21,16 +21,16 @@ public class MixRigRefactoringPage extends RefactoringPage {
 	public MixRigOccurrence mixRig;
 	private Button btnAddSelect;
 	private Button btnChangeStereotype;
+	
 	private AddSelectTypeComposite addSelectComposite;
-	
-	
-	
-	
+	private ChangeSubtypeRigidityComposite changeSubtypeComposite;
 	
 	private ExpandBar bar;
 	private ExpandItem itemAddSelect;
-	private ChangeSubtypeRigidityComposite changeSubtypeComposite;
 	private ExpandItem itemChangeSubtype;
+	
+
+	
 	
 	/**
 	 * Create the wizard.
