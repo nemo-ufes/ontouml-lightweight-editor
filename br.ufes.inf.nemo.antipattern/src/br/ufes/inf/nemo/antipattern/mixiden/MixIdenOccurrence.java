@@ -1,15 +1,26 @@
 package br.ufes.inf.nemo.antipattern.mixiden;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Category;
 import RefOntoUML.Classifier;
+import RefOntoUML.Generalization;
+import RefOntoUML.Mixin;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Phase;
 import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
+import RefOntoUML.impl.CollectiveImpl;
+import RefOntoUML.impl.KindImpl;
+import RefOntoUML.impl.PhaseImpl;
+import RefOntoUML.impl.QuantityImpl;
+import RefOntoUML.impl.RoleImpl;
+import RefOntoUML.impl.SubKindImpl;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
@@ -133,6 +144,83 @@ public class MixIdenOccurrence extends AntipatternOccurrence {
 			fix.addAll(fixer.changeClassStereotypeTo(mixin, ClassStereotype.SUBKIND));
 	}
 	
+	public void changeIdentityProviders(ArrayList<SortalToAdd> list){
+		ArrayList<Classifier> createdClassifiers = new ArrayList<Classifier>();
+		
+		//REMOVE GENERALIZATIONS THAT LEAD TO IDENTITY PROVIDER
+		for (SortalToAdd sta : list) {
+			
+			if(sta.getSortal()==null || !subtypes.contains(sta.getSortal()) )
+				continue;
+			
+			Iterator<Generalization> iterator = sta.getSortal().getGeneralization().iterator();
+			
+			while(iterator.hasNext()){
+				Generalization g = iterator.next();
+				if(g.getGeneral().equals(identityProvider) || g.getGeneral().allParents().contains(identityProvider)){
+					iterator.remove();
+					fix.addAll(fixer.deleteElement(g));
+				}
+			}			
+		}
+		
+		//SETS NEW IDENTITY PROVIDERS
+		for (SortalToAdd sta : list) {	
+			
+			Classifier subtype = null, identityProvider = null;
+			
+			if(sta.getSortal()==null || !subtypes.contains(sta.getSortal()) )
+				continue;
+			
+			if(sta.getSortal().equals(sta.getIdentityProvider())){
+				if(sta.isSortalStereotypeChange()){
+					Fix currentFix = fixer.changeClassStereotypeTo(sta.getSortal(), OutcomeFixer.getClassStereotype(sta.getSortalStereotype()));
+					subtype = currentFix.getAddedByType(Classifier.class).get(0);
+					fix.addAll(currentFix);
+				}
+				continue;
+			}
+			
+			if(sta.isSortalStereotypeChange()){
+				Fix currentFix = fixer.changeClassStereotypeTo(sta.getSortal(), OutcomeFixer.getClassStereotype(sta.getSortalStereotype()));
+				subtype = currentFix.getAddedByType(Classifier.class).get(0);
+				fix.addAll(currentFix);
+			}
+			else
+				subtype = sta.getSortal();
+			
+			if(sta.getIdentityProvider()==null || fix.getDeleted().contains(sta.getIdentityProvider())){
+				
+				for (Classifier classifier : createdClassifiers) {
+					if(classifier.getName().compareTo(sta.getIdentityProviderName())==0 && classifier.getClass().equals(sta.getIdentityProviderStereotype()))
+						identityProvider = classifier;
+				}
+				
+				if(identityProvider==null){
+					identityProvider = (Classifier) fixer.createClass(OutcomeFixer.getClassStereotype(sta.getIdentityProviderStereotype()));
+					identityProvider.setName(sta.identityProviderName);
+					fixer.copyContainer(subtype, identityProvider);
+					createdClassifiers.add(identityProvider);
+					fix.includeAdded(identityProvider);
+				}
+			}
+			else{
+				if(sta.isIdentityProvideStereotypeChange()){
+					Fix currentFix = fixer.changeClassStereotypeTo(sta.getIdentityProvider(), OutcomeFixer.getClassStereotype(sta.getIdentityProviderStereotype()));
+					identityProvider = currentFix.getAddedByType(Classifier.class).get(0);
+					fix.addAll(currentFix);
+				}
+				else
+					identityProvider = sta.getIdentityProvider();
+			}
+			
+			fix.addAll(fixer.createGeneralization(subtype, identityProvider));
+			
+			
+			
+		}
+	}
+	
 	public void addSortals(ArrayList<SortalToAdd> list){
 		ArrayList<Classifier> createdClassifiers = new ArrayList<Classifier>();
 		
@@ -176,6 +264,7 @@ public class MixIdenOccurrence extends AntipatternOccurrence {
 				if(newIdentityProvider==null){
 					newIdentityProvider = (Classifier) fixer.createClass(OutcomeFixer.getClassStereotype(sta.getIdentityProviderStereotype()));
 					newIdentityProvider.setName(sta.getIdentityProviderName());
+					fixer.copyContainer(identityProvider, newIdentityProvider);
 					createdClassifiers.add(newIdentityProvider);
 					fix.includeAdded(newIdentityProvider);
 				}
@@ -186,6 +275,34 @@ public class MixIdenOccurrence extends AntipatternOccurrence {
 			}
 		}
 		
+	}
+	
+	public ArrayList<Class<?>> allowedSubtypeStereotypes(){
+		ArrayList<Class<?>> allowedStereotypes = new ArrayList<Class<?>>();
+		
+		if(mixin instanceof RoleMixin || mixin instanceof Mixin){
+			allowedStereotypes.add(RoleImpl.class);
+			allowedStereotypes.add(PhaseImpl.class);
+		}
+		
+		if(mixin instanceof Category || mixin instanceof Mixin){
+			allowedStereotypes.add(KindImpl.class);
+			allowedStereotypes.add(CollectiveImpl.class);
+			allowedStereotypes.add(QuantityImpl.class);
+			allowedStereotypes.add(SubKindImpl.class);
+		}
+		
+		return allowedStereotypes;
+	}
+	
+	public ArrayList<Class<?>> identityProviderStereotypes(){
+		ArrayList<Class<?>> identityProviderStereotypes = new ArrayList<Class<?>>();
+
+		identityProviderStereotypes.add(KindImpl.class);
+		identityProviderStereotypes.add(CollectiveImpl.class);
+		identityProviderStereotypes.add(QuantityImpl.class);
+		
+		return identityProviderStereotypes;
 	}
 
 }

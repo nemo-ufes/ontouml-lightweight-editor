@@ -9,9 +9,10 @@ import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 
 public class MixIdenAction extends AntiPatternAction<MixIdenOccurrence>{
 
-	public enum Action {CHANGE_MIXIN_STEREOTYPE, ADD_SUBTYPES};
+	public enum Action {CHANGE_MIXIN_STEREOTYPE, ADD_SUBTYPES, CHANGE_SUBTYPES_IDENTITY};
 	
 	private ArrayList<SortalToAdd> newSubtypes;
+	private ArrayList<SortalToAdd> subtypesToFix;
 	
 	public MixIdenAction(MixIdenOccurrence ap) {
 		super(ap);
@@ -21,6 +22,9 @@ public class MixIdenAction extends AntiPatternAction<MixIdenOccurrence>{
 	public void run() {
 		if(code==Action.CHANGE_MIXIN_STEREOTYPE){
 			ap.changeMixinStereotype();
+		}
+		else if(code==Action.CHANGE_SUBTYPES_IDENTITY) {
+			ap.changeIdentityProviders(subtypesToFix);
 		}
 		else if(code==Action.ADD_SUBTYPES) {
 			ap.addSortals(newSubtypes);
@@ -34,7 +38,15 @@ public class MixIdenAction extends AntiPatternAction<MixIdenOccurrence>{
 	public void setAddSubtypes(ArrayList<SortalToAdd> newSubtypes){
 		code = Action.ADD_SUBTYPES;
 		this.newSubtypes = newSubtypes;
+		this.subtypesToFix = null;
 	}
+	
+	public void setChangeSubtypesIdentity(ArrayList<SortalToAdd> subtypesToFix){
+		code = Action.CHANGE_SUBTYPES_IDENTITY;
+		this.subtypesToFix = subtypesToFix;
+		this.newSubtypes = null;
+	}
+
 		
 	@Override
 	public String toString(){
@@ -62,6 +74,14 @@ public class MixIdenAction extends AntiPatternAction<MixIdenOccurrence>{
 					result+="Add Class: «"+getStereotypeName(subtype.getIdentityProviderStereotype())+"» "+subtype.getIdentityProviderName()+"\n";
 				}
 			}			
+		}
+		else if (code==Action.CHANGE_SUBTYPES_IDENTITY){
+			for (SortalToAdd subtype : subtypesToFix) {
+				if(subtype.newIdentityProvider())
+					result+="Add Class: «"+getStereotypeName(subtype.getIdentityProviderStereotype())+"» "+subtype.getIdentityProviderName()+"\n";
+				
+				result+="Modify Class: Change "+subtype.getSortalName()+" identity provider to: "+subtype.getIdentityProviderName()+"\n";
+			}
 		}
 		
 		return result;

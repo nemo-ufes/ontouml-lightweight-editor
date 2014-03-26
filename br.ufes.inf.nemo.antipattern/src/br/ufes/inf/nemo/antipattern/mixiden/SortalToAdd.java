@@ -12,6 +12,29 @@ public class SortalToAdd {
 		setSortalFromClassifier(sortal);
 		setIdentityProviderFromClassifier(identityProvider);
 	}
+	
+	public SortalToAdd(Classifier sortal, Class<?> sortalStereotype, Classifier identityProvider){
+		this.sortal = sortal;
+		this.sortalName = sortal.getName();
+		this.sortalStereotype = sortalStereotype;
+		setIdentityProviderFromClassifier(identityProvider);
+	}
+	
+	public SortalToAdd(Classifier sortal, Class<?> sortalStereotype, Classifier identityProvider, Class<?> identityProviderStereotype){
+		this.sortal = sortal;
+		this.sortalName = sortal.getName();
+		this.sortalStereotype = sortalStereotype;
+		this.identityProvider = identityProvider;
+		this.identityProviderName = identityProvider.getName();
+		this.identityProviderStereotype = identityProviderStereotype;
+	}
+	
+	public SortalToAdd(Classifier sortal, Classifier identityProvider, Class<?> identityProviderStereotype){
+		setSortalFromClassifier(sortal);
+		this.identityProvider = identityProvider;
+		this.identityProviderName = identityProvider.getName();
+		this.identityProviderStereotype = identityProviderStereotype;
+	}
 
 	public SortalToAdd(String sortalName, Class<?> sortalStereotype, String identityProviderName,  Class<?> identityProviderStereotype){
 		setSortalFromName(sortalName, sortalStereotype);
@@ -28,6 +51,13 @@ public class SortalToAdd {
 		setIdentityProviderFromName(identityProviderName, identityProviderStereotype);
 	}
 	
+	public SortalToAdd(Classifier sortal, Class<?> sortalStereotype, String identityProviderName, Class<?> identityProviderStereotype) {
+		this.sortal = sortal;
+		this.sortalName = sortal.getName();
+		this.sortalStereotype = sortalStereotype;
+		setIdentityProviderFromName(identityProviderName, identityProviderStereotype);
+	}
+
 	private void setIdentityProviderFromClassifier(Classifier identityProvider) {
 		this.identityProvider = identityProvider;
 		this.identityProviderName = identityProvider.getName();
@@ -82,6 +112,14 @@ public class SortalToAdd {
 	
 	public boolean existingSortal(){
 		return !newSortal();
+	}
+	
+	public boolean isSortalStereotypeChange(){
+		return !sortalStereotype.equals(sortal.getClass());
+	}
+	
+	public boolean isIdentityProvideStereotypeChange(){
+		return !identityProviderStereotype.equals(identityProvider.getClass());
 	}
 	
 	public boolean newIdentityProvider(){
