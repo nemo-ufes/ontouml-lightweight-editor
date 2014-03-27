@@ -29,6 +29,8 @@ import br.ufes.inf.nemo.oled.draw.Selection;
 import br.ufes.inf.nemo.oled.ui.popup.MultiSelectionPopupMenu;
 import br.ufes.inf.nemo.oled.ui.popup.SingleConnectionPopupMenu;
 import br.ufes.inf.nemo.oled.ui.popup.SingleNodePopupMenu;
+import br.ufes.inf.nemo.oled.ui.popup.SinglePropertyPopupMenu;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlDiagramElement;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
@@ -42,8 +44,9 @@ import br.ufes.inf.nemo.oled.util.AppCommandListener;
 public class ContextMenusBuilder {
 	
 	private DiagramEditor editor;
-	private SingleNodePopupMenu singleNodePopup;
+	private SingleNodePopupMenu singleNodePopup;	
 	private SingleConnectionPopupMenu singleConnectionPopup;
+	private SinglePropertyPopupMenu singlePropertyPopup;
 	private MultiSelectionPopupMenu multiSelectinoPopup;
 	
 	public ContextMenusBuilder(DiagramEditor editor)
@@ -51,6 +54,7 @@ public class ContextMenusBuilder {
 		this.editor = editor;
 		singleNodePopup = new SingleNodePopupMenu();
 		singleConnectionPopup = new SingleConnectionPopupMenu();
+		singlePropertyPopup = new SinglePropertyPopupMenu();
 		multiSelectinoPopup = new MultiSelectionPopupMenu();
 	}
 	
@@ -61,15 +65,29 @@ public class ContextMenusBuilder {
 	 *            the selection
 	 * @return the popup menu
 	 */
-	public JPopupMenu setContext(Selection selection) {
+	public JPopupMenu setContext(Selection selection, double x, double y) {
 		if (selection.getElements().size() > 1) {
 			multiSelectinoPopup.setSelectedElements((ArrayList<DiagramElement>) selection.getElements());
 			return multiSelectinoPopup;
 		} else {
 			UmlDiagramElement elem = (UmlDiagramElement) selection.getElement();
 			if (elem instanceof Connection) {
-				singleConnectionPopup.setConnection((Connection)elem,editor);
-				return singleConnectionPopup;
+				//properties
+				double cx1 = ((Connection)elem).getAbsoluteX1();
+				double cx2 = ((Connection)elem).getAbsoluteX2();
+				double cy1 = ((Connection)elem).getAbsoluteY1();
+				double cy2 = ((Connection)elem).getAbsoluteY2();
+				if(x>cx1 && x<cx1+10 || x<cx1 && x>cx1-10){
+					System.out.println(cx1+","+(cx1+10));
+					System.out.println(cx1+","+(cx1-10));
+					System.out.println("("+x+","+y+") - abrir popup de property");					
+					singleConnectionPopup.setConnection((Connection)elem,editor);
+					return singleConnectionPopup;
+					
+				}else{
+					singleConnectionPopup.setConnection((Connection)elem,editor);
+					return singleConnectionPopup;
+				}
 			}
 			singleNodePopup.setNode((UmlNode)elem,editor);
 			return singleNodePopup;

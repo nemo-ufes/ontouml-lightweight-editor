@@ -175,7 +175,7 @@ public class SelectionHandler implements EditorMode {
 		if (!nothingSelected()) {
 			if(selection.getElement() instanceof StructureDiagram == false)
 			{
-				JPopupMenu menu = contextMenuBuilder.setContext(selection);
+				JPopupMenu menu = contextMenuBuilder.setContext(selection,mx,my);
 				menu.show(editor, e.getMouseEvent().getX(), e.getMouseEvent().getY());
 			}
 		}	
