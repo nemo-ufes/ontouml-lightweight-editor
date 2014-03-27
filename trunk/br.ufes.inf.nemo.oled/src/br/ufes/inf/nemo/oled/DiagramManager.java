@@ -646,7 +646,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** Move element to a Diagram */
 	public void moveToDiagram(RefOntoUML.Element element, DiagramEditor d)
 	{
-		if (d!=null && d.getDiagram().containsChild(element)) return;			
+		if (d!=null && d.getDiagram().containsChild(element)) {
+			if (element instanceof NamedElement)
+				frame.showInformationMessageDialog("Moving to Diagram", "\""+ModelHelper.getStereotype(element)+" "+((NamedElement)element).getName()+"\" already exists in diagram \""+d.getDiagram().getName()+"\"");
+			else if (element instanceof Generalization)
+				frame.showInformationMessageDialog("Moving to Diagram", "\"Generalization "+((Generalization)element).getSpecific().getName()+"->"+((Generalization)element).getSpecific().getName()+"\" already exists in diagram \""+d.getDiagram().getName()+"\"");
+			return;			
+		}
 		if (d!=null) {			
 			if (element instanceof RefOntoUML.Class) {
 				RefOntoUML.Class oClass = (RefOntoUML.Class)element;
@@ -686,13 +692,19 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{		
 		// retain only generalizations from selected
 		ArrayList<Generalization> gens = new ArrayList<Generalization>();
+		boolean genSetAlreadyExists = false;
 		for(DiagramElement dElem: diagramElementsList){
 			if (dElem instanceof GeneralizationElement){
 				Generalization gen = ((GeneralizationElement)dElem).getGeneralization();
-				if(gen!=null)gens.add(gen);
+				if (gen.getGeneralizationSet()!=null && !gen.getGeneralizationSet().isEmpty()) genSetAlreadyExists=true;
+				if(gen!=null) gens.add(gen);
 			}
 		}
 		if(gens.size()<=1) return null; 
+		if(genSetAlreadyExists){
+			int response = JOptionPane.showConfirmDialog(getFrame(), "There is already a generalization set in the selected generalizations.\nAre you sure you want to continue?", "Adding Generalization Set", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+			if(response!=JOptionPane.OK_OPTION) return null;
+		}
 		//create default gen set
 		EObject eContainer = null;
 		if(gens.size()>1) eContainer = gens.get(0).getSpecific().eContainer();	
