@@ -33,6 +33,7 @@ import br.ufes.inf.nemo.oled.ui.popup.SinglePropertyPopupMenu;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlDiagramElement;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 
 /**
@@ -72,25 +73,26 @@ public class ContextMenusBuilder {
 		} else {
 			UmlDiagramElement elem = (UmlDiagramElement) selection.getElement();
 			if (elem instanceof Connection) {
-				// detects when the click is close to the edges...
-				double cx1 = ((Connection)elem).getAbsoluteX1();
-				double cx2 = ((Connection)elem).getAbsoluteX2();
-				double cy1 = ((Connection)elem).getAbsoluteY1();
-				double cy2 = ((Connection)elem).getAbsoluteY2();
-				double diffx1 = (x-cx1); double diffy1 = (y-cy1);
-				double diffx2 = (x-cx2); double diffy2 = (y-cy2);
-				if (diffx1<0) diffx1 = diffx1*(-1); if (diffy1<0) diffy1 = diffy1*(-1);
-				if (diffx2<0) diffx2 = diffx2*(-1); if (diffy2<0) diffy2 = diffy2*(-1);
-				if(diffx1<30 && diffy1<30){	
-					singlePropertyPopup.setProperty((UmlConnection)elem,true,editor);
-					return singlePropertyPopup;
-				}else if(diffx2<30 && diffy2<30){
-					singlePropertyPopup.setProperty((UmlConnection)elem,false,editor);
-					return singlePropertyPopup;				
-				}else{
-					singleConnectionPopup.setConnection((Connection)elem,editor);
-					return singleConnectionPopup;
-				}
+				if(elem instanceof AssociationElement){
+					// detects when the click is close to the edges...
+					double cx1 = ((Connection)elem).getAbsoluteX1();
+					double cx2 = ((Connection)elem).getAbsoluteX2();
+					double cy1 = ((Connection)elem).getAbsoluteY1();
+					double cy2 = ((Connection)elem).getAbsoluteY2();
+					double diffx1 = (x-cx1); double diffy1 = (y-cy1);
+					double diffx2 = (x-cx2); double diffy2 = (y-cy2);
+					if (diffx1<0) diffx1 = diffx1*(-1); if (diffy1<0) diffy1 = diffy1*(-1);
+					if (diffx2<0) diffx2 = diffx2*(-1); if (diffy2<0) diffy2 = diffy2*(-1);
+					if(diffx1<30 && diffy1<30){	
+						singlePropertyPopup.setProperty((UmlConnection)elem,true,editor);
+						return singlePropertyPopup;
+					}else if(diffx2<30 && diffy2<30){
+						singlePropertyPopup.setProperty((UmlConnection)elem,false,editor);
+						return singlePropertyPopup;
+					}
+				}				
+				singleConnectionPopup.setConnection((Connection)elem,editor);
+				return singleConnectionPopup;				
 			}
 			singleNodePopup.setNode((UmlNode)elem,editor);
 			return singleNodePopup;
