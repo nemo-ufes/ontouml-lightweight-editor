@@ -11,7 +11,9 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import RefOntoUML.Generalization;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -22,20 +24,39 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
 	@SuppressWarnings("unused")
 	private ArrayList<DiagramElement> selected = new ArrayList<DiagramElement>();
+	private JMenuItem createGenSetItem;
+	@SuppressWarnings("unused")
+	private JMenuItem unionItem;
+	@SuppressWarnings("unused")
+	private JMenuItem exclusionItem;
+	@SuppressWarnings("unused")
+	private JMenuItem deleteItem;
 	
 	public MultiSelectionPopupMenu()
 	{			
-		createMenuItem(this, "creategenset");
-		this.addSeparator();
-		createMenuItem(this, "derivedunion");
-		createMenuItem(this, "derivedexclusion");
-		this.addSeparator();		
-		createMenuItem(this, "delete");	
+		createGenSetItem = createMenuItem(this, "creategenset");
+		
+		unionItem = createMenuItem(this, "derivedunion");
+		exclusionItem = createMenuItem(this, "derivedexclusion");
+		
+		deleteItem = createMenuItem(this, "delete");	
 	}
 	
 	public void setSelectedElements(ArrayList<DiagramElement> selected)
 	{
-		this.selected = selected;		
+		this.selected = selected;
+
+		// check if we can show the item that creates generalization sets
+		ArrayList<Generalization> gens = new ArrayList<Generalization>();
+		for(DiagramElement dElem: selected){
+			if (dElem instanceof GeneralizationElement){
+				Generalization gen = ((GeneralizationElement)dElem).getGeneralization();
+				if(gen!=null)gens.add(gen);
+			}
+		}
+		if(gens.size()<=1) { createGenSetItem.setVisible(false); } 
+		else createGenSetItem.setVisible(true);
+		
 	}
 	
 	/**

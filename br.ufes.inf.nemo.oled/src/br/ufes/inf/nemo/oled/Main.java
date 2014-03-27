@@ -34,7 +34,7 @@ public final class Main {
 	
 	public static AppFrame frame; 
 
-	public static String OLED_VERSION = "0.9.13"; //Build: 25-03-2014
+	public static String OLED_VERSION = "0.9.14"; //Build: 27-03-2014
 	
 	/** This caches the result of the call to get all fonts. */
 	private static String[] allFonts = null;	
@@ -130,6 +130,11 @@ public final class Main {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());		
 		//if (!onMac()&&!onWindows()) UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");		
 		UIManager.put("TabbedPane.focus", new Color(0, 0, 0, 0));
+	
+		UIManager.put("OptionPane.yesButtonText","Yes");
+		UIManager.put("OptionPane.noButtonText", "No");
+		UIManager.put("OptionPane.cancelButtonText", "Cancel");
+		UIManager.put("OptionPane.titleText","Title");
 	}
 
 	/** Choose the appropriate Font according to the operating system */
