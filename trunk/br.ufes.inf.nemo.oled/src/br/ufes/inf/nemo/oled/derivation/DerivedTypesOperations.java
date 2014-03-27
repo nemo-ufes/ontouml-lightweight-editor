@@ -57,7 +57,7 @@ public class DerivedTypesOperations {
 						mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project);
 					}
 			}
-			
+
 		}
 		else{
 			WrongSelection();
@@ -219,36 +219,38 @@ public class DerivedTypesOperations {
 		JOptionPane.showMessageDialog(frame, "Wrong Selection, please check the documentation!");
 
 	}
-	
-	public static void UnionPattern(DiagramManager dm, ArrayList<String> values){
+
+	public static void UnionPattern(DiagramManager dm, ArrayList<String> values, Point2D.Double location){
 		OutcomeFixer of = new OutcomeFixer(dm.getCurrentProject().getModel());
 		Fix mainfix = new Fix();
 		//of.factory;
 		Classifier newElement= (Classifier) of.createClass(of.getClassStereotype(values.get(0)));
-		//of.copyContainer((dm.getCurrentProject().getElements().get(0)), newElement);
-		mainfix.includeAdded(newElement);
-		dm.updateOLED(mainfix);
-		//newElement.setName(values.get(2));
-		//dm.updateOLED(mainfix);
-		/*
-		Classifier newElement2 = (Classifier)of.createClass( of.getClassStereotype(values.get(1)));
-		newElement.setName(values.get(3));
-		ArrayList<String> stereotypes= DerivedByExclusion.getInstance().inferStereotype(newElement.eClass().getName() , newElement2.eClass().getName());
-		
+		dm.getCurrentProject().getModel().getPackagedElement().add(newElement);
+		newElement.setName(values.get(2));
+		mainfix.includeAdded(newElement, location.getX()-100,location.getY()+100);
+		Classifier newElement2= (Classifier) of.createClass(of.getClassStereotype(values.get(1)));
+		newElement2.setName(values.get(3));
+		dm.getCurrentProject().getModel().getPackagedElement().add(newElement2);
+		mainfix.includeAdded(newElement2, location.getX()+100,location.getY()+100);
+		ArrayList<String> stereotypes= DerivedByUnion.getInstance().inferStereotype(newElement.eClass().getName() , newElement2.eClass().getName());
+		Classifier newElement3=null;
 		if(stereotypes!=null){
 			if(stereotypes.size()==1){
-				Classifier newElement3 = (Classifier)of.createClass( of.getClassStereotype(stereotypes.get(0)));
-			}else{
-				Object[] stereo;
-				stereo=  stereotypes.toArray();
-				String name=DefineNameDerivedType();
-				String stereotype= selectStereotype(stereo);
-				Classifier newElement3 = (Classifier)of.createClass( of.getClassStereotype(stereotype));
-				
+				newElement3 = (Classifier)of.createClass( of.getClassStereotype(stereotypes.get(0)));
+				mainfix.includeAdded(newElement3, location.getX(),location.getY());
 			}
-			newElement.setName(values.get(4));
+			newElement3.setName(values.get(4));
+			Fix fix=of.createGeneralization(newElement, newElement3);
+			Fix fixG2=of.createGeneralization(newElement2, newElement3);
+			ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+			generalizations.add((Generalization) fix.getAdded().get(0));
+			generalizations.add((Generalization) fixG2.getAdded().get(0));
+			Fix gs =  of.createGeneralizationSet(generalizations);
+			mainfix.addAll(fixG2);
+			mainfix.addAll(fix);
+			mainfix.addAll(gs);
+			dm.updateOLED(mainfix);
 			
-		}*/
+		}
 	}
-
 }

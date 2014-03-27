@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -71,6 +72,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
+import br.ufes.inf.nemo.oled.derivation.UnionPattern;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.ElementType;
@@ -2231,10 +2233,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	
-	public void openDerivedTypePattern(double x, double y) {
+	public void openDerivedTypePattern(Double x, Double y) {
 			
-//		JDialog dialog = new UnionPattern(this);
-//		dialog.setModal(true);
-//		dialog.setVisible(true);
+		JDialog dialog = new UnionPattern(this);
+		dialog.setLocation(x.intValue(), y.intValue());
+		((UnionPattern) dialog).setPosition(x, y);
+		dialog.setModal(true);
+		dialog.setVisible(true);
 	}
 }
