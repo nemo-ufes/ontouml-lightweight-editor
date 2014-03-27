@@ -2,21 +2,34 @@ package br.ufes.inf.nemo.oled.derivation;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+
+import java.awt.Color;
+import java.awt.SystemColor;
+
+import net.miginfocom.swing.MigLayout;
+
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JCheckBox;
+import javax.swing.DefaultComboBoxModel;
 
 import br.ufes.inf.nemo.oled.DiagramManager;
+import apple.laf.JRSUIUtils.ComboBox;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
+import java.util.ArrayList;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 public class UnionPattern extends JDialog {
 
@@ -30,6 +43,10 @@ public class UnionPattern extends JDialog {
 	private JLabel lblSecondSubtype = new JLabel("Second Subtype");
 	private JLabel lblNewLabel = new JLabel("First Subtype");
 	private DiagramManager diagramMan;
+	private JLabel lblName;
+	private JLabel lblStereotype;
+	private JLabel lblNewLabel_1;
+	private Point2D.Double location= new Point2D.Double();
 	/**
 	 * Launch the application.
 	 */
@@ -38,67 +55,117 @@ public class UnionPattern extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	public void setPosition(java.lang.Double x, java.lang.Double y){
+		location.x= this.getLocation().getX();
+		location.y= this.getLocation().getY();
+	}
+	
 	public UnionPattern(DiagramManager diagramManager) {
 		this.diagramMan= diagramManager;
-		setBounds(100, 100, 450, 262);
+		setBounds(100, 100, 450, 226);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		location.x= this.getLocation().getX();
+		location.y= this.getLocation().getY();
 		getContentPane().add(contentPanel, BorderLayout.NORTH);
-		
 		{
-			JLabel lblName = new JLabel("Name");
-			contentPanel.add(lblName, "cell 1 0");
+			lblName = new JLabel("Name");
 		}
 		{
-			JLabel lblStereotype = new JLabel("Stereotype");
-			contentPanel.add(lblStereotype, "cell 2 0");
+			lblStereotype = new JLabel("Stereotype");
 		}
 		{
 
 			lblNewLabel.setForeground(SystemColor.textInactiveText);
-			contentPanel.add(lblNewLabel, "cell 0 1,alignx trailing,aligny top");
 		}
 		{
 			textField = new JTextField();
-			contentPanel.add(textField, "cell 1 1,growx");
 			textField.setColumns(10);
 		}
 		{
 
 			comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Category", "Role", "Phase", "Role Mixin", "Mixin"}));
-			contentPanel.add(comboBox_1, "cell 2 1,growx");
 		}
 		{
 			
 			comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Category", "Role", "Phase", "Role Mixin", "Mixin"}));
-			contentPanel.add(comboBox, "cell 2 1,growx");
 		}
 		{
 			
 			lblSecondSubtype.setForeground(SystemColor.windowBorder);
 			lblSecondSubtype.setBackground(SystemColor.activeCaptionBorder);
-			contentPanel.add(lblSecondSubtype, "cell 0 2,alignx trailing");
 		}
 		{
 			textField_1 = new JTextField();
-			contentPanel.add(textField_1, "cell 1 2,growx");
 			textField_1.setColumns(10);
 		}
 		{
 
 			comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Category", "Role", "Phase", "Role Mixin", "Mixin"}));
-			contentPanel.add(comboBox, "cell 2 2,growx");
 		}
 		{
-			JLabel lblNewLabel_1 = new JLabel("Derived Type");
+			lblNewLabel_1 = new JLabel("Derived Type");
 			lblNewLabel_1.setForeground(SystemColor.windowBorder);
-			contentPanel.add(lblNewLabel_1, "cell 0 3,alignx trailing");
 		}
 		{
 			textField_2 = new JTextField();
-			contentPanel.add(textField_2, "cell 1 3,growx");
 			textField_2.setColumns(10);
 		}
+		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
+		gl_contentPanel.setHorizontalGroup(
+			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addGap(89)
+					.addComponent(lblName)
+					.addGap(203)
+					.addComponent(lblStereotype))
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addGap(21)
+					.addComponent(lblNewLabel)
+					.addGap(4)
+					.addComponent(textField, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+					.addGap(4)
+					.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addGap(7)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblSecondSubtype)
+						.addComponent(lblNewLabel_1))
+					.addGap(4)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)))
+					.addGap(7))
+		);
+		gl_contentPanel.setVerticalGroup(
+			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addGap(7)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblName)
+						.addComponent(lblStereotype))
+					.addGap(4)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(4)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblSecondSubtype))
+						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_1))
+					.addGap(26))
+		);
+		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -114,7 +181,7 @@ public class UnionPattern extends JDialog {
 						values.add((String) (textField_1.getText()));
 						values.add((String) (textField_2.getText()));
 						dispose();
-						DerivedTypesOperations.UnionPattern(diagramMan, values);
+						DerivedTypesOperations.UnionPattern(diagramMan, values,location);
 						
 					}
 				});
