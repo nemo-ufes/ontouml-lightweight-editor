@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -57,6 +58,8 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Constraintx;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import RefOntoUML.LiteralInteger;
+import RefOntoUML.LiteralUnlimitedNatural;
 import RefOntoUML.NamedElement;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
@@ -299,7 +302,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
 		browser.getTree().removeCurrentNode();
 	}
-
+		
 	/** Add relationship to the model (not to diagrams). */
 	public RefOntoUML.Relationship addRelation(RelationType stereotype, EObject eContainer)
 	{
@@ -399,6 +402,25 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
+	/** Change multiplicity and update the connections in diagram */
+	public void changeMultiplicity(RefOntoUML.Property property, int lowerValue, int upperValue)
+	{
+		LiteralInteger lower = getElementFactory().getFactory().createLiteralInteger();
+		lower.setValue(lowerValue);
+		LiteralUnlimitedNatural upper =  getElementFactory().getFactory().createLiteralUnlimitedNatural();
+		upper.setValue(upperValue);				
+		property.setLowerValue(lower);			
+		property.setUpperValue(upper);
+		refreshDiagramElement(property.getAssociation());
+	}
+	
+	/** Change multiplicity from string and update the connections in diagrams */
+	public void changeMultiplicity(RefOntoUML.Property property, String multiplicity) throws ParseException
+	{
+		ModelHelper.setMultiplicityFromString(property, multiplicity);
+		refreshDiagramElement(property.getAssociation());
+	}
+	
 	/** Delete element from the model and every diagram in each it appears. It shows a message before deletion.*/
 	public void delete(RefOntoUML.Element element)
 	{	

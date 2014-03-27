@@ -2,29 +2,21 @@ package br.ufes.inf.nemo.oled.derivation;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-
-import java.awt.Color;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-import net.miginfocom.swing.MigLayout;
-
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JCheckBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.DiagramManager;
-import apple.laf.JRSUIUtils.ComboBox;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 public class UnionPattern extends JDialog {
 
@@ -52,7 +44,7 @@ public class UnionPattern extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.NORTH);
-		contentPanel.setLayout(new MigLayout("", "[66px][200px:n,grow][grow]", "[14px][][][100px]"));
+		
 		{
 			JLabel lblName = new JLabel("Name");
 			contentPanel.add(lblName, "cell 1 0");
