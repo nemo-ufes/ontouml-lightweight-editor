@@ -22,7 +22,6 @@ public class UmlLabelFormatter {
 			int i=0;
 			for(GeneralizationSet genSet: ((Generalization)namedElement).getGeneralizationSet()){
 				if(i==((Generalization)namedElement).getGeneralizationSet().size()-1) name += genSet.getName();
-				System.out.println(name);
 				i++;
 			}
 			return name;

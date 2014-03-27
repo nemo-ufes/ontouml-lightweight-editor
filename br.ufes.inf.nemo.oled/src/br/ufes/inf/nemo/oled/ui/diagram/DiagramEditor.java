@@ -355,8 +355,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			captionEditor.hideEditor();
 		}
 		editorMode.cancel();
-		redraw();
-		
+		selectionHandler.deselectAll();
+		redraw();		
 		frame.getToolManager().getOpenPalette().getPalleteElement("select").setSelected(true);
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));		
 	}
