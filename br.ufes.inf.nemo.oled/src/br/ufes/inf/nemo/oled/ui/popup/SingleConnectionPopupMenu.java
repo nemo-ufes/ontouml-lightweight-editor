@@ -96,12 +96,14 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		showNameItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (con instanceof AssociationElement) {	
-					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-					((AssociationElement)con).setShowName(showNameItem.isSelected());
-					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
-				}				
+				ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+				if (con instanceof AssociationElement) {					
+					((AssociationElement)con).setShowName(showNameItem.isSelected());					
+				}else{
+					((GeneralizationElement)con).setShowName(showNameItem.isSelected());
+				}
+				list.add(con);
+				editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
 			}
 		});
 			
@@ -195,9 +197,12 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			showRolesItem.setSelected(((AssociationElement)con).showRoles());
 			showNameItem.setSelected(((AssociationElement)con).showName());
 			showStereotypeItem.setSelected(((AssociationElement)con).showOntoUmlStereotype());
-		}else{
-			visibilityMenu.setEnabled(false);
+		}else{			
+			showNameItem.setSelected(((GeneralizationElement)con).showName());
 			readingDirectionMenu.setEnabled(false);
+			showMultiplicitiesItem.setEnabled(false);
+			showRolesItem.setEnabled(false);			
+			showStereotypeItem.setEnabled(false);
 		}
 		
 		rectMenuItem.setEnabled(true);
