@@ -21,6 +21,7 @@ package br.ufes.inf.nemo.oled.ui.diagram;
 
 import java.awt.Cursor;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,10 +32,12 @@ import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.MultiSelection;
+import br.ufes.inf.nemo.oled.draw.NodeSelection;
 import br.ufes.inf.nemo.oled.draw.NullElement;
 import br.ufes.inf.nemo.oled.draw.NullSelection;
 import br.ufes.inf.nemo.oled.draw.RubberbandSelector;
 import br.ufes.inf.nemo.oled.draw.Selection;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnectionSelection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlDiagramElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.AppCommandListener;
@@ -53,8 +56,7 @@ public class SelectionHandler implements EditorMode {
 
 	private DiagramEditor editor;
 	private Selection selection = NullSelection.getInstance();
-	private Set<SelectionListener> listeners =
-		new HashSet<SelectionListener>();
+	private Set<SelectionListener> listeners = new HashSet<SelectionListener>();
 	private ContextMenusBuilder contextMenuBuilder;
 	private Point2D startPoint = new Point2D.Double();
 	
@@ -116,16 +118,18 @@ public class SelectionHandler implements EditorMode {
 		
 		boolean focusEditor = true;
 		double mx = e.getX(), my = e.getY();
-
+		
+		if(e.getMouseEvent().isControlDown()) return;
+		
 		//System.out.println("Modifiers " + e.getMouseEvent().getMouseModifiersText(e.getMouseEvent().getModifiers()));
 		
 		// this is a pretty ugly cast, it is needed in order to use the getLabel()
 		// method which is not a base DiagramElement method
-		DiagramElement previousSelected = selection.getElement();
+		List<DiagramElement> previousSelected = selection.getElements();
 		
 		DiagramElement element = editor.getDiagram().getChildAt(mx, my);
 			
-		if (element instanceof UmlDiagramElement && previousSelected == element) {	
+		if (element instanceof UmlDiagramElement && previousSelected.contains(element)) {	
 			Label label = element.getLabelAt(mx, my);
 			if (label != null && label.isEditable()) {
 				focusEditor = false;
@@ -144,8 +148,7 @@ public class SelectionHandler implements EditorMode {
 		else {
 			if (element == NullElement.getInstance()) {
 				element = editor.getDiagram();
-			}
-			
+			}			
 			selection = element.getSelection(editor);
 			
 		}
@@ -192,50 +195,43 @@ public class SelectionHandler implements EditorMode {
 	private void handleSelectionOnMousePress(EditorMouseEvent e) {
 		double mx = e.getX(), my = e.getY();
 		
-		//selection = getSelection(mx, my);
 		Selection newSelection = getSelection(mx, my);
-		selection = newSelection;
-		
-		/*if(e.getMouseEvent().isShiftDown())
-		{
-			if (selection instanceof NodeSelection)
-			{
-				ArrayList<DiagramElement> allElements = new ArrayList<DiagramElement>();
-				DiagramElement selectedElement = selection.getElement();
-				allElements.add(selectedElement);
-				DiagramElement newSelectedElement = newSelection.getElement();
-				allElements.add(newSelectedElement);
-				selection = new MultiSelection(editor, allElements);
-				
-				//selection = selection;
-			}
-			
-			else if(selection instanceof MultiSelection)
-			{
-				//TODO create the add and remove methods in multi selection
-				if (selection.getElements().contains(newSelection.getElement()))
-				{
-					selection.getElements().remove(newSelection.getElement());
-				}
-				else
-				{
-					selection.getElements().add(newSelection.getElement());
-				}
-			}
-		}
-		else
-		{
-			selection = newSelection;
-		}*/
 
+		if(e.getMouseEvent().isControlDown())
+		{			
+			if (newSelection instanceof NodeSelection || newSelection instanceof UmlConnectionSelection || newSelection instanceof MultiSelection || newSelection instanceof RubberbandSelector )
+			{
+				if(selection.getElements().size()>0){				
+					ArrayList<DiagramElement> allElement = new ArrayList<DiagramElement>();
+					List<DiagramElement> selectedElement = selection.getElements();	
+					allElement.addAll(selectedElement);
+					List<DiagramElement> newSelectedElement = newSelection.getElements();
+					// select new elements...
+					for(DiagramElement elem: newSelectedElement){
+						if (!selectedElement.contains(elem)) allElement.add(elem);						
+					}
+					// in case of clicking in an already selected element: deselect it.					
+					if(selectedElement.containsAll(newSelectedElement)){
+						DiagramElement deselection = editor.getDiagram().getChildAt(mx, my);						
+						allElement.remove(deselection);
+					}										
+					selection = new MultiSelection(editor, allElement);			
+				}else{
+					selection = newSelection;
+				}
+			}else{
+				selection = newSelection;
+			}
+		}else{
+			selection = newSelection;
+		}
+		
 		// Dragging only if left mouse button was pressed
-		if (e.isMainButton()) {
-			
+		if (e.isMainButton()){			
 			if (nothingSelected() && editor.getDiagram().contains(mx, my)) {
 				selection = selector;
 				selection.updatePosition(mx, my);
-			}
-			
+			}			
 			startPoint.setLocation(mx,my);
 			selection.startDragging(mx, my);
 		}
