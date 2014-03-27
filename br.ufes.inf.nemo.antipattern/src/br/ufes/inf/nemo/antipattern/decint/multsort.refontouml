@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_uS6X8LSHEeOqhJHNzyBZAw" name="Model">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_uwwKgLSHEeOqhJHNzyBZAw" name="Person" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_vAVeoLSHEeOqhJHNzyBZAw" name="Player" visibility="public">
+    <generalization xmi:id="_v72rsLSHEeOqhJHNzyBZAw" general="_uwwKgLSHEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_vWmpkLSHEeOqhJHNzyBZAw" name="Student" visibility="public">
+    <generalization xmi:id="_wcqSsLSHEeOqhJHNzyBZAw" general="_uwwKgLSHEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_z1hr8LSHEeOqhJHNzyBZAw" name="StudentPlayer" visibility="public">
+    <generalization xmi:id="_19pPALSHEeOqhJHNzyBZAw" general="_vAVeoLSHEeOqhJHNzyBZAw"/>
+    <generalization xmi:id="_2fMc4LSHEeOqhJHNzyBZAw" general="_vWmpkLSHEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="__9Kr0LSKEeOqhJHNzyBZAw" name="Male" visibility="public">
+    <generalization xmi:id="_GLIC4LSLEeOqhJHNzyBZAw" general="_uwwKgLSHEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_BOzS0LSLEeOqhJHNzyBZAw" name="Female" visibility="public">
+    <generalization xmi:id="_FfVT4LSLEeOqhJHNzyBZAw" general="_uwwKgLSHEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_CppgMLSLEeOqhJHNzyBZAw" name="Hermafrodite" visibility="public">
+    <generalization xmi:id="_EPVEkLSLEeOqhJHNzyBZAw" general="__9Kr0LSKEeOqhJHNzyBZAw"/>
+    <generalization xmi:id="_E9CfILSLEeOqhJHNzyBZAw" general="_BOzS0LSLEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_NhJOMLSLEeOqhJHNzyBZAw" name="Child" visibility="public">
+    <generalization xmi:id="_QD1NYLSLEeOqhJHNzyBZAw" general="_uwwKgLSHEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_PBx6gLSLEeOqhJHNzyBZAw" name="Adult" visibility="public">
+    <generalization xmi:id="_QlFgULSLEeOqhJHNzyBZAw" general="_uwwKgLSHEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_RJ5dkLSLEeOqhJHNzyBZAw" name="ChildStudent" visibility="public">
+    <generalization xmi:id="_Sbr1kLSLEeOqhJHNzyBZAw" general="_NhJOMLSLEeOqhJHNzyBZAw"/>
+    <generalization xmi:id="_TF1l0LSLEeOqhJHNzyBZAw" general="_vWmpkLSHEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_a-OeYLSLEeOqhJHNzyBZAw" name="Disease" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_dGfycLSLEeOqhJHNzyBZAw" name="ModeSuper" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_d_pA8LSLEeOqhJHNzyBZAw" name="ModeIntersection" visibility="public">
+    <generalization xmi:id="_n83fELSLEeOqhJHNzyBZAw" general="_a-OeYLSLEeOqhJHNzyBZAw"/>
+    <generalization xmi:id="_on6nMLSLEeOqhJHNzyBZAw" general="_dGfycLSLEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_vgeacLSLEeOqhJHNzyBZAw" name="Mariage" visibility="public">
+    <generalization xmi:id="_3cpm0LSLEeOqhJHNzyBZAw" general="_14maILSLEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_wD868LSLEeOqhJHNzyBZAw" name="Purchase" visibility="public">
+    <generalization xmi:id="_33ER8LSLEeOqhJHNzyBZAw" general="_14maILSLEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_w_6z8LSLEeOqhJHNzyBZAw" name="ArrangedMariage" visibility="public">
+    <generalization xmi:id="_yychgLSLEeOqhJHNzyBZAw" general="_vgeacLSLEeOqhJHNzyBZAw"/>
+    <generalization xmi:id="_zRnJwLSLEeOqhJHNzyBZAw" general="_wD868LSLEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_14maILSLEeOqhJHNzyBZAw" name="Agreement" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_9UzF8LSLEeOqhJHNzyBZAw" name="Category1" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_90vxULSLEeOqhJHNzyBZAw" name="Category2" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_-I5cYLSLEeOqhJHNzyBZAw" name="Category3" visibility="public" isAbstract="true">
+    <generalization xmi:id="_AIZ2ALSMEeOqhJHNzyBZAw" general="_9UzF8LSLEeOqhJHNzyBZAw"/>
+    <generalization xmi:id="_BRlEkLSMEeOqhJHNzyBZAw" general="_90vxULSLEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_CxBeELSMEeOqhJHNzyBZAw" name="Category4" visibility="public" isAbstract="true">
+    <generalization xmi:id="_GwMCULSMEeOqhJHNzyBZAw" general="_DkPDsLSMEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_DMocALSMEeOqhJHNzyBZAw" name="Category5" visibility="public" isAbstract="true">
+    <generalization xmi:id="_HTzswLSMEeOqhJHNzyBZAw" general="_DkPDsLSMEeOqhJHNzyBZAw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_DkPDsLSMEeOqhJHNzyBZAw" name="Category6" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_EqAY8LSMEeOqhJHNzyBZAw" name="Kind2" visibility="public">
+    <generalization xmi:id="_Fbb14LSMEeOqhJHNzyBZAw" general="_DMocALSMEeOqhJHNzyBZAw"/>
+    <generalization xmi:id="_F7yJ4LSMEeOqhJHNzyBZAw" general="_CxBeELSMEeOqhJHNzyBZAw"/>
+  </packagedElement>
+</RefOntoUML:Model>
