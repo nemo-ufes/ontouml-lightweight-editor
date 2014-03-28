@@ -38,6 +38,8 @@ import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
+import br.ufes.inf.nemo.antipattern.decint.DecIntAntipattern;
+import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseOccurrence;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
@@ -54,8 +56,6 @@ import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigOccurrence;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
-import br.ufes.inf.nemo.antipattern.multsort.MultSortAntipattern;
-import br.ufes.inf.nemo.antipattern.multsort.MultSortOccurrence;
 import br.ufes.inf.nemo.antipattern.partover.PartOverAntipattern;
 import br.ufes.inf.nemo.antipattern.partover.PartOverOccurrence;
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
@@ -76,6 +76,7 @@ import br.ufes.inf.nemo.antipattern.wholeover.WholeOverAntipattern;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.asscyc.AssCycWizard;
 import br.ufes.inf.nemo.antipattern.wizard.binover.BinOverWizard;
+import br.ufes.inf.nemo.antipattern.wizard.decint.DecIntWizard;
 import br.ufes.inf.nemo.antipattern.wizard.depphase.DepPhaseWizard;
 import br.ufes.inf.nemo.antipattern.wizard.freerole.FreeRoleWizard;
 import br.ufes.inf.nemo.antipattern.wizard.gsrig.GSRigWizard;
@@ -308,7 +309,7 @@ public class AntiPatternResultDialog extends Dialog {
 	    	  if  (element instanceof MixIdenOccurrence) return MixIdenAntipattern.getAntipatternInfo().getAcronym();
 	    	  if  (element instanceof MixRigOccurrence) return MixRigAntipattern.getAntipatternInfo().getAcronym();
 	    	  if  (element instanceof MultiDepOccurrence) return MultiDepAntipattern.getAntipatternInfo().getAcronym();
-	    	  if  (element instanceof MultSortOccurrence) return MultSortAntipattern.getAntipatternInfo().getAcronym();
+	    	  if  (element instanceof DecIntOccurrence) return DecIntAntipattern.getAntipatternInfo().getAcronym();
 	    	  if  (element instanceof PartOverOccurrence) return PartOverAntipattern.getAntipatternInfo().getAcronym();
 	    	  if  (element instanceof RelCompOccurrence) return RelCompAntipattern.getAntipatternInfo().getAcronym();
 	    	  if  (element instanceof RelOverOccurrence) return RelOverAntipattern.getAntipatternInfo().getAcronym();
@@ -393,6 +394,7 @@ public class AntiPatternResultDialog extends Dialog {
     	if (apOccur instanceof MixRigOccurrence) wizardDialog = new WizardDialog(new Shell(d), new MixRigWizard((MixRigOccurrence)apOccur));
     	if (apOccur instanceof MixIdenOccurrence) wizardDialog = new WizardDialog(new Shell(d), new MixIdenWizard((MixIdenOccurrence)apOccur));
     	if (apOccur instanceof UndefPhaseOccurrence) wizardDialog = new WizardDialog(new Shell(d), new UndefPhaseWizard((UndefPhaseOccurrence)apOccur));
+    	if (apOccur instanceof DecIntOccurrence) wizardDialog = new WizardDialog(new Shell(d), new DecIntWizard((DecIntOccurrence)apOccur));
 
     	return wizardDialog;
 	}
