@@ -1,8 +1,6 @@
 package br.ufes.inf.nemo.antipattern.overlapping;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -21,6 +19,7 @@ import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
+import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.common.list.ArrayListOperations;
 
 public class OverlappingTypesIdentificator {
@@ -257,11 +256,11 @@ public class OverlappingTypesIdentificator {
 			throw new Exception();
 		
 		//get commmon supertypes; there must be at least one
-		commonSupertypes.addAll(getCommonSupertypesFromClassifiers(types));
+		commonSupertypes.addAll(AntiPatternIdentifier.getCommonSupertypesFromClassifiers(types));
 		if(commonSupertypes.size()<1)
 			return false;
 		
-		return madeDisjointByGeneralizationSet(types, genSets,commonSupertypes);
+		return AntiPatternIdentifier.madeDisjointByGeneralizationSet(types, genSets,commonSupertypes);
 	}
 	
 	
@@ -273,38 +272,13 @@ public class OverlappingTypesIdentificator {
 			throw new Exception();
 		
 		//get commmon supertypes; there must be at least one
-		ArrayList<Classifier> commonSupertypes = getCommonSupertypesFromClassifiers(types);
+		ArrayList<Classifier> commonSupertypes = AntiPatternIdentifier.getCommonSupertypesFromClassifiers(types);
 		if(commonSupertypes.size()==0)
 			return true;
 		
-		return madeDisjointByGeneralizationSet(types, genSets, commonSupertypes);
+		return AntiPatternIdentifier.madeDisjointByGeneralizationSet(types, genSets, commonSupertypes);
 	}
 	
-	private static boolean madeDisjointByGeneralizationSet(	ArrayList<Classifier> types, ArrayList<GeneralizationSet> genSets, ArrayList<Classifier> commonSupertypes) {
-		//collect generalizationSets
-		ArrayList<GeneralizationSet> generalizationSets = new ArrayList<GeneralizationSet>();
-		for (Classifier parent : commonSupertypes) {
-			generalizationSets = getSubtypesGeneralizationSets(parent);
-		}
-		
-		//verifies if there is a generalization set which makes the subtypes disjoint
-		for (GeneralizationSet gs : generalizationSets) {
-			int typesInDifferentGeneralizations = 0;
-			
-			for (Generalization g1 : gs.getGeneralization())
-				if(types.contains(g1.getSpecific()) || ArrayListOperations.hasIntersection(types, g1.getSpecific().allChildren()))
-					typesInDifferentGeneralizations++;
-			
-			if(typesInDifferentGeneralizations>1){
-				if(gs.isIsDisjoint())
-					return false;
-				else
-					genSets.add(gs);
-			}		
-		}
-		return true;
-	}
-
 	public static Classifier getIdentityProvider(SortalClass sc){
 		
 		if(sc instanceof Kind || sc instanceof Collective || sc instanceof Quantity)
@@ -325,24 +299,7 @@ public class OverlappingTypesIdentificator {
 			types.add((Classifier) property.getType());
 		}
 
-		return getCommonSupertypesFromClassifiers(types);
-	}
-	
-	public static ArrayList<Classifier> getCommonSupertypesFromClassifiers(ArrayList<Classifier> types) {
-		ArrayList<Classifier> superTypes = new ArrayList<Classifier>();
-		
-		if(types==null || types.size()==0)
-			return superTypes;
-		
-		superTypes.addAll(types.get(0).allParents());
-		
-		for (int i = 1; i < types.size(); i++) {
-			ArrayList<Classifier> currentSupertypes = new ArrayList<Classifier>();
-			currentSupertypes.addAll(types.get(i).allParents());
-			superTypes.retainAll(currentSupertypes);
-		}
-		
-		return superTypes;
+		return AntiPatternIdentifier.getCommonSupertypesFromClassifiers(types);
 	}
 	
 	public static ArrayList<Classifier> getCommonSubtypesFromProperties(ArrayList<Property> partEnds) {
@@ -371,32 +328,7 @@ public class OverlappingTypesIdentificator {
 		return subtypes;
 	}
 
-	//Get generalization sets from a classifier's generalization
-	public static ArrayList<GeneralizationSet> getGeneralizationSets(Classifier c){
-		Set<GeneralizationSet> genSets = new HashSet<GeneralizationSet>();
-		
-		for (Generalization g : c.getGeneralization()) {
-			genSets.addAll(g.getGeneralizationSet());
-		}
-		
-		ArrayList<GeneralizationSet> result = new ArrayList<GeneralizationSet>();
-		result.addAll(genSets);
-		return result;
-	}
 	
-	//Get generalization sets from a classifier's generalization
-	public static ArrayList<GeneralizationSet> getSubtypesGeneralizationSets(Classifier c){
-		if(c==null)
-			return null;
-		
-		Set<GeneralizationSet> genSets = new HashSet<GeneralizationSet>();
-		for (Classifier child : c.children()) {
-			genSets.addAll(getGeneralizationSets(child));
-		}
-		ArrayList<GeneralizationSet> result = new ArrayList<GeneralizationSet>();
-		result.addAll(genSets);
-		return result;
-	}
 	
 		
 }
