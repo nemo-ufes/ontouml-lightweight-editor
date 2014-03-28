@@ -6,7 +6,10 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
+import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
 import RefOntoUML.SubstanceSortal;
+import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
@@ -15,6 +18,7 @@ public class DecIntOccurrence extends AntipatternOccurrence {
 	Class subtype;
 	ArrayList<Classifier> relevantParents;
 	ArrayList<Classifier> identityProviders;
+	ArrayList<GeneralizationSet> disjointGSList;
 	
 	public DecIntOccurrence(Class subtype, ArrayList<Classifier> relevantParents, DecIntAntipattern ap) throws Exception {
 		super(ap);
@@ -30,12 +34,42 @@ public class DecIntOccurrence extends AntipatternOccurrence {
 		
 		this.subtype = subtype;
 		this.relevantParents = relevantParents;
+		this.identityProviders = setIdentityProviders();
+		this.disjointGSList = setDisjointGSList();
+	}
+
+
+	private ArrayList<Classifier> setIdentityProviders() {
+		ArrayList<Classifier> identityProviders = new ArrayList<Classifier>();
 		
-		identityProviders = new ArrayList<Classifier>();
-		for (Classifier parent : subtype.allParents()) {
+		for (Classifier parent :  parser.getAllParents(subtype)) {
 			if(parent instanceof SubstanceSortal)
 				identityProviders.add(parent);
 		}
+		
+		return identityProviders;
+	}
+	
+		
+	private ArrayList<GeneralizationSet> setDisjointGSList() {
+		
+		ArrayList<GeneralizationSet> disjointGSList = new ArrayList<GeneralizationSet>();
+		
+		for (Classifier parent : parser.getAllParents(subtype)) {
+			for (GeneralizationSet gs : AntiPatternIdentifier.getSubtypesGeneralizationSets(parent)) {
+				
+				int generalizationsLeadingToSubtype = 0;
+				for (Generalization g : gs.getGeneralization())
+					if(g.getSpecific().equals(subtype) || parser.getAllChildren(g.getSpecific()).contains(subtype))
+						generalizationsLeadingToSubtype++;
+				
+				if(generalizationsLeadingToSubtype>1 && gs.isIsDisjoint() && !disjointGSList.contains(gs)){
+					disjointGSList.add(gs);
+				}
+			}
+		}
+		
+		return disjointGSList;
 	}
 	
 	public Class getSubtype() {
@@ -49,6 +83,11 @@ public class DecIntOccurrence extends AntipatternOccurrence {
 	public ArrayList<Classifier> getIdentityProviders() {
 		return identityProviders;
 	}
+
+	public ArrayList<GeneralizationSet> getDisjointGSList() {
+		return disjointGSList;
+	}
+
 
 	@Override
 	public OntoUMLParser setSelected() {

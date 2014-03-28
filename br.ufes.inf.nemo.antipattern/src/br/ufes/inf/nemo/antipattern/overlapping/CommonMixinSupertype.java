@@ -2,13 +2,13 @@ package br.ufes.inf.nemo.antipattern.overlapping;
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
+import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 
 //partEnds with the same type
 public class CommonMixinSupertype extends OverlappingGroup {
@@ -111,7 +111,7 @@ public class CommonMixinSupertype extends OverlappingGroup {
 		if(!this.overlappingProperties.containsAll(partEnds))
 			return false;
 		
-		ArrayList<GeneralizationSet> gss = OverlappingTypesIdentificator.getSubtypesGeneralizationSets(closestSupertpe);
+		ArrayList<GeneralizationSet> gss = AntiPatternIdentifier.getSubtypesGeneralizationSets(closestSupertpe);
 		
 		ArrayList<Classifier> subtypes = new ArrayList<> ();
 		for (Property property : partEnds) {
