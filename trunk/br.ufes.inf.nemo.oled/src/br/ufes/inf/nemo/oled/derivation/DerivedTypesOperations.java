@@ -7,6 +7,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.eclipse.uml2.uml.Include;
+
 import RefOntoUML.Classifier;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
@@ -24,10 +26,12 @@ import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 
 public class DerivedTypesOperations {
 
-
+	static OutcomeFixer of;
+	static Fix mainfix;
+	static DiagramManager dman;
 
 	@SuppressWarnings("unused")
-	public static Fix createUnionDerivation(DiagramEditor activeEditor, UmlProject project){
+	public static Fix createUnionDerivation(DiagramEditor activeEditor, UmlProject project, DiagramManager dm){
 
 		Fix mainfix = new Fix();
 		List<DiagramElement> selected = activeEditor.getSelectedElements();
@@ -47,14 +51,14 @@ public class DerivedTypesOperations {
 				if(stereotypes!=null)
 					if(stereotypes.size()<2){
 						String name=DefineNameDerivedType();
-						mainfix =createDerivedTypeUnion(stereotypes.get(0), mainfix, selected,name,refontoList,project);			
+						mainfix =createDerivedTypeUnion(stereotypes.get(0), mainfix, selected,name,refontoList,project,dm);			
 					}
 					else{
 						Object[] stereo;
 						stereo=  stereotypes.toArray();
 						String name=DefineNameDerivedType();
 						String stereotype= selectStereotype(stereo);
-						mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project);
+						mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
 					}
 			}
 
@@ -65,29 +69,20 @@ public class DerivedTypesOperations {
 		return mainfix;
 	}
 
-	public static Fix createDerivedTypeUnion(String stereotype, Fix mainfix, List<DiagramElement> selected, String name, ArrayList<RefOntoUML.Element> refontoList, UmlProject project){
-
+	public static Fix createDerivedTypeUnion(String stereotype, Fix fix, List<DiagramElement> selected, String name, ArrayList<RefOntoUML.Element> refontoList, UmlProject project, DiagramManager dm){
+		dman = dm;
+		mainfix = fix;
 		//UmlProject project = getCurrentEditor().getProject();
-		OutcomeFixer of = new OutcomeFixer(project.getModel());
-		Classifier newElement = (Classifier)of.createClass( of.getClassStereotype(stereotype));
-		newElement.setName(name);
-		of.copyContainer(((ClassElement) selected.get(0)).getClassifier(), newElement);
-		Fix fix=of.createGeneralization((Classifier)refontoList.get(0), newElement);
-		Fix fixG2=of.createGeneralization((Classifier)refontoList.get(1), newElement);
-		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-		generalizations.add((Generalization) fix.getAdded().get(0));
-		generalizations.add((Generalization) fixG2.getAdded().get(0));
-		Fix gs =  of.createGeneralizationSet(generalizations);
-		mainfix.addAll(fixG2);
-		mainfix.addAll(fix);
-		mainfix.addAll(gs);
-		ClassElement position = (ClassElement) selected.get(0);
-		ClassElement position2 = (ClassElement) selected.get(1);
+		of = new OutcomeFixer(project.getModel());
 		Point2D.Double firstpoint = new Point2D.Double();
 		Point2D.Double secondpoint = new Point2D.Double();
+		ClassElement position = (ClassElement) selected.get(0);
+		ClassElement position2 = (ClassElement) selected.get(1);
 		firstpoint.setLocation(position.getAbsoluteX1(),position.getAbsoluteY1());
 		secondpoint.setLocation(position2.getAbsoluteX1(),position2.getAbsoluteY1());
 		Point2D.Double newElementPosition= ClassPosition.findPositionGeneralization(firstpoint, secondpoint);
+		Classifier newElement = includeElement(newElementPosition, name, stereotype);
+		createGeneralization(newElement, (Classifier)refontoList.get(0), (Classifier)refontoList.get(1));
 		mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
 		return mainfix;
 
@@ -221,36 +216,46 @@ public class DerivedTypesOperations {
 	}
 
 	public static void UnionPattern(DiagramManager dm, ArrayList<String> values, Point2D.Double location){
-		OutcomeFixer of = new OutcomeFixer(dm.getCurrentProject().getModel());
-		Fix mainfix = new Fix();
-		//of.factory;
-		Classifier newElement= (Classifier) of.createClass(of.getClassStereotype(values.get(0)));
-		dm.getCurrentProject().getModel().getPackagedElement().add(newElement);
-		newElement.setName(values.get(2));
-		mainfix.includeAdded(newElement, location.getX()-100,location.getY()+100);
-		Classifier newElement2= (Classifier) of.createClass(of.getClassStereotype(values.get(1)));
-		newElement2.setName(values.get(3));
-		dm.getCurrentProject().getModel().getPackagedElement().add(newElement2);
-		mainfix.includeAdded(newElement2, location.getX()+100,location.getY()+100);
+		dman=dm;
+		of = new OutcomeFixer(dm.getCurrentProject().getModel());
+		mainfix = new Fix();
+		Point2D.Double[] positions= ClassPosition.GSpositioning(2, location);
+		Classifier newElement= includeElement(positions[1], values.get(2), values.get(0));
+		Classifier newElement2= includeElement(positions[2], values.get(3), values.get(1));
 		ArrayList<String> stereotypes= DerivedByUnion.getInstance().inferStereotype(newElement.eClass().getName() , newElement2.eClass().getName());
 		Classifier newElement3=null;
 		if(stereotypes!=null){
 			if(stereotypes.size()==1){
-				newElement3 = (Classifier)of.createClass( of.getClassStereotype(stereotypes.get(0)));
-				mainfix.includeAdded(newElement3, location.getX(),location.getY());
+				newElement3 = includeElement(location, values.get(4), stereotypes.get(0));
 			}
-			newElement3.setName(values.get(4));
-			Fix fix=of.createGeneralization(newElement, newElement3);
-			Fix fixG2=of.createGeneralization(newElement2, newElement3);
-			ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-			generalizations.add((Generalization) fix.getAdded().get(0));
-			generalizations.add((Generalization) fixG2.getAdded().get(0));
-			Fix gs =  of.createGeneralizationSet(generalizations);
-			mainfix.addAll(fixG2);
-			mainfix.addAll(fix);
-			mainfix.addAll(gs);
-			dm.updateOLED(mainfix);
-			
+			else{
+				Object[] stereo;
+				stereo=  stereotypes.toArray();
+				String stereotype= selectStereotype(stereo);
+				newElement3 = includeElement(location, values.get(4), stereotype);
+			}
+			createGeneralization(newElement3, newElement2, newElement);
+			dm.updateOLED(mainfix);	
 		}
+	}
+	//include an element acoording its position name and category
+	public static Classifier includeElement(Point2D.Double position, String name, String stereotype){
+		Classifier newElement= (Classifier) of.createClass(of.getClassStereotype(stereotype));
+		dman.getCurrentProject().getModel().getPackagedElement().add(newElement);
+		newElement.setName(name);
+		mainfix.includeAdded(newElement, position.getX(),position.getY());
+		return newElement;
+	}
+	
+	public  static void createGeneralization(Classifier father, Classifier son1, Classifier son2){
+		Fix fix=of.createGeneralization(son1, father);
+		Fix fixG2=of.createGeneralization(son2, father);
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+		generalizations.add((Generalization) fix.getAdded().get(0));
+		generalizations.add((Generalization) fixG2.getAdded().get(0));
+		Fix gs =  of.createGeneralizationSet(generalizations);
+		mainfix.addAll(fixG2);
+		mainfix.addAll(fix);
+		mainfix.addAll(gs);
 	}
 }

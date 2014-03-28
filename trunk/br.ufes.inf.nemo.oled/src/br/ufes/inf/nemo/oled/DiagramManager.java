@@ -2226,7 +2226,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
 		UmlProject project = getCurrentEditor().getProject();
-		Fix fix = DerivedTypesOperations.createUnionDerivation(activeEditor, project);
+		Fix fix = DerivedTypesOperations.createUnionDerivation(activeEditor, project,this);
 		if(fix!=null)
 			updateOLED(fix);	
 		
