@@ -322,6 +322,8 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			
 			selectorMap.put("CREATE_GEN_SET", new MethodCall(
 					DiagramEditor.class.getMethod("createGeneralizationSet")));
+			selectorMap.put("DELETE_GEN_SET", new MethodCall(
+					DiagramEditor.class.getMethod("deleteGeneralizationSet")));
 
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
