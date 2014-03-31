@@ -81,6 +81,7 @@ import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
+import br.ufes.inf.nemo.oled.ui.CustomOntoUMLElement;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorCommandDispatcher;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.Editor;
@@ -723,6 +724,46 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		//update application accordingly
 		updateOLEDFromModification(((GeneralizationSet)newgenset),false);		
 		return (GeneralizationSet)newgenset;
+	}
+	
+	public boolean contains (ArrayList<CustomOntoUMLElement> list, RefOntoUML.Element elem)
+	{
+		for(CustomOntoUMLElement coe: list){
+			if(coe.getElement().equals(elem)) return true;
+		}
+		return false;
+	}
+	
+	/** Delete a generalization set from a list of selected diagram elements */
+	public void deleteGeneralizationSetFrom(Collection<DiagramElement> diagramElementsList) 
+	{	
+		// retain only generalization sets from selected
+		ArrayList<CustomOntoUMLElement> genSets = new ArrayList<CustomOntoUMLElement>();		
+		for(DiagramElement dElem: diagramElementsList){
+			if (dElem instanceof GeneralizationElement){
+				Generalization gen = ((GeneralizationElement)dElem).getGeneralization();
+				if (gen.getGeneralizationSet()!=null && !gen.getGeneralizationSet().isEmpty()) {
+					for(GeneralizationSet gs: gen.getGeneralizationSet()) {
+						if (!contains(genSets,(RefOntoUML.Element)gs)) genSets.add(new CustomOntoUMLElement(gs,""));				
+					}
+				}
+			}
+		}
+		if(genSets.size()==0) return;
+		if(genSets.size()==1){
+			frame.getDiagramManager().delete((RefOntoUML.Element)genSets.get(0).getElement());
+		}else{
+			CustomOntoUMLElement chosen = (CustomOntoUMLElement) JOptionPane.showInputDialog(getFrame(), 
+					"Which generalization set do you want to delete?",
+					"Deleting Generalization Set",
+					JOptionPane.QUESTION_MESSAGE, 
+					null, 
+					genSets.toArray(), 
+					genSets.toArray()[0]);
+			if(chosen!=null){
+				frame.getDiagramManager().delete((RefOntoUML.Element)chosen.getElement());
+			}		
+		}			
 	}
 	
 	/** 

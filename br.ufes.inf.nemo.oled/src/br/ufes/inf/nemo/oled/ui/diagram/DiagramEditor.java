@@ -114,13 +114,10 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 public class DiagramEditor extends BaseEditor implements ActionListener, MouseListener, MouseWheelListener, MouseMotionListener, DiagramNotification, DiagramOperations, NodeChangeListener {
 
 	private static final long serialVersionUID = 4210158437374056534L;
-	// For now, we define the margins of the diagram as constants
-	private static final double MARGIN_TOP = 0;
-	private static final double MARGIN_LEFT = 0;
-	private static final double MARGIN_RIGHT = 0;
-	private static final double MARGIN_BOTTOM = 0;
-	private static final double ADDSCROLL_HORIZONTAL = 0;
-	private static final double ADDSCROLL_VERTICAL = 0;
+
+	private AppFrame frame;
+	private DiagramManager diagramManager;
+	
 	private transient DrawingContext drawingContext = new DrawingContextImpl();
 	private transient EditorMode editorMode;
 	private transient SelectionHandler selectionHandler;
@@ -128,37 +125,54 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private transient LineHandler lineHandler;
 	public transient List<UndoableEditListener> editListeners = new ArrayList<UndoableEditListener>();
 	private transient Scaling scaling = Scaling.SCALING_100;
+		
+	// For now, we define the margins of the diagram as constants
+	private static final double MARGIN_TOP = 0;
+	private static final double MARGIN_LEFT = 0;
+	private static final double MARGIN_RIGHT = 0;
+	private static final double MARGIN_BOTTOM = 0;
+	private static final double ADDSCROLL_HORIZONTAL = 0;
+	private static final double ADDSCROLL_VERTICAL = 0;
+	
 	private double widthWithZoom;
 	private double heightWithZoom;
+	
+	// It is nice to report the mapped coordinates to listeners, so it can be used for debug output. 
+	private List<EditorStateListener> editorListeners = new ArrayList<EditorStateListener>();
+	
+	// To edit the captions in the diagram. 
+	private CaptionEditor captionEditor = new CaptionEditor();
+	private MultilineEditor multilineEditor = new MultilineEditor();
+	
+	// This is the root of the shape hierarchy. 
+	private StructureDiagram diagram;
+	
+	// MouseEvent wrapper
+	private transient EditorMouseEvent mouseEvent = new EditorMouseEvent();
 	
 	// this might be null when the application is started and the pointer still did not move or had the focus of the editor
 	private static MouseEvent currentPointerPosition;
 	
-	public CreationHandler getCreationHandler()
-	{
-		return creationHandler;
-	}
-	
-	public LineHandler getLineHandler()
-	{
-		return lineHandler;
-	}
+	// The command processor to hold this diagram's operations.
+	private UndoManager undoManager = new UndoManager();
 	
 	/**
 	 * Reset the transient values for serialization.
+	 * 
 	 * @param stream an ObjectInputStream
 	 * @throws IOException if I/O error occured
 	 * @throws ClassNotFoundException if class was not found
 	 */
-	private void readObject(ObjectInputStream stream)
-			throws IOException, ClassNotFoundException {
+	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException 
+	{
 		initEditorMembers();
 	}
 
 	/**
 	 * Initializes the transient editor members.
 	 */
-	private void initEditorMembers() {
+	private void initEditorMembers() 
+	{
 		drawingContext = new DrawingContextImpl();
 		selectionHandler = new SelectionHandler(this);
 		creationHandler = new CreationHandler(this);
@@ -167,42 +181,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		mouseEvent = new EditorMouseEvent();
 		scaling = Scaling.SCALING_100;
 	}
-
-	/**
-	 * It is nice to report the mapped coordinates to listeners, so it can be
-	 * used for debug output.
-	 */
-	private List<EditorStateListener> editorListeners =
-			new ArrayList<EditorStateListener>();
-
-	/**
-	 * To edit the captions in the diagram.
-	 */
-	private CaptionEditor captionEditor = new CaptionEditor();
-	private MultilineEditor multilineEditor = new MultilineEditor();
-
-	/**
-	 * This is the root of the shape hierarchy.
-	 */
-	private StructureDiagram diagram;
-
-	// MouseEvent wrapper
-	private transient EditorMouseEvent mouseEvent = new EditorMouseEvent();
-
-	private AppFrame frame;
-
-	private DiagramManager diagramManager;
-
-	public DiagramManager getManager() {
-		return diagramManager;
-	}
-
-	// The command processor to hold this diagram's operations.
-	private UndoManager undoManager = new UndoManager();
-
-	/**
-	 * Empty constructor for testing. Do not use !
-	 */
+	
+	/** Empty constructor for testing. Do not use !  */
 	public DiagramEditor() { }
 
 	/**
@@ -211,7 +191,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * @param diagramManager 
 	 * @param diagram the diagram
 	 */
-	public DiagramEditor(AppFrame frame, DiagramManager diagramManager, StructureDiagram diagram) {
+	public DiagramEditor(AppFrame frame, DiagramManager diagramManager, StructureDiagram diagram) 
+	{
 		this.frame = frame;
 		this.diagramManager = diagramManager;
 		this.diagram = diagram;
@@ -235,40 +216,28 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		setToDiagramSize();
 	}
 
-	public UmlProject getProject()
-	{
-		return diagram.getProject();
-	}
-
-	/**
-	 * Adds an EditorStateListener.
-	 * @param l a listener
-	 */
-	public void addEditorStateListener(EditorStateListener l) {
-		editorListeners.add(l);
-	}
-	
-	public int getScalingPercentual()
-	{
-		return (int)((scaling.getScaleFactor()*100)/100);
-	}
+	public DiagramManager getManager() { return diagramManager; }
+	public DiagramManager getDiagramManager() { return diagramManager; }
+	public CreationHandler getCreationHandler() { return creationHandler; }	
+	public LineHandler getLineHandler() { return lineHandler; }
+	public UmlProject getProject() { return diagram.getProject(); }
+	public void addEditorStateListener(EditorStateListener l) { editorListeners.add(l); }	
+	public int getScalingPercentual() { return (int)((scaling.getScaleFactor()*100)/100); }
 
 	/**
 	 * Adjusts this component's preferredSize attribute to the diagram's size.
 	 * This also influences the scroll pane which the component is contained in.
 	 */
-	private void setToDiagramSize() {
-		setPreferredSize(new Dimension(
-				(int) (diagram.getSize().getWidth() + MARGIN_RIGHT + MARGIN_LEFT + ADDSCROLL_HORIZONTAL),
-				(int) (diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL)));
-
+	private void setToDiagramSize() 
+	{
+		setPreferredSize(new Dimension((int) (diagram.getSize().getWidth() + MARGIN_RIGHT + MARGIN_LEFT + ADDSCROLL_HORIZONTAL),
+		(int) (diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL)));
 		invalidate();
 	}
 
-	/**
-	 * Adds the event handlers.
-	 */
-	private void installHandlers() {
+	/** Adds the event handlers. */
+	private void installHandlers() 
+	{
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
@@ -346,12 +315,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		});
 	}
 
-	/**
-	 * Cancels the current edit action.
-	 */
-	public void cancelEditing() {
-				
-		if (captionEditor.isVisible()) {
+	/** Cancels the current edit action. */
+	public void cancelEditing() 
+	{				
+		if (captionEditor.isVisible()) 
+		{
 			captionEditor.hideEditor();
 		}
 		editorMode.cancel();
@@ -370,7 +338,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		frame.getDiagramManager().delete(diagramElementsList);		
 	}
 	
-	/** create a generalizations from selected elements in the diagram */
+	/** Create a generalizations from selected elements in the diagram */
 	public void createGeneralizationSet()
 	{		
 		Collection<DiagramElement> diagramElementsList = getSelectedElements();
@@ -383,43 +351,41 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			cancelEditing();
 		}		
 	}
-	
-	/** delete generalization Set from selected elements in the diagram */
+		
+	/** Delete generalization Set from selected elements in the diagram */
 	public void deleteGeneralizationSet()
 	{
-		
+		Collection<DiagramElement> diagramElementsList = getSelectedElements();
+		frame.getDiagramManager().deleteGeneralizationSetFrom(diagramElementsList);		
+		deselectAll();
+		cancelEditing();		
 	}
 	
-	/**
-	 * Removes the elements selected only from the diagram
-	 */
-	public void excludeSelection() {
+	/** Removes the elements selected only from the diagram  */
+	public void excludeSelection() 
+	{
 		Collection<DiagramElement> diagramElementsList = getSelectedElements();
 		execute(new DeleteElementCommand(this, ModelHelper.getElements(diagramElementsList), diagram.getProject(),false,true));
 	}
 	
-	/**
-	 * Open Diagram PopupMenu
-	 */
+	/** Open Diagram PopupMenu */
 	public void openDiagramPopupMenu(MouseEvent e)
 	{
 		DiagramPopupMenu popup = new DiagramPopupMenu(frame);
 		popup.show(e.getComponent(),e.getX(),e.getY());
 	}
 	
-	/**
-	 * Open ToolBox Menu.
-	 */
+	/** Open ToolBox Menu. */
 	public void openToolBoxPopupMenu()
 	{
 		if (currentPointerPosition==null) return;
 		int xp = currentPointerPosition.getX();
 		int yp = currentPointerPosition.getY();
 		if (xp <= diagram.getAbsoluteX1() || xp >= diagram.getAbsoluteX2()) return;
-		if (yp < diagram.getAbsoluteY1() || yp > diagram.getAbsoluteY2()) return;
-				
+		if (yp < diagram.getAbsoluteY1() || yp > diagram.getAbsoluteY2()) return;				
 		DiagramElement elem = diagram.getChildAt(currentPointerPosition.getX(), currentPointerPosition.getY());		
-		if (elem instanceof NullElement){
+		if (elem instanceof NullElement)
+		{
 			ToolboxPopupMenu menu = new ToolboxPopupMenu(frame);
 			menu.show((Component)diagramManager.getCurrentDiagramEditor(), (int)currentPointerPosition.getX(), (int) currentPointerPosition.getY());				
 		}
@@ -427,13 +393,12 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 	// *************************************************************************
 	// ***** Drawing the component
-	// *******************************************
+	// *************************************************************************
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) 
+	{
 		Rectangle clipBounds = new Rectangle();
 		g.getClipBounds(clipBounds);
 		paintComponent(g, clipBounds, true);
@@ -443,10 +408,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Paints the component into a non-screen Graphics object.
 	 * @param g the Graphics object
 	 */
-	public void paintComponentNonScreen(Graphics g) {
+	public void paintComponentNonScreen(Graphics g) 
+	{
 		Dimension canvasSize = getTotalCanvasSize();
-		Rectangle clipBounds = new Rectangle(0, 0, canvasSize.width,
-				canvasSize.height);
+		Rectangle clipBounds = new Rectangle(0, 0, canvasSize.width,canvasSize.height);
 		g.setClip(clipBounds);
 		paintComponent(g, clipBounds, false);
 	}
@@ -455,35 +420,30 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Paints this component with a specified bounds object.
 	 * @param g the graphics context
 	 * @param bounds the bounding rectangle to repaint
-	 * @param toScreen true if rendered to screen, false otherwise
-	 * otherwise
+	 * @param toScreen true if rendered to screen, false otherwise 
 	 */
-	private void paintComponent(Graphics g, Rectangle bounds, boolean toScreen) {
+	private void paintComponent(Graphics g, Rectangle bounds, boolean toScreen) 
+	{
 		Graphics2D g2d = (Graphics2D) g;
 		setRenderingHints(g2d);
-		if (scaling.getScaleFactor() != 1.0) {
-			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		if (scaling.getScaleFactor() != 1.0) 
+		{
+			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		}
-
 		boolean gridVisible = diagram.isGridVisible();
 		Color background = Color.WHITE;
 		if (toScreen) {
-			// Scaling is only interesting if rendering to screen
-			scaleDiagram(g2d);			
+			scaleDiagram(g2d); // Scaling is only interesting if rendering to screen			
 		} else {
 			diagram.setGridVisible(false);
 			background = Color.WHITE;
 		}
-
 		int width = (int)(diagram.getSize().getWidth()+ MARGIN_RIGHT + MARGIN_LEFT + ADDSCROLL_HORIZONTAL);
 		int height = (int)(diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL);
 		heightWithZoom = (height*scaling.getScaleFactor());
 		widthWithZoom = (width*scaling.getScaleFactor());
-		setPreferredSize(new Dimension((int)widthWithZoom, (int)heightWithZoom));
-		
+		setPreferredSize(new Dimension((int)widthWithZoom, (int)heightWithZoom));		
 		bounds = new Rectangle((int)width,(int)height);
 		clearScreen(g, bounds, background);
 		drawingContext.setGraphics2D(g2d, bounds);				
@@ -510,27 +470,24 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Sets the rendering hints used in the editor.
 	 * @param g2d the Graphics2D object
 	 */
-	private void setRenderingHints(Graphics2D g2d) {
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
+	private void setRenderingHints(Graphics2D g2d) 
+	{
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 
 	/**
 	 * Resets the rendering hints used in the editor.
 	 * @param g2d the Graphics2D object
 	 */
-	private void restoreRenderingHints(Graphics2D g2d) {
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
+	private void restoreRenderingHints(Graphics2D g2d) 
+	{
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
 		/*
-    if (scaling.getScaleFactor() != 1.0) {
-      g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-        RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-    }*/
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_DEFAULT);
+    	if (scaling.getScaleFactor() != 1.0) 
+      		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+    	*/
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_DEFAULT);
 	}
 
 	/**
@@ -539,7 +496,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * @param bounds the bounds to draw within
 	 * @param color the background color
 	 */
-	private void clearScreen(Graphics g, Rectangle bounds, Color color) {
+	private void clearScreen(Graphics g, Rectangle bounds, Color color) 
+	{
 		g.setColor(color);
 		g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
 	}
@@ -548,19 +506,21 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Scales the diagram.
 	 * @param g2d the Graphics2D object
 	 */
-	private void scaleDiagram(Graphics2D g2d) {
+	private void scaleDiagram(Graphics2D g2d) 
+	{
 		double scaleFactor = scaling.getScaleFactor();
 		g2d.scale(scaleFactor, scaleFactor);		
 	}
 
 	// ************************************************************************
 	// ***** ActionListener
-	// *********************************
+	// ************************************************************************
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) 
+	{
 		stopEditing();
 	}
 
@@ -568,17 +528,15 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Stops the editing process if one was active.
 	 * @return true if editor was closed, false if nothing happened
 	 */
-	private boolean stopEditing() {
+	private boolean stopEditing() 
+	{
 		TextEditor currentEditor = null;
-		if (captionEditor.isVisible()) {
-			currentEditor = captionEditor;
-		}
-		if (multilineEditor.isVisible()) {
-			currentEditor = multilineEditor;
-		}
-
-		//O problema est� aqui. � necess�rio veirificar o modo do editor
-		if (currentEditor != null && currentEditor.isVisible()) {
+		if (captionEditor.isVisible()) currentEditor = captionEditor;		
+		if (multilineEditor.isVisible()) currentEditor = multilineEditor;
+		
+		//O problema esta aqui, eh necessario veirificar o modo do editor
+		if (currentEditor != null && currentEditor.isVisible()) 
+		{
 			String text = currentEditor.getText();
 			Label label = currentEditor.getLabel();
 			SetLabelTextCommand command = new SetLabelTextCommand(this, label, text,diagramManager.getCurrentProject());
@@ -592,69 +550,76 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 	// ************************************************************************
 	// ***** MouseListener
-	// *********************************
+	// ************************************************************************
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void mousePressed(MouseEvent e) {
-		if (!stopEditing()) {
-			editorMode.mousePressed(convertMouseEvent(e));
-		}
+	/** {@inheritDoc} */
+	public void mousePressed(MouseEvent e) 
+	{
+		if (!stopEditing()) editorMode.mousePressed(convertMouseEvent(e));		
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void mouseReleased(MouseEvent e) {
-		if (!stopEditing()) {
-			editorMode.mouseReleased(convertMouseEvent(e));
-		}
+	/** {@inheritDoc} */
+	public void mouseReleased(MouseEvent e) 
+	{
+		if (!stopEditing()) editorMode.mouseReleased(convertMouseEvent(e));		
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void mouseClicked(MouseEvent e) {
-		if (!stopEditing()) {			
-			editorMode.mouseClicked(convertMouseEvent(e));
-		}
+	/** {@inheritDoc} */
+	public void mouseClicked(MouseEvent e) 
+	{
+		if (!stopEditing()) editorMode.mouseClicked(convertMouseEvent(e));		
 	}
 
 	// ************************************************************************
+	// ***** MouseWheelListener
+	// ************************************************************************
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) 
+	{
+		if (e.isControlDown())
+		{
+            if (e.getWheelRotation() < 0)
+            {
+            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) zoomIn();
+            }
+            if (e.getWheelRotation() > 0)
+            {
+            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) zoomOut();
+            }
+		}
+	}
+	
+	// ************************************************************************
 	// ***** MouseMotionListener
-	// *********************************
+	// ************************************************************************
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void mouseExited(MouseEvent e) { 
+	/** {@inheritDoc} */
+	public void mouseExited(MouseEvent e) 
+	{ 
 		EditorMouseEvent evt = convertMouseEvent(e);
 		currentPointerPosition = evt.getMouseEvent();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void mouseEntered(MouseEvent e) {
+	/** {@inheritDoc} */
+	public void mouseEntered(MouseEvent e) 
+	{
 		EditorMouseEvent evt = convertMouseEvent(e);
 		currentPointerPosition = evt.getMouseEvent();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void mouseMoved(MouseEvent e) {
+	/** {@inheritDoc} */
+	public void mouseMoved(MouseEvent e) 
+	{
 		EditorMouseEvent evt = convertMouseEvent(e);
 		currentPointerPosition = evt.getMouseEvent();		
 		editorMode.mouseMoved(evt);
 		notifyCoordinateListeners();		
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	public void mouseDragged(MouseEvent e) {		
+	/** {@inheritDoc} */
+	public void mouseDragged(MouseEvent e) 
+	{		
 		EditorMouseEvent evt = convertMouseEvent(e);
 		currentPointerPosition = evt.getMouseEvent();
 		editorMode.mouseDragged(evt);
@@ -665,8 +630,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Notifies the coordinate listeners.
 	 * Precondition: Mouse coordinates have been previously transformed.
 	 */
-	private void notifyCoordinateListeners() {
-		for (EditorStateListener l : editorListeners) {
+	private void notifyCoordinateListeners() 
+	{
+		for (EditorStateListener l : editorListeners) 
+		{
 			l.mouseMoved(mouseEvent);
 		}
 	}
@@ -676,7 +643,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * @param e the MouseEvent
 	 * @return the converted event
 	 */
-	private EditorMouseEvent convertMouseEvent(MouseEvent e) {
+	private EditorMouseEvent convertMouseEvent(MouseEvent e) 
+	{
 		mouseEvent.setMouseEvent(e, scaling);
 		return mouseEvent;
 	}
@@ -706,29 +674,25 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/**
 	 * Clears the undo diagramManager.
 	 */
-	public void clearUndoManager() {
-		undoManager.discardAllEdits();
-	}
+	public void clearUndoManager() { undoManager.discardAllEdits(); }
 
 	/**
 	 * Returns the current selection.
 	 * @return the selected element
 	 */
-	public List<DiagramElement> getSelectedElements() {
-		return selectionHandler.getSelectedElements();
-	}
+	public List<DiagramElement> getSelectedElements() { return selectionHandler.getSelectedElements(); }
 
 	/**
 	 * Returns the total canvas size for export functions. The total size
 	 * includes the margins
 	 * @return the total canvas size
 	 */
-	public Dimension getTotalCanvasSize() {
+	public Dimension getTotalCanvasSize() 
+	{
 		Dimension2D diagramSize = diagram.getSize();
 		Dimension result = new Dimension();
 		result.width = (int) (diagramSize.getWidth() + MARGIN_LEFT + MARGIN_RIGHT);
-		result.height = (int) (diagramSize.getHeight() + MARGIN_TOP +
-				MARGIN_BOTTOM);
+		result.height = (int) (diagramSize.getHeight() + MARGIN_TOP + MARGIN_BOTTOM);
 		return result;
 	}
 
@@ -738,41 +702,24 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	// ***** and sorts.
 	// ************************************************************************
 
-	/**
-	 * Undoes the last operation.
-	 */
+	/** Undoes the last operation. */
 	public void undo() { undoManager.undo(); }
 
-	/**
-	 * Redoes the last operation.
-	 */
+	/** Redoes the last operation. */
 	public void redo() { undoManager.redo(); }
 
 	/**
 	 * Rescales the view.
 	 * @param aScaling a Scaling object
 	 */
-	public void setScaling(Scaling aScaling) {
+	public void setScaling(Scaling aScaling) 
+	{
 		scaling = aScaling;		
 		frame.getStatusBar().reportZoomPercentual(aScaling.toString());
 		revalidate();
 		repaint();
 	}
-
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
-		if (e.isControlDown()){
-            if (e.getWheelRotation() < 0)
-            {
-            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) zoomIn();
-            }
-            if (e.getWheelRotation() > 0)
-            {
-            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) zoomOut();
-            }
-		}
-	}
-	
+		
 	public void zoomOut()
 	{			
 		if (scaling.equals(Scaling.SCALING_150)) setScaling(Scaling.SCALING_145); 
@@ -821,29 +768,30 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		else if (scaling.equals(Scaling.SCALING_145)) setScaling(Scaling.SCALING_150);		
 	}
 	
-	/**
-	 * Sets the editor into selection mode.
-	 */
-	public void setSelectionMode() {
-		editorMode = selectionHandler;
-		//FIXME Treat select/unselect with shift key pressed
+	/** Sets the editor into selection mode. */
+	public void setSelectionMode() 
+	{		
+		editorMode = selectionHandler;		
 	}
 
 	/**
 	 * Switches the editor into creation mode.
 	 * @param elementType the ElementType that indicates what to create
 	 */
-	public void setCreationMode(ElementType elementType) {
+	public void setCreationMode(ElementType elementType) 
+	{
 		creationHandler.createNode(elementType);
 		editorMode = creationHandler;
 	}
 
-	public void setDragElementMode(RefOntoUML.Type type, EObject eContainer){		
+	public void setDragElementMode(RefOntoUML.Type type, EObject eContainer)
+	{		
 		creationHandler.createNode(type,eContainer);
 		editorMode = creationHandler;
 	}
 		
-	public void setPatternCreationMode(){
+	public void setPatternCreationMode()
+	{
 		creationHandler.setPattern(ElementType.UNION);
 		editorMode = creationHandler;
 	}
@@ -852,9 +800,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Switches the editor into connection creation mode.
 	 * @param relationType the RelationType to create
 	 */
-	public void setCreateConnectionMode(RelationType relationType) {
-		lineHandler.setRelationType(relationType,
-				getDiagram().getElementFactory().getConnectMethod(relationType));
+	public void setCreateConnectionMode(RelationType relationType) 
+	{
+		lineHandler.setRelationType(relationType,getDiagram().getElementFactory().getConnectMethod(relationType));
 		editorMode = lineHandler;
 	}
 
@@ -863,7 +811,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		RelationType relationType = RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase());
 		lineHandler.setRelationType(relationType, getDiagram().getElementFactory().getConnectMethod(relationType));
 		editorMode = lineHandler;		
-		
 		RefOntoUML.Type source = null;
 		RefOntoUML.Type target = null;
 		if(relationship instanceof RefOntoUML.Association){
@@ -885,11 +832,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		
 		return lineHandler.createAndAddConnection(this, relationship, src, tgt, eContainer);
 	}
-		  
-	/**
-	 * Immediate redraw of the view.
-	 */
-	public void redraw() {
+		  	
+	/** Immediate redraw of the view. */
+	public void redraw() 
+	{
 		paintImmediately(0, 0, getWidth(), getHeight());
 	}
 
@@ -897,7 +843,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Sets the grid to visible.
 	 * @param flag true for visible grid, false otherwise
 	 */
-	public void showGrid(boolean flag) {
+	public void showGrid(boolean flag) 
+	{
 		diagram.setGridVisible(flag);
 		repaint();
 	}
@@ -911,41 +858,46 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Activates grid snapping.
 	 * @param flag true if snapping should be supported, false otherwise
 	 */
-	public void snapToGrid(boolean flag) {
+	public void snapToGrid(boolean flag) 
+	{
 		diagram.setSnapToGrid(flag);
 	}
 
 	/**
 	 * Resets the current connection's points.
 	 */
-	public void resetConnectionPoints() {
+	public void resetConnectionPoints() 
+	{
 		DiagramElement elem = selectionHandler.getSelectedElements().get(0);
-		if (elem instanceof Connection) {
+		if (elem instanceof Connection) 
+		{
 			execute(new ResetConnectionPointsCommand(this, (Connection) elem));
 		}
 	}
 
-	public void resetConnectionPoints(DiagramElement elem){
-		if (elem instanceof Connection) {
+	public void resetConnectionPoints(DiagramElement elem)
+	{
+		if (elem instanceof Connection) 
+		{
 			execute(new ResetConnectionPointsCommand(this, (Connection) elem));
 		}		
 	}
 	
-	/**
-	 * Brings the current selection to the front.
-	 */
-	public void bringToFront() {
-		if (selectionHandler.getSelectedElements().size() > 0) {
+	/** Brings the current selection to the front. */
+	public void bringToFront() 
+	{
+		if (selectionHandler.getSelectedElements().size() > 0) 
+		{
 			diagram.bringChildToFront(selectionHandler.getSelectedElements().get(0));
 			redraw();
 		}
 	}
 
-	/**
-	 * Puts the current selection to the back.
-	 */
-	public void putToBack() {
-		if (getSelectedElements().size() > 0) {
+	/** Puts the current selection to the back. */
+	public void putToBack() 
+	{
+		if (getSelectedElements().size() > 0) 
+		{
 			diagram.putChildToBack(getSelectedElements().get(0));
 			redraw();
 		}
@@ -984,45 +936,37 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		DiagramElement element = selectionHandler.getSelection().getElement();
 		if (element instanceof ClassElement) ((ClassElement)element).setShowAttributes(true);	
 	}
-	
-	/**
-	 * Edits the current selection's properties.
-	 */
-	public void editProperties() {
-		if (getSelectedElements().size() > 0) {
-			editProperties(getSelectedElements().get(0));
-		}
-	}
 
-	/**
-	 * Switches a rectilinear connection to a direct one.
-	 */
-	public void rectilinearToDirect() {
-		if (getSelectedElements().size() > 0 &&
-				getSelectedElements().get(0) instanceof UmlConnection) {
+	/** Switches a rectilinear connection to a direct one. */
+	public void rectilinearToDirect() 
+	{
+		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
+		{
 			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
 			execute(new ConvertConnectionTypeCommand(this, conn, new SimpleConnection()));
+			
 			// we can only tell the selection handler to forget about the selection
 			selectionHandler.deselectAll();
 		}
 	}
 	
-	public void setLineStyle(UmlConnection connection, boolean setRectilinear){
+	public void setLineStyle(UmlConnection connection, boolean setRectilinear)
+	{
 		if(setRectilinear){
 			execute(new ConvertConnectionTypeCommand(this, connection, new RectilinearConnection()));
-		}
-		else
+		} else {
 			execute(new ConvertConnectionTypeCommand(this, connection, new SimpleConnection()));
+		}
 	}
 
-	/**
-	 * Switches a direct connection into a rectilinear one.
-	 */
-	public void directToRectilinear() {
-		if (getSelectedElements().size() > 0 &&
-				getSelectedElements().get(0) instanceof UmlConnection) {
+	/** Switches a direct connection into a rectilinear one. */
+	public void directToRectilinear() 
+	{
+		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
+		{
 			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
 			execute(new ConvertConnectionTypeCommand(this, conn, new RectilinearConnection()));
+			
 			// we can only tell the selection handler to forget about the selection
 			selectionHandler.deselectAll();			
 		}
@@ -1032,11 +976,12 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Sets the end type navigability of the current selected connection.
 	 * @param endType the RelationEndType
 	 */
-	public void setNavigability(RelationEndType endType) {
-		if (getSelectedElements().size() > 0 &&
-				getSelectedElements().get(0) instanceof UmlConnection) {
+	public void setNavigability(RelationEndType endType) 
+	{
+		if (getSelectedElements().size() > 0 && getSelectedElements().get(0) instanceof UmlConnection) 
+		{
 			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
-			//Relationship relationship = (Relationship) conn.getModelElement();
+					
 			// Setup a toggle
 			if (endType == RelationEndType.SOURCE) {
 				execute(new SetConnectionNavigabilityCommand(this, conn, endType, true)); //FIXME Improve this = !relationship.isNavigableToElement1()
@@ -1046,39 +991,37 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			}
 		}
 	}
-
+		
 	/**
 	 * Runs the specified command by this editor's CommandProcessor, which makes
 	 * the operation reversible.
 	 * @param command the command to run
 	 */
-	public void execute(Command command) {
-		
-		// We need to run() after notifying the UndoManager in order to ensure
-		// correct menu behaviour
+	public void execute(Command command) 
+	{		
+		// We need to run() after notifying the UndoManager in order to ensure correct menu behaviour
 		command.run();
-
 		diagramManager.updateUI();
 	}
 
-	/*
-	 * Notifies the listeners about a state change.
-	 //CLEANUP
-	private void notifyStateChanged() {
-		for (EditorStateListener l : editorListeners) {
-			l.stateChanged(this);
-		}
-	}*/
+//	//Notifies the listeners about a state change. 
+//	private void notifyStateChanged() 
+//	{
+//		for (EditorStateListener l : editorListeners) {
+//			l.stateChanged(this);
+//		}
+//	}
 
 	// *************************************************************************
-	// ***** BaseEditor callbacks
+	// ***** BaseEditor callback
 	// *********************************
 
 	/**
 	 * Adds the specified SelectionListener.
 	 * @param l the SelectionListener to add
 	 */
-	public void addSelectionListener(SelectionListener l) {
+	public void addSelectionListener(SelectionListener l) 
+	{
 		selectionHandler.addSelectionListener(l);
 	}
 
@@ -1086,124 +1029,110 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Adds the specified AppCommandListener.
 	 * @param l the AppCommandListener to add
 	 */
-	public void addAppCommandListener(AppCommandListener l) {
+	public void addAppCommandListener(AppCommandListener l) 
+	{
 		selectionHandler.addAppCommandListener(l);
 	}
 
 	// *************************************************************************
 	// ***** ModelNotification
-	// *********************************
+	// *************************************************************************
 
 	public void notifyChange(List<DiagramElement> elements, ChangeType changeType, NotificationType notificationType)
 	{
 		editorMode.stateChanged();
-
-		for (EditorStateListener l : editorListeners) {
+		for (EditorStateListener l : editorListeners) 
+		{
 			l.stateChanged(this, changeType);
 		}
-
 		repaint();
-
 		if(changeType == ChangeType.ELEMENTS_REMOVED || (changeType == ChangeType.ELEMENTS_ADDED && notificationType == NotificationType.UNDO))
+		{
 			selectionHandler.elementRemoved(elements);
-
+		}
 		//In case of the three commands  
 		if(changeType == ChangeType.ELEMENTS_ADDED || changeType == ChangeType.ELEMENTS_REMOVED || changeType == ChangeType.LABEL_TEXT_SET || changeType == ChangeType.CONNECTION_NAVEGABILITY_SET 
-		  || changeType == ChangeType.ELEMENTS_MOVED || changeType == ChangeType.ELEMENTS_DRAGGED || changeType == ChangeType.ELEMENTS_CHANGED)				 
+		|| changeType == ChangeType.ELEMENTS_MOVED || changeType == ChangeType.ELEMENTS_DRAGGED || changeType == ChangeType.ELEMENTS_CHANGED)				 
 		{
 			frame.getMainToolBar().enableSaveButton(true);
 			getProject().setSaveModelNeeded(true);
 		}
-
 		diagram.setSaveNeeded(true);		
-		
 		showStatus(elements, changeType, notificationType);
 	}
 
 	private void showStatus(List<DiagramElement> elements, ChangeType commandType, NotificationType notificationType)
 	{
-
 		StringBuilder sb = new StringBuilder();
-
-		if(notificationType == NotificationType.UNDO)
-		{
-			sb.append("undo");
-		}
-
-		else if (notificationType == NotificationType.REDO)
-		{
-			sb.append("redo");
-		}
-
+		if(notificationType == NotificationType.UNDO) sb.append("undo");
+		else if (notificationType == NotificationType.REDO) sb.append("redo");
 		switch (commandType) {
-		case ELEMENTS_ADDED: 
-			if(notificationType == NotificationType.DO) sb.append("added"); else sb.append(" add");
-			break;
-		case ELEMENTS_REMOVED:
-			if(notificationType == NotificationType.DO) sb.append("removed"); else sb.append(" remove");
-			break;
-		case ELEMENTS_DRAGGED:
-			if(notificationType == NotificationType.DO) sb.append("dragged"); else sb.append(" drag");
-			break;
-		case ELEMENTS_MOVED:
-			if(notificationType == NotificationType.DO) sb.append("moved"); else sb.append(" move");
-			break;
-		case ELEMENTS_CHANGED:
-			if(notificationType == NotificationType.DO) sb.append("changed"); else sb.append(" change");
-			break;
-		case ELEMENTS_RESIZED:
-			if(notificationType == NotificationType.DO) sb.append("resized"); else sb.append(" resize");
-			break;
-		case CONNECTION_NAVEGABILITY_SET:
-			if(notificationType == NotificationType.DO) sb.append("navegability set"); else sb.append(" set navegability");
-			break;
-		case CONNECTION_TYPE_CONVERTED:
-			if(notificationType == NotificationType.DO) sb.append("connnection type changed"); else sb.append(" change connnection type");
-			break;
-		case CONNECTION_POINT_EDITED:
-			if(notificationType == NotificationType.DO) sb.append("connection point changed"); else sb.append(" change connnection point");
-			break;
-		case CONNECTION_POINTS_RESET:
-			if(notificationType == NotificationType.DO) sb.append("connection points reset"); else sb.append(" reset connection points");
-			break;
-		case LABEL_TEXT_SET:
-			if(notificationType == NotificationType.DO) sb.append("label text set"); else sb.append(" set label text");
-			break;
-		default:
-			break;	
+			case ELEMENTS_ADDED: 
+				if(notificationType == NotificationType.DO) sb.append("added"); else sb.append(" add");
+				break;
+			case ELEMENTS_REMOVED:
+				if(notificationType == NotificationType.DO) sb.append("removed"); else sb.append(" remove");
+				break;
+			case ELEMENTS_DRAGGED:
+				if(notificationType == NotificationType.DO) sb.append("dragged"); else sb.append(" drag");
+				break;
+			case ELEMENTS_MOVED:
+				if(notificationType == NotificationType.DO) sb.append("moved"); else sb.append(" move");
+				break;
+			case ELEMENTS_CHANGED:
+				if(notificationType == NotificationType.DO) sb.append("changed"); else sb.append(" change");
+				break;
+			case ELEMENTS_RESIZED:
+				if(notificationType == NotificationType.DO) sb.append("resized"); else sb.append(" resize");
+				break;
+			case CONNECTION_NAVEGABILITY_SET:
+				if(notificationType == NotificationType.DO) sb.append("navegability set"); else sb.append(" set navegability");
+				break;
+			case CONNECTION_TYPE_CONVERTED:
+				if(notificationType == NotificationType.DO) sb.append("connnection type changed"); else sb.append(" change connnection type");
+				break;
+			case CONNECTION_POINT_EDITED:
+				if(notificationType == NotificationType.DO) sb.append("connection point changed"); else sb.append(" change connnection point");
+				break;
+			case CONNECTION_POINTS_RESET:
+				if(notificationType == NotificationType.DO) sb.append("connection points reset"); else sb.append(" reset connection points");
+				break;
+			case LABEL_TEXT_SET:
+				if(notificationType == NotificationType.DO) sb.append("label text set"); else sb.append(" set label text");
+				break;
+			default:
+				break;	
 		}
-
 		sb.append(" : ");
-
-		for (int i = 0; i < elements.size(); i++) {
-
+		for (int i = 0; i < elements.size(); i++) 
+		{
 			DiagramElement element = elements.get(i);
-
-			if(element instanceof ClassElement)
-				sb.append(ModelHelper.handleName(((ClassElement)element).getClassifier()) + (i < elements.size()-1 ? ", " : ""));
-			else if(element instanceof BaseConnection)
-				sb.append(ModelHelper.handleName(((BaseConnection)element).getRelationship()) + (i < elements.size()-1 ? ", " : ""));
-			else if (element instanceof SimpleLabel || element instanceof AssociationLabel)
-				sb.append(((Label) element).getSource().getLabelText());
+			if(element instanceof ClassElement) sb.append(ModelHelper.handleName(((ClassElement)element).getClassifier()) + (i < elements.size()-1 ? ", " : ""));
+			else if(element instanceof BaseConnection) sb.append(ModelHelper.handleName(((BaseConnection)element).getRelationship()) + (i < elements.size()-1 ? ", " : ""));
+			else if (element instanceof SimpleLabel || element instanceof AssociationLabel) sb.append(((Label) element).getSource().getLabelText());
 		}
-
 		frame.showStatus(capitalize(sb.toString()));
 	}
 
-	private String capitalize(String s) {
+	private String capitalize(String s) 
+	{
 		if (s.length() == 0) return s;
 		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
 	}
 
-
 	// *************************************************************************
-	// ***** DiagramEditorOperations
-	// *********************************
+	// ***** Diagram Editor Operations
+	// *************************************************************************
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void editProperties(DiagramElement element) {
+	/** Edits the current selection's properties. */
+	public void editProperties() 
+	{
+		if (getSelectedElements().size() > 0) editProperties(getSelectedElements().get(0));		
+	}
+	
+	/** {@inheritDoc} */
+	public void editProperties(DiagramElement element) 
+	{
 		if (element instanceof ClassElement) {
 			ClassElement classElement = (ClassElement) element;			
 			DialogCaller.callClassDialog(frame,diagramManager,classElement.getClassifier(),true);			
@@ -1219,25 +1148,22 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void moveElements(MoveOperation[] moveOperations) {
+	/** {@inheritDoc} */
+	public void moveElements(MoveOperation[] moveOperations) 
+	{
 		MoveElementCommand cmd = new MoveElementCommand(this, moveOperations);
 		execute(cmd);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setNewConnectionPoints(Connection conn, List<Point2D> points) {
+	/** {@inheritDoc} */
+	public void setNewConnectionPoints(Connection conn, List<Point2D> points) 
+	{
 		execute(new EditConnectionPointsCommand(this, conn, points));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void resizeElement(Node element, Point2D newpos, Dimension2D size) {
+	/** {@inheritDoc} */
+	public void resizeElement(Node element, Point2D newpos, Dimension2D size) 
+	{
 		ResizeElementCommand cmd = new ResizeElementCommand(this, element, newpos, size);
 		execute(cmd);
 	}
@@ -1246,9 +1172,12 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Open an editor for the specified Label object.
 	 * @param label the Label object
 	 */
-	public void editLabel(Label label) {
-		if (label != null) {
-			if (label instanceof MultiLineLabel) {
+	public void editLabel(Label label) 
+	{
+		if (label != null) 
+		{
+			if (label instanceof MultiLineLabel) 
+			{
 				multilineEditor.setFont(drawingContext.getFont(FontType.DEFAULT));
 				multilineEditor.showEditor(label, getGraphics());
 			} else {
@@ -1257,44 +1186,21 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/*** {@inheritDoc} */
 	public void nodeResized(Node node) { setToDiagramSize(); }
-
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	public void nodeMoved(Node node) { }
+	
+	public void requestFocusInEditor() { diagramManager.requestFocus(); }
 
-	public void requestFocusInEditor() {
-		diagramManager.requestFocus();		
-	}
+	/** {@inheritDoc} */
+	public EditorNature getEditorNature() {	return EditorNature.ONTOUML; }
 
-	public DiagramManager getDiagramManager() {
-		return diagramManager;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public EditorNature getEditorNature()
-	{
-		return EditorNature.ONTOUML;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	@Override
-	public boolean isSaveNeeded()
-	{
-		return diagram.getProject().isSaveModelNeeded() || diagram.isSaveNeeded();
-	}
+	public boolean isSaveNeeded() { return diagram.getProject().isSaveModelNeeded() || diagram.isSaveNeeded(); }
 
 	@Override
-	public void dispose() {
-
-	}
+	public void dispose() { }
 
 }
