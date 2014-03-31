@@ -11,12 +11,14 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 import RefOntoUML.Association;
 import RefOntoUML.Generalization;
+import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.oled.draw.Connection;
@@ -24,6 +26,7 @@ import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
@@ -35,8 +38,9 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 
 	private static final long serialVersionUID = 1L;
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
-	private Connection con;
 	private DiagramEditor editor;
+	//connection items
+	private Connection con;
 	final JMenuItem showRolesItem;
 	final JMenuItem showNameItem;
 	final JMenuItem showMultiplicitiesItem;
@@ -47,7 +51,18 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	final JMenuItem readNoIndicatorItem;
 	final JMenu visibilityMenu;
 	final JMenu readingDirectionMenu;
-//	RelationStereotypeChangeMenu changeMenu;
+	// end-point items
+	private boolean isSource;
+	private Property property;
+	private JMenu multiplicityMenu;
+	private JRadioButtonMenuItem zerooneItem;
+	private JRadioButtonMenuItem zeromanyItem;
+	private JRadioButtonMenuItem oneItem;
+	private JRadioButtonMenuItem onemanyItem;
+	private JRadioButtonMenuItem twomanyItem;
+	private JRadioButtonMenuItem twoItem;
+	private JRadioButtonMenuItem otherItem;	
+	private JMenuItem endNameItem;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -61,6 +76,8 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		rectMenuItem = createMenuItem(this, "directtorect");
 		
 		addSeparator();
+		
+		createEndPointItems();
 		
 		visibilityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.visibility.name"));
 		add(visibilityMenu);
@@ -175,15 +192,114 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		addSeparator();
 		
 		createMenuItem(this, "delete");
+	}
+	
+	public void createEndPointItems()
+	{	
+		endNameItem = new JMenuItem("Set End-Point Name...");
+		add(endNameItem);
+		endNameItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {			
+				 String name = (String)JOptionPane.showInputDialog(editor.getDiagramManager().getFrame(), 
+					     "Specify the end-point name: ",
+					     "Set end-point name",
+						 JOptionPane.PLAIN_MESSAGE,
+						 null,
+						 null,
+						 property.getType().getName().toLowerCase().trim()
+				 );
+				 if(name!=null){
+					 property.setName(name);
+					 ((AssociationElement)con).setShowRoles(true);
+					 editor.getDiagramManager().refreshDiagramElement(property.getAssociation());
+				 }
+			}
+		});
 		
-//		addSeparator();		
-//		if(!(((AssociationElement)con).getRelationship() instanceof RefOntoUML.Generalization))
-//		{	
-//			changeMenu = new RelationStereotypeChangeMenu(editor.getDiagramManager());
-//			add(changeMenu);
-//		}
+		multiplicityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.multiplicity.name"));
+		add(multiplicityMenu);
+				
+		ButtonGroup group = new ButtonGroup();
 		
-		//addEditConnectionPropertiesMenu(menu, (UmlConnection) conn);				
+		zerooneItem = createRadioMenuItem(multiplicityMenu, "multiplicity.zeroone");
+		group.add(zerooneItem);
+		zerooneItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {			
+				editor.getDiagramManager().changeMultiplicity(property, 0, 1);
+			}
+		});
+		
+		zeromanyItem = createRadioMenuItem(multiplicityMenu, "multiplicity.zeromany");
+		group.add(zeromanyItem);
+		zeromanyItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {			
+				editor.getDiagramManager().changeMultiplicity(property, 0, -1);
+			}
+		});
+		
+		oneItem = createRadioMenuItem(multiplicityMenu, "multiplicity.one");
+		group.add(oneItem);
+		oneItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {			
+				editor.getDiagramManager().changeMultiplicity(property, 1, 1);
+			}
+		});
+		
+		onemanyItem = createRadioMenuItem(multiplicityMenu, "multiplicity.onemany");
+		group.add(onemanyItem);
+		onemanyItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {			
+				editor.getDiagramManager().changeMultiplicity(property, 1, -1);
+			}
+		});
+		
+		twoItem = createRadioMenuItem(multiplicityMenu, "multiplicity.two");
+		group.add(twoItem);
+		twoItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {			
+				editor.getDiagramManager().changeMultiplicity(property, 2, 2);
+			}
+		});		
+		
+		twomanyItem = createRadioMenuItem(multiplicityMenu, "multiplicity.twomany");
+		group.add(twomanyItem);
+		twomanyItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {			
+				editor.getDiagramManager().changeMultiplicity(property, 2, -1);
+			}
+		});		
+		
+		multiplicityMenu.addSeparator();
+		
+		otherItem = createRadioMenuItem(multiplicityMenu, "multiplicity.other");
+		group.add(otherItem);
+		otherItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {			
+				 String multiplicity = (String)JOptionPane.showInputDialog(editor.getDiagramManager().getFrame(), 
+				     "Specify the new multiplicity: ",
+				     "Set multiplicity",
+					 JOptionPane.PLAIN_MESSAGE,
+					 null,
+					 null,
+					 "0..2"
+				);
+				 if(multiplicity!=null){
+					 try{
+						 editor.getDiagramManager().changeMultiplicity(property, multiplicity);
+					 }catch(Exception e){
+						 editor.getDiagramManager().getFrame().showErrorMessageDialog("Parsing multiplicity string", e.getLocalizedMessage());
+					 }
+				 }
+			}
+		});
 	}
 	
 	public void setConnection(Connection con, DiagramEditor editor)
@@ -227,10 +343,31 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			}			
 		}
 		
-//		if(changeMenu!=null){			
-//			changeMenu.setElement(((AssociationElement)con).getRelationship());
-//		}
+		multiplicityMenu.setVisible(false);
+		endNameItem.setVisible(false);
 	}		
+	
+	public void setConnection (UmlConnection con, DiagramEditor editor, boolean isSourceEndPoint)
+	{		
+		setConnection(con,editor);
+		
+		this.editor = editor;	
+		this.con=con;
+		this.isSource = isSourceEndPoint;	
+		
+		Association assoc = (Association)con.getRelationship();		
+		if (this.isSource) property = assoc.getMemberEnd().get(0);
+		else property = assoc.getMemberEnd().get(1);
+		
+		if (property.getLower()==0 && property.getUpper()==-1) zeromanyItem.setSelected(true); 
+		if (property.getLower()==0 && property.getUpper()==1) zerooneItem.setSelected(true);
+		if (property.getLower()==1 && property.getUpper()==1) oneItem.setSelected(true);
+		if (property.getLower()==1 && property.getUpper()==-1) onemanyItem.setSelected(true);
+		if (property.getLower()==2 && property.getUpper()==-1) twomanyItem.setSelected(true);
+		
+		multiplicityMenu.setVisible(true);
+		endNameItem.setVisible(true);
+	}	
 	
 	/**
 	 * Adds the navigability setting menu.
