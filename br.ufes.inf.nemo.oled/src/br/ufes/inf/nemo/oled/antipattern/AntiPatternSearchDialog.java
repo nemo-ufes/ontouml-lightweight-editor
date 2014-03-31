@@ -90,7 +90,7 @@ public class AntiPatternSearchDialog extends JDialog {
 	private Thread UndefPhaseThread;
 	private Thread WholeOverThread;
 	private Thread PartOverThread;
-	private Thread MultSortThread;
+	private Thread DecIntThread;
 	
 	private JCheckBox cbxAssCyc;	
 	private JCheckBox cbxBinOver;	
@@ -194,7 +194,7 @@ public class AntiPatternSearchDialog extends JDialog {
 	public Boolean UndefPhaseisSelected() { return cbxUndefPhase.isSelected(); }
 	public Boolean WholeOverisSelected() { return cbxWholeOver.isSelected(); }
 	public Boolean PartOverisSelected() { return cbxPartOver.isSelected(); }
-	public Boolean MultSortisSelected() { return cbxDecInt.isSelected(); }
+	public Boolean DecIntisSelected() { return cbxDecInt.isSelected(); }
 	
 		
 	/**
@@ -428,7 +428,7 @@ public class AntiPatternSearchDialog extends JDialog {
        			if (UndefPhaseisSelected()) cbxUndefPhase.setSelected(false);
        			if (WholeOverisSelected()) cbxWholeOver.setSelected(false);
        			if (PartOverisSelected()) cbxUndefPhase.setSelected(false);
-       			if (MultSortisSelected()) cbxDecInt.setSelected(false);
+       			if (DecIntisSelected()) cbxDecInt.setSelected(false);
        		}
        	});
 		
@@ -456,7 +456,7 @@ public class AntiPatternSearchDialog extends JDialog {
        			if (!UndefPhaseisSelected()) cbxUndefPhase.setSelected(true);
        			if (!WholeOverisSelected()) cbxWholeOver.setSelected(true);
        			if (!PartOverisSelected()) cbxPartOver.setSelected(true);
-       			if (!MultSortisSelected()) cbxDecInt.setSelected(true);
+       			if (!DecIntisSelected()) cbxDecInt.setSelected(true);
        		}
        	});
 		
@@ -1487,9 +1487,9 @@ public class AntiPatternSearchDialog extends JDialog {
 					PartOverThread.start();									
 				}
 				
-				if (MultSortisSelected())
+				if (DecIntisSelected())
 				{	
-					MultSortThread = new Thread(new Runnable() {				
+					DecIntThread = new Thread(new Runnable() {				
 						@Override
 						public void run() {	
 							updateStatus("Identifying DecInt... ");
@@ -1510,7 +1510,7 @@ public class AntiPatternSearchDialog extends JDialog {
 							});
 						}
 					});
-					MultSortThread.start();									
+					DecIntThread.start();									
 				}
 			
 				joinAll();
@@ -1564,7 +1564,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		if (UndefPhaseisSelected()) totalItemsSelected++;
 		if (WholeOverisSelected()) totalItemsSelected++;
 		if (PartOverisSelected()) totalItemsSelected++;
-		if (MultSortisSelected()) totalItemsSelected++;
+		if (DecIntisSelected()) totalItemsSelected++;
 		return totalItemsSelected;
 	}
 	public void joinAll()
@@ -1590,7 +1590,7 @@ public class AntiPatternSearchDialog extends JDialog {
 			if(UndefPhaseThread!=null) UndefPhaseThread.join();
 			if(WholeOverThread!=null) WholeOverThread.join();
 			if(PartOverThread!=null) PartOverThread.join();
-			if(MultSortThread!=null) MultSortThread.join();
+			if(DecIntThread!=null) DecIntThread.join();
 		} catch (InterruptedException e) {				
 			e.printStackTrace();
 		}
