@@ -44,7 +44,7 @@ public class SimpleConnection extends AbstractConnection {
   /**
    * {@inheritDoc}
    */
-  public boolean isRectilinear() { return false; }
+  public boolean isTreeStyle() { return false; }
 
   /**
    * {@inheritDoc}

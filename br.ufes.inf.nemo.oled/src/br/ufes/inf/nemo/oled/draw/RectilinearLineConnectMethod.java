@@ -32,7 +32,7 @@ import br.ufes.inf.nemo.oled.draw.GeometryUtil.Orientation;
  * @author Wei-ju Wu
  * @version 1.0
  */
-public final class RectilinearLineConnectMethod implements LineConnectMethod {
+public class RectilinearLineConnectMethod implements LineConnectMethod {
 
   private static RectilinearLineConnectMethod instance =
     new RectilinearLineConnectMethod();
@@ -46,7 +46,7 @@ public final class RectilinearLineConnectMethod implements LineConnectMethod {
   /**
    * Private constructor.
    */
-  private RectilinearLineConnectMethod() { }
+  protected RectilinearLineConnectMethod() { }
 
   //FIXME To enable associations like material to source
   //FIXME - problem in "conn.setPoints(linepoints)" method, return null...

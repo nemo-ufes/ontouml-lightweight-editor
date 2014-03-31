@@ -67,6 +67,7 @@ import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.draw.DrawingContextImpl;
 import br.ufes.inf.nemo.oled.draw.Label;
+import br.ufes.inf.nemo.oled.draw.LineStyle;
 import br.ufes.inf.nemo.oled.draw.MoveOperation;
 import br.ufes.inf.nemo.oled.draw.MultiLineLabel;
 import br.ufes.inf.nemo.oled.draw.Node;
@@ -76,6 +77,7 @@ import br.ufes.inf.nemo.oled.draw.RectilinearConnection;
 import br.ufes.inf.nemo.oled.draw.Scaling;
 import br.ufes.inf.nemo.oled.draw.SimpleConnection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
+import br.ufes.inf.nemo.oled.draw.TreeConnection;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
@@ -949,12 +951,14 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 	}
 	
-	public void setLineStyle(UmlConnection connection, boolean setRectilinear)
+	public void setLineStyle(UmlConnection connection, LineStyle style)
 	{
-		if(setRectilinear){
+		if(style == LineStyle.RECTILINEAR){
 			execute(new ConvertConnectionTypeCommand(this, connection, new RectilinearConnection()));
-		} else {
+		} else if (style == LineStyle.DIRECT) {
 			execute(new ConvertConnectionTypeCommand(this, connection, new SimpleConnection()));
+		} else if (style == LineStyle.TREESTYLE) {
+			execute(new ConvertConnectionTypeCommand(this, connection, new TreeConnection()));
 		}
 	}
 
@@ -971,6 +975,19 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 	}
 
+	/** Switches a direct connection into a rectilinear one. */
+	public void directToTreeStyle() 
+	{
+		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
+		{
+			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
+			execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection()));
+			
+			// we can only tell the selection handler to forget about the selection
+			selectionHandler.deselectAll();			
+		}
+	}
+	
 	/**
 	 * Sets the end type navigability of the current selected connection.
 	 * @param endType the RelationEndType
