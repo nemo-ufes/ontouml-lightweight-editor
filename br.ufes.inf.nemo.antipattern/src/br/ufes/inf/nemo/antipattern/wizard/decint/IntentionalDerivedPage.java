@@ -62,9 +62,10 @@ public class IntentionalDerivedPage  extends DecIntPage {
 				if(!isPageComplete())
 					setPageComplete(true);
 			}
-			else
-				setPageComplete(true);
-			
+			else{
+				if(isPageComplete())
+					setPageComplete(false);
+			}
 			
 		}
 	};
