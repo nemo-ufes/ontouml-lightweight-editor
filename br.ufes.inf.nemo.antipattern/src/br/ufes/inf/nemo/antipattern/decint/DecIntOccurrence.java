@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.antipattern.decint;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -100,6 +101,93 @@ public class DecIntOccurrence extends AntipatternOccurrence {
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 
 		return parser;
+	}
+	
+	public ArrayList<Generalization> getGeneralizationsToFixFromIdentityProvider(Classifier selectedIp){
+		ArrayList<Generalization> list = new ArrayList<Generalization>();
+		
+		for (Classifier ip : identityProviders) {
+			if(ip.equals(selectedIp))
+				continue;
+			for (Classifier child : ip.children()) {
+				if(child.equals(subtype) || child.allChildren().contains(subtype)){
+					for (Generalization g : child.getGeneralization()) {
+						if(g.getGeneral().equals(ip))
+							list.add(g);
+					}
+				}
+			}
+		}
+		
+		return list;
+	}
+	
+	public void fixIdentityProvider(Classifier identityProvider){
+		if(!identityProviders.contains(identityProvider))
+			return;
+		
+		//sets new generals
+		for (Generalization gToFix : getGeneralizationsToFixFromIdentityProvider(identityProvider)) {
+			gToFix.setGeneral(identityProvider);
+			fix.includeModified(gToFix);
+		}
+		
+		//remove duplicate generalizations
+		for (Classifier child : identityProvider.children()) {
+			
+			ArrayList<Generalization> keepList = new ArrayList<Generalization>();
+			ArrayList<Generalization> removeList = new ArrayList<Generalization>();
+			
+			for (Generalization g1 : child.getGeneralization()) {
+				for (Generalization keepG : keepList) {
+					if(keepG.getSpecific().equals(g1.getSpecific()) && keepG.getGeneral().equals(g1.getGeneral()))
+						removeList.add(g1);
+					else
+						keepList.add(g1);
+				}
+			}
+			
+			Iterator<Generalization> iterator = removeList.iterator();
+			while (iterator.hasNext()){
+				Generalization gToRemove = iterator.next();
+				fix.addAll(fixer.deleteElement(gToRemove));
+				iterator.remove();
+			}
+		}
+		
+		
+	}
+	
+	public void fixGeneralizationSets(ArrayList<GeneralizationSetReplica> replicas){
+		for (GeneralizationSet gs : getDisjointGSList()) {
+			boolean hasReplica = false;
+			for (GeneralizationSetReplica replica : replicas) {
+				if(replica.getOriginal().equals(gs)){
+					hasReplica = true;
+					replica.persistChanges();
+					fix.includeModified(gs);
+					break;
+				}
+			}
+			if(!hasReplica){
+				fix.addAll(fixer.deleteElement(gs));
+			}
+		}
+	}
+	
+	public void generateIntersectionDerivation(){
+		String context = subtype.parents().get(0).getName();
+		String invExpr = addQuotes(context)+".allInstances()->forAll ( x | ( ";
+		
+		for (int i = 0; i < relevantParents.size(); i++) {
+			if(i!=0)
+				invExpr += " and ";
+			invExpr += "x.oclIsTypeOf("+addQuotes(relevantParents.get(i).getName())+")";
+		}
+		
+		invExpr += ") implies x.oclIsTypeOf("+addQuotes(subtype.getName())+") )";
+	
+		fix.addAll(fixer.generateOCLInvariant(context, "intersection_"+subtype.getName(), invExpr));
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.antipattern.wizard.decint;
 
 import java.util.ArrayList;
 
+import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -16,6 +17,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
+import br.ufes.inf.nemo.antipattern.decint.GeneralizationSetReplica;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
@@ -36,7 +38,7 @@ public class GeneralizationSetComposite extends Composite {
 	private Button btnReset;
 	private Button btnDelete;
 	
-	private GeneralizationSetPage page;
+	private WizardPage page;
 	
 	int selectedLine = -1;
 	private ArrayList<GeneralizationSet> genSets;
@@ -49,7 +51,7 @@ public class GeneralizationSetComposite extends Composite {
 	 * @param style
 	 * @param canGoToNextPageListener 
 	 */
-	public GeneralizationSetComposite(Composite parent, int style, DecIntOccurrence decInt, GeneralizationSetPage page) {
+	public GeneralizationSetComposite(Composite parent, int style, DecIntOccurrence decInt, WizardPage page) {
 		super(parent, style);
 		this.decInt = decInt;
 		this.page = page;
@@ -194,16 +196,16 @@ public class GeneralizationSetComposite extends Composite {
 				replica.setCovering(checkIsCovering.getSelection());
 				replica.setDisjoint(checkIsDisjoint.getSelection());
 				
-				replica.selectedGeneralizations.clear();
+				replica.getSelectedGeneralizations().clear();
 				
 				int i = 0;
 				for (TableItem ti : table.getItems()) {
 					if(ti.getChecked())
-						replica.getSelectedGeneralizations().add(replica.allowedGeneralizations.get(i));
+						replica.getSelectedGeneralizations().add(replica.getAllowedGeneralizations().get(i));
 					i++;
 				}
 				
-				listGenSet.setItem(selectedLine, getReplicaString(replica));
+				listGenSet.setItem(selectedLine, replica.toString());
 				selectedLine = -1;
 				setNoSelectionState();
 			}
@@ -249,26 +251,10 @@ public class GeneralizationSetComposite extends Composite {
 	
 	private void setGSList(){
 		for (GeneralizationSetReplica replica : replicas) {
-			listGenSet.add(getReplicaString(replica));
+			listGenSet.add(replica.toString());
 		}
 	}
 
-	private String getReplicaString(GeneralizationSetReplica replica) {
-		String result = new String();
-		result += replica.getName() + ": "+replica.getSupertype().getName()+" { ";
-		
-		ArrayList<Generalization> genlist = replica.getSelectedGeneralizations();		    
-		int i=1;
-		for(Generalization gen: genlist)
-		{
-			if(i < genlist.size()) result += gen.getSpecific().getName()+", ";
-			else result += gen.getSpecific().getName(); 
-			i++;
-		}
-		result+=" } ";
-		return result;
-	}
-	
 	private void setNoSelectionState(){
 		selectedLine = -1;
 		
@@ -306,7 +292,7 @@ public class GeneralizationSetComposite extends Composite {
 		if(table.getItems().length>0)
 			table.removeAll();
 		
-		for (Generalization g : replica.allowedGeneralizations) {
+		for (Generalization g : replica.getAllowedGeneralizations()) {
 			TableItem ti = new TableItem(table, SWT.NONE);
 			ti.setText(1, g.getSpecific().getName());
 			ti.setChecked(replica.getSelectedGeneralizations().contains(g));
@@ -337,100 +323,14 @@ public class GeneralizationSetComposite extends Composite {
 		return true;
 	}
 	
+	
+	
+	public ArrayList<GeneralizationSetReplica> getReplicas() {
+		return replicas;
+	}
+
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
-	}
-	
-	class GeneralizationSetReplica{
-		private String name;
-		private boolean isCovering, isDisjoint, isDeleted;
-		private ArrayList<Generalization> selectedGeneralizations;
-		private ArrayList<Generalization> allowedGeneralizations;
-		private GeneralizationSet original;
-		private Classifier supertype;
-		
-		public GeneralizationSetReplica(GeneralizationSet original){
-			this.original = original;
-			setOriginalValues();
-			setAllowedGeneralizations();
-		}
-
-		private void setAllowedGeneralizations(){
-			supertype = original.getGeneralization().get(0).getGeneral();
-			allowedGeneralizations = new ArrayList<Generalization>();
-			for (Classifier child : supertype.children()) {
-				for (Generalization g : child.getGeneralization()) {
-					if(g.getGeneral().equals(supertype))
-						allowedGeneralizations.add(g);
-				}
-			}
-		}
-		
-		public void setOriginalValues() {
-			isCovering = original.isIsCovering();
-			isDisjoint = original.isIsDisjoint();
-			isDeleted = false;
-			name = original.getName();
-			selectedGeneralizations = new ArrayList<Generalization>(original.getGeneralization());
-		}
-
-		public boolean isCovering() {
-			return isCovering;
-		}
-
-		public void setCovering(boolean isCovering) {
-			this.isCovering = isCovering;
-		}
-
-		public boolean isDisjoint() {
-			return isDisjoint;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public void setDisjoint(boolean isDisjoint) {
-			this.isDisjoint = isDisjoint;
-		}
-
-		public boolean isDeleted() {
-			return isDeleted;
-		}
-
-		public void setDeleted(boolean isDeleted) {
-			this.isDeleted = isDeleted;
-		}
-
-		public ArrayList<Generalization> getSelectedGeneralizations() {
-			return selectedGeneralizations;
-		}
-
-		public void setSelectedGeneralizations(ArrayList<Generalization> generalizations) {
-			this.selectedGeneralizations = generalizations;
-		}
-
-		public GeneralizationSet getOriginal() {
-			return original;
-		}
-
-		public void setOriginal(GeneralizationSet original) {
-			this.original = original;
-		}
-
-		public ArrayList<Generalization> getAllowedGeneralizations() {
-			return allowedGeneralizations;
-		}
-
-		public Classifier getSupertype() {
-			return supertype;
-		}
-		
-		
 	}
 }

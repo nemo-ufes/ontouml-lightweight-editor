@@ -1,64 +1,62 @@
 package br.ufes.inf.nemo.antipattern.wizard.decint;
 
-import java.text.Normalizer;
+import java.util.ArrayList;
 
-import org.eclipse.emf.ecore.EObject;
-
-import RefOntoUML.Association;
-import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
+import RefOntoUML.Classifier;
+import RefOntoUML.Generalization;
+import RefOntoUML.GeneralizationSet;
+import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
+import br.ufes.inf.nemo.antipattern.decint.GeneralizationSetReplica;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 
-public class DecIntAction extends AntiPatternAction<AssCycOccurrence>{
+public class DecIntAction extends AntiPatternAction<DecIntOccurrence>{
 
-	public Association assoc;
+	private Classifier identityProvider;
+	private ArrayList<GeneralizationSetReplica> gsReplicas;
 	
-	public DecIntAction(AssCycOccurrence ap) 
+	
+	public DecIntAction(DecIntOccurrence ap) 
 	{
 		super(ap);
 	}
 
-	public enum Action { DERIVE_ONE_ASSOCIATION, CYCLE_FORBIDDEN, CYCLE_MANDATORY }
+	public enum Action { FIX_IDENTITY_PROVIDER, FIX_GENERALIZATION_SETS, DERIVE_BY_INTERSECTION }
 	
 	@Override
 	public void run()
 	{
-		if(code==Action.DERIVE_ONE_ASSOCIATION)
+		if(code==Action.FIX_IDENTITY_PROVIDER)
 		{
-			ap.deriveAssociation(assoc);
+			ap.fixIdentityProvider(identityProvider);
 		}
-		if(code==Action.CYCLE_FORBIDDEN)
+		
+		else if(code==Action.FIX_GENERALIZATION_SETS)
 		{
-			ap.forbidCycle();
+			ap.fixGeneralizationSets(gsReplicas);
 		}
-		if(code==Action.CYCLE_MANDATORY)
+		else if(code==Action.DERIVE_BY_INTERSECTION)
 		{
-			ap.enforceCycle();
+			ap.generateIntersectionDerivation();
 		}
 	}
 	
-	public static String getStereotype(EObject element)
+	public void setFixGeneralizationSets(ArrayList<GeneralizationSetReplica> gsReplicas)
 	{
-		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
-	    return type;
+		code=Action.FIX_GENERALIZATION_SETS;
+		this.gsReplicas = gsReplicas;
+		this.identityProvider = null;
 	}
 	
-	public void setDeriveAssociation(Association assoc)
+	public void setFixIdentityProvider(Classifier identityProvider)
 	{
-		code=Action.DERIVE_ONE_ASSOCIATION;
-		this.assoc = assoc;
+		code=Action.FIX_IDENTITY_PROVIDER;
+		this.gsReplicas = null;
+		this.identityProvider = identityProvider;
 	}
 	
-	public void setCycleForbidden()
+	public void setDeriveByIntersection()
 	{
-		code=Action.CYCLE_FORBIDDEN;
-	}
-	
-	public void setCycleMandatory()
-	{
-		code=Action.CYCLE_MANDATORY;
+		code=Action.DERIVE_BY_INTERSECTION;
 	}
 	
 	@Override
@@ -66,17 +64,34 @@ public class DecIntAction extends AntiPatternAction<AssCycOccurrence>{
 	{
 		String result = new String();
 		
-		if(code==Action.DERIVE_ONE_ASSOCIATION)
+		if(code==Action.DERIVE_BY_INTERSECTION)
 		{
-			result += "Create OCL derivation for association "+getStereotype(assoc)+" "+(assoc).getName()+": "+(assoc).getMemberEnd().get(0).getType().getName()+"->"+(assoc).getMemberEnd().get(1).getType().getName();
+			result += "Create OCL Rule: derivation by intersection for type "+ap.getSubtype().getName();
 		}
-		if(code==Action.CYCLE_FORBIDDEN)
+		
+		else if(code==Action.FIX_IDENTITY_PROVIDER)
 		{
-			result += "Create OCL invariant forbidding instance level cycle";
+			for (Generalization g : ap.getGeneralizationsToFixFromIdentityProvider(identityProvider)) {
+				result += "Modify Generalization: Specific = "+g.getSpecific().getName()+"; " +
+												"Old General = "+g.getGeneral().getName()+"; " +
+												"New General = "+identityProvider.getName()+"\n";
+			}
 		}
-		if(code==Action.CYCLE_MANDATORY)
+		else if(code==Action.FIX_GENERALIZATION_SETS)
 		{
-			result += "Create OCL invariant enforcing instance level cycle";
+			for (GeneralizationSet gs : ap.getDisjointGSList()) {
+				boolean hasReplica = false;
+				for (GeneralizationSetReplica replica : gsReplicas) {
+					if(replica.getOriginal().equals(gs)){
+						hasReplica = true;
+						result += "Modify: Generalization Set "+replica+"\n";
+					}
+				}
+				if(!hasReplica){
+					result += "Remove: "+ap.getParser().getStringRepresentation(gs)+"\n";
+				}
+				
+			}
 		}
 		return result;
 	}

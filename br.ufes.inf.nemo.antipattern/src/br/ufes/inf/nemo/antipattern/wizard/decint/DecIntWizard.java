@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.decint;
 
+import org.eclipse.jface.wizard.WizardPage;
+
 import br.ufes.inf.nemo.antipattern.decint.DecIntAntipattern;
 import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
@@ -9,8 +11,9 @@ import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
 
 public class DecIntWizard extends AntipatternWizard {
 
-	public IdentityProviderPage identityProviderPage;
-	public GeneralizationSetPage generalizationSetPage;
+	private IdentityProviderPage identityProviderPage;
+	private GeneralizationSetPage generalizationSetPage;
+	private IntentionalDerivedPage intentionalDerivedPage;
 	
 	public DecIntWizard(DecIntOccurrence ap) {
 		super(ap,DecIntAntipattern.getAntipatternInfo().name);		
@@ -19,39 +22,64 @@ public class DecIntWizard extends AntipatternWizard {
 	@Override
 	public void addPages() 
 	{
-		identityProviderPage = new IdentityProviderPage(getAp());
-		generalizationSetPage = new GeneralizationSetPage(getAp());
+		if(getAp().getIdentityProviders().size()>1)
+			identityProviderPage = new IdentityProviderPage(getAp());
+		else
+			identityProviderPage = null;
 		
+		if(getAp().getDisjointGSList().size()>0)
+			generalizationSetPage = new GeneralizationSetPage(getAp());
+		else
+			generalizationSetPage = null;
+	
+		intentionalDerivedPage = new IntentionalDerivedPage(getAp());
 		finishing = new FinishingPage();
 		options = new DecIntRefactoringPage(getAp());
 		
+		WizardPage firstPage;
+		
+		if(identityProviderPage!=null)
+			firstPage = identityProviderPage;
+		else if (generalizationSetPage!=null)
+			firstPage = generalizationSetPage;
+		else
+			firstPage = intentionalDerivedPage;
+			
 		presentation = new PresentationPage(
-				DecIntAntipattern.getAntipatternInfo().name,
-				DecIntAntipattern.getAntipatternInfo().acronym,
+			DecIntAntipattern.getAntipatternInfo().name,
+			DecIntAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
-			identityProviderPage,
+			firstPage,
 			options
 		);
 			
 		addPage(presentation);	
-		addPage(identityProviderPage);	
-		addPage(generalizationSetPage);
+		
+		if(identityProviderPage!=null) addPage(identityProviderPage);	
+		if(generalizationSetPage!=null) addPage(generalizationSetPage);
+		
+		addPage(intentionalDerivedPage);
 		addPage(options);
 		addPage(finishing);
+	}
+	
+	public GeneralizationSetPage getGeneralizationSetPage() {
+		return generalizationSetPage;
+	}
+
+	public IntentionalDerivedPage getIntentionalDerivedPage() {
+		return intentionalDerivedPage;
+	}
+
+	public IdentityProviderPage getIdentityProviderPage()
+	{
+		return identityProviderPage;
 	}
 	
 	public DecIntOccurrence getAp() {
 		return (DecIntOccurrence)ap;
 	}
 	
-	public IdentityProviderPage getIdentityProviderPage()
-	{
-		return identityProviderPage;
-	}
-	public GeneralizationSetPage getSecondPage()
-	{
-		return generalizationSetPage;
-	}
 	@Override
 	public boolean performFinish() {
 		for(AntiPatternAction<?> action: super.getAllActions())
