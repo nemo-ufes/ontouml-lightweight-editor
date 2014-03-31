@@ -61,6 +61,8 @@ public class DecIntWizard extends AntipatternWizard {
 		addPage(intentionalDerivedPage);
 		addPage(options);
 		addPage(finishing);
+		
+		
 	}
 	
 	public GeneralizationSetPage getGeneralizationSetPage() {

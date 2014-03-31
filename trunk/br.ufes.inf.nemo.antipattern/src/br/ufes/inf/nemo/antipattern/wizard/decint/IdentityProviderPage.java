@@ -46,11 +46,14 @@ public class IdentityProviderPage  extends DecIntPage {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(identityProviderList.getSelectionIndex()!=-1){
-					setPageComplete(true);
+					if(!isPageComplete())
+						setPageComplete(true);
 					selectedIP=decint.getIdentityProviders().get(identityProviderList.getSelectionIndex());
 				}
 				else{
-					setPageComplete(false);
+					if(isPageComplete())
+						setPageComplete(false);
+					
 					selectedIP=null;
 				}
 			}

@@ -159,8 +159,10 @@ public class GeneralizationSetComposite extends Composite {
 			if(!page.isPageComplete())
 				page.setPageComplete(true);
 		}
-		else
-			page.setPageComplete(false);
+		else{
+			if(page.isPageComplete())
+				page.setPageComplete(false);
+		}
 	}
 	
 	private SelectionListener removeAllListener = new SelectionAdapter(){
