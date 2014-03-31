@@ -79,7 +79,6 @@ import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.BaseEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.ConvertConnectionTypeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;

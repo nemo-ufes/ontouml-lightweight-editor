@@ -16,7 +16,7 @@ import javax.swing.border.LineBorder;
 
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
-import br.ufes.inf.nemo.oled.ui.DiagramEditorCommandDispatcher;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorCommandDispatcher;
 
 /**
  * This class provides an accordion pane for accomodating the many allElements 
