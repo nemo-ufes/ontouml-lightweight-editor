@@ -3,9 +3,6 @@ package br.ufes.inf.nemo.antipattern.wizard.decint;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
@@ -33,8 +30,8 @@ public class GeneralizationSetPage  extends DecIntPage {
 		questionText.setBackground(questionText.getParent().getBackground());
 		questionText.setText("<"+subtypeName+"> specializes two or more types that are made disjoint by a generalization set, " +
 							"that generates a logical contradiction and implies that it has an empty extension (no instances). " +
-							"\n\nTo fix that you must either remove some generalizations to the types or modify the isDisjoint " +
-							"meta-attribute of the generalization set.");
+							"\n\nTo fix that you must either remove the disjoint generalizations sets or set their isDisjoint " +
+							"meta-attribute to false.");
 		questionText.setBounds(10, 10, 585, 77);
 		questionText.setJustify(true);
 		
@@ -47,7 +44,11 @@ public class GeneralizationSetPage  extends DecIntPage {
 	@Override
 	public IWizardPage getNextPage() 
 	{	
-		return super.getNextPage();
+		DecIntAction action = new DecIntAction(decint);
+		action.setFixGeneralizationSets(gsComposite.getReplicas());
+		getDecIntWizard().replaceAction(1, action);
+		
+		return getDecIntWizard().getIntentionalDerivedPage();
 	}
 }
 
