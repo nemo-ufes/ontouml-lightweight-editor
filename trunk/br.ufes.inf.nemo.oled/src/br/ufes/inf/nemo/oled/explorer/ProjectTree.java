@@ -30,10 +30,10 @@ import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
+import br.ufes.inf.nemo.oled.dialog.properties.DialogCaller;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.dialog.DialogCaller;
-import br.ufes.inf.nemo.oled.ui.popup.TreePopupMenu;
+import br.ufes.inf.nemo.oled.popupmenu.TreePopupMenu;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 public class ProjectTree extends CheckboxTree {

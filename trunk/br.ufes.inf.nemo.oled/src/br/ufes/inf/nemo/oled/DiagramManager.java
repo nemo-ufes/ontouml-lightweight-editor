@@ -73,6 +73,8 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
+import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
+import br.ufes.inf.nemo.oled.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
@@ -104,11 +106,6 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
-import br.ufes.inf.nemo.oled.ui.dialog.EcoreSettingDialog;
-import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
-import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
-import br.ufes.inf.nemo.oled.ui.dialog.UMLSettingDialog;
-//import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
@@ -135,6 +132,7 @@ import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui.GlossaryGeneratorUI;
 import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
+//import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
 //import br.ufes.inf.nemo.oled.deprecated.InstanceVisualizer;
 
 /**
@@ -1754,18 +1752,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			ProjectBrowser pbrowser = ProjectBrowser.getProjectBrowserFor(getFrame(), getCurrentProject());
 			pbrowser.find(text);		   
 		}
-	}
-
-	/** Transform model to UML (*.uml) ignoring all stereotypes. */
-	public void generateUML() 
-	{
-		UMLSettingDialog.open(frame, true,ProjectBrowser.getParserFor(currentProject));		
-	}
-
-	/** Transform model to Ecore (*.ecore) ignoring all stereotypes. */
-	public void generateEcore() 
-	{	
-		EcoreSettingDialog.open(frame, true, ProjectBrowser.getParserFor(currentProject));
 	}
 
 	/**
