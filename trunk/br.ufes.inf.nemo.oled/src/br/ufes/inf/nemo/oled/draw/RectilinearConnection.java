@@ -39,7 +39,7 @@ public class RectilinearConnection extends AbstractConnection {
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isRectilinear() { return true; }
+	public boolean isTreeStyle() { return true; }
 
 	/**
 	 * {@inheritDoc}

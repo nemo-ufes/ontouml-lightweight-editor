@@ -139,7 +139,7 @@ public interface Connection extends DiagramElement {
    * Determines whether the connection is managed in rectilinear fashion.
    * @return true if managed in rectilinear fashion
    */
-  boolean isRectilinear();
+  boolean isTreeStyle();
 
   /**
    * Calculates the rotation of the last segment to node 1.

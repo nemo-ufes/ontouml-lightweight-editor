@@ -40,7 +40,7 @@ import br.ufes.inf.nemo.oled.draw.GeometryUtil.Orientation;
  * @author Wei-ju Wu
  * @version 1.0
  */
-public final class RectilinearLineBuilder {
+public class RectilinearLineBuilder {
 
   /**
    * The direction of the fixed point from the rectangle.
@@ -73,7 +73,7 @@ public final class RectilinearLineBuilder {
   /**
    * Private constructor.
    */
-  private RectilinearLineBuilder() { }
+  protected RectilinearLineBuilder() { }
 
   /**
    * Calculates a number of line segments, given two fixed points and an
@@ -98,7 +98,7 @@ public final class RectilinearLineBuilder {
    * @param firstSegmentOrientation the orientation for the first segment
    * @return the calculated line segments
    */
-  private List<Point2D> calculateLineSegments(double x1, double y1, double x2,
+  protected List<Point2D> calculateLineSegments(double x1, double y1, double x2,
     double y2, Orientation firstSegmentOrientation) {
     Direction direction = getDirection(x1, y1, x2, y2);
     List<Point2D> result = new LinkedList<Point2D>();
@@ -117,7 +117,7 @@ public final class RectilinearLineBuilder {
     }
     return result;
   }
-
+  
   /**
    * Returns the line segments between two nodes. The orientations in relation
    * to each other and for each node, a side is chosen heuristically.
@@ -170,6 +170,7 @@ public final class RectilinearLineBuilder {
         return calculateLineSegments(c1.getAbsoluteX1(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(), Orientation.HORIZONTAL);
     }
   }
+  
   /**
    * Creates a line segment that connects node1 and node2 with the
    * following properties:
@@ -181,7 +182,7 @@ public final class RectilinearLineBuilder {
    * if from right to left
    * @return the line segment as a list of Point2D
    */
-  private List<Point2D> createHorizontalLineSegment(Node node1, Node node2,
+  protected List<Point2D> createHorizontalLineSegment(Node node1, Node node2,
     boolean leftToRight) {
     List<Point2D> result = new LinkedList<Point2D>();
     double y = calculateOverlapMiddlePoint(node1.getAbsoluteY1(),
@@ -196,7 +197,7 @@ public final class RectilinearLineBuilder {
     return result;
   }
 
-  private List<Point2D> createHorizontalLineSegment(Connection c1, Node node2,
+  protected List<Point2D> createHorizontalLineSegment(Connection c1, Node node2,
     boolean leftToRight) {
     List<Point2D> result = new LinkedList<Point2D>();
     double y = calculateOverlapMiddlePoint(c1.getAbsoluteY1(),
@@ -222,7 +223,7 @@ public final class RectilinearLineBuilder {
    * if from bottom to top
    * @return the line segment as a list of Point2D
    */
-  private List<Point2D> createVerticalLineSegment(Node node1, Node node2,
+  protected List<Point2D> createVerticalLineSegment(Node node1, Node node2,
     boolean topToBottom) {
     List<Point2D> result = new LinkedList<Point2D>();
     double x = calculateOverlapMiddlePoint(node1.getAbsoluteX1(),
@@ -237,7 +238,7 @@ public final class RectilinearLineBuilder {
     return result;
   }
   
-  private List<Point2D> createVerticalLineSegment(Connection c1, Node node2,
+  protected List<Point2D> createVerticalLineSegment(Connection c1, Node node2,
    boolean topToBottom) {
    List<Point2D> result = new LinkedList<Point2D>();
    double x = calculateOverlapMiddlePoint(c1.getAbsoluteX1(),
@@ -262,7 +263,7 @@ public final class RectilinearLineBuilder {
    * @param y2 the y2 coordinate
    * @param firstSegmentOrientation the orientation of the first segment
    */
-  private void createTwoSegments(List<Point2D> points, double x1, double y1,
+  protected void createTwoSegments(List<Point2D> points, double x1, double y1,
     double x2, double y2, Orientation firstSegmentOrientation) {
     if (firstSegmentOrientation == Orientation.HORIZONTAL) {
       points.add(new Point2D.Double(x1, y1));
@@ -381,7 +382,7 @@ public final class RectilinearLineBuilder {
    * @param r2end the end of the second range
    * @return true if r1 and r2 overlap, false otherwise
    */
-  private boolean rangesOverlap(double r1start, double r1end, double r2start,
+  protected boolean rangesOverlap(double r1start, double r1end, double r2start,
     double r2end) {
     return GeometryUtil.getInstance().rangesOverlap(r1start, r1end, r2start,
       r2end);
@@ -399,7 +400,7 @@ public final class RectilinearLineBuilder {
    * @param r2end the end of the second range
    * @return true if r1 and r2 overlap, false otherwise
    */
-  private double calculateOverlapMiddlePoint(double r1start, double r1end,
+  protected double calculateOverlapMiddlePoint(double r1start, double r1end,
     double r2start, double r2end) {
     double regionStart = Math.max(r1start, r2start);
     double regionEnd = Math.min(r1end, r2end);

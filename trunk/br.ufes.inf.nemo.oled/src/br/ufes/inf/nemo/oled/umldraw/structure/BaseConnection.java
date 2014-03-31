@@ -72,8 +72,8 @@ public class BaseConnection implements UmlConnection, Adapter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isRectilinear() {
-		return connection.isRectilinear();
+	public boolean isTreeStyle() {
+		return connection.isTreeStyle();
 	}
 
 	/**

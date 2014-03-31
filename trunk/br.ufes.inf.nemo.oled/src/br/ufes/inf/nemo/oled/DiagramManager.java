@@ -76,6 +76,7 @@ import br.ufes.inf.nemo.oled.derivation.UnionPattern;
 import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.draw.LineStyle;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
@@ -533,7 +534,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if(element instanceof Association)
 		{
 			AssociationElement ae = (AssociationElement) ModelHelper.getDiagramElementByEditor(element, d);
-			isRectilinear = ae.isRectilinear();
+			isRectilinear = ae.isTreeStyle();
 			showName = ae.showName();
 			showOntoUMLStereotype = ae.showOntoUmlStereotype();
 			showRoles = ae.showRoles();
@@ -546,7 +547,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			
 		else if(element instanceof Generalization){
 			GeneralizationElement ge = (GeneralizationElement) ModelHelper.getDiagramElementByEditor(element, d);
-			isRectilinear = ge.isRectilinear();
+			isRectilinear = ge.isTreeStyle();
 			
 			deleteFromDiagram(element, d);
 			moveGeneralizationToDiagram((Generalization) element, d, isRectilinear);
@@ -624,7 +625,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			Type tgt = ((Association)association).getMemberEnd().get(1).getType();				
 			if (d.getDiagram().containsChild(src) && d.getDiagram().containsChild(tgt))	{			
 				AssociationElement conn = (AssociationElement) d.dragRelation(association,association.eContainer());
-				d.setLineStyle(conn, isRectilinear);
+				if(isRectilinear) d.setLineStyle(conn, LineStyle.RECTILINEAR);
+				else d.setLineStyle(conn, LineStyle.DIRECT);
 				conn.setShowMultiplicities(showMultiplicities);
 				conn.setShowName(showName);
 				conn.setShowOntoUmlStereotype(showOntoUMLStereotype);
@@ -638,9 +640,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (d.getDiagram().containsChild(gen.getGeneral()) && d.getDiagram().containsChild(gen.getSpecific()))
 		{	
 			UmlConnection conn = d.dragRelation(gen,gen.eContainer());
-			d.setLineStyle(conn, isRectilinear);
+			if(isRectilinear) d.setLineStyle(conn,  LineStyle.RECTILINEAR);
+			else d.setLineStyle(conn,  LineStyle.DIRECT);
 		}
 	}
+	
 	/** Move element to a Diagram */
 	public void moveToDiagram(RefOntoUML.Element element, DiagramEditor d)
 	{
