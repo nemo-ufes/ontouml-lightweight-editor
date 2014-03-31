@@ -24,14 +24,12 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
-import org.eclipse.emf.ecore.EObject;
-
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
-import br.ufes.inf.nemo.oled.ui.OntoUMLElement;
+import br.ufes.inf.nemo.oled.ui.CustomOntoUMLElement;
 
 public class GeneralizationSetEditionPanel extends JPanel {
 	
@@ -79,28 +77,6 @@ public class GeneralizationSetEditionPanel extends JPanel {
 		this.parent = parent;
 		this.diagramManager = diagramManager;
 		this.genSet = genSet;
-	}
-	
-	class CustomOntoUMLElement extends OntoUMLElement {
-		public CustomOntoUMLElement(EObject refElement, String uniqueName) 
-		{
-			super(refElement, uniqueName);
-		}
-		
-		@Override
-		public String toString() {
-			if (this.element instanceof Generalization){
-				String general = new String();
-				String specific = new String();
-				if (((Generalization)element).getGeneral()==null) general = "null";
-				else general = ((Generalization)element).getGeneral().getName();
-				if (((Generalization)element).getSpecific()==null) specific = "null";
-				else specific = ((Generalization)element).getSpecific().getName();
-				return type + " "+specific+"->"+general;
-			}else {
-				return super.toString();
-			}
-		}	
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
