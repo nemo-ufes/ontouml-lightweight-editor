@@ -530,7 +530,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 */
 	private boolean stopEditing() 
 	{
-		TextEditor currentEditor = null;
+		BaseTextEditor currentEditor = null;
 		if (captionEditor.isVisible()) currentEditor = captionEditor;		
 		if (multilineEditor.isVisible()) currentEditor = multilineEditor;
 		

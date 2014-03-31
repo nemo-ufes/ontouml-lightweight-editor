@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled.explorer;
 
 import org.eclipse.emf.ecore.EObject;
 

@@ -42,7 +42,7 @@ import br.ufes.inf.nemo.oled.draw.MultilineLayouter.MultilineLayout;
  * @version 1.0
  */
 public class MultilineEditor extends JTextArea
-implements DocumentListener, TextEditor {
+implements DocumentListener, BaseTextEditor {
 
 	private static final long serialVersionUID = 1L;
 	private Label currentLabel;

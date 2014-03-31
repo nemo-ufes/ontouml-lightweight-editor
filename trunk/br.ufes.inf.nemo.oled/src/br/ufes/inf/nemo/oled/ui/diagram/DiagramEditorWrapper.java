@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled.ui.diagram;
 
 import java.awt.BorderLayout;
 import java.awt.Point;
@@ -16,7 +16,8 @@ import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.ui.DiagramEditorCommandDispatcher;
+import br.ufes.inf.nemo.oled.ui.diagram.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /** 

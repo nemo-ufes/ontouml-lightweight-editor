@@ -36,6 +36,7 @@ import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.palette.ColorPalette;
 import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.oled.ui.diagram.Editor;
 
 
 /**
