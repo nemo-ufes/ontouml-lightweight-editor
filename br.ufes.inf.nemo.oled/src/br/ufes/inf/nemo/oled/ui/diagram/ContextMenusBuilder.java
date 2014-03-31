@@ -29,7 +29,6 @@ import br.ufes.inf.nemo.oled.draw.Selection;
 import br.ufes.inf.nemo.oled.ui.popup.MultiSelectionPopupMenu;
 import br.ufes.inf.nemo.oled.ui.popup.SingleConnectionPopupMenu;
 import br.ufes.inf.nemo.oled.ui.popup.SingleNodePopupMenu;
-import br.ufes.inf.nemo.oled.ui.popup.SinglePropertyPopupMenu;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlDiagramElement;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
@@ -46,16 +45,14 @@ public class ContextMenusBuilder {
 	
 	private DiagramEditor editor;
 	private SingleNodePopupMenu singleNodePopup;	
-	private SingleConnectionPopupMenu singleConnectionPopup;
-	private SinglePropertyPopupMenu singlePropertyPopup;
+	private SingleConnectionPopupMenu singleConnectionPopup;	
 	private MultiSelectionPopupMenu multiSelectinoPopup;
 	
 	public ContextMenusBuilder(DiagramEditor editor)
 	{
 		this.editor = editor;
 		singleNodePopup = new SingleNodePopupMenu();
-		singleConnectionPopup = new SingleConnectionPopupMenu();
-		singlePropertyPopup = new SinglePropertyPopupMenu();
+		singleConnectionPopup = new SingleConnectionPopupMenu();		
 		multiSelectinoPopup = new MultiSelectionPopupMenu();
 	}
 	
@@ -84,11 +81,11 @@ public class ContextMenusBuilder {
 					if (diffx1<0) diffx1 = diffx1*(-1); if (diffy1<0) diffy1 = diffy1*(-1);
 					if (diffx2<0) diffx2 = diffx2*(-1); if (diffy2<0) diffy2 = diffy2*(-1);
 					if(diffx1<30 && diffy1<30){	
-						singlePropertyPopup.setProperty((UmlConnection)elem,true,editor);
-						return singlePropertyPopup;
+						singleConnectionPopup.setConnection((UmlConnection)elem,editor,true);
+						return singleConnectionPopup;
 					}else if(diffx2<30 && diffy2<30){
-						singlePropertyPopup.setProperty((UmlConnection)elem,false,editor);
-						return singlePropertyPopup;
+						singleConnectionPopup.setConnection((UmlConnection)elem,editor,true);
+						return singleConnectionPopup;
 					}
 				}				
 				singleConnectionPopup.setConnection((Connection)elem,editor);
