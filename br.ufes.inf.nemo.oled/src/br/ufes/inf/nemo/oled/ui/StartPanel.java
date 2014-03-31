@@ -48,6 +48,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.diagram.Editor;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.IconLoader;

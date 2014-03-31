@@ -17,6 +17,7 @@ import javax.swing.JToolBar;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.diagram.Editor;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.IconLoader;

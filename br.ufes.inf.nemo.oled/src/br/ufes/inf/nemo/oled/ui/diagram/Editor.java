@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled.ui.diagram;
 
 import org.eclipse.emf.edit.provider.IDisposable;
 

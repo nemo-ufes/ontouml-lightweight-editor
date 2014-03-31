@@ -1,62 +1,74 @@
-/**
- * Copyright 2007 Wei-ju Wu
- *
- * This file is part of TinyUML.
- *
- * TinyUML is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * TinyUML is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with TinyUML; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- */
 package br.ufes.inf.nemo.oled.ui.diagram;
 
-import java.awt.Graphics;
+import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
-import br.ufes.inf.nemo.oled.draw.Label;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
-/**
- * The interface to generalize access to text editors.
- * @author Wei-ju Wu
- * @version 1.0
- */
-public interface TextEditor {
+import br.ufes.inf.nemo.oled.draw.Diagram;
+import br.ufes.inf.nemo.oled.model.UmlProject;
 
-  /**
-   * Returns the currently edited Label.
-   * @return the label
-   */
-  Label getLabel();
+public class TextEditor extends JPanel implements Editor {
 
-  /**
-   * Makes the editor invisible.
-   */
-  void hideEditor();
+	private static final long serialVersionUID = -1832428183354138999L;
+	private JTextArea textArea = new JTextArea();
+	private UmlProject project;
+	
+	public TextEditor(UmlProject project)
+	{
+		super(new BorderLayout());
+		JScrollPane scroll = new JScrollPane(textArea);
+		add(scroll, BorderLayout.CENTER);
+		
+		this.project = project;
+	}
 
-  /**
-   * Displays the editor at the specified position.
-   * @param aLabel the label to edit
-   * @param g the Graphics object
-   */
-  void showEditor(Label aLabel, Graphics g);
+	public void loadFile(String filePath) {
+		try {
+			FileReader fr = new FileReader(filePath);
+			BufferedReader br = new BufferedReader(fr);
+			textArea.read(br, null);
+			br.close();
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public void setText(String text) {
+		textArea.setText(text);
+	}
 
-  /**
-   * Returns the visibility state of this editor.
-   * @return true if visible, false if not visible
-   */
-  boolean isVisible();
+	public String getTextArea() {
+		return textArea.getText();
+	}
 
-  /**
-   * Returns the text within the editor.
-   * @return the text
-   */
-  String getText();
+	@Override
+	public boolean isSaveNeeded() {
+		return false;
+	}
+
+	@Override
+	public EditorNature getEditorNature() {
+		return EditorNature.TEXT;
+	}
+
+	@Override
+	public Diagram getDiagram() {
+		return null;
+	}
+
+	@Override
+	public void dispose() {
+		
+	}
+
+	@Override
+	public UmlProject getProject() {
+		return project;
+	}
+		
 }

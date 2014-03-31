@@ -20,7 +20,7 @@ import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 
 public class ClassStereotypeChangeMenu extends JMenu{
 

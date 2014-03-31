@@ -34,7 +34,7 @@ import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
-import br.ufes.inf.nemo.oled.ui.OntoUMLElement;
+import br.ufes.inf.nemo.oled.explorer.OntoUMLElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 
 public class GeneralizationEditionPanel extends JPanel {

@@ -13,8 +13,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.OutputPane;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.verifier.ErrorTablePanel;
 import br.ufes.inf.nemo.oled.verifier.WarningTablePanel;

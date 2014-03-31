@@ -9,7 +9,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import br.ufes.inf.nemo.oled.AppFrame;
-import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 
 public class ToolboxPopupMenu extends JPopupMenu {	
 

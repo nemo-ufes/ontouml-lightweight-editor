@@ -42,7 +42,7 @@ import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
  * @version 1.0
  */
 public class CaptionEditor extends JTextField
-implements DocumentListener, TextEditor {
+implements DocumentListener, BaseTextEditor {
 
 	
 	private static final long serialVersionUID = 4249755381822809715L;
