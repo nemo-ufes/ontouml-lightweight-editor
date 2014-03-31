@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.common.positioning;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 
 public class ClassPosition {
 
