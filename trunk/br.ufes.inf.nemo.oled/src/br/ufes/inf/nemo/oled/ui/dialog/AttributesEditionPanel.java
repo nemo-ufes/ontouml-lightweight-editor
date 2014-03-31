@@ -45,9 +45,9 @@ import RefOntoUML.Element;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.palette.ColorPalette;
+import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
-import br.ufes.inf.nemo.oled.util.ColorPalette;
-import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 public class AttributesEditionPanel extends JPanel {

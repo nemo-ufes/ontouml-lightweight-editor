@@ -17,7 +17,7 @@
  * along with TinyUML; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package br.ufes.inf.nemo.oled.util;
+package br.ufes.inf.nemo.oled;
 
 /**
  * A simple interface to be implemented by classes that receive application

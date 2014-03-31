@@ -12,9 +12,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import RefOntoUML.Generalization;
+import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
-import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 

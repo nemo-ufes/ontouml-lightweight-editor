@@ -2,9 +2,9 @@ package br.ufes.inf.nemo.oled;
 
 import javax.swing.JTabbedPane;
 
+import br.ufes.inf.nemo.oled.palette.Palette;
+import br.ufes.inf.nemo.oled.palette.PaletteAccordion;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorCommandDispatcher;
-import br.ufes.inf.nemo.oled.ui.Palette;
-import br.ufes.inf.nemo.oled.ui.PaletteAccordion;
 
 public class ToolManager extends JTabbedPane {
 

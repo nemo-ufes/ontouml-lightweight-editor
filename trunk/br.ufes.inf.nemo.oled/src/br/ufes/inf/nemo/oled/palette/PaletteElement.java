@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled.palette;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

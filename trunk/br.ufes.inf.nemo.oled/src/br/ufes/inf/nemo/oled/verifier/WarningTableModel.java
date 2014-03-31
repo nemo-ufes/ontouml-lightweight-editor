@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled.verifier;
 
 import javax.swing.table.AbstractTableModel;
 

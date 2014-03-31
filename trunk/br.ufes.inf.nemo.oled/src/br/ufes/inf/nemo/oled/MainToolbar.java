@@ -30,7 +30,6 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
-import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 

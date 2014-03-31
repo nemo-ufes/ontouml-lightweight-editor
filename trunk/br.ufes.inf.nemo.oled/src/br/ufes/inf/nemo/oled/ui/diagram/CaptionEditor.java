@@ -31,8 +31,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import br.ufes.inf.nemo.oled.draw.Label;
-import br.ufes.inf.nemo.oled.util.ColorPalette;
-import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.oled.palette.ColorPalette;
+import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 
 
 /**

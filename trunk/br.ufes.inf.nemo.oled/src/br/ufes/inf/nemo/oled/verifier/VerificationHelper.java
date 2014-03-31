@@ -1,7 +1,8 @@
-package br.ufes.inf.nemo.oled.util;
+package br.ufes.inf.nemo.oled.verifier;
 
 import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
 import br.ufes.inf.nemo.common.ontoumlverificator.VerificationResult;
+import br.ufes.inf.nemo.oled.util.OperationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 
 /**

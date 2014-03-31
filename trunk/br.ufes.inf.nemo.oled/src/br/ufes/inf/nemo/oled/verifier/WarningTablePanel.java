@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled.verifier;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,8 +20,8 @@ import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.util.ColorPalette;
-import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.oled.palette.ColorPalette;
+import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.util.FileChoosersUtil;
 
 /**
