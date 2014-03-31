@@ -59,7 +59,7 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 			}
 		}
 		if(gens.size()<=1) { createGenSetItem.setVisible(false); deleteGenSetItem.setVisible(false); }
-		else createGenSetItem.setVisible(true);
+		else { createGenSetItem.setVisible(true); deleteGenSetItem.setVisible(false); }
 		if(gens.size()>1 && containGenset==true) { deleteGenSetItem.setVisible(true); }		
 	}
 	
