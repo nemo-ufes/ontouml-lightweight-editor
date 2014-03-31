@@ -25,6 +25,7 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	@SuppressWarnings("unused")
 	private ArrayList<DiagramElement> selected = new ArrayList<DiagramElement>();
 	private JMenuItem createGenSetItem;
+	private JMenuItem deleteGenSetItem;
 	@SuppressWarnings("unused")
 	private JMenuItem unionItem;
 	@SuppressWarnings("unused")
@@ -35,6 +36,7 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	public MultiSelectionPopupMenu()
 	{			
 		createGenSetItem = createMenuItem(this, "creategenset");
+		deleteGenSetItem = createMenuItem(this, "deletegenset");
 		
 		unionItem = createMenuItem(this, "derivedunion");
 		exclusionItem = createMenuItem(this, "derivedexclusion");
@@ -46,17 +48,19 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	{
 		this.selected = selected;
 
-		// check if we can show the item that creates generalization sets
+		// check if we can show the item that creates/delete generalization sets
+		boolean containGenset=false;
 		ArrayList<Generalization> gens = new ArrayList<Generalization>();
 		for(DiagramElement dElem: selected){
 			if (dElem instanceof GeneralizationElement){
 				Generalization gen = ((GeneralizationElement)dElem).getGeneralization();
 				if(gen!=null)gens.add(gen);
+				if(gen.getGeneralizationSet()!=null && !gen.getGeneralizationSet().isEmpty()) containGenset=true;
 			}
 		}
-		if(gens.size()<=1) { createGenSetItem.setVisible(false); } 
+		if(gens.size()<=1) { createGenSetItem.setVisible(false); deleteGenSetItem.setVisible(false); }
 		else createGenSetItem.setVisible(true);
-		
+		if(gens.size()>1 && containGenset==true) { deleteGenSetItem.setVisible(true); }		
 	}
 	
 	/**
