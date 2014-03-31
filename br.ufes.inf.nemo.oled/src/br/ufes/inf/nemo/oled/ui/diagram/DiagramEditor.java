@@ -56,6 +56,7 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Association;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.Connection;
@@ -98,7 +99,6 @@ import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
-import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.Command;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 

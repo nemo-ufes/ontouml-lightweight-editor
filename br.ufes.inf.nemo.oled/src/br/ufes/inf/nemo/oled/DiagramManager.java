@@ -129,7 +129,7 @@ import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
 import br.ufes.inf.nemo.oled.util.SBVRHelper;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
-import br.ufes.inf.nemo.oled.util.VerificationHelper;
+import br.ufes.inf.nemo.oled.verifier.VerificationHelper;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
 import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui.GlossaryGeneratorUI;

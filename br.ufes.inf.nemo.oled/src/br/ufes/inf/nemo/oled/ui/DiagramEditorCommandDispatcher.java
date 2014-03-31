@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.MainMenu;
@@ -35,7 +36,6 @@ import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.dialog.AutoCompletionDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.SimulationDialog;
-import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.MethodCall;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;

@@ -28,6 +28,7 @@ import java.util.Set;
 
 import javax.swing.JPopupMenu;
 
+import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.Label;
@@ -40,7 +41,6 @@ import br.ufes.inf.nemo.oled.draw.Selection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnectionSelection;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlDiagramElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
-import br.ufes.inf.nemo.oled.util.AppCommandListener;
 
 
 

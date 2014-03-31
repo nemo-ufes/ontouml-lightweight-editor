@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.ui;
+package br.ufes.inf.nemo.oled.palette;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -15,7 +15,7 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import br.ufes.inf.nemo.oled.util.AppCommandListener;
+import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.IconLoader.IconType;

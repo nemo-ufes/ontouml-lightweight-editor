@@ -25,8 +25,8 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.util.ColorPalette;
-import br.ufes.inf.nemo.oled.util.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.oled.palette.ColorPalette;
+import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 
 public class RelatedElementsPanel extends JPanel {
 

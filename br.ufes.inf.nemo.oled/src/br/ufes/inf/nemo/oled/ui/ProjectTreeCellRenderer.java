@@ -27,6 +27,7 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.palette.PaletteAccordion;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 /**

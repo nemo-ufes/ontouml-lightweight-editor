@@ -36,7 +36,6 @@ import javax.swing.KeyStroke;
 
 import br.ufes.inf.nemo.oled.ui.dialog.AboutDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.LicensesDialog;
-import br.ufes.inf.nemo.oled.util.AppCommandListener;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 

@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.util;
+package br.ufes.inf.nemo.oled.palette;
 
 import java.awt.Color;
 import java.util.HashMap;

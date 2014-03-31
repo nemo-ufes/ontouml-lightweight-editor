@@ -14,10 +14,10 @@ import javax.swing.event.DocumentListener;
 
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.DiagramEditorWrapper;
-import br.ufes.inf.nemo.oled.ui.ErrorTablePanel;
 import br.ufes.inf.nemo.oled.ui.OutputPane;
-import br.ufes.inf.nemo.oled.ui.WarningTablePanel;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
+import br.ufes.inf.nemo.oled.verifier.ErrorTablePanel;
+import br.ufes.inf.nemo.oled.verifier.WarningTablePanel;
 import br.ufes.inf.nemo.tocl.editor.TOCLEditorPanel;
 
 public class InfoManager extends JTabbedPane {
