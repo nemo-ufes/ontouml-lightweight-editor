@@ -6,6 +6,7 @@ import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
+import br.ufes.inf.nemo.antipattern.decint.DecIntAntipattern;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
@@ -14,7 +15,6 @@ import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
-import br.ufes.inf.nemo.antipattern.decint.DecIntAntipattern;
 import br.ufes.inf.nemo.antipattern.partover.PartOverAntipattern;
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
 import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
@@ -55,7 +55,7 @@ public class AntiPatternList {
 	private UndefPhaseAntipattern undefPhase;
 	private WholeOverAntipattern wholeOver;
 	private PartOverAntipattern partOver;
-	private DecIntAntipattern multSort;
+	private DecIntAntipattern decInt;
 	
 	public AssCycAntipattern getAssCyc() {
 		return assCyc;
@@ -66,7 +66,7 @@ public class AntiPatternList {
 			MixIdenAntipattern mixIden, MixRigAntipattern mixRig, MultiDepAntipattern multiDep, RelCompAntipattern relComp,
 			RelOverAntipattern relOver, RelRigAntipattern relRig, RelSpecAntipattern relSpec, RepRelAntipattern repRel,
 			UndefFormalAntipattern undefFormal, UndefPhaseAntipattern undefPhase, WholeOverAntipattern wholeOver,
-			PartOverAntipattern partOver, DecIntAntipattern multSort) {
+			PartOverAntipattern partOver, DecIntAntipattern decInt) {
 
 		this.assCyc = assCyc;
 		this.binOver = binOver;
@@ -88,7 +88,7 @@ public class AntiPatternList {
 		this.undefPhase = undefPhase;
 		this.wholeOver = wholeOver;
 		this.partOver = partOver;
-		this.multSort = multSort;
+		this.decInt = decInt;
 	}
 	
 	public AntiPatternList() {
@@ -118,7 +118,7 @@ public class AntiPatternList {
 		result.addAll(undefPhase.getOccurrences());
 		result.addAll(wholeOver.getOccurrences());
 		result.addAll(partOver.getOccurrences());
-		result.addAll(multSort.getOccurrences());
+		result.addAll(decInt.getOccurrences());
 		return result;
 	}
 	
@@ -128,11 +128,11 @@ public class AntiPatternList {
 	public void setPartOver(PartOverAntipattern partOver) {
 		this.partOver = partOver;
 	}
-	public DecIntAntipattern getMultSort() {
-		return multSort;
+	public DecIntAntipattern getDecInt() {
+		return decInt;
 	}
-	public void setMultSort(DecIntAntipattern multSort) {
-		this.multSort = multSort;
+	public void setDecInt(DecIntAntipattern decInt) {
+		this.decInt = decInt;
 	}
 	public void setAssCyc(AssCycAntipattern assCyc) {
 		this.assCyc = assCyc;
