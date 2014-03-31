@@ -30,15 +30,15 @@ public class AppFrame extends JFrame implements AppCommandListener {
 
 	private static final long serialVersionUID = 3464348864344034246L;
 	
-	private transient MainMenu mainMenu;
-	private transient MainToolbar mainToolBar;
-	private transient SecondaryToolbar secondaryToolBar;
+	private transient AppMenu mainMenu;
+	private transient AppToolbar mainToolBar;
+	private transient AppSecondToolbar secondaryToolBar;
 	
 	private transient ToolManager toolManager;
 	private transient DiagramManager diagramManager;
 	private transient ProjectBrowser projectBrowser;
 	private transient InfoManager infoManager;
-	private transient StatusBar statusBar;
+	private transient AppStatusBar statusBar;
 	
 	private transient Map<String, MethodCall> selectorMap = new HashMap<String, MethodCall>();
 	
@@ -89,7 +89,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 * Adds the main menu.
 	 */
 	private void installMainMenu() {
-		mainMenu = new MainMenu(this);
+		mainMenu = new AppMenu(this);
 		mainMenu.addCommandListener(this);
 		mainMenu.addCommandListener(diagramManager.getEditorDispatcher());
 		setJMenuBar(mainMenu.getMenuBar());
@@ -100,10 +100,10 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 */
 	private void installMainToolBar() 
 	{		
-		mainToolBar = new MainToolbar();
+		mainToolBar = new AppToolbar();
 		mainToolBar.addCommandListener(this);
 		mainToolBar.addCommandListener(diagramManager.getEditorDispatcher());
-		secondaryToolBar = new SecondaryToolbar(this);
+		secondaryToolBar = new AppSecondToolbar(this);
 		secondaryToolBar.addCommandListener(this);
 		secondaryToolBar.addCommandListener(diagramManager.getEditorDispatcher());		
 		JPanel panel = new JPanel();
@@ -124,17 +124,17 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		return projectBrowser;
 	}
 	
-	public StatusBar getStatusBar()
+	public AppStatusBar getStatusBar()
 	{
 		return statusBar;		
 	}
 	
-	public MainToolbar getMainToolBar()
+	public AppToolbar getMainToolBar()
 	{
 		return mainToolBar;
 	}
 	
-	public SecondaryToolbar getSecondaryBar()
+	public AppSecondToolbar getSecondaryBar()
 	{
 		return secondaryToolBar;
 	}
@@ -185,7 +185,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 * Adds the status bar.
 	 * */
 	private void installStatusBar() {
-		statusBar = new StatusBar();
+		statusBar = new AppStatusBar();
 		this.getContentPane().add(statusBar, BorderLayout.SOUTH);
 	}
 
@@ -324,9 +324,9 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	/**
 	 * Gets the application main menu.
 	 * 
-	 * @return {@link MainMenu} the main menu
+	 * @return {@link AppMenu} the main menu
 	 * */
-	public MainMenu getMainMenu() {
+	public AppMenu getMainMenu() {
 		return mainMenu;
 	}
 

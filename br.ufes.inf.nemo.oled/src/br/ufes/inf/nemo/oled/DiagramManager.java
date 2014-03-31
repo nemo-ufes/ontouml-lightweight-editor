@@ -83,21 +83,20 @@ import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
-import br.ufes.inf.nemo.oled.ui.DiagramEditorCommandDispatcher;
-import br.ufes.inf.nemo.oled.ui.InstanceVisualizer;
 import br.ufes.inf.nemo.oled.ui.StartPanel;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
 import br.ufes.inf.nemo.oled.ui.commands.PngExporter;
 import br.ufes.inf.nemo.oled.ui.commands.ProjectReader;
 import br.ufes.inf.nemo.oled.ui.commands.ProjectWriter;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorCommandDispatcher;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.diagram.Editor;
+import br.ufes.inf.nemo.oled.ui.diagram.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorMouseEvent;
 import br.ufes.inf.nemo.oled.ui.diagram.EditorStateListener;
 import br.ufes.inf.nemo.oled.ui.diagram.SelectionListener;
 import br.ufes.inf.nemo.oled.ui.diagram.TextEditor;
-import br.ufes.inf.nemo.oled.ui.diagram.Editor.EditorNature;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
@@ -109,7 +108,7 @@ import br.ufes.inf.nemo.oled.ui.dialog.EcoreSettingDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.ui.dialog.UMLSettingDialog;
-import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
+//import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
@@ -135,10 +134,8 @@ import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
 import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui.GlossaryGeneratorUI;
 import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
-import edu.mit.csail.sdg.alloy4.ConstMap;
-import edu.mit.csail.sdg.alloy4compiler.ast.Module;
-import edu.mit.csail.sdg.alloy4compiler.translator.A4Solution;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
+//import br.ufes.inf.nemo.oled.deprecated.InstanceVisualizer;
 
 /**
  * Class responsible for managing and organizing the {@link DiagramEditor}s in tabs.
@@ -1712,7 +1709,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * 
 	 * @return MainMenu the applications' main menu
 	 * */
-	public MainMenu getMainMenu() 
+	public AppMenu getMainMenu() 
 	{
 		return frame.getMainMenu();
 	}
@@ -2126,15 +2123,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	//===================================== @Older =======================================
 
 	/**
-	 * Shows a dialog for choosing the elements to simulate and the style settings 
-	 */
-	public void verificationSettings() {
-		VerificationSettingsDialog dialog = new VerificationSettingsDialog(frame, this, true);
-		dialog.setLocationRelativeTo(frame);
-		dialog.setVisible(true);
-	}	
-
-	/**
 	 * Simulate the selected model elements using Alloy.
 	 */
 	public void verifyCurrentModel() {
@@ -2161,55 +2149,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public void verifyCurrentModelFile() {
-
-		StructureDiagram diagram = (StructureDiagram) getCurrentWrapper().getDiagram();
-		UmlProject project = getCurrentProject();
-
-		List<SimulationElement> simulationElements = diagram.getSimulationElements();
-		OperationResult result = AlloyHelper.verifyModelFromAlloyFile(project.getTempDir());
-
-		if(result.getResultType() != ResultType.ERROR)
-		{
-			frame.getInfoManager().showOutputText(result.toString(), true, false); 
-
-			A4Solution solution = (A4Solution) result.getData()[0];
-			Module module = (Module) result.getData()[1];
-			ConstMap<String, String> alloySources = (ConstMap<String, String>) result.getData()[2];
-
-			showModelInstances(diagram, solution, module, alloySources, simulationElements);
-		}
-		else
-		{
-			frame.getInfoManager().showOutputText(result.toString(), true, true); 
-		}
-	}
-
-	/**
-	 * Shows model instances for a given Alloy Solution/Module. 
-	 */
-	private void showModelInstances(StructureDiagram diagram, A4Solution solution, Module module, ConstMap<String, String> alloySources, List<SimulationElement> simulationElements)
-	{
-		InstanceVisualizer instanceViz = (InstanceVisualizer) getEditorForDiagram(diagram, EditorNature.INSTANCE_VISUALIZER);
-		if(instanceViz == null)
-		{
-			//TODO Localize this;
-			addClosable("Verification Output", new InstanceVisualizer(diagram, solution, module, alloySources, simulationElements)); 
-		}
-		else
-		{
-			List<SimulationElement> simElements = ((StructureDiagram) getCurrentWrapper().getDiagram()).getSimulationElements();
-
-			instanceViz.setSolution(solution);
-			instanceViz.setModule(module);
-			instanceViz.setAlloySources(alloySources);
-			instanceViz.loadSolution();
-			instanceViz.setSimulationElements(simElements);
-			setSelectedComponent(instanceViz);
-		}
-	}	
-
+	@SuppressWarnings("unused")
 	private Editor getEditorForDiagram(StructureDiagram diagram, EditorNature nature)
 	{
 		int totalTabs = getTabCount();
