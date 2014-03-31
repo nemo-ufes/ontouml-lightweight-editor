@@ -12,8 +12,6 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.SystemColor;
 
-import net.miginfocom.swing.MigLayout;
-
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;

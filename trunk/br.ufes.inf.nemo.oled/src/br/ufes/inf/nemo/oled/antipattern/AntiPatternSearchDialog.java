@@ -31,6 +31,7 @@ import javax.swing.border.EmptyBorder;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
+import br.ufes.inf.nemo.antipattern.decint.DecIntAntipattern;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
@@ -39,7 +40,6 @@ import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
-import br.ufes.inf.nemo.antipattern.multsort.MultSortAntipattern;
 import br.ufes.inf.nemo.antipattern.partover.PartOverAntipattern;
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompAntipattern;
 import br.ufes.inf.nemo.antipattern.relover.RelOverAntipattern;
@@ -811,7 +811,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblMultSortIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
 		leftPanel.add(lblMultSortIco);
 		
-		cbxMultSort = new JCheckBox(MultSortAntipattern.getAntipatternInfo().getAcronym()+": "+MultSortAntipattern.getAntipatternInfo().getName());		
+		cbxMultSort = new JCheckBox(DecIntAntipattern.getAntipatternInfo().getAcronym()+": "+DecIntAntipattern.getAntipatternInfo().getName());		
 		cbxMultSort.setPreferredSize(new Dimension(250, 20));
 		cbxMultSort.setBackground(UIManager.getColor("Panel.background"));
 		leftPanel.add(cbxMultSort);
@@ -933,7 +933,7 @@ public class AntiPatternSearchDialog extends JDialog {
 				 final UndefPhaseAntipattern undefPhase = new UndefPhaseAntipattern(parser);
 				 final WholeOverAntipattern wholeOver = new WholeOverAntipattern(parser);
 				 final PartOverAntipattern partOver = new PartOverAntipattern(parser);
-				 final MultSortAntipattern multSort = new MultSortAntipattern(parser);
+				 final DecIntAntipattern multSort = new DecIntAntipattern(parser);
 			
 				if (parser.getElements() == null) return;
 				
@@ -1472,16 +1472,16 @@ public class AntiPatternSearchDialog extends JDialog {
 					MultSortThread = new Thread(new Runnable() {				
 						@Override
 						public void run() {	
-							updateStatus("Identifying MultSort... ");
+							updateStatus("Identifying DecInt... ");
 							multSort.identify();				
 							SwingUtilities.invokeLater(new Runnable() {
 								@Override
 								public void run() {									
 									progressBar.setValue(progressBar.getValue()+incrementalValue);
 									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("MultSort: "+multSort.getOccurrences().size()+" items found");							
+									updateStatus("DecInt: "+multSort.getOccurrences().size()+" items found");							
 									if (multSort.getOccurrences().size()>0) {
-										result += MultSortAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multSort.getOccurrences().size()+" items found.\n";
+										result += DecIntAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multSort.getOccurrences().size()+" items found.\n";
 										totalOccurrences += multSort.getOccurrences().size();
 										lblMultSortRes.setText("("+multSort.getOccurrences().size()+")");
 										cbxMultSort.setFont(new Font(cbxMultSort.getFont().getFontName(), Font.BOLD,cbxMultSort.getFont().getSize()));
