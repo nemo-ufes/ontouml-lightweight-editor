@@ -30,11 +30,11 @@ import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.AppMenu;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.antipattern.AntiPatternSearchDialog;
+import br.ufes.inf.nemo.oled.dialog.AutoCompletionDialog;
+import br.ufes.inf.nemo.oled.dialog.SimulationDialog;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
-import br.ufes.inf.nemo.oled.ui.dialog.AutoCompletionDialog;
-import br.ufes.inf.nemo.oled.ui.dialog.SimulationDialog;
 import br.ufes.inf.nemo.oled.util.MethodCall;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
@@ -285,12 +285,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("GENERATE_TEXT", new MethodCall(
 					getClass().getMethod("generateText")));
-			
-			selectorMap.put("GENERATE_ECORE", new MethodCall(
-					getClass().getMethod("generateEcore")));
-			
-			selectorMap.put("GENERATE_UML", new MethodCall(
-					getClass().getMethod("generateUML")));
 
 			selectorMap.put("ERROR", new MethodCall(
 					getClass().getMethod("searchErrors")));
@@ -490,18 +484,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		if (manager.isProjectLoaded()==false) return;
 
 		manager.generateText();
-	}
-
-	public void generateUML()
-	{
-		if (manager.isProjectLoaded()==false) return;
-		manager.generateUML();
-	}
-	
-	public void generateEcore()
-	{
-		if (manager.isProjectLoaded()==false) return;
-		manager.generateEcore();		
 	}
 	
 	/**
