@@ -174,8 +174,10 @@ public class AntiPatternSearchDialog extends JDialog {
 	/** 
 	 * Check if AntiPattern is selected.
 	 */
+	
 	public Boolean AssCycisSelected() { return cbxAssCyc.isSelected(); }
 	public Boolean BinOverisSelected() { return cbxBinOver.isSelected(); }
+	public Boolean DecIntisSelected() { return cbxDecInt.isSelected(); }
 	public Boolean DepPhaseisSelected() { return cbxDepPhase.isSelected(); }
 	public Boolean FreeRoleisSelected() { return cbxFreeRole.isSelected(); }
 	public Boolean GSRigisSelected() { return cbxGSRig.isSelected(); }
@@ -185,6 +187,7 @@ public class AntiPatternSearchDialog extends JDialog {
 	public Boolean MixIdenisSelected() { return cbxMixIden.isSelected(); }
 	public Boolean MixRigisSelected() { return cbxMixRig.isSelected(); }
 	public Boolean MultiDepisSelected() { return cbxMultiDep.isSelected(); }
+	public Boolean PartOverisSelected() { return cbxPartOver.isSelected(); }
 	public Boolean RelCompisSelected() { return cbxRelComp.isSelected(); }
 	public Boolean RelOverisSelected() { return cbxRelOver.isSelected(); }
 	public Boolean RelRigisSelected() { return cbxRelRig.isSelected(); }
@@ -193,10 +196,7 @@ public class AntiPatternSearchDialog extends JDialog {
 	public Boolean UndefFormalisSelected() { return cbxUndefFormal.isSelected(); }
 	public Boolean UndefPhaseisSelected() { return cbxUndefPhase.isSelected(); }
 	public Boolean WholeOverisSelected() { return cbxWholeOver.isSelected(); }
-	public Boolean PartOverisSelected() { return cbxPartOver.isSelected(); }
-	public Boolean DecIntisSelected() { return cbxDecInt.isSelected(); }
 	
-		
 	/**
 	 * Open the Dialog.
 	 */
@@ -244,6 +244,7 @@ public class AntiPatternSearchDialog extends JDialog {
 	{
 		lblAssCycIco.setVisible(show);
 		lblBinOverIco.setVisible(show);
+		lblDecIntIco.setVisible(show);
 		lblDepPhaseIco.setVisible(show);
 		lblFreeRoleIco.setVisible(show);
 		lblGSRigIco.setVisible(show);
@@ -253,6 +254,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblMixIdenIco.setVisible(show);
 		lblMixRigIco.setVisible(show);
 		lblMultiDepIco.setVisible(show);
+		lblPartOverIco.setVisible(show);
 		lblRelCompIco.setVisible(show);
 		lblRelOverIco.setVisible(show);
 		lblRelRigIco.setVisible(show);
@@ -261,14 +263,13 @@ public class AntiPatternSearchDialog extends JDialog {
 		lblUndefFormalIco.setVisible(show);
 		lblUndefPhaseIco.setVisible(show);
 		lblWholeOverIco.setVisible(show);
-		lblPartOverIco.setVisible(show);
-		lblDecIntIco.setVisible(show);
 	}
 	
 	public void HideBoldnessOnAllCheckBoxes()
 	{
 		cbxAssCyc.setFont(new Font(cbxAssCyc.getFont().getName(), Font.PLAIN, cbxAssCyc.getFont().getSize()));	
 		cbxBinOver.setFont(new Font(cbxBinOver.getFont().getName(), Font.PLAIN, cbxBinOver.getFont().getSize()));
+		cbxDecInt.setFont(new Font(cbxDecInt.getFont().getName(), Font.PLAIN, cbxDecInt.getFont().getSize()));	
 		cbxDepPhase.setFont(new Font(cbxDepPhase.getFont().getName(), Font.PLAIN, cbxDepPhase.getFont().getSize()));
 		cbxFreeRole.setFont(new Font(cbxFreeRole.getFont().getName(), Font.PLAIN, cbxFreeRole.getFont().getSize()));
 		cbxGSRig.setFont(new Font(cbxGSRig.getFont().getName(), Font.PLAIN, cbxGSRig.getFont().getSize()));
@@ -278,6 +279,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		cbxMixIden.setFont(new Font(cbxMixIden.getFont().getName(), Font.PLAIN, cbxMixIden.getFont().getSize()));	
 		cbxMixRig.setFont(new Font(cbxMixRig.getFont().getName(), Font.PLAIN, cbxMixRig.getFont().getSize()));	
 		cbxMultiDep.setFont(new Font(cbxMultiDep.getFont().getName(), Font.PLAIN, cbxMultiDep.getFont().getSize()));
+		cbxPartOver.setFont(new Font(cbxPartOver.getFont().getName(), Font.PLAIN, cbxPartOver.getFont().getSize()));
 		cbxRelComp.setFont(new Font(cbxRelComp.getFont().getName(), Font.PLAIN, cbxRelComp.getFont().getSize()));	
 		cbxRelOver.setFont(new Font(cbxRelOver.getFont().getName(), Font.PLAIN, cbxRelOver.getFont().getSize()));	
 		cbxRelRig.setFont(new Font(cbxRelRig.getFont().getName(), Font.PLAIN, cbxRelRig.getFont().getSize()));	
@@ -286,8 +288,6 @@ public class AntiPatternSearchDialog extends JDialog {
 		cbxUndefFormal.setFont(new Font(cbxUndefFormal.getFont().getName(), Font.PLAIN, cbxUndefFormal.getFont().getSize()));	
 		cbxUndefPhase.setFont(new Font(cbxUndefPhase.getFont().getName(), Font.PLAIN, cbxUndefPhase.getFont().getSize()));
 		cbxWholeOver.setFont(new Font(cbxWholeOver.getFont().getName(), Font.PLAIN, cbxWholeOver.getFont().getSize()));	
-		cbxPartOver.setFont(new Font(cbxPartOver.getFont().getName(), Font.PLAIN, cbxPartOver.getFont().getSize()));
-		cbxDecInt.setFont(new Font(cbxDecInt.getFont().getName(), Font.PLAIN, cbxDecInt.getFont().getSize()));	
 	}
 	
 	/**
@@ -410,6 +410,7 @@ public class AntiPatternSearchDialog extends JDialog {
        		{
        			if (AssCycisSelected()) cbxAssCyc.setSelected(false);
        			if (BinOverisSelected()) cbxBinOver.setSelected(false);
+       			if (DecIntisSelected()) cbxDecInt.setSelected(false);
        			if (DepPhaseisSelected()) cbxDepPhase.setSelected(false);
        			if (FreeRoleisSelected()) cbxFreeRole.setSelected(false);
        			if (GSRigisSelected()) cbxGSRig.setSelected(false);
@@ -419,6 +420,7 @@ public class AntiPatternSearchDialog extends JDialog {
        			if (MixIdenisSelected()) cbxMixIden.setSelected(false);
        			if (MixRigisSelected()) cbxMixRig.setSelected(false);
        			if (MultiDepisSelected()) cbxMultiDep.setSelected(false);
+       			if (PartOverisSelected()) cbxPartOver.setSelected(false);
        			if (RelCompisSelected()) cbxRelComp.setSelected(false);
        			if (RelOverisSelected()) cbxRelOver.setSelected(false);
        			if (RelRigisSelected()) cbxRelRig.setSelected(false);
@@ -427,8 +429,8 @@ public class AntiPatternSearchDialog extends JDialog {
        			if (UndefFormalisSelected()) cbxUndefFormal.setSelected(false);
        			if (UndefPhaseisSelected()) cbxUndefPhase.setSelected(false);
        			if (WholeOverisSelected()) cbxWholeOver.setSelected(false);
-       			if (PartOverisSelected()) cbxUndefPhase.setSelected(false);
-       			if (DecIntisSelected()) cbxDecInt.setSelected(false);
+       			
+       			
        		}
        	});
 		
@@ -438,6 +440,7 @@ public class AntiPatternSearchDialog extends JDialog {
        		{
        			if (!AssCycisSelected()) cbxAssCyc.setSelected(true);
        			if (!BinOverisSelected()) cbxBinOver.setSelected(true);
+       			if (!DecIntisSelected()) cbxDecInt.setSelected(true);
        			if (!DepPhaseisSelected()) cbxDepPhase.setSelected(true);
        			if (!FreeRoleisSelected()) cbxFreeRole.setSelected(true);
        			if (!GSRigisSelected()) cbxGSRig.setSelected(true);
@@ -447,6 +450,7 @@ public class AntiPatternSearchDialog extends JDialog {
        			if (!MixIdenisSelected()) cbxMixIden.setSelected(true);
        			if (!MixRigisSelected()) cbxMixRig.setSelected(true);
        			if (!MultiDepisSelected()) cbxMultiDep.setSelected(true);
+       			if (!PartOverisSelected()) cbxPartOver.setSelected(true);
        			if (!RelCompisSelected()) cbxRelComp.setSelected(true);
        			if (!RelOverisSelected()) cbxRelOver.setSelected(true);
        			if (!RelRigisSelected()) cbxRelRig.setSelected(true);
@@ -455,8 +459,6 @@ public class AntiPatternSearchDialog extends JDialog {
        			if (!UndefFormalisSelected()) cbxUndefFormal.setSelected(true);
        			if (!UndefPhaseisSelected()) cbxUndefPhase.setSelected(true);
        			if (!WholeOverisSelected()) cbxWholeOver.setSelected(true);
-       			if (!PartOverisSelected()) cbxPartOver.setSelected(true);
-       			if (!DecIntisSelected()) cbxDecInt.setSelected(true);
        		}
        	});
 		
@@ -821,25 +823,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		leftPanel.add(lblMixRigRes);
 		lblMixRigRes.setPreferredSize(new Dimension(120, 20));		
 		lblMixRigRes.setForeground(Color.BLUE);
-
-		lblDecIntIco = new JButton();
-		lblDecIntIco.setPreferredSize(new Dimension(20, 20));
-		lblDecIntIco.setIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help.png")));
-		lblDecIntIco.setOpaque(false);
-		lblDecIntIco.setContentAreaFilled(false);
-		lblDecIntIco.setBorderPainted(false);
-		lblDecIntIco.setRolloverIcon(new ImageIcon(AntiPatternSearchDialog.class.getResource("/resources/icons/x16/help-rollover.png")));
-		leftPanel.add(lblDecIntIco);
-		
-		cbxDecInt = new JCheckBox(DecIntAntipattern.getAntipatternInfo().getAcronym()+": "+DecIntAntipattern.getAntipatternInfo().getName());		
-		cbxDecInt.setPreferredSize(new Dimension(250, 20));
-		cbxDecInt.setBackground(UIManager.getColor("Panel.background"));
-		leftPanel.add(cbxDecInt);
-		lblDecIntRes = new JLabel("");
-		lblDecIntRes.setPreferredSize(new Dimension(90, 20));		
-		lblDecIntRes.setForeground(Color.BLUE);
-		leftPanel.add(lblDecIntRes);
-				
+	
 		JPanel buttonPane = new JPanel();
 		getContentPane().add(buttonPane, BorderLayout.CENTER);
 		buttonPane.setPreferredSize(new Dimension(60, 65));
@@ -953,7 +937,7 @@ public class AntiPatternSearchDialog extends JDialog {
 				 final UndefPhaseAntipattern undefPhase = new UndefPhaseAntipattern(parser);
 				 final WholeOverAntipattern wholeOver = new WholeOverAntipattern(parser);
 				 final PartOverAntipattern partOver = new PartOverAntipattern(parser);
-				 final DecIntAntipattern multSort = new DecIntAntipattern(parser);
+				 final DecIntAntipattern decInt = new DecIntAntipattern(parser);
 			
 				if (parser.getElements() == null) return;
 				
@@ -1493,17 +1477,17 @@ public class AntiPatternSearchDialog extends JDialog {
 						@Override
 						public void run() {	
 							updateStatus("Identifying DecInt... ");
-							multSort.identify();				
+							decInt.identify();				
 							SwingUtilities.invokeLater(new Runnable() {
 								@Override
 								public void run() {									
 									progressBar.setValue(progressBar.getValue()+incrementalValue);
 									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("DecInt: "+multSort.getOccurrences().size()+" items found");							
-									if (multSort.getOccurrences().size()>0) {
-										result += DecIntAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multSort.getOccurrences().size()+" items found.\n";
-										totalOccurrences += multSort.getOccurrences().size();
-										lblDecIntRes.setText("("+multSort.getOccurrences().size()+")");
+									updateStatus("DecInt: "+decInt.getOccurrences().size()+" items found");							
+									if (decInt.getOccurrences().size()>0) {
+										result += DecIntAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+decInt.getOccurrences().size()+" items found.\n";
+										totalOccurrences += decInt.getOccurrences().size();
+										lblDecIntRes.setText("("+decInt.getOccurrences().size()+")");
 										cbxDecInt.setFont(new Font(cbxDecInt.getFont().getFontName(), Font.BOLD,cbxDecInt.getFont().getSize()));
 									}								
 								}
@@ -1516,7 +1500,7 @@ public class AntiPatternSearchDialog extends JDialog {
 				joinAll();
 				
 				AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, mixIden,
-						   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver, partOver, multSort);
+						   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver, partOver, decInt);
 
 				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
 				
@@ -1546,6 +1530,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		int totalItemsSelected = 0;			
 		if (AssCycisSelected()) totalItemsSelected++;
 		if (BinOverisSelected()) totalItemsSelected++;
+		if (DecIntisSelected()) totalItemsSelected++;
 		if (DepPhaseisSelected()) totalItemsSelected++;
 		if (FreeRoleisSelected()) totalItemsSelected++;
 		if (GSRigisSelected()) totalItemsSelected++;
@@ -1555,6 +1540,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		if (MixIdenisSelected()) totalItemsSelected++;
 		if (MixRigisSelected()) totalItemsSelected++;
 		if (MultiDepisSelected()) totalItemsSelected++;
+		if (PartOverisSelected()) totalItemsSelected++;
 		if (RelCompisSelected()) totalItemsSelected++;
 		if (RelOverisSelected()) totalItemsSelected++;
 		if (RelRigisSelected()) totalItemsSelected++;
@@ -1563,8 +1549,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		if (UndefFormalisSelected()) totalItemsSelected++;
 		if (UndefPhaseisSelected()) totalItemsSelected++;
 		if (WholeOverisSelected()) totalItemsSelected++;
-		if (PartOverisSelected()) totalItemsSelected++;
-		if (DecIntisSelected()) totalItemsSelected++;
+
 		return totalItemsSelected;
 	}
 	public void joinAll()
@@ -1572,6 +1557,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		try {
 			if(AssCycThread!=null)AssCycThread.join();				
 			if(BinOverThread!=null) BinOverThread.join();
+			if(DecIntThread!=null) DecIntThread.join();
 			if(DepPhaseThread!=null) DepPhaseThread.join();
 			if(FreeRoleThread!=null) FreeRoleThread.join();
 			if(GSRigThread!=null) GSRigThread.join();
@@ -1581,6 +1567,7 @@ public class AntiPatternSearchDialog extends JDialog {
 			if(MixIdenThread!=null) MixIdenThread.join();
 			if(MixRigThread!=null) MixRigThread.join();
 			if(MultiDepThread!=null) MultiDepThread.join();
+			if(PartOverThread!=null) PartOverThread.join();
 			if(RelCompThread!=null) RelCompThread.join();
 			if(RelOverThread!=null) RelOverThread.join();
 			if(RelRigThread!=null) RelRigThread.join();
@@ -1589,8 +1576,6 @@ public class AntiPatternSearchDialog extends JDialog {
 			if(UndefFormalThread!=null) UndefFormalThread.join();
 			if(UndefPhaseThread!=null) UndefPhaseThread.join();
 			if(WholeOverThread!=null) WholeOverThread.join();
-			if(PartOverThread!=null) PartOverThread.join();
-			if(DecIntThread!=null) DecIntThread.join();
 		} catch (InterruptedException e) {				
 			e.printStackTrace();
 		}
@@ -1600,6 +1585,7 @@ public class AntiPatternSearchDialog extends JDialog {
 	{
 		if(AssCycThread!=null)AssCycThread.interrupt();				
 		if(BinOverThread!=null) BinOverThread.interrupt();
+		if(DecIntThread!=null) DecIntThread.interrupt();
 		if(DepPhaseThread!=null) DepPhaseThread.interrupt();
 		if(FreeRoleThread!=null) FreeRoleThread.interrupt();
 		if(GSRigThread!=null) GSRigThread.interrupt();
@@ -1609,6 +1595,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		if(MixIdenThread!=null) MixIdenThread.interrupt();
 		if(MixRigThread!=null) MixRigThread.interrupt();
 		if(MultiDepThread!=null) MultiDepThread.interrupt();
+		if(PartOverThread!=null) PartOverThread.interrupt();
 		if(RelCompThread!=null) RelCompThread.interrupt();
 		if(RelOverThread!=null) RelOverThread.interrupt();
 		if(RelRigThread!=null) RelRigThread.interrupt();
