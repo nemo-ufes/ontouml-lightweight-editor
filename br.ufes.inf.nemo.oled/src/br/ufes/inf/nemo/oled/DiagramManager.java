@@ -65,6 +65,7 @@ import RefOntoUML.NamedElement;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
+import RefOntoUML.StringExpression;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
@@ -341,6 +342,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		cmd.run();
 	}
 
+	public void addConstraintx(String text, RefOntoUML.Element eContainer) 
+	{
+		RefOntoUML.Constraintx ct = (Constraintx)addElement(ElementType.CONSTRAINT,eContainer);		
+		((StringExpression)ct.getSpecification()).setSymbol(text);
+	}
+	
 	/** Add comment to the model (not to diagrams) */
 	public void addComment(RefOntoUML.Comment c, RefOntoUML.Element eContainer)
 	{
