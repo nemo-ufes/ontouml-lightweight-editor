@@ -194,8 +194,11 @@ public class CreationHandler implements EditorMode {
     	// CASSIO : DERIVED TYPES PATTERNS
     	editor.cancelEditing();
     	if(elementType == ElementType.UNION){
-    		editor.getDiagramManager().openDerivedTypePattern(tmpPos.getX(),tmpPos.getY());
-    	}    	
+    		editor.getDiagramManager().openDerivedTypePatternUnion(tmpPos.getX(),tmpPos.getY());
+    	}  
+    	if(elementType == ElementType.EXCLUSION){
+    		editor.getDiagramManager().openDerivedTypePatternExclusion(tmpPos.getX(),tmpPos.getY());
+    	}
     }
     
   }

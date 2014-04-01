@@ -73,6 +73,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
+import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
 import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.dialog.OWLSettingsDialog;
@@ -2230,12 +2231,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	
-	public void openDerivedTypePattern(Double x, Double y) {
+	public void openDerivedTypePatternUnion(Double x, Double y) {
 			
 		JDialog dialog = new UnionPattern(this);
 		dialog.setLocation(x.intValue(), y.intValue());
 		((UnionPattern) dialog).setPosition(x, y);
 		dialog.setModal(true);
 		dialog.setVisible(true);
+	}
+	
+	public void openDerivedTypePatternExclusion(Double x, Double y) {
+//		JDialog dialog = new ExclusionPattern();
+//		dialog.setLocation(x.intValue(), y.intValue());
+//		//((UnionPattern) dialog).setPosition(x, y);
+//		dialog.setModal(true);
+//		dialog.setVisible(true);
+	
 	}
 }

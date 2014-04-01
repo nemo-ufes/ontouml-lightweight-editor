@@ -152,7 +152,8 @@ public class DerivedTypesOperations {
 				}
 				if(stereotypes!=null){
 					String name = DefineNameDerivedType();
-					if(refontoList.get(pos2).eClass().getName().equals("SubKind"))
+					//DerivedByExclusion.getInstance().createExclusionRule(((Classifier) refontoList.get(pos)).getName(), ((Classifier) refontoList.get(pos2)).getName(), name);
+					if(!(refontoList.get(pos2).eClass().getName().equals("Role") && (refontoList.get(pos).eClass().getName().equals("Kind")) ))
 					{
 						String rule="context: "+((Classifier) refontoList.get(pos)).getName()+"\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+name+"')";
 						dm.getFrame().getInfoManager().getOcleditor().addText(rule);
