@@ -27,6 +27,8 @@ import java.util.List;
 
 import org.eclipse.emf.edit.command.AddCommand;
 
+import RefOntoUML.Comment;
+import RefOntoUML.Constraintx;
 import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.CompositeElement;
@@ -78,7 +80,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		this.eContainer = eContainer;
 		this.diagramElement = ModelHelper.getDiagramElementByEditor(element,(DiagramEditor)notification);
 		if(this.diagramElement==null) {
-			if(!(element instanceof GeneralizationSet))
+			if(!(element instanceof GeneralizationSet) && !(element instanceof Comment) && !(element instanceof Constraintx))
 				this.diagramElement = ((DiagramEditor)this.notification).getCreationHandler().createNode((RefOntoUML.Type)element, eContainer);
 		}
 		absx = x;
@@ -178,6 +180,14 @@ public class AddNodeCommand extends BaseDiagramCommand {
 				if (!(((RefOntoUML.Element)eContainer).getOwnedComment().contains(element)))
 				{
 					AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Element)eContainer).getOwnedComment(), element);
+					project.getEditingDomain().getCommandStack().execute(cmd);
+				}
+				
+			}else if (eContainer instanceof RefOntoUML.Classifier && element instanceof RefOntoUML.Constraintx)
+			{
+				if (!(((RefOntoUML.Constraintx)element).getConstrainedElement().contains((RefOntoUML.Classifier)eContainer)))						
+				{
+					AddCommand cmd = new AddCommand(project.getEditingDomain(), ((RefOntoUML.Constraintx)element).getConstrainedElement(), (RefOntoUML.Classifier)eContainer);
 					project.getEditingDomain().getCommandStack().execute(cmd);
 				}
 				

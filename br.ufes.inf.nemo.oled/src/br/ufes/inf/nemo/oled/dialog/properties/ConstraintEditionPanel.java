@@ -25,6 +25,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import javax.swing.JTextField;
 
 
 public class ConstraintEditionPanel extends JPanel {
@@ -41,14 +42,15 @@ public class ConstraintEditionPanel extends JPanel {
 	private JButton btnAdd;
 	private JButton btnSave;
 	private JButton btnDelete;
-	private JButton btnParse;
 	@SuppressWarnings("rawtypes")
 	private JComboBox comboConstraint;
 	private JScrollPane scrollPaneText;
 	private JTextArea constraintTextArea;
-	private JLabel lblSelected;
 	
 	private ArrayList<Constraintx> constraintList = new ArrayList<Constraintx>();
+	private JTextField textFieldName;
+
+	private JLabel lblName;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ConstraintEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement, Classifier element) 
@@ -60,27 +62,56 @@ public class ConstraintEditionPanel extends JPanel {
 		JPanel panel = new JPanel();
 		panel.setBorder(BorderFactory.createTitledBorder(""));
 		
+		constraintTextArea = new JTextArea();	
+		constraintTextArea.setToolTipText("Click here to start writing constraints");
+		
+		scrollPaneText = new JScrollPane();
+		scrollPaneText.setToolTipText("Click here to start writing constraints");
+		scrollPaneText.setViewportView(constraintTextArea);
+		
+		textFieldName = new JTextField();
+		textFieldName.setColumns(10);
+		
+		lblName = new JLabel("Name:");
+		
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 402, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(textFieldName, GroupLayout.PREFERRED_SIZE, 341, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textFieldName, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		panel.setLayout(gl_panel);
+		
 		comboConstraint = new JComboBox();
+		comboConstraint.setFocusable(false);
 		comboConstraint.setToolTipText("This is the name of your constraint");
 		comboConstraint.setPreferredSize(new Dimension(350, 20));
-		comboConstraint.setFocusable(false);
 		comboConstraint.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
 				ConstraintElement ce = (ConstraintElement) comboConstraint.getSelectedItem();
-				if(ce!=null) constraintTextArea.setText(((StringExpression)ce.getConstraint().getSpecification()).getSymbol());
-			}
-		});
-		
-		
-		btnAdd = new JButton("");
-		btnAdd.setFocusable(false);
-		btnAdd.setIcon(new ImageIcon(ConstraintEditionPanel.class.getResource("/resources/icons/x16/add.png")));
-		btnAdd.setToolTipText("Add a new constraint to this class");
-		btnAdd.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				createConstraintActionPerformed();				
+				if(ce!=null) {
+					constraintTextArea.setText(((StringExpression)ce.getConstraint().getSpecification()).getSymbol());
+					textFieldName.setText(ce.getConstraint().getName());
+				}
 			}
 		});
 		
@@ -106,84 +137,56 @@ public class ConstraintEditionPanel extends JPanel {
 			}
 		});
 		
-		constraintTextArea = new JTextArea();	
-		constraintTextArea.setToolTipText("Click here to start writing constraints");
-		
-		scrollPaneText = new JScrollPane();
-		scrollPaneText.setToolTipText("Click here to start writing constraints");
-		scrollPaneText.setViewportView(constraintTextArea);
-		
 		comboConstraintType = new JComboBox();
 		comboConstraintType.setToolTipText("The type of constraint to be created");
 		comboConstraintType.setModel(new DefaultComboBoxModel(new String[] {"invariant", "derivation"}));
-//		((JLabel)comboConstraintType.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
 		
-		lblSelected = new JLabel("Selected constraint:");
 		
-		btnParse = new JButton("");
-		btnParse.setFocusable(false);
-		btnParse.setEnabled(false);
-		btnParse.setToolTipText("Parse selected constraint");
-		btnParse.setIcon(new ImageIcon(ConstraintEditionPanel.class.getResource("/resources/icons/x16/accept.png")));
+		btnAdd = new JButton("");
+		btnAdd.setFocusable(false);
+		btnAdd.setIcon(new ImageIcon(ConstraintEditionPanel.class.getResource("/resources/icons/x16/new.png")));
+		btnAdd.setToolTipText("Add a new constraint to this class");
+		btnAdd.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				createConstraintActionPerformed();				
+			}
+		});
 		
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 402, GroupLayout.PREFERRED_SIZE)
-						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-							.addComponent(lblSelected, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(comboConstraint, GroupLayout.PREFERRED_SIZE, 276, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(comboConstraintType, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-							.addGap(152)
-							.addComponent(btnParse, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblSelected, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboConstraint, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(btnAdd, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
-							.addComponent(comboConstraintType, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(btnSave, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnParse, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnDelete, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addContainerGap())
-		);
-		panel.setLayout(gl_panel);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 426, GroupLayout.PREFERRED_SIZE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(199)
+							.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(comboConstraintType, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+						.addComponent(comboConstraint, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addContainerGap(14, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(19)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 270, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(14)
+					.addComponent(comboConstraint, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(comboConstraintType, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+						.addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+							.addComponent(btnSave, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+							.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)))
+					.addContainerGap(15, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 		
@@ -265,6 +268,7 @@ public class ConstraintEditionPanel extends JPanel {
 		if((ConstraintElement)comboConstraint.getSelectedItem()!=null){
 			Constraintx c = ((ConstraintElement)comboConstraint.getSelectedItem()).getConstraint();
 			((StringExpression)c.getSpecification()).setSymbol(constraintTextArea.getText());
+			c.setName(textFieldName.getText());
 			comboConstraint.repaint();
 			comboConstraint.validate();
 		}		
@@ -276,6 +280,7 @@ public class ConstraintEditionPanel extends JPanel {
 			comboConstraint.removeItem(comboConstraint.getSelectedItem());
 			comboConstraint.invalidate();	
 			constraintTextArea.setText("");
+			textFieldName.setText("");
 		}			
 		if (comboConstraint.getItemCount()>0) {
 			enableConstraintArea(true);
