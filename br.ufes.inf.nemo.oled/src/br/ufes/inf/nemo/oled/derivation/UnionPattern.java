@@ -28,6 +28,8 @@ import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Font;
 
 public class UnionPattern extends JDialog {
 
@@ -41,8 +43,6 @@ public class UnionPattern extends JDialog {
 	private JLabel lblSecondSubtype = new JLabel("Second Subtype");
 	private JLabel lblNewLabel = new JLabel("First Subtype");
 	private DiagramManager diagramMan;
-	private JLabel lblName;
-	private JLabel lblStereotype;
 	private JLabel lblNewLabel_1;
 	private Point2D.Double location= new Point2D.Double();
 	/**
@@ -60,18 +60,13 @@ public class UnionPattern extends JDialog {
 	
 	public UnionPattern(DiagramManager diagramManager) {
 		this.diagramMan= diagramManager;
-		setBounds(100, 100, 450, 226);
+		setBounds(100, 100, 453, 239);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(new Color(245, 245, 245));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		location.x= this.getLocation().getX();
 		location.y= this.getLocation().getY();
 		getContentPane().add(contentPanel, BorderLayout.NORTH);
-		{
-			lblName = new JLabel("Name");
-		}
-		{
-			lblStereotype = new JLabel("Stereotype");
-		}
 		{
 
 			lblNewLabel.setForeground(SystemColor.textInactiveText);
@@ -109,59 +104,60 @@ public class UnionPattern extends JDialog {
 			textField_2 = new JTextField();
 			textField_2.setColumns(10);
 		}
+		
+		JLabel lblDerivationByUnion = new JLabel("Derivation By Union");
+		lblDerivationByUnion.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(89)
-					.addComponent(lblName)
-					.addGap(203)
-					.addComponent(lblStereotype))
+					.addGap(141)
+					.addComponent(lblDerivationByUnion)
+					.addGap(180))
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(21)
-					.addComponent(lblNewLabel)
-					.addGap(4)
-					.addComponent(textField, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
-					.addGap(4)
-					.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(7)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblSecondSubtype)
-						.addComponent(lblNewLabel_1))
-					.addGap(4)
+					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
-							.addGap(4)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)))
-					.addGap(7))
+							.addGap(11)
+							.addComponent(lblNewLabel)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
+								.addComponent(textField, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(lblSecondSubtype)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addGap(11)
+							.addComponent(lblNewLabel_1)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))
+					.addGap(8))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(7)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblName)
-						.addComponent(lblStereotype))
-					.addGap(4)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(4)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
+							.addComponent(lblDerivationByUnion)
+							.addGap(26)
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNewLabel_1))
+							.addGap(48))
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblSecondSubtype))
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNewLabel))
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblSecondSubtype)
 						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_1))
-					.addGap(26))
+					.addGap(28))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
@@ -194,5 +190,4 @@ public class UnionPattern extends JDialog {
 			}
 		}
 	}
-
 }

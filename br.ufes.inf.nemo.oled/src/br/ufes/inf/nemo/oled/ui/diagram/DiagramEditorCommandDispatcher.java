@@ -247,6 +247,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("CREATE_DERIVATION_BY_UNION", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternCreationMode")));
 			
+			selectorMap.put("CREATE_DERIVATION_BY_EXCLUSION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternCreationModeEx")));
+			
 			selectorMap.put("SHOW_GRID", new MethodCall(
 					getClass().getMethod("showGrid")));
 
