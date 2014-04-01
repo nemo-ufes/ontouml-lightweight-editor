@@ -410,6 +410,11 @@ public class EAXMIParser implements XMIParser {
 				break;
 			case PROPERTY:
 				elemList = XMLDOMUtil.getElementChildsByType(elem, "uml:Property");
+				if (elemList.size() == 2)
+				{
+					if (elemList.get(0).getAttributeNS(XMINS, "id").startsWith("EAID_dst"))
+						elemList.add(1, elemList.remove(0));
+				}
 				break;
 			default:
 				break;
@@ -504,8 +509,12 @@ public class EAXMIParser implements XMIParser {
     	{
     		List<Element> memberEndsAux = XMLDOMUtil.getElementChildsByTagName(elem, "memberEnd");
     		List<Element> memberEnds = new ArrayList<Element>();
-    		for (Element memberEnd : memberEndsAux) {
-    			memberEnds.add(doc.getElementById(memberEnd.getAttributeNS(XMINS, "idref")));
+    		for (Element memberEnd : memberEndsAux)
+    		{
+    			if (memberEnd.getAttributeNS(XMINS, "idref").startsWith("EAID_src"))
+    				memberEnds.add(0, doc.getElementById(memberEnd.getAttributeNS(XMINS, "idref")));
+    			else
+    				memberEnds.add(doc.getElementById(memberEnd.getAttributeNS(XMINS, "idref")));
     		}
     		if (elem.hasAttribute("relator"))
     			hashProp.put("relator", doc.getElementById(elem.getAttribute("relator")));
