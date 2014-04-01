@@ -350,13 +350,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/** Add element to the model (not to diagrams).  */
-	public RefOntoUML.PackageableElement addElement(ElementType stereotype, RefOntoUML.Package eContainer)
+	public RefOntoUML.Element addElement(ElementType stereotype, RefOntoUML.Element eContainer)
 	{
-		RefOntoUML.PackageableElement element = elementFactory.createElement(stereotype);		
+		RefOntoUML.Element element = elementFactory.createElement(stereotype);		
 				
-		//to add only in the model do exactly as follow		
-		AddNodeCommand cmd = new AddNodeCommand(null,null,element,0,0,getCurrentProject(),eContainer);		
-		cmd.run();
+		if(element instanceof RefOntoUML.Comment){
+			AddNodeCommand cmd = new AddNodeCommand(null,null,(RefOntoUML.Comment)element,0,0,getCurrentProject(),eContainer);		
+			cmd.run();
+		}else if (element instanceof RefOntoUML.Constraintx){
+			AddNodeCommand cmd = new AddNodeCommand(null,null,(RefOntoUML.Constraintx)element,0,0,getCurrentProject(),eContainer);		
+			cmd.run();
+		}else{
+			//to add only in the model do exactly as follow		
+			AddNodeCommand cmd = new AddNodeCommand(null,null,element,0,0,getCurrentProject(),eContainer);		
+			cmd.run();
+		}
 
 		return element;
 	}
@@ -534,20 +542,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if(element instanceof Association)
 		{
 			AssociationElement ae = (AssociationElement) ModelHelper.getDiagramElementByEditor(element, d);
-			isRectilinear = ae.isTreeStyle();
-			showName = ae.showName();
-			showOntoUMLStereotype = ae.showOntoUmlStereotype();
-			showRoles = ae.showRoles();
-			showMultiplicities = ae.showMultiplicities();
-			direction = ae.getNameReadingDirection();
-			
+			if(ae!=null){
+				isRectilinear = ae.isTreeStyle();			
+				showName = ae.showName();
+				showOntoUMLStereotype = ae.showOntoUmlStereotype();
+				showRoles = ae.showRoles();
+				showMultiplicities = ae.showMultiplicities();
+				direction = ae.getNameReadingDirection();
+			}
 			deleteFromDiagram(element, d);
 			moveAssociationToDiagram((Association) element, d, isRectilinear, showName, showOntoUMLStereotype, showMultiplicities, showRoles, direction);
 		}
 			
 		else if(element instanceof Generalization){
 			GeneralizationElement ge = (GeneralizationElement) ModelHelper.getDiagramElementByEditor(element, d);
-			isRectilinear = ge.isTreeStyle();
+			if (ge!=null) isRectilinear = ge.isTreeStyle();
 			
 			deleteFromDiagram(element, d);
 			moveGeneralizationToDiagram((Generalization) element, d, isRectilinear);
@@ -711,7 +720,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		EObject eContainer = null;
 		if(gens.size()>1) eContainer = gens.get(0).getSpecific().eContainer();	
 		else eContainer = getCurrentProject().getModel();
-		PackageableElement newgenset = addElement(ElementType.GENERALIZATIONSET, (RefOntoUML.Package)eContainer);
+		PackageableElement newgenset = (PackageableElement)addElement(ElementType.GENERALIZATIONSET, (RefOntoUML.Package)eContainer);
 		// init data of generalization set
 		((GeneralizationSet)newgenset).setIsCovering(true);
 		((GeneralizationSet)newgenset).setIsDisjoint(true);
@@ -788,10 +797,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			tree.selectModelElement(element.eContainer());
 			tree.addObject(element);
 		} else {
-			tree.selectModelElement(element);
-			tree.removeCurrentNode();
-			tree.selectModelElement(element.eContainer());
-			tree.addObject(element);
+			if(element instanceof Generalization){
+				tree.selectModelElement(element);
+				tree.removeCurrentNode();
+				tree.selectModelElement(element.eContainer());
+				tree.addObject(element);
+			}
 		}
 		tree.updateUI();
 		
@@ -844,7 +855,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if (element instanceof NamedElement){				
 				getFrame().showErrorMessageDialog("Updating OLED from modification", "An error ocurred while updating "+ModelHelper.getStereotype(element)+" "+((NamedElement)element).getName()+ " in the diagram");
 			}else if (element instanceof Generalization){
-				getFrame().showErrorMessageDialog("Updating OLED from modification", "An error ocurred while updating "+ModelHelper.getStereotype(element)+" "+((Generalization)element).getGeneral()+ "->"+((Generalization)element).getSpecific()+" in the diagram");
+				getFrame().showErrorMessageDialog("Updating OLED from modification", "An error ocurred while updating "+ModelHelper.getStereotype(element)+" "+((Generalization)element).getGeneral().getName()+ "->"+((Generalization)element).getSpecific().getName()+" in the diagram");
 			}					
 		}
 	}

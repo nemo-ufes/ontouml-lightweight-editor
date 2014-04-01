@@ -343,14 +343,32 @@ public class TreePopupMenu extends JPopupMenu {
     		{
     			final RefOntoUML.Type eContainer = (RefOntoUML.Type)ontoElement.getElement();
     			JMenuItem addGenItem = new JMenuItem("Add Generalization");
+    			JMenuItem addCommentItem = new JMenuItem("Add Comment");
+    			JMenuItem addConstraintItem = new JMenuItem("Add Constraint");
     			add(addGenItem);    			
+    			add(addCommentItem);
+    			add(addConstraintItem);
     			addGenItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
 	   	        		frame.getDiagramManager().addRelation(RelationType.GENERALIZATION,eContainer);
 	   	        	}
        	        });
+    			addCommentItem.addActionListener(new ActionListener() {				
+	   	        	@Override
+	   	        	public void actionPerformed(ActionEvent e) {
+	   	        		frame.getDiagramManager().addElement(ElementType.COMMENT,eContainer);
+	   	        	}
+       	        });
+    			addConstraintItem.addActionListener(new ActionListener() {				
+	   	        	@Override
+	   	        	public void actionPerformed(ActionEvent e) {
+	   	        		frame.getDiagramManager().addElement(ElementType.CONSTRAINT,eContainer);
+	   	        	}
+       	        });
     			addGenItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/generalization.png")));
+    			addCommentItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/comment.png")));
+    			addConstraintItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/constraintx.png")));
     		}
 		}		
 

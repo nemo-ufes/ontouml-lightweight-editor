@@ -202,7 +202,7 @@ public class GeneralizationEditionPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				int response = JOptionPane.showConfirmDialog(GeneralizationEditionPanel.this, "Are you sure you want to create a new generalization set?", "Creating Generalization Set", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if(response==JOptionPane.OK_OPTION){
-					PackageableElement genSet = diagramManager.addElement(ElementType.GENERALIZATIONSET,(RefOntoUML.Package)element.eContainer().eContainer());
+					PackageableElement genSet = (PackageableElement)diagramManager.addElement(ElementType.GENERALIZATIONSET,(RefOntoUML.Package)element.eContainer().eContainer());
 					genSet.setName("gs");
 					((GeneralizationSet)genSet).setIsCovering(true);
 					((GeneralizationSet)genSet).setIsDisjoint(true);

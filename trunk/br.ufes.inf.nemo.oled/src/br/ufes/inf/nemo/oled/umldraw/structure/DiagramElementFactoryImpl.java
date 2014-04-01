@@ -42,6 +42,8 @@ import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Mixin;
 import RefOntoUML.Mode;
+import RefOntoUML.NamedElement;
+import RefOntoUML.PackageableElement;
 import RefOntoUML.Phase;
 import RefOntoUML.Property;
 import RefOntoUML.Quantity;
@@ -325,9 +327,9 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   /**
    * Create only the RefOntoUML Type element and do not create the referred UmlNode on the Diagram.
    */
-  public RefOntoUML.PackageableElement createElement(ElementType elementType)
+  public RefOntoUML.Element createElement(ElementType elementType)
   {
-	  RefOntoUML.PackageableElement type = null;
+	  RefOntoUML.Element type = null;
 	  if (elementType.equals(ElementType.PACKAGE)) type = factory.createPackage();
 	  if (elementType.equals(ElementType.KIND)) type = factory.createKind();
 	  if (elementType.equals(ElementType.COLLECTIVE)) type = factory.createCollective();
@@ -342,9 +344,14 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 	  if (elementType.equals(ElementType.RELATOR)) { type = factory.createRelator();  }
 	  if (elementType.equals(ElementType.DATATYPE)) { type = factory.createDataType();  }	  
 	  if (elementType.equals(ElementType.GENERALIZATIONSET)) { type = factory.createGeneralizationSet();  }
-	  type.setName(ModelHelper.getStereotype(type)+nextElementCount(elementType)); 
-	  type.setVisibility(VisibilityKind.PUBLIC);	  	
+	  if (elementType.equals(ElementType.COMMENT)) { type = createComment();  }
+	  if (elementType.equals(ElementType.CONSTRAINT)) { type = createConstraintx();  }
+	  if(type instanceof NamedElement){
+		  ((NamedElement)type).setName(ModelHelper.getStereotype(type)+nextElementCount(elementType)); 
+		  ((NamedElement)type).setVisibility(VisibilityKind.PUBLIC);
+	  }		 
 	  return type;			  
+	  
   }
     
   public Comment createComment()
@@ -369,7 +376,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
    */
   public RefOntoUML.PackageableElement createElement(ElementType elementType, RefOntoUML.Type type)
   {
-	  RefOntoUML.PackageableElement newType = createElement(elementType);
+	  RefOntoUML.PackageableElement newType = (PackageableElement)createElement(elementType);
 	  newType.setVisibility(type.getVisibility());
 	  newType.setName(type.getName());
 	  ((Classifier)newType).setIsAbstract(((Classifier)type).isIsAbstract());
