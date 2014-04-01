@@ -542,10 +542,11 @@ public class ProjectTree extends CheckboxTree {
     	}
 	}
 	@SuppressWarnings("rawtypes")
-	public void selectModelElement(EObject element)
+	public boolean selectModelElement(EObject element)
 	{	
+		boolean result = false;
 		EObject rootEObj = ((OntoUMLElement)modelRootNode.getUserObject()).getElement();
-		if (rootEObj.equals(element)) { select(modelRootNode); return; }
+		if (rootEObj.equals(element)) { result=true; select(modelRootNode); return result; }
 		
 		Enumeration e = modelRootNode.breadthFirstEnumeration();
 	    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)e.nextElement();
@@ -553,7 +554,9 @@ public class ProjectTree extends CheckboxTree {
 	    {
 	    	EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
 	    	if (obj.equals(element)) { 
-	    		this.setSelectionPath(new TreePath(node.getPath()));	    		
+	    		result =true;
+	    		this.setSelectionPath(new TreePath(node.getPath()));
+	    		return result;
 	    	}
 	    		
 	    	node = (DefaultMutableTreeNode)e.nextElement();
@@ -561,8 +564,11 @@ public class ProjectTree extends CheckboxTree {
 	    //last element
 	    EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
 	    if (obj.equals(element)){ 
-	    	this.setSelectionPath(new TreePath(node.getPath()));	    	
+	    	result =true;
+	    	this.setSelectionPath(new TreePath(node.getPath()));	 
+	    	return result;
 	    }	    
+	    return result;	    
 	}
 	
 	public void select (DefaultMutableTreeNode  node)

@@ -122,7 +122,7 @@ public class AttributesEditionPanel extends JPanel {
 		btnCreate = new JButton("");
 		btnCreate.setFocusable(false);
 		btnCreate.setToolTipText("Add new attribute to this class");
-		btnCreate.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/icons/x16/add.png")));
+		btnCreate.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/icons/x16/new.png")));
 		btnCreate.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

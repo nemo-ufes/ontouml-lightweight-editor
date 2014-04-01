@@ -272,7 +272,21 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		}
 		
 		for(Element elem: elemList) {
-			if (elem instanceof RefOntoUML.GeneralizationSet) delete(elem);
+			if (elem instanceof RefOntoUML.GeneralizationSet) {			
+				// Dependencies with generalizations: solving this here before delete the generalization set
+				if (elem instanceof RefOntoUML.GeneralizationSet){
+					ArrayList<Generalization> gens = new ArrayList<Generalization>(); 
+					for(Generalization gen: ((GeneralizationSet)elem).getGeneralization()){				
+						if(gen!=null) {
+							gens.add(gen);							
+						}
+					}			
+					((GeneralizationSet)elem).getGeneralization().removeAll(gens);
+					for(Generalization gen: gens) ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(gen, false);
+				}
+				
+				delete(elem);
+			}
 		}
 	}
 	
@@ -303,16 +317,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	}
 	
 	private void delete (RefOntoUML.Element elem)
-	{
-		// generalization sets have dependencies with generalizations... solving this here before delete the generalization set
-		if (elem instanceof RefOntoUML.GeneralizationSet){
-			ArrayList<Generalization> gens = new ArrayList<Generalization>(); 
-			for(Generalization gen: ((GeneralizationSet)elem).getGeneralization()){				
-				if(gen!=null)gens.add(gen);				
-			}			
-			((GeneralizationSet)elem).getGeneralization().removeAll(gens);
-		}
-		
+	{			
 		DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), elem);
 		project.getEditingDomain().getCommandStack().execute(cmd);		
 	}
