@@ -428,7 +428,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		{
 			ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
 			deletionList.add(element);		
-			//from diagrams & model
+			//from diagrams & model			
 			for(DiagramEditor diagramEditor: getDiagramEditors(element))
 			{
 				DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
@@ -783,8 +783,16 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		// Project Tree
 		// =================================		
 		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
-		tree.selectModelElement(element.eContainer());		
-		tree.addObject(element);		
+		boolean found = tree.selectModelElement(element);
+		if(!found) {
+			tree.selectModelElement(element.eContainer());
+			tree.addObject(element);
+		} else {
+			tree.selectModelElement(element);
+			tree.removeCurrentNode();
+			tree.selectModelElement(element.eContainer());
+			tree.addObject(element);
+		}
 		tree.updateUI();
 		
 		// =================================
