@@ -73,7 +73,6 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
-import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
 import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.dialog.OWLSettingsDialog;
@@ -87,6 +86,7 @@ import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ontoumlpattern.PatternTool;
 import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
 import br.ufes.inf.nemo.oled.ui.StartPanel;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
@@ -2247,5 +2247,23 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 //		dialog.setModal(true);
 //		dialog.setVisible(true);
 	
+	}
+
+	public void patternCreationSubkind(double x, double y) {
+		Fix fix = PatternTool.createSubkindPattern(getCurrentProject().getModel(),x,y);
+		if(fix!=null)
+			updateOLED(fix);
+	}
+
+	public void patternCreationRelator(double x, double y) {
+		Fix fix = PatternTool.createRelatorPattern(getCurrentProject().getModel(),x,y);
+		if(fix!=null)
+			updateOLED(fix);		
+	}
+
+	public void patternCreationRole(double x, double y) {
+		Fix fix = PatternTool.createRolePattern(getCurrentProject().getModel(),x,y);
+		if(fix!=null)
+			updateOLED(fix);
 	}
 }

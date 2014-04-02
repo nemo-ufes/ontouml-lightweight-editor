@@ -195,9 +195,18 @@ public class CreationHandler implements EditorMode {
     	editor.cancelEditing();
     	if(elementType == ElementType.UNION){
     		editor.getDiagramManager().openDerivedTypePatternUnion(tmpPos.getX(),tmpPos.getY());
-    	}  
-    	if(elementType == ElementType.EXCLUSION){
+    	}else if(elementType == ElementType.EXCLUSION){
     		editor.getDiagramManager().openDerivedTypePatternExclusion(tmpPos.getX(),tmpPos.getY());
+    	}
+    	
+    	//Victor 
+    	
+    	if(elementType == ElementType.SUBKINDPATTERN){
+    		editor.getDiagramManager().patternCreationSubkind(tmpPos.getX(),tmpPos.getY());
+    	}else if(elementType == ElementType.RELATORPATTERN){
+    		editor.getDiagramManager().patternCreationRelator(tmpPos.getX(),tmpPos.getY());		
+    	}else if(elementType == ElementType.ROLEPATTERN){
+    		editor.getDiagramManager().patternCreationRole(tmpPos.getX(),tmpPos.getY());  		
     	}
     }
     

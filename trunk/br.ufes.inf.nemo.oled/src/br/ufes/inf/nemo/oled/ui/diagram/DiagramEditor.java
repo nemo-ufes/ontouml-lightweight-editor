@@ -797,6 +797,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		editorMode = creationHandler;
 	}
 	
+	public void setPatternMode(ElementType elemType)
+	{
+		creationHandler.setPattern(elemType);
+		editorMode = creationHandler;
+	}
 	public void setPatternCreationModeEx()
 	{
 		creationHandler.setPattern(ElementType.EXCLUSION);

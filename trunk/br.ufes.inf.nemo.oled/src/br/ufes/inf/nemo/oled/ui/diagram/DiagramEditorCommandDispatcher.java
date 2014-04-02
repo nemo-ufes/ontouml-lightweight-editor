@@ -224,7 +224,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("CREATE_NOTE_CONNECTION", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.NOTE_CONNECTOR));
-			
+
 			selectorMap.put("RESET_POINTS", new MethodCall(
 					DiagramEditor.class.getMethod("resetConnectionPoints")));
 
@@ -243,13 +243,13 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					RelationEndType.TARGET));
 
 			// Self-calls
-			
+
 			selectorMap.put("CREATE_DERIVATION_BY_UNION", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternCreationMode")));
-			
+
 			selectorMap.put("CREATE_DERIVATION_BY_EXCLUSION", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternCreationModeEx")));
-			
+
 			selectorMap.put("SHOW_GRID", new MethodCall(
 					getClass().getMethod("showGrid")));
 
@@ -303,12 +303,21 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("DERIVERELATIONS", new MethodCall(
 					getClass().getMethod("deriveRelations")));
-			
+
 			selectorMap.put("DERIVED_BY_UNION", new MethodCall(
 					getClass().getMethod("derivedByUnion")));
-			
+
 			selectorMap.put("DERIVED_BY_EXCLUSION", new MethodCall(
 					getClass().getMethod("derivedByExclusion")));
+
+			selectorMap.put("PATTERN_CREATION_SUBKIND", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.SUBKINDPATTERN));
+
+			selectorMap.put("PATTERN_CREATION_RELATOR", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.RELATORPATTERN));
+			
+			selectorMap.put("PATTERN_CREATION_ROLE", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.ROLEPATTERN));
 			
 			selectorMap.put("CREATE_GEN_SET", new MethodCall(
 					DiagramEditor.class.getMethod("createGeneralizationSet")));
@@ -337,7 +346,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{
 		if (manager.isProjectLoaded()==false) return;
 		manager.getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));	
-		
+
 		manager.parseOCL(false);
 		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(manager.getCurrentProject());
 
@@ -346,7 +355,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		refOptions.check(refparser);
 
 		SimulationDialog.open(refOptions, oclOptions, manager.getFrame());
-		
+
 		manager.getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
@@ -356,7 +365,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 		AntiPatternSearchDialog.open(manager.getFrame());		
 	}
-	
+
 	public void undo()
 	{		
 		if (manager.isProjectLoaded()==false) return;
@@ -374,17 +383,17 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void derivedByUnion()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.deriveByUnion();
 	}
-	
+
 	public void derivedByExclusion()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		
+
 		manager.deriveByExclusion();
 	}
-	
+
 	public void redo()
 	{
 		if (manager.isProjectLoaded()==false) return;
@@ -488,7 +497,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 		manager.generateText();
 	}
-	
+
 	/**
 	 * Displays the grid depending on the selection state of the menu item.
 	 */
