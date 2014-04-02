@@ -87,7 +87,24 @@ public class PaletteAccordion extends JPanel{
 		//createMiscellaneousPalette(editorDispatcher);
 		//createStaticRulesPalette(editorDispatcher);
 		createPatternsPalette(editorDispatcher);
+		createOntoUMLPatternsPalette(editorDispatcher);
 		render();
+	}
+	
+	private void createOntoUMLPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher) {
+		String pelleteName = "Patterns";
+		Palette palette =  new Palette(this, pelleteName);
+		palette.createElement("staticpalette.classes", "select");
+		palette.createElement("staticpalette.patterncreation", "subkindcreation");
+		palette.createElement("staticpalette.patterncreation", "relatorcreation");
+		palette.createElement("staticpalette.patterncreation", "rolecreation");
+		
+		palette.addCommandListener(editorDispatcher);
+		
+		paletteMap.put(pelleteName, palette);
+
+		if(openPalette == null)
+			openPalette = pelleteName;		
 	}
 	
 	private void render()
