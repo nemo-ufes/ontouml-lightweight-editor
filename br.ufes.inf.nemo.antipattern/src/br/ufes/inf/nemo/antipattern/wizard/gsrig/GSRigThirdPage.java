@@ -60,7 +60,7 @@ public class GSRigThirdPage extends GSRigPage {
 		btnAntiRigid.setText("Anti-Rigid: if x instantiates it in a given moment, there is at least one possible situation in which x does not do so");
 		
 		btnSemiRigid = new Button(container, SWT.RADIO);
-		btnSemiRigid.setBounds(10, 111, 644, 16);
+		btnSemiRigid.setBounds(10, 112, 644, 16);
 		btnSemiRigid.setText("Semi-Rigid: the type may act as rigid for some individuals and anti-rigid for others");
 	}
 	

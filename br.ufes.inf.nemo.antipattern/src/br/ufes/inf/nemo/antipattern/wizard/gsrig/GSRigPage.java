@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.antipattern.wizard.gsrig;
 
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 
@@ -27,5 +28,11 @@ public class GSRigPage extends WizardPage {
 	@Override
 	public void createControl(Composite arg0) {
 		
+	}
+	
+	@Override
+	public IWizardPage getPreviousPage(){
+		getGSRigWizard().setCanFinish(false);
+		return super.getPreviousPage();
 	}
 }
