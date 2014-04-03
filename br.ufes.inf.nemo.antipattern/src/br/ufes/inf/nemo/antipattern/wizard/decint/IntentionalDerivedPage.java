@@ -12,10 +12,10 @@ import org.eclipse.swt.widgets.Composite;
 import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
 
 public class IntentionalDerivedPage  extends DecIntPage {
-	
-	
-	private Button btnYes;
 
+	private Button btnYes;
+	private Button btnNo;
+	
 	public IntentionalDerivedPage(DecIntOccurrence decint) 
 	{
 		super(decint);		
@@ -70,18 +70,21 @@ public class IntentionalDerivedPage  extends DecIntPage {
 		}
 	};
 	
-
-	private Button btnNo;	@Override
+	@Override
 	public IWizardPage getNextPage() 
 	{	
 		if(btnNo.getSelection()){
 			DecIntAction action = new DecIntAction(decint);
 			action.setDeriveByIntersection();
 			getDecIntWizard().replaceAction(2, action);
+			return getDecIntWizard().getFinishing();
 		}
-		else
+		else if (btnYes.getSelection()){
 			getDecIntWizard().removeAllActions(2);
-		return getDecIntWizard().getFinishing();
+			return getDecIntWizard().getFinishing();
+		}
+		
+		return super.getNextPage();
 	}
 }
 
