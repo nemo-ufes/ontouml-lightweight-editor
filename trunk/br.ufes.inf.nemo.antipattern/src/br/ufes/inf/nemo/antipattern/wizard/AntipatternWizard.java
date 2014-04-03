@@ -126,4 +126,14 @@ public abstract class AntipatternWizard extends Wizard {
 		}
 	}
 
+	public HashMap<Integer, ArrayList<AntiPatternAction<?>>> getActions() {
+		return actions;
+	}
+
+	public void setCanFinish(boolean canFinish) {
+		this.canFinish = canFinish;
+	}
+	
+	
+
 }
