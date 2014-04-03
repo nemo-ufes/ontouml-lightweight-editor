@@ -49,6 +49,12 @@ public class PaletteAccordion extends JPanel{
 
 	private static Border unselectedPaletteBorder = new LineBorder(ColorPalette.getInstance().getColor(ThemeColor.GREY_DARK), 1, true);
 	private static Color unselectedPaletteBackground = ColorPalette.getInstance().getColor(ThemeColor.GREY_LIGHT);
+
+	private Palette ontopatternPalette;
+
+	private Palette derivedPalette;
+
+	private Palette elementsPalette;
 		
 	public AppFrame getFrame()
 	{
@@ -83,28 +89,9 @@ public class PaletteAccordion extends JPanel{
 	public void createStaticStructurePalettes(DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		createStaticClassesPalette(editorDispatcher);		
-		//createStaticRelationshipsPalette(editorDispatcher);
-		//createMiscellaneousPalette(editorDispatcher);
-		//createStaticRulesPalette(editorDispatcher);
 		createPatternsPalette(editorDispatcher);
 		createOntoUMLPatternsPalette(editorDispatcher);
 		render();
-	}
-	
-	private void createOntoUMLPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher) {
-		String pelleteName = "Patterns";
-		Palette palette =  new Palette(this, pelleteName);
-		palette.createElement("staticpalette.classes", "select");
-		palette.createElement("staticpalette.patterncreation", "subkindcreation");
-		palette.createElement("staticpalette.patterncreation", "relatorcreation");
-		palette.createElement("staticpalette.patterncreation", "rolecreation");
-		
-		palette.addCommandListener(editorDispatcher);
-		
-		paletteMap.put(pelleteName, palette);
-
-		if(openPalette == null)
-			openPalette = pelleteName;		
 	}
 	
 	private void render()
@@ -152,51 +139,50 @@ public class PaletteAccordion extends JPanel{
 	{
 		return paletteMap.get(openPalette);
 	}
+	
+	public Palette getElementsPalette()
+	{
+		return paletteMap.get("Elements");
+	}
 
+	public Palette getDerivationPatternsPalette()
+	{
+		return paletteMap.get("Derived Types Patterns");
+	}
+	
+	public Palette getPatternsPalette()
+	{
+		return paletteMap.get("Patterns");
+	}
+	
+	private void createOntoUMLPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher) 
+	{
+		String pelleteName = "Patterns";
+		ontopatternPalette = new Palette(this, pelleteName);
+		ontopatternPalette.createElement("staticpalette.classes", "select");
+		ontopatternPalette.createElement("staticpalette.patterncreation", "subkindcreation");
+		ontopatternPalette.createElement("staticpalette.patterncreation", "relatorcreation");
+		ontopatternPalette.createElement("staticpalette.patterncreation", "rolecreation");
+		
+		ontopatternPalette.addCommandListener(editorDispatcher);
+		
+		paletteMap.put(pelleteName, ontopatternPalette);
+
+		if(openPalette == null)
+			openPalette = pelleteName;		
+	}
+	
 	private void createPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
-		Palette palette =  new Palette(this, "Derived Types Patterns");
-		palette.createElement("staticpalette.classes", "select");
+		derivedPalette = new Palette(this, "Derived Types Patterns");
+		derivedPalette.createElement("staticpalette.classes", "select");
 		//palette.addSpacer(0,PALLETE_VSPACE);
-		palette.createElement("staticpalette.patterns", "derivationbyunion");
-		palette.createElement("staticpalette.patterns2", "derivationbyexclusion");
-//		palette.createElement("staticpalette.classes", "quantity");
-//		palette.createElement("staticpalette.classes", "collective");
-//		palette.createElement("staticpalette.classes", "subkind");
-//		//palette.addSpacer(0,PALLETE_VSPACE);
-//		palette.createElement("staticpalette.classes", "phase");
-//		palette.createElement("staticpalette.classes", "role");
-//		//palette.addSpacer(0,PALLETE_VSPACE);
-//		palette.createElement("staticpalette.classes", "category");
-//		palette.createElement("staticpalette.classes", "rolemixin");
-//		palette.createElement("staticpalette.classes", "mixin");
-//		//palette.addSpacer(0,PALLETE_VSPACE);
-//		palette.createElement("staticpalette.classes", "mode");
-//		palette.createElement("staticpalette.classes", "relator");
-//		//palette.addSpacer(0,PALLETE_VSPACE);
-//		palette.createElement("staticpalette.classes", "datatype");
-//		
-//		//palette.addSpacer(0,PALLETE_VSPACE);		
-//		
-//		palette.createElement("staticpalette.relations", "generalization");
-//		//palette.addSpacer(0,PALLETE_VSPACE);
-//		palette.createElement("staticpalette.relations", "material");
-//		palette.createElement("staticpalette.relations", "formal");
-//		//palette.addSpacer(0,PALLETE_VSPACE);
-//		palette.createElement("staticpalette.relations", "characterization");
-//		palette.createElement("staticpalette.relations", "mediation");
-//		palette.createElement("staticpalette.relations", "derivation");
-//		//palette.addSpacer(0,PALLETE_VSPACE);
-//		palette.createElement("staticpalette.relations", "componentof");
-//		palette.createElement("staticpalette.relations", "memberof");	
-//		palette.createElement("staticpalette.relations", "subcollectionof");
-//		palette.createElement("staticpalette.relations", "subquantityof");
-//		//palette.addSpacer(0,PALLETE_VSPACE);
-//		palette.createElement("staticpalette.relations", "association");
+		derivedPalette.createElement("staticpalette.patterns", "derivationbyunion");
+		derivedPalette.createElement("staticpalette.patterns2", "derivationbyexclusion");
 		
-		palette.addCommandListener(editorDispatcher);
+		derivedPalette.addCommandListener(editorDispatcher);
 		
-		paletteMap.put("Derived Types Patterns", palette);
+		paletteMap.put("Derived Types Patterns", derivedPalette);
 
 		if(openPalette == null)
 			openPalette = "Derived Types Patterns";
@@ -204,47 +190,47 @@ public class PaletteAccordion extends JPanel{
 	
 	private void createStaticClassesPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
-		Palette palette =  new Palette(this, "Elements");
-		palette.createElement("staticpalette.classes", "select");
+		elementsPalette = new Palette(this, "Elements");
+		elementsPalette.createElement("staticpalette.classes", "select");
 		//palette.addSpacer(0,PALLETE_VSPACE);
-		palette.createElement("staticpalette.classes", "kind");
-		palette.createElement("staticpalette.classes", "quantity");
-		palette.createElement("staticpalette.classes", "collective");
-		palette.createElement("staticpalette.classes", "subkind");
+		elementsPalette.createElement("staticpalette.classes", "kind");
+		elementsPalette.createElement("staticpalette.classes", "quantity");
+		elementsPalette.createElement("staticpalette.classes", "collective");
+		elementsPalette.createElement("staticpalette.classes", "subkind");
 		//palette.addSpacer(0,PALLETE_VSPACE);
-		palette.createElement("staticpalette.classes", "phase");
-		palette.createElement("staticpalette.classes", "role");
+		elementsPalette.createElement("staticpalette.classes", "phase");
+		elementsPalette.createElement("staticpalette.classes", "role");
 		//palette.addSpacer(0,PALLETE_VSPACE);
-		palette.createElement("staticpalette.classes", "category");
-		palette.createElement("staticpalette.classes", "rolemixin");
-		palette.createElement("staticpalette.classes", "mixin");
+		elementsPalette.createElement("staticpalette.classes", "category");
+		elementsPalette.createElement("staticpalette.classes", "rolemixin");
+		elementsPalette.createElement("staticpalette.classes", "mixin");
 		//palette.addSpacer(0,PALLETE_VSPACE);
-		palette.createElement("staticpalette.classes", "mode");
-		palette.createElement("staticpalette.classes", "relator");
+		elementsPalette.createElement("staticpalette.classes", "mode");
+		elementsPalette.createElement("staticpalette.classes", "relator");
 		//palette.addSpacer(0,PALLETE_VSPACE);
-		palette.createElement("staticpalette.classes", "datatype");
+		elementsPalette.createElement("staticpalette.classes", "datatype");
 		
 		//palette.addSpacer(0,PALLETE_VSPACE);		
 		
-		palette.createElement("staticpalette.relations", "generalization");
+		elementsPalette.createElement("staticpalette.relations", "generalization");
 		//palette.addSpacer(0,PALLETE_VSPACE);
-		palette.createElement("staticpalette.relations", "material");
-		palette.createElement("staticpalette.relations", "formal");
+		elementsPalette.createElement("staticpalette.relations", "material");
+		elementsPalette.createElement("staticpalette.relations", "formal");
 		//palette.addSpacer(0,PALLETE_VSPACE);
-		palette.createElement("staticpalette.relations", "characterization");
-		palette.createElement("staticpalette.relations", "mediation");
-		palette.createElement("staticpalette.relations", "derivation");
+		elementsPalette.createElement("staticpalette.relations", "characterization");
+		elementsPalette.createElement("staticpalette.relations", "mediation");
+		elementsPalette.createElement("staticpalette.relations", "derivation");
 		//palette.addSpacer(0,PALLETE_VSPACE);
-		palette.createElement("staticpalette.relations", "componentof");
-		palette.createElement("staticpalette.relations", "memberof");	
-		palette.createElement("staticpalette.relations", "subcollectionof");
-		palette.createElement("staticpalette.relations", "subquantityof");
+		elementsPalette.createElement("staticpalette.relations", "componentof");
+		elementsPalette.createElement("staticpalette.relations", "memberof");	
+		elementsPalette.createElement("staticpalette.relations", "subcollectionof");
+		elementsPalette.createElement("staticpalette.relations", "subquantityof");
 		//palette.addSpacer(0,PALLETE_VSPACE);
-		palette.createElement("staticpalette.relations", "association");
+		elementsPalette.createElement("staticpalette.relations", "association");
 		
-		palette.addCommandListener(editorDispatcher);
+		elementsPalette.addCommandListener(editorDispatcher);
 		
-		paletteMap.put("Elements", palette);
+		paletteMap.put("Elements", elementsPalette);
 
 		if(openPalette == null)
 			openPalette = "Elements";

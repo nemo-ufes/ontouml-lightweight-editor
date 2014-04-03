@@ -518,7 +518,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		cbxRelOver.setBackground(UIManager.getColor("Panel.background"));
 		lblRelOverRes = new JLabel("");
 		lblRelOverRes.setPreferredSize(new Dimension(43, 20));
-		lblRelOverRes.setForeground(Color.BLACK);		
+		lblRelOverRes.setForeground(Color.BLUE);		
 		lblRelOverIco  = new JButton();
 		lblRelOverIco.setPreferredSize(new Dimension(20, 20));
 		lblRelOverIco.setOpaque(false);
