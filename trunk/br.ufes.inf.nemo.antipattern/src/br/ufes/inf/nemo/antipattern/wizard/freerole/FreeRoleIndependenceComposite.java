@@ -81,7 +81,7 @@ public class FreeRoleIndependenceComposite extends Composite{
 		
 	//	Composite composite_1 = new Composite(composite,SWT.NONE);
 	//	composite_1.setBounds(10, 111, 530, 73);
-		independenceTable = new FreeRoleIndependenceTable(this, SWT.NONE, freeRole);
+		independenceTable = new FreeRoleIndependenceTable(this, SWT.BORDER, freeRole);
 		independenceTable.getTable().setBounds(10, 111, 530, 73);
 		
 		SelectionAdapter newLineListneer = new SelectionAdapter() {

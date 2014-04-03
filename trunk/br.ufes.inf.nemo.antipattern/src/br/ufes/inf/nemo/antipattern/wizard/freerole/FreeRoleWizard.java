@@ -76,7 +76,7 @@ public class FreeRoleWizard extends AntipatternWizard {
 	{
 		return fourthPageList.get(index);
 	}
-	public FreeRoleFifthPage getFifthPage(int index)
+	public FreeRolePage getFifthPage(int index)
 	{
 		return fifthPageList.get(index);
 	}

@@ -133,7 +133,5 @@ public abstract class AntipatternWizard extends Wizard {
 	public void setCanFinish(boolean canFinish) {
 		this.canFinish = canFinish;
 	}
-	
-	
 
 }
