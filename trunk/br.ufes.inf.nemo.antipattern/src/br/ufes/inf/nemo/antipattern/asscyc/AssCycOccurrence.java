@@ -26,22 +26,34 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		return cycleRelationship;
 	}
 	
-	public Association getAssociationEndingIn(Type type)
+	public Association getAssociationEndingIn(Type type, Association association)
 	{
 		for(Relationship assoc: getCycleRelationship())
 		{
-			if (((Association)assoc).getMemberEnd().get(1).getType().equals(type))
+			if(assoc!=association){
+				if (((Association)assoc).getMemberEnd().get(1).getType().equals(type))
 				return ((Association)assoc);
+				if (((Association)assoc).getMemberEnd().get(0).getType().equals(type))
+				return ((Association)assoc);
+			}			
 		}
 		return null;
 	}
 	
-	public void printNavigations(Type start, Type end, ArrayList<String> result)
+	public void printNavigations(Type start, Type end, Association assoc, ArrayList<String> result)
 	{
 		if(start!=end){
-			Association association = getAssociationEndingIn(start);
-			if (association!=null) result.add("._'"+association.getMemberEnd().get(0).getName()+"'");			
-			printNavigations(association.getMemberEnd().get(0).getType(),end, result);
+			Association association = getAssociationEndingIn(start,assoc);
+			if(association!=null){
+				if(association.getMemberEnd().get(0).getType().equals(start)){
+					result.add("._'"+association.getMemberEnd().get(1).getName()+"'");
+					printNavigations(association.getMemberEnd().get(1).getType(),end,association,result);
+				}
+				if(association.getMemberEnd().get(1).getType().equals(start)){
+					result.add("._'"+association.getMemberEnd().get(0).getName()+"'");
+					printNavigations(association.getMemberEnd().get(0).getType(),end,association,result);
+				}			
+			}
 		}
 	}
 	
@@ -59,8 +71,7 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		result+= "derive: self";
 		
 		ArrayList<String> navigations = new ArrayList<String>();
-		printNavigations(src.getType(),tgt.getType(),navigations);
-		
+		printNavigations(src.getType(), tgt.getType(), assoc, navigations);
 		for(String str: navigations){
 			result+= str;
 		}
