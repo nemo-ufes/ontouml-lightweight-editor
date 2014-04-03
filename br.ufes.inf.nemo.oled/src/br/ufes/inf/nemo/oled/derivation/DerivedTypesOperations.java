@@ -272,16 +272,10 @@ public class DerivedTypesOperations {
 		Point2D.Double[] positions= ClassPosition.GSpositioning(2, location);
 		Classifier newElement= includeElement(location, values.get(3), values.get(0));
 		Classifier newElement2= includeElement(positions[2], values.get(4), values.get(1));
-		ArrayList<String> stereotypes= DerivedByExclusion.getInstance().inferStereotype(newElement.eClass().getName() , newElement2.eClass().getName());
-		Classifier newElement3=null;
-		newElement3 = includeElement(positions[1], values.get(5), stereotypes.get(0));
+		Classifier newElement3 = includeElement(positions[1], values.get(5), values.get(2));
 		createGeneralization(newElement, newElement2, newElement3);
 		dman2.updateOLED(mainfix);	
-		if(!(newElement2.eClass().getName().equals("Role") && (newElement.eClass().getName().equals("Kind")) ))
-		{
-			String rule="context: "+newElement.getName()+"\n"+"inv: not oclIsTypeOf(_'"+newElement2.getName()+"') implies oclIsTypeOf(_'"+newElement3.getName()+"')";
-			dman2.getFrame().getInfoManager().getOcleditor().addText(rule);
-		}
+		
 	}
 
 }

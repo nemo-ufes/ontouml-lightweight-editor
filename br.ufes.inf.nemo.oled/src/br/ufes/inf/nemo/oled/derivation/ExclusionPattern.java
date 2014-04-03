@@ -1,40 +1,31 @@
 package br.ufes.inf.nemo.oled.derivation;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.ComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.text.Position;
-import javax.swing.JTextField;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JLabel;
-
 import java.awt.Color;
-
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-
+import java.awt.FlowLayout;
 import java.awt.SystemColor;
-
-import javax.swing.UIManager;
-
-import org.eclipse.swt.widgets.Item;
-
-import apple.laf.JRSUIUtils.ComboBox;
-import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
-import br.ufes.inf.nemo.oled.DiagramManager;
-
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Vector;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+
+import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
+import br.ufes.inf.nemo.oled.DiagramManager;
+
+import javax.swing.JCheckBox;
 
 public class ExclusionPattern extends JDialog {
 
@@ -48,19 +39,12 @@ public class ExclusionPattern extends JDialog {
 	Vector comboBoxItems2=new Vector();
 	JComboBox comboBox_2 = new JComboBox();
 	private Point2D.Double location= new Point2D.Double();
+	JCheckBox chckbxNewCheckBox = new JCheckBox("generate OCL rule");
 	DiagramManager dman;
 
 	final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 	JComboBox comboBox = new JComboBox(model);
 
-	/**
-	 * Launch the application.
-	 */
-
-
-	/**
-	 * Create the dialog.
-	 */
 
 	public void setPosition(java.lang.Double x, java.lang.Double y){
 		location.x= this.getLocation().getX();
@@ -121,8 +105,7 @@ public class ExclusionPattern extends JDialog {
 		});
 
 
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kind", "SubKind", "Role", "Phase", "Quantity", "Collection", "Mixin", "Role Mixin", "Category"}));
-		comboBox.setEnabled(false);
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Category", "Mixin"}));
 
 
 		comboBox_1.addActionListener(new ActionListener() {
@@ -149,56 +132,70 @@ public class ExclusionPattern extends JDialog {
 		});
 		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Kind", "SubKind", "Role", "Phase", "Quantity", "Collection", "Mixin", "Role Mixin", "Category"}));
 
-
-		comboBox_2.setEnabled(false);
-
 		JLabel lblNewLabel_3 = new JLabel("Derivation By Exclusion");
+
+		final JCheckBox chckbxNewCheckBox = new JCheckBox("generate OCL rule");
+		chckbxNewCheckBox.setSelected(true);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 				gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 						.addGap(140)
-						.addComponent(lblNewLabel_3)
-						.addContainerGap(8, Short.MAX_VALUE))
-						.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
-								.addContainerGap(31, Short.MAX_VALUE)
-								.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-										.addComponent(lblNewLabel)
-										.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel_3))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+								.addGap(32)
+								.addComponent(lblNewLabel)
+								.addGap(4)
+								.addComponent(textField, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)
+								.addGap(10)
+								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPanel.createSequentialGroup()
+										.addGap(31)
+										.addComponent(lblNewLabel_1)
+										.addGap(18)
+										.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)
+										.addGap(10)
+										.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_contentPanel.createSequentialGroup()
+												.addGap(31)
 												.addComponent(lblNewLabel_2)
-												.addComponent(lblNewLabel_1)))
-												.addPreferredGap(ComponentPlacement.RELATED)
-												.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-														.addComponent(textField, GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
-														.addComponent(textField_1)
-														.addComponent(textField_2))
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-																.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-																.addComponent(comboBox_1, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-																.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-																.addContainerGap())
+												.addGap(4)
+												.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+														.addComponent(chckbxNewCheckBox)
+														.addGroup(gl_contentPanel.createSequentialGroup()
+																.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)
+																.addGap(10)
+																.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+																.addGap(55))
 				);
+		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collection", "Quantity", "SubKind", "Category"}));
 		gl_contentPanel.setVerticalGroup(
 				gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 						.addComponent(lblNewLabel_3)
 						.addGap(32)
-						.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGap(29)
-								.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-										.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblNewLabel_1)
-										.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-												.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(lblNewLabel_2)
-												.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-												.addContainerGap(35, Short.MAX_VALUE))
+						.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPanel.createSequentialGroup()
+										.addGap(3)
+										.addComponent(lblNewLabel))
+										.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addGap(29)
+										.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_contentPanel.createSequentialGroup()
+														.addGap(3)
+														.addComponent(lblNewLabel_1))
+														.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+														.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+														.addGap(6)
+														.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+																.addGroup(gl_contentPanel.createSequentialGroup()
+																		.addGap(3)
+																		.addComponent(lblNewLabel_2))
+																		.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																		.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+																		.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+																		.addComponent(chckbxNewCheckBox))
 				);
 		contentPanel.setLayout(gl_contentPanel);
 		{
@@ -211,15 +208,35 @@ public class ExclusionPattern extends JDialog {
 					public void actionPerformed(ActionEvent arg0) {
 						ArrayList<String> values = new ArrayList<String>();
 						if(comboBox.getModel().getSelectedItem()!=null && comboBox_1.getModel().getSelectedItem()!=null && comboBox_2.getModel().getSelectedItem()!=null){
+
+							//pai
 							values.add(comboBox.getModel().getSelectedItem().toString());
+							//filho
 							values.add(comboBox_1.getModel().getSelectedItem().toString());
+							//filho
 							values.add(comboBox_2.getModel().getSelectedItem().toString());
 
 							values.add(textField.getText());
 							values.add(textField_1.getText());
 							values.add(textField_2.getText());
-							DerivedTypesOperations.exclusionPattern(dman,values,location);
-							dispose();
+							if(chckbxNewCheckBox.isSelected()){
+								if(!(comboBox_1.getModel().getSelectedItem().toString().equals("Role") && comboBox.getModel().getSelectedItem().toString().equals("Kind")) )
+								{
+									if(!((textField.getText().equals("") || textField_1.getText().equals("") || textField_2.getText().equals("")))){
+										String rule="context: "+textField.getText()+"\n"+"inv: not oclIsTypeOf(_'"+textField_1.getText()+"') implies oclIsTypeOf(_'"+textField_2.getText()+"')";
+										dman.getFrame().getInfoManager().getOcleditor().addText(rule);
+										DerivedTypesOperations.exclusionPattern(dman,values,location);
+										dispose();
+									}
+									else{
+										DerivedTypesOperations.wrongSelection("Please set the names for generating the OCL rule");
+									}
+								}
+							}
+							else{
+								DerivedTypesOperations.exclusionPattern(dman,values,location);
+								dispose();
+							}
 						}
 						else{
 							DerivedTypesOperations.wrongSelection("Please, select all the stereotypes");
@@ -232,6 +249,11 @@ public class ExclusionPattern extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
