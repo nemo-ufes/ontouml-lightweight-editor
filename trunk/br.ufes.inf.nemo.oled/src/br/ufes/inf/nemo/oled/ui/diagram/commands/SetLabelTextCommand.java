@@ -65,7 +65,7 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 	 * {@inheritDoc}
 	 */
 	public void run() {
-		
+		String oldName = label.getNameLabelText();
 		label.setNameLabelText(text);
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
@@ -75,6 +75,13 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		if (parent instanceof ClassElement) 
 		{
 			Classifier element = (((ClassElement)parent).getClassifier());
+						
+			// replace all references in constraints at the OCL editor
+			String currentConstraints = ProjectBrowser.frame.getInfoManager().getConstraints();
+			String newConstraints = currentConstraints.replaceAll(oldName,text);
+			ProjectBrowser.frame.getInfoManager().setConstraints(newConstraints);
+			
+			// update application accordingly
 			ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(element, false);
 			
 		}else if (parent instanceof BaseConnection){

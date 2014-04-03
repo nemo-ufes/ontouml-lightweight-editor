@@ -41,6 +41,21 @@ public class ToolManager extends JTabbedPane {
 		return palettes.getOpenPalette();
 	}
 
+	public Palette getElementsPalette()
+	{
+		return palettes.getElementsPalette();
+	}
+
+	public Palette getDerivationPatternsPalette()
+	{
+		return palettes.getDerivationPatternsPalette();
+	}
+	
+	public Palette getPatternsPalette()
+	{
+		return palettes.getPatternsPalette();
+	}
+	
 	public PaletteAccordion getPalleteAccordion()
 	{
 		return palettes;
