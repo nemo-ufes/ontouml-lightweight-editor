@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.Position;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -27,9 +28,11 @@ import org.eclipse.swt.widgets.Item;
 
 import apple.laf.JRSUIUtils.ComboBox;
 import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
+import br.ufes.inf.nemo.oled.DiagramManager;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -44,6 +47,8 @@ public class ExclusionPattern extends JDialog {
 	Vector comboBoxItems=new Vector();
 	Vector comboBoxItems2=new Vector();
 	JComboBox comboBox_2 = new JComboBox();
+	private Point2D.Double location= new Point2D.Double();
+	DiagramManager dman;
 
 	final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 	JComboBox comboBox = new JComboBox(model);
@@ -51,19 +56,16 @@ public class ExclusionPattern extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			ExclusionPattern dialog = new ExclusionPattern();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	/**
 	 * Create the dialog.
 	 */
+
+	public void setPosition(java.lang.Double x, java.lang.Double y){
+		location.x= this.getLocation().getX();
+		location.y= this.getLocation().getY();
+	}
 
 	public void setCombo(){
 
@@ -81,7 +83,16 @@ public class ExclusionPattern extends JDialog {
 		}
 	}
 
-	public ExclusionPattern() {
+	public ExclusionPattern(DiagramManager dm) {
+
+		dman = dm;
+		setBounds(100, 100, 453, 239);
+		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBackground(new Color(245, 245, 245));
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		location.x= this.getLocation().getX();
+		location.y= this.getLocation().getY();
+
 		comboBoxItems.add("Kind");
 		setBounds(100, 100, 421, 258);
 		getContentPane().setLayout(new BorderLayout());
@@ -132,7 +143,6 @@ public class ExclusionPattern extends JDialog {
 				}
 				comboBox.setEnabled(true);
 				comboBox_2.setEnabled(true);
-				//updated=false;
 				setCombo();
 
 			}
@@ -197,6 +207,25 @@ public class ExclusionPattern extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						ArrayList<String> values = new ArrayList<String>();
+						if(comboBox.getModel().getSelectedItem()!=null && comboBox_1.getModel().getSelectedItem()!=null && comboBox_2.getModel().getSelectedItem()!=null){
+							values.add(comboBox.getModel().getSelectedItem().toString());
+							values.add(comboBox_1.getModel().getSelectedItem().toString());
+							values.add(comboBox_2.getModel().getSelectedItem().toString());
+
+							values.add(textField.getText());
+							values.add(textField_1.getText());
+							values.add(textField_2.getText());
+							DerivedTypesOperations.exclusionPattern(dman,values,location);
+							dispose();
+						}
+						else{
+							DerivedTypesOperations.wrongSelection("Please, select all the stereotypes");
+						}
+					}
+				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
