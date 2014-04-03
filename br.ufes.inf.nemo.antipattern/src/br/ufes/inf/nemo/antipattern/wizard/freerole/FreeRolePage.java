@@ -1,31 +1,20 @@
 package br.ufes.inf.nemo.antipattern.wizard.freerole;
 
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.widgets.Composite;
-
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
 
-public class FreeRolePage extends WizardPage {
 
-	protected FreeRoleOccurrence freeRole;	
+public abstract class FreeRolePage extends AntipatternWizardPage<FreeRoleOccurrence, FreeRoleWizard> {
 	
+	protected int index = -1;
+
 	/**
 	 * Create the wizard.
 	 */
 	public FreeRolePage(FreeRoleOccurrence freeRole) 
 	{
-		super("FreeRolePage");		
-		this.freeRole = freeRole;		
+		super(freeRole);			
 		setTitle(FreeRoleAntipattern.getAntipatternInfo().getName());		
-	}
-	
-	public FreeRoleWizard getFreeRoleWizard(){
-		return (FreeRoleWizard)getWizard();
-	}
-
-	@Override
-	public void createControl(Composite arg0) {
-		
 	}
 }

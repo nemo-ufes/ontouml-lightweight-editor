@@ -2,17 +2,16 @@ package br.ufes.inf.nemo.antipattern.wizard.freerole;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 
 public class FreeRoleFirstPage extends FreeRolePage {
 	
-	private Label lblDoesAnInstance;
-	private int index=-1;
+	private StyledText styledTextQuestion;
 	private Button btnYes;
 	private Button btnNo;
 	
@@ -20,7 +19,8 @@ public class FreeRoleFirstPage extends FreeRolePage {
 	{
 		super(freeRole);		
 		this.index = freeRoleIndex;
-		setDescription("Role "+freeRole.getFreeRoles().get(index).getName());
+		setDescription(	"Defined Role: " +freeRole.getDefinedRole().getName()+
+						"\nCurrent Free Role: "+freeRole.getFreeRoles().get(index).getName());
 	}
 	
 	public boolean contains(List list, String elem){
@@ -39,19 +39,28 @@ public class FreeRoleFirstPage extends FreeRolePage {
 	
 		setControl(container);			
 		
-		lblDoesAnInstance = new Label(container, SWT.WRAP);
-		lblDoesAnInstance.setBounds(10, 10, 554, 52);
-		lblDoesAnInstance.setText("Does an instance of "+freeRole.getDefinedRole().getName()+" becomes a "+freeRole.getFreeRoles().get(index).getName()+" when a pre-determined set " +
-		"of conditions is valid? For example, a Student is a Freshman when he/she is in the first semester of his Enrollment (the relator which characterizes student), " +
-		"whilst a senior, is one that is on his last.");		
+		styledTextQuestion = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.V_SCROLL);
+		styledTextQuestion.setBackground(styledTextQuestion.getParent().getBackground());
+		styledTextQuestion.setBounds(10, 10, 554, 105);
+		styledTextQuestion.setText("Does an instance of "+occurrence.getDefinedRole().getName()+" becomes a "+occurrence.getFreeRoles().get(index).getName()+" when a pre-determined set " +
+		"of conditions is valid? " +
+		"\r\n\r\n"+
+		"For example, on one hand a Student is a Freshman when he/she is in the first semester of his Enrollment (the relator which characterizes the Student type). " +
+		"On the other hand, a Senior, is a student that is on his last semester before graduation.");		
+		styledTextQuestion.setJustify(true);
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 69, 554, 16);
-		btnYes.setText("Yes ("+freeRole.getFreeRoles().get(index).getName()+"  is a derived type)");
-		
+		btnYes.setBounds(10, 121, 554, 16);
+		btnYes.setText("Yes (<"+occurrence.getFreeRoles().get(index).getName()+"> is a derived type)");
+
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 94, 554, 16);
-		btnNo.setText("No ("+freeRole.getFreeRoles().get(index).getName()+"  is a intentional type)\r\n");
+		btnNo.setBounds(10, 143, 554, 16);
+		btnNo.setText("No (<"+occurrence.getFreeRoles().get(index).getName()+"> is a intentional type)\r\n");
+		
+		setAsEnablingNextPageButton(btnYes);
+		setAsEnablingNextPageButton(btnNo);
+		
+		setPageComplete(false);
 	}
 	
 	@Override

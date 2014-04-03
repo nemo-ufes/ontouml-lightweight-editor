@@ -9,7 +9,6 @@ import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 
 public class FreeRoleFourthPage extends FreeRolePage {
 	
-	private int index = -1;
 	private Label lblToCharacterizeThe;
 	private FreeRoleIndependenceComposite composite; 
 	
@@ -17,7 +16,8 @@ public class FreeRoleFourthPage extends FreeRolePage {
 	{
 		super(freeRole);		
 		this.index = freeRoleIndex;
-		setDescription("Role "+freeRole.getFreeRoles().get(index).getName());
+		setDescription(	"Defined Role: " +freeRole.getDefinedRole().getName()+
+				"\nCurrent Free Role: "+freeRole.getFreeRoles().get(index).getName());
 	}
 
 	/**
@@ -31,12 +31,9 @@ public class FreeRoleFourthPage extends FreeRolePage {
 		
 		lblToCharacterizeThe = new Label(container, SWT.WRAP);
 		lblToCharacterizeThe.setBounds(10, 10, 554, 38);
-		lblToCharacterizeThe.setText("To characterize the new independent relational dependency of "+freeRole.getFreeRoles().get(index).getName()+", we will need some additional information:");
-			
-//		Composite composite = new Composite(container, SWT.BORDER);
-//		composite.setBounds(10, 54, 554, 218);
+		lblToCharacterizeThe.setText("To characterize the new independent relational dependency of "+occurrence.getFreeRoles().get(index).getName()+", we will need some additional information:");
 		
-		composite = new FreeRoleIndependenceComposite(container,SWT.BORDER,freeRole,index);
+		composite = new FreeRoleIndependenceComposite(container,SWT.BORDER,occurrence,index);
 		composite.setBounds(10, 54, 554, 218);
 	}
 	
@@ -44,9 +41,9 @@ public class FreeRoleFourthPage extends FreeRolePage {
 	public IWizardPage getNextPage() 
 	{	
 		//Action =============================				
-		FreeRoleAction newAction = new FreeRoleAction(freeRole);
-		newAction.setCreateNewRelatorWithMediation(freeRole.getFreeRoles().get(index), composite.getRelatorNameText().getText(), composite.getRelatorMultipCombo().getText(), composite.getRoleMultipCombo().getText()); 
-		getFreeRoleWizard().replaceAction(index,newAction);	
+		FreeRoleAction newAction = new FreeRoleAction(occurrence);
+		newAction.setCreateNewRelatorWithMediation(occurrence.getFreeRoles().get(index), composite.getRelatorNameText().getText(), composite.getRelatorMultipCombo().getText(), composite.getRoleMultipCombo().getText()); 
+		getAntipatternWizard().replaceAction(index,newAction);	
 		//======================================
 		
 		if(composite.getIndependenceTable().getTypeNames().size()>=1)
@@ -60,17 +57,17 @@ public class FreeRoleFourthPage extends FreeRolePage {
 				Boolean createMaterial = composite.getIndependenceTable().getCreateMaterial().get(i-1);
 				
 				//Action =============================				
-				newAction = new FreeRoleAction(freeRole);
-				newAction.setCreateDependentObjects(freeRole.getFreeRoles().get(index), typeName, stereo, relatorMultiplicity, mediatedMultiplicity,createMaterial); 
-				getFreeRoleWizard().addAction(index,newAction);	
+				newAction = new FreeRoleAction(occurrence);
+				newAction.setCreateDependentObjects(occurrence.getFreeRoles().get(index), typeName, stereo, relatorMultiplicity, mediatedMultiplicity,createMaterial); 
+				getAntipatternWizard().addAction(index,newAction);	
 				//======================================
 			}
 		}
 		
-		if(index<freeRole.getFreeRoles().size()-1){
-			return ((FreeRoleWizard)getWizard()).getFirstPage(index+1);
+		if(index<occurrence.getFreeRoles().size()-1){
+			return getAntipatternWizard().getFirstPage(index+1);
 		}else{
-			return ((FreeRoleWizard)getWizard()).getFinishing();
+			return getAntipatternWizard().getFinishing();
 		}		
 	}
 }
