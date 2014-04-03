@@ -72,17 +72,22 @@ public class IdentityProviderPage  extends DecIntPage {
 	@Override
 	public IWizardPage getNextPage() 
 	{	
-		DecIntAction action = new DecIntAction(decint);
-		action.setFixIdentityProvider(selectedIP);
-		getDecIntWizard().replaceAction(0, action);
+		if(identityProviderList.getSelectionCount()!=-1){
+			DecIntAction action = new DecIntAction(decint);
+			action.setFixIdentityProvider(selectedIP);
+			getDecIntWizard().replaceAction(0, action);
+			
+			if(decint.getIdentityProviders().containsAll(decint.getRelevantParents())){
+				getDecIntWizard().getFinishing();
+			}
+			
+			if(getDecIntWizard().getGeneralizationSetPage()!=null)
+				return getDecIntWizard().getGeneralizationSetPage();
+			
+			return getDecIntWizard().getIntentionalDerivedPage();
+		}
 		
-		if(decint.getIdentityProviders().containsAll(decint.getRelevantParents()))
-			getDecIntWizard().getFinishing();
-		
-		if(getDecIntWizard().getGeneralizationSetPage()!=null)
-			return getDecIntWizard().getGeneralizationSetPage();
-		
-		return getDecIntWizard().getIntentionalDerivedPage();
+		return super.getNextPage();
 	}
 }
 

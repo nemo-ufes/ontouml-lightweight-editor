@@ -44,11 +44,15 @@ public class GeneralizationSetPage  extends DecIntPage {
 	@Override
 	public IWizardPage getNextPage() 
 	{	
-		DecIntAction action = new DecIntAction(decint);
-		action.setFixGeneralizationSets(gsComposite.getReplicas());
-		getDecIntWizard().replaceAction(1, action);
+		if(gsComposite.generalizationSetsFixed()){
+			DecIntAction action = new DecIntAction(decint);
+			action.setFixGeneralizationSets(gsComposite.getReplicas());
+			getDecIntWizard().replaceAction(1, action);
+			
+			return getDecIntWizard().getIntentionalDerivedPage();
+		}
 		
-		return getDecIntWizard().getIntentionalDerivedPage();
+		return super.getNextPage();
 	}
 }
 

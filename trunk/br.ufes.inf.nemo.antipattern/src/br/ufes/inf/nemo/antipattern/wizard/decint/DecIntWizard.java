@@ -62,7 +62,7 @@ public class DecIntWizard extends AntipatternWizard {
 		addPage(options);
 		addPage(finishing);
 		
-		
+		this.canFinish = false;
 	}
 	
 	public GeneralizationSetPage getGeneralizationSetPage() {
