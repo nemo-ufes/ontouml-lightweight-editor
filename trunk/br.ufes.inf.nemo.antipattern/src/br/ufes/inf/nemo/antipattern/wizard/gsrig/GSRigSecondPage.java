@@ -5,6 +5,8 @@ import java.text.Normalizer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -48,15 +50,36 @@ public class GSRigSecondPage extends GSRigPage {
 		btnRigid = new Button(container, SWT.RADIO);
 		btnRigid.setBounds(10, 35, 644, 16);
 		btnRigid.setText("Only the rigid subtypes");
+		btnRigid.addSelectionListener(canGoToNextPageAdapter);
 		
 		btnAntiRigid = new Button(container, SWT.RADIO);
-		btnAntiRigid.setBounds(10, 61, 644, 16);
+		btnAntiRigid.setBounds(10, 57, 644, 16);
 		btnAntiRigid.setText("Only the anti-rigid subtypes");
+		btnAntiRigid.addSelectionListener(canGoToNextPageAdapter);
 		
 		btnMixed = new Button(container, SWT.RADIO);
-		btnMixed.setBounds(10, 83, 644, 16);
+		btnMixed.setBounds(10, 79, 644, 16);
 		btnMixed.setText("The rigid subtypes have one and the anti-rigid another");
+		btnMixed.addSelectionListener(canGoToNextPageAdapter);
+		
+		setPageComplete(false);
 	}
+	
+	private SelectionAdapter canGoToNextPageAdapter = new SelectionAdapter() {
+		
+		@Override
+		public void widgetSelected(SelectionEvent arg0) {
+			if(btnMixed.getSelection() || btnAntiRigid.getSelection() || btnRigid.getSelection()){
+				if(!isPageComplete())
+					setPageComplete(true);
+			}
+			else {
+				if(isPageComplete())
+					setPageComplete(false);
+			}
+			
+		}
+	};
 	
 	@Override
 	public IWizardPage getNextPage() 
@@ -67,6 +90,7 @@ public class GSRigSecondPage extends GSRigPage {
 			newAction.setCreateGSForRigids(); 
 			getGSRigWizard().replaceAction(0,newAction);
 			//======================================
+			return getGSRigWizard().getFinishing();
 		}
 		
 		if(btnAntiRigid.getSelection()){
@@ -75,6 +99,7 @@ public class GSRigSecondPage extends GSRigPage {
 			newAction.setCreateGSForAntiRigids(); 
 			getGSRigWizard().replaceAction(0,newAction);
 			//======================================
+			return getGSRigWizard().getFinishing();
 		}
 		
 		if(btnMixed.getSelection())
@@ -84,9 +109,10 @@ public class GSRigSecondPage extends GSRigPage {
 			newAction.setCreateGSForBoth(); 
 			getGSRigWizard().replaceAction(0,newAction);	
 			//======================================
+			return getGSRigWizard().getFinishing();
 		}
 		
-		return ((GSRigWizard)getWizard()).getFinishing();
+		return super.getNextPage();
 	}
 }
 	

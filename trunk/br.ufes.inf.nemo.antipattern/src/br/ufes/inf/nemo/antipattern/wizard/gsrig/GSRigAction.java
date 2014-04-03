@@ -140,8 +140,9 @@ public class GSRigAction  extends AntiPatternAction<GSRigOccurrence>{
 				}else{
 					result += getStereotype(c)+" "+c.getName()+",";
 				}
+				i++;
 			}
-			result += "Delete "+(new ParsingElement(ap.getGs(),false,""));
+			result += "\nDelete "+(new ParsingElement(ap.getGs(),false,""));
 		}	
 		if (code == Action.CREATE_GS_FOR_ANTIRIGIDS)
 		{
@@ -153,8 +154,9 @@ public class GSRigAction  extends AntiPatternAction<GSRigOccurrence>{
 				}else{
 					result += getStereotype(c)+" "+c.getName()+",";
 				}
+				i++;
 			}
-			result += "Delete "+(new ParsingElement(ap.getGs(),false,""));
+			result += "\nDelete "+(new ParsingElement(ap.getGs(),false,""));
 		}			
 		if (code == Action.CREATE_GS_FOR_BOTH)
 		{
@@ -166,9 +168,10 @@ public class GSRigAction  extends AntiPatternAction<GSRigOccurrence>{
 				}else{
 					result += getStereotype(c)+" "+c.getName()+",";
 				}
+				i++;
 			}
 			
-			result += "Create new <<GeneralizationSet>> for antirigids: ";
+			result += "\nCreate new <<GeneralizationSet>> for antirigids: ";
 			i=0;
 			for(Classifier c: ap.getAntiRigidSpecifics()) { 
 				if(i==ap.getAntiRigidSpecifics().size()-1) {
@@ -176,8 +179,9 @@ public class GSRigAction  extends AntiPatternAction<GSRigOccurrence>{
 				}else{
 					result += getStereotype(c)+" "+c.getName()+",";
 				}
+				i++;
 			}
-			result += "Delete "+(new ParsingElement(ap.getGs(),false,""));
+			result += "\nDelete "+(new ParsingElement(ap.getGs(),false,""));
 		}
 		if(code == Action.CHANGE_SUPERTYPE_TO_MIXIN)
 		{
