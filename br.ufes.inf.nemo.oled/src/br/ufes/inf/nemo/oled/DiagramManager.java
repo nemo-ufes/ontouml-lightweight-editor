@@ -73,6 +73,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
+import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
 import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.dialog.OWLSettingsDialog;
