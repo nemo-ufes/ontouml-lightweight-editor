@@ -39,7 +39,7 @@ public class GSRigFifthPage extends GSRigPage {
 		
 		lblConsideringThatThere = new Label(container, SWT.WRAP);
 		lblConsideringThatThere.setBounds(10, 10, 644, 36);
-		lblConsideringThatThere.setText("Considering that there are rigid and anti-rigid subtypes in the generalization set, it implies that there is one or more implicit rigid implicit subtype of <RigidSuperType>. Would you like to create:");
+		lblConsideringThatThere.setText("Considering that there are rigid and anti-rigid subtypes in the generalization set, it implies that there is one or more implicit rigid subtype of <RigidSuperType>. Would you like to create:");
 		
 		btnIntentional = new Button(container, SWT.RADIO);
 		btnIntentional.setBounds(10, 53, 644, 16);
