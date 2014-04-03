@@ -345,7 +345,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 * the pointer.
 	 * */
 	public void selectPaletteDefaultElement() {
-		toolManager.getOpenPalette().selectDefault();
+		toolManager.getElementPalette().selectDefault();
 	}
 
 	// Helper method
