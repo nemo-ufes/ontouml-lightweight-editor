@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.oled.derivation;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class DerivedTypesOperations {
 
 		}
 		else{
-			WrongSelection();
+			wrongSelection("Wrong Selection, check the documentation");
 		}
 		return mainfix;
 	}
@@ -170,12 +171,12 @@ public class DerivedTypesOperations {
 				}
 			}
 			else{
-				WrongSelection();
+				wrongSelection("Wrong Selection, check the documentation");
 			}
 
 		}
 		else{
-			WrongSelection();
+			wrongSelection("Wrong Selection, check the documentation");
 		}
 		return null;
 	}
@@ -209,10 +210,10 @@ public class DerivedTypesOperations {
 	}
 
 	@SuppressWarnings("unused")
-	public static void WrongSelection(){
+	public static void wrongSelection(String message){
 		JFrame frame = new JFrame("InputDialog Example #1");
 		System.out.println("error");
-		JOptionPane.showMessageDialog(frame, "Wrong Selection, please check the documentation!");
+		JOptionPane.showMessageDialog(frame, message);
 
 	}
 
@@ -237,7 +238,7 @@ public class DerivedTypesOperations {
 			}
 			createGeneralization(newElement3, newElement2, newElement);
 			dm.updateOLED(mainfix);	
-		}
+		}	
 	}
 	//include an element acoording its position name and category
 	public static Classifier includeElement(Point2D.Double position, String name, String stereotype){
@@ -247,7 +248,7 @@ public class DerivedTypesOperations {
 		mainfix.includeAdded(newElement, position.getX(),position.getY());
 		return newElement;
 	}
-	
+
 	public  static void createGeneralization(Classifier father, Classifier son1, Classifier son2){
 		Fix fix=of.createGeneralization(son1, father);
 		Fix fixG2=of.createGeneralization(son2, father);
@@ -259,4 +260,28 @@ public class DerivedTypesOperations {
 		mainfix.addAll(fix);
 		mainfix.addAll(gs);
 	}
+
+
+
+	public static void exclusionPattern(DiagramManager dman2,
+			ArrayList<String> values, Double location) {
+		// TODO Auto-generated method stub
+		dman=dman2;
+		of = new OutcomeFixer(dman2.getCurrentProject().getModel());
+		mainfix = new Fix();
+		Point2D.Double[] positions= ClassPosition.GSpositioning(2, location);
+		Classifier newElement= includeElement(location, values.get(3), values.get(0));
+		Classifier newElement2= includeElement(positions[2], values.get(4), values.get(1));
+		ArrayList<String> stereotypes= DerivedByExclusion.getInstance().inferStereotype(newElement.eClass().getName() , newElement2.eClass().getName());
+		Classifier newElement3=null;
+		newElement3 = includeElement(positions[1], values.get(5), stereotypes.get(0));
+		createGeneralization(newElement, newElement2, newElement3);
+		dman2.updateOLED(mainfix);	
+		if(!(newElement2.eClass().getName().equals("Role") && (newElement.eClass().getName().equals("Kind")) ))
+		{
+			String rule="context: "+newElement.getName()+"\n"+"inv: not oclIsTypeOf(_'"+newElement2.getName()+"') implies oclIsTypeOf(_'"+newElement3.getName()+"')";
+			dman2.getFrame().getInfoManager().getOcleditor().addText(rule);
+		}
+	}
+
 }

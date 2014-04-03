@@ -2241,11 +2241,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	public void openDerivedTypePatternExclusion(Double x, Double y) {
-//		JDialog dialog = new ExclusionPattern();
-//		dialog.setLocation(x.intValue(), y.intValue());
-//		//((UnionPattern) dialog).setPosition(x, y);
-//		dialog.setModal(true);
-//		dialog.setVisible(true);
+		JDialog dialog = new ExclusionPattern(this);
+		dialog.setLocation(x.intValue(), y.intValue());
+		((ExclusionPattern) dialog).setPosition(x, y);
+		dialog.setModal(true);
+		dialog.setVisible(true);
 	
 	}
 
