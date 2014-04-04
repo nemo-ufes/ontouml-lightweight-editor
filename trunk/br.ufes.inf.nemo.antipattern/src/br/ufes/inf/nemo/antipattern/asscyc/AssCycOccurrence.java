@@ -98,11 +98,11 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		invName += "_"+a.getName();
 		
 		if (a.getMemberEnd().get(0).getType().equals(this.cycle.get(0))) {
-			rule += a.getMemberEnd().get(1).getName();
+			rule += "_'"+a.getMemberEnd().get(1).getName()+"'";
 			last_target = a.getMemberEnd().get(1).getType();
 		}
 		else{ 
-			rule += a.getMemberEnd().get(0).getName();
+			rule += "_'"+a.getMemberEnd().get(0).getName()+"'";
 			last_target = a.getMemberEnd().get(0).getType();
 		}
 			
@@ -115,11 +115,11 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 				invName+= "_"+((Association)r).getName();
 				
 				if( ((Association)r).getMemberEnd().get(0).getType().equals(last_target)) {
-					rule += "."+((Association)r).getMemberEnd().get(1).getName();
+					rule += "._'"+((Association)r).getMemberEnd().get(1).getName()+"'";
 					last_target =((Association)r).getMemberEnd().get(1).getType();
 				}
 				else {
-					rule += "."+((Association)r).getMemberEnd().get(0).getName();
+					rule += "._'"+((Association)r).getMemberEnd().get(0).getName()+"'";
 					last_target =((Association)r).getMemberEnd().get(0).getType();
 				}
 					
