@@ -326,7 +326,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		editorMode.cancel();
 		selectionHandler.deselectAll();
 		redraw();		
-		frame.getToolManager().getElementPalette().getPalleteElement("select").setSelected(true);
+		frame.getToolManager().getElementsPalette().getPalleteElement("select").setSelected(true);
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));		
 	}
 
