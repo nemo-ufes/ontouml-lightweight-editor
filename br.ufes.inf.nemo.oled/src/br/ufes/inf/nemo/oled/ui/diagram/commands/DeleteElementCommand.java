@@ -59,16 +59,14 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	private static final long serialVersionUID = 2456036038567915529L;
 	
 	private Collection<DiagramElement> diagramElemList = new ArrayList<DiagramElement>();
-	private Collection<DiagramElement> diagramElemDep1List = new ArrayList<DiagramElement>(); //level1 of dependencies
-	private Collection<DiagramElement> diagramElemDep2List = new ArrayList<DiagramElement>(); //level2 of dependencies(only true for derivation)
-		
+	private Collection<DiagramElement> diagramElemDep1List = new ArrayList<DiagramElement>(); //level1 of dependencies (relationships in general)
+	private Collection<DiagramElement> diagramElemDep2List = new ArrayList<DiagramElement>(); //level2 of dependencies(only true for derivation)		
 	private Collection<Element> elemList= new ArrayList<Element>();
-	private Collection<Element> elemDep1List= new ArrayList<Element>(); // level1 of dependencies
-	private Collection<Element> elemDep2List= new ArrayList<Element>(); // level2 of dependencies (only true for derivation)
-	
+	private Collection<Element> elemDep1List= new ArrayList<Element>(); // level1 of dependencies (relationships in general)
+	private Collection<Element> elemDep2List= new ArrayList<Element>(); // level2 of dependencies (only true for derivation)	
 	private List<ParentChildRelation> parentChildRelations = new ArrayList<ParentChildRelation>();
-	private List<ParentChildRelation> parentChildRelationsDep1 = new ArrayList<ParentChildRelation>(); // level1 of dependencies
-	private List<ParentChildRelation> parentChildRelationsDep2 = new ArrayList<ParentChildRelation>(); // level2 of dependencies 
+	private List<ParentChildRelation> parentChildRelationsDep1 = new ArrayList<ParentChildRelation>(); // level1 of dependencies (relationships in general)
+	private List<ParentChildRelation> parentChildRelationsDep2 = new ArrayList<ParentChildRelation>(); // level2 of dependencies (only true for derivation) 
 	
 	private boolean deleteFromModel;
 	private boolean deleteFromDiagram;
@@ -188,7 +186,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			relation.parent.addChild(relation.element);			
 		}
 		
-		//dependecies of level2
+		//dependencies of level2
 		for (ParentChildRelation relation : parentChildRelationsDep2) {
 			if (relation.element instanceof Connection) {
 				reattachConnectionToNodes((Connection) relation.element);
@@ -247,47 +245,49 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	
 	private void deleteFromModel(Collection<Element> elemList)
 	{
-		//delete first the derivations
-		for(Element elem: elemList) {
-			if (elem instanceof RefOntoUML.Derivation) delete(elem);				
-		}
-		//then the comments
-		for(Element elem: elemList){
-			if (elem instanceof RefOntoUML.Comment) delete(elem);
-		}
+		ArrayList<GeneralizationSet> genSets = new ArrayList<GeneralizationSet>();
 		
-		//then the constraints
-		for(Element elem: elemList){
+		//delete first the derivations, comments and constraints (third level of dependence)
+		for(Element elem: elemList) {
+			if (elem instanceof RefOntoUML.Derivation) delete(elem);
+			if (elem instanceof RefOntoUML.Comment) delete(elem);
 			if (elem instanceof RefOntoUML.Constraintx) delete(elem);
+			if (elem instanceof RefOntoUML.Generalization) {
+				Generalization gen = (Generalization)elem;				
+				for(GeneralizationSet genSet: gen.getGeneralizationSet()) if(!genSets.contains(genSet))genSets.add(genSet);
+			}
+		}				
+		// then generalization sets (third level of dependence)
+		for(Element elem: elemList) {			
+			if (elem instanceof RefOntoUML.GeneralizationSet) deleteGeneralizationSet((GeneralizationSet)elem);			
+		}
+		for(Element elem: genSets) {			
+			if (elem instanceof RefOntoUML.GeneralizationSet) deleteGeneralizationSet((GeneralizationSet)elem);			
 		}
 				
-		//then the rest of relationships
+		//then the rest of associations and generalizations (second level of dependence)
 		for(Element elem: elemList) {				
-			if (elem instanceof RefOntoUML.Relationship) delete(elem);
+			if (elem instanceof RefOntoUML.Association) delete(elem);
+			if (elem instanceof RefOntoUML.Generalization) delete(elem);			
 		}
 		
-		//then the classes and datatypes
+		//then the classes and datatypes (first level of dependence)
 		for(Element elem: elemList) {
 			if (elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType) delete(elem);			
-		}
-		
-		for(Element elem: elemList) {
-			if (elem instanceof RefOntoUML.GeneralizationSet) {			
-				// Dependencies with generalizations: solving this here before delete the generalization set
-				if (elem instanceof RefOntoUML.GeneralizationSet){
-					ArrayList<Generalization> gens = new ArrayList<Generalization>(); 
-					for(Generalization gen: ((GeneralizationSet)elem).getGeneralization()){				
-						if(gen!=null) {
-							gens.add(gen);							
-						}
-					}			
-					((GeneralizationSet)elem).getGeneralization().removeAll(gens);
-					for(Generalization gen: gens) ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(gen, false);
-				}
-				
-				delete(elem);
-			}
-		}
+		}		
+	}
+	
+	private void deleteGeneralizationSet(GeneralizationSet elem)
+	{
+		ArrayList<Generalization> gens = new ArrayList<Generalization>(); 
+		for(Generalization gen: ((GeneralizationSet)elem).getGeneralization())
+		{				
+			if(gen!=null) gens.add(gen);			
+		}			
+		((GeneralizationSet)elem).getGeneralization().removeAll(gens);		
+		for(Generalization gen: gens) ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(gen, false);
+		delete(elem);
+		ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(elem);
 	}
 	
 	private void delete (DiagramElement element)
@@ -300,7 +300,6 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		if(element instanceof BaseConnection || element instanceof ClassElement) 
 		{
 			element.getParent().removeChild(element);
-//			element.setParent(null);
 		}
 		
 		if (element.getParent() instanceof StructureDiagram) {
