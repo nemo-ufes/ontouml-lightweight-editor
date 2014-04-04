@@ -82,11 +82,4 @@ public class DecIntWizard extends AntipatternWizard {
 		return (DecIntOccurrence)ap;
 	}
 	
-	@Override
-	public boolean performFinish() {
-		for(AntiPatternAction<?> action: super.getAllActions())
-			action.run();
-		
-		return true;
-	}
 }

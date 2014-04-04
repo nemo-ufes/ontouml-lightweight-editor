@@ -80,11 +80,5 @@ public class HomoFuncWizard extends AntipatternWizard {
 	{
 		return seventhPage;
 	}
-	@Override
-	public boolean performFinish() {
-		for(AntiPatternAction<?> action: super.getAllActions())
-			action.run();
-		
-		return true;
-	}
+	
 }

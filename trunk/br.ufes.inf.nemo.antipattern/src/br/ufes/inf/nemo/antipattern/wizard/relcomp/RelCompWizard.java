@@ -67,9 +67,4 @@ public class RelCompWizard extends AntipatternWizard {
 	}
 
 
-	@Override
-	public boolean performFinish() {
-		runAllActions();
-		return true;
-	}
 }

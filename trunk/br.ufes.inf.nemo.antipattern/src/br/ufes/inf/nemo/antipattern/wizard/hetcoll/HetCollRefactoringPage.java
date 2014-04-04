@@ -11,12 +11,15 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import RefOntoUML.Association;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
 
 public class HetCollRefactoringPage extends RefactoringPage {
@@ -30,6 +33,10 @@ public class HetCollRefactoringPage extends RefactoringPage {
 	private Button btnArrowLeft;
 	private List yesList;
 	private List noList;
+	private Text lblSecondOption;
+	private Text lblThirdOption;
+
+	private Text lblFirstOption;
 	
 	/**
 	 * Create the wizard.
@@ -43,8 +50,8 @@ public class HetCollRefactoringPage extends RefactoringPage {
 		setDescription("The follwing options can be used to refactor the model.");
 	}
 
-	public HetCollWizard getHetCollWizard(){
-		return (HetCollWizard)getWizard();
+	public AntipatternWizard getHetCollWizard(){
+		return (AntipatternWizard)getWizard();
 	}
 	
 	public static String getStereotype(EObject element)
@@ -93,22 +100,19 @@ public class HetCollRefactoringPage extends RefactoringPage {
 	    };
 	    
 		btnFirstOption = new Button(container, SWT.CHECK);
-		btnFirstOption.setBounds(10, 10, 554, 27);		
-		btnFirstOption.setText(hetColl.getWhole().getName()+" is a functional complex and all partOf relations are stereotyped as «componentOf»");
+		btnFirstOption.setBounds(10, 10, 20, 59);
 		btnFirstOption.addSelectionListener(listener1);
 		
 		btnSecondOption = new Button(container, SWT.CHECK | SWT.WRAP);
-		btnSecondOption.setBounds(10, 43, 250, 85);
-		btnSecondOption.setText("The parts are also collectives and their respective relations are stereotyped as «subCollectionOf»");
+		btnSecondOption.setBounds(10, 75, 20, 85);
 		btnSecondOption.addSelectionListener(listener2);
 		
 		btnThirdOption = new Button(container, SWT.CHECK | SWT.WRAP);
-		btnThirdOption.setBounds(314, 43, 250, 85);
-		btnThirdOption.setText("There is a new type, named MemberPart, which is the super-type of all parts and is connected to "+hetColl.getWhole().getName()+" through a single «memberOf» relation. In addition, all other partOf relations are deleted.");		
+		btnThirdOption.setBounds(292, 75, 20, 85);
 		btnThirdOption.addSelectionListener(listener2);
 		
 		yesList = new List(container,SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		yesList.setBounds(10, 135, 250, 137);
+		yesList.setBounds(36, 166, 224, 106);
 		
 		for(Property p: hetColl.getMemberEnds())
 		{		
@@ -118,7 +122,7 @@ public class HetCollRefactoringPage extends RefactoringPage {
 		yesList.setSelection(0);
 		
 		btnArrowRight = new Button(container, SWT.NONE);
-		btnArrowRight.setBounds(266, 134, 40, 25);
+		btnArrowRight.setBounds(266, 181, 40, 25);
 		btnArrowRight.setText("->");
 		btnArrowRight.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -135,7 +139,7 @@ public class HetCollRefactoringPage extends RefactoringPage {
 		});
 		
 		btnArrowLeft = new Button(container, SWT.NONE);
-		btnArrowLeft.setBounds(266, 165, 40, 25);
+		btnArrowLeft.setBounds(266, 212, 40, 25);
 		btnArrowLeft.setText("<-");
 		btnArrowLeft.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -152,7 +156,23 @@ public class HetCollRefactoringPage extends RefactoringPage {
 		});
 		
 		noList = new List(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		noList.setBounds(314, 134, 250, 138);
+		noList.setBounds(318, 166, 224, 106);
+		
+		lblFirstOption = new Text(container, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		lblFirstOption.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		lblFirstOption.setBounds(36, 10, 506, 59);		
+		lblFirstOption.setText(hetColl.getWhole().getName()+" is a functional complex and all partOf relations are stereotyped as «componentOf»");
+		
+		lblSecondOption = new Text(container, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		lblSecondOption.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		lblSecondOption.setBounds(36, 75, 224, 85);
+		lblSecondOption.setText("New Label");
+		lblSecondOption.setText("The parts are also collectives and their respective relations are stereotyped as «subCollectionOf»");
+		
+		lblThirdOption = new Text(container, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		lblThirdOption.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		lblThirdOption.setBounds(318, 75, 224, 85);
+		lblThirdOption.setText("There is a new type, named MemberPart, which is the super-type of all parts and is connected to "+hetColl.getWhole().getName()+" through a single «memberOf» relation. In addition, all other partOf relations are deleted.");
 	}
 	
 	public Property getProperty (String typeName){
@@ -185,7 +205,7 @@ public class HetCollRefactoringPage extends RefactoringPage {
 	@Override
 	public IWizardPage getNextPage() 
 	{
-		((HetCollWizard)getWizard()).removeAllActions();
+		((AntipatternWizard)getWizard()).removeAllActions();
 		
 		if(btnFirstOption.getSelection()){
 			ArrayList<Association> assocList = new ArrayList<Association>();
@@ -221,6 +241,6 @@ public class HetCollRefactoringPage extends RefactoringPage {
 				//======================================	
 			}
 		}
-		return ((HetCollWizard)getWizard()).getFinishing();	
+		return ((AntipatternWizard)getWizard()).getFinishing();	
 	}
 }

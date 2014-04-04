@@ -8,11 +8,13 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import RefOntoUML.Association;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 
 public class HetCollFirstPage extends HetCollPage {
 
@@ -43,24 +45,26 @@ public class HetCollFirstPage extends HetCollPage {
 
 		setControl(container);
 		
-		Label lblDoAllParts = new Label(container, SWT.NONE);
-		lblDoAllParts.setBounds(10, 10, 554, 26);
+		Text lblDoAllParts = new Text(container, SWT.WRAP | SWT.V_SCROLL);
+		lblDoAllParts.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		lblDoAllParts.setBounds(10, 10, 554, 48);
 		lblDoAllParts.setText("Do all parts of a "+hetColl.getWhole().getName()+" have the same function (or play the same role) regarding their whole?  ");
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 94, 554, 16);
+		btnYes.setBounds(10, 163, 554, 16);
 		btnYes.setText("Yes, "+hetColl.getWhole().getName()+" is a collective.");
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 116, 554, 16);
+		btnNo.setBounds(10, 185, 554, 16);
 		btnNo.setText("No, "+hetColl.getWhole().getName()+" is a functional complex.");
 		
-		Label lblMustAnInstance = new Label(container, SWT.NONE);
-		lblMustAnInstance.setBounds(10, 40, 554, 48);
+		Text lblMustAnInstance = new Text(container, SWT.WRAP | SWT.V_SCROLL);
+		lblMustAnInstance.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		lblMustAnInstance.setBounds(10, 64, 554, 63);
 		
 		if(hetColl.getMemberEnds().size()>=2){
-			lblMustAnInstance.setText("In other words, must an instance of "+hetColl.getWhole().getName()+" be composed of at least one instance of "+hetColl.getMemberEnds().get(0).getType().getName()+", one of "+
-			hetColl.getMemberEnds().get(1).getType().getName()+" and etc?");
+			lblMustAnInstance.setText("In other words, must an instance of "+hetColl.getWhole().getName()+" be composed of at least one instance of "+
+				hetColl.getMemberEnds().get(0).getType().getName()+", one of "+hetColl.getMemberEnds().get(1).getType().getName()+" and etc?");
 		}else{
 			lblMustAnInstance.setText("In other words, must an instance of "+hetColl.getWhole().getName()+" be composed of at least one instance of the parts ?");
 		}
@@ -84,6 +88,6 @@ public class HetCollFirstPage extends HetCollPage {
 				//======================================
 			}
 		}
-		return ((HetCollWizard)getWizard()).getFinishing();
+		return ((AntipatternWizard)getWizard()).getFinishing();
 	}
 }

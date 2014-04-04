@@ -69,9 +69,4 @@ public class UndefPhaseWizard extends AntipatternWizard {
 	public UndefPhaseFifthPage getFifthPage() {
 		return fifthPage;
 	}
-	@Override
-	public boolean performFinish() {
-		runAllActions();
-		return true;
-	}
 }

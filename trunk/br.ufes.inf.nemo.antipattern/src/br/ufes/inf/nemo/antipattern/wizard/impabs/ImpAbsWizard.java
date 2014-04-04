@@ -113,9 +113,4 @@ public class ImpAbsWizard extends AntipatternWizard {
 		return isMeronymic;
 	}
 
-	@Override
-	public boolean performFinish() {
-		runAllActions();
-		return true;
-	}
 }

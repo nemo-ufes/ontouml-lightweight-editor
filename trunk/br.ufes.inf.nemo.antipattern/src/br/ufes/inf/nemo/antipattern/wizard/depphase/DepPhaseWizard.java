@@ -97,11 +97,4 @@ public class DepPhaseWizard extends AntipatternWizard {
 		return false;
 	}
 
-	@Override
-	public boolean performFinish() {
-		for(AntiPatternAction<?> action: super.getAllActions())
-			action.run();
-		
-		return true;
-	}
 }

@@ -86,12 +86,5 @@ public class GSRigWizard extends AntipatternWizard {
 		return sixthPage;	
 	}
 	
-	@Override
-	public boolean performFinish() {
-		for(AntiPatternAction<?> action: super.getAllActions())
-			action.run();
-		
-		return true;
-	}
 }
 

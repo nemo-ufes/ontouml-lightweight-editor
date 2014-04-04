@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.antipattern.wizard.asscyc;
 
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
@@ -51,12 +50,5 @@ public class AssCycWizard extends AntipatternWizard {
 	public AssCycSecondPage getSecondPage()
 	{
 		return secondPage;
-	}
-	@Override
-	public boolean performFinish() {
-		for(AntiPatternAction<?> action: super.getAllActions())
-			action.run();
-		
-		return true;
 	}
 }

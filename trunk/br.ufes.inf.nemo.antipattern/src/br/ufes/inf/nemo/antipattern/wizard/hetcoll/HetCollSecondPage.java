@@ -10,13 +10,15 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import RefOntoUML.Association;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
+import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 
 public class HetCollSecondPage extends HetCollPage {
 
@@ -59,16 +61,18 @@ public class HetCollSecondPage extends HetCollPage {
 
 		setControl(container);
 		
-		Label lblAreTheParts = new Label(container, SWT.WRAP);
-		lblAreTheParts.setBounds(10, 10, 554, 15);
+		Text lblAreTheParts = new Text(container, SWT.WRAP | SWT.V_SCROLL);
+		lblAreTheParts.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		lblAreTheParts.setBounds(10, 10, 554, 37);
 		lblAreTheParts.setText("Are the parts of the "+hetColl.getWhole().getName()+"’s parts also a part of "+hetColl.getWhole().getName()+"? ");
 		
-		Label lblNewLabel = new Label(container, SWT.WRAP);
-		lblNewLabel.setBounds(10, 63, 227, 37);
-		lblNewLabel.setText("Yes... Therefore, the following parts are members of "+hetColl.getWhole().getName()+":");
+		Text lblNewLabel = new Text(container, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		lblNewLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		lblNewLabel.setBounds(10, 63, 227, 78);
+		lblNewLabel.setText("Yes.\nThe following parts are members of "+hetColl.getWhole().getName()+":");
 		
 		yesList = new List(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		yesList.setBounds(10, 106, 227, 125);
+		yesList.setBounds(10, 147, 227, 125);
 		
 		for(Property p: hetColl.getMemberEnds())
 		{		
@@ -78,7 +82,7 @@ public class HetCollSecondPage extends HetCollPage {
 		yesList.setSelection(0);
 		
 		btnArrowRight = new Button(container, SWT.NONE);
-		btnArrowRight.setBounds(243, 105, 37, 25);
+		btnArrowRight.setBounds(243, 182, 37, 25);
 		btnArrowRight.setText("->");
 		btnArrowRight.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -95,7 +99,7 @@ public class HetCollSecondPage extends HetCollPage {
 		});
 				
 		btnArrowLeft = new Button(container, SWT.NONE);
-		btnArrowLeft.setBounds(243, 136, 37, 25);
+		btnArrowLeft.setBounds(243, 213, 37, 25);
 		btnArrowLeft.setText("<-");
 		btnArrowLeft.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -112,11 +116,12 @@ public class HetCollSecondPage extends HetCollPage {
 		});
 				
 		noList = new List(container, SWT.BORDER);
-		noList.setBounds(286, 106, 227, 125);
+		noList.setBounds(286, 147, 227, 125);
 		
-		Label lblNewLabel_3 = new Label(container, SWT.WRAP);
-		lblNewLabel_3.setBounds(286, 63, 227, 37);
-		lblNewLabel_3.setText("No... Therefore, the following parts are subcollections of "+hetColl.getWhole().getName()+":");
+		Text lblNewLabel_3 = new Text(container, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		lblNewLabel_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		lblNewLabel_3.setBounds(286, 63, 227, 78);
+		lblNewLabel_3.setText("No.\nThe following parts are subcollections of "+hetColl.getWhole().getName()+":");
 	}
 	
 	public Property getProperty (String typeName){
@@ -172,6 +177,6 @@ public class HetCollSecondPage extends HetCollPage {
 				//======================================
 			}			
 		}
-		return ((HetCollWizard)getWizard()).getFinishing();		
+		return ((AntipatternWizard)getWizard()).getFinishing();		
 	}	
 }
