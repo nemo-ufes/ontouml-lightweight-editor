@@ -402,14 +402,13 @@ public class AntiPatternResultDialog extends Dialog {
 	public void showWizard(final AntipatternOccurrence apOccur)
 	{
 		WizardDialog wizardDialog = getWizardDialog(apOccur);		
-		if(wizardDialog!=null && wizardDialog.open()==Window.OK){
-			apOccur.setIsFixed(true);
+		if(wizardDialog!=null && wizardDialog.open()==Window.OK){			
 			if(!apOccur.getFix().isEmpty()){
-				if(AntiPatternModifDialog.openDialog(apOccur.getFix(), frame)==Window.OK){
-					refresh();
+				if(AntiPatternModifDialog.openDialog(apOccur.getFix(), frame)==Window.OK){					
 					frame.getDiagramManager().updateOLED(apOccur.getFix());					
 				}
 			}
+			refresh();
 		}
 	}		
 }

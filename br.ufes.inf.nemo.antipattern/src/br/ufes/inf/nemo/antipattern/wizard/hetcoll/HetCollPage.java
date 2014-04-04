@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 
 public class HetCollPage extends WizardPage {
 
@@ -20,8 +21,8 @@ public class HetCollPage extends WizardPage {
 		setTitle(HetCollAntipattern.getAntipatternInfo().getName());		
 	}
 	
-	public HetCollWizard getHetCollWizard(){
-		return (HetCollWizard)getWizard();
+	public AntipatternWizard getHetCollWizard(){
+		return (AntipatternWizard)getWizard();
 	}
 
 	@Override

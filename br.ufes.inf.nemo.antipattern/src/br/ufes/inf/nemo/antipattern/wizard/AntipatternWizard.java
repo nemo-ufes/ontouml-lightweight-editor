@@ -134,4 +134,12 @@ public abstract class AntipatternWizard extends Wizard {
 		this.canFinish = canFinish;
 	}
 
+	@Override
+	public boolean performFinish() {
+		for(AntiPatternAction<?> action: this.getAllActions())
+			action.run();
+		ap.setIsFixed(true);
+		return true;
+	}
+
 }

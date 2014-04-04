@@ -68,9 +68,4 @@ public class RepRelWizard extends AntipatternWizard {
 		return thirdPage;
 	}
 	
-	@Override
-	public boolean performFinish() {
-		runAllActions();
-		return true;
-	}
 }

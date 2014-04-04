@@ -78,9 +78,4 @@ public class UndefFormalWizard extends AntipatternWizard {
 			return fifthPage;
 		}
 		
-		@Override
-		public boolean performFinish() {
-			runAllActions();
-			return true;
-		}
 }

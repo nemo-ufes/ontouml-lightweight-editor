@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.antipattern.wizard.hetcoll;
 
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
@@ -52,13 +51,5 @@ public class HetCollWizard extends AntipatternWizard {
 	public HetCollSecondPage getSecondPage()
 	{
 		return secondPage;
-	}
-	
-	@Override
-	public boolean performFinish() {
-		for(AntiPatternAction<?> action: super.getAllActions())
-			action.run();
-		
-		return true;
 	}
 }

@@ -93,14 +93,7 @@ public class BinOverWizard extends AntipatternWizard {
 	public BinOverOccurrence getAp() {
 		return (BinOverOccurrence)ap;
 	}
-
-	@Override
-	public boolean performFinish() {
 		
-		runAllActions();		
-		return true;
-	}
-	
 	public static String getStereotypeName(Class<? extends Association> stereo){
 		String name = stereo.toString().replaceAll("class RefOntoUML.impl.","");
 	    name = name.replaceAll("Impl","");

@@ -81,13 +81,6 @@ public class MixIdenWizard extends AntipatternWizard {
 	{
 		return thirdPage;
 	}
-
-	@Override
-	public boolean performFinish() {
-		runAllActions();
-		return true;
-	}
-	
 	
 	
 }

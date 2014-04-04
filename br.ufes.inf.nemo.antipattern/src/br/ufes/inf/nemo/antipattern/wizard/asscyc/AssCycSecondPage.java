@@ -5,18 +5,19 @@ import java.text.Normalizer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
 
 public class AssCycSecondPage  extends AssCycPage {
 		
 	private Button btnAlways;
 	private Button btnNever;
 	private Button btnPossibly;
-	private Label lblConsiderInstancesOf;
+	private Text lblConsiderInstancesOf;
 
 	public AssCycSecondPage(AssCycOccurrence asscyc) 
 	{
@@ -32,20 +33,29 @@ public class AssCycSecondPage  extends AssCycPage {
 	
 		setControl(container);			
 		
-		lblConsiderInstancesOf = new Label(container, SWT.WRAP);
-		lblConsiderInstancesOf.setBounds(10, 10, 554, 57);
-		lblConsiderInstancesOf.setText("Consider instances of t1 of <Type-1>, t2 of <Type-2>, t3 of <Type-3> and so on. If t1 is connected to t2 through <assoc-1> and t2 is connected to t3 through <assoc-2>, must t3 be connected to t1 through <assoc-3>?");
+		lblConsiderInstancesOf = new Text(container, SWT.WRAP | SWT.V_SCROLL);
+		lblConsiderInstancesOf.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		lblConsiderInstancesOf.setBounds(10, 10, 554, 148);
+		String text = "Consider instances of\n\n";
+		int i = 0;
+		for(RefOntoUML.Class c: asscyc.getCycle()){
+			if(i!=asscyc.getCycle().size()-1) text += "- t"+(i+1)+": \""+c.getName()+"\"\n";
+			else text+= "- t"+(i+1)+": \""+c.getName()+"\"\n";
+			i++;
+		}
+		text+= "\nIf t1 is connected to t2, t2 is connected to t3, and so on, must tn be connected to t1 ?";		
+		lblConsiderInstancesOf.setText(text);
 		
 		btnAlways = new Button(container, SWT.RADIO);
-		btnAlways.setBounds(10, 73, 554, 16);
+		btnAlways.setBounds(10, 164, 554, 16);
 		btnAlways.setText("Always. Instance level cycle is mandatory");
 		
 		btnNever = new Button(container, SWT.RADIO);
-		btnNever.setBounds(10, 95, 554, 16);
+		btnNever.setBounds(10, 186, 554, 16);
 		btnNever.setText("Never. Instance level cycle is forbidden");
 		
 		btnPossibly = new Button(container, SWT.RADIO);
-		btnPossibly.setBounds(10, 117, 554, 16);
+		btnPossibly.setBounds(10, 208, 554, 16);
 		btnPossibly.setText("Possibly. Never mind, the model is correct");
 	}
 

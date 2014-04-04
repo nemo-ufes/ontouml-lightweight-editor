@@ -69,11 +69,4 @@ public class MultiDepWizard extends AntipatternWizard {
 //		return secondPage;
 //	}
 		
-	@Override
-	public boolean performFinish() {
-		for(AntiPatternAction<?> action: super.getAllActions())
-			action.run();
-		
-		return true;
-	}
 }

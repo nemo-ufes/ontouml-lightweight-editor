@@ -38,12 +38,6 @@ public class OverlappingWizard extends AntipatternWizard {
 		return null;
 	}
 	
-	@Override
-	public boolean performFinish() {
-		runAllActions();
-		return true;
-	}
-	
 	public boolean hasNextVariation(int variationIndex){
 		return variationIndex<getAp().getVariations().size()-1;
 	}

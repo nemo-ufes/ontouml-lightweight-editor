@@ -85,11 +85,6 @@ public class MixRigWizard extends AntipatternWizard {
 		return thirdPage;
 	}
 
-	@Override
-	public boolean performFinish() {
-		runAllActions();
-		return true;
-	}
 	public ArrayList<Class<?>> allowedStereotypes(){
 		ArrayList<Class<?>> allowedStereotypes = new ArrayList<Class<?>>();
 		
