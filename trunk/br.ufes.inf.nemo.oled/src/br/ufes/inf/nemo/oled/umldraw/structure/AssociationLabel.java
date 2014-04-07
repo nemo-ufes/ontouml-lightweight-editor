@@ -21,15 +21,15 @@ package br.ufes.inf.nemo.oled.umldraw.structure;
 
 import java.awt.Color;
 import java.awt.geom.GeneralPath;
+import java.util.ArrayList;
 
-import RefOntoUML.Generalization;
+import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
-import br.ufes.inf.nemo.oled.umldraw.shared.UmlModelElementLabelSource;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
 
 /**
@@ -45,6 +45,7 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	private static final long serialVersionUID = 4398704922594883346L;
 	private Label typeLabel;
 	private Label nameLabel;
+	private Label metapropertyLabel;
 	private BaseConnection association;
 	private boolean editable;
 	
@@ -54,6 +55,7 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	public AssociationLabel() {
 		setTypeLabel(new SimpleLabel());
 		setNameLabel(new SimpleLabel());
+		setMetaPropertyLabel(new SimpleLabel());
 	}
 
 	/**
@@ -65,6 +67,11 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 		return nameLabel;
 	}
 
+	public Label getMetaPropertyLabel()
+	{
+		return metapropertyLabel;
+	}
+	
 	/**
 	 * Sets a Label. This method is exposed for unit testing.
 	 * 
@@ -77,6 +84,13 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 		nameLabel.setParent(this);
 	}
 
+	public void setMetaPropertyLabel(Label aLabel)
+	{
+		metapropertyLabel = aLabel;
+		metapropertyLabel.setSource(this);
+		metapropertyLabel.setParent(this);
+	}
+	
 	/**
 	 * Returns the wrapped nameLabel.
 	 * 
@@ -140,6 +154,11 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	public String getTypeLabelText() {
 		return typeLabel.getNameLabelText();
 	}
+	
+	public String getMetaPropertyLabelText()
+	{
+		return metapropertyLabel.getNameLabelText();
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -152,6 +171,11 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 		typeLabel.setNameLabelText(text);
 	}
 
+	public void setMetaPropertyLabelText(String text)
+	{
+		metapropertyLabel.setNameLabelText(text);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -163,14 +187,14 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	 * {@inheritDoc}
 	 */
 	public void centerHorizontally() {
-		nameLabel.centerHorizontally();
+		nameLabel.centerHorizontally();		
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void draw(DrawingContext drawingContext) {
+	public void draw(final DrawingContext drawingContext) {
 
 		if (association instanceof AssociationElement) {
 			final AssociationElement assocElement = (AssociationElement) association;
@@ -212,7 +236,9 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 					private static final long serialVersionUID = -5187481263917156632L;
 
 					@Override
-					public void setLabelText(String aText) { }
+					public void setLabelText(String aText) { 
+						
+					}
 					
 					@Override
 					public String getLabelText() {
@@ -223,18 +249,53 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 				nameLabel.draw(drawingContext);
 				drawDirection(drawingContext);
 			}
+			
+			if(assocElement.getRelationship() instanceof Meronymic && assocElement.showMetaProperties()){
+				metapropertyLabel.setSource(new LabelSource() {
 
-		}
+					private static final long serialVersionUID = -5187481263917156632L;
 
-		else if (association instanceof GeneralizationElement) {
-			Generalization generalization = ((GeneralizationElement) association).getGeneralization();	
-			if(generalization.getGeneralizationSet().size() > 0)
-			{
-				typeLabel.setSource(new UmlModelElementLabelSource((StructureDiagram)association.getDiagram(),generalization));
-				typeLabel.draw(drawingContext);
+					@Override
+					public void setLabelText(String aText) { 
+						
+					}
+					
+					@Override
+					public String getLabelText() {
+						Meronymic m = (Meronymic)assocElement.getRelationship();
+						ArrayList<String> result = new ArrayList<String>();
+						if (m.isIsEssential()) result.add("isEssential");
+						if (m.isIsInseparable()) result.add("isInseparable");
+						if (m.isIsImmutablePart()) result.add("isImmutablePart");
+						if (m.isIsImmutableWhole()) result.add("isImmutableWhole");
+						String str =  new String();
+						if (result.size()>0){						
+							str +="{"; 
+							int i=0;
+							for(String s: result){
+								if(i==result.size()-1) str += s;
+								else str += s+",";
+								i++;
+							}
+							str += "}";
+						}				
+						// Calculate offset for horizontal alignment of the meta property label
+						if (metapropertyLabel.getOrigin().getY() == nameLabel.getOrigin().getY())
+						{					
+							double offset = (drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(str))/2;
+							if(assocElement.showName()){
+								metapropertyLabel.setOrigin(nameLabel.getOrigin().getX()-offset, metapropertyLabel.getOrigin().getY() + drawingContext.getFontMetrics(FontType.DEFAULT).getHeight());
+							}else{
+								metapropertyLabel.setOrigin(nameLabel.getOrigin().getX()-offset, metapropertyLabel.getOrigin().getY());	
+							}					
+						}
+						return str; 
+					}
+				});				
+				metapropertyLabel.draw(drawingContext);				
 			}
+				
 		}
-
 	}
 
 	/**

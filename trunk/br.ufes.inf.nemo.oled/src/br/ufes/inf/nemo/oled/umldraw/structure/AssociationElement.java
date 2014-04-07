@@ -72,7 +72,7 @@ public final class AssociationElement extends BaseConnection {
 	private Label role1Label;
 	private Label role2Label;
 	private AssociationLabel nameLabel;
-	private boolean showMultiplicities, showName, showRoles;
+	private boolean showMultiplicities, showName, showRoles, showMetaProperties;
 
 	
 	/**
@@ -91,6 +91,7 @@ public final class AssociationElement extends BaseConnection {
 		setupNameLabel();
 		
 		showMultiplicities = true;
+		showMetaProperties=true;
 	}
 
 	/**
@@ -105,6 +106,8 @@ public final class AssociationElement extends BaseConnection {
 	 */
 	public void setShowName(boolean flag) { showName = flag; }
 
+	public void setShowMetaProperties(boolean flag) { showMetaProperties = flag; }
+		
 	/**
 	 * Returns the value of the showMultiplicities property.
 	 * @return the value of the showMultiplicities property
@@ -125,6 +128,8 @@ public final class AssociationElement extends BaseConnection {
 	public boolean showRoles() {
 		return showRoles;
 	}
+	
+	public boolean showMetaProperties() { return showMetaProperties; }
 	
 	/**
 	 * Sets the showRoles property.
@@ -152,7 +157,7 @@ public final class AssociationElement extends BaseConnection {
 		cloned.multiplicity2Label.setParent(multiplicity2Label.getParent());
 		cloned.role1Label.setParent(role1Label.getParent());
 		cloned.role2Label.setParent(role2Label.getParent());
-		cloned.nameLabel.setParent(nameLabel.getParent());
+		cloned.nameLabel.setParent(nameLabel.getParent());		
 		return cloned;
 	}
 
@@ -210,7 +215,6 @@ public final class AssociationElement extends BaseConnection {
 			public void setLabelText(String aText) { }
 		});
 	}
-
 
 	/**
 	 * Sets the role label sources.
