@@ -113,6 +113,7 @@ public final class IconLoader {
 		DERIVERELATIONS,
 		NEMO,		
 		DIRECT,
+		PATTERN,
 	}
 
 	private Map<IconType, String> urlMap = new HashMap<IconType, String>();
@@ -130,6 +131,7 @@ public final class IconLoader {
 		urlMap.put(IconType.MOUSE_POINTER, "resources/icons/x16/mousepointer.png");
 		
 		urlMap.put(IconType.CLASS, "resources/icons/x16/tree/class.png");
+		urlMap.put(IconType.PATTERN, "resources/icons/x16/sitemap.png");
 		urlMap.put(IconType.ASSOCIATION, "resources/icons/x16/tree/association.png");
 		urlMap.put(IconType.ASSOCIATION_ARROW, "resources/icons/x16/tree/association-arrow.png");		
 		urlMap.put(IconType.AGGREGATION, "resources/icons/x16/tree/componentof.png");
@@ -164,7 +166,7 @@ public final class IconLoader {
 		urlMap.put(IconType.ANTIPATTERN, "resources/icons/antipattern16.png");
 		
 		urlMap.put(IconType.GENERATE_ALLOY, "resources/icons/x16/alloy/alloy.png");
-		
+				
 		urlMap.put(IconType.GENERATE_OWL, "resources/icons/x16/owl.png");
 		urlMap.put(IconType.GENERATE_OWL_SETTINGS, "resources/icons/x16/owl.png");
 		

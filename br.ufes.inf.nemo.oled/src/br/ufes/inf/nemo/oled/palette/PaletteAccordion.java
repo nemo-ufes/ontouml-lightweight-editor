@@ -89,8 +89,8 @@ public class PaletteAccordion extends JPanel{
 	public void createStaticStructurePalettes(DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		createStaticClassesPalette(editorDispatcher);		
-		createPatternsPalette(editorDispatcher);
 		createOntoUMLPatternsPalette(editorDispatcher);
+		createPatternsPalette(editorDispatcher);		
 		render();
 	}
 	
@@ -147,7 +147,7 @@ public class PaletteAccordion extends JPanel{
 
 	public Palette getDerivationPatternsPalette()
 	{
-		return paletteMap.get("Derived Types Patterns");
+		return paletteMap.get("Derived Patterns");
 	}
 	
 	public Palette getPatternsPalette()
@@ -174,7 +174,7 @@ public class PaletteAccordion extends JPanel{
 	
 	private void createPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
-		derivedPalette = new Palette(this, "Derived Types Patterns");
+		derivedPalette = new Palette(this, "Derived Patterns");
 		derivedPalette.createElement("staticpalette.classes", "select");
 		//palette.addSpacer(0,PALLETE_VSPACE);
 		derivedPalette.createElement("staticpalette.patterns", "derivationbyunion");
@@ -182,10 +182,10 @@ public class PaletteAccordion extends JPanel{
 		
 		derivedPalette.addCommandListener(editorDispatcher);
 		
-		paletteMap.put("Derived Types Patterns", derivedPalette);
+		paletteMap.put("Derived Patterns", derivedPalette);
 
 		if(openPalette == null)
-			openPalette = "Derived Types Patterns";
+			openPalette = "Derived Patterns";
 	}
 	
 	private void createStaticClassesPalette(DiagramEditorCommandDispatcher editorDispatcher)
