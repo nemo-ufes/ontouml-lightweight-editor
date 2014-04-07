@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Generalization;
 import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
-import RefOntoUML.StringExpression;
 
 /**
  * @author John Guerson
@@ -103,13 +102,12 @@ public class OntoUMLElement {
 		}
 		
 		if (element instanceof RefOntoUML.Constraintx)
-		{
-			StringExpression expr = (StringExpression)((RefOntoUML.Constraintx)element).getSpecification();
-			
-			if(expr.getSymbol().length()>15)
-				return type +" "+ expr.getSymbol().substring(0,15)+" (...)";
-			else
-				return type +" "+ expr.getSymbol();
+		{			
+			if(((RefOntoUML.Constraintx)element).getName()!=null){
+				return type +" "+ ((RefOntoUML.Constraintx)element).getName();
+			}else{
+				return type +" null";
+			}			
 		}
 		
 		if (element instanceof RefOntoUML.GeneralizationSet)

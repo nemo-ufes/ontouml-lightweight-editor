@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.patterntool;
+package br.ufes.inf.nemo.oled.pattern;
 
 import java.util.ArrayList;
 
