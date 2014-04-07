@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled;
 
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -297,22 +298,27 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 */
 	private boolean canQuit() {
 		
-		DiagramEditor editor = diagramManager.getCurrentDiagramEditor();
-		if(editor != null)
-			if (editor.canUndo()) {
-				return true;
-				
-				// Commented this line because we don't want this dialog anymore...
-				
-				/*
-				JOptionPane.showConfirmDialog(
-					this,
-					ApplicationResources.getInstance().getString(
-						"confirm.quit.message"),
-					ApplicationResources.getInstance().getString(
-						"confirm.quit.title"), JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-				 */
-			}
+		int response = JOptionPane.showOptionDialog(
+			this,
+			"Do you really want to quit?",
+			"Quit application?", 
+			JOptionPane.YES_NO_CANCEL_OPTION,
+			JOptionPane.QUESTION_MESSAGE,
+			null,
+			new String[]{"Save and Exit", "Exit without saving", "Cancel"},
+			"default");		
+		if(response==JOptionPane.YES_OPTION){
+			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			diagramManager.saveProject();
+			setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			return true;
+		}
+		if(response==JOptionPane.NO_OPTION){
+			return true;
+		}
+		if(response==JOptionPane.CANCEL_OPTION){
+			return false;
+		}
 		return true;
 	}
 
