@@ -18,6 +18,7 @@ import javax.swing.KeyStroke;
 
 import RefOntoUML.Association;
 import RefOntoUML.Generalization;
+import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
@@ -63,6 +64,12 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private JRadioButtonMenuItem twoItem;
 	private JRadioButtonMenuItem otherItem;	
 	private JMenuItem endNameItem;
+	private JMenu metaPropertiesMenu;
+	private JCheckBoxMenuItem essential;
+	private JCheckBoxMenuItem inseparable;
+	private JCheckBoxMenuItem immutablewhole;
+	private JCheckBoxMenuItem immutablepart;
+	private JCheckBoxMenuItem shareable;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -78,6 +85,76 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		addSeparator();
 		
 		createEndPointItems();
+		
+		metaPropertiesMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.metaproperties.name"));
+		add(metaPropertiesMenu);
+		
+		essential = createCheckBoxMenuItem(metaPropertiesMenu, "metaproperties.essential");
+		essential.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (con instanceof AssociationElement) {	 
+					((Meronymic)((AssociationElement) con).getRelationship()).setIsEssential(essential.isSelected());
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setShowMetaProperties(true);
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}
+			}
+		});
+		
+		inseparable = createCheckBoxMenuItem(metaPropertiesMenu, "metaproperties.inseparable");
+		inseparable.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (con instanceof AssociationElement) {	 
+					((Meronymic)((AssociationElement) con).getRelationship()).setIsInseparable(inseparable.isSelected());
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setShowMetaProperties(true);
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}
+			}
+		});
+		
+		immutablewhole = createCheckBoxMenuItem(metaPropertiesMenu, "metaproperties.immutablewhole");
+		immutablewhole.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (con instanceof AssociationElement) {	 
+					((Meronymic)((AssociationElement) con).getRelationship()).setIsImmutableWhole(immutablewhole.isSelected());
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setShowMetaProperties(true);
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}
+			}
+		});
+		
+		immutablepart = createCheckBoxMenuItem(metaPropertiesMenu, "metaproperties.immutablepart");
+		immutablepart.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (con instanceof AssociationElement) {	 
+					((Meronymic)((AssociationElement) con).getRelationship()).setIsImmutablePart(immutablepart.isSelected());
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setShowMetaProperties(true);
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}
+			}
+		});
+		
+		shareable = createCheckBoxMenuItem(metaPropertiesMenu, "metaproperties.shareable");
+		shareable.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (con instanceof AssociationElement) {	 
+					((Meronymic)((AssociationElement) con).getRelationship()).setIsShareable(shareable.isSelected());					
+					editor.getDiagramManager().refreshDiagramElement(((AssociationElement) con).getRelationship());					
+				}
+			}
+		});
 		
 		visibilityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.visibility.name"));
 		add(visibilityMenu);
@@ -320,7 +397,15 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			showRolesItem.setEnabled(false);			
 			showStereotypeItem.setEnabled(false);
 		}
-		
+		if(con instanceof AssociationElement){
+			if(((AssociationElement)con).getRelationship() instanceof Meronymic){
+				shareable.setSelected(((Meronymic)((AssociationElement) con).getRelationship()).isIsShareable());
+				inseparable.setSelected(((Meronymic)((AssociationElement) con).getRelationship()).isIsInseparable());
+				immutablepart.setSelected(((Meronymic)((AssociationElement) con).getRelationship()).isIsImmutablePart());
+				immutablewhole.setSelected(((Meronymic)((AssociationElement) con).getRelationship()).isIsImmutableWhole());
+				essential.setSelected(((Meronymic)((AssociationElement) con).getRelationship()).isIsEssential());
+			}
+		}
 		rectMenuItem.setEnabled(true);
 		
 		if((con.getConnection1()!=null || con.getConnection2()!=null))

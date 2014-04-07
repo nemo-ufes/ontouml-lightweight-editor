@@ -755,7 +755,7 @@ public class ProjectTree extends CheckboxTree {
 	            			ProjectTree.this.frame.getDiagramManager(),	            			
 	            			(RefOntoUML.Constraintx)element,
 	            			true
-	            		);                  			
+	            		);
             		}else if (element instanceof RefOntoUML.Generalization)
             		{
             			DialogCaller.callGeneralizationDialog(

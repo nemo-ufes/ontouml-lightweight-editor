@@ -89,15 +89,18 @@ public class AssociationEditionPanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(assocPanel, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(meronymicPanel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)
-								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(directionPanel, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(assocPanel, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(panel, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(directionPanel, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)))
+							.addContainerGap(10, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(meronymicPanel, 0, 0, Short.MAX_VALUE)
+							.addGap(219))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -110,7 +113,7 @@ public class AssociationEditionPanel extends JPanel {
 						.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(meronymicPanel, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
-					.addGap(21))
+					.addGap(15))
 		);
 		
 		btnName = new JCheckBox("Name");
@@ -195,12 +198,11 @@ public class AssociationEditionPanel extends JPanel {
 							.addGroup(gl_meronymicPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(cbxImmutablepart, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
 								.addComponent(cbxImmutablewhole, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap())
+					.addGap(238))
 		);
 		gl_meronymicPanel.setVerticalGroup(
 			gl_meronymicPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_meronymicPanel.createSequentialGroup()
-					.addGap(5)
 					.addGroup(gl_meronymicPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(cbxEssential, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbxImmutablepart, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -209,7 +211,8 @@ public class AssociationEditionPanel extends JPanel {
 						.addComponent(cbxInseparable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cbxImmutablewhole, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(5)
-					.addComponent(cbxShareable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addComponent(cbxShareable, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(13))
 		);
 		meronymicPanel.setLayout(gl_meronymicPanel);
 		// Inseparable implies in Immutable Part...
@@ -364,6 +367,13 @@ public class AssociationEditionPanel extends JPanel {
 		element.setIsAbstract(cbxAbstract.isSelected());
 		((Association)element).setIsDerived(cbxDerived.isSelected());
 				
+		if(element instanceof Meronymic){
+			((Meronymic)element).setIsEssential(cbxEssential.isSelected());
+			((Meronymic)element).setIsInseparable(cbxInseparable.isSelected());
+			((Meronymic)element).setIsImmutablePart(cbxImmutablepart.isSelected());
+			((Meronymic)element).setIsImmutableWhole(cbxImmutablewhole.isSelected());
+			((Meronymic)element).setIsShareable(cbxShareable.isSelected());
+		}
 		if (assocElement!=null) {
 			assocElement.setShowMultiplicities(btnMultiplicity.isSelected());
 			assocElement.setShowRoles(btnEndNames.isSelected());
