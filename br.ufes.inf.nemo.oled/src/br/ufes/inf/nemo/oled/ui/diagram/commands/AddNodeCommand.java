@@ -143,18 +143,21 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		//Adds the element to the diagram
 		parent.addChild(element);
 //		element.setParent((CompositeNode)parent);
+		
 		if(element instanceof Node) {
+			
 			((Node)element).setAbsolutePos(absx, absy);
+			
 			// show attributes compartment if necessary
 			Classifier c = ((ClassElement)element).getClassifier();
 			if (c instanceof RefOntoUML.Class){
 				if (((RefOntoUML.Class)c).getOwnedAttribute().size()>0){
-					((ClassElement)element).showAttributes();
+					((ClassElement)element).setShowAttributes(true);
 				}
 			}
 			if (c instanceof RefOntoUML.DataType){
 				if (((RefOntoUML.DataType)c).getOwnedAttribute().size()>0){
-					((ClassElement)element).showAttributes();
+					((ClassElement)element).setShowAttributes(true);
 				}
 			}
 		}
