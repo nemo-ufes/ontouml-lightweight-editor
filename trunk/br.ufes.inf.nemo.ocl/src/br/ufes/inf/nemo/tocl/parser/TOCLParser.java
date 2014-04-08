@@ -235,7 +235,7 @@ public class TOCLParser extends OCLParser{
     
     public String processTempKeyword(String result)
     {
-    	Pattern p = Pattern.compile("\\W(temp|inv|derive)\\W(\\s*\\w*\\s*):");
+    	Pattern p = Pattern.compile("\\W(temp|inv|derive)\\W*(\\s*\\w*\\s*):");
 		Matcher m = p.matcher(result);
 		int jump = 0;
     	while (m.find()) 

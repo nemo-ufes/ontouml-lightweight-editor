@@ -57,7 +57,8 @@ public class TOCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "";
+		description = "Operation <b>Classifier::allInstances(w: World): Classifier-instances</b<<br><br>" + 
+		"Returns the set of all instances of Classifier T in world w.";
 		
 		c = new TOCLTemplateCompletion(provider, 
 			"allInstances(w)","allInstances(w)",
@@ -76,6 +77,17 @@ public class TOCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 				
+		description = "Operation <b>OclAny::oclIsNew(w: World) : Boolean</b><br><br>"+
+		"Evaluates to true if self exists in w but not in the immediate previous world from w.<br>" +
+		"In other words, it checks the object creation in world w.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+				"oclIsNew(w)","oclIsNew(w)",
+				"oclIsNew(${world})${cursor}",
+				null, description);		
+			provider.addCompletion(c);
+			oclCompletionList.add(c);
+			
 		description = "Operation <b>OclAny::existsIn(w: World) : Boolean</b><br><br>"+
 		"Evaluates to true if self exists in the World w.";
 		
