@@ -13,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
+import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
@@ -29,7 +30,8 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
 	private UmlNode node;
 	final JMenuItem showAttrItem;
-	final JMenuItem showOperItem;
+	final JMenuItem showOperItem;	
+	final JMenuItem findInProjectItem;
 	private DiagramEditor editor;
 //	private ClassStereotypeChangeMenu changeMenu;
 	
@@ -37,6 +39,20 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	{
 		JMenuItem propertyItem = createMenuItem(this, "editproperties");
 		propertyItem.setAccelerator(KeyStroke.getKeyStroke("F9"));		
+		
+		addSeparator();
+		
+		findInProjectItem = new JMenuItem("Find in Project");
+		add(findInProjectItem);
+		findInProjectItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (node instanceof ClassElement) {						
+					Classifier c = ((ClassElement)node).getClassifier();
+					editor.getDiagramManager().getFrame().getProjectBrowser().getTree().selectModelElement(c);					
+				}				
+			}
+		});
 		
 		addSeparator();
 		

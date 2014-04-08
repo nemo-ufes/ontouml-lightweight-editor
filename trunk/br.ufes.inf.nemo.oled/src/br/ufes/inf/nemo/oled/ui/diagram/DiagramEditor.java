@@ -950,7 +950,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	}
 
 	/** Switches a rectilinear connection to a direct one. */
-	public void rectilinearToDirect() 
+	public void toDirect() 
 	{
 		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
 		{
@@ -974,7 +974,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	}
 
 	/** Switches a direct connection into a rectilinear one. */
-	public void directToRectilinear() 
+	public void toRectilinear() 
 	{
 		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
 		{
@@ -987,7 +987,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	}
 
 	/** Switches a direct connection into a rectilinear one. */
-	public void directToTreeStyle() 
+	public void toTreeStyle() 
 	{
 		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
 		{

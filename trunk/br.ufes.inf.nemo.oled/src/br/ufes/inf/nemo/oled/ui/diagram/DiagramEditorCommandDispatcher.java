@@ -229,11 +229,14 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					DiagramEditor.class.getMethod("resetConnectionPoints")));
 
 			selectorMap.put("RECT_TO_DIRECT", new MethodCall(
-					DiagramEditor.class.getMethod("rectilinearToDirect")));
+					DiagramEditor.class.getMethod("toDirect")));
 
 			selectorMap.put("DIRECT_TO_RECT", new MethodCall(
-					DiagramEditor.class.getMethod("directToRectilinear")));
+					DiagramEditor.class.getMethod("toRectilinear")));
 
+			selectorMap.put("TREE_STYLE", new MethodCall(
+					DiagramEditor.class.getMethod("toTreeStyle")));
+			
 			selectorMap.put("NAVIGABLE_TO_SOURCE", new MethodCall(
 					DiagramEditor.class.getMethod("setNavigability", RelationEndType.class),
 					RelationEndType.SOURCE));
