@@ -34,7 +34,7 @@ import br.ufes.inf.nemo.oled.draw.GeometryUtil.Orientation;
 public class RectilinearConnection extends AbstractConnection {
 
 	private static final long serialVersionUID = -1969143695568555407L;
-	private Point2D node1ConnectPoint = null, node2ConnectPoint = null;
+	protected Point2D node1ConnectPoint = null, node2ConnectPoint = null;
 
 	/**
 	 * {@inheritDoc}
@@ -79,11 +79,11 @@ public class RectilinearConnection extends AbstractConnection {
 	 * @param point the point
 	 * @return the new Point2D object
 	 */
-	private Point2D getPointInNodeCoordinates(Node node, Point2D point) {
+	protected Point2D getPointInNodeCoordinates(Node node, Point2D point) {
 		return new Point2D.Double(point.getX() - node.getAbsoluteX1(), point.getY() - node.getAbsoluteY1());
 	}
 
-	private Point2D getPointInNodeCoordinates(Connection c, Point2D point) {
+	protected Point2D getPointInNodeCoordinates(Connection c, Point2D point) {
 		return new Point2D.Double(point.getX() - c.getAbsoluteX1(), point.getY() - c.getAbsoluteY1());
 	}
 	
@@ -94,7 +94,7 @@ public class RectilinearConnection extends AbstractConnection {
 	 * @param point the point to map
 	 * @return the new point
 	 */
-	private Point2D getPointInAbsoluteCoordinates(Node node, Point2D point) {
+	protected Point2D getPointInAbsoluteCoordinates(Node node, Point2D point) {
 		return new Point2D.Double(point.getX() + node.getAbsoluteX1(), point.getY() + node.getAbsoluteY1());
 	}
 	
@@ -161,7 +161,7 @@ public class RectilinearConnection extends AbstractConnection {
 	 * @param indexAtNode the index of the point at the node
 	 * @param indexInner the inner point next ot the point at the node
 	 */
-	private void reattachConnectionPoint(Node node, Point2D nodeConnectPoint, int indexAtNode, int indexInner) {
+	protected void reattachConnectionPoint(Node node, Point2D nodeConnectPoint, int indexAtNode, int indexInner) {
 
 		if (wasPulledOff(node, nodeConnectPoint, getPoints().get(indexAtNode))) {
 			Point2D pointAtNode = getPoints().get(indexAtNode);
@@ -185,7 +185,7 @@ public class RectilinearConnection extends AbstractConnection {
 		}
 	}
 
-	private void reattachConnectionPoint(Connection c, Point2D nodeConnectPoint, int indexAtNode, int indexInner) {
+	protected void reattachConnectionPoint(Connection c, Point2D nodeConnectPoint, int indexAtNode, int indexInner) {
 
 		if (wasPulledOff(c, nodeConnectPoint, getPoints().get(indexAtNode))) {
 			Point2D pointAtNode = getPoints().get(indexAtNode);

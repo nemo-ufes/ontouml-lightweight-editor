@@ -8,8 +8,6 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import org.eclipse.uml2.uml.Include;
-
 import RefOntoUML.Classifier;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
@@ -209,7 +207,6 @@ public class DerivedTypesOperations {
 
 	}
 
-	@SuppressWarnings("unused")
 	public static void wrongSelection(String message){
 		JFrame frame = new JFrame("InputDialog Example #1");
 		System.out.println("error");
