@@ -23,7 +23,7 @@ public class NodeLegendManager {
         ArrayList<Atom> worldList = xmlFile.getWorldList();
         
         int imageNo = 0;
-    	File imageFolder = new File("./resources/gur project");
+    	File imageFolder = new File("." + File.separator + "resources" + File.separator + "gur project");
         while(atoms.hasNext()) {
         	Atom atom = atoms.next();
         	String atomLabel = atom.getLabel();
@@ -65,6 +65,16 @@ public class NodeLegendManager {
     		}
     	}
     	return null;
+    }
+    
+    public void setLegendWithType(String type, NodeLegend nodeleg) {
+    	for(int i=0; i<legendList.size(); i++) {
+    		NodeLegend nl = legendList.get(i);
+    		if(nl.getType().equals(type)){
+    			legendList.set(i, nodeleg);
+    			return;
+    		}
+    	}
     }
     
     public Iterator getLegendIterator() {

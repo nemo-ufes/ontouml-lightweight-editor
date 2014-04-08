@@ -6,6 +6,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -188,6 +199,20 @@ public class GraphManager {
 			//System.out.println(n.getId());
 			if(n.existsInWorld("world_structure/CurrentWorld$0")) {
 				String mainType = n.getMainType("world_structure/CurrentWorld$0");//xmlFile.getAtomMainType(idList.get(i), selectedWorld).getName();
+				String stylePath = AplMainWindow.STYLE_NODE_PATH + mainType + AplMainWindow.STYLE_EXT;
+				File f = new File(stylePath);
+				if(f.exists()) {
+				    try {
+				    	FileInputStream inputFileStream = new FileInputStream(f);
+					    ObjectInputStream objectInputStream = new ObjectInputStream(inputFileStream);
+						NodeLegend nl = (NodeLegend) objectInputStream.readObject();
+						objectInputStream.close();
+					    inputFileStream.close();
+					    nodeLegendManager.setLegendWithType(mainType, nl);
+					} catch (ClassNotFoundException | IOException e) {
+						e.printStackTrace();
+					}
+				}
     			String attrib = nodeLegendManager.getLegendWithType(mainType).getStyle();
     			node.addAttribute("ui.style", attrib);
     			Iterator<Attribute> attrs = n.getAttributeIterator("world_structure/CurrentWorld$0");
@@ -195,6 +220,7 @@ public class GraphManager {
     				Attribute attr = attrs.next();
     				node.addAttribute(attr.getName(), attr.getValue());
     			}
+				
 			}else{
 				node.addAttribute("ui.style", "visibility-mode: hidden;");
 			}
@@ -880,7 +906,25 @@ public class GraphManager {
     			Node node = selectedGraph.getNode(n.getId());
     			
     			String mainType = n.getMainType(selectedWorld);	//xmlFile.getAtomMainType(idList.get(i), selectedWorld).getName();
-    			String attrib = nodeLegendManager.getLegendWithType(mainType).getStyle();
+    			NodeLegend nl = nodeLegendManager.getLegendWithType(mainType);
+    			String attrib = nl.getStyle();
+    			
+				try {
+					String stylePath = AplMainWindow.STYLE_NODE_PATH + mainType + AplMainWindow.STYLE_EXT;
+					File f = new File(stylePath);
+					FileOutputStream outputFileStream = new FileOutputStream(f);
+					ObjectOutputStream outputStream = new ObjectOutputStream(outputFileStream);
+					//writeObject method of ObjectOutputStream will write/serialize the employeeobject to 
+					//the path provided by FileOutputStream
+					outputStream.writeObject(nl);
+					outputStream.close();
+					outputFileStream.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+    			
     			//node.removeAttribute("ui.style");
     			node.setAttribute("ui.style", attrib);
     			//node.addAttribute("layout.weight", 100);

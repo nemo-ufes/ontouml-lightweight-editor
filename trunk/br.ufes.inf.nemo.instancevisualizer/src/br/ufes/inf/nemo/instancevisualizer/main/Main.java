@@ -22,7 +22,7 @@ public class Main {
     	System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		MainWindow mw = new MainWindow(args);
 		mw.setVisible(true);
-		AplMainWindow.loadFile(new File(".//examples//exemplo5_4mundos.xml"), new File(".//examples//exemplo5_4mundos.refontouml"));
+		AplMainWindow.loadFile(new File(".//examples//open2.xml"), new File(".//examples//open2.refontouml"));
     }
     
 }
