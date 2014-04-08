@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.pattern;
+package br.ufes.inf.nemo.oled.patterntool;
 
 import java.util.ArrayList;
 
@@ -21,50 +21,39 @@ public class PatternTool {
 
 	private static Classifier _general;
 	
+	/**
+	 * Public methods 
+	 */
+	
 	public static Fix createSubkindPattern(Package root, double x, double y) {
-//		outcomeFixer = new OutcomeFixer(root);
-//
-//		Classifier general = createClassifier(root, ClassStereotype.KIND, "General", x, y);
-//		Classifier specific = createClassifier(root, ClassStereotype.SUBKIND, "Specific", x, y+horizontalDistance);
-//
-//		fix.addAll(outcomeFixer.createGeneralization(specific, general));
-//
-//		return fix;
-		return createPhasePartitionPattern(root, x, y);
+		fix = new Fix();
+		outcomeFixer = new OutcomeFixer(root);
+
+		Classifier general = createClassifier(root, ClassStereotype.KIND, "General", x, y);
+		Classifier specific = createClassifier(root, ClassStereotype.SUBKIND, "Specific", x, y+horizontalDistance);
+
+		fix.addAll(outcomeFixer.createGeneralization(specific, general));
+
+		return fix;
 	}
 
 	public static Fix createSubkindPartitionPattern(Package root, double x, double y) {
+		fix = new Fix();
 		outcomeFixer = new OutcomeFixer(root);
 		createPartition(root, x, y, ClassStereotype.KIND, ClassStereotype.SUBKIND, 2);
 		return fix;
 	}
 
 	public static Fix createPhasePartitionPattern(Package root, double x, double y) {
+		fix = new Fix();
 		outcomeFixer = new OutcomeFixer(root);
 		createPartition(root, x, y, ClassStereotype.KIND, ClassStereotype.PHASE, 2);
 		outcomeFixer.createAttribute(_general, "attribute", ClassStereotype.PRIMITIVETYPE, "Integer");
 		return fix;
 	}
 	
-	private static void createPartition(Package root, double x, double y,ClassStereotype generalType, ClassStereotype specificsType, int specificQuant){
-		outcomeFixer = new OutcomeFixer(root);
-		ArrayList<Generalization> generalizationList = new ArrayList<>();
-
-		Classifier general = createClassifier(root, generalType, "General", (x+(specificQuant/2*verticalDistance)/3)-60, y);
-		_general = general;
-		
-		for (int i = 0; i < specificQuant; i++) {
-			Classifier specific = createClassifier(root, specificsType, "Specific"+i, x+(i*verticalDistance)/3, y+horizontalDistance);
-			Fix _fix = outcomeFixer.createGeneralization(specific, general);
-			Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
-			generalizationList.add(generalization);
-			
-			fix.addAll(_fix);
-		}
-		fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"));
-	}
-
 	public static Fix createRelatorPattern(Package root, double x, double y) {
+		fix = new Fix();
 		outcomeFixer = new OutcomeFixer(root);
 
 		Classifier leftGeneral = createClassifier(root, ClassStereotype.KIND, "General0", x, y);
@@ -106,17 +95,8 @@ public class PatternTool {
 		return fix;
 	}
 
-
-	private static Classifier createClassifier(Package root, ClassStereotype stereotype, String name, double x, double y){
-		RefOntoUML.Classifier classifier = (Classifier) outcomeFixer.createClass(stereotype);
-		classifier.setName(name);
-		root.getPackagedElement().add(classifier);
-		fix.includeAdded(classifier,x,y);
-
-		return classifier;
-	}
-
 	public static Fix createRolePattern(Package root, double x, double y) {
+		fix = new Fix();
 		outcomeFixer = new OutcomeFixer(root);
 
 		Classifier general = createClassifier(root, ClassStereotype.KIND, "General", x, y);
@@ -127,5 +107,35 @@ public class PatternTool {
 		return fix;
 	}
 
+	/**
+	 * Private methods
+	 * */
+	
+	private static Classifier createClassifier(Package root, ClassStereotype stereotype, String name, double x, double y){
+		RefOntoUML.Classifier classifier = (Classifier) outcomeFixer.createClass(stereotype);
+		classifier.setName(name);
+		root.getPackagedElement().add(classifier);
+		fix.includeAdded(classifier,x,y);
 
+		return classifier;
+	}
+
+	private static void createPartition(Package root, double x, double y,ClassStereotype generalType, ClassStereotype specificsType, int specificQuant){
+		outcomeFixer = new OutcomeFixer(root);
+		ArrayList<Generalization> generalizationList = new ArrayList<>();
+
+		Classifier general = createClassifier(root, generalType, "General", (x+(specificQuant/2*verticalDistance)/3)-60, y);
+		_general = general;
+		
+		for (int i = 0; i < specificQuant; i++) {
+			Classifier specific = createClassifier(root, specificsType, "Specific"+i, x+(i*verticalDistance)/3, y+horizontalDistance);
+			Fix _fix = outcomeFixer.createGeneralization(specific, general);
+			Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
+			generalizationList.add(generalization);
+			
+			fix.addAll(_fix);
+		}
+		fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"));
+	}
+	
 }
