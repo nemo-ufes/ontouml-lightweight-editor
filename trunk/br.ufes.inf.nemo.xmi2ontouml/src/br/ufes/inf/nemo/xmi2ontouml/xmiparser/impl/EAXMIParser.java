@@ -173,12 +173,17 @@ public class EAXMIParser implements XMIParser {
 	private void reverseAggregation(Element element)
 	{
 		if (element.getNodeName().equals("type") && element.hasAttribute("aggregation") &&
-				(element.getAttribute("aggregation").equals("composition") ||
+				(element.getAttribute("aggregation").equals("composite") ||
 				element.getAttribute("aggregation").equals("shared")))
 		{
 			String aggType = element.getAttribute("aggregation");
 			Element connectorElem = (Element) element.getParentNode().getParentNode();
 			Element assocElem = doc.getElementById(connectorElem.getAttributeNS(XMINS, "idref"));
+			if (assocElem == null)
+			{
+				Element extProp = XMLDOMUtil.getFirstAppearanceOf(connectorElem, "extendedProperties");
+				assocElem = doc.getElementById(extProp.getAttribute("associationclass"));
+			}
 			
 			for (Element ownedEnd : XMLDOMUtil.getElementChildsByTagName(assocElem, "ownedEnd"))
 			{
