@@ -87,7 +87,7 @@ import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.pattern.PatternTool;
+import br.ufes.inf.nemo.oled.patterntool.PatternTool;
 import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
 import br.ufes.inf.nemo.oled.ui.StartPanel;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
@@ -2264,6 +2264,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 	public void patternCreationRole(double x, double y) {
 		Fix fix = PatternTool.createRolePattern(getCurrentProject().getModel(),x,y);
+		if(fix!=null)
+			updateOLED(fix);
+	}
+	
+	public void patternCreationSubkindPartition(double x, double y) {
+		Fix fix = PatternTool.createSubkindPartitionPattern(getCurrentProject().getModel(),x,y);
+		if(fix!=null)
+			updateOLED(fix);
+	}
+	
+	public void patternCreationPhasePartition(double x, double y) {
+		Fix fix = PatternTool.createPhasePartitionPattern(getCurrentProject().getModel(),x,y);
 		if(fix!=null)
 			updateOLED(fix);
 	}

@@ -207,6 +207,10 @@ public class CreationHandler implements EditorMode {
     		editor.getDiagramManager().patternCreationRelator(tmpPos.getX(),tmpPos.getY());		
     	}else if(elementType == ElementType.ROLEPATTERN){
     		editor.getDiagramManager().patternCreationRole(tmpPos.getX(),tmpPos.getY());  		
+    	}else if(elementType == ElementType.SUBKINDPARTITIONPATTERN){
+    		editor.getDiagramManager().patternCreationSubkindPartition(tmpPos.getX(),tmpPos.getY()); 		
+    	}else if(elementType == ElementType.PHASEPARTITION){
+    		editor.getDiagramManager().patternCreationPhasePartition(tmpPos.getX(),tmpPos.getY());  		
     	}
     }
     
