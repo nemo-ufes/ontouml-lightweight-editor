@@ -115,6 +115,8 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		}
 		
 		if(antecedent.size()>0 && consequent.size()>0){
+			//this.solveTempVariables(ctStereotype, factory, antecedent, consequent);
+			
 			//create a rule with the incremented antecedents and consequents
 			SWRLRule rule = factory.getSWRLRule(antecedent,consequent);
 			
@@ -140,6 +142,8 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			throw new UnexpectedResultingRule(atoms, strRule);
 		}
 
+		
+		
 		String nonDeclVar = Factory.allConsequentVariablesExistsInAntecedent(antecedent, consequent);
 		if(!nonDeclVar.equals("")){
 			String strRule = Factory.getStrRule(this.m_NamedElementImpl);
