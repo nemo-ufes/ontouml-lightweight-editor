@@ -48,6 +48,7 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	private Label metapropertyLabel;
 	private BaseConnection association;
 	private boolean editable;
+	private transient DrawingContext context;
 	
 	/**
 	 * Constructor.
@@ -194,8 +195,9 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void draw(final DrawingContext drawingContext) {
-
+	public void draw(DrawingContext drawingContext) {
+		context = drawingContext;
+		
 		if (association instanceof AssociationElement) {
 			final AssociationElement assocElement = (AssociationElement) association;
 
@@ -282,9 +284,9 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 						// Calculate offset for horizontal alignment of the meta property label
 						if (metapropertyLabel.getOrigin().getY() == nameLabel.getOrigin().getY())
 						{					
-							double offset = (drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(str))/2;
+							double offset = (context.getFontMetrics(FontType.DEFAULT).stringWidth(str))/2;
 							if(assocElement.showName()){
-								metapropertyLabel.setOrigin(nameLabel.getOrigin().getX()-offset, metapropertyLabel.getOrigin().getY() + drawingContext.getFontMetrics(FontType.DEFAULT).getHeight());
+								metapropertyLabel.setOrigin(nameLabel.getOrigin().getX()-offset, metapropertyLabel.getOrigin().getY() + context.getFontMetrics(FontType.DEFAULT).getHeight());
 							}else{
 								metapropertyLabel.setOrigin(nameLabel.getOrigin().getX()-offset, metapropertyLabel.getOrigin().getY());	
 							}					
