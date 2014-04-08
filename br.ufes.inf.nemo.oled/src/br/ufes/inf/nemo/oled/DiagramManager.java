@@ -87,7 +87,7 @@ import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.patterntool.PatternTool;
+import br.ufes.inf.nemo.oled.pattern.PatternTool;
 import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
 import br.ufes.inf.nemo.oled.ui.StartPanel;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
