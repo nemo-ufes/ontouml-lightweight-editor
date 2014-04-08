@@ -134,7 +134,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>OclAny::oclAsType(T)(type: AnyClassifier(T)): T</b><br><br>"+
+		description = "Operation <b>OclAny::oclAsType(type: AnyClassifier(T)): T</b><br><br>"+
 		
 		"Evaluates to self, where self is of the type identified by T. The type T may be any classifier " +
 		"defined in the OntoUML model; if the actual type of self at evaluation time does not conform to T, then " +
@@ -152,7 +152,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>OclAny::oclIsKindOf(T)(type: AnyClassifier(T)): Boolean</b><br><br>"+
+		description = "Operation <b>OclAny::oclIsKindOf(type: AnyClassifier(T)): Boolean</b><br><br>"+
 		"Evaluates to true if the type of self conforms to t. That is, self is of type t or a subtype of t.";
 		
 		c = new OCLTemplateCompletion(provider, 
@@ -162,7 +162,8 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Returns the set of all instances of a Classifier T.";
+		description = "Operation <b>Classifier::allInstances(): Classifier-instances</b<<br><br>" +
+		"Returns the set of all instances of a Classifier T.";
 		
 		c = new OCLTemplateCompletion(provider, 
 			"allInstances","allInstances",
@@ -171,7 +172,7 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>OclAny::oclIsTypeOf(T)(type: AnyClassifier(T)): Boolean</b><br><br>"+
+		description = "Operation <b>OclAny::oclIsTypeOf(type: AnyClassifier(T)): Boolean</b><br><br>"+
 		"Evaluates to true if self is of the type t but not a subtype of t.";
 		
 		c = new OCLTemplateCompletion(provider, 
@@ -191,6 +192,17 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
+		description = "Operation <b>OclAny::oclIsNew() : Boolean</b><br><br>"+
+		"Can only be used in a postcondition. Evaluates to true if the self is created during"+ 
+		"performing the operation (for instance, it didn’t exist at precondition time).";
+
+		c = new OCLTemplateCompletion(provider, 
+				"oclIsNew","oclIsNew",
+				"oclIsNew()${cursor}",
+				null, description);		
+			provider.addCompletion(c);
+			oclCompletionList.add(c);
+			
 		return oclCompletionList;
 	}
 	

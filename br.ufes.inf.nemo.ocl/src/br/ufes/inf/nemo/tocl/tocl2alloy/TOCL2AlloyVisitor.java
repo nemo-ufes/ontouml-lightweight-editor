@@ -66,13 +66,15 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 			if(operName.equals("previous")) { return "(next."+sourceResult+")"; }
 			if(operName.equals("allPrevious")) { return "(^next."+sourceResult+")"; }
 			if(operName.equals("allNext")) { return "("+sourceResult+".^next)"; }
-			if(operName.equals("isOrigin")) { return "(no next."+sourceResult+")"; }
-			if(operName.equals("isTerminal")) { return "(no "+sourceResult+".next)"; }		
+			if(operName.equals("oclIsNew")) { return "(some w: World | "+sourceResult+" in w.exists and "+sourceResult+" !in (next.w).exists)"; }
+//			if(operName.equals("isOrigin")) { return "(no next."+sourceResult+")"; }
+//			if(operName.equals("isTerminal")) { return "(no "+sourceResult+".next)"; }		
 	        for (java.util.Iterator<String> iter = argumentsResult.iterator(); iter.hasNext();) 
 	        {
 				String argument = iter.next();
 				if(operName.equals("allInstances")) { return argument+"."+sourceResult; }
-				if(operName.equals("existsIn")) { return sourceResult+" in "+argument+"."+"exists"; }				
+				if(operName.equals("existsIn")) { return sourceResult+" in "+argument+"."+"exists"; }
+				if(operName.equals("oclIsNew")) { return "(some "+argument+": World | "+sourceResult+" in "+argument+"."+"exists and "+sourceResult+" !in (next."+argument+").exists)"; }
 				if(ontoElement!=null){
 					String alias = refparser.getAlias(ontoElement);
 					if(ontoElement instanceof RefOntoUML.Property) { 

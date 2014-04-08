@@ -111,13 +111,19 @@ public class UMLTemporalGenerator {
 			{
 				org.eclipse.uml2.uml.Class class_ = ((org.eclipse.uml2.uml.Class)c);				
 				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("existsIn", parameters, typeParameters, pt);
-				outln(op);				
+				outln(op);
+				
+				org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation("oclIsNew", parameters, typeParameters, pt);
+				outln(op2);				
 			}
 			if (c instanceof org.eclipse.uml2.uml.DataType && !(c instanceof org.eclipse.uml2.uml.PrimitiveType) && !(c instanceof org.eclipse.uml2.uml.Enumeration))
 			{
 				org.eclipse.uml2.uml.DataType class_ = ((org.eclipse.uml2.uml.DataType)c);				
 				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("existsIn", parameters, typeParameters, pt);
 				outln(op);
+				
+				org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation("oclIsNew", parameters, typeParameters, pt);
+				outln(op2);				
 			}
 		}
 	}

@@ -27,6 +27,7 @@ public class TOCLCellRenderer extends OCLCellRenderer {
 		
 		if (tc.getDefinitionString().equals("oclIsTypeOf(w)")||
 			tc.getDefinitionString().equals("oclIsKindOf(w)")||
+			tc.getDefinitionString().equals("oclIsNew(w)")||
 			tc.getDefinitionString().equals("allInstances(w)")||
 			tc.getDefinitionString().equals("existsIn")||
 			tc.getDefinitionString().equals("next")||
