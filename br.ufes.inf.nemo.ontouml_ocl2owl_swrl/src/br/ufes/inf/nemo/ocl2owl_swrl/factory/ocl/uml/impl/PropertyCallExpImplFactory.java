@@ -27,6 +27,7 @@ import org.semanticweb.owlapi.model.SWRLDArgument;
 import org.semanticweb.owlapi.model.SWRLDataPropertyAtom;
 import org.semanticweb.owlapi.model.SWRLIArgument;
 import org.semanticweb.owlapi.model.SWRLObjectPropertyAtom;
+import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -74,6 +75,11 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		}
 		*/
 		
+		//essa mexida foi feita para correcao da criacao de variaveis temporarias feitas pelo proprio parser
+		if(this.isTempVariable(varX)){
+			varX = referredArgument;
+		}
+		
 		//then, the referred property of the property call is got
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
 		Type propertyType = referredProperty.getType();
@@ -99,7 +105,13 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		ArrayList<SWRLDArgument> retArgsZ = new ArrayList<SWRLDArgument>();
 		retArgsZ.add(varX);
 		retArgsZ.add(varY);
-		
+		/*
+		//essa mexida foi feita para correcao da criacao de variaveis temporarias feitas pelo proprio parser
+		if(this.isTempVariable(referredArgument) || this.isTempVariable(varX)){
+			SWRLSameIndividualAtom same = factory.getSWRLSameIndividualAtom((SWRLVariable)referredArgument, (SWRLVariable)varX);
+			this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, same);
+		}
+		*/
 		return retArgsZ;
 	}
 	

@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.ocl2owl_swrl.factory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.ocl.uml.impl.BooleanLiteralExpImpl;
@@ -22,6 +24,7 @@ import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -29,6 +32,7 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLArgument;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
+import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import uk.ac.manchester.cs.owl.owlapi.SWRLObjectPropertyAtomImpl;
@@ -125,6 +129,25 @@ public class Factory {
 		}
 		
 		return variableName;
+	}
+	
+	public void solveTempVariables(String ctStereotype, OWLDataFactory factory, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
+		List<SWRLArgument> tempVars = new ArrayList<SWRLArgument>();
+		for (SWRLAtom cons : antecedent) {
+			Collection<SWRLArgument> swrlArguments = cons.getAllArguments();
+			for (SWRLArgument swrlArgument : swrlArguments) {
+				if(this.isTempVariable((SWRLDArgument) swrlArgument) && !tempVars.contains(swrlArgument)){
+					tempVars.add(swrlArgument);
+				}
+			}
+		}
+		
+		Collections.sort(tempVars);
+		
+		for(int i = 0; i < tempVars.size() - 1; i++){
+			SWRLSameIndividualAtom same = factory.getSWRLSameIndividualAtom((SWRLVariable)tempVars.get(i), (SWRLVariable)tempVars.get(i+1));
+			this.insertOnAntecedentOrConsequent(ctStereotype, true, antecedent, consequent, same);
+		}
 	}
 	
 	public static void replaceNonexistentVariableInAtom(OWLDataFactory factory, Set<SWRLAtom> swrlAtoms, SWRLVariable oldVariable, SWRLVariable newVariable){
@@ -338,5 +361,26 @@ public class Factory {
 	public OWLObjectProperty getOWLObjectProperty(OCLExpressionImpl oclExpression, String nameSpace, OntoUMLParser refParser, OWLDataFactory factory) throws Ocl2Owl_SwrlException{
 		String ruleString = Factory.getStrRule(oclExpression);
 		throw new NonImplemented("getOWLObjectProperty", ruleString);
+	}
+	
+	public Boolean isTempVariable(SWRLDArgument argument){
+		if(argument != null){
+			if(argument.getClass().equals(SWRLVariableImpl.class)){
+				SWRLVariableImpl variable = (SWRLVariableImpl)argument;
+				
+				try {
+					String varName = variable.getIRI().getFragment();
+					String teste = varName.substring(4);
+					int t2 = Integer.parseInt(teste);
+					
+					if(varName.startsWith("temp")){
+						return true;
+					}
+				} catch (Exception e) {
+					//apenas um teste para saber se o restante do nome da variavel eh um inteiro
+				}
+			}
+		}
+		return false;
 	}
 }
