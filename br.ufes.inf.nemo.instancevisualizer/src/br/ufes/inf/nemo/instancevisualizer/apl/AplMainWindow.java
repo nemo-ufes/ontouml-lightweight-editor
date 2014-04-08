@@ -33,6 +33,11 @@ import edu.mit.csail.sdg.alloy4compiler.translator.TranslateAlloyToKodkod;
 
 public class AplMainWindow {
 	
+	public final static String STYLE_PATH = "." + File.separator + "style" + File.separator;
+	public final static String STYLE_NODE_PATH = STYLE_PATH + "node" + File.separator;
+	public final static String STYLE_EDGE_PATH = STYLE_PATH + "edge" + File.separator;
+	public final static String STYLE_EXT = ".ser";
+	
 	public static MainWindow mainWindow;
 	public static boolean popOutEnabled = false;
 	public static A4Solution solution;
@@ -46,7 +51,6 @@ public class AplMainWindow {
 	private static File openFileChooserDialog(String startingDir, boolean mustExist, String... filters) {
 		// Opening file dialog:
 		File f = DialogUtil.fileDialog("Open", startingDir, filters, false);
-		
 		// Checking if file exists (it must exist!):
 		// If f==null, the file chooser dialog has been canceled.
 		while(f != null && !f.exists() && mustExist) {
@@ -61,86 +65,84 @@ public class AplMainWindow {
 	 * Calls the "Open File" menu item on the main window. A file chooser dialog is opened to select the file. 
 	 */
 	public static void openFile(String startingDir) {
-		new Thread() {
-	   		@SuppressWarnings("deprecation")
-			public void run() {
-				try {
-					// Opening file dialog:
-					File f = openFileChooserDialog("."+File.separator, true, "XML Instance$xml", "Alloy code$als");
-					if(f == null) {
-						// If f==null, the file chooser dialog has been canceled.
-						stop();
-					}
-					
-					/* The .refontouml file is used to get types' stereotypes.
-					 * It muts be located on the same directory of the selected .als/.xml file.
-					 * This file is not required. 
-					 */
-					// Loading .refontouml file:
-					fWithoutExt = f.getParent() + File.separator + f.getName().replaceFirst("[.][^.]+$", "");
-					File refontoFile = new File(fWithoutExt + ".refontouml");
-					if(!refontoFile.exists()) {
-						// TODO make refontouml optional?
-						refontoFile = null;
-						DialogUtil.errorDialog(mainWindow, DialogUtil.ERROR, ".refontouml not found", "The corresponding .refontouml must be in the same directory as the opened file.");
-						String parent = f.getParent();
-						if(parent == null) {
-							openFile("."+File.separator);
-						}else{
-							openFile(parent);
-						}
-						stop();
-					}
-					
-					// Disabling the main window:
-					mainWindow.setEnabled(false);
-					
-					mainWindow.setStatus("Detecting file type...");
-					FileReader fr = new FileReader(f);
-					char cbuf[] = new char[6];
-					fr.read(cbuf);
-					String beginning = new String(cbuf);
-					fr.close();
-										
-					// We detect if the file is an alloy xml by checking if it starts with "<alloy": 
-					if(beginning.equals("<alloy")) {
-						alsOpen = false;
-					}else{
-						alsOpen = true;
-						CompModule model = null;
-						Command cmd = null;
-						try {
-							mainWindow.setStatus("Parsing file...");
-							model = CompUtil.parseEverything_fromFile(null, null, f.getAbsolutePath());
-							cmd = model.getAllCommands().get(0);
-							
-							mainWindow.setStatus("Generating solution...");
-						   	solution = TranslateAlloyToKodkod.execute_command(null, model.getAllReachableSigs(), cmd, new A4Options());
-						   	
-						   	mainWindow.setStatus("Writing solution .xml...");
-						   	String xmlFilePath = fWithoutExt + "_temp.xml";
-						   	solution.writeXML(xmlFilePath);
-						   	
-						   	// Setting f variable, so the xml can be loaded:
-						   	f = new File(xmlFilePath);
-						   	
-						   	// Enabling the "Next Instance" menu item on the main window:
-						   	mainWindow.getMntmNextInstance().setEnabled(true);
-						   	
-						} catch(Err e) {
-							DialogUtil.errorDialog(mainWindow, DialogUtil.ERROR, "Invalid alloy file", "Please, select a valid .als or .xml file.");
-							mainWindow.setEnabled(true);
-							mainWindow.setStatus("");
+		// Opening file dialog:
+		final File fop = openFileChooserDialog("."+File.separator, true, "XML Instance$xml", "Alloy code$als");
+		if(fop != null){
+			new Thread() {
+		   		@SuppressWarnings("deprecation")
+				public void run() {
+					try {
+						File f = fop;
+						/* The .refontouml file is used to get types' stereotypes.
+						 * It muts be located on the same directory of the selected .als/.xml file.
+						 * This file is not required. 
+						 */
+						// Loading .refontouml file:
+						fWithoutExt = f.getParent() + File.separator + f.getName().replaceFirst("[.][^.]+$", "");
+						File refontoFile = new File(fWithoutExt + ".refontouml");
+						if(!refontoFile.exists()) {
+							// TODO make refontouml optional?
+							refontoFile = null;
+							DialogUtil.errorDialog(mainWindow, DialogUtil.ERROR, ".refontouml not found", "The corresponding .refontouml must be in the same directory as the opened file.");
+							String parent = f.getParent();
+							if(parent == null) {
+								openFile("."+File.separator);
+							}else{
+								openFile(parent);
+							}
 							stop();
-							//e.printStackTrace();
 						}
+						
+						// Disabling the main window:
+						mainWindow.setEnabled(false);
+						
+						mainWindow.setStatus("Detecting file type...");
+						FileReader fr = new FileReader(f);
+						char cbuf[] = new char[6];
+						fr.read(cbuf);
+						String beginning = new String(cbuf);
+						fr.close();
+											
+						// We detect if the file is an alloy xml by checking if it starts with "<alloy": 
+						if(beginning.equals("<alloy")) {
+							alsOpen = false;
+						}else{
+							alsOpen = true;
+							CompModule model = null;
+							Command cmd = null;
+							try {
+								mainWindow.setStatus("Parsing file...");
+								model = CompUtil.parseEverything_fromFile(null, null, f.getAbsolutePath());
+								cmd = model.getAllCommands().get(0);
+								
+								mainWindow.setStatus("Generating solution...");
+							   	solution = TranslateAlloyToKodkod.execute_command(null, model.getAllReachableSigs(), cmd, new A4Options());
+							   	
+							   	mainWindow.setStatus("Writing solution .xml...");
+							   	String xmlFilePath = fWithoutExt + "_temp.xml";
+							   	solution.writeXML(xmlFilePath);
+							   	
+							   	// Setting f variable, so the xml can be loaded:
+							   	f = new File(xmlFilePath);
+							   	
+							   	// Enabling the "Next Instance" menu item on the main window:
+							   	mainWindow.getMntmNextInstance().setEnabled(true);
+							   	
+							} catch(Err e) {
+								DialogUtil.errorDialog(mainWindow, DialogUtil.ERROR, "Invalid alloy file", "Please, select a valid .als or .xml file.");
+								mainWindow.setEnabled(true);
+								mainWindow.setStatus("");
+								stop();
+								//e.printStackTrace();
+							}
+						}
+						loadFile(f, refontoFile);
+					} catch (IOException e) {
+						DialogUtil.bugDialog(mainWindow, e);
 					}
-					loadFile(f, refontoFile);
-				} catch (IOException e) {
-					DialogUtil.bugDialog(mainWindow, e);
-				}
-	   		}
-	   	}.start();
+		   		}
+		   	}.start();
+		}
 	}
 	
 	/**
@@ -193,7 +195,7 @@ public class AplMainWindow {
 		filters[0] = "Instance Visualizer Theme$ivt";
 		
 		// Opening file dialog:
-		File f = DialogUtil.fileDialog("Open", "./", filters, false);
+		File f = DialogUtil.fileDialog("Open", "." + File.separator, filters, false);
 		
 		// f==null means cancelled dialog.
 		if(f != null) {
@@ -257,7 +259,7 @@ public class AplMainWindow {
 		filters[0] = "Instance Visualizer Theme$thm";
 		
 		// Opening file dialog:
-		File f = DialogUtil.fileDialog("Save", "./", filters, false);
+		File f = DialogUtil.fileDialog("Save", "." + File.separator, filters, false);
 		
 		// f==null means cancelled dialog.
 		if(f != null) {
@@ -301,7 +303,7 @@ public class AplMainWindow {
 	 * @return
 	 * @throws IOException
 	 */
-	static String readFile(String path, Charset encoding) throws IOException {
+	static public String readFile(String path, Charset encoding) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return encoding.decode(ByteBuffer.wrap(encoded)).toString();
 	}

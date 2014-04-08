@@ -1,11 +1,12 @@
 package br.ufes.inf.nemo.instancevisualizer.graph;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-import br.ufes.inf.nemo.common.resource.TypeName;
-import br.ufes.inf.nemo.instancevisualizer.apl.AplMainWindow;
-
-public class NodeLegend {
+public class NodeLegend implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9019940159565305668L;
 	private String type;
 	private String stereotype;
 	private String prefix;
@@ -52,14 +53,7 @@ public class NodeLegend {
     //private String jcomponent;	EXPERIMENTAL
     
     public NodeLegend(String type, String stereotype, String fillImage, String style, String prefixMode) {
-    	this.type = type;
-    	this.stereotype = stereotype;
-    	//this.style = style;
-    	this.fillImage = fillImage;
-    	this.amount = 0;
-    	this.prefix = createPrefix(prefixMode);
-    	
-    	// Default Style:
+	    // Default Style:
     	switch(stereotype) {
 	        case "Mode":
 	        	this.size = "16px";
@@ -71,6 +65,12 @@ public class NodeLegend {
 	        	this.size = "32px";
 	        	break;
     	}
+    	this.type = type;
+    	this.stereotype = stereotype;
+    	//this.style = style;
+    	this.fillImage = fillImage;
+    	this.amount = 0;
+    	this.prefix = createPrefix(prefixMode);
     }
     
     public String createPrefix(String mode) {
@@ -106,15 +106,7 @@ public class NodeLegend {
     public String createLabel() {
     	return prefix + (++amount);
     }
-    /*
-    public void addStyle(String style) {
-    	if(style.endsWith(";")) {
-    		this.style += "\n" + style;
-    	}else{
-    		this.style += "\n" + style + ";";
-    	}
-    }*/
-
+    
 	public String getType() {
 		return type;
 	}
@@ -373,5 +365,5 @@ public class NodeLegend {
 				"z-index: " + zIndex + ";\n";
 		return style;
 	}
-
+	
 }
