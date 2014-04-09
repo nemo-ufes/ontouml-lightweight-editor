@@ -140,7 +140,9 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			this.argumentFactory = (OCLExpressionImplFactory) Factory.constructor(argument, this.m_NamedElementImpl);
 			//the argument is solved and the and the returned arguments from the argumentSolveMethod above are returned 
 			retArgsY = this.argumentFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, leftSideOfImplies);
-			varY = retArgsY.get(retArgsY.size()-1);//get the last
+			if(retArgsY != null){
+				varY = retArgsY.get(retArgsY.size()-1);//get the last
+			}
 			
 			//verify if is includes or excludes operations to reset the variable
 			if(this.isIncludesOperation() || this.isExcludesOperation()){
