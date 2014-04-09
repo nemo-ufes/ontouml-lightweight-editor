@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 
-public class UndefFormalFourthPage extends UndefFormalPage{
+public class CreateDataTypePage extends UndefFormalPage{
 
 	public Composite parent;
 	private CreateDataTypeComposite createDataTypeComposite;
@@ -14,7 +14,7 @@ public class UndefFormalFourthPage extends UndefFormalPage{
 	/**
 	 * Create the wizard.
 	 */
-	public UndefFormalFourthPage(UndefFormalOccurrence uf) 
+	public CreateDataTypePage(UndefFormalOccurrence uf) 
 	{
 		super(uf);
 		setDescription("Source: "+uf.getSource().getName()+", Target: "+uf.getTarget().getName());
@@ -28,19 +28,19 @@ public class UndefFormalFourthPage extends UndefFormalPage{
 		Composite container = new Composite(parent, SWT.NONE);		
 		setControl(container);
 		
-		createDataTypeComposite = new CreateDataTypeComposite(container, SWT.NONE, (UndefFormalOccurrence) uf);
-		createDataTypeComposite.setBounds(10, 10, 554, 262);		
+		createDataTypeComposite = new CreateDataTypeComposite(container, SWT.NONE, (UndefFormalOccurrence) occurrence);
+		createDataTypeComposite.setBounds(10, 10, 554, 285);		
 	}
 	
 	@Override
 	public IWizardPage getNextPage() 
 	{	
 		//Action =============================
-		UndefFormalAction newAction = new UndefFormalAction(uf);
-		newAction.setCreateDatatypesAttributesAndRules(uf.getFormal(),uf.getSource(),uf.getTarget(),
+		UndefFormalAction newAction = new UndefFormalAction(occurrence);
+		newAction.setCreateDatatypesAttributesAndRules(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget(),
 			createDataTypeComposite.getSourceMapType(), createDataTypeComposite.getTargetMapType(), createDataTypeComposite.getSourceMapStereo(), 
 			createDataTypeComposite.getTargetMapStereo(), createDataTypeComposite.getConstraints());
-		getUndefFormalWizard().replaceAction(0,newAction);	
+		getAntipatternWizard().replaceAction(0,newAction);	
 		//======================================
 		
 		return ((UndefFormalWizard)getWizard()).getFinishing();	

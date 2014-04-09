@@ -9,7 +9,7 @@ import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
 
-public class UndefFormalThirdPage extends UndefFormalPage{
+public class IsComparativeFormalPage extends UndefFormalPage{
 
 	public Composite parent;
 	public Button btnYes;
@@ -18,7 +18,7 @@ public class UndefFormalThirdPage extends UndefFormalPage{
 	/**
 	 * Create the wizard.
 	 */
-	public UndefFormalThirdPage(UndefFormalOccurrence uf) 
+	public IsComparativeFormalPage(UndefFormalOccurrence uf) 
 	{
 		super(uf);
 		setDescription("Source: "+uf.getSource().getName()+", Target: "+uf.getTarget().getName());
@@ -34,8 +34,8 @@ public class UndefFormalThirdPage extends UndefFormalPage{
 		
 		Label lblCanBeReduced = new Label(container, SWT.WRAP);
 		lblCanBeReduced.setBounds(10, 10, 554, 54);
-		lblCanBeReduced.setText("Can "+uf.getFormal().getName()+" be reduced to the comparison of quality values of qualities (Data Types) that characterize " +
-			uf.getSource().getName()+" and "+uf.getTarget().getName()+"? An example of a relation that can be derived is “heavier than”, that " +
+		lblCanBeReduced.setText("Can "+occurrence.getFormal().getName()+" be reduced to the comparison of quality values of qualities (Data Types) that characterize " +
+			occurrence.getSource().getName()+" and "+occurrence.getTarget().getName()+"? An example of a relation that can be derived is “heavier than”, that " +
 			"holds between two people and which can be derived from the comparison of their weights.");
 		
 		btnYes = new Button(container, SWT.RADIO);

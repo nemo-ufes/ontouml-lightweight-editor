@@ -1,27 +1,18 @@
 package br.ufes.inf.nemo.antipattern.wizard.undefformal;
 
-import org.eclipse.jface.wizard.WizardPage;
-
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalAntipattern;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
 
-public abstract class UndefFormalPage extends WizardPage {
-
-	protected UndefFormalOccurrence uf;
+public abstract class UndefFormalPage extends AntipatternWizardPage<UndefFormalOccurrence, UndefFormalWizard> {
 	
 	/**
 	 * Create the wizard.
 	 */
 	public UndefFormalPage(UndefFormalOccurrence uf) 
 	{
-		super("UndefFormalPage");				
-		this.uf = uf;
-				
+		super(uf);					
 		setTitle(UndefFormalAntipattern.getAntipatternInfo().getName());
-	}
-	
-	public UndefFormalWizard getUndefFormalWizard(){
-		return (UndefFormalWizard)getWizard();
 	}
 
 }
