@@ -20,6 +20,7 @@ import RefOntoUML.Category;
 import RefOntoUML.Characterization;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
+import RefOntoUML.Collective;
 import RefOntoUML.Comment;
 import RefOntoUML.Constraintx;
 import RefOntoUML.DataType;
@@ -29,6 +30,7 @@ import RefOntoUML.Enumeration;
 import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import RefOntoUML.Kind;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
@@ -41,6 +43,7 @@ import RefOntoUML.PackageableElement;
 import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
+import RefOntoUML.Quantity;
 import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
@@ -1492,4 +1495,104 @@ public class OntoUMLParser {
 		return null;
 	}
 	
+	public boolean isFunctionalComplex(Classifier c){
+		
+		if(c instanceof Kind)
+			return true;
+		
+		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
+			ArrayList<Classifier> identityProviders = getIdentityProvider(c);
+			if(identityProviders.size()==1 && identityProviders.get(0) instanceof Kind)
+				return true;
+		}
+		
+		if(c instanceof MixinClass){
+			if(getChildren(c).size()==0)
+				return false;
+			for (Classifier child : getChildren(c)) {
+				if(!isFunctionalComplex(child))
+					return false;
+			}
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean isQuantity(Classifier c){
+
+		if(c instanceof Quantity)
+			return true;
+		
+		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
+			ArrayList<Classifier> identityProviders = getIdentityProvider(c);
+			if(identityProviders.size()==1 && identityProviders.get(0) instanceof Quantity)
+				return true;
+		}
+		
+		if(c instanceof MixinClass){
+			if(getChildren(c).size()==0)
+				return false;
+			
+			for (Classifier child : getChildren(c)) {
+				if(!isQuantity(child))
+					return false;
+			}
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean isCollective(Classifier c){
+		
+		if(c instanceof Collective)
+			return true;
+		
+		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
+			ArrayList<Classifier> identityProviders = getIdentityProvider(c);
+			if(identityProviders.size()==1 && identityProviders.get(0) instanceof Collective)
+				return true;
+		}
+		
+		if(c instanceof MixinClass){
+			if(getChildren(c).size()==0)
+				return false;
+			
+			for (Classifier child : getChildren(c)) {
+				if(!isCollective(child))
+					return false;
+			}
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean hasFunctionalComplexChild(MixinClass mixin){
+		for (Classifier child : getAllChildren(mixin)) {
+			if(isFunctionalComplex(child))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean hasCollectiveChild(MixinClass mixin){
+		for (Classifier child : getAllChildren(mixin)) {
+			if(isCollective(child))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean hasQuantityChild(MixinClass mixin){
+		for (Classifier child : getAllChildren(mixin)) {
+			if(isQuantity(child))
+				return true;
+		}
+		
+		return false;
+	}
 }
