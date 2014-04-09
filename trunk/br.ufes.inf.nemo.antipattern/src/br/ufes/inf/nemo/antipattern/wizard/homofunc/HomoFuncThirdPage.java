@@ -117,7 +117,8 @@ public class HomoFuncThirdPage extends HomoFuncPage {
 	@Override
 	public IWizardPage getNextPage() 
 	{		
-		if(createPartComposite.getParts().size()>0)
+		
+		if(createPartComposite!=null && createPartComposite.getParts().size()>0)
 		{						
 			if (createPartComposite!=null){				
 				//Action =============================
@@ -141,7 +142,7 @@ public class HomoFuncThirdPage extends HomoFuncPage {
 				return ((HomoFuncWizard)getWizard()).getFinishing();
 			}			
 		}
-		if(createSubComponentOf.getRelations().size()>0)
+		if(createSubComponentOf!=null && createSubComponentOf.getRelations().size()>0)
 		{					
 			if (createSubComponentOf!=null){
 				//Action =============================
