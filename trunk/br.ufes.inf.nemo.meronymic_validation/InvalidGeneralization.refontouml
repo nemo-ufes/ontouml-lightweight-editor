@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_h-Yi0b8dEeOpEt4bFV8hQw" name="Model">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_mFRfsL8dEeOpEt4bFV8hQw" name="Pessoa" visibility="public">
+    <generalization xmi:id="_xRCNgL8dEeOpEt4bFV8hQw" general="_w137gL8dEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_m-RkQL8dEeOpEt4bFV8hQw" name="SubKind1" visibility="public">
+    <generalization xmi:id="_qG0CgL8dEeOpEt4bFV8hQw" general="_mFRfsL8dEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_nXNosL8dEeOpEt4bFV8hQw" name="SubKind2" visibility="public">
+    <generalization xmi:id="_s35qEL8dEeOpEt4bFV8hQw" general="_m-RkQL8dEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_ns4WsL8dEeOpEt4bFV8hQw" name="SubKind3" visibility="public">
+    <generalization xmi:id="_rKMyIL8dEeOpEt4bFV8hQw" general="_nXNosL8dEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_o5eFoL8dEeOpEt4bFV8hQw" name="SubKind4" visibility="public">
+    <generalization xmi:id="_rsC68L8dEeOpEt4bFV8hQw" general="_nXNosL8dEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_pSj7EL8dEeOpEt4bFV8hQw" name="SubKind5" visibility="public">
+    <generalization xmi:id="_sNc-4L8dEeOpEt4bFV8hQw" general="_nXNosL8dEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_psYwUL8dEeOpEt4bFV8hQw" name="SubKind6" visibility="public">
+    <generalization xmi:id="_qsXmoL8dEeOpEt4bFV8hQw" general="_mFRfsL8dEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_w137gL8dEeOpEt4bFV8hQw" name="Category1" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_12R6UL8dEeOpEt4bFV8hQw" name="Category2" visibility="public" isAbstract="true">
+    <generalization xmi:id="_49os0L8dEeOpEt4bFV8hQw" general="_2L9PYL8dEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_2L9PYL8dEeOpEt4bFV8hQw" name="Category3" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_2hxuYL8dEeOpEt4bFV8hQw" name="Category4" visibility="public" isAbstract="true">
+    <generalization xmi:id="_361zEL8dEeOpEt4bFV8hQw" general="_12R6UL8dEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_IXfLsL8eEeOpEt4bFV8hQw" name="SubKind7" visibility="public">
+    <generalization xmi:id="_JV-NML8eEeOpEt4bFV8hQw" general="_I_Q9YL8eEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_I_Q9YL8eEeOpEt4bFV8hQw" name="SubKind8" visibility="public">
+    <generalization xmi:id="_SwQ9YL8eEeOpEt4bFV8hQw" general="_R8wc0L8eEeOpEt4bFV8hQw"/>
+    <generalization xmi:id="_kMT9gL8eEeOpEt4bFV8hQw" general="_iVatUL8eEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_KTkd4L8eEeOpEt4bFV8hQw" name="Role1" visibility="public">
+    <generalization xmi:id="_URyagL8eEeOpEt4bFV8hQw" general="_TyBVUL8eEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_K2wqgL8eEeOpEt4bFV8hQw" name="Phase1" visibility="public">
+    <generalization xmi:id="_Lw8a0L8eEeOpEt4bFV8hQw" general="_IXfLsL8eEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_LU4w8L8eEeOpEt4bFV8hQw" name="Phase2" visibility="public">
+    <generalization xmi:id="_MLELAL8eEeOpEt4bFV8hQw" general="_IXfLsL8eEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_R8wc0L8eEeOpEt4bFV8hQw" name="Kind2" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Collective" xmi:id="_TyBVUL8eEeOpEt4bFV8hQw" name="Collective1" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_VPVA0L8eEeOpEt4bFV8hQw" name="Kind3" visibility="public">
+    <generalization xmi:id="_V--VEL8eEeOpEt4bFV8hQw" general="_2hxuYL8dEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_VldB0L8eEeOpEt4bFV8hQw" name="Kind4" visibility="public">
+    <generalization xmi:id="_WTnIUL8eEeOpEt4bFV8hQw" general="_2hxuYL8dEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_X1RvYL8eEeOpEt4bFV8hQw" name="Kind5" visibility="public">
+    <generalization xmi:id="_baKycL8eEeOpEt4bFV8hQw" general="_a46fgL8eEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_a46fgL8eEeOpEt4bFV8hQw" name="Relator1" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Mode" xmi:id="_bup0sL8eEeOpEt4bFV8hQw" name="Mode1" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_cO3l0L8eEeOpEt4bFV8hQw" name="Relator2" visibility="public">
+    <generalization xmi:id="_cl3wkL8eEeOpEt4bFV8hQw" general="_bup0sL8eEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" xmi:id="_dysJAL8eEeOpEt4bFV8hQw" name="Phase3" visibility="public">
+    <generalization xmi:id="_fr9XwL8eEeOpEt4bFV8hQw" general="_fVsz4L8eEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Quantity" xmi:id="_eLBwgL8eEeOpEt4bFV8hQw" name="Quantity1" visibility="public">
+    <generalization xmi:id="_ehl2YL8eEeOpEt4bFV8hQw" general="_dysJAL8eEeOpEt4bFV8hQw"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Quantity" xmi:id="_fVsz4L8eEeOpEt4bFV8hQw" name="Quantity2" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_iVatUL8eEeOpEt4bFV8hQw" name="Role2" visibility="public">
+    <generalization xmi:id="_kxa1sL8eEeOpEt4bFV8hQw" general="_R8wc0L8eEeOpEt4bFV8hQw"/>
+  </packagedElement>
+</RefOntoUML:Model>
