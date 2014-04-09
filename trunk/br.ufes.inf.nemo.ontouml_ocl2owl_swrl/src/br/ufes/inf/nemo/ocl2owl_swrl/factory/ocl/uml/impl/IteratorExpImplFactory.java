@@ -77,14 +77,23 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source, this.m_NamedElementImpl);
 		//the source is solved and the and the returned arguments from the sourceSolveMethod above are returned 
 		ArrayList<SWRLDArgument> retArgsX = this.sourceFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, null, operatorNot, repeatNumber, leftSideOfImplies);
-		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//get the last
+		SWRLDArgument varX = null;
+		if(retArgsX != null){
+			varX = retArgsX.get(retArgsX.size()-1);//get the last
+		}		
 		
 		//and a factory is created according to the body class 
 		this.bodyFactory = (OCLExpressionImplFactory) Factory.constructor(body, this.m_NamedElementImpl);
 		//the body is solved and the and the returned arguments from the bodySolveMethod above are returned 
 		ArrayList<SWRLDArgument> retArgsY = this.bodyFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, varX, operatorNot, repeatNumber, leftSideOfImplies); 
-		SWRLDArgument varY = retArgsY.get(retArgsY.size()-1);//get the last
+		SWRLDArgument varY = null;
+		if(retArgsY != null){
+			varY = retArgsY.get(retArgsY.size()-1);//get the last
+		}
 		
+		if(retArgsX == null || retArgsY == null){
+			return null;
+		}
 		if(retArgsY.size() > 0 && retArgsX.size() > 0 && (org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(ctStereotype) || org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype))){
 			SWRLDArgument varY0 = retArgsY.get(0);
 			

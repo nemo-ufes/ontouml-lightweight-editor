@@ -183,13 +183,14 @@ public class OCL2OWL_SWRL {
     		String strBlockOclConstraints = oclRules.substring(blockBegin, blockEnd);
     		
 			//since the string "--@" starts at the blockBegin, the tag name will end at the occurrence of '\n'
-			int endOfTag = strBlockOclConstraints.indexOf("\n", blockBegin);
-			int iTag = strBlockOclConstraints.indexOf("--@", blockBegin);
-			if(iTag < 0){iTag=0;}
+			int endOfTag = strBlockOclConstraints.indexOf("\n", 0); 
+			
+			int iTag = strBlockOclConstraints.indexOf("--@", 0);
+			if(iTag < 0){iTag=0;endOfTag=0;}
 			if(iTag >= endOfTag || iTag >= blockEnd || iTag < 0){endOfTag=0;}
-			if(endOfTag<blockBegin){endOfTag=blockBegin;}
+			if(endOfTag<iTag){endOfTag=iTag;}
 			//get the tag and replace all unexpected chars
-			String tag = oclRules.substring(blockBegin, endOfTag);
+			String tag = strBlockOclConstraints.substring(iTag, endOfTag);
 			tag = tag.replace("--@", "");
 			tag = tag.replace("--", "");
 			tag = tag.replace("@", "");
@@ -261,6 +262,7 @@ public class OCL2OWL_SWRL {
 						//increment the error message and the unsuccessfully transformed rules
 						this.errors += e.getMessage() + "\n";
 						unsuccessfullyTransformedRules++;
+						
 					}
 				}
 				//System.out.println(this.errors);	
