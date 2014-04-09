@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.ocl2owl_swrl;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.ocl.uml.impl.ExpressionInOCLImpl;
 import org.eclipse.uml2.uml.Constraint;
@@ -145,27 +147,47 @@ public class OCL2OWL_SWRL {
 		//Now, the rules are treated by blocks.
 		//Is expected that rules without tags comes first and then blocks of rules with the same tag
 		//the first block is considered from the position zero to the first occurrence of a tag (--@)
-		int blockBegin = 0;
-		int blockEnd = oclRules.indexOf("--@");
+		//int blockBegin = 0;
+		//int blockEnd = oclRules.indexOf("--@");
 		OCLParser oclParser  = null;
 		
 		//create a ocl parser to create a referent uml model based on the ontouml model
 		oclParser = new OCLParser(ontoParser, null, null);
-
-		while(true){
+		
+		Pattern p = Pattern.compile("(--@(.+)\n)?context");
+    	Matcher m = p.matcher(oclRules);
+    	
+    	StringBuffer sb = new StringBuffer();
+    	while (m.find()){
+		//while(true){
 			//if doesn't exist more tags, the of block is setted as the end of the oclRules
-			if(blockEnd < 0){
+			/*if(blockEnd < 0){
 				blockEnd = oclRules.length();
 				//when the begin and the end of the block are equal, the while loop is terminated
 				if(blockBegin == blockEnd){
 					break;
 				}
+			}*/
+    		int blockBegin = m.start();
+    		int blockEnd = m.end();
+    		
+    		Matcher auxM = p.matcher(oclRules);
+    		auxM.find(blockEnd);
+    		
+    		try {
+    			blockEnd = auxM.start();
+			} catch (Exception e) {
+				blockEnd = oclRules.length();
 			}
-			
+    		
+    		String strBlockOclConstraints = oclRules.substring(blockBegin, blockEnd);
+    		
 			//since the string "--@" starts at the blockBegin, the tag name will end at the occurrence of '\n'
-			int endOfTag = oclRules.indexOf("\n", blockBegin);
-			int iTag = oclRules.indexOf("--@", blockBegin);
+			int endOfTag = strBlockOclConstraints.indexOf("\n", blockBegin);
+			int iTag = strBlockOclConstraints.indexOf("--@", blockBegin);
+			if(iTag < 0){iTag=0;}
 			if(iTag >= endOfTag || iTag >= blockEnd || iTag < 0){endOfTag=0;}
+			if(endOfTag<blockBegin){endOfTag=blockBegin;}
 			//get the tag and replace all unexpected chars
 			String tag = oclRules.substring(blockBegin, endOfTag);
 			tag = tag.replace("--@", "");
@@ -177,12 +199,12 @@ public class OCL2OWL_SWRL {
 			tag = tag.toLowerCase();
 			
 			//get the block of rules desconsidering the tag
-			String strBlockOclConstraints = oclRules.substring(endOfTag, blockEnd);
+			//strBlockOclConstraints = oclRules.substring(endOfTag, blockEnd);
 			
 			//set the begining of the next block as the end of the actual block
-			blockBegin = blockEnd;
+			//blockBegin = blockEnd;
 			//get the index of the next tag as the end of the next block
-			blockEnd = oclRules.indexOf("--@", blockBegin+3);
+			//blockEnd = oclRules.indexOf("--@", blockBegin+3);
 			
 			//parse the ocl constraints
 			oclParser.parseStandardOCL(strBlockOclConstraints);
@@ -197,13 +219,13 @@ public class OCL2OWL_SWRL {
 				e.printStackTrace();
 				//return e.getMessage();
 			}*/
-			
 			//treats all constraints of ocl parser
 			for(Constraint ct: oclParser.getConstraints())
 			{
 				String stereotype = "";
 				//get the stereotype of constraint
 				stereotype = oclParser.getUMLReflection().getStereotype(ct);
+
 				//if the is tagged, the stereotype is setted as the tag
 				if(!tag.equals("") && org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype)){
 					stereotype = tag;
@@ -241,7 +263,7 @@ public class OCL2OWL_SWRL {
 						unsuccessfullyTransformedRules++;
 					}
 				}
-				//System.out.println(this.errors);				
+				//System.out.println(this.errors);	
 			}
 		}
 		

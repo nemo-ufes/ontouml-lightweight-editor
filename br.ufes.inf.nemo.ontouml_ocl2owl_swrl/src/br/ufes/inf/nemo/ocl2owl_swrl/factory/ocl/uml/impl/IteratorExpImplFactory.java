@@ -91,6 +91,9 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 			retArgsX.set(0, varY0);
 		}
 		
+		if(this.isTempVariable(varY)){
+			varY = varX;
+		}
 		
 		//SWRLDArgument varZ = null;
 		if(this.isUniqueIterator()){
