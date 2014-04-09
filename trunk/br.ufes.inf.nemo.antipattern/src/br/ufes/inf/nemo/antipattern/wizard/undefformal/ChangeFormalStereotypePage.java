@@ -14,7 +14,7 @@ import RefOntoUML.Mediation;
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 
-public class UndefFormalFirstPage extends UndefFormalPage{
+public class ChangeFormalStereotypePage extends UndefFormalPage{
 	
 	public Composite parent;
 	public Button btnYes;
@@ -29,7 +29,7 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 	/**
 	 * Create the wizard.
 	 */
-	public UndefFormalFirstPage(UndefFormalOccurrence uf) 
+	public ChangeFormalStereotypePage(UndefFormalOccurrence uf) 
 	{
 		super(uf);
 		setDescription("Source: "+uf.getSource().getName()+", Target: "+uf.getTarget().getName());
@@ -60,12 +60,12 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 	    		 btn2SourceWhole.setVisible(false);
 	        }
 	        if (btnYes.getSelection()){
-	          if(uf.isBetweenModes() || uf.isBetweenQuantities() || uf.isBetweenCollectives()){
+	          if(occurrence.isBetweenModes() || occurrence.isBetweenQuantities() || occurrence.isBetweenCollectives()){
 	    		  optionComposite.setVisible(true);
 	    		  btn1TargetWhole.setVisible(true);
 	    		  btn1SourceWhole.setVisible(true);	  	          
 	    	  }	    		
-	          if(uf.isBetweenCollectives()){
+	          if(occurrence.isBetweenCollectives()){
 	    		  btn2TargetWhole.setVisible(true);
 	    		  btn2SourceWhole.setVisible(true);
 	    	  }    	  
@@ -107,7 +107,7 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 		btn2TargetWhole.addSelectionListener(listener);
 		
 		// Relator / Object
-		if (uf.isBetweenRelatorAndObject()) 
+		if (occurrence.isBetweenRelatorAndObject()) 
 		{
 			label.setText("The relation that usually holds between an object and a relator is a particular type " +
 			"of internal relation, entitled mediation. It captures that instances of the relator are existentially dependent on the instances of the " +
@@ -115,48 +115,48 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 		}
 		
 		// Mode / Object
-		else if (uf.isBetweenModeAndAnyOther() || uf.isBetweenModes())
+		else if (occurrence.isBetweenModeAndAnyOther() || occurrence.isBetweenModes())
 		{
 			label.setText("The relation that usually holds between modes and other types (even other modes) is a " +
 			" type of internal relation, entitled characterization. It captures that instances of the mode provide intrinsic " +
 			"characteristics of the type, which implies that they are existentially dependent on the instances of the characterized type. Is that the case?");
-			if (uf.isBetweenModes()){		
+			if (occurrence.isBetweenModes()){		
 				btnYes.setText("Yes, a characterization");
-				btn1SourceWhole.setText(""+uf.getSource().getName()+" as source");
+				btn1SourceWhole.setText(""+occurrence.getSource().getName()+" as source");
 				btn1SourceWhole.setSelection(true);
-				btn1TargetWhole.setText(""+uf.getTarget().getName()+" as target");
+				btn1TargetWhole.setText(""+occurrence.getTarget().getName()+" as target");
 			}
 		}
 		
 		// Quantity / Quantity
-		else if (uf.isBetweenQuantities())
+		else if (occurrence.isBetweenQuantities())
 		{
 			label.setText("The relation that usually holds between two quantities is particular type of internal relation, named subQuantityOf." +
 			" That captures that the whole, a maximal amount of matter is composed by another maximal amout of matter, the part. An example is the " +
 			"relation between Wine and Water, where the latter is a sub quantity of the former. Is that the case?");
 			btnYes.setText("Yes, a quantityof");
-			btn1SourceWhole.setText(""+uf.getSource().getName()+" as whole");
+			btn1SourceWhole.setText(""+occurrence.getSource().getName()+" as whole");
 			btn1SourceWhole.setSelection(true);
-			btn1TargetWhole.setText(""+uf.getTarget().getName()+" as whole");			
+			btn1TargetWhole.setText(""+occurrence.getTarget().getName()+" as whole");			
 		}
 		
 		// Collective / Collective
-		else if (uf.isBetweenCollectives())
+		else if (occurrence.isBetweenCollectives())
 		{
 			label.setText("There are two types of relation that usually hold between two collectives: memberOf and subCollectionOf. Both of them are part-whole relations, " +
 			"which imply asymmetry (if a part of b then b not part of a), irreflexivity (a not part of a) and acyclicity (if a part of b and b part of c then c is not part of a)."+"\n\n"+
 			"A memberOf holds between a member and its collection, like a tree is a member of a forest. A subCollectionOf holds between two collections, like the collections of forks in a " +
 			"cutlery set. Is that the case?");
 			btnYes.setText("Yes, a memberOf or subcollectionOf");
-			btn1SourceWhole.setText("MemberOf: "+uf.getTarget().getName()+" as member");	
+			btn1SourceWhole.setText("MemberOf: "+occurrence.getTarget().getName()+" as member");	
 			btn1SourceWhole.setSelection(true);
-			btn1TargetWhole.setText("MemberOf: "+uf.getSource().getName()+" as member");
-			btn2SourceWhole.setText("SubCollectionOf: "+uf.getTarget().getName()+" as subcollection");
-			btn2TargetWhole.setText("SubCollectionOf: "+uf.getSource().getName()+" as subcollection");			
+			btn1TargetWhole.setText("MemberOf: "+occurrence.getSource().getName()+" as member");
+			btn2SourceWhole.setText("SubCollectionOf: "+occurrence.getTarget().getName()+" as subcollection");
+			btn2TargetWhole.setText("SubCollectionOf: "+occurrence.getSource().getName()+" as subcollection");			
 		}
 		
 		// Collective / Functional
-		else if (uf.isBetweenCollectiveAndFunctional())
+		else if (occurrence.isBetweenCollectiveAndFunctional())
 		{
 			label.setText("The relation that is usually applicable between a collection ( as <collective>) and a functional complex ( as <functional>) is the memberOf. It is a particular type of part-whole relation, which implies: "+""+
 			"- asymmetry: if a is a member of b then b is not a member of a;"+"\n"+
@@ -167,7 +167,7 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 		}
 		
 		// Functional / Functional
-		else if (uf.isBetweenFunctionals())
+		else if (occurrence.isBetweenFunctionals())
 		{
 			label.setText("One possible relation that holds between functional complexes is a particular type of part-whole relation entitled componentOf. This has the semantics that for the whole to function as such, he needs a part functioning as such."+""+ 
 			"As all part-whole relations componentOf is embbeded with the following constraints at the instance level:"+"\n"+
@@ -178,10 +178,10 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 		}
 		
 		// Object / Object
-		else if (uf.isBetweenObjects())
+		else if (occurrence.isBetweenObjects())
 		{
-			label.setText("Consider the instances ‘x’ of "+uf.getSource().getName()+" and ‘y’ of "+uf.getTarget().getName()+". Is the reason why ‘x’ is connected to ‘y’ " +
-			"through <<formal>> "+uf.getFormal().getName()+", the occurrence of an external event, which also creates a truth-maker for the relation? To help you answering this question, consider the " +
+			label.setText("Consider the instances ‘x’ of "+occurrence.getSource().getName()+" and ‘y’ of "+occurrence.getTarget().getName()+". Is the reason why ‘x’ is connected to ‘y’ " +
+			"through <<formal>> "+occurrence.getFormal().getName()+", the occurrence of an external event, which also creates a truth-maker for the relation? To help you answering this question, consider the " +
 			"example: the relation that holds between an Employee and the Company in which he works is a material relation. A Hiring event creates the relation alongside with " +
 			"its truth-maker, the Employment (a relator).");
 		}	
@@ -191,21 +191,21 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 	public IWizardPage getNextPage() 
 	{	
 		// Relator / Object
-		if (uf.isBetweenRelatorAndObject())
+		if (occurrence.isBetweenRelatorAndObject())
 		{
 			if(btnYes.getSelection()){
 				//Action =============================
-				UndefFormalAction newAction = new UndefFormalAction(uf);
-				newAction.setChangeToMediation(uf.getFormal(),uf.getSource(),uf.getTarget());
-				getUndefFormalWizard().replaceAction(0,newAction);	
+				UndefFormalAction newAction = new UndefFormalAction(occurrence);
+				newAction.setChangeToMediation(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget());
+				getAntipatternWizard().replaceAction(0,newAction);	
 				//======================================
 				
 				//Check condition
 				Relator relator = null;
-				if(uf.getSource() instanceof Relator) relator = (Relator)uf.getSource();
-				else relator = (Relator)uf.getTarget();
+				if(occurrence.getSource() instanceof Relator) relator = (Relator)occurrence.getSource();
+				else relator = (Relator)occurrence.getTarget();
 				ArrayList<Mediation> mediations = new ArrayList<Mediation>();
-				uf.getParser().getAllMediations(relator, mediations);
+				occurrence.getParser().getAllMediations(relator, mediations);
 				
 				if (mediations.size()>0) return ((UndefFormalWizard)getWizard()).getFinishing();
 				else return ((UndefFormalWizard)getWizard()).getFifthPage();
@@ -216,13 +216,13 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 		}
 		
 		// Mode / Object
-		else if (uf.isBetweenModeAndAnyOther())
+		else if (occurrence.isBetweenModeAndAnyOther())
 		{
 			if(btnYes.getSelection()){
 				//Action =============================
-				UndefFormalAction newAction = new UndefFormalAction(uf);
-				newAction.setChangeToCharacterization(uf.getFormal(),uf.getSource(),uf.getTarget());
-				getUndefFormalWizard().replaceAction(0,newAction);	
+				UndefFormalAction newAction = new UndefFormalAction(occurrence);
+				newAction.setChangeToCharacterization(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget());
+				getAntipatternWizard().replaceAction(0,newAction);	
 				//======================================
 				return ((UndefFormalWizard)getWizard()).getFinishing();
 			}
@@ -232,14 +232,14 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 		}		
 		
 		// Quantity / Quantity
-		else if (uf.isBetweenQuantities())
+		else if (occurrence.isBetweenQuantities())
 		{
 			if(btnYes.getSelection()){				
 				//Action =============================
-				UndefFormalAction newAction = new UndefFormalAction(uf);
-				if (btn1SourceWhole.getSelection()) newAction.setChangeToSubQuantityOfSrcWhole(uf.getFormal(),uf.getSource(),uf.getTarget());
-				if (btn1TargetWhole.getSelection()) newAction.setChangeToSubQuantityOfTgtWhole(uf.getFormal(),uf.getSource(),uf.getTarget());
-				getUndefFormalWizard().replaceAction(0,newAction);	
+				UndefFormalAction newAction = new UndefFormalAction(occurrence);
+				if (btn1SourceWhole.getSelection()) newAction.setChangeToSubQuantityOfSrcWhole(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget());
+				if (btn1TargetWhole.getSelection()) newAction.setChangeToSubQuantityOfTgtWhole(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget());
+				getAntipatternWizard().replaceAction(0,newAction);	
 				//======================================
 				return ((UndefFormalWizard)getWizard()).getFinishing();
 			}
@@ -249,16 +249,16 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 		}
 		
 		// Collective / Collective
-		else if (uf.isBetweenCollectives())
+		else if (occurrence.isBetweenCollectives())
 		{
 			if(btnYes.getSelection()){
 				//Action =============================
-				UndefFormalAction newAction = new UndefFormalAction(uf);
-				if(btn1SourceWhole.getSelection()) newAction.setChangeToMemberOfSrcWhole(uf.getFormal(),uf.getSource(),uf.getTarget());
-				if(btn1TargetWhole.getSelection()) newAction.setChangeToMemberOfTgtWhole(uf.getFormal(),uf.getSource(),uf.getTarget());
-				if(btn2SourceWhole.getSelection()) newAction.setChangeToSubCollectionOfSrcWhole(uf.getFormal(),uf.getSource(),uf.getTarget());
-				if(btn2TargetWhole.getSelection()) newAction.setChangeToSubCollectionOfTgtWhole(uf.getFormal(),uf.getSource(),uf.getTarget());
-				getUndefFormalWizard().replaceAction(0,newAction);
+				UndefFormalAction newAction = new UndefFormalAction(occurrence);
+				if(btn1SourceWhole.getSelection()) newAction.setChangeToMemberOfSrcWhole(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget());
+				if(btn1TargetWhole.getSelection()) newAction.setChangeToMemberOfTgtWhole(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget());
+				if(btn2SourceWhole.getSelection()) newAction.setChangeToSubCollectionOfSrcWhole(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget());
+				if(btn2TargetWhole.getSelection()) newAction.setChangeToSubCollectionOfTgtWhole(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget());
+				getAntipatternWizard().replaceAction(0,newAction);
 				//======================================
 				return ((UndefFormalWizard)getWizard()).getFinishing();
 			}
@@ -268,12 +268,12 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 		}
 		
 		// Collective / Functional
-		else if (uf.isBetweenCollectiveAndFunctional()){
+		else if (occurrence.isBetweenCollectiveAndFunctional()){
 			if(btnYes.getSelection()){
 				//Action =============================
-				UndefFormalAction newAction = new UndefFormalAction(uf);
-				newAction.setChangeToMemberOfSrcWhole(uf.getFormal(),uf.getSource(),uf.getTarget());						
-				getUndefFormalWizard().replaceAction(0,newAction);	
+				UndefFormalAction newAction = new UndefFormalAction(occurrence);
+				newAction.setChangeToMemberOfSrcWhole(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget());						
+				getAntipatternWizard().replaceAction(0,newAction);	
 				//======================================
 				return ((UndefFormalWizard)getWizard()).getFinishing();
 			}
@@ -283,12 +283,12 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 		}
 		
 		// Functional / Functional
-		else if (uf.isBetweenFunctionals()){
+		else if (occurrence.isBetweenFunctionals()){
 			if(btnYes.getSelection()){
 				//Action =============================
-				UndefFormalAction newAction = new UndefFormalAction(uf);
-				newAction.setChangeToMemberOfSrcWhole(uf.getFormal(),uf.getSource(),uf.getTarget());
-				getUndefFormalWizard().replaceAction(0,newAction);	
+				UndefFormalAction newAction = new UndefFormalAction(occurrence);
+				newAction.setChangeToMemberOfSrcWhole(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget());
+				getAntipatternWizard().replaceAction(0,newAction);	
 				//======================================
 				return ((UndefFormalWizard)getWizard()).getFinishing();
 			}
@@ -298,7 +298,7 @@ public class UndefFormalFirstPage extends UndefFormalPage{
 		}
 		
 		// Object / Object
-		else if (uf.isBetweenObjects()) {
+		else if (occurrence.isBetweenObjects()) {
 			return ((UndefFormalWizard)getWizard()).getSecondPage();
 		}
 		

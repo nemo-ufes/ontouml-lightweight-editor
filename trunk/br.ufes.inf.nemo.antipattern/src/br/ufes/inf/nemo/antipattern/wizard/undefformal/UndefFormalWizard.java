@@ -8,11 +8,11 @@ import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
 
 public class UndefFormalWizard extends AntipatternWizard {
 
-		protected UndefFormalFirstPage firstPage;
-		protected UndefFormalSecondPage secondPage;
-		protected UndefFormalThirdPage thirdPage;
-		protected UndefFormalFourthPage fourthPage;
-		protected UndefFormalFifthPage fifthPage;
+		protected ChangeFormalStereotypePage firstPage;
+		protected IsMaterialPage secondPage;
+		protected IsComparativeFormalPage thirdPage;
+		protected CreateDataTypePage fourthPage;
+		protected CreateMediatedPage fifthPage;
 		
 		public UndefFormalWizard(UndefFormalOccurrence ap) {
 			super(ap, UndefFormalAntipattern.getAntipatternInfo().name);	    
@@ -26,11 +26,11 @@ public class UndefFormalWizard extends AntipatternWizard {
 			finishing = new FinishingPage();
 			options = new UndefFormalRefactoringPage((UndefFormalOccurrence)ap);
 					
-			firstPage = new  UndefFormalFirstPage(( UndefFormalOccurrence)ap);
-			secondPage = new UndefFormalSecondPage((UndefFormalOccurrence)ap);
-			thirdPage = new UndefFormalThirdPage((UndefFormalOccurrence)ap);
-			fourthPage = new UndefFormalFourthPage((UndefFormalOccurrence)ap);
-			fifthPage = new UndefFormalFifthPage((UndefFormalOccurrence)ap);
+			firstPage = new  ChangeFormalStereotypePage(( UndefFormalOccurrence)ap);
+			secondPage = new IsMaterialPage((UndefFormalOccurrence)ap);
+			thirdPage = new IsComparativeFormalPage((UndefFormalOccurrence)ap);
+			fourthPage = new CreateDataTypePage((UndefFormalOccurrence)ap);
+			fifthPage = new CreateMediatedPage((UndefFormalOccurrence)ap);
 			
 			presentation = new PresentationPage(
 				UndefFormalAntipattern.getAntipatternInfo().name,
@@ -54,26 +54,26 @@ public class UndefFormalWizard extends AntipatternWizard {
 			return ((UndefFormalOccurrence)ap);
 		}
 
-		public UndefFormalFirstPage getFirstPage() {
+		public ChangeFormalStereotypePage getFirstPage() {
 			return firstPage;
 		}
 		
-		public UndefFormalSecondPage getSecondPage()
+		public IsMaterialPage getSecondPage()
 		{
 			return secondPage;
 		}
 			
-		public UndefFormalThirdPage getThirdPage()
+		public IsComparativeFormalPage getThirdPage()
 		{
 			return thirdPage;
 		}
 		
-		public UndefFormalFourthPage getFourthPage()
+		public CreateDataTypePage getFourthPage()
 		{
 			return fourthPage;
 		}
 		
-		public UndefFormalFifthPage getFifthPage()
+		public CreateMediatedPage getFifthPage()
 		{
 			return fifthPage;
 		}
