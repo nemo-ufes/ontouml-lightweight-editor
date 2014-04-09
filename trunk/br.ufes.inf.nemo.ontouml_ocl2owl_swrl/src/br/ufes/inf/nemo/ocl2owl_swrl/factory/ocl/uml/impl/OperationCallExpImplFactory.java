@@ -170,7 +170,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		//esse trecho foi incluído para tratar uso variáveis (regra: 70/71)
 		if(source.getClass().equals(VariableExpImpl.class) && refArgAux != null){
 			VariableExpImpl variable = (VariableExpImpl)source;
-			if(!variable.getName().equals("self")){
+			if(!variable.getName().equals("self") && !this.isTempVariable(varX)){
 				SWRLSameIndividualAtom sameAs = factory.getSWRLSameIndividualAtom((SWRLVariable)varX, (SWRLVariable)refArgAux);
 				if(!antecedent.contains(sameAs)){
 					this.insertOnAntecedentOrConsequent(ctStereotype, leftSideOfImplies, antecedent, consequent, sameAs);

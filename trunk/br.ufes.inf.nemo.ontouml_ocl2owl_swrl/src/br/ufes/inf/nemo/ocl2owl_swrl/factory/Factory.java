@@ -24,7 +24,6 @@ import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLEntity;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -32,7 +31,6 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLArgument;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
-import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import uk.ac.manchester.cs.owl.owlapi.SWRLObjectPropertyAtomImpl;
@@ -96,10 +94,59 @@ public class Factory {
 		}
 		
 		if(hasToBeInsertedInConsequent(ctStereotype, leftSideOfImplies)){
-			consequent.add(atom);
+			//the atom can be inserted in consequent if does not exist in antecedent
+			//the function atomExistAtoms was created 
+			if(!this.atomExistAtoms(antecedent, atom, false)){
+				consequent.add(atom);
+			}			
 		}else{
+			this.atomExistAtoms(consequent, atom, true);
 			antecedent.add(atom);
 		}
+	}
+	
+	public Boolean atomExistAtoms(Set<SWRLAtom> atoms, SWRLAtom atom, Boolean removeIt){
+		Class atomClass = atom.getClass();
+		Collection<SWRLArgument> atomArgs = atom.getAllArguments();
+		int qtAtomArgs = atomArgs.size();
+		if(qtAtomArgs > 1){
+			Collections.sort((List<SWRLArgument>) atomArgs);
+		}
+		for (SWRLAtom auxAtom : atoms) {
+			if(auxAtom.getClass().equals(atomClass)){
+				Collection<SWRLArgument> auxAtomArgs = auxAtom.getAllArguments();
+				if(auxAtomArgs.size() == qtAtomArgs){
+					if(qtAtomArgs > 1){
+						Collections.sort((List<SWRLArgument>) auxAtomArgs);
+					}
+					Boolean itEqual = true;
+					for(int i = 0; i < qtAtomArgs; i++){
+						Object[] list1 = atomArgs.toArray();
+						Object[] list2 = auxAtomArgs.toArray();
+						
+						IRI iri1 = ((SWRLVariableImpl)list1[i]).getIRI();
+						IRI iri2 = ((SWRLVariableImpl)list2[i]).getIRI();
+						//IRI iri1 = ((SWRLVariableImpl)(((ArrayList<SWRLArgument>)atomArgs).get(i))).getIRI();
+						//IRI iri2 = ((SWRLVariableImpl)(((ArrayList<SWRLArgument>)auxAtomArgs).get(i))).getIRI();
+						if(!iri1.getFragment().equals(iri2.getFragment())){
+							itEqual = false;
+						}
+					}
+					
+					if(itEqual){
+						if(removeIt){
+							atoms.remove(atom);
+						}
+						
+						return true;
+					}					
+					//verificar se todos os elementos sao iguais
+					//eliminar elemento se removeIt == true
+					//se forem, retornar true
+				}				
+			}
+		}
+		return false;
 	}
 	
 	public static Boolean variableExistsInAtom(Set<SWRLAtom> swrlAtoms, SWRLVariable variable){
@@ -129,25 +176,6 @@ public class Factory {
 		}
 		
 		return variableName;
-	}
-	
-	public void solveTempVariables(String ctStereotype, OWLDataFactory factory, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent){
-		List<SWRLArgument> tempVars = new ArrayList<SWRLArgument>();
-		for (SWRLAtom cons : antecedent) {
-			Collection<SWRLArgument> swrlArguments = cons.getAllArguments();
-			for (SWRLArgument swrlArgument : swrlArguments) {
-				if(this.isTempVariable((SWRLDArgument) swrlArgument) && !tempVars.contains(swrlArgument)){
-					tempVars.add(swrlArgument);
-				}
-			}
-		}
-		
-		Collections.sort(tempVars);
-		
-		for(int i = 0; i < tempVars.size() - 1; i++){
-			SWRLSameIndividualAtom same = factory.getSWRLSameIndividualAtom((SWRLVariable)tempVars.get(i), (SWRLVariable)tempVars.get(i+1));
-			this.insertOnAntecedentOrConsequent(ctStereotype, true, antecedent, consequent, same);
-		}
 	}
 	
 	public static void replaceNonexistentVariableInAtom(OWLDataFactory factory, Set<SWRLAtom> swrlAtoms, SWRLVariable oldVariable, SWRLVariable newVariable){

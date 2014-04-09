@@ -33,6 +33,8 @@ public class VariableExpImplFactory extends OCLExpressionImplFactory {
 		Object type;
 		if(variableExpImpl.getName().equals("self")){
 			type = variableExpImpl.getReferredVariable().getType();
+			//a linha abaixo foi adicionada para corrigir para corrigir a geracao do nome de variaveis da regra DR69 
+			referredArgument = null;
 		}else{
 			type = variableExpImpl;
 			referredArgument = null;
