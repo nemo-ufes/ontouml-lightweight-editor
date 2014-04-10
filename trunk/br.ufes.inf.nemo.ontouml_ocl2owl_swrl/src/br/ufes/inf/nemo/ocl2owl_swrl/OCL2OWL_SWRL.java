@@ -270,7 +270,7 @@ public class OCL2OWL_SWRL {
 		}
 		
 		String successMessage = "\n\n" + successfullyTransformedRules + " rule(s) successfully transformed.\n" + unsuccessfullyTransformedRules + " rule(s) unsuccessfully transformed.\n"; 
-		this.errors = successMessage + this.errors;
+		this.errors += successMessage;
 	}
 	
 	/**

@@ -426,9 +426,14 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		
 		//get the relation2
 		OWLObjectProperty relation2 = this.argumentFactory.getOWLObjectProperty(operationCallExpImpl, nameSpace, refParser, factory);
-		
+		/*
+		System.out.println(relation1.getIRI().getFragment());
+		System.out.println(relation2.getIRI().getFragment());
+		System.out.println();
+		*/
 		//set relation2 as subRelationOf relation1
 		OWLSubObjectPropertyOfAxiom subRelationOf = factory.getOWLSubObjectPropertyOfAxiom(relation2, relation1);
+		
 		//apply changes in the owl manager
 		manager.applyChange(new AddAxiom(ontology, subRelationOf));
 				
