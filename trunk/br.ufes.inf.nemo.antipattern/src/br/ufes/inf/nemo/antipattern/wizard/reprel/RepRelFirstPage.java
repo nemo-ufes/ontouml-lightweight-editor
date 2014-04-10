@@ -34,7 +34,7 @@ public class RepRelFirstPage extends RepRelPage{
 		this.parent = parent;
 		Composite container = new Composite(parent, SWT.NULL);
 
-		StyledText styledText = new StyledText(container, SWT.WRAP);
+		StyledText styledText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL);
 		styledText.setMarginColor(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setText("Each instance of the mediated types can be connected to various instances of "+repRel.getRelator().getName()+". " +
@@ -46,7 +46,7 @@ public class RepRelFirstPage extends RepRelPage{
 		
 		setControl(container);
 		
-		ScrolledComposite sc = new ScrolledComposite(container, SWT.V_SCROLL | SWT.BORDER);
+		ScrolledComposite sc = new ScrolledComposite(container, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
 		sc.setBounds(10, 60, 554, 212);
 		
 		Composite composite = new Composite(sc, SWT.NONE);
