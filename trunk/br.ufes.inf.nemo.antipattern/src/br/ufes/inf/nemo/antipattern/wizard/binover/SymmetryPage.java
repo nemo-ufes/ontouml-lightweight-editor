@@ -43,7 +43,7 @@ public class SymmetryPage extends BinOverPage {
 							"\r\n\r\n" +
 							"Consider two individuals, x and y, both instances of <"+binOver.getSource().getName()+"> " +
 							"and <"+binOver.getTarget().getName()+">. " +
-							"If x, acting as <"+getSourceEndName()+">, is conneced to y, " +
+							"If x, acting as <"+getSourceEndName()+">, is connected to y, " +
 							"acting as <"+getTargetEndName()+">, " +
 							"through <"+getRelationName()+"> " +
 							"does it mean that y must also act as <"+getSourceEndName()+"> " +
