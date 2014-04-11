@@ -157,6 +157,26 @@ public class TOCLCompletionProvider {
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
+
+		description = "Operation <b>World::paths() : Set(Path)</b><br><br>"+
+		"Returns all paths in which self is at.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"paths","paths",
+			"paths()${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+		
+		description = "Operation <b>Path::worlds() : Set(World)</b><br><br>"+
+		"Returns all worlds contained in the path self.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"worlds","worlds",
+			"worlds()${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
 		
 		return oclCompletionList;
 	}	

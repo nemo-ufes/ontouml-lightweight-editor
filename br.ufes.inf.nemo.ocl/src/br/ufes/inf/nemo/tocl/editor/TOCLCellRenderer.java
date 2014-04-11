@@ -36,6 +36,10 @@ public class TOCLCellRenderer extends OCLCellRenderer {
 			tc.getDefinitionString().equals("allNext")||
 			tc.getDefinitionString().equals("hasPrevious")||
 			tc.getDefinitionString().equals("hasNext")||
+			tc.getDefinitionString().equals("isTerminal")||
+			tc.getDefinitionString().equals("isOrigin")||
+			tc.getDefinitionString().equals("paths")||
+			tc.getDefinitionString().equals("worlds")||
 			tc.getDefinitionString().equals("temporal")
 		   ){
 			setIcon(new ImageIcon(TOCLCellRenderer.class.getResource("/br/ufes/inf/nemo/tocl/editor/icons/operation.gif")));

@@ -31,12 +31,7 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 		{
 			Classifier classifier = t.getReferredType();
 			
-			if (classifier.getName().equalsIgnoreCase("World")) return "World";
-			else if (classifier.getName().equalsIgnoreCase("CurrentWorld")) return "CurrentWorld";
-			else if (classifier.getName().equalsIgnoreCase("PastWorld")) return "PastWorld";
-			else if (classifier.getName().equalsIgnoreCase("CounterfactualWorld")) return "CounterfactualWorld";
-			else if (classifier.getName().equalsIgnoreCase("FutureWorld")) return "FutureWorld";
-
+			if (classifier.getName().equalsIgnoreCase("World")) return "World";			
 	    	if (classifier instanceof org.eclipse.ocl.uml.AnyType) return "univ";		
 			if (classifier instanceof org.eclipse.ocl.uml.VoidType) return "none";		
 			if (classifier instanceof org.eclipse.ocl.uml.PrimitiveType){ 
@@ -67,14 +62,13 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 			if(operName.equals("allPrevious")) { return "(^next."+sourceResult+")"; }
 			if(operName.equals("allNext")) { return "("+sourceResult+".^next)"; }
 			if(operName.equals("oclIsNew")) { return "(some w: World | "+sourceResult+" in w.exists and "+sourceResult+" !in (next.w).exists)"; }
-//			if(operName.equals("isOrigin")) { return "(no next."+sourceResult+")"; }
-//			if(operName.equals("isTerminal")) { return "(no "+sourceResult+".next)"; }		
+			if(operName.equals("isOrigin")) { return "(no next."+sourceResult+")"; }
+			if(operName.equals("isTerminal")) { return "(no "+sourceResult+".next)"; }		
 	        for (java.util.Iterator<String> iter = argumentsResult.iterator(); iter.hasNext();) 
 	        {
 				String argument = iter.next();
 				if(operName.equals("allInstances")) { return argument+"."+sourceResult; }
-				if(operName.equals("existsIn")) { return sourceResult+" in "+argument+"."+"exists"; }
-				if(operName.equals("oclIsNew")) { return "(some "+argument+": World | "+sourceResult+" in "+argument+"."+"exists and "+sourceResult+" !in (next."+argument+").exists)"; }
+				if(operName.equals("existsIn")) { return sourceResult+" in "+argument+"."+"exists"; }				
 				if(ontoElement!=null){
 					String alias = refparser.getAlias(ontoElement);
 					if(ontoElement instanceof RefOntoUML.Property) { 
@@ -95,11 +89,7 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 				}
 	        }
 	        if(operName.equals("allInstances")) { 
-	        	if (sourceResult.equals("World")) return sourceResult;
-	        	else if (sourceResult.equals("CurrentWorld")) return sourceResult;
-	        	else if (sourceResult.equals("FutureWorld")) return sourceResult;
-	        	else if (sourceResult.equals("PastWorld")) return sourceResult;
-	        	else if (sourceResult.equals("CounterfactualWorld")) return sourceResult;
+	        	if (sourceResult.equals("World")) return sourceResult;	        	
 	        	else return "World."+sourceResult;
 	        }	        
 	        if(ontoElement!=null){
