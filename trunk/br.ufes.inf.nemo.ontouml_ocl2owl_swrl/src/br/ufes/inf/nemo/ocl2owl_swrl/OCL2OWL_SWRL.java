@@ -19,6 +19,7 @@ import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonInitialized;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.ExpressionInOCLImplFactory;
 import br.ufes.inf.nemo.ocl2owl_swrl.tags.Tag;
+import br.ufes.inf.nemo.ocl2owl_swrl.util.Counters;
 
 public class OCL2OWL_SWRL {
 	private String nameSpace = null;
@@ -29,6 +30,8 @@ public class OCL2OWL_SWRL {
 	private OWLOntology ontology = null;
 	public String errors = "";
 	
+	public Counters logCounting = new Counters();
+		
 	//public OCL2SWRL(OCLParser oclParser, OntoUMLParser refParser, OWLOntologyManager manager, String nameSpace) {
 	/**
 	 * Constructor.
@@ -257,19 +260,21 @@ public class OCL2OWL_SWRL {
 						//call the solve method
 						exprFactory.solve(stereotype, this.ontoParser, this.nameSpace, this.manager, this.factory, this.ontology, antecedent, consequent, null, false, 1, false);
 						//increment the successfully transformed rules
-						successfullyTransformedRules++;
+						//successfullyTransformedRules++;
+						this.logCounting.updateCounters(stereotype, true, null);
 					}catch (Exception e) {
 						//increment the error message and the unsuccessfully transformed rules
 						this.errors += e.getMessage() + "\n";
-						unsuccessfullyTransformedRules++;
-						
+						//unsuccessfullyTransformedRules++;
+						this.logCounting.updateCounters(stereotype, false, e);
 					}
 				}
 				//System.out.println(this.errors);	
 			}
 		}
 		
-		String successMessage = "\n\n" + successfullyTransformedRules + " rule(s) successfully transformed.\n" + unsuccessfullyTransformedRules + " rule(s) unsuccessfully transformed.\n"; 
+		//String successMessage = "\n\n" + successfullyTransformedRules + " rule(s) successfully transformed.\n" + unsuccessfullyTransformedRules + " rule(s) unsuccessfully transformed.\n";
+    	String successMessage = this.logCounting.getreturnMessage();
 		this.errors += successMessage;
 	}
 	
