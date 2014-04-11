@@ -22,9 +22,11 @@ public class UMLTemporalGenerator {
 	
 	// temporal inclusion	
 	public HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> tmap = new HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>>();
+	public String tlog = new String();	
+	@Deprecated
 	public int assoc_counter=0;
+	@Deprecated
 	public int attr_counter=0;
-	public String tlog = new String();
 		
 	public HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> getMap()
 	{
@@ -66,13 +68,17 @@ public class UMLTemporalGenerator {
 		ArrayList<org.eclipse.uml2.uml.Property> attributes = new ArrayList<org.eclipse.uml2.uml.Property>();
 		getAttributes(umlRoot,attributes);
 		
-		org.eclipse.uml2.uml.Class umlWorld = createWorldHierarchy(umlRoot);				
-		createWorldAccessibilityRelation(umlWorld);		
-		createWorldOperations(umlWorld);
+//		not necessary...
+//		org.eclipse.uml2.uml.Class umlWorld = createWorldHierarchy(umlRoot);
 		
-		createTopLevelExistenceOperations(umlWorld, topLevels);		
+		org.eclipse.uml2.uml.Class umlWorld = umlRoot.createOwnedClass("World", false);
+		createWorldAccessibilityRelation(umlWorld);
+		org.eclipse.uml2.uml.Class umlTimePath = createPathStructure(umlWorld, umlRoot);				
+		createWorldOperations(umlWorld,umlTimePath);		
+		createPathOperations(umlWorld,umlTimePath);
+		createTopLevelExistenceOperations(umlWorld, classes);		
 		createTopLevelAllInstancesOperation(umlWorld, classes);
-
+		createOclIsNewOperation(umlWorld,classes);
 		createTemporalAttributeAccessOperations(umlWorld, attributes);
 
 		// unnecessary since end-points in UML are owned attributes
@@ -120,10 +126,34 @@ public class UMLTemporalGenerator {
 			{
 				org.eclipse.uml2.uml.DataType class_ = ((org.eclipse.uml2.uml.DataType)c);				
 				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("existsIn", parameters, typeParameters, pt);
+				outln(op);				
+			}
+		}
+	}
+	
+	public void createOclIsNewOperation(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)
+	{
+		org.eclipse.uml2.uml.PrimitiveType pt = getPrimitiveBooleanType();
+		
+		EList<String> parameters = new BasicEList<String>();
+		parameters.add("w");
+		
+		EList<org.eclipse.uml2.uml.Type> typeParameters = new BasicEList<org.eclipse.uml2.uml.Type>();
+		typeParameters.add(umlWorld);
+		
+		for(Classifier c: topLevels)
+		{
+			if (c instanceof org.eclipse.uml2.uml.Class)
+			{
+				org.eclipse.uml2.uml.Class class_ = ((org.eclipse.uml2.uml.Class)c);				
+				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("oclIsNew", parameters, typeParameters, pt);
 				outln(op);
-				
-				org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation("oclIsNew", parameters, typeParameters, pt);
-				outln(op2);				
+			}
+			if (c instanceof org.eclipse.uml2.uml.DataType && !(c instanceof org.eclipse.uml2.uml.PrimitiveType) && !(c instanceof org.eclipse.uml2.uml.Enumeration))
+			{
+				org.eclipse.uml2.uml.DataType class_ = ((org.eclipse.uml2.uml.DataType)c);				
+				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("oclIsNew", parameters, typeParameters, pt);
+				outln(op);
 			}
 		}
 	}
@@ -164,8 +194,23 @@ public class UMLTemporalGenerator {
 		outln("UML:Operation :: "+"name="+op.getName()+", type="+op.getType().getName()+", lower="+op.getLower()+", upper="+op.getUpper()+"");		
 	}
 	
-	public void createWorldOperations(org.eclipse.uml2.uml.Class umlWorld)
+	public void createPathOperations(org.eclipse.uml2.uml.Class umlWorld, org.eclipse.uml2.uml.Class umlTimePath)
+	{
+		org.eclipse.uml2.uml.Operation worldsOp = umlTimePath.createOwnedOperation("worlds", null, null, umlWorld);
+		worldsOp.setLower(1);
+		worldsOp.setUpper(-1);
+		
+		outln(worldsOp);		
+	}
+	
+	public void createWorldOperations(org.eclipse.uml2.uml.Class umlWorld, org.eclipse.uml2.uml.Class umlTimePath)
 	{	
+		org.eclipse.uml2.uml.Operation pathsOp = umlWorld.createOwnedOperation("paths", null, null, umlTimePath);
+		pathsOp.setLower(1);
+		pathsOp.setUpper(-1);
+		
+		outln(pathsOp);
+		
 		org.eclipse.uml2.uml.Operation previousOp = umlWorld.createOwnedOperation("previous", null, null, umlWorld);
 		previousOp.setLower(0);
 		previousOp.setUpper(1);
@@ -285,20 +330,20 @@ public class UMLTemporalGenerator {
 					op.setLower(attr.getLower());
 					outln(op);
 					
-					org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation(attr.getName(), null, null, type);
-					if(attr.isReadOnly()){ 
-						op2.setLower(attr.getLower()); 
-						op2.setUpper(attr.getUpper()); 
-					}else{						
-						op2.setLower(attr.getLower());
-						op2.setUpper(-1);
-					}
-					
-					outln(op2);
+//					we decide that the world parameter must always be specified
+//					org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation(attr.getName(), null, null, type);
+//					if(attr.isReadOnly()){ 
+//						op2.setLower(attr.getLower()); 
+//						op2.setUpper(attr.getUpper()); 
+//					}else{						
+//						op2.setLower(attr.getLower());
+//						op2.setUpper(-1);
+//					}					
+//					outln(op2);
 					
 					ArrayList<org.eclipse.uml2.uml.Element> list = new ArrayList<org.eclipse.uml2.uml.Element>();
 					list.add(op);
-					list.add(op2);
+//					list.add(op2);
 					tmap.put(getKey(attr), list);
 				}
 				if(owner instanceof org.eclipse.uml2.uml.DataType){
@@ -309,19 +354,20 @@ public class UMLTemporalGenerator {
 					op.setLower(attr.getLower());
 					outln(op);
 					
-					org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation(attr.getName(), null, null, type);
-					if(attr.isReadOnly()){ 
-						op2.setLower(attr.getLower()); 
-						op2.setUpper(attr.getUpper()); 
-					}else{						
-						op2.setLower(attr.getLower());
-						op2.setUpper(-1);
-					}
-					outln(op2);
+//					we decide that the world parameter must always be specified
+//					org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation(attr.getName(), null, null, type);
+//					if(attr.isReadOnly()){ 
+//						op2.setLower(attr.getLower()); 
+//						op2.setUpper(attr.getUpper()); 
+//					}else{						
+//						op2.setLower(attr.getLower());
+//						op2.setUpper(-1);
+//					}
+//					outln(op2);
 
 					ArrayList<org.eclipse.uml2.uml.Element> list = new ArrayList<org.eclipse.uml2.uml.Element>();
 					list.add(op);
-					list.add(op2);
+//					list.add(op2);
 					tmap.put(getKey(attr), list);
 				}
 			}
@@ -394,6 +440,60 @@ public class UMLTemporalGenerator {
 		}	
 	}
 	
+	public org.eclipse.uml2.uml.Class createPathStructure(org.eclipse.uml2.uml.Class umlWorld, org.eclipse.uml2.uml.Package umlRoot)
+	{
+		org.eclipse.uml2.uml.Class umlTimePath = umlRoot.createOwnedClass("Path", false);
+		
+		boolean end1IsNavigable = true;
+		String end1Name = "worlds";
+		org.eclipse.uml2.uml.AggregationKind agg1 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		int end1Lower = 1;
+		int end1Upper = -1;				
+		boolean end2IsNavigable = true;
+		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		String end2Name = "paths";
+		int end2Lower = 1;
+		int end2Upper = -1;				
+		org.eclipse.uml2.uml.Association existenceRelation = umlTimePath.createAssociation(
+			end1IsNavigable, agg1, end1Name, end1Lower, end1Upper, (org.eclipse.uml2.uml.Type)umlWorld,
+			end2IsNavigable, agg2, end2Name, end2Lower, end2Upper
+		);
+		umlRoot.getPackagedElements().add(existenceRelation);
+		
+		outln(existenceRelation);
+		
+		return umlTimePath;
+	}
+	
+	public void createWorldAccessibilityRelation (org.eclipse.uml2.uml.Class umlWorld)
+	{
+		boolean end1IsNavigable = true;
+		String end1Name = "previous";
+		org.eclipse.uml2.uml.AggregationKind agg1 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		int end1Lower = 0;
+		int end1Upper = 1;
+		
+		boolean end2IsNavigable = true;
+		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		String end2Name = "next";
+		int end2Lower = 0;
+		int end2Upper = -1;
+		
+		org.eclipse.uml2.uml.Association worldAccessibility = umlWorld.createAssociation(
+			end1IsNavigable, agg1, end1Name, end1Lower, end1Upper, (org.eclipse.uml2.uml.Type)umlWorld,
+			end2IsNavigable, agg2, end2Name, end2Lower, end2Upper
+		);
+		
+		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)umlWorld.getOwner();
+		umlRoot.getPackagedElements().add(worldAccessibility);
+		
+		outln(worldAccessibility);
+	}
+	
+	// ===================================================
+	// ===================================================
+
+	@Deprecated
 	public org.eclipse.uml2.uml.Class createWorldHierarchy(org.eclipse.uml2.uml.Package umlRoot)
 	{
 		org.eclipse.uml2.uml.Class umlWorld = umlRoot.createOwnedClass("World", false);
@@ -440,34 +540,6 @@ public class UMLTemporalGenerator {
         
 		return umlWorld;
 	}
-	
-	public void createWorldAccessibilityRelation (org.eclipse.uml2.uml.Class umlWorld)
-	{
-		boolean end1IsNavigable = true;
-		String end1Name = "previous";
-		org.eclipse.uml2.uml.AggregationKind agg1 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
-		int end1Lower = 0;
-		int end1Upper = 1;
-		
-		boolean end2IsNavigable = true;
-		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
-		String end2Name = "next";
-		int end2Lower = 0;
-		int end2Upper = -1;
-		
-		org.eclipse.uml2.uml.Association worldAccessibility = umlWorld.createAssociation(
-			end1IsNavigable, agg1, end1Name, end1Lower, end1Upper, (org.eclipse.uml2.uml.Type)umlWorld,
-			end2IsNavigable, agg2, end2Name, end2Lower, end2Upper
-		);
-		
-		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)umlWorld.getOwner();
-		umlRoot.getPackagedElements().add(worldAccessibility);
-		
-		outln(worldAccessibility);
-	}
-	
-	// ===================================================
-	// ===================================================
 	
 	@SuppressWarnings("unused")
 	@Deprecated
