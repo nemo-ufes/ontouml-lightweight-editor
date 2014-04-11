@@ -56,6 +56,10 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		
 		addSeparator();
 		
+		createPatternMenu();
+		
+		addSeparator();
+		
 		JMenu drawOrderMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.draworder.name"));
 		add(drawOrderMenu);
 		
@@ -116,6 +120,14 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 //		addSeparator();				
 //		changeMenu = new ClassStereotypeChangeMenu(editor.getDiagramManager());
 //		add(changeMenu);
+	}
+	
+	public void createPatternMenu()
+	{
+		JMenu applyPatternMenu = new JMenu("Apply Pattern");
+		add(applyPatternMenu);
+		
+		JMenuItem subkindItem = createMenuItem(applyPatternMenu,"pattern.subkind");		
 	}
 	
 	public void setNode (UmlNode node, DiagramEditor editor)
