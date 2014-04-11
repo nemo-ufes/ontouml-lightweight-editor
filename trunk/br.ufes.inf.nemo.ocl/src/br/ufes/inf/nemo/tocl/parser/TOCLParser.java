@@ -194,7 +194,22 @@ public class TOCLParser extends OCLParser{
     { 
     	return result.replaceAll("(?s)/\\*.*?\\*/","");    	
     }
-    	 
+    
+    public void checkInvalidOperationsAndNavigations(String result) throws ParserException
+    {
+    	if (result.contains("oclIsNew()")){
+    		throw new ParserException("Cannot find operation (oclIsNew()). Missing world parameter. ");
+    	}
+    	
+    	int match = countMatches("oclIsKindOf\\((_')*\\s*\\w+\\s*'*\\)", result);
+    	if(match>0) {
+    		throw new ParserException("Cannot find operation (oclIsKindOf(T)). Missing world parameter. ");
+    	}    	match = countMatches("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*\\)", result);
+    	if(match>0) {
+    		throw new ParserException("Cannot find operation (oclIsTypeOf(T)). Missing world parameter. ");    	
+    	}
+    }
+    
     public HashMap<String,Integer> processTemporalProperty(String result)
     {
     	int char_added=0;
@@ -233,7 +248,7 @@ public class TOCLParser extends OCLParser{
         return count;
     }
     
-    public String processTempKeyword(String result)
+    public String processTempKeyword(String result) throws ParserException
     {
     	Pattern p = Pattern.compile("\\W(temp|inv|derive)\\W*(\\s*\\w*\\s*):");
 		Matcher m = p.matcher(result);
@@ -266,6 +281,9 @@ public class TOCLParser extends OCLParser{
         		}else{
         			expression = right.substring(0,right.length());
         		}
+        		        		
+        		checkInvalidOperationsAndNavigations(expression);        		
+        		
         		HashMap<String,Integer>map = processTemporalProperty(expression);
 	        	for(String key: map.keySet()){	        		
 	        		expression = key;
@@ -299,7 +317,7 @@ public class TOCLParser extends OCLParser{
     	return indexes;
     }
     
-	private String processTemporalOCL(String oclTemporalContent)
+	private String processTemporalOCL(String oclTemporalContent) throws ParserException
     {
 		String result = new String();
 		result = oclTemporalContent;
@@ -307,15 +325,7 @@ public class TOCLParser extends OCLParser{
 		// remove comments...
 		result = processInLineComments(result);
 		result = processMultiLineComments(result);
-		
-		// remove world parameter and record it
-		Pattern p = Pattern.compile("oclIsKindOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
-		result = processObjectOperation(result, p);
-		
-		// remove world parameter and record it
-		p = Pattern.compile("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
-		result = processObjectOperation(result, p);
-				
+
     	// navigations such as endName[w]/attrName[w] will become endName(w)/attrName(w)
 	    result = result.replaceAll("\\[","(");
 	    result = result.replaceAll("\\]",")");
@@ -323,7 +333,15 @@ public class TOCLParser extends OCLParser{
 	    // record which constraints are temporal
 	    // process temporal properties
 	    result = processTempKeyword(result);
-    	
+	    
+		// remove world parameter and record it
+		Pattern p = Pattern.compile("oclIsKindOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
+		result = processObjectOperation(result, p);
+		
+		// remove world parameter and record it
+		p = Pattern.compile("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
+		result = processObjectOperation(result, p);
+		
 	    return result;
     }
 
@@ -339,17 +357,26 @@ public class TOCLParser extends OCLParser{
 			umlconstraintsList = myOCL.parse(document);
 		}catch(ParserException pe){
 			if (pe.getLocalizedMessage().contains("World")){
-				if(!pe.getLocalizedMessage().contains("oclIsKindOf") && !pe.getLocalizedMessage().contains("oclIsTypeOf") &&
+				if(!pe.getLocalizedMessage().contains("oclIsKindOf") && !pe.getLocalizedMessage().contains("oclIsTypeOf") &&				   
 				   !pe.getLocalizedMessage().contains("allIntances") && !pe.getLocalizedMessage().contains("existsIn") &&
 				   !pe.getLocalizedMessage().contains("next") && !pe.getLocalizedMessage().contains("previous") &&
 				   !pe.getLocalizedMessage().contains("allNext") && !pe.getLocalizedMessage().contains("allPrevious") &&
-				   !pe.getLocalizedMessage().contains("hasNext") && !pe.getLocalizedMessage().contains("hasPrevious"))
+				   !pe.getLocalizedMessage().contains("isTerminal") && !pe.getLocalizedMessage().contains("isOrigin") &&
+				   !pe.getLocalizedMessage().contains("hasNext") && !pe.getLocalizedMessage().contains("hasPrevious") &&
+				   !pe.getLocalizedMessage().contains("worlds") && !pe.getLocalizedMessage().contains("paths") &&
+				   !pe.getLocalizedMessage().contains("oclIsNew"))
 				{
 					String message = pe.getLocalizedMessage().replace("(World)","[World]");
 					message = message.replace("operation", "association end-point ");
 					throw new ParserException(message);
 				}					
-			}else{				
+			}if (pe.getLocalizedMessage().contains("operation") && !pe.getLocalizedMessage().contains("World")){
+				String message = pe.getLocalizedMessage().replace("()","");
+				message = message.replace("operation", "association end-point ");
+				message+=".\nMissing world argument using the syntax \"[ ]\"";
+				throw new ParserException(message);
+				
+			} else{				
 				throw new ParserException(pe.getLocalizedMessage());
 			}
 		}	
