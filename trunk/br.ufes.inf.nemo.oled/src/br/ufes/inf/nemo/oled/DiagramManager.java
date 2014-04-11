@@ -2251,13 +2251,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	public void patternCreationSubkind(double x, double y) {
-		Fix fix = PatternTool.createSubkindPattern(getCurrentProject().getModel(),x,y);
+		Fix fix = PatternTool.createSubkindPattern(frame, getCurrentProject(),x,y);
 		if(fix!=null)
 			updateOLED(fix);
 	}
 
 	public void patternCreationRelator(double x, double y) {
-		Fix fix = PatternTool.createRelatorPattern(getCurrentProject().getModel(),x,y);
+		Fix fix = PatternTool.createRelatorPattern(frame,getCurrentProject(),x,y);
 		if(fix!=null)
 			updateOLED(fix);		
 	}
@@ -2275,7 +2275,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	public void patternCreationPhasePartition(double x, double y) {
-		Fix fix = PatternTool.createPhasePartitionPattern(getCurrentProject().getModel(),x,y);
+		Fix fix = PatternTool.createPhasePartitionPattern(frame,getCurrentProject(),x,y);
 		if(fix!=null)
 			updateOLED(fix);
 	}

@@ -327,11 +327,13 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			
 			selectorMap.put("PATTERN_CREATION_ROLE", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.ROLEPATTERN));
-			
+						
 			selectorMap.put("CREATE_GEN_SET", new MethodCall(
 					DiagramEditor.class.getMethod("createGeneralizationSet")));
 			selectorMap.put("DELETE_GEN_SET", new MethodCall(
 					DiagramEditor.class.getMethod("deleteGeneralizationSet")));
+			
+			
 
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();

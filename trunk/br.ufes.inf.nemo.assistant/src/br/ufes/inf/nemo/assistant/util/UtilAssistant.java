@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.assistant.util;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Set;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import RefOntoUML.Category;
@@ -45,7 +46,7 @@ public class UtilAssistant {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Print all RefOntoUML structure
 	 * */
@@ -53,7 +54,7 @@ public class UtilAssistant {
 		OntoUMLParser parser = new OntoUMLParser(root);
 		System.out.println(parser.toString());
 	}
-	
+
 	/**
 	 * Return a String with the Class
 	 * e.g.: From Kind Person, returns "Person"
@@ -74,6 +75,30 @@ public class UtilAssistant {
 			s[i] = getStringRepresentationClass(cls);
 		}
 		return s;
+	}
+
+	/**
+	 * Return a String[] with the Class and its Stereotype of each Classifier in the
+	 * ArrayList
+	 * e.g.: From {"Kind Person", "Collective Students"} returns ["Kind Person", "Collective Students"]
+	 * */
+	public static String[] getStringRepresentationClassStereotype(Set<? extends Classifier> set){
+		String[] s = new String[set.size()];
+		int i = 0;
+		for (Classifier cls : set) {
+			s[i] = getStringRepresentationStereotype(cls) +" - "+ getStringRepresentationClass(cls);
+			i++;
+		}
+		return s;
+	}
+
+	/**
+	 * Return a String[] with the Class and its Stereotype of each Classifier in the
+	 * ArrayList
+	 * e.g.: From "Collective Students" returns "Collective Students"
+	 * */
+	public static String getStringRepresentationClassStereotype(Classifier cls){
+		return  getStringRepresentationStereotype(cls) +" - "+ getStringRepresentationClass(cls);
 	}
 
 	/**
