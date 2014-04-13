@@ -127,6 +127,16 @@ public class TOCLCompletionProvider {
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
+		
+		description = "Operation <b>World::allNext(w: World) : Set(World)</b><br><br>"+
+		"Returns all the worlds after the world self until w";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"allNext(w)","allNext(w)",
+			"allNext(${world})${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
 				
 		description = "Operation <b>World::allPrevious() : Set(World)</b><br><br>"+
 		"Returns all the worlds before the world self.";
@@ -137,7 +147,17 @@ public class TOCLCompletionProvider {
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
-				
+
+		description = "Operation <b>World::allPrevious(w: World) : Set(World)</b><br><br>"+
+		"Returns all the worlds before the world self until w";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"allPrevious(w)","allPrevious(w)",
+			"allPrevious(${world})${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+		
 		description = "Operation <b>World::hasPrevious() : Boolean</b><br><br>"+
 		"Evaluates to true if the world self has an immediate previous world.";
 		

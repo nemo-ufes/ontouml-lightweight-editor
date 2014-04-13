@@ -223,6 +223,16 @@ public class UMLTemporalGenerator {
 		
 		outln(directPreviousOp);
 		
+		EList<String> parameters = new BasicEList<String>();
+		parameters.add("w");		
+		EList<org.eclipse.uml2.uml.Type> typeParameters = new BasicEList<org.eclipse.uml2.uml.Type>();
+		typeParameters.add(umlWorld);
+		
+		org.eclipse.uml2.uml.Operation untilpreviousOp = umlWorld.createOwnedOperation("allPrevious", parameters, typeParameters, umlWorld);
+		untilpreviousOp.setLower(0);
+		untilpreviousOp.setUpper(-1);		
+		outln(untilpreviousOp);
+				
 		org.eclipse.uml2.uml.Operation nextOp = umlWorld.createOwnedOperation("next", null, null, umlWorld);
 		nextOp.setLower(0);
 		nextOp.setUpper(-1);
@@ -234,6 +244,11 @@ public class UMLTemporalGenerator {
 		directNextOp.setUpper(-1);
 		
 		outln(directNextOp);
+		
+		org.eclipse.uml2.uml.Operation untilnextOp = umlWorld.createOwnedOperation("allNext", parameters, typeParameters, umlWorld);
+		untilnextOp.setLower(0);
+		untilnextOp.setUpper(-1);		
+		outln(untilnextOp);
 		
 		org.eclipse.uml2.uml.PrimitiveType pt = getPrimitiveBooleanType();
 		

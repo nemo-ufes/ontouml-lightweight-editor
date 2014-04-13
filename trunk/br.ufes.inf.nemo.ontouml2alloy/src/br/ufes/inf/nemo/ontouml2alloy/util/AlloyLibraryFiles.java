@@ -74,6 +74,21 @@ public class AlloyLibraryFiles {
 			
 			"module world_structure[World]\n\n" +
 			
+			"-- Definition: Every Path is represented as a terminal World\n"+
+			"-- Returns all terminal Worlds (i.e. paths) of the structure\n"+
+			"fun Path : set World {  World.next - (World.next & next.World) }\n\n"+
+			
+			"-- Returns the Paths (i.e., terminal worlds) in which a particular World is at\n"+
+			"fun Path [w: World] : set World { w.(^next) & Path }\n\n"+		
+
+			"-- Returns all the next worlds from self until w2\n"+
+			"fun allNext [w1, w2: World] : set World {\n"+ 
+			"w2 in w1.(^next) implies ((^next).w2 - (^next).w1 - w1) else none }\n\n"+
+
+			"-- Returns all the previous worlds from self until w2\n"+
+			"fun allPrevious [w1, w2: World] : set World {\n"+ 
+			"w2 in (^next).w1 implies ((^next).w1 - (^next).w2 - w2) else none }\n\n"+
+
 			"some abstract sig TemporalWorld extends World{\n" +
 			"\tnext: set TemporalWorld -- Immediate next moments.\n" +
 			"}{\n" +
