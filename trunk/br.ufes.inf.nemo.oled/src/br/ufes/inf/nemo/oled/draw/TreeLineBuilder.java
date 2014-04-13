@@ -83,7 +83,7 @@ public class TreeLineBuilder extends RectilinearLineBuilder {
 	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY1()));
 	    	  return points;	    	  
 	      }
-	      default: {
+	      default: {	    	  
 	    	  return super.calculateLineSegments(node1, node2);	    	  
 	      }
 	    }		

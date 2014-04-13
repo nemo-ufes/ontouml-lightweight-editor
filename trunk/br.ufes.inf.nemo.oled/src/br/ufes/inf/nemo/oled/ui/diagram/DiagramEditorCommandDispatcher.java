@@ -234,8 +234,11 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("DIRECT_TO_RECT", new MethodCall(
 					DiagramEditor.class.getMethod("toRectilinear")));
 
-			selectorMap.put("TREE_STYLE", new MethodCall(
-					DiagramEditor.class.getMethod("toTreeStyle")));
+			selectorMap.put("TREE_STYLE_VERTICAL", new MethodCall(
+					DiagramEditor.class.getMethod("toTreeStyleVertical")));
+			
+			selectorMap.put("TREE_STYLE_HORIZONTAL", new MethodCall(
+					DiagramEditor.class.getMethod("toTreeStyleHorizontal")));
 			
 			selectorMap.put("NAVIGABLE_TO_SOURCE", new MethodCall(
 					DiagramEditor.class.getMethod("setNavigability", RelationEndType.class),

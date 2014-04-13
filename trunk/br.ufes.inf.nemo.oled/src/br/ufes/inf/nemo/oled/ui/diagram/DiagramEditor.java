@@ -968,8 +968,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			execute(new ConvertConnectionTypeCommand(this, connection, new RectilinearConnection()));
 		} else if (style == LineStyle.DIRECT) {
 			execute(new ConvertConnectionTypeCommand(this, connection, new SimpleConnection()));
-		} else if (style == LineStyle.TREESTYLE) {
-			execute(new ConvertConnectionTypeCommand(this, connection, new TreeConnection()));
+		} else if (style == LineStyle.TREESTYLE_VERTICAL) {
+			execute(new ConvertConnectionTypeCommand(this, connection, new TreeConnection(true)));
+		} else if (style == LineStyle.TREESTYLE_HORIZONTAL) {
+			execute(new ConvertConnectionTypeCommand(this, connection, new TreeConnection(false)));
 		}
 	}
 
@@ -986,13 +988,26 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 	}
 
-	/** Switches a direct connection into a rectilinear one. */
-	public void toTreeStyle() 
+	/** Switches a direct connection into a tree vertical one. */
+	public void toTreeStyleVertical() 
 	{
 		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
 		{
 			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
-			execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection()));
+			execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection(true)));
+			
+			// we can only tell the selection handler to forget about the selection
+			selectionHandler.deselectAll();			
+		}
+	}
+	
+	/** Switches a direct connection into a tree horizontal one. */
+	public void toTreeStyleHorizontal() 
+	{
+		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
+		{
+			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
+			execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection(false)));
 			
 			// we can only tell the selection handler to forget about the selection
 			selectionHandler.deselectAll();			

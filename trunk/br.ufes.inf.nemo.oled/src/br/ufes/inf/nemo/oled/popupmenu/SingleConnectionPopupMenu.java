@@ -47,7 +47,8 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	final JMenuItem showMultiplicitiesItem;
 	final JMenuItem showStereotypeItem;
 	final JMenuItem rectMenuItem;
-	final JMenuItem treeStyleMenuItem;
+	final JMenuItem treeStyleVerticalMenuItem;
+	final JMenuItem treeStyleHorizontalMenuItem;
 	final JMenuItem readToSourceItem;
 	final JMenuItem readToDestinationItem;
 	final JMenuItem readNoIndicatorItem;
@@ -101,7 +102,8 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		createMenuItem(this, "resetpoints");
 		createMenuItem(this, "recttodirect");
 		rectMenuItem = createMenuItem(this, "directtorect");
-		treeStyleMenuItem = createMenuItem(this, "treestyle");
+		treeStyleVerticalMenuItem = createMenuItem(this, "treestyle.vertical");
+		treeStyleHorizontalMenuItem = createMenuItem(this, "treestyle.horizontal");
 		
 		addSeparator();
 		
