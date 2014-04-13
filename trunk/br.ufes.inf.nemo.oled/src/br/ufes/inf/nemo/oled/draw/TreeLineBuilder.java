@@ -88,4 +88,69 @@ public class TreeLineBuilder extends RectilinearLineBuilder {
 	      }
 	    }		
 	}
+	
+	public List<Point2D> calculateHorizontalLineSegments(Node node1, Node node2) 
+	{		
+	    NodeDirection direction = getNodeDirection(node1, node2);
+	    switch (direction) {
+	      case WEST_EAST: {
+	        return super.createHorizontalLineSegment(node1, node2, true);
+	      }
+	      case EAST_WEST: {
+	        return super.createHorizontalLineSegment(node1, node2, false);
+	      }
+	      case NORTH_SOUTH: {
+	    	  ArrayList<Point2D> points = new ArrayList<Point2D>();
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY2()));
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node2.getAbsoluteY1()-30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY1()-30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY1()));
+	    	  return points;
+	      }
+	      case SOUTH_NORTH: {
+	    	  ArrayList<Point2D> points = new ArrayList<Point2D>();
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY1()));
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node2.getAbsoluteY2()+30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY2()+30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY2()));
+	    	  return points;	        
+	      }
+	      case SE_NW: {	    	  
+	    	  ArrayList<Point2D> points = new ArrayList<Point2D>();
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY1()));
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node2.getAbsoluteY2()+30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY2()+30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY2()));
+	    	  return points;
+	      }
+	      case SW_NE: {	    	  
+	    	  ArrayList<Point2D> points = new ArrayList<Point2D>();
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY1()));
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node2.getAbsoluteY2()+30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY2()+30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY2()));
+	    	  return points;
+	      }
+	      case NW_SE:{	    	  
+	    	  ArrayList<Point2D> points = new ArrayList<Point2D>();
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY2()));
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node2.getAbsoluteY1()-30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY1()-30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY1()));
+	    	  return points;	    	  
+	      }
+	      case NE_SW:{	    	  
+	    	  ArrayList<Point2D> points = new ArrayList<Point2D>();
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY2()));
+	    	  points.add(new Point2D.Double(node1.getAbsCenterX(),node2.getAbsoluteY1()-30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY1()-30));
+	    	  points.add(new Point2D.Double(node2.getAbsCenterX(),node2.getAbsoluteY1()));
+	    	  return points;	    	  
+	      }
+	      default: {	    	  
+	    	  return super.calculateLineSegments(node1, node2);	    	  
+	      }
+	    }		
+	}
+
 }

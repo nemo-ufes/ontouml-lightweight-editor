@@ -28,10 +28,14 @@ public class TreeConnection extends RectilinearConnection {
 	public void copyData(Connection conn) 
 	{
 		super.copyData(conn);
-		if ((conn.getNode1()!=null) && (conn.getNode2()!=null))
-			setPoints(TreeLineBuilder.getInstance().calculateLineSegments(getNode1(), getNode2()));
-		if ((conn.getNode1()==null) && (conn.getNode2()!=null))
-			setPoints(TreeLineBuilder.getInstance().calculateLineSegments(getConnection1(), getNode2()));		
+		if ((conn.getNode1()!=null) && (conn.getNode2()!=null)){
+			if (vertical) setPoints(TreeLineBuilder.getInstance().calculateLineSegments(getNode1(), getNode2()));
+			else setPoints(TreeLineBuilder.getInstance().calculateHorizontalLineSegments(getNode1(), getNode2()));
+		}
+		if ((conn.getNode1()==null) && (conn.getNode2()!=null)){
+			if (vertical) setPoints(TreeLineBuilder.getInstance().calculateLineSegments(getConnection1(), getNode2()));
+			//else setPoints(TreeLineBuilder.getInstance().calculateHorizontalLineSegments(getConnection1(), getNode2()));
+		}
 	}
 	
 	@Override
@@ -41,10 +45,14 @@ public class TreeConnection extends RectilinearConnection {
 		{
 			// If there are at most three connection points, simply recalculate the
 			// connection between the two nodes completely
-			if(getNode1()!=null && getNode2()!=null)
-				setPoints(TreeLineBuilder.getInstance().calculateLineSegments(getNode1(), getNode2()));
-			else if (getNode1()==null && getNode2()!=null)
-				setPoints(TreeLineBuilder.getInstance().calculateLineSegments(getConnection1(), getNode2()));			
+			if(getNode1()!=null && getNode2()!=null){
+				if (vertical) setPoints(TreeLineBuilder.getInstance().calculateLineSegments(getNode1(), getNode2()));
+				else setPoints(TreeLineBuilder.getInstance().calculateHorizontalLineSegments(getNode1(), getNode2()));
+			}
+			else if (getNode1()==null && getNode2()!=null){
+				if (vertical) setPoints(TreeLineBuilder.getInstance().calculateLineSegments(getConnection1(), getNode2()));
+				//else setPoints(TreeLineBuilder.getInstance().calculateHorizontalLineSegments(getConnection1(), getNode2()));
+			}
 		} else {
 			if(getNode1()!=null && getNode2()!=null){
 				reattachConnectionPoint(getNode1(), node1ConnectPoint, 0, 1);
