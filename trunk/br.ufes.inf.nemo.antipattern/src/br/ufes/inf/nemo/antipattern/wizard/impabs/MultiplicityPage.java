@@ -62,7 +62,7 @@ public class MultiplicityPage extends ImpAbsPage<MultiplicityTableBuilder> {
 			contextualizationContent += exampleLine(sourceChildren.get(sourceIndexes[1]),targetChildren.get(targetIndexes[1]));
 		}
 			
-		contextualizationContent += "\n\nIf there any restrictions regarding the number of subtypes of <"+occurrence.getTarget().getName()+"> (minimum or maximum)  " +
+		contextualizationContent += "\n\nIf there are any restrictions regarding the number of subtypes of <"+occurrence.getTarget().getName()+"> (minimum or maximum)  " +
 									"an instance of <"+occurrence.getSource().getName()+"> (or any of its subtypes) must be related, or vice versa, select them below.";
 		
 		contextualizationText = new StyledText(container, SWT.WRAP );

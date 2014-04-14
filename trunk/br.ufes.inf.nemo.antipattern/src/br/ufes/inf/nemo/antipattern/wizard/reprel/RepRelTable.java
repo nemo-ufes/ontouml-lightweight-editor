@@ -104,8 +104,8 @@ public class RepRelTable {
 	
 	private ArrayList<Mediation> getSelected(TableItem ti){
 		ArrayList<Mediation> line = new ArrayList<Mediation>();		
-		for (Integer i = 0; i < mediations.size(); i++) {
-			Button checkBox = (Button) ti.getData(i.toString());
+		for (Integer i = 0; i < mediations.size(); i++) {			
+			Button checkBox = (Button) ti.getData(i.toString());			
 			if (checkBox.getSelection())
 				line.add(mediations.get(i));
 		}
