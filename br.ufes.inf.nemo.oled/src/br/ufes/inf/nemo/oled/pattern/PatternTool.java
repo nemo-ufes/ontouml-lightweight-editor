@@ -68,19 +68,20 @@ public class PatternTool {
 	}
 
 	public static Fix createRelatorPattern(JFrame frame, UmlProject project, double x, double y) {
-		OntoUMLParser parser = ProjectBrowser.getParserFor(project);
-
-		Set<RigidSortalClass> rigids = parser.getAllInstances(RefOntoUML.RigidSortalClass.class);
-		Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
-		Set<Relator> relators = parser.getAllInstances(RefOntoUML.Relator.class);
-
-		RelatorCreation relatorCreation = new RelatorCreation(UtilAssistant.getStringRepresentationClassStereotype(rigids), UtilAssistant.getStringRepresentationClassStereotype(roles), UtilAssistant.getStringRepresentationClassStereotype(relators));
-		ImagePanel imagePanel = new ImagePanel(PatternType.RelatorCreation);
-
-		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame,parser, x, y, relatorCreation, imagePanel);
-		window.setVisible(true);
-		window.setLocationRelativeTo(frame);
-		return window.getFix();
+//		OntoUMLParser parser = ProjectBrowser.getParserFor(project);
+//
+//		Set<RigidSortalClass> rigids = parser.getAllInstances(RefOntoUML.RigidSortalClass.class);
+//		Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
+//		Set<Relator> relators = parser.getAllInstances(RefOntoUML.Relator.class);
+//
+//		RelatorCreation relatorCreation = new RelatorCreation(UtilAssistant.getStringRepresentationClassStereotype(rigids), UtilAssistant.getStringRepresentationClassStereotype(roles), UtilAssistant.getStringRepresentationClassStereotype(relators));
+//		ImagePanel imagePanel = new ImagePanel(PatternType.RelatorCreation);
+//
+//		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame,parser, x, y, relatorCreation, imagePanel);
+//		window.setVisible(true);
+//		window.setLocationRelativeTo(frame);
+//		return window.getFix();
+		return new Fix();
 	}
 
 	public static Fix createRolePattern(Package root, double x, double y) {
