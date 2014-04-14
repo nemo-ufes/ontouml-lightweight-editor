@@ -156,17 +156,6 @@ public class HetCollSecondPage extends HetCollPage {
 	{
 		if(getYesList().size()>0){
 			ArrayList<Association> assocList = new ArrayList<Association>();
-			for(Property p: getYesList()) { if (p!=null) assocList.add(p.getAssociation()); }		
-			if(assocList.size()>0){
-				//Action =============================
-				HetCollAction newAction = new HetCollAction(hetColl);
-				newAction.setChangeAllToCollectionAndSubCollectionOf(assocList); 
-				getHetCollWizard().replaceAction(0,newAction);	
-				//======================================
-			}
-		}
-		if(getNoList().size()>0){
-			ArrayList<Association> assocList = new ArrayList<Association>();
 			for(Property p: getNoList()) { if (p!=null) assocList.add(p.getAssociation()); }
 			if(assocList.size()>=2){
 				//Action =============================
@@ -175,7 +164,18 @@ public class HetCollSecondPage extends HetCollPage {
 				if (getYesList().size()>0) getHetCollWizard().replaceAction(1,newAction);
 				else getHetCollWizard().replaceAction(0,newAction);
 				//======================================
-			}			
+			}
+		}
+		if(getNoList().size()>0){
+			ArrayList<Association> assocList = new ArrayList<Association>();
+			for(Property p: getYesList()) { if (p!=null) assocList.add(p.getAssociation()); }		
+			if(assocList.size()>0){
+				//Action =============================
+				HetCollAction newAction = new HetCollAction(hetColl);
+				newAction.setChangeAllToCollectionAndSubCollectionOf(assocList); 
+				getHetCollWizard().replaceAction(0,newAction);	
+				//======================================
+			}						
 		}
 		return ((AntipatternWizard)getWizard()).getFinishing();		
 	}	
