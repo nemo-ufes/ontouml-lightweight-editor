@@ -45,11 +45,11 @@ public class RelRigSecondPage extends RelRigPage {
 
 		setControl(container);
 		
-		StyledText styledText = new StyledText(container, SWT.WRAP);
+		StyledText styledText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL);
 		styledText.setEditable(false);
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setText("Is it always necessary for an instance of "+rigidType.getName()+" to be connected to an instance of "+relRig.getRelator().getName()+"?");
-		styledText.setBounds(10, 10, 554, 15);
+		styledText.setBounds(10, 10, 554, 71);
 		
 		SelectionAdapter listener = new SelectionAdapter() {
 		      public void widgetSelected(SelectionEvent e) {
@@ -59,12 +59,12 @@ public class RelRigSecondPage extends RelRigPage {
 		
 		btnYes = new Button(container, SWT.RADIO);
 		btnYes.setText("Yes");
-		btnYes.setBounds(10, 31, 90, 16);
+		btnYes.setBounds(10, 87, 554, 16);
 		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(container, SWT.RADIO);
 		btnNo.setText("No");
-		btnNo.setBounds(10, 55, 90, 16);
+		btnNo.setBounds(10, 111, 554, 16);
 		btnNo.addSelectionListener(listener);
 	}	
 	

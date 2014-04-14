@@ -45,12 +45,12 @@ public class RelRigFirstPage extends RelRigPage {
 
 		setControl(container);
 		
-		StyledText styledText = new StyledText(container, SWT.WRAP);
+		StyledText styledText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL);
 		styledText.setMarginColor(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setText("Is it possible for an object that isn’t a "+rigidType.getName()+" to become one or an object that is an instance of "+rigidType.getName()+" cease to be it and still exist?");
 		styledText.setEditable(false);
-		styledText.setBounds(10, 10, 554, 38);
+		styledText.setBounds(10, 10, 554, 58);
 		
 		SelectionAdapter listener = new SelectionAdapter() {
 		      public void widgetSelected(SelectionEvent e) {
@@ -59,12 +59,12 @@ public class RelRigFirstPage extends RelRigPage {
 		    };
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 54, 90, 16);
+		btnYes.setBounds(10, 74, 554, 16);
 		btnYes.setText("Yes");
 		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 78, 90, 16);
+		btnNo.setBounds(10, 98, 554, 16);
 		btnNo.setText("No");
 		btnYes.addSelectionListener(listener);
 
