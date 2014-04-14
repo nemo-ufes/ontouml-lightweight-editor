@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -32,11 +33,30 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	private JMenuItem exclusionItem;
 	@SuppressWarnings("unused")
 	private JMenuItem deleteItem;
+	@SuppressWarnings("unused")
+	private JMenuItem rectMenuItem;
+	@SuppressWarnings("unused")
+	private JMenuItem treeStyleVerticalMenuItem;
+	@SuppressWarnings("unused")
+	private JMenuItem treeStyleHorizontalMenuItem;
+	@SuppressWarnings("unused")
+	private JMenuItem directMenuItem;
+	@SuppressWarnings("unused")
+	private JMenuItem resetMenuItem;
+	private JMenu lineStyleItem;
 	
 	public MultiSelectionPopupMenu()
 	{			
 		createGenSetItem = createMenuItem(this, "creategenset");
 		deleteGenSetItem = createMenuItem(this, "deletegenset");
+				
+		resetMenuItem = createMenuItem(this, "resetpoints");
+		lineStyleItem = new JMenu("Line Style");
+		add(lineStyleItem);
+		directMenuItem = createMenuItem(lineStyleItem, "recttodirect");
+		rectMenuItem = createMenuItem(lineStyleItem, "directtorect");
+		treeStyleVerticalMenuItem = createMenuItem(lineStyleItem, "treestyle.vertical");
+		treeStyleHorizontalMenuItem = createMenuItem(lineStyleItem, "treestyle.horizontal");
 		
 		unionItem = createMenuItem(this, "derivedunion");
 		exclusionItem = createMenuItem(this, "derivedexclusion");

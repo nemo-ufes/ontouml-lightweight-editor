@@ -122,6 +122,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 //		add(changeMenu);
 	}
 	
+	@SuppressWarnings("unused")
 	public void createPatternMenu()
 	{
 		JMenu applyPatternMenu = new JMenu("Apply Pattern");

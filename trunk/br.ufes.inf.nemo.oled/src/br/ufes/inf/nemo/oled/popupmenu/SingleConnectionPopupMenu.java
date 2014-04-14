@@ -73,6 +73,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private JCheckBoxMenuItem immutablepart;
 	private JCheckBoxMenuItem shareable;
 	private JMenuItem findInProjectItem;
+	private JMenu lineStyleItem;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -100,10 +101,12 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		addSeparator();
 		
 		createMenuItem(this, "resetpoints");
-		createMenuItem(this, "recttodirect");
-		rectMenuItem = createMenuItem(this, "directtorect");
-		treeStyleVerticalMenuItem = createMenuItem(this, "treestyle.vertical");
-		treeStyleHorizontalMenuItem = createMenuItem(this, "treestyle.horizontal");
+		lineStyleItem = new JMenu("Line Style");
+		add(lineStyleItem);
+		createMenuItem(lineStyleItem, "recttodirect");
+		rectMenuItem = createMenuItem(lineStyleItem, "directtorect");
+		treeStyleVerticalMenuItem = createMenuItem(lineStyleItem, "treestyle.vertical");
+		treeStyleHorizontalMenuItem = createMenuItem(lineStyleItem, "treestyle.horizontal");
 		
 		addSeparator();
 		
