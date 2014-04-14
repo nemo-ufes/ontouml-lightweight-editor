@@ -27,6 +27,7 @@ import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Selection;
+import br.ufes.inf.nemo.oled.popupmenu.DiagramPopupMenu;
 import br.ufes.inf.nemo.oled.popupmenu.MultiSelectionPopupMenu;
 import br.ufes.inf.nemo.oled.popupmenu.SingleConnectionPopupMenu;
 import br.ufes.inf.nemo.oled.popupmenu.SingleNodePopupMenu;
@@ -47,6 +48,8 @@ public class ContextMenusBuilder {
 	private SingleNodePopupMenu singleNodePopup;	
 	private SingleConnectionPopupMenu singleConnectionPopup;	
 	private MultiSelectionPopupMenu multiSelectinoPopup;
+	@SuppressWarnings("unused")
+	private DiagramPopupMenu diagramPopup;
 	
 	public ContextMenusBuilder(DiagramEditor editor)
 	{
@@ -54,6 +57,7 @@ public class ContextMenusBuilder {
 		singleNodePopup = new SingleNodePopupMenu();
 		singleConnectionPopup = new SingleConnectionPopupMenu();		
 		multiSelectinoPopup = new MultiSelectionPopupMenu();
+		diagramPopup = new DiagramPopupMenu(editor);
 	}
 	
 	/**

@@ -439,6 +439,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 				metaPropertiesMenu.setVisible(false);
 			}
 		}
+		if(con instanceof GeneralizationElement) metaPropertiesMenu.setVisible(false);
 		rectMenuItem.setEnabled(true);
 		
 		if((con.getConnection1()!=null || con.getConnection2()!=null))
