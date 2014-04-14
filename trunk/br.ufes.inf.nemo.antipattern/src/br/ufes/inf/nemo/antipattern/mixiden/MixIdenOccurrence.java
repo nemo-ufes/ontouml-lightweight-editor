@@ -30,6 +30,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 public class MixIdenOccurrence extends AntipatternOccurrence {
 	
 	MixinClass mixin;
+	String shortName = new String();	
 	ArrayList<Classifier> subtypes;
 	Classifier identityProvider;
 	private boolean hasRigid;
@@ -46,6 +47,7 @@ public class MixIdenOccurrence extends AntipatternOccurrence {
 			throw new NullPointerException("MixIden: mixin must be an instance of Mixin.");
 		
 		this.mixin = mixin;
+		this.shortName = parser.getStringRepresentation(mixin);
 		
 		this.subtypes = new ArrayList<Classifier>();
 		this.subtypes.addAll(mixin.children());
@@ -132,7 +134,7 @@ public class MixIdenOccurrence extends AntipatternOccurrence {
 
 	@Override
 	public String getShortName() {
-		return parser.getStringRepresentation(mixin);
+		return shortName;
 	}
 	
 	public void changeMixinStereotype(){
