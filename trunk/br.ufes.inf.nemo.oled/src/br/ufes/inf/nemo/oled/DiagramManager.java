@@ -2263,20 +2263,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	public void patternCreationRole(double x, double y) {
-		Fix fix = PatternTool.createRolePattern(getCurrentProject().getModel(),x,y);
-		if(fix!=null)
-			updateOLED(fix);
+//		Fix fix = PatternTool.createRolePattern(getCurrentProject().getModel(),x,y);
+//		if(fix!=null)
+//			updateOLED(fix);
 	}
 	
 	public void patternCreationSubkindPartition(double x, double y) {
-		Fix fix = PatternTool.createSubkindPartitionPattern(getCurrentProject().getModel(),x,y);
-		if(fix!=null)
-			updateOLED(fix);
+//		Fix fix = PatternTool.createSubkindPartitionPattern(getCurrentProject().getModel(),x,y);
+//		if(fix!=null)
+//			updateOLED(fix);
 	}
 	
 	public void patternCreationPhasePartition(double x, double y) {
-		Fix fix = PatternTool.createPhasePartitionPattern(frame,getCurrentProject(),x,y);
-		if(fix!=null)
-			updateOLED(fix);
+//		Fix fix = PatternTool.createPhasePartitionPattern(frame,getCurrentProject(),x,y);
+//		if(fix!=null)
+//			updateOLED(fix);
 	}
 }
