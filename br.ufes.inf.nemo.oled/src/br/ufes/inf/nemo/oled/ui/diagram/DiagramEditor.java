@@ -372,7 +372,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/** Open Diagram PopupMenu */
 	public void openDiagramPopupMenu(MouseEvent e)
 	{
-		DiagramPopupMenu popup = new DiagramPopupMenu(frame);
+		DiagramPopupMenu popup = new DiagramPopupMenu(frame.getDiagramManager().getCurrentDiagramEditor());
 		popup.show(e.getComponent(),e.getX(),e.getY());
 	}
 	
