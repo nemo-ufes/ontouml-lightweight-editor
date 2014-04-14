@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.relrig;
 
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.widgets.Composite;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
@@ -22,13 +23,20 @@ public abstract class RelRigPage extends WizardPage {
 			super("RelRigPage");				
 			
 			this.relRig = relRig;
-			this.rigid = rigid;		
-			this.rigidEnd = relRig.getRigidMediatedProperties().get(rigid);
-			this.rigidType = (Classifier) rigidEnd.getType();
+			this.rigid = rigid;	
+			if(relRig!=null){
+				this.rigidEnd = relRig.getRigidMediatedProperties().get(rigid);
+				this.rigidType = (Classifier) rigidEnd.getType();
+			}
 			setTitle(RelRigAntipattern.getAntipatternInfo().getName());		
 		}
 		
 		public RelRigWizard getRelRigWizard(){
 			return (RelRigWizard)getWizard();
+		}
+		
+		@Override
+		public void createControl(Composite arg0) {
+			
 		}
 	}

@@ -460,7 +460,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 			if(property.getType()==null || property.getType().getName()==null || property.getType().getName().trim().isEmpty())
 				property.setName("property");
 			else
-				property.setName(property.getType().toString().trim().toLowerCase());
+				property.setName(property.getType().getName().trim().toLowerCase());
 		}
 	}
 	

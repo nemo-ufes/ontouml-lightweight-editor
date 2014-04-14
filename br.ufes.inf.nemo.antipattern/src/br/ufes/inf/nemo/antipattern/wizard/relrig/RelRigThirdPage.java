@@ -44,11 +44,11 @@ public class RelRigThirdPage extends RelRigPage {
 
 		setControl(container);
 		
-		StyledText styledText = new StyledText(container, SWT.WRAP);
+		StyledText styledText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL);
 		styledText.setEditable(false);
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setText("Is it possible for an instance of "+rigidType.getName()+" to change the instances of "+relRig.getRelator().getName()+" it is connected to?");
-		styledText.setBounds(10, 10, 554, 15);
+		styledText.setBounds(10, 10, 554, 56);
 		
 		SelectionAdapter listener = new SelectionAdapter() {
 		      public void widgetSelected(SelectionEvent e) {
@@ -58,12 +58,12 @@ public class RelRigThirdPage extends RelRigPage {
 		
 		btnYes = new Button(container, SWT.RADIO);
 		btnYes.setText("Yes");
-		btnYes.setBounds(10, 31, 90, 16);
+		btnYes.setBounds(10, 72, 90, 16);
 		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(container, SWT.RADIO);
 		btnNo.setText("No");
-		btnNo.setBounds(10, 55, 90, 16);
+		btnNo.setBounds(10, 96, 90, 16);
 		btnNo.addSelectionListener(listener);
 	}
 	
