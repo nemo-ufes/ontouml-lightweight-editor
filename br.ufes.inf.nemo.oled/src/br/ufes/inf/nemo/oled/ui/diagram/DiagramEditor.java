@@ -952,14 +952,15 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/** Switches a rectilinear connection to a direct one. */
 	public void toDirect() 
 	{
-		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
+		for(DiagramElement dElem: getSelectedElements())
 		{
-			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
-			execute(new ConvertConnectionTypeCommand(this, conn, new SimpleConnection()));
-			
-			// we can only tell the selection handler to forget about the selection
-			selectionHandler.deselectAll();
-		}
+			if(dElem instanceof UmlConnection){
+				UmlConnection conn = (UmlConnection) dElem;
+				execute(new ConvertConnectionTypeCommand(this, conn, new SimpleConnection()));
+			}
+		}		
+		// we can only tell the selection handler to forget about the selection
+		selectionHandler.deselectAll();		
 	}
 	
 	public void setLineStyle(UmlConnection connection, LineStyle style)
@@ -978,40 +979,43 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/** Switches a direct connection into a rectilinear one. */
 	public void toRectilinear() 
 	{
-		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
+		for(DiagramElement dElem: getSelectedElements())
 		{
-			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
-			execute(new ConvertConnectionTypeCommand(this, conn, new RectilinearConnection()));
-			
-			// we can only tell the selection handler to forget about the selection
-			selectionHandler.deselectAll();			
-		}
+			if(dElem instanceof UmlConnection){
+				UmlConnection conn = (UmlConnection) dElem;
+				execute(new ConvertConnectionTypeCommand(this, conn, new RectilinearConnection()));
+			}
+		}		
+		// we can only tell the selection handler to forget about the selection
+		selectionHandler.deselectAll();		
 	}
 
 	/** Switches a direct connection into a tree vertical one. */
 	public void toTreeStyleVertical() 
 	{
-		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
+		for(DiagramElement dElem: getSelectedElements())
 		{
-			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
-			execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection(true)));
-			
-			// we can only tell the selection handler to forget about the selection
-			selectionHandler.deselectAll();			
-		}
+			if(dElem instanceof UmlConnection){
+				UmlConnection conn = (UmlConnection) dElem;
+				execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection(true)));
+			}
+		}		
+		// we can only tell the selection handler to forget about the selection
+		selectionHandler.deselectAll();
 	}
 	
 	/** Switches a direct connection into a tree horizontal one. */
 	public void toTreeStyleHorizontal() 
 	{
-		if (getSelectedElements().size() > 0 &&	getSelectedElements().get(0) instanceof UmlConnection) 
+		for(DiagramElement dElem: getSelectedElements())
 		{
-			UmlConnection conn = (UmlConnection) getSelectedElements().get(0);
-			execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection(false)));
-			
-			// we can only tell the selection handler to forget about the selection
-			selectionHandler.deselectAll();			
-		}
+			if(dElem instanceof UmlConnection){
+				UmlConnection conn = (UmlConnection) dElem;
+				execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection(false)));
+			}
+		}		
+		// we can only tell the selection handler to forget about the selection
+		selectionHandler.deselectAll();		
 	}
 	
 	/**

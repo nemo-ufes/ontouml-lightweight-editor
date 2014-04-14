@@ -1,31 +1,19 @@
 package br.ufes.inf.nemo.oled.pattern;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import javax.swing.JFrame;
 
-import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.Package;
-import RefOntoUML.Property;
-import RefOntoUML.Relator;
-import RefOntoUML.RigidSortalClass;
-import RefOntoUML.Role;
-import RefOntoUML.SubKind;
-import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel;
 import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel.PatternType;
 import br.ufes.inf.nemo.assistant.pattern.window.PatternAbstractWindowAssistant;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.RelatorCreation;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.SubkindCreation;
-import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 
@@ -36,6 +24,7 @@ public class PatternTool {
 	private static final int horizontalDistance = 150;
 	private static final int verticalDistance = 330;
 
+	@SuppressWarnings("unused")
 	private static Classifier _general;
 
 	/**

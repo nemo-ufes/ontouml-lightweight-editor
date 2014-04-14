@@ -35,7 +35,7 @@ import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
 import br.ufes.inf.nemo.oled.draw.Label;
-import br.ufes.inf.nemo.oled.draw.RectilinearConnection;
+import br.ufes.inf.nemo.oled.draw.SimpleConnection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlLabelFormatter;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlModelElementLabelSource;
@@ -99,7 +99,7 @@ public final class GeneralizationElement extends BaseConnection {
 	 * Private constructor.
 	 */
 	private GeneralizationElement() {
-		setConnection(new RectilinearConnection());
+		setConnection(new SimpleConnection());
 		setIsDashed(false);
 		setupNameLabel();
 	}
