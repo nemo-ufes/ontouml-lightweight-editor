@@ -64,7 +64,7 @@ public class RelRigAction extends AntiPatternAction<RelRigOccurrence>{
 			result ="Create Class: Subtype of "+ap.getParser().getStringRepresentation(rigidType)+
 			   		"\nChange Association's Target End's Type: "+ap.getParser().getStringRepresentation(mediation);
 		else if(code==Action.BOTH_READ_ONLY)	
-			result = "Modify meta-property: isReadOnly=true for "+ap.getParser().getStringRepresentation(mediation);
+			result = "Modify meta-property isReadOnly to true for "+ap.getParser().getStringRepresentation(mediation)+" at the \""+mediation.getMemberEnd().get(0).getType().getName()+"\"'s side"; 
 		return result; 
 	}
 
