@@ -22,6 +22,7 @@ import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLClassAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
 import org.semanticweb.owlapi.model.SWRLRule;
+import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -72,7 +73,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		SWRLVariable contextVar = factory.getSWRLVariable(iri);
 		
 		//the bodyExpression is solved and the and the returned arguments from the bodyExpressionSolveMethod above are returned 
-		bodyExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, repeatNumber, leftSideOfImplies);
+		ArrayList<SWRLDArgument> retArgsX = bodyExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, repeatNumber, leftSideOfImplies);
 		
 		//verify if is the stereotype is a tag
 		Boolean isTag = Tag.isTag(ctStereotype);
@@ -110,7 +111,15 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			}else if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
 				//in the derivations case, the context is always considered the unique atom on the consequent
 				this.elementFactory = new PropertyCallExpImplFactory(m_NamedElementImpl, (Property) element);
-				this.elementFactory.solvePropertyAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, 1);
+				ArrayList<SWRLDArgument> retArgsY = this.elementFactory.solvePropertyAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, 1);
+				
+				if(retArgsX.size() > 0 && retArgsY.size() > 0){
+					SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);
+					SWRLDArgument varY = retArgsY.get(retArgsY.size()-1);
+					
+					SWRLSameIndividualAtom same = factory.getSWRLSameIndividualAtom((SWRLVariable)varX, (SWRLVariable)varY);
+					antecedent.add(same);
+				}				
 			}
 		}
 		
@@ -142,8 +151,6 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			throw new UnexpectedResultingRule(atoms, strRule);
 		}
 
-		
-		
 		String nonDeclVar = Factory.allConsequentVariablesExistsInAntecedent(antecedent, consequent);
 		if(!nonDeclVar.equals("")){
 			String strRule = Factory.getStrRule(this.m_NamedElementImpl);
