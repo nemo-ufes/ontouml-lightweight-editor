@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.antipattern.wizard.mixrig;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -232,7 +233,7 @@ public class AddSelectTypeComposite extends Composite {
 	}
 
 	private void setComboTypeItems(){
-		
+		ArrayList<String> list = new ArrayList<String>();
 		if(existingClassifiers==null)
 			existingClassifiers = new ArrayList<Classifier>();
 		
@@ -246,11 +247,13 @@ public class AddSelectTypeComposite extends Composite {
 				for (Object classifier : classifiers) {
 					if (classifier instanceof Classifier){
 						existingClassifiers.add((Classifier) classifier);
-						comboClassifier.add(((Classifier) classifier).getName());
+						list.add(((Classifier) classifier).getName());
 					}
 				}
 			}
 		}
+		Collections.sort(list);
+		for(String str: list) { comboClassifier.add(str); }
 	}
 	
 	private void setComboStereotype(){
