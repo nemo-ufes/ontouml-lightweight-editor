@@ -107,10 +107,7 @@ public class OCL2OWL_SWRL {
 	 */
 	@SuppressWarnings("unchecked")
 	public void Transformation () throws Exception{
-		//counters of successfully and unsuccessfully transformed rules 
-		int successfullyTransformedRules = 0;
-		int unsuccessfullyTransformedRules = 0;
-		
+		//String unsuccessfullyTransformedRules = "";
 		/*
 		OCLParser oclParser = null;
 		try {
@@ -160,7 +157,6 @@ public class OCL2OWL_SWRL {
 		Pattern p = Pattern.compile("(--@(.+)\n)?context");
     	Matcher m = p.matcher(oclRules);
     	
-    	StringBuffer sb = new StringBuffer();
     	while (m.find()){
 		//while(true){
 			//if doesn't exist more tags, the of block is setted as the end of the oclRules
@@ -267,15 +263,20 @@ public class OCL2OWL_SWRL {
 						this.errors += e.getMessage() + "\n";
 						//unsuccessfullyTransformedRules++;
 						this.logCounting.updateCounters(stereotype, false, e);
+						
+						//unsuccessfullyTransformedRules += strBlockOclConstraints;
+						//unsuccessfullyTransformedRules += "\n\n";
 					}
 				}
 				//System.out.println(this.errors);	
 			}
 		}
 		
+    	//this.errors += unsuccessfullyTransformedRules;
 		//String successMessage = "\n\n" + successfullyTransformedRules + " rule(s) successfully transformed.\n" + unsuccessfullyTransformedRules + " rule(s) unsuccessfully transformed.\n";
     	String successMessage = this.logCounting.getreturnMessage();
 		this.errors += successMessage;
+		
 	}
 	
 	/**
