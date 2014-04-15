@@ -18,7 +18,7 @@ public class UndefFormalRefactoringPage extends RefactoringPage {
 	public List list;
 	public SetUpperMultComposite setCardinalityComposite;	
 	public CreateMediatedComposite createMediatedComposite;
-	public CreateDataTypeComposite createDataTypeComposite;
+	public DataTypeComposite createDataTypeComposite;
 	
 	/**
 	 * Create the wizard.
@@ -97,7 +97,7 @@ public class UndefFormalRefactoringPage extends RefactoringPage {
 		createMediatedComposite = new CreateMediatedComposite(composite, SWT.BORDER);
 		createMediatedComposite.setBounds(10, 160, 554, 66);
 		
-		createDataTypeComposite = new CreateDataTypeComposite(composite, SWT.BORDER, (UndefFormalOccurrence) uf);
+		createDataTypeComposite = new DataTypeComposite(composite, SWT.BORDER, (UndefFormalOccurrence) uf);
 		createDataTypeComposite.setBounds(10, 232, 554, 287);
 		
 		setCardinalityComposite.enable(false);
@@ -142,7 +142,7 @@ public class UndefFormalRefactoringPage extends RefactoringPage {
 		if(list.getSelectionIndex()==4){
 			//Action =============================
 			UndefFormalAction newAction = new UndefFormalAction(uf);
-			newAction.setChangeToMaterial(uf.getFormal(),uf.getSource(),uf.getTarget());
+//			newAction.setChangeToMaterial(uf.getFormal(),uf.getSource(),uf.getTarget());
 			getUndefFormalWizard().replaceAction(0,newAction);	
 			//======================================
 		}

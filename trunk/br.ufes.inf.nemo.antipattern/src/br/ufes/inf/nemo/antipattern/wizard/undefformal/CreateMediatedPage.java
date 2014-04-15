@@ -2,11 +2,11 @@ package br.ufes.inf.nemo.antipattern.wizard.undefformal;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 
@@ -15,7 +15,7 @@ public class CreateMediatedPage extends UndefFormalPage{
 	public Composite parent;
 	public Button btnDependence;
 	public Button btnNotCaptured;
-	private SetUpperMultComposite setUpperMultComposite;
+	private SetUpperMultComposite setLowerMultComposite;
 	private  CreateMediatedComposite createMediatedComposite ;
 	
 	/**
@@ -35,19 +35,21 @@ public class CreateMediatedPage extends UndefFormalPage{
 		
 		setControl(container);
 		
-		Label lblQRelatorsAre = new Label(container, SWT.WRAP);
-		lblQRelatorsAre.setBounds(10, 10, 554, 47);
-		lblQRelatorsAre.setText("Relators are existentially dependent on two or more individuals. Does an instance of "+occurrence.getSource().getName()+" " +
+		StyledText questionText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.V_SCROLL);
+		questionText.setBounds(10, 10, 554, 47);
+		questionText.setBackground(questionText.getParent().getBackground());
+		questionText.setAlwaysShowScrollBars(false);
+		questionText.setText("Relators are existentially dependent on two or more individuals. Does an instance of <"+occurrence.getSource().getName()+"> " +
 			"depends on two or more instances of "+occurrence.getTarget().getName()+"? Or is there another object type that is still not captured in the model?");
 		
 		SelectionAdapter listener = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
 	    	  if(btnDependence.getSelection()){
 	    		  createMediatedComposite.enable(false);
-	    		  setUpperMultComposite.enable(true);
+	    		  setLowerMultComposite.enable(true);
 	    	  }
 	    	  if(btnNotCaptured.getSelection()){
-	    		  setUpperMultComposite.enable(false);	    		 
+	    		  setLowerMultComposite.enable(false);	    		 
 	    		  createMediatedComposite.enable(true);
 	    	  }
 	      }
@@ -55,7 +57,7 @@ public class CreateMediatedPage extends UndefFormalPage{
 	    	    	    
 		btnDependence = new Button(container, SWT.RADIO);
 		btnDependence.setBounds(10, 70, 554, 16);
-		btnDependence.setText("Yes, "+occurrence.getSource().getName()+" is connected to (at most) N instances of "+occurrence.getTarget().getName()+"...");
+		btnDependence.setText("Yes, "+occurrence.getSource().getName()+" is connected to (at least) N instances of "+occurrence.getTarget().getName()+"...");
 		btnDependence.addSelectionListener(listener);
 
 		btnNotCaptured = new Button(container, SWT.RADIO);
@@ -63,11 +65,17 @@ public class CreateMediatedPage extends UndefFormalPage{
 		btnNotCaptured.setText("There are other mediated types not captured by the model...");
 		btnNotCaptured.addSelectionListener(listener);
 	    
-	    setUpperMultComposite = new SetUpperMultComposite(container, SWT.NONE);
-	    setUpperMultComposite.setBounds(10, 92, 554, 39);
+	    setLowerMultComposite = new SetUpperMultComposite(container, SWT.NONE);
+	    setLowerMultComposite.setBounds(10, 92, 554, 39);
+	    setLowerMultComposite.enable(false);
 	    
 	    createMediatedComposite = new CreateMediatedComposite(container, SWT.NONE);
 	    createMediatedComposite.setBounds(10, 179, 554, 64);
+	    createMediatedComposite.enable(false);
+	    
+	    setPageComplete(false);
+	    setAsEnablingNextPageButton(btnDependence);
+	    setAsEnablingNextPageButton(btnNotCaptured);
 	}
 	
 	@Override
@@ -76,7 +84,7 @@ public class CreateMediatedPage extends UndefFormalPage{
 		if (btnDependence.getSelection()){
 			//Action =============================
 			UndefFormalAction newAction = new UndefFormalAction(occurrence);
-			newAction.setUpperMult(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget(),setUpperMultComposite.getValue());
+			newAction.setUpperMult(occurrence.getFormal(),occurrence.getSource(),occurrence.getTarget(),setLowerMultComposite.getValue());
 			getAntipatternWizard().replaceAction(1,newAction);	
 			//======================================
 		}
