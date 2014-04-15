@@ -5,15 +5,22 @@ import java.util.ArrayList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
 
 public class MultiplicityTableBuilder extends ImpAbsTableBuilder<MultiplicityLine>{
-	
-	public MultiplicityTableBuilder (Composite parent, int args, ImpAbsOccurrence occurrence, int columnStdWidth) throws Exception{
-		super(parent, args, occurrence,columnStdWidth,columnNamesList());		
+
+	public MultiplicityTableBuilder (Composite parent, int args, ImpAbsOccurrence occurrence, int columnStdWidth) throws Exception{		 
+		super(parent, args, occurrence,columnStdWidth,columnNamesList());
+		int i=0;
+		for (TableColumn column : table.getColumns()) {
+			if(i%2==0) column.setWidth(250);
+			else  column.setWidth(150);
+			i++;	
+		}
 	}
 	
 	@Override

@@ -52,13 +52,13 @@ public class DerivedPage extends ImpAbsPage<MetaPropertiesTableBuilder> {
 											"\n\nSince all relations in OntoUML are binary and bidirectional, when setting one end as derived, the semantics of " +
 											"the language force the opposite end to also be derived (even if it is not set as such)."+
 											
-											"\n\nThe current values of readOnly for <"+parser.getStringRepresentation(occurrence.getAssociation())+"> are:"+
+											"\n\nThe current values of isDerived for <"+parser.getStringRepresentation(occurrence.getAssociation())+"> are:"+
 											"\n"+parser.getStringRepresentation(sourceEnd)+" : "+sourceEnd.isIsDerived()+
 											"\n"+parser.getStringRepresentation(targetEnd)+" : "+targetEnd.isIsDerived()+
 											
 											"\n\nIs that true for all subtypes?";
 
-		contextualizationText = new StyledText(container, SWT.WRAP );
+		contextualizationText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL );
 		contextualizationText.setBackground(container.getBackground());
 		contextualizationText.setBounds(10, 10, STD_WIDTH, TBL_POS_Y-45);
 		contextualizationText.setText(contextualizationContent);

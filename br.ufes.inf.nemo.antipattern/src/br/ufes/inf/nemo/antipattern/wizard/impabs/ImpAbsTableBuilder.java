@@ -28,7 +28,7 @@ public abstract class ImpAbsTableBuilder<T extends ImpAbsLine>{
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		
-		table.setSize(columnNames.size()*columnStdWidth, 200);
+		table.setSize(410, 157);
 		
 		if(occurrence==null)
 			throw new Exception();
@@ -103,7 +103,7 @@ public abstract class ImpAbsTableBuilder<T extends ImpAbsLine>{
 		
 		combo.setEditable(isEditable);
 		combo.pack();
-		editor.minimumWidth = combo.getSize().x;
+		editor.grabHorizontal = true;
 		editor.horizontalAlignment = SWT.CENTER;
 		editor.setEditor(combo, tableItem, columnPosition);
 		tableItem.setData(columnNames.get(columnPosition), combo);
@@ -164,6 +164,4 @@ public abstract class ImpAbsTableBuilder<T extends ImpAbsLine>{
 
 	public abstract void addLine();
 	protected abstract T getLine(TableItem ti) throws Exception;
-
-		 
 }

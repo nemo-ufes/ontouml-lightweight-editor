@@ -51,7 +51,7 @@ public class ReadOnlyPage extends ImpAbsPage<MetaPropertiesTableBuilder> {
 											"\n\n(Note that for some types of relations, the values are set by default. " +
 											"Mediations, for example, always have readOnly=true on the mediated end)";
 
-		contextualizationText = new StyledText(container, SWT.WRAP );
+		contextualizationText = new StyledText(container, SWT.WRAP| SWT.V_SCROLL );
 		contextualizationText.setBackground(container.getBackground());
 		contextualizationText.setBounds(10, 10, STD_WIDTH, 140);
 		contextualizationText.setText(contextualizationContent);

@@ -51,13 +51,13 @@ public class InseparablePage extends ImpAbsPage<MetaPropertiesTableBuilder> {
 											"Notice that isInseparable implies isImmutableWhole, but the opposite doesn't."+
 											
 											"\n\nThe values for these meta-properties in the part-whole relation <"+parser.getStringRepresentation(meronymic)+
-											">, between whole <"+parser.getStringRepresentation(whole)+"> and part <"+parser.getStringRepresentation(whole)+"> are: "+
+											">, between whole <"+parser.getStringRepresentation(whole)+"> and part <"+parser.getStringRepresentation(part)+"> are: "+
 											"\nisInseparable: "+meronymic.isIsInseparable()+
 											"\nisImmutableWhole: "+meronymic.isIsImmutableWhole()+
 											
 											"\n\nIs that true for all subtypes?";
 
-		contextualizationText = new StyledText(container, SWT.WRAP );
+		contextualizationText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL);
 		contextualizationText.setBackground(container.getBackground());
 		contextualizationText.setBounds(10, 10, STD_WIDTH, TBL_POS_Y-45);
 		contextualizationText.setText(contextualizationContent);

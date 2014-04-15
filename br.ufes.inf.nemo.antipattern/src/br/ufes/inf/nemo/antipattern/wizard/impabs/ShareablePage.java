@@ -43,7 +43,7 @@ public class ShareablePage extends ImpAbsPage<MetaPropertiesTableBuilder> {
 											
 											"\n\nIs that true for all subtypes?";
 
-		contextualizationText = new StyledText(container, SWT.WRAP );
+		contextualizationText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL);
 		contextualizationText.setBackground(container.getBackground());
 		contextualizationText.setBounds(10, 10, STD_WIDTH, 140);
 		contextualizationText.setText(contextualizationContent);
