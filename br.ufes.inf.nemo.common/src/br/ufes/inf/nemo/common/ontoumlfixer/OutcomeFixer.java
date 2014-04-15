@@ -41,6 +41,7 @@ import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.RefOntoUMLFactory;
+import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
@@ -79,6 +80,7 @@ import RefOntoUML.impl.componentOfImpl;
 import RefOntoUML.impl.memberOfImpl;
 import RefOntoUML.impl.subCollectionOfImpl;
 import RefOntoUML.impl.subQuantityOfImpl;
+import br.ufes.inf.nemo.common.ontoumlverificator.MultiplicityValidator;
 
 public class OutcomeFixer{
 
@@ -186,19 +188,88 @@ public class OutcomeFixer{
 	}
 
 	/** Invert sides of an association */
-	public Fix invertEnds(Association association)
+	public Fix invertEnds(Relationship relationship)
 	{
 		Fix fix = new Fix();
-		Property src = association.getMemberEnd().get(0);
-		Property tgt = association.getMemberEnd().get(1);
-		association.getOwnedEnd().remove(1);
-		association.getOwnedEnd().remove(0);
-		association.getOwnedMember().remove(0);
-		association.getOwnedMember().remove(1);
-		association.getNavigableOwnedEnd().remove(1);
-		association.getNavigableOwnedEnd().remove(0);
-		setEnds(association,tgt,src);
-		fix.includeModified(association);
+		
+		if(relationship instanceof Association){
+			Association association = (Association) relationship;
+			Property src = association.getMemberEnd().get(0);
+			Property tgt = association.getMemberEnd().get(1);
+			
+			Type type = src.getType();
+			src.setType(tgt.getType());
+			tgt.setType(type);
+			
+			String name = src.getName();
+			src.setName(tgt.getName());
+			tgt.setName(name);
+			
+			boolean isDerived = src.isIsDerived();
+			src.setIsDerived(tgt.isIsDerived());
+			tgt.setIsDerived(isDerived);
+			
+			boolean isReadOnly = src.isIsReadOnly();
+			src.setIsReadOnly(tgt.isIsReadOnly());
+			tgt.setIsReadOnly(isReadOnly);
+			
+			boolean isUnique = src.isIsUnique();
+			src.setIsUnique(tgt.isIsUnique());
+			tgt.setIsUnique(isUnique);
+			
+			boolean isOrdered = src.isIsOrdered();
+			src.setIsOrdered(tgt.isIsOrdered());
+			tgt.setIsOrdered(isOrdered);
+			
+			AggregationKind aggregation = src.getAggregation();
+			src.setAggregation(tgt.getAggregation());
+			tgt.setAggregation(aggregation);
+			
+			int lower = src.getLower();
+			int upper = src.getUpper();
+			changePropertyMultiplicity(src, tgt.getLower(), tgt.getUpper(), false);
+			changePropertyMultiplicity(src, lower, upper, false);
+			
+			ArrayList<Property> redefined = new ArrayList<Property>(src.getRedefinedProperty());
+			ArrayList<Property> subsetted = new ArrayList<Property>(src.getSubsettedProperty());
+			
+			src.getRedefinedProperty().clear();
+			src.getRedefinedProperty().addAll(tgt.getRedefinedProperty());
+			src.getSubsettedProperty().clear();
+			src.getSubsettedProperty().addAll(tgt.getSubsettedProperty());
+			
+			tgt.getRedefinedProperty().clear();
+			tgt.getRedefinedProperty().addAll(redefined);
+			tgt.getSubsettedProperty().clear();
+			tgt.getSubsettedProperty().addAll(subsetted);
+		}
+		
+		if(relationship instanceof Meronymic){
+		
+			Property source = ((Meronymic) relationship).getMemberEnd().get(0), target = ((Meronymic) relationship).getMemberEnd().get(1);
+			
+			if(source.getAggregation()==AggregationKind.NONE){
+				if(target.getAggregation()==AggregationKind.NONE || target.getAggregation()==null){
+					source.setAggregation(AggregationKind.COMPOSITE);
+				}			
+				else{
+					source.setAggregation(target.getAggregation());
+				}
+			}
+			
+			target.setAggregation(AggregationKind.NONE);
+		}
+		
+		if(relationship instanceof Generalization){
+			Generalization g = (Generalization)relationship;
+			Classifier specific = g.getSpecific();
+			Classifier general = g.getGeneral();
+			
+			g.setGeneral(specific);
+			g.setSpecific(general);
+		}
+		
+		fix.includeModified(relationship);
 		return fix;
 	}
 	
@@ -252,22 +323,20 @@ public class OutcomeFixer{
 	/** Change a property multiplicity from the format: 1..*, 0..*, 0..-1, 1, 3, and so on and so forth */	
 	public Fix changePropertyMultiplicity(Property property, String multiplicity) 
 	{
-		Fix fix = new Fix();	
-		String lower = "1";
-		String upper = "1";
-		if(multiplicity.contains("..")){
-			String[] array = multiplicity.split("\\.\\.");
-			lower = array[0].trim();
-			upper = array[1].trim();
-			if(lower.equals("*")) lower = "-1";
-			if(upper.equals("*")) upper = "-1";
-		}else{
-			if (multiplicity.equals("*")) multiplicity = "-1";
-			lower = multiplicity.trim();
-			upper = multiplicity.trim();
+		MultiplicityValidator validator = new MultiplicityValidator(multiplicity);
+		int lowerValue;
+		int upperValue;
+		
+		if(validator.isValid()){
+			lowerValue = validator.getLower();
+			upperValue = validator.getUpper();
 		}
-		int lowerValue = Integer.parseInt(lower);
-		int upperValue = Integer.parseInt(upper);
+		else{
+			lowerValue = 1;
+			upperValue = 1;
+		}
+		
+		Fix fix = new Fix();	
 		LiteralInteger lowerBound = factory.createLiteralInteger();
 		lowerBound.setValue(lowerValue);
 		LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
@@ -349,16 +418,22 @@ public class OutcomeFixer{
 	{
 		if (source instanceof RefOntoUML.Property && receiver instanceof RefOntoUML.Property) 
 		{
-			RefOntoUML.Property property = (RefOntoUML.Property) source;
-			RefOntoUML.Property rcvProperty = (RefOntoUML.Property) receiver;
-			rcvProperty.setType(property.getType());
+			receiver.setType(source.getType());
 			LiteralInteger lowerBound = factory.createLiteralInteger();
-			lowerBound.setValue(property.getLower());
+			lowerBound.setValue(source.getLower());
 			LiteralUnlimitedNatural upperBound = factory.createLiteralUnlimitedNatural();
-			upperBound.setValue(property.getUpper());
-			rcvProperty.setUpperValue(upperBound);
-			rcvProperty.setLowerValue(lowerBound);
-			if (copyMetaAttributes) copyMetaAttributes(source, receiver);
+			upperBound.setValue(source.getUpper());
+			receiver.setUpperValue(upperBound);
+			receiver.setLowerValue(lowerBound);
+			receiver.setName(source.getName());
+			
+			receiver.getRedefinedProperty().clear();
+			receiver.getRedefinedProperty().addAll(source.getRedefinedProperty());
+			receiver.getSubsettedProperty().clear();
+			receiver.getSubsettedProperty().addAll(source.getSubsettedProperty());
+		
+			if (copyMetaAttributes) 
+				copyMetaAttributes(source, receiver);
 		}
 	}
 	
@@ -680,7 +755,7 @@ public class OutcomeFixer{
 		Fix fixes = new Fix();		
 		// create new relationship
 		RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);		
-		copyPropertiesDatas(relationship, newRelationship,false);
+		copyPropertiesDatas(relationship, newRelationship,true);
 		fixes.includeAdded(newRelationship);
 		// the same container as
 		copyContainer(relationship, newRelationship);
@@ -694,29 +769,35 @@ public class OutcomeFixer{
 		}		
 		// delete element
 		fixes.addAll(deleteElement(relationship));		
+		
+		if(newStereo==RelationStereotype.COMPONENTOF || newStereo==RelationStereotype.MEMBEROF || newStereo==RelationStereotype.SUBCOLLECTIONOF || newStereo==RelationStereotype.SUBQUANTITYOF){
+			Property source = ((Association) newRelationship).getMemberEnd().get(0), target = ((Association) newRelationship).getMemberEnd().get(1);
+			
+			if(source.getAggregation()==AggregationKind.NONE){
+				if(target.getAggregation()==AggregationKind.NONE || target.getAggregation()==null){
+					source.setAggregation(AggregationKind.COMPOSITE);
+				}			
+				else{
+					source.setAggregation(target.getAggregation());
+				}
+			}
+			
+			target.setAggregation(AggregationKind.NONE);
+		}
+		
 		return fixes;
 	}
 
 	/** Change a relationship stereotype */
 	public Fix changeRelationStereotypeTo(EObject relationship, RelationStereotype newStereo, boolean invertSides) 
 	{
-		Fix fixes = new Fix();
-		// create new relationship
-		RefOntoUML.Relationship newRelationship = createAssociationWithProperties(newStereo);		
-		copyPropertiesDatas(relationship, newRelationship,false);
-		fixes.includeAdded(newRelationship);
-		// the same container as
-		copyContainer(relationship, newRelationship);
-		fixes.includeModified(relationship.eContainer());
-		// change references
-		Fix references = changeModelReferences(relationship, newRelationship);
-		fixes.includeAllModified(references.getModified());
-		// delete element
-		fixes.addAll(deleteElement(relationship));
+		Fix fixes = changeRelationStereotypeTo(relationship, newStereo);
+		
 		//invert sides
 		if(invertSides){
-			if (relationship instanceof RefOntoUML.Association) fixes.addAll(invertEnds((RefOntoUML.Association)newRelationship));
+			invertEnds(fixes.getAddedByType(Relationship.class).get(0));
 		}
+		
 		return fixes;
 	}
 	
@@ -1419,6 +1500,43 @@ public class OutcomeFixer{
 		}		
 		if (includeModified && (option==SpecializationType.SUBSET || option==SpecializationType.REDEFINE)) fix.includeModified(specific);		
 		return fix;
+	}
+
+	public Fix deriveMaterialMultiplicities(MaterialAssociation material, Mediation m1, Mediation m2) {
+		
+		Property 	m1RelatorEnd = m1.getMemberEnd().get(0), m1MediatedEnd = m1.getMemberEnd().get(1), 
+					m2RelatorEnd = m2.getMemberEnd().get(0), m2MediatedEnd = m2.getMemberEnd().get(1), 
+					matSourceEnd, matTargetEnd;
+		
+		if(material.getMemberEnd().get(0).getType().equals(m1MediatedEnd.getType())){
+			matSourceEnd = material.getMemberEnd().get(0);
+			matTargetEnd = material.getMemberEnd().get(1);
+		}
+		else {
+			matSourceEnd = material.getMemberEnd().get(1);
+			matTargetEnd = material.getMemberEnd().get(0);
+		}
+		
+		Fix fix = new Fix();
+		
+		int sourceLower, sourceUpper, targetLower, targetUpper;
+		
+		sourceLower = m2RelatorEnd.getLower()*m1MediatedEnd.getLower();
+		if(m1MediatedEnd.getUpper()==-1 || m2RelatorEnd.getUpper()==-1)
+			sourceUpper = -1;
+		else
+			sourceUpper = m2RelatorEnd.getUpper()*m1MediatedEnd.getUpper();
+		
+		targetLower = m1RelatorEnd.getLower()*m2MediatedEnd.getLower();
+		if(m1RelatorEnd.getUpper()==-1 || m2MediatedEnd.getUpper()==-1)
+			targetUpper = -1;
+		else
+			targetUpper = m1RelatorEnd.getUpper()*m2MediatedEnd.getUpper();
+		
+		fix.addAll(changePropertyMultiplicity(matSourceEnd,sourceLower,sourceUpper,true));
+		fix.addAll(changePropertyMultiplicity(matTargetEnd, targetLower, targetUpper, true));
+		
+		return fix;		
 	}
 	
 	
