@@ -14,6 +14,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -245,13 +246,13 @@ public class AntiPatternResultDialog extends Dialog {
 	    viewer.getControl().setLayoutData(gridData);
 	    
 	    // Set buttons
-	    TableItem[] items = table.getItems();
+	    final TableItem[] items = table.getItems();
 	    for (int i = 0; i < items.length; i++) 
 	    {	     
-	      TableEditor editor = new TableEditor(table);
-	      
-	      Button button = new Button(table, SWT.NONE);	   
-	      button.setImage(new Image(getShell().getDisplay(),AntiPatternResultDialog.class.getResourceAsStream("/resources/icons/x16/hammer_screwdriver.png")));	      
+	      TableEditor editor = new TableEditor(table);	      
+	      final Button button = new Button(table, SWT.NONE);
+	      button.setToolTipText("Run the wizard to fix the occurrence");
+	      button.setImage(new Image(getShell().getDisplay(),AntiPatternResultDialog.class.getResourceAsStream("/resources/icons/x16/hammer_screwdriver.png"))); 	      
 	      final AntipatternOccurrence apOccur = result.get(i);	      
 	      button.addListener(SWT.Selection,new Listener() {
 		        public void handleEvent(Event event) 
@@ -260,14 +261,34 @@ public class AntiPatternResultDialog extends Dialog {
 		        }
 		      }
 	      );
-	      button.pack();
-	      
+	      button.pack();	      
 	      editor.minimumWidth = button.getSize().x;
 	      editor.horizontalAlignment = SWT.CENTER;
 	      editor.setEditor(button, items[i], 3);
+	      
+	      editor = new TableEditor(table);	      
+	      final Button button2 = new Button(table, SWT.NONE);	
+	      button2.setToolTipText("Remove occurence from this list");
+	      button2.setImage(new Image(getShell().getDisplay(),AntiPatternResultDialog.class.getResourceAsStream("/resources/icons/x16/bin_closed.png"))); 	      
+	      //final AntipatternOccurrence apOccur1 = result.get(i);	
+	      final int index = i;
+	      button2.addListener(SWT.Selection,new Listener() {
+		        public void handleEvent(Event event) 
+		        {		        		
+		        	items[index].dispose();
+		        	button2.dispose();
+		        	button.dispose();
+		        	viewer.getTable().setRedraw(true);			
+		        }
+		      }
+	      );
+	      button2.pack();	      
+	      editor.minimumWidth = button2.getSize().x;
+	      editor.horizontalAlignment = SWT.CENTER;
+	      editor.setEditor(button2, items[i], 4);
 	    }	    
 	  }
-
+		
 	  public TableViewer getViewer() { return viewer; }
 
 	  /** 
@@ -275,8 +296,8 @@ public class AntiPatternResultDialog extends Dialog {
 	   */
 	  private void createColumns(final Composite parent, final TableViewer viewer) 
 	  {
-	    String[] titles = { "Name", "Type", "Status", "" };
-	    int[] bounds = { 250, 100, 100, 100 };
+	    String[] titles = { "Name", "Type", "Status", "", "" };
+	    int[] bounds = { 250, 100, 100, 70, 70 };
 
 	    // First column is for a short description of the antipattern
 	    TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
@@ -331,12 +352,28 @@ public class AntiPatternResultDialog extends Dialog {
 	      public String getText(Object element) {
 	        String value = new Boolean(((AntipatternOccurrence) element).isFixed()).toString();
 	        if (value.equals("true")) return "Fixed";
-	        else return "Open";
+	        else return "Opened";
 	      }
+	      @Override
+	    	public Color getForeground(Object element) {
+	    	  String value = new Boolean(((AntipatternOccurrence) element).isFixed()).toString();
+		      if (value.equals("true")) return Display.getDefault().getSystemColor(SWT.COLOR_DARK_GREEN);
+		      else return Display.getDefault().getSystemColor(SWT.COLOR_DARK_RED);
+	    	}
 	    });
 	    
 	    // Show the button to investigate the occurrence
 	    col = createTableViewerColumn(titles[3], bounds[3], 3);
+	    
+	    col.setLabelProvider(new ColumnLabelProvider() {
+	      @Override
+	      public String getText(Object element) {
+	        return "";
+	      }
+	    });
+	    
+	    // Show the button to remove the occurrence
+	    col = createTableViewerColumn(titles[4], bounds[4], 4);
 	    
 	    col.setLabelProvider(new ColumnLabelProvider() {
 	      @Override
