@@ -111,10 +111,19 @@ public class OCLEditorPanel extends JPanel {
 		oclSyntaxHighlight = new OCLSyntaxHighlight();	    
 	    ((RSyntaxDocument)textArea.getDocument()).setSyntaxStyle(oclSyntaxHighlight);
 	    
-	    OCLCompletionProvider oclProvider = new OCLCompletionProvider();	    
+	    mainProvider = new DefaultCompletionProvider(){ 
+			   @Override
+			   protected boolean isValidChar(char ch) {
+			      return ch=='.' || ch=='>' || super.isValidChar(ch);
+			   }
+			};
+		mainProvider.setAutoActivationRules(true, ".");
+		mainProvider.setAutoActivationRules(true, ">");
+			
+	    modelProvider = new ModelCompletionProvider(mainProvider);
+	    oclProvider = new OCLCompletionProvider(mainProvider);
+	    oclProvider.addCompletions();
 	    
-	    mainProvider = oclProvider.getProvider();
-	    	
 	    createAutoComplete(mainProvider);
 	    
 	    setLayout(new BorderLayout(0, 0));
@@ -300,7 +309,7 @@ public class OCLEditorPanel extends JPanel {
 	
 	public void addCompletions(OntoUMLParser refparser)
 	{   
-		modelProvider = new ModelCompletionProvider(refparser, mainProvider);	   
+		modelProvider.addCompletions(refparser);	   
 	}
    
 	public void removeCompletion(EObject elem)
@@ -308,6 +317,11 @@ public class OCLEditorPanel extends JPanel {
 	    modelProvider.removeCompletion(elem);
 	}
     
+	public void removeAllModelCompletions()
+	{
+		modelProvider.removeAllCompletions();
+	}
+	
 	public void updateCompletion(EObject elem)
 	{
 		modelProvider.updateCompletion(elem);

@@ -23,7 +23,9 @@ public class TOCLEditorPanel extends OCLEditorPanel {
 	{
 		super(parent);
 		
-		toclProvider = new TOCLCompletionProvider(mainProvider);
+		tmodelProvider = new TModelCompletionProvider(mainProvider);
+		toclProvider = new TOCLCompletionProvider(mainProvider);		
+		toclProvider.addCompletions();
 		
 		toclSyntaxHighlight = new TOCLSyntaxHighlight();
 		((RSyntaxDocument)textArea.getDocument()).setSyntaxStyle(toclSyntaxHighlight);
@@ -33,18 +35,28 @@ public class TOCLEditorPanel extends OCLEditorPanel {
 	
 	// Completions ======================
 	
+	@Override
 	public void addCompletions(OntoUMLParser refparser)
 	{   
 		super.addCompletions(refparser);
-		tmodelProvider = new TModelCompletionProvider(refparser, mainProvider);	   
+		tmodelProvider.addCompletions(refparser);	   
 	}
-   
+
+	@Override
 	public void removeCompletion(EObject elem)
 	{
 		super.removeCompletion(elem);
-		tmodelProvider.removeCompletion(elem);
+		tmodelProvider.removeCompletion(elem);		
 	}
     
+	@Override
+	public void removeAllModelCompletions()
+	{
+		super.removeAllModelCompletions();
+		tmodelProvider.removeAllCompletions();		
+	}
+	
+	@Override
 	public void updateCompletion(EObject elem)
 	{
 		super.updateCompletion(elem);

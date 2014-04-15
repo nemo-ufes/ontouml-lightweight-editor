@@ -26,10 +26,14 @@ public class ModelCompletionProvider {
 	public ArrayList<ModelTemplateCompletion> attributes = new  ArrayList<ModelTemplateCompletion>();
 	public ArrayList<ModelTemplateCompletion> endpoints = new  ArrayList<ModelTemplateCompletion>();
 	
-	public ModelCompletionProvider(OntoUMLParser refparser, DefaultCompletionProvider provider)
+	public ModelCompletionProvider(DefaultCompletionProvider provider)
 	{
-	  this.provider = provider;
-	  for(RefOntoUML.Class oc: refparser.getAllInstances(RefOntoUML.Class.class))
+	  this.provider = provider;	    
+	}
+	   
+	public void addCompletions(OntoUMLParser refparser)
+	{
+		for(RefOntoUML.Class oc: refparser.getAllInstances(RefOntoUML.Class.class))
 	   {
 		   	addCompletion(oc);
 	   }
@@ -42,9 +46,8 @@ public class ModelCompletionProvider {
 	   for(RefOntoUML.Association p: refparser.getAllInstances(RefOntoUML.Association.class))
 	   {
 		   addCompletion(p);
-	   }	   
+	   }	
 	}
-	   
 	public void addCompletion(RefOntoUML.Association p)
 	{
 	   for(Property pp: p.getMemberEnd()){
@@ -52,6 +55,16 @@ public class ModelCompletionProvider {
 	   }
 	}  
    
+	public void removeAllCompletions()
+	{
+		for(ModelTemplateCompletion c: classes) provider.removeCompletion(c);
+		for(ModelTemplateCompletion c: attributes) provider.removeCompletion(c);
+		for(ModelTemplateCompletion c: endpoints) provider.removeCompletion(c);
+		classes.clear();
+		attributes.clear();
+		endpoints.clear();
+	}
+	
     public void addCompletion(RefOntoUML.Property p)
     {
 	   if ((p.getName()!=null)&&!(p.getName().isEmpty())&&(p.getType()!=null))

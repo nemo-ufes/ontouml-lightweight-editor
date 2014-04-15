@@ -16,11 +16,15 @@ public class TOCLCompletionProvider {
 	
 	public TOCLCompletionProvider(DefaultCompletionProvider provider)
 	{
-		this.provider = provider;				
-		objects.addAll(createObjectCompletion());
-		constraints.addAll(createConstraintCompletion());
+		this.provider = provider;		
 	}		
 
+	public void addCompletions()
+	{
+		objects.addAll(createObjectCompletion());
+		constraints.addAll(createConstraintCompletion());	
+	}
+	
 	public DefaultCompletionProvider getProvider(){ return provider; }
 		
 	private ArrayList<TOCLTemplateCompletion> createConstraintCompletion()
