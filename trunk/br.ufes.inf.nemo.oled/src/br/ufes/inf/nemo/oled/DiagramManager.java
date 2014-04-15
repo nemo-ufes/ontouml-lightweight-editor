@@ -136,8 +136,6 @@ import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui.GlossaryGeneratorUI;
 import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
-//import br.ufes.inf.nemo.oled.ui.dialog.VerificationSettingsDialog;
-//import br.ufes.inf.nemo.oled.deprecated.InstanceVisualizer;
 
 /**
  * Class responsible for managing and organizing the {@link DiagramEditor}s in tabs.
@@ -1144,6 +1142,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				setProjectFile(file);				
 
 				createEmptyCurrentProject();	
+				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 				saveCurrentProjectToFile(file);				
 
@@ -1184,6 +1183,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);				
 				frame.getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);
+				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 				for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
 				getCurrentProject().setSaveModelNeeded(false);
@@ -1227,6 +1227,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);								
 				frame.getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);
+				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 				for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
 				getCurrentProject().setSaveModelNeeded(false);

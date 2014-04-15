@@ -19,26 +19,22 @@ public class OCLCompletionProvider {
 	public ArrayList<OCLTemplateCompletion> integers = new ArrayList<OCLTemplateCompletion>();
 	public ArrayList<OCLTemplateCompletion> booleans = new ArrayList<OCLTemplateCompletion>();	
 	
-	public OCLCompletionProvider()
+	public OCLCompletionProvider(DefaultCompletionProvider provider)
+	{	
+		this.provider = provider;				
+	}
+
+	public void addCompletions()
 	{
-		provider = new DefaultCompletionProvider(){ 
-		   @Override
-		   protected boolean isValidChar(char ch) {
-		      return ch=='.' || ch=='>' || super.isValidChar(ch);
-		   }
-		};
-		provider.setAutoActivationRules(true, ".");
-		provider.setAutoActivationRules(true, ">");
-		
 		constraints.addAll(createConstraintCompletion());		
 		objects.addAll(createObjectCompletion());
 		sets.addAll(createSetCompletion());
 		iterators.addAll(createIteratorCompletion());
 		expressions.addAll(createExpressionCompletion());		
 		integers.addAll(createIntegerCompletion());	
-//		booleans.addAll(createBooleanCompletion());		
+//		booleans.addAll(createBooleanCompletion());
 	}
-
+	
 	public DefaultCompletionProvider getProvider(){ return provider; }
 	
 	/** Constraint Completion*/

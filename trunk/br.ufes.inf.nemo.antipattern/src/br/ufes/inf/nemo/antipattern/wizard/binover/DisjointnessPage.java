@@ -79,7 +79,7 @@ public class DisjointnessPage extends BinOverPage {
 		if(btnNo.getSelection()){
 			BinOverAction action = new BinOverAction(binOver);
 			action.setDisjointness();
-			getBinOverWizard().addAction(0, action);
+			getBinOverWizard().replaceAction(0, action);
 			return getBinOverWizard().getFinishing();
 		}
 		

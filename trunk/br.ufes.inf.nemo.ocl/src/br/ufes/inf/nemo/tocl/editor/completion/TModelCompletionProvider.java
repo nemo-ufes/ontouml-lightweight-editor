@@ -20,16 +20,18 @@ public class TModelCompletionProvider {
 	public ArrayList<ModelTemplateCompletion> tAttributes = new  ArrayList<ModelTemplateCompletion>();
 	public ArrayList<ModelTemplateCompletion> tEndPoints = new  ArrayList<ModelTemplateCompletion>();
 	
-	public TModelCompletionProvider(OntoUMLParser refparser, DefaultCompletionProvider provider)
+	public TModelCompletionProvider(DefaultCompletionProvider provider)
 	{
 		this.provider = provider;
-		
+	}
+	
+	public void addCompletions(OntoUMLParser refparser)
+	{
 		for(RefOntoUML.Association p: refparser.getAllInstances(RefOntoUML.Association.class))
 		{
 		   addCompletion(p);
 		}	
 	}
-	
 	public void addCompletion(RefOntoUML.Association p)
 	{
 	   for(Property pp: p.getMemberEnd()){
@@ -102,6 +104,14 @@ public class TModelCompletionProvider {
 		   removeEndPoint((RefOntoUML.Property)elem);
 	   }	   
     }
+	
+	public void removeAllCompletions()
+	{
+		for(ModelTemplateCompletion c: tAttributes) provider.removeCompletion(c);
+		for(ModelTemplateCompletion c: tEndPoints) provider.removeCompletion(c);		
+		tAttributes.clear();
+		tEndPoints.clear();
+	}
 	
 	@SuppressWarnings("rawtypes")
     public void removeEndPoint(RefOntoUML.Property elem)
