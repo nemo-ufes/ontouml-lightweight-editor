@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Mediation;
+import RefOntoUML.Relator;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 
@@ -19,6 +21,15 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 	public String constraints;
 	public int upper;
 	public HashMap<String,String> newMediatedMap  = new HashMap<String,String>();
+	private Relator relator;
+	private String relatorName;
+	private String mediation1Name;
+	private String mediation1SourceMult;
+	private String mediation1TargetMult;
+	private String mediation2Name;
+	private String mediation2SourceMult;
+	private String mediation2TargetMult;
+	private Mediation mediation1, mediation2;
 	
 	public UndefFormalAction( UndefFormalOccurrence ap) {
 		super(ap);
@@ -31,6 +42,7 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 		CHANGE_TO_MATERIAL,
 		CHANGE_TO_SUBCOLLECTIONOF_SRC_WHOLE, 
 		CHANGE_TO_SUBCOLLECTIONOF_TGT_WHOLE,
+		CHANGE_TO_COMPONENTOF,
 		CHANGE_TO_MEMBEROF_SRC_WHOLE, 
 		CHANGE_TO_MEMBEROF_TGT_WHOLE,
 		CHANGE_TO_SUBQUANTITYOF_SRC_WHOLE, 
@@ -38,6 +50,7 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 		CREATE_DATATYPES_ATTRIBUTES_AND_RULES,
 		SET_UPPER_MULTP,
 		CREATE_NEW_MEDIATED_TYPES,
+		REMOVE_FORMAL
 	}
 	
 	public void setChangeToMediation(Association assoc, Classifier source, Classifier target){
@@ -81,6 +94,10 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 		this.assoc = assoc;
 		this.source=source;
 		this.target=target;
+	}
+	
+	public void setRemoveFormal(){
+		code = Action.REMOVE_FORMAL;
 	}
 	
 	public void setChangeToCharacterizationInvertingSides(Association assoc, Classifier source, Classifier target){
@@ -131,18 +148,118 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 		this.target=target;
 	}
 	
-	public void setChangeToMaterial(Association assoc, Classifier source, Classifier target){	
+	public void setChangeToComponentOF(Classifier source, Classifier target){
+		code = Action.CHANGE_TO_COMPONENTOF;
+		this.source=source;
+		this.target=target;
+	}
+	
+	public void setChangeToMaterial(){	
+		code = Action.CHANGE_TO_MATERIAL;
+	}
+	
+	public void setChangeToMaterial(Association assoc, String relatorName, 
+			String mediation1Name, String mediation1SourceMult, String mediation1TargetMult, 
+			String mediation2Name, String mediation2SourceMult, String mediation2TargetMult){	
+		
 		code = Action.CHANGE_TO_MATERIAL;
 		this.assoc = assoc;
-		this.source = source;
-		this.target = target;
+		this.relatorName = relatorName;
+		this.relator = null;
+		
+		this.mediation1Name = mediation1Name;
+		this.mediation1SourceMult = mediation1SourceMult;
+		this.mediation1TargetMult = mediation1TargetMult;
+		this.mediation1 = null;
+		
+		this.mediation2Name = mediation2Name;		
+		this.mediation2SourceMult = mediation2SourceMult;
+		this.mediation2TargetMult = mediation2TargetMult;
+		this.mediation2 = null;
+	}
+	
+	public void setChangeToMaterial(Association assoc, Relator relator, 
+			String mediation1Name, String mediation1SourceMult, String mediation1TargetMult, 
+			String mediation2Name, String mediation2SourceMult, String mediation2TargetMult){	
+		
+		code = Action.CHANGE_TO_MATERIAL;
+		this.assoc = assoc;
+		this.relator = relator;
+		this.relatorName = null;
+		
+		this.mediation1Name = mediation1Name;
+		this.mediation1SourceMult = mediation1SourceMult;
+		this.mediation1TargetMult = mediation1TargetMult;
+		this.mediation1 = null;
+		
+		this.mediation2Name = mediation2Name;
+		this.mediation2SourceMult = mediation2SourceMult;
+		this.mediation2TargetMult = mediation2TargetMult;
+		this.mediation2 = null;
+	}
+	
+	public void setChangeToMaterial(Association assoc, Relator relator, Mediation mediation1, 
+			String mediation2Name, String mediation2SourceMult, String mediation2TargetMult){	
+		
+		code = Action.CHANGE_TO_MATERIAL;
+		this.assoc = assoc;
+		this.relator = relator;
+		this.relatorName = null;
+		
+		this.mediation1Name = null;
+		this.mediation1SourceMult = null;
+		this.mediation1TargetMult = null;
+		this.mediation1 = mediation1;
+		
+		this.mediation2Name = mediation2Name;
+		this.mediation2SourceMult = mediation2SourceMult;
+		this.mediation2TargetMult = mediation2TargetMult;
+		this.mediation2 = null;
+	}
+	
+	public void setChangeToMaterial(Association assoc, Relator relator,  
+			String mediation1Name, String mediation1SourceMult, String mediation1TargetMult, 
+			Mediation mediation2){	
+		
+		code = Action.CHANGE_TO_MATERIAL;
+		this.assoc = assoc;
+		this.relator = relator;
+		this.relatorName = null;
+		
+		this.mediation1Name = mediation1Name;
+		this.mediation1SourceMult = mediation1SourceMult;
+		this.mediation1TargetMult = mediation1TargetMult;
+		this.mediation1 = null;
+		
+		this.mediation2Name = null;
+		this.mediation2SourceMult = null;
+		this.mediation2TargetMult = null;
+		this.mediation2 = mediation2;
+	}
+	
+	public void setChangeToMaterial(Association assoc, Relator relator, Mediation mediation1, Mediation mediation2){	
+		
+		code = Action.CHANGE_TO_MATERIAL;
+		this.assoc = assoc;
+		this.relator = relator;
+		this.relatorName = null;
+		
+		this.mediation1Name = null;
+		this.mediation1SourceMult = null;
+		this.mediation1TargetMult = null;
+		this.mediation1 = mediation1;
+		
+		this.mediation2Name = null;
+		this.mediation2SourceMult = null;
+		this.mediation2TargetMult = null;
+		this.mediation2 = mediation2;
 	}
 	
 	@Override
 	public void run() {
 		if(code==Action.CHANGE_TO_MEDIATION) ap.changeToMediation(assoc,source,target);		
 		else if(code==Action.CHANGE_TO_CHARACTERIZATION) ap.changeToCharacterization(assoc,source,target); 
-		else if(code==Action.CHANGE_TO_MATERIAL) ap.changeToMaterial(assoc,source,target);			
+		else if(code==Action.CHANGE_TO_MATERIAL) ap.changeToMaterial(assoc, relator, relatorName, mediation1, mediation1Name, mediation1SourceMult, mediation1TargetMult, mediation2, mediation2Name, mediation2SourceMult, mediation2TargetMult);		
 		else if(code==Action.CHANGE_TO_SUBCOLLECTIONOF_SRC_WHOLE) ap.changeToSubCollectionOfSrcWhole(assoc,source,target);
 		else if(code==Action.CHANGE_TO_SUBCOLLECTIONOF_TGT_WHOLE) ap.changeToSubCollectionOfTgtWhole(assoc,source,target);
 		else if(code==Action.CHANGE_TO_MEMBEROF_SRC_WHOLE) ap.changeToMemberOfSrcWhole(assoc,source,target);			
@@ -152,6 +269,8 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 		else if(code==Action.CREATE_DATATYPES_ATTRIBUTES_AND_RULES) ap.createDatatypesAttributesAndConstraint(assoc,source,target,sourceMapType,targetMapType,sourceMapStereo,targetMapStereo, constraints);
 		else if(code==Action.SET_UPPER_MULTP) ap.setUpperMult(assoc,source,target,upper);
 		else if(code==Action.CREATE_NEW_MEDIATED_TYPES) ap.createNewMediatedTypes(newMediatedMap);
+		else if(code==Action.REMOVE_FORMAL) ap.removeFormal();
+		else if(code==Action.CHANGE_TO_COMPONENTOF) ap.changeToComponentOf(source,target);
 	}
 	
 	@Override
@@ -165,7 +284,16 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 			result = "Change formal association "+assoc.getName()+" to <<characterization>> ";
 					
 		}else if(code==Action.CHANGE_TO_MATERIAL){
-			result = "Change formal association "+assoc.getName()+" to <<material>> ";
+			result = "Modify Association: set <"+assoc.getName()+"> as <<material>> ";
+			
+			if(relator==null)
+				result += "\nCreate Class: (Relator) "+relatorName;
+			if(mediation1==null)
+				result += "\nCreate Association: (Mediation) "+mediation1Name;
+			if(mediation2==null)
+				result += "\nCreate Association: (Mediation) "+mediation2Name;
+			
+			result += "\nCreate Association: Derivation";
 			
 		}else if(code==Action.CHANGE_TO_SUBCOLLECTIONOF_SRC_WHOLE){
 			result = "Change formal association "+assoc.getName()+" to <<subCollectionOf>> with "+target.getName()+" as subcollection";
@@ -202,6 +330,13 @@ public class UndefFormalAction  extends AntiPatternAction< UndefFormalOccurrence
 			for(String name: newMediatedMap.keySet()){
 				result += "Create new mediated type: "+name +" ("+newMediatedMap.get(name)+")"+", and a mediation connected from the relator to it "+"\n";	
 			}			
+		}
+		else if(code==Action.REMOVE_FORMAL){
+			result = "Remove Association <"+ap.getFormalName()+">";
+		
+		}else if(code==Action.CHANGE_TO_COMPONENTOF){
+			result = "Change Association: Set <"+ap.getFormalName()+"> as ComponentOf (Whole: <"+source.getName()+">, Part: <"+target.getName()+">)";
+		
 		}
 				
 		return result; 

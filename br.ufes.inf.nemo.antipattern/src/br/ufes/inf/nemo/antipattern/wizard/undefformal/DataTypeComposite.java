@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Text;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 
-public class CreateDataTypeComposite extends Composite {
+public class DataTypeComposite extends Composite {
 
 	public Label lblTarget;		
 	public Label lblSource;		
@@ -34,19 +34,35 @@ public class CreateDataTypeComposite extends Composite {
 	public StyledText oclTextComp;
 	
 	public UndefFormalOccurrence uf;
+	private Button btnTargetTemplate;
+	private Button btnSourceTemplate;
+	
+	private final String sourceTemplate, targetTemplate;
 	
 	/**
 	 * Create the composite.
 	 * @param parent
 	 * @param style
 	 */
-	public CreateDataTypeComposite(Composite parent, int style, UndefFormalOccurrence uf) 
+	public DataTypeComposite(Composite parent, int style, UndefFormalOccurrence uf) 
 	{
 		super(parent, style);
 		this.uf=uf;
 		
-//		Composite composite2 = new Composite(this, SWT.NONE);	
-//		composite2.setBounds(10, 112, 260, 87);
+		
+		uf.getFixer().fixPropertyName(uf.getFormal().getMemberEnd().get(0));
+		uf.getFixer().fixPropertyName(uf.getFormal().getMemberEnd().get(1));
+		
+		String sourceName = uf.addQuotes(uf.getSource().getName());
+		String targetName = uf.addQuotes(uf.getTarget().getName());
+		String sourceEnd = uf.addQuotes(uf.getFormal().getMemberEnd().get(0).getName());
+		String targetEnd = uf.addQuotes(uf.getFormal().getMemberEnd().get(1).getName());
+		
+		sourceTemplate ="context "+sourceName+"::<"+targetEnd+"> : "+targetName+"\r\n" +
+						"derive : <COMPLETE-HERE>";
+		
+		targetTemplate ="context "+targetName+"::<"+sourceEnd+"> : "+sourceName+"\r\n" +
+						"derive : <COMPLETE-HERE>";
 		
 		sourceTable = new AttrTable(this, SWT.BORDER, ((RefOntoUML.Class)uf.getSource()).getOwnedAttribute());
 		sourceTable.getTable().setBounds(10, 112, 260, 87);
@@ -57,9 +73,9 @@ public class CreateDataTypeComposite extends Composite {
 		btnSourceCreate.addSelectionListener(new SelectionAdapter() {
 			 @Override
 	            public void widgetSelected(SelectionEvent e) {
-				 if (typeList.getItem(typeList.getSelectionIndex()).equals("Primitive type"))
+				 if (typeList.getSelectionIndex()==0)
 					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) sourceTable.addNewPrimitiveType(nameText.getText(),typeNameText.getText());
-				 if (typeList.getItem(typeList.getSelectionIndex()).equals("DataType type"))
+				 if (typeList.getSelectionIndex()==1)
 					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) sourceTable.addNewDataType(nameText.getText(),typeNameText.getText());
 //				 if (typeList.getItem(typeList.getSelectionIndex()).equals("Enumeration"))
 //					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) sourceTable.addNewEnumeration(nameText.getText(),typeNameText.getText());
@@ -73,8 +89,6 @@ public class CreateDataTypeComposite extends Composite {
 		targetTable = new AttrTable(this, SWT.BORDER, ((RefOntoUML.Class)uf.getTarget()).getOwnedAttribute());
 		targetTable.getTable().setBounds(283, 112, 260, 87);
 				
-//		Composite composite = new Composite(container, SWT.NONE);	
-//		composite.setBounds(283, 112, 260, 87);
 		
 		lblTarget = new Label(this, SWT.NONE);
 		lblTarget.setBounds(283, 91, 158, 15);
@@ -86,9 +100,9 @@ public class CreateDataTypeComposite extends Composite {
 		btnTargetCreate.addSelectionListener(new SelectionAdapter() {
 			 @Override
 	            public void widgetSelected(SelectionEvent e) {
-				 if (typeList.getItem(typeList.getSelectionIndex()).equals("Primitive type"))
+				 if (typeList.getSelectionIndex()==0)
 					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) targetTable.addNewPrimitiveType(nameText.getText(),typeNameText.getText());  
-				 if (typeList.getItem(typeList.getSelectionIndex()).equals("DataType type"))
+				 if (typeList.getSelectionIndex()==1)
 					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) targetTable.addNewDataType(nameText.getText(),typeNameText.getText());
 //				 if (typeList.getItem(typeList.getSelectionIndex()).equals("Enumeration"))
 //					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) targetTable.addNewEnumeration(nameText.getText(),typeNameText.getText());				 
@@ -96,8 +110,8 @@ public class CreateDataTypeComposite extends Composite {
 		});	
 
 		oclTextComp = new StyledText(this,  SWT.V_SCROLL | SWT.BORDER);
-		oclTextComp.setText("\r\ncontext <Source>::<target> : <Target>\r\nderive : Target.allInstances()->select( t : Target | <CONDITION>)");
-		oclTextComp.setBounds(10, 205, 533, 66);
+		oclTextComp.setText(sourceTemplate);
+		oclTextComp.setBounds(10, 205, 533, 85);
 		
 		typeList = new Combo(this, SWT.READ_ONLY);
 		typeList.setItems(new String[] {"Primitive type", "Data type", "Enumeration"});
@@ -144,6 +158,27 @@ public class CreateDataTypeComposite extends Composite {
 				targetTable.removeLine();				 
 			 }
 		});		
+		
+		btnTargetTemplate = new Button(this, SWT.NONE);
+		btnTargetTemplate.setBounds(442, 299, 101, 25);
+		btnTargetTemplate.setText("Target Template");
+		btnTargetTemplate.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e){
+				oclTextComp.setText(targetTemplate);
+			}
+		});
+		
+		btnSourceTemplate = new Button(this, SWT.NONE);
+		btnSourceTemplate.setText("Source Template");
+		btnSourceTemplate.setBounds(335, 299, 101, 25);
+		btnSourceTemplate.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e){
+				oclTextComp.setText(sourceTemplate);
+			}
+		});
+		
 	}
 
 	public void enable(boolean value)

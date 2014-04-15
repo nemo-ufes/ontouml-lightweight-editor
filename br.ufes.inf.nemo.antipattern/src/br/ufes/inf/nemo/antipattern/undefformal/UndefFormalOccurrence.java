@@ -6,22 +6,15 @@ import java.util.HashMap;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
-import RefOntoUML.Category;
+import RefOntoUML.Characterization;
 import RefOntoUML.Classifier;
-import RefOntoUML.Collective;
 import RefOntoUML.FormalAssociation;
-import RefOntoUML.Generalization;
-import RefOntoUML.Kind;
+import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
-import RefOntoUML.Mode;
-import RefOntoUML.ObjectClass;
-import RefOntoUML.Phase;
-import RefOntoUML.Quantity;
+import RefOntoUML.Property;
 import RefOntoUML.Relator;
-import RefOntoUML.Role;
-import RefOntoUML.SubKind;
-import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -74,62 +67,7 @@ public class UndefFormalOccurrence extends AntipatternOccurrence {
 		return parser;
 	}
 
-	public boolean isBetweenRelatorAndObject()
-	{
-		return (source instanceof Relator && target instanceof ObjectClass) || (source instanceof ObjectClass && target instanceof Relator);
-	}
-	
-	public boolean isBetweenModeAndAnyOther()
-	{
-		return (source instanceof Mode && target instanceof RefOntoUML.Class) || (source instanceof RefOntoUML.Class && target instanceof Mode);
-	}
-
-	public boolean isBetweenModes()
-	{
-		return source instanceof Mode && target instanceof Mode;
-	}
-	
-	public boolean isBetweenQuantities()
-	{
-		return source instanceof Quantity && target instanceof Quantity;
-	}
-
-	public boolean isBetweenCollectives()
-	{
-		return source instanceof Collective && target instanceof Collective;
-	}
-	
-	public boolean isBetweenObjects()
-	{
-		return source instanceof ObjectClass && target instanceof ObjectClass;
-	}
-	
-	public boolean isBetweenCollectiveAndFunctional()
-	{
-		return (source instanceof Collective && isFunctionalComplex(target)) || (target instanceof Collective && isFunctionalComplex(source));
-	}
-	
-	public boolean isBetweenFunctionals()
-	{
-		return isFunctionalComplex(source) && isFunctionalComplex(target);
-	}
-	
-	public boolean isFunctionalComplex(Type type)
-	{
-		boolean isFunctionalComplex =false;
-		if (type instanceof Kind) isFunctionalComplex = true; 
-		if (type instanceof SubKind) isFunctionalComplex = true;
-		if (type instanceof Phase) isFunctionalComplex = true;
-		if (type instanceof Role) isFunctionalComplex = true;
-		if (type instanceof Category){
-			isFunctionalComplex = true;
-			for(Generalization gen: parser.getSpecializations((Classifier)type)){
-				if (!(gen.getSpecific() instanceof Kind)) isFunctionalComplex = false;
-			}
-		}
-		return isFunctionalComplex;
-	}
-	
+		
 	@Override
 	public String toString(){
 		String result = "Source: "+super.parser.getStringRepresentation(this.source)+"\n"+
@@ -147,15 +85,85 @@ public class UndefFormalOccurrence extends AntipatternOccurrence {
 	// OUTCOMING FIXES ======================================================================
 	
 	public void changeToMediation(Association assoc, Classifier source, Classifier target) {
-		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.MEDIATION, false));
+		Fix fixes = fixer.changeRelationStereotypeTo(assoc, RelationStereotype.MEDIATION, false);
+		
+		Mediation mediation = fixes.getAddedByType(Mediation.class).get(0);
+		
+		Property mediatedEnd = mediation.getMemberEnd().get(1);
+		Property relatorEnd = mediatedEnd.getOpposite();
+		
+		mediatedEnd.setIsReadOnly(true);
+		
+		if(mediatedEnd.getLower()==0)
+			fixer.changePropertyMultiplicity(mediatedEnd, 1, mediatedEnd.getUpper(), false);
+		if(relatorEnd.getLower()==0)
+			fixer.changePropertyMultiplicity(relatorEnd, 1, relatorEnd.getUpper(), false);
+		
+		fix.addAll(fixes);
 	}
 
 	public void changeToCharacterization(Association assoc, Classifier source, Classifier target) {
-		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.CHARACTERIZATION, false));
+		Fix fixes = fixer.changeRelationStereotypeTo(assoc, RelationStereotype.CHARACTERIZATION, false);
+		Characterization characterization = fixes.getAddedByType(Characterization.class).get(0);
+		
+		Property characterizedEnd = characterization.getMemberEnd().get(1);
+		characterizedEnd.setIsReadOnly(true);
+		fixer.changePropertyMultiplicity(characterizedEnd, 1, 1, false);
+		
+		Property modeEnd = characterizedEnd.getOpposite();
+		
+		if(modeEnd.getLower()==0)
+			fixer.changePropertyMultiplicity(modeEnd, 1, modeEnd.getUpper(), false);
+		
+		fix.addAll(fixes);
+		
 	}
 
 	public void changeToMaterial(Association assoc, Classifier source, Classifier target) {
 		fix.addAll(fixer.changeRelationStereotypeTo(assoc, RelationStereotype.MATERIAL, false));
+	}
+	
+	public void changeToMaterial(Association assoc, Relator relator, String relatorName, 
+			Mediation mediation1, String mediation1Name, String mediation1SourceMult, String mediation1TargetMult, 
+			Mediation mediation2, String mediation2Name, String mediation2SourceMult, String mediation2TargetMult) {
+		
+		Fix currentFix = fixer.changeRelationStereotypeTo(assoc, RelationStereotype.MATERIAL, false);
+		MaterialAssociation material = currentFix.getAddedByType(MaterialAssociation.class).get(0);
+		fix.addAll(currentFix);
+		
+		if(relator==null){
+			relator = (Relator) fixer.createClass(ClassStereotype.RELATOR);
+			relator.setName(relatorName);
+			fixer.copyContainer(material, relator);
+			fix.includeAdded(relator);
+		}
+		
+		if(mediation1==null){
+			currentFix = fixer.createAssociationBetween(RelationStereotype.MEDIATION, mediation1Name, relator, source);
+			mediation1 = currentFix.getAddedByType(Mediation.class).get(0);
+			fix.addAll(currentFix);
+			fixer.changePropertyMultiplicity(mediation1.getMemberEnd().get(0), mediation1SourceMult);
+			fixer.changePropertyMultiplicity(mediation1.getMemberEnd().get(1), mediation1TargetMult);
+		}
+		else{
+			fix.addAll(fixer.changePropertyMultiplicity(mediation1.getMemberEnd().get(0), mediation1SourceMult));
+			fix.addAll(fixer.changePropertyMultiplicity(mediation1.getMemberEnd().get(1), mediation1TargetMult));
+		}
+		
+		if(mediation2==null){
+			currentFix = fixer.createAssociationBetween(RelationStereotype.MEDIATION, mediation2Name, relator, target);
+			mediation2 = currentFix.getAddedByType(Mediation.class).get(0);
+			fix.addAll(currentFix);
+			fixer.changePropertyMultiplicity(mediation2.getMemberEnd().get(0), mediation2SourceMult);
+			fixer.changePropertyMultiplicity(mediation2.getMemberEnd().get(1), mediation2TargetMult);
+		}
+		else{
+			fix.addAll(fixer.changePropertyMultiplicity(mediation2.getMemberEnd().get(0), mediation2SourceMult));
+			fix.addAll(fixer.changePropertyMultiplicity(mediation2.getMemberEnd().get(1), mediation2TargetMult));
+		}
+		
+		fix.addAll(fixer.createAssociationBetween(RelationStereotype.DERIVATION, "", relator, material));
+		fixer.deriveMaterialMultiplicities(material,mediation1,mediation2);
 	}
 
 	public void changeToSubCollectionOfSrcWhole(Association assoc, Classifier source, Classifier target) {
@@ -217,6 +225,27 @@ public class UndefFormalOccurrence extends AntipatternOccurrence {
 		}
 		if (med != null){
 			fix.addAll(fixer.createNewMediatedTypes((Relator)med.relator(), newMediatedMap));
+		}
+	}
+	
+	public String getFormalName(){
+		String formalName = getFormal().getName();
+		if(formalName==null || formalName.trim().isEmpty())
+			formalName = "unnamed";
+		
+		return formalName;
+	}
+
+	public void removeFormal() {
+		fix.addAll(fixer.deleteElement(getFormal()));
+	}
+
+	public void changeToComponentOf(Classifier newSource, Classifier newTarget) {
+		
+		if(this.source.equals(newSource) && this.target.equals(newTarget))
+			fix.addAll(fixer.changeRelationStereotypeTo(formal, RelationStereotype.COMPONENTOF, false));
+		else if (this.source.equals(newTarget) && this.target.equals(newSource)){
+			fix.addAll(fixer.changeRelationStereotypeTo(formal, RelationStereotype.COMPONENTOF, true));
 		}
 	}
 

@@ -20,6 +20,7 @@ public class SetUpperMultComposite extends Composite {
 		
 		spinner = new Spinner(this, SWT.BORDER);
 		spinner.setBounds(10, 10, 47, 22);
+		spinner.setMinimum(2);
 		
 		lblCardinality = new Label(this, SWT.NONE);
 		lblCardinality.setBounds(63, 10, 364, 22);
