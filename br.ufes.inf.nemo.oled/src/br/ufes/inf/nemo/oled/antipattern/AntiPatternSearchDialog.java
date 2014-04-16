@@ -7,9 +7,10 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Toolkit;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultBoundedRangeModel;
@@ -299,7 +300,9 @@ public class AntiPatternSearchDialog extends JDialog {
 		
 		this.frame = frame;
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternSearchDialog.class.getResource("/resources/icons/antipattern36.png")));
+//		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternSearchDialog.class.getResource("/resources/icons/antipattern36.png")));
+		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
+		setIconImage(icon);
 		setTitle("Anti-Pattern Identification");
 		setBounds(100, 100, 854, 511);
 		 
