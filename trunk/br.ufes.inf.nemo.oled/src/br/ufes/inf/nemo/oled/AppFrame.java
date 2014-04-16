@@ -33,7 +33,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	
 	private transient AppMenu mainMenu;
 	private transient AppToolbar mainToolBar;
-	private transient AppSecondToolbar secondaryToolBar;
 	
 	private transient ToolManager toolManager;
 	private transient DiagramManager diagramManager;
@@ -104,14 +103,10 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		mainToolBar = new AppToolbar();
 		mainToolBar.addCommandListener(this);
 		mainToolBar.addCommandListener(diagramManager.getEditorDispatcher());
-		secondaryToolBar = new AppSecondToolbar(this);
-		secondaryToolBar.addCommandListener(this);
-		secondaryToolBar.addCommandListener(diagramManager.getEditorDispatcher());		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout(5,5));
 		panel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		panel.add(mainToolBar.getToolbar(), BorderLayout.WEST);
-		panel.add(secondaryToolBar.getToolbar(), BorderLayout.EAST);
+		panel.add(mainToolBar.getToolbar(), BorderLayout.WEST);		
 		this.getContentPane().add(panel, BorderLayout.NORTH);
 		//this.getContentPane().add(mainToolBar.getToolbar(), BorderLayout.NORTH);
 	}
@@ -135,11 +130,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		return mainToolBar;
 	}
 	
-	public AppSecondToolbar getSecondaryBar()
-	{
-		return secondaryToolBar;
-	}
-	
 	public static int GetScreenWorkingWidth() {
 	    return java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
 	}
@@ -159,7 +149,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()-100));
 		
 		infoManager= new InfoManager(this, null);
-		infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,100));
+		infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,130));
 		
 		projectBrowser = new ProjectBrowser(diagramManager.getFrame(),null);
 		projectBrowser.setPreferredSize(new Dimension(230,250));
@@ -494,7 +484,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	
 	public void focusOnOclEditor()
 	{		
-		infoManager.setSelectedIndex(3);		
+		infoManager.setSelectedIndex(4);		
 	}
 	
 	public boolean isFocusedOnOclEditor()

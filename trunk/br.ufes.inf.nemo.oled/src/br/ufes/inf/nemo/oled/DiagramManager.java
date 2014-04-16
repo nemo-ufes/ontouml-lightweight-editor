@@ -81,6 +81,7 @@ import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.LineStyle;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
+import br.ufes.inf.nemo.oled.finder.ElementFound;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
@@ -1773,20 +1774,24 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{		
 		frame.focusOnOclEditor();
 	}
-
-	/**
-	 * Find (Match String) in the Project Browser
-	 */
-	public void find() 
-	{
-		String text = frame.getSecondaryBar().getText().toLowerCase();	    		
-		if(text!=null)
-		{
-			ProjectBrowser pbrowser = ProjectBrowser.getProjectBrowserFor(getFrame(), getCurrentProject());
-			pbrowser.find(text);		   
+	
+	/** Strictly find by name */
+	public ArrayList<ElementFound> strictlyFindByName(String text)
+	{		
+		ArrayList<ElementFound> result = new ArrayList<ElementFound>();
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
+		for(EObject eobj: refparser.getAllInstances(EObject.class)){
+			if (eobj instanceof NamedElement){
+				String name = ((NamedElement)eobj).getName();
+				if(name!=null){
+					if(name.trim().compareToIgnoreCase(text)==0) result.add(new ElementFound(eobj));
+					if(name.trim().contains(text.trim())) result.add(new ElementFound(eobj));
+				}
+			}
 		}
+		return result;
 	}
-
+	
 	/**
 	 * Search for warnings in the model
 	 */

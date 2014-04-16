@@ -26,8 +26,8 @@ import java.util.Map;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
-import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.AppMenu;
+import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.antipattern.AntiPatternSearchDialog;
 import br.ufes.inf.nemo.oled.dialog.AutoCompletionDialog;
@@ -78,10 +78,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("UNDO", new MethodCall(
 					getClass().getMethod("undo")));
-
-			selectorMap.put("FIND", new MethodCall(
-					getClass().getMethod("find")));
-
+			
 			selectorMap.put("REDRAW", new MethodCall(
 					DiagramEditor.class.getMethod("redraw")));
 
@@ -385,13 +382,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		if (manager.isProjectLoaded()==false) return;
 
 		if(manager.getCurrentDiagramEditor()!=null) manager.getCurrentDiagramEditor().undo();
-	}
-
-	public void find()
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		manager.find();
 	}
 
 	public void derivedByUnion()
