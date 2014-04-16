@@ -24,6 +24,9 @@ public class FinderScrollTable extends JScrollPane{
 	private FinderTableModel tablemodel;
 	private ArrayList<ElementFound> foundList = new ArrayList<ElementFound>();
 	
+	public JTable getTable() { return table; }
+	public ArrayList<ElementFound> getResult() { return foundList; }
+	
 	public FinderScrollTable()
 	{				
 		String[] columnNames = {"Name","Stereotype","Path"};

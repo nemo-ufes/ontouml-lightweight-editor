@@ -1780,15 +1780,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{		
 		ArrayList<ElementFound> result = new ArrayList<ElementFound>();
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
-		for(EObject eobj: refparser.getAllInstances(EObject.class)){
-			if (eobj instanceof NamedElement){
-				String name = ((NamedElement)eobj).getName();
-				if(name!=null){
-					if(name.trim().toLowerCase().compareToIgnoreCase(text)==0) result.add(new ElementFound(eobj));
-					if(name.trim().toLowerCase().contains(text.toLowerCase().trim())) result.add(new ElementFound(eobj));
+		if(refparser!=null){
+			for(EObject eobj: refparser.getAllInstances(EObject.class)){
+				if (eobj instanceof NamedElement){
+					String name = ((NamedElement)eobj).getName();
+					if(name!=null){
+						if(name.trim().toLowerCase().compareToIgnoreCase(text)==0) result.add(new ElementFound(eobj));
+						if(name.trim().toLowerCase().contains(text.toLowerCase().trim())) result.add(new ElementFound(eobj));
+					}
 				}
 			}
-		}
+		}		
 		return result;
 	}
 	

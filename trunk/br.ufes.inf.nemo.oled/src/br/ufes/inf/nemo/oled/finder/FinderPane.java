@@ -3,9 +3,15 @@ package br.ufes.inf.nemo.oled.finder;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JPanel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 
 import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -55,10 +61,62 @@ public class FinderPane extends JPanel{
 				find();
 			}
 		});
+		
+		JTableHeader header = finderScrollTable.getTable().getTableHeader() ;		 
+		header.addMouseListener(new MouseAdapter() {
+		    public void mouseClicked(MouseEvent e) 
+		    {
+		      JTableHeader h = (JTableHeader)e.getSource() ;
+		      int nColumn = h.columnAtPoint(e.getPoint());		   
+		      if (nColumn != -1) sortColumn(nColumn, h.getTable().getModel());
+		    }		 
+		    public void sortColumn(int nColumn, TableModel model)
+		    {		      
+		    	if(nColumn==0){
+		    		resetResult();
+		    		Collections.sort(finderScrollTable.getResult(),new NameComparator());
+		    		finderScrollTable.setData(finderScrollTable.getResult());
+		    		
+		    	}
+		    	if(nColumn==1){
+		    		resetResult();
+		    		Collections.sort(finderScrollTable.getResult(),new StereotypeComparator());
+		    		finderScrollTable.setData(finderScrollTable.getResult());
+		    	}
+		    	if(nColumn==2){
+		    		resetResult();
+		    		Collections.sort(finderScrollTable.getResult(),new PathComparator());
+		    		finderScrollTable.setData(finderScrollTable.getResult());
+		    	}
+		    }
+		  }
+		);
+		
 		repaint(); 
 		validate();
 	}
 	
+	public class NameComparator implements Comparator<ElementFound> 
+    {
+        @Override
+        public int compare(ElementFound o1, ElementFound o2) {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+    }
+	public class StereotypeComparator implements Comparator<ElementFound> 
+    {
+        @Override
+        public int compare(ElementFound o1, ElementFound o2) {
+            return o1.getType().compareToIgnoreCase(o2.getType());
+        }
+    }
+	public class PathComparator implements Comparator<ElementFound> 
+    {
+        @Override
+        public int compare(ElementFound o1, ElementFound o2) {
+            return o1.getPath().compareToIgnoreCase(o2.getPath());
+        }
+    }
 	public void find() 
 	{
 		resetResult();		
