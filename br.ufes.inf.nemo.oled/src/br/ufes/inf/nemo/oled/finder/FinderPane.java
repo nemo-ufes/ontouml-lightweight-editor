@@ -1,6 +1,8 @@
 package br.ufes.inf.nemo.oled.finder;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
@@ -23,6 +26,7 @@ public class FinderPane extends JPanel{
 	private UmlProject project;
 	private FinderScrollTable finderScrollTable;
 	private FinderHeadPane finderHeadPane;
+	private JLabel status;
 	
 	public FinderPane(UmlProject project)
 	{
@@ -40,6 +44,7 @@ public class FinderPane extends JPanel{
 	 */
 	public FinderPane() 
 	{
+		setBackground(Color.LIGHT_GRAY);
 		setLayout(new BorderLayout(0, 0));
 		
 		finderHeadPane = new FinderHeadPane();
@@ -47,6 +52,11 @@ public class FinderPane extends JPanel{
 		
 		finderScrollTable = new FinderScrollTable();
 		add(finderScrollTable, BorderLayout.CENTER);
+		
+		status = new JLabel("");
+		status.setBackground(Color.LIGHT_GRAY);
+		add(status, BorderLayout.SOUTH);
+		status.setPreferredSize(new Dimension(450, 20));
 		
 		finderHeadPane.getRunButton().addActionListener(new ActionListener() 
 		{
@@ -123,6 +133,7 @@ public class FinderPane extends JPanel{
 		// find
 		ArrayList<ElementFound> result = ProjectBrowser.frame.getDiagramManager().strictlyFindByName(finderHeadPane.getText());
 		finderScrollTable.setData(result);
+		status.setText("  "+result.size()+" items found.");
 	}
 	
 	public void resetResult() { finderScrollTable.reset(); repaint(); validate();}	
