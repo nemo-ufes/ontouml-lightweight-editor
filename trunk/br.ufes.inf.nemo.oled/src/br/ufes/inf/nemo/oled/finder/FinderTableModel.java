@@ -12,7 +12,7 @@ public class FinderTableModel extends AbstractTableModel
 		this.data=data;
 	}
 	
-	private String[] columnNames = {"Name","Stereotype","Path"};
+	private String[] columnNames = {"Name","Stereotype","Location"};
     private Object[][] data = {};
 
     public int getColumnCount() {

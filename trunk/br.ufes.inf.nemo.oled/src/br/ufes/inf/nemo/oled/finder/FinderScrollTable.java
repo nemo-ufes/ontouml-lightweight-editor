@@ -29,7 +29,7 @@ public class FinderScrollTable extends JScrollPane{
 	
 	public FinderScrollTable()
 	{				
-		String[] columnNames = {"Name","Stereotype","Path"};
+		String[] columnNames = {"Name","Stereotype","Location"};
         Object[][] data = {};
         
 	    setMinimumSize(new Dimension(0, 0));
@@ -106,7 +106,7 @@ public class FinderScrollTable extends JScrollPane{
 			i++;
 		}
 		
-		String[] columnNames = {"Name","Stereotype","Path"};
+		String[] columnNames = {"Name","Stereotype","Location"};
 		tablemodel = new FinderTableModel(columnNames,data);
 		
 		table.setModel(tablemodel);
