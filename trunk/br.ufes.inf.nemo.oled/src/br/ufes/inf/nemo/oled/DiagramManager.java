@@ -1784,8 +1784,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if (eobj instanceof NamedElement){
 				String name = ((NamedElement)eobj).getName();
 				if(name!=null){
-					if(name.trim().compareToIgnoreCase(text)==0) result.add(new ElementFound(eobj));
-					if(name.trim().contains(text.trim())) result.add(new ElementFound(eobj));
+					if(name.trim().toLowerCase().compareToIgnoreCase(text)==0) result.add(new ElementFound(eobj));
+					if(name.trim().toLowerCase().contains(text.toLowerCase().trim())) result.add(new ElementFound(eobj));
 				}
 			}
 		}
