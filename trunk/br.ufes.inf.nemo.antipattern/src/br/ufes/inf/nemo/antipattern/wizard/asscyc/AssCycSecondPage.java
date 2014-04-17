@@ -33,30 +33,36 @@ public class AssCycSecondPage  extends AssCycPage {
 	
 		setControl(container);			
 		
-		lblConsiderInstancesOf = new Text(container, SWT.WRAP | SWT.V_SCROLL);
+		lblConsiderInstancesOf = new Text(container, SWT.WRAP | SWT.V_SCROLL | SWT.READ_ONLY);
 		lblConsiderInstancesOf.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		lblConsiderInstancesOf.setBounds(10, 10, 554, 148);
 		String text = "Consider instances of\n\n";
 		int i = 0;
-		for(RefOntoUML.Class c: asscyc.getCycle()){
-			if(i!=asscyc.getCycle().size()-1) text += "- t"+(i+1)+": \""+c.getName()+"\"\n";
+		for(RefOntoUML.Class c: occurrence.getCycle()){
+			if(i!=occurrence.getCycle().size()-1) text += "- t"+(i+1)+": \""+c.getName()+"\"\n";
 			else text+= "- t"+(i+1)+": \""+c.getName()+"\"\n";
 			i++;
 		}
-		text+= "\nIf t1 is connected to t2, t2 is connected to t3, and so on, must tn be connected to t1 ?";		
+		text+= "\nIf t1 is connected to t2, t2 is connected to t3, and so on, must t"+occurrence.getCycle().size()+" be connected to t1 ?";		
 		lblConsiderInstancesOf.setText(text);
 		
 		btnAlways = new Button(container, SWT.RADIO);
 		btnAlways.setBounds(10, 164, 554, 16);
-		btnAlways.setText("Always. Instance level cycle is mandatory");
+		btnAlways.setText("Always, the cycle is mandatory");
 		
 		btnNever = new Button(container, SWT.RADIO);
 		btnNever.setBounds(10, 186, 554, 16);
-		btnNever.setText("Never. Instance level cycle is forbidden");
+		btnNever.setText("Never, the level cycle is forbidden");
 		
 		btnPossibly = new Button(container, SWT.RADIO);
 		btnPossibly.setBounds(10, 208, 554, 16);
-		btnPossibly.setText("Possibly. Never mind, the model is correct");
+		btnPossibly.setText("Possibly, there restriction about it");
+		
+		setAsEnablingNextPageButton(btnAlways);
+		setAsEnablingNextPageButton(btnNever);
+		setAsEnablingNextPageButton(btnPossibly);
+		
+		setPageComplete(false);
 	}
 
 	public static String getStereotype(EObject element)
@@ -74,17 +80,17 @@ public class AssCycSecondPage  extends AssCycPage {
 		if(btnAlways.getSelection())
 		{
 			//Action =============================
-			AssCycAction newAction = new AssCycAction(asscyc);
+			AssCycAction newAction = new AssCycAction(occurrence);
 			newAction.setCycleMandatory();
-			getAssCycWizard().replaceAction(0,newAction);	
+			getAntipatternWizard().replaceAction(0,newAction);	
 			//======================================
 		}
 		if(btnNever.getSelection())
 		{
 			//Action =============================
-			AssCycAction newAction = new AssCycAction(asscyc);
+			AssCycAction newAction = new AssCycAction(occurrence);
 			newAction.setCycleForbidden(); 
-			getAssCycWizard().replaceAction(0,newAction);	
+			getAntipatternWizard().replaceAction(0,newAction);	
 			//======================================
 		}
 		if(btnPossibly.getSelection())
@@ -92,6 +98,6 @@ public class AssCycSecondPage  extends AssCycPage {
 			
 		}
 		
-		return getAssCycWizard().getFinishing();
+		return getAntipatternWizard().getFinishing();
 	}
 }

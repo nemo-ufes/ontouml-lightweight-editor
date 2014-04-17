@@ -369,4 +369,22 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		}
 		fix.includeRule(generateCycleOcl(CLOSED, parser));
 	}
+	
+	public String getClassCycleString(){
+		String result = "";
+		
+		for (int i = 0; i < cycle.size(); i++) {
+			if(i==0){
+				result += "<"+cycle.get(i).getName()+">";
+			}
+			else if (i==cycle.size()-1){
+				result += " and <"+cycle.get(i).getName()+">";
+			}
+			else{
+				result += ", <"+cycle.get(i).getName()+">";
+			}	
+		}
+		
+		return result;
+	}
 }

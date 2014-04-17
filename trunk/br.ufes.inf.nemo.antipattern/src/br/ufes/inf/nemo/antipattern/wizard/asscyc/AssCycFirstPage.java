@@ -5,6 +5,7 @@ import java.text.Normalizer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
@@ -19,7 +20,7 @@ import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
 
 public class AssCycFirstPage  extends AssCycPage {
 		
-	private Label lblIsItAny;
+	private StyledText questionText;
 	private Button btnYes;
 	private Button btnNo;
 	private Label lblDerivedAssociation;
@@ -38,54 +39,96 @@ public class AssCycFirstPage  extends AssCycPage {
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 
-		setControl(container);			
+		setControl(container);
+		container.setLayout(null);
 
-		lblIsItAny = new Label(container, SWT.WRAP);
-		lblIsItAny.setBounds(10, 10, 554, 87);
-		lblIsItAny.setText("Is it any of the associations in the cycle derived from the others? For an example of derived association consider the domain of physiology.  The human body is composed of organ systems, such as the circulatory system and the digestive system. Each system is composed of organs, like the heart, lungs and stomach. The part-hood relation that holds between human body and organ is derived from the composition from human body to organ system and from organ system to organ. ");
+		questionText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.V_SCROLL);
+		questionText.setBounds(10, 10, 554, 233);
+		questionText.setJustify(true);
+		questionText.setBackground(questionText.getParent().getBackground());
+		questionText.setText(
+				"To start the analysis of this Association Cycle anti-pattern, we first remember the concept of derived associations, inherit by OntoUML from UML." +
+				"\n\n" +
+				"In a brief description, derived associations are the ones that can be calculated from other associations and attributes. " +
+				"An example of a derived association is “older than”, which can hold between two people. " +
+				"Every instance of the association can be computed by the comparing people’s ages. " +
+				"Another example can be found by considering the part-whole relations that hold in a Car. " +
+				"A Car is composed by an Engine, which in turn is composed by an Exhaust System. " +
+				"The part-whole relation that holds between a Car and an Exhaust System is derived from the relations between the Car and the Engine and between the Engine and the Exhaust System." +
+				"\n\n" +
+				"In your model, we identified a cycle of associations containing the classes: "+occurrence.getClassCycleString()+"."+
+				"\n\n" +
+				"That suggests that one of the associations may be derived from the others. Is that the case?");
   	  
-		SelectionAdapter listener = new SelectionAdapter() {
+		SelectionAdapter yesListener = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
 	    	  assocCombo.setVisible(true);
 	    	  lblDerivedAssociation.setVisible(true);
 	    	  composite.setVisible(true);
+	    	  
+	    	  if(assocCombo.getSelectionIndex()!=-1){
+	    		  if(!isPageComplete())
+		    		  setPageComplete(true);
+	    	  }
+	    	  else{
+	    		  if(isPageComplete())
+		    		  setPageComplete(false);
+	    	  }
 	      }
 	    };
 
-		SelectionAdapter listener1 = new SelectionAdapter() {
+		SelectionAdapter noListener = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
 	    	  assocCombo.setVisible(false);
 	    	  lblDerivedAssociation.setVisible(false);
 	    	  composite.setVisible(false);
+	    	  
+	    	  if(!isPageComplete())
+	    		  setPageComplete(true);
 	      }
 	    };
+	    
+	    SelectionAdapter comboListener = new SelectionAdapter() {
+		      public void widgetSelected(SelectionEvent e) {
+		    	  if(assocCombo.getSelectionIndex()!=-1){
+			    	  if(!isPageComplete())
+			    		  setPageComplete(true);
+		    	  }else{
+		    		  if(isPageComplete())
+			    		  setPageComplete(false);
+		    	  }
+		      }
+		    };
 		    
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 125, 554, 16);
-		btnYes.setText("Yes. Association is derived");
-		btnYes.addSelectionListener(listener);
+		btnYes.setBounds(10, 271, 554, 16);
+		btnYes.setText("Yes, one association is derived");
+		btnYes.addSelectionListener(yesListener);
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 103, 554, 16);
-		btnNo.setText("No. All associations are intentional");
-		btnNo.addSelectionListener(listener1);
+		btnNo.setBounds(10, 249, 554, 16);
+		btnNo.setText("No, none of the associations are derived");
+		btnNo.addSelectionListener(noListener);
 		
 		composite = new Composite(container, SWT.BORDER);
-		composite.setBounds(10, 159, 554, 64);
+		composite.setBounds(10, 293, 554, 64);
 		
 		lblDerivedAssociation = new Label(composite, SWT.NONE);
 		lblDerivedAssociation.setBounds(10, 10, 530, 16);
-		lblDerivedAssociation.setText("Choose which association is derived:");
+		lblDerivedAssociation.setText("Please, choose which association is derived:");
 		
 		assocCombo = new Combo(composite, SWT.READ_ONLY);
 		assocCombo.setBounds(10, 32, 530, 23);		
-		for(Relationship rel: asscyc.getCycleRelationship()){
+		for(Relationship rel: occurrence.getCycleRelationship()){
 			assocCombo.add(getStereotype(rel)+" "+((NamedElement)rel).getName()+": "+((Association)rel).getMemberEnd().get(0).getType().getName()+"->"+((Association)rel).getMemberEnd().get(1).getType().getName());
 		}
+		assocCombo.addSelectionListener(comboListener);
 		
 		lblDerivedAssociation.setVisible(false);
 		assocCombo.setVisible(false);
 		composite.setVisible(false);
+		
+		setPageComplete(false);
 	}
 	
 	public static String getStereotype(EObject element)
@@ -102,22 +145,22 @@ public class AssCycFirstPage  extends AssCycPage {
 	{	
 		if (btnNo.getSelection())
 		{
-			return getAssCycWizard().getSecondPage();
+			return getAntipatternWizard().getSecondPage();
 		}
 		if(btnYes.getSelection())
 		{
 			if(assocCombo.getSelectionIndex()>=0)
 			{
-				Association assoc = (Association)asscyc.getCycleRelationship().get(assocCombo.getSelectionIndex());
+				Association assoc = (Association)occurrence.getCycleRelationship().get(assocCombo.getSelectionIndex());
 				//Action =============================
-				AssCycAction newAction = new AssCycAction(asscyc);
+				AssCycAction newAction = new AssCycAction(occurrence);
 				newAction.setDeriveAssociation(assoc); 
-				getAssCycWizard().replaceAction(0,newAction);	
+				getAntipatternWizard().replaceAction(0,newAction);	
 				//======================================
 			}				
 		}
 		
-		return getAssCycWizard().getFinishing();
+		return getAntipatternWizard().getFinishing();
 	}
 }
 

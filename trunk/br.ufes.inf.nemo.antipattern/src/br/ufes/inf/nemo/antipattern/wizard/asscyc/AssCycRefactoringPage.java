@@ -5,7 +5,12 @@ import java.text.Normalizer;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 import RefOntoUML.Association;
 import RefOntoUML.NamedElement;
@@ -13,9 +18,6 @@ import RefOntoUML.Relationship;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Button;
 
 public class AssCycRefactoringPage extends RefactoringPage {
 	
@@ -24,8 +26,7 @@ public class AssCycRefactoringPage extends RefactoringPage {
 	private Combo assocCombo;
 	private Button btnEnforce;
 	private Button btnForbid;
-	private Composite composite_1;
-	private Composite composite;
+	private Button btnDerive;
 		
 	/**
 	 * Create the wizard.
@@ -52,6 +53,26 @@ public class AssCycRefactoringPage extends RefactoringPage {
 	    return type;
 	}
 	
+	SelectionAdapter enableNextPageListener = new SelectionAdapter() {
+		
+		@Override
+		public void widgetSelected(SelectionEvent arg0) {
+			if(btnDerive.getSelection())
+				assocCombo.setEnabled(true);
+			else
+				assocCombo.setEnabled(false);
+			
+			if((btnDerive.getSelection() && assocCombo.getSelectionIndex()!=-1)|| btnForbid.getSelection() || btnEnforce.getSelection()){
+				if(!isPageComplete())
+					setPageComplete(true);
+			}
+			else{
+				if(isPageComplete())
+					setPageComplete(false);
+			}
+		}
+	};
+	
 	/**
 	 * Create contents of the wizard.
 	 * @param parent
@@ -60,30 +81,41 @@ public class AssCycRefactoringPage extends RefactoringPage {
 	{
 		Composite container = new Composite(parent, SWT.NONE);
 
-		setControl(container);				
+		setControl(container);
+
+		lblCreateOclDerivation = new Label(container, SWT.NONE);
+		lblCreateOclDerivation.setBounds(10, 119, 554, 16);
+		lblCreateOclDerivation.setText("Please, choose the association to be derived:");
 		
-		composite = new Composite(container, SWT.BORDER);
-		composite.setBounds(10, 80, 554, 73);
+		assocCombo = new Combo(container, SWT.READ_ONLY);
+		assocCombo.setBounds(10, 141, 554, 23);
+		assocCombo.addSelectionListener(enableNextPageListener);
 		
-		lblCreateOclDerivation = new Label(composite, SWT.NONE);
-		lblCreateOclDerivation.setText("Create OCL derivation to the following derived association:");
-		lblCreateOclDerivation.setBounds(10, 10, 530, 16);
-				
-		assocCombo = new Combo(composite, SWT.READ_ONLY);
-		assocCombo.setBounds(10, 32, 530, 23);		
 		for(Relationship rel: asscyc.getCycleRelationship()){
 			assocCombo.add(getStereotype(rel)+" "+((NamedElement)rel).getName()+": "+((Association)rel).getMemberEnd().get(0).getType().getName()+"->"+((Association)rel).getMemberEnd().get(1).getType().getName());
 		}
-		composite_1 = new Composite(container, SWT.BORDER);
-		composite_1.setBounds(10, 10, 554, 64);
 		
-		btnEnforce = new Button(composite_1, SWT.RADIO);
-		btnEnforce.setBounds(10, 10, 534, 16);
-		btnEnforce.setText("Create OCL invariant enforcing the instance level cycle");
+		btnDerive = new Button(container, SWT.RADIO);
+		btnDerive.setBounds(10, 87, 554, 16);
+		btnDerive.setText("Create OCL derivation rule for one of the associations");
+		btnDerive.addSelectionListener(enableNextPageListener);
 		
-		btnForbid = new Button(composite_1, SWT.RADIO);
-		btnForbid.setBounds(10, 32, 534, 16);
-		btnForbid.setText("Create OCL invariant fobidding the instance level cycle");
+		btnForbid = new Button(container, SWT.RADIO);
+		btnForbid.setBounds(10, 65, 554, 16);
+		btnForbid.setText("Create OCL invariant FORBIDDING the instance level cycle");
+		btnForbid.addSelectionListener(enableNextPageListener);
+		
+		btnEnforce = new Button(container, SWT.RADIO);
+		btnEnforce.setBounds(10, 43, 554, 16);
+		btnEnforce.setText("Create OCL invariant ENFORCING the instance level cycle");
+		btnEnforce.addSelectionListener(enableNextPageListener);
+		
+		Label lblPleaseChooseWhich = new Label(container, SWT.NONE);
+		lblPleaseChooseWhich.setBounds(10, 10, 554, 15);
+		lblPleaseChooseWhich.setText("Please choose which action to perform on the model:");
+		
+		setPageComplete(false);
+		assocCombo.setEnabled(false);
 	}
 
 	@Override
@@ -91,7 +123,7 @@ public class AssCycRefactoringPage extends RefactoringPage {
 	{
 		((AssCycWizard)getWizard()).removeAllActions();
 		
-		if (assocCombo.getSelectionIndex()>=0)
+		if (btnDerive.getSelection() && assocCombo.getSelectionIndex()>=0)
 		{
 			Association assoc = (Association)asscyc.getCycleRelationship().get(assocCombo.getSelectionIndex());
 			//Action =============================

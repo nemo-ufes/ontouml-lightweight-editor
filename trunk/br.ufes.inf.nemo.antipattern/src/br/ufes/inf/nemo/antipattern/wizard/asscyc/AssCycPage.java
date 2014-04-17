@@ -1,32 +1,22 @@
 package br.ufes.inf.nemo.antipattern.wizard.asscyc;
 
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.widgets.Composite;
-
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
 
 
-public class AssCycPage extends WizardPage {
+public abstract class AssCycPage extends AntipatternWizardPage<AssCycOccurrence, AssCycWizard> {
 
-	protected AssCycOccurrence asscyc;	
+	protected AssCycOccurrence occurrence;	
 	
 	/**
 	 * Create the wizard.
 	 */
 	public AssCycPage(AssCycOccurrence asscyc) 
 	{
-		super("AssCycPage");		
-		this.asscyc = asscyc;		
+		super(asscyc);		
+		this.occurrence = asscyc;		
 		setTitle(AssCycAntipattern.getAntipatternInfo().getName());		
 	}
-	
-	public AssCycWizard getAssCycWizard(){
-		return (AssCycWizard)getWizard();
-	}
 
-	@Override
-	public void createControl(Composite arg0) {
-		
-	}
 }
