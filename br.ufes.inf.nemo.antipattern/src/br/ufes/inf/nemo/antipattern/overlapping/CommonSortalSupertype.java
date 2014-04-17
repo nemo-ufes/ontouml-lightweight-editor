@@ -69,7 +69,7 @@ public class CommonSortalSupertype extends OverlappingGroup {
 	@Override
 	public String toString(){
 		String result =	"Overllaping Group: Sortals with Common Identity Provider" +
-						"\nIdentity Provider: "+identityProvider.getName()+
+						"\nIdentity Provider: "+getIdentityProviderName()+
 						"\nCommon Supertypes: ";
 		
 		for (Classifier parent : this.commonSupertypes)
@@ -141,6 +141,19 @@ public class CommonSortalSupertype extends OverlappingGroup {
 
 	public ArrayList<GeneralizationSet> getGenSets() {
 		return genSets;
+	}
+	
+	public String getIdentityProviderName(){
+		if(identityProvider == null)
+			return "None";
+		
+		if(identityProvider.getName()==null)
+			return "Null Name";
+		
+		if(identityProvider.getName().trim().isEmpty())
+			return "Unnamed";
+		
+		return identityProvider.getName();
 	}
 	
 }
