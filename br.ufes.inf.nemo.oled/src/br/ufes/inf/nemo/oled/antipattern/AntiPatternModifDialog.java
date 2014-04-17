@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.antipattern;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -17,6 +18,7 @@ import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.oled.AppFrame;
 
 public class AntiPatternModifDialog extends Dialog {
@@ -59,10 +61,10 @@ public class AntiPatternModifDialog extends Dialog {
 	
 	public void addFix()
 	{		
-		for(Object obj: fix.getModified()) modifiedList.add(obj.toString());
-		for(Object obj: fix.getAdded()) addedList.add(obj.toString());
-		for(Object obj: fix.getDeleted()) removedList.add(obj.toString());
-		rulesText.setText(rulesText.getText()+"\n"+fix.getRulesString());
+		for(Object obj: fix.getModified()) modifiedList.add(OntoUMLNameHelper.getCompleteName((EObject) obj));
+		for(Object obj: fix.getAdded()) addedList.add(OntoUMLNameHelper.getCompleteName((EObject) obj));
+		for(Object obj: fix.getDeleted()) removedList.add(OntoUMLNameHelper.getCompleteName((EObject) obj));
+		rulesText.setText(rulesText.getText()+fix.getRulesString()+"\n\n");
 		
 		int qtde= modifiedList.getItemCount()+addedList.getItemCount()+removedList.getItemCount();
 		if (!fix.getRulesString().isEmpty()) qtde++;
