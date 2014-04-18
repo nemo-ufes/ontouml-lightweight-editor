@@ -211,7 +211,7 @@ public class OntoUMLNameHelper {
 		
 		if (elem instanceof Generalization)	{
 			Generalization g = (Generalization) elem;
-			return getTypeName(elem, true) +" " + getTypeAndName(g.getSpecific(), true) + " -> "+getTypeAndName(g.getGeneral(), true);
+			return getTypeName(elem, true) +" {" + getTypeAndName(g.getSpecific(), true) + " -> "+getTypeAndName(g.getGeneral(), true)+ "}";
 		}
 		
 		if (elem instanceof Class || elem instanceof DataType) {
@@ -220,7 +220,7 @@ public class OntoUMLNameHelper {
 		
 		if (elem instanceof Association){
 			Association a = (Association) elem;
-			return getTypeAndName(elem,true)+" { "+getCommonName(a.getMemberEnd().get(0).getType())+" -> "+getCommonName(a.getMemberEnd().get(1).getType()) + " }";
+			return getTypeAndName(elem,true)+" {"+getCommonName(a.getMemberEnd().get(0).getType())+" -> "+getCommonName(a.getMemberEnd().get(1).getType()) + "}";
 		}
 		
 		if(elem instanceof GeneralizationSet){
