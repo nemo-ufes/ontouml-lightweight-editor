@@ -69,6 +69,7 @@ public class RepRelAntipattern extends Antipattern<RepRelOccurrence> {
 			"rigid object type, stereotyped as «kind», «quantity», «collective», «subkind» or «category».",
 			oclQuery); 
 	
+	@Deprecated
 	public ArrayList<RepRelOccurrence> identifyOCL() {
 		ArrayList<Relator> query_result;
 		
