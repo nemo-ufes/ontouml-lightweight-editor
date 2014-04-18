@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class ReflexivityPage extends BinOverPage {
 
@@ -31,16 +32,16 @@ public class ReflexivityPage extends BinOverPage {
 		Composite container = new Composite(parent, SWT.NULL);
 		setControl(container);
 
-		setDescription("Binary Relation: "+getRelationName()+
+		setDescription("Binary Relation: "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+
 				   "\nCurrent Stereotype: "+getBinOverWizard().getCurrentStereotypeName(this));	
 		
-		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
+		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
 		styledText.setText(	"Now, we begin the analysis focusing on the properties of binary relations. We start with reflexivity." +
 							"\r\n\r\nWhat can be said about an individual being connected to itself through relation " +
-							"<"+getRelationName()+">?");
+							OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+"?");
 		styledText.setJustify(true);
 		styledText.setBackground(container.getBackground());
-		styledText.setBounds(10, 10, 554, 65);
+		styledText.setBounds(10, 10, 754, 65);
 		
 		btnReflexive = new Button(container, SWT.RADIO);
 		btnReflexive.setBounds(10, 81, 554, 16);
@@ -74,6 +75,8 @@ public class ReflexivityPage extends BinOverPage {
 	
 	@Override
 	public IWizardPage getNextPage(){
+		if(!btnReflexive.getSelection() && !btnIrreflexive.getSelection() && !btnNonReflexive.getSelection())
+			return null;
 		
 		if(btnReflexive.getSelection()){
 			getBinOverWizard().reflexivity = BinaryPropertyValue.REFLEXIVE;
@@ -84,17 +87,11 @@ public class ReflexivityPage extends BinOverPage {
 		else if(btnNonReflexive.getSelection()) {
 			getBinOverWizard().reflexivity = BinaryPropertyValue.NON_REFLEXIVE;
 		}
-		else {
-			getBinOverWizard().reflexivity = BinaryPropertyValue.NONE;
-		}
-		
-		getBinOverWizard().removeAllActions(0, BinOverAction.Action.SET_BINARY_PROPERTY);
-		BinOverAction action = new BinOverAction(binOver);
-		action.setBinaryProperty(getBinOverWizard().reflexivity);
-		getBinOverWizard().addAction(0, action);
 		
 		if (getBinOverWizard().possibleStereotypes(getBinOverWizard().reflexivity).contains(binOver.getAssociation().getClass())){
-			getBinOverWizard().removeAllActions(1);
+			BinOverAction action = new BinOverAction(binOver);
+			action.setBinaryProperty(getBinOverWizard().reflexivity);
+			getBinOverWizard().replaceAction(1, action);
 			return getBinOverWizard().getSymmetryPage();
 		}
 		else{

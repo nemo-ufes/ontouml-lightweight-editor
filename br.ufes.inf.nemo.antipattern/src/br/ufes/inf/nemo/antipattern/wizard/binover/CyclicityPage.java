@@ -13,6 +13,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class CyclicityPage extends BinOverPage {
 
@@ -38,39 +39,39 @@ public class CyclicityPage extends BinOverPage {
 		Composite container = new Composite(parent, SWT.NULL);
 		setControl(container);
 
-		setDescription("Binary Relation: "+getRelationName()+
+		setDescription("Binary Relation: "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+
 				   "\nCurrent Stereotype: "+getBinOverWizard().getCurrentStereotypeName(this));	
 		
-		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
+		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
 		styledText.setText(	"The last binary property we analyze in this antipattern is the Ciclicity."+
 							"\r\n\r\n" +
 							"Consider three distinct individuals: a, b and c. " +
-							"If <"+getRelationName()+"> connects a to b, and also b to c, " +
+							"If <"+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+"> connects a to b, and also b to c, " +
 							"we can imply that the relation: ");
 			
 		styledText.setJustify(true);
 		styledText.setBackground(container.getBackground());
-		styledText.setBounds(10, 10, 554, 82);
+		styledText.setBounds(10, 10, 754, 71);
 				
 		btnCyclic = new Button(container, SWT.RADIO);
-		btnCyclic.setBounds(10, 98, 554, 16);
+		btnCyclic.setBounds(10, 87, 554, 16);
 		btnCyclic.setText("Connects c to a (Cyclic)");
 		
 		btnAcyclic = new Button(container, SWT.RADIO);
 		btnAcyclic.setText("DOES NOT connect c to a (Acyclic)");
-		btnAcyclic.setBounds(10, 120, 554, 16);
+		btnAcyclic.setBounds(10, 109, 554, 16);
 		
 		btnNonCyclic = new Button(container, SWT.RADIO);
 		btnNonCyclic.setText("Nothing (Non-Cyclic)");
-		btnNonCyclic.setBounds(10, 141, 554, 16);
+		btnNonCyclic.setBounds(10, 130, 554, 16);
 		
 		lblIncompatibility = new Label(container, SWT.WRAP);
 		lblIncompatibility.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		lblIncompatibility.setBounds(10, 163, 554, 16);
+		lblIncompatibility.setBounds(10, 152, 554, 16);
 		lblIncompatibility.setText(	"(One or more options disable due to incompatibility with your previous answers.)");
 		
 		lblCurrentValues = new Label(container, SWT.WRAP | SWT.RIGHT);
-		lblCurrentValues.setBounds(10, 256, 554, 15);
+		lblCurrentValues.setBounds(10, 256, 754, 15);
 		lblCurrentValues.setText("Reflexivity = , Symmetry = , Transitivity =");
 		
 		setPageComplete(false);
@@ -137,22 +138,20 @@ public class CyclicityPage extends BinOverPage {
 	@Override
 	public IWizardPage getNextPage(){
 
+		if(!btnCyclic.getSelection() && !btnAcyclic.getSelection() && !btnNonCyclic.getSelection())
+			return null;
+		
 		if(btnCyclic.getSelection())
 			getBinOverWizard().cyclicity = BinaryPropertyValue.CYCLIC;
 		else if(btnAcyclic.getSelection())
 			getBinOverWizard().cyclicity = BinaryPropertyValue.ACYCLIC;
 		else if(btnNonCyclic.getSelection())
 			getBinOverWizard().cyclicity = BinaryPropertyValue.NON_CYCLIC;
-		else
-			getBinOverWizard().cyclicity = BinaryPropertyValue.NONE;
-		
-		getBinOverWizard().removeAllActions(0, BinOverAction.Action.SET_BINARY_PROPERTY);
-		BinOverAction action = new BinOverAction(binOver);
-		action.setBinaryProperty(getBinOverWizard().cyclicity);
-		getBinOverWizard().addAction(0, action);
 		
 		if (getBinOverWizard().possibleStereotypes(getBinOverWizard().cyclicity).contains(getBinOverWizard().getCurrentStereotype(this))){
-			getBinOverWizard().removeAllActions(4);
+			BinOverAction action = new BinOverAction(binOver);
+			action.setBinaryProperty(getBinOverWizard().cyclicity);
+			getBinOverWizard().replaceAction(4, action);
 			return getBinOverWizard().getFinishing();
 		}
 		else

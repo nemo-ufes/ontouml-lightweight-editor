@@ -110,24 +110,21 @@ public class BinOverWizard extends AntipatternWizard {
 				return BinaryPropertyValue.ANTI_REFLEXIVE;
 		}
 		else if (type==BinaryProperty.Symmetry){
-			if(stereotype==FormalAssociationImpl.class || stereotype==MaterialAssociationImpl.class || 
-					stereotype==MediationImpl.class)
+			if(stereotype==FormalAssociationImpl.class || stereotype==MaterialAssociationImpl.class)
 				return BinaryPropertyValue.NONE;
 			else
 				return BinaryPropertyValue.ASYMMETRIC;
 		}
 		else if(type==BinaryProperty.Transitivity){
-			if(stereotype==FormalAssociationImpl.class || stereotype==MaterialAssociationImpl.class || 
-					stereotype==MediationImpl.class || stereotype==CharacterizationImpl.class)
+			if(stereotype==FormalAssociationImpl.class || stereotype==MaterialAssociationImpl.class || stereotype==CharacterizationImpl.class)
 				return BinaryPropertyValue.NONE;
-			else if (stereotype==memberOfImpl.class) 
+			else if (stereotype==MediationImpl.class || stereotype==memberOfImpl.class) 
 				return BinaryPropertyValue.ANTI_TRANSITIVE;
 			else
 				return BinaryPropertyValue.TRANSITIVE;
 		}
 		else if (type==BinaryProperty.Cyclicity){
-			if(stereotype==FormalAssociationImpl.class || stereotype==MaterialAssociationImpl.class || 
-					stereotype==MediationImpl.class)
+			if(stereotype==FormalAssociationImpl.class || stereotype==MaterialAssociationImpl.class)
 				return BinaryPropertyValue.NONE;
 			else
 				return BinaryPropertyValue.ACYCLIC;
@@ -151,8 +148,11 @@ public class BinOverWizard extends AntipatternWizard {
 			possibleStereotypes.add(CharacterizationImpl.class);
 		}
 		
-		else if(property==BinaryPropertyValue.ANTI_TRANSITIVE)
+		else if(property==BinaryPropertyValue.ANTI_TRANSITIVE){
 			possibleStereotypes.add(memberOfImpl.class);
+			possibleStereotypes.add(MediationImpl.class);
+			possibleStereotypes.add(CharacterizationImpl.class);
+		}
 		
 		else if (property==BinaryPropertyValue.TRANSITIVE){
 				possibleStereotypes.add(componentOfImpl.class);
@@ -247,7 +247,7 @@ public class BinOverWizard extends AntipatternWizard {
 			return binOver.getAssociation().getClass();
 		
 		else if(currentPage.equals(symmetryPage) || currentPage.equals(symmetryChangePage)){
-			try { newStereo = ((BinOverAction) getAction(1).get(0)).getNewStereotype(); }
+			try { newStereo = ((BinOverAction) getAction(1).get(1)).getNewStereotype(); }
 			catch (Exception e){ newStereo = null;	}
 			
 			if(newStereo!=null)
@@ -255,13 +255,13 @@ public class BinOverWizard extends AntipatternWizard {
 		}
 		
 		else if(currentPage.equals(transitivityPage) || currentPage.equals(transitivityChangePage)){
-			try { newStereo = ((BinOverAction) getAction(2).get(0)).getNewStereotype(); }
+			try { newStereo = ((BinOverAction) getAction(2).get(1)).getNewStereotype(); }
 			catch (Exception e){ newStereo = null;	}
 			
 			if(newStereo!=null)
 				return newStereo;
 			else{
-				try { newStereo = ((BinOverAction) getAction(1).get(0)).getNewStereotype(); }
+				try { newStereo = ((BinOverAction) getAction(1).get(1)).getNewStereotype(); }
 				catch (Exception e){ newStereo = null;	}
 				
 				if(newStereo!=null)
@@ -270,20 +270,20 @@ public class BinOverWizard extends AntipatternWizard {
 		}
 		
 		else if(currentPage.equals(cyclicityPage) || currentPage.equals(cyclicityChangePage)){
-			try { newStereo = ((BinOverAction) getAction(3).get(0)).getNewStereotype(); }
+			try { newStereo = ((BinOverAction) getAction(3).get(1)).getNewStereotype(); }
 			catch (Exception e){ newStereo = null;	}
 			
 			if(newStereo!=null)
 				return newStereo;
 			else{
-				try { newStereo = ((BinOverAction) getAction(2).get(0)).getNewStereotype(); }
+				try { newStereo = ((BinOverAction) getAction(2).get(1)).getNewStereotype(); }
 				catch (Exception e){ newStereo = null;	}
 				
 				if(newStereo!=null)
 					return newStereo;
 				
 				else{
-					try { newStereo = ((BinOverAction) getAction(1).get(0)).getNewStereotype(); }
+					try { newStereo = ((BinOverAction) getAction(1).get(1)).getNewStereotype(); }
 					catch (Exception e){ newStereo = null;	}
 					
 					if(newStereo!=null)
@@ -320,28 +320,23 @@ public class BinOverWizard extends AntipatternWizard {
 	@Override
 	public Collection<AntiPatternAction<?>> getAllActions() {
 		
-		ArrayList<AntiPatternAction<?>> allActions = new ArrayList<AntiPatternAction<?>>();
 		ArrayList<AntiPatternAction<?>> runnableActions = new ArrayList<AntiPatternAction<?>>();
 		BinOverAction changeStereotypeAction = null;
-		allActions.addAll(actions.get(0));
 		
-		if(actions.get(4)!=null && !actions.get(4).isEmpty()){
-			allActions.addAll(actions.get(4));
-			changeStereotypeAction = (BinOverAction) actions.get(4).get(0);
+		
+		if(actions.get(4)!=null && actions.get(4).size()>=2){
+			changeStereotypeAction = (BinOverAction) actions.get(4).get(1);
 		}
-		else if(actions.get(3)!=null && !actions.get(3).isEmpty()) {
-			allActions.addAll(actions.get(3));
-			changeStereotypeAction = (BinOverAction) actions.get(3).get(0);
-		}
-
-		else if(actions.get(2)!=null && !actions.get(2).isEmpty()) {
-			allActions.addAll(actions.get(2));
-			changeStereotypeAction = (BinOverAction) actions.get(2).get(0);
+		else if(actions.get(3)!=null && actions.get(3).size()>=2) {
+			changeStereotypeAction = (BinOverAction) actions.get(3).get(1);
 		}
 
-		else if(actions.get(1)!=null && !actions.get(1).isEmpty()) {
-			allActions.addAll(actions.get(1));
-			changeStereotypeAction = (BinOverAction) actions.get(1).get(0);
+		else if(actions.get(2)!=null && actions.get(2).size()>=2) {
+			changeStereotypeAction = (BinOverAction) actions.get(2).get(1);
+		}
+
+		else if(actions.get(1)!=null && actions.get(1).size()>=2) {
+			changeStereotypeAction = (BinOverAction) actions.get(1).get(1);
 		}
 	
 		Class<? extends Association> stereotype;
@@ -353,29 +348,35 @@ public class BinOverWizard extends AntipatternWizard {
 		else
 			stereotype = ((BinOverOccurrence)ap).getAssociation().getClass();
 		
-		for (AntiPatternAction<?> antiPatternAction : allActions) {
-			if(antiPatternAction instanceof BinOverAction){
-				
-				BinOverAction boAction = (BinOverAction) antiPatternAction;
-				
-				boolean isActionBPChange = 	boAction.getCode()==BinOverAction.Action.SET_BINARY_PROPERTY;
-				
-				boolean isMaterial = stereotype.equals(MaterialAssociationImpl.class);
-				boolean isFormal = stereotype.equals(FormalAssociationImpl.class);
-				boolean isNon = (boAction.getProperty()==BinaryPropertyValue.NON_REFLEXIVE || boAction.getProperty()==BinaryPropertyValue.NON_SYMMETRIC ||
-								boAction.getProperty()==BinaryPropertyValue.NON_TRANSITIVE || boAction.getProperty()==BinaryPropertyValue.NON_CYCLIC);	
-				
-				System.out.println("Getting Action: "+boAction.getCode());
-				System.out.println("\tisBP: "+isActionBPChange);
-				System.out.println("\tisNon: "+isNon);
-				System.out.println("\tisMaterial: "+isMaterial);
-				System.out.println("\tisFormal: "+isFormal);
-				System.out.println();
-				
-				if(isActionBPChange && !isNon && (isMaterial || isFormal))
+		for (AntiPatternAction<?> antiPatternAction : super.getAllActions()) {
+			if(!(antiPatternAction instanceof BinOverAction))
+				continue;
+			
+			BinOverAction boAction = (BinOverAction) antiPatternAction;
+			
+			boolean isActionBPChange = 	boAction.getCode()==BinOverAction.Action.SET_BINARY_PROPERTY;
+			boolean isActionSetDisjoitness =  boAction.getCode()==BinOverAction.Action.SET_DISJOINTNESS;
+			
+			boolean isMaterial = stereotype.equals(MaterialAssociationImpl.class);
+			boolean isFormal = stereotype.equals(FormalAssociationImpl.class);
+			boolean isNon = (boAction.getProperty()==BinaryPropertyValue.NON_REFLEXIVE || boAction.getProperty()==BinaryPropertyValue.NON_SYMMETRIC ||
+							boAction.getProperty()==BinaryPropertyValue.NON_TRANSITIVE || boAction.getProperty()==BinaryPropertyValue.NON_CYCLIC);	
+			
+			System.out.println("Getting Action: "+boAction.getCode());
+			System.out.println("\tisBP: "+isActionBPChange);
+			System.out.println("\tisNon: "+isNon);
+			System.out.println("\tisMaterial: "+isMaterial);
+			System.out.println("\tisFormal: "+isFormal);
+			System.out.println();
+			
+			if(isActionBPChange){
+				if(!isNon && (isMaterial || isFormal))
 					runnableActions.add(boAction);
-
 			}
+			else if(isActionSetDisjoitness){
+				runnableActions.add(boAction);
+			}
+			
 		}
 
 		return runnableActions;
