@@ -29,6 +29,7 @@ public class RelOverWizard extends OverlappingWizard {
 			RelOverAntipattern.getAntipatternInfo().name,
 			RelOverAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			RelOverAntipattern.getAntipatternInfo().description,
 			disjointPages.get(0),
 			options
 		);

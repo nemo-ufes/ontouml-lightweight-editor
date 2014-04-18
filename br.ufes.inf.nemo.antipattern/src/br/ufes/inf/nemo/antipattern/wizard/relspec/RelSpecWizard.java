@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.antipattern.wizard.relspec;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
@@ -43,6 +42,7 @@ public class RelSpecWizard extends AntipatternWizard {
 			RelSpecAntipattern.getAntipatternInfo().name,
 			RelSpecAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			RelSpecAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);

@@ -51,6 +51,7 @@ public class MixIdenWizard extends AntipatternWizard {
 			DepPhaseAntipattern.getAntipatternInfo().name,
 			DepPhaseAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			DepPhaseAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);

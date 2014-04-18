@@ -56,6 +56,7 @@ public class UndefFormalWizard extends AntipatternWizard {
 				UndefFormalAntipattern.getAntipatternInfo().name,
 				UndefFormalAntipattern.getAntipatternInfo().acronym,
 				ap.toString(),
+				UndefFormalAntipattern.getAntipatternInfo().description,
 				isComparativeFormalPage,
 				options
 			);
@@ -259,6 +260,7 @@ public class UndefFormalWizard extends AntipatternWizard {
 					!natureHash.get(Nature.RELATOR) && !natureHash.get(Nature.QUANTITY) && !natureHash.get(Nature.DATATYPE);
 		}
 		
+		@SuppressWarnings("unused")
 		private boolean isDatatype(HashMap<Nature,Boolean> natureHash){
 			return natureHash.get(Nature.DATATYPE) && !natureHash.get(Nature.COLLECTIVE) && !natureHash.get(Nature.FUNCTIONAL) &&
 					!natureHash.get(Nature.RELATOR) && !natureHash.get(Nature.MODE) && !natureHash.get(Nature.QUANTITY);

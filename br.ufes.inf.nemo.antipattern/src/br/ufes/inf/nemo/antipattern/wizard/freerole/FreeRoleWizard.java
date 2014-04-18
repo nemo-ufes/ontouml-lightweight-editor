@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import RefOntoUML.Role;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
@@ -40,6 +39,7 @@ public class FreeRoleWizard extends AntipatternWizard {
 				FreeRoleAntipattern.getAntipatternInfo().name,
 				FreeRoleAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			FreeRoleAntipattern.getAntipatternInfo().description,
 			firstPageList.get(0),
 			options
 		);

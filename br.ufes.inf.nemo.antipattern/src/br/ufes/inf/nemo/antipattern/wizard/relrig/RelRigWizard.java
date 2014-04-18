@@ -6,7 +6,6 @@ import org.eclipse.jface.wizard.WizardPage;
 
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
@@ -53,6 +52,7 @@ public class RelRigWizard extends AntipatternWizard {
 			RelRigAntipattern.getAntipatternInfo().name,
 			RelRigAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			RelRigAntipattern.getAntipatternInfo().description,
 			firstpageList.get(0),
 			options
 		);

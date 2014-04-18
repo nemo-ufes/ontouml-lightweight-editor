@@ -70,6 +70,7 @@ public class BinOverWizard extends AntipatternWizard {
 			BinOverAntipattern.getAntipatternInfo().name,
 			BinOverAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			BinOverAntipattern.getAntipatternInfo().description,
 			disjointPage,
 			options
 		);

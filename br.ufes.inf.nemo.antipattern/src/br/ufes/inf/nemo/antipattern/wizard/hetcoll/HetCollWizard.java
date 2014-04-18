@@ -28,6 +28,7 @@ public class HetCollWizard extends AntipatternWizard {
 				HetCollAntipattern.getAntipatternInfo().name,
 				HetCollAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			HetCollAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);

@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.antipattern.wizard.gsrig;
 
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
@@ -37,6 +36,7 @@ public class GSRigWizard extends AntipatternWizard {
 				GSRigAntipattern.getAntipatternInfo().name,
 				GSRigAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			GSRigAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);

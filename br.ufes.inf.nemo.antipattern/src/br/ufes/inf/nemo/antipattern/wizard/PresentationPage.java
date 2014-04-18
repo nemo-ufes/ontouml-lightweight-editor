@@ -20,22 +20,24 @@ public class PresentationPage extends WizardPage {
 	
 	public String title;
 	public String apType;
-	public String elements;	
+	public String elements;
+	public String genericDescription;
 	
 	//GUI
 	public Label lblModelElements;
 	public Button btnGoOptions;
 	public Button btnGoWizard;
-	public StyledText styledText;
+	public StyledText combinationText;
 	
 	// Next page
 	public WizardPage stepByStep;
 	public WizardPage optionPage;
+	private StyledText descriptionText;
 	
 	/**
 	 * Create the wizard.
 	 */
-	public PresentationPage(String title, String apType, String elements, WizardPage stepByStep, WizardPage optionPage) 
+	public PresentationPage(String title, String apType, String elements, String genericDescription, WizardPage stepByStep, WizardPage optionPage) 
 	{
 		super(title);
 		
@@ -45,6 +47,7 @@ public class PresentationPage extends WizardPage {
 		this.elements = elements;
 		this.stepByStep = stepByStep;
 		this.optionPage = optionPage;
+		this.genericDescription = genericDescription;
 		
 		setTitle(title);
 		setDescription("This Wizard will help you decide if the occurrence of the "+apType+" antipattern characterizes an error.");		
@@ -72,19 +75,36 @@ public class PresentationPage extends WizardPage {
 		btnGoOptions = new Button(container, SWT.RADIO);
 		btnGoOptions.setText("go directly to the refactoring options?");
 				
-		styledText = new StyledText(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI | SWT.WRAP);
-		styledText.setEditable(false);
-		styledText.setText(elements);
-	    
+		combinationText = new StyledText(container, SWT.BORDER | SWT.V_SCROLL | SWT.READ_ONLY | SWT.MULTI | SWT.WRAP);
+		combinationText.setText(elements);
+		
+		descriptionText = new StyledText(container, SWT.BORDER | SWT.V_SCROLL | SWT.READ_ONLY | SWT.MULTI | SWT.WRAP);
+		descriptionText.setText(genericDescription);
+		
+		Label lblAntipatternDescripton = new Label(container, SWT.NONE);
+		lblAntipatternDescripton.setText("Antipattern Descripton:");
+		
 		GroupLayout gl_container = new GroupLayout(container);
 		gl_container.setHorizontalGroup(
-			gl_container.createParallelGroup(GroupLayout.TRAILING)
-				.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(11)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(lblModelElements, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+						.add(combinationText, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
+					.add(11))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(lblAntipatternDescripton, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(descriptionText, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
 					.addContainerGap()
 					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
-						.add(styledText, GroupLayout.PREFERRED_SIZE, 544, GroupLayout.PREFERRED_SIZE)
-						.add(lblModelElements, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
-						.add(GroupLayout.TRAILING, lblWouldYouLike, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+						.add(lblWouldYouLike, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
 						.add(btnGoWizard, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
 						.add(btnGoOptions, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
 					.addContainerGap())
@@ -92,18 +112,22 @@ public class PresentationPage extends WizardPage {
 		gl_container.setVerticalGroup(
 			gl_container.createParallelGroup(GroupLayout.LEADING)
 				.add(gl_container.createSequentialGroup()
-					.addContainerGap()
+					.add(13)
 					.add(lblModelElements)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(styledText, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					.add(combinationText, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(lblAntipatternDescripton)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(descriptionText, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.RELATED)
 					.add(lblWouldYouLike)
-					.addPreferredGap(LayoutStyle.RELATED)
+					.add(8)
 					.add(btnGoWizard)
-					.addPreferredGap(LayoutStyle.RELATED)
+					.add(8)
 					.add(btnGoOptions)
-					.addContainerGap(74, Short.MAX_VALUE))
-		);		
+					.add(33))
+		);
 		container.setLayout(gl_container);
 	}	
 	

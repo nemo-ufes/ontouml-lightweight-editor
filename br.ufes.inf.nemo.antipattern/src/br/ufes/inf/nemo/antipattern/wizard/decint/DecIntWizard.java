@@ -4,7 +4,6 @@ import org.eclipse.jface.wizard.WizardPage;
 
 import br.ufes.inf.nemo.antipattern.decint.DecIntAntipattern;
 import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
@@ -49,6 +48,7 @@ public class DecIntWizard extends AntipatternWizard {
 			DecIntAntipattern.getAntipatternInfo().name,
 			DecIntAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			DecIntAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);

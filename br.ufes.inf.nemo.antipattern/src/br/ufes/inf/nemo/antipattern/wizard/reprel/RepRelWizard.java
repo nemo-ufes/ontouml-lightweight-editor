@@ -38,6 +38,7 @@ public class RepRelWizard extends AntipatternWizard {
 			RepRelAntipattern.getAntipatternInfo().name,
 			RepRelAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			RepRelAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);
