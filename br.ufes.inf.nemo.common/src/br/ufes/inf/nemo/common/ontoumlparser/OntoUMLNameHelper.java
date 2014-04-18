@@ -144,32 +144,29 @@ public class OntoUMLNameHelper {
 		return getName(elem);
 	}
 	
-	public static String getTypeAndName(EObject elem, boolean addGuillemets){
+	public static String getTypeAndName(EObject elem, boolean addGuillemets, boolean addSingleQuotes){
 		
 		String name = "";
 		
 		if(elem instanceof NamedElement)
-			name = " "+getName(elem);
+			name = " "+getName(elem,addSingleQuotes,false);
 		
-		if(addGuillemets)
-			return getTypeName(elem,true)+name;
-		else
-			return getTypeName(elem,false)+name;
+		return getTypeName(elem,addGuillemets)+name;
 	}
 	
 	public static String getCommonName(EObject elem) 
 	{		
 		
 		if (elem instanceof Package){
-			return getTypeAndName(elem, false);
+			return getTypeAndName(elem, false, false);
 		}
 		
 		if (elem instanceof Generalization)	{			
-			return getTypeName(elem, false) +" " + getTypeAndName(((Generalization)elem).getGeneral(), false);
+			return getTypeName(elem, false) +" " + getTypeAndName(((Generalization)elem).getGeneral(), false, false);
 		}
 		
 		if (elem instanceof Classifier) {
-			return getTypeAndName(elem, true);
+			return getTypeAndName(elem, true, false);
 		}
 		
 		if (elem instanceof GeneralizationSet)
@@ -181,7 +178,7 @@ public class OntoUMLNameHelper {
 		    if(genset.getGeneralization()!=null && !genset.getGeneralization().isEmpty())
 		    	general = genset.getGeneralization().get(0).getGeneral();
 		    
-		    result += getTypeAndName(elem, false) + " / "+getName(general)+" { ";
+		    result += getTypeAndName(elem, false, false) + " / "+getName(general)+" { ";
 		   	    
 		    int i=1;
 		    for(Generalization gen: genset.getGeneralization())
@@ -201,26 +198,26 @@ public class OntoUMLNameHelper {
 			return getTypeName(p)+" "+getName(p.getType())+" ("+getName(p)+")"+" ["+getMultiplicity(p,true,"..")+"]";			
 		}
 		
-		return getTypeAndName(elem, true);
+		return getTypeAndName(elem, true, false);
 	}
 	
 	public static String getCompleteName(EObject elem){
 		if (elem instanceof Package){
-			return getTypeAndName(elem, true);
+			return getTypeAndName(elem, true, false);
 		}
 		
 		if (elem instanceof Generalization)	{
 			Generalization g = (Generalization) elem;
-			return getTypeName(elem, true) +" {" + getTypeAndName(g.getSpecific(), true) + " -> "+getTypeAndName(g.getGeneral(), true)+ "}";
+			return getTypeName(elem, true) +" {" + getTypeAndName(g.getSpecific(), true, false) + " -> "+getTypeAndName(g.getGeneral(), true, false)+ "}";
 		}
 		
 		if (elem instanceof Class || elem instanceof DataType) {
-			return getTypeAndName(elem, true);
+			return getTypeAndName(elem, true, false);
 		}
 		
 		if (elem instanceof Association){
 			Association a = (Association) elem;
-			return getTypeAndName(elem,true)+" {"+getCommonName(a.getMemberEnd().get(0).getType())+" -> "+getCommonName(a.getMemberEnd().get(1).getType()) + "}";
+			return getTypeAndName(elem,true, false)+" {"+getCommonName(a.getMemberEnd().get(0).getType())+" -> "+getCommonName(a.getMemberEnd().get(1).getType()) + "}";
 		}
 		
 		if(elem instanceof GeneralizationSet){
@@ -234,7 +231,7 @@ public class OntoUMLNameHelper {
 			return getTypeName(p,true)+" "+getName(p.eContainer())+"::"+getName(p)+" ("+getName(p.getType())+")"+" ["+getMultiplicity(p,true,"..")+"]";			
 		}
 		
-		return getTypeAndName(elem, true);
+		return getTypeAndName(elem, true, false);
 	}
 	
 	public static String getMultiplicity(Property p, boolean alwaysShowLowerAndUpper, String separator){
@@ -255,5 +252,9 @@ public class OntoUMLNameHelper {
 			return lowerString;
 		
 		return lowerString+separator+upperString;
+	}
+	
+	public static String getNameAndType(Property p){
+		return getName(p, true, false)+" ("+getName(p.getType())+")";
 	}
 }
