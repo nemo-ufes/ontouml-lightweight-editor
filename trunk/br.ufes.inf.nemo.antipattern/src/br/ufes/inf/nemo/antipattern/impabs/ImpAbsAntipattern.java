@@ -24,7 +24,8 @@ public class ImpAbsAntipattern extends Antipattern<ImpAbsOccurrence> {
 	
 	private static final AntipatternInfo info = new AntipatternInfo("Imprecise Abstraction", 
 			"ImpAbs", 
-			"This anti-pattern occurs when...",
+			"This anti-pattern selects associations between which have at least one of the ends meeting the following criteria:" +
+			"(i) its upper multiplicity is greater than 1; and (ii) its type (class) has 2 or more subtypes.",
 			oclQuery); 
 		
 	public static AntipatternInfo getAntipatternInfo(){
