@@ -1,7 +1,5 @@
 package br.ufes.inf.nemo.antipattern.wizard.binover;
 
-import java.util.Arrays;
-
 import RefOntoUML.Association;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
@@ -20,10 +18,8 @@ public class BinOverAction extends AntiPatternAction<BinOverOccurrence>{
 	public enum Action { SET_BINARY_PROPERTY, SET_DISJOINTNESS, CHANGE_STEREOTYPE }
 	
 	public void setBinaryProperty(BinaryPropertyValue property){
-		if(property!=BinaryPropertyValue.NONE && Arrays.asList(BinaryPropertyValue.values()).contains(property)){
-			code=Action.SET_BINARY_PROPERTY;
-			this.property = property;
-		}
+		code=Action.SET_BINARY_PROPERTY;
+		this.property = property;
 	}
 	
 	public void setDisjointness(){

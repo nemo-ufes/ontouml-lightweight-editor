@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Label;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class SymmetryPage extends BinOverPage {
 
@@ -35,38 +36,38 @@ public class SymmetryPage extends BinOverPage {
 		Composite container = new Composite(parent, SWT.NULL);
 		setControl(container);
 
-		setDescription("Binary Relation: "+getRelationName()+
+		setDescription("Binary Relation: "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+
 				   "\nCurrent Stereotype: "+getBinOverWizard().getCurrentStereotypeName(this));	
 		
-		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
-		styledText.setText(	"Now lets analyze the symmetry of <"+getRelationName()+">. " +
+		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
+		styledText.setText(	"Now lets analyze the symmetry of "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+". " +
 							"\r\n\r\n" +
-							"Consider two individuals, x and y, both instances of <"+binOver.getSource().getName()+"> " +
-							"and <"+binOver.getTarget().getName()+">. " +
-							"If x, acting as <"+getSourceEndName()+">, is connected to y, " +
-							"acting as <"+getTargetEndName()+">, " +
-							"through <"+getRelationName()+"> " +
-							"does it mean that y must also act as <"+getSourceEndName()+"> " +
-							"and be connected to x acting as <"+getTargetEndName()+">?");
+							"Consider two individuals, x and y, both instances of "+OntoUMLNameHelper.getTypeAndName(binOver.getSource(), true, true)+" " +
+							"and <"+OntoUMLNameHelper.getTypeAndName(binOver.getTarget(), true, true)+">. " +
+							"If x, acting as "+OntoUMLNameHelper.getNameAndType(binOver.getAssociation().getMemberEnd().get(0))+", is connected to y, " +
+							"acting as <"+OntoUMLNameHelper.getNameAndType(binOver.getAssociation().getMemberEnd().get(1))+">, " +
+							"through "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+" " +
+							"does it mean that y must also act as "+OntoUMLNameHelper.getNameAndType(binOver.getAssociation().getMemberEnd().get(0))+" " +
+							"and be connected to x acting as "+OntoUMLNameHelper.getNameAndType(binOver.getAssociation().getMemberEnd().get(1))+"?");
 		
 		styledText.setJustify(true);
 		styledText.setBackground(container.getBackground());
-		styledText.setBounds(10, 10, 554, 114);
+		styledText.setBounds(10, 10, 754, 120);
 		
 		btnSymmetric = new Button(container, SWT.RADIO);
-		btnSymmetric.setBounds(10, 130, 554, 16);
+		btnSymmetric.setBounds(10, 136, 554, 16);
 		btnSymmetric.setText("Yes (Symmetric)");
 		
 		btnAsymmetric = new Button(container, SWT.RADIO);
 		btnAsymmetric.setText("No and it is forbidden (Anti-Symmetric)");
-		btnAsymmetric.setBounds(10, 152, 554, 16);
+		btnAsymmetric.setBounds(10, 158, 554, 16);
 		
 		btnNonSymmetric = new Button(container, SWT.RADIO);
 		btnNonSymmetric.setText("It does not imply, but it is possible (Non-symmetric)");
-		btnNonSymmetric.setBounds(10, 173, 554, 16);
+		btnNonSymmetric.setBounds(10, 179, 554, 16);
 		
 		lblCurrentValues = new Label(container, SWT.WRAP | SWT.RIGHT);
-		lblCurrentValues.setBounds(10, 256, 554, 15);
+		lblCurrentValues.setBounds(210, 256, 554, 15);
 		lblCurrentValues.setText("Reflexivity = ");
 		
 		setPageComplete(false);
@@ -93,22 +94,20 @@ public class SymmetryPage extends BinOverPage {
 	@Override
 	public IWizardPage getNextPage(){
 			
+		if(!btnSymmetric.getSelection() && !btnAsymmetric.getSelection() && !btnNonSymmetric.getSelection())
+			return null;
+		
 		if(btnSymmetric.getSelection())
 			getBinOverWizard().symmetry = BinaryPropertyValue.SYMMETRIC;
 		else if(btnAsymmetric.getSelection())
 			getBinOverWizard().symmetry = BinaryPropertyValue.ASYMMETRIC;
 		else if(btnNonSymmetric.getSelection())
 			getBinOverWizard().symmetry = BinaryPropertyValue.NON_SYMMETRIC;
-		else
-			getBinOverWizard().symmetry = BinaryPropertyValue.NONE;
-		
-		getBinOverWizard().removeAllActions(0, BinOverAction.Action.SET_BINARY_PROPERTY);
-		BinOverAction action = new BinOverAction(binOver);
-		action.setBinaryProperty(getBinOverWizard().symmetry);
-		getBinOverWizard().addAction(0, action);
-			
+
 		if ( getBinOverWizard().possibleStereotypes(getBinOverWizard().symmetry).contains(getBinOverWizard().getCurrentStereotype(this))){
-			getBinOverWizard().removeAllActions(2);
+			BinOverAction action = new BinOverAction(binOver);
+			action.setBinaryProperty(getBinOverWizard().symmetry);
+			getBinOverWizard().replaceAction(2, action);
 			return getBinOverWizard().getTransitivityPage();
 		}
 		else

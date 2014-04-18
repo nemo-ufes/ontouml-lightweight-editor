@@ -13,6 +13,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class TransitivityPage extends BinOverPage {
 	
@@ -38,38 +39,38 @@ public class TransitivityPage extends BinOverPage {
 		Composite container = new Composite(parent, SWT.NULL);
 		setControl(container);
 		
-		setDescription("Binary Relation: "+getRelationName()+
-			   	"\nCurrent Stereotype: "+getBinOverWizard().getCurrentStereotypeName(this));	
-		
-		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
-		styledText.setText(	"Now, lets analyze <"+getRelationName()+"> focusing on its transitivity." +
+		setDescription("Binary Relation: "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+
+				   "\nCurrent Stereotype: "+getBinOverWizard().getCurrentStereotypeName(this));	
+				
+		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
+		styledText.setText(	"Now, lets analyze "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+" focusing on its transitivity." +
 							"\r\n\r\n" +
-							"Consider three distinct individuals: a, b and c. If <"+getRelationName()+"> " +
+							"Consider three distinct individuals: a, b and c. If "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+" " +
 							"connects a to b, and also b to c, we can imply that the relation: ");
 		
 		styledText.setJustify(true);
 		styledText.setBackground(container.getBackground());
-		styledText.setBounds(10, 10, 554, 82);
+		styledText.setBounds(10, 10, 754, 73);
 		
 		btnTransitive = new Button(container, SWT.RADIO);
-		btnTransitive.setBounds(10, 98, 554, 16);
+		btnTransitive.setBounds(10, 89, 554, 16);
 		btnTransitive.setText("Connects a to c (Transitive)");
 		
 		btnIntransitive = new Button(container, SWT.RADIO);
 		btnIntransitive.setText("DOES NOT connect a to c (Intransitive)");
-		btnIntransitive.setBounds(10, 120, 554, 16);
+		btnIntransitive.setBounds(10, 111, 554, 16);
 		
 		btnNonTransitive = new Button(container, SWT.RADIO);
 		btnNonTransitive.setText("Nothing (Non-Transitive)");
-		btnNonTransitive.setBounds(10, 141, 554, 16);
+		btnNonTransitive.setBounds(10, 132, 554, 16);
 		
 		lblIncompatibility = new Label(container, SWT.WRAP);
 		lblIncompatibility.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		lblIncompatibility.setBounds(10, 163, 554, 16);
+		lblIncompatibility.setBounds(10, 154, 754, 16);
 		lblIncompatibility.setText(	"(One or more options disable due to incompatibility with your previous answers.)");
 		
 		lblCurrentValues = new Label(container, SWT.WRAP | SWT.RIGHT);
-		lblCurrentValues.setBounds(10, 256, 554, 15);
+		lblCurrentValues.setBounds(10, 256, 754, 15);
 		lblCurrentValues.setText("Reflexivity = , Symmetry = ");
 		
 		setPageComplete(false);
@@ -135,6 +136,8 @@ public class TransitivityPage extends BinOverPage {
 	@Override
 	public IWizardPage getNextPage(){
 		
+		if(!btnTransitive.getSelection() && !btnIntransitive.getSelection() && !btnNonTransitive.getSelection())
+			return null;
 		
 		if(btnTransitive.getSelection())
 			getBinOverWizard().transitivity = BinaryPropertyValue.TRANSITIVE;
@@ -142,16 +145,11 @@ public class TransitivityPage extends BinOverPage {
 			getBinOverWizard().transitivity = BinaryPropertyValue.ANTI_TRANSITIVE;
 		else if(btnNonTransitive.getSelection())
 			getBinOverWizard().transitivity = BinaryPropertyValue.NON_TRANSITIVE;
-		else
-			getBinOverWizard().transitivity = BinaryPropertyValue.NONE;
-		
-		getBinOverWizard().removeAllActions(0, BinOverAction.Action.SET_BINARY_PROPERTY);
-		BinOverAction action = new BinOverAction(binOver);
-		action.setBinaryProperty(getBinOverWizard().transitivity);
-		getBinOverWizard().addAction(0, action);
 		
 		if (getBinOverWizard().possibleStereotypes(getBinOverWizard().transitivity).contains(getBinOverWizard().getCurrentStereotype(this))){
-			getBinOverWizard().removeAllActions(3);
+			BinOverAction action = new BinOverAction(binOver);
+			action.setBinaryProperty(getBinOverWizard().transitivity);
+			getBinOverWizard().replaceAction(3, action);
 			return getBinOverWizard().getCyclicityPage();
 		}
 		else

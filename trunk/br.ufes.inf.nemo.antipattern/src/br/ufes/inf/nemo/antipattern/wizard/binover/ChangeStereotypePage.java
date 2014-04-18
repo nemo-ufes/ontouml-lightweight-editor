@@ -15,7 +15,7 @@ import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryProperty;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
-import br.ufes.inf.nemo.antipattern.wizard.binover.BinOverAction.Action;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class ChangeStereotypePage extends BinOverPage {
 
@@ -67,8 +67,8 @@ public class ChangeStereotypePage extends BinOverPage {
 		
 			setPageComplete(false);
 			
-			styledText = new StyledText(container, SWT.WRAP);
-			styledText.setBounds(10, 10, 554, 110);
+			styledText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.V_SCROLL);
+			styledText.setBounds(10, 10, 754, 110);
 			styledText.setBackground(container.getBackground());
 			styledText.setJustify(true);
 			
@@ -94,10 +94,10 @@ public class ChangeStereotypePage extends BinOverPage {
 		this.chosenPropertyValue = chosenPropertyValue;
 		
 	
-		styledText.setText(	"We found an inconsistency between your previous answer and the embedded constraints on the current stereotype of <"+getRelationName()+">. " +
+		styledText.setText(	"We found an inconsistency between your previous answer and the embedded constraints on the current stereotype of "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+". " +
 							"The problem is that all relations stereotyped as <"+getBinOverWizard().getCurrentStereotypeName(this)+"> are natively <"+defaultPropertyValue+">" +
 							"\r\n\r\n" +
-							"If <"+getRelationName()+"> must be <"+chosenPropertyValue+">, its ontological categorization (stereotype) must change.  Would like to:");
+							"If "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+" must be <"+chosenPropertyValue+">, its ontological categorization (stereotype) must change.  Would like to:");
 		
 	
 		
@@ -119,64 +119,55 @@ public class ChangeStereotypePage extends BinOverPage {
 		BinOverAction action = new BinOverAction(binOver);
 			
 		if(btnKeep.getSelection()){
+			
+			action.setBinaryProperty(defaultPropertyValue);
+			
 			if(propertyType==BinaryProperty.Reflexivity){
-				getBinOverWizard().removeAllActions(0, Action.SET_BINARY_PROPERTY);
-				action.setBinaryProperty(defaultPropertyValue);
 				getBinOverWizard().reflexivity = defaultPropertyValue;
-				getBinOverWizard().removeAllActions(1);
+				getBinOverWizard().replaceAction(1, action);	
 			}
 			else if(propertyType==BinaryProperty.Symmetry){
-				getBinOverWizard().removeAllActions(0, Action.SET_BINARY_PROPERTY);
-				action.setBinaryProperty(defaultPropertyValue);
 				getBinOverWizard().symmetry = defaultPropertyValue;
-				getBinOverWizard().removeAllActions(2);
+				getBinOverWizard().replaceAction(2, action);	
 			}
 			else if(propertyType==BinaryProperty.Transitivity){
-				getBinOverWizard().removeAllActions(0, Action.SET_BINARY_PROPERTY);
-				action.setBinaryProperty(defaultPropertyValue);
 				getBinOverWizard().transitivity = defaultPropertyValue;
-				getBinOverWizard().removeAllActions(3);
+				getBinOverWizard().replaceAction(3, action);	
 			}
 			else if(propertyType==BinaryProperty.Cyclicity){
-				getBinOverWizard().removeAllActions(0, Action.SET_BINARY_PROPERTY);
-				action.setBinaryProperty(defaultPropertyValue);
 				getBinOverWizard().cyclicity = defaultPropertyValue;
-				getBinOverWizard().removeAllActions(4);
+				getBinOverWizard().replaceAction(4, action);	
 			}
 		}
 		
 		else{
 			
+			action.setBinaryProperty(chosenPropertyValue);
+			
 			BinOverAction action2 = new BinOverAction(binOver);
 			action2.setChangeStereortype(getBinOverWizard().possibleStereotypes(chosenPropertyValue).get(combo.getSelectionIndex()));
 			
 			if(propertyType==BinaryProperty.Reflexivity){
-				getBinOverWizard().removeAllActions(0, Action.SET_BINARY_PROPERTY);
-				action.setBinaryProperty(chosenPropertyValue);
 				getBinOverWizard().reflexivity = chosenPropertyValue;
-				getBinOverWizard().replaceAction(1, action2);
+				getBinOverWizard().replaceAction(1, action);
+				getBinOverWizard().addAction(1, action2);
 			}
 			else if(propertyType==BinaryProperty.Symmetry){
-				getBinOverWizard().removeAllActions(0, Action.SET_BINARY_PROPERTY);
-				action.setBinaryProperty(chosenPropertyValue);
 				getBinOverWizard().symmetry = chosenPropertyValue;
-				getBinOverWizard().replaceAction(2, action2);
+				getBinOverWizard().replaceAction(2, action);
+				getBinOverWizard().addAction(2, action2);
 			}
 			else if(propertyType==BinaryProperty.Transitivity){
-				getBinOverWizard().removeAllActions(0, Action.SET_BINARY_PROPERTY);
-				action.setBinaryProperty(chosenPropertyValue);
 				getBinOverWizard().transitivity = chosenPropertyValue;
-				getBinOverWizard().replaceAction(3, action2);
+				getBinOverWizard().replaceAction(3, action);
+				getBinOverWizard().addAction(3, action2);
 			}
 			else if(propertyType==BinaryProperty.Cyclicity){
-				getBinOverWizard().removeAllActions(0, Action.SET_BINARY_PROPERTY);
-				action.setBinaryProperty(chosenPropertyValue);
 				getBinOverWizard().cyclicity = chosenPropertyValue;
-				getBinOverWizard().replaceAction(4, action2);
+				getBinOverWizard().replaceAction(4, action);
+				getBinOverWizard().addAction(4, action2);
 			}
 		}
-		
-		getBinOverWizard().addAction(0, action);	
 		
 		if(propertyType==BinaryProperty.Reflexivity)
 			return getBinOverWizard().getSymmetryPage();
@@ -187,6 +178,6 @@ public class ChangeStereotypePage extends BinOverPage {
 		else if(propertyType==BinaryProperty.Cyclicity)
 			return getBinOverWizard().getFinishing();
 		
-		return super.getNextPage();
+		return null;
 	}
 }
