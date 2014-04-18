@@ -95,7 +95,6 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 				mediatedProperties.add(targetEnd);
 		
 		}
-		System.out.println("Size Mediation: "+mediatedProperties.size());
 		
 		for (Property end : mediatedProperties) {
 			mediations.add((Mediation) end.getAssociation());
