@@ -44,6 +44,7 @@ public class ImpAbsWizard extends AntipatternWizard {
 			ImpAbsAntipattern.getAntipatternInfo().name,
 			ImpAbsAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			ImpAbsAntipattern.getAntipatternInfo().description,
 			multPage,
 			options
 		);

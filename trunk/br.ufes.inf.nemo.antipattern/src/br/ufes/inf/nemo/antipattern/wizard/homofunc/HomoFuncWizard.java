@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.antipattern.wizard.homofunc;
 
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
@@ -37,6 +36,7 @@ public class HomoFuncWizard extends AntipatternWizard {
 				HomoFuncAntipattern.getAntipatternInfo().name,
 				HomoFuncAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			HomoFuncAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);

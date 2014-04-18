@@ -36,6 +36,7 @@ public class UndefPhaseWizard extends AntipatternWizard {
 			UndefPhaseAntipattern.getAntipatternInfo().name,
 			UndefPhaseAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			UndefPhaseAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);

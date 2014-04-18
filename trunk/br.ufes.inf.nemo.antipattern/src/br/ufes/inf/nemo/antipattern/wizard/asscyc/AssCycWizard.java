@@ -25,9 +25,10 @@ public class AssCycWizard extends AntipatternWizard {
 		options = new AssCycRefactoringPage(getAp());
 		
 		presentation = new PresentationPage(
-				AssCycAntipattern.getAntipatternInfo().name,
-				AssCycAntipattern.getAntipatternInfo().acronym,
+			AssCycAntipattern.getAntipatternInfo().name,
+			AssCycAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			AssCycAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);

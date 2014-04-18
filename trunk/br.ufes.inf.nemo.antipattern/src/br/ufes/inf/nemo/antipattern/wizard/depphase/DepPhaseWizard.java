@@ -7,7 +7,6 @@ import org.eclipse.swt.widgets.List;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
@@ -34,6 +33,7 @@ public class DepPhaseWizard extends AntipatternWizard {
 			DepPhaseAntipattern.getAntipatternInfo().name,
 			DepPhaseAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			DepPhaseAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);

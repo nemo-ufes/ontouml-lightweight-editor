@@ -29,6 +29,7 @@ public class WholeOverWizard extends OverlappingWizard {
 			WholeOverAntipattern.getAntipatternInfo().name,
 			WholeOverAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			WholeOverAntipattern.getAntipatternInfo().description,
 			disjointPages.get(0),
 			options
 		);

@@ -38,6 +38,7 @@ public class RelCompWizard extends AntipatternWizard {
 			RelCompAntipattern.getAntipatternInfo().name,
 			RelCompAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			RelCompAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);

@@ -10,7 +10,6 @@ import RefOntoUML.impl.QuantityImpl;
 import RefOntoUML.impl.RoleImpl;
 import RefOntoUML.impl.RoleMixinImpl;
 import RefOntoUML.impl.SubKindImpl;
-import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
@@ -52,9 +51,10 @@ public class MixRigWizard extends AntipatternWizard {
 		options = new MixRigRefactoringPage(getAp());
 		
 		presentation = new PresentationPage(
-			DepPhaseAntipattern.getAntipatternInfo().name,
-			DepPhaseAntipattern.getAntipatternInfo().acronym,
+			MixRigAntipattern.getAntipatternInfo().name,
+			MixRigAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			MixRigAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);

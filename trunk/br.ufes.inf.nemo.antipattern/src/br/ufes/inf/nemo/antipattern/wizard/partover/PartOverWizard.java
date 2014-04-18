@@ -29,6 +29,7 @@ public class PartOverWizard extends OverlappingWizard {
 			PartOverAntipattern.getAntipatternInfo().name,
 			PartOverAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			PartOverAntipattern.getAntipatternInfo().description,
 			disjointPages.get(0),
 			options
 		);

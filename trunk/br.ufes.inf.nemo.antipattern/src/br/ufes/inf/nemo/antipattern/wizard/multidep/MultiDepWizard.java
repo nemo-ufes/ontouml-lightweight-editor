@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.antipattern.wizard.multidep;
 
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepAntipattern;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.FinishingPage;
 import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
@@ -31,6 +30,7 @@ public class MultiDepWizard extends AntipatternWizard {
 			MultiDepAntipattern.getAntipatternInfo().name,
 			MultiDepAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
+			MultiDepAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);
