@@ -14,11 +14,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -31,6 +33,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
@@ -98,6 +102,7 @@ import br.ufes.inf.nemo.antipattern.wizard.undefphase.UndefPhaseWizard;
 import br.ufes.inf.nemo.antipattern.wizard.wholeover.WholeOverWizard;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
  * @author Tiago Sales
@@ -107,9 +112,18 @@ import br.ufes.inf.nemo.oled.model.AntiPatternList;
 public class AntiPatternResultDialog extends Dialog {
 
 	private AppFrame frame;
+	private ArrayList<AntipatternOccurrence> allOccurrences;
 	private ArrayList<AntipatternOccurrence> result;
 	private static TableViewer viewer;
 	private AntipatternResultFilter filter;
+	private Composite container;
+	private Label searchLabel;
+	private Text searchText;
+	private Button btnAnalyze;
+	private Button btnRemove;
+	private Table table;
+	private Button btnReset;
+	private Label feedBackLabel;
 		
 	/**
 	 * Create the dialog.
@@ -118,7 +132,8 @@ public class AntiPatternResultDialog extends Dialog {
 	public AntiPatternResultDialog(Shell parentShell, ArrayList<AntipatternOccurrence> result, AppFrame frame) 
 	{
 		super(parentShell);		
-		this.result = result;
+		this.result = new ArrayList<AntipatternOccurrence>(result);
+		this.allOccurrences = new ArrayList<AntipatternOccurrence>(result);
 		this.frame = frame;
 		setDefaultImage(new Image(Display.getDefault(),AntiPatternResultDialog.class.getResourceAsStream("/resources/icons/antipattern36.png")));		
 	}
@@ -146,9 +161,48 @@ public class AntiPatternResultDialog extends Dialog {
 	@Override
 	protected Control createDialogArea(Composite parent) 
 	{
-		Composite container = (Composite) super.createDialogArea(parent);		
+		container = (Composite) super.createDialogArea(parent);		
 		
-		createPartControl(container);		
+		createPartControl(container);
+
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(searchLabel)
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(searchText, GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+							.add(66)
+							.add(btnAnalyze, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(btnRemove, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(btnReset, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
+						.add(table, GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+						.add(feedBackLabel, GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING, false)
+						.add(searchLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.add(gl_container.createParallelGroup(GroupLayout.BASELINE)
+							.add(searchText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.add(btnReset)
+							.add(btnRemove, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.add(btnAnalyze, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+					.addPreferredGap(LayoutStyle.UNRELATED)
+					.add(table, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(feedBackLabel)
+					.add(15))
+		);
+		container.setLayout(gl_container);
 		
 		return container;
 	}
@@ -192,19 +246,91 @@ public class AntiPatternResultDialog extends Dialog {
 	@Override
 	protected Point getInitialSize() 
 	{
-		return new Point(650, 450);
+		return new Point(690, 518);
 	}
 	
 	public void createPartControl(Composite parent) 
 	{
-	    GridLayout layout = new GridLayout(2, false);
-	    parent.setLayout(layout);
 	    
-	    Label searchLabel = new Label(parent, SWT.NONE);
+	    searchLabel = new Label(parent, SWT.NONE);
 	    searchLabel.setText("Find: ");
 	    
-	    final Text searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
-	    searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+	    searchText = new Text(parent, SWT.BORDER | SWT.SEARCH);
+	    
+	    btnAnalyze = new Button(container, SWT.NONE);
+    	btnAnalyze.setText("Analyze");
+    	btnAnalyze.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(table.getSelectionIndices().length==0){
+					feedBackLabel.setVisible(false);
+					feedBackLabel.setText("Can't open Anti-pattern Wizard! Please select a line in the table above.");
+					feedBackLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+					feedBackLabel.setVisible(true);
+				}
+					
+				else if(table.getSelectionIndices().length>1){
+					feedBackLabel.setVisible(false);
+					feedBackLabel.setText("Can't open Anti-pattern Wizard! Please select only ONE line in the table above.");
+					feedBackLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+					feedBackLabel.setVisible(true);
+				}
+				else if (((AntipatternOccurrence) viewer.getElementAt(table.getSelectionIndex())).isFixed()){
+					feedBackLabel.setVisible(false);
+					feedBackLabel.setText("Can't open Anti-pattern Wizard! Occurrence already analyzed.");
+					feedBackLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+					feedBackLabel.setVisible(true);
+				}
+				else {
+					feedBackLabel.setVisible(false);
+					feedBackLabel.setText("Anti-pattern Wizard Opened!");
+					feedBackLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
+					feedBackLabel.setVisible(true);
+					showWizard((AntipatternOccurrence) viewer.getElementAt(table.getSelectionIndex()));
+				}
+			}
+		});   
+    	btnRemove = new Button(container, SWT.NONE);
+    	btnRemove.setText("Remove");
+	    btnRemove.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				
+				if(table.getSelectionIndices().length==0){
+					feedBackLabel.setVisible(false);
+					feedBackLabel.setText("Can't remove anti-pattern occurrence from Table! Please select at least one line in the table above.");
+					feedBackLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+					feedBackLabel.setVisible(true);
+				}
+				else {
+					feedBackLabel.setVisible(false);
+					feedBackLabel.setText(table.getSelectionIndices().length+" anti-pattern occurrence(s) successfully removed!");
+					feedBackLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
+					feedBackLabel.setVisible(true);
+					
+					for (int index : table.getSelectionIndices()) {
+						result.remove(viewer.getElementAt(index));
+					}
+						
+					viewer.refresh();
+				}
+			}
+		});
+	    
+	    btnReset = new Button(container, SWT.NONE);
+		btnReset.setText("Reset");
+		btnReset.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent arg0) {
+					result.clear();
+					result.addAll(allOccurrences);
+					viewer.refresh();
+					feedBackLabel.setVisible(false);
+					feedBackLabel.setText("Anti-pattern occurrence table restored!");
+					feedBackLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
+					feedBackLabel.setVisible(true);
+				}
+			});
 	    
 	    createViewer(parent);
 	    	    
@@ -212,10 +338,20 @@ public class AntiPatternResultDialog extends Dialog {
 	    	public void keyReleased(KeyEvent ke) {
 	    		filter.setSearchText(searchText.getText());
 	    		viewer.refresh();
-	    	}
+	    		feedBackLabel.setVisible(false);
+	    		feedBackLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
+	    		feedBackLabel.setText(table.getItemCount()+" results were found");
+	    		feedBackLabel.setVisible(true);	    		
+	    		}
 	    });
 	    
-	    filter = new AntipatternResultFilter();
+	    feedBackLabel = new Label(container, SWT.NONE);
+		feedBackLabel.setAlignment(SWT.RIGHT);
+		feedBackLabel.setVisible(false);
+		
+		
+	    
+		filter = new AntipatternResultFilter();
 	    viewer.addFilter(filter);
 	  }
 	    
@@ -225,10 +361,12 @@ public class AntiPatternResultDialog extends Dialog {
 	 */
 	  private void createViewer(Composite parent) 
 	  {
-	    viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+	    
+    	
+    	viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 	    createColumns(parent, viewer);
 	    
-	    final Table table = viewer.getTable();
+	    table = viewer.getTable();
 	    table.setHeaderVisible(true);
 	    table.setLinesVisible(true);
 
@@ -245,48 +383,6 @@ public class AntiPatternResultDialog extends Dialog {
 	    gridData.horizontalAlignment = GridData.FILL;	    
 	    viewer.getControl().setLayoutData(gridData);
 	    
-	    // Set buttons
-	    final TableItem[] items = table.getItems();
-	    for (int i = 0; i < items.length; i++) 
-	    {	     
-	      TableEditor editor = new TableEditor(table);	      
-	      final Button button = new Button(table, SWT.NONE);
-	      button.setToolTipText("Run the wizard to fix the occurrence");
-	      button.setImage(new Image(getShell().getDisplay(),AntiPatternResultDialog.class.getResourceAsStream("/resources/icons/x16/hammer_screwdriver.png"))); 	      
-	      final AntipatternOccurrence apOccur = result.get(i);	      
-	      button.addListener(SWT.Selection,new Listener() {
-		        public void handleEvent(Event event) 
-		        {
-		        	showWizard(apOccur);
-		        }
-		      }
-	      );
-	      button.pack();	      
-	      editor.minimumWidth = button.getSize().x;
-	      editor.horizontalAlignment = SWT.CENTER;
-	      editor.setEditor(button, items[i], 3);
-	      
-	      editor = new TableEditor(table);	      
-	      final Button button2 = new Button(table, SWT.NONE);	
-	      button2.setToolTipText("Remove occurence from this list");
-	      button2.setImage(new Image(getShell().getDisplay(),AntiPatternResultDialog.class.getResourceAsStream("/resources/icons/x16/bin_closed.png"))); 	      
-	      //final AntipatternOccurrence apOccur1 = result.get(i);	
-	      final int index = i;
-	      button2.addListener(SWT.Selection,new Listener() {
-		        public void handleEvent(Event event) 
-		        {		        		
-		        	items[index].dispose();
-		        	button2.dispose();
-		        	button.dispose();
-		        	viewer.getTable().setRedraw(true);			
-		        }
-		      }
-	      );
-	      button2.pack();	      
-	      editor.minimumWidth = button2.getSize().x;
-	      editor.horizontalAlignment = SWT.CENTER;
-	      editor.setEditor(button2, items[i], 4);
-	    }	    
 	  }
 		
 	  public TableViewer getViewer() { return viewer; }
@@ -296,8 +392,8 @@ public class AntiPatternResultDialog extends Dialog {
 	   */
 	  private void createColumns(final Composite parent, final TableViewer viewer) 
 	  {
-	    String[] titles = { "Name", "Type", "Status", "", "" };
-	    int[] bounds = { 250, 100, 100, 70, 70 };
+	    String[] titles = { "Name", "Type", "Status"};
+	    int[] bounds = { 350, 140, 140 };
 
 	    // First column is for a short description of the antipattern
 	    TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
@@ -362,25 +458,25 @@ public class AntiPatternResultDialog extends Dialog {
 	    	}
 	    });
 	    
-	    // Show the button to investigate the occurrence
-	    col = createTableViewerColumn(titles[3], bounds[3], 3);
-	    
-	    col.setLabelProvider(new ColumnLabelProvider() {
-	      @Override
-	      public String getText(Object element) {
-	        return "";
-	      }
-	    });
-	    
-	    // Show the button to remove the occurrence
-	    col = createTableViewerColumn(titles[4], bounds[4], 4);
-	    
-	    col.setLabelProvider(new ColumnLabelProvider() {
-	      @Override
-	      public String getText(Object element) {
-	        return "";
-	      }
-	    });
+//	    // Show the button to investigate the occurrence
+//	    col = createTableViewerColumn(titles[3], bounds[3], 3);
+//	    
+//	    col.setLabelProvider(new ColumnLabelProvider() {
+//	      @Override
+//	      public String getText(Object element) {
+//	        return "";
+//	      }
+//	    });
+//	    
+//	    // Show the button to remove the occurrence
+//	    col = createTableViewerColumn(titles[4], bounds[4], 4);
+//	    
+//	    col.setLabelProvider(new ColumnLabelProvider() {
+//	      @Override
+//	      public String getText(Object element) {
+//	        return "";
+//	      }
+//	    });
 	  }
 
 	@Override
