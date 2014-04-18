@@ -80,16 +80,16 @@ public class FinishingPage extends WizardPage {
 		gl_container.setHorizontalGroup(
 			gl_container.createParallelGroup(GroupLayout.LEADING)
 				.add(gl_container.createSequentialGroup()
-					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
-						.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
 							.addContainerGap()
 							.add(actionsList, GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE))
-						.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
-							.add(10)
-							.add(introLabel, GroupLayout.PREFERRED_SIZE, 552, GroupLayout.PREFERRED_SIZE))
-						.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
+						.add(gl_container.createSequentialGroup()
 							.addContainerGap()
-							.add(rulesLabel)))
+							.add(rulesLabel, GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE))
+						.add(gl_container.createSequentialGroup()
+							.add(10)
+							.add(introLabel, GroupLayout.DEFAULT_SIZE, 564, Short.MAX_VALUE)))
 					.addContainerGap())
 		);
 		gl_container.setVerticalGroup(
@@ -100,7 +100,7 @@ public class FinishingPage extends WizardPage {
 					.addPreferredGap(LayoutStyle.RELATED)
 					.add(rulesLabel)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(actionsList, GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+					.add(actionsList, GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		container.setLayout(gl_container);
