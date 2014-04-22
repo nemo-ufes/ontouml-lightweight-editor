@@ -78,7 +78,7 @@ public abstract class AntipatternWizard extends Wizard {
 	}
 	
 	public void addAction(int pos, AntiPatternAction<?> action){
-		System.out.println("NEW ACTION: "+action);
+
 		if(actions.get(pos)!=null)
 			actions.get(pos).add(action);
 		else {
@@ -87,10 +87,6 @@ public abstract class AntipatternWizard extends Wizard {
 			actions.put(pos, indexedActions);
 		}
 		
-		System.out.println("ADD ACTION - Actions size: "+getAllActions().size());
-		for (AntiPatternAction<?> a : getAllActions()) {
-			System.out.println(a);
-		}
 	}
 		
     @Override

@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 /**
  * @author Tiago Sales
@@ -48,7 +49,6 @@ public class RelCompThirdPage extends RelCompPage {
 		lblQuestion.setText("To complete the analysis, let's evaluate the remainder constraint possibilities.\r\n\r\n" +
 							"If an instance 'x' of '"+getRelComp().getA2Source().getName()+"' is connected to an instance 'y' of '"+getRelComp().getA2Target().getName()+
 							"', through '"+getRelComp().getParser().getStringRepresentation(getRelComp().getA2())+"', is it NECESSARY that:");
-		lblQuestion.setBounds(10, 10, 699, 66);
 		
 		SelectionAdapter listener = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
@@ -59,43 +59,70 @@ public class RelCompThirdPage extends RelCompPage {
 	    setPageComplete(false);
 
 	    btnSourceDependsOnTarget = new Button(container, SWT.RADIO);
-		btnSourceDependsOnTarget.setBounds(10, 82, 699, 16);
 		btnSourceDependsOnTarget.addSelectionListener(listener);
-		btnSourceDependsOnTarget.setText("'x' is connected to no instances of '' to which 'y' is connected to through ''");	
+		btnSourceDependsOnTarget.setText("'x' is connected to NO instances of '' to which 'y' is connected to through ''");	
 		
 		btnTargetDependsOnSource = new Button(container, SWT.RADIO);
-		btnTargetDependsOnSource.setBounds(10, 104, 699, 16);
 		btnTargetDependsOnSource.addSelectionListener(listener);
-		btnTargetDependsOnSource.setText("'y' is connected to no instances of '' to which 'x' is connected to through ''");	
+		btnTargetDependsOnSource.setText("'y' is connected to NO instances of '' to which 'x' is connected to through ''");	
 		
 		if(getRelComp().a2EndsSpecializeA1Target()){
-			btnSourceDependsOnTarget.setText("'x' is connected to no instances of '"+getRelComp().getA1Source().getName()+"' to which 'y' is connected to through '"+
+			btnSourceDependsOnTarget.setText("'x' is connected to NO instances of '"+getRelComp().getA1Source().getName()+"' to which 'y' is connected to through '"+
 											 getRelComp().getParser().getStringRepresentation(getRelComp().getA1())+"'");	
-			btnTargetDependsOnSource.setText("'y' is connected to no instances of '"+getRelComp().getA1Source().getName()+"' to which 'x' is connected to through '"+
+			btnTargetDependsOnSource.setText("'y' is connected to NO instances of '"+getRelComp().getA1Source().getName()+"' to which 'x' is connected to through '"+
 											 getRelComp().getParser().getStringRepresentation(getRelComp().getA1())+"'");	
 		}
 		else{
-			btnSourceDependsOnTarget.setText("'x' is connected to no instances of '"+getRelComp().getA1Target().getName()+"' to which 'y' is connected to through '"+
+			btnSourceDependsOnTarget.setText("'x' is connected to NO instances of '"+getRelComp().getA1Target().getName()+"' to which 'y' is connected to through '"+
 					 getRelComp().getParser().getStringRepresentation(getRelComp().getA1())+"'");
-			btnTargetDependsOnSource.setText("'y' is connected to no instances of '"+getRelComp().getA1Target().getName()+"' to which 'x' is connected to through '"+
+			btnTargetDependsOnSource.setText("'y' is connected to NO instances of '"+getRelComp().getA1Target().getName()+"' to which 'x' is connected to through '"+
 					 getRelComp().getParser().getStringRepresentation(getRelComp().getA1())+"'");	
 		}
 		
 		btnBoth = new Button(container, SWT.RADIO);
-		btnBoth.setText("First two options are forbidden");
-		btnBoth.setBounds(10, 126, 699, 16);
+		btnBoth.setText("First two options are necessities");
 		btnBoth.addSelectionListener(listener);
 		
 		btnNone = new Button(container, SWT.RADIO);
-		btnNone.setText("First two options are necessities");
-		btnNone.setBounds(10, 148, 699, 16);
+		btnNone.setText("None of the options are necessities");
 		btnNone.addSelectionListener(listener);
 		
 		Label lblNote = new Label(container, SWT.WRAP | SWT.RIGHT);
 		lblNote.setText("Note that if '"+getRelComp().getParser().getStringRepresentation(getRelComp().getA2())+"' is a symmetric relation and that is enforced in the model, the effects of the first three options are the same.");
 		lblNote.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		lblNote.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
-		lblNote.setBounds(10, 238, 699, 33);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(btnSourceDependsOnTarget, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+						.add(btnTargetDependsOnSource, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+						.add(btnBoth, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+						.add(btnNone, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+						.add(GroupLayout.TRAILING, lblNote, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+						.add(GroupLayout.TRAILING, lblQuestion, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblQuestion, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnSourceDependsOnTarget)
+					.add(6)
+					.add(btnTargetDependsOnSource)
+					.add(6)
+					.add(btnBoth)
+					.add(6)
+					.add(btnNone)
+					.add(74)
+					.add(lblNote, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					.add(10))
+		);
+		container.setLayout(gl_container);
 		
 	}
 	

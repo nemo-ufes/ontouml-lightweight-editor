@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relcomp.RelCompOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 /**
  * @author Tiago Sales
@@ -55,7 +56,6 @@ public class RelCompSecondPage extends RelCompPage {
 		lblQuestion.setText("Since none of the previous rules were necessary. Now, let's evaluate other constraint possibilities.\r\n\r\n" +
 							"If an instance 'x' of '"+getRelComp().getA2Source().getName()+"' is connected to an instance 'y' of '"+getRelComp().getA2Target().getName()+
 							"', through '"+getRelComp().getParser().getStringRepresentation(getRelComp().getA2())+"', is it NECESSARY that:");
-		lblQuestion.setBounds(10, 10, 699, 64);
 		
 		SelectionAdapter listener = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
@@ -86,13 +86,11 @@ public class RelCompSecondPage extends RelCompPage {
 	    setPageComplete(false);
 
 		btnSourceDependsOnTarget = new Button(container, SWT.RADIO);
-		btnSourceDependsOnTarget.setBounds(10, 80, 699, 16);
 		btnSourceDependsOnTarget.setText("'x' is connected to at least <n> instances of '' to which 'y' is connected through ''");		
 		btnSourceDependsOnTarget.addSelectionListener(listener);
 		
 		btnTargetDependsOnSource = new Button(container, SWT.RADIO);
 		btnTargetDependsOnSource.setText("'y' is connected to at least <m> instances of '' to which 'x' is connected through ''");
-		btnTargetDependsOnSource.setBounds(10, 129, 699, 16);		
 		btnTargetDependsOnSource.addSelectionListener(listener);
 		
 		if(getRelComp().a2EndsSpecializeA1Target()){
@@ -112,52 +110,111 @@ public class RelCompSecondPage extends RelCompPage {
 		
 		btnBoth = new Button(container, SWT.RADIO);
 		btnBoth.setText("First two options are true for <n> and <m>");
-		btnBoth.setBounds(10, 178, 699, 16);
 		btnBoth.addSelectionListener(listener);
 		
 		btnNone = new Button(container, SWT.RADIO);
 		btnNone.addSelectionListener(listener);
 		btnNone.setText("None of the options are necessities");
-		btnNone.setBounds(10, 227, 699, 16);
 		
 		Label lblForN = new Label(container, SWT.NONE);
-		lblForN.setBounds(10, 102, 39, 15);
 		lblForN.setText("for n = ");
 		
 		Label lblForM = new Label(container, SWT.NONE);
 		lblForM.setText("for m = ");
-		lblForM.setBounds(10, 151, 39, 15);
 		
 		lblForNBoth = new Label(container, SWT.NONE);
 		lblForNBoth.setText("for n = ");
-		lblForNBoth.setBounds(10, 200, 39, 15);
 		
 		
 		lblForMBoth = new Label(container, SWT.NONE);
 		lblForMBoth.setText("and m = ");
-		lblForMBoth.setBounds(108, 200, 43, 15);
 		
 		spinnerN = new Spinner(container, SWT.BORDER);
-		spinnerN.setBounds(55, 102, 47, 22);
 		setSpinnerDefaultProperties(spinnerN);
 		
 		spinnerM = new Spinner(container, SWT.BORDER);
-		spinnerM.setBounds(55, 150, 47, 22);
 		setSpinnerDefaultProperties(spinnerM);
 		
 		spinnerNBoth = new Spinner(container, SWT.BORDER);
-		spinnerNBoth.setBounds(55, 200, 47, 22);
 		setSpinnerDefaultProperties(spinnerNBoth);
 		
 		spinnerMBoth = new Spinner(container, SWT.BORDER);
-		spinnerMBoth.setBounds(157, 199, 47, 22);
 		setSpinnerDefaultProperties(spinnerMBoth);
 		
 		lblNote = new Label(container, SWT.WRAP | SWT.RIGHT);
 		lblNote.setText("Note that if '"+getRelComp().getParser().getStringRepresentation(getRelComp().getA2())+"' is a symmetric relation and that is enforced in the model, the effects of the first three options are the same.");
 		lblNote.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		lblNote.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.ITALIC));
-		lblNote.setBounds(10, 282, 699, 33);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(lblQuestion, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+						.add(btnSourceDependsOnTarget, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+						.add(gl_container.createSequentialGroup()
+							.add(lblForN)
+							.add(6)
+							.add(spinnerN, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.add(btnTargetDependsOnSource, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+						.add(gl_container.createSequentialGroup()
+							.add(lblForM, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+							.add(6)
+							.add(spinnerM, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.add(btnBoth, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+						.add(gl_container.createSequentialGroup()
+							.add(lblForNBoth)
+							.add(6)
+							.add(spinnerNBoth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.add(6)
+							.add(lblForMBoth, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+							.add(6)
+							.add(spinnerMBoth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.add(btnNone, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+						.add(GroupLayout.TRAILING, lblNote, GroupLayout.PREFERRED_SIZE, 570, GroupLayout.PREFERRED_SIZE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblQuestion, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnSourceDependsOnTarget)
+					.add(6)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(lblForN)
+						.add(spinnerN, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(5)
+					.add(btnTargetDependsOnSource)
+					.add(5)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(1)
+							.add(lblForM))
+						.add(spinnerM, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(6)
+					.add(btnBoth)
+					.add(5)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(1)
+							.add(lblForNBoth))
+						.add(gl_container.createSequentialGroup()
+							.add(1)
+							.add(spinnerNBoth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.add(gl_container.createSequentialGroup()
+							.add(1)
+							.add(lblForMBoth))
+						.add(spinnerMBoth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(5)
+					.add(btnNone)
+					.add(39)
+					.add(lblNote, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					.add(10))
+		);
+		container.setLayout(gl_container);
 		
 	}
 	
