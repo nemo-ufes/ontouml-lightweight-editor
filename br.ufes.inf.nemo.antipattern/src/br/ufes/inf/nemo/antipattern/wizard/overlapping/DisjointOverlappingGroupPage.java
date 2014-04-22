@@ -7,9 +7,9 @@ import org.eclipse.jface.wizard.IWizardPage;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
 
-public abstract class DisjointOverlappingPage extends OverlappingWizardPage{
+public class DisjointOverlappingGroupPage extends OverlappingWizardPage{
 	
-	public DisjointOverlappingPage(String pageName, OverlappingOccurrence occurrence, int variationIndex) {
+	public DisjointOverlappingGroupPage(String pageName, OverlappingOccurrence occurrence, int variationIndex) {
 		super(pageName, occurrence, variationIndex);
 	}
 		
@@ -27,14 +27,33 @@ public abstract class DisjointOverlappingPage extends OverlappingWizardPage{
 	@Override
 	public IWizardPage getNextPage(){
 		
-		registerActions();
+		boolean showExclusive;
 		
-		if (canOpenExclusivePage()){
-			return getOverlappingWizard().getExclusivePage(getVariationIndex());
+		if(btnYes.getSelection()){
+			getOverlappingWizard().removeAllActions(getVariationIndex());
+			showExclusive = true;
 		}
+		else if(btnNo.getSelection()){
 			
+			registerActions();
+			
+			if (canOpenExclusivePage())
+				showExclusive = true;
+			else
+				showExclusive = false;
+		}
+		else
+			return null;
+		
+		if (showExclusive){
+			if(getOverlappingWizard().hasShownExclusiveDefinition){
+				return getOverlappingWizard().getExclusivePage(getVariationIndex());
+			}else{
+				return getOverlappingWizard().getExclusiveDefinitionPage(getVariationIndex());
+			}
+		}
 		else if (getOverlappingWizard().hasNextVariation(getVariationIndex())){
-			return  getOverlappingWizard().getDisjointPage(getVariationIndex()+1);
+			return  getOverlappingWizard().getDisjointOverlappingPage(getVariationIndex()+1);
 		}
 		else {
 			return getOverlappingWizard().getFinishing();
@@ -55,7 +74,14 @@ public abstract class DisjointOverlappingPage extends OverlappingWizardPage{
 				return true;
 		}	
 		return false;
-	
+	}
+
+	@Override
+	public String getQuestion() {
+		return 	"Currently the model states that the types: "+variation.getOverlappingTypesString()+" are overlapping, i.e., " +
+				"it is possible for the same individual to instantiate all of them simultaneously." +
+				"\n\nIs that true? If not, use the table below to specify sub-groups of disjoint types. " +
+				"If more than one restriction is required, add extra lines in the table.";
 	}
 	
 }

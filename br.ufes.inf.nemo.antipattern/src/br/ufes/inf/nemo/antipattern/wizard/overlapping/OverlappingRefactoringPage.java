@@ -5,23 +5,23 @@ import java.util.ArrayList;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
 
 public class OverlappingRefactoringPage extends RefactoringPage {
 
 	private OverlappingOccurrence occurrence;
-	private ArrayList<OverlappingCheckBoxTableBuilder> exclusiveBuilderList;
-	private ArrayList<OverlappingCheckBoxTableBuilder> disjointBuilderList;
+	private ArrayList<OverlappingGroupComposite> exclusiveCompositeList;
+	private ArrayList<OverlappingGroupComposite> disjointCompositeList;
 
 	/**
 	 * Create the wizard.
@@ -30,8 +30,8 @@ public class OverlappingRefactoringPage extends RefactoringPage {
 		super();
 		
 		this.occurrence = occurrence;
-		exclusiveBuilderList = new ArrayList<OverlappingCheckBoxTableBuilder>();
-		disjointBuilderList = new ArrayList<OverlappingCheckBoxTableBuilder>();
+		exclusiveCompositeList = new ArrayList<OverlappingGroupComposite>();
+		disjointCompositeList = new ArrayList<OverlappingGroupComposite>();
 	}
 
 	/**
@@ -39,87 +39,78 @@ public class OverlappingRefactoringPage extends RefactoringPage {
 	 * @param parent
 	 */
 	public void createControl(Composite parent) {
-		ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		setControl(sc);
-		sc.setBounds(10, 60, 554, 212);
-		
-		Composite composite = new Composite(sc, SWT.NONE);
-
-		lblChooseTheAppropriate = new Label(composite, SWT.NONE);
-		lblChooseTheAppropriate.setText("Choose the appropriate refactoring options:");
-		lblChooseTheAppropriate.setBounds(10, 10, 300, 25);
-		
-		int tableVerticalPosition = 70;
-		int tableVerticalSpacing = 110;
-		
-		for (int i = 0; i < occurrence.getVariations().size(); i++) {
-			try {
-				createComponents(composite, tableVerticalPosition, i, 0);
-				tableVerticalPosition += tableVerticalSpacing;
-				createComponents(composite, tableVerticalPosition, i, 1);
-				tableVerticalPosition += tableVerticalSpacing;
-			} catch (Exception e) {	e.printStackTrace(); }
-		}
-		
-		lblnoteThatSome = new Label(composite, SWT.NONE);
-		lblnoteThatSome.setAlignment(SWT.LEFT);
-		lblnoteThatSome.setForeground(SWTResourceManager.getColor(255, 0, 0));
-		lblnoteThatSome.setText("(Note that some options may be incompatible)");
-		lblnoteThatSome.setBounds(10,tableVerticalPosition-31, 300, 25);
-		
-		sc.setContent(composite);
+		ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
-		sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));  
+		
+		setControl(sc);
+		
+		Composite composite = new Composite(sc, SWT.NONE);
+		composite.setLayout(new GridLayout(1, false));
+		
+		Label lblInstruction = new Label(composite, SWT.NONE);
+		GridData gd_lblInstruction = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		gd_lblInstruction.widthHint = 554;
+		lblInstruction.setLayoutData(gd_lblInstruction);
+		lblInstruction.setText("Please choose the appropriate refactoring options:");		
+				
+		for (int i = 0; i < occurrence.getVariations().size(); i++) {
+			createComponents(composite, i, 0);
+			createComponents(composite, i, 1);
+		}
+		
+		for (int i = 0; i < occurrence.getVariations().size(); i++) {
+			GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+			disjointCompositeList.get(i).setLayoutData(gridData);
+			
+			gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
+			exclusiveCompositeList.get(i).setLayoutData(gridData);
+		}
+		
+		Label lblWarning = new Label(composite, SWT.RIGHT);
+		GridData gd_lblWarning = new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1);
+		gd_lblWarning.widthHint = 554;
+		lblWarning.setLayoutData(gd_lblWarning);
+		lblWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		lblWarning.setText("Note that some options may be incompatible");
+		
+		sc.setContent(composite);
+		sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		sc.setSize(100, 100);
+		
 	}
 
 	//actiontype = 0 -> disjoint, actiontype = 1->exclusive
-	private void createComponents(Composite container, int tableYPosition, int variationIndex, int actionType) throws Exception {
+	private void createComponents(Composite container, int variationIndex, int actionType){
 		
 		OverlappingGroup currentVariation = occurrence.getVariations().get(variationIndex);
-		int addLineButtonYPosition = tableYPosition - 31;
-		int tableTitleLabelYPosition = tableYPosition - 21;
-		OverlappingCheckBoxTableBuilder builder;
+		OverlappingGroupComposite builder;
 		
 		if (actionType==0){
 			String tableTitle = "Group "+(variationIndex+1)+": select the DISJOINT types";
-			builder = new OverlappingCheckBoxTableBuilder(container,SWT.BORDER, currentVariation, tableTitle, variationIndex);
-			disjointBuilderList.add(builder);
+			builder = new OverlappingGroupComposite(container,SWT.NONE, currentVariation, tableTitle, variationIndex);
+			disjointCompositeList.add(builder);
 		}
 		else{
 			String tableTitle = "Group "+(variationIndex+1)+": select the EXCLUSIVE types";
-			builder = new OverlappingCheckBoxTableBuilder(container,SWT.BORDER, currentVariation, tableTitle, variationIndex);
-			exclusiveBuilderList.add(builder);
+			builder = new OverlappingGroupComposite(container,SWT.NONE, currentVariation, tableTitle, variationIndex);
+			exclusiveCompositeList.add(builder);
 		}
-		
-		int tableHeight = 70;
-		
-		Label label = builder.getLabel();
-		label.setBounds(10, tableTitleLabelYPosition, 300, 15);
-		
-		Table table = builder.getTable();
-		table.setBounds(10, tableYPosition, 554, tableHeight);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-		
-		Button btnAddLine = builder.getButton();
-		btnAddLine.setBounds(489, addLineButtonYPosition, 75, 25);
-		btnAddLine.setText("Add Line");
 	}
 	
 	public OverlappingOccurrence getOccurrence() {
 		return occurrence;
 	}
 
-	public ArrayList<OverlappingCheckBoxTableBuilder> getBuilderList() {
-		return exclusiveBuilderList;
+	public ArrayList<OverlappingGroupComposite> getBuilderList() {
+		return exclusiveCompositeList;
 	}
 	
 	public ArrayList<ArrayList<Property>> getAllDisjointSelections(){
 		
 		ArrayList<ArrayList<Property>> selections = new ArrayList<ArrayList<Property>>();
 		
-		for (OverlappingCheckBoxTableBuilder builder : disjointBuilderList) {
+		for (OverlappingGroupComposite builder : disjointCompositeList) {
 			selections.addAll(builder.getSelections());
 		} 
 		
@@ -130,7 +121,7 @@ public class OverlappingRefactoringPage extends RefactoringPage {
 		
 		ArrayList<ArrayList<Property>> selections = new ArrayList<ArrayList<Property>>();
 		
-		for (OverlappingCheckBoxTableBuilder builder : exclusiveBuilderList) {
+		for (OverlappingGroupComposite builder : exclusiveCompositeList) {
 			selections.addAll(builder.getSelections());
 		} 
 		
@@ -144,7 +135,7 @@ public class OverlappingRefactoringPage extends RefactoringPage {
 			
 			wizard.removeAllActions();
 			
-			for (OverlappingCheckBoxTableBuilder builder : exclusiveBuilderList) {
+			for (OverlappingGroupComposite builder : exclusiveCompositeList) {
 				for (ArrayList<Property> properties : builder.getSelections()) {
 					OverlappingAction action = new OverlappingAction(occurrence,builder.getVariation());
 					action.setExclusive(properties);
@@ -152,7 +143,7 @@ public class OverlappingRefactoringPage extends RefactoringPage {
 				}
 			}
 			
-			for (OverlappingCheckBoxTableBuilder builder : disjointBuilderList) {
+			for (OverlappingGroupComposite builder : disjointCompositeList) {
 				for (ArrayList<Property> properties : builder.getSelections()) {
 					OverlappingAction action = new OverlappingAction(occurrence,builder.getVariation());
 					action.setDisjoint(properties);
