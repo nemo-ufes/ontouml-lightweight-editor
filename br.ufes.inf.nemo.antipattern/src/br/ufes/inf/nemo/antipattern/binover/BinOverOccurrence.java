@@ -132,9 +132,9 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 		else if(overlappingGroup instanceof CommonSortalSupertype || overlappingGroup instanceof CommonMixinSupertype){
 			
 			if(overlappingGroup instanceof CommonMixinSupertype)
-				context = ((CommonMixinSupertype) overlappingGroup).getCommonSupertypes().get(0).getName();
+				context = ((CommonMixinSupertype) overlappingGroup).getClosestSupertpe().getName();
 			else if (overlappingGroup instanceof CommonSortalSupertype)
-				context = ((CommonSortalSupertype) overlappingGroup).getCommonSupertypes().get(0).getName();
+				context = ((CommonSortalSupertype) overlappingGroup).getClosestSupertpe().getName();
 			
 			quotedContext = addQuotes(context);
 			fix.addAll(fixer.fixPropertyName(targetEnd));
