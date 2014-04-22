@@ -33,6 +33,10 @@ public abstract class AntipatternOccurrence {
 		return fix;
 	}
 	
+	public Antipattern<?> getAntipattern() {
+		return antipattern;
+	}
+
 	public OutcomeFixer getFixer() {
 		return fixer;
 	}
