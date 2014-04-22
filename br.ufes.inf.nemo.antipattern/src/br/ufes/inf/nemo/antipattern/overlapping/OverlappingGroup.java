@@ -6,6 +6,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.list.Combination;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public abstract class OverlappingGroup {
 
@@ -63,6 +64,25 @@ public abstract class OverlappingGroup {
 
 	public ArrayList<Classifier> getOverlappingTypes() {
 		return overlappingTypes;
+	}
+	
+	public String getOverlappingTypesString(){
+		String result = new String();
+		String typeName;
+		for (int i = 0; i < overlappingTypes.size(); i++) {
+			typeName = OntoUMLNameHelper.getTypeAndName(overlappingTypes.get(0), true, true);
+			
+			if(i==0){
+				result += typeName;
+			}
+			else if(i<overlappingTypes.size()-1){
+				result += ", "+typeName;
+			}
+			else{
+				result += " and "+typeName;
+			}
+		}
+		return result;
 	}
 
 	public boolean isValidVariation() {

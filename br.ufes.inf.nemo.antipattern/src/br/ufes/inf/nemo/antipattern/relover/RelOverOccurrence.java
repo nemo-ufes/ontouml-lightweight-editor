@@ -199,6 +199,28 @@ public class RelOverOccurrence extends OverlappingOccurrence{
 	public String getShortName() {
 		return "Relator: "+parser.getStringRepresentation(getRelator());
 	}
+
+	@Override
+	public String getPropertyTypeString() {
+		return "mediated types from";
+	}
+
+	@Override
+	public String getExclusiveExample() {
+		return 	"In a police investigation (the relator base), many people are involved due to different reasons: the detectives are responsible for " +
+				"conducting the investigation, the suspects are the ones being investigated and the witnesses contribute in solving the crime " +
+				"(the set of all relations to the base). It is possible for the same person to be a detective, a suspect and a witness at the same time " +
+				"(so the types are overlapping). It is also possible for a detective to be the witness on the same investigation he is currently conducting. " +
+				"What is not possible, is for a detective to investigate himself, i.e, to be act as the detective and the suspect on the same investigation. "+
+				"\r\n\r\n"+
+				"In this domain, the associations connecting Investigation to Detective and Witness are not exclusive. On the other hand, the ones " +
+				"connecting Investigation to Detective and Suspect are.";
+	}
+
+	@Override
+	public String getBaseClassType() {
+		return "Relator";
+	}
 	
 	
 }

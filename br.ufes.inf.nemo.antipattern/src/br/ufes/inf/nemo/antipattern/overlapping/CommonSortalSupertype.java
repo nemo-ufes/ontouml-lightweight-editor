@@ -111,6 +111,7 @@ public class CommonSortalSupertype extends OverlappingGroup {
 				
 				if (allGsChildren.containsAll(subtypes)){
 					gs.setIsDisjoint(true);
+					occurrence.getFix().includeModified(gs);
 					isFixed = true;
 					break;
 				}

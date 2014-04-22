@@ -179,4 +179,10 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		else
 			return false;
 	}
+
+	public abstract String getPropertyTypeString();
+	
+	public abstract String getExclusiveExample();
+
+	public abstract String getBaseClassType();
 }
