@@ -5,8 +5,8 @@ import java.util.HashSet;
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
 
 public class PartOverOccurrence extends OverlappingOccurrence{
 
@@ -47,6 +47,21 @@ public class PartOverOccurrence extends OverlappingOccurrence{
 	@Override
 	public String getShortName() {
 		return "Part: "+parser.getStringRepresentation(getPart());
+	}
+
+	@Override
+	public String getPropertyTypeString() {
+		return "whole types of";
+	}
+
+	@Override
+	public String getExclusiveExample() {
+		return "";
+	}
+
+	@Override
+	public String getBaseClassType() {
+		return "Part";
 	}
 	
 

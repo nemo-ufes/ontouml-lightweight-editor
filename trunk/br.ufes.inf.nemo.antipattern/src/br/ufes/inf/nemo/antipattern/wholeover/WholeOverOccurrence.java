@@ -50,5 +50,25 @@ public class WholeOverOccurrence extends OverlappingOccurrence {
 	@Override
 	public String getShortName() {
 		return "Whole: "+ parser.getStringRepresentation(getWhole());
+	}
+
+	@Override
+	public String getPropertyTypeString() {
+		return "part types of";
+	}
+
+	@Override
+	public String getExclusiveExample() {
+		return 	"A scientific event organization committee (the whole base) is composed by people with different assignments and responsibilities. " +
+				"There’s the Event Chairman, the Local Organization Chairs, the Technical Program Chairs, amongst others (which define the association set to the part types). "+
+				"\r\n\r\n"+
+				"If it is possible for the same person to perform all roles in the same conference, the memberships from the whole committee to the different " +
+				"members  are non-exclusive. If a person can only have at most one position in a given committee, the relations set is said to exclusive.";
+		 
+	}
+
+	@Override
+	public String getBaseClassType() {
+		return "Whole";
 	}	
 }

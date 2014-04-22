@@ -10,6 +10,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelCompOccurrence extends AntipatternOccurrence {
@@ -98,12 +99,13 @@ public class RelCompOccurrence extends AntipatternOccurrence {
 	@Override
 	public String toString() {
 		
-		String result = "A1: "+parser.getStringRepresentation(a1.getMemberEnd().get(0)) + 
-						" - " + parser.getStringRepresentation(a1) + 
-						" - " + parser.getStringRepresentation(a1.getMemberEnd().get(1)) + "\n"+
-						"A2: "+parser.getStringRepresentation(a2.getMemberEnd().get(0))+ 
-						" - " + parser.getStringRepresentation(a2) + 
-						" - " + parser.getStringRepresentation(a2.getMemberEnd().get(1));
+//		String result = "A1: "+parser.getStringRepresentation(a1.getMemberEnd().get(0)) + 
+//						" - " + parser.getStringRepresentation(a1) + 
+//						" - " + parser.getStringRepresentation(a1.getMemberEnd().get(1)) + "\n"+
+//						"A2: "+parser.getStringRepresentation(a2.getMemberEnd().get(0))+ 
+//						" - " + parser.getStringRepresentation(a2) + 
+//						" - " + parser.getStringRepresentation(a2.getMemberEnd().get(1));
+		String result = OntoUMLNameHelper.getCompleteName(a1)+"\n"+OntoUMLNameHelper.getCompleteName(a2);
 		return result;
 	}
 
