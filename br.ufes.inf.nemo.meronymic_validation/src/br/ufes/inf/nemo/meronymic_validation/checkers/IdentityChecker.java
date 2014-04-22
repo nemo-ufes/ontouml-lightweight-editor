@@ -8,15 +8,16 @@ import RefOntoUML.Classifier;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class IdentityChecker {
+public class IdentityChecker extends Checker<Classifier>{
 
-	OntoUMLParser parser;
+	
 	HashMap<Classifier,ArrayList<Classifier>> identityHash;
 	
 	public IdentityChecker(OntoUMLParser parser) {
-		this.parser = parser;
+		super(parser);
 		this.identityHash = null;
 	}
 	
@@ -24,7 +25,8 @@ public class IdentityChecker {
 	 * 
 	 * @return false if there is a problem
 	 */
-	public void check(){
+	@Override
+	public boolean check(){
 
 		if(identityHash==null)
 			this.identityHash = new HashMap<Classifier,ArrayList<Classifier>>();
@@ -42,6 +44,21 @@ public class IdentityChecker {
 				}
 			}
 		}
+		
+		if(errors!=null)
+			errors.clear();
+		else
+			errors = new ArrayList<Classifier>();
+		
+		for (Classifier c : identityHash.keySet()) {
+			if(hasProblem(c))
+				errors.add(c);
+		}
+		
+		if(errors.size()>0)
+			return false;
+		
+		return true;
 	}
 	
 	public boolean hasProblem(Classifier sortal){
@@ -61,19 +78,30 @@ public class IdentityChecker {
 		return false;
 	}
 
-	public ArrayList<Classifier> getClassesWithError() {
-		ArrayList<Classifier> classesWithError = new ArrayList<Classifier>();
-
-		for (Classifier sortal : identityHash.keySet()) {
-			if(hasProblem(sortal))
-				classesWithError.add(sortal);
-		}
-		
-		return classesWithError;
-	}
-
 	public ArrayList<Classifier> getIdentityProviders(Classifier sortalClass) {
 		return identityHash.get(sortalClass);
+	}
+
+	@Override
+	public String getErrorDescription(int i) {
+		String description = "Type: "+OntoUMLNameHelper.getTypeAndName(getErrors().get(i), true, true)+" - Identity Providers: ";
+		int count = 0;
+		int invParentsSize = getIdentityProviders(errors.get(i)).size();
+		for (Classifier invalidParent : getIdentityProviders(errors.get(i))) {
+			description += OntoUMLNameHelper.getTypeAndName(invalidParent, true, true);
+			if(count<invParentsSize-1)
+				description += ", ";
+			count++;
+		}
+		return description;
+	}
+
+	@Override
+	public String getErrorType(int i) {
+		if(getIdentityProviders(errors.get(i)).size()==0)
+			return "No identity provider defined";
+		else
+			return "Multiple identity providers ("+getIdentityProviders(errors.get(i)).size()+")";
 	}
 
 	

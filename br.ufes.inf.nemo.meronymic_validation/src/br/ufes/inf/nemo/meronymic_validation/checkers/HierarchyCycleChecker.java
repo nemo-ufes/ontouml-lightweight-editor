@@ -7,22 +7,19 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
 import br.ufes.inf.nemo.meronymic_validation.graph.Graph;
 
-public class HierarchyCycleChecker {
-
-	OntoUMLParser parser;
-	ArrayList<ArrayList<Classifier>> hierarchyCycles;
+public class HierarchyCycleChecker extends Checker<ArrayList<Classifier>> {
 	
 	public HierarchyCycleChecker(OntoUMLParser parser) {
-		this.parser = parser;
-		hierarchyCycles = null;
+		super(parser);
 	}
 	
+	@Override
 	public boolean check(){
 		
-		if(hierarchyCycles==null)
-			hierarchyCycles = new ArrayList<ArrayList<Classifier>>();
+		if(errors==null)
+			errors = new ArrayList<ArrayList<Classifier>>();
 		else
-			hierarchyCycles.clear();
+			errors.clear();
 		
 		Graph genGraph = new Graph();
 		//creates directed graph with classes and generalizations
@@ -36,39 +33,34 @@ public class HierarchyCycleChecker {
 		Graph.removeDuplicateEdgeCycles(allPaths);
 	
 		for (EdgePath cycle : allPaths) {
-			hierarchyCycles.add(cycle.getNodeIdsOfType(Classifier.class));
+			errors.add(cycle.getNodeIdsOfType(Classifier.class));
 		}	
 		
-		if(hierarchyCycles.size()==0)
-			return false;
+		if(errors.size()==0)
+			return true;
 		
-		return true;
+		return false;
 	}
 	
-	public ArrayList<ArrayList<Classifier>> getCycles(){
-		if(hierarchyCycles==null)
+	@Override
+	public String getErrorDescription(int i){
+		if(errors==null)
 			check();
 		
-		return hierarchyCycles;
-	}
-	
-	public static String errorType(){
-		return "Generalization Cycle";
-	}
-	
-	public String getCycleStringById(int i){
-		if(hierarchyCycles==null)
-			check();
-		
-		if(i>=hierarchyCycles.size())
+		if(i>=errors.size())
 			return "";
 		
 		String result = "";
-		for (Classifier c : hierarchyCycles.get(i)) {
+		for (Classifier c : errors.get(i)) {
 			result += c.getName()+", ";
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public String getErrorType(int i){
+		return "Hierarchy Cycle";
 	}
 	
 }

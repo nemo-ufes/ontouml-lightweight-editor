@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
-import RefOntoUML.Kind;
 import RefOntoUML.Meronymic;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Quantity;
@@ -14,10 +13,10 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class MeronymicEndsChecker {
-	OntoUMLParser parser;
+public class MeronymicEndsChecker extends Checker<Meronymic>{
 	
 	ArrayList<componentOf> componentOfWithError;
 	ArrayList<subQuantityOf> subQuantityOfWithError;
@@ -25,18 +24,33 @@ public class MeronymicEndsChecker {
 	ArrayList<subCollectionOf> subCollectionOfWithError;
 	
 	public MeronymicEndsChecker(OntoUMLParser parser) {
-		this.parser = parser;
+		super(parser);
 		componentOfWithError = null;
 		subQuantityOfWithError = null;
 		memberOfWithError = null;
 		subCollectionOfWithError = null;
 	}
 	
-	public void check(){
+	public boolean check(){
 		checkComponentOf();
 		checkSubQuantityOf();
 		checkMemberOf();
 		checkSubCollectionOf();
+		
+		if(errors==null)
+			errors = new ArrayList<Meronymic>();
+		else
+			errors.clear();
+		
+		errors.addAll(componentOfWithError);
+		errors.addAll(memberOfWithError);
+		errors.addAll(subCollectionOfWithError);
+		errors.addAll(subQuantityOfWithError);
+		
+		if(errors.size()>0)
+			return false;
+		
+		return true;
 	}
 	
 	public void checkComponentOf(){
@@ -50,7 +64,7 @@ public class MeronymicEndsChecker {
 			Classifier whole = (Classifier) parser.getWholeEnd(compOf).getType();
 			Classifier part = (Classifier) parser.getPartEnd(compOf).getType();
 			
-			if(!isFunctionalComplex(whole) || !isFunctionalComplex(part))
+			if(!parser.isFunctionalComplex(whole) || !parser.isFunctionalComplex(part))
 				componentOfWithError.add(compOf);
 		}
 	}
@@ -82,7 +96,7 @@ public class MeronymicEndsChecker {
 			Classifier whole = (Classifier) parser.getWholeEnd(membOf).getType();
 			Classifier part = (Classifier) parser.getPartEnd(membOf).getType();
 			
-			if(!isCollective(whole) || (!isCollective(part) && !isFunctionalComplex(part)))
+			if(!isCollective(whole) || (!parser.isCollective(part) && !parser.isFunctionalComplex(part)))
 				memberOfWithError.add(membOf);
 		}
 	}
@@ -104,27 +118,7 @@ public class MeronymicEndsChecker {
 		
 	}
 	
-	public boolean isFunctionalComplex(Classifier c){
-		
-		if(c instanceof Kind)
-			return true;
-		
-		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
-			ArrayList<Classifier> identityProviders = parser.getIdentityProvider(c);
-			if(identityProviders.size()==1 && identityProviders.get(0) instanceof Kind)
-				return true;
-		}
-		
-		if(c instanceof MixinClass){
-			for (Classifier child : parser.getChildren(c)) {
-				if(!isFunctionalComplex(child))
-					return false;
-			}
-			return true;
-		}
-		
-		return false;
-	}
+	
 	
 	public boolean isQuantity(Classifier c){
 		
@@ -193,16 +187,24 @@ public class MeronymicEndsChecker {
 			checkSubCollectionOf();
 		return subCollectionOfWithError;
 	}
-	
-	public ArrayList<Meronymic> getAllMeronymicWithError(){
-		ArrayList<Meronymic> meronymics = new ArrayList<Meronymic>();
 
-		meronymics.addAll(getComponentOfWithError());
-		meronymics.addAll(getSubCollectionOfWithError());
-		meronymics.addAll(getMemberOfWithError());
-		meronymics.addAll(getSubQuantityOfWithError());
-
-		return meronymics;
+	@Override
+	public String getErrorDescription(int i) {
+		return OntoUMLNameHelper.getCompleteName(errors.get(i));
 	}
+
+	@Override
+	public String getErrorType(int i) {
+		if(errors.get(i) instanceof componentOf)
+			return "Invalid ends' stereotypes for ComponentOf";
+		if(errors.get(i) instanceof memberOf)
+			return "Invalid ends' stereotypes for MemberOf";
+		if(errors.get(i) instanceof subCollectionOf)
+			return "Invalid ends' stereotypes for SubCollectionOf";
+		if(errors.get(i) instanceof subQuantityOf)
+			return "Invalid ends' stereotypes for SubQuantityOf";
+		return "Invalid Meronymic";
+	}
+	
 	
 }

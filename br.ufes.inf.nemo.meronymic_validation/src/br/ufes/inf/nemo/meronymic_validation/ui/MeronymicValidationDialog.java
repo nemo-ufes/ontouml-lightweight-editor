@@ -444,9 +444,9 @@ public class MeronymicValidationDialog extends JDialog {
 			if(hasHierarchyCycle) consoleTextPane.setText(consoleTextPane.getText()+"FAILED!\n");
 			else consoleTextPane.setText(consoleTextPane.getText()+"OK!\n");	
 
-			consoleTextPane.setText(consoleTextPane.getText()+"Hierarchy cycles found: "+inferenceMaker.getHierachyCycleChecker().getCycles().size()+"\n");
+			consoleTextPane.setText(consoleTextPane.getText()+"Hierarchy cycles found: "+inferenceMaker.getHierachyCycleChecker().getErrors().size()+"\n");
 			if(hasHierarchyCycle){
-				for (ArrayList<Classifier> cycle : inferenceMaker.getHierachyCycleChecker().getCycles()) {
+				for (ArrayList<Classifier> cycle : inferenceMaker.getHierachyCycleChecker().getErrors()) {
 					for (Classifier classifier : cycle) {
 						consoleTextPane.setText(consoleTextPane.getText()+classifier.getName()+", ");
 					}

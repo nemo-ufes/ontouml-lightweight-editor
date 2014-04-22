@@ -12,15 +12,16 @@ import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class GeneralizationChecker {
+public class GeneralizationChecker extends Checker<Classifier>{
 
 	OntoUMLParser parser;
 	HashMap<Classifier,ArrayList<Classifier>> forbiddenParentsHash;
 	
 	public GeneralizationChecker(OntoUMLParser parser) {
-		this.parser = parser;
+		super(parser);
 		this.forbiddenParentsHash = null;
 	}
 	
@@ -28,7 +29,7 @@ public class GeneralizationChecker {
 	 * 
 	 * @return false if there is a problem
 	 */
-	public void check(){
+	public boolean check(){
 		
 		if(forbiddenParentsHash==null)
 			forbiddenParentsHash = new HashMap<Classifier,ArrayList<Classifier>>();
@@ -85,6 +86,21 @@ public class GeneralizationChecker {
 				}
 			}		
 		}
+		
+		if(errors!=null)
+			errors.clear();
+		else
+			errors = new ArrayList<Classifier>();
+		
+		for (Classifier c : forbiddenParentsHash.keySet()) {
+			if(forbiddenParentsHash.get(c).size()>0)
+				errors.add(c);
+		}
+		
+		if(errors.size()>0)
+			return false;
+		
+		return true;
 	}
 	
 	public boolean hasProblem(Classifier sortal){
@@ -99,18 +115,26 @@ public class GeneralizationChecker {
 		return forbiddenParents.size()>0;
 	}
 
-	public ArrayList<Classifier> getClassesWithError() {
-		ArrayList<Classifier> classesWithError = new ArrayList<Classifier>();
-
-		for (Classifier objectClass : forbiddenParentsHash.keySet()) {
-			if(hasProblem(objectClass))
-				classesWithError.add(objectClass);
-		}
-		
-		return classesWithError;
-	}
-
 	public ArrayList<Classifier> getForbiddenParents(Classifier objectClass) {
 		return forbiddenParentsHash.get(objectClass);
+	}
+
+	@Override
+	public String getErrorDescription(int i) {
+		String description = "Type: "+OntoUMLNameHelper.getTypeAndName(getErrors().get(i), true, true)+" - Invalid Parents: ";
+		int count = 0;
+		int invParentsSize = getForbiddenParents(errors.get(i)).size();
+		for (Classifier invalidParent : getForbiddenParents(errors.get(i))) {
+			description += OntoUMLNameHelper.getTypeAndName(invalidParent, true, true);
+			if(count<invParentsSize-1)
+				description += ", ";
+			count++;
+		}
+		return description;
+	}
+
+	@Override
+	public String getErrorType(int i) {
+		return getForbiddenParents(errors.get(i)).size()+" invalid parents";
 	}
 }

@@ -7,22 +7,19 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
 import br.ufes.inf.nemo.meronymic_validation.graph.Graph;
 
-public class MeronymicCycleChecker {
-
-	OntoUMLParser parser;
-	ArrayList<ArrayList<Classifier>> meronymicCycles;
+public class MeronymicCycleChecker extends Checker<ArrayList<Classifier>>{
 	
 	public MeronymicCycleChecker(OntoUMLParser parser) {
-		this.parser = parser;
-		meronymicCycles = null;
+		super(parser);
 	}
 	
+	@Override
 	public boolean check(){
 		
-		if(meronymicCycles==null)
-			meronymicCycles = new ArrayList<ArrayList<Classifier>>();
+		if(errors==null)
+			errors = new ArrayList<ArrayList<Classifier>>();
 		else
-			meronymicCycles.clear();
+			errors.clear();
 		
 		Graph genGraph = new Graph();
 		//creates directed graph with classes and meronymics
@@ -36,20 +33,34 @@ public class MeronymicCycleChecker {
 		Graph.removeDuplicateEdgeCycles(allPaths);
 	
 		for (EdgePath cycle : allPaths) {
-			meronymicCycles.add(cycle.getNodeIdsOfType(Classifier.class));
+			errors.add(cycle.getNodeIdsOfType(Classifier.class));
 		}	
 		
-		if(meronymicCycles.size()==0)
+		if(errors.size()>0)
 			return false;
 		
 		return true;
 	}
-	
-	public ArrayList<ArrayList<Classifier>> getCycles(){
-		if(meronymicCycles==null)
+
+	@Override
+	public String getErrorDescription(int i){
+		if(errors==null)
 			check();
 		
-		return meronymicCycles;
+		if(i>=errors.size())
+			return "";
+		
+		String result = "";
+		for (Classifier c : errors.get(i)) {
+			result += c.getName()+", ";
+		}
+		
+		return result;
+	}
+
+	@Override
+	public String getErrorType(int i) {
+		return "Part-Whole Cycle";
 	}
 	
 }

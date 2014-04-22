@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,14 +16,14 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.meronymic_validation.checkers.HierarchyCycleChecker;
+import br.ufes.inf.nemo.meronymic_validation.checkers.Checker;
 import br.ufes.inf.nemo.meronymic_validation.checkers.PreConditionChecker;
 //import br.ufes.inf.nemo.oled.AppFrame;
 
@@ -59,8 +60,8 @@ public class PreConditionDialog extends JDialog {
 	private DefaultTableModel tableModel;
 	private OntoUMLParser parser;
 	private PreConditionChecker checker;
-	
-	private Thread updateUIThread;
+	protected enum State {SUCCESS, FAILED, ABORTED, UNDEFINED, INTERRUPED};
+	private SwingWorker<Boolean, CheckResult> worker;
 	
 	/**
 	 * Create the dialog.
@@ -168,6 +169,7 @@ public class PreConditionDialog extends JDialog {
 		
 		btnStop = new JButton("Stop");
 		btnStop.setBounds(267, 366, 57, 23);
+		btnStop.addActionListener(actionStop);
 		contentPanel.add(btnStop);
 		
 		btnNext = new JButton("Next");
@@ -196,13 +198,180 @@ public class PreConditionDialog extends JDialog {
 		
 	}
 	
+	private ActionListener actionStop = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			textProgress.setText("Pre-conditions analysis stopped by user!");
+			worker.cancel(true);
+		}
+	};
+	
 	private ActionListener actionRun = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			RunButtonActionPerformed(event);
+			hideAllLabels();
+			
+			worker = new SwingWorker<Boolean, CheckResult>() {
+				
+				CheckResult result;
+				ArrayList<ArrayList<Object>> errorList;
+				
+				@Override
+				protected Boolean doInBackground() {
+					System.out.println("doInBackground!!");
+					result = new CheckResult();
+					errorList = new ArrayList<ArrayList<Object>>();
+					
+					result.message = "Checking the model for hierarchy cycles...";
+					publish(result);
+					
+					if(runChecker(checker.getHierachyCycleChecker(), errorList)){
+						result.hierarchyResult = State.SUCCESS;	
+					}
+					else{
+						result.hierarchyResult = State.FAILED;
+						result.generalizationResult = result.identityResult = result.aggregationResult = result.endsResult = result.meronymicResult = State.ABORTED;
+						result.message = "The model failed one of the tests!";
+						return false;
+					}
+					
+					result.message = "Checking the model for invalid parents...";
+					publish(result);
+					
+					if(runChecker(checker.getGeneralizationChecker(), errorList)){
+						result.generalizationResult = State.SUCCESS;
+					}
+					else{
+						result.generalizationResult = State.FAILED;
+						result.identityResult = result.aggregationResult = result.endsResult = result.meronymicResult = State.ABORTED;
+						result.message = "The model failed one of the tests!";
+						return false;
+					}
+					
+					result.message = "Checking the model for identity problems...";
+					publish(result);
+					
+					if(runChecker(checker.getIdentityChecker(), errorList)){
+						result.identityResult = State.SUCCESS;
+					}
+					else{
+						result.identityResult = State.FAILED;
+						result.aggregationResult = result.endsResult = result.meronymicResult = State.ABORTED;
+						result.message = "The model failed one of the tests!";
+						return false;
+					}
+					
+					result.message = "Checking the model for aggregation issues on meronymics...";
+					publish(result);
+					
+					if(runChecker(checker.getAggregationChecker(), errorList)){
+						result.aggregationResult = State.SUCCESS;
+					}
+					else{
+						result.aggregationResult = State.FAILED;
+						result.endsResult = result.meronymicResult = State.ABORTED;
+						result.message = "The model failed one of the tests!";
+						return false;
+					}
+					
+					result.message = "Checking if the source and whole combination of all part-whole relations are valid...";
+					publish(result);
+					
+					if(runChecker(checker.getMeronymicEndsChecker(), errorList)){
+						result.endsResult = State.SUCCESS;
+					}
+					else{
+						result.endsResult = State.FAILED;
+						result.meronymicResult = State.ABORTED;
+						result.message = "The model failed one of the tests!";
+						return false;
+					}
+					
+					result.message = "Checking the model for meronymic cycles...";
+					publish(result);
+					
+					if(runChecker(checker.getMeronymicCycleChecker(), errorList)){
+						result.endsResult = State.SUCCESS;
+					}
+					else{
+						result.endsResult = State.FAILED;
+						result.message = "The model failed one of the tests!";
+						return false;
+					}
+					
+					result.message = "The model passed all the tests!";
+					return true;
+				}
+
+				private boolean runChecker(Checker<?> checker, ArrayList<ArrayList<Object>> errorList) {
+					if(checker.check()){
+						return true;
+					}
+					else{						
+						for (int i = 0; i < checker.getErrors().size(); i++) {
+							ArrayList<Object> errorLine = new ArrayList<Object>();
+							errorLine.add(i+1);
+							errorLine.add(checker.getErrorType(i));
+							errorLine.add(checker.getErrorDescription(i));
+							errorList.add(errorLine);
+						}
+						return false;
+					}
+				}
+
+				@Override
+				protected void process(final List<CheckResult> result) {
+					System.out.println("PROCESSING!!!");
+					CheckResult check = result.get(result.size()-1);
+					setLabels(check);
+					
+					if(check.message!=null)
+						textProgress.setText(check.message);
+				}
+
+				@Override
+				protected void done() {
+					System.out.println("DONE!!!");
+					
+					setLabels(result);
+					textProgress.setText(result.message);
+		        	for (ArrayList<Object> errorLine : errorList) {
+		        		tableModel.addRow(errorLine.toArray());
+					}
+				}
+			};
+			
+			worker.execute();
 		}
 	};
 
+	class CheckResult {
+		State hierarchyResult, generalizationResult, identityResult, aggregationResult, endsResult, meronymicResult;
+		String message;
+		
+		public CheckResult(){
+			hierarchyResult = generalizationResult = identityResult = aggregationResult = endsResult = meronymicResult = State.UNDEFINED;
+		}
+	}
+	
+	private void setLabel(JLabel label, State state){
+		if(state==State.SUCCESS)
+			setLabelToPassed(label);
+		else if (state==State.FAILED)
+			setLabelToFailed(label);
+		else if (state==State.ABORTED)
+			setLabelToAborted(label);
+	}
+	
+	private void setLabels(CheckResult check) {
+		setLabel(lblHierarchyCycleResult,check.hierarchyResult);
+		setLabel(lblValidSpecializationsResult,check.generalizationResult);
+		setLabel(lblValidIdentitiesResult,check.identityResult);
+		setLabel(lblAggregationKindResult,check.aggregationResult);
+		setLabel(lblWellFormedPartWholeResult,check.endsResult);
+		setLabel(lblPartWholeCyclesResult,check.meronymicResult);
+	}
+	
 	private void setFailedTest(JLabel currentLabel, ArrayList<JLabel> labelList){
 		textProgress.setText("The model contains errors.");
 		setLabelToFailed(currentLabel);
@@ -273,69 +442,6 @@ public class PreConditionDialog extends JDialog {
 //			dialog.setLocationRelativeTo(parent);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Identifying AntiPatterns...
-	 * 
-	 * @param event
-	 */
-	public void RunButtonActionPerformed(ActionEvent event)
-	{
-		try{
-			ArrayList<JLabel> labelList = new ArrayList<JLabel>();
-			labelList.add(lblHierarchyCycleResult);
-			labelList.add(lblValidSpecializationsResult);
-			labelList.add(lblValidIdentitiesResult);
-			labelList.add(lblAggregationKindResult);
-			labelList.add(lblWellFormedPartWholeResult);
-			labelList.add(lblPartWholeCyclesResult);
-			
-			
-			if (updateUIThread!=null) 
-				updateUIThread.interrupt();
-		
-			updateUIThread = new Thread(new Runnable() {			
-				@Override
-				public void run() {
-					SwingUtilities.invokeLater(new Runnable() {					
-						@Override
-						public void run() {
-							hideAllLabels();
-							textProgress.setText("Checking Hierachy Cycles...");
-						}
-					});
-				}
-			});
-			updateUIThread.run();
-
-			checker.getHierachyCycleChecker().check();
-			
-			labelList.remove(lblHierarchyCycleResult);
-			if(checker.getHierachyCycleChecker().getCycles().size()>0){
-				setFailedTest(lblHierarchyCycleResult,labelList);			
-					for (int i = 1; i <= checker.getHierachyCycleChecker().getCycles().size(); i++) {
-						String cycle = checker.getHierachyCycleChecker().getCycleStringById(i-1);
-						String typeDescription = HierarchyCycleChecker.errorType();
-						tableModel.addRow(new Object[]{i,cycle.toString(),typeDescription});
-					}
-					
-					return;
-				}
-				setLabelToPassed(lblHierarchyCycleResult);
-							
-									
-						}
-					});
-				}
-			});
-
-			
-		
-		}
-		catch(Exception e){
 			e.printStackTrace();
 		}
 	}
