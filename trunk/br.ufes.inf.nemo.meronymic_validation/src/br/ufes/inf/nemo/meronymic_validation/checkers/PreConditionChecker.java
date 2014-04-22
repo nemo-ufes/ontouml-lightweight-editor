@@ -30,28 +30,22 @@ public class PreConditionChecker {
 	 */
 	public boolean checkPreConditions(){
 		
-		hierachyCycleChecker.check();
-		if(hierachyCycleChecker.getCycles().size()>0)
+		if(!hierachyCycleChecker.check())
 			return false;
 		
-		generalizationChecker.check();
-		if(generalizationChecker.getClassesWithError().size()>0)
+		if(!generalizationChecker.check())
 			return false;
 		
-		identityChecker.check();
-		if(identityChecker.getClassesWithError().size()>0)
+		if(!identityChecker.check())
 			return false;
 		
-		aggregationChecker.check();
-		if(aggregationChecker.getMeronymicWithError().size()>0)
+		if(!aggregationChecker.check())
 			return false;
 
-		meronymicEndsChecker.check();
-		if(meronymicEndsChecker.getAllMeronymicWithError().size()>0)
+		if(!meronymicEndsChecker.check())
 			return false;
 		
-		meronymicCycleChecker.check();
-		if(meronymicCycleChecker.getCycles().size()>0)
+		if(!meronymicCycleChecker.check())
 			return false;
 		
 		return true;
