@@ -12,26 +12,25 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-
-import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 
-public class OverlappingCheckBoxTableBuilder{
+public class OverlappingGroupComposite extends Composite{
 
 	private final OverlappingGroup variation;
 	private final ArrayList<Property> overlappingProperties;
 	private final int variationIndex;
-	private Table table;
-	private Button btnAddLine;
-	private Label lblTableTitle;
+	protected Table table;
+	protected Button btnAddLine;
+	protected Label lblTableTitle;
 	
-	public OverlappingCheckBoxTableBuilder (Composite parent, int args, OverlappingGroup variation, String title, int variationIndex) throws Exception{
+	public OverlappingGroupComposite (Composite parent, int style, OverlappingGroup variation, String title, int variationIndex) {
+		super(parent,style);
 		
-		table = new Table(parent, args);
-		
-		if(variation==null)
-			throw new Exception();
+		table = new Table(this, SWT.BORDER);
 		
 		this.variation = variation;
 		this.variationIndex = variationIndex;
@@ -50,21 +49,33 @@ public class OverlappingCheckBoxTableBuilder{
 			tableColumn.setText(columnName);
 		}
 		
-		int tableWidth = 0;
-		
-		for (TableColumn tc : table.getColumns()) {
-			tableWidth+=tc.getWidth();
-		}
-		
-		table.setSize(tableWidth+10, 200);
 		addLine();
 		
-		lblTableTitle = new Label(parent, SWT.NONE);
+		lblTableTitle = new Label(this, SWT.NONE);
 		lblTableTitle.setText(title);
 		
-		btnAddLine = new Button(parent, SWT.NONE);
+		btnAddLine = new Button(this, SWT.NONE);
 		btnAddLine.setText("Add Line");
-		btnAddLine.setBounds(300, 300, 300, 300);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(lblTableTitle, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
+				.add(table, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
+				.add(GroupLayout.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.add(btnAddLine, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(lblTableTitle)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(table, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnAddLine)
+					.addContainerGap(23, Short.MAX_VALUE))
+		);
+		setLayout(groupLayout);
 		btnAddLine.addSelectionListener(new SelectionAdapter() {
 			 @Override
 	            public void widgetSelected(SelectionEvent e) {
@@ -79,14 +90,6 @@ public class OverlappingCheckBoxTableBuilder{
 
 	public int getVariationIndex() {
 		return variationIndex;
-	}
-
-	public Button getBtnAddLine() {
-		return btnAddLine;
-	}
-
-	public Label getLblTableTitle() {
-		return lblTableTitle;
 	}
 
 	public void addLine(){
@@ -106,18 +109,6 @@ public class OverlappingCheckBoxTableBuilder{
 	
 	public OverlappingGroup getVariation() {
 		return variation;
-	}
-
-	public Table getTable() {
-		return table;
-	}
-	
-	public Button getButton() {
-		return btnAddLine;
-	}
-	
-	public Label getLabel() {
-		return lblTableTitle;
 	}
 	
 	public ArrayList<ArrayList<Property>> getSelections (){
@@ -144,6 +135,9 @@ public class OverlappingCheckBoxTableBuilder{
 		
 		return line;
 	}
-	
-		 
+
+	@Override
+	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
+	}
 }
