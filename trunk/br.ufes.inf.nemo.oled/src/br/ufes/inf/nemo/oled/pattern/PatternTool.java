@@ -10,6 +10,7 @@ import RefOntoUML.Package;
 import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel;
 import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel.PatternType;
 import br.ufes.inf.nemo.assistant.pattern.window.PatternAbstractWindowAssistant;
+import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.RelatorCreation;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.SubkindCreation;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
@@ -41,6 +42,25 @@ public class PatternTool {
 		return window.getFix();
 	}
 
+	public static Fix createRelatorPattern(JFrame frame, UmlProject project, double x, double y) {
+		RelatorCreation relatorCreation = new RelatorCreation(ProjectBrowser.getParserFor(project));
+		ImagePanel imagePanel = new ImagePanel(PatternType.RelatorCreation);
+
+		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, relatorCreation, imagePanel);
+		window.setVisible(true);
+		window.setLocationRelativeTo(frame);
+		return window.getFix();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static Fix createSubkindPartitionPattern(Package root, double x, double y) {
 		fix = new Fix();
 		outcomeFixer = new OutcomeFixer(root);
@@ -54,23 +74,6 @@ public class PatternTool {
 //		createPartition(root, x, y, ClassStereotype.KIND, ClassStereotype.PHASE, 2);
 //		outcomeFixer.createAttribute(_general, "attribute", ClassStereotype.PRIMITIVETYPE, "Integer");
 		return fix;
-	}
-
-	public static Fix createRelatorPattern(JFrame frame, UmlProject project, double x, double y) {
-//		OntoUMLParser parser = ProjectBrowser.getParserFor(project);
-//
-//		Set<RigidSortalClass> rigids = parser.getAllInstances(RefOntoUML.RigidSortalClass.class);
-//		Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
-//		Set<Relator> relators = parser.getAllInstances(RefOntoUML.Relator.class);
-//
-//		RelatorCreation relatorCreation = new RelatorCreation(UtilAssistant.getStringRepresentationClassStereotype(rigids), UtilAssistant.getStringRepresentationClassStereotype(roles), UtilAssistant.getStringRepresentationClassStereotype(relators));
-//		ImagePanel imagePanel = new ImagePanel(PatternType.RelatorCreation);
-//
-//		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame,parser, x, y, relatorCreation, imagePanel);
-//		window.setVisible(true);
-//		window.setLocationRelativeTo(frame);
-//		return window.getFix();
-		return new Fix();
 	}
 
 	public static Fix createRolePattern(Package root, double x, double y) {

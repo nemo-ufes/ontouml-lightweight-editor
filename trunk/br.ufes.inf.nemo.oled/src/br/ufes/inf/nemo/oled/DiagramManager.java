@@ -2243,7 +2243,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 	}
 	
-	
 	public void openDerivedTypePatternUnion(Double x, Double y) {
 			
 		JDialog dialog = new UnionPattern(this);
@@ -2262,33 +2261,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	
 	}
 
-	public void patternCreationSubkind(double x, double y) {
-		Fix fix = PatternTool.createSubkindPattern(frame, getCurrentProject(),x,y);
-		if(fix!=null)
+	public void runPattern(ElementType elementType, double x, double y) {
+		Fix fix = null;
+		
+		if(elementType == ElementType.SUBKINDPATTERN){
+			fix = PatternTool.createSubkindPattern(frame, getCurrentProject(),x,y);
+    	}else if(elementType == ElementType.RELATORPATTERN){
+    		fix = PatternTool.createRelatorPattern(frame, getCurrentProject(),x,y);		
+    	}else if(elementType == ElementType.SUBKINDPARTITIONPATTERN){
+    		fix = PatternTool.createSubkindPattern(frame, getCurrentProject(),x,y);		
+    	}else if(elementType == ElementType.PHASEPARTITION){
+    		fix = PatternTool.createPhasePartitionPattern(frame, getCurrentProject(),x,y);		
+    	}
+		
+		if(fix != null){
 			updateOLED(fix);
-	}
-
-	public void patternCreationRelator(double x, double y) {
-		Fix fix = PatternTool.createRelatorPattern(frame,getCurrentProject(),x,y);
-		if(fix!=null)
-			updateOLED(fix);		
-	}
-
-	public void patternCreationRole(double x, double y) {
-//		Fix fix = PatternTool.createRolePattern(getCurrentProject().getModel(),x,y);
-//		if(fix!=null)
-//			updateOLED(fix);
-	}
-	
-	public void patternCreationSubkindPartition(double x, double y) {
-//		Fix fix = PatternTool.createSubkindPartitionPattern(getCurrentProject().getModel(),x,y);
-//		if(fix!=null)
-//			updateOLED(fix);
-	}
-	
-	public void patternCreationPhasePartition(double x, double y) {
-//		Fix fix = PatternTool.createPhasePartitionPattern(frame,getCurrentProject(),x,y);
-//		if(fix!=null)
-//			updateOLED(fix);
+		}
 	}
 }

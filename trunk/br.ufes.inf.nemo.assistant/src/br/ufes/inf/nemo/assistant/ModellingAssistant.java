@@ -23,6 +23,11 @@ import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 
 public class ModellingAssistant {
 
+	public static void main(String[] args) {
+		System.out.println("hello world!");
+	}
+	
+	
 	public static final String serializedObjectPath = "graph_assistant.ser";
 	
 	private HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraph;
