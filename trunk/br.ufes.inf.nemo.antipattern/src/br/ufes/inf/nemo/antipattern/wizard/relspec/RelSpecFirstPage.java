@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 
 /**
  * @author Tiago Sales
@@ -42,14 +43,19 @@ public class RelSpecFirstPage extends RelSpecPage {
 
 		setControl(container);
 		
-		StyledText styledText = new StyledText(container, SWT.WRAP);
+		StyledText styledText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL);
 		styledText.setMarginColor(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		styledText.setText(	"Consider an instance ‘x’ of "+relSpec.getAlignedSpecificSource().getName()+" that is related to an instance ‘y’ of " +
-							relSpec.getAlignedSpecificTarget().getName()+", through relation "+relSpec.getSpecific().getName()+". What can be said" +
-							" about ‘x’ being connected to ‘y’ through "+relSpec.getGeneral().getName()+"?");
+		styledText.setText(			
+			"General-Relation: <<"+OutcomeFixer.getStereotype(relSpec.getSpecific())+">> "+relSpec.getGeneral().getMemberEnd().get(0).getType().getName()+"->"+relSpec.getGeneral().getMemberEnd().get(1).getType().getName()+"\n"+
+			"Specific-Relation: <<"+OutcomeFixer.getStereotype(relSpec.getSpecific())+">> "+relSpec.getSpecific().getMemberEnd().get(0).getType().getName()+"->"+relSpec.getSpecific().getMemberEnd().get(1).getType().getName()+"\n\n"+
+					
+			"Consider an instance ‘x’ of "+relSpec.getAlignedSpecificSource().getName()+" that is related to an instance ‘y’ of " +
+			relSpec.getAlignedSpecificTarget().getName()+", through relation Specific-Relation. What can be said" +
+			" about ‘x’ being connected to ‘y’ through General-Relation?"
+		);
 		styledText.setEditable(false);
-		styledText.setBounds(10, 10, 554, 63);
+		styledText.setBounds(10, 10, 554, 109);
 		
 		SelectionAdapter listener = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
@@ -60,18 +66,18 @@ public class RelSpecFirstPage extends RelSpecPage {
 	    setPageComplete(false);
 
 		btnRequired = new Button(container, SWT.RADIO);
-		btnRequired.setBounds(10, 79, 90, 16);
+		btnRequired.setBounds(10, 125, 90, 16);
 		btnRequired.setText("Required");		
 		btnRequired.addSelectionListener(listener);
 		
 		btnForbidden = new Button(container, SWT.RADIO);
 		btnForbidden.setText("Forbbiden");
-		btnForbidden.setBounds(10, 101, 90, 16);		
+		btnForbidden.setBounds(10, 147, 90, 16);		
 		btnForbidden.addSelectionListener(listener);
 		
 		btnPossible = new Button(container, SWT.RADIO);
 		btnPossible.setText("Possible, but not required");
-		btnPossible.setBounds(10, 123, 156, 16);
+		btnPossible.setBounds(10, 169, 156, 16);
 		btnPossible.addSelectionListener(listener);
 	}
 	
