@@ -200,20 +200,9 @@ public class CreationHandler implements EditorMode {
     	}
     	
     	//Victor 
-    	
-    	if(elementType == ElementType.SUBKINDPATTERN){
-    		editor.getDiagramManager().patternCreationSubkind(tmpPos.getX(),tmpPos.getY());
-    	}else if(elementType == ElementType.RELATORPATTERN){
-    		editor.getDiagramManager().patternCreationRelator(tmpPos.getX(),tmpPos.getY());		
-    	}else if(elementType == ElementType.ROLEPATTERN){
-    		editor.getDiagramManager().patternCreationRole(tmpPos.getX(),tmpPos.getY());  		
-    	}else if(elementType == ElementType.SUBKINDPARTITIONPATTERN){
-    		editor.getDiagramManager().patternCreationSubkindPartition(tmpPos.getX(),tmpPos.getY()); 		
-    	}else if(elementType == ElementType.PHASEPARTITION){
-    		editor.getDiagramManager().patternCreationPhasePartition(tmpPos.getX(),tmpPos.getY());  		
-    	}
+    	//trying to run some pattern
+    	editor.getDiagramManager().runPattern(elementType, tmpPos.getX(),tmpPos.getY());
     }
-    
   }
 
   /**

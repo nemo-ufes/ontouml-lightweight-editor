@@ -1,4 +1,5 @@
 package br.ufes.inf.nemo.assistant.pattern.window.selctionbox;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+
 import javax.swing.UIManager;
 
 public class RelatorCreation extends ClassSelectionPanel {
@@ -49,7 +51,7 @@ public class RelatorCreation extends ClassSelectionPanel {
 	
 	public RelatorCreation(OntoUMLParser parser) {
 		setLayout(null);
-
+				
 		JPanel rigidSortalPanel = new JPanel();
 		rigidSortalPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Left RigidSortal classes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		rigidSortalPanel.setBounds(0, 11, 435, 116);

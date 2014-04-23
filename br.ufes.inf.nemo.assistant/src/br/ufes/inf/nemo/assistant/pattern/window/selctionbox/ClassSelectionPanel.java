@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -36,10 +37,53 @@ public abstract class ClassSelectionPanel extends JPanel {
 
 				if(chk.isSelected()){
 					edit.setVisible(false);
+					edit.setEnabled(false);
+					
 					cb.setVisible(true);
+					cb.setEnabled(true);
 				}else{
 					edit.setVisible(true);
+					edit.setEnabled(true);
+					
 					cb.setVisible(false);
+					cb.setEnabled(false);
+				}
+			}
+		};
+	}
+	
+	protected ActionListener getCheckBoxActionListener(final JComboBox<String> type, final JLabel lbType){
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JCheckBox chk = (JCheckBox)e.getSource();
+				JTextField edit = hashChkEdit.get(chk);
+				JComboBox<String> cb = hashChkCombo.get(chk);
+
+				if(chk.isSelected()){
+					edit.setVisible(false);
+					edit.setEnabled(false);
+					
+					cb.setVisible(true);
+					cb.setEnabled(true);
+					
+					type.setVisible(false);
+					type.setEnabled(false);
+					
+					lbType.setVisible(false);
+					lbType.setEnabled(false);
+				}else{
+					edit.setVisible(true);
+					edit.setEnabled(true);
+					
+					cb.setVisible(false);
+					cb.setEnabled(false);
+					
+					type.setVisible(true);
+					type.setEnabled(true);
+					
+					lbType.setVisible(true);
+					lbType.setEnabled(true);
 				}
 			}
 		};

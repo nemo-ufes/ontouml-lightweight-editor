@@ -15,6 +15,8 @@ import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 public class PatternAbstractWindowAssistant extends JDialog {
 
@@ -44,19 +46,18 @@ public class PatternAbstractWindowAssistant extends JDialog {
 		contentPane.add(imagePanel,BorderLayout.CENTER);
 
 		classPanel = panel;
+classPanel.setBorder(new LineBorder(Color.YELLOW));
 		
 		JScrollPane scroll = new JScrollPane(classPanel);
-		scroll.setBorder(null);
-		scroll.getVerticalScrollBar().setUnitIncrement(10);
-		scroll.getHorizontalScrollBar().setUnitIncrement(10);
+		scroll.setBorder(new LineBorder(Color.RED));
+//		scroll.getVerticalScrollBar().setUnitIncrement(10);
+//		scroll.getHorizontalScrollBar().setUnitIncrement(10);
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scroll.setPreferredSize(new Dimension(422,265));
-		//scroll.setViewportView(classPanel);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		//classPanel.setBounds(478, 10, 422, 265);
 		contentPane.add(scroll,BorderLayout.EAST);
-		
+
 		JPanel btnPanel = new JPanel();
 		contentPane.add(btnPanel,BorderLayout.SOUTH);
 		

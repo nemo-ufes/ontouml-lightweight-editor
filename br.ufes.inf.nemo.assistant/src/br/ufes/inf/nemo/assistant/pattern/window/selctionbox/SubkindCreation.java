@@ -1,7 +1,5 @@
 package br.ufes.inf.nemo.assistant.pattern.window.selctionbox;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
@@ -23,6 +21,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class SubkindCreation extends ClassSelectionPanel {
+	private static final long serialVersionUID = 1L;
 	private JTextField genEdit;
 	private JTextField spcEdit;
 	
@@ -54,6 +53,7 @@ public class SubkindCreation extends ClassSelectionPanel {
 		genEdit.setColumns(10);
 
 		genCB = new JComboBox<String>();
+		genCB.setEnabled(false);
 		genCB.setBounds(109, 19, 149, 20);
 		rigidSortalPanel.add(genCB);
 
@@ -88,6 +88,7 @@ public class SubkindCreation extends ClassSelectionPanel {
 		spcEdit.setColumns(10);
 
 		spcCB = new JComboBox<String>();
+		spcCB.setEnabled(false);
 		spcCB.setBounds(109, 19, 149, 20);
 		subkindPanel.add(spcCB);
 
@@ -109,29 +110,6 @@ public class SubkindCreation extends ClassSelectionPanel {
 		getModelValues(parser);
 	}
 
-	protected ActionListener getCheckBoxActionListener(final JComboBox<String> type, final JLabel lbType){
-		return new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JCheckBox chk = (JCheckBox)e.getSource();
-				JTextField edit = hashChkEdit.get(chk);
-				JComboBox<String> cb = hashChkCombo.get(chk);
-
-				if(chk.isSelected()){
-					edit.setVisible(false);
-					cb.setVisible(true);
-					type.setVisible(false);
-					lbType.setVisible(false);
-				}else{
-					edit.setVisible(true);
-					cb.setVisible(false);
-					type.setVisible(true);
-					lbType.setVisible(true);
-				}
-			}
-		};
-	}
-	
 	@Override
 	public void getRunPattern(double x, double y) {
 		Package root = parser.getModel();
