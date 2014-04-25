@@ -7,6 +7,7 @@ import java.util.Set;
 import org.eclipse.ocl.uml.impl.OCLExpressionImpl;
 import org.eclipse.ocl.uml.impl.PropertyCallExpImpl;
 import org.eclipse.uml2.uml.Association;
+import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.internal.impl.ClassImpl;
@@ -289,7 +290,8 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		Property referredProperty = propertyCallExpImpl.getReferredProperty();
 		
 		//get the owner of the attribute (a class)
-		ClassImpl owner = (ClassImpl)referredProperty.getOwner();
+		//ClassImpl owner = (ClassImpl)referredProperty.getOwner();
+		NamedElementImpl owner = (NamedElementImpl)referredProperty.getOwner();
 		
 		//generate a variable name likes in the OntoUML2OWL_SWRL
 		String attrName = owner.getName() + "." + referredProperty.getName();//aqui eh necessario chamar a funcao de criacao de nomes feita pelo victor
