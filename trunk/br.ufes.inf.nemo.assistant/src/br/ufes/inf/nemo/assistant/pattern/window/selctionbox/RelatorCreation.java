@@ -3,7 +3,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -15,6 +17,8 @@ import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
+import RefOntoUML.Relator;
+import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
@@ -52,6 +56,7 @@ public class RelatorCreation extends ClassSelectionPanel {
 	public RelatorCreation(OntoUMLParser parser) {
 		setLayout(null);
 				
+		setSize(new Dimension(441,338));
 		JPanel rigidSortalPanel = new JPanel();
 		rigidSortalPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Left RigidSortal classes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		rigidSortalPanel.setBounds(0, 11, 435, 116);
@@ -69,6 +74,7 @@ public class RelatorCreation extends ClassSelectionPanel {
 		genEdit0.setColumns(10);
 
 		genCB0 = new JComboBox<String>();
+		genCB0.setEnabled(false);
 		genCB0.setBounds(109, 19, 149, 20);
 		rigidSortalPanel.add(genCB0);
 
@@ -102,6 +108,7 @@ public class RelatorCreation extends ClassSelectionPanel {
 		spcEdit1.setColumns(10);
 
 		spcCB1 = new JComboBox<String>();
+		spcCB1.setEnabled(false);
 		spcCB1.setBounds(109, 86, 149, 20);
 		subkindPanel.add(spcCB1);
 
@@ -125,6 +132,7 @@ public class RelatorCreation extends ClassSelectionPanel {
 		subkindPanel.add(lblOntoumlType1);
 		
 		genCB1 = new JComboBox();
+		genCB1.setEnabled(false);
 		genCB1.setBounds(109, 24, 149, 20);
 		subkindPanel.add(genCB1);
 		
@@ -136,8 +144,6 @@ public class RelatorCreation extends ClassSelectionPanel {
 		typesCB1.setBounds(109, 49, 149, 20);
 		subkindPanel.add(typesCB1);
 
-		genChk0.addActionListener(getCheckBoxActionListener(typesCB0,lblOntoumlType0));
-		
 		lblSpecific_1 = new JLabel("Specific0:");
 		lblSpecific_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblSpecific_1.setBounds(20, 84, 59, 14);
@@ -149,13 +155,13 @@ public class RelatorCreation extends ClassSelectionPanel {
 		spcEdit0.setColumns(10);
 		
 		spcCB0 = new JComboBox();
+		spcCB0.setEnabled(false);
 		spcCB0.setBounds(109, 81, 149, 20);
 		rigidSortalPanel.add(spcCB0);
 		
 		spcChk0 = new JCheckBox("Reuse class?");
 		spcChk0.setBounds(271, 80, 97, 23);
 		rigidSortalPanel.add(spcChk0);
-		spcChk1.addActionListener(getCheckBoxActionListener());
 		
 		relatorPanel = new JPanel();
 		relatorPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Relator class", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -178,6 +184,7 @@ public class RelatorCreation extends ClassSelectionPanel {
 		relatorPanel.add(relChk0);
 		
 		relCB0 = new JComboBox();
+		relCB0.setEnabled(false);
 		relCB0.setBounds(109, 20, 149, 20);
 		relatorPanel.add(relCB0);
 		
@@ -210,29 +217,6 @@ public class RelatorCreation extends ClassSelectionPanel {
 		getModelValues(parser);
 	}
 
-	protected ActionListener getCheckBoxActionListener(final JComboBox<String> type, final JLabel lbType){
-		return new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JCheckBox chk = (JCheckBox)e.getSource();
-				JTextField edit = hashChkEdit.get(chk);
-				JComboBox<String> cb = hashChkCombo.get(chk);
-
-				if(chk.isSelected()){
-					edit.setVisible(false);
-					cb.setVisible(true);
-					type.setVisible(false);
-					lbType.setVisible(false);
-				}else{
-					edit.setVisible(true);
-					cb.setVisible(false);
-					type.setVisible(true);
-					lbType.setVisible(true);
-				}
-			}
-		};
-	}
-	
 	@Override
 	public void getRunPattern(double x, double y) {
 		Package root = parser.getModel();
@@ -280,11 +264,17 @@ public class RelatorCreation extends ClassSelectionPanel {
 
 		outcomeFixer.setEnds((Association) material, srcProperty, tgtProperty);
 		fix.includeAdded(material);
-
 	}
 
 	@Override
 	protected void getModelValues(OntoUMLParser parser) {
-		
+		Set<Relator> relators = parser.getAllInstances(RefOntoUML.Relator.class);
+		if(relators.size() > 0){
+			String[] relatorVector = UtilAssistant.getStringRepresentationClassStereotype(relators);
+			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(relatorVector);  
+			relCB0.setModel(model);
+		}else{
+			relChk0.setVisible(false);
+		}
 	}
 }

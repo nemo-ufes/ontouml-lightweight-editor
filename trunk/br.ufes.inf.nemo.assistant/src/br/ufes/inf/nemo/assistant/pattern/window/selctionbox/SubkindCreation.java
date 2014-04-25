@@ -1,4 +1,5 @@
 package br.ufes.inf.nemo.assistant.pattern.window.selctionbox;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Set;
 
@@ -34,7 +35,8 @@ public class SubkindCreation extends ClassSelectionPanel {
 	
 	public SubkindCreation(OntoUMLParser parser) {
 		setLayout(null);
-
+		setSize(new Dimension(450, 200));
+		
 		/* RIGID SORTAL */
 		JPanel rigidSortalPanel = new JPanel();
 		rigidSortalPanel.setBorder(new TitledBorder(null, "RigidSortal class", TitledBorder.LEADING, TitledBorder.TOP, null, null));
