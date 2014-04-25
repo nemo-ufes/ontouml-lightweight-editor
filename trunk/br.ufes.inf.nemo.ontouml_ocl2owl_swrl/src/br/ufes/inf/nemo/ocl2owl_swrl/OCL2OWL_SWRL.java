@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ocl2owl_swrl;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,8 +16,11 @@ import org.semanticweb.owlapi.model.SWRLAtom;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.ConsequentVariableNonDeclaredOnAntecedent;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonInitialized;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonSupported;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnexpectedOperator;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnexpectedResultingRule;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.ExpressionInOCLImplFactory;
 import br.ufes.inf.nemo.ocl2owl_swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2owl_swrl.util.Counters;
@@ -107,6 +111,7 @@ public class OCL2OWL_SWRL {
 	 */
 	@SuppressWarnings("unchecked")
 	public void Transformation () throws Exception{
+		String problematicRules = "";
 		//String unsuccessfullyTransformedRules = "";
 		/*
 		OCLParser oclParser = null;
@@ -208,6 +213,7 @@ public class OCL2OWL_SWRL {
 			
 			//parse the ocl constraints
 			oclParser.parseStandardOCL(strBlockOclConstraints);
+			
 			//parse the block of ocl rules
 			//OCLParser oclParser = null;
 			//try {
@@ -220,7 +226,8 @@ public class OCL2OWL_SWRL {
 				//return e.getMessage();
 			}*/
 			//treats all constraints of ocl parser
-			for(Constraint ct: oclParser.getConstraints())
+			List<Constraint> constraints = oclParser.getConstraints();
+			for(Constraint ct: constraints)
 			{
 				String stereotype = "";
 				//get the stereotype of constraint
@@ -260,10 +267,20 @@ public class OCL2OWL_SWRL {
 						this.logCounting.updateCounters(stereotype, true, null);
 					}catch (Exception e) {
 						//increment the error message and the unsuccessfully transformed rules
+						String message = e.getMessage();
 						this.errors += e.getMessage() + "\n";
 						//unsuccessfullyTransformedRules++;
 						this.logCounting.updateCounters(stereotype, false, e);
 						
+						if(e.getClass().equals(UnexpectedResultingRule.class)){
+							int i = constraints.indexOf(ct);
+							problematicRules += strBlockOclConstraints;
+							problematicRules += "\n";
+							problematicRules += i;
+							problematicRules += "\n";
+							problematicRules += "\n";
+							
+						}
 						//unsuccessfullyTransformedRules += strBlockOclConstraints;
 						//unsuccessfullyTransformedRules += "\n\n";
 					}
@@ -271,7 +288,8 @@ public class OCL2OWL_SWRL {
 				//System.out.println(this.errors);	
 			}
 		}
-		
+    	System.out.println("AQUI\n");
+		System.out.println(problematicRules);
     	//this.errors += unsuccessfullyTransformedRules;
 		//String successMessage = "\n\n" + successfullyTransformedRules + " rule(s) successfully transformed.\n" + unsuccessfullyTransformedRules + " rule(s) unsuccessfully transformed.\n";
     	String successMessage = this.logCounting.getreturnMessage();
