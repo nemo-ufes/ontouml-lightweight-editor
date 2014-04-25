@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.assistant.pattern.window;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,14 +11,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
 
 public class PatternAbstractWindowAssistant extends JDialog {
 
@@ -25,42 +23,37 @@ public class PatternAbstractWindowAssistant extends JDialog {
 	 */
 	private static final long serialVersionUID = 8526414518990243355L;
 
-	private JPanel contentPane;
 
-	private ImagePanel imagePanel;
 	private ClassSelectionPanel classPanel;
-	
+
 	public PatternAbstractWindowAssistant(JFrame owner, final double x, final double y, ClassSelectionPanel panel, ImagePanel image) {
 		super(owner, true);
 		setTitle("Pattern use");
-		setResizable(false);
+		setResizable(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 926, 351);
-		contentPane = new JPanel();
+
+		//Calculates the frame size
+		int frameWidth = panel.getWidth()+image.getWidth()+20;
+		int frameHeight = (panel.getHeight() > image.getHeight()?panel.getHeight():image.getHeight())+60;
+
+
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0,0));
-		
-		imagePanel = image;
-		//imagePanel.setPreferredSize(new Dimension(458, 299));
-		contentPane.add(imagePanel,BorderLayout.CENTER);
+		contentPane.setLayout(new BorderLayout(0, 0));
 
 		classPanel = panel;
-classPanel.setBorder(new LineBorder(Color.YELLOW));
-		
-		JScrollPane scroll = new JScrollPane(classPanel);
-		scroll.setBorder(new LineBorder(Color.RED));
-//		scroll.getVerticalScrollBar().setUnitIncrement(10);
-//		scroll.getHorizontalScrollBar().setUnitIncrement(10);
-		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		
-		//classPanel.setBounds(478, 10, 422, 265);
-		contentPane.add(scroll,BorderLayout.EAST);
 
+		JPanel topPanel = new JPanel(new GridLayout(0, 2));
+		
+		topPanel.add(image);
+		topPanel.add(classPanel);
+		
+		contentPane.add(topPanel,BorderLayout.CENTER);
+		
 		JPanel btnPanel = new JPanel();
 		contentPane.add(btnPanel,BorderLayout.SOUTH);
-		
+
 		JButton btnAddPattern = new JButton("Add Pattern");
 		btnAddPattern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -70,7 +63,7 @@ classPanel.setBorder(new LineBorder(Color.YELLOW));
 		});
 		btnAddPattern.setBounds(672, 284, 117, 23);
 		btnPanel.add(btnAddPattern);
-		
+
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -79,7 +72,17 @@ classPanel.setBorder(new LineBorder(Color.YELLOW));
 		});
 		btnCancel.setBounds(561, 284, 89, 23);
 		btnPanel.add(btnCancel);
+		
+		frameHeight += btnAddPattern.getHeight();
+		setSize(frameWidth, frameHeight);
+		
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		int _x = (int) ((screen.getWidth() - getWidth()) /2);
+		int _y = (int) ((screen.getHeight() -getHeight()) /2);
+		
+		setLocation(_x, _y);
 	}
+	
 	public Fix getFix(){
 		return classPanel.getFix();
 	}

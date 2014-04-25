@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.assistant.pattern.window;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -22,14 +23,15 @@ public class ImagePanel extends JPanel {
 			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/SubkindCreation.png"));
 
 		setLayout(null);
-
+		
+		
 		Image img = iconLogo.getImage() ;  
 		Image newimg = img.getScaledInstance( 445, 259,  java.awt.Image.SCALE_SMOOTH ) ;  
 		iconLogo = new ImageIcon( newimg );
 
 		JPanel imagePanel = new JPanel();
 		imagePanel.setBackground(Color.WHITE);
-		imagePanel.setBounds(0, 18, 445, 259);
+		imagePanel.setBounds(0, 18, iconLogo.getIconWidth(), iconLogo.getIconHeight());
 		add(imagePanel);
 		JLabel lblImg = new JLabel(iconLogo);
 		imagePanel.add(lblImg);
@@ -37,6 +39,8 @@ public class ImagePanel extends JPanel {
 		JLabel lblPatternStructure = new JLabel("Pattern Structure");
 		lblPatternStructure.setBounds(3, 1, 166, 14);
 		add(lblPatternStructure);
+		
+		setSize(new Dimension(iconLogo.getIconWidth(),iconLogo.getIconHeight()+20));
 	}
 
 }
