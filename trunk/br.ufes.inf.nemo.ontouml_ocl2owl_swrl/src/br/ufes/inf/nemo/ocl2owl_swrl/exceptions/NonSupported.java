@@ -12,7 +12,8 @@ public class NonSupported extends Ocl2Owl_SwrlException {
 	 */
 	public NonSupported(String operator, String rule) 
     {		
-		super("\nWarning: Unable to process the following OCL rule because it uses the unsupported operator '" + operator + "':\n" + rule);
+		//super("\nWarning: Unable to process the following OCL rule because it uses the unsupported operator '" + operator + "':\n" + rule);
+		super("Warning: Unable to process the following OCL rule because it uses the unsupported operator '" + operator + "'.");
     }
 	
 	

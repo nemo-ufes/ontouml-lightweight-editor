@@ -136,6 +136,11 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 			
 			//the argument of the operation is got
 			OCLExpressionImpl argument = (OCLExpressionImpl) operationCallExpImpl.getArgument().get(0);
+			
+			if(!sourceIsLeftSideOfImplies && this.hasImpliesOperation(argument)){
+				sourceIsLeftSideOfImplies = true;
+			}
+			
 			//and a factory is created according to the argument class 
 			this.argumentFactory = (OCLExpressionImplFactory) Factory.constructor(argument, this.m_NamedElementImpl);
 			//the argument is solved and the and the returned arguments from the argumentSolveMethod above are returned 

@@ -10,7 +10,8 @@ public class UnexpectedResultingRule extends Ocl2Owl_SwrlException {
 	 */
 	public UnexpectedResultingRule(String atoms, String rule) 
     {		
-		super("\nWarning: the transformation result for the following OCL rule has null '" + atoms + "':\n" + rule);
+		//super("\nWarning: the transformation result for the following OCL rule has null '" + atoms + "':\n" + rule);
+		super("Warning: the transformation result for the following OCL rule has null '" + atoms + "'.");
     }
 	
 	private static final long serialVersionUID = 1L;
