@@ -8,11 +8,13 @@ import java.util.regex.Pattern;
 
 import org.eclipse.ocl.uml.impl.ExpressionInOCLImpl;
 import org.eclipse.uml2.uml.Constraint;
+import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
+import org.semanticweb.owlapi.model.SWRLRule;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
@@ -214,6 +216,14 @@ public class OCL2OWL_SWRL {
 			//parse the ocl constraints
 			oclParser.parseStandardOCL(strBlockOclConstraints);
 			
+			
+			int line = 0;
+			int blockIndex = oclRules.indexOf(strBlockOclConstraints);
+			int lastBreakLine = 0;
+			while(lastBreakLine < blockIndex && lastBreakLine >= 0){
+				lastBreakLine = oclRules.indexOf("\n", lastBreakLine) + 1;
+				line++;
+			}
 			//parse the block of ocl rules
 			//OCLParser oclParser = null;
 			//try {
@@ -267,32 +277,60 @@ public class OCL2OWL_SWRL {
 						this.logCounting.updateCounters(stereotype, true, null);
 					}catch (Exception e) {
 						//increment the error message and the unsuccessfully transformed rules
-						String message = e.getMessage();
-						this.errors += e.getMessage() + "\n";
+						
 						//unsuccessfullyTransformedRules++;
 						this.logCounting.updateCounters(stereotype, false, e);
 						
-						if(e.getClass().equals(UnexpectedResultingRule.class)){
-							int i = constraints.indexOf(ct);
+						int ctId = constraints.indexOf(ct);
+						/*
+						if(e.getClass().equals(ConsequentVariableNonDeclaredOnAntecedent.class)){
+							
 							problematicRules += strBlockOclConstraints;
 							problematicRules += "\n";
-							problematicRules += i;
+							problematicRules += ctId;
 							problematicRules += "\n";
 							problematicRules += "\n";
 							
 						}
+						*/
+						/*
+						SWRLRule rule = factory.getSWRLRule(antecedent,consequent);
+						manager.applyChange(new AddAxiom(ontology, rule));
+						*/
 						//unsuccessfullyTransformedRules += strBlockOclConstraints;
 						//unsuccessfullyTransformedRules += "\n\n";
+						
+						Pattern pError = Pattern.compile("derive:|inv:");
+				    	Matcher mError = pError.matcher(strBlockOclConstraints);
+				    	
+				    	int ctIndex = 0;
+				    	int ctFound = 0;
+				    	while (mError.find() && ctFound <= ctId){
+				    		ctIndex = mError.start();
+				    		ctFound++;
+				    		
+				    	}
+				    	
+				    	int lineError = 1;
+				    	int lastBreakLineError = 0;
+				    	while(lastBreakLineError < ctIndex && lastBreakLineError >= 0){
+				    		lastBreakLineError = strBlockOclConstraints.indexOf("\n", lastBreakLineError) + 1;
+				    		lineError++;
+				    	}
+				    	lineError += line;
+				    	String message = e.getMessage();
+						this.errors += "Line " + lineError + ": " + message + "\n";
+				    	
 					}
 				}
 				//System.out.println(this.errors);	
 			}
 		}
-    	System.out.println("AQUI\n");
-		System.out.println(problematicRules);
+    	
+		//System.out.println(problematicRules);
     	//this.errors += unsuccessfullyTransformedRules;
 		//String successMessage = "\n\n" + successfullyTransformedRules + " rule(s) successfully transformed.\n" + unsuccessfullyTransformedRules + " rule(s) unsuccessfully transformed.\n";
-    	String successMessage = this.logCounting.getreturnMessage();
+    	String successMessage = this.logCounting.getReturnMessage();
 		this.errors += successMessage;
 		
 	}

@@ -12,7 +12,9 @@ public class ConsequentVariableNonDeclaredOnAntecedent extends Ocl2Owl_SwrlExcep
 	 */
 	public ConsequentVariableNonDeclaredOnAntecedent(String variable, String rule) 
     {		
-		super("\nWarning: the transformation result for the following OCL rule has a variable (" + variable + ") on consequent that wasn't declared on antecedent:\n" + rule);
+		
+		//super("\nWarning: the transformation result for the following OCL rule has a variable (" + variable + ") on consequent that wasn't declared on antecedent:\n" + rule);
+		super("Warning: the transformation result for the following OCL rule has a variable (" + variable + ") on consequent that wasn't declared on antecedent.");
     }
 	
 	

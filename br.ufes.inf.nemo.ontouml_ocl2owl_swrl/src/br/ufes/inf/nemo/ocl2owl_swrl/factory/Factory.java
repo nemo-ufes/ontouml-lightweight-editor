@@ -105,6 +105,14 @@ public class Factory {
 		}
 	}
 	
+	public Boolean hasImpliesOperation(OCLExpressionImpl expr){
+		String strExpr = expr.toString();
+		if(strExpr.contains("implies")){
+			return true;
+		}
+		return false;
+	}
+	
 	public Boolean atomExistAtoms(Set<SWRLAtom> atoms, SWRLAtom atom, Boolean removeIt){
 		Class atomClass = atom.getClass();
 		Collection<SWRLArgument> atomArgs = atom.getAllArguments();
