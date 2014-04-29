@@ -8,9 +8,15 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import RefOntoUML.AntiRigidMixinClass;
+import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Classifier;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
+import RefOntoUML.Kind;
+import RefOntoUML.RigidMixinClass;
+import RefOntoUML.RigidSortalClass;
+import RefOntoUML.SemiRigidMixinClass;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.positioning.ClassPosition;
@@ -28,22 +34,23 @@ public class DerivedTypesOperations {
 	static OutcomeFixer of;
 	static Fix mainfix;
 	static DiagramManager dman;
+	static boolean gs_with_nonsortal_or_kind=false;
 
 	@SuppressWarnings("unused")
 	public static Fix createUnionDerivation(DiagramEditor activeEditor, UmlProject project, DiagramManager dm){
 
 		Fix mainfix = new Fix();
 		List<DiagramElement> selected = activeEditor.getSelectedElements();
-		if(selected.size()==2  && selected.get(0) instanceof ClassElement && selected.get(1) instanceof ClassElement ){
-			int j=0;
-			ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
-			for (int i = 0; i < selected.size(); i++) {
-				if (selected.get(i) instanceof ClassElement) {
-					j++;
-					ClassElement ce = (ClassElement) selected.get(i);
-					refontoList.add(ce.getClassifier());
-				}		
-			}
+		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
+		int j=0;
+		for (int i = 0; i < selected.size(); i++) {
+			if (selected.get(i) instanceof ClassElement) {
+				j++;
+				ClassElement ce = (ClassElement) selected.get(i);
+				refontoList.add(ce.getClassifier());
+			}		
+		}
+		if(selected.size()==2  && selected.get(0) instanceof ClassElement && selected.get(1) instanceof ClassElement ){			
 			if(refontoList.size()==2){
 
 				ArrayList<String>stereotypes= DerivedByUnion.getInstance().inferStereotype(refontoList.get(0).eClass().getName(), refontoList.get(1).eClass().getName());
@@ -63,28 +70,116 @@ public class DerivedTypesOperations {
 
 		}
 		else{
-			wrongSelection("Wrong Selection, check the documentation");
+			String specialCase=multipleElementsUnionDerivation(selected);
+			String name=DefineNameDerivedType();
+			if(specialCase=="Rigid+NonRigid"){
+				String stereotype= "Mixin";
+				mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+			}
+			if(gs_with_nonsortal_or_kind){
+				if(specialCase=="AllRigid"){
+					String stereotype= "Category";
+					mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+				}else{
+					if(specialCase=="Antirigid+NonRigid"){
+						String stereotype= "Role Mixin";
+						mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+					}
+				}
+			}
+			//wrongSelection("Wrong Selection, check the documentation");
 		}
 		return mainfix;
 	}
+
+	private static String multipleElementsUnionDerivation(
+			List<DiagramElement> selected) {
+		//String anterior="";
+		String specialCase="AllRigid";
+		DiagramElement diagramElement=selected.get(0);
+		if(!(diagramElement instanceof ClassElement)){
+			wrongSelection("Wrong Selection");
+			return "";
+		}else{
+			ClassElement ce = (ClassElement) diagramElement;
+			if(ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof RigidSortalClass){
+				for (DiagramElement otherelement : selected) {
+					ce = (ClassElement) otherelement;
+					if((ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof AntiRigidMixinClass || ce.getClassifier() instanceof SemiRigidMixinClass || ce.getClassifier() instanceof Kind )){
+						gs_with_nonsortal_or_kind= true;
+					}
+					if(!(ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof RigidSortalClass)){
+						specialCase="Rigid+NonRigid";
+						break;
+					}
+				}	
+			}else{
+				if(ce.getClassifier() instanceof AntiRigidMixinClass || ce.getClassifier() instanceof AntiRigidSortalClass){
+					for (DiagramElement otherelement : selected) {
+						ce = (ClassElement) otherelement;
+						if((ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof AntiRigidMixinClass || ce.getClassifier() instanceof SemiRigidMixinClass || ce.getClassifier() instanceof Kind)){
+							gs_with_nonsortal_or_kind= true;
+						}
+						if(ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof RigidSortalClass){
+							specialCase="Antirigid+NonRigid";
+							break;
+						}
+					}
+					specialCase="AntiRigid+NonRigid";
+				}else{
+					for (DiagramElement otherelement : selected) {
+						ce = (ClassElement) otherelement;
+						if((ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof AntiRigidMixinClass || ce.getClassifier() instanceof SemiRigidMixinClass || ce.getClassifier() instanceof Kind)){
+							gs_with_nonsortal_or_kind= true;
+						}
+						if(ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof RigidSortalClass){
+							specialCase="Rigid+NonRigid";
+							break;
+						}
+					}
+					specialCase="AllSemiRigid";
+				}
+			}
+		}
+		return specialCase;
+	}
+
 
 	public static Fix createDerivedTypeUnion(String stereotype, Fix fix, List<DiagramElement> selected, String name, ArrayList<RefOntoUML.Element> refontoList, UmlProject project, DiagramManager dm){
 		dman = dm;
 		mainfix = fix;
 		//UmlProject project = getCurrentEditor().getProject();
-		of = new OutcomeFixer(project.getModel());
-		Point2D.Double firstpoint = new Point2D.Double();
-		Point2D.Double secondpoint = new Point2D.Double();
-		ClassElement position = (ClassElement) selected.get(0);
-		ClassElement position2 = (ClassElement) selected.get(1);
-		firstpoint.setLocation(position.getAbsoluteX1(),position.getAbsoluteY1());
-		secondpoint.setLocation(position2.getAbsoluteX1(),position2.getAbsoluteY1());
-		Point2D.Double newElementPosition= ClassPosition.findPositionGeneralization(firstpoint, secondpoint);
-		Classifier newElement = includeElement(newElementPosition, name, stereotype);
-		createGeneralization(newElement, (Classifier)refontoList.get(0), (Classifier)refontoList.get(1));
-		mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
+		if(selected.size()<3){
+			of = new OutcomeFixer(project.getModel());
+			Point2D.Double firstpoint = new Point2D.Double();
+			Point2D.Double secondpoint = new Point2D.Double();
+			ClassElement position = (ClassElement) selected.get(0);
+			ClassElement position2 = (ClassElement) selected.get(1);
+			firstpoint.setLocation(position.getAbsoluteX1(),position.getAbsoluteY1());
+			secondpoint.setLocation(position2.getAbsoluteX1(),position2.getAbsoluteY1());
+			Point2D.Double newElementPosition= ClassPosition.findPositionGeneralization(firstpoint, secondpoint);
+			Classifier newElement = includeElement(newElementPosition, name, stereotype);
+			createGeneralization(newElement, (Classifier)refontoList.get(0), (Classifier)refontoList.get(1));
+			mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
+			
+		}else{
+			of = new OutcomeFixer(project.getModel());
+			Point2D.Double firstpoint = new Point2D.Double();
+			Point2D.Double secondpoint = new Point2D.Double();
+			ClassElement position = (ClassElement) selected.get(0);
+			ClassElement position2 = (ClassElement) selected.get(1);
+			firstpoint.setLocation(position.getAbsoluteX1(),position.getAbsoluteY1());
+			secondpoint.setLocation(position2.getAbsoluteX1(),position2.getAbsoluteY1());
+			Point2D.Double newElementPosition= ClassPosition.findPositionGeneralization(firstpoint, secondpoint);
+			Classifier newElement = includeElement(newElementPosition, name, stereotype);
+			ArrayList<Classifier> classifiers= new ArrayList<Classifier>();
+			for (Element element : refontoList) {
+				classifiers.add((Classifier)element);
+			}
+			createMultipleGeneralization(newElement, classifiers);
+			mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
+		}
 		return mainfix;
-
 	}
 
 	private static Fix createDerivedTypeExclusion(String stereotype, Fix mainfix, List<DiagramElement> selected, String name, ClassElement pai, ClassElement filho,GeneralizationElement generalizationElement, UmlProject project){		//UmlProject project = getCurrentEditor().getProject();
@@ -258,6 +353,17 @@ public class DerivedTypesOperations {
 		mainfix.addAll(gs);
 	}
 
+	public  static void createMultipleGeneralization(Classifier father, ArrayList<Classifier> sons){
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+		for (Classifier classifier : sons) {
+			Fix fix=of.createGeneralization(classifier, father);
+			generalizations.add((Generalization) fix.getAdded().get(0));
+			mainfix.addAll(fix);
+		}
+
+		Fix gs =  of.createGeneralizationSet(generalizations);
+		mainfix.addAll(gs);
+	}
 
 
 	public static void exclusionPattern(DiagramManager dman2,
@@ -272,7 +378,7 @@ public class DerivedTypesOperations {
 		Classifier newElement3 = includeElement(positions[1], values.get(5), values.get(2));
 		createGeneralization(newElement, newElement2, newElement3);
 		dman2.updateOLED(mainfix);	
-		
+
 	}
 
 }
