@@ -92,8 +92,8 @@ public class AboutDialog extends JDialog {
 				
 		JPanel panel = new JPanel();
 		
-		lblVersion = new JLabel("OLED v"+Main.OLED_VERSION);
-		lblVersion.setFont(new Font(lblVersion.getFont().getFontName(), Font.BOLD, 11));
+		lblVersion = new JLabel("OLED v"+Main.OLED_VERSION+" - "+Main.OLED_COMPILATION_DATE);
+		lblVersion.setFont(new Font(lblVersion.getFont().getFontName(), Font.PLAIN, 11));
 		lblVersion.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JLabel lblNemoinfufesbr = new JLabel("nemo.inf.ufes.br");
@@ -131,7 +131,7 @@ public class AboutDialog extends JDialog {
 					.addContainerGap(26, Short.MAX_VALUE))
 		);
 		
-		JLabel lblViniciusSobralVictor = new JLabel("Vinicius Sobral - EA Compatibility");
+		JLabel lblViniciusSobralVictor = new JLabel("Vinicius Sobral - EA/Astah Compatibility");
 		lblViniciusSobralVictor.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		JLabel lblTiagoPrinceSales = new JLabel("Tiago Prince Sales - Alloy and Anti-Patterns");
@@ -143,10 +143,10 @@ public class AboutDialog extends JDialog {
 		labelAuthor1.setForeground(Color.BLACK);
 		labelAuthor1.setHorizontalAlignment(SwingConstants.LEFT);
 		
-		JLabel lblVictorAmorim = new JLabel("Victor Amorim - OWL and Modeling Assistant");
+		JLabel lblVictorAmorim = new JLabel("Victor Amorim - OWL and OntoUML Patterns");
 		lblVictorAmorim.setHorizontalAlignment(SwingConstants.LEFT);
 		
-		JLabel lblCssioReginato = new JLabel("Cássio Reginato - OWL and Derived Types");
+		JLabel lblCssioReginato = new JLabel("Cássio Reginato - OWL and OntoUML Derived Patterns");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)

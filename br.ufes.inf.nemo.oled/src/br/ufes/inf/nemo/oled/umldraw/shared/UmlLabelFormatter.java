@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.umldraw.shared;
 
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
@@ -13,8 +14,8 @@ public class UmlLabelFormatter {
 	{
 		if(namedElement instanceof PropertyImpl)
 		{
-			Property property = (Property) namedElement; 
-			return property.getName() + " : " + property.getType().getName();
+			Property property = (Property) namedElement;			
+			return property.getName() + " : " + property.getType().getName()+"["+ModelHelper.getMultiplicityString(property)+"]";			
 		}
 		if(namedElement instanceof Generalization)
 		{
