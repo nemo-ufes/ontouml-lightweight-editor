@@ -427,6 +427,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		property.setLowerValue(lower);			
 		property.setUpperValue(upper);
 		refreshDiagramElement(property.getAssociation());
+		ProjectBrowser.refreshTree(currentProject);
 	}
 	
 	/** Change multiplicity from string and update the connections in diagrams */
@@ -434,6 +435,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		ModelHelper.setMultiplicityFromString(property, multiplicity);
 		refreshDiagramElement(property.getAssociation());
+		ProjectBrowser.refreshTree(currentProject);
 	}
 	
 	/** Delete element from the model and every diagram in each it appears. It shows a message before deletion.*/
@@ -555,7 +557,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				showName = ae.showName();
 				showOntoUMLStereotype = ae.showOntoUmlStereotype();
 				showRoles = ae.showRoles();
-				showMultiplicities = ae.showMultiplicities();
+				showMultiplicities = ae.showMultiplicities();				
 				direction = ae.getNameReadingDirection();
 			}
 			deleteFromDiagram(element, d);
@@ -820,6 +822,22 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(element);
 	}
 
+	/** Invert end points of an association. THis method switch the current properties of an association. THe source becomes the target and vice-versa. */
+	public void invertEndPoints(RefOntoUML.Association association)
+	{
+		Property source = association.getMemberEnd().get(0);
+   		Property target = association.getMemberEnd().get(1);
+   		association.getMemberEnd().clear();	
+   		association.getMemberEnd().add(target);
+   		association.getMemberEnd().add(source);   		
+   		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, currentProject).getTree();
+   		tree.selectModelElement(source);
+   		tree.removeCurrentNode();
+   		tree.selectModelElement(association);
+   		tree.addObject(source);   		
+   		frame.getDiagramManager().updateOLEDFromModification(association, true);
+	}
+		
 	/**
 	 * Update the application accordingly to the refontouml instance created
 	 * 
