@@ -70,23 +70,63 @@ public class DerivedTypesOperations {
 
 		}
 		else{
+			String stereotype=null;
 			String specialCase=multipleElementsUnionDerivation(selected);
 			String name=DefineNameDerivedType();
 			if(specialCase=="Rigid+NonRigid"){
-				String stereotype= "Mixin";
-				mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+				stereotype= "Mixin";
+				//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+			}else{
+				if(specialCase=="SemiRigid+Non-Rigid"){
+					Object[] stereo;
+					ArrayList<String>stereotypes = new ArrayList<String>();
+					stereotypes.add("Category");
+					stereotypes.add("Role Mixin");
+					stereo=  stereotypes.toArray();
+					stereotype= selectStereotype(stereo);
+					//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+				}
 			}
 			if(gs_with_nonsortal_or_kind){
 				if(specialCase=="AllRigid"){
-					String stereotype= "Category";
-					mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+					stereotype= "Category";
+					//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
 				}else{
-					if(specialCase=="Antirigid+NonRigid"){
-						String stereotype= "Role Mixin";
-						mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+					if(specialCase=="AllAntiRigid"){
+						stereotype= "Role Mixin";
+						//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+					}
+				}
+			}else{
+				if(specialCase=="AllRigid"){
+					Object[] stereo;
+					ArrayList<String>stereotypes = new ArrayList<String>();
+					stereotypes.add("Kind");
+					stereotypes.add("Collective");
+					stereotypes.add("Quantity");
+					stereotypes.add("Subkind");
+					stereotypes.add("Category");
+					stereo=  stereotypes.toArray();
+					stereotype= selectStereotype(stereo);
+					//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+				}else{
+					if(specialCase=="AllAntiRigid"){
+						Object[] stereo;
+						ArrayList<String>stereotypes = new ArrayList<String>();
+						stereotypes.add("Kind");
+						stereotypes.add("Collective");
+						stereotypes.add("Quantity");
+						stereotypes.add("Subkind");
+						stereotypes.add("Role");
+						stereotypes.add("Phase");
+						stereotypes.add("Role Mixin");
+						stereo=  stereotypes.toArray();
+						stereotype= selectStereotype(stereo);
+						//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
 					}
 				}
 			}
+			mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
 			//wrongSelection("Wrong Selection, check the documentation");
 		}
 		return mainfix;
@@ -97,13 +137,16 @@ public class DerivedTypesOperations {
 		//String anterior="";
 		String specialCase="AllRigid";
 		DiagramElement diagramElement=selected.get(0);
+		List<DiagramElement> selected2 = new ArrayList<DiagramElement>();
+		selected2.addAll(selected);
+		selected2.remove(0);
 		if(!(diagramElement instanceof ClassElement)){
 			wrongSelection("Wrong Selection");
 			return "";
 		}else{
 			ClassElement ce = (ClassElement) diagramElement;
 			if(ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof RigidSortalClass){
-				for (DiagramElement otherelement : selected) {
+				for (DiagramElement otherelement : selected2) {
 					ce = (ClassElement) otherelement;
 					if((ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof AntiRigidMixinClass || ce.getClassifier() instanceof SemiRigidMixinClass || ce.getClassifier() instanceof Kind )){
 						gs_with_nonsortal_or_kind= true;
@@ -114,30 +157,30 @@ public class DerivedTypesOperations {
 					}
 				}	
 			}else{
-				if(ce.getClassifier() instanceof AntiRigidMixinClass || ce.getClassifier() instanceof AntiRigidSortalClass){
-					for (DiagramElement otherelement : selected) {
+				if(ce.getClassifier() instanceof SemiRigidMixinClass){
+					for (DiagramElement otherelement : selected2) {
 						ce = (ClassElement) otherelement;
 						if((ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof AntiRigidMixinClass || ce.getClassifier() instanceof SemiRigidMixinClass || ce.getClassifier() instanceof Kind)){
 							gs_with_nonsortal_or_kind= true;
 						}
-						if(ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof RigidSortalClass){
-							specialCase="Antirigid+NonRigid";
-							break;
-						}
-					}
-					specialCase="AntiRigid+NonRigid";
-				}else{
-					for (DiagramElement otherelement : selected) {
-						ce = (ClassElement) otherelement;
-						if((ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof AntiRigidMixinClass || ce.getClassifier() instanceof SemiRigidMixinClass || ce.getClassifier() instanceof Kind)){
-							gs_with_nonsortal_or_kind= true;
-						}
-						if(ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof RigidSortalClass){
+						if((ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof RigidSortalClass || ce.getClassifier() instanceof Kind )){
 							specialCase="Rigid+NonRigid";
 							break;
 						}
 					}
-					specialCase="AllSemiRigid";
+					specialCase="SemiRigid+Non-Rigid";
+				}else{
+					for (DiagramElement otherelement : selected2) {
+						ce = (ClassElement) otherelement;
+						if((ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof AntiRigidMixinClass || ce.getClassifier() instanceof SemiRigidMixinClass || ce.getClassifier() instanceof Kind)){
+							gs_with_nonsortal_or_kind= true;
+						}
+						if(ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof RigidSortalClass || ce.getClassifier() instanceof Kind ){
+							specialCase="Rigid+NonRigid";
+							break;
+						}
+					}
+					specialCase="AllAntiRigid";
 				}
 			}
 		}
