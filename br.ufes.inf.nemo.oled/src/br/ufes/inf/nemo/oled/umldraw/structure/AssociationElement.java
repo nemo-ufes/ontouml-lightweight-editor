@@ -185,7 +185,7 @@ public final class AssociationElement extends BaseConnection {
 			 */
 			public String getLabelText() {
 				Association association = (Association) getRelationship();
-				return ModelHelper.getMultiplicityString(association.getOwnedEnd().get(0));
+				return ModelHelper.getMultiplicityString(association.getMemberEnd().get(0));
 			}
 
 			/**
@@ -206,7 +206,7 @@ public final class AssociationElement extends BaseConnection {
 			 */
 			public String getLabelText() {
 				Association association = (Association) getRelationship();
-				return ModelHelper.getMultiplicityString(association.getOwnedEnd().get(1));
+				return ModelHelper.getMultiplicityString(association.getMemberEnd().get(1));
 			}
 
 			/**
@@ -233,7 +233,7 @@ public final class AssociationElement extends BaseConnection {
 			 */
 			public String getLabelText() {
 				Association association = (Association) getRelationship();
-				String role = association.getOwnedEnd().get(0).getName(); 
+				String role = association.getMemberEnd().get(0).getName(); 
 				return role != null ? role : "";
 			}
 
@@ -255,7 +255,7 @@ public final class AssociationElement extends BaseConnection {
 			 */
 			public String getLabelText() {
 				Association association = (Association) getRelationship();
-				String role = association.getOwnedEnd().get(1).getName();
+				String role = association.getMemberEnd().get(1).getName();
 				return role != null ? role : "";
 			}
 

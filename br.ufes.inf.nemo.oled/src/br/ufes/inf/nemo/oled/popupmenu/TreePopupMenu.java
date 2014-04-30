@@ -379,17 +379,14 @@ public class TreePopupMenu extends JPopupMenu {
     		if(ontoElement.getElement() instanceof RefOntoUML.Association)
     		{    			
     			final Association association = (Association)ontoElement.getElement();
-    			JMenuItem invertEndPointsItem = new JMenuItem("Invert End Points");
-    			add(invertEndPointsItem);    			
+    			JMenu invertMenu = new JMenu("Invert");    			
+    			JMenuItem invertEndPointsItem = new JMenuItem("End Points");
+    			invertMenu.add(invertEndPointsItem);
+    			add(invertMenu);    			
     			invertEndPointsItem.addActionListener(new ActionListener() {				
 	   	        	@Override
 	   	        	public void actionPerformed(ActionEvent e) {
-	   	        		Property source = association.getMemberEnd().get(0);
-	   	        		Property target = association.getMemberEnd().get(1);
-	   	        		association.getMemberEnd().clear();
-	   	        		association.getMemberEnd().add(target);
-	   	        		association.getMemberEnd().add(source);
-	   	        		frame.getDiagramManager().updateOLEDFromModification(association, true);
+	   	        		frame.getDiagramManager().invertEndPoints(association);
 	   	        	}
        	        });    			
     		}

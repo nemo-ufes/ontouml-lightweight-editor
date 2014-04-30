@@ -88,7 +88,7 @@ public class ContextMenusBuilder {
 						singleConnectionPopup.setConnection((UmlConnection)elem,editor,true);
 						return singleConnectionPopup;
 					}else if(diffx2<30 && diffy2<30){
-						singleConnectionPopup.setConnection((UmlConnection)elem,editor,true);
+						singleConnectionPopup.setConnection((UmlConnection)elem,editor,false);
 						return singleConnectionPopup;
 					}
 				}				

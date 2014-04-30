@@ -74,6 +74,8 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private JCheckBoxMenuItem shareable;
 	private JMenuItem findInProjectItem;
 	private JMenu lineStyleItem;
+	private JMenuItem invertEndPointsItem;
+	private JMenu invertMenu;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -101,6 +103,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		addSeparator();
 		
 		createMenuItem(this, "resetpoints");
+				
 		lineStyleItem = new JMenu("Line Style");
 		add(lineStyleItem);
 		createMenuItem(lineStyleItem, "recttodirect");
@@ -110,6 +113,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		
 		addSeparator();
 		
+		createInvertMenu();
 		createEndPointItems();
 		createMetaProperties();
 				
@@ -226,6 +230,21 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		addSeparator();
 		
 		createMenuItem(this, "delete");
+	}
+	
+	public void createInvertMenu()
+	{
+		invertMenu = new JMenu("Invert");
+		add(invertMenu);
+		
+		invertEndPointsItem = new JMenuItem("End Points");
+		invertMenu.add(invertEndPointsItem);    			
+		invertEndPointsItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		editor.getDiagramManager().invertEndPoints((Association)((AssociationElement)con).getRelationship());
+        	}
+        });
 	}
 	
 	public void createMetaProperties()
@@ -420,12 +439,14 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			showRolesItem.setSelected(((AssociationElement)con).showRoles());
 			showNameItem.setSelected(((AssociationElement)con).showName());
 			showStereotypeItem.setSelected(((AssociationElement)con).showOntoUmlStereotype());
+			invertMenu.setVisible(true);			
 		}else{			
 			showNameItem.setSelected(((GeneralizationElement)con).showName());
 			readingDirectionMenu.setEnabled(false);
 			showMultiplicitiesItem.setEnabled(false);
 			showRolesItem.setEnabled(false);			
 			showStereotypeItem.setEnabled(false);
+			invertMenu.setVisible(false);
 		}
 		if(con instanceof AssociationElement){
 			if(((AssociationElement)con).getRelationship() instanceof Meronymic){
