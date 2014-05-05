@@ -180,6 +180,24 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		setBorder(new EmptyBorder(0,0,0,0));
 	}
 
+	public void saveProjectNeeded(boolean value)
+	{
+		currentProject.setSaveModelNeeded(value);
+		frame.getMainToolBar().enableSaveButton(value);
+	}
+	
+	public void saveDiagramNeeded(StructureDiagram diagram, boolean value)
+	{
+		diagram.setSaveNeeded(value);
+		saveProjectNeeded(value);
+	}
+	
+	public void saveAllDiagramNeeded(boolean value)
+	{
+		for(UmlDiagram d: getCurrentProject().getDiagrams()) d.setSaveNeeded(value);
+		saveProjectNeeded(value);	
+	}
+	
 	/**
 	 * Create a current project from a Model
 	 * @param project
@@ -187,8 +205,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public UmlProject createCurrentProject(RefOntoUML.Package model)
 	{		
 		currentProject = new UmlProject(model);
-		currentProject.setSaveModelNeeded(false);		
-		frame.getMainToolBar().enableSaveButton(false);
+		saveProjectNeeded(false);
 
 		frame.getProjectBrowser().setProject(currentProject);
 		frame.getInfoManager().setProject(currentProject);
@@ -206,8 +223,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void createEmptyCurrentProject()
 	{
 		currentProject = new UmlProject();
-		currentProject.setSaveModelNeeded(false);
-		frame.getMainToolBar().enableSaveButton(false);
+		saveProjectNeeded(false);
 
 		frame.getProjectBrowser().setProject(currentProject);
 		frame.getInfoManager().setProject(currentProject);
@@ -254,10 +270,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		StructureDiagram diagram = new StructureDiagram(project,elementFactory);
 		diagram.setLabelText("New Diagram");
-		project.addDiagram(diagram);
-		project.setSaveModelNeeded(true);
-		frame.getMainToolBar().enableSaveButton(true);
-		diagram.setSaveNeeded(true);
+		project.addDiagram(diagram);		
+		saveDiagramNeeded(diagram,false);
 		createDiagramEditor(diagram);
 		
 		//add the diagram from the browser
@@ -274,9 +288,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			StructureDiagram diagram = new StructureDiagram(getCurrentProject(), elementFactory);
 			diagram.setLabelText("New Diagram");
 			getCurrentProject().addDiagram(diagram);
-			getCurrentProject().setSaveModelNeeded(true);
-			frame.getMainToolBar().enableSaveButton(true);
-			diagram.setSaveNeeded(true);
+			saveDiagramNeeded(diagram,true);
 			createDiagramEditor(diagram);
 			
 			//add the diagram from the browser
@@ -292,6 +304,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void removeDiagram(StructureDiagram diagram)
 	{
+		//first remove all the elements in the diagram
+		for(DiagramElement dElem: diagram.getChildren()) {
+			if(dElem instanceof ClassElement) deleteFromDiagram(((ClassElement)dElem).getClassifier(), getDiagramEditor(diagram));
+			if(dElem instanceof AssociationElement) deleteFromDiagram(((AssociationElement)dElem).getRelationship(), getDiagramEditor(diagram));
+			if(dElem instanceof GeneralizationElement) deleteFromDiagram(((GeneralizationElement)dElem).getRelationship(), getDiagramEditor(diagram));
+		}
+		//second deletes the diagram
 		getCurrentProject().getDiagrams().remove(diagram);
 		for(Component c: getComponents()){
 			if (c instanceof DiagramEditorWrapper){
@@ -1205,8 +1224,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 				for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
-				getCurrentProject().setSaveModelNeeded(false);
-				frame.getMainToolBar().enableSaveButton(false);
+				saveProjectNeeded(false);
 
 				String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);
 				frame.getInfoManager().getOcleditor().setText(constraints);
@@ -1249,8 +1267,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 				for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
-				getCurrentProject().setSaveModelNeeded(false);
-				frame.getMainToolBar().enableSaveButton(false);
+				saveProjectNeeded(false);
 
 				String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);
 				frame.getInfoManager().getOcleditor().setText(constraints);
@@ -1302,10 +1319,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			getCurrentProject().setName(file.getName().replace(".oled",""));
 			ProjectBrowser.refreshTree(getCurrentProject());
 
-			getCurrentProject().setSaveModelNeeded(false);
-			frame.getMainToolBar().enableSaveButton(false);
-
-			for(UmlDiagram d: getCurrentProject().getDiagrams()) d.setSaveNeeded(false);
+			saveAllDiagramNeeded(false);
 
 			frame.setTitle("OLED - "+file.getName()+"");
 			invalidate();
