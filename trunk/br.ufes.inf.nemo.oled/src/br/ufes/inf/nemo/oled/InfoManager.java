@@ -78,10 +78,8 @@ public class InfoManager extends JTabbedPane {
 			public void insertUpdate(DocumentEvent arg0) {
 			}			
 			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-				/*InfoManager.this.frame.getDiagramManager().getCurrentDiagramEditor().getDiagram().setSaveNeeded(true);
-				InfoManager.this.project.setSaveModelNeeded(true);
-				InfoManager.this.frame.getDiagramManager().updateUI();*/
+			public void changedUpdate(DocumentEvent arg0) {				
+				InfoManager.this.frame.getDiagramManager().saveProjectNeeded(true);				
 			}
 		});
 				

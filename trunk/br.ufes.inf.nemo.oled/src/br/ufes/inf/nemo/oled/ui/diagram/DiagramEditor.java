@@ -1100,10 +1100,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		if(changeType == ChangeType.ELEMENTS_ADDED || changeType == ChangeType.ELEMENTS_REMOVED || changeType == ChangeType.LABEL_TEXT_SET || changeType == ChangeType.CONNECTION_NAVEGABILITY_SET 
 		|| changeType == ChangeType.ELEMENTS_MOVED || changeType == ChangeType.ELEMENTS_DRAGGED || changeType == ChangeType.ELEMENTS_CHANGED)				 
 		{
-			frame.getMainToolBar().enableSaveButton(true);
-			getProject().setSaveModelNeeded(true);
+			frame.getDiagramManager().saveDiagramNeeded(this.getDiagram(),true);	
 		}
-		diagram.setSaveNeeded(true);		
+		
 		showStatus(elements, changeType, notificationType);
 	}
 
@@ -1244,7 +1243,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean isSaveNeeded() { return diagram.getProject().isSaveModelNeeded() || diagram.isSaveNeeded(); }
+	public boolean isSaveNeeded() { return diagram.isSaveNeeded(); }
 
 	@Override
 	public void dispose() { }

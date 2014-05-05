@@ -15,6 +15,7 @@ import javax.swing.JPopupMenu;
 import RefOntoUML.Generalization;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -41,7 +42,6 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	private JMenuItem treeStyleHorizontalMenuItem;
 	@SuppressWarnings("unused")
 	private JMenuItem directMenuItem;
-	@SuppressWarnings("unused")
 	private JMenuItem resetMenuItem;
 	private JMenu lineStyleItem;
 	
@@ -49,7 +49,7 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	{			
 		createGenSetItem = createMenuItem(this, "creategenset");
 		deleteGenSetItem = createMenuItem(this, "deletegenset");
-				
+		
 		resetMenuItem = createMenuItem(this, "resetpoints");
 		lineStyleItem = new JMenu("Line Style");
 		add(lineStyleItem);
@@ -58,9 +58,11 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		treeStyleVerticalMenuItem = createMenuItem(lineStyleItem, "treestyle.vertical");
 		treeStyleHorizontalMenuItem = createMenuItem(lineStyleItem, "treestyle.horizontal");
 		
+		addSeparator();
 		unionItem = createMenuItem(this, "derivedunion");
 		exclusionItem = createMenuItem(this, "derivedexclusion");
 		
+		addSeparator();
 		deleteItem = createMenuItem(this, "delete");	
 	}
 	
@@ -70,17 +72,23 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 
 		// check if we can show the item that creates/delete generalization sets
 		boolean containGenset=false;
+		boolean areAllAssociations=true;
 		ArrayList<Generalization> gens = new ArrayList<Generalization>();
 		for(DiagramElement dElem: selected){
 			if (dElem instanceof GeneralizationElement){
 				Generalization gen = ((GeneralizationElement)dElem).getGeneralization();
 				if(gen!=null)gens.add(gen);
 				if(gen.getGeneralizationSet()!=null && !gen.getGeneralizationSet().isEmpty()) containGenset=true;
+			}			
+			if(dElem instanceof ClassElement){
+				areAllAssociations=false;
 			}
 		}
 		if(gens.size()<=1) { createGenSetItem.setVisible(false); deleteGenSetItem.setVisible(false); }
 		else { createGenSetItem.setVisible(true); deleteGenSetItem.setVisible(false); }
-		if(gens.size()>1 && containGenset==true) { deleteGenSetItem.setVisible(true); }		
+		if(gens.size()>1 && containGenset==true) { deleteGenSetItem.setVisible(true); }	
+		if(!areAllAssociations) { lineStyleItem.setVisible(false); resetMenuItem.setVisible(false); }
+		else { lineStyleItem.setVisible(true); resetMenuItem.setVisible(true); }
 	}
 	
 	/**
