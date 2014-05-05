@@ -72,6 +72,11 @@ public class DerivedTypesOperations {
 		else{
 			String stereotype=null;
 			String specialCase=multipleElementsUnionDerivation(selected);
+			specialCase = multipleElementsUnionDerivationRelation();
+			if(specialCase.equals("")){
+				wrongSelection("Wrong Selection");
+				return null;
+			}
 			String name=DefineNameDerivedType();
 			if(specialCase=="Rigid+NonRigid"){
 				stereotype= "Mixin";
@@ -132,6 +137,12 @@ public class DerivedTypesOperations {
 		return mainfix;
 	}
 
+	private static String multipleElementsUnionDerivationRelation() {
+		// TODO Auto-generated method stub
+		
+		return null;
+	}
+
 	private static String multipleElementsUnionDerivation(
 			List<DiagramElement> selected) {
 		//String anterior="";
@@ -141,7 +152,6 @@ public class DerivedTypesOperations {
 		selected2.addAll(selected);
 		selected2.remove(0);
 		if(!(diagramElement instanceof ClassElement)){
-			wrongSelection("Wrong Selection");
 			return "";
 		}else{
 			ClassElement ce = (ClassElement) diagramElement;
