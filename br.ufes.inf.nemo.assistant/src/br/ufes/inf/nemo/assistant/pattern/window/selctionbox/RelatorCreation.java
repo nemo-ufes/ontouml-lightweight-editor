@@ -1,8 +1,6 @@
 package br.ufes.inf.nemo.assistant.pattern.window.selctionbox;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
@@ -11,6 +9,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import RefOntoUML.Association;
@@ -18,14 +17,14 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
+import RefOntoUML.RigidSortalClass;
+import RefOntoUML.Role;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-
-import javax.swing.UIManager;
 
 public class RelatorCreation extends ClassSelectionPanel {
 	private JTextField genEdit0;
@@ -57,111 +56,111 @@ public class RelatorCreation extends ClassSelectionPanel {
 		setLayout(null);
 				
 		setSize(new Dimension(441,338));
-		JPanel rigidSortalPanel = new JPanel();
-		rigidSortalPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Left RigidSortal classes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		rigidSortalPanel.setBounds(0, 11, 435, 116);
-		add(rigidSortalPanel);
-		rigidSortalPanel.setLayout(null);
+		JPanel leftRigidSortalPanel = new JPanel();
+		leftRigidSortalPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Left RigidSortal classes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		leftRigidSortalPanel.setBounds(0, 11, 435, 116);
+		add(leftRigidSortalPanel);
+		leftRigidSortalPanel.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("General0:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNewLabel.setBounds(20, 22, 59, 14);
-		rigidSortalPanel.add(lblNewLabel);
+		leftRigidSortalPanel.add(lblNewLabel);
 
 		genEdit0 = new JTextField();
 		genEdit0.setBounds(109, 19, 149, 20);
-		rigidSortalPanel.add(genEdit0);
+		leftRigidSortalPanel.add(genEdit0);
 		genEdit0.setColumns(10);
 
 		genCB0 = new JComboBox<String>();
 		genCB0.setEnabled(false);
 		genCB0.setBounds(109, 19, 149, 20);
-		rigidSortalPanel.add(genCB0);
+		leftRigidSortalPanel.add(genCB0);
 
 		JLabel lblOntoumlType0 = new JLabel("OntoUML type:");
 		lblOntoumlType0.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblOntoumlType0.setBounds(20, 47, 97, 14);
-		rigidSortalPanel.add(lblOntoumlType0);
+		leftRigidSortalPanel.add(lblOntoumlType0);
 
 		genChk0 = new JCheckBox("Reuse class?");
 		genChk0.setBounds(271, 18, 97, 23);
-		rigidSortalPanel.add(genChk0);
+		leftRigidSortalPanel.add(genChk0);
 
 		typesCB0 = new JComboBox<String>();
 		typesCB0.setBounds(109, 44, 149, 20);
-		rigidSortalPanel.add(typesCB0);
+		leftRigidSortalPanel.add(typesCB0);
 		
-		JPanel subkindPanel = new JPanel();
-		subkindPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Right RigidSortal classes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		subkindPanel.setBounds(0, 144, 435, 121);
-		add(subkindPanel);
-		subkindPanel.setLayout(null);
+		JPanel rightRigidSortalPanel = new JPanel();
+		rightRigidSortalPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Right RigidSortal classes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		rightRigidSortalPanel.setBounds(0, 144, 435, 121);
+		add(rightRigidSortalPanel);
+		rightRigidSortalPanel.setLayout(null);
 
 		JLabel lblSpecific = new JLabel("Specific1:");
 		lblSpecific.setBounds(20, 89, 56, 14);
 		lblSpecific.setFont(new Font("Tahoma", Font.BOLD, 11));
-		subkindPanel.add(lblSpecific);
+		rightRigidSortalPanel.add(lblSpecific);
 
 		spcEdit1 = new JTextField();
 		spcEdit1.setBounds(109, 86, 149, 20);
-		subkindPanel.add(spcEdit1);
+		rightRigidSortalPanel.add(spcEdit1);
 		spcEdit1.setColumns(10);
 
 		spcCB1 = new JComboBox<String>();
 		spcCB1.setEnabled(false);
 		spcCB1.setBounds(109, 86, 149, 20);
-		subkindPanel.add(spcCB1);
+		rightRigidSortalPanel.add(spcCB1);
 
 		spcChk1 = new JCheckBox("Reuse class?");
 		spcChk1.setBounds(271, 85, 97, 23);
-		subkindPanel.add(spcChk1);
+		rightRigidSortalPanel.add(spcChk1);
 
 		lblGeneral = new JLabel("General1:");
 		lblGeneral.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblGeneral.setBounds(20, 27, 67, 14);
-		subkindPanel.add(lblGeneral);
+		rightRigidSortalPanel.add(lblGeneral);
 		
 		genEdit1 = new JTextField();
 		genEdit1.setBounds(109, 24, 149, 20);
-		subkindPanel.add(genEdit1);
+		rightRigidSortalPanel.add(genEdit1);
 		genEdit1.setColumns(10);
 		
 		lblOntoumlType1 = new JLabel("OntoUML type:");
 		lblOntoumlType1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblOntoumlType1.setBounds(20, 52, 88, 14);
-		subkindPanel.add(lblOntoumlType1);
+		rightRigidSortalPanel.add(lblOntoumlType1);
 		
 		genCB1 = new JComboBox();
 		genCB1.setEnabled(false);
 		genCB1.setBounds(109, 24, 149, 20);
-		subkindPanel.add(genCB1);
+		rightRigidSortalPanel.add(genCB1);
 		
 		genChk1 = new JCheckBox("Reuse class?");
 		genChk1.setBounds(271, 23, 97, 23);
-		subkindPanel.add(genChk1);
+		rightRigidSortalPanel.add(genChk1);
 		
 		typesCB1 = new JComboBox();
 		typesCB1.setBounds(109, 49, 149, 20);
-		subkindPanel.add(typesCB1);
+		rightRigidSortalPanel.add(typesCB1);
 
 		lblSpecific_1 = new JLabel("Specific0:");
 		lblSpecific_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblSpecific_1.setBounds(20, 84, 59, 14);
-		rigidSortalPanel.add(lblSpecific_1);
+		leftRigidSortalPanel.add(lblSpecific_1);
 		
 		spcEdit0 = new JTextField();
 		spcEdit0.setBounds(109, 81, 149, 20);
-		rigidSortalPanel.add(spcEdit0);
+		leftRigidSortalPanel.add(spcEdit0);
 		spcEdit0.setColumns(10);
 		
 		spcCB0 = new JComboBox();
 		spcCB0.setEnabled(false);
 		spcCB0.setBounds(109, 81, 149, 20);
-		rigidSortalPanel.add(spcCB0);
+		leftRigidSortalPanel.add(spcCB0);
 		
 		spcChk0 = new JCheckBox("Reuse class?");
 		spcChk0.setBounds(271, 80, 97, 23);
-		rigidSortalPanel.add(spcChk0);
+		leftRigidSortalPanel.add(spcChk0);
 		
 		relatorPanel = new JPanel();
 		relatorPanel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Relator class", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -268,10 +267,42 @@ public class RelatorCreation extends ClassSelectionPanel {
 
 	@Override
 	protected void getModelValues(OntoUMLParser parser) {
+
+		Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
+		System.out.println();
+		if(!roles.isEmpty()){
+			String[] roleVector = UtilAssistant.getStringRepresentationClassStereotype(roles);
+			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(roleVector);  
+			spcCB0.setModel(model);
+			model = new DefaultComboBoxModel<String>(roleVector);
+			spcCB1.setModel(model);
+		}else{
+			spcChk0.setVisible(false);
+			spcChk1.setVisible(false);
+		}
+		
+		Set<RigidSortalClass> rigids = parser.getAllInstances(RefOntoUML.RigidSortalClass.class);
+		if(rigids.size() > 0){
+			String[] rigidVector = UtilAssistant.getStringRepresentationClassStereotype(rigids);
+			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(rigidVector);  
+			genCB0.setModel(model);
+			model = new DefaultComboBoxModel<String>(rigidVector);
+			genCB1.setModel(model);
+		}else{
+			genChk0.setVisible(false);
+			genChk1.setVisible(false);
+		}
+		
+		String[] rigidTypes = new String[]{"Kind", "Collective", "Quantity","Subkind"};
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(rigidTypes);  
+		typesCB0.setModel(model);
+		model = new DefaultComboBoxModel<String>(rigidTypes);  
+		typesCB1.setModel(model);
+		
 		Set<Relator> relators = parser.getAllInstances(RefOntoUML.Relator.class);
 		if(relators.size() > 0){
 			String[] relatorVector = UtilAssistant.getStringRepresentationClassStereotype(relators);
-			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(relatorVector);  
+			model = new DefaultComboBoxModel<String>(relatorVector);  
 			relCB0.setModel(model);
 		}else{
 			relChk0.setVisible(false);
