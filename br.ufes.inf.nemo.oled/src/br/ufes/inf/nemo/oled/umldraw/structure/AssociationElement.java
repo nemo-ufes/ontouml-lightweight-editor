@@ -38,8 +38,8 @@ import br.ufes.inf.nemo.oled.draw.DrawingContext.StrokeType;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
 import br.ufes.inf.nemo.oled.draw.Node;
+import br.ufes.inf.nemo.oled.draw.RectilinearConnection;
 import br.ufes.inf.nemo.oled.draw.SimpleArrowTip;
-import br.ufes.inf.nemo.oled.draw.SimpleConnection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
@@ -85,7 +85,7 @@ public final class AssociationElement extends BaseConnection {
 	 * Constructor.
 	 */
 	private AssociationElement() {
-		setConnection(new SimpleConnection());
+		setConnection(new RectilinearConnection());
 		setupMultiplicityLabels();
 		setupRoleLabels();
 		setupNameLabel();
@@ -644,10 +644,12 @@ public final class AssociationElement extends BaseConnection {
 
 		// medium segment
 		List<Line2D> segments = getSegments();		
-		Line2D middlesegment = segments.get(segments.size() / 2);
-		int x = (int) (middlesegment.getX2() + middlesegment.getX1() - labelWidth) / 2;
-		int y = (int) (middlesegment.getY2() + middlesegment.getY1()) / 2;
-		nameLabel.setAbsolutePos(x, y);
+		if(segments.size()>0){
+			Line2D middlesegment = segments.get(segments.size() / 2);
+			int x = (int) (middlesegment.getX2() + middlesegment.getX1() - labelWidth) / 2;
+			int y = (int) (middlesegment.getY2() + middlesegment.getY1()) / 2;
+			nameLabel.setAbsolutePos(x, y);
+		}
 	}
 
 	/**

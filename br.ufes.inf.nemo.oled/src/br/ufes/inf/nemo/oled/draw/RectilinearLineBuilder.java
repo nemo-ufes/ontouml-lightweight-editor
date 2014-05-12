@@ -84,10 +84,8 @@ public class RectilinearLineBuilder {
    * @param firstSegmentOrientation the orientation for the first segment
    * @return the calculated line segments
    */
-  public List<Point2D> calculateLineSegments(Point2D p1, Point2D p2,
-    Orientation firstSegmentOrientation) {
-    return calculateLineSegments(p1.getX(), p1.getY(), p2.getX(), p2.getY(),
-      firstSegmentOrientation);
+  public List<Point2D> calculateLineSegments(Point2D p1, Point2D p2, Orientation firstSegmentOrientation) {
+    return calculateLineSegments(p1.getX(), p1.getY(), p2.getX(), p2.getY(), firstSegmentOrientation);
   }
 
   /**
@@ -99,14 +97,13 @@ public class RectilinearLineBuilder {
    * @param firstSegmentOrientation the orientation for the first segment
    * @return the calculated line segments
    */
-  protected List<Point2D> calculateLineSegments(double x1, double y1, double x2,
-    double y2, Orientation firstSegmentOrientation) {
+  protected List<Point2D> calculateLineSegments(double x1, double y1, double x2, double y2, Orientation firstSegmentOrientation) {
     Direction direction = getDirection(x1, y1, x2, y2);
     List<Point2D> result = new LinkedList<Point2D>();
     switch (direction) {
-      case INSIDE:
-        break;
-      case STRAIGHT:
+      case INSIDE:    	  
+    	break;
+      case STRAIGHT: 
         result.add(new Point2D.Double(x1, y1));
         result.add(new Point2D.Double(x2, y2));
         break;
@@ -119,87 +116,120 @@ public class RectilinearLineBuilder {
     return result;
   }
   
-  /**
-   * Returns the line segments between two nodes. The orientations in relation
-   * to each other and for each node, a side is chosen heuristically.
-   * @param node1 the first Node
-   * @param node2 the second Node
-   * @return the line segments
-   */
-  public List<Point2D> calculateLineSegments(Node node1, Node node2) {
-	NodeDirection direction = getNodeDirection(node1, node2);
+  public List<Point2D> calculateSelfLineSegments(Node node1, Node node2, Point2D p1, Point2D p2) {	
     if (node1.equals(node2))
     {
-    	// self-relationships
-    	switch (direction) {
-        case WEST_EAST: {
-   		 	 ArrayList<Point2D> points = new ArrayList<Point2D>(); 
-   		 	 points.add(new Point2D.Double(node1.getAbsoluteX1(),node1.getAbsCenterY()));
-   		 	 points.add(new Point2D.Double(node1.getAbsoluteX1()-25,node1.getAbsCenterY()));
-   		 	 points.add(new Point2D.Double(node1.getAbsoluteX1()-25,node1.getAbsoluteY1()-25));
-   		 	 points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY1()-25));
-   		 	 points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY1()));
-   		 	 return points;	
-    	}
-        case EAST_WEST:
-          return createHorizontalLineSegment(node1, node2, false);
-        case NORTH_SOUTH:
-          return createVerticalLineSegment(node1, node2, true);
-        case SOUTH_NORTH:
-          return createVerticalLineSegment(node1, node2, false);
-        case SE_NW:
-          return calculateLineSegments(node1.getAbsoluteX1(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
-        case SW_NE:
-          return calculateLineSegments(node1.getAbsoluteX2(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
-        case NW_SE:
-          return calculateLineSegments(node1.getAbsoluteX2(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(),  Orientation.HORIZONTAL);
-        case NE_SW:
-        default:
-          return calculateLineSegments(node1.getAbsoluteX1(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(), Orientation.HORIZONTAL);
-    	}	
-	}else{		
-	    switch (direction) {
-	      case WEST_EAST:
-	        return createHorizontalLineSegment(node1, node2, true);
-	      case EAST_WEST:
-	        return createHorizontalLineSegment(node1, node2, false);
-	      case NORTH_SOUTH:
-	        return createVerticalLineSegment(node1, node2, true);
-	      case SOUTH_NORTH:
-	        return createVerticalLineSegment(node1, node2, false);
-	      case SE_NW:
-	        return calculateLineSegments(node1.getAbsoluteX1(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
-	      case SW_NE:
-	        return calculateLineSegments(node1.getAbsoluteX2(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
-	      case NW_SE:
-	        return calculateLineSegments(node1.getAbsoluteX2(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(),  Orientation.HORIZONTAL);
-	      case NE_SW:
-	      default:
-	        return calculateLineSegments(node1.getAbsoluteX1(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(), Orientation.HORIZONTAL);
-	    }
+    	NodeDirection direction = getPointDirection(p1, p2);
+    	 switch (direction) {
+         case WEST_EAST: {        	 
+        	ArrayList<Point2D> points = new ArrayList<Point2D>(); 
+      	 	points.add(new Point2D.Double(node1.getAbsoluteX2(),node1.getAbsoluteY2()-10));
+      	 	points.add(new Point2D.Double(node1.getAbsoluteX2()+35,node1.getAbsoluteY2()-10));
+      	 	points.add(new Point2D.Double(node1.getAbsoluteX2()+35,node1.getAbsoluteY1()+10));
+      	 	points.add(new Point2D.Double(node1.getAbsoluteX2(),node1.getAbsoluteY1()+10));      	 	
+      	 	return points;
+         }
+         case EAST_WEST: { 
+        	ArrayList<Point2D> points = new ArrayList<Point2D>(); 
+      	 	points.add(new Point2D.Double(node1.getAbsoluteX1(),node1.getAbsoluteY2()-10));
+      	 	points.add(new Point2D.Double(node1.getAbsoluteX1()-35,node1.getAbsoluteY2()-10));
+      	 	points.add(new Point2D.Double(node1.getAbsoluteX1()-35,node1.getAbsoluteY1()+10));
+      	 	points.add(new Point2D.Double(node1.getAbsoluteX1(),node1.getAbsoluteY1()+10));
+      	 	return points;
+         }
+         case NORTH_SOUTH: {
+        	ArrayList<Point2D> points = new ArrayList<Point2D>(); 
+       	 	points.add(new Point2D.Double(node1.getAbsoluteX1()+13,node1.getAbsoluteY2()));
+       	 	points.add(new Point2D.Double(node1.getAbsoluteX1()+13,node1.getAbsoluteY2()+55));
+       	 	points.add(new Point2D.Double(node1.getAbsoluteX2()-13,node1.getAbsoluteY2()+55));
+       	 	points.add(new Point2D.Double(node1.getAbsoluteX2()-13,node1.getAbsoluteY2()));
+       	 	return points;        	
+         }
+         case SOUTH_NORTH: {
+        	ArrayList<Point2D> points = new ArrayList<Point2D>(); 
+    	 	points.add(new Point2D.Double(node1.getAbsoluteX1()+13,node1.getAbsoluteY1()));
+    	 	points.add(new Point2D.Double(node1.getAbsoluteX1()+13,node1.getAbsoluteY1()-55));
+    	 	points.add(new Point2D.Double(node1.getAbsoluteX2()-13,node1.getAbsoluteY1()-55));
+    	 	points.add(new Point2D.Double(node1.getAbsoluteX2()-13,node1.getAbsoluteY1()));
+    	 	return points;        	
+         }
+         case SE_NW: {
+        	//designing from east to north
+        	ArrayList<Point2D> points = new ArrayList<Point2D>(); 
+        	points.add(new Point2D.Double(node1.getAbsoluteX2(),node1.getAbsCenterY()));
+        	points.add(new Point2D.Double(node1.getAbsoluteX2()+25,node1.getAbsCenterY()));
+        	points.add(new Point2D.Double(node1.getAbsoluteX2()+25,node1.getAbsoluteY1()-25));
+        	points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY1()-25));
+        	points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY1()));
+        	return points;        	
+         }
+         case SW_NE: {
+            //designing from west to north
+            ArrayList<Point2D> points = new ArrayList<Point2D>(); 
+       	 	points.add(new Point2D.Double(node1.getAbsoluteX1(),node1.getAbsCenterY()));
+       	 	points.add(new Point2D.Double(node1.getAbsoluteX1()-25,node1.getAbsCenterY()));
+       	 	points.add(new Point2D.Double(node1.getAbsoluteX1()-25,node1.getAbsoluteY1()-25));
+       	 	points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY1()-25));
+       	 	points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY1()));
+       	 	return points;        	 
+         }
+         case NW_SE: {
+        	 //designing from west to south
+         	ArrayList<Point2D> points = new ArrayList<Point2D>(); 
+          	points.add(new Point2D.Double(node1.getAbsoluteX1(),node1.getAbsCenterY()));
+          	points.add(new Point2D.Double(node1.getAbsoluteX1()-25,node1.getAbsCenterY()));
+          	points.add(new Point2D.Double(node1.getAbsoluteX1()-25,node1.getAbsoluteY2()+25));
+          	points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY2()+25));
+          	points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY2()));
+          	return points;  
+         }
+         case NE_SW: {
+        	//designing from east to south
+        	ArrayList<Point2D> points = new ArrayList<Point2D>(); 
+         	points.add(new Point2D.Double(node1.getAbsoluteX2(),node1.getAbsCenterY()));
+         	points.add(new Point2D.Double(node1.getAbsoluteX2()+25,node1.getAbsCenterY()));
+         	points.add(new Point2D.Double(node1.getAbsoluteX2()+25,node1.getAbsoluteY2()+25));
+         	points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY2()+25));
+         	points.add(new Point2D.Double(node1.getAbsCenterX(),node1.getAbsoluteY2()));
+         	return points;  
+         }
+         default: {
+        	 return calculateLineSegments(node1.getAbsoluteX1(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(), Orientation.HORIZONTAL);  
+         }
+       }    	    
+	}else{
+		return calculateLineSegments(node1.getAbsoluteX1(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(), Orientation.HORIZONTAL); 
 	}
   }
+  
+  public List<Point2D> calculateLineSegments(Node node1, Node node2) {
+	NodeDirection direction = getNodeDirection(node1, node2);    	
+    switch (direction) {
+      case WEST_EAST: return createHorizontalLineSegment(node1, node2, true);
+      case EAST_WEST: return createHorizontalLineSegment(node1, node2, false);
+      case NORTH_SOUTH: return createVerticalLineSegment(node1, node2, true);
+      case SOUTH_NORTH: return createVerticalLineSegment(node1, node2, false);
+      case SE_NW: return calculateLineSegments(node1.getAbsoluteX1(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
+      case SW_NE: return calculateLineSegments(node1.getAbsoluteX2(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
+      case NW_SE: return calculateLineSegments(node1.getAbsoluteX2(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(),  Orientation.HORIZONTAL);  
+      case NE_SW: 
+      default: return calculateLineSegments(node1.getAbsoluteX1(), node1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(), Orientation.HORIZONTAL);  
+    }	
+  }
 
-  public List<Point2D> calculateLineSegments(Connection c1, Node node2) {
+  public List<Point2D> calculateLineSegments(Connection c1, Node node2) 
+  {
     NodeDirection direction = getNodeDirection(c1, node2);
     switch (direction) {
-      case WEST_EAST:
-        return createHorizontalLineSegment(c1, node2, true);
-      case EAST_WEST:
-        return createHorizontalLineSegment(c1, node2, false);
-      case NORTH_SOUTH:
-        return createVerticalLineSegment(c1, node2, true);
-      case SOUTH_NORTH:
-        return createVerticalLineSegment(c1, node2, false);
-      case SE_NW:
-        return calculateLineSegments(c1.getAbsoluteX1(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
-      case SW_NE:
-        return calculateLineSegments(c1.getAbsoluteX2(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
-      case NW_SE:
-        return calculateLineSegments(c1.getAbsoluteX2(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(),  Orientation.HORIZONTAL);
+      case WEST_EAST: return createHorizontalLineSegment(c1, node2, true);
+      case EAST_WEST: return createHorizontalLineSegment(c1, node2, false);
+      case NORTH_SOUTH: return createVerticalLineSegment(c1, node2, true);
+      case SOUTH_NORTH: return createVerticalLineSegment(c1, node2, false);
+      case SE_NW: return calculateLineSegments(c1.getAbsoluteX1(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
+      case SW_NE: return calculateLineSegments(c1.getAbsoluteX2(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
+      case NW_SE: return calculateLineSegments(c1.getAbsoluteX2(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(),  Orientation.HORIZONTAL);
       case NE_SW:
-      default:
-        return calculateLineSegments(c1.getAbsoluteX1(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(), Orientation.HORIZONTAL);
+      default: return calculateLineSegments(c1.getAbsoluteX1(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(), Orientation.HORIZONTAL);
     }
   }
   
@@ -367,6 +397,19 @@ public class RectilinearLineBuilder {
     return NodeDirection.NE_SW;
   }
 
+  public NodeDirection getPointDirection(Point2D p1, Point2D p2)
+  {
+	  if(p1.getX() < p2.getX() && p1.getY() > p2.getY()) return NodeDirection.SW_NE;
+	  else if(p1.getX() > p2.getX() && p1.getY() < p2.getY()) return NodeDirection.NE_SW;
+	  else if(p1.getX() < p2.getX() && p1.getY() < p2.getY()) return NodeDirection.NW_SE;
+	  else if(p1.getX() > p2.getX() && p1.getY() > p2.getY()) return NodeDirection.SE_NW;
+	  else if(p1.getX() == p2.getX() && p1.getY() > p2.getY()) return NodeDirection.SOUTH_NORTH;
+	  else if(p1.getX() == p2.getX() && p1.getY() < p2.getY()) return NodeDirection.NORTH_SOUTH;
+	  else if(p1.getX() < p2.getX() && p1.getY() == p2.getY()) return NodeDirection.WEST_EAST;
+	  else if(p1.getX() > p2.getX() && p1.getY() == p2.getY()) return NodeDirection.EAST_WEST;
+	  else return NodeDirection.SOUTH_NORTH;
+  }
+  
   public NodeDirection getNodeDirection(Connection c1, Node node2) {
     double node1x1 = c1.getAbsoluteX1(), node1y1 = c1.getAbsoluteY1();
     double node1x2 = c1.getAbsoluteX2(), node1y2 = c1.getAbsoluteY2();
@@ -439,3 +482,4 @@ public class RectilinearLineBuilder {
     return (regionStart + regionEnd) / 2;
   }
 }
+
