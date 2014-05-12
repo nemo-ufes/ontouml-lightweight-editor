@@ -27,6 +27,7 @@ public class TreeLineBuilder extends RectilinearLineBuilder {
 	@Override
 	public List<Point2D> calculateLineSegments(Node node1, Node node2) 
 	{		
+		if(node1.equals(node2)) return calculateSelfLineSegments(node1, node2, node1.getOrigin(), node2.getOrigin());
 	    NodeDirection direction = getNodeDirection(node1, node2);
 	    switch (direction) {
 	    //==================================== (OK)
@@ -95,6 +96,7 @@ public class TreeLineBuilder extends RectilinearLineBuilder {
 	
 	public List<Point2D> calculateHorizontalLineSegments(Node node1, Node node2) 
 	{		
+		if(node1.equals(node2)) return calculateSelfLineSegments(node1, node2, node1.getOrigin(), node2.getOrigin());
 	    NodeDirection direction = getNodeDirection(node1, node2);
 	    switch (direction) {
 	      // ==================================== (OK)

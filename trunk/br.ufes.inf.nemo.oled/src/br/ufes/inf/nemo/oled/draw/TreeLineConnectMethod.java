@@ -31,8 +31,8 @@ public class TreeLineConnectMethod extends RectilinearLineConnectMethod {
 	  {
 		  TreeLineBuilder linebuilder = TreeLineBuilder.getInstance();
 		  List<Point2D> points=null;
-		    if (sourceNode.equals(targetNode)) points = linebuilder.calculateSelfLineSegments(sourceNode, targetNode, source, dest);
-		    else points = linebuilder.calculateLineSegments(sourceNode, targetNode);
+		  if (sourceNode.equals(targetNode)) points = linebuilder.calculateSelfLineSegments(sourceNode, targetNode, source, dest);
+		  else points = linebuilder.calculateLineSegments(sourceNode, targetNode);
 		    List<Point2D> linepoints = new LinkedList<Point2D>();
 		    for (Point2D point : points) linepoints.add(point);
 		    
