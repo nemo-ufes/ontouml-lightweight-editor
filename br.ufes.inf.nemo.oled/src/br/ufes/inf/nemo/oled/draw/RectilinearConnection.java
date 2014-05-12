@@ -129,10 +129,12 @@ public class RectilinearConnection extends AbstractConnection {
 		if (getPoints().size() <= 3) {
 			// If there are at most three connection points, simply recalculate the
 			// connection between the two nodes completely
-			if(getNode1()!=null && getNode2()!=null)
-				setPoints(RectilinearLineBuilder.getInstance().calculateLineSegments(getNode1(), getNode2()));
+			if(getNode1()!=null && getNode2()!=null){
+				//setPoints(RectilinearLineBuilder.getInstance().calculateLineSegments(getNode1(), getNode2()));
+				setPoints(RectilinearLineBuilder.getInstance().calculateSelfLineSegments(getNode1(), getNode2(),node1ConnectPoint,node2ConnectPoint));				
+			}
 			else if (getNode1()==null && getNode2()!=null)
-				setPoints(RectilinearLineBuilder.getInstance().calculateLineSegments(getConnection1(), getNode2()));
+				setPoints(RectilinearLineBuilder.getInstance().calculateLineSegments(getConnection1(), getNode2()));				
 			
 		} else {
 			if(getNode1()!=null && getNode2()!=null){
