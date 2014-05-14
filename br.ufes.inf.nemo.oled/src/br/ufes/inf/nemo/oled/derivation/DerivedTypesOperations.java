@@ -9,28 +9,64 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import RefOntoUML.AntiRigidMixinClass;
-import RefOntoUML.AntiRigidSortalClass;
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.Kind;
+import RefOntoUML.NamedElement;
+import RefOntoUML.Property;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.SemiRigidMixinClass;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.positioning.ClassPosition;
 import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
 import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
 import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 
 public class DerivedTypesOperations {
 
+	private class FeatureElement {
+		RefOntoUML.Element element;
+		OntoUMLParser ref;
+		public FeatureElement(RefOntoUML.Element element, OntoUMLParser refparser) 
+		{
+			ref= refparser;
+			this.element = element;
+		}
+		
+		public Element getElement() { return element; }
+		
+		@Override
+		public String toString(){
+			String result = new String();
+			
+			if (element instanceof RefOntoUML.Property)
+			{
+				Property p = (Property)element;
+				String owner = new String();
+				if(p.getAssociation()==null){
+					owner = ""+ref.getStereotype(p.eContainer())+" "+((NamedElement)p.eContainer()).getName();
+				}else{
+					owner = ""+ref.getStereotype(p.getAssociation())+" "+((NamedElement)p.getAssociation()).getName();
+				}
+				result += "Property "+p.getType().getName()+": ("+p.getName()+") ["+p.getLower()+","+p.getUpper()+"] "+" (owner: "+owner+")";						  				
+			}
+			
+			return result;
+		}
+	}
+	
 	static OutcomeFixer of;
 	static Fix mainfix;
 	static DiagramManager dman;
@@ -72,7 +108,8 @@ public class DerivedTypesOperations {
 		else{
 			String stereotype=null;
 			String specialCase=multipleElementsUnionDerivation(selected);
-			specialCase = multipleElementsUnionDerivationRelation();
+			tryunionassociationderivation(selected,dm);
+
 			if(specialCase.equals("")){
 				wrongSelection("Wrong Selection");
 				return null;
@@ -137,11 +174,44 @@ public class DerivedTypesOperations {
 		return mainfix;
 	}
 
-	private static String multipleElementsUnionDerivationRelation() {
+
+
+
+	private static void tryunionassociationderivation(
+			List<DiagramElement> selected, DiagramManager diagramManager) {
 		// TODO Auto-generated method stub
+		ArrayList<Property> featureList = new ArrayList<Property>();
+		ArrayList<Association> associations = new ArrayList<Association>();
+		ArrayList<Property> properties = new ArrayList<Property>();
+		ArrayList<Property> propertiesTarget = new ArrayList<Property>();
+		ArrayList<String> options = new ArrayList<String>();
 		
-		return null;
+		for (DiagramElement sel : selected) {
+			if(!(sel instanceof AssociationElement))
+				return;
+			associations.add((Association) ((AssociationElement)sel).getRelationship());
+		}
+		
+		for (Association association : associations) {
+			properties.add((Property) association.getMemberEnd().get(0));
+			propertiesTarget.add((Property) association.getMemberEnd().get(1));
+		}
+		
+		Property element = (Property) associations.get(0).getMemberEnd().get(0);		
+		OntoUMLParser refparser= ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
+		
+		
+		for(RefOntoUML.Property p : refparser.getAllInstances(RefOntoUML.Property.class)) 
+		{
+			if(!featureList.contains(p) && !properties.contains(p) && !propertiesTarget.contains(p) && ((Classifier)element.getType()).allParents().contains(p.getType())){
+				options.add(((NamedElement)p.eContainer()).getName());
+			}
+		}
+		selectRelation(options.toArray());
 	}
+
+
+
 
 	private static String multipleElementsUnionDerivation(
 			List<DiagramElement> selected) {
@@ -214,7 +284,7 @@ public class DerivedTypesOperations {
 			Classifier newElement = includeElement(newElementPosition, name, stereotype);
 			createGeneralization(newElement, (Classifier)refontoList.get(0), (Classifier)refontoList.get(1));
 			mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
-			
+
 		}else{
 			of = new OutcomeFixer(project.getModel());
 			Point2D.Double firstpoint = new Point2D.Double();
@@ -354,6 +424,21 @@ public class DerivedTypesOperations {
 		return stereotype;
 
 	}
+	
+	public  static  String selectRelation(Object[] stereo) {
+		// TODO Auto-generated method stub
+		JFrame frame = new JFrame("Input Dialog Example 3");
+		String stereotype = (String) JOptionPane.showInputDialog(frame, 
+				"Choose between the possible relations ?",
+				"Union Derivation Relation",
+				JOptionPane.QUESTION_MESSAGE, 
+				null, 
+				stereo, 
+				stereo[0]);
+		return stereotype;
+
+	}
+
 
 	public static void wrongSelection(String message){
 		JFrame frame = new JFrame("InputDialog Example #1");
