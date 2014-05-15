@@ -319,6 +319,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("PATTERN_CREATION_SUBKIND_PARTITION", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.SUBKINDPARTITIONPATTERN));
 
+			selectorMap.put("PATTERN_CREATION_ROLEMIXIN_PATTERN", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.ROLEMIXIN));
+			
 			selectorMap.put("PATTERN_CREATION_PHASE_PARTITION", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PHASEPARTITION));
 			

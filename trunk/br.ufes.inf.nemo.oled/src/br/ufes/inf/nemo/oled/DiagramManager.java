@@ -2300,6 +2300,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			fix = PatternTool.createSubkindPattern(frame, getCurrentProject(),x,y);
     	}else if(elementType == ElementType.RELATORPATTERN){
     		fix = PatternTool.createRelatorPattern(frame, getCurrentProject(),x,y);		
+    	}if(elementType == ElementType.ROLEMIXIN){
+			fix = PatternTool.createRoleMixinPattern(frame, getCurrentProject(),x,y);
     	}else if(elementType == ElementType.SUBKINDPARTITIONPATTERN){
     		fix = PatternTool.createSubkindPattern(frame, getCurrentProject(),x,y);		
     	}else if(elementType == ElementType.PHASEPARTITION){
