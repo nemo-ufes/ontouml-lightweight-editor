@@ -162,6 +162,7 @@ public class PaletteAccordion extends JPanel{
 		ontopatternPalette.createElement("staticpalette.classes", "select");
 		ontopatternPalette.createElement("staticpalette.patterncreation", "subkindcreation");
 		ontopatternPalette.createElement("staticpalette.patterncreation", "relatorcreation");
+		ontopatternPalette.createElement("staticpalette.patterncreation", "rolemixinpattern");
 		ontopatternPalette.createElement("staticpalette.patterncreation", "rolecreation");
 		ontopatternPalette.createElement("staticpalette.patterncreation", "subkindpartition");
 		ontopatternPalette.createElement("staticpalette.patterncreation", "phasepartition");

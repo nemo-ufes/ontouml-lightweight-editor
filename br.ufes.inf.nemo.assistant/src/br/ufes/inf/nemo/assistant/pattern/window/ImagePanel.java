@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 public class ImagePanel extends JPanel {
 
 	public enum PatternType {
-		RelatorCreation,SubkindCreation
+		RelatorCreation,SubkindCreation,RoleMixinPattern
 	}
 
 	public ImagePanel(PatternType type){
@@ -21,6 +21,8 @@ public class ImagePanel extends JPanel {
 			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/RelatorCreation.png"));
 		else if(type.equals(PatternType.SubkindCreation))
 			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/SubkindCreation.png"));
+		else if(type.equals(PatternType.RoleMixinPattern))
+			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/RoleMixinCreation.png"));
 
 		setLayout(null);
 		

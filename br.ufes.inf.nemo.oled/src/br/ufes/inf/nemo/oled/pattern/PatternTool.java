@@ -11,6 +11,7 @@ import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel;
 import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel.PatternType;
 import br.ufes.inf.nemo.assistant.pattern.window.PatternAbstractWindowAssistant;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.RelatorCreation;
+import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.RoleMixinPattern;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.SubkindCreation;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
@@ -52,6 +53,15 @@ public class PatternTool {
 		return window.getFix();
 	}
 	
+	public static Fix createRoleMixinPattern(JFrame frame, UmlProject project, double x, double y) {
+		RoleMixinPattern roleMixinPattern = new RoleMixinPattern(ProjectBrowser.getParserFor(project));
+		ImagePanel imagePanel = new ImagePanel(PatternType.RoleMixinPattern);
+
+		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, roleMixinPattern, imagePanel);
+		window.setVisible(true);
+		window.setLocationRelativeTo(frame);
+		return window.getFix();
+	}	
 	
 	
 	
