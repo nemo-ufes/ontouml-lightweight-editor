@@ -47,11 +47,14 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 import uk.ac.manchester.cs.owl.owlapi.SWRLLiteralArgumentImpl;
 import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.ocl2owl_swrl.OCL2OWL_SWRL;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnexpectedOperator;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnsupportedByReasoner;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.Factory;
 import br.ufes.inf.nemo.ocl2owl_swrl.tags.Tag;
+import br.ufes.inf.nemo.ocl2owl_swrl.util.SelectedReasoner;
 import br.ufes.inf.nemo.ocl2owl_swrl.util.Util;
 
 /**
@@ -843,7 +846,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 	
 	@Override
-	public Boolean isComparisonOperation(){
+	public Boolean isComparisonOperation() throws UnsupportedByReasoner{
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
 		Operation operation = operationCallExpImpl.getReferredOperation();
 		String oprName = operation.getName();
@@ -855,6 +858,9 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 					oprName.equals("=") ||
 					oprName.equals("<>")
 				){
+				if(OCL2OWL_SWRL.selectedReasoner.equals(SelectedReasoner.Hermit)){
+					throw new UnsupportedByReasoner(OCL2OWL_SWRL.selectedReasoner.toString());
+				}
 				return true;
 			}
 		}
@@ -863,7 +869,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 	}
 	
 	@Override
-	public Boolean isArithmeticOperation(){
+	public Boolean isArithmeticOperation() throws UnsupportedByReasoner{
 		OperationCallExpImpl operationCallExpImpl = (OperationCallExpImpl) this.m_NamedElementImpl; 
 		Operation operation = operationCallExpImpl.getReferredOperation();
 		String oprName = operation.getName();
@@ -877,6 +883,9 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 					oprName.equals("/") ||
 					oprName.equals("*")
 				){
+				if(OCL2OWL_SWRL.selectedReasoner.equals(SelectedReasoner.Hermit)){
+					throw new UnsupportedByReasoner(OCL2OWL_SWRL.selectedReasoner.toString());
+				}
 				return true;
 			}
 		}

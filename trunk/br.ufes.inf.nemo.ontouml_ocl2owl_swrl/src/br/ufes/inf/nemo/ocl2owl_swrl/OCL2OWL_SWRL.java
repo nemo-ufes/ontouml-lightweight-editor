@@ -8,24 +8,20 @@ import java.util.regex.Pattern;
 
 import org.eclipse.ocl.uml.impl.ExpressionInOCLImpl;
 import org.eclipse.uml2.uml.Constraint;
-import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.SWRLAtom;
-import org.semanticweb.owlapi.model.SWRLRule;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
-import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.ConsequentVariableNonDeclaredOnAntecedent;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonInitialized;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonSupported;
-import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnexpectedOperator;
-import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnexpectedResultingRule;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.ExpressionInOCLImplFactory;
 import br.ufes.inf.nemo.ocl2owl_swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2owl_swrl.util.Counters;
+import br.ufes.inf.nemo.ocl2owl_swrl.util.SelectedReasoner;
 
 public class OCL2OWL_SWRL {
 	private String nameSpace = null;
@@ -35,6 +31,7 @@ public class OCL2OWL_SWRL {
 	private OWLDataFactory factory = null;
 	private OWLOntology ontology = null;
 	public String errors = "";
+	public static SelectedReasoner selectedReasoner = null;
 	
 	public Counters logCounting = new Counters();
 		
@@ -113,6 +110,9 @@ public class OCL2OWL_SWRL {
 	 */
 	@SuppressWarnings("unchecked")
 	public void Transformation () throws Exception{
+		
+		
+		
 		String problematicRules = "";
 		//String unsuccessfullyTransformedRules = "";
 		/*
