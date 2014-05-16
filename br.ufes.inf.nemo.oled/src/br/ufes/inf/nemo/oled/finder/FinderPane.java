@@ -39,6 +39,11 @@ public class FinderPane extends JPanel{
 		this.project = project;
 	}
 	
+	public void requestFindFocus()
+	{
+		finderHeadPane.getTextField().requestFocus();		
+	}
+	
 	/**
 	 * Constructor.
 	 */
@@ -132,6 +137,7 @@ public class FinderPane extends JPanel{
 		resetResult();		
 		// find
 		ArrayList<ElementFound> result = ProjectBrowser.frame.getDiagramManager().strictlyFindByName(finderHeadPane.getText());
+		Collections.sort(result,new StereotypeComparator());
 		finderScrollTable.setData(result);
 		status.setText("  "+result.size()+" items found.");
 	}

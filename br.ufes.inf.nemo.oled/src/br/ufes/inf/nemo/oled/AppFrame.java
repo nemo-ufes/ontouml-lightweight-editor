@@ -146,10 +146,10 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		diagramManager = new DiagramManager(this);
 		diagramManager.setTabPlacement(JTabbedPane.BOTTOM);		
 		diagramManager.addStartPanel();
-		diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()-100));
+		diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()-200));
 		
 		infoManager= new InfoManager(this, null);
-		infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,130));
+		infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,230));
 		
 		projectBrowser = new ProjectBrowser(diagramManager.getFrame(),null);
 		projectBrowser.setPreferredSize(new Dimension(230,250));
@@ -169,7 +169,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		multiSplitPane.add(projectBrowser, "right");
 		multiSplitPane.add(diagramManager, "middle.top");		
 		multiSplitPane.add(infoManager, "middle.bottom");
-		getContentPane().add(multiSplitPane, BorderLayout.CENTER);        
+		getContentPane().add(multiSplitPane, BorderLayout.CENTER);  
 	}	
 	
 	/**
@@ -487,9 +487,15 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		infoManager.setSelectedIndex(4);		
 	}
 	
+	public void focusOnFinder()
+	{		
+		infoManager.setSelectedIndex(3);
+		infoManager.getFinder().requestFindFocus();
+	}
+	
 	public boolean isFocusedOnOclEditor()
 	{
-		return infoManager.getSelectedIndex()==3;
+		return infoManager.getSelectedIndex()==4;
 	}
 	
 	public class Interceptor extends PrintStream

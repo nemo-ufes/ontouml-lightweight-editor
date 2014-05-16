@@ -39,7 +39,7 @@ public class FinderHeadPane extends JPanel {
 		textField.setColumns(10);
 		
 		btnRun = new JButton("");
-		btnRun.setIcon(new ImageIcon(FinderHeadPane.class.getResource("/resources/icons/x16/next.png")));
+		btnRun.setIcon(new ImageIcon(FinderHeadPane.class.getResource("/resources/icons/x16/find.png")));
 		btnRun.setBackground(Color.LIGHT_GRAY);
 				
 		JLabel lblTerm = new JLabel("Term:");

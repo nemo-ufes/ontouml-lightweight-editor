@@ -19,10 +19,11 @@
  */
 package br.ufes.inf.nemo.oled.ui.commands;
 
-import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -43,11 +44,13 @@ public class PngExporter extends FileWriter {
    * @throws IOException if error occurred
    */
   public void writePNG(DiagramEditor editor, File file) throws IOException {
-    Dimension size = editor.getTotalCanvasSize();
+    //Dimension size = editor.getTotalCanvasSize();
+	ArrayList<Point> points = editor.getUsedCanvasSize();
+	//Point origin = points.get(0);
+	Point end = points.get(1);
     File theFile = getFileWithExtension(file);
     if (canWrite(editor, theFile)) {
-      BufferedImage image = new BufferedImage((int) size.getWidth(),
-        (int) size.getHeight(), BufferedImage.TYPE_INT_RGB);
+      BufferedImage image = new BufferedImage((int) end.x+20, (int) end.y+20, BufferedImage.TYPE_INT_RGB);
       editor.paintComponentNonScreen(image.getGraphics());
       ImageIO.write(image, "png", theFile);
     }

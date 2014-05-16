@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
+import javax.swing.JToggleButton;
 
 public class DiagramToolbar extends JToolBar {
 
@@ -39,6 +40,8 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnAlignCenterHorizontally;
 	private JButton btnBringToFront;
 	private JButton btnPutToBack;
+	private JToggleButton btnGrid;
+	private JButton btnExportPng;
 	
 	public DiagramToolbar (final DiagramEditor editor)
 	{
@@ -53,6 +56,19 @@ public class DiagramToolbar extends JToolBar {
         		editor.alignBottom();
         	}
         });
+		
+		btnGrid = new JToggleButton("");
+		btnGrid.setSelected(editor.showGrid());
+		btnGrid.setToolTipText("Grid Lines");
+		btnGrid.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		editor.showGrid(btnGrid.isSelected());
+        	}
+        });	
+		btnGrid.setFocusable(false);
+		btnGrid.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/grid.png")));
+		add(btnGrid);
 		btnAlignBottom.setToolTipText("Align Bottom");
 		btnAlignBottom.setFocusable(false);
 		btnAlignBottom.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_bottom.png")));
@@ -141,5 +157,17 @@ public class DiagramToolbar extends JToolBar {
 		btnPutToBack.setFocusable(false);
 		btnPutToBack.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_move_back.png")));
 		add(btnPutToBack);
+		
+		btnExportPng = new JButton("");
+		btnExportPng.setToolTipText("Export as PNG");
+		btnExportPng.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		editor.getDiagramManager().exportGfx();
+        	}
+        });	
+		btnExportPng.setFocusable(false);
+		btnExportPng.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/photo.png")));
+		add(btnExportPng);
 	}
 }
