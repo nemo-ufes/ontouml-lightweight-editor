@@ -92,30 +92,29 @@ public class AboutDialog extends JDialog {
 				
 		JPanel panel = new JPanel();
 		
-		lblVersion = new JLabel("OLED v"+Main.OLED_VERSION+" - "+Main.OLED_COMPILATION_DATE);
+		lblVersion = new JLabel("      OLED v"+Main.OLED_VERSION+" - "+Main.OLED_COMPILATION_DATE);
 		lblVersion.setFont(new Font(lblVersion.getFont().getFontName(), Font.PLAIN, 11));
-		lblVersion.setHorizontalAlignment(SwingConstants.CENTER);
+		lblVersion.setHorizontalAlignment(SwingConstants.LEFT);
 		
-		JLabel lblNemoinfufesbr = new JLabel("nemo.inf.ufes.br");
-		lblNemoinfufesbr.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel lblNemoinfufesbr = new JLabel("      nemo.inf.ufes.br");
+		lblNemoinfufesbr.setHorizontalAlignment(SwingConstants.LEFT);
 				
 		GroupLayout gl_CenterPanel = new GroupLayout(CenterPanel);
 		gl_CenterPanel.setHorizontalGroup(
 			gl_CenterPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_CenterPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_CenterPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, gl_CenterPanel.createSequentialGroup()
+					.addGroup(gl_CenterPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_CenterPanel.createSequentialGroup()
 							.addComponent(labelDescription, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
 							.addGap(11))
-						.addGroup(Alignment.TRAILING, gl_CenterPanel.createSequentialGroup()
-							.addComponent(lblVersion, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
-							.addContainerGap())
 						.addGroup(gl_CenterPanel.createSequentialGroup()
 							.addComponent(panel, 0, 0, Short.MAX_VALUE)
 							.addGap(11))
 						.addGroup(gl_CenterPanel.createSequentialGroup()
-							.addComponent(lblNemoinfufesbr, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+							.addGroup(gl_CenterPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblNemoinfufesbr, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+								.addComponent(lblVersion, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
 							.addContainerGap())))
 		);
 		gl_CenterPanel.setVerticalGroup(
@@ -128,7 +127,7 @@ public class AboutDialog extends JDialog {
 					.addComponent(lblNemoinfufesbr)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(26, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		
 		JLabel lblViniciusSobralVictor = new JLabel("Vinicius Sobral - EA/Astah Compatibility");
