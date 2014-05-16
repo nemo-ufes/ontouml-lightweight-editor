@@ -208,7 +208,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 			pos.setLocation(tmpPos);
 			
 			MoveNodeOperation op = new MoveNodeOperation(node, node.getParent(), pos);
-			editor.moveElements(new MoveNodeOperation[] {op});
+			editor.moveElements(new MoveNodeOperation[] {op});					
 		}
 
 	}
