@@ -39,6 +39,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonImplemented;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnsupportedByReasoner;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.BooleanLiteralExpImplFactory;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.CollectionItemImplFactory;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.CollectionLiteralExpImplFactory;
@@ -320,17 +321,19 @@ public class Factory {
 	
 	/**
 	 * This function verify if is a comparison operation
+	 * @throws UnsupportedByReasoner 
 	 * 
 	 */
-	public Boolean isComparisonOperation(){
+	public Boolean isComparisonOperation() throws UnsupportedByReasoner{
 		return false;
 	}
 	
 	/**
 	 * This function verify if is an arithmetic operation
+	 * @throws UnsupportedByReasoner 
 	 * 
 	 */
-	public Boolean isArithmeticOperation(){
+	public Boolean isArithmeticOperation() throws UnsupportedByReasoner{
 		return false;
 	}
 	
