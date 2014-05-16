@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -905,6 +906,192 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 	}
 
+	/** Align Top */
+	public void alignTop()
+	{
+		if (selectionHandler.getSelectedElements().size() > 0) 
+		{
+			ArrayList<Double> coordList = new ArrayList<Double>();
+			List<DiagramElement> elements = new ArrayList<DiagramElement>();
+			for(DiagramElement de: selectionHandler.getSelectedElements())
+			{
+				if(de instanceof ClassElement){
+					ClassElement ce = (ClassElement)de;
+					elements.add(ce);
+					coordList.add(ce.getAbsoluteY1());					
+				}
+			}
+			Collections.sort(coordList);
+			double finalpos = Collections.min(coordList);
+			if(finalpos>0){
+				for(DiagramElement de: elements)
+				{
+					if(de instanceof ClassElement){
+						ClassElement ce = (ClassElement)de;
+						ce.setAbsolutePos(ce.getAbsoluteX1(), finalpos);						
+					}
+				}
+			}			
+			notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
+		}
+	}
+	
+	/** Align Bottom */
+	public void alignBottom()
+	{
+		ArrayList<Double> coordList = new ArrayList<Double>();
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		for(DiagramElement de: selectionHandler.getSelectedElements())
+		{
+			if(de instanceof ClassElement){
+				ClassElement ce = (ClassElement)de;
+				elements.add(ce);
+				coordList.add(ce.getAbsoluteY1());					
+			}
+		}
+		Collections.sort(coordList);
+		double finalpos = Collections.max(coordList);
+		if(finalpos>0){
+			for(DiagramElement de: elements)
+			{
+				if(de instanceof ClassElement){
+					ClassElement ce = (ClassElement)de;
+					ce.setAbsolutePos(ce.getAbsoluteX1(), finalpos);						
+				}
+			}
+		}			
+		notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
+	}
+	
+	/** Align Left */
+	public void alignLeft()
+	{
+		ArrayList<Double> coordList = new ArrayList<Double>();
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		for(DiagramElement de: selectionHandler.getSelectedElements())
+		{
+			if(de instanceof ClassElement){
+				ClassElement ce = (ClassElement)de;
+				elements.add(ce);
+				coordList.add(ce.getAbsoluteX1());					
+			}
+		}
+		Collections.sort(coordList);
+		double finalpos = Collections.min(coordList);
+		if(finalpos>0){
+			for(DiagramElement de: elements)
+			{
+				if(de instanceof ClassElement){
+					ClassElement ce = (ClassElement)de;
+					ce.setAbsolutePos(finalpos,ce.getAbsoluteY1());						
+				}
+			}
+		}			
+		notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
+	}
+	
+	/** Align Right */
+	public void alignRight()
+	{
+		ArrayList<Double> coordList = new ArrayList<Double>();
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		for(DiagramElement de: selectionHandler.getSelectedElements())
+		{
+			if(de instanceof ClassElement){
+				ClassElement ce = (ClassElement)de;
+				elements.add(ce);
+				coordList.add(ce.getAbsoluteX1());					
+			}
+		}
+		Collections.sort(coordList);
+		double finalpos = Collections.max(coordList);
+		if(finalpos>0){
+			for(DiagramElement de: elements)
+			{
+				if(de instanceof ClassElement){
+					ClassElement ce = (ClassElement)de;
+					ce.setAbsolutePos(finalpos,ce.getAbsoluteY1());						
+				}
+			}
+		}			
+		notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
+	}
+	
+	/** Align Center Horizontally */
+	public void alignCenterHorizontally ()
+	{
+		if (selectionHandler.getSelectedElements().size() > 0) 
+		{
+			ArrayList<Double> coordList = new ArrayList<Double>();
+			List<DiagramElement> elements = new ArrayList<DiagramElement>();
+			for(DiagramElement de: selectionHandler.getSelectedElements())
+			{
+				if(de instanceof ClassElement){
+					ClassElement ce = (ClassElement)de;
+					elements.add(ce);
+					coordList.add(ce.getAbsoluteY1());					
+				}
+			}
+			double finalpos = calculateCenterAlignPosition(coordList);
+			if(finalpos!=-1){
+				for(DiagramElement de: elements)
+				{
+					if(de instanceof ClassElement){
+						ClassElement ce = (ClassElement)de;
+						ce.setAbsolutePos(ce.getAbsoluteX1(), finalpos);						
+					}
+				}
+			}			
+			notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
+		}
+	}
+	
+	/** Align Center Vertically */
+	public void alignCenterVertically()
+	{
+		if (selectionHandler.getSelectedElements().size() > 0) 
+		{
+			ArrayList<Double> coordList = new ArrayList<Double>();
+			List<DiagramElement> elements = new ArrayList<DiagramElement>();
+			for(DiagramElement de: selectionHandler.getSelectedElements())
+			{
+				if(de instanceof ClassElement){
+					ClassElement ce = (ClassElement)de;
+					elements.add(ce);
+					coordList.add(ce.getAbsoluteX1());					
+				}
+			}			
+			double finalpos = calculateCenterAlignPosition(coordList);
+			if(finalpos!=-1){
+				for(DiagramElement de: selectionHandler.getSelectedElements())
+				{
+					if(de instanceof ClassElement){
+						ClassElement ce = (ClassElement)de;
+						ce.setAbsolutePos(finalpos,ce.getAbsoluteY1());
+					}
+				}
+			}
+			notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
+		}
+	}
+	
+	/** Algorithm to calculate the center alignment position */
+	private double calculateCenterAlignPosition(ArrayList<Double> coordList)
+	{
+		Collections.sort(coordList);
+		int size = coordList.size();
+		double offset = 1000;
+		double finalpos = -1;			
+		if(coordList.get(0)==coordList.get(size-1)) return finalpos;			
+		for(int i =size-1; i>=0;i--){
+			for(int j=i-1; j>=0;j--){
+				double diff = coordList.get(i)-coordList.get(j);
+				if(diff<offset) { finalpos = coordList.get(j)+(diff/2); offset = diff; }
+			}
+		}
+		return finalpos;
+	}
+		
 	/** Puts the current selection to the back. */
 	public void putToBack() 
 	{

@@ -106,7 +106,7 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 	public void undo() {
 		super.undo();
 		label.setNameLabelText(oldText);
-		
+		//label.setSize(w, h);
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(label);
 		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, NotificationType.UNDO);

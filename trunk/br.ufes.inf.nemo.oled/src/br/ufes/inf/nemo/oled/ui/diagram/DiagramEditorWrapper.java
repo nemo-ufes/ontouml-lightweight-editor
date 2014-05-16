@@ -17,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
+import java.awt.Color;
 
 /** 
  * Wrapper class for {@link DiagramEditor} responsible for providing toolbar and handling the model file.  
@@ -26,7 +27,8 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	private static final long serialVersionUID = -1962960747434759099L;
 	private DiagramEditor editor;
 	private JScrollPane scrollpane;
-		
+	private DiagramToolbar diagramToolbar;
+	
 	//TODO Remove me
 	private File projectFile;
 	
@@ -34,15 +36,20 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	{
 		super(new BorderLayout(0,0));
 		this.editor = editor;		
+	
+		diagramToolbar = new DiagramToolbar(editor);
 		
 		scrollpane = new JScrollPane();
+		scrollpane.setBackground(Color.WHITE);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
 		scrollpane.setWheelScrollingEnabled(true);
 		scrollpane.setViewportView(editor);
 		scrollpane.setBorder(new EmptyBorder(0,0,0,0));
 		
-		add(scrollpane);
+		add(diagramToolbar,BorderLayout.NORTH);
+		add(scrollpane,BorderLayout.CENTER);
+		
 		setBorder(new EmptyBorder(0,0,0,0));
 	}	
 	
