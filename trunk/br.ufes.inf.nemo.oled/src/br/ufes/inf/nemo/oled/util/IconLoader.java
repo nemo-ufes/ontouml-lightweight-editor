@@ -181,7 +181,7 @@ public final class IconLoader {
 		urlMap.put(IconType.COPY, "resources/icons/x16/page_2_copy.png");
 		urlMap.put(IconType.PASTE, "resources/icons/x16/page_paste.png");		
 		urlMap.put(IconType.DELETE, "resources/icons/x16/cross.png");
-		urlMap.put(IconType.EXCLUDE, "resources/icons/x16/exclude.png");		
+		urlMap.put(IconType.EXCLUDE, "resources/icons/x16/bin_closed.png");		
 		urlMap.put(IconType.UNDO, "resources/icons/x16/arrow_undo.png");
 		urlMap.put(IconType.REDO, "resources/icons/x16/arrow_redo.png");		
 		urlMap.put(IconType.ABOUT, "resources/icons/x16/exclamation.png");

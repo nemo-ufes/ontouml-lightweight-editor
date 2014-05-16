@@ -25,6 +25,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
@@ -417,7 +418,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		g.setClip(clipBounds);
 		paintComponent(g, clipBounds, false);
 	}
-		
+	
 	/**
 	 * Paints this component with a specified bounds object.
 	 * @param g the graphics context
@@ -692,12 +693,37 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public Dimension getTotalCanvasSize() 
 	{
 		Dimension2D diagramSize = diagram.getSize();
-		Dimension result = new Dimension();
+		Dimension result = new Dimension();		
 		result.width = (int) (diagramSize.getWidth() + MARGIN_LEFT + MARGIN_RIGHT);
 		result.height = (int) (diagramSize.getHeight() + MARGIN_TOP + MARGIN_BOTTOM);
 		return result;
 	}
 
+	public ArrayList<Point> getUsedCanvasSize()
+	{
+		ArrayList<Point> result = new ArrayList<Point>();		
+		double x1=10000,x2=0,y1=10000,y2=0;
+		for(DiagramElement elem: getDiagram().getChildren())
+		{
+			if(elem instanceof ClassElement){
+				ClassElement ce = (ClassElement)elem;
+				if(ce.getAbsoluteX1()<x1) x1 = ce.getAbsoluteX1();
+				if(ce.getAbsoluteX2()>x2) x2 = ce.getAbsoluteX2();
+				if(ce.getAbsoluteY2()>y2) y2 = ce.getAbsoluteY2();
+				if(ce.getAbsoluteY1()<y1) y1 = ce.getAbsoluteY1();				
+			}
+		}
+		Point origin = new Point();
+		Point end = new Point();
+		origin.x=(int)x1;
+		origin.y=(int)y1;		
+		end.x = (int)(x2);
+		end.y = (int)(y2);
+		result.add(origin);
+		result.add(end);
+		return result;
+	}
+	
 	// ************************************************************************
 	// ***** BaseEditor commands. These are invoked by external clients, the main
 	// ***** purpose is to provide the external interface for menu commands
@@ -1436,3 +1462,4 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void dispose() { }
 
 }
+

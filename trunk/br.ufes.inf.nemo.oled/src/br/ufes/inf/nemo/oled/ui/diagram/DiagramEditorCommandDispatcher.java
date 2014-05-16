@@ -76,6 +76,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("REDO", new MethodCall(
 					getClass().getMethod("redo")));
 
+			selectorMap.put("FIND", new MethodCall(
+					getClass().getMethod("find")));
+			
 			selectorMap.put("UNDO", new MethodCall(
 					getClass().getMethod("undo")));
 			
@@ -409,6 +412,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 	}
 
+	public void find()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.getFrame().focusOnFinder();		
+	}
+	
 	public void enableAssistant()
 	{
 		//	System.out.println("assitant opened");
