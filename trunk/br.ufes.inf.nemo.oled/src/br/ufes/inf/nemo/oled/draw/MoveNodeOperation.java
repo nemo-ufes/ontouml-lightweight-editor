@@ -67,6 +67,7 @@ public class MoveNodeOperation extends MoveOperation {
 		}
 		
 		node.setAbsolutePos(targetPos.getX(), targetPos.getY());
+		
 	}
 
 	/**

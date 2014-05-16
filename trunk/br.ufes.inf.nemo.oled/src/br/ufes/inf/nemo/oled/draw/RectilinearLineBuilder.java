@@ -229,7 +229,7 @@ public class RectilinearLineBuilder {
       case SE_NW: return calculateLineSegments(c1.getAbsoluteX1(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
       case SW_NE: return calculateLineSegments(c1.getAbsoluteX2(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY2(),  Orientation.HORIZONTAL);
       case NW_SE: return calculateLineSegments(c1.getAbsoluteX2(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(),  Orientation.HORIZONTAL);
-      case NE_SW:
+      case NE_SW: return calculateLineSegments(c1.getAbsoluteX1(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(), Orientation.HORIZONTAL);
       default: return calculateLineSegments(c1.getAbsoluteX1(), c1.getAbsCenterY(), node2.getAbsCenterX(), node2.getAbsoluteY1(), Orientation.HORIZONTAL);
     }
   }

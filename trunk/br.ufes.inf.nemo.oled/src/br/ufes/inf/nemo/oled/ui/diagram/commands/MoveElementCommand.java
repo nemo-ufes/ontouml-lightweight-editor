@@ -67,7 +67,7 @@ public class MoveElementCommand extends BaseDiagramCommand {
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		
-		for (MoveOperation moveOperation : moveOperations) {
+		for (MoveOperation moveOperation : moveOperations) {			
 			moveOperation.run();
 			if(moveOperation instanceof MoveNodeOperation){
 				elements.add(((MoveNodeOperation)moveOperation).getNode());				
@@ -85,7 +85,7 @@ public class MoveElementCommand extends BaseDiagramCommand {
 					resetRelatedConnectionPoints((DiagramEditor)notification, c);
 				}
 			}
-		}		
+		}
 		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
 	}
 
