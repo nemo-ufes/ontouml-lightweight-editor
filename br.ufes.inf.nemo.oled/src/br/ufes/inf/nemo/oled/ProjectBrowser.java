@@ -19,6 +19,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import br.ufes.inf.nemo.assistant.ModellingAssistant;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.explorer.OntoUMLElement;
+import br.ufes.inf.nemo.oled.explorer.ProjectToolBar;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
@@ -29,6 +30,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
+import javax.swing.border.EtchedBorder;
 
 public class ProjectBrowser extends JPanel{
 
@@ -56,6 +58,8 @@ public class ProjectBrowser extends JPanel{
 	private OntoUML2AlloyOptions refOptions;
 	private TOCL2AlloyOption oclOptions;	
 	private ModellingAssistant assistant;
+
+	private ProjectToolBar ptoolbar;
 				
 	public void setProject(UmlProject project)
 	{
@@ -80,6 +84,9 @@ public class ProjectBrowser extends JPanel{
 		//VICTOR comentar
 		assistant = new ModellingAssistant(project.getModel());
 	
+		ptoolbar = new ProjectToolBar(tree,frame.getDiagramManager());
+		add(ptoolbar, BorderLayout.NORTH);
+		
 		scroll.setViewportView(tree);
 		
 		treeMap.put(project, this);
@@ -130,6 +137,7 @@ public class ProjectBrowser extends JPanel{
 	public ProjectBrowser(AppFrame appframe, UmlProject project)
 	{
 		super(new BorderLayout());
+		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		this.project = project;
 		frame = appframe;
 		
@@ -139,7 +147,7 @@ public class ProjectBrowser extends JPanel{
 		{
 			setProject(project);
 		}
-				
+		
 		add(scroll, BorderLayout.CENTER);	
 		
 		JPanel emptyTempPanel = new JPanel();
@@ -149,7 +157,7 @@ public class ProjectBrowser extends JPanel{
 		
 		emptyTempPanel.setPreferredSize(new Dimension(200,250));
 		scroll.setPreferredSize(new Dimension(200,250));
-		setPreferredSize(new Dimension(200,250));
+		setPreferredSize(new Dimension(216, 317));
 	}
 	
 	public static ProjectBrowser getProjectBrowserFor(AppFrame frame, UmlProject project) 
