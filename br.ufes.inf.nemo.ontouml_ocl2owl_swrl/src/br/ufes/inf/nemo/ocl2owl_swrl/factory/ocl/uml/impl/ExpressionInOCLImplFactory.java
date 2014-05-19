@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 import org.eclipse.ocl.expressions.Variable;
@@ -14,23 +15,34 @@ import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLEntity;
+import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.SWRLArgument;
 import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLClassAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
+import org.semanticweb.owlapi.model.SWRLPredicate;
 import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
+import uk.ac.manchester.cs.owl.owlapi.OWLObjectComplementOfImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLObjectImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
+import uk.ac.manchester.cs.owl.owlapi.SWRLVariableImpl;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.ConsequentVariableNonDeclaredOnAntecedent;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnexpectedResultingRule;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.Factory;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.uml2.uml.internal.impl.NamedElementImplFactory;
+import br.ufes.inf.nemo.ocl2owl_swrl.parser.SWRLParseException;
+import br.ufes.inf.nemo.ocl2owl_swrl.parser.SWRLParser;
 import br.ufes.inf.nemo.ocl2owl_swrl.tags.Tag;
 
 /**
@@ -128,6 +140,22 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			
 			//create a rule with the incremented antecedents and consequents
 			SWRLRule rule = factory.getSWRLRule(antecedent,consequent);
+			
+			SWRLParser swrlParser = new SWRLParser(ontology, factory, nameSpace);
+			SWRLRule ruleAux = null;
+			try {
+				ruleAux = swrlParser.parse(rule);
+				System.out.println();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				try {
+					System.out.println(SWRLParser.getRuleString(rule));
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				e.printStackTrace();
+			}
 			
 			//apply changes in the owl manager
 			manager.applyChange(new AddAxiom(ontology, rule));

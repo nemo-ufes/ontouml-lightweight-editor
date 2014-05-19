@@ -1,5 +1,5 @@
 package br.ufes.inf.nemo.ocl2owl_swrl.util;
 
 public enum SelectedReasoner {
-	Hermit;
+	Unselected, Hermit, Pellet;
 }

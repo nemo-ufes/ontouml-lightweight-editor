@@ -859,7 +859,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 					oprName.equals("<>")
 				){
 				if(OCL2OWL_SWRL.selectedReasoner.equals(SelectedReasoner.Hermit)){
-					throw new UnsupportedByReasoner(OCL2OWL_SWRL.selectedReasoner.toString());
+					throw new UnsupportedByReasoner(OCL2OWL_SWRL.selectedReasoner.toString(), oprName);
 				}
 				return true;
 			}
@@ -884,7 +884,7 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 					oprName.equals("*")
 				){
 				if(OCL2OWL_SWRL.selectedReasoner.equals(SelectedReasoner.Hermit)){
-					throw new UnsupportedByReasoner(OCL2OWL_SWRL.selectedReasoner.toString());
+					throw new UnsupportedByReasoner(OCL2OWL_SWRL.selectedReasoner.toString(), oprName);
 				}
 				return true;
 			}
