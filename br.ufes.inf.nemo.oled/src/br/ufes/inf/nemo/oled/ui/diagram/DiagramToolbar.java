@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JToolBar;
 import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 
 public class DiagramToolbar extends JToolBar {
 
@@ -23,6 +23,8 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnPutToBack;
 	private JToggleButton btnGrid;
 	private JButton btnExportPng;
+	private JButton btnZoomOut;
+	private JButton btnZoomIn;
 	
 	public DiagramToolbar (final DiagramEditor editor)
 	{
@@ -140,7 +142,7 @@ public class DiagramToolbar extends JToolBar {
 		add(btnPutToBack);
 		
 		btnExportPng = new JButton("");
-		btnExportPng.setToolTipText("Export as PNG");
+		btnExportPng.setToolTipText("<html>Export diagram as PNG<br><br>IMPORTANT: Move your diagram as close as possible <br>to the upper left side of the grid.<br><br> </hmtl>");
 		btnExportPng.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
@@ -150,5 +152,29 @@ public class DiagramToolbar extends JToolBar {
 		btnExportPng.setFocusable(false);
 		btnExportPng.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/photo.png")));
 		add(btnExportPng);
+		
+		btnZoomOut = new JButton("");
+		btnZoomOut.setToolTipText("Zoom out");
+		btnZoomOut.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		editor.zoomOut();
+        	}
+        });	
+		btnZoomOut.setFocusable(false);
+		btnZoomOut.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/zoom-out.png")));
+		add(btnZoomOut);
+		
+		btnZoomIn = new JButton("");
+		btnZoomIn.setToolTipText("Zoom in");
+		btnZoomIn.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		editor.zoomIn();
+        	}
+        });	
+		btnZoomIn.setFocusable(false);
+		btnZoomIn.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/zoom-in.png")));
+		add(btnZoomIn);
 	}
 }
