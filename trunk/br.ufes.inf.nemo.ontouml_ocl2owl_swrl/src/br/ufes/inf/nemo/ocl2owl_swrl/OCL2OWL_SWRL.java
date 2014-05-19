@@ -21,6 +21,7 @@ import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.ExpressionInOCLImplFactory;
 import br.ufes.inf.nemo.ocl2owl_swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2owl_swrl.util.Counters;
+import br.ufes.inf.nemo.ocl2owl_swrl.util.SelectReasoner;
 import br.ufes.inf.nemo.ocl2owl_swrl.util.SelectedReasoner;
 
 public class OCL2OWL_SWRL {
@@ -110,7 +111,7 @@ public class OCL2OWL_SWRL {
 	 */
 	@SuppressWarnings("unchecked")
 	public void Transformation () throws Exception{
-		
+		selectedReasoner = SelectReasoner.selectReasoner();
 		
 		
 		String problematicRules = "";
