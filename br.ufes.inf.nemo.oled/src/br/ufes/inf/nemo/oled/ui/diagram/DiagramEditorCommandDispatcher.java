@@ -300,7 +300,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("WARNING", new MethodCall(
 					getClass().getMethod("searchWarnings")));
-
+			
 			selectorMap.put("OCLEDITOR", new MethodCall(
 					getClass().getMethod("showOclEditor")));
 
@@ -375,7 +375,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 		manager.getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
-
+		
 	public void manageAntiPatterns()
 	{			
 		if (manager.isProjectLoaded()==false) return;

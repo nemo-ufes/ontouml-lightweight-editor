@@ -743,11 +743,15 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void setScaling(Scaling aScaling) 
 	{
 		scaling = aScaling;		
-		frame.getStatusBar().reportZoomPercentual(aScaling.toString());
 		revalidate();
 		repaint();
 	}
 		
+	public String getZoomPercentualValue()
+	{
+		return scaling.toString().replace(".0","");
+	}
+	
 	public void zoomOut()
 	{			
 		if (scaling.equals(Scaling.SCALING_150)) setScaling(Scaling.SCALING_145); 
