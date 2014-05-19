@@ -43,6 +43,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	private transient Map<String, MethodCall> selectorMap = new HashMap<String, MethodCall>();
 	
 	private transient SimpleGUICustom analyzer;
+
+	private transient MultiSplitPane multiSplitPane;
 	
 	/**
 	 * Default constructor.
@@ -53,12 +55,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		setTitle(getResourceString("application.title")+" v"+Main.OLED_VERSION);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-		Dimension size = new Dimension(1000, 648);
-		Dimension minimumSize = new Dimension(700, 650);
-		this.setSize(size);
-		this.setPreferredSize(size);
-		this.setMinimumSize(minimumSize);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setPreferredSize();
 		
 		installManagers();
 		installMainMenu();
@@ -73,6 +70,16 @@ public class AppFrame extends JFrame implements AppCommandListener {
 
 		pack();
 		initSelectorMap();	
+	}
+	
+	public void setPreferredSize()
+	{
+		Dimension size = new Dimension(1000, 648);
+		Dimension minimumSize = new Dimension(700, 650);
+		this.setSize(size);
+		this.setPreferredSize(size);
+		this.setMinimumSize(minimumSize);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 	
 	public void createSysOutInterceptor()
@@ -100,7 +107,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 */
 	private void installMainToolBar() 
 	{		
-		mainToolBar = new AppToolbar();
+		mainToolBar = new AppToolbar(this);
 		mainToolBar.addCommandListener(this);
 		mainToolBar.addCommandListener(diagramManager.getEditorDispatcher());
 		JPanel panel = new JPanel();
@@ -163,14 +170,29 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		String layoutDef = "(ROW weight=1.0 left (COLUMN middle.top middle.bottom) right)";
 		MultiSplitLayout.Node modelRoot = MultiSplitLayout.parseModel(layoutDef);
 		
-		MultiSplitPane multiSplitPane = new MultiSplitPane();
+		multiSplitPane = new MultiSplitPane();
 		multiSplitPane.getMultiSplitLayout().setModel(modelRoot);
 		multiSplitPane.add(toolManager.getPalleteAccordion(), "left");
 		multiSplitPane.add(projectBrowser, "right");
 		multiSplitPane.add(diagramManager, "middle.top");		
 		multiSplitPane.add(infoManager, "middle.bottom");
-		getContentPane().add(multiSplitPane, BorderLayout.CENTER);  
+		getContentPane().add(multiSplitPane, BorderLayout.CENTER); 
 	}	
+			
+	public void showToolBox(boolean value)
+	{		
+		if(value){
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()-200));
+			toolManager.setPreferredSize(new Dimension(230,250));
+			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(230,250));			
+		}else{
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240,GetScreenWorkingHeight()-200));
+			toolManager.setPreferredSize(new Dimension(0,250));
+			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(0,250));
+		}		
+		multiSplitPane.repaint();
+		multiSplitPane.validate();		
+	}
 	
 	/**
 	 * Adds the status bar.
@@ -194,7 +216,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			selectorMap.put("CLOSE_PROJECT",
 					new MethodCall(DiagramManager.class.getMethod("closeCurrentProject")));
 			selectorMap.put("OPEN_RECENT_PROJECT",
-					new MethodCall(DiagramManager.class.getMethod("openRecentProject")));			
+					new MethodCall(DiagramManager.class.getMethod("openRecentProject")));
 			selectorMap.put("ISSUE_REPORT",
 					new MethodCall(DiagramManager.class.getMethod("openIssueReport")));
 			selectorMap.put("SAVE_PROJECT_AS",
@@ -218,7 +240,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			selectorMap.put("QUIT",
 					new MethodCall(getClass().getMethod("quitApplication")));
 			selectorMap.put("ABOUT",
-					new MethodCall(getClass().getMethod("about")));
+					new MethodCall(getClass().getMethod("about")));			
 			selectorMap.put("HELP_CONTENTS", new MethodCall(getClass()
 					.getMethod("displayHelpContents")));
 		} catch (NoSuchMethodException ex) {
@@ -335,7 +357,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public ToolManager getToolManager() {
 		return toolManager;
 	}
-
+		
 	/**
 	 * Resets the active palette (in the tool manager) to the default element,
 	 * the pointer.

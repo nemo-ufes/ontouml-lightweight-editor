@@ -41,16 +41,20 @@ import br.ufes.inf.nemo.oled.util.IconLoader;
  */
 public class AppToolbar implements ActionListener {
 
-	JToolBar toolbar = new JToolBar();
+	@SuppressWarnings("unused")
+	private AppFrame frame;
+	private JToolBar toolbar = new JToolBar();
 	private List<AppCommandListener> listeners =
 		new ArrayList<AppCommandListener>();
-	private Map<String, JButton> buttonMap = new HashMap<String, JButton>();
-	private JButton save;
-
+	private Map<String, JButton> jbuttonMap = new HashMap<String, JButton>();
+	
+	private JButton save;	
+	
 	/**
 	 * Constructor.
 	 */
-	public AppToolbar() {
+	public AppToolbar(final AppFrame frame) {
+		this.frame = frame;
 		
 		createButton("new");
 		//createButton("newdiagram");
@@ -60,7 +64,6 @@ public class AppToolbar implements ActionListener {
 		createButton("cut");
 		createButton("copy");
 		createButton("paste");
-		toolbar.addSeparator();		
 		createButton("undo");
 		createButton("redo");
 		toolbar.addSeparator();
@@ -123,7 +126,7 @@ public class AppToolbar implements ActionListener {
 		button.addActionListener(this);
 		button.setBorderPainted(false);
 	    button.setFocusable(false);
-		buttonMap.put(command, button);
+		jbuttonMap.put(command, button);
 		toolbar.add(button);
 		button.setToolTipText(getResourceString(prefix + ".tooltip"));
 		return button;
@@ -153,6 +156,6 @@ public class AppToolbar implements ActionListener {
 	 * @param flag true if enabled, false to disable
 	 */
 	public void enableButton(String command, boolean flag) {
-		buttonMap.get(command).setEnabled(flag);
+		jbuttonMap.get(command).setEnabled(flag);
 	}
 }

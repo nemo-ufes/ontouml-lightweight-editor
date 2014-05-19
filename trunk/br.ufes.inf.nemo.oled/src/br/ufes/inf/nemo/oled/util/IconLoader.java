@@ -49,6 +49,7 @@ public final class IconLoader {
 		PASTE, 
 		DELETE, 
 		UNDO, 
+		TOOLBOX,
 		REDO, 
 		ERROR,
 		WARNING,
@@ -185,7 +186,8 @@ public final class IconLoader {
 		urlMap.put(IconType.UNDO, "resources/icons/x16/arrow_undo.png");
 		urlMap.put(IconType.REDO, "resources/icons/x16/arrow_redo.png");		
 		urlMap.put(IconType.ABOUT, "resources/icons/x16/exclamation.png");
-				
+		urlMap.put(IconType.TOOLBOX, "resources/icons/x16/hammer_screwdriver.png");
+		
 		urlMap.put(IconType.EXPORT, "resources/icons/x16/page_white_get.png");
 		urlMap.put(IconType.IMPORT, "resources/icons/x16/page_white_put.png");
 		

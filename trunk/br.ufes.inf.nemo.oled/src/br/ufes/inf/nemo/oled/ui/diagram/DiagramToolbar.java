@@ -25,6 +25,7 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnExportPng;
 	private JButton btnZoomOut;
 	private JButton btnZoomIn;
+	private JButton btnZoomStatus;
 	
 	public DiagramToolbar (final DiagramEditor editor)
 	{
@@ -48,10 +49,11 @@ public class DiagramToolbar extends JToolBar {
         	public void actionPerformed(ActionEvent e) {        		
         		editor.showGrid(btnGrid.isSelected());
         	}
-        });	
+        });
 		btnGrid.setFocusable(false);
 		btnGrid.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/grid.png")));
 		add(btnGrid);
+						
 		btnAlignBottom.setToolTipText("Align Bottom");
 		btnAlignBottom.setFocusable(false);
 		btnAlignBottom.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_bottom.png")));
@@ -159,6 +161,7 @@ public class DiagramToolbar extends JToolBar {
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
         		editor.zoomOut();
+        		btnZoomStatus.setText(editor.getZoomPercentualValue()+"%");
         	}
         });	
 		btnZoomOut.setFocusable(false);
@@ -171,10 +174,16 @@ public class DiagramToolbar extends JToolBar {
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
         		editor.zoomIn();
+        		btnZoomStatus.setText(editor.getZoomPercentualValue()+"%");
         	}
         });	
 		btnZoomIn.setFocusable(false);
 		btnZoomIn.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/zoom-in.png")));
 		add(btnZoomIn);
+		
+		btnZoomStatus = new JButton("100%");
+		btnZoomStatus.setContentAreaFilled(false);		
+		btnZoomStatus.setFocusable(false);
+		add(btnZoomStatus);
 	}
 }

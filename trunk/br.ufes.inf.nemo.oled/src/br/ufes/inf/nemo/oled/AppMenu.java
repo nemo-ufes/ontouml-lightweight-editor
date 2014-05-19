@@ -265,20 +265,7 @@ public class AppMenu implements ActionListener {
 	private void createViewMenu() {
 		JMenu viewMenu = createMenu("view");
 		menubar.add(viewMenu);
-		
-		//FIXME JOHN!!!
-		/*JRadioButtonMenuItem zoom50 = createRadioMenuItem(viewMenu,"zoom_50"); 
-		JRadioButtonMenuItem zoom75 = createRadioMenuItem(viewMenu, "zoom_75"); 
-		JRadioButtonMenuItem zoom100 = createRadioMenuItem(viewMenu, "zoom_100");
-		JRadioButtonMenuItem zoom150 = createRadioMenuItem(viewMenu, "zoom_150");		
-		viewMenu.add(zoom150); 
-		ButtonGroup group = new	ButtonGroup(); 
-		group.add(zoom50); 
-		group.add(zoom75);
-		group.add(zoom100); 
-		group.add(zoom150);
-		zoom100.setSelected(true);*/
-		 
+				 
 		JMenuItem zoomInItem = createMenuItem(viewMenu,"zoomin");
 		zoomInItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, ActionEvent.CTRL_MASK));
 		JMenuItem zoomOutItem = createMenuItem(viewMenu,"zoomout");
@@ -292,6 +279,7 @@ public class AppMenu implements ActionListener {
 		showGrid.setSelected(true);
 		JMenuItem snapToGrid = createCheckBoxMenuItem(viewMenu, "snaptogrid");
 		snapToGrid.setSelected(true);
+
 		viewMenu.addSeparator();
 		createMenuItem(viewMenu, "redraw");
 	}
