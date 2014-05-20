@@ -11,19 +11,24 @@ public class Counters{
 		public int totalCount = 0;
 		public int successCount = 0;
 		public int unsuccessCount = 0;
+		public int warningCount = 0;
 		public ArrayList<Class> unsucessReasons = new ArrayList<Class>();
-
+		public ArrayList<Class> warningReasons = new ArrayList<Class>();
 		public Counter() {
 
 		}
 	}
 
+	public enum ResultStatus {
+		Success, Unsuccess, Warning;
+	}
 	public HashMap<String, Counter> counters = new HashMap<String, Counter>();
 	public int total = 0;
 	public int totalSuccess = 0;
 	public int totalUnsuccess = 0;
+	public int totalWarning = 0;
 
-	public void updateCounters(String stereotype, Boolean success, Exception e){
+	public void updateCounters(String stereotype, ResultStatus resultStatus, Exception e){
 		Counter counter;
 
 		if(this.counters.get(stereotype) == null){
@@ -35,15 +40,20 @@ public class Counters{
 
 		total++;
 		counter.totalCount++;
-		if(success){
+		if(resultStatus.equals(ResultStatus.Success)){
 			totalSuccess++;
 			counter.successCount++;
-		}else{
+		}else if(resultStatus.equals(ResultStatus.Unsuccess)){
 			totalUnsuccess++;
 			counter.unsuccessCount++;
 			if(!counter.unsucessReasons.contains(e.getClass())){
-				counter.unsucessReasons.add(e.getClass());
-				
+				counter.unsucessReasons.add(e.getClass());	
+			}
+		}else{
+			totalWarning++;
+			counter.warningCount++;
+			if(!counter.warningReasons.contains(e.getClass())){
+				counter.warningReasons.add(e.getClass());	
 			}
 		}
 
@@ -60,9 +70,13 @@ public class Counters{
 		ret += "\t\t";
 		ret += "Successfully";
 		ret += "\t\t";
+		ret += "Warnings";
+		ret += "\t\t";
 		ret += "Unsuccessfully";
 		ret += "\t\t";
-		ret += "Reasons";
+		ret += "Warning Reasons";
+		ret += "\t\t";
+		ret += "Unsuccess Reasons";
 		ret += "\n";
 		
 		int percent = 0;
@@ -105,8 +119,15 @@ public class Counters{
 			*/
 			//ret += "\n\t";
 			ret += "\t\t";
+			ret += counter.warningCount;
+			percent = (int) (((double)(counter.warningCount)/(double)(counter.totalCount))*100);
+			ret += " (" + percent + "%)";
+			
+			ret += "\t\t";
 			//ret += "Unsuccessfully transformed: ";
 			ret += counter.unsuccessCount;
+			percent = (int) (((double)(counter.unsuccessCount)/(double)(counter.totalCount))*100);
+			ret += " (" + percent + "%)";
 			
 			/*
 			if(counter.unsucessReasons.size() > 0){
@@ -114,10 +135,19 @@ public class Counters{
 			}
 			*/
 			ret += "\t\t";
+			for (Class reason : counter.warningReasons) {
+				//ret += "\n\t\t";
+				ret += reason.getName().replace("br.ufes.inf.nemo.ocl2owl_swrl.exceptions.", "");
+				if(counter.warningReasons.indexOf(reason) < counter.warningReasons.size()-1){
+					ret += ", ";
+				}
+			}
+			
+			ret += "\t\t";
 			for (Class reason : counter.unsucessReasons) {
 				//ret += "\n\t\t";
 				ret += reason.getName().replace("br.ufes.inf.nemo.ocl2owl_swrl.exceptions.", "");
-				if(counter.unsucessReasons.indexOf(reason) < counter.unsucessReasons.size()){
+				if(counter.unsucessReasons.indexOf(reason) < counter.unsucessReasons.size()-1){
 					ret += ", ";
 				}
 			}
@@ -148,7 +178,15 @@ public class Counters{
 		//ret += "\n";
 		ret += "\t\t";
 		//ret += "Rule(s) unsuccessfully transformed: ";
+		ret += this.totalWarning;
+		percent = (int) (((double)(this.totalWarning)/(double)(this.total))*100);
+		ret += " (" + percent + "%) ";
+		
+		ret += "\t\t";
+		//ret += "Rule(s) unsuccessfully transformed: ";
 		ret += this.totalUnsuccess;
+		percent = (int) (((double)(this.totalUnsuccess)/(double)(this.total))*100);
+		ret += " (" + percent + "%) ";
 		ret += "\n";
 		
 

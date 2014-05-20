@@ -18,6 +18,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonInitialized;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.NonSupported;
+import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnsupportedByReasoner;
 import br.ufes.inf.nemo.ocl2owl_swrl.factory.ocl.uml.impl.ExpressionInOCLImplFactory;
 import br.ufes.inf.nemo.ocl2owl_swrl.tags.Tag;
 import br.ufes.inf.nemo.ocl2owl_swrl.util.Counters;
@@ -275,12 +276,19 @@ public class OCL2OWL_SWRL {
 						exprFactory.solve(stereotype, this.ontoParser, this.nameSpace, this.manager, this.factory, this.ontology, antecedent, consequent, null, false, 1, false);
 						//increment the successfully transformed rules
 						//successfullyTransformedRules++;
-						this.logCounting.updateCounters(stereotype, true, null);
+						
+						this.logCounting.updateCounters(stereotype, Counters.ResultStatus.Success, null);
 					}catch (Exception e) {
 						//increment the error message and the unsuccessfully transformed rules
 						
+						Counters.ResultStatus resultStatus;
+						if(e instanceof UnsupportedByReasoner){
+							resultStatus = Counters.ResultStatus.Warning;
+						}else{
+							resultStatus = Counters.ResultStatus.Unsuccess;
+						}
 						//unsuccessfullyTransformedRules++;
-						this.logCounting.updateCounters(stereotype, false, e);
+						this.logCounting.updateCounters(stereotype, resultStatus, e);
 						
 						int ctId = constraints.indexOf(ct);
 						/*
