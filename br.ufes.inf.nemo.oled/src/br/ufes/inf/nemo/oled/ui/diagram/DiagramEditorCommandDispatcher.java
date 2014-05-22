@@ -85,14 +85,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("REDRAW", new MethodCall(
 					DiagramEditor.class.getMethod("redraw")));
 
-			selectorMap.put("ZOOM_IN", new MethodCall(
-					DiagramEditor.class.getMethod("zoomIn"))
-					);
-
-			selectorMap.put("ZOOM_OUT", new MethodCall(
-					DiagramEditor.class.getMethod("zoomOut"))
-					);
-
 			selectorMap.put("SELECT_ALL", new MethodCall(
 					DiagramEditor.class.getMethod("selectAll")));
 
@@ -259,6 +251,17 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("SHOW_GRID", new MethodCall(
 					getClass().getMethod("showGrid")));
 
+			selectorMap.put("TOOLBOX", new MethodCall(
+					getClass().getMethod("showToolbox")));
+			
+			selectorMap.put("ZOOM_IN", new MethodCall(
+					getClass().getMethod("zoomIn"))
+					);
+
+			selectorMap.put("ZOOM_OUT", new MethodCall(
+					getClass().getMethod("zoomOut"))
+					);
+			
 			selectorMap.put("SNAP_TO_GRID", new MethodCall(
 					getClass().getMethod("snapToGrid")));
 
@@ -522,9 +525,28 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		if (manager.isProjectLoaded()==false) return;
 
 		manager.getCurrentDiagramEditor().showGrid(getMenuManager().isSelected("SHOW_GRID"));
-		manager.getCurrentDiagramEditor().redraw();
+		manager.getCurrentWrapper().getToolBar().update();
 	}
 
+	public void showToolbox() {
+		manager.getFrame().showToolBox(getMenuManager().isSelected("TOOLBOX"));
+		manager.getCurrentWrapper().getToolBar().update();
+	}
+	
+	public void zoomOut()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.getCurrentDiagramEditor().zoomOut();
+		manager.getCurrentWrapper().getToolBar().update();
+	}
+	
+	public void zoomIn()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.getCurrentDiagramEditor().zoomIn();
+		manager.getCurrentWrapper().getToolBar().update();
+	}
+	
 	/**
 	 * Returns the application's menu manager.
 	 * @return the menu manager

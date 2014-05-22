@@ -279,7 +279,10 @@ public class AppMenu implements ActionListener {
 		showGrid.setSelected(true);
 		JMenuItem snapToGrid = createCheckBoxMenuItem(viewMenu, "snaptogrid");
 		snapToGrid.setSelected(true);
-
+		
+		JMenuItem toolboxItem = createCheckBoxMenuItem(viewMenu,"toolbox");
+		toolboxItem.setSelected(true);
+		
 		viewMenu.addSeparator();
 		createMenuItem(viewMenu, "redraw");
 	}

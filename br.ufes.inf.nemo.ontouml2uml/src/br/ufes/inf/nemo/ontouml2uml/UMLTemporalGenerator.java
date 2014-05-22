@@ -273,6 +273,17 @@ public class UMLTemporalGenerator {
 		isOriginOp.setUpper(1);
 		
 		outln(isOriginOp);
+		
+		EList<String> paramList = new BasicEList<String>();
+		paramList.add("p");		
+		EList<org.eclipse.uml2.uml.Type> typeParamList = new BasicEList<org.eclipse.uml2.uml.Type>();
+		typeParamList.add(umlTimePath);
+		
+		org.eclipse.uml2.uml.Operation untilnextOpPath = umlWorld.createOwnedOperation("allNext", paramList, typeParamList, umlTimePath);
+		untilnextOpPath.setLower(0);
+		untilnextOpPath.setUpper(-1);
+		
+		outln(untilnextOpPath);
 	}
 	
 	public org.eclipse.uml2.uml.PrimitiveType getPrimitiveBooleanType()

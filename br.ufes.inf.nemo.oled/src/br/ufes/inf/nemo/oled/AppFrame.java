@@ -151,7 +151,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	private void installManagers() 
 	{		
 		diagramManager = new DiagramManager(this);
-		diagramManager.setTabPlacement(JTabbedPane.BOTTOM);		
+		diagramManager.setTabPlacement(JTabbedPane.TOP);		
 		diagramManager.addStartPanel();
 		diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()-200));
 		
@@ -178,20 +178,28 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		multiSplitPane.add(infoManager, "middle.bottom");
 		getContentPane().add(multiSplitPane, BorderLayout.CENTER); 
 	}	
+	
+	public boolean showToolBox()
+	{
+		return !(toolManager.getPreferredSize().width == 0);
+	}
 			
 	public void showToolBox(boolean value)
-	{		
+	{
 		if(value){
 			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()-200));
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,230));
+			projectBrowser.setPreferredSize(new Dimension(230,250));
 			toolManager.setPreferredSize(new Dimension(230,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(230,250));			
 		}else{
 			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240,GetScreenWorkingHeight()-200));
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240,230));
+			projectBrowser.setPreferredSize(new Dimension(230,250));
 			toolManager.setPreferredSize(new Dimension(0,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(0,250));
 		}		
-		multiSplitPane.repaint();
-		multiSplitPane.validate();		
+		multiSplitPane.revalidate();	
 	}
 	
 	/**

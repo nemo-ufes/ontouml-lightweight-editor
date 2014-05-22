@@ -32,6 +32,8 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	//TODO Remove me
 	private File projectFile;
 	
+	public DiagramToolbar getToolBar() { return diagramToolbar; }
+	
 	public DiagramEditorWrapper(final DiagramEditor editor, DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		super(new BorderLayout(0,0));

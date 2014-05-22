@@ -141,6 +141,16 @@ public class TOCLCompletionProvider {
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
+		
+		description = "Operation <b>World::allNext(p: Path) : Set(World)</b><br><br>"+
+		"Returns all the worlds after the world self in the path p";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"allNext(p)","allNext(p)",
+			"allNext(${path})${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
 				
 		description = "Operation <b>World::allPrevious() : Set(World)</b><br><br>"+
 		"Returns all the worlds before the world self.";
