@@ -201,7 +201,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		this.diagram = diagram;
 		this.diagram.addNodeChangeListener(this);
 		initEditorMembers();
-
+		
+		setToolTipText("Press SPACE to see the elements you may draw");
+		
 		// Make sure the this component has no layout diagramManager, is opaque and has
 		// no double buffer
 		setLayout(null);
