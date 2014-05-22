@@ -36,6 +36,7 @@ public class TOCLCellRenderer extends OCLCellRenderer {
 			tc.getDefinitionString().equals("allPrevious(w)")||
 			tc.getDefinitionString().equals("allNext")||
 			tc.getDefinitionString().equals("allNext(w)")||
+			tc.getDefinitionString().equals("allNext(p)")||
 			tc.getDefinitionString().equals("hasPrevious")||
 			tc.getDefinitionString().equals("hasNext")||
 			tc.getDefinitionString().equals("isTerminal")||
