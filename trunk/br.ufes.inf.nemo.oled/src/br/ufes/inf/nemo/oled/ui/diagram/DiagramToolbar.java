@@ -27,6 +27,7 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnZoomOut;
 	private JButton btnZoomIn;
 	private JButton btnZoomStatus;
+	private JButton btnNewDiagram;
 	
 	public void update(){
 		btnGrid.setSelected(editor.showGrid());
@@ -48,6 +49,18 @@ public class DiagramToolbar extends JToolBar {
         	}
         });
 		
+		btnNewDiagram = new JButton("");
+		btnNewDiagram.setToolTipText("New diagram");
+		btnNewDiagram.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		editor.getDiagramManager().newDiagram();
+        	}
+        });
+		btnNewDiagram.setFocusable(false);
+		btnNewDiagram.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/application_add.png")));
+		add(btnNewDiagram);
+		
 		btnGrid = new JToggleButton("");
 		btnGrid.setSelected(editor.showGrid());
 		btnGrid.setToolTipText("Grid Lines");
@@ -60,7 +73,7 @@ public class DiagramToolbar extends JToolBar {
 		btnGrid.setFocusable(false);
 		btnGrid.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/grid.png")));
 		add(btnGrid);
-						
+		
 		btnToolBox = new JToggleButton("");
 		btnToolBox.setSelected(editor.getDiagramManager().getFrame().showToolBox());
 		btnToolBox.setToolTipText("Show/hide Toolbox");
