@@ -1,12 +1,10 @@
 package br.ufes.inf.nemo.oled;
 
-import java.awt.Dimension;
-
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
+import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
-import javax.swing.border.EmptyBorder;
 
 public class BrowserManager extends JTabbedPane {
 
@@ -25,8 +23,7 @@ public class BrowserManager extends JTabbedPane {
 		
 		browser = new ProjectBrowser(frame,null);
 		browser.setBorder(new EmptyBorder(0, 0, 0, 0));
-		browser.setPreferredSize(new Dimension(230,250));
-		
+				
 		addTab("Project Browser", browser); 
 		setIconAt(indexOfComponent(browser),new ImageIcon(BrowserManager.class.getResource("/resources/icons/x16/drawer.png")));
 	}
