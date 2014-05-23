@@ -8,7 +8,7 @@ import javax.swing.JPopupMenu;
 
 import org.eclipse.emf.ecore.EObject;
 
-import br.ufes.inf.nemo.oled.ProjectBrowser;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 
 public class FinderPopupMenu extends JPopupMenu {
 
@@ -26,7 +26,7 @@ public class FinderPopupMenu extends JPopupMenu {
 		findInProjectMenuItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {	
-				ProjectBrowser.frame.getDiagramManager().getFrame().getProjectBrowser().getTree().selectModelElement(context);		
+				ProjectBrowser.frame.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().selectModelElement(context);		
 			}
 		});
 	}

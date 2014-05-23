@@ -19,8 +19,8 @@ import javax.swing.ScrollPaneConstants;
 import org.eclipse.uml2.uml.Constraint;
 
 import br.ufes.inf.nemo.oled.AppFrame;
-import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.dialog.SingleConstraintPanel;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 
 /**

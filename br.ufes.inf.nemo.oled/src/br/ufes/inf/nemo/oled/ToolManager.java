@@ -1,10 +1,12 @@
 package br.ufes.inf.nemo.oled;
 
+import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
 import br.ufes.inf.nemo.oled.palette.Palette;
 import br.ufes.inf.nemo.oled.palette.PaletteAccordion;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorCommandDispatcher;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 
 public class ToolManager extends JTabbedPane {
 
@@ -27,8 +29,9 @@ public class ToolManager extends JTabbedPane {
 		palettes.createStaticStructurePalettes(editorDispatcher);
 		//Assistent assistent = new Assistent();
 		//Assistent patternsPanel = new Assistent();
-				
-		addTab("Toolbox", palettes); //TODO Localize these		
+		
+		addTab("Toolbox", palettes); //TODO Localize these
+		setIconAt(indexOfComponent(palettes),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/hammer_screwdriver.png")));
 		//this.addTab("Assistent", assistent);
 		//this.addTab("Patterns", patternsPanel);
 	}
