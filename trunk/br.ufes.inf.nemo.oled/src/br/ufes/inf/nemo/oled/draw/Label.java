@@ -62,7 +62,8 @@ public interface Label extends Node {
    * @param aFontType the FontType
    */
   void setFontType(FontType aFontType);
-
+  FontType getFontType();
+  
   /**
    * Centers this Label horizontally in its parent.
    */
