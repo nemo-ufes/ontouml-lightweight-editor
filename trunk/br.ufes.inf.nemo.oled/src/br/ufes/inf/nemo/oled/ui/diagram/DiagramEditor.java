@@ -393,7 +393,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		DiagramElement elem = diagram.getChildAt(currentPointerPosition.getX(), currentPointerPosition.getY());		
 		if (elem instanceof NullElement)
 		{
-			ToolboxPopupMenu menu = new ToolboxPopupMenu(frame);
+			ToolboxPopupMenu menu = new ToolboxPopupMenu(frame,currentPointerPosition.getX(),currentPointerPosition.getY());
 			menu.show((Component)diagramManager.getCurrentDiagramEditor(), (int)currentPointerPosition.getX(), (int) currentPointerPosition.getY());				
 		}
 	}
