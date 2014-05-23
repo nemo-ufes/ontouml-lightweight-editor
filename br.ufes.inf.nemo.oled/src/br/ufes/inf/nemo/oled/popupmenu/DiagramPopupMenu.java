@@ -21,21 +21,10 @@ public class DiagramPopupMenu extends JPopupMenu implements ActionListener{
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
 	@SuppressWarnings("unused")
 	private DiagramEditor editor;
-	private JCheckBoxMenuItem showGrid; 
 	
 	public DiagramPopupMenu(final DiagramEditor editor)
     {        		
 		this.editor=editor;    	    	
-//    	showGrid = createCheckBoxMenuItem(this, "showgrid");
-		showGrid = new JCheckBoxMenuItem("Show Grid Lines");
-		showGrid.setSelected(editor.showGrid());
-		showGrid.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {	
-				editor.showGrid(showGrid.isSelected());
-			}
-		});
-    	add(showGrid);    	
     }	
 	
 	/**

@@ -39,11 +39,17 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	JMenuItem subquantityOfItem = new JMenuItem("SubQuantityOf");
 	JMenuItem subcollectionOfItem = new JMenuItem("SubCollectionOf");	
 	JMenuItem derivationItem = new JMenuItem("Derivation");
+	JMenuItem unionItem = new JMenuItem("Union");	
+	JMenuItem exclusionItem = new JMenuItem("Exclusion");
 	public AppFrame frame;
+	public double x;
+	public double y;
 	
-    public ToolboxPopupMenu(final AppFrame frame)
+    public ToolboxPopupMenu(final AppFrame frame, final double x, final double y)
     {        
     	this.frame = frame;
+    	this.x=x;
+    	this.y=y;
     	add(pointerItem);
     	add(kindItem);
     	add(quantityItem);
@@ -69,6 +75,10 @@ public class ToolboxPopupMenu extends JPopupMenu {
         add(associationItem);
         add(derivationItem);
         
+        addSeparator();
+        add(unionItem);
+        add(exclusionItem);
+        
         kindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/kind.png")));
         quantityItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/quantity.png")));
         collectiveItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/collective.png")));
@@ -92,6 +102,9 @@ public class ToolboxPopupMenu extends JPopupMenu {
         subcollectionOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/subcollectionof.png")));
         subquantityOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/subquantityof.png")));
         derivationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/derivation.png")));
+        
+        unionItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));        
+        exclusionItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
         
         pointerItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/mousepointer.png")));
         
@@ -345,6 +358,28 @@ public class ToolboxPopupMenu extends JPopupMenu {
 			    if (SwingUtilities.isLeftMouseButton(e))
 	            {
 			    	frame.getToolManager().getElementsPalette().getPalleteElement("derivation").setSelected(true);
+	            }
+			}
+		});
+       unionItem.addMouseListener(new MouseAdapter()
+	    {    	   
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getDiagramManager().openDerivedTypePatternUnion(x, y);
+	            }
+			}
+		});
+       exclusionItem.addMouseListener(new MouseAdapter()
+	    {    	   
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getDiagramManager().openDerivedTypePatternExclusion(x,y);
 	            }
 			}
 		});
