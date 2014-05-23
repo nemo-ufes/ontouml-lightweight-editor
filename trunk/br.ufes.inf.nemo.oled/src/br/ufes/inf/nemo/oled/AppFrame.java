@@ -160,6 +160,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 				
 		browserManager = new BrowserManager(this);
 		browserManager.setPreferredSize(new Dimension(230,250));
+		browserManager.getProjectBrowser().setPreferredSize(new Dimension(230,250));
 		
 		toolManager = new ToolManager(this, diagramManager.getEditorDispatcher());
 		toolManager.setPreferredSize(new Dimension(230,250));
@@ -192,12 +193,14 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()-200));
 			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,230));			
 			browserManager.getProjectBrowser().setPreferredSize(new Dimension(230,250));
+			browserManager.setPreferredSize(new Dimension(230,250));
 			toolManager.setPreferredSize(new Dimension(230,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(230,250));			
 		}else{
 			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240,GetScreenWorkingHeight()-200));
 			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240,230));
 			browserManager.getProjectBrowser().setPreferredSize(new Dimension(230,250));
+			browserManager.setPreferredSize(new Dimension(230,250));
 			toolManager.setPreferredSize(new Dimension(0,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(0,250));
 		}		
