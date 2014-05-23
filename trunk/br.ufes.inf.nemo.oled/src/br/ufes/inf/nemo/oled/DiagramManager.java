@@ -80,6 +80,7 @@ import br.ufes.inf.nemo.oled.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.LineStyle;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
 import br.ufes.inf.nemo.oled.finder.ElementFound;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
@@ -207,7 +208,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		currentProject = new UmlProject(model);
 		saveProjectNeeded(false);
 
-		frame.getProjectBrowser().setProject(currentProject);
+		frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 		frame.getInfoManager().setProject(currentProject);
 		frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 		for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
@@ -225,7 +226,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		currentProject = new UmlProject();
 		saveProjectNeeded(false);
 
-		frame.getProjectBrowser().setProject(currentProject);
+		frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 		frame.getInfoManager().setProject(currentProject);
 		newDiagram(currentProject);
 	}
@@ -252,7 +253,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (currentProject!=null){
 
 			removeAll();
-			frame.getProjectBrowser().eraseProject();
+			frame.getBrowserManager().getProjectBrowser().eraseProject();
 			frame.getInfoManager().eraseProject();
 			frame.getStatusBar().clearStatus();			
 			currentProject=null;
@@ -1219,7 +1220,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				lastOpenPath = file.getAbsolutePath();
 
 				currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);				
-				frame.getProjectBrowser().setProject(currentProject);
+				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
@@ -1262,7 +1263,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				setProjectFile(file);
 
 				currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);								
-				frame.getProjectBrowser().setProject(currentProject);
+				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));

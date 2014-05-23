@@ -33,7 +33,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import org.eclipse.emf.edit.provider.IDisposable;
 
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.ProjectBrowser;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.palette.ColorPalette;
 import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.ui.diagram.Editor;

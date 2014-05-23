@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
-import br.ufes.inf.nemo.oled.ProjectBrowser;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 
 /**

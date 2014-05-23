@@ -23,8 +23,8 @@ import RefOntoUML.Constraintx;
 import RefOntoUML.StringExpression;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 
 import javax.swing.JTextField;
 

@@ -16,7 +16,7 @@ import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.SubkindCreation;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.oled.ProjectBrowser;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 
 public class PatternTool {

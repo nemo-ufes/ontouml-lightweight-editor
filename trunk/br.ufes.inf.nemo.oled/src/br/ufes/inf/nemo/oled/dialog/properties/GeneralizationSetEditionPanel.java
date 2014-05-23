@@ -28,8 +28,8 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.ProjectBrowser;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 
 public class GeneralizationSetEditionPanel extends JPanel {
 	
