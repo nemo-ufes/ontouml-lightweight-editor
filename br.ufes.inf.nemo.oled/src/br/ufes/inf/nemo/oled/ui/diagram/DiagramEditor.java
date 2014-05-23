@@ -159,6 +159,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	// The command processor to hold this diagram's operations.
 	private UndoManager undoManager = new UndoManager();
 	
+	public DrawingContext getDrawingContext() { return drawingContext; }
+	
 	/**
 	 * Reset the transient values for serialization.
 	 * 

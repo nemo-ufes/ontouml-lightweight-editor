@@ -36,6 +36,7 @@ import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 
 public class DerivedTypesOperations {
 
+	@SuppressWarnings("unused")
 	private class FeatureElement {
 		RefOntoUML.Element element;
 		OntoUMLParser ref;

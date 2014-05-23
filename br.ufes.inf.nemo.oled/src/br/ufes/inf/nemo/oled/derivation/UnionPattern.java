@@ -1,56 +1,54 @@
 package br.ufes.inf.nemo.oled.derivation;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-
 import java.awt.Color;
-import java.awt.SystemColor;
-
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JCheckBox;
-import javax.swing.DefaultComboBoxModel;
-
-import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
-import br.ufes.inf.nemo.oled.DiagramManager;
-import apple.laf.JRSUIUtils.ComboBox;
-
-import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 
-import java.awt.Font;
+import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
+import br.ufes.inf.nemo.oled.DiagramManager;
 
 public class UnionPattern extends JDialog {
 
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField_1;
+	@SuppressWarnings("rawtypes")
 	JComboBox comboBox_1 = new JComboBox();
 	private JTextField textField;
 	private JTextField textField_2;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboBox = new JComboBox();
+	@SuppressWarnings({ "rawtypes", "unused" })
 	private JComboBox comboBox1 = new JComboBox();
-	private JLabel lblSecondSubtype = new JLabel("Second Subtype");
-	private JLabel lblNewLabel = new JLabel("First Subtype");
+	private JLabel lblNewLabel = new JLabel("Types");
 	private DiagramManager diagramMan;
 	private JLabel lblNewLabel_1;
 	private Point2D.Double location= new Point2D.Double();
+	@SuppressWarnings("rawtypes")
 	private final JComboBox comboBox_2 = new JComboBox();
+	@SuppressWarnings("rawtypes")
 	Vector comboBoxItems=new Vector();
+	@SuppressWarnings("rawtypes")
 	Vector comboBoxItems2=new Vector();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 	/**
 	 * Launch the application.
@@ -66,6 +64,7 @@ public class UnionPattern extends JDialog {
 	}
 	
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setCombo(){
 		ArrayList<String> stereo=DerivedByUnion.getInstance().inferStereotype(comboBox.getModel().getSelectedItem().toString(), comboBox_1.getModel().getSelectedItem().toString());
 		if(stereo!=null){
@@ -78,10 +77,13 @@ public class UnionPattern extends JDialog {
 			comboBox_2.getModel().setSelectedItem(model.getElementAt(0));
 		}
 	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public UnionPattern(DiagramManager diagramManager) {
+		setTitle("Derivation by Union");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(UnionPattern.class.getResource("/resources/icons/x16/sitemap.png")));
 		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"Category"}));
 		this.diagramMan= diagramManager;
-		setBounds(100, 100, 453, 239);
+		setBounds(100, 100, 453, 226);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(245, 245, 245));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -90,7 +92,7 @@ public class UnionPattern extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.NORTH);
 		{
 
-			lblNewLabel.setForeground(SystemColor.textInactiveText);
+			lblNewLabel.setForeground(Color.BLACK);
 		}
 		{
 			textField = new JTextField();
@@ -115,11 +117,6 @@ public class UnionPattern extends JDialog {
 			comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Category", "Role", "Phase", "Role Mixin", "Mixin"}));
 		}
 		{
-			
-			lblSecondSubtype.setForeground(SystemColor.windowBorder);
-			lblSecondSubtype.setBackground(SystemColor.activeCaptionBorder);
-		}
-		{
 			textField_1 = new JTextField();
 			textField_1.setColumns(10);
 		}
@@ -129,77 +126,65 @@ public class UnionPattern extends JDialog {
 		}
 		{
 			lblNewLabel_1 = new JLabel("Derived Type");
-			lblNewLabel_1.setForeground(SystemColor.windowBorder);
+			lblNewLabel_1.setForeground(Color.BLACK);
 		}
 		{
 			textField_2 = new JTextField();
 			textField_2.setColumns(10);
 		}
-		
-		JLabel lblDerivationByUnion = new JLabel("Derivation By Union");
-		lblDerivationByUnion.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+							.addGroup(gl_contentPanel.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 398, GroupLayout.PREFERRED_SIZE))
+							.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(141)
-							.addComponent(lblDerivationByUnion))
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(21)
-							.addComponent(lblNewLabel_1)
-							.addGap(4)
-							.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(21)
-							.addComponent(lblNewLabel)
-							.addGap(4)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
-							.addGap(6)
-							.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(10)
-							.addComponent(lblSecondSubtype)
-							.addGap(1)
-							.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)
-							.addGap(6)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(8, Short.MAX_VALUE))
+							.addContainerGap()
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(lblNewLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+								.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
+									.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+										.addComponent(textField, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+										.addComponent(comboBox_1, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+										.addComponent(comboBox, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))))))
+					.addContainerGap(19, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addComponent(lblDerivationByUnion)
-					.addGap(26)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblNewLabel_1))
-						.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-							.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addGap(22)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblNewLabel))
+					.addContainerGap()
+					.addComponent(lblNewLabel_1)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(lblNewLabel)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(6)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblSecondSubtype))
+					.addGap(8)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(18, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");

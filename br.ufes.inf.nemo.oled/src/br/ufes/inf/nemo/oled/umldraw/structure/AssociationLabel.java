@@ -383,4 +383,9 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 		this.editable = editable;
 	}
 
+	@Override
+	public FontType getFontType() {
+		return getFontType();
+	}
+
 }

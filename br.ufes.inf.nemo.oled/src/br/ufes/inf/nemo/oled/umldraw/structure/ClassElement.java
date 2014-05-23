@@ -460,7 +460,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 	/**
 	 * Reinitializes the main compartment with the contained labels.
 	 */
-	private void reinitMainCompartment() {
+	public void reinitMainCompartment() {
 		mainCompartment.removeAllLabels();
 		mainCompartment.addLabel(ontoUmlLabel);
 		mainCompartment.addLabel(mainLabel);

@@ -73,6 +73,8 @@ public class SimpleLabel extends AbstractNode implements Label {
 		fontType = aFontType;
 	}
 
+	public FontType getFontType() { return fontType; } 
+	
 	/**
 	 * {@inheritDoc}
 	 */

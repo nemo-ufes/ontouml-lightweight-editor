@@ -67,7 +67,7 @@ public class ResizeElementCommand extends BaseDiagramCommand {
 		element.setAbsolutePos(newpos.getX(), newpos.getY());
 		
 		element.setSize(newsize.getWidth(), newsize.getHeight());
-		
+				
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
 		notification.notifyChange(elements, ChangeType.ELEMENTS_RESIZED, redo ? NotificationType.REDO : NotificationType.DO);
