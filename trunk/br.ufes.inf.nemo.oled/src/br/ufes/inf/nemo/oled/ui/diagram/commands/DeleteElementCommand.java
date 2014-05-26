@@ -45,7 +45,6 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
@@ -95,9 +94,9 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		{
 			// level 1 of dependency
 			ArrayList<Relationship> depList = ProjectBrowser.getParserFor(project).getDirectRelationships(elem);			
-			elemDep1List.addAll(depList);			
-			diagramElemDep1List.addAll(ModelHelper.getDiagramElementsByEditor(elemDep1List,(DiagramEditor)notification));			
-			
+			depList.removeAll(elemList);
+			for(Element e: depList) { if(!elemDep1List.contains(e)) elemDep1List.add(e); }			
+					
 			// level 2 of dependency
 			// the case in which there is a material in depList. We must include the derivation too.
 			for(Relationship r: depList )
@@ -106,17 +105,13 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				{ 
 					Derivation d = ProjectBrowser.getParserFor(project).getDerivation((MaterialAssociation)r);
 					if(d!=null) {
-						elemDep2List.add(d);
-						diagramElemDep2List.add(ModelHelper.getDiagramElementByEditor(d,(DiagramEditor)notification));
+						if(!elemDep2List.contains(d)) elemDep2List.add(d);						
 					}
 				}
 			}			
 		}
-		
-		elemList.removeAll(elemDep1List);
-		elemList.removeAll(elemDep2List);
-		diagramElemList.removeAll(diagramElemDep1List);
-		diagramElemList.removeAll(diagramElemDep2List);
+		diagramElemDep1List.addAll(ModelHelper.getDiagramElementsByEditor(elemDep1List,(DiagramEditor)notification));
+		diagramElemDep2List.addAll(ModelHelper.getDiagramElementsByEditor(elemDep2List,(DiagramEditor)notification));
 		
 		// Parent children and their dependencies
 		for (DiagramElement elem : diagramElemList){
@@ -134,7 +129,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * {@inheritDoc} - REDO
 	 */
 	@Override
-	public void redo() {
+	public void redo() 
+	{	
 		redo = true;
 		super.redo();
 		run();
@@ -145,7 +141,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 */
 	@Override
 	public void undo() 
-	{
+	{		
 		super.undo();
 		
 		//requested
@@ -158,6 +154,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		if(deleteFromDiagram){	
 			int i=0;
 			for (ParentChildRelation relation : parentChildRelations) {
+				//guess we dont need this
 //				if (relation.element instanceof Connection) {
 //					reattachConnectionToNodes((Connection) relation.element);
 //				} else if (relation.element instanceof Node) {
@@ -179,12 +176,12 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		if(deleteFromDiagram){
 			int i=0;
 			for (ParentChildRelation relation : parentChildRelationsDep1) {
+				//guess we dont need this
 //				if (relation.element instanceof Connection) {
 //					reattachConnectionToNodes((Connection) relation.element);
 //				} else if (relation.element instanceof Node) {
 //					reattachNodeConnections((Node) relation.element);
-//				}	
-				System.out.println(relation.parent);
+//				}				
 				relation.parent.addChild(relation.element);			
 				ModelHelper.addMapping(((ArrayList<Element>)elemDep1List).get(i),relation.element);
 				i++;
@@ -201,6 +198,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		if(deleteFromDiagram){
 			int i=0;
 			for (ParentChildRelation relation : parentChildRelationsDep2) {
+				//guess we dont need this
 //				if (relation.element instanceof Connection) {
 //					reattachConnectionToNodes((Connection) relation.element);
 //				} else if (relation.element instanceof Node) {
@@ -226,14 +224,27 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 */
 	public void run() 
 	{
+		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+		
 		// deletes dependencies level2 (derivations)
 		delete(diagramElemDep2List,elemDep2List);	
-				
+		list.addAll(diagramElemDep2List);
+		
 		// deletes dependencies level1
 		delete(diagramElemDep1List,elemDep1List);
-
+		list.addAll(diagramElemDep1List);
+		
 		// delete the element requested
 		delete(diagramElemList, elemList);
+		list.addAll(diagramElemList);
+		
+		DiagramEditor d = ((DiagramEditor)notification);
+		//notify
+		if (d!=null) {
+			d.notifyChange((List<DiagramElement>) list, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);			
+			UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)d), this);
+			for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
+		}
 	}
 	
 	public void delete(Collection<DiagramElement> diagramElemList, Collection<Element> elemList)
@@ -316,18 +327,6 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		{
 			element.getParent().removeChild(element);
 		}
-		
-		if (element.getParent() instanceof StructureDiagram) {
-			DiagramEditor d = ((DiagramEditor)notification).getDiagramManager().getDiagramEditor((StructureDiagram)element.getParent());
-			//notify
-			if (d!=null) {
-				ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-				list.add(element);
-				d.notifyChange((List<DiagramElement>) list, ChangeType.ELEMENTS_REMOVED, redo ? NotificationType.REDO : NotificationType.DO);			
-				UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)d), this);
-				for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
-			}	
-		}
 	}
 	
 	private void delete (RefOntoUML.Element elem)
@@ -385,6 +384,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * @param node
 	 *            the node that is readded
 	 */
+	@SuppressWarnings("unused")
 	private void reattachNodeConnections(Node node) 
 	{
 		for (Connection conn : node.getConnections()) 
@@ -426,6 +426,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * @param conn
 	 *            the connection that is readded
 	 */
+	@SuppressWarnings("unused")
 	private void reattachConnectionToNodes(Connection conn) 
 	{
 		if (conn.getNode1()!=null)

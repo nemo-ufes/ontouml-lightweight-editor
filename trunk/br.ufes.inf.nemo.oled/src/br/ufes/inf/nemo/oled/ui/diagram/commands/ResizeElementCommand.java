@@ -24,9 +24,13 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DoubleDimension;
 import br.ufes.inf.nemo.oled.draw.Node;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
@@ -34,7 +38,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.Notificatio
 /**
  * This class implements a resizing command.
  *
- * @author Wei-ju Wu, Antognoni Albuquerque
+ * @author Wei-ju Wu, Antognoni Albuquerque, John Guerson
  * @version 1.1
  */
 public class ResizeElementCommand extends BaseDiagramCommand {
@@ -70,7 +74,14 @@ public class ResizeElementCommand extends BaseDiagramCommand {
 				
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
-		notification.notifyChange(elements, ChangeType.ELEMENTS_RESIZED, redo ? NotificationType.REDO : NotificationType.DO);
+		
+		DiagramEditor d = ((DiagramEditor)notification);
+		//notify
+		if (d!=null) {
+			d.notifyChange((List<DiagramElement>) elements, ChangeType.ELEMENTS_RESIZED, redo ? NotificationType.REDO : NotificationType.DO);			
+			UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)d), this);
+			for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
+		}		
 	}
 
 	/**

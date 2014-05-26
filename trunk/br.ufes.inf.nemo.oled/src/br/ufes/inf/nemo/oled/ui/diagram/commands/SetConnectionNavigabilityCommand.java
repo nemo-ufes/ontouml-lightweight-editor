@@ -32,11 +32,12 @@ import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 
 
 /**
- * This class implements a Command to set the navigability of a connection.
+ * This class implements a Command to set the navigability of a connection. We do not need this for OntoUML.
  *
- * @author Wei-ju Wu
+ * @author Wei-ju Wu, John Guerson
  * @version 1.0
  */
+@Deprecated
 public class SetConnectionNavigabilityCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = -3010234913328981820L;

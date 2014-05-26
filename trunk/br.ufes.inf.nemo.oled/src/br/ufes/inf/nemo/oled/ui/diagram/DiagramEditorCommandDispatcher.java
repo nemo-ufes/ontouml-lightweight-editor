@@ -390,7 +390,13 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{		
 		if (manager.isProjectLoaded()==false) return;
 
-		if(manager.getCurrentDiagramEditor()!=null) manager.getCurrentDiagramEditor().undo();
+		if(manager.getCurrentDiagramEditor()!=null) {
+			if(manager.getCurrentDiagramEditor().canUndo()){
+				manager.getCurrentDiagramEditor().undo();
+			}else{				
+				manager.getFrame().showInformationMessageDialog("Cannot Undo", "No other action to be undone.\nThe undo only works for deletion, addition and movement of elements.\n\n");
+			}
+		}
 	}
 
 	public void derivedByUnion()
@@ -411,7 +417,14 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{
 		if (manager.isProjectLoaded()==false) return;
 
-		if(manager.getCurrentDiagramEditor()!=null) manager.getCurrentDiagramEditor().redo();
+		if(manager.getCurrentDiagramEditor()!=null) 
+		{			
+			if(manager.getCurrentDiagramEditor().canRedo()){
+				manager.getCurrentDiagramEditor().redo();
+			}else{
+				manager.getFrame().showInformationMessageDialog("Cannot Redo", "No other action to be redone.\nThe redo only works for deletion, addition and movement of elements.\n\n");
+			}
+		}
 
 	}
 

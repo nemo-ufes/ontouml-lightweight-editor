@@ -461,7 +461,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** Delete element from the model and every diagram in each it appears. It shows a message before deletion.*/
 	public void delete(RefOntoUML.Element element)
 	{	
-		int response = JOptionPane.showConfirmDialog(frame, "Delete selected items from the model and all diagrams? \n\nWARNING: This action cannot be undone.", "Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
+		int response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear?\n\n", "Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
 		if(response==Window.OK)
 		{
 			ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
@@ -484,7 +484,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** Delete elements from the model and every diagram in each they appear. It shows a message before deletion. */
 	public void delete(Collection<DiagramElement> diagramElementList)
 	{
-		int response = JOptionPane.showConfirmDialog(frame, "Delete selected items from the model and all diagrams? \n\nWARNING: This action cannot be undone.\n\n", "Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
+		int response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear?\n\n", "Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
 		if(response==Window.OK)
 		{
 			ArrayList<RefOntoUML.Element> deletionList = (ArrayList<RefOntoUML.Element>)ModelHelper.getElements(diagramElementList);			

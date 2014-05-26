@@ -23,8 +23,12 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
@@ -32,7 +36,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.Notificatio
 /**
  * This class implements a reversible command to reset a connection's points.
  *
- * @author Wei-ju Wu
+ * @author Wei-ju Wu, John Guerson
  * @version 1.0
  */
 public class ResetConnectionPointsCommand extends BaseDiagramCommand {
@@ -60,7 +64,14 @@ public class ResetConnectionPointsCommand extends BaseDiagramCommand {
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(connection);
-		notification.notifyChange(elements, ChangeType.CONNECTION_POINTS_RESET, redo ? NotificationType.REDO : NotificationType.DO);
+		
+		DiagramEditor d = ((DiagramEditor)notification);
+		//notify
+		if (d!=null) {
+			d.notifyChange((List<DiagramElement>) elements, ChangeType.CONNECTION_POINTS_RESET, redo ? NotificationType.REDO : NotificationType.DO);			
+			UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)d), this);
+			for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
+		}		
 	}
 
 	/**

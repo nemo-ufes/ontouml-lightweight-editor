@@ -22,6 +22,9 @@ package br.ufes.inf.nemo.oled.ui.diagram.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.MoveNodeOperation;
@@ -86,7 +89,14 @@ public class MoveElementCommand extends BaseDiagramCommand {
 				}
 			}
 		}
-		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
+
+		DiagramEditor d = ((DiagramEditor)notification);
+		//notify
+		if (d!=null) {
+			d.notifyChange((List<DiagramElement>) elements, ChangeType.ELEMENTS_MOVED, redo ? NotificationType.REDO : NotificationType.DO);			
+			UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)d), this);
+			for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
+		}
 	}
 
 	public void resetRelatedConnectionPoints(DiagramEditor notification, Connection con)
@@ -117,8 +127,7 @@ public class MoveElementCommand extends BaseDiagramCommand {
 				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
 		}
 		
-		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.UNDO);
-		
+		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.UNDO);		
 	}
 
 	/**
