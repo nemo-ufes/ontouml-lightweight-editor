@@ -22,8 +22,12 @@ package br.ufes.inf.nemo.oled.ui.diagram.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
@@ -32,7 +36,7 @@ import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 /**
  * This class converts wrapped connection types.
  *
- * @author Wei-ju Wu
+ * @author Wei-ju Wu, John Guerson
  * @version 1.0
  */
 public class ConvertConnectionTypeCommand extends BaseDiagramCommand {
@@ -65,9 +69,17 @@ public class ConvertConnectionTypeCommand extends BaseDiagramCommand {
 		for(Connection c: connection.getConnections()){
 			c.resetPoints();
 		}
+		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(connection);
-		notification.notifyChange(elements, ChangeType.CONNECTION_TYPE_CONVERTED, redo ? NotificationType.REDO : NotificationType.DO);
+		
+		DiagramEditor d = ((DiagramEditor)notification);
+		//notify
+		if (d!=null) {
+			d.notifyChange((List<DiagramElement>) elements, ChangeType.CONNECTION_TYPE_CONVERTED, redo ? NotificationType.REDO : NotificationType.DO);			
+			UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)d), this);
+			for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
+		}		
 	}
 
 	/**

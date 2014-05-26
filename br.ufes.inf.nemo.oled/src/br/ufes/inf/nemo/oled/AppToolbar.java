@@ -82,8 +82,8 @@ public class AppToolbar implements ActionListener {
 		toolbar.addSeparator();
 		createButton("generatesbvr");
 		
-		enableButton("UNDO", false);
-		enableButton("REDO", false);
+		enableButton("UNDO", true);
+		enableButton("REDO", true);
 		enableButton("CUT", false);
 		enableButton("COPY", false);
 		enableButton("PASTE", false);

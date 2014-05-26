@@ -114,6 +114,7 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
  * @author Wei-ju Wu
  * @version 1.0
  */
+@SuppressWarnings("deprecation")
 public class DiagramEditor extends BaseEditor implements ActionListener, MouseListener, MouseWheelListener, MouseMotionListener, DiagramNotification, DiagramOperations, NodeChangeListener {
 
 	private static final long serialVersionUID = 4210158437374056534L;
@@ -735,10 +736,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	// ************************************************************************
 
 	/** Undoes the last operation. */
-	public void undo() { undoManager.undo(); }
+	public void undo() { if (canUndo()) undoManager.undo(); }
 
 	/** Redoes the last operation. */
-	public void redo() { undoManager.redo(); }
+	public void redo() { if (canRedo()) undoManager.redo(); }
 
 	/**
 	 * Rescales the view.
@@ -1243,6 +1244,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Sets the end type navigability of the current selected connection.
 	 * @param endType the RelationEndType
 	 */
+	@Deprecated
 	public void setNavigability(RelationEndType endType) 
 	{
 		if (getSelectedElements().size() > 0 && getSelectedElements().get(0) instanceof UmlConnection) 

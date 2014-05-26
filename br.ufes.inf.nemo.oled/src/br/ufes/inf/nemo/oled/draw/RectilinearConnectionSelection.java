@@ -441,11 +441,15 @@ public class RectilinearConnectionSelection extends ConnectionSelection {
     Line2D segment = new Line2D.Double(editpoints.get(editSegmentIndex),
       editpoints.get(editSegmentIndex + 1));
     if (editSegmentIndex == 0) {
-      getConnection().getNode1().calculateIntersection(segment,
-        editpoints.get(editSegmentIndex));
+      if(getConnection().getNode1()!=null)
+    	getConnection().getNode1().calculateIntersection(segment,editpoints.get(editSegmentIndex));
+      else
+        getConnection().getConnection1().calculateIntersection(segment,editpoints.get(editSegmentIndex));  
     } else if (editSegmentIndex == editpoints.size() - 2) {
-      getConnection().getNode2().calculateIntersection(segment,
-        editpoints.get(editSegmentIndex + 1));
+    	if(getConnection().getNode2()!=null)
+    		getConnection().getNode2().calculateIntersection(segment, editpoints.get(editSegmentIndex + 1));
+    	else
+    		getConnection().getConnection2().calculateIntersection(segment, editpoints.get(editSegmentIndex + 1));
     }
   }
 

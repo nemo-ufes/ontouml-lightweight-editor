@@ -22,12 +22,16 @@ package br.ufes.inf.nemo.oled.ui.diagram.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
@@ -37,7 +41,7 @@ import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
  * This class represents a reversible operation that sets a Label to a new
  * text.
  *
- * @author Wei-ju Wu, Antognoni Albuquerque
+ * @author Wei-ju Wu, Antognoni Albuquerque, John Guerson
  * @version 1.0
  */
 public class SetLabelTextCommand extends BaseDiagramCommand {
@@ -65,14 +69,12 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 	 * {@inheritDoc}
 	 */
 	public void run() {
-		String oldName = label.getNameLabelText();
 		
-		label.setNameLabelText(text);
-				
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		elements.add(label);
-		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, redo ? NotificationType.REDO : NotificationType.DO);
 		
+		String oldName = label.getNameLabelText();		
+		label.setNameLabelText(text);
+						
 		if (parent instanceof ClassElement) 
 		{
 			Classifier element = (((ClassElement)parent).getClassifier());
@@ -84,9 +86,19 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 			
 			// update application accordingly
 			ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(element, false);
-			
+						
 		}else if (parent instanceof BaseConnection){
 			
+		}
+		
+		elements.add(parent);
+		
+		DiagramEditor d = ((DiagramEditor)notification);
+		//notify
+		if (d!=null) {
+			d.notifyChange((List<DiagramElement>) elements, ChangeType.LABEL_TEXT_SET, redo ? NotificationType.REDO : NotificationType.DO);			
+			UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)d), this);
+			for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
 		}
 	}
 
@@ -104,13 +116,30 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void undo() {
+	public void undo() 
+	{
 		super.undo();
+		
 		label.setNameLabelText(oldText);
-		//label.setSize(w, h);
+		
+		if (parent instanceof ClassElement) 
+		{
+			Classifier element = (((ClassElement)parent).getClassifier());
+						
+			// replace all references in constraints at the OCL editor
+			String currentConstraints = ProjectBrowser.frame.getInfoManager().getConstraints();
+			String newConstraints = currentConstraints.replaceAll(text,oldText);
+			ProjectBrowser.frame.getInfoManager().setConstraints(newConstraints);
+			
+			// update application accordingly
+			ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(element, false);
+						
+		}else if (parent instanceof BaseConnection){
+			
+		}
+				
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		elements.add(label);
-		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, NotificationType.UNDO);
-					
+		elements.add(parent);
+		notification.notifyChange(elements, ChangeType.LABEL_TEXT_SET, NotificationType.UNDO);					
 	}
 }

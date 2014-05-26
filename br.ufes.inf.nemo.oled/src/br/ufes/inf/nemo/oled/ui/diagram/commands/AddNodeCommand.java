@@ -25,6 +25,9 @@ package br.ufes.inf.nemo.oled.ui.diagram.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+
 import org.eclipse.emf.edit.command.AddCommand;
 
 import RefOntoUML.Classifier;
@@ -45,7 +48,7 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
  * AddElementCommand can not handle setting positions with nesting very
  * well.
  *
- * @author Wei-ju Wu, Antognoni Albuquerque
+ * @author Wei-ju Wu, Antognoni Albuquerque, John Guerson
  * @version 1.1
  */
 public class AddNodeCommand extends BaseDiagramCommand {
@@ -54,22 +57,13 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	
 	private CompositeElement parent;
 	private DiagramElement diagramElement;
-	private double absx, absy;
-	
+	private double absx, absy;	
 	private RefOntoUML.Element element;
-	private RefOntoUML.Element eContainer;		
-	
+	private RefOntoUML.Element eContainer;	
 	private boolean addToDiagram;
-	
-	/**
-	 * Constructor.
-	 * @param editorNotification a ModelNotification object
-	 * @param parent the parent component
-	 * @param aNode the created element
-	 * @param x the absolute x position
-	 * @param y the absolute y position
-	 */
-	public AddNodeCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element element, double x, double y, UmlProject project, RefOntoUML.Element eContainer) {
+
+	public AddNodeCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element element, double x, double y, UmlProject project, RefOntoUML.Element eContainer) 
+	{
 		this.parent = parent;
 		this.project = project;
 		this.notification = editorNotification;		
@@ -92,19 +86,22 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 * {@inheritDoc} - UNDO
 	 */
 	@Override
-	public void undo() {
+	public void undo() 
+	{		
 		super.undo();
 	
 		if(element!=null){
 			project.getEditingDomain().getCommandStack().undo();
+			ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(element);
 		}
 		
-		if(diagramElement != null){
-			parent.removeChild(diagramElement);	
+		if(addToDiagram && diagramElement != null){
+			parent.removeChild(diagramElement);			
+			ModelHelper.removeMapping(diagramElement);
 			
 			List<DiagramElement> elements = new ArrayList<DiagramElement>();
 			elements.add(diagramElement);
-			notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);	
+			notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);
 		}		
 	}
 
@@ -112,7 +109,8 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 * {@inheritDoc} - REDO
 	 */
 	@Override
-	public void redo() {
+	public void redo() 
+	{	
 		redo = true;
 		super.redo();
 		run();
@@ -123,14 +121,24 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	 */
 	public void run() 
 	{				
+		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+		
 		addToModel(element);		
+		ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);
 		
 		if(addToDiagram && diagramElement !=null){						
 			addToDiagram(diagramElement,redo);
 			if (ModelHelper.getDiagramElementByEditor(element,(DiagramEditor)notification)==null) ModelHelper.addMapping(element, ((ClassElement)diagramElement));
-		}
+			list.add(diagramElement);
+		}		
 		
-		ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);		
+		DiagramEditor d = ((DiagramEditor)notification);
+		//notify
+		if (d!=null) {
+			d.notifyChange((List<DiagramElement>) list, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);			
+			UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)d), this);
+			for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
+		}
 	}	
 	
 	/**
@@ -160,12 +168,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 					((ClassElement)element).setShowAttributes(true);
 				}
 			}
-		}
-								
-		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		elements.add(element);
-		
-		if(notification!=null) notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);
+		}		
 	}
 	
 	/**
