@@ -56,50 +56,29 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
  */
 public class DeleteElementCommand extends BaseDiagramCommand{
 
-	private static final long serialVersionUID = 2456036038567915529L;
-	
+	private static final long serialVersionUID = 2456036038567915529L;	
 	private Collection<DiagramElement> diagramElemList = new ArrayList<DiagramElement>();
-	private Collection<DiagramElement> diagramElemDep1List = new ArrayList<DiagramElement>(); //level1 of dependencies (relationships in general)
-	private Collection<DiagramElement> diagramElemDep2List = new ArrayList<DiagramElement>(); //level2 of dependencies(only true for derivation)		
+	private Collection<DiagramElement> diagramElemDep1List = new ArrayList<DiagramElement>(); 
+	private Collection<DiagramElement> diagramElemDep2List = new ArrayList<DiagramElement>(); 		
 	private Collection<Element> elemList= new ArrayList<Element>();
-	private Collection<Element> elemDep1List= new ArrayList<Element>(); // level1 of dependencies (relationships in general)
-	private Collection<Element> elemDep2List= new ArrayList<Element>(); // level2 of dependencies (only true for derivation)	
+	private Collection<Element> elemDep1List= new ArrayList<Element>(); 
+	private Collection<Element> elemDep2List= new ArrayList<Element>(); 	
 	private List<ParentChildRelation> parentChildRelations = new ArrayList<ParentChildRelation>();
-	private List<ParentChildRelation> parentChildRelationsDep1 = new ArrayList<ParentChildRelation>(); // level1 of dependencies (relationships in general)
-	private List<ParentChildRelation> parentChildRelationsDep2 = new ArrayList<ParentChildRelation>(); // level2 of dependencies (only true for derivation) 
-	
+	private List<ParentChildRelation> parentChildRelationsDep1 = new ArrayList<ParentChildRelation>(); 
+	private List<ParentChildRelation> parentChildRelationsDep2 = new ArrayList<ParentChildRelation>();	
 	private boolean deleteFromModel;
 	private boolean deleteFromDiagram;
 	
-	/**
-	 * A helper class to store the original parent child relation.
-	 */
+	/** A helper class to store the original parent child relation. */
 	private static class ParentChildRelation {
 		DiagramElement element;
-		CompositeNode parent;
-		
-		/**
-		 * Constructor.
-		 * 
-		 * @param anElement
-		 *            the element
-		 * @param aParent
-		 *            the element's parent
-		 */
-		public ParentChildRelation(DiagramElement anElement, CompositeNode aParent) {
+		CompositeNode parent;		
+		public ParentChildRelation(DiagramElement anElement, CompositeNode aParent){
 			parent = aParent;
 			element = anElement;
 		}
 	}
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param aNotification
-	 *            the ModelNotification object
-	 * @param theElements
-	 *            the DiagramElements to remove, each must have a parent
-	 */
 	public DeleteElementCommand(DiagramNotification aNotification, Collection<Element> theElements, UmlProject project, boolean deleteFromModel, boolean deleteFromDiagram) 
 	{
 		this.project = project;
@@ -110,13 +89,13 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		// requested element for deletion
 		elemList.addAll(theElements);
 		diagramElemList.addAll(ModelHelper.getDiagramElementsByEditor((elemList),(DiagramEditor)notification));		
-				
+
 		// init the dependecies of level 1 and 2.
 		for (Element elem : theElements) 
-		{			
+		{
 			// level 1 of dependency
 			ArrayList<Relationship> depList = ProjectBrowser.getParserFor(project).getDirectRelationships(elem);			
-			elemDep1List.addAll(depList);
+			elemDep1List.addAll(depList);			
 			diagramElemDep1List.addAll(ModelHelper.getDiagramElementsByEditor(elemDep1List,(DiagramEditor)notification));			
 			
 			// level 2 of dependency
@@ -133,6 +112,11 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 				}
 			}			
 		}
+		
+		elemList.removeAll(elemDep1List);
+		elemList.removeAll(elemDep2List);
+		diagramElemList.removeAll(diagramElemDep1List);
+		diagramElemList.removeAll(diagramElemDep2List);
 		
 		// Parent children and their dependencies
 		for (DiagramElement elem : diagramElemList){
@@ -165,37 +149,68 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		super.undo();
 		
 		//requested
-		for (ParentChildRelation relation : parentChildRelations) {
-			if (relation.element instanceof Connection) {
-				reattachConnectionToNodes((Connection) relation.element);
-			} else if (relation.element instanceof Node) {
-				reattachNodeConnections((Node) relation.element);
-			}			
-			project.getEditingDomain().getCommandStack().undo();
-			relation.parent.addChild(relation.element);
+		if(deleteFromModel){
+			for (Element element : elemList) {
+				project.getEditingDomain().getCommandStack().undo();
+				ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);
+			}						
+		}
+		if(deleteFromDiagram){	
+			int i=0;
+			for (ParentChildRelation relation : parentChildRelations) {
+//				if (relation.element instanceof Connection) {
+//					reattachConnectionToNodes((Connection) relation.element);
+//				} else if (relation.element instanceof Node) {
+//					reattachNodeConnections((Node) relation.element);
+//				}				
+				relation.parent.addChild(relation.element);
+				ModelHelper.addMapping(((ArrayList<Element>)elemList).get(i),relation.element);
+				i++;
+			}
 		}
 		
-		//dependencies of level1
-		for (ParentChildRelation relation : parentChildRelationsDep1) {
-			if (relation.element instanceof Connection) {
-				reattachConnectionToNodes((Connection) relation.element);
-			} else if (relation.element instanceof Node) {
-				reattachNodeConnections((Node) relation.element);
-			}
-			project.getEditingDomain().getCommandStack().undo();
-			relation.parent.addChild(relation.element);			
+		//dependencies of level1 (usually relationships)
+		if(deleteFromModel){
+			for (Element element : elemDep1List) {
+				project.getEditingDomain().getCommandStack().undo();
+				ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);
+			}						
 		}
+		if(deleteFromDiagram){
+			int i=0;
+			for (ParentChildRelation relation : parentChildRelationsDep1) {
+//				if (relation.element instanceof Connection) {
+//					reattachConnectionToNodes((Connection) relation.element);
+//				} else if (relation.element instanceof Node) {
+//					reattachNodeConnections((Node) relation.element);
+//				}	
+				System.out.println(relation.parent);
+				relation.parent.addChild(relation.element);			
+				ModelHelper.addMapping(((ArrayList<Element>)elemDep1List).get(i),relation.element);
+				i++;
+			}
+		}		
 		
-		//dependencies of level2
-		for (ParentChildRelation relation : parentChildRelationsDep2) {
-			if (relation.element instanceof Connection) {
-				reattachConnectionToNodes((Connection) relation.element);
-			} else if (relation.element instanceof Node) {
-				reattachNodeConnections((Node) relation.element);
-			}
-			project.getEditingDomain().getCommandStack().undo();
-			relation.parent.addChild(relation.element);			
+		//dependencies of level2 (true only for derivations)
+		if(deleteFromModel){
+			for (Element element : elemDep2List) {
+				project.getEditingDomain().getCommandStack().undo();
+				ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);
+			}						
 		}
+		if(deleteFromDiagram){
+			int i=0;
+			for (ParentChildRelation relation : parentChildRelationsDep2) {
+//				if (relation.element instanceof Connection) {
+//					reattachConnectionToNodes((Connection) relation.element);
+//				} else if (relation.element instanceof Node) {
+//					reattachNodeConnections((Node) relation.element);
+//				}				
+				relation.parent.addChild(relation.element);
+				ModelHelper.addMapping(((ArrayList<Element>)elemDep2List).get(i),relation.element);
+				i++;
+			}
+		}		
 		
 		if(notification!=null){
 			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
@@ -212,13 +227,13 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	public void run() 
 	{
 		// deletes dependencies level2 (derivations)
-		delete(diagramElemDep2List,elemDep2List);
-		
+		delete(diagramElemDep2List,elemDep2List);	
+				
 		// deletes dependencies level1
 		delete(diagramElemDep1List,elemDep1List);
 
 		// delete the element requested
-		delete(diagramElemList, elemList); 			
+		delete(diagramElemList, elemList);
 	}
 	
 	public void delete(Collection<DiagramElement> diagramElemList, Collection<Element> elemList)
@@ -355,7 +370,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 					conn.getNode2().removeConnection(conn);
 				else 
 					conn.getConnection2().removeConnection(conn);
-			}
+			}			
 			conn.getParent().removeChild(conn);
 		}
 		
@@ -384,8 +399,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 					conn.getNode2().addConnection(conn);
 				else 
 					conn.getConnection2().addConnection(conn);
-			}
-			conn.getParent().addChild(conn);
+			}			
 		}
 	}
 

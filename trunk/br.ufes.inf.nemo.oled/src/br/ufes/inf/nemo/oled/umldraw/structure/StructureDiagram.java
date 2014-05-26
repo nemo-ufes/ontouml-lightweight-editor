@@ -593,8 +593,10 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	@Override
 	public void addChild(DiagramElement child) {
 		if (child instanceof Connection) {
-			connections.add((Connection) child);
-			child.setParent(this);
+			if(!connections.contains(child)){
+				connections.add((Connection) child);
+				child.setParent(this);
+			}
 		} else {
 			super.addChild(child);
 			resizeToNode((Node) child);
@@ -610,7 +612,8 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	@Override
 	public void removeChild(DiagramElement child) {
 		if (child instanceof Connection) {
-			connections.remove((Connection) child);
+			if(connections.contains(child))
+				connections.remove((Connection) child);
 		} else {
 			super.removeChild(child);
 		}

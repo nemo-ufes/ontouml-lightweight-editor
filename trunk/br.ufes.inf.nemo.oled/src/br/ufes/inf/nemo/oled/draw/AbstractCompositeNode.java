@@ -75,7 +75,8 @@ implements CompositeNode {
    * {@inheritDoc}
    */
   public void removeChild(DiagramElement child) {
-    children.remove(child);
+	  if(children.contains(child))
+		  children.remove(child);
   }
 
   /**
