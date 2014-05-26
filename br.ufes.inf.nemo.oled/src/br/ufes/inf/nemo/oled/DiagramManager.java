@@ -503,7 +503,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					cmd.run();
 				}
 			}else{
-				System.err.println("Deletion list for selection is empty! Check DiagramManager.delete() method.");
+				System.err.println("ERROR: The list of diagram elements for deletion is empty! \n" +
+				"       Check the DiagramManager.delete(DiagramElementList) method.");
 			}
 		}
 	}
@@ -824,7 +825,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
 		boolean found = tree.selectModelElement(element);
 		if(!found) {
-			tree.selectModelElement(element.eContainer());
+			if(element.eContainer()!=null)
+				tree.selectModelElement(element.eContainer());
+			else
+				tree.selectModelElement(project.getModel());
 			tree.addObject(element);
 		} else {
 			if(element instanceof Generalization){
@@ -1311,8 +1315,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			result = ProjectWriter.getInstance().writeProject(this, file, getCurrentProject(), oclmodel);
 
 			if (getCurrentDiagramEditor()!=null) {
-				getCurrentDiagramEditor().clearUndoManager();
-				frame.updateMenuAndToolbars(getCurrentDiagramEditor());
+				//getCurrentDiagramEditor().clearUndoManager();
+				//frame.updateMenuAndToolbars(getCurrentDiagramEditor());
 			}
 
 			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
@@ -2168,7 +2172,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void stateChanged(DiagramEditor editor, ChangeType changeType) 
 	{
 		if(changeType == ChangeType.ELEMENTS_ADDED) frame.selectPaletteDefaultElement();
-		frame.updateMenuAndToolbars(editor);
+		//frame.updateMenuAndToolbars(editor);
 	}
 
 	/**

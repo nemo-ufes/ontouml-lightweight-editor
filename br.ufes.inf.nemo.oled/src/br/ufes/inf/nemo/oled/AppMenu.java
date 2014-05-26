@@ -251,8 +251,8 @@ public class AppMenu implements ActionListener {
 		// editMenu.addSeparator();
 		// createMenuItem(editMenu, "settings");
 
-		enableMenuItem("UNDO", false);
-		enableMenuItem("REDO", false);
+		enableMenuItem("UNDO", true);
+		enableMenuItem("REDO", true);
 		// enableMenuItem("CUT", false);
 		// enableMenuItem("COPY", false);
 		// enableMenuItem("PASTE", false);

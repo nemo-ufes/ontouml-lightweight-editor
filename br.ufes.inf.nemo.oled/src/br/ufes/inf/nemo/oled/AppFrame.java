@@ -22,7 +22,6 @@ import javax.swing.border.EtchedBorder;
 import org.jdesktop.swingx.MultiSplitLayout;
 import org.jdesktop.swingx.MultiSplitPane;
 
-import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.MethodCall;
@@ -414,26 +413,26 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 * @param editor
 	 *            the editor
 	 */
-	public void updateMenuAndToolbars(DiagramEditor editor) {
-		
-		if(mainMenu != null && mainToolBar != null )
-		{
-			if(editor != null)
-			{
-				mainMenu.enableMenuItem("UNDO", editor.canUndo());
-				mainMenu.enableMenuItem("REDO", editor.canRedo());
-				mainToolBar.enableButton("UNDO", editor.canUndo());
-				mainToolBar.enableButton("REDO", editor.canRedo());
-			}
-			else
-			{
-				mainMenu.enableMenuItem("UNDO", false);
-				mainMenu.enableMenuItem("REDO", false);
-				mainToolBar.enableButton("UNDO", false);
-				mainToolBar.enableButton("REDO", false);
-			}
-		}
-	}
+//	public void updateMenuAndToolbars(DiagramEditor editor) {
+//		
+//		if(mainMenu != null && mainToolBar != null )
+//		{
+//			if(editor != null)
+//			{
+//				mainMenu.enableMenuItem("UNDO", editor.canUndo());
+//				mainMenu.enableMenuItem("REDO", editor.canRedo());
+//				mainToolBar.enableButton("UNDO", editor.canUndo());
+//				mainToolBar.enableButton("REDO", editor.canRedo());
+//			}
+//			else
+//			{
+//				mainMenu.enableMenuItem("UNDO", false);
+//				mainMenu.enableMenuItem("REDO", false);
+//				mainToolBar.enableButton("UNDO", false);
+//				mainToolBar.enableButton("REDO", false);
+//			}
+//		}
+//	}
 	
 	/**
 	 * Shoe Error Message Dialog.
