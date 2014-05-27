@@ -635,6 +635,30 @@ public class ProjectTree extends CheckboxTree {
 	    if (alreadyChecked.contains(obj)) { checkNode(node,true); }    	    	
 	}	
 	 
+	/** Check this elements in the tree uncheking all other packageable elements (i.e. ignoring the packages). */
+	@SuppressWarnings("rawtypes")
+	public void check(List<EObject> elements, boolean uncheckOthers) 
+	{			   
+	    Enumeration e = modelRootNode.breadthFirstEnumeration();
+	    DefaultMutableTreeNode  node = (DefaultMutableTreeNode)e.nextElement();
+	    while (e.hasMoreElements()) 
+	    {
+	    	EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
+	    	if(!(obj instanceof RefOntoUML.Package)){
+	    		if (elements.contains(obj)) { checkNode(node,true); }	    			
+	    		else { uncheckNode(node,true); }
+	    	}
+	    	
+	    	node = (DefaultMutableTreeNode)e.nextElement();	    
+	    }
+	    //last element
+	    EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
+	    if(!(obj instanceof RefOntoUML.Package)){
+		    if (elements.contains(obj)) { checkNode(node,true); }  
+		    else { uncheckNode(node,true); }
+	    }		    
+	}	
+	
 	/**
 	 * Check this elements.
 	 * 

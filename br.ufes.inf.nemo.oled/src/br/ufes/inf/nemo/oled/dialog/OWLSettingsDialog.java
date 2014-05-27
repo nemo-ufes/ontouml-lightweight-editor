@@ -29,6 +29,7 @@ import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
+import java.awt.Toolkit;
 
 
 /**
@@ -67,6 +68,7 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 
 	public OWLSettingsDialog(AppFrame frame, DiagramManager diagramManager, boolean modal) {
 		super(frame, modal);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(OWLSettingsDialog.class.getResource("/resources/icons/x16/cog.png")));
 		this.setManager(diagramManager);
 		initGUI();
 		myPostInit();
@@ -130,7 +132,7 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 				//ApplicationResources.getInstance().getString("dialog.owlsettings.reification")
 				setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 				this.setResizable(false);
-				setTitle(ApplicationResources.getInstance().getString("dialog.owlsettings.title"));
+				setTitle("OWL Settings");
 				
 				generateOWLPanel = new JPanel();
 				GroupLayout GenerateOWLPanelLayout = new GroupLayout((JComponent)generateOWLPanel);

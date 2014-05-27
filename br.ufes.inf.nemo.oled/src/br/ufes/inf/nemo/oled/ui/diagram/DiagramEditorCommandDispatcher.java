@@ -19,25 +19,19 @@
  */
 package br.ufes.inf.nemo.oled.ui.diagram;
 
-import java.awt.Cursor;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.AppMenu;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.antipattern.AntiPatternSearchDialog;
 import br.ufes.inf.nemo.oled.dialog.AutoCompletionDialog;
-import br.ufes.inf.nemo.oled.dialog.SimulationDialog;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.util.MethodCall;
-import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
-import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 
 /**
  * This class receives BaseEditor related AppCommands and dispatches them to
@@ -365,18 +359,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void generatesAlloy()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		manager.getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));	
-
-		manager.parseOCL(false);
-		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(manager.getCurrentProject());
-
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(manager.getCurrentProject());
-		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(manager.getCurrentProject());		
-		refOptions.check(refparser);
-
-		SimulationDialog.open(refOptions, oclOptions, manager.getFrame());
-
-		manager.getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		manager.openSimulationSettings();
 	}
 		
 	public void manageAntiPatterns()
@@ -506,7 +489,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{
 		if (manager.isProjectLoaded()==false) return;
 
-		manager.generateOwlSettings();
+		manager.openOwlSettings();
 	}
 
 	public void generateOwl() 
