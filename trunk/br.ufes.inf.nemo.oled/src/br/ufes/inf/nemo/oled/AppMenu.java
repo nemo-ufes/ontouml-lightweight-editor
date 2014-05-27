@@ -150,11 +150,11 @@ public class AppMenu implements ActionListener {
 		JMenuItem openItem = createMenuItem(fileMenu, "open");
 		openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		
-		fileMenu.addSeparator();
+		//fileMenu.addSeparator();
 		
 		createMenuItem(fileMenu,"close");
 		
-		fileMenu.addSeparator();
+		//fileMenu.addSeparator();
 		
 		JMenuItem saveItem = createMenuItem(fileMenu, "save");
 		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));

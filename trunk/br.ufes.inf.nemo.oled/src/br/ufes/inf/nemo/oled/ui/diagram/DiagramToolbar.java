@@ -28,6 +28,8 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnZoomIn;
 	private JButton btnZoomStatus;
 	private JButton btnNewDiagram;
+	private JButton btnAlloy;
+	private JButton btnOWL;
 	
 	public void update(){
 		btnGrid.setSelected(editor.showGrid());
@@ -177,7 +179,7 @@ public class DiagramToolbar extends JToolBar {
 		add(btnPutToBack);
 		
 		btnExportPng = new JButton("");
-		btnExportPng.setToolTipText("<html>Export diagram as PNG<br><br>IMPORTANT: Move your diagram as close as possible <br>to the upper left side of the grid.<br><br> </hmtl>");
+		btnExportPng.setToolTipText("<html>Save diagram as PNG<br><br>IMPORTANT: Move your diagram as close as possible <br>to the upper left side of the grid.<br><br> </hmtl>");
 		btnExportPng.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
@@ -218,5 +220,31 @@ public class DiagramToolbar extends JToolBar {
 		btnZoomStatus.setContentAreaFilled(false);		
 		btnZoomStatus.setFocusable(false);
 		add(btnZoomStatus);
+		
+		btnAlloy = new JButton("");
+		btnAlloy.setToolTipText("Transform your diagram into Alloy");
+		btnAlloy.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		editor.getDiagramManager().workingOnlyWith(editor.getDiagram());
+        		editor.getDiagramManager().openSimulationSettings();        		
+        	}
+        });	
+		btnAlloy.setFocusable(false);
+		btnAlloy.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/alloy/alloy.png")));
+		add(btnAlloy);
+		
+		btnOWL = new JButton("");
+		btnOWL.setToolTipText("Transform your diagram into OWL");
+		btnOWL.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		editor.getDiagramManager().workingOnlyWith(editor.getDiagram());
+        		editor.getDiagramManager().openOwlSettings();
+        	}
+        });	
+		btnOWL.setFocusable(false);
+		btnOWL.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/owl.png")));
+		add(btnOWL);
 	}
 }

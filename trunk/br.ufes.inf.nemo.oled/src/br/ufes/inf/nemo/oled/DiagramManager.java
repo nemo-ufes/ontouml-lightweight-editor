@@ -77,6 +77,7 @@ import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
 import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.dialog.OWLSettingsDialog;
+import br.ufes.inf.nemo.oled.dialog.AlloySettingsDialog;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.LineStyle;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
@@ -148,31 +149,25 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public final AppFrame frame;
 	private DiagramEditorCommandDispatcher editorDispatcher;
 	private DiagramElementFactoryImpl elementFactory;
-
 	private UmlProject currentProject;
 	private File projectFile;
-
 	public String lastOpenPath = new String();
 	public String lastSavePath = new String();
 	public String lastImportEAPath = new String();
 	public String lastImportEcorePath = new String();
 	public String lastExportEcorePath = new String();
 
-	public AppFrame getFrame()
-	{
-		return frame;
-	}
-
-	public DiagramElementFactoryImpl getElementFactory()
-	{
-		return elementFactory;
-	}
+	/** Get Frame */
+	public AppFrame getFrame() { return frame; }
+	/** Get Factory */
+	public DiagramElementFactoryImpl getElementFactory() { return elementFactory; }
 
 	/**
 	 * Constructor for the DiagramManager class.
 	 * @param frame the parent window {@link AppFrame}
 	 */
-	public DiagramManager(final AppFrame frame) {
+	public DiagramManager(final AppFrame frame) 
+	{
 		super();
 		this.frame = frame;		
 		editorDispatcher = new DiagramEditorCommandDispatcher(this,frame);
@@ -181,60 +176,51 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		setBorder(new EmptyBorder(0,0,0,0));
 	}
 
+	/** Tell the application that we need to save the project i.e. the project was modified */
 	public void saveProjectNeeded(boolean value)
 	{
 		currentProject.setSaveModelNeeded(value);
 		frame.getMainToolBar().enableSaveButton(value);
 	}
 	
+	/** Tell the application that we need to save the diagram i.e. the diagram was modified */
 	public void saveDiagramNeeded(StructureDiagram diagram, boolean value)
 	{
 		diagram.setSaveNeeded(value);
 		saveProjectNeeded(value);
 	}
 	
+	/** Tell the application that we need to save all diagrams i.e. the diagrams were all modified */
 	public void saveAllDiagramNeeded(boolean value)
 	{
 		for(UmlDiagram d: getCurrentProject().getDiagrams()) d.setSaveNeeded(value);
 		saveProjectNeeded(value);	
 	}
 	
-	/**
-	 * Create a current project from a Model
-	 * @param project
-	 */
+	/** Create a project */
 	public UmlProject createCurrentProject(RefOntoUML.Package model)
 	{		
 		currentProject = new UmlProject(model);
 		saveProjectNeeded(false);
-
 		frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 		frame.getInfoManager().setProject(currentProject);
 		frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 		for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
 		if(currentProject.getDiagrams().size()==0) newDiagram();
-
-		//frame.showInfoManager();	
 		return currentProject;
 	}
 
-	/**
-	 * Create a current project
-	 */
+	/** Create a project */
 	public void createEmptyCurrentProject()
 	{
 		currentProject = new UmlProject();
 		saveProjectNeeded(false);
-
 		frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 		frame.getInfoManager().setProject(currentProject);
 		newDiagram(currentProject);
 	}
 
-	/**
-	 * Verifies if there is a OLED project opened/loaded.
-	 * @return
-	 */
+	/** Verifies if there is a project opened/loaded. */
 	public boolean isProjectLoaded()
 	{
 		if (getCurrentProject()==null) {
@@ -245,13 +231,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
-	/**
-	 * Close Project
-	 */
+	/** Close Project */
 	public void closeCurrentProject()
 	{
 		if (currentProject!=null){
-
 			removeAll();
 			frame.getBrowserManager().getProjectBrowser().eraseProject();
 			frame.getInfoManager().eraseProject();
@@ -259,50 +242,39 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			currentProject=null;
 			addStartPanel();
 		}
-
 		updateUI();
 	}
 
-	/**
-	 * Creates a new Diagram with in existing Project
-	 * @param project
-	 */
+	/** Creates a new Diagram with in existing Project */
 	public void newDiagram(UmlProject project)
 	{
 		StructureDiagram diagram = new StructureDiagram(project,elementFactory);
 		diagram.setLabelText("New Diagram");
 		project.addDiagram(diagram);		
 		saveDiagramNeeded(diagram,false);
-		createDiagramEditor(diagram);
-		
+		createDiagramEditor(diagram);		
 		//add the diagram from the browser
 		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
 		browser.getTree().addObject(browser.getTree().getDiagramRootNode(),diagram);
 	}
 
-	/**
-	 * Creates a new diagram on the current Project
-	 */
+	/** Creates a new diagram on the current Project */
 	public void newDiagram()
 	{
-		if (currentProject!=null){
+		if (currentProject!=null)
+		{
 			StructureDiagram diagram = new StructureDiagram(getCurrentProject(), elementFactory);
 			diagram.setLabelText("New Diagram");
 			getCurrentProject().addDiagram(diagram);
 			saveDiagramNeeded(diagram,true);
-			createDiagramEditor(diagram);
-			
+			createDiagramEditor(diagram);			
 			//add the diagram from the browser
 			ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
 			browser.getTree().addObject(browser.getTree().getDiagramRootNode(),diagram);			
 		}
 	}
 
-	/**
-	 * Remove Diagram from Tab. Not from the Project.
-	 * 
-	 * @param diagram
-	 */
+	/** Remove Diagram from Tab, not from the Project. */
 	public void removeDiagram(StructureDiagram diagram)
 	{
 		//first remove all the elements in the diagram
@@ -318,20 +290,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram)) remove(c);
 			}
 		}		
-		
 		//remove the diagram from the browser
 		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
 		browser.getTree().removeCurrentNode();
 	}
 		
-	/** Add relationship to the model (not to diagrams). */
+	/** Add relationship to the model instance (not to diagram). */
 	public RefOntoUML.Relationship addRelation(RelationType stereotype, EObject eContainer)
 	{
 		RefOntoUML.Relationship relationship = elementFactory.createRelationship(stereotype);
-
 		// add default properties
 		if(relationship instanceof RefOntoUML.Association) elementFactory.createPropertiesByDefault((RefOntoUML.Association)relationship);
-
 		//to add only in the model do exactly as follow				
 		if (stereotype==RelationType.GENERALIZATION) {
 			AddConnectionCommand cmd = new AddConnectionCommand(null,null,relationship,(RefOntoUML.Classifier)eContainer,null,getCurrentProject(),null);
@@ -340,22 +309,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			AddConnectionCommand cmd = new AddConnectionCommand(null,null,relationship,null,null,getCurrentProject(),eContainer);
 			cmd.run();
 		}
-
 		return relationship;
 	}
 
-	/** Add comment to the model (not to diagrams) */
+	/** Add comment to the model instance (not to diagram) */
 	public RefOntoUML.Comment addComment(RefOntoUML.Element eContainer)
 	{
 		RefOntoUML.Comment comment = elementFactory.createComment();
-
 		//to add only in the model do exactly as follow		
 		AddNodeCommand cmd = new AddNodeCommand(null,null,comment,0,0,getCurrentProject(),eContainer);		
 		cmd.run();
-
 		return comment;
 	}
 
+	/** Add constraintx to the model instance (not to diagram) */
 	public void addConstraintx(Constraintx cmt, RefOntoUML.Element eContainer) 
 	{
 		//to add only in the model do exactly as follow		
@@ -363,13 +330,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		cmd.run();
 	}
 
+	/** Add constraintx to the model instance (not to diagram) */
 	public void addConstraintx(String text, RefOntoUML.Element eContainer) 
 	{
 		RefOntoUML.Constraintx ct = (Constraintx)addElement(ElementType.CONSTRAINT,eContainer);		
 		((StringExpression)ct.getSpecification()).setSymbol(text);
 	}
 	
-	/** Add comment to the model (not to diagrams) */
+	/** Add comment to the model instance (not to diagram) */
 	public void addComment(RefOntoUML.Comment c, RefOntoUML.Element eContainer)
 	{
 		//to add only in the model do exactly as follow		
@@ -377,11 +345,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		cmd.run();
 	}
 
-	/** Add element to the model (not to diagrams).  */
+	/** Add element to the model instance (not to diagram).  */
 	public RefOntoUML.Element addElement(ElementType stereotype, RefOntoUML.Element eContainer)
 	{
-		RefOntoUML.Element element = elementFactory.createElement(stereotype);		
-				
+		RefOntoUML.Element element = elementFactory.createElement(stereotype);				
 		if(element instanceof RefOntoUML.Comment){
 			AddNodeCommand cmd = new AddNodeCommand(null,null,(RefOntoUML.Comment)element,0,0,getCurrentProject(),eContainer);		
 			cmd.run();
@@ -393,22 +360,25 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			AddNodeCommand cmd = new AddNodeCommand(null,null,element,0,0,getCurrentProject(),eContainer);		
 			cmd.run();
 		}
-
 		return element;
 	}
 
-	/** Rename an element. It updates the application accordingly, including the diagrams in which the element appears. It also shows a input dialog. */
+	/** Rename an element. It updates the application accordingly (including the diagrams in which the element appears). It also shows a input dialog for text entry. */
 	public void rename(RefOntoUML.Element element)
 	{
-		if (element instanceof NamedElement) {
+		if (element instanceof NamedElement) 
+		{
 			String value = new String();    						
 			value = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename - "+((NamedElement)element).getName(),JOptionPane.INFORMATION_MESSAGE,null,null,((NamedElement)element).getName());    						
-			if(value!=null){
+			if(value!=null)
+			{
 				((NamedElement)element).setName(value);
 				ArrayList<DiagramEditor> editors = ProjectBrowser.frame.getDiagramManager().getDiagramEditors(element);
 				ArrayList<DiagramElement> dElemList = ModelHelper.getDiagramElements(element);
-				for(DiagramElement dElem: dElemList){
-					if (dElem instanceof ClassElement){
+				for(DiagramElement dElem: dElemList)
+				{
+					if (dElem instanceof ClassElement)
+					{
 						SetLabelTextCommand cmd = new SetLabelTextCommand((DiagramNotification)editors.get(0),((ClassElement)dElem).getMainLabel(),value,ProjectBrowser.frame.getDiagramManager().getCurrentProject());
 						cmd.run();
 					}
@@ -509,14 +479,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
-	/** Change class stereotype */ 
+	/** Change a class stereotype */ 
 	public void changeClassStereotype(Type type, String stereo) 
 	{   
-		ArrayList<DiagramElement> diagramElemList = ModelHelper.getDiagramElements(type);
-		
+		ArrayList<DiagramElement> diagramElemList = ModelHelper.getDiagramElements(type);		
    		OutcomeFixer fixer = new OutcomeFixer(ProjectBrowser.getParserFor(currentProject).getModel());
-   		Fix fix = fixer.changeClassStereotypeTo(type, fixer.getClassStereotype(stereo));
-   	
+   		Fix fix = fixer.changeClassStereotypeTo(type, fixer.getClassStereotype(stereo));   	
    		for(DiagramElement diagramElem: diagramElemList){
 	   		if (diagramElem !=null && diagramElem instanceof ClassElement) {
 	   			double x = ((ClassElement)diagramElem).getAbsoluteX1();
@@ -531,10 +499,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void changeRelationStereotype(Relationship type, String stereo) 
 	{	
    		OutcomeFixer fixer = new OutcomeFixer(ProjectBrowser.getParserFor(currentProject).getModel());
-   		Fix fix = fixer.changeRelationStereotypeTo(type, fixer.getRelationshipStereotype(stereo)); 
-   		
-   		updateOLED(fix);
-   		   		
+   		Fix fix = fixer.changeRelationStereotypeTo(type, fixer.getRelationshipStereotype(stereo));   		
+   		updateOLED(fix);   		   		
    	}
 	
 	/** Delete element from all diagrams in the project. (not from the model) */
@@ -542,7 +508,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
 		deletionList.add(element);
-
 		for(DiagramEditor diagramEditor: getDiagramEditors(element))
 		{
 			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
@@ -568,12 +533,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		boolean showOntoUMLStereotype = false;
 		boolean showMultiplicities = false;
 		boolean showRoles = false;
-		ReadingDirection direction = ReadingDirection.UNDEFINED;
-		
+		ReadingDirection direction = ReadingDirection.UNDEFINED;		
 		if(element instanceof Association)
 		{
 			AssociationElement ae = (AssociationElement) ModelHelper.getDiagramElementByEditor(element, d);
-			if(ae!=null){
+			if(ae!=null)
+			{
 				isRectilinear = ae.isTreeStyle();			
 				showName = ae.showName();
 				showOntoUMLStereotype = ae.showOntoUmlStereotype();
@@ -583,12 +548,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 			deleteFromDiagram(element, d);
 			moveAssociationToDiagram((Association) element, d, isRectilinear, showName, showOntoUMLStereotype, showMultiplicities, showRoles, direction);
-		}
-			
-		else if(element instanceof Generalization){
+		}			
+		else if(element instanceof Generalization)
+		{			
 			GeneralizationElement ge = (GeneralizationElement) ModelHelper.getDiagramElementByEditor(element, d);
-			if (ge!=null) isRectilinear = ge.isTreeStyle();
-			
+			if (ge!=null) isRectilinear = ge.isTreeStyle();			
 			deleteFromDiagram(element, d);
 			moveGeneralizationToDiagram((Generalization) element, d, isRectilinear);
 		}		
@@ -646,10 +610,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void refreshDiagramElement (RefOntoUML.Element element, DiagramEditor d)
 	{		
 		if (d!=null && !d.getDiagram().containsChild(element)) return;
-		if (d!=null) {
+		if (d!=null) 
+		{
 			ArrayList<DiagramElement> diagramElemList = ModelHelper.getDiagramElements(element);
-			for(DiagramElement diagramElem: diagramElemList){
-				if(diagramElem!=null){				
+			for(DiagramElement diagramElem: diagramElemList)
+			{
+				if(diagramElem!=null)
+				{				
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 					list.add(diagramElem);
 					d.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
@@ -658,25 +625,27 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}		
 	}
 	
-	public void moveAssociationToDiagram(Association association, DiagramEditor d, 
-			boolean isRectilinear, boolean showName, boolean showOntoUMLStereotype, boolean showMultiplicities, boolean showRoles, ReadingDirection direction){
-		
-			Type src = ((Association)association).getMemberEnd().get(0).getType();
-			Type tgt = ((Association)association).getMemberEnd().get(1).getType();				
-			if (d.getDiagram().containsChild(src) && d.getDiagram().containsChild(tgt))	{			
-				AssociationElement conn = (AssociationElement) d.dragRelation(association,association.eContainer());
-				if(isRectilinear) d.setLineStyle(conn, LineStyle.RECTILINEAR);
-				else d.setLineStyle(conn, LineStyle.DIRECT);
-				conn.setShowMultiplicities(showMultiplicities);
-				conn.setShowName(showName);
-				conn.setShowOntoUmlStereotype(showOntoUMLStereotype);
-				conn.setShowRoles(showRoles);
-				conn.setNameReadingDirection(direction);
-			}
+	/** Move association to a diagram. It creates a diagram element for that refonto instance adding it to the application map. */
+	public void moveAssociationToDiagram(Association association, DiagramEditor d, boolean isRectilinear, boolean showName, boolean showOntoUMLStereotype, boolean showMultiplicities, boolean showRoles, ReadingDirection direction)
+	{		
+		Type src = ((Association)association).getMemberEnd().get(0).getType();
+		Type tgt = ((Association)association).getMemberEnd().get(1).getType();				
+		if (d.getDiagram().containsChild(src) && d.getDiagram().containsChild(tgt))	
+		{			
+			AssociationElement conn = (AssociationElement) d.dragRelation(association,association.eContainer());
+			if(isRectilinear) d.setLineStyle(conn, LineStyle.RECTILINEAR);
+			else d.setLineStyle(conn, LineStyle.DIRECT);
+			conn.setShowMultiplicities(showMultiplicities);
+			conn.setShowName(showName);
+			conn.setShowOntoUmlStereotype(showOntoUMLStereotype);
+			conn.setShowRoles(showRoles);
+			conn.setNameReadingDirection(direction);
+		}
 	}
 	
-	public void moveGeneralizationToDiagram(Generalization gen, DiagramEditor d, boolean isRectilinear){
-		
+	/** Move generalization to a diagram. It creates a diagram element for that refonto instance adding it to the application map. */
+	public void moveGeneralizationToDiagram(Generalization gen, DiagramEditor d, boolean isRectilinear)
+	{		
 		if (d.getDiagram().containsChild(gen.getGeneral()) && d.getDiagram().containsChild(gen.getSpecific()))
 		{	
 			UmlConnection conn = d.dragRelation(gen,gen.eContainer());
@@ -688,15 +657,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** Move element to a Diagram */
 	public void moveToDiagram(RefOntoUML.Element element, DiagramEditor d)
 	{
-		if (d!=null && d.getDiagram().containsChild(element)) {
+		if (d!=null && d.getDiagram().containsChild(element))
+		{
 			if (element instanceof NamedElement)
 				frame.showInformationMessageDialog("Moving to Diagram", "\""+ModelHelper.getStereotype(element)+" "+((NamedElement)element).getName()+"\" already exists in diagram \""+d.getDiagram().getName()+"\"");
 			else if (element instanceof Generalization)
 				frame.showInformationMessageDialog("Moving to Diagram", "\"Generalization "+((Generalization)element).getSpecific().getName()+"->"+((Generalization)element).getSpecific().getName()+"\" already exists in diagram \""+d.getDiagram().getName()+"\"");
 			return;			
 		}
-		if (d!=null) {			
-			if (element instanceof RefOntoUML.Class) {
+		if (d!=null) 
+		{			
+			if (element instanceof RefOntoUML.Class) 
+			{
 				RefOntoUML.Class oClass = (RefOntoUML.Class)element;
 				d.setDragElementMode(oClass,oClass.eContainer());				
 			}			
@@ -705,12 +677,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				RefOntoUML.DataType oClass = (RefOntoUML.DataType)element;
 				d.setDragElementMode(oClass,oClass.eContainer());				
 			}			
-			
 			if(element instanceof Association)
+			{
 				moveAssociationToDiagram((Association) element, d, false, true, true, true, false, ReadingDirection.UNDEFINED);
-			
+			}
 			if(element instanceof Generalization)
+			{
 				moveGeneralizationToDiagram((Generalization) element, d, false);
+			}
 		}	
 	}
 
@@ -765,6 +739,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return (GeneralizationSet)newgenset;
 	}
 	
+	/** Useful method */
 	public boolean contains (ArrayList<CustomOntoUMLElement> list, RefOntoUML.Element elem)
 	{
 		for(CustomOntoUMLElement coe: list){
@@ -806,22 +781,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/** 
-	 * Update the application accordingly to the refontouml instance created
-	 * 
+	 * Update the application accordingly to the refontouml instance created. This instance must be already be inserted in its container. 
 	 * @param element: added element on refontouml root instance.
 	 */
 	public void updateOLEDFromInclusion(RefOntoUML.Element element)
 	{		
 		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
-
-		// =================================
-		// OntoUML Parser
-		// =================================
+		// add to the parser
 		ProjectBrowser.getParserFor(project).addElement(element);		
-
-		// =================================
-		// Project Tree
-		// =================================		
+		// add to the tree
 		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
 		boolean found = tree.selectModelElement(element);
 		if(!found) {
@@ -839,14 +807,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 		tree.updateUI();
-		
-		// =================================
-		// OCL Completion
-		// =================================		
+		//add to ocl completion		
 		ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(element);
 	}
 
-	/** Invert end points of an association. THis method switch the current properties of an association. THe source becomes the target and vice-versa. */
+	/** Invert end points of an association. This method switch the current properties of an association. THe source becomes the target and vice-versa. */
 	public void invertEndPoints(RefOntoUML.Association association)
 	{
 		Property source = association.getMemberEnd().get(0);
@@ -864,16 +829,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 	/**
 	 * Update the application accordingly to the refontouml instance created
-	 * 
 	 * @param element: modified element on the refontouml root instance
 	 */
 	public void updateOLEDFromModification(RefOntoUML.Element element, boolean redesign)
 	{
 		updateOLEDFromInclusion(element);
-
-		// =================================
-		// Diagrams
-		// =================================		
+		// update the diagrams
 		try{
 			if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType){
 				refreshDiagramElement((Classifier)element);			
@@ -897,8 +858,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 			if(element instanceof RefOntoUML.GeneralizationSet){
 				for(Generalization gen: ((RefOntoUML.GeneralizationSet) element).getGeneralization()) updateOLEDFromModification(gen,false);
-			}
-			
+			}			
 		}catch (Exception e){
 			e.printStackTrace();
 			System.err.println(e.getLocalizedMessage());			
@@ -912,32 +872,264 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 	/**
 	 * Update the application accordingly to the refontouml instance created
-	 * 
 	 * @param element: deleted element on the refontouml root instance
 	 */
 	public void updateOLEDFromDeletion(RefOntoUML.Element deletedElement)
 	{		
 		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
-
-		// =================================
-		// OntoUML Parser
-		// =================================
+		// delete from the parser
 		ProjectBrowser.getParserFor(project).removeElement(deletedElement);
-
-		// =================================
-		// OCL Completion
-		// =================================		
+		// delete from ocl completion
 		ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(deletedElement);			
-
-		// =================================
-		// Project Tree
-		// =================================
+		// delete from the tree
 		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
 		browser.getTree().selectModelElement(deletedElement);
 		browser.getTree().removeCurrentNode();
 		browser.getTree().updateUI();
 	}
 
+	/**
+	 * Creates an editor for a given Diagram.
+	 * @param diagram the diagram to be edited by the editor
+	 * */
+	public DiagramEditor createDiagramEditor(StructureDiagram diagram)
+	{
+		DiagramEditor editor = new DiagramEditor(frame, this, diagram);
+		editor.addEditorStateListener(this);
+		editor.addSelectionListener(this);
+		editor.addAppCommandListener(editorDispatcher);
+		// Add all the diagram elements of 'diagram' to the ModelHelper mapping.
+		// Keeps trace of mappings between DiagramElement <-> Element.
+		ModelHelper.addMapping(editor.getDiagram());
+		//Add the diagram to the tabbed pane (this), through the wrapper
+		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
+		addClosable(diagram.getLabelText(), wrapper);
+		return editor;
+	}
+	
+	/** Verifies if this diagram is already opened in a tab. */
+	public boolean isDiagramOpened (StructureDiagram diagram)
+	{
+		for(Component c: getComponents())
+			if (c instanceof DiagramEditorWrapper)
+				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram)) return true;
+		return false;
+	}
+
+	/** New OLED Project. */
+	public void newProject() 
+	{				
+		JFileChooser fileChooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
+		fileChooser.setDialogTitle("New Project");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);
+		fileChooser.setSelectedFile(new File("*.oled"));
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		if (fileChooser.showDialog(this,"OK") == JFileChooser.APPROVE_OPTION) {
+			try {			
+				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				closeCurrentProject();
+				File file = fileChooser.getSelectedFile();				
+				if (!file.exists()){
+					if(!file.getName().endsWith(".oled")) {
+						file = new File(file.getCanonicalFile() + ".oled");
+					}else{
+						file = new File(file.getCanonicalFile()+"");
+					}
+				}				
+				setProjectFile(file);
+				createEmptyCurrentProject();	
+				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
+				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
+				saveCurrentProjectToFile(file);
+				frame.setTitle("OLED - "+file.getName()+"");							
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
+				ex.printStackTrace();
+			}
+		}
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+	}	
+
+	/** Open an existing project. */
+	public void openProject() 
+	{		
+		JFileChooser fileChooser = new JFileChooser(lastOpenPath);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
+		fileChooser.setDialogTitle("Open Project");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);		
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			try {
+				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				closeCurrentProject();
+				File file = fileChooser.getSelectedFile();
+				setProjectFile(file);
+				lastOpenPath = file.getAbsolutePath();
+				currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);				
+				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
+				frame.getInfoManager().setProject(currentProject);
+				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
+				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
+				for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
+				saveProjectNeeded(false);
+				String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);
+				frame.getInfoManager().getOcleditor().setText(constraints);
+				frame.focusOnOclEditor();
+				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
+				frame.setTitle("OLED - "+file.getName()+"");
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
+				ex.printStackTrace();
+			}
+			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		}		
+	}
+
+	/** Open an existing project. */
+	public void openRecentProject() 
+	{
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		try {
+			StartPanel startPanel = (StartPanel) getCurrentEditor();
+			if(startPanel != null)
+			{
+				closeCurrentProject();
+				File file = new File(startPanel.getSelectedRecentFile());
+				setProjectFile(file);
+				currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);								
+				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
+				frame.getInfoManager().setProject(currentProject);
+				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
+				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
+				for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
+				saveProjectNeeded(false);
+				String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);
+				frame.getInfoManager().getOcleditor().setText(constraints);
+				frame.focusOnOclEditor();
+				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
+				frame.setTitle("OLED - "+file.getName()+"");
+			}
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
+		}		
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+	}
+
+	/** Save current Project to a file *.oled */
+	private File saveCurrentProjectToFile(File file) 
+	{
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		if (file.exists()) file.delete();
+		File result = null;
+		try {
+			if(!file.getName().endsWith(".oled")) {
+				file = new File(file.getCanonicalFile() + ".oled");
+			}
+			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());			
+			oclmodel.setConstraints(frame.getInfoManager().getConstraints(),"CONTENT");
+			result = ProjectWriter.getInstance().writeProject(this, file, getCurrentProject(), oclmodel);			
+			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
+			getCurrentProject().setName(file.getName().replace(".oled",""));
+			ProjectBrowser.refreshTree(getCurrentProject());
+			saveAllDiagramNeeded(false);
+			frame.setTitle("OLED - "+file.getName()+"");
+			invalidate();
+			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.savefile.title"), JOptionPane.ERROR_MESSAGE);
+		}
+		return result;
+	}
+
+	/** Saves immediately if possible. */
+	public void saveProject() 
+	{
+		if (getProjectFile() == null) 
+		{
+			int option = saveProjectAs();
+			if (option!=JFileChooser.APPROVE_OPTION){
+				updateUI();
+				return;
+			}
+		}else{
+			saveCurrentProjectToFile(getProjectFile());
+		}
+		updateUI();
+	}
+
+	/** Saves the project with a file chooser. */
+	public int saveProjectAs() 
+	{
+		JFileChooser fileChooser = new JFileChooser(lastSavePath);
+		fileChooser.setDialogTitle("Save Project");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		int option = fileChooser.showSaveDialog(this);
+		if (option == JFileChooser.APPROVE_OPTION) {
+			setProjectFile(saveCurrentProjectToFile(fileChooser.getSelectedFile()));
+			File file = fileChooser.getSelectedFile();
+			frame.setTitle("OLED - "+file.getName()+"");
+			lastSavePath = file.getAbsolutePath();			
+		}
+		return option;
+	}
+
+	/** Open the Alloy simulation setting window */
+	public void openSimulationSettings()
+	{
+		if (isProjectLoaded()==false) return;
+		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());	
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
+		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		//parse TOCL
+		parseOCL(false);
+		//configure a default option
+		refOptions.check(refparser);
+		// open settings
+		AlloySettingsDialog.open(refOptions, oclOptions, getFrame());	
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+	}
+	
+	/** 
+	 *  Tell the application to work only with the set of elements contained in the diagram.
+	 *  
+	 *  This method check in the tree all the elements contained in the diagram.
+	 *  If something is missing it completes the checking with the missing elements.
+	 *  The elements checked  in the tree are then properly selected in the OntoUML parser.
+	 *  This then enables all the application to work only with the selected/checked elements. 
+	 */
+	public void workingOnlyWith(StructureDiagram diagram)
+	{
+		// get elements from the diagram
+		ArrayList<EObject> elements = new ArrayList<EObject>();
+		for(DiagramElement de: diagram.getChildren()){
+			if(de instanceof ClassElement) { elements.add(((ClassElement)de).getClassifier()); }
+			if(de instanceof AssociationElement) { elements.add(((AssociationElement)de).getRelationship()); }
+			if(de instanceof GeneralizationElement) {
+				Relationship rel = ((GeneralizationElement)de).getRelationship();
+				elements.add(rel);
+				elements.addAll(((Generalization)rel).getGeneralizationSet());				 
+			}
+		}		
+		//complete missing/mandatory dependencies on the parser
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());				
+		refparser.selectThisElements((ArrayList<EObject>)elements,true);
+		List<EObject> added = refparser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY,false);
+		elements.removeAll(added);
+		elements.addAll(added);
+		//check in the tree the selected elements of the parser
+		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
+		modeltree.getTree().check(elements, true);					
+		modeltree.getTree().updateUI(); 
+	}
+	
 	/** Update OLED according to a Fix.  */
 	public void updateOLED (final Fix fix)
 	{
@@ -1042,6 +1234,19 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
+	
+	/** Generates Alloy */
+	public void generateAlloy()  
+	{									
+		doOntoUML2Alloy();
+		doTOCL2Alloy();
+		if (ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),true, -1);
+		else openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),false, 0);	
+		String umlpath = ProjectBrowser.getAlloySpecFor(getCurrentProject()).getAlloyPath().replace(".als", ".uml");
+		File umlfile = new File(umlpath);
+		umlfile.deleteOnExit();		
+	}
+	
 	/** Transform OntoUML into Alloy */
 	public void doOntoUML2Alloy()
 	{
@@ -1059,6 +1264,45 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
+	/**
+	 * Auto complete selection in the model
+	 */
+	public String autoCompleteSelection(int option, UmlProject project)
+	{		
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(project);
+		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, project);
+
+		if (refparser==null) { return ""; }	
+
+		// Get elements from the tree
+		List<EObject> selected = modeltree.getTree().getModelCheckedElements();
+
+		// Get added elements from the auto selection completion
+		refparser.selectThisElements((ArrayList<EObject>)selected,true);		
+		List<EObject> added = refparser.autoSelectDependencies(option,false);
+
+		// Show which elements were added to selection
+		String msg = new String();
+		if (added.size()>0) msg = "The following elements were include in selection:\n\n";
+		for(EObject o: added)
+		{
+			msg += ""+refparser.getStringRepresentation(o)+".\n";
+		}
+		if (added.size()==0) msg += "No elements to include in selection.";		
+
+		// Update tree adding the elements...
+		selected.removeAll(added);
+		selected.addAll(added);		
+
+		modeltree.getTree().checkModelElements(selected, true);			
+		modeltree.getTree().updateUI();    	
+
+		// Create a new model package from selected elements in the model.
+		// ontoumlmodel.setOntoUMLPackage(ontoumlmodel.getOntoUMLParser().createPackageFromSelections(new Copier()));
+
+		return msg;
+	}
+	
 	/** Transform Temporal OCL into Alloy */
 	public void doTOCL2Alloy()
 	{
@@ -1067,7 +1311,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
 		AlloySpecification alloySpec = ProjectBrowser.getAlloySpecFor(getCurrentProject());
 		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }
-		if (oclmodel.getOCLParser()==null) { frame.showErrorMessageDialog("Error","Inexistent constraints. You need to first create constraints.");  return; }
+		if (oclmodel.getOCLParser()==null) { /*frame.showErrorMessageDialog("Error","Inexistent constraints. You need to first create constraints.");*/  return; }
 		try {						
 			// transforming...
 			String logMessage = alloySpec.addConstraints(refparser, oclmodel,oclOptions);
@@ -1114,268 +1358,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		});
 	}
+		
 	
-	/**
-	 * Creates an editor for a given Diagram.
-	 * @param diagram the diagram to be edited by the editor
-	 * */
-	public DiagramEditor createDiagramEditor(StructureDiagram diagram)
-	{
-		DiagramEditor editor = new DiagramEditor(frame, this, diagram);
-		editor.addEditorStateListener(this);
-		editor.addSelectionListener(this);
-		editor.addAppCommandListener(editorDispatcher);
-
-		// Add all the diagram elements of 'diagram' to the ModelHelper mapping.
-		// Keeps trace of mappings between DiagramElement <-> Element.
-		ModelHelper.addMapping(editor.getDiagram());
-
-		//Add the diagram to the tabbed pane (this), through the wrapper
-		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
-		addClosable(diagram.getLabelText(), wrapper);		
-
-		return editor;
-	}
-
-	/**
-	 * Verifies if this diagram is already opened in a tab.
-	 * 
-	 * @param diagram
-	 * @return
-	 */
-	public boolean isDiagramOpened (StructureDiagram diagram)
-	{
-		for(Component c: getComponents()){
-			if (c instanceof DiagramEditorWrapper){
-				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram)){
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * New OLED Project.
-	 */
-	public void newProject() 
-	{				
-		JFileChooser fileChooser = new JFileChooser();
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
-		fileChooser.setDialogTitle("New Project");
-		fileChooser.addChoosableFileFilter(filter);
-		fileChooser.setFileFilter(filter);
-		fileChooser.setSelectedFile(new File("*.oled"));
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showDialog(this,"OK") == JFileChooser.APPROVE_OPTION) {
-			try {			
-				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));	
-
-				closeCurrentProject();				
-
-				File file = fileChooser.getSelectedFile();				
-				if (!file.exists()) {
-
-					if(!file.getName().endsWith(".oled"))
-					{
-						file = new File(file.getCanonicalFile() + ".oled");
-					}else
-						file = new File(file.getCanonicalFile()+"");
-				}				
-				setProjectFile(file);				
-
-				createEmptyCurrentProject();	
-				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
-				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
-				saveCurrentProjectToFile(file);				
-
-				frame.setTitle("OLED - "+file.getName()+"");
-							
-			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, ex.getMessage(),
-						getResourceString("error.readfile.title"),
-						JOptionPane.ERROR_MESSAGE);
-				ex.printStackTrace();
-			}
-		}	
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-	}	
-
-	/**
-	 * Opens an existing project.
-	 */
-	public void openProject() 
-	{		
-		JFileChooser fileChooser = new JFileChooser(lastOpenPath);
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
-		fileChooser.setDialogTitle("Open Project");
-		fileChooser.addChoosableFileFilter(filter);
-		fileChooser.setFileFilter(filter);		
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			try {
-
-				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-				closeCurrentProject();
-
-				File file = fileChooser.getSelectedFile();
-				setProjectFile(file);
-				lastOpenPath = file.getAbsolutePath();
-
-				currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);				
-				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
-				frame.getInfoManager().setProject(currentProject);
-				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
-				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
-				for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
-				saveProjectNeeded(false);
-
-				String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);
-				frame.getInfoManager().getOcleditor().setText(constraints);
-				frame.focusOnOclEditor();
-
-				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
-
-				frame.setTitle("OLED - "+file.getName()+"");
-
-			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, ex.getMessage(),
-						getResourceString("error.readfile.title"),
-						JOptionPane.ERROR_MESSAGE);
-				ex.printStackTrace();
-			}
-
-			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		}		
-	}
-
-	/**
-	 * Opens an existing project.
-	 */
-	public void openRecentProject() {
-
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-		try {
-			StartPanel startPanel = (StartPanel) getCurrentEditor();
-			if(startPanel != null)
-			{
-				closeCurrentProject();
-
-				File file = new File(startPanel.getSelectedRecentFile());
-				setProjectFile(file);
-
-				currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);								
-				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
-				frame.getInfoManager().setProject(currentProject);
-				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
-				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
-				for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
-				saveProjectNeeded(false);
-
-				String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);
-				frame.getInfoManager().getOcleditor().setText(constraints);
-				frame.focusOnOclEditor();
-
-				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
-
-				frame.setTitle("OLED - "+file.getName()+"");
-
-			}
-		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
-		}		
-
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-	}
-
-	/**
-	 * Writes the current model file. The returned file is different if the input
-	 * file does not have the tsm extension.
-	 * @param file the file to write
-	 * @return the file that was written
-	 */
-	private File saveCurrentProjectToFile(File file) {
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		if (file.exists()) file.delete();
-
-		File result = null;
-		try {
-
-			if(!file.getName().endsWith(".oled"))
-			{
-				file = new File(file.getCanonicalFile() + ".oled");
-			}
-
-			// copy OCL string in the editor to the OCL Document related to the UmlProject
-			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());			
-			oclmodel.setConstraints(frame.getInfoManager().getConstraints(),"CONTENT");
-
-			result = ProjectWriter.getInstance().writeProject(this, file, getCurrentProject(), oclmodel);
-
-			if (getCurrentDiagramEditor()!=null) {
-				//getCurrentDiagramEditor().clearUndoManager();
-				//frame.updateMenuAndToolbars(getCurrentDiagramEditor());
-			}
-
-			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
-
-			getCurrentProject().setName(file.getName().replace(".oled",""));
-			ProjectBrowser.refreshTree(getCurrentProject());
-
-			saveAllDiagramNeeded(false);
-
-			frame.setTitle("OLED - "+file.getName()+"");
-			invalidate();
-
-			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.savefile.title"), JOptionPane.ERROR_MESSAGE);
-		}
-		return result;
-	}
-
-	/**
-	 * Saves immediately if possible.
-	 */
-	public void saveProject() {
-
-		if (getProjectFile() == null) {
-			int option = saveProjectAs();
-			if (option!=JFileChooser.APPROVE_OPTION){
-				updateUI();
-				return;
-			}
-		} else {
-			saveCurrentProjectToFile(getProjectFile());
-		}
-
-		updateUI();
-	}
-
-	/**
-	 * Saves the project with a file chooser.
-	 */
-	public int saveProjectAs() {
-		JFileChooser fileChooser = new JFileChooser(lastSavePath);
-		fileChooser.setDialogTitle("Save Project");
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
-		fileChooser.addChoosableFileFilter(filter);
-		fileChooser.setFileFilter(filter);
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		int option = fileChooser.showSaveDialog(this);
-		if (option == JFileChooser.APPROVE_OPTION) {
-			setProjectFile(saveCurrentProjectToFile(fileChooser.getSelectedFile()));
-			File file = fileChooser.getSelectedFile();
-			frame.setTitle("OLED - "+file.getName()+"");
-			lastSavePath = file.getAbsolutePath();			
-		}
-		return option;
-	}
-
 	/**
 	 * Imports a RefOntoUML model.
 	 */
@@ -1944,46 +1928,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 //
 //		frame.getInfoManager().showOutputText(result, true, true);
 	}
-
-	/**
-	 * Auto complete selection in the model
-	 */
-	public String autoCompleteSelection(int option, UmlProject project)
-	{		
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(project);
-		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, project);
-
-		if (refparser==null) { return ""; }	
-
-		// Get elements from the tree
-		List<EObject> selected = modeltree.getTree().getModelCheckedElements();
-
-		// Get added elements from the auto selection completion
-		refparser.selectThisElements((ArrayList<EObject>)selected,true);		
-		List<EObject> added = refparser.autoSelectDependencies(option,false);
-
-		// Show which elements were added to selection
-		String msg = new String();
-		if (added.size()>0) msg = "The following elements were include in selection:\n\n";
-		for(EObject o: added)
-		{
-			msg += ""+refparser.getStringRepresentation(o)+".\n";
-		}
-		if (added.size()==0) msg += "No elements to include in selection.";		
-
-		// Update tree adding the elements...
-		selected.removeAll(added);
-		selected.addAll(added);		
-
-		modeltree.getTree().checkModelElements(selected, true);			
-		modeltree.getTree().updateUI();    	
-
-		// Create a new model package from selected elements in the model.
-		// ontoumlmodel.setOntoUMLPackage(ontoumlmodel.getOntoUMLParser().createPackageFromSelections(new Copier()));
-
-		return msg;
-	}
-	
+		
 	/** Open Alloy Analyzer */
 	public void openAnalyzer (final AlloySpecification alloymodel, final boolean showAnalyzer, final int cmdIndexToExecute) 
 	{
@@ -2020,26 +1965,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.showErrorMessageDialog("Opening alloy file", e.getLocalizedMessage());					
 		}
 	}
-
-	/**
-	 * Generates Alloy from OntoUML+OCL model
-	 * @throws InterruptedException 
-	 */
-	public void generatesAlloy()  
-	{									
-		doOntoUML2Alloy();
-		doTOCL2Alloy();
-		if (ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),true, -1);
-		else openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),false, 0);	
-		String umlpath = ProjectBrowser.getAlloySpecFor(getCurrentProject()).getAlloyPath().replace(".als", ".uml");
-		File umlfile = new File(umlpath);
-		umlfile.deleteOnExit();		
-	}
-
+	
 	/**
 	 * Shows a dialog for choosing the owl seneration settings 
 	 */
-	public void generateOwlSettings() {
+	public void openOwlSettings() {
 		OWLSettingsDialog dialog = new OWLSettingsDialog(frame, this, true);
 		dialog.setLocationRelativeTo(frame);
 		dialog.setVisible(true);

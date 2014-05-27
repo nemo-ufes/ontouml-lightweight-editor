@@ -23,7 +23,7 @@ import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
  * @author John Guerson
  */
 
-public class SimulationDialog extends JDialog {
+public class AlloySettingsDialog extends JDialog {
 	
 	private static final long serialVersionUID = 7877781445149017806L;
 	
@@ -41,7 +41,7 @@ public class SimulationDialog extends JDialog {
 	{
 		try {
 			
-			SimulationDialog dialog = new SimulationDialog(refOptions,oclOptions,frame);
+			AlloySettingsDialog dialog = new AlloySettingsDialog(refOptions,oclOptions,frame);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 			dialog.setLocationRelativeTo(frame);
@@ -59,7 +59,7 @@ public class SimulationDialog extends JDialog {
 	 * @param frame
 	 * @wbp.parser.constructor
 	 */
-	public SimulationDialog(OntoUML2AlloyOptions refOptions, TOCL2AlloyOption oclOptions, AppFrame frame)
+	public AlloySettingsDialog(OntoUML2AlloyOptions refOptions, TOCL2AlloyOption oclOptions, AppFrame frame)
 	{
 		this(frame);
 		this.frame = frame;		
@@ -91,13 +91,13 @@ public class SimulationDialog extends JDialog {
 	/**
 	 * Constructor
 	 */
-	public SimulationDialog(AppFrame frame) 
+	public AlloySettingsDialog(AppFrame frame) 
 	{
 		super(frame);
 		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(SimulationDialog.class.getResource("/resources/icons/x16/cog.png")));
-		setTitle("Configuring Simulation");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AlloySettingsDialog.class.getResource("/resources/icons/x16/cog.png")));
+		setTitle("Alloy Settings");
 		setSize(new Dimension(536, 258));
 		
 		btnOk = new JButton("OK");	
@@ -158,7 +158,7 @@ public class SimulationDialog extends JDialog {
 		  
 //    	dispose();
     
-    	frame.getDiagramManager().generatesAlloy();		  		
+    	frame.getDiagramManager().generateAlloy();		  		
 	}
 	
 	public AppFrame getFrame()
