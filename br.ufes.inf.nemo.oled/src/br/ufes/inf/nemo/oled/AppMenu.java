@@ -89,10 +89,10 @@ public class AppMenu implements ActionListener {
 	@SuppressWarnings("unused")
 	private void createTransformationMenu()
 	{
-		JMenu simulationMenu = createMenu("simulation");
-		menubar.add(simulationMenu);
-		
-		JMenuItem alloyItem = createMenuItem(simulationMenu, "generatealloy");
+//		JMenu simulationMenu = createMenu("simulation");
+//		menubar.add(simulationMenu);
+//		
+//		JMenuItem alloyItem = createMenuItem(simulationMenu, "generatealloy");
 		//alloyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 		
 		//JMenuItem vizItem = createMenuItem(simulationMenu, "visualizer");
@@ -101,6 +101,8 @@ public class AppMenu implements ActionListener {
 		
 		JMenu transformMenu = createMenu("transformation");
 		menubar.add(transformMenu);
+		
+		JMenuItem alloyItem = createMenuItem(transformMenu, "generatealloy");
 		
 		JMenuItem owlItem = createMenuItem(transformMenu, "generateowlsettings");
 		//owlItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
@@ -151,9 +153,7 @@ public class AppMenu implements ActionListener {
 		openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		
 		//fileMenu.addSeparator();
-		
-		createMenuItem(fileMenu,"close");
-		
+						
 		//fileMenu.addSeparator();
 		
 		JMenuItem saveItem = createMenuItem(fileMenu, "save");
@@ -176,6 +176,9 @@ public class AppMenu implements ActionListener {
 		createMenuItem(exportMenu, "exportecore");
 		
 		fileMenu.addSeparator();
+		createMenuItem(fileMenu,"close");
+		fileMenu.addSeparator();
+		
 		JMenuItem quitItem = createMenuItem(fileMenu, "quit");
 		quitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 	}
@@ -192,6 +195,8 @@ public class AppMenu implements ActionListener {
 		JMenuItem selectAllItem = createMenuItem(diagramMenu,"selectall");
 		selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
 //		selectAllItem.setEnabled(false);
+		
+		diagramMenu.addSeparator();
 		
 		createMenuItem(diagramMenu,"exportgfx");
 	}
@@ -276,14 +281,14 @@ public class AppMenu implements ActionListener {
 		
 		JMenuItem showGrid = createCheckBoxMenuItem(viewMenu, "showgrid");
 		showGrid.setSelected(true);
-		JMenuItem snapToGrid = createCheckBoxMenuItem(viewMenu, "snaptogrid");
-		snapToGrid.setSelected(true);
+		//JMenuItem snapToGrid = createCheckBoxMenuItem(viewMenu, "snaptogrid");
+		//snapToGrid.setSelected(true);
 		
 		JMenuItem toolboxItem = createCheckBoxMenuItem(viewMenu,"toolbox");
 		toolboxItem.setSelected(true);
 		
-		viewMenu.addSeparator();
-		createMenuItem(viewMenu, "redraw");
+		//viewMenu.addSeparator();
+		//createMenuItem(viewMenu, "redraw");
 	}
 
 	/**

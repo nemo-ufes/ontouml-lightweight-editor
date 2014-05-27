@@ -75,9 +75,9 @@ import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
+import br.ufes.inf.nemo.oled.dialog.AlloySettingsDialog;
 import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.dialog.OWLSettingsDialog;
-import br.ufes.inf.nemo.oled.dialog.AlloySettingsDialog;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.LineStyle;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
@@ -1127,7 +1127,50 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		//check in the tree the selected elements of the parser
 		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
 		modeltree.getTree().check(elements, true);					
-		modeltree.getTree().updateUI(); 
+		modeltree.getTree().updateUI();		
+	}
+	
+	/** Generates Text Description */
+	public void generateText() 
+	{
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+				UmlProject project = getCurrentProject();				
+				GlossaryGeneratorUI settings = new GlossaryGeneratorUI(ProjectBrowser.getParserFor(project));
+				settings.setVisible(true);				
+			}
+		});
+	}
+	
+	/** Generates SBVR */
+	public void generateSbvr(RefOntoUML.Model refpackage) 
+	{
+		UmlProject project = getCurrentProject();		
+		OperationResult result = SBVRHelper.generateSBVR(refpackage, project.getTempDir());
+		if(result.getResultType() != ResultType.ERROR)
+		{
+			frame.getInfoManager().showOutputText(result.toString(), true, true);
+			//HTMLVisualizer htmlViz = (HTMLVisualizer) getEditorForDiagram(diagram, EditorNature.HTML);
+			/*if(htmlViz == null)
+			{
+				htmlViz = new HTMLVisualizer(diagram);				
+				addClosable("SBVR Generated", htmlViz);
+			}else {
+				setSelectedComponent(htmlViz);
+				frame.setVisible(true); //HACK!!! Needed to force to show the browser
+			}*/
+			String htmlFilePath = (String) result.getData()[0];
+			File file = new File(htmlFilePath);
+			openLinkWithBrowser(file.toURI().toString());
+			/*if(!htmlViz.loadLocalPage(htmlFilePath))
+			{
+				getCurrentWrapper().showOutputText("\n\nCouldn't open the documentation with the internal browser. Trying to open with the system default browser...", false, true);
+				openLinkWithBrowser(new File(htmlFilePath).toURI().toString());
+			}*/
+		}else{
+			frame.getInfoManager().showOutputText(result.toString(), true, true); 
+		}
 	}
 	
 	/** Update OLED according to a Fix.  */
@@ -1345,20 +1388,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		t.start();
 		return t;
 	}
-	
-	/** Generates Text Description */
-	public void generateText() 
-	{
-		SwingUtilities.invokeLater(new Runnable() {			
-			@Override
-			public void run() {
-				UmlProject project = getCurrentProject();				
-				GlossaryGeneratorUI settings = new GlossaryGeneratorUI(ProjectBrowser.getParserFor(project));
-				settings.setVisible(true);				
-			}
-		});
-	}
-		
 	
 	/**
 	 * Imports a RefOntoUML model.
@@ -2031,52 +2060,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			frame.getInfoManager().showOutputText(result.toString(), true, true); 
 		}
 	}
-
-	/**
-	 * Generates SBVR from the selected model 
-	 */
-	public void generateSbvr() {
-
-		UmlProject project = getCurrentProject();
-
-		OperationResult result = SBVRHelper.generateSBVR((RefOntoUML.Model)ProjectBrowser.getParserFor(project).getModel(), project.getTempDir());
-		//OperationResult result = SBVRHelper.generateSBVR(project.getModel(), project.getTempDir());
-
-		if(result.getResultType() != ResultType.ERROR)
-		{
-			frame.getInfoManager().showOutputText(result.toString(), true, true); 
-
-			//HTMLVisualizer htmlViz = (HTMLVisualizer) getEditorForDiagram(diagram, EditorNature.HTML);
-
-			/*if(htmlViz == null)
-			{
-				htmlViz = new HTMLVisualizer(diagram);
-
-				//TODO Localize this;
-				addClosable("SBVR Generated", htmlViz);
-			}
-			else
-			{
-				setSelectedComponent(htmlViz);
-				frame.setVisible(true); //HACK!!! Needed to force to show the browser
-			}*/
-
-			String htmlFilePath = (String) result.getData()[0];
-			File file = new File(htmlFilePath);			
-			openLinkWithBrowser(file.toURI().toString());
-
-			/*if(!htmlViz.loadLocalPage(htmlFilePath))
-			{
-				getCurrentWrapper().showOutputText("\n\nCouldn't open the documentation with the internal browser. Trying to open with the system default browser...", false, true);
-				openLinkWithBrowser(new File(htmlFilePath).toURI().toString());
-			}*/
-
-		}
-		else
-		{
-			frame.getInfoManager().showOutputText(result.toString(), true, true); 
-		}
-	}
+	
 
 	private Editor getEditorForProject(UmlProject project, EditorNature nature)
 	{
