@@ -22,12 +22,14 @@ package br.ufes.inf.nemo.oled.ui.diagram;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.AppMenu;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.antipattern.AntiPatternSearchDialog;
 import br.ufes.inf.nemo.oled.dialog.AutoCompletionDialog;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
@@ -377,7 +379,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			if(manager.getCurrentDiagramEditor().canUndo()){
 				manager.getCurrentDiagramEditor().undo();
 			}else{				
-				manager.getFrame().showInformationMessageDialog("Cannot Undo", "No other action to be undone.\nThe undo only works for deletion, addition and movement of elements.\n\n");
+				manager.getFrame().showInformationMessageDialog("Cannot Undo", "No other action to be undone.\n\n");
 			}
 		}
 	}
@@ -405,7 +407,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			if(manager.getCurrentDiagramEditor().canRedo()){
 				manager.getCurrentDiagramEditor().redo();
 			}else{
-				manager.getFrame().showInformationMessageDialog("Cannot Redo", "No other action to be redone.\nThe redo only works for deletion, addition and movement of elements.\n\n");
+				manager.getFrame().showInformationMessageDialog("Cannot Redo", "No other action to be redone.\n\n");
 			}
 		}
 
@@ -502,8 +504,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void generateSbvr()
 	{
 		if (manager.isProjectLoaded()==false) return;
-
-		manager.generateSbvr();
+		
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(manager.getCurrentProject());
+		manager.generateSbvr((RefOntoUML.Model)refparser.getModel());
 	}
 
 	public void generateText()
