@@ -361,7 +361,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void generatesAlloy()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		manager.openSimulationSettings();
+		manager.openAlloySettings();
 	}
 		
 	public void manageAntiPatterns()
@@ -513,7 +513,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{
 		if (manager.isProjectLoaded()==false) return;
 
-		manager.generateText();
+		manager.openTextSettings();
 	}
 
 	/**

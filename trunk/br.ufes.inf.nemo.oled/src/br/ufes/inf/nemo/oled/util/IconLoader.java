@@ -166,14 +166,14 @@ public final class IconLoader {
 				
 		urlMap.put(IconType.ANTIPATTERN, "resources/icons/antipattern16.png");
 		
-		urlMap.put(IconType.GENERATE_ALLOY, "resources/icons/x16/alloy/alloy.png");
+		urlMap.put(IconType.GENERATE_ALLOY, "resources/icons/x16/distribution.png");
 				
 		urlMap.put(IconType.GENERATE_OWL, "resources/icons/x16/owl.png");
 		urlMap.put(IconType.GENERATE_OWL_SETTINGS, "resources/icons/x16/owl.png");
 		
-		urlMap.put(IconType.GENERATE_SBVR, "resources/icons/x16/sbvr.png");
+		urlMap.put(IconType.GENERATE_SBVR, "resources/icons/x16/blog.png");
 		
-		urlMap.put(IconType.GENERATE_TEXT, "resources/icons/x16/text.gif");
+		urlMap.put(IconType.GENERATE_TEXT, "resources/icons/x16/bookmark_book.png");
 	
 		urlMap.put(IconType.NEW, "resources/icons/x16/page_2.png");
 		urlMap.put(IconType.OPEN, "resources/icons/x16/folder.png");
