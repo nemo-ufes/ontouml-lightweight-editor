@@ -72,6 +72,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
+import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
@@ -126,15 +127,16 @@ import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.FileChoosersUtil;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.oled.util.OLEDResourceFactory;
+import br.ufes.inf.nemo.oled.util.OLEDSettings;
 import br.ufes.inf.nemo.oled.util.OWLHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
-import br.ufes.inf.nemo.oled.util.SBVRHelper;
 import br.ufes.inf.nemo.oled.util.SimulationElement;
 import br.ufes.inf.nemo.oled.verifier.VerificationHelper;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
+import br.ufes.inf.nemo.ontouml2sbvr.core.OntoUML2SBVR;
 import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui.GlossaryGeneratorUI;
 import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
@@ -835,41 +837,36 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		updateOLEDFromInclusion(element);
 		// update the diagrams
-		try{
-			if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType){
-				refreshDiagramElement((Classifier)element);			
-			}
-			if (element instanceof RefOntoUML.Association){
-				if (redesign) { remakeDiagramElement((RefOntoUML.Element)element); }
-				else refreshDiagramElement((RefOntoUML.Element)element);
-			}
-			if (element instanceof RefOntoUML.Property){
-				Association assoc= ((RefOntoUML.Property)element).getAssociation();								
-				if (assoc!=null) {
-					if(redesign) remakeDiagramElement((RefOntoUML.Element)assoc);
-					else refreshDiagramElement((RefOntoUML.Element)assoc);
-				} else {
-					refreshDiagramElement((RefOntoUML.Element)(element).eContainer());
-				}
-			}		
-			if (element instanceof RefOntoUML.Generalization){
-				if (redesign) { remakeDiagramElement((RefOntoUML.Element)element); }
-				else refreshDiagramElement((RefOntoUML.Element)element);
-			}
-			if(element instanceof RefOntoUML.GeneralizationSet){
-				for(Generalization gen: ((RefOntoUML.GeneralizationSet) element).getGeneralization()) updateOLEDFromModification(gen,false);
-			}			
-		}catch (Exception e){
-			e.printStackTrace();
-			System.err.println(e.getLocalizedMessage());			
-			if (element instanceof NamedElement){				
-				getFrame().showErrorMessageDialog("Updating OLED from modification", "An error ocurred while updating "+ModelHelper.getStereotype(element)+" "+((NamedElement)element).getName()+ " in the diagram");
-			}else if (element instanceof Generalization){
-				getFrame().showErrorMessageDialog("Updating OLED from modification", "An error ocurred while updating "+ModelHelper.getStereotype(element)+" "+((Generalization)element).getGeneral().getName()+ "->"+((Generalization)element).getSpecific().getName()+" in the diagram");
-			}					
+		if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType)
+		{
+			refreshDiagramElement((Classifier)element);			
 		}
+		if (element instanceof RefOntoUML.Association)
+		{
+			if (redesign) remakeDiagramElement((RefOntoUML.Element)element);
+			else refreshDiagramElement((RefOntoUML.Element)element);
+		}
+		if (element instanceof RefOntoUML.Property)
+		{
+			Association assoc= ((RefOntoUML.Property)element).getAssociation();								
+			if (assoc!=null){
+				if(redesign) remakeDiagramElement((RefOntoUML.Element)assoc);
+				else refreshDiagramElement((RefOntoUML.Element)assoc);
+			}else{
+				refreshDiagramElement((RefOntoUML.Element)(element).eContainer());
+			}
+		}		
+		if (element instanceof RefOntoUML.Generalization)
+		{
+			if (redesign) remakeDiagramElement((RefOntoUML.Element)element); 
+			else refreshDiagramElement((RefOntoUML.Element)element);
+		}
+		if(element instanceof RefOntoUML.GeneralizationSet)
+		{
+			for(Generalization gen: ((RefOntoUML.GeneralizationSet) element).getGeneralization()) updateOLEDFromModification(gen,false);
+		}		
 	}
-
+	
 	/**
 	 * Update the application accordingly to the refontouml instance created
 	 * @param element: deleted element on the refontouml root instance
@@ -1080,8 +1077,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return option;
 	}
 
-	/** Open the Alloy simulation setting window */
-	public void openSimulationSettings()
+	/** Open the Text Description settings window */
+	public void openTextSettings() 
+	{
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+				UmlProject project = getCurrentProject();				
+				GlossaryGeneratorUI settings = new GlossaryGeneratorUI(ProjectBrowser.getParserFor(project));
+				settings.setVisible(true);
+			}
+		});
+	}
+	
+	/** Open the Alloy simulation settings window */
+	public void openAlloySettings()
 	{
 		if (isProjectLoaded()==false) return;
 		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());	
@@ -1096,6 +1106,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		AlloySettingsDialog.open(refOptions, oclOptions, getFrame());	
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
+
+	/** Open the OWL settings window	 */
+	public void openOwlSettings() 
+	{
+		OWLSettingsDialog dialog = new OWLSettingsDialog(frame, this, true);
+		dialog.setLocationRelativeTo(frame);
+		dialog.setVisible(true);
+	}	
 	
 	/** 
 	 *  Tell the application to work only with the set of elements contained in the diagram.
@@ -1130,44 +1148,30 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		modeltree.getTree().updateUI();		
 	}
 	
-	/** Generates Text Description */
-	public void generateText() 
-	{
-		SwingUtilities.invokeLater(new Runnable() {			
-			@Override
-			public void run() {
-				UmlProject project = getCurrentProject();				
-				GlossaryGeneratorUI settings = new GlossaryGeneratorUI(ProjectBrowser.getParserFor(project));
-				settings.setVisible(true);				
-			}
-		});
-	}
-	
-	/** Generates SBVR */
+	/**  Generate SBVR. In order to use the plug-in, we need to store the model into a file before. */
 	public void generateSbvr(RefOntoUML.Model refpackage) 
 	{
-		UmlProject project = getCurrentProject();		
-		OperationResult result = SBVRHelper.generateSBVR(refpackage, project.getTempDir());
+		UmlProject project = getCurrentProject();
+		OperationResult result;
+		String modelFileName = ConfigurationHelper.getCanonPath(project.getTempDir(), OLEDSettings.MODEL_DEFAULT_FILE.getValue());
+		File modelFile = new File(modelFileName);  	
+    	modelFile.deleteOnExit();    	
+		try {			
+			ResourceUtil.saveReferenceOntoUML(modelFileName, refpackage);
+			OntoUML2SBVR.Transformation(modelFileName);			
+			String docPage = modelFile.getPath().replace(".refontouml", ".html");			
+			frame.getInfoManager().showOutputText("SBVR generated successfully", true, true); 
+			result = new OperationResult(ResultType.SUCESS, "SBVR generated successfully", new Object[] { docPage });			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			result = new OperationResult(ResultType.ERROR, "Error while generating the SBVR representaion. Details: " + ex.getMessage(), null);
+		}		
 		if(result.getResultType() != ResultType.ERROR)
 		{
-			frame.getInfoManager().showOutputText(result.toString(), true, true);
-			//HTMLVisualizer htmlViz = (HTMLVisualizer) getEditorForDiagram(diagram, EditorNature.HTML);
-			/*if(htmlViz == null)
-			{
-				htmlViz = new HTMLVisualizer(diagram);				
-				addClosable("SBVR Generated", htmlViz);
-			}else {
-				setSelectedComponent(htmlViz);
-				frame.setVisible(true); //HACK!!! Needed to force to show the browser
-			}*/
+			frame.getInfoManager().showOutputText(result.toString(), true, true);			
 			String htmlFilePath = (String) result.getData()[0];
 			File file = new File(htmlFilePath);
 			openLinkWithBrowser(file.toURI().toString());
-			/*if(!htmlViz.loadLocalPage(htmlFilePath))
-			{
-				getCurrentWrapper().showOutputText("\n\nCouldn't open the documentation with the internal browser. Trying to open with the system default browser...", false, true);
-				openLinkWithBrowser(new File(htmlFilePath).toURI().toString());
-			}*/
 		}else{
 			frame.getInfoManager().showOutputText(result.toString(), true, true); 
 		}
@@ -1994,15 +1998,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.showErrorMessageDialog("Opening alloy file", e.getLocalizedMessage());					
 		}
 	}
-	
-	/**
-	 * Shows a dialog for choosing the owl seneration settings 
-	 */
-	public void openOwlSettings() {
-		OWLSettingsDialog dialog = new OWLSettingsDialog(frame, this, true);
-		dialog.setLocationRelativeTo(frame);
-		dialog.setVisible(true);
-	}	
 
 	/**
 	 * Generates OWL from the selected model   

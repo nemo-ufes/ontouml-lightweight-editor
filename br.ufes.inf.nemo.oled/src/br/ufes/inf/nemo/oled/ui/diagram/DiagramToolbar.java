@@ -35,7 +35,7 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnNewDiagram;
 	private JButton btnAlloy;
 	private JButton btnOWL;
-	private JButton btnText;
+	private JButton btnGlossary;
 	private JButton btnSbvr;
 	
 	public void update(){
@@ -62,8 +62,6 @@ public class DiagramToolbar extends JToolBar {
 		btnNewDiagram.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/application_add.png")));
 		add(btnNewDiagram);
 		
-		addSeparator();
-		
 		btnGrid = new JToggleButton("");
 		btnGrid.setSelected(editor.showGrid());
 		btnGrid.setToolTipText("Grid Lines");
@@ -89,8 +87,6 @@ public class DiagramToolbar extends JToolBar {
 		btnToolBox.setFocusable(false);
 		btnToolBox.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/hammer_screwdriver.png")));
 		add(btnToolBox);
-		
-		addSeparator();
 		
 		btnAlignBottom = new JButton("");
 		btnAlignBottom.addActionListener(new ActionListener() {				
@@ -200,8 +196,6 @@ public class DiagramToolbar extends JToolBar {
 		btnExportPng.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/photo.png")));
 		add(btnExportPng);
 		
-		addSeparator();
-		
 		btnZoomOut = new JButton("");
 		btnZoomOut.setToolTipText("Zoom out");
 		btnZoomOut.addActionListener(new ActionListener() {				
@@ -214,12 +208,7 @@ public class DiagramToolbar extends JToolBar {
 		btnZoomOut.setFocusable(false);
 		btnZoomOut.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/zoom-out.png")));
 		add(btnZoomOut);
-				
-		btnZoomStatus = new JButton("100%");
-		btnZoomStatus.setContentAreaFilled(false);		
-		btnZoomStatus.setFocusable(false);
-		add(btnZoomStatus);
-				
+		
 		btnZoomIn = new JButton("");
 		btnZoomIn.setToolTipText("Zoom in");
 		btnZoomIn.addActionListener(new ActionListener() {				
@@ -232,20 +221,47 @@ public class DiagramToolbar extends JToolBar {
 		btnZoomIn.setFocusable(false);
 		btnZoomIn.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/zoom-in.png")));
 		add(btnZoomIn);
+				
+		btnZoomStatus = new JButton("100%");
+		btnZoomStatus.setContentAreaFilled(false);		
+		btnZoomStatus.setFocusable(false);
+		add(btnZoomStatus);
 		
-		addSeparator();
-		
-		btnText = new JButton("");
-		btnText.addActionListener(new ActionListener() {				
+		btnGlossary = new JButton("");
+		btnGlossary.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
-        		      		
+        		editor.getDiagramManager().workingOnlyWith(editor.getDiagram());
+        		editor.getDiagramManager().openTextSettings();
         	}
         });	
-		btnText.setToolTipText("Transform this diagram into a textual description");
-		btnText.setFocusable(false);
-		btnText.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/page_white_text.png")));
-		add(btnText);
+		btnGlossary.setToolTipText("Transform this diagram into a glossary of terms");
+		btnGlossary.setFocusable(false);
+		btnGlossary.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/bookmark_book.png")));
+		add(btnGlossary);
+		
+			btnAlloy = new JButton("");
+			btnAlloy.setToolTipText("Transform this diagram and axioms into Alloy");
+			btnAlloy.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		editor.getDiagramManager().workingOnlyWith(editor.getDiagram());
+        		editor.getDiagramManager().openAlloySettings();        		
+        	}
+        });	
+			btnAlloy.setFocusable(false);
+			btnAlloy.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/distribution.png")));
+			add(btnAlloy);
+		
+		btnOWL = new JButton("");
+		btnOWL.setToolTipText("Transform this diagram and axioms into OWL");
+		btnOWL.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		editor.getDiagramManager().workingOnlyWith(editor.getDiagram());
+        		editor.getDiagramManager().openOwlSettings();
+        	}
+        });	
 		
 		btnSbvr = new JButton("");
 		btnSbvr.setToolTipText("Transform this diagram into SBVR");
@@ -260,31 +276,8 @@ public class DiagramToolbar extends JToolBar {
         		editor.getDiagramManager().generateSbvr(model);
         	}
         });	
-		btnSbvr.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/sbvr.png")));
+		btnSbvr.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/blog.png")));
 		add(btnSbvr);
-	
-		btnAlloy = new JButton("");
-		btnAlloy.setToolTipText("Transform this diagram and axioms into Alloy");
-		btnAlloy.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {        		
-        		editor.getDiagramManager().workingOnlyWith(editor.getDiagram());
-        		editor.getDiagramManager().openSimulationSettings();        		
-        	}
-        });	
-		btnAlloy.setFocusable(false);
-		btnAlloy.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/alloy/alloy.png")));
-		add(btnAlloy);
-		
-		btnOWL = new JButton("");
-		btnOWL.setToolTipText("Transform this diagram and axioms into OWL");
-		btnOWL.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {        		
-        		editor.getDiagramManager().workingOnlyWith(editor.getDiagram());
-        		editor.getDiagramManager().openOwlSettings();
-        	}
-        });	
 		btnOWL.setFocusable(false);
 		btnOWL.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/owl.png")));
 		add(btnOWL);
