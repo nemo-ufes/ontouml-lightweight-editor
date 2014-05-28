@@ -26,6 +26,9 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 public class GlossaryGeneratorUI extends JFrame {
 	
@@ -46,7 +49,6 @@ public class GlossaryGeneratorUI extends JFrame {
 	private JTextField edtTitle;
 	private JLabel lblTitle;
 	private JCheckBox chkInheritMediations;
-	private JLabel lblNewLabel_1;
 
 	public GlossaryGeneratorUI(OntoUMLParser parser){
 		this();		
@@ -57,23 +59,25 @@ public class GlossaryGeneratorUI extends JFrame {
 	 * Create the frame.
 	 */
 	public GlossaryGeneratorUI() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(GlossaryGeneratorUI.class.getResource("/resources/icon/bookmark_book.png")));
+		setPreferredSize(new Dimension(390, 387));
+		setSize(new Dimension(390, 387));
 		
-		setResizable(false);
-		setType(Type.UTILITY);
-		setTitle("OntoUML Glossary Generator");
+		//setType(Type.UTILITY);
+		setTitle("Glossary Settings");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 388, 395);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JLabel lblNewLabel = new JLabel("Output File Name");
+		JLabel lblNewLabel = new JLabel("Output File Name (*.html)");
 		
 		edtOutputFileName = new JTextField();
 		edtOutputFileName.setText("Glossary Output");
 		edtOutputFileName.setColumns(10);
 		
-		JLabel lblOutputDirectory = new JLabel("Output Directory");
+		JLabel lblOutputDirectory = new JLabel("Output Folder");
 		
 		edtOutputDirectory = new JTextField();
 		edtOutputDirectory.setColumns(10);
@@ -84,7 +88,8 @@ public class GlossaryGeneratorUI extends JFrame {
 		chkAnalyseDescriptiveConsistency.setToolTipText("Check if exists any inconsistency that can be affect the generation of glossary");
 		
 		cmbLanguage = new JComboBox<String>();
-		cmbLanguage.addItem("Português - BR");
+		cmbLanguage.setFocusable(false);
+		cmbLanguage.addItem("Portuguese - BR");
 		cmbLanguage.setSelectedIndex(0);
 		
 		JLabel lblLanguage = new JLabel("Target Language");
@@ -106,37 +111,36 @@ public class GlossaryGeneratorUI extends JFrame {
 		chkInheritMediations = new JCheckBox("Inherit Mediations of Parent Relators ");
 		chkInheritMediations.setSelected(true);
 		chkInheritMediations.setToolTipText("Check if exists any inconsistency that can be affect the generation of glossary");
-		
-		lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setToolTipText("Adds the mediation's description of a parent relator");
-		lblNewLabel_1.setIcon(new ImageIcon(GlossaryGeneratorUI.class.getResource("/resources/icon/1392770960_information.png")));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
-						.addComponent(lblLanguage)
-						.addComponent(cmbLanguage, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
-						.addComponent(chkAnalyseDescriptiveConsistency)
-						.addComponent(lblOutputDirectory)
-						.addComponent(lblNewLabel)
-						.addComponent(lblSubtitle)
-						.addComponent(lblTitle)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(lblOutputDirectory, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(edtSubtitle, Alignment.LEADING)
-								.addComponent(edtTitle, Alignment.LEADING)
-								.addComponent(edtOutputDirectory, Alignment.LEADING)
-								.addComponent(edtOutputFileName, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnSelectOutputDirectory, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
+								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE)
+								.addComponent(chkAnalyseDescriptiveConsistency, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblLanguage, GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblSubtitle, GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+								.addComponent(edtOutputFileName, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addComponent(edtOutputDirectory, GroupLayout.PREFERRED_SIZE, 308, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnSelectOutputDirectory, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+								.addComponent(lblTitle, GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+								.addComponent(edtSubtitle, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE)
+								.addComponent(chkInheritMediations, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE))
+							.addContainerGap())
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(chkInheritMediations, GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel_1)))
-					.addContainerGap())
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(edtTitle, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cmbLanguage, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 344, GroupLayout.PREFERRED_SIZE))
+							.addContainerGap())))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -145,7 +149,7 @@ public class GlossaryGeneratorUI extends JFrame {
 					.addComponent(lblLanguage)
 					.addGap(9)
 					.addComponent(cmbLanguage, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addGap(7)
 					.addComponent(lblTitle)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(edtTitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -157,48 +161,30 @@ public class GlossaryGeneratorUI extends JFrame {
 					.addComponent(lblNewLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(edtOutputFileName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblOutputDirectory)
-					.addGap(1)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(edtOutputDirectory, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnSelectOutputDirectory))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(chkAnalyseDescriptiveConsistency)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(chkInheritMediations)
-						.addComponent(lblNewLabel_1))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addComponent(chkAnalyseDescriptiveConsistency)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(chkInheritMediations)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		
-		btnGenerateGlossary = new JButton("Generate Glossary");
+		btnGenerateGlossary = new JButton("Generate");
 		btnGenerateGlossary.setIcon(new ImageIcon(GlossaryGeneratorUI.class.getResource("/resources/icon/1392761208_rich_text_align_left.png")));
 		btnGenerateGlossary.setActionCommand("generateGlossary");
 		
 		btnCancel = new JButton("Cancel");
 		btnCancel.setIcon(new ImageIcon(GlossaryGeneratorUI.class.getResource("/resources/icon/cancel.png")));
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(63)
-					.addComponent(btnGenerateGlossary)
-					.addGap(5)
-					.addComponent(btnCancel)
-					.addGap(63))
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(5)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnCancel, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-						.addComponent(btnGenerateGlossary, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)))
-		);
-		panel.setLayout(gl_panel);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel.add(btnGenerateGlossary);
+		panel.add(btnCancel);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
