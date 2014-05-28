@@ -250,7 +250,7 @@ public class DiagramToolbar extends JToolBar {
         	}
         });	
 			btnAlloy.setFocusable(false);
-			btnAlloy.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/distribution.png")));
+			btnAlloy.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/alloy/alloy.png")));
 			add(btnAlloy);
 		
 		btnOWL = new JButton("");
