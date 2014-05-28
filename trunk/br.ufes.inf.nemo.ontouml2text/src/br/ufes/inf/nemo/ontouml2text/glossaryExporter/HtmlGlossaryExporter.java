@@ -35,7 +35,7 @@ public class HtmlGlossaryExporter extends GlossaryExporter {
 			File css = new File(this.outputDirectory+"/"+this.outputName+"/"+"all/css");
 			css.mkdir();
 			
-			index = new PrintWriter(new BufferedWriter(new FileWriter(this.outputDirectory+"/"+this.outputName+"/"+"index"+".html")));
+			index = new PrintWriter(new BufferedWriter(new FileWriter(this.outputDirectory+"/"+this.outputName+"/"+"this.outputName"+".html")));
 			allDescriptionsFile = new PrintWriter(new BufferedWriter(new FileWriter(this.outputDirectory+"/"+this.outputName+"/"+"all/all"+".html")));
 			 
 			createHeaderFile(index,this.title,"all/","all/css/");		// create alphabet index
