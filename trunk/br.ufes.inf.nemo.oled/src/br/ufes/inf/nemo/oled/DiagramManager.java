@@ -35,11 +35,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
@@ -1575,8 +1578,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public Component addClosable(String text, Component component)
 	{
 		if (component==null) component = new JPanel();
-		addTab(text, component);
-		setTabComponentAt(indexOfComponent(component), new ClosableTabPanel(this));
+		addTab(text, component);		
+		ClosableTabPanel tab = new ClosableTabPanel(this);
+		if(component instanceof DiagramEditorWrapper){
+			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/diagram.png"));
+			tab.getLabel().setIcon(icon);
+			tab.getLabel().setIconTextGap(5);
+			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+		}
+		if(component instanceof TextEditor){
+			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/editor.png"));
+			tab.getLabel().setIcon(icon);
+			tab.getLabel().setIconTextGap(5);
+			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+		}
+		setTabComponentAt(indexOfComponent(component),tab);
 		setSelectedComponent(component);
 		return component;
 	}
@@ -1999,59 +2015,38 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 
-	/**
-	 * Generates OWL from the selected model   
-	 */
-	public void generateOwl() {
-
+	/** Generates OWL from the selected model */
+	public void generateOwl() 
+	{
 		UmlProject project = getCurrentProject();
-		//StructureDiagram diagram = getCurrentEditor().getDiagram();
-
 		String owlType = ProjectSettings.OWL_MAPPING_TYPE.getValue(project);
 		MappingType mappingType = null;
-
-		if(!owlType.equals("SIMPLE")){
-			mappingType = MappingType.valueOf(owlType); 
-		}
+		if(!owlType.equals("SIMPLE")) mappingType = MappingType.valueOf(owlType);		
 		String oclRules = getFrame().getInfoManager().getOcleditor().getText();
-
 		OperationResult result = OWLHelper.generateOwl(project.getModel(), 
-				ProjectSettings.OWL_ONTOLOGY_IRI.getValue(project),
-				mappingType,
-				ProjectSettings.OWL_GENERATE_FILE.getBoolValue(project),
-				ProjectSettings.OWL_FILE_PATH.getValue(project),
-				oclRules);
-
-		//Model model, String ontologyIRI, String mappingType, boolean fileOutput, String filePath
-
+			ProjectSettings.OWL_ONTOLOGY_IRI.getValue(project),
+			mappingType,
+			ProjectSettings.OWL_GENERATE_FILE.getBoolValue(project),
+			ProjectSettings.OWL_FILE_PATH.getValue(project),
+			oclRules);
 		if(result.getResultType() != ResultType.ERROR)
 		{
 			if(!ProjectSettings.OWL_GENERATE_FILE.getBoolValue(project))
 			{
 				frame.getInfoManager().showOutputText(result.toString(), true, false);
-
 				TextEditor textViz = (TextEditor) getEditorForProject(project, EditorNature.TEXT);
-
 				if(textViz == null)
 				{
 					textViz = new TextEditor(project);
-
-					//TODO Localize this;
-					addClosable("OWL Generated", textViz);
-				}
-				else
-				{
+					addClosable("Text Editor", textViz);
+				}else{
 					setSelectedComponent(textViz);
 				}
 				textViz.setText((String) result.getData()[0]);
-			}
-			else
-			{
+			}else{
 				frame.getInfoManager().showOutputText(result.toString(), true, true);
 			}
-		}
-		else
-		{
+		}else{
 			frame.getInfoManager().showOutputText(result.toString(), true, true); 
 		}
 	}

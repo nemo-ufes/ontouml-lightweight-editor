@@ -17,9 +17,8 @@ public class ProjectToolBar extends JToolBar {
 	private ProjectTree tree;
 	@SuppressWarnings("unused")
 	private DiagramManager diagramManager;
-	private JButton btnUp;
-	private JButton btnDown;
 	private JButton btnCompleteSelection;
+	private JButton btnRefresh;
 		
 	public ProjectToolBar (ProjectTree tree, final DiagramManager diagramManager)
 	{		
@@ -28,6 +27,11 @@ public class ProjectToolBar extends JToolBar {
 		
 		setFloatable(false);
 		setMargin(new Insets(5,5,5,5));
+		
+		btnRefresh = new JButton("");
+		btnRefresh.setFocusable(false);
+		btnRefresh.setIcon(new ImageIcon(ProjectToolBar.class.getResource("/resources/icons/x16/arrow_refresh.png")));
+		add(btnRefresh);
 		
 		btnCompleteSelection = new JButton("");
 		btnCompleteSelection.addActionListener(new ActionListener() {				
@@ -38,34 +42,7 @@ public class ProjectToolBar extends JToolBar {
         });		
 		btnCompleteSelection.setToolTipText("<html>Check the elements dependencies on the tree <br>and complete the selection with the missing dependencies</html>");
 		btnCompleteSelection.setFocusable(false);
-		btnCompleteSelection.setIcon(new ImageIcon(ProjectToolBar.class.getResource("/resources/icons/x16/accept-black.png")));
+		btnCompleteSelection.setIcon(new ImageIcon(ProjectToolBar.class.getResource("/resources/icons/x16/accept.png")));
 		add(btnCompleteSelection);
-		
-		btnUp = new JButton("");
-		btnUp.setEnabled(false);
-		btnUp.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		
-        	}
-        });
-		btnUp.setToolTipText("Move the current element up within its package");
-		btnUp.setFocusable(false);
-		btnUp.setIcon(new ImageIcon(ProjectToolBar.class.getResource("/resources/icons/x16/arrow_up.png")));
-		add(btnUp);
-		
-		btnDown = new JButton("");
-		btnDown.setEnabled(false);
-		btnDown.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		
-        	}
-        });
-		btnDown.setToolTipText("Move the current element down within its package");
-		btnDown.setFocusable(false);
-		btnDown.setIcon(new ImageIcon(ProjectToolBar.class.getResource("/resources/icons/x16/arrow_down.png")));
-		add(btnDown);
-		
-		}
+	}
 }
