@@ -36,7 +36,9 @@ import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.palette.ColorPalette;
 import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.diagram.Editor;
+import br.ufes.inf.nemo.oled.ui.diagram.TextEditor;
 
 
 /**
@@ -48,6 +50,31 @@ public class ClosableTabPanel extends JPanel {
 	public final JTabbedPane pane;
 	public JLabel label;
 	public TabButton button;
+	
+	public JLabel getLabel() { return label; }
+	
+	public void setIcon()
+	{
+		//Includes Icon on the label		
+		int i = pane.indexOfTabComponent(ClosableTabPanel.this);
+		if (i != -1) {
+			Component obj = (pane.getComponentAt(i));			
+			if(obj instanceof DiagramEditorWrapper)
+			{
+				Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/diagram.png"));
+				label.setIcon(icon);
+				label.setIconTextGap(5);
+				label.setHorizontalTextPosition(SwingConstants.RIGHT);
+			}
+			else if(obj instanceof TextEditor)
+			{
+				Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/editor.png"));
+				label.setIcon(icon);
+				label.setIconTextGap(5);
+				label.setHorizontalTextPosition(SwingConstants.RIGHT);
+			}
+		}
+	}
 	
 	/**
 	 * Constructor for the ClosableTab class.
@@ -74,12 +101,6 @@ public class ClosableTabPanel extends JPanel {
 				return null;
 			}
 		};
-
-		//Includes Icon on the label						
-		Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/diagram.png"));
-		label.setIcon(icon);
-		label.setIconTextGap(5);
-		label.setHorizontalTextPosition(SwingConstants.RIGHT);
 		
 		//set label editable through JTextField component
 		label.addMouseListener(new MouseAdapter() 
