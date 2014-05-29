@@ -554,7 +554,7 @@ public class OntoUMLParser {
 	/**
 	 * This method selects all Elements of the model.
 	 */
-	public void SelectAllElements()
+	public void selectAllElements()
 	{
 		for (ParsingElement pe : elementsHash.values()) 
 		{

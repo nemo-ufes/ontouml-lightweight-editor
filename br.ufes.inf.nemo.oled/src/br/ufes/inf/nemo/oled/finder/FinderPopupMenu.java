@@ -26,7 +26,7 @@ public class FinderPopupMenu extends JPopupMenu {
 		findInProjectMenuItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {	
-				ProjectBrowser.frame.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().selectModelElement(context);		
+				ProjectBrowser.frame.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().checkModelElement(context);		
 			}
 		});
 	}

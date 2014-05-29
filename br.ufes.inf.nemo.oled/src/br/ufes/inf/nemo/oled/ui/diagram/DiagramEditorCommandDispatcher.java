@@ -22,6 +22,8 @@ package br.ufes.inf.nemo.oled.ui.diagram;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
+
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
@@ -269,30 +271,24 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("AUTO_SELECTION", new MethodCall(
 					getClass().getMethod("autoComplete")));
-
-			selectorMap.put("VALIDATE_MODEL", new MethodCall(
-					getClass().getMethod("verifyCurrentProject")));
-
+			
+			selectorMap.put("VERIFY_MODEL", new MethodCall(
+					getClass().getMethod("verifyModel")));
+			
 			selectorMap.put("GENERATE_ALLOY", new MethodCall(
-					getClass().getMethod("generatesAlloy")));
+					getClass().getMethod("generateAlloy")));
 
 			selectorMap.put("ANTIPATTERN", new MethodCall(
 					getClass().getMethod("manageAntiPatterns")));
 
-			selectorMap.put("VERIFY_MODEL", new MethodCall(
-					getClass().getMethod("verifyModel")));
-
 			selectorMap.put("GENERATE_OWL_SETTINGS", new MethodCall(
-					getClass().getMethod("generateOwlSettings")));
-
-			selectorMap.put("GENERATE_OWL", new MethodCall(
 					getClass().getMethod("generateOwl")));
 
 			selectorMap.put("GENERATE_SBVR", new MethodCall(
 					getClass().getMethod("generateSbvr")));
 
 			selectorMap.put("GENERATE_TEXT", new MethodCall(
-					getClass().getMethod("generateText")));
+					getClass().getMethod("callGlossary")));
 
 			selectorMap.put("ERROR", new MethodCall(
 					getClass().getMethod("searchErrors")));
@@ -358,44 +354,16 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		} 
 	}
 
-	public void generatesAlloy()
-	{
-		if (manager.isProjectLoaded()==false) return;
-		manager.openAlloySettings();
-	}
-		
-	public void manageAntiPatterns()
-	{			
-		if (manager.isProjectLoaded()==false) return;
-
-		AntiPatternSearchDialog.open(manager.getFrame());		
-	}
-
 	public void undo()
 	{		
 		if (manager.isProjectLoaded()==false) return;
-
-		if(manager.getCurrentDiagramEditor()!=null) {
+		if(manager.getCurrentDiagramEditor()!=null){
 			if(manager.getCurrentDiagramEditor().canUndo()){
 				manager.getCurrentDiagramEditor().undo();
 			}else{				
 				manager.getFrame().showInformationMessageDialog("Cannot Undo", "No other action to be undone.\n\n");
 			}
 		}
-	}
-
-	public void derivedByUnion()
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		manager.deriveByUnion();
-	}
-
-	public void derivedByExclusion()
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		manager.deriveByExclusion();
 	}
 
 	public void redo()
@@ -410,7 +378,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 				manager.getFrame().showInformationMessageDialog("Cannot Redo", "No other action to be redone.\n\n");
 			}
 		}
-
 	}
 
 	public void find()
@@ -418,107 +385,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		if (manager.isProjectLoaded()==false) return;
 		manager.getFrame().focusOnFinder();		
 	}
-	
-	public void enableAssistant()
-	{
-		//	System.out.println("assitant opened");
-		// 	isAssitantEnable = !isAssitantEnable; 
-
-	}
-
-	public void parseOCL()
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		manager.parseOCL(true);		
-	}
-
-	public void showOutputPane()
-	{	
-		manager.showOutputPane();
-	}
-
-	public void searchWarnings()
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		manager.searchWarnings();
-		manager.getFrame().focusOnWarnings();
-	}
-
-	public void searchErrors()
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		manager.searchErrors();
-		manager.getFrame().focusOnErrors();
-	}
-
-	public void showOclEditor()
-	{
-		manager.showOclEditor();
-	}
-
-	public void autoComplete()
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		AutoCompletionDialog.open(manager.getFrame(),manager.getCurrentProject());
-	}
-
-	public void verifyCurrentProject() 
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		manager.verifyCurrentModel();
-	}
-
-	public void deriveRelations() 
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		//manager.deriveRelations();
-	}
-
-	public void verifyModel() 
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		manager.verifyCurrentProject();
-	}
-
-	public void generateOwlSettings() 
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		manager.openOwlSettings();
-	}
-
-	public void generateOwl() 
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		manager.generateOwl();
-	}
-
-	public void generateSbvr()
-	{
-		if (manager.isProjectLoaded()==false) return;
-		
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(manager.getCurrentProject());
-		manager.generateSbvr((RefOntoUML.Model)refparser.getModel());
-	}
-
-	public void generateText()
-	{
-		if (manager.isProjectLoaded()==false) return;
-
-		manager.openTextSettings();
-	}
-
-	/**
-	 * Displays the grid depending on the selection state of the menu item.
-	 */
 
 	public void showGrid() {
 		if (manager.isProjectLoaded()==false) return;
@@ -546,6 +412,106 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		manager.getCurrentWrapper().getToolBar().update();
 	}
 	
+	public void callGlossary()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.workingOnlyWithChecked();
+		manager.callGlossary();
+	}
+	
+	public void generateSbvr()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.workingOnlyWithChecked();
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(manager.getCurrentProject());
+		manager.generateSbvr((RefOntoUML.Model)refparser.createPackageFromSelections(new Copier()));
+	}
+		
+	public void generateAlloy()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.workingOnlyWithChecked();		
+		manager.openAlloySettings();
+	}
+
+	public void generateOwl() 
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.workingOnlyWithChecked();
+		manager.openOwlSettings();
+	}
+	
+	public void verifyModel() 
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.verifyCurrentProject();
+	}
+	
+	public void parseOCL()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.parseOCL(true);		
+	}
+	public void derivedByUnion()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.deriveByUnion();
+	}
+
+	public void derivedByExclusion()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.deriveByExclusion();
+	}
+
+	public void manageAntiPatterns()
+	{			
+		if (manager.isProjectLoaded()==false) return;
+		manager.workingOnlyWithChecked();
+		AntiPatternSearchDialog.open(manager.getFrame());		
+	}
+	
+	public void searchWarnings()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.searchWarnings();
+		manager.getFrame().focusOnWarnings();
+	}
+
+	public void searchErrors()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.searchErrors();
+		manager.getFrame().focusOnErrors();
+	}
+	
+	public void enableAssistant() 
+	{
+		
+	}
+		
+	public void showOutputPane()
+	{	
+		manager.showOutputPane();
+	}
+
+	public void showOclEditor()
+	{
+		manager.showOclEditor();
+	}
+
+	public void autoComplete()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		AutoCompletionDialog.open(manager.getFrame(),manager.getCurrentProject());
+	}
+
+	public void deriveRelations() 
+	{
+		if (manager.isProjectLoaded()==false) return;
+		//manager.deriveRelations();
+	}
+
 	/**
 	 * Returns the application's menu manager.
 	 * @return the menu manager

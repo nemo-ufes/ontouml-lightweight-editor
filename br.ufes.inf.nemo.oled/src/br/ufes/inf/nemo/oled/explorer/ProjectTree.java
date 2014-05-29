@@ -541,7 +541,7 @@ public class ProjectTree extends CheckboxTree {
     	}
 	}
 	@SuppressWarnings("rawtypes")
-	public boolean selectModelElement(EObject element)
+	public boolean checkModelElement(EObject element)
 	{	
 		boolean result = false;
 		EObject rootEObj = ((OntoUMLElement)modelRootNode.getUserObject()).getElement();

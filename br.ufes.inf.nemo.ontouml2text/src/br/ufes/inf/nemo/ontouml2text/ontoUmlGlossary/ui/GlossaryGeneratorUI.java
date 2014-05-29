@@ -64,20 +64,20 @@ public class GlossaryGeneratorUI extends JFrame {
 		setSize(new Dimension(390, 387));
 		
 		//setType(Type.UTILITY);
-		setTitle("Glossary Settings");
+		setTitle("Glossary");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JLabel lblNewLabel = new JLabel("Output File Name (*.html)");
+		JLabel lblNewLabel = new JLabel("HTML File Name:");
 		
 		edtOutputFileName = new JTextField();
-		edtOutputFileName.setText("Glossary Output");
+		edtOutputFileName.setText("Glossary");
 		edtOutputFileName.setColumns(10);
 		
-		JLabel lblOutputDirectory = new JLabel("Output Folder");
+		JLabel lblOutputDirectory = new JLabel("Output Folder:");
 		
 		edtOutputDirectory = new JTextField();
 		edtOutputDirectory.setColumns(10);
@@ -92,19 +92,19 @@ public class GlossaryGeneratorUI extends JFrame {
 		cmbLanguage.addItem("Portuguese - BR");
 		cmbLanguage.setSelectedIndex(0);
 		
-		JLabel lblLanguage = new JLabel("Target Language");
+		JLabel lblLanguage = new JLabel("Target Language:");
 		
 		edtSubtitle = new JTextField();
 		edtSubtitle.setText("Detailed Description of Concepts");
 		edtSubtitle.setColumns(10);
 		
-		JLabel lblSubtitle = new JLabel("Subtitle");
+		JLabel lblSubtitle = new JLabel("Subtitle:");
 		
 		edtTitle = new JTextField();
 		edtTitle.setText("Glossary");
 		edtTitle.setColumns(10);
 		
-		lblTitle = new JLabel("Title");
+		lblTitle = new JLabel("Title:");
 		
 		JPanel panel = new JPanel();
 		
@@ -181,7 +181,7 @@ public class GlossaryGeneratorUI extends JFrame {
 		btnGenerateGlossary.setActionCommand("generateGlossary");
 		
 		btnCancel = new JButton("Cancel");
-		btnCancel.setIcon(new ImageIcon(GlossaryGeneratorUI.class.getResource("/resources/icon/cancel.png")));
+		//btnCancel.setIcon(new ImageIcon(GlossaryGeneratorUI.class.getResource("/resources/icon/cancel.png")));
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panel.add(btnGenerateGlossary);
 		panel.add(btnCancel);
