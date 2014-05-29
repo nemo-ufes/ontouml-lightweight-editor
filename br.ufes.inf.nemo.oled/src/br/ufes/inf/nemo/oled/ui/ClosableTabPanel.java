@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.eclipse.emf.edit.provider.IDisposable;
@@ -36,6 +37,7 @@ import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.palette.ColorPalette;
 import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
+import br.ufes.inf.nemo.oled.popupmenu.TabPopupMenu;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.diagram.Editor;
 import br.ufes.inf.nemo.oled.ui.diagram.TextEditor;
@@ -115,9 +117,14 @@ public class ClosableTabPanel extends JPanel {
                     editor.requestFocus(); 
                     editor.selectAll();                     
                     if (editor.getPreferredSize().width < 100) editor.setPreferredSize(new Dimension(100, editor.getPreferredSize().height)); 
-                } 
-                else 
-                { 
+                } else if (SwingUtilities.isRightMouseButton(e)){
+                	if(pane instanceof DiagramManager){                		
+                		int index = pane.indexOfTabComponent(ClosableTabPanel.this);
+                		Component comp = pane.getComponentAt(index);                		
+                		TabPopupMenu popup = new TabPopupMenu(pane,comp);
+                		popup.show(e.getComponent(),e.getX(),e.getY());
+                	}
+                } else { 
                     if (pane.getSelectedIndex() != pane.indexOfTabComponent(ClosableTabPanel.this)) pane.setSelectedIndex(pane.indexOfTabComponent(ClosableTabPanel.this)); 
                     pane.requestFocus(); 
                 }                
@@ -214,6 +221,11 @@ public class ClosableTabPanel extends JPanel {
 					}
 				}
 			}
+			removeTab();
+		}
+
+		public void removeTab()
+		{
 			int i = pane.indexOfTabComponent(ClosableTabPanel.this);
 			if (i != -1) {
 
@@ -225,7 +237,7 @@ public class ClosableTabPanel extends JPanel {
 				pane.remove(i);
 			}
 		}
-
+		
 		/**
 		 * Updates the UI. 
 		 * */
