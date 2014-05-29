@@ -1382,6 +1382,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		frame.showStatus(capitalize(sb.toString()));
 	}
 
+	@Override
+	public String toString(){
+		return " "+getDiagram().getName();
+	}
+	
 	private String capitalize(String s) 
 	{
 		if (s.length() == 0) return s;

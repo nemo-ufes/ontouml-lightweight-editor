@@ -1797,6 +1797,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return list;
 	}
 
+	public void selectEditor(DiagramEditor editor)
+	{		
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) {
+				if(((DiagramEditorWrapper) c).getDiagramEditor().equals(editor)) setSelectedComponent(c);
+			}
+		}		
+	}
+	
 	public DiagramEditor getDiagramEditor(StructureDiagram diagram)
 	{		
 		for(Component c: getComponents()){
