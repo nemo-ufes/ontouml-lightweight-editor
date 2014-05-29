@@ -49,7 +49,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				if (node instanceof ClassElement) {						
 					Classifier c = ((ClassElement)node).getClassifier();
-					editor.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().selectModelElement(c);					
+					editor.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().checkModelElement(c);					
 				}				
 			}
 		});

@@ -50,16 +50,16 @@ public class OWLHelper {
 					fileManager.write(owlOutput);
 					fileManager.done();
 					
-					return new OperationResult(ResultType.SUCESS, errors + "\n\nOWL generated successfully", new Object[] { owlFileName });
+					return new OperationResult(ResultType.SUCESS, errors + "OWL generated successfully", new Object[] { owlFileName });
 				}
 				else
 				{
-					return new OperationResult(ResultType.SUCESS, errors + "\n\nOWL generated successfully", new Object[] { owlOutput });
+					return new OperationResult(ResultType.SUCESS, errors + "OWL generated successfully", new Object[] { owlOutput });
 				}
     		}
     		else
     		{
-    			return new OperationResult(ResultType.ERROR, errors + "\n\nNo OWL generated", null);
+    			return new OperationResult(ResultType.ERROR, errors + "No OWL generated", null);
     		}
     	}
     	catch (Exception ex)

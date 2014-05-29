@@ -52,6 +52,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ocl.ParserException;
@@ -124,7 +125,6 @@ import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.DiagramElementFactoryImpl;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
-import br.ufes.inf.nemo.oled.util.AlloyHelper;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.FileChoosersUtil;
@@ -135,7 +135,6 @@ import br.ufes.inf.nemo.oled.util.OWLHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
-import br.ufes.inf.nemo.oled.util.SimulationElement;
 import br.ufes.inf.nemo.oled.verifier.VerificationHelper;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
@@ -796,18 +795,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ProjectBrowser.getParserFor(project).addElement(element);		
 		// add to the tree
 		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
-		boolean found = tree.selectModelElement(element);
+		boolean found = tree.checkModelElement(element);
 		if(!found) {
 			if(element.eContainer()!=null)
-				tree.selectModelElement(element.eContainer());
+				tree.checkModelElement(element.eContainer());
 			else
-				tree.selectModelElement(project.getModel());
+				tree.checkModelElement(project.getModel());
 			tree.addObject(element);
 		} else {
 			if(element instanceof Generalization){
-				tree.selectModelElement(element);
+				tree.checkModelElement(element);
 				tree.removeCurrentNode();
-				tree.selectModelElement(element.eContainer());
+				tree.checkModelElement(element.eContainer());
 				tree.addObject(element);
 			}
 		}
@@ -825,9 +824,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
    		association.getMemberEnd().add(target);
    		association.getMemberEnd().add(source);   		
    		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, currentProject).getTree();
-   		tree.selectModelElement(source);
+   		tree.checkModelElement(source);
    		tree.removeCurrentNode();
-   		tree.selectModelElement(association);
+   		tree.checkModelElement(association);
    		tree.addObject(source);   		
    		frame.getDiagramManager().updateOLEDFromModification(association, true);
 	}
@@ -883,7 +882,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(deletedElement);			
 		// delete from the tree
 		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
-		browser.getTree().selectModelElement(deletedElement);
+		browser.getTree().checkModelElement(deletedElement);
 		browser.getTree().removeCurrentNode();
 		browser.getTree().updateUI();
 	}
@@ -1081,7 +1080,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/** Open the Text Description settings window */
-	public void openTextSettings() 
+	public void callGlossary() 
 	{
 		SwingUtilities.invokeLater(new Runnable() {			
 			@Override
@@ -1124,7 +1123,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 *  This method check in the tree all the elements contained in the diagram.
 	 *  If something is missing it completes the checking with the missing elements.
 	 *  The elements checked  in the tree are then properly selected in the OntoUML parser.
-	 *  This then enables all the application to work only with the selected/checked elements. 
+	 *  This then enables all the application to work only with the selected/checked elements in the parser. 
 	 */
 	public void workingOnlyWith(StructureDiagram diagram)
 	{
@@ -1149,6 +1148,68 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
 		modeltree.getTree().check(elements, true);					
 		modeltree.getTree().updateUI();		
+	}
+
+	/** Tell the application to work only with the elements contained in these diagrams. */
+	public void workingOnlyWith(ArrayList<StructureDiagram> diagrams)
+	{
+		ArrayList<EObject> elements = new ArrayList<EObject>();
+		for(StructureDiagram sd: diagrams) {
+			for(DiagramElement de: sd.getChildren()){
+				if(de instanceof ClassElement) { elements.add(((ClassElement)de).getClassifier()); }
+				if(de instanceof AssociationElement) { elements.add(((AssociationElement)de).getRelationship()); }
+				if(de instanceof GeneralizationElement) {
+					Relationship rel = ((GeneralizationElement)de).getRelationship();
+					elements.add(rel);
+					elements.addAll(((Generalization)rel).getGeneralizationSet());				 
+				}
+			}		
+		}			
+		//complete missing/mandatory dependencies on the parser
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());				
+		refparser.selectThisElements((ArrayList<EObject>)elements,true);
+		List<EObject> added = refparser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY,false);
+		elements.removeAll(added);
+		elements.addAll(added);
+		//check in the tree the selected elements of the parser
+		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
+		modeltree.getTree().check(elements, true);					
+		modeltree.getTree().updateUI();		
+	}
+	
+	/** 
+	 * Tell the application to work only with the checked elements in the tree.
+	 * 
+	 * This method check if some dependence is missing in the checking, completing it with the missing elements.
+	 * The elements checked  in the tree are then properly selected in the OntoUML parser.
+	 * This  enables all the application to work only with the checked elements in the parser/tree.
+	 */
+	public void workingOnlyWithChecked()
+	{
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(currentProject);
+		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);			
+		List<EObject> selected = modeltree.getTree().getModelCheckedElements();
+		refparser.selectThisElements((ArrayList<EObject>)selected,true);		
+		List<EObject> added = refparser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY,false);		
+		selected.removeAll(added);
+		selected.addAll(added);	
+		modeltree.getTree().checkModelElements(selected, true);			
+		modeltree.getTree().updateUI();
+	}
+	
+	/** 
+	 * Tell the application to work with all elements in the model.
+	 * 
+	 * This method check all the elements of the model in the tree. Then properly select them in the OntoUML parser.
+	 * This  enables all the application to work with all the elements in the parser/tree.
+	 */
+	public void workingWithAll()
+	{
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(currentProject);
+		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);			
+		modeltree.getTree().checkModelElement(currentProject.getModel());
+		refparser.selectAllElements();		
+		modeltree.getTree().updateUI();
 	}
 	
 	/**  Generate SBVR. In order to use the plug-in, we need to store the model into a file before. */
@@ -1726,10 +1787,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return null;
 	}
 
-	/**
-	 * Gets all DiagramEditors
-	 * @return
-	 */
+	/** Return all opened diagram editors */
 	public ArrayList<DiagramEditor> getDiagramEditors()
 	{
 		ArrayList<DiagramEditor> list = new ArrayList<DiagramEditor>();
@@ -2023,7 +2081,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		MappingType mappingType = null;
 		if(!owlType.equals("SIMPLE")) mappingType = MappingType.valueOf(owlType);		
 		String oclRules = getFrame().getInfoManager().getOcleditor().getText();
-		OperationResult result = OWLHelper.generateOwl(project.getModel(), 
+		RefOntoUML.Package model = ProjectBrowser.getParserFor(project).createPackageFromSelections(new Copier());
+		OperationResult result = OWLHelper.generateOwl(model, 
 			ProjectSettings.OWL_ONTOLOGY_IRI.getValue(project),
 			mappingType,
 			ProjectSettings.OWL_GENERATE_FILE.getBoolValue(project),
@@ -2092,33 +2151,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void mouseMoved(EditorMouseEvent event) {}
 
 	//===================================== @Older =======================================
-
-	/**
-	 * Simulate the selected model elements using Alloy.
-	 */
-	public void verifyCurrentModel() {
-
-		UmlProject project = getCurrentEditor().getProject();
-		StructureDiagram diagram = (StructureDiagram) getCurrentEditor().getDiagram();
-
-		List<SimulationElement> simulationElements = diagram.getSimulationElements();
-		OperationResult result = AlloyHelper.validateModel(project.getModel(), simulationElements, project.getTempDir());
-
-		if(result.getResultType() != ResultType.ERROR)
-		{
-			frame.getInfoManager().showOutputText(result.toString(), true, false); 
-
-			//			A4Solution solution = (A4Solution) result.getData()[0];
-			//			Module module = (Module) result.getData()[1];
-			//			ConstMap<String, String> alloySources = (ConstMap<String, String>) result.getData()[2];
-			//
-			//			showModelInstances(diagram, solution, module, alloySources, simulationElements);			
-		}
-		else
-		{
-			frame.getInfoManager().showOutputText(result.toString(), true, true); 
-		}
-	}
 
 	@SuppressWarnings("unused")
 	private Editor getEditorForDiagram(StructureDiagram diagram, EditorNature nature)

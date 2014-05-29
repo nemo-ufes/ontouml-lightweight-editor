@@ -3,16 +3,15 @@ package br.ufes.inf.nemo.oled.ui.diagram;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
-import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
-
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
+import br.ufes.inf.nemo.oled.antipattern.AntiPatternSearchDialog;
+import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 public class DiagramToolbar extends JToolBar {
 
@@ -35,8 +34,7 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnNewDiagram;
 	private JButton btnAlloy;
 	private JButton btnOWL;
-	private JButton btnGlossary;
-	private JButton btnSbvr;
+	private JButton btnAntiPattern;
 	
 	public void update(){
 		btnGrid.setSelected(editor.showGrid());
@@ -185,7 +183,7 @@ public class DiagramToolbar extends JToolBar {
 		add(btnPutToBack);
 		
 		btnExportPng = new JButton("");
-		btnExportPng.setToolTipText("<html>Save diagram as PNG<br><br>IMPORTANT: Move your diagram as close as possible <br>to the upper left side of the grid.<br><br> </hmtl>");
+		btnExportPng.setToolTipText("<html>Save diagram as PNG<br><br>TIP: Move your diagram as close as possible <br>to the upper left side of the grid.<br><br> </hmtl>");
 		btnExportPng.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
@@ -227,59 +225,49 @@ public class DiagramToolbar extends JToolBar {
 		btnZoomStatus.setFocusable(false);
 		add(btnZoomStatus);
 		
-		btnGlossary = new JButton("");
-		btnGlossary.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {        		
-        		editor.getDiagramManager().workingOnlyWith(editor.getDiagram());
-        		editor.getDiagramManager().openTextSettings();
-        	}
+		btnAlloy = new JButton("");
+		btnAlloy.setToolTipText("Transform all OPENED diagrams and all axioms into Alloy");
+		btnAlloy.addActionListener(new ActionListener() {				
+	    	@Override
+	    	public void actionPerformed(ActionEvent e) {       
+	    		ArrayList<StructureDiagram> diagrams = new ArrayList<StructureDiagram>();
+	    		for(DiagramEditor de: editor.getDiagramManager().getDiagramEditors()) diagrams.add(de.getDiagram());
+	    		editor.getDiagramManager().workingOnlyWith(diagrams);
+	    		editor.getDiagramManager().openAlloySettings();        		
+	    	}
         });	
-		btnGlossary.setToolTipText("Transform this diagram into a glossary of terms");
-		btnGlossary.setFocusable(false);
-		btnGlossary.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/bookmark_book.png")));
-		add(btnGlossary);
-		
-			btnAlloy = new JButton("");
-			btnAlloy.setToolTipText("Transform this diagram and axioms into Alloy");
-			btnAlloy.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {        		
-        		editor.getDiagramManager().workingOnlyWith(editor.getDiagram());
-        		editor.getDiagramManager().openAlloySettings();        		
-        	}
-        });	
-			btnAlloy.setFocusable(false);
-			btnAlloy.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/alloy/alloy.png")));
-			add(btnAlloy);
+		btnAlloy.setFocusable(false);
+		btnAlloy.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/alloy/alloy.png")));
+		add(btnAlloy);
 		
 		btnOWL = new JButton("");
-		btnOWL.setToolTipText("Transform this diagram and axioms into OWL");
+		btnOWL.setToolTipText("Transform all OPENED diagrams and all axioms into OWL");
 		btnOWL.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
-        		editor.getDiagramManager().workingOnlyWith(editor.getDiagram());
+        		ArrayList<StructureDiagram> diagrams = new ArrayList<StructureDiagram>();
+	    		for(DiagramEditor de: editor.getDiagramManager().getDiagramEditors()) diagrams.add(de.getDiagram());
+	    		editor.getDiagramManager().workingOnlyWith(diagrams);
         		editor.getDiagramManager().openOwlSettings();
         	}
-        });	
-		
-		btnSbvr = new JButton("");
-		btnSbvr.setToolTipText("Transform this diagram into SBVR");
-		btnSbvr.setFocusable(false);
-		//btnSbvr.setEnabled(false);
-		btnSbvr.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {        		
-        		editor.getDiagramManager().workingOnlyWith(editor.getDiagram());
-        		OntoUMLParser refparser = ProjectBrowser.getParserFor(editor.getDiagramManager().getCurrentProject());
-        		RefOntoUML.Model model = (RefOntoUML.Model)refparser.createPackageFromSelections(new Copier());
-        		editor.getDiagramManager().generateSbvr(model);
-        	}
-        });	
-		btnSbvr.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/blog.png")));
-		add(btnSbvr);
+        });
 		btnOWL.setFocusable(false);
 		btnOWL.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/owl.png")));
 		add(btnOWL);
+		
+		btnAntiPattern = new JButton("");
+		btnAntiPattern.setToolTipText("Identify antipattern occurrences in all OPENED diagrams");
+		btnAntiPattern.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		ArrayList<StructureDiagram> diagrams = new ArrayList<StructureDiagram>();
+	    		for(DiagramEditor de: editor.getDiagramManager().getDiagramEditors()) diagrams.add(de.getDiagram());
+	    		editor.getDiagramManager().workingOnlyWith(diagrams);
+        		AntiPatternSearchDialog.open(editor.getDiagramManager().getFrame());
+        	}
+        });
+		btnAntiPattern.setFocusable(false);
+		btnAntiPattern.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/antipattern16.png")));
+		add(btnAntiPattern);
 	}
 }

@@ -91,11 +91,11 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			public void actionPerformed(ActionEvent arg0) {
 				if (con instanceof AssociationElement) {						
 					Relationship c = ((AssociationElement)con).getRelationship();
-					editor.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().selectModelElement(c);					
+					editor.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().checkModelElement(c);					
 				}
 				if (con instanceof GeneralizationElement) {						
 					Relationship c = ((GeneralizationElement)con).getRelationship();
-					editor.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().selectModelElement(c);					
+					editor.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().checkModelElement(c);					
 				}
 			}
 		});
