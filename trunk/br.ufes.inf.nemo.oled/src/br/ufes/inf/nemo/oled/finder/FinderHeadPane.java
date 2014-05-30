@@ -41,7 +41,8 @@ public class FinderHeadPane extends JPanel {
 		btnRun = new JButton("");
 		btnRun.setIcon(new ImageIcon(FinderHeadPane.class.getResource("/resources/icons/x16/find.png")));
 		btnRun.setBackground(Color.LIGHT_GRAY);
-				
+		btnRun.setFocusable(false);
+		
 		JLabel lblTerm = new JLabel("Term:");
 		
 		GroupLayout groupLayout = new GroupLayout(this);

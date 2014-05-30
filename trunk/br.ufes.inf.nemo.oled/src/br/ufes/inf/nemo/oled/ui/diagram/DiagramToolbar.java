@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.ui.diagram;
 
+import java.awt.Color;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
@@ -35,6 +37,7 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnAlloy;
 	private JButton btnOWL;
 	private JButton btnAntiPattern;
+	private JButton btnColor;
 	
 	public void update(){
 		btnGrid.setSelected(editor.showGrid());
@@ -190,6 +193,25 @@ public class DiagramToolbar extends JToolBar {
         		editor.getDiagramManager().exportGfx();
         	}
         });	
+		
+		btnColor = new JButton("");
+		btnColor.setToolTipText("Set the background color for selected classes");
+		btnColor.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/control_wheel.png")));
+		btnColor.addActionListener(new ActionListener() {				
+        	private Color color;
+
+			@Override
+        	public void actionPerformed(ActionEvent e) { 
+				if(color==null) color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", Color.LIGHT_GRAY);
+				else color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", color);
+        		if (color != null){
+        			editor.setBackgroundInSelected(color);
+        		}        		        		
+        	}
+        });	
+		add(btnColor);
+		btnColor.setFocusable(false);
+		
 		btnExportPng.setFocusable(false);
 		btnExportPng.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/photo.png")));
 		add(btnExportPng);
