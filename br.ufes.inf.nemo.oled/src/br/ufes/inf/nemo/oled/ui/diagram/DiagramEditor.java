@@ -1081,6 +1081,17 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 	}
 	
+	public void setBackgroundInSelected(Color color)
+	{
+		for(DiagramElement de: getSelectedElements()){
+			if(de instanceof ClassElement){
+				ClassElement ce = (ClassElement)de;
+				ce.setBackgroundColor(color);
+			}
+		}
+		repaint();
+	}
+	
 	/** Align Center Vertically */
 	public void alignCenterVertically()
 	{

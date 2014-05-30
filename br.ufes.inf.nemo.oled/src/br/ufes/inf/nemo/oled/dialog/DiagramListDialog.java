@@ -73,13 +73,13 @@ public class DiagramListDialog extends JDialog {
 		this.elem = elem;
 		this.diagrams = diagrams;
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage(DiagramListDialog.class.getResource("/resources/icons/x16/tree/diagram.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(DiagramListDialog.class.getResource("/resources/icons/x16/text_list_bullets.png")));
 		initGUI();
 	}
 	
 	public DiagramListDialog()
 	{
-		setIconImage(Toolkit.getDefaultToolkit().getImage(DiagramListDialog.class.getResource("/resources/icons/x16/tree/diagram.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(DiagramListDialog.class.getResource("/resources/icons/x16/text_list_bullets.png")));
 		initGUI();
 	}
 	

@@ -19,6 +19,7 @@
  */
 package br.ufes.inf.nemo.oled.umldraw.structure;
 
+import java.awt.Color;
 import java.awt.geom.Dimension2D;
 
 import org.eclipse.emf.common.notify.Adapter;
@@ -131,6 +132,14 @@ public final class ClassElement extends AbstractCompositeNode implements
 		return cloned;
 	}
 
+	public void setBackgroundColor(Color color)
+	{
+		mainCompartment.setBackground(color);
+		attributesCompartment.setBackground(color);
+		operationsCompartment.setBackground(color);
+		invalidate();
+	}
+	
 	public void changeStereotypeTo(String stereotype)
 	{
 		ontoUmlStereotype = stereotype;
