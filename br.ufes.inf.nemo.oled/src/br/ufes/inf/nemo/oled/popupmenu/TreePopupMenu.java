@@ -339,16 +339,18 @@ public class TreePopupMenu extends JPopupMenu {
         derivationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/derivation.png")));
 	}
 	
-	public void createAddGenItem()
+	public void createAddItem()
 	{
 		OntoUMLElement ontoElement = ((OntoUMLElement)selectedNode.getUserObject());
 		final RefOntoUML.Type eContainer = (RefOntoUML.Type)ontoElement.getElement();
-		JMenuItem addGenItem = new JMenuItem("Add Generalization");
-		JMenuItem addCommentItem = new JMenuItem("Add Comment");
-		JMenuItem addConstraintItem = new JMenuItem("Add Constraint");
-		add(addGenItem);    			
-		add(addCommentItem);
-		add(addConstraintItem);
+		JMenu addItem = new JMenu("Add");
+		JMenuItem addGenItem = new JMenuItem("Generalization");
+		JMenuItem addCommentItem = new JMenuItem("Comment");
+		JMenuItem addConstraintItem = new JMenuItem("Constraintx");
+		addItem.add(addGenItem);    			
+		addItem.add(addCommentItem);
+		addItem.add(addConstraintItem);
+		add(addItem);
 		addGenItem.addActionListener(new ActionListener() {				
 	        	@Override
 	        	public void actionPerformed(ActionEvent e) {
@@ -469,8 +471,8 @@ public class TreePopupMenu extends JPopupMenu {
     		}		   		
     		if(ontoElement.getElement() instanceof RefOntoUML.Class || ontoElement.getElement() instanceof RefOntoUML.DataType)
     		{    			
-    			createClassChangeItem();
-    			createAddGenItem();
+    			createAddItem();
+    			createClassChangeItem();    			
     		}
     		if(ontoElement.getElement() instanceof RefOntoUML.Association)
     		{ 
