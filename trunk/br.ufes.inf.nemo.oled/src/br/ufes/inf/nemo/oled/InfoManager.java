@@ -119,13 +119,13 @@ public class InfoManager extends JTabbedPane {
 		addTab(" Errors ",errors);	
 		setIconAt(indexOfComponent(errors),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/cross_octagon.png")));
 		
-		addTab(" Output ",outputPane);	
+		addTab(" Console ",outputPane);	
 		setIconAt(indexOfComponent(outputPane),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/monitor.png")));
 		
 		addTab(" Find ",finderPane);
 		setIconAt(indexOfComponent(finderPane),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/find.png")));
 		
-		addTab(" Temporal OCL Editor ",ocleditor);	
+		addTab(" OCL/TOCL Constraints ",ocleditor);	
 		setIconAt(indexOfComponent(ocleditor),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/text-editor.png")));
 		
 		setTabPlacement(JTabbedPane.BOTTOM);				
