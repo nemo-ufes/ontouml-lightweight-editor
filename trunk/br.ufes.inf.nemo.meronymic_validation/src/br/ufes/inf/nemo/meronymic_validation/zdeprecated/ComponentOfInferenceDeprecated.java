@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.meronymic_validation.inference;
+package br.ufes.inf.nemo.meronymic_validation.zdeprecated;
 
 /*
  * This class infers componentOf relations from pre-defined structures presented in G. Guizzardi's paper
@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EcoreFactory;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.meronymic_validation.derivation.DerivedMeronymic;
 import br.ufes.inf.nemo.meronymic_validation.graph.Node;
 
 import RefOntoUML.AggregationKind;

@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.meronymic_validation.inference;
+package br.ufes.inf.nemo.meronymic_validation.zdeprecated;
 
 import java.util.ArrayList;
 

@@ -21,9 +21,9 @@ public class MeronymicCycleChecker extends Checker<ArrayList<Classifier>>{
 		else
 			errors.clear();
 		
-		Graph genGraph = new Graph();
+		Graph genGraph = new Graph(parser);
 		//creates directed graph with classes and meronymics
-		genGraph.createMeronymicGraph(parser);
+		genGraph.createMeronymicGraph();
 		
 		//get all paths in the graph
 		ArrayList<EdgePath> allPaths = genGraph.getAllEdgePathsFromAllNodes();

@@ -17,7 +17,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class GeneralizationChecker extends Checker<Classifier>{
 
-	OntoUMLParser parser;
 	HashMap<Classifier,ArrayList<Classifier>> forbiddenParentsHash;
 	
 	public GeneralizationChecker(OntoUMLParser parser) {
@@ -29,6 +28,7 @@ public class GeneralizationChecker extends Checker<Classifier>{
 	 * 
 	 * @return false if there is a problem
 	 */
+	@Override
 	public boolean check(){
 		
 		if(forbiddenParentsHash==null)

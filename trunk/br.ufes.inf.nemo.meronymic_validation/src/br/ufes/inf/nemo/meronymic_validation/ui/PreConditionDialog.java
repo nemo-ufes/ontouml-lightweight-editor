@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +61,7 @@ public class PreConditionDialog extends JDialog {
 	private JProgressBar progressBar;
 	private DefaultTableModel tableModel;
 	private OntoUMLParser parser;
-	private PreConditionChecker checker;
+	private PreConditionChecker preConditionChecker;
 	protected enum State {SUCCESS, FAILED, ABORTED, UNDEFINED, INTERRUPED};
 	private SwingWorker<Boolean, CheckResult> worker;
 	
@@ -71,7 +73,7 @@ public class PreConditionDialog extends JDialog {
 //		super(frame);
 //		this.frame = frame;
 		this.parser = parser;
-		checker = new PreConditionChecker(this.parser);
+		preConditionChecker = new PreConditionChecker(this.parser);
 		
 		setResizable(false);
 		setTitle("Meronymic Transitivity Validation");
@@ -148,10 +150,8 @@ public class PreConditionDialog extends JDialog {
 		JLabel lblResults = new JLabel("Errors found:");
 		lblResults.setBounds(10, 188, 69, 15);
 		contentPanel.add(lblResults);
-		
-		
-		
-		JTable errorTable = new JTable();
+
+		errorTable = new JTable();
 		errorTable.setPreferredScrollableViewportSize(new Dimension(500, 70));
 		errorTable.setFillsViewportHeight(true);
 		
@@ -171,6 +171,7 @@ public class PreConditionDialog extends JDialog {
 		btnStop.setBounds(267, 366, 57, 23);
 		btnStop.addActionListener(actionStop);
 		contentPanel.add(btnStop);
+		btnStop.setEnabled(false);
 		
 		btnNext = new JButton("Next");
 		btnNext.setBounds(334, 366, 60, 23);
@@ -193,6 +194,7 @@ public class PreConditionDialog extends JDialog {
 		textProgress.setColumns(10);
 		
 		progressBar = new JProgressBar();
+		progressBar.setStringPainted(true);
 		progressBar.setBounds(346, 419, 117, 20);
 		contentPanel.add(progressBar);
 		
@@ -201,15 +203,20 @@ public class PreConditionDialog extends JDialog {
 	private ActionListener actionStop = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			textProgress.setText("Pre-conditions analysis stopped by user!");
 			worker.cancel(true);
+			textProgress.setText("Pre-conditions analysis stopped by user!");
+			progressBar.setValue(0);
+			btnStop.setEnabled(false);
+			
 		}
 	};
 	
 	private ActionListener actionRun = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent event) {
+			btnStop.setEnabled(true);
 			hideAllLabels();
+			progressBar.setValue(0);
 			
 			worker = new SwingWorker<Boolean, CheckResult>() {
 				
@@ -225,7 +232,7 @@ public class PreConditionDialog extends JDialog {
 					result.message = "Checking the model for hierarchy cycles...";
 					publish(result);
 					
-					if(runChecker(checker.getHierachyCycleChecker(), errorList)){
+					if(runChecker(preConditionChecker.getHierachyCycleChecker(), errorList)){
 						result.hierarchyResult = State.SUCCESS;	
 					}
 					else{
@@ -234,11 +241,11 @@ public class PreConditionDialog extends JDialog {
 						result.message = "The model failed one of the tests!";
 						return false;
 					}
-					
+					setProgress(17);
 					result.message = "Checking the model for invalid parents...";
 					publish(result);
 					
-					if(runChecker(checker.getGeneralizationChecker(), errorList)){
+					if(runChecker(preConditionChecker.getGeneralizationChecker(), errorList)){
 						result.generalizationResult = State.SUCCESS;
 					}
 					else{
@@ -247,11 +254,11 @@ public class PreConditionDialog extends JDialog {
 						result.message = "The model failed one of the tests!";
 						return false;
 					}
-					
+					setProgress(33);
 					result.message = "Checking the model for identity problems...";
 					publish(result);
 					
-					if(runChecker(checker.getIdentityChecker(), errorList)){
+					if(runChecker(preConditionChecker.getIdentityChecker(), errorList)){
 						result.identityResult = State.SUCCESS;
 					}
 					else{
@@ -260,11 +267,11 @@ public class PreConditionDialog extends JDialog {
 						result.message = "The model failed one of the tests!";
 						return false;
 					}
-					
+					setProgress(50);
 					result.message = "Checking the model for aggregation issues on meronymics...";
 					publish(result);
 					
-					if(runChecker(checker.getAggregationChecker(), errorList)){
+					if(runChecker(preConditionChecker.getAggregationChecker(), errorList)){
 						result.aggregationResult = State.SUCCESS;
 					}
 					else{
@@ -273,11 +280,11 @@ public class PreConditionDialog extends JDialog {
 						result.message = "The model failed one of the tests!";
 						return false;
 					}
-					
+					setProgress(67);
 					result.message = "Checking if the source and whole combination of all part-whole relations are valid...";
 					publish(result);
 					
-					if(runChecker(checker.getMeronymicEndsChecker(), errorList)){
+					if(runChecker(preConditionChecker.getMeronymicEndsChecker(), errorList)){
 						result.endsResult = State.SUCCESS;
 					}
 					else{
@@ -287,10 +294,11 @@ public class PreConditionDialog extends JDialog {
 						return false;
 					}
 					
+					setProgress(83);
 					result.message = "Checking the model for meronymic cycles...";
 					publish(result);
 					
-					if(runChecker(checker.getMeronymicCycleChecker(), errorList)){
+					if(runChecker(preConditionChecker.getMeronymicCycleChecker(), errorList)){
 						result.endsResult = State.SUCCESS;
 					}
 					else{
@@ -299,6 +307,7 @@ public class PreConditionDialog extends JDialog {
 						return false;
 					}
 					
+					setProgress(100);
 					result.message = "The model passed all the tests!";
 					return true;
 				}
@@ -338,12 +347,24 @@ public class PreConditionDialog extends JDialog {
 		        	for (ArrayList<Object> errorLine : errorList) {
 		        		tableModel.addRow(errorLine.toArray());
 					}
+		        	progressBar.setValue(100);
+		        	btnStop.setEnabled(false);
 				}
 			};
+			
+			worker.addPropertyChangeListener(new PropertyChangeListener() {
+				
+				@Override
+				public void propertyChange(PropertyChangeEvent event) {
+					if(event.getPropertyName().compareTo("progress")==0)
+						progressBar.setValue((Integer) event.getNewValue());
+				}
+				});
 			
 			worker.execute();
 		}
 	};
+	private JTable errorTable;
 
 	class CheckResult {
 		State hierarchyResult, generalizationResult, identityResult, aggregationResult, endsResult, meronymicResult;

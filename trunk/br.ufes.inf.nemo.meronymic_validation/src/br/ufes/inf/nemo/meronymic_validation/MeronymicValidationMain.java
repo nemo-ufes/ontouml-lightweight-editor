@@ -1,6 +1,9 @@
-package br.ufes.inf.nemo.meronymic_validation.ui;
+package br.ufes.inf.nemo.meronymic_validation;
 
 import java.io.File;
+
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -11,8 +14,10 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.meronymic_validation.ui.ForbiddenFrame;
+import br.ufes.inf.nemo.meronymic_validation.ui.ValidationDialog;
 
-public class MeronymicTester {
+public class MeronymicValidationMain {
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -25,12 +30,16 @@ public class MeronymicTester {
 		// Get the URI of the model file.
 	
 //		URI fileURI = URI.createFileURI(new File("GeneralizationCycle.refontouml").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("IdentityProblem.refontouml").getAbsolutePath());
 //		URI fileURI = URI.createFileURI(new File("InvalidGeneralization.refontouml").getAbsolutePath());
-//		URI fileURI = URI.createFileURI(new File("GeneralizationCycle.refontouml").getAbsolutePath());
-//		URI fileURI = URI.createFileURI(new File("GeneralizationCycle.refontouml").getAbsolutePath());
-//		URI fileURI = URI.createFileURI(new File("GeneralizationCycle.refontouml").getAbsolutePath());
-	
+//		URI fileURI = URI.createFileURI(new File("IdentityProblem.refontouml").getAbsolutePath());
+//		URI fileURI = URI.createFileURI(new File("AggregationProblem.refontouml").getAbsolutePath());
+//		URI fileURI = URI.createFileURI(new File("MeronymicEndsProblem.refontouml").getAbsolutePath());
+//		URI fileURI = URI.createFileURI(new File("MeronymicCycle.refontouml").getAbsolutePath());
+//		URI fileURI = URI.createFileURI(new File("meronymicValid.refontouml").getAbsolutePath());
+//		URI fileURI = URI.createFileURI(new File("allMeronymic.refontouml").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("intransitiveMemberOf.refontouml").getAbsolutePath());
+		
+		
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
 		
@@ -44,8 +53,14 @@ public class MeronymicTester {
 		OntoUMLParser parser = new OntoUMLParser(m);
 		System.out.println("Parser loaded: "+ m.getName());
 		
-	
-		PreConditionDialog.open(parser);
+//		ValidationDialog dialog = new ValidationDialog(parser);
+//		dialog.setBounds(100, 100, 860, 684);
+//		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//		dialog.setVisible(true);
+		
+		ForbiddenFrame frame = new ForbiddenFrame(parser);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setVisible(true);
 	}
 	
 }

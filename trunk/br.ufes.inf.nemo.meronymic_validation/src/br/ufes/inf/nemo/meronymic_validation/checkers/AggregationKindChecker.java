@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Meronymic;
-import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
@@ -22,9 +21,9 @@ public class AggregationKindChecker extends Checker<Meronymic>{
 		else
 			errors.clear();
 		
-		for (componentOf compOf : parser.getAllInstances(componentOf.class)) {
-			if(!isAggregationKindSet(compOf))
-				errors.add(compOf);
+		for (Meronymic meronymic : parser.getAllInstances(Meronymic.class)) {
+			if(!isAggregationKindSet(meronymic))
+				errors.add(meronymic);
 		}
 		
 		if(getErrors().size()>0)
@@ -59,12 +58,12 @@ public class AggregationKindChecker extends Checker<Meronymic>{
 
 	@Override
 	public String getErrorType(int i) {
-		String description = "Invalid Aggregation - ";
+		String description = "";
 		
 		if(bothEndsAreNone(errors.get(i)))
-			description += "No end is setted";
+			description += "Aggregation NONE in both ends";
 		else
-			description += "Both ends are setted";
+			description += "Aggregation setted in both ends";
 		
 		return description;
 	}
