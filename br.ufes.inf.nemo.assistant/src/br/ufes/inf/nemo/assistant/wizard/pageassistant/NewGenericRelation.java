@@ -27,8 +27,7 @@ public class NewGenericRelation extends WizardPageAssistant implements Serializa
 	 */
 	public NewGenericRelation() {
 		super("Create new generic relation");
-		setTitle("New Relation");
-		setDescription("Creating a Relation between two classes");
+		setTitle("Creating a Relation between two classes");
 	}
 
 	/**
@@ -270,7 +269,6 @@ public class NewGenericRelation extends WizardPageAssistant implements Serializa
 
 	@Override
 	public void init() {
-		setTitle("New Relation");
-		setDescription("Creating a Relation between two classes");
+		setTitle("Creating a Relation between two classes");
 	}
 }

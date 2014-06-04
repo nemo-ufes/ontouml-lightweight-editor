@@ -19,6 +19,8 @@ public class NodeAssistant implements Serializable{
 
 	private WizardPageAssistant page = null;
 
+	private String nodeDescription;
+	
 	public boolean isEndNode(){
 		//return isEndNode;
 		if(nextNode == null && (trueNode == null || falseNode == null)){
@@ -42,6 +44,7 @@ public class NodeAssistant implements Serializable{
 	
 	public WizardPageAssistant getPage(){
 		page.init();
+		page.setDescription(nodeDescription);
 		return page;
 	}
 
@@ -109,5 +112,9 @@ public class NodeAssistant implements Serializable{
 	protected boolean isAction = false;
 	public boolean isAction(){
 		return isAction;
+	}
+
+	public void setDescription(String description) {
+		nodeDescription = description;
 	}
 }

@@ -20,8 +20,7 @@ public class Question extends WizardPageAssistant  implements Serializable{
 	 */
 	public Question() {
 		super("Question");
-		setTitle("Question");
-		setDescription("User Question");
+		setTitle("User Question");
 	}
 
 	private Button btTrue;
@@ -118,7 +117,7 @@ public class Question extends WizardPageAssistant  implements Serializable{
 
 	@Override
 	public void init() {
-		setTitle("Question");
+		setTitle("User Question");
 		setDescription("User Question");
 	}
 }

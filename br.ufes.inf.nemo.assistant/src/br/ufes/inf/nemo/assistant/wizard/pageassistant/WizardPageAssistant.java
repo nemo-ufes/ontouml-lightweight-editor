@@ -16,6 +16,14 @@ public abstract class WizardPageAssistant extends WizardPage {
 		super("");
 	}
 
+	protected String pageDescription = new String();
+	
+	@Override
+	public void setDescription(String description) {
+		pageDescription = description;
+		super.setDescription(description);
+	}
+	
 	/**
 	 * 
 	 */

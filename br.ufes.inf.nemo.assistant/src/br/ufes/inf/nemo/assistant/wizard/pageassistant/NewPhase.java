@@ -32,8 +32,7 @@ public class NewPhase extends WizardPageAssistant  implements Serializable{
 	 */
 	public NewPhase() {
 		super("Create new phase");
-		setTitle("New Phases");
-		setDescription("Creating new Phases");
+		setTitle("Creating new Phases and its rules");
 	}
 
 	private int contPhases = 0;
@@ -234,8 +233,7 @@ public class NewPhase extends WizardPageAssistant  implements Serializable{
 
 	@Override
 	public void init() {
-		setTitle("New Phases");
-		setDescription("Creating new Phases");
+		setTitle("Creating new Phases and its rules");
 		contPhases = 0;
 	}
 }

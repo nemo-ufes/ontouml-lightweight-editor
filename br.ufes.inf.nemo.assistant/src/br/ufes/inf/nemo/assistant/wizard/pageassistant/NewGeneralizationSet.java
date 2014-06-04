@@ -29,8 +29,7 @@ public class NewGeneralizationSet extends WizardPageAssistant implements Seriali
 	 */
 	public NewGeneralizationSet() {
 		super("Create new GeneralizationSet");
-		setTitle("New GeneralizationSet");
-		setDescription("Creating a Generalization set and setting its meta-properties");
+		setTitle("Creating a Generalization set and setting its meta-properties");
 	}
 
 	private boolean canFinish = false;
@@ -337,7 +336,6 @@ public class NewGeneralizationSet extends WizardPageAssistant implements Seriali
 
 	@Override
 	public void init() {
-		setTitle("New GeneralizationSet");
-		setDescription("Creating a Generalization set and setting its meta-properties");
+		setTitle("Creating a Generalization set and setting its meta-properties");
 	}
 }

@@ -183,7 +183,7 @@ public class AstahParser {
 
 		//Set the page description
 		if(!aNode.getTaggedValue("description").isEmpty())
-			node.getPage().setDescription(aNode.getTaggedValue("description"));
+			node.setDescription(aNode.getTaggedValue("description"));
 
 		//Keep the last node in memory
 		_lastNode = node;			
