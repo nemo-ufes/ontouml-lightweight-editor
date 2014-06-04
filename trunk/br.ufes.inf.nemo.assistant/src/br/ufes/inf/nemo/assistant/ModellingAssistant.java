@@ -122,9 +122,6 @@ public class ModellingAssistant {
 					fix = graph.getManagerPattern().getFix();
 				}
 				
-				System.out.println("REFonto: {");
-				UtilAssistant.printRefOntoUML(currentRoot);
-				System.out.println("}");
 				return fix;
 			}else{
 //				System.out.println("stereotype not treated yet");
@@ -133,9 +130,6 @@ public class ModellingAssistant {
 			//e.printStackTrace();
 //			System.out.println("pattern not treated yet");
 		}
-//		System.out.println("REFonto: {");
-//		UtilAssistant.printRefOntoUML(p);
-//		System.out.println("}");
 		return null;
 	}
 }

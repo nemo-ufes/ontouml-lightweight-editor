@@ -33,8 +33,7 @@ public class NewRelator extends WizardPageAssistant {
 
 	@Override
 	public void init() {
-		setTitle("New Realtor");
-		setDescription("Creating a Relator class and its mediations");
+		setTitle("Creating a Relator class and its mediations");
 	}
 	
 	private Table table;

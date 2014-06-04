@@ -25,8 +25,7 @@ public class DialogNewGenericRelation extends TitleAreaDialog{
 	@Override
 	public void create() {
 		super.create();
-		setTitle("Creating a Mediation Relation");
-		setMessage("Create a association between classes");
+		setTitle("Create a association between classes");
 	}
 
 	@Override

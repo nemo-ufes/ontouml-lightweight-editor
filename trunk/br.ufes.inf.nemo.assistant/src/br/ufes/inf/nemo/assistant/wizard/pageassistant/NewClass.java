@@ -24,8 +24,7 @@ public class NewClass extends WizardPageAssistant implements Serializable {
 	 */
 	public NewClass() {
 		super("Create new class");
-		setTitle("New Class");
-		setDescription("Creating a new Class");
+		setTitle("Creating a new Class");
 	}
 
 	private Combo cbStereotypes;
@@ -130,7 +129,7 @@ public class NewClass extends WizardPageAssistant implements Serializable {
 
 	@Override
 	public void init() {
-		setTitle("New Class");
+		setTitle("Creating a new Class");
 		setDescription("Creating a new Class");
 	}
 
