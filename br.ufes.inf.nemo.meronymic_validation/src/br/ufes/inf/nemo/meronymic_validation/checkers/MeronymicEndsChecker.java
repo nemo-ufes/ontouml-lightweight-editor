@@ -31,6 +31,7 @@ public class MeronymicEndsChecker extends Checker<Meronymic>{
 		subCollectionOfWithError = null;
 	}
 	
+	@Override
 	public boolean check(){
 		checkComponentOf();
 		checkSubQuantityOf();
@@ -61,8 +62,8 @@ public class MeronymicEndsChecker extends Checker<Meronymic>{
 			componentOfWithError.clear();
 		
 		for (componentOf compOf : parser.getAllInstances(componentOf.class)) {
-			Classifier whole = (Classifier) parser.getWholeEnd(compOf).getType();
-			Classifier part = (Classifier) parser.getPartEnd(compOf).getType();
+			Classifier whole = (Classifier) OntoUMLParser.getWholeEnd(compOf).getType();
+			Classifier part = (Classifier) OntoUMLParser.getPartEnd(compOf).getType();
 			
 			if(!parser.isFunctionalComplex(whole) || !parser.isFunctionalComplex(part))
 				componentOfWithError.add(compOf);
@@ -77,8 +78,8 @@ public class MeronymicEndsChecker extends Checker<Meronymic>{
 			subQuantityOfWithError.clear();
 		
 		for (subQuantityOf subQuantOf : parser.getAllInstances(subQuantityOf.class)) {
-			Classifier whole = (Classifier) parser.getWholeEnd(subQuantOf).getType();
-			Classifier part = (Classifier) parser.getPartEnd(subQuantOf).getType();
+			Classifier whole = (Classifier) OntoUMLParser.getWholeEnd(subQuantOf).getType();
+			Classifier part = (Classifier) OntoUMLParser.getPartEnd(subQuantOf).getType();
 			
 			if(!isQuantity(whole) || !isQuantity(part))
 				subQuantityOfWithError.add(subQuantOf);
@@ -93,8 +94,8 @@ public class MeronymicEndsChecker extends Checker<Meronymic>{
 			memberOfWithError.clear();
 		
 		for (memberOf membOf : parser.getAllInstances(memberOf.class)) {
-			Classifier whole = (Classifier) parser.getWholeEnd(membOf).getType();
-			Classifier part = (Classifier) parser.getPartEnd(membOf).getType();
+			Classifier whole = (Classifier) OntoUMLParser.getWholeEnd(membOf).getType();
+			Classifier part = (Classifier) OntoUMLParser.getPartEnd(membOf).getType();
 			
 			if(!isCollective(whole) || (!parser.isCollective(part) && !parser.isFunctionalComplex(part)))
 				memberOfWithError.add(membOf);
@@ -109,8 +110,8 @@ public class MeronymicEndsChecker extends Checker<Meronymic>{
 			subCollectionOfWithError.clear();
 		
 		for (subCollectionOf subColOf : parser.getAllInstances(subCollectionOf.class)) {
-			Classifier whole = (Classifier) parser.getWholeEnd(subColOf).getType();
-			Classifier part = (Classifier) parser.getPartEnd(subColOf).getType();
+			Classifier whole = (Classifier) OntoUMLParser.getWholeEnd(subColOf).getType();
+			Classifier part = (Classifier) OntoUMLParser.getPartEnd(subColOf).getType();
 			
 			if(!isCollective(whole) || !isCollective(part))
 				subCollectionOfWithError.add(subColOf);

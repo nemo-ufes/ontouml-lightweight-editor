@@ -84,9 +84,15 @@ public class IdentityChecker extends Checker<Classifier>{
 
 	@Override
 	public String getErrorDescription(int i) {
-		String description = "Type: "+OntoUMLNameHelper.getTypeAndName(getErrors().get(i), true, true)+" - Identity Providers: ";
+		String description = OntoUMLNameHelper.getTypeAndName(getErrors().get(i), true, true);
+		
+		if(getIdentityProviders(errors.get(i)).size()==0)
+			return description;
+		
+		description+=" - Iden. Prov.: ";
 		int count = 0;
 		int invParentsSize = getIdentityProviders(errors.get(i)).size();
+		
 		for (Classifier invalidParent : getIdentityProviders(errors.get(i))) {
 			description += OntoUMLNameHelper.getTypeAndName(invalidParent, true, true);
 			if(count<invParentsSize-1)

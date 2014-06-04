@@ -21,9 +21,9 @@ public class HierarchyCycleChecker extends Checker<ArrayList<Classifier>> {
 		else
 			errors.clear();
 		
-		Graph genGraph = new Graph();
+		Graph genGraph = new Graph(parser);
 		//creates directed graph with classes and generalizations
-		genGraph.createGeneralizationGraph(parser);
+		genGraph.createGeneralizationGraph();
 		
 		//get all paths in the graph
 		ArrayList<EdgePath> allPaths = genGraph.getAllEdgePathsFromAllNodes();

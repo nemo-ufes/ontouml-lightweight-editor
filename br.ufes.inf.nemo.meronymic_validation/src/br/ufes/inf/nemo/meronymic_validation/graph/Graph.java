@@ -17,13 +17,19 @@ public class Graph {
 	HashMap<Object, Node> allNodes ;
 	OntoUMLParser parser;
 	
-	public Graph() {
+	public Graph(OntoUMLParser parser) {
 		this.allNodes = new HashMap<Object, Node>();
-		parser = null;
+		this.parser = parser;
 	}
 	
-	public void createGeneralizationGraph(OntoUMLParser parser){
-		this.parser = parser;
+	public Graph() {
+		this.allNodes = new HashMap<Object, Node>();
+		this.parser = null;
+	}
+	
+	public void createGeneralizationGraph(){
+		if(parser==null)
+			return;
 		
 		Set<Classifier> allClassifiers = parser.getAllInstances(Classifier.class);
 		
@@ -42,8 +48,9 @@ public class Graph {
 		}
 	}
 	
-	public void createMeronymicGraph(OntoUMLParser parser){
-		this.parser = parser;
+	public void createMeronymicGraph(){
+		if(parser == null)
+			return;
 		
 		Set<Meronymic> allMeronymic = parser.getAllInstances(Meronymic.class);
 		
@@ -71,8 +78,9 @@ public class Graph {
 	}
 	
 	public void createMeronymicGraph(Set<? extends Meronymic> meronymicList){
-		parser = null;
-
+		if(parser==null)
+			return;
+		
 		this.allNodes.clear();
 		
 		//creates all nodes
