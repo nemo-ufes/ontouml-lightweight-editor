@@ -50,7 +50,11 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	private static final int HANDLE_NE = 1;
 	private static final int HANDLE_SW = 2;
 	private static final int HANDLE_SE = 3;
-	private Rectangle2D[] handles = new Rectangle2D[4];
+	private static final int HANDLE_NORTH = 4;
+	private static final int HANDLE_WEST = 5;
+	private static final int HANDLE_SOUTH = 6;
+	private static final int HANDLE_EAST = 7;
+	private Rectangle2D[] handles = new Rectangle2D[8];
 
 	private Node node;
 	private DiagramOperations editor;
@@ -75,7 +79,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	 */
 	public NodeSelection(DiagramOperations anEditor, Node aNode) {
 		editor = anEditor;
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 8; i++) {
 			handles[i] = new Rectangle2D.Double();
 		}
 		node = aNode;
@@ -128,21 +132,40 @@ public class NodeSelection implements Selection, NodeChangeListener {
 		
 		double x = absx - HANDLE_SIZE + (HANDLE_SIZE/2), y = absy - HANDLE_SIZE + (HANDLE_SIZE/2),
 		
+		//first handle
 		width = HANDLE_SIZE, height = HANDLE_SIZE;
 		handles[0].setRect(x, y, width, height);
 
+		/** middle */
+		x = absx+(swidth/2)-(HANDLE_SIZE/2);
+		handles[4].setRect(x, y, width, height);
+		
 		// second handle
 		x = absx + swidth - (HANDLE_SIZE/2);
 		handles[1].setRect(x, y, width, height);
 
+		/** middle */
+		x = absx - HANDLE_SIZE + (HANDLE_SIZE/2);
+		y = absy + (node.getSize().getHeight()/2) - (HANDLE_SIZE/2);
+		handles[5].setRect(x, y, width, height);
+		
 		// third handle
 		x = absx - HANDLE_SIZE + (HANDLE_SIZE/2);
 		y = absy + node.getSize().getHeight() - (HANDLE_SIZE/2);
 		handles[2].setRect(x, y, width, height);
 
+		/** middle */
+		x = absx + (swidth/2) - (HANDLE_SIZE/2);		
+		handles[6].setRect(x, y, width, height);
+				
 		// fourth handle
 		x = absx + swidth - (HANDLE_SIZE/2);
 		handles[3].setRect(x, y, width, height);
+
+		/** middle */
+		x = absx + swidth - (HANDLE_SIZE/2);	
+		y = absy + (node.getSize().getHeight()/2) - (HANDLE_SIZE/2);
+		handles[7].setRect(x, y, width, height);
 	}
 
 	/**
@@ -335,6 +358,18 @@ public class NodeSelection implements Selection, NodeChangeListener {
 		case HANDLE_SW:
 			resizeSw(diffx, diffy);
 			break;
+		case HANDLE_NORTH:
+			resizeN(diffx, diffy);
+			break;
+		case HANDLE_WEST:
+			resizeW(diffx, diffy);
+			break;	
+		case HANDLE_SOUTH:
+			resizeS(diffx, diffy);
+			break;
+		case HANDLE_EAST:
+			resizeE(diffx, diffy);
+			break;	
 		default:
 			break;
 		}
@@ -351,6 +386,12 @@ public class NodeSelection implements Selection, NodeChangeListener {
 		new CornerSnap(editor.getDiagram(), tmpPos, tmpSize).snapRightLower();
 	}
 
+	protected void resizeS(double diffx, double diffy) {
+		tmpSize.setSize(node.getSize().getWidth(),
+				node.getSize().getHeight() + diffy);
+		new CornerSnap(editor.getDiagram(), tmpPos, tmpSize).snapRightLower();
+	}
+	
 	/**
 	 * Resize using the NE handle.
 	 * @param diffx the diffx value
@@ -363,20 +404,35 @@ public class NodeSelection implements Selection, NodeChangeListener {
 				node.getSize().getHeight() - diffy);
 		new CornerSnap(editor.getDiagram(), tmpPos, tmpSize).snapRightUpper();
 	}
-
+	
+	protected void resizeE(double diffx, double diffy) {
+		tmpSize.setSize(node.getSize().getWidth()+diffx,
+				node.getSize().getHeight());
+		new CornerSnap(editor.getDiagram(), tmpPos, tmpSize).snapRightUpper();
+	}
+	
 	/**
 	 * Resize using the NW handle.
 	 * @param diffx the diffx value
 	 * @param diffy the diffy value
 	 */
-	protected void resizeNw(double diffx, double diffy) {
+	protected void resizeNw(double diffx, double diffy) {		
 		tmpPos.setLocation(node.getAbsoluteX1() + diffx,
 				node.getAbsoluteY1() + diffy);
 		tmpSize.setSize(node.getSize().getWidth() - diffx,
 				node.getSize().getHeight() - diffy);
 		new CornerSnap(editor.getDiagram(), tmpPos, tmpSize).snapLeftUpper();
 	}
-
+	
+	protected void resizeN(double diffx, double diffy)
+	{
+		tmpPos.setLocation(node.getAbsoluteX1(),
+				node.getAbsoluteY1() + diffy);
+		tmpSize.setSize(node.getSize().getWidth(),
+				node.getSize().getHeight() - diffy);
+		new CornerSnap(editor.getDiagram(), tmpPos, tmpSize).snapLeftUpper();
+	}
+	
 	/**
 	 * Resize using the SW handle.
 	 * @param diffx the diffx value
@@ -390,6 +446,15 @@ public class NodeSelection implements Selection, NodeChangeListener {
 		new CornerSnap(editor.getDiagram(), tmpPos, tmpSize).snapLeftLower();
 	}
 
+	protected void resizeW(double diffx, double diffy)
+	{
+		tmpPos.setLocation(node.getAbsoluteX1() + diffx,
+				node.getAbsoluteY1());
+		tmpSize.setSize(node.getSize().getWidth() - diffx,
+				node.getSize().getHeight());
+		new CornerSnap(editor.getDiagram(), tmpPos, tmpSize).snapLeftLower();
+	}
+	
 	/**
 	 * Truncate the specified diffx, depending on the resizing direction.
 	 * A selection can not be made smaller than the Node's minimum size
@@ -413,7 +478,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	 * @return -x if resizeDirection is in the west, x otherwise
 	 */
 	private double westernSwap(double x) {
-		return (resizeDirection == HANDLE_NW || resizeDirection == HANDLE_SW) ?
+		return (resizeDirection == HANDLE_NW || resizeDirection == HANDLE_SW || resizeDirection == HANDLE_WEST) ?
 				-x : x;
 	}
 
@@ -423,7 +488,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	 * @return the negative y if the resize direction is in the north, y, else
 	 */
 	private double northernSwap(double y) {
-		return (resizeDirection == HANDLE_NW || resizeDirection == HANDLE_NE) ?
+		return (resizeDirection == HANDLE_NW || resizeDirection == HANDLE_NE || resizeDirection == HANDLE_NORTH ) ?
 				-y : y;
 	}
 
@@ -575,7 +640,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	 * @return the handle number
 	 */
 	private int getResizeHandle(double x, double y) {
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 8; i++) {
 			if (handles[i].contains(x, y)) {
 				return i;
 			}
@@ -596,6 +661,14 @@ public class NodeSelection implements Selection, NodeChangeListener {
 			return Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR);
 		case HANDLE_SE:
 			return Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
+		case HANDLE_NORTH:
+			return Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
+		case HANDLE_SOUTH:
+			return Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR);
+		case HANDLE_WEST:
+			return Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
+		case HANDLE_EAST:
+			return Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);			
 		default:
 			return Cursor.getDefaultCursor();
 		}
