@@ -199,7 +199,7 @@ public class DiagramToolbar extends JToolBar {
 		btnColor.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/control_wheel.png")));
 		btnColor.addActionListener(new ActionListener() {				
         	private Color color;
-
+        	
 			@Override
         	public void actionPerformed(ActionEvent e) { 
 				if(color==null) color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", Color.LIGHT_GRAY);
@@ -211,7 +211,7 @@ public class DiagramToolbar extends JToolBar {
         });	
 		add(btnColor);
 		btnColor.setFocusable(false);
-		
+				
 		btnExportPng.setFocusable(false);
 		btnExportPng.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/photo.png")));
 		add(btnExportPng);
@@ -290,6 +290,6 @@ public class DiagramToolbar extends JToolBar {
         });
 		btnAntiPattern.setFocusable(false);
 		btnAntiPattern.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/antipattern16.png")));
-		add(btnAntiPattern);
+		add(btnAntiPattern);		
 	}
 }
