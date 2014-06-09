@@ -41,6 +41,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	JMenuItem derivationItem = new JMenuItem("Derivation");
 	JMenuItem unionItem = new JMenuItem("Union");	
 	JMenuItem exclusionItem = new JMenuItem("Exclusion");
+	JMenuItem intersectionItem = new JMenuItem("Intersection");
 	public AppFrame frame;
 	public double x;
 	public double y;
@@ -78,6 +79,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
         addSeparator();
         add(unionItem);
         add(exclusionItem);
+        add(intersectionItem);
         
         kindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/kind.png")));
         quantityItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/quantity.png")));
@@ -105,6 +107,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
         
         unionItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));        
         exclusionItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
+        intersectionItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
         
         pointerItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/mousepointer.png")));
         
@@ -372,6 +375,18 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	            }
 			}
 		});
+       intersectionItem.addMouseListener(new MouseAdapter()
+	    {    	   
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getDiagramManager().openDerivedTypePatternIntersection(x, y);
+	            }
+			}
+		});
+       
        exclusionItem.addMouseListener(new MouseAdapter()
 	    {    	   
 			@Override

@@ -79,6 +79,7 @@ import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
+import br.ufes.inf.nemo.oled.derivation.IntersectionPattern;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
 import br.ufes.inf.nemo.oled.dialog.AlloySettingsDialog;
 import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
@@ -2260,5 +2261,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if(fix != null){
 			updateOLED(fix);
 		}
+	}
+	public void openDerivedTypePatternIntersection(Double x, Double y) {
+		// TODO Auto-generated method stub
+		JDialog dialog = new IntersectionPattern(this);
+		dialog.setLocation(x.intValue(), y.intValue());
+		((IntersectionPattern) dialog).setPosition(x, y);
+		dialog.setModal(true);
+		dialog.setVisible(true);
+	}
+	public void deriveByIntersection() {
+		// TODO Auto-generated method stub
+		
 	}
 }

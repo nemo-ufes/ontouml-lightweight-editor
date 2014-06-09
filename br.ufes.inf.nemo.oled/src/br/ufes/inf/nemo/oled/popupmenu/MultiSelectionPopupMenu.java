@@ -39,6 +39,8 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	@SuppressWarnings("unused")
 	private JMenuItem exclusionItem;
 	@SuppressWarnings("unused")
+	private JMenuItem intersectionItem;
+	@SuppressWarnings("unused")
 	private JMenuItem deleteItem;
 	@SuppressWarnings("unused")
 	private JMenuItem rectMenuItem;
@@ -140,6 +142,7 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		
 		unionItem = createMenuItem(this, "derivedunion");
 		exclusionItem = createMenuItem(this, "derivedexclusion");
+		intersectionItem = createMenuItem(this, "derivedintersection");
 		
 		deleteItem = createMenuItem(this, "delete");	
 	}
