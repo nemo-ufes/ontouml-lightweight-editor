@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.popupmenu;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -15,6 +17,11 @@ import javax.swing.JPopupMenu;
 import RefOntoUML.Generalization;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AlignElementsCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.SetColorCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AlignElementsCommand.Alignment;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -24,7 +31,6 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 
 	private static final long serialVersionUID = 1L;
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
-	@SuppressWarnings("unused")
 	private ArrayList<DiagramElement> selected = new ArrayList<DiagramElement>();
 	private JMenuItem createGenSetItem;
 	private JMenuItem deleteGenSetItem;
@@ -44,6 +50,15 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	private JMenuItem directMenuItem;
 	private JMenuItem resetMenuItem;
 	private JMenu lineStyleItem;
+	private JMenu alignMenu;
+	private JMenuItem alignTop;
+	private JMenuItem alignBottom;
+	private JMenuItem alignLeft;
+	private JMenuItem alignRight;
+	private JMenuItem alignCenterVertically;
+	private JMenuItem alignCenterHorizontally;
+	private DiagramEditor editor;
+	private JMenuItem setColorItem;
 	
 	public MultiSelectionPopupMenu()
 	{			
@@ -58,23 +73,86 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		treeStyleVerticalMenuItem = createMenuItem(lineStyleItem, "treestyle.vertical");
 		treeStyleHorizontalMenuItem = createMenuItem(lineStyleItem, "treestyle.horizontal");
 		
-		addSeparator();
+		alignMenu = new JMenu("Align");
+		alignTop = new JMenuItem("Align Top");
+		alignTop.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if(editor!=null) editor.execute(new AlignElementsCommand((DiagramNotification)editor,selected,editor.getProject(),Alignment.TOP));
+        	}
+        });
+		alignBottom = new JMenuItem("Align Bottom");
+		alignBottom.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if(editor!=null) editor.execute(new AlignElementsCommand((DiagramNotification)editor,selected,editor.getProject(),Alignment.BOTTOM));
+        	}
+        });
+		alignLeft = new JMenuItem("Align Left");
+		alignLeft.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if(editor!=null) editor.execute(new AlignElementsCommand((DiagramNotification)editor,selected,editor.getProject(),Alignment.LEFT));
+        	}
+        });
+		alignRight = new JMenuItem("Align Right");
+		alignRight.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if(editor!=null) editor.execute(new AlignElementsCommand((DiagramNotification)editor,selected,editor.getProject(),Alignment.RIGHT));
+        	}
+        });
+		alignCenterHorizontally = new JMenuItem("Align Center Horizontally");
+		alignCenterHorizontally.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if(editor!=null) editor.execute(new AlignElementsCommand((DiagramNotification)editor,selected,editor.getProject(),Alignment.CENTER_HORIZONTAL));
+        	}
+        });
+		alignCenterVertically = new JMenuItem("Align Center Vertically");
+		alignCenterVertically.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if(editor!=null) editor.execute(new AlignElementsCommand((DiagramNotification)editor,selected,editor.getProject(),Alignment.CENTER_VERTICAL));
+        	}
+        });
+		alignMenu.add(alignTop);
+		alignMenu.add(alignBottom);
+		alignMenu.add(alignLeft);
+		alignMenu.add(alignRight);
+		alignMenu.add(alignCenterHorizontally);
+		alignMenu.add(alignCenterVertically);
+		add(alignMenu);
+		
+		setColorItem = new JMenuItem("Set Color");
+		setColorItem.addActionListener(new ActionListener() {				
+			private Color color;        	
+			@Override
+        	public void actionPerformed(ActionEvent e) { 
+				if(color==null) color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", Color.LIGHT_GRAY);
+				else color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", color);
+        		if (color != null){
+        			editor.execute(new SetColorCommand((DiagramNotification)editor,selected,editor.getProject(),color));        			
+        		}        		        		
+        	}
+        });
+		add(setColorItem);
+		
 		unionItem = createMenuItem(this, "derivedunion");
 		exclusionItem = createMenuItem(this, "derivedexclusion");
 		
-		addSeparator();
 		deleteItem = createMenuItem(this, "delete");	
 	}
 	
-	public void setSelectedElements(ArrayList<DiagramElement> selected)
+	public void setSelectedElements(ArrayList<DiagramElement> selected, DiagramEditor editor)
 	{
 		this.selected = selected;
-
+		this.editor = editor;
 		// check if we can show the item that creates/delete generalization sets
 		boolean containGenset=false;
 		boolean areAllAssociations=true;
 		ArrayList<Generalization> gens = new ArrayList<Generalization>();
-		for(DiagramElement dElem: selected){
+		for(DiagramElement dElem: selected){			
 			if (dElem instanceof GeneralizationElement){
 				Generalization gen = ((GeneralizationElement)dElem).getGeneralization();
 				if(gen!=null)gens.add(gen);
@@ -84,11 +162,19 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 				areAllAssociations=false;
 			}
 		}
+		
 		if(gens.size()<=1) { createGenSetItem.setVisible(false); deleteGenSetItem.setVisible(false); }
 		else { createGenSetItem.setVisible(true); deleteGenSetItem.setVisible(false); }
 		if(gens.size()>1 && containGenset==true) { deleteGenSetItem.setVisible(true); }	
+		
 		if(!areAllAssociations) { lineStyleItem.setVisible(false); resetMenuItem.setVisible(false); }
 		else { lineStyleItem.setVisible(true); resetMenuItem.setVisible(true); }
+		
+		if(!areAllAssociations) { alignMenu.setVisible(true); }
+		else { alignMenu.setVisible(false); }
+		
+		if(!areAllAssociations) { setColorItem.setVisible(true); }
+		else { setColorItem.setVisible(false); }
 	}
 	
 	/**
@@ -174,3 +260,4 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		return menuitem;
 	}
 }
+

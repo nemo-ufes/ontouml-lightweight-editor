@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.popupmenu;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -17,6 +19,8 @@ import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.SetColorCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
@@ -33,6 +37,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	final JMenuItem showOperItem;	
 	final JMenuItem findInProjectItem;
 	private DiagramEditor editor;
+	private JMenuItem setColorItem;
 //	private ClassStereotypeChangeMenu changeMenu;
 	
 	public SingleNodePopupMenu()
@@ -59,6 +64,22 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		createPatternMenu();
 		
 		addSeparator();
+				
+		setColorItem = new JMenuItem("Set Color");
+		setColorItem.addActionListener(new ActionListener() {				
+			private Color color;        	
+			@Override
+        	public void actionPerformed(ActionEvent e) { 
+				ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+				list.add(node);
+				if(color==null) color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", Color.LIGHT_GRAY);
+				else color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", color);
+        		if (color != null){
+        			editor.execute(new SetColorCommand((DiagramNotification)editor,list,editor.getProject(),color));        			
+        		}        		        		
+        	}
+        });
+		add(setColorItem);
 		
 		JMenu drawOrderMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.draworder.name"));
 		add(drawOrderMenu);

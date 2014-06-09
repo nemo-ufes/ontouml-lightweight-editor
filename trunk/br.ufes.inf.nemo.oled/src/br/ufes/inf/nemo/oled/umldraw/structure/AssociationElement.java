@@ -73,7 +73,6 @@ public final class AssociationElement extends BaseConnection {
 	private Label role2Label;
 	private AssociationLabel nameLabel;
 	private boolean showMultiplicities, showName, showRoles, showMetaProperties;
-
 	
 	/**
 	 * Returns the prototype instance.

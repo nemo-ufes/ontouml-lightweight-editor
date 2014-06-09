@@ -967,7 +967,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 					}
 				}
 			}			
-			notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
 		}
 	}
 	
@@ -994,8 +993,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 					ce.setAbsolutePos(ce.getAbsoluteX1(), finalpos);						
 				}
 			}
-		}			
-		notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
+		}		
 	}
 	
 	/** Align Left */
@@ -1021,8 +1019,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 					ce.setAbsolutePos(finalpos,ce.getAbsoluteY1());						
 				}
 			}
-		}			
-		notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
+		}	
 	}
 	
 	/** Align Right */
@@ -1048,8 +1045,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 					ce.setAbsolutePos(finalpos,ce.getAbsoluteY1());						
 				}
 			}
-		}			
-		notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
+		}		
 	}
 	
 	/** Align Center Horizontally */
@@ -1077,7 +1073,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 					}
 				}
 			}			
-			notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
 		}
 	}
 	
@@ -1116,8 +1111,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 						ce.setAbsolutePos(finalpos,ce.getAbsoluteY1());
 					}
 				}
-			}
-			notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.DO);
+			}			
 		}
 	}
 	
@@ -1332,7 +1326,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 		//In case of the three commands  
 		if(changeType == ChangeType.ELEMENTS_ADDED || changeType == ChangeType.ELEMENTS_REMOVED || changeType == ChangeType.LABEL_TEXT_SET || changeType == ChangeType.CONNECTION_NAVEGABILITY_SET 
-		|| changeType == ChangeType.ELEMENTS_MOVED || changeType == ChangeType.ELEMENTS_DRAGGED || changeType == ChangeType.ELEMENTS_CHANGED)				 
+		|| changeType == ChangeType.ELEMENTS_MOVED || changeType == ChangeType.ELEMENTS_DRAGGED || changeType == ChangeType.ELEMENTS_CHANGED || changeType == ChangeType.ELEMENTS_ALIGNED || changeType == ChangeType.ELEMENTS_COLORED)				 
 		{
 			frame.getDiagramManager().saveDiagramNeeded(this.getDiagram(),true);	
 		}
@@ -1354,6 +1348,12 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 				break;
 			case ELEMENTS_DRAGGED:
 				if(notificationType == NotificationType.DO) sb.append("dragged"); else sb.append(" drag");
+				break;
+			case ELEMENTS_COLORED:
+				if(notificationType == NotificationType.DO) sb.append("colored"); else sb.append(" color");
+				break;
+			case ELEMENTS_ALIGNED:
+				if(notificationType == NotificationType.DO) sb.append("aligned"); else sb.append(" align");
 				break;
 			case ELEMENTS_MOVED:
 				if(notificationType == NotificationType.DO) sb.append("moved"); else sb.append(" move");

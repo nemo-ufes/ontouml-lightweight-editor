@@ -34,8 +34,8 @@ public final class Main {
 	
 	public static AppFrame frame; 
 
-	public static String OLED_VERSION = "0.9.27"; 
-	public static String OLED_COMPILATION_DATE = "May 29, 2014"; 
+	public static String OLED_VERSION = "0.9.28"; 
+	public static String OLED_COMPILATION_DATE = "Jun 06, 2014"; 
 	
 	/** This caches the result of the call to get all fonts. */
 	private static String[] allFonts = null;	

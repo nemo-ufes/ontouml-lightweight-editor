@@ -266,9 +266,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("PARSE_OCL", new MethodCall(
 					getClass().getMethod("parseOCL")));
 
-			selectorMap.put("ASSISTANT", new MethodCall(
-					getClass().getMethod("enableAssistant")));
-
 			selectorMap.put("AUTO_SELECTION", new MethodCall(
 					getClass().getMethod("autoComplete")));
 			
@@ -485,11 +482,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		manager.getFrame().focusOnErrors();
 	}
 	
-	public void enableAssistant() 
-	{
-		
-	}
-		
 	public void showOutputPane()
 	{	
 		manager.showOutputPane();
