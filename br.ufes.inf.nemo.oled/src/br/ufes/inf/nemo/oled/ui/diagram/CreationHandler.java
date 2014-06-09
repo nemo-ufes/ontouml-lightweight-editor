@@ -186,10 +186,10 @@ public class CreationHandler implements EditorMode {
 	    //move all its generalizations too
 	    editor.getDiagramManager().moveGeneralizationsToDiagram(elem, elem.eContainer(), editor);
 	    	    
-	    //VICTOR COMENTAR
 	    if (!isDragging) {
 	    	editor.getDiagramManager().openModellingAssistant(elem);
 	    }
+	    
     }else{	   
     	// CASSIO : DERIVED TYPES PATTERNS
     	editor.cancelEditing();

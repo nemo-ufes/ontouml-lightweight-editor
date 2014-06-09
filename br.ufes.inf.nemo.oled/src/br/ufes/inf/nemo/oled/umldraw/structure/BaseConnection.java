@@ -58,7 +58,7 @@ public class BaseConnection implements UmlConnection, Adapter {
 
 	private static final long serialVersionUID = 4796693000723361980L;
 	private transient Relationship relationship;
-	private Connection connection;
+	protected Connection connection;
 	private String ontoUmlStereotype;
 	private boolean showOntoUmlStereotype = false;
 	private String relationshipUUID; 
@@ -68,7 +68,7 @@ public class BaseConnection implements UmlConnection, Adapter {
 	 */
 	protected BaseConnection() {
 	}
-	
+		
 	/**
 	 * {@inheritDoc}
 	 */

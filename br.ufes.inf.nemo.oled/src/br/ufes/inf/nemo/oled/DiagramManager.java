@@ -1212,6 +1212,33 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		modeltree.getTree().updateUI();
 	}
 	
+	/** Open modeling assistant wizard */
+	public void openModellingAssistant(final Classifier elem)
+	{
+		boolean runAssistant = getFrame().getMainMenu().isAssistantChecked();
+		if(runAssistant) {
+			if(Main.onMac()) {
+				com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute(new Runnable(){        	
+					@Override
+					public void run() {
+						Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);						
+						if(fix != null) updateOLED(fix);
+					}
+				});
+			}else{
+				final Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
+				if(fix != null){
+					SwingUtilities.invokeLater(new Runnable() {						
+						@Override
+						public void run() {
+							updateOLED(fix);
+						}
+					});
+				}					
+			}    		
+		}	
+	}
+	
 	/**  Generate SBVR. In order to use the plug-in, we need to store the model into a file before. */
 	public void generateSbvr(RefOntoUML.Model refpackage) 
 	{
@@ -2175,35 +2202,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 		return null;
-	}
-
-	public void openModellingAssistant(final Classifier elem){
-		//VICTOR COMENTAR
-		boolean runAssistant = getFrame().getMainMenu().isAssistantChecked();
-
-		if(runAssistant){
-			if(Main.onMac()){//To work on Mac
-				com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
-					@Override
-					public void run() {
-						Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
-						
-						if(fix != null)
-							updateOLED(fix);
-					}
-				});
-			}else{//To work in others
-				final Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
-				if(fix != null){
-					SwingUtilities.invokeLater(new Runnable() {						
-						@Override
-						public void run() {
-							updateOLED(fix);
-						}
-					});
-				}					
-			}    		
-		}	
 	}
 
 	@SuppressWarnings({ })

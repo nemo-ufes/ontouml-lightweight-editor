@@ -13,6 +13,11 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 import br.ufes.inf.nemo.oled.antipattern.AntiPatternSearchDialog;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AlignElementsCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.AlignElementsCommand.Alignment;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.SetColorCommand;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 public class DiagramToolbar extends JToolBar {
@@ -93,7 +98,7 @@ public class DiagramToolbar extends JToolBar {
 		btnAlignBottom.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		editor.alignBottom();
+        		editor.execute(new AlignElementsCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),Alignment.BOTTOM));
         	}
         });
 		btnAlignBottom.setToolTipText("Align Bottom");
@@ -105,7 +110,7 @@ public class DiagramToolbar extends JToolBar {
 		btnAlignTop.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		editor.alignTop();
+        		editor.execute(new AlignElementsCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),Alignment.TOP));
         	}
         });
 		btnAlignTop.setToolTipText("Align Top");
@@ -117,7 +122,7 @@ public class DiagramToolbar extends JToolBar {
 		btnAlignLeft.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		editor.alignLeft();
+        		editor.execute(new AlignElementsCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),Alignment.LEFT));
         	}
         });
 		btnAlignLeft.setToolTipText("Align Left");
@@ -129,7 +134,7 @@ public class DiagramToolbar extends JToolBar {
 		btnAlignRight.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		editor.alignRight();
+        		editor.execute(new AlignElementsCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),Alignment.RIGHT));
         	}
         });
 		btnAlignRight.setToolTipText("Align Right");
@@ -141,7 +146,7 @@ public class DiagramToolbar extends JToolBar {
 		btnAlignCenterVertically.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		editor.alignCenterVertically();
+        		editor.execute(new AlignElementsCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),Alignment.CENTER_VERTICAL));
         	}
         });
 		btnAlignCenterVertically.setToolTipText("Align Center Vertically");
@@ -153,7 +158,7 @@ public class DiagramToolbar extends JToolBar {
 		btnAlignCenterHorizontally.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		editor.alignCenterHorizontally();
+        		editor.execute(new AlignElementsCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),Alignment.CENTER_HORIZONTAL));
         	}
         });	
 		btnAlignCenterHorizontally.setToolTipText("Align Center Horizontally");
@@ -198,14 +203,13 @@ public class DiagramToolbar extends JToolBar {
 		btnColor.setToolTipText("Set the background color for selected classes");
 		btnColor.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/control_wheel.png")));
 		btnColor.addActionListener(new ActionListener() {				
-        	private Color color;
-        	
+        	private Color color;        	
 			@Override
         	public void actionPerformed(ActionEvent e) { 
 				if(color==null) color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", Color.LIGHT_GRAY);
 				else color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", color);
         		if (color != null){
-        			editor.setBackgroundInSelected(color);
+        			editor.execute(new SetColorCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),color));        			
         		}        		        		
         	}
         });	

@@ -140,6 +140,11 @@ public final class ClassElement extends AbstractCompositeNode implements
 		invalidate();
 	}
 	
+	public Color getBackgroundColor()
+	{
+		return mainCompartment.getBackground();
+	}
+	
 	public void changeStereotypeTo(String stereotype)
 	{
 		ontoUmlStereotype = stereotype;

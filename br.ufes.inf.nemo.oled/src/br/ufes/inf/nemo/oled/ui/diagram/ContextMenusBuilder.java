@@ -69,7 +69,7 @@ public class ContextMenusBuilder {
 	 */
 	public JPopupMenu setContext(Selection selection, double x, double y) {
 		if (selection.getElements().size() > 1) {
-			multiSelectinoPopup.setSelectedElements((ArrayList<DiagramElement>) selection.getElements());
+			multiSelectinoPopup.setSelectedElements((ArrayList<DiagramElement>) selection.getElements(),editor);
 			return multiSelectinoPopup;
 		} else {
 			UmlDiagramElement elem = (UmlDiagramElement) selection.getElement();

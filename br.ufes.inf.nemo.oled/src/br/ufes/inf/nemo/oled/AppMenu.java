@@ -430,16 +430,7 @@ public class AppMenu implements ActionListener {
 	 * {@inheritDoc}
 	 */
 	public void actionPerformed(ActionEvent e) {
-		boolean showBugReport = true;
-		for (AppCommandListener l : listeners) {
-			//victor
-			if(e.getActionCommand().equals("ASSISTANT") && showBugReport){
-				if(isAssistantChecked())
-					frame.showInformationMessageDialog("Activating Modeling Assistant", "Modeling Assistant v1.0 \nPlease report bug or improvements to:\nhttps://code.google.com/p/ontouml-lightweight-editor/issues/list");
-				else
-					frame.showInformationMessageDialog("Deactivating Modeling Assistant", "If you found some bug, please, report for us:\nhttps://code.google.com/p/ontouml-lightweight-editor/issues/list");
-				showBugReport = false;
-			}
+		for (AppCommandListener l : listeners) {			
 			l.handleCommand(e.getActionCommand());
 		}
 	}
