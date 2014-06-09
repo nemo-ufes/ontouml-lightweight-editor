@@ -1627,6 +1627,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void addStartPanel()
 	{
+		//StartPanel start = new StartPanel(frame);
 		StartPanel start = new StartPanel(frame);
 		this.addNonClosable("Start", start);
 	}
