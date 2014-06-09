@@ -40,7 +40,7 @@ public class ToolManager extends JTabbedPane {
 		return editorDispatcher;
 	}
 	
-	public Palette getOpenPalette() {
+	public Palette getElementPalette() {
 		return palettes.getOpenPalette();
 	}
 

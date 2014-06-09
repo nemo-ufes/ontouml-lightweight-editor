@@ -245,6 +245,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("CREATE_DERIVATION_BY_EXCLUSION", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternCreationModeEx")));
+			
+			selectorMap.put("CREATE_DERIVATION_BY_INTERSECTION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternCreationModeIntersection")));
 
 			selectorMap.put("SHOW_GRID", new MethodCall(
 					getClass().getMethod("showGrid")));
@@ -307,6 +310,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("DERIVED_BY_EXCLUSION", new MethodCall(
 					getClass().getMethod("derivedByExclusion")));
+			
+			selectorMap.put("DERIVED_BY_INTERSECTION", new MethodCall(
+					getClass().getMethod("derivedByIntersection")));
 
 			selectorMap.put("PATTERN_CREATION_SUBKIND", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.SUBKINDPATTERN));
@@ -460,6 +466,13 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		if (manager.isProjectLoaded()==false) return;
 		manager.deriveByExclusion();
 	}
+	
+	public void derivedByIntersection()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.deriveByIntersection();
+	}
+
 
 	public void manageAntiPatterns()
 	{			

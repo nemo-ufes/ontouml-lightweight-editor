@@ -19,6 +19,7 @@ import RefOntoUML.Property;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.SemiRigidMixinClass;
+import RefOntoUML.util.RefOntoUMLAdapterFactory;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -109,12 +110,17 @@ public class DerivedTypesOperations {
 		else{
 			String stereotype=null;
 			String specialCase=multipleElementsUnionDerivation(selected);
-			tryunionassociationderivation(selected,dm);
+			String specialCaseRelation=tryunionassociationderivation(selected,dm);
 
 			if(specialCase.equals("")){
 				wrongSelection("Wrong Selection");
 				return null;
 			}
+			
+			if(specialCaseRelation.equals("union_relation_derivation")){
+				return null;
+			}
+			
 			String name=DefineNameDerivedType();
 			if(specialCase=="Rigid+NonRigid"){
 				stereotype= "Mixin";
@@ -124,7 +130,7 @@ public class DerivedTypesOperations {
 					Object[] stereo;
 					ArrayList<String>stereotypes = new ArrayList<String>();
 					stereotypes.add("Category");
-					stereotypes.add("Role Mixin");
+					stereotypes.add("RoleMixin");
 					stereo=  stereotypes.toArray();
 					stereotype= selectStereotype(stereo);
 					//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
@@ -136,7 +142,7 @@ public class DerivedTypesOperations {
 					//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
 				}else{
 					if(specialCase=="AllAntiRigid"){
-						stereotype= "Role Mixin";
+						stereotype= "RoleMixin";
 						//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
 					}
 				}
@@ -162,7 +168,7 @@ public class DerivedTypesOperations {
 						stereotypes.add("Subkind");
 						stereotypes.add("Role");
 						stereotypes.add("Phase");
-						stereotypes.add("Role Mixin");
+						stereotypes.add("RoleMixin");
 						stereo=  stereotypes.toArray();
 						stereotype= selectStereotype(stereo);
 						//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
@@ -178,7 +184,7 @@ public class DerivedTypesOperations {
 
 
 
-	private static void tryunionassociationderivation(
+	private static String tryunionassociationderivation(
 			List<DiagramElement> selected, DiagramManager diagramManager) {
 		// TODO Auto-generated method stub
 		ArrayList<Property> featureList = new ArrayList<Property>();
@@ -189,7 +195,7 @@ public class DerivedTypesOperations {
 		
 		for (DiagramElement sel : selected) {
 			if(!(sel instanceof AssociationElement))
-				return;
+				return "";
 			associations.add((Association) ((AssociationElement)sel).getRelationship());
 		}
 		
@@ -204,11 +210,23 @@ public class DerivedTypesOperations {
 		
 		for(RefOntoUML.Property p : refparser.getAllInstances(RefOntoUML.Property.class)) 
 		{
-			if(!featureList.contains(p) && !properties.contains(p) && !propertiesTarget.contains(p) && ((Classifier)element.getType()).allParents().contains(p.getType())){
+			if(!properties.contains(p) && !propertiesTarget.contains(p) && ((Classifier)element.getType()).allParents().contains(p.getType())){
+				featureList.add(p);
 				options.add(((NamedElement)p.eContainer()).getName());
 			}
 		}
-		selectRelation(options.toArray());
+		String option =selectRelation(options.toArray());
+		for (Property feature : featureList) {
+			if(((NamedElement)feature.eContainer()).getName().equals(option)){
+				for (Property prop : properties) {
+					prop.getSubsettedProperty().add(feature);
+					prop.setIsDerivedUnion(true);
+				}
+				
+			}
+		}
+		return "union_relation_derivation";
+		
 	}
 
 
@@ -373,7 +391,7 @@ public class DerivedTypesOperations {
 					//DerivedByExclusion.getInstance().createExclusionRule(((Classifier) refontoList.get(pos)).getName(), ((Classifier) refontoList.get(pos2)).getName(), name);
 					if(!(refontoList.get(pos2).eClass().getName().equals("Role") && (refontoList.get(pos).eClass().getName().equals("Kind")) ))
 					{
-						String rule="context: "+((Classifier) refontoList.get(pos)).getName()+"\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+name+"')";
+						String rule="\n context: _'"+((Classifier) refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+name+"')";
 						dm.getFrame().getInfoManager().getOcleditor().addText(rule);
 					}	
 					//String rule="context: "
@@ -491,6 +509,12 @@ public class DerivedTypesOperations {
 		mainfix.addAll(fix);
 		mainfix.addAll(gs);
 	}
+	
+	public  static void createGeneralizationSingle(Classifier father, Classifier son1){
+		Fix fix=of.createGeneralization(son1, father);
+		mainfix.addAll(fix);
+
+	}
 
 	public  static void createMultipleGeneralization(Classifier father, ArrayList<Classifier> sons){
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
@@ -518,6 +542,22 @@ public class DerivedTypesOperations {
 		createGeneralization(newElement, newElement2, newElement3);
 		dman2.updateOLED(mainfix);	
 
+	}
+
+
+	public static void intersectionPattern(DiagramManager dm, String base_1_name,
+			String base_2_name, String derived_name, Double location, String base_1_stereo, String stereo_base_2_stereo, String derived_stereo) {
+		// TODO Auto-generated method stub
+		dman= dm;
+		of = new OutcomeFixer(dm.getCurrentProject().getModel());
+		mainfix = new Fix();
+		Point2D.Double[] positions= ClassPosition.GSpositioningDown(2, location);
+		Classifier newElement= includeElement(positions[1],base_1_name, base_1_stereo);
+		Classifier newElement2= includeElement(positions[2], base_2_name, stereo_base_2_stereo);
+		Classifier newElement3 = includeElement(positions[0], derived_name, derived_stereo);
+		createGeneralizationSingle(newElement,newElement3);
+		createGeneralizationSingle(newElement2,newElement3);
+		dm.updateOLED(mainfix);
 	}
 
 }

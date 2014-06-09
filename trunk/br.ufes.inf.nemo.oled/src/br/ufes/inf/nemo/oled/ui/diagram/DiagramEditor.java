@@ -843,6 +843,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		creationHandler.setPattern(ElementType.EXCLUSION);
 		editorMode = creationHandler;
 	}
+	public void setPatternCreationModeIntersection()
+	{
+		creationHandler.setPattern(ElementType.INTERSECTION);
+		editorMode = creationHandler;
+	}
 	
 	/**
 	 * Switches the editor into connection creation mode.

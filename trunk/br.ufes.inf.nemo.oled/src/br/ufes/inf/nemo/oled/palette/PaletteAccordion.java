@@ -182,6 +182,7 @@ public class PaletteAccordion extends JPanel{
 		//palette.addSpacer(0,PALLETE_VSPACE);
 		derivedPalette.createElement("staticpalette.patterns", "derivationbyunion");
 		derivedPalette.createElement("staticpalette.patterns2", "derivationbyexclusion");
+		derivedPalette.createElement("staticpalette.patterns3", "derivationbyintersection");
 		
 		derivedPalette.addCommandListener(editorDispatcher);
 		
