@@ -160,7 +160,6 @@ public class AppMenu implements ActionListener {
 		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		
 		createMenuItem(fileMenu, "saveas");		
-		fileMenu.addSeparator();
 		
 		JMenu importMenu = createMenu("Import");
 		importMenu.setText("Import from");
@@ -175,9 +174,7 @@ public class AppMenu implements ActionListener {
 		
 		createMenuItem(exportMenu, "exportecore");
 		
-		fileMenu.addSeparator();
 		createMenuItem(fileMenu,"close");
-		fileMenu.addSeparator();
 		
 		JMenuItem quitItem = createMenuItem(fileMenu, "quit");
 		quitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
@@ -195,8 +192,6 @@ public class AppMenu implements ActionListener {
 		JMenuItem selectAllItem = createMenuItem(diagramMenu,"selectall");
 		selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
 //		selectAllItem.setEnabled(false);
-		
-		diagramMenu.addSeparator();
 		
 		createMenuItem(diagramMenu,"exportgfx");
 	}
@@ -237,8 +232,6 @@ public class AppMenu implements ActionListener {
 		JMenuItem redoItem = createMenuItem(editMenu, "redo");
 		redoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
 		
-		editMenu.addSeparator();
-		
 		JMenuItem findItem = createMenuItem(editMenu, "find");
 		findItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
 
@@ -276,8 +269,6 @@ public class AppMenu implements ActionListener {
 		zoomOutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionEvent.CTRL_MASK));
 		viewMenu.add(zoomInItem);
 		viewMenu.add(zoomOutItem);
-		
-		viewMenu.addSeparator();
 		
 		JMenuItem showGrid = createCheckBoxMenuItem(viewMenu, "showgrid");
 		showGrid.setSelected(true);
