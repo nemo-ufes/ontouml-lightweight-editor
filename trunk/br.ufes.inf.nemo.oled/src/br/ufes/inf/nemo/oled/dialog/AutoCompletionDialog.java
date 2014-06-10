@@ -120,7 +120,7 @@ public class AutoCompletionDialog extends JDialog {
 		this.project = project;
 		
 		setTitle("Complete selection");
-		setBounds(100, 100, 270, 258);
+		setBounds(100, 100, 286, 258);
 		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

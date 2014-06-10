@@ -79,7 +79,6 @@ import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
-import br.ufes.inf.nemo.oled.derivation.IntersectionPattern;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
 import br.ufes.inf.nemo.oled.dialog.AlloySettingsDialog;
 import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
@@ -1547,7 +1546,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void importXMI()
 	{		
-		new ImportXMIDialog(frame, true, this);
+		JFileChooser fileChooser = new JFileChooser(lastImportEAPath);
+		fileChooser.setDialogTitle("Import from EA");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("XMI, XML (*.xmi, *.xml)", "xmi", "xml");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);		
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+		{
+			if (fileChooser.getFileFilter() == filter)
+			{
+				File file = fileChooser.getSelectedFile();
+				lastImportEAPath = file.getAbsolutePath();
+				new ImportXMIDialog(frame, true, this, lastImportEAPath);
+			}
+		}		
 	}
 
 	/**
@@ -2264,11 +2277,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	public void openDerivedTypePatternIntersection(Double x, Double y) {
 		// TODO Auto-generated method stub
-		JDialog dialog = new IntersectionPattern(this);
-		dialog.setLocation(x.intValue(), y.intValue());
-		((IntersectionPattern) dialog).setPosition(x, y);
-		dialog.setModal(true);
-		dialog.setVisible(true);
+//		JDialog dialog = new IntersectionPattern(this);
+//		dialog.setLocation(x.intValue(), y.intValue());
+//		((IntersectionPattern) dialog).setPosition(x, y);
+//		dialog.setModal(true);
+//		dialog.setVisible(true);
 	}
 	public void deriveByIntersection() {
 		// TODO Auto-generated method stub

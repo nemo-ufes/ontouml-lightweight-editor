@@ -111,7 +111,7 @@ public class AlloySettingsDialog extends JDialog {
        	});
 		
 		btnCancel = new JButton("Cancel");
-		btnCancel.setPreferredSize(new Dimension(70, 25));
+		btnCancel.setPreferredSize(new Dimension(90, 25));
 		btnCancel.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
