@@ -375,7 +375,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 //						}
 //					}
 					
-					int opt = JOptionPane.showConfirmDialog(this, "Parsing complete. Do you wish to filter the model now?");
+					int opt = JOptionPane.showConfirmDialog(this, "Parsing completed. Do you want to filter the model now?", "EA Parser", JOptionPane.INFORMATION_MESSAGE);
 					if (opt == 0)
 					{
 						trees = transfManager.generateModelTrees(model, this);
