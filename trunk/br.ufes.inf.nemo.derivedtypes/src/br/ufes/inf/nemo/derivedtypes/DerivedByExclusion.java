@@ -20,142 +20,142 @@ public class DerivedByExclusion extends DerivedType{
 		//linha 1
 		ArrayList<String> value;
 		value= new ArrayList<>();
-		value.add("SUBKIND");
+		value.add("Subkind");
 		tableValues.put("Kind"+"SubKind", value);
 
 		value= new ArrayList<>();
-		value.add("SUBKIND");
+		value.add("Subkind");
 		tableValues.put("SubKind"+"SubKind", value);
 
 		value= new ArrayList<>();
-		value.add("KIND");
-		value.add("SUBKIND");
-		value.add("CATEGORY");
+		value.add("Kind");
+		value.add("Subkind");
+		value.add("Category");
 		tableValues.put("Category"+"Kind", value);
 
 		value= new ArrayList<>();
-		value.add("KIND");
-		value.add("SUBKIND");
-		value.add("CATEGORY");
+		value.add("Kind");
+		value.add("Subkind");
+		value.add("Category");
 		tableValues.put("Category"+"SubKind", value);
 
 		value= new ArrayList<>();
-		value.add("KIND");
-		value.add("SUBKIND");
-		value.add("CATEGORY");
+		value.add("Kind");
+		value.add("Subkind");
+		value.add("Category");
 		tableValues.put("Category"+"Category", value);
 
 		value= new ArrayList<>();
-		value.add("ROLE");
-		value.add("PHASE");
-		value.add("MIXIN");
-		value.add("ROLE MIXIN");
+		value.add("Role");
+		value.add("Phase");
+		value.add("Mixin");
+		value.add("RoleMixin");
 		tableValues.put("Mixin"+"Kind", value);
 
 		value= new ArrayList<>();
-		value.add("ROLE");
-		value.add("PHASE");
-		value.add("MIXIN");
-		value.add("ROLE MIXIN");
+		value.add("Role");
+		value.add("Phase");
+		value.add("Mixin");
+		value.add("RoleMixin");
 		tableValues.put("Mixin"+"SubKind", value);
 
 		value= new ArrayList<>();
-		value.add("ROLE");
-		value.add("PHASE");
-		value.add("MIXIN");
-		value.add("ROLE MIXIN");
+		value.add("Role");
+		value.add("Phase");
+		value.add("Mixin");
+		value.add("RoleMixin");
 		tableValues.put("Mixin"+"Category", value);
 
 		//linha 4
 		value= new ArrayList<>();
-		value.add("ROLE");
+		value.add("Role");
 		tableValues.put("Kind"+"Role", value);
 
 		value= new ArrayList<>();
-		value.add("ROLE");
+		value.add("Role");
 		tableValues.put("SubKind"+"Role", value);
 
 		value= new ArrayList<>();
-		value.add("PHASE");
+		value.add("Phase");
 		tableValues.put("Kind"+"Phase", value);
 
 		value= new ArrayList<>();
-		value.add("ROLE");
+		value.add("Role");
 		tableValues.put("SubKind"+"Phase", value);
 
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Category"+"Role", value);
 
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Category"+"Phase", value);
 
 		value= new ArrayList<>();
-		value.add("ROLE");
+		value.add("Role");
 		tableValues.put("Role"+"Role", value);
 
 		value= new ArrayList<>();
-		value.add("ROLE");
+		value.add("Role");
 		tableValues.put("Phase"+"Role", value);
 
 		value= new ArrayList<>();
-		value.add("PHASE");
+		value.add("Phase");
 		tableValues.put("Role"+"Phase", value);
 
 		value= new ArrayList<>();
-		value.add("PHASE");
+		value.add("Phase");
 		tableValues.put("Phase"+"Phase", value);
 
 		value= new ArrayList<>();
-		value.add("ROLE");
+		value.add("Role");
 		tableValues.put("Role Mixin"+"Role", value);
 
 		value= new ArrayList<>();
-		value.add("PHASE");
+		value.add("Phase");
 		tableValues.put("Role Mixin"+"Phase", value);
 
 		value= new ArrayList<>();
-		value.add("PHASE");
+		value.add("Phase");
 		tableValues.put("Role Mixin"+"Phase", value);
 
 		value= new ArrayList<>();
-		value.add("ROLE");
-		value.add("PHASE");
-		value.add("ROLE MIXIN");
+		value.add("Role");
+		value.add("Phase");
+		value.add("RoleMixin");
 		tableValues.put("Role Mixin"+"Role Mixin", value);
 
 		value= new ArrayList<>();
-		value.add("KIND");
-		value.add("SUBKIND");
-		value.add("MIXIN");
+		value.add("Kind");
+		value.add("Subkind");
+		value.add("Mixin");
 		tableValues.put("MIXIN"+"ROLE", value);
 
 		value= new ArrayList<>();
-		value.add("KIND");
-		value.add("SUBKIND");
+		value.add("Kind");
+		value.add("Subkind");
 		value.add("MIXIN");
 		tableValues.put("MIXIN"+"PHASE", value);
 
 		value= new ArrayList<>();
-		value.add("KIND");
-		value.add("SUBKIND");
-		value.add("MIXIN");
+		value.add("Kind");
+		value.add("Subkind");
+		value.add("Mixin");
 		tableValues.put("MIXIN"+"ROLE MIXIN", value);
 
 		value= new ArrayList<>();
-		value.add("ROLE");
-		value.add("PHASE");
-		value.add("MIXIN");
+		value.add("Role");
+		value.add("Phase");
+		value.add("Mixin");
 		tableValues.put("CATEGORY"+"MIXIN", value);
 
 		value= new ArrayList<>();
-		value.add("KIND");
-		value.add("SUBKIND");
-		value.add("ROLE");
-		value.add("PHASE");
-		value.add("MIXIN");
-		value.add("ROLE MIXIN");
+		value.add("Kind");
+		value.add("Subkind");
+		value.add("Role");
+		value.add("Phase");
+		value.add("Mixin");
+		value.add("RoleMixin");
 		tableValues.put("MIXIN"+"MIXIN", value);
 
 

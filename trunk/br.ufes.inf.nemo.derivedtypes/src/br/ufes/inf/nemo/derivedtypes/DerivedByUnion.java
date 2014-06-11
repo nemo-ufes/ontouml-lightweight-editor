@@ -18,39 +18,39 @@ public class DerivedByUnion extends DerivedType{
 		//linha 1
 		ArrayList<String> value;
 		value= new ArrayList<>();
-		value.add("CATEGORY");
+		value.add("Category");
 		tableValues.put("Kind"+"Kind", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
+		value.add("Category");
 		tableValues.put("Collective"+"Collective", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
+		value.add("Category");
 		tableValues.put("Quantity"+"Quantity", value);
 
 		value= new ArrayList<>();
-		value.add("CATEGORY");
+		value.add("Category");
 		tableValues.put("Kind"+"Quantity", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
+		value.add("Category");
 		tableValues.put("Quantity"+"Kind", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
+		value.add("Category");
 		tableValues.put("Kind"+"Collective", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
+		value.add("Category");
 		tableValues.put("Collective"+"Kind", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
+		value.add("Category");
 		tableValues.put("Quantity"+"Collective", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
+		value.add("Category");
 		tableValues.put("Collective"+"Quantity", value);
 		
 		
@@ -107,8 +107,8 @@ public class DerivedByUnion extends DerivedType{
 		
 		//linha 4 e 5		
 		value= new ArrayList<>();
-		value.add("SUBKIND");
-		value.add("CATEGORY");
+		value.add("Subkind");
+		value.add("Category");
 		tableValues.put("SubKind"+"SubKind", value);
 		
 		//linha 6 
@@ -144,189 +144,189 @@ public class DerivedByUnion extends DerivedType{
 		//TABELA 2
 		//linha 1
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Kind"+"Role", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Role"+"Kind", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Collective"+"Role", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Role"+"Collective", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Quantity"+"Role", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Role"+"Quantity", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Kind"+"Phase", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Phase"+"Kind", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Collective"+"Phase", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Phase"+"Collective", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Quantity"+"Phase", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Phase"+"Quantity", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Kind"+"RoleMixin", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Role Mixin"+"Kind", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Collective"+"RoleMixin", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Role Mixin"+"Collective", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Quantity"+"RoleMixin", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Role Mixin"+"Quantity", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Subkind"+"Role", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Role"+"Subkind", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Subkind"+"Phase", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Phase"+"Subkind", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Subkind"+"RoleMixin", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("RoleMixin"+"Subkind", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Category"+"Role", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Role"+"Category", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Category"+"Phase", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Phase"+"Category", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("Category"+"RoleMixin", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("RoleMixin"+"Category", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
-		value.add("MIXIN");
+		value.add("Category");
+		value.add("Mixin");
 		tableValues.put("Mixin"+"Role", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
-		value.add("MIXIN");
+		value.add("Category");
+		value.add("Mixin");
 		tableValues.put("Role"+"Mixin", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
-		value.add("MIXIN");
+		value.add("Category");
+		value.add("Mixin");
 		tableValues.put("Mixin"+"Phase", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
-		value.add("MIXIN");
+		value.add("Category");
+		value.add("Mixin");
 		tableValues.put("Phase"+"Mixin", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
-		value.add("MIXIN");
+		value.add("Category");
+		value.add("Mixin");
 		tableValues.put("Mixin"+"Mixin", value);
 		
 		value= new ArrayList<>();
-		value.add("CATEGORY");
-		value.add("MIXIN");
+		value.add("Category");
+		value.add("Mixin");
 		tableValues.put("Mixin"+"Phase", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
+		value.add("Mixin");
 		tableValues.put("RoleMixin"+"Mixin", value);
 		
 		value= new ArrayList<>();
-		value.add("SUBKIND");
-		value.add("ROLE MIXIN");
+		value.add("Subkind");
+		value.add("RoleMixin");
 		tableValues.put("Role"+"Role", value);
 		
 		value= new ArrayList<>();
-		value.add("ROLEMIXIN");
+		value.add("RoleMixin");
 		tableValues.put("Role"+"Phase", value);
 		
 		value= new ArrayList<>();
-		value.add("ROLEMIXIN");
+		value.add("RoleMixin");
 		tableValues.put("Phase"+"Role", value);
 		
 		value= new ArrayList<>();
-		value.add("SUBKIND");
-		value.add("ROLEMIXIN");
+		value.add("Subkind");
+		value.add("RoleMixin");
 		tableValues.put("Phase"+"Phase", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
-		value.add("ROLEMIXIN");
+		value.add("Mixin");
+		value.add("RoleMixin");
 		tableValues.put("RoleMixin"+"Role", value);
 		
 		value= new ArrayList<>();
-		value.add("MIXIN");
-		value.add("ROLEMIXIN");
+		value.add("Mixin");
+		value.add("RoleMixin");
 		tableValues.put("Role"+"RoleMixin", value);
 		
 		value= new ArrayList<>();
-		value.add("ROLEMIXIN");
+		value.add("RoleMixin");
 		tableValues.put("RoleMixin"+"RoleMixin", value);
 		
 

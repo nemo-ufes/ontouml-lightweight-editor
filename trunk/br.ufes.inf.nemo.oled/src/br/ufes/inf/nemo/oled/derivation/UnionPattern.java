@@ -33,11 +33,11 @@ public class UnionPattern extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField_1;
+	private JTextField txtBase_1;
 	@SuppressWarnings("rawtypes")
 	JComboBox comboBox_1 = new JComboBox();
-	private JTextField textField;
-	private JTextField textField_2;
+	private JTextField txtBase;
+	private JTextField txtDerived;
 	@SuppressWarnings("rawtypes")
 	private JComboBox comboBox = new JComboBox();
 	@SuppressWarnings({ "rawtypes", "unused" })
@@ -64,8 +64,8 @@ public class UnionPattern extends JDialog {
 	 * Create the dialog.
 	 */
 	public void setPosition(java.lang.Double x, java.lang.Double y){
-		location.x= this.getLocation().getX();
-		location.y= this.getLocation().getY();
+		location.x= x;
+		location.y= y;
 	}
 	
 	
@@ -104,8 +104,9 @@ public class UnionPattern extends JDialog {
 			lblNewLabel.setForeground(Color.BLACK);
 		}
 		{
-			textField = new JTextField();
-			textField.setColumns(10);
+			txtBase = new JTextField();
+			txtBase.setText("base 1");
+			txtBase.setColumns(10);
 		}
 		{
 			comboBox_1.addActionListener(new ActionListener() {
@@ -126,8 +127,9 @@ public class UnionPattern extends JDialog {
 			comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Category", "Role", "Phase", "Role Mixin", "Mixin"}));
 		}
 		{
-			textField_1 = new JTextField();
-			textField_1.setColumns(10);
+			txtBase_1 = new JTextField();
+			txtBase_1.setText("base 2");
+			txtBase_1.setColumns(10);
 		}
 		{
 
@@ -138,13 +140,14 @@ public class UnionPattern extends JDialog {
 			lblNewLabel_1.setForeground(Color.BLACK);
 		}
 		{
-			textField_2 = new JTextField();
-			textField_2.setColumns(10);
+			txtDerived = new JTextField();
+			txtDerived.setText("derived");
+			txtDerived.setColumns(10);
 		}
 		
 		JTextPane txtpnATypeIs = new JTextPane();
 		txtpnATypeIs.setEditable(false);
-		txtpnATypeIs.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 12));
+		txtpnATypeIs.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtpnATypeIs.setText("The population of the type derived by union is the sum of all individuals of the base types .");
 		
 		JLabel lblNewLabel_2 = new JLabel("");
@@ -162,14 +165,14 @@ public class UnionPattern extends JDialog {
 								.addComponent(txtpnATypeIs, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
 								.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
 								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+									.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))
 								.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
 								.addGroup(gl_contentPanel.createSequentialGroup()
 									.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
-										.addComponent(textField, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE))
+										.addComponent(txtBase_1, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+										.addComponent(txtBase, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 										.addComponent(comboBox_1, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
@@ -188,17 +191,17 @@ public class UnionPattern extends JDialog {
 					.addComponent(lblNewLabel_1)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblNewLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(8)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtBase_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
@@ -219,9 +222,9 @@ public class UnionPattern extends JDialog {
 							values.add(comboBox.getModel().getSelectedItem().toString());
 							values.add(comboBox_1.getModel().getSelectedItem().toString());
 
-							values.add(textField_2.getText());
-							values.add(textField_1.getText());
-							values.add(textField.getText());
+							values.add(txtDerived.getText());
+							values.add(txtBase_1.getText());
+							values.add(txtBase.getText());
 							DerivedTypesOperations.exclusionPattern(diagramMan,values,location);
 							dispose();
 						}

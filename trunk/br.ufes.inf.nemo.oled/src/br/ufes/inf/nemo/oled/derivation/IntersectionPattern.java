@@ -31,13 +31,15 @@ import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.awt.Toolkit;
+import javax.swing.SwingConstants;
 
 public class IntersectionPattern extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField txtBase;
+	private JTextField txtBase_1;
+	private JTextField txtDerived;
 	JComboBox combo_base_1 = new JComboBox();
 	JComboBox combo_base_2 = new JComboBox();
 	JComboBox combo_derived = new JComboBox();
@@ -55,6 +57,9 @@ public class IntersectionPattern extends JDialog {
 	 * Create the dialog.
 	 */
 	public IntersectionPattern(final DiagramManager dm) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(IntersectionPattern.class.getResource("/resources/icons/x16/sitemap.png")));
+		setTitle("Derivation by Intersection");
+		setResizable(false);
 	
 		//this.setLocation(Integer., y);
 		getContentPane().setBackground(Color.WHITE);
@@ -68,14 +73,20 @@ public class IntersectionPattern extends JDialog {
 		
 		JLabel lblNewLabel_2 = new JLabel("Derived Type");
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		txtBase = new JTextField();
+		txtBase.setForeground(Color.DARK_GRAY);
+		txtBase.setText("Base 1");
+		txtBase.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		txtBase_1 = new JTextField();
+		txtBase_1.setForeground(Color.DARK_GRAY);
+		txtBase_1.setText("Base 2");
+		txtBase_1.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
+		txtDerived = new JTextField();
+		txtDerived.setForeground(Color.DARK_GRAY);
+		txtDerived.setText("Derived");
+		txtDerived.setColumns(10);
 		
 		
 		combo_base_1.addActionListener(new ActionListener() {
@@ -134,7 +145,7 @@ public class IntersectionPattern extends JDialog {
 		
 		JTextPane txtpnTheDerivedType = new JTextPane();
 		txtpnTheDerivedType.setEditable(false);
-		txtpnTheDerivedType.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 11));
+		txtpnTheDerivedType.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		txtpnTheDerivedType.setText("The population of a derived type by intersection is the overlap of the base types");
 		
 		JLabel lblNewLabel_3 = new JLabel("");
@@ -159,7 +170,7 @@ public class IntersectionPattern extends JDialog {
 									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
 										.addComponent(lblNewLabel_2)
 										.addGroup(gl_contentPanel.createSequentialGroup()
-											.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
+											.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
 											.addPreferredGap(ComponentPlacement.UNRELATED)
 											.addComponent(combo_derived, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 										.addGroup(gl_contentPanel.createSequentialGroup()
@@ -167,8 +178,8 @@ public class IntersectionPattern extends JDialog {
 											.addGap(10))
 										.addGroup(gl_contentPanel.createSequentialGroup()
 											.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-												.addComponent(textField_1)
-												.addComponent(textField, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE))
+												.addComponent(txtBase_1)
+												.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE))
 											.addPreferredGap(ComponentPlacement.UNRELATED)
 											.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 												.addComponent(combo_base_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -194,11 +205,11 @@ public class IntersectionPattern extends JDialog {
 							.addComponent(lblNewLabel)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(combo_base_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addGap(18)
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(txtBase_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(combo_base_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
@@ -207,7 +218,7 @@ public class IntersectionPattern extends JDialog {
 									.addGap(28))
 								.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 									.addComponent(combo_derived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
+									.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
 					.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
 					.addComponent(label)
 					.addContainerGap())
@@ -216,13 +227,14 @@ public class IntersectionPattern extends JDialog {
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setBackground(Color.WHITE);
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
+				okButton.setHorizontalAlignment(SwingConstants.RIGHT);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						DerivedTypesOperations.intersectionPattern(dm, textField.getText(),textField_1.getText(),textField_2.getText(),location,combo_base_1.getSelectedItem().toString(),combo_base_2.getSelectedItem().toString(), combo_derived.getSelectedItem().toString());
+						DerivedTypesOperations.intersectionPattern(dm, txtBase.getText(),txtBase_1.getText(),txtDerived.getText(),location,combo_base_1.getSelectedItem().toString(),combo_base_2.getSelectedItem().toString(), combo_derived.getSelectedItem().toString());
 						dispose();
 					}
 				});
@@ -232,6 +244,7 @@ public class IntersectionPattern extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.setHorizontalAlignment(SwingConstants.RIGHT);
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
@@ -253,7 +266,7 @@ public class IntersectionPattern extends JDialog {
 		
 	}
 	public void setPosition(java.lang.Double x, java.lang.Double y){
-		location.x= this.getLocation().getX();
-		location.y= this.getLocation().getY();
+		location.x= x;
+		location.y= y;
 	}
 }

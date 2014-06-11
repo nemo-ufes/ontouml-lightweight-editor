@@ -35,9 +35,9 @@ public class ExclusionPattern extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField txtSupertype;
+	private JTextField txtBase;
+	private JTextField txtDerived;
 	@SuppressWarnings("rawtypes")
 	JComboBox comboBox_1 = new JComboBox();
 	boolean updated=false;
@@ -57,8 +57,8 @@ public class ExclusionPattern extends JDialog {
 
 
 	public void setPosition(java.lang.Double x, java.lang.Double y){
-		location.x= this.getLocation().getX();
-		location.y= this.getLocation().getY();
+		location.x= x;
+		location.y= y;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -103,14 +103,17 @@ public class ExclusionPattern extends JDialog {
 
 		JLabel lblNewLabel = new JLabel("Supertype");
 
-		textField = new JTextField();
-		textField.setColumns(10);
+		txtSupertype = new JTextField();
+		txtSupertype.setText("Supertype");
+		txtSupertype.setColumns(10);
 
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		txtBase = new JTextField();
+		txtBase.setText("Base");
+		txtBase.setColumns(10);
 
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
+		txtDerived = new JTextField();
+		txtDerived.setText("Derived");
+		txtDerived.setColumns(10);
 
 		JLabel lblNewLabel_1 = new JLabel("From Type");
 
@@ -156,7 +159,7 @@ public class ExclusionPattern extends JDialog {
 		
 		JTextPane txtpnATypeIs = new JTextPane();
 		txtpnATypeIs.setEditable(false);
-		txtpnATypeIs.setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 11));
+		txtpnATypeIs.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		txtpnATypeIs.setText("A type is derived by exclusion when it is just the complement of other type.");
 		
 		JLabel lblNewLabel_3 = new JLabel("");
@@ -173,19 +176,19 @@ public class ExclusionPattern extends JDialog {
 								.addComponent(txtpnATypeIs, GroupLayout.PREFERRED_SIZE, 396, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 392, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 302, GroupLayout.PREFERRED_SIZE)
+									.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 302, GroupLayout.PREFERRED_SIZE)
 									.addGap(6)
 									.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))
 								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 392, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, 302, GroupLayout.PREFERRED_SIZE)
+									.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, 302, GroupLayout.PREFERRED_SIZE)
 									.addGap(6)
 									.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))
 								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 392, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 									.addComponent(chckbxNewCheckBox, GroupLayout.PREFERRED_SIZE, 392, GroupLayout.PREFERRED_SIZE)
 									.addGroup(gl_contentPanel.createSequentialGroup()
-										.addComponent(textField, GroupLayout.PREFERRED_SIZE, 302, GroupLayout.PREFERRED_SIZE)
+										.addComponent(txtSupertype, GroupLayout.PREFERRED_SIZE, 302, GroupLayout.PREFERRED_SIZE)
 										.addGap(6)
 										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))))
 							.addGap(20))
@@ -202,19 +205,19 @@ public class ExclusionPattern extends JDialog {
 					.addComponent(lblNewLabel_2)
 					.addGap(6)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(11)
 					.addComponent(lblNewLabel_1)
 					.addGap(6)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(5)
 					.addComponent(lblNewLabel)
 					.addGap(6)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtSupertype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(1)
 					.addComponent(chckbxNewCheckBox)
@@ -242,14 +245,14 @@ public class ExclusionPattern extends JDialog {
 							//filho
 							values.add(comboBox_2.getModel().getSelectedItem().toString());
 
-							values.add(textField.getText());
-							values.add(textField_1.getText());
-							values.add(textField_2.getText());
+							values.add(txtSupertype.getText());
+							values.add(txtBase.getText());
+							values.add(txtDerived.getText());
 							if(chckbxNewCheckBox.isSelected()){
 								if(!(comboBox_1.getModel().getSelectedItem().toString().equals("Role") && comboBox.getModel().getSelectedItem().toString().equals("Kind")) )
 								{
-									if(!((textField.getText().equals("") || textField_1.getText().equals("") || textField_2.getText().equals("")))){
-										String rule="\n context: _'"+textField.getText()+"'\n"+"inv: not oclIsTypeOf(_'"+textField_1.getText()+"') implies oclIsTypeOf(_'"+textField_2.getText()+"')";
+									if(!((txtSupertype.getText().equals("") || txtBase.getText().equals("") || txtDerived.getText().equals("")))){
+										String rule="\n context: _'"+txtSupertype.getText()+"'\n"+"inv: not oclIsTypeOf(_'"+txtBase.getText()+"') implies oclIsTypeOf(_'"+txtDerived.getText()+"')";
 										dman.getFrame().getInfoManager().getOcleditor().addText(rule);
 										DerivedTypesOperations.exclusionPattern(dman,values,location);
 										dispose();
