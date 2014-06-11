@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.oled.dialog;
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -29,7 +30,6 @@ import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
-import java.awt.Toolkit;
 
 
 /**
@@ -418,41 +418,6 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 		wormA2Item.setDescription(ApplicationResources.getInstance().getString("dialog.owlsettings.worm-view-a2"));
 		
 		return new DefaultComboBoxModel(new Object[] { rulesItem, simpleItem, reificationItem, wormA0Item, wormA1Item, wormA2Item });
-	}
-	
-	class MappingTypeComboItem
-	{
-		private String value;
-		private String displayName;
-		private String description;
-		
-		public String getValue() {
-			return value;
-		}
-		public void setValue(String value) {
-			this.value = value;
-		}
-		public String getDisplayName() {
-			return displayName;
-		}
-		public void setDisplayName(String displayName) {
-			this.displayName = displayName;
-		}
-		public String getDescription() {
-			return description;
-		}
-		public void setDescription(String description) {
-			this.description = description;
-		}
-		
-		@Override
-		public String toString()
-		{
-			if(displayName != null)
-				return displayName;
-			
-			return value;
-		}
 	}
 	
 }

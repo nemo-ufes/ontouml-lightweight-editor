@@ -196,8 +196,8 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 						.addComponent(browseBtn))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel_4.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnUseDefaultOptions, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnRun, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnUseDefaultOptions)
+						.addComponent(btnRun))
 					.addGap(17))
 		);
 		panel_4.setLayout(gl_panel_4);
@@ -255,17 +255,17 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 				.addGroup(gl_horizontalBox.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 299, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(69)
 					.addComponent(btnFilter)
-					.addGap(81))
+					.addGap(18))
 		);
 		gl_horizontalBox.setVerticalGroup(
 			gl_horizontalBox.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_horizontalBox.createSequentialGroup()
 					.addGap(6)
-					.addGroup(gl_horizontalBox.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnFilter, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(panel_5, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 29, Short.MAX_VALUE))
+					.addGroup(gl_horizontalBox.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnFilter)
+						.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		rdbtnFilterModelBy = new JRadioButton("Show package structure");

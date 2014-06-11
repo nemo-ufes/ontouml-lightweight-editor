@@ -89,18 +89,14 @@ public class AssociationEditionPanel extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(meronymicPanel, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE)
+						.addComponent(assocPanel, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(assocPanel, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(panel, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(directionPanel, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)))
-							.addContainerGap(10, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(meronymicPanel, 0, 0, Short.MAX_VALUE)
-							.addGap(219))))
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(directionPanel, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -113,7 +109,7 @@ public class AssociationEditionPanel extends JPanel {
 						.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(meronymicPanel, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
-					.addGap(15))
+					.addGap(14))
 		);
 		
 		btnName = new JCheckBox("Name");
@@ -160,12 +156,12 @@ public class AssociationEditionPanel extends JPanel {
 		btnToSource = new JRadioButton("To source");
 		directionPanel.add(btnToSource);
 		group.add(btnToSource);
-		btnToSource.setPreferredSize(new Dimension(80, 25));
+		btnToSource.setPreferredSize(new Dimension(83, 25));
 		
 		btnUndefined = new JRadioButton("Undefined");
 		directionPanel.add(btnUndefined);
 		group.add(btnUndefined);
-		btnUndefined.setPreferredSize(new Dimension(100, 25));
+		btnUndefined.setPreferredSize(new Dimension(90, 25));
 		
 		btnToDestination = new JRadioButton("To destination");
 		directionPanel.add(btnToDestination);
@@ -173,14 +169,14 @@ public class AssociationEditionPanel extends JPanel {
 		btnToDestination.setPreferredSize(new Dimension(180, 25));
 		
 		cbxEssential = new JCheckBox("Essential");		
-		cbxEssential.setPreferredSize(new Dimension(75, 20));
+		cbxEssential.setPreferredSize(new Dimension(85, 20));
 		cbxImmutablepart = new JCheckBox("ImmutablePart");
 		cbxImmutablepart.setPreferredSize(new Dimension(120, 20));
 		
 		cbxInseparable = new JCheckBox("Inseparable");
-		cbxInseparable.setPreferredSize(new Dimension(85, 20));
+		cbxInseparable.setPreferredSize(new Dimension(95, 20));
 		cbxImmutablewhole = new JCheckBox("ImmutableWhole");
-		cbxImmutablewhole.setPreferredSize(new Dimension(110, 20));
+		cbxImmutablewhole.setPreferredSize(new Dimension(125, 20));
 		cbxShareable = new JCheckBox("Shareable");
 		cbxShareable.setPreferredSize(new Dimension(200, 20));
 		GroupLayout gl_meronymicPanel = new GroupLayout(meronymicPanel);
@@ -268,15 +264,15 @@ public class AssociationEditionPanel extends JPanel {
 						.addComponent(lblStereo, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_assocPanel.createSequentialGroup()
-							.addComponent(stereoCombo, GroupLayout.PREFERRED_SIZE, 215, GroupLayout.PREFERRED_SIZE)
+							.addComponent(stereoCombo, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(cbxAbstract)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cbxDerived, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addComponent(nameField, GroupLayout.PREFERRED_SIZE, 358, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(cbxDerived))
+						.addComponent(nameField, GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_assocPanel.setVerticalGroup(
 			gl_assocPanel.createParallelGroup(Alignment.LEADING)
