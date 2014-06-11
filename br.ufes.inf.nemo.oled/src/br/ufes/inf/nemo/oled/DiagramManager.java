@@ -2284,7 +2284,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 //		dialog.setVisible(true);
 	}
 	public void deriveByIntersection() {
-		// TODO Auto-generated method stub
+		DiagramEditor activeEditor = getCurrentDiagramEditor();
+		UmlProject project = getCurrentEditor().getProject();
+		Fix fix = DerivedTypesOperations.createIntersectionDerivation(activeEditor, project,this);
+		if(fix!=null)
+			updateOLED(fix);
 		
 	}
 	

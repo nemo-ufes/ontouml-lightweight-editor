@@ -9,16 +9,21 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import RefOntoUML.AntiRigidMixinClass;
+import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.Kind;
+import RefOntoUML.Mixin;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Property;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
+import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
 import RefOntoUML.SemiRigidMixinClass;
+import RefOntoUML.SubKind;
 import RefOntoUML.util.RefOntoUMLAdapterFactory;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
@@ -34,6 +39,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Category;
 
 public class DerivedTypesOperations {
 
@@ -549,15 +555,66 @@ public class DerivedTypesOperations {
 			String base_2_name, String derived_name, Double location, String base_1_stereo, String stereo_base_2_stereo, String derived_stereo) {
 		// TODO Auto-generated method stub
 		dman= dm;
-		of = new OutcomeFixer(dm.getCurrentProject().getModel());
-		mainfix = new Fix();
-		Point2D.Double[] positions= ClassPosition.GSpositioningDown(2, location);
-		Classifier newElement= includeElement(positions[1],base_1_name, base_1_stereo);
-		Classifier newElement2= includeElement(positions[2], base_2_name, stereo_base_2_stereo);
-		Classifier newElement3 = includeElement(positions[0], derived_name, derived_stereo);
-		createGeneralizationSingle(newElement,newElement3);
-		createGeneralizationSingle(newElement2,newElement3);
-		dm.updateOLED(mainfix);
+	}
+
+
+
+
+	public static Fix createIntersectionDerivation(DiagramEditor activeEditor,
+			UmlProject project, DiagramManager diagramManager) {
+		// TODO Auto-generated method stub
+		Fix mainfix = new Fix();
+		List<DiagramElement> selected = activeEditor.getSelectedElements();
+		List<ClassElement> classList = new ArrayList<ClassElement>();
+		List<GeneralizationElement> gen = new ArrayList<GeneralizationElement>();
+		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
+		String specialCase=null;
+		for (DiagramElement element : selected) {
+			if (element instanceof ClassElement) {
+				classList.add((ClassElement) element);
+				refontoList.add((Element) ((ClassElement) element).getClassifier());
+			}
+		}
+
+		for (ClassElement element : classList) {
+			
+			if(element.getClassifier() instanceof AntiRigidSortalClass){
+				if(element.getClassifier() instanceof Role){
+					return createIntersectionDerivedType("Role", diagramManager, activeEditor);
+				}else{
+					specialCase="Phase";
+				}
+			}else{
+				if(!specialCase.equals("Phase")){
+					if(element.getClassifier() instanceof SubKind){
+						specialCase="SubKind";
+					}else{
+						if(element.getClassifier() instanceof RoleMixin){
+							specialCase="RoleMixin";
+						}else{
+							if(!specialCase.equals("RoleMixin")){
+								if(element.getClassifier() instanceof Mixin){
+									specialCase="Mixin";
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+			
+		return null;
+	}
+
+
+
+
+	private static Fix createIntersectionDerivedType(String string,
+			DiagramManager diagramManager, DiagramEditor activeEditor) {
+				return mainfix;
+		// TODO Auto-generated method stub
+		
 	}
 
 }
