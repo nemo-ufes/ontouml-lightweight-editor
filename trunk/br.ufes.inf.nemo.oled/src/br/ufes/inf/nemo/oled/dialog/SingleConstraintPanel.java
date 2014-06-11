@@ -84,7 +84,7 @@ public class SingleConstraintPanel extends JPanel {
 	public SingleConstraintPanel() 
 	{
 //		setBorder(BorderFactory.createTitledBorder(""));		
-		setPreferredSize(new Dimension(423, 76));
+		setPreferredSize(new Dimension(433, 76));
 		
 		JPanel optPanel = new JPanel();		
 		FlowLayout fl_optPanel = (FlowLayout) optPanel.getLayout();
@@ -99,9 +99,9 @@ public class SingleConstraintPanel extends JPanel {
 			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(ctPanel, GroupLayout.PREFERRED_SIZE, 405, GroupLayout.PREFERRED_SIZE)
-						.addComponent(optPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(ctPanel, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
+						.addComponent(optPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(22))
 		);
 		gl_panel.setVerticalGroup(
@@ -185,7 +185,7 @@ public class SingleConstraintPanel extends JPanel {
 		
 		lblWorlds = new JLabel("Worlds:");
 		lblWorlds.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblWorlds.setPreferredSize(new Dimension(40, 20));
+		lblWorlds.setPreferredSize(new Dimension(45, 20));
 		optPanel.add(lblWorlds);
 		
 		worldSpinner = new JSpinner();

@@ -259,11 +259,11 @@ public class PropertyEditionPanel extends JPanel {
 		optionsPanel.add(cbxDerived);
 		
 		cbxUnique = new JCheckBox("Unique");
-		cbxUnique.setPreferredSize(new Dimension(100, 20));
+		cbxUnique.setPreferredSize(new Dimension(95, 20));
 		optionsPanel.add(cbxUnique);
 		
 		cbxOrdered = new JCheckBox("Ordered");
-		cbxOrdered.setPreferredSize(new Dimension(70, 20));
+		cbxOrdered.setPreferredSize(new Dimension(75, 20));
 		optionsPanel.add(cbxOrdered);
 		
 		cbxReadOnly = new JCheckBox("Read Only");

@@ -3,11 +3,9 @@ package br.ufes.inf.nemo.oled.dialog.help;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Image;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -119,8 +117,8 @@ public class LicensesDialog extends JDialog {
 		setTitle("Licenses for OLED");
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setPreferredSize(new Dimension(600, 400));
-		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
-		setIconImage(icon);
+		//Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
+		//setIconImage(icon);
 		
 		choices.setSelectedIndex(0);		
 		setLicense((String)choices.getSelectedItem());

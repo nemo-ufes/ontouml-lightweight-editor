@@ -111,7 +111,7 @@ public class ModelSimulationPanel extends JPanel {
 	{
 		setBorder(BorderFactory.createTitledBorder("Model"));		
 		setBackground(UIManager.getColor("Panel.background"));
-		setPreferredSize(new Dimension(500, 177));
+		setPreferredSize(new Dimension(532, 177));
 		setSize(new Dimension(186, 228));
 		
 		JPanel panel = new JPanel();		
@@ -165,18 +165,18 @@ public class ModelSimulationPanel extends JPanel {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(107)
+							.addContainerGap()
+							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(122)
 							.addComponent(btndefault)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnEnableall, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnDisableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(12)
-							.addComponent(lblChooseWhichAxioms, GroupLayout.PREFERRED_SIZE, 466, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 468, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(lblChooseWhichAxioms, GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -186,20 +186,20 @@ public class ModelSimulationPanel extends JPanel {
 					.addComponent(lblChooseWhichAxioms)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-					.addGap(13)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnEnableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnDisableall, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btndefault, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
-					.addGap(123))
+					.addGap(9))
 		);
 
 		cbxRelator = new JCheckBox("Relator constraint");		
-		cbxRelator.setPreferredSize(new Dimension(150, 20));
+		cbxRelator.setPreferredSize(new Dimension(160, 20));
 		cbxRelator.setToolTipText("");
 				
 		cbxWeak = new JCheckBox("Weak supplementation");
-		cbxWeak.setPreferredSize(new Dimension(150, 20));
+		cbxWeak.setPreferredSize(new Dimension(160, 20));
 		cbxWeak.setToolTipText("");
 		
 		lblStateWeak = new JButton("");	
@@ -257,7 +257,7 @@ public class ModelSimulationPanel extends JPanel {
 		identityInfoButton.setPreferredSize(new Dimension(30, 20));
 		cbxIdentity = new JCheckBox("Identity principle");
 		cbxIdentity.setToolTipText("");
-		cbxIdentity.setPreferredSize(new Dimension(150, 20));
+		cbxIdentity.setPreferredSize(new Dimension(160, 20));
 		
 		lblStateAntirigidity = new JButton("");
 		
@@ -280,7 +280,7 @@ public class ModelSimulationPanel extends JPanel {
 		cbxAntirigidity = new JCheckBox("Antirigidity visualization");
 		cbxAntirigidity.setToolTipText("");
 		cbxAntirigidity.setFocusable(false);
-		cbxAntirigidity.setPreferredSize(new Dimension(150, 20));
+		cbxAntirigidity.setPreferredSize(new Dimension(160, 20));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)

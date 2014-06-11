@@ -85,8 +85,8 @@ public class ConstraintEditionPanel extends JPanel {
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textFieldName, GroupLayout.PREFERRED_SIZE, 341, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
+							.addComponent(textFieldName)))
+					.addGap(20))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -157,14 +157,11 @@ public class ConstraintEditionPanel extends JPanel {
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(panel, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
-								.addComponent(comboConstraint, 0, 426, Short.MAX_VALUE))
-							.addContainerGap(14, Short.MAX_VALUE))
+						.addComponent(comboConstraint, Alignment.LEADING, 0, 423, Short.MAX_VALUE)
+						.addComponent(panel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 423, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -172,8 +169,8 @@ public class ConstraintEditionPanel extends JPanel {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(comboConstraintType, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
-							.addGap(25))))
+							.addComponent(comboConstraintType, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)))
+					.addGap(25))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -188,7 +185,7 @@ public class ConstraintEditionPanel extends JPanel {
 						.addComponent(comboConstraintType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
 						.addComponent(btnSave, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addContainerGap(27, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 		
