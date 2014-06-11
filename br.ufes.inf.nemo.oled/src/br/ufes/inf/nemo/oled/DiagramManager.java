@@ -25,6 +25,8 @@ package br.ufes.inf.nemo.oled;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -79,6 +81,7 @@ import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
+import br.ufes.inf.nemo.oled.derivation.IntersectionPattern;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
 import br.ufes.inf.nemo.oled.dialog.AlloySettingsDialog;
 import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
@@ -2241,7 +2244,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void openDerivedTypePatternUnion(Double x, Double y) {
 			
 		JDialog dialog = new UnionPattern(this);
-		dialog.setLocation(x.intValue(), y.intValue());
+		this.setCenterDialog(dialog);
 		((UnionPattern) dialog).setPosition(x, y);
 		dialog.setModal(true);
 		dialog.setVisible(true);
@@ -2249,11 +2252,19 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	
 	public void openDerivedTypePatternExclusion(Double x, Double y) {
 		JDialog dialog = new ExclusionPattern(this);
-		dialog.setLocation(x.intValue(), y.intValue());
+		this.setCenterDialog(dialog);
 		((ExclusionPattern) dialog).setPosition(x, y);
 		dialog.setModal(true);
 		dialog.setVisible(true);
 	
+	}
+	
+	public void setCenterDialog(JDialog dialog){
+		final Toolkit toolkit = Toolkit.getDefaultToolkit();
+		final Dimension screenSize = toolkit.getScreenSize();
+		int x_1 = (screenSize.width - dialog.getWidth()) / 2;
+		int y_2 = (screenSize.height - dialog.getHeight()) / 2;
+		dialog.setLocation(x_1, y_2);
 	}
 
 	public void runPattern(ElementType elementType, double x, double y) {
@@ -2276,12 +2287,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	public void openDerivedTypePatternIntersection(Double x, Double y) {
-		// TODO Auto-generated method stub
-//		JDialog dialog = new IntersectionPattern(this);
-//		dialog.setLocation(x.intValue(), y.intValue());
-//		((IntersectionPattern) dialog).setPosition(x, y);
-//		dialog.setModal(true);
-//		dialog.setVisible(true);
+		JDialog dialog = new IntersectionPattern(this);
+		this.setCenterDialog(dialog);
+		((IntersectionPattern) dialog).setPosition(x, y);
+		dialog.setModal(true);
+		dialog.setVisible(true);
 	}
 	public void deriveByIntersection() {
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
