@@ -106,7 +106,7 @@ public class InfoManager extends JTabbedPane {
 		parserMenuItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				frame.getDiagramManager().parseOCL(true);
+				frame.getDiagramManager().parseConstraints(true);
 			}
 		});
 		

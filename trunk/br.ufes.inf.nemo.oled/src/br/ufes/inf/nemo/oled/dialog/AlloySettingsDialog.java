@@ -158,7 +158,7 @@ public class AlloySettingsDialog extends JDialog {
 		  
 //    	dispose();
     
-    	frame.getDiagramManager().generateAlloy();		  		
+    	frame.getDiagramManager().transformToAlloy();		  		
 	}
 	
 	public AppFrame getFrame()

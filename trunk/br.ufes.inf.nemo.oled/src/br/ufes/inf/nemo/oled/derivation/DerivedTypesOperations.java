@@ -24,7 +24,6 @@ import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SemiRigidMixinClass;
 import RefOntoUML.SubKind;
-import RefOntoUML.util.RefOntoUMLAdapterFactory;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -39,7 +38,6 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
-import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Category;
 
 public class DerivedTypesOperations {
 

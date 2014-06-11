@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -28,7 +29,6 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
-import javax.swing.border.EtchedBorder;
 
 public class ProjectBrowser extends JPanel{
 

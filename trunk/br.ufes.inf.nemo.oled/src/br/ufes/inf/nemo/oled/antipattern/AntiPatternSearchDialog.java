@@ -7,10 +7,9 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultBoundedRangeModel;
@@ -301,8 +300,8 @@ public class AntiPatternSearchDialog extends JDialog {
 		this.frame = frame;
 		
 //		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternSearchDialog.class.getResource("/resources/icons/antipattern36.png")));
-		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
-		setIconImage(icon);
+		//Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternSearchDialog.class.getResource("/resources/icons/antipattern36.png")));
 		setTitle("Anti-Pattern Identification");
 		setBounds(100, 100, 854, 511);
 		 
@@ -331,14 +330,15 @@ public class AntiPatternSearchDialog extends JDialog {
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panel_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 806, GroupLayout.PREFERRED_SIZE)
-						.addComponent(panel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 806, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblChooseWhichAntipattern, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
-							.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 403, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, 397, GroupLayout.PREFERRED_SIZE)))
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblChooseWhichAntipattern, GroupLayout.DEFAULT_SIZE, 815, Short.MAX_VALUE)
+						.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+							.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(panel_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
+								.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, 397, GroupLayout.PREFERRED_SIZE))))
 					.addGap(3))
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -349,9 +349,9 @@ public class AntiPatternSearchDialog extends JDialog {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
-						.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
+						.addComponent(rightPanel, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -831,7 +831,7 @@ public class AntiPatternSearchDialog extends JDialog {
 		getContentPane().add(buttonPane, BorderLayout.CENTER);
 		buttonPane.setPreferredSize(new Dimension(60, 65));
 		
-		progressBarDescr = new JLabel("Click in SEARCH to detect anti-patterns in the model.");		
+		progressBarDescr = new JLabel("");		
 		progressBarDescr.setForeground(Color.BLUE);		
 		
 		GroupLayout gl_buttonPane = new GroupLayout(buttonPane);

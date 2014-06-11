@@ -1,12 +1,12 @@
 package br.ufes.inf.nemo.oled.umldraw.shared;
 
-import br.ufes.inf.nemo.oled.util.ModelHelper;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Property;
 import RefOntoUML.impl.PropertyImpl;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 public class UmlLabelFormatter {
 

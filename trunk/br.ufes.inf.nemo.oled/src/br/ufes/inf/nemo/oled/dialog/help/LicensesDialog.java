@@ -71,6 +71,7 @@ public class LicensesDialog extends JDialog {
 		choices = new JComboBox();
 		choices.setModel(new DefaultComboBoxModel(new String[] {"TinyUML","Alloy", "Kodkod", "JavaCup", "SAT4J", "ZChaff", "MiniSat","AutoComplete","RSyntaxTextArea","LEDIcons"}));
 		choices.setPreferredSize(new Dimension(150, 20));
+		choices.setFocusable(false);
 		choices.addActionListener(new ActionListener() 
 		{
        		public void actionPerformed(ActionEvent event) 
