@@ -89,9 +89,13 @@ public class AppMenu implements ActionListener {
 	@SuppressWarnings("unused")
 	private void createTransformationMenu()
 	{
-//		JMenu simulationMenu = createMenu("simulation");
-//		menubar.add(simulationMenu);
-//		
+		JMenu simulationMenu = new JMenu("Validation");
+		menubar.add(simulationMenu);
+		
+		JMenuItem alloyItem = createMenuItem(simulationMenu, "generatealloy");
+		JMenuItem antipatternItem = createMenuItem(simulationMenu, "antipattern");
+		JMenuItem partWholeItem = createMenuItem(simulationMenu,"partwhole");
+		
 //		JMenuItem alloyItem = createMenuItem(simulationMenu, "generatealloy");
 		//alloyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 		
@@ -101,9 +105,7 @@ public class AppMenu implements ActionListener {
 		
 		JMenu transformMenu = createMenu("transformation");
 		menubar.add(transformMenu);
-		
-		JMenuItem alloyItem = createMenuItem(transformMenu, "generatealloy");
-		
+				
 		JMenuItem owlItem = createMenuItem(transformMenu, "generateowlsettings");
 		//owlItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 		
@@ -121,9 +123,6 @@ public class AppMenu implements ActionListener {
 		
 		JMenu toolMenu = createMenu("tool");
 		menubar.add(toolMenu);
-		
-		JMenuItem antipatternItem = createMenuItem(toolMenu, "antipattern");
-		//antipatternItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));
 		
 		JMenuItem assistantItem = createCheckBoxMenuItem(toolMenu, "assistant");
 

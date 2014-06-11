@@ -281,6 +281,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("ANTIPATTERN", new MethodCall(
 					getClass().getMethod("manageAntiPatterns")));
 
+			selectorMap.put("PART_WHOLE_VALIDATION", new MethodCall(
+					getClass().getMethod("validatesParthood")));
+			
 			selectorMap.put("GENERATE_OWL_SETTINGS", new MethodCall(
 					getClass().getMethod("generateOwl")));
 
@@ -517,6 +520,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		//manager.deriveRelations();
 	}
 
+	public void validatesParthood()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.validatesParthood();
+	}
+	
 	/**
 	 * Returns the application's menu manager.
 	 * @return the menu manager

@@ -2287,4 +2287,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void validatesParthood() {
+		// TODO Tiago
+		
+	}
 }
