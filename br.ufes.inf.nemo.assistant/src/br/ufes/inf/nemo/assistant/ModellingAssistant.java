@@ -9,6 +9,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -31,6 +32,7 @@ public class ModellingAssistant {
 	public static final String serializedObjectPath = "graph_assistant.ser";
 	
 	private HashMap<StereotypeOntoUMLEnum, GraphAssistant> hashGraph;
+	@SuppressWarnings("unused")
 	private Package currentRoot;
 
 	/**
@@ -86,6 +88,7 @@ public class ModellingAssistant {
 		public WizardDialogAssistant(Shell parentShell, IWizard newWizard) 
 		{
 			super(parentShell, newWizard);
+			setDefaultImage(new Image(Display.getDefault(),ModellingAssistant.class.getResourceAsStream("/resource/wizard36.png")));
 		}
 		
 		@Override
@@ -116,7 +119,7 @@ public class ModellingAssistant {
 
 				Display display = Display.getDefault();				
 				Shell shell = display.getActiveShell();				
-				WizardDialogAssistant wizardDialog = new WizardDialogAssistant(shell,new WizardAssitant(graph));
+				WizardDialogAssistant wizardDialog = new WizardDialogAssistant(shell,new WizardAssitant(graph));				
 				wizardDialog.create();
 				if (wizardDialog.open() == Window.OK) {
 					fix = graph.getManagerPattern().getFix();

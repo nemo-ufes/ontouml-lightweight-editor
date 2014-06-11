@@ -152,10 +152,10 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		diagramManager = new DiagramManager(this);
 		diagramManager.setTabPlacement(JTabbedPane.TOP);		
 		diagramManager.addStartPanel();
-		diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()-200));
+		diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()));
 		
 		infoManager= new InfoManager(this, null);
-		infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,230));
+		infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,0));
 				
 		browserManager = new BrowserManager(this);
 		browserManager.setPreferredSize(new Dimension(230,250));
@@ -178,32 +178,51 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		multiSplitPane.add(infoManager, "middle.bottom");
 		multiSplitPane.setBorder(null);
 		multiSplitPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		getContentPane().add(multiSplitPane, BorderLayout.CENTER); 
+		getContentPane().add(multiSplitPane, BorderLayout.CENTER);
 	}	
 	
 	public boolean showToolBox()
 	{
 		return !(toolManager.getPreferredSize().width == 0);
 	}
-			
-	public void showToolBox(boolean value)
+	
+	public boolean showInfoManager()
 	{
+		return !(infoManager.getPreferredSize().height == 0);
+	}
+	
+	public void showInfoManager(boolean value)
+	{
+		multiSplitPane.getMultiSplitLayout().setFloatingDividers(true);
 		if(value){
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()-200));
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,230));			
-			browserManager.getProjectBrowser().setPreferredSize(new Dimension(230,250));
-			browserManager.setPreferredSize(new Dimension(230,250));
-			toolManager.setPreferredSize(new Dimension(230,250));
-			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(230,250));			
+			infoManager.setPreferredSize(new Dimension((int)infoManager.getPreferredSize().getWidth(),230));
+			diagramManager.setPreferredSize(new Dimension((int)diagramManager.getPreferredSize().getWidth(),GetScreenWorkingHeight()-200));	
 		}else{
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240,GetScreenWorkingHeight()-200));
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240,230));
-			browserManager.getProjectBrowser().setPreferredSize(new Dimension(230,250));
-			browserManager.setPreferredSize(new Dimension(230,250));
-			toolManager.setPreferredSize(new Dimension(0,250));
-			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(0,250));
+			infoManager.setPreferredSize(new Dimension((int)infoManager.getPreferredSize().getWidth(),0));
+			diagramManager.setPreferredSize(new Dimension((int)diagramManager.getPreferredSize().getWidth(),GetScreenWorkingHeight()));			
 		}		
 		multiSplitPane.revalidate();	
+	}
+	
+	public void showToolBox(boolean value)
+	{
+		multiSplitPane.getMultiSplitLayout().setFloatingDividers(true);
+		if(value){
+			toolManager.setPreferredSize(new Dimension(230,250));
+			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(230,250));
+			browserManager.getProjectBrowser().setPreferredSize(new Dimension(230,250));
+			browserManager.setPreferredSize(new Dimension(230,250));	
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,(int)infoManager.getPreferredSize().getHeight()));
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,(int)diagramManager.getPreferredSize().getHeight()));											
+		}else{
+			toolManager.setPreferredSize(new Dimension(0,250));
+			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(0,250));
+			browserManager.getProjectBrowser().setPreferredSize(new Dimension(230,250));
+			browserManager.setPreferredSize(new Dimension(230,250));
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240,(int)infoManager.getPreferredSize().getHeight()));						
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240,(int)diagramManager.getPreferredSize().getHeight()));			
+		}		
+		multiSplitPane.revalidate();
 	}
 	
 	/**

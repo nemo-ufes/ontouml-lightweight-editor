@@ -456,7 +456,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void parseOCL()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		manager.parseOCL(true);		
+		manager.parseConstraints(true);		
 	}
 	public void derivedByUnion()
 	{

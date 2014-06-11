@@ -48,12 +48,14 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.UndoManager;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.window.Window;
 
 import RefOntoUML.Association;
 import RefOntoUML.Generalization;
@@ -373,7 +375,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void excludeSelection() 
 	{
 		Collection<DiagramElement> diagramElementsList = getSelectedElements();
-		execute(new DeleteElementCommand(this, ModelHelper.getElements(diagramElementsList), diagram.getProject(),false,true));
+		int response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the element(s) from the diagram?\n If so, note that the element(s) will still exist in the project browser. \nYou can still move the element back to the diagram again.\n", "Delete from Diagram", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
+		if(response==Window.OK)
+		{
+			execute(new DeleteElementCommand(this, ModelHelper.getElements(diagramElementsList), diagram.getProject(),false,true));
+		}
 	}
 	
 	/** Open Diagram PopupMenu */

@@ -438,7 +438,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** Delete element from the model and every diagram in each it appears. It shows a message before deletion.*/
 	public void delete(RefOntoUML.Element element)
 	{	
-		int response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear?\n\n", "Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
+		int response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear? This action can still be undone.\n", "Delete from OLED", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
 		if(response==Window.OK)
 		{
 			ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
@@ -461,7 +461,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** Delete elements from the model and every diagram in each they appear. It shows a message before deletion. */
 	public void delete(Collection<DiagramElement> diagramElementList)
 	{
-		int response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear?\n\n", "Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null);
+		int response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear? This action can still be undone.\n", "Delete from OLED", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
 		if(response==Window.OK)
 		{
 			ArrayList<RefOntoUML.Element> deletionList = (ArrayList<RefOntoUML.Element>)ModelHelper.getElements(diagramElementList);			
@@ -512,23 +512,23 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	
 	/** Delete element from all diagrams in the project. (not from the model) */
 	public void deleteFromDiagrams(RefOntoUML.Element element)
-	{
+	{		
 		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
 		deletionList.add(element);
 		for(DiagramEditor diagramEditor: getDiagramEditors(element))
 		{
 			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
 			cmd.run();
-		}
+		}		
 	}
 
 	/** Delete element from a particular diagram (do not delete it from the model). */
 	public void deleteFromDiagram(RefOntoUML.Element element, DiagramEditor diagramEditor)
-	{
+	{		
 		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
 		deletionList.add(element);		
 		DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
-		cmd.run();
+		cmd.run();		
 	}
 
 	/** Re-make element in the diagram . 
@@ -655,9 +655,19 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{		
 		if (d.getDiagram().containsChild(gen.getGeneral()) && d.getDiagram().containsChild(gen.getSpecific()))
 		{	
-			UmlConnection conn = d.dragRelation(gen,gen.eContainer());
-			if(isRectilinear) d.setLineStyle(conn,  LineStyle.RECTILINEAR);
+			UmlConnection conn = d.dragRelation(gen,gen.eContainer());			
+			if (gen.getGeneralizationSet().size()>0) 
+			{
+				Classifier general = gen.getGeneral();
+				Classifier specific = gen.getSpecific();
+				ClassElement generalElem = (ClassElement)ModelHelper.getDiagramElementByEditor(general, d);
+				ClassElement specificElem = (ClassElement)ModelHelper.getDiagramElementByEditor(specific, d);
+				if (generalElem.getAbsoluteY1() < specificElem.getAbsoluteY1()) d.setLineStyle(conn, LineStyle.TREESTYLE_VERTICAL);
+				else d.setLineStyle(conn, LineStyle.TREESTYLE_HORIZONTAL);
+			}
+			else if (isRectilinear) d.setLineStyle(conn,  LineStyle.RECTILINEAR);
 			else d.setLineStyle(conn,  LineStyle.DIRECT);
+			((GeneralizationElement)conn).setShowName(false);
 		}
 	}
 	
@@ -1104,7 +1114,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		//parse TOCL
-		parseOCL(false);
+		parseConstraints(false);
 		//configure a default option
 		refOptions.check(refparser);
 		// open settings
@@ -1112,6 +1122,211 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
+	/** Parse constraints from the editor */
+	public void parseConstraints(boolean showSuccesfullyMessage)
+	{
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));		
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());		
+		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to create an OLED project first."); return; }		
+		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
+		try {
+			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
+			// set parser 
+			String name = ((RefOntoUML.Package)getCurrentProject().getResource().getContents().get(0)).getName();
+			if (name==null || name.isEmpty()) name = "model";
+			oclmodel.setParser( new TOCLParser(refparser,getCurrentProject().getTempDir()+File.separator,name.toLowerCase()));
+			//parsing...
+			oclmodel.getParser().parseTemporalOCL(frame.getInfoManager().getConstraints());
+			// set options 
+			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new TOCL2AlloyOption(oclmodel.getOCLParser()));
+			// show Message
+			String msg =  "Constraints are syntactically correct.\n";
+			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing Constraints",msg);			
+		}catch(SemanticException e2){
+			frame.showErrorMessageDialog("Semantic Error",  "Parser: "+e2.getLocalizedMessage());    		
+			e2.printStackTrace();	
+
+		}catch(ParserException e1){
+			frame.showErrorMessageDialog("Parsing Error", "Parser: "+e1.getLocalizedMessage());    			
+			e1.printStackTrace();    	
+
+		}catch(Exception e4){
+			frame.showErrorMessageDialog("Unexpected Error", e4.getLocalizedMessage());			
+			e4.printStackTrace();
+		}		
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+	}
+	
+	/** Run Transformation to Alloy */
+	public void transformToAlloy()  
+	{									
+		runOntoUML2Alloy();
+		runTOCL2Alloy();
+		
+		if (ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),true, -1);
+		else openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),false, 0);	
+		
+		String umlpath = ProjectBrowser.getAlloySpecFor(getCurrentProject()).getAlloyPath().replace(".als", ".uml");
+		File umlfile = new File(umlpath);
+		umlfile.deleteOnExit();		
+	}
+	
+	/** Run transformation from OntoUML into Alloy */
+	public void runOntoUML2Alloy()
+	{
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
+		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
+		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }
+		// complete mandatory dependencies
+		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
+		try {			
+			// transforming...
+			ProjectBrowser.getAlloySpecFor(getCurrentProject()).setAlloyModel(refparser,refOptions);
+		} catch (Exception e) {
+			frame.showErrorMessageDialog("Transforming OntoUML into Alloy",e.getLocalizedMessage());					
+			e.printStackTrace();
+		}
+	}
+	
+	/** Run Transformation from TOCL into Alloy */
+	public void runTOCL2Alloy()
+	{
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
+		OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
+		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
+		AlloySpecification alloySpec = ProjectBrowser.getAlloySpecFor(getCurrentProject());
+		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }
+		if (oclmodel.getOCLParser()==null) { /*frame.showErrorMessageDialog("Error","Inexistent constraints. You need to first create constraints.");*/  return; }
+		try {						
+			// transforming...
+			String logMessage = alloySpec.addConstraints(refparser, oclmodel,oclOptions);
+			// log details 
+			if (!logMessage.isEmpty() && logMessage!=null)
+			{				
+				frame.showWarningMessageDialog("Transforming Temporal OCL into Alloy",logMessage);					
+			}
+		} catch (Exception e) {			
+			frame.showErrorMessageDialog("Transforming Temporal OCL into Alloy",e.getLocalizedMessage());					
+			e.printStackTrace();
+		}		
+	}
+		
+	/** Open the alloy specification with the alloy analyzer */
+	public void openAnalyzer (final AlloySpecification alloymodel, final boolean showAnalyzer, final int cmdIndexToExecute) 
+	{
+		if (alloymodel.getAlloyPath().isEmpty() || alloymodel.getAlloyPath()==null) return;
+		try{
+			if(frame.getAlloyAnalyzer()==null){
+				String[] args = {""};
+				frame.setAlloyAnalyzer(new SimpleGUICustom(args,true,""));
+			}
+			final Timer timer = new Timer(100, null);			
+			ActionListener listener = new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					if (frame.getAlloyAnalyzer().isInitialized())
+					{
+						frame.getAlloyAnalyzer().setTheme(alloymodel.getDirectory() + "standart_theme.thm");				
+						frame.getAlloyAnalyzer().doOpenFile(alloymodel.getAlloyPath());				
+						if (cmdIndexToExecute>=0)frame.getAlloyAnalyzer().doRun(cmdIndexToExecute);						
+						timer.stop();
+					}
+				}
+			};
+			timer.addActionListener(listener);
+			timer.start();
+		}catch(Exception e){
+			e.printStackTrace();
+			if(e.getLocalizedMessage().isEmpty()) frame.showErrorMessageDialog("Opening alloy file", "A unexpected error has occurred. please report this to developers.");
+			else frame.showErrorMessageDialog("Opening alloy file", e.getLocalizedMessage());					
+		}
+	}
+	
+	/** Import a Reference OntoUML model instance. */
+	public void importEcore() 
+	{
+		JFileChooser fileChooser = new JFileChooser(lastImportEcorePath);
+		fileChooser.setDialogTitle(getResourceString("dialog.saveas.title"));
+		fileChooser.setDialogTitle(getResourceString("dialog.importecore.title"));
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			if (fileChooser.getFileFilter() == filter) {
+				try {
+					closeCurrentProject();
+					getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					ResourceSet resourceSet = new ResourceSetImpl();
+					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,new OLEDResourceFactory());
+					resourceSet.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI, RefOntoUML.RefOntoUMLPackage.eINSTANCE);
+					File ecoreFile = new File(fileChooser.getSelectedFile().getPath());					
+					org.eclipse.emf.common.util.URI fileURI = org.eclipse.emf.common.util.URI.createFileURI(ecoreFile.getAbsolutePath());		
+					Resource resource = resourceSet.createResource(fileURI);		
+					resource.load(Collections.emptyMap());
+					File projectFile = new File(ecoreFile.getAbsolutePath().replace(".refontouml", ".oled"));
+					setProjectFile(projectFile);
+					lastOpenPath = projectFile.getAbsolutePath();
+					createCurrentProject((RefOntoUML.Package)resource.getContents().get(0));
+					saveCurrentProjectToFile(projectFile);
+					lastImportEcorePath = fileChooser.getSelectedFile().getAbsolutePath();
+					ConfigurationHelper.addRecentProject(projectFile.getCanonicalPath());
+					newDiagram();
+					frame.setTitle("OLED - "+projectFile.getName()+"");
+					getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(this, ex.getMessage(),getResourceString("dialog.importecore.title"),JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+	}
+	
+
+	/** Import a model from a XMI file (from Entreprise Architect). */
+	public void importXMI()
+	{		
+		JFileChooser fileChooser = new JFileChooser(lastImportEAPath);
+		fileChooser.setDialogTitle("Import from EA");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("XMI, XML (*.xmi, *.xml)", "xmi", "xml");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);		
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+		{
+			if (fileChooser.getFileFilter() == filter)
+			{
+				File file = fileChooser.getSelectedFile();
+				lastImportEAPath = file.getAbsolutePath();
+				new ImportXMIDialog(frame, true, this, lastImportEAPath);
+			}
+		}		
+	}
+	
+	/** Export the current model as an Ecore instance file (Reference model)*/
+	public void exportEcore() 
+	{
+		if(getCurrentEditor() != null) {
+			JFileChooser fileChooser = new JFileChooser(lastExportEcorePath);
+			fileChooser.setDialogTitle(getResourceString("dialog.exportecore.title"));
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
+			fileChooser.addChoosableFileFilter(filter);
+			fileChooser.setFileFilter(filter);
+			fileChooser.setAcceptAllFileFilterUsed(false);
+			if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+				if (fileChooser.getFileFilter() == filter) {
+					try {
+						EcoreExporter exporter = new EcoreExporter();
+						exporter.writeEcore(this, fileChooser.getSelectedFile(), getCurrentEditor().getProject());
+						lastExportEcorePath = fileChooser.getSelectedFile().getAbsolutePath();
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(this, ex.getMessage(),getResourceString("dialog.exportecore.title"), JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		}
+	}
+	
 	/** Open the OWL settings window	 */
 	public void openOwlSettings() 
 	{
@@ -1339,71 +1554,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		return ;
 	}
-
-	/** Parse TOCL constraints from TOCL editor */
-	public void parseOCL(boolean showSuccesfullyMessage)
-	{
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));		
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());		
-		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }		
-		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
-		try {
-			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
-			// set parser 
-			String name = ((RefOntoUML.Package)getCurrentProject().getResource().getContents().get(0)).getName();
-			if (name==null || name.isEmpty()) name = "model";
-			oclmodel.setParser( new TOCLParser(refparser,getCurrentProject().getTempDir()+File.separator,name.toLowerCase()));
-			//parsing...
-			oclmodel.getParser().parseTemporalOCL(frame.getInfoManager().getConstraints());
-			// set options 
-			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new TOCL2AlloyOption(oclmodel.getOCLParser()));
-			// show Message
-			String msg =  "Constraints are syntactically correct.\n";
-			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing temporal OCL",msg);			
-		}catch(SemanticException e2){
-			frame.showErrorMessageDialog("Temporal OCL Semantic Error",  "Temporal OCL Parser: "+e2.getLocalizedMessage());    		
-			e2.printStackTrace();	
-
-		}catch(ParserException e1){
-			frame.showErrorMessageDialog("Temporal OCL Parsing Error", "Temporal OCL Parser: "+e1.getLocalizedMessage());    			
-			e1.printStackTrace();    	
-
-		}catch(Exception e4){
-			frame.showErrorMessageDialog("Unexpected Error", e4.getLocalizedMessage());			
-			e4.printStackTrace();
-		}		
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-	}
-
-	
-	/** Generates Alloy */
-	public void generateAlloy()  
-	{									
-		doOntoUML2Alloy();
-		doTOCL2Alloy();
-		if (ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),true, -1);
-		else openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),false, 0);	
-		String umlpath = ProjectBrowser.getAlloySpecFor(getCurrentProject()).getAlloyPath().replace(".als", ".uml");
-		File umlfile = new File(umlpath);
-		umlfile.deleteOnExit();		
-	}
-	
-	/** Transform OntoUML into Alloy */
-	public void doOntoUML2Alloy()
-	{
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
-		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
-		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }
-		// complete mandatory dependencies
-		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
-		try {			
-			// transforming...
-			ProjectBrowser.getAlloySpecFor(getCurrentProject()).setAlloyModel(refparser,refOptions);
-		} catch (Exception e) {
-			frame.showErrorMessageDialog("Transforming OntoUML into Alloy",e.getLocalizedMessage());					
-			e.printStackTrace();
-		}
-	}
 	
 	/**
 	 * Auto complete selection in the model
@@ -1444,28 +1594,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return msg;
 	}
 	
-	/** Transform Temporal OCL into Alloy */
-	public void doTOCL2Alloy()
-	{
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
-		OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
-		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
-		AlloySpecification alloySpec = ProjectBrowser.getAlloySpecFor(getCurrentProject());
-		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }
-		if (oclmodel.getOCLParser()==null) { /*frame.showErrorMessageDialog("Error","Inexistent constraints. You need to first create constraints.");*/  return; }
-		try {						
-			// transforming...
-			String logMessage = alloySpec.addConstraints(refparser, oclmodel,oclOptions);
-			// log details 
-			if (!logMessage.isEmpty() && logMessage!=null)
-			{				
-				frame.showWarningMessageDialog("Transforming Temporal OCL into Alloy",logMessage);					
-			}
-		} catch (Exception e) {			
-			frame.showErrorMessageDialog("Transforming Temporal OCL into Alloy",e.getLocalizedMessage());					
-			e.printStackTrace();
-		}		
-	}
 	
 	/** Set Alloy Analyzer instance */
 	@Deprecated
@@ -1485,85 +1613,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		});
 		t.start();
 		return t;
-	}
-	
-	/**
-	 * Imports a RefOntoUML model.
-	 */
-	public void importEcore() {
-
-		JFileChooser fileChooser = new JFileChooser(lastImportEcorePath);
-		fileChooser.setDialogTitle(getResourceString("dialog.saveas.title"));
-		fileChooser.setDialogTitle(getResourceString("dialog.importecore.title"));
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
-		fileChooser.addChoosableFileFilter(filter);
-		fileChooser.setFileFilter(filter);
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			if (fileChooser.getFileFilter() == filter) {
-				try {
-
-					closeCurrentProject();
-
-					getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-					ResourceSet resourceSet = new ResourceSetImpl();
-					resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,new OLEDResourceFactory());
-					resourceSet.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI, RefOntoUML.RefOntoUMLPackage.eINSTANCE);
-					File ecoreFile = new File(fileChooser.getSelectedFile().getPath());					
-					org.eclipse.emf.common.util.URI fileURI = org.eclipse.emf.common.util.URI.createFileURI(ecoreFile.getAbsolutePath());		
-					Resource resource = resourceSet.createResource(fileURI);		
-					resource.load(Collections.emptyMap());
-
-					File projectFile = new File(ecoreFile.getAbsolutePath().replace(".refontouml", ".oled"));
-					setProjectFile(projectFile);
-					lastOpenPath = projectFile.getAbsolutePath();
-
-					createCurrentProject((RefOntoUML.Package)resource.getContents().get(0));
-
-					saveCurrentProjectToFile(projectFile);
-
-					lastImportEcorePath = fileChooser.getSelectedFile().getAbsolutePath();
-
-					ConfigurationHelper.addRecentProject(projectFile.getCanonicalPath());
-
-					newDiagram();
-
-					frame.setTitle("OLED - "+projectFile.getName()+"");
-
-					getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(this, ex.getMessage(),
-							getResourceString("dialog.importecore.title"),
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		}
-
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-	}
-
-	/**
-	 * Imports a model from a XMI file.
-	 */
-	public void importXMI()
-	{		
-		JFileChooser fileChooser = new JFileChooser(lastImportEAPath);
-		fileChooser.setDialogTitle("Import from EA");
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("XMI, XML (*.xmi, *.xml)", "xmi", "xml");
-		fileChooser.addChoosableFileFilter(filter);
-		fileChooser.setFileFilter(filter);		
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-		{
-			if (fileChooser.getFileFilter() == filter)
-			{
-				File file = fileChooser.getSelectedFile();
-				lastImportEAPath = file.getAbsolutePath();
-				new ImportXMIDialog(frame, true, this, lastImportEAPath);
-			}
-		}		
 	}
 
 	/**
@@ -1614,34 +1663,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					JOptionPane.showMessageDialog(this, ex.getMessage(),
 							getResourceString("error.exportgfx.title"),
 							JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Saves the current model as an Ecore-based file.
-	 * */
-	public void exportEcore() 
-	{
-		if(getCurrentEditor() != null) {
-			JFileChooser fileChooser = new JFileChooser(lastExportEcorePath);
-			fileChooser.setDialogTitle(getResourceString("dialog.exportecore.title"));
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("Reference OntoUML Model (*.refontouml)", "refontouml");
-			fileChooser.addChoosableFileFilter(filter);
-			fileChooser.setFileFilter(filter);
-			fileChooser.setAcceptAllFileFilterUsed(false);
-			if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-				if (fileChooser.getFileFilter() == filter) {
-					try {
-						EcoreExporter exporter = new EcoreExporter();
-						exporter.writeEcore(this, fileChooser.getSelectedFile(), getCurrentEditor().getProject());
-						lastExportEcorePath = fileChooser.getSelectedFile().getAbsolutePath();
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(this, ex.getMessage(),
-								getResourceString("dialog.exportecore.title"),
-								JOptionPane.ERROR_MESSAGE);
-					}
 				}
 			}
 		}
@@ -2089,43 +2110,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 //
 //		frame.getInfoManager().showOutputText(result, true, true);
 	}
-		
-	/** Open Alloy Analyzer */
-	public void openAnalyzer (final AlloySpecification alloymodel, final boolean showAnalyzer, final int cmdIndexToExecute) 
-	{
-		if (alloymodel.getAlloyPath().isEmpty() || alloymodel.getAlloyPath()==null) return;
-
-		try{
-			//open analyer
-			if(frame.getAlloyAnalyzer()==null){
-				String[] args = {""};
-				frame.setAlloyAnalyzer(new SimpleGUICustom(args,true,""));
-			}
-
-			final Timer timer = new Timer(100, null);			
-			ActionListener listener = new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					if (frame.getAlloyAnalyzer().isInitialized())
-					{
-						frame.getAlloyAnalyzer().setTheme(alloymodel.getDirectory() + "standart_theme.thm");				
-						frame.getAlloyAnalyzer().doOpenFile(alloymodel.getAlloyPath());				
-						if (cmdIndexToExecute>=0)frame.getAlloyAnalyzer().doRun(cmdIndexToExecute);						
-						timer.stop();
-					}
-				}
-			};
-			timer.addActionListener(listener);
-			timer.start();					
-
-		}catch(Exception e){
-			e.printStackTrace();
-			if(e.getLocalizedMessage().isEmpty())
-				frame.showErrorMessageDialog("Opening alloy file", "A unexpected error has occurred. please report this to developers.");
-			else
-				frame.showErrorMessageDialog("Opening alloy file", e.getLocalizedMessage());					
-		}
-	}
 
 	/** Generates OWL from the selected model */
 	public void generateOwl() 
@@ -2222,12 +2206,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	@SuppressWarnings({ })
-	public void deriveByExclusion() {
+	public void deriveByExclusion() 
+	{
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
 		UmlProject project = getCurrentEditor().getProject();
 		Fix fix = DerivedTypesOperations.createExclusionDerivation(activeEditor, project, this);
-		if(fix!=null)
-			updateOLED(fix);
+		if(fix!=null) updateOLED(fix);
 	}
 	
 	@SuppressWarnings({ })
@@ -2236,9 +2220,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
 		UmlProject project = getCurrentEditor().getProject();
 		Fix fix = DerivedTypesOperations.createUnionDerivation(activeEditor, project,this);
-		if(fix!=null)
-			updateOLED(fix);	
-		
+		if(fix!=null) updateOLED(fix);		
 	}
 	
 	public void openDerivedTypePatternUnion(Double x, Double y) {
