@@ -50,13 +50,13 @@ public class DerivedTypesOperations {
 			ref= refparser;
 			this.element = element;
 		}
-		
+
 		public Element getElement() { return element; }
-		
+
 		@Override
 		public String toString(){
 			String result = new String();
-			
+
 			if (element instanceof RefOntoUML.Property)
 			{
 				Property p = (Property)element;
@@ -68,11 +68,11 @@ public class DerivedTypesOperations {
 				}
 				result += "Property "+p.getType().getName()+": ("+p.getName()+") ["+p.getLower()+","+p.getUpper()+"] "+" (owner: "+owner+")";						  				
 			}
-			
+
 			return result;
 		}
 	}
-	
+
 	static OutcomeFixer of;
 	static Fix mainfix;
 	static DiagramManager dman;
@@ -120,11 +120,11 @@ public class DerivedTypesOperations {
 				wrongSelection("Wrong Selection");
 				return null;
 			}
-			
+
 			if(specialCaseRelation.equals("union_relation_derivation")){
 				return null;
 			}
-			
+
 			String name=DefineNameDerivedType();
 			if(specialCase=="Rigid+NonRigid"){
 				stereotype= "Mixin";
@@ -196,22 +196,22 @@ public class DerivedTypesOperations {
 		ArrayList<Property> properties = new ArrayList<Property>();
 		ArrayList<Property> propertiesTarget = new ArrayList<Property>();
 		ArrayList<String> options = new ArrayList<String>();
-		
+
 		for (DiagramElement sel : selected) {
 			if(!(sel instanceof AssociationElement))
 				return "";
 			associations.add((Association) ((AssociationElement)sel).getRelationship());
 		}
-		
+
 		for (Association association : associations) {
 			properties.add((Property) association.getMemberEnd().get(0));
 			propertiesTarget.add((Property) association.getMemberEnd().get(1));
 		}
-		
+
 		Property element = (Property) associations.get(0).getMemberEnd().get(0);		
 		OntoUMLParser refparser= ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
-		
-		
+
+
 		for(RefOntoUML.Property p : refparser.getAllInstances(RefOntoUML.Property.class)) 
 		{
 			if(!properties.contains(p) && !propertiesTarget.contains(p) && ((Classifier)element.getType()).allParents().contains(p.getType())){
@@ -226,11 +226,11 @@ public class DerivedTypesOperations {
 					prop.getSubsettedProperty().add(feature);
 					prop.setIsDerivedUnion(true);
 				}
-				
+
 			}
 		}
 		return "union_relation_derivation";
-		
+
 	}
 
 
@@ -447,7 +447,7 @@ public class DerivedTypesOperations {
 		return stereotype;
 
 	}
-	
+
 	public  static  String selectRelation(Object[] stereo) {
 		// TODO Auto-generated method stub
 		JFrame frame = new JFrame("Input Dialog Example 3");
@@ -513,7 +513,7 @@ public class DerivedTypesOperations {
 		mainfix.addAll(fix);
 		mainfix.addAll(gs);
 	}
-	
+
 	public  static void createGeneralizationSingle(Classifier father, Classifier son1){
 		Fix fix=of.createGeneralization(son1, father);
 		mainfix.addAll(fix);
@@ -530,6 +530,14 @@ public class DerivedTypesOperations {
 
 		Fix gs =  of.createGeneralizationSet(generalizations);
 		mainfix.addAll(gs);
+	}
+	public  static void createMultipleGeneralizationIntersection(Classifier son, ArrayList<Classifier> parents){
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+		for (Classifier classifier : parents) {
+			Fix fix=of.createGeneralization(son, classifier);
+			generalizations.add((Generalization) fix.getAdded().get(0));
+			mainfix.addAll(fix);
+		}
 	}
 
 
@@ -552,7 +560,16 @@ public class DerivedTypesOperations {
 	public static void intersectionPattern(DiagramManager dm, String base_1_name,
 			String base_2_name, String derived_name, Double location, String base_1_stereo, String stereo_base_2_stereo, String derived_stereo) {
 		// TODO Auto-generated method stub
-		dman= dm;
+		  dman= dm;
+          of = new OutcomeFixer(dm.getCurrentProject().getModel());
+          mainfix = new Fix();
+          Point2D.Double[] positions= ClassPosition.GSpositioningDown(2, location);
+          Classifier newElement= includeElement(positions[1],base_1_name, base_1_stereo);
+          Classifier newElement2= includeElement(positions[2], base_2_name, stereo_base_2_stereo);
+          Classifier newElement3 = includeElement(positions[0], derived_name, derived_stereo);
+          createGeneralizationSingle(newElement,newElement3);
+          createGeneralizationSingle(newElement2,newElement3);
+          dm.updateOLED(mainfix);
 	}
 
 
@@ -566,7 +583,7 @@ public class DerivedTypesOperations {
 		List<ClassElement> classList = new ArrayList<ClassElement>();
 		List<GeneralizationElement> gen = new ArrayList<GeneralizationElement>();
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
-		String specialCase=null;
+		String specialCase="";
 		for (DiagramElement element : selected) {
 			if (element instanceof ClassElement) {
 				classList.add((ClassElement) element);
@@ -575,44 +592,109 @@ public class DerivedTypesOperations {
 		}
 
 		for (ClassElement element : classList) {
-			
 			if(element.getClassifier() instanceof AntiRigidSortalClass){
+				if(specialCase.equals("Kind")){
+					wrongSelection("Kinds intersect only with Mixins");
+				}
 				if(element.getClassifier() instanceof Role){
-					return createIntersectionDerivedType("Role", diagramManager, activeEditor);
+					specialCase= "Role";
 				}else{
-					specialCase="Phase";
+					if(specialCase!="Role")
+						specialCase= "Phase";
 				}
 			}else{
-				if(!specialCase.equals("Phase")){
+				if(element.getClassifier() instanceof RigidSortalClass){
+					if(specialCase.equals("Kind")){
+						wrongSelection("Kinds intersect only with Mixins");
+					}
 					if(element.getClassifier() instanceof SubKind){
-						specialCase="SubKind";
-					}else{
-						if(element.getClassifier() instanceof RoleMixin){
-							specialCase="RoleMixin";
-						}else{
-							if(!specialCase.equals("RoleMixin")){
-								if(element.getClassifier() instanceof Mixin){
-									specialCase="Mixin";
-								}
+						if(!specialCase.equals("Role") && !specialCase.equals("Phase")){
+							if(specialCase.equals("RoleMixin")){
+								specialCase="Role";
+							}else if(specialCase.equals("Mixin")){
+								specialCase="KindMixin";
+							} else {
+								specialCase="Subkind";
 							}
 						}
+
+					}else{
+						if(specialCase.equals("Kind")|| specialCase.equals("Subkind")|| specialCase.equals("Role") || specialCase.equals("Phase")){
+							wrongSelection("Kinds intersect only with Mixins");
+						}else{
+							if(specialCase=="RoleMixin"){
+								specialCase="Role";
+							}else	if(specialCase=="Mixin"){
+								specialCase="KindMixin";
+							}else	if(specialCase=="Category"){
+								specialCase="Subkind";
+							}else{
+								specialCase="Kind";
+							}
+						}
+					}
+				}else{
+					if(element.getClassifier() instanceof RoleMixin){
+						if(specialCase.equals("") || specialCase.equals("RoleMixin") || specialCase.equals("Mixin")|| specialCase.equals("Category")){
+							specialCase="RoleMixin";
+						}else if(specialCase.equals("Kind") || specialCase.equals("Subkind")){
+							specialCase="Role";
+						}
+					} else if(element.getClassifier() instanceof Mixin){
+						if(specialCase.equals("") ||  specialCase.equals("Mixin")|| specialCase.equals("Category")){
+							specialCase="Mixin";
+						} else if(specialCase.equals("Kind") || specialCase.equals("Subkind") ){
+							specialCase="KindMixin";
+						}
+					}
+					else if (specialCase.equals("Kind")){
+						specialCase="Subkind";
+					}else{
+						specialCase="Category";
 					}
 				}
 			}
 		}
 
-			
-		return null;
+		return createIntersectionDerivedType(specialCase, diagramManager, activeEditor, project);
 	}
 
 
 
 
-	private static Fix createIntersectionDerivedType(String string,
-			DiagramManager diagramManager, DiagramEditor activeEditor) {
-				return mainfix;
+	private static Fix createIntersectionDerivedType(String stereotype,
+			DiagramManager diagramManager, DiagramEditor activeEditor, UmlProject project) {
+		dman= diagramManager;
+		int j=0;
+		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
+		for (int i = 0; i < activeEditor.getSelectedElements().size(); i++) {
+			if (activeEditor.getSelectedElements().get(i) instanceof ClassElement) {
+				j++;
+				ClassElement ce = (ClassElement) activeEditor.getSelectedElements().get(i);
+				refontoList.add(ce.getClassifier());
+			}		
+		}
+		mainfix= new Fix();
+		String name=DefineNameDerivedType(); 
+		of = new OutcomeFixer(project.getModel());
+		Point2D.Double firstpoint = new Point2D.Double();
+		Point2D.Double secondpoint = new Point2D.Double();
+		ClassElement position = (ClassElement) activeEditor.getSelectedElements().get(0);
+		ClassElement position2 = (ClassElement) activeEditor.getSelectedElements().get(1);
+		firstpoint.setLocation(position.getAbsoluteY1(),position.getAbsoluteX1());
+		secondpoint.setLocation(position2.getAbsoluteY1(),position2.getAbsoluteX1());
+		Point2D.Double newElementPosition= ClassPosition.findPositionGeneralizationMember(firstpoint, secondpoint);
+		Classifier newElement = includeElement(newElementPosition, name, stereotype);
+		ArrayList<Classifier> classifiers= new ArrayList<Classifier>();
+		for (Element element : refontoList) {
+			classifiers.add((Classifier)element);
+		}
+		createMultipleGeneralizationIntersection(newElement,classifiers);
+		mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
 		// TODO Auto-generated method stub
-		
+		return mainfix;
+
 	}
+
 
 }

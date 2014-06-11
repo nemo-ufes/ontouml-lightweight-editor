@@ -46,7 +46,7 @@ public class DerivedByIntersection extends DerivedType {
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Phase");
-		values.put("Phase"+"Role Mixin", possibilites);
+		values.put("Phase"+"RoleMixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Phase");
@@ -54,7 +54,7 @@ public class DerivedByIntersection extends DerivedType {
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
-		values.put("Kind"+"Role Mixin", possibilites);
+		values.put("Kind"+"RoleMixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Subkind");
@@ -62,6 +62,7 @@ public class DerivedByIntersection extends DerivedType {
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
+		possibilites.add("Phase");
 		possibilites.add("Subkind");
 		values.put("Kind"+"Mixin", possibilites);
 		
@@ -79,35 +80,45 @@ public class DerivedByIntersection extends DerivedType {
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
-		values.put("Subkind"+"Role Mixin", possibilites);
+		values.put("Subkind"+"RoleMixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Phase");
-		values.put("Subkind"+"Subkind", possibilites); 
+		values.put("Subkind"+"Subkind", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
-		values.put("Role Mixin"+"Role", possibilites);
+		possibilites.add("Phase");
+		possibilites.add("Subkind");
+		values.put("Subkind"+"Mixin", possibilites);
+		
+		possibilites = new ArrayList<String>();
+		possibilites.add("Subkind");
+		values.put("Subkind"+"Category", possibilites);
+		
+		possibilites = new ArrayList<String>();
+		possibilites.add("Role");
+		values.put("RoleMixin"+"Role", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Phase");
-		values.put("Role Mixin"+"Phase", possibilites);
+		values.put("RoleMixin"+"Phase", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
-		values.put("Role Mixin"+"Subkind", possibilites);
+		values.put("RoleMixin"+"Subkind", possibilites);
 		
 		possibilites = new ArrayList<String>();
-		possibilites.add("Role Mixin");
-		values.put("Role Mixin"+"Role Mixin", possibilites);
+		possibilites.add("RoleMixin");
+		values.put("RoleMixin"+"RoleMixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
-		possibilites.add("Role Mixin");
-		values.put("Role Mixin"+"Category", possibilites); 
+		possibilites.add("RoleMixin");
+		values.put("RoleMixin"+"Category", possibilites); 
 		
 		possibilites = new ArrayList<String>();
-		possibilites.add("Role Mixin");
-		values.put("Role Mixin"+"Mixin", possibilites); 
+		possibilites.add("RoleMixin");
+		values.put("RoleMixin"+"Mixin", possibilites); 
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
