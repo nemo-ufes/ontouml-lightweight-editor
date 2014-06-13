@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.meronymic_validation.forbidden.ui;
+package br.ufes.inf.nemo.meronymic_validation.zdeprecated;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

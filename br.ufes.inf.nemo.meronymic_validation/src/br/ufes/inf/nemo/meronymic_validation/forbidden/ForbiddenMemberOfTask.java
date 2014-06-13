@@ -1,23 +1,25 @@
 package br.ufes.inf.nemo.meronymic_validation.forbidden;
 
+import javax.swing.JTabbedPane;
+
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import RefOntoUML.memberOf;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.meronymic_validation.forbidden.ui.ForbiddenTable;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
+import br.ufes.inf.nemo.meronymic_validation.userinterface.ForbiddenTableModel;
 
-public class IntransitiveMemberOfTask extends ForbiddenTask<memberOf>{
-		
-	public IntransitiveMemberOfTask(OntoUMLParser parser, ForbiddenTable table) {
-		super(parser, table);
+public class ForbiddenMemberOfTask extends ForbiddenTask<memberOf>{
+
+	public ForbiddenMemberOfTask(OntoUMLParser parser, ForbiddenTableModel tableModel, JTabbedPane tabbedPane) {
+		super(parser, tableModel);
 		existing.addAll(parser.getAllInstances(memberOf.class));
 	}
 	
 	public void findIntransitiveMemberOf(){
 
 		if(!arePathsSet())
-			setPaths();
+			setPaths(false, false);
 		
 		for (EdgePath path : paths) {
 			if(path.isCycle() || path.getEdges().size()==1)
@@ -43,12 +45,21 @@ public class IntransitiveMemberOfTask extends ForbiddenTask<memberOf>{
 
 	@Override
 	protected Boolean doInBackground() throws Exception {
+		System.out.println("Intransitive MemberOf: Analyzing model...");
 		setProgress(1);
-		setPaths();
+		System.out.println("Intransitive MemberOf: Creating meronymic graph...");
+		setPaths(false, false);
 		setProgress(40);
+		System.out.println("Intransitve MemberOf: Analyzing graph...");
 		findIntransitiveMemberOf();
 		setProgress(100);
 		return true;
+	}
+	
+	@Override
+	protected void done() {
+		System.out.println("Intransitve MemberOf: Analysis successfuly concluded!");
+		System.out.println("Intransitve MemberOf: "+forbidden.size()+" forbidden relations found!");
 	}
 	
 }

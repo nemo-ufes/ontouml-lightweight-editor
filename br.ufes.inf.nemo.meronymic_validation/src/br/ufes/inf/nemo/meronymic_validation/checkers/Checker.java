@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public abstract class Checker <T>{
+public abstract class Checker<T extends MeronymicError<?>>{
 
 	protected OntoUMLParser parser;
 	protected ArrayList<T> errors;
 	
 	public Checker(OntoUMLParser parser){
 		this.parser = parser;
-		errors = null;
+		this.errors = new ArrayList<T>();
 	}
 	
 	public ArrayList<T> getErrors(){
@@ -27,6 +27,5 @@ public abstract class Checker <T>{
 	}
 	
 	public abstract boolean check();
-	public abstract String getErrorDescription(int i);
-	public abstract String getErrorType(int i);
+	public abstract String checkerName();
 }

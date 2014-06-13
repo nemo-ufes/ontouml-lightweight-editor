@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.meronymic_validation.graph;
 
-class DirectedEdge {
+public class DirectedEdge {
 	final Object id;
 	final Node source;
 	final Node target;

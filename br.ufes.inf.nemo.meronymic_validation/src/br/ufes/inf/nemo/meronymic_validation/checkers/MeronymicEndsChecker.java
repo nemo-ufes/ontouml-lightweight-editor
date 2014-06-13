@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
-import RefOntoUML.Meronymic;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Quantity;
 import RefOntoUML.SubKind;
@@ -13,10 +12,9 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class MeronymicEndsChecker extends Checker<Meronymic>{
+public class MeronymicEndsChecker extends Checker<MeronymicEndsError>{
 	
 	ArrayList<componentOf> componentOfWithError;
 	ArrayList<subQuantityOf> subQuantityOfWithError;
@@ -38,16 +36,24 @@ public class MeronymicEndsChecker extends Checker<Meronymic>{
 		checkMemberOf();
 		checkSubCollectionOf();
 		
-		if(errors==null)
-			errors = new ArrayList<Meronymic>();
-		else
-			errors.clear();
+		errors.clear();
 		
-		errors.addAll(componentOfWithError);
-		errors.addAll(memberOfWithError);
-		errors.addAll(subCollectionOfWithError);
-		errors.addAll(subQuantityOfWithError);
+		for (componentOf cp : componentOfWithError) {
+			errors.add(new MeronymicEndsError(parser, cp));
+		}
 		
+		for (memberOf mb : memberOfWithError) {
+			errors.add(new MeronymicEndsError(parser, mb));
+		}
+		
+		for (subCollectionOf sc : subCollectionOfWithError) {
+			errors.add(new MeronymicEndsError(parser, sc));
+		}
+		
+		for (subQuantityOf sq : subQuantityOfWithError) {
+			errors.add(new MeronymicEndsError(parser, sq));
+		}
+	
 		if(errors.size()>0)
 			return false;
 		
@@ -190,22 +196,11 @@ public class MeronymicEndsChecker extends Checker<Meronymic>{
 	}
 
 	@Override
-	public String getErrorDescription(int i) {
-		return OntoUMLNameHelper.getCompleteName(errors.get(i));
+	public String checkerName() {
+		return "Well-Formed Meronymics";
 	}
 
-	@Override
-	public String getErrorType(int i) {
-		if(errors.get(i) instanceof componentOf)
-			return "Invalid ends' stereotypes for ComponentOf";
-		if(errors.get(i) instanceof memberOf)
-			return "Invalid ends' stereotypes for MemberOf";
-		if(errors.get(i) instanceof subCollectionOf)
-			return "Invalid ends' stereotypes for SubCollectionOf";
-		if(errors.get(i) instanceof subQuantityOf)
-			return "Invalid ends' stereotypes for SubQuantityOf";
-		return "Invalid Meronymic";
-	}
+	
 	
 	
 }

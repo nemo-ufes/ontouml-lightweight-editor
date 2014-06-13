@@ -8,10 +8,9 @@ import RefOntoUML.Classifier;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class IdentityChecker extends Checker<Classifier>{
+public class IdentityChecker extends Checker<IdentityError>{
 
 	
 	HashMap<Classifier,ArrayList<Classifier>> identityHash;
@@ -37,7 +36,7 @@ public class IdentityChecker extends Checker<Classifier>{
 			if(objectClass instanceof SortalClass){
 				ArrayList<Classifier> identityProviders = new ArrayList<Classifier>();
 				identityHash.put(objectClass, identityProviders);
-				for (Classifier parent : parser.retainSelected(objectClass.allParents())) {
+				for (Classifier parent : parser.getAllParents(objectClass)) {
 					if(parent instanceof SubstanceSortal){
 						identityProviders.add((SubstanceSortal) parent);
 					}
@@ -45,14 +44,11 @@ public class IdentityChecker extends Checker<Classifier>{
 			}
 		}
 		
-		if(errors!=null)
-			errors.clear();
-		else
-			errors = new ArrayList<Classifier>();
+		errors.clear();
 		
 		for (Classifier c : identityHash.keySet()) {
 			if(hasProblem(c))
-				errors.add(c);
+				errors.add(new IdentityError(parser, c, getIdentityProviders(c)));
 		}
 		
 		if(errors.size()>0)
@@ -83,35 +79,8 @@ public class IdentityChecker extends Checker<Classifier>{
 	}
 
 	@Override
-	public String getErrorDescription(int i) {
-		String description = OntoUMLNameHelper.getTypeAndName(getErrors().get(i), true, true);
-		
-		if(getIdentityProviders(errors.get(i)).size()==0)
-			return description;
-		
-		description+=" - Iden. Prov.: ";
-		int count = 0;
-		int invParentsSize = getIdentityProviders(errors.get(i)).size();
-		
-		for (Classifier invalidParent : getIdentityProviders(errors.get(i))) {
-			description += OntoUMLNameHelper.getTypeAndName(invalidParent, true, true);
-			if(count<invParentsSize-1)
-				description += ", ";
-			count++;
-		}
-		return description;
+	public String checkerName() {
+		return "Valid Identities";
 	}
-
-	@Override
-	public String getErrorType(int i) {
-		if(getIdentityProviders(errors.get(i)).size()==0)
-			return "No identity provider defined";
-		else
-			return "Multiple identity providers ("+getIdentityProviders(errors.get(i)).size()+")";
-	}
-
-	
-	
-	
 	
 }

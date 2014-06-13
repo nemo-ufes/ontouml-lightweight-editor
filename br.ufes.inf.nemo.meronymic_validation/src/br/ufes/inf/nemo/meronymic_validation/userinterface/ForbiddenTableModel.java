@@ -1,16 +1,12 @@
-package br.ufes.inf.nemo.meronymic_validation.forbidden.ui;
+package br.ufes.inf.nemo.meronymic_validation.userinterface;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
 import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-import br.ufes.inf.nemo.meronymic_validation.forbidden.ForbiddenMemberOf;
 import br.ufes.inf.nemo.meronymic_validation.forbidden.ForbiddenMeronymic;
 
 public class ForbiddenTableModel extends AbstractTableModel {
@@ -18,8 +14,8 @@ public class ForbiddenTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -1928067858298060225L;
 	
 	private ArrayList<ForbiddenMeronymic<? extends Meronymic>> forbiddenMeronymic = new ArrayList<>();
-	private static final String[] 	COLUMNS = {"Whole","Part","Name","Stereotype","Location","Description","Fix"};
-	private static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, String.class, String.class, String.class, String.class, String.class, JButton.class};
+	private static final String[] 	COLUMNS = {"Whole","Part","Name","Stereotype","Location","Description"};
+	private static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, String.class, String.class, String.class, String.class, String.class};
 
 	public ForbiddenTableModel() { 
 	}
@@ -104,27 +100,9 @@ public class ForbiddenTableModel extends AbstractTableModel {
 		    	return OntoUMLNameHelper.getPath(forbidden.getMeronymic());
 		    case 5:
 		    	return forbidden.getDescription();
-		    case 6:
-		    	return createFixMeButton(row);
 		    default:
 		    	return null;
 		   }
-	}
-
-	private JButton createFixMeButton(final int row) {
-		JButton button = new JButton("FixMe"+row);
-        
-		button.addActionListener(new ActionListener() {
-        
-			public void actionPerformed(ActionEvent arg0) {
-                FixIntranstiveMemberOfFrame frame = new FixIntranstiveMemberOfFrame((ForbiddenMemberOf) forbiddenMeronymic.get(row));
-                frame.setAlwaysOnTop(true);
-                frame.setVisible(true);
-                
-            }
-        });
-		
-        return button;
 	}
 
 	@Override

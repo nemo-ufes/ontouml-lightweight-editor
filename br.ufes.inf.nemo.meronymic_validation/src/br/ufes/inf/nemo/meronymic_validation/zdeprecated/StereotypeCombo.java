@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.meronymic_validation.ui;
+package br.ufes.inf.nemo.meronymic_validation.zdeprecated;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;

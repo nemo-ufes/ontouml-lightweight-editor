@@ -13,9 +13,9 @@ import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.derivation.DerivedMeronymic.PatternType;
-import br.ufes.inf.nemo.meronymic_validation.derivation.ui.DerivedTable;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
 import br.ufes.inf.nemo.meronymic_validation.graph.Graph;
+import br.ufes.inf.nemo.meronymic_validation.userinterface.DerivedTableModel;
 
 public abstract class DerivationTask <T extends Meronymic> extends SwingWorker<Boolean, DerivedMeronymic>{
 
@@ -25,11 +25,11 @@ public abstract class DerivationTask <T extends Meronymic> extends SwingWorker<B
 	protected ArrayList<DerivedMeronymic> derived;
 	protected ArrayList<DerivedMeronymic> forbidden;
 	private boolean arePathsSet;
-	DerivedTable table;
+	DerivedTableModel tableModel;
 	
-	public DerivationTask(OntoUMLParser parser, DerivedTable table) {
+	public DerivationTask(OntoUMLParser parser, DerivedTableModel tableModel) {
 		this.parser = parser;
-		this.table = table;
+		this.tableModel = tableModel;
 		
 		existing = new HashSet<T>();
 		paths = new ArrayList<EdgePath>();
@@ -54,8 +54,8 @@ public abstract class DerivationTask <T extends Meronymic> extends SwingWorker<B
 		return derived;
 	}
 
-	public DerivedTable getTable() {
-		return table;
+	public DerivedTableModel getTable() {
+		return tableModel;
 	}
 
 	public ArrayList<DerivedMeronymic> getForbidden() {
@@ -73,7 +73,7 @@ public abstract class DerivationTask <T extends Meronymic> extends SwingWorker<B
 		
 		Graph genGraph = new Graph(parser);
 		//creates directed graph with classes and meronymics
-		genGraph.createMeronymicGraph(existing);
+		genGraph.createMeronymicGraph(existing, false, false);
 		
 		//get all paths in the graph
 		paths = genGraph.getAllEdgePathsFromAllNodes();
@@ -132,7 +132,7 @@ public abstract class DerivationTask <T extends Meronymic> extends SwingWorker<B
 	@Override
 	protected void process(final List<DerivedMeronymic> result) {
 		System.out.println("PROCESSING!!!");
-		table.getModel().addRows(result);
+		tableModel.addRows(result);
 	}
 	
 	@Override

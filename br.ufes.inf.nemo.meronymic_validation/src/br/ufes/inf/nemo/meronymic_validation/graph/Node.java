@@ -18,6 +18,15 @@ public class Node {
 		edges.add(new DirectedEdge(edgeId, this, next));
 	}
 	
+	
+	public Object getId() {
+		return id;
+	}
+
+	public ArrayList<DirectedEdge> getEdges() {
+		return edges;
+	}
+
 	@Override
 	public String toString(){
 		
