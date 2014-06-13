@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import RefOntoUML.Category;
 import RefOntoUML.Classifier;
+import RefOntoUML.Generalization;
 import RefOntoUML.Mixin;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.Phase;
@@ -12,10 +13,9 @@ import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
-public class GeneralizationChecker extends Checker<Classifier>{
+public class GeneralizationChecker extends Checker<GeneralizationError>{
 
 	HashMap<Classifier,ArrayList<Classifier>> forbiddenParentsHash;
 	
@@ -87,14 +87,14 @@ public class GeneralizationChecker extends Checker<Classifier>{
 			}		
 		}
 		
-		if(errors!=null)
-			errors.clear();
-		else
-			errors = new ArrayList<Classifier>();
+		errors.clear();
 		
-		for (Classifier c : forbiddenParentsHash.keySet()) {
-			if(forbiddenParentsHash.get(c).size()>0)
-				errors.add(c);
+		for (Classifier child : forbiddenParentsHash.keySet()) {
+			for (Classifier parent : forbiddenParentsHash.get(child)) {
+				for (Generalization g : getGeneralizationsBetween(child,parent)) {
+					errors.add(new GeneralizationError(parser,g));
+				}
+			}
 		}
 		
 		if(errors.size()>0)
@@ -118,23 +118,21 @@ public class GeneralizationChecker extends Checker<Classifier>{
 	public ArrayList<Classifier> getForbiddenParents(Classifier objectClass) {
 		return forbiddenParentsHash.get(objectClass);
 	}
-
-	@Override
-	public String getErrorDescription(int i) {
-		String description = "Type: "+OntoUMLNameHelper.getTypeAndName(getErrors().get(i), true, true)+" - Invalid Parents: ";
-		int count = 0;
-		int invParentsSize = getForbiddenParents(errors.get(i)).size();
-		for (Classifier invalidParent : getForbiddenParents(errors.get(i))) {
-			description += OntoUMLNameHelper.getTypeAndName(invalidParent, true, true);
-			if(count<invParentsSize-1)
-				description += ", ";
-			count++;
+	
+	public ArrayList<Generalization> getGeneralizationsBetween(Classifier child, Classifier parent){
+		ArrayList<Generalization> list = new ArrayList<Generalization>();
+		
+		for (Generalization g : child.getGeneralization()) {
+			if(g.getGeneral().equals(parent))
+				list.add(g);
 		}
-		return description;
+		
+		return list;
 	}
 
 	@Override
-	public String getErrorType(int i) {
-		return getForbiddenParents(errors.get(i)).size()+" invalid parents";
+	public String checkerName() {
+		return "Valid Specialization";
 	}
+	
 }

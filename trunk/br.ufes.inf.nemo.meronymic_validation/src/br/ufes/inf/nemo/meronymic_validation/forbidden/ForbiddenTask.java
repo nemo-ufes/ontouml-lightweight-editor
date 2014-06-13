@@ -10,9 +10,11 @@ import javax.swing.SwingWorker;
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.meronymic_validation.forbidden.ui.ForbiddenTable;
+import br.ufes.inf.nemo.meronymic_validation.graph.DirectedEdge;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
 import br.ufes.inf.nemo.meronymic_validation.graph.Graph;
+import br.ufes.inf.nemo.meronymic_validation.graph.Node;
+import br.ufes.inf.nemo.meronymic_validation.userinterface.ForbiddenTableModel;
 
 public abstract class ForbiddenTask <T extends Meronymic> extends SwingWorker<Boolean, ForbiddenMeronymic<T>>{
 
@@ -21,11 +23,11 @@ public abstract class ForbiddenTask <T extends Meronymic> extends SwingWorker<Bo
 	protected ArrayList<EdgePath> paths;
 	protected ArrayList<ForbiddenMeronymic<T>> forbidden;
 	private boolean arePathsSet;
-	ForbiddenTable table;
+	ForbiddenTableModel tableModel;
 	
-	public ForbiddenTask(OntoUMLParser parser, ForbiddenTable table) {
+	public ForbiddenTask(OntoUMLParser parser, ForbiddenTableModel tableModel) {
 		this.parser = parser;
-		this.table = table;
+		this.tableModel = tableModel;
 		
 		existing = new HashSet<T>();
 		paths = new ArrayList<EdgePath>();
@@ -45,8 +47,8 @@ public abstract class ForbiddenTask <T extends Meronymic> extends SwingWorker<Bo
 		return paths;
 	}
 
-	public ForbiddenTable getTable() {
-		return table;
+	public ForbiddenTableModel getTable() {
+		return tableModel;
 	}
 
 	public ArrayList<ForbiddenMeronymic<T>> getForbidden() {
@@ -58,14 +60,20 @@ public abstract class ForbiddenTask <T extends Meronymic> extends SwingWorker<Bo
 		return arePathsSet;
 	}
 
-	public void setPaths(){
+	public void setPaths(boolean addPartChildren, boolean addPartParents){
 		
 		paths.clear();
 		
 		Graph genGraph = new Graph(parser);
 		//creates directed graph with classes and meronymics
-		genGraph.createMeronymicGraph(existing);
+		genGraph.createMeronymicGraph(existing, addPartParents, addPartChildren);
+		System.out.println(genGraph.getAllNodes());
 		
+		for (Node node : genGraph.getAllNodes()) {
+			for (DirectedEdge egde : node.getEdges()) {
+				System.out.println("(Edge) "+egde.getSource().toString()+" -> "+egde.getTarget().toString());
+			}
+		}
 		//get all paths in the graph
 		paths = genGraph.getAllEdgePathsFromAllNodes();
 		
@@ -88,7 +96,7 @@ public abstract class ForbiddenTask <T extends Meronymic> extends SwingWorker<Bo
 	protected void process(final List<ForbiddenMeronymic<T>> result) {
 		System.out.println("PROCESSING!!!");
 		for (ForbiddenMeronymic<T> forbiddenMeronymic : result) {
-			table.getModel().addRow(forbiddenMeronymic);
+			tableModel.addRow(forbiddenMeronymic);
 		}
 	}
 	

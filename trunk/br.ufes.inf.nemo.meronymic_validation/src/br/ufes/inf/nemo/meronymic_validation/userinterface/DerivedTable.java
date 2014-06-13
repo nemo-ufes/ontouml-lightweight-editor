@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.meronymic_validation.derivation.ui;
+package br.ufes.inf.nemo.meronymic_validation.userinterface;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;

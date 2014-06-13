@@ -48,36 +48,11 @@ public class Graph {
 		}
 	}
 	
-	public void createMeronymicGraph(){
-		if(parser == null)
-			return;
-		
-		Set<Meronymic> allMeronymic = parser.getAllInstances(Meronymic.class);
-		
-		this.allNodes.clear();
-		
-		//creates all nodes
-		for (Meronymic m : allMeronymic) {
-			Type whole = parser.getWholeEnd(m).getType();
-			Type part = parser.getPartEnd(m).getType();
-			
-			if(getNode(whole)==null)
-				 addNode(new Node(whole));
-			if(getNode(part)==null)
-				 addNode(new Node(part));
-		}
-		
-		//creates all edges
-		for (Meronymic m : allMeronymic) {
-			Type whole = parser.getWholeEnd(m).getType();
-			Type part = parser.getPartEnd(m).getType();
-			Property partEnd = parser.getPartEnd(m);
-			
-			getNode(whole).connect(partEnd, getNode(part));
-		}
+	public void createMeronymicGraph(boolean addPartParents, boolean addPartChildren){
+		createMeronymicGraph(parser.getAllInstances(Meronymic.class), addPartParents, addPartChildren);
 	}
 	
-	public void createMeronymicGraph(Set<? extends Meronymic> meronymicList){
+	public void createMeronymicGraph(Set<? extends Meronymic> meronymicList, boolean addPartParents, boolean addPartChildren){
 		if(parser==null)
 			return;
 		
@@ -85,25 +60,50 @@ public class Graph {
 		
 		//creates all nodes
 		for (Meronymic m : meronymicList) {
-			Type whole = parser.getWholeEnd(m).getType();
-			Type part = parser.getPartEnd(m).getType();
+			Type whole = OntoUMLParser.getWholeEnd(m).getType();
+			Type part = OntoUMLParser.getPartEnd(m).getType();
 			
 			if(getNode(whole)==null)
 				 addNode(new Node(whole));
 			if(getNode(part)==null)
 				 addNode(new Node(part));
+			
+			if(addPartParents){
+				for (Classifier parent : parser.getAllParents((Classifier)part)) {
+					if(getNode(parent)==null)
+						 addNode(new Node(parent));
+				}
+			}
+			
+			if(addPartChildren){
+				for (Classifier child : parser.getAllChildren((Classifier)part)) {
+					if(getNode(child)==null)
+						 addNode(new Node(child));
+				}
+			}
 		}
 		
 		//creates all edges
 		for (Meronymic m : meronymicList) {
-			Type whole = parser.getWholeEnd(m).getType();
-			Type part = parser.getPartEnd(m).getType();
-			Property partEnd = parser.getPartEnd(m);
+			Type whole = OntoUMLParser.getWholeEnd(m).getType();
+			Type part = OntoUMLParser.getPartEnd(m).getType();
+			Property partEnd = OntoUMLParser.getPartEnd(m);
 			
 			getNode(whole).connect(partEnd, getNode(part));
+			
+			if(addPartParents){
+				for (Classifier parent : parser.getAllParents((Classifier)part)) {
+					getNode(whole).connect(partEnd, getNode(parent));
+				}
+			}
+			
+			if(addPartChildren){
+				for (Classifier child : parser.getAllChildren((Classifier)part)) {
+					getNode(whole).connect(partEnd, getNode(child));
+				}
+			}
 		}
 	}
-	
 	
 	public Node getNode(Object id){
 		return allNodes.get(id);
@@ -168,7 +168,7 @@ public class Graph {
 				}
 				
 				if(basePath.containsAll(path) && path.containsAll(basePath)){
-					System.out.println("Removing: "+path+" ----- Base Path: "+basePath);
+//					System.out.println("Removing: "+path+" ----- Base Path: "+basePath);
 					allPaths.remove(path);
 				}
 				else
@@ -243,7 +243,6 @@ public class Graph {
 				
 				//contains the same edges
 				if(basePath.containSameEdges(path)){
-					System.out.println("Removing: "+path.edges+" ----- Base Path: "+basePath.edges);
 					allPaths.remove(path);
 				}
 				else

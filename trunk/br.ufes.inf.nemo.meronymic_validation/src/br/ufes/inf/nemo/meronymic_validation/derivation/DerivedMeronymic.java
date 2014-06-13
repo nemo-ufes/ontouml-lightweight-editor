@@ -10,6 +10,7 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
@@ -39,9 +40,11 @@ public class DerivedMeronymic {
 	boolean isAllowed;
 	Action action;
 	PatternType pattern;
+	Fix fix;
 	
 	public DerivedMeronymic(RelationStereotype stereotype) {
 		this.stereotype = stereotype;
+		fix = new Fix();
 	}
 	
 	public DerivedMeronymic(Meronymic existingMeronymic) {
@@ -56,6 +59,7 @@ public class DerivedMeronymic {
 		if(existingMeronymic instanceof subQuantityOf)
 			this.stereotype = RelationStereotype.SUBQUANTITYOF;
 		
+		fix = new Fix();
 	}
 	
 	public PatternType getPattern() {
@@ -426,5 +430,14 @@ public class DerivedMeronymic {
 		
 		oclDerivationRule = "context "+contextName+"::"+partEndName+" : Set(_'"+getPart().getName()+")\n"+
 							"derive : "+rule;
+	}
+
+	public Fix fix() {
+		if(action==Action.FORBID);
+		if(action==Action.PERSIST){
+//			OutcomeFixer fixer = new OutcomeFixer();
+		}
+		
+		return fix;
 	}
 }

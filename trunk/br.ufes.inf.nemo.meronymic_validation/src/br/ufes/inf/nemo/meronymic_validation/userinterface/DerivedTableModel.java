@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.meronymic_validation.derivation.ui;
+package br.ufes.inf.nemo.meronymic_validation.userinterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +117,10 @@ public class DerivedTableModel extends AbstractTableModel {
 		default:
 			return false;
 		}
+	}
+
+	public ArrayList<DerivedMeronymic> getAllRows() {
+		return derivedMeronymic;
 	}
 	
 

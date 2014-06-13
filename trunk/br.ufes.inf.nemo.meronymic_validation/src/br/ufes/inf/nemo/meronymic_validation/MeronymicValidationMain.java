@@ -2,9 +2,6 @@ package br.ufes.inf.nemo.meronymic_validation;
 
 import java.io.File;
 
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -14,8 +11,6 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import RefOntoUML.RefOntoUMLFactory;
 import RefOntoUML.RefOntoUMLPackage;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.meronymic_validation.ui.ForbiddenFrame;
-import br.ufes.inf.nemo.meronymic_validation.ui.ValidationDialog;
 
 public class MeronymicValidationMain {
 	
@@ -29,7 +24,7 @@ public class MeronymicValidationMain {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 		// Get the URI of the model file.
 	
-//		URI fileURI = URI.createFileURI(new File("GeneralizationCycle.refontouml").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("GeneralizationCycle.refontouml").getAbsolutePath());
 //		URI fileURI = URI.createFileURI(new File("InvalidGeneralization.refontouml").getAbsolutePath());
 //		URI fileURI = URI.createFileURI(new File("IdentityProblem.refontouml").getAbsolutePath());
 //		URI fileURI = URI.createFileURI(new File("AggregationProblem.refontouml").getAbsolutePath());
@@ -37,8 +32,8 @@ public class MeronymicValidationMain {
 //		URI fileURI = URI.createFileURI(new File("MeronymicCycle.refontouml").getAbsolutePath());
 //		URI fileURI = URI.createFileURI(new File("meronymicValid.refontouml").getAbsolutePath());
 //		URI fileURI = URI.createFileURI(new File("allMeronymic.refontouml").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("intransitiveMemberOf.refontouml").getAbsolutePath());
-		
+//		URI fileURI = URI.createFileURI(new File("intransitiveMemberOf.refontouml").getAbsolutePath());
+//		URI fileURI = URI.createFileURI(new File("forbiddenComponentOf.refontouml").getAbsolutePath());
 		
 		// Demand load the resource for this file.
 		Resource resource = resourceSet.getResource(fileURI, true);
@@ -48,7 +43,7 @@ public class MeronymicValidationMain {
 		RefOntoUML.Package m;
 		m = (RefOntoUML.Package)resource.getContents().get(0);
 
-		System.out.println("File loaded: Teste.refontouml");
+		System.out.println("File loaded: "+fileURI.toString());
 		
 		OntoUMLParser parser = new OntoUMLParser(m);
 		System.out.println("Parser loaded: "+ m.getName());
@@ -58,9 +53,15 @@ public class MeronymicValidationMain {
 //		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 //		dialog.setVisible(true);
 		
-		ForbiddenFrame frame = new ForbiddenFrame(parser);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setVisible(true);
+//		ForbiddenFrame frame = new ForbiddenFrame(parser);
+//		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//		frame.setVisible(true);
+		
+//		PreConditionDialog dialog = new PreConditionDialog(parser);
+//		dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//		dialog.setVisible(true);
+		
+//		ValidationFrame.open(parser);`2
 	}
 	
 }

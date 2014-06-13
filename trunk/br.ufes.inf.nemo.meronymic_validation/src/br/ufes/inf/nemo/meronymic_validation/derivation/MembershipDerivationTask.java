@@ -10,15 +10,15 @@ import RefOntoUML.subCollectionOf;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.derivation.DerivedMeronymic.PatternType;
-import br.ufes.inf.nemo.meronymic_validation.derivation.ui.DerivedTable;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
+import br.ufes.inf.nemo.meronymic_validation.userinterface.DerivedTableModel;
 
 public class MembershipDerivationTask extends DerivationTask<Meronymic>{
 	
 	
 	
-	public MembershipDerivationTask(OntoUMLParser parser, DerivedTable table) {
-		super(parser, table);
+	public MembershipDerivationTask(OntoUMLParser parser, DerivedTableModel tableModel) {
+		super(parser, tableModel);
 		
 		existing.addAll(parser.getAllInstances(subCollectionOf.class));
 		existing.addAll(parser.getAllInstances(memberOf.class));

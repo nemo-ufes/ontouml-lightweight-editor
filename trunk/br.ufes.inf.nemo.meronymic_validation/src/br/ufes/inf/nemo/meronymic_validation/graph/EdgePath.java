@@ -117,4 +117,12 @@ public class EdgePath {
 		
 		return edges.get(i-1).getTarget().id;
 	}
+
+	public int edges() {
+		return edges.size();
+	}
+	
+	public int nodes() {
+		return edges.size()+1;
+	}
 }

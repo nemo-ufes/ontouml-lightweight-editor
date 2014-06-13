@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.meronymic_validation.derivation.ui;
+package br.ufes.inf.nemo.meronymic_validation.zdeprecated;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -19,7 +19,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.derivation.DerivationTask;
 import br.ufes.inf.nemo.meronymic_validation.derivation.DerivedMeronymic;
-import br.ufes.inf.nemo.meronymic_validation.ui.StereotypeCombo;
 
 public abstract class DerivedResultPanel extends JPanel {
 	
@@ -33,7 +32,7 @@ public abstract class DerivedResultPanel extends JPanel {
 	private JTextField wholeNameText;
 	private JTextField partNameText;
 	
-	protected DerivedTable table;
+//	protected DerivedTable table;
 	private StereotypeCombo stereotypeCombo;
 	private JComboBox wholeTypeCombo;
 	private JComboBox wholeMultiplicityCombo;
@@ -60,8 +59,8 @@ public abstract class DerivedResultPanel extends JPanel {
 		
 		@Override
 		public void valueChanged(ListSelectionEvent event) {
-			if(table.getSelectedRow()>=0)
-				setRowData(table.getModel().getRow(table.getSelectedRow()));
+//			if(table.getSelectedRow()>=0)
+//				setRowData(table.getModel().getRow(table.getSelectedRow()));
 		}
 	};
 	
@@ -73,8 +72,8 @@ public abstract class DerivedResultPanel extends JPanel {
 	public DerivedResultPanel(OntoUMLParser parser) {
 		
 		this.parser = parser;
-		this.table = new DerivedTable();
-		this.table.getSelectionModel().addListSelectionListener(tableSelectionListener);
+//		this.table = new DerivedTable();
+//		this.table.getSelectionModel().addListSelectionListener(tableSelectionListener);
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Meta-Properties", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
@@ -126,7 +125,7 @@ public abstract class DerivedResultPanel extends JPanel {
 		);
 		
 		
-		scrollPane.setViewportView(table);
+//		scrollPane.setViewportView(table);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		GroupLayout gl_panel_3 = new GroupLayout(panel_3);
@@ -493,7 +492,7 @@ public abstract class DerivedResultPanel extends JPanel {
 	
 	public void executeTask(){
 		clearRowData();
-		table.getModel().clear();
+//		table.getModel().clear();
 		
 		if(derivationTask==null || derivationTask.isCancelled() || derivationTask.isDone())
 			setTask();
@@ -502,7 +501,7 @@ public abstract class DerivedResultPanel extends JPanel {
 	}
 	
 	public boolean isTableEmpty() {
-		return table.getModel().getRowCount()==0;
+		return false;//table.getModel().getRowCount()==0;
 	}
 	
 	public abstract DerivationTask<?> createDerivationTask();

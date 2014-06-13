@@ -2,15 +2,6 @@ package br.ufes.inf.nemo.meronymic_validation.forbidden;
 
 import java.util.ArrayList;
 
-import javax.swing.text.html.HTMLEditorKit.Parser;
-
-import org.eclipse.emf.ecore.EObject;
-
-import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.Kind;
@@ -21,6 +12,12 @@ import RefOntoUML.Quantity;
 import RefOntoUML.Role;
 import RefOntoUML.SubKind;
 import RefOntoUML.memberOf;
+import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class ForbiddenMemberOf extends ForbiddenMeronymic<memberOf> {
 	
@@ -37,7 +34,17 @@ public class ForbiddenMemberOf extends ForbiddenMeronymic<memberOf> {
 
 	@Override
 	public String getDescription() {
-		return "MemberOf is intransitive";
+		String result = "MemberOf is intransitive. Existing path: ";
+		
+		int i = 0;
+		for (Property p : path) {
+			if(i!=0)
+				result += " -> ";
+			result += OntoUMLNameHelper.getNameAndType(p);
+			i++;
+		}
+		
+		return result;
 	}
 	
 	@Override

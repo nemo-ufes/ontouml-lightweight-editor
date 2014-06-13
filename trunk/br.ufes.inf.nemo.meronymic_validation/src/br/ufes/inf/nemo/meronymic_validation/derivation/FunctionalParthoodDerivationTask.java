@@ -7,8 +7,8 @@ import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.derivation.DerivedMeronymic.PatternType;
-import br.ufes.inf.nemo.meronymic_validation.derivation.ui.DerivedTable;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
+import br.ufes.inf.nemo.meronymic_validation.userinterface.DerivedTableModel;
 
 public class FunctionalParthoodDerivationTask extends DerivationTask<componentOf>{
 
@@ -16,8 +16,8 @@ public class FunctionalParthoodDerivationTask extends DerivationTask<componentOf
 	private ArrayList<DerivedMeronymic> derivedIndirectType1;
 	private ArrayList<DerivedMeronymic> derivedIndirectType2;
 	
-	public FunctionalParthoodDerivationTask(OntoUMLParser parser, DerivedTable table) {
-		super(parser, table);
+	public FunctionalParthoodDerivationTask(OntoUMLParser parser, DerivedTableModel tableModel) {
+		super(parser, tableModel);
 
 		existing.addAll(parser.getAllInstances(componentOf.class));
 		

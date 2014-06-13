@@ -31,7 +31,8 @@ public abstract class ForbiddenMeronymic<M extends Meronymic> {
 	}
 
 	public void setPath(ArrayList<Property> path) {
-		this.path = new ArrayList<Property>(path);
+		this.path.clear();
+		this.path.addAll(path);
 	}
 
 	public M getMeronymic() {
