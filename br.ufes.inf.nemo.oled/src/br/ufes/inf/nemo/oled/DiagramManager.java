@@ -1108,14 +1108,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** Open the Alloy simulation settings window */
 	public void openAlloySettings()
 	{
-		if (isProjectLoaded()==false) return;
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
-		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());		
-		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
+		if (isProjectLoaded()==false) return;		
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		//parse TOCL
 		parseConstraints(false);
+		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
 		//configure a default ontouml2alloy option
+		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
+		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
 		refOptions.check(refparser);
 		// open settings
 		AlloySettingsDialog.open(refOptions, oclOptions, getFrame());	
@@ -1128,7 +1128,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));		
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());		
 		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to create an OLED project first."); return; }		
-		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
 		try {
 			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
 			// set parser 
@@ -1177,8 +1176,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
 		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
 		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }
-		// complete mandatory dependencies
-		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
 		try {			
 			// transforming...
 			ProjectBrowser.getAlloySpecFor(getCurrentProject()).setAlloyModel(refparser,refOptions);
@@ -1384,6 +1381,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
 		modeltree.getTree().check(elements, true);					
 		modeltree.getTree().updateUI();		
+		ProjectBrowser.setParserFor(currentProject, refparser);
 	}
 
 	/** Tell the application to work only with the elements contained in these diagrams. */
@@ -1429,6 +1427,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
 		modeltree.getTree().check(elements, true);					
 		modeltree.getTree().updateUI();		
+		ProjectBrowser.setParserFor(currentProject, refparser);
 	}
 	
 	/** 
@@ -1449,6 +1448,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		selected.addAll(added);	
 		modeltree.getTree().checkModelElements(selected, true);			
 		modeltree.getTree().updateUI();
+		ProjectBrowser.setParserFor(currentProject, refparser);
 	}
 	
 	/** 
@@ -1464,6 +1464,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		modeltree.getTree().checkModelElement(currentProject.getModel());
 		refparser.selectAllElements();		
 		modeltree.getTree().updateUI();
+		ProjectBrowser.setParserFor(currentProject, refparser);
 	}
 	
 	/** Open modeling assistant wizard */
@@ -2046,8 +2047,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
 
-		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
-
 		ModelDiagnostician verificator = new ModelDiagnostician();    	
 		frame.getInfoManager().getWarnings().setData(
 				verificator.getWarningsMatrixFormat(ProjectBrowser.getParserFor(getCurrentProject())),
@@ -2072,8 +2071,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
 
 		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
-
-		autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,getCurrentProject());
 
 		ModelDiagnostician verificator = new ModelDiagnostician();    	
 		frame.getInfoManager().getErrors().setData(

@@ -909,16 +909,6 @@ public class AntiPatternSearchDialog extends JDialog {
 				 });
 				
 				 OntoUMLParser parser = ProjectBrowser.getParserFor(frame.getDiagramManager().getCurrentProject());
-
-				 SwingUtilities.invokeLater(new Runnable() {			
-					@Override
-					public void run() {
-						frame.getDiagramManager().autoCompleteSelection(
-							OntoUMLParser.NO_HIERARCHY,
-							frame.getDiagramManager().getCurrentProject()
-						);							
-					}
-				 });				 
 				 
 				 final AssCycAntipattern assCyc = new AssCycAntipattern(parser); 	
 				 final BinOverAntipattern binOver = new BinOverAntipattern(parser);		
