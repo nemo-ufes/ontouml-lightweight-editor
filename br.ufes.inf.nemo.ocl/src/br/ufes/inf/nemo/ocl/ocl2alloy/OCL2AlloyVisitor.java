@@ -242,6 +242,10 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
 		
 		StringBuffer result = new StringBuffer();
     	RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getOntoUMLElement(property);
+    	if(ontoProperty==null) {
+    		System.err.println("Null OntoUML element -->>> Property "+property.getName()+" : "+property.getType().getName()+"");
+    		return "<null-element>";
+    	}
     	String nameProperty = refparser.getAlias(ontoProperty);    	
     	if (property.getAssociation()!=null) result.append(sourceResult + "." + nameProperty+ "[w]");    	
     	else if (property.getType().getName().compareToIgnoreCase("Boolean")==0) { result.append(sourceResult + " in w." + nameProperty+ "");}    	
@@ -546,6 +550,7 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
 	   	else result.append("\tall w: World | ");
 			
 		RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getOntoUMLElement(classifier);
+		
 		String nameClassifier = refparser.getAlias(ontoClassifier);
 		 	
 		if (expr.getBodyExpression().toString().contains("self")){
