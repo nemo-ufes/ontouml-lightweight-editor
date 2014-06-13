@@ -1109,13 +1109,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void openAlloySettings()
 	{
 		if (isProjectLoaded()==false) return;
-		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());	
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
+		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());		
 		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		//parse TOCL
 		parseConstraints(false);
-		//configure a default option
+		//configure a default ontouml2alloy option
 		refOptions.check(refparser);
 		// open settings
 		AlloySettingsDialog.open(refOptions, oclOptions, getFrame());	
