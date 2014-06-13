@@ -1348,8 +1348,26 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		// get elements from the diagram
 		ArrayList<EObject> elements = new ArrayList<EObject>();
 		for(DiagramElement de: diagram.getChildren()){
-			if(de instanceof ClassElement) { elements.add(((ClassElement)de).getClassifier()); }
-			if(de instanceof AssociationElement) { elements.add(((AssociationElement)de).getRelationship()); }
+			if(de instanceof ClassElement) {
+				Classifier c = ((ClassElement)de).getClassifier();
+				elements.add(c);
+				if(c instanceof RefOntoUML.Class) {
+					for(Property attr: ((RefOntoUML.Class)c).getOwnedAttribute()) {
+						elements.add(attr);
+						if(!elements.contains(attr.getType())) elements.add(attr.getType());
+					}
+				}
+				if(c instanceof RefOntoUML.DataType) {
+					for(Property attr: ((RefOntoUML.DataType)c).getOwnedAttribute()) {
+						elements.add(attr);
+						if(!elements.contains(attr.getType())) elements.add(attr.getType());
+					}
+				}
+			}
+			if(de instanceof AssociationElement) { 
+				Association r = (Association)((AssociationElement)de).getRelationship();
+				elements.add(r);								
+			}
 			if(de instanceof GeneralizationElement) {
 				Relationship rel = ((GeneralizationElement)de).getRelationship();
 				elements.add(rel);
@@ -1374,8 +1392,26 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ArrayList<EObject> elements = new ArrayList<EObject>();
 		for(StructureDiagram sd: diagrams) {
 			for(DiagramElement de: sd.getChildren()){
-				if(de instanceof ClassElement) { elements.add(((ClassElement)de).getClassifier()); }
-				if(de instanceof AssociationElement) { elements.add(((AssociationElement)de).getRelationship()); }
+				if(de instanceof ClassElement) {
+					Classifier c = ((ClassElement)de).getClassifier();
+					elements.add(c);
+					if(c instanceof RefOntoUML.Class) {
+						for(Property attr: ((RefOntoUML.Class)c).getOwnedAttribute()) {
+							elements.add(attr);
+							if(!elements.contains(attr.getType())) elements.add(attr.getType());
+						}
+					}
+					if(c instanceof RefOntoUML.DataType) {
+						for(Property attr: ((RefOntoUML.DataType)c).getOwnedAttribute()) {
+							elements.add(attr);
+							if(!elements.contains(attr.getType())) elements.add(attr.getType());
+						}
+					}
+				}
+				if(de instanceof AssociationElement) { 
+					Association r = (Association)((AssociationElement)de).getRelationship();
+					elements.add(r);								
+				}
 				if(de instanceof GeneralizationElement) {
 					Relationship rel = ((GeneralizationElement)de).getRelationship();
 					elements.add(rel);
