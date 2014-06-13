@@ -487,6 +487,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void searchWarnings()
 	{
 		if (manager.isProjectLoaded()==false) return;
+		manager.workingOnlyWithChecked();
 		manager.searchWarnings();
 		manager.getFrame().focusOnWarnings();
 	}
@@ -494,6 +495,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void searchErrors()
 	{
 		if (manager.isProjectLoaded()==false) return;
+		manager.workingOnlyWithChecked();
 		manager.searchErrors();
 		manager.getFrame().focusOnErrors();
 	}
