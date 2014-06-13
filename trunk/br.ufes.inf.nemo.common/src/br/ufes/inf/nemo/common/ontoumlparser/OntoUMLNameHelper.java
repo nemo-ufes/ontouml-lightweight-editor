@@ -240,6 +240,10 @@ public class OntoUMLNameHelper {
 		
 		Integer lower = p.getLower();
 		Integer upper = p.getUpper();
+		return getMultiplicity(lower, upper, alwaysShowLowerAndUpper, separator);
+	}
+
+	public static String getMultiplicity(Integer lower, Integer upper, boolean alwaysShowLowerAndUpper, String separator) {
 		String lowerString = lower.toString();
 		String upperString = upper.toString();
 		
@@ -256,5 +260,25 @@ public class OntoUMLNameHelper {
 	
 	public static String getNameAndType(Property p){
 		return getName(p, true, false)+" ("+getName(p.getType())+")";
+	}
+
+	public static String getPath(EObject c){
+		if(c == null)
+			return "";
+		
+		if (c.eContainer()==null) 
+			return "";
+		else
+		{
+			String containerName = "";
+			if(c.eContainer() instanceof NamedElement)
+				containerName = ((NamedElement) c.eContainer()).getName();
+			else
+				containerName = "unnamed";
+			if(c.eContainer().eContainer()==null)
+				return containerName;
+			
+			return getPath(c.eContainer())+"::"+containerName;
+		}
 	}
 }
