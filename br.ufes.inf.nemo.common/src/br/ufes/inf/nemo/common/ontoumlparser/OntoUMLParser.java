@@ -661,9 +661,11 @@ public class OntoUMLParser {
 	public Set<Classifier> getAllParents(Classifier c)
 	{
 		Set<Classifier> result = new HashSet<Classifier>();		
-		for (Classifier classifier : c.allParents()) 
+		//this method might return null when it falls into a loop
+		for (Object classifier : c.allParents()) 
 		{
-			if(isSelected(classifier)) result.add(classifier);
+			if(classifier instanceof Classifier && isSelected((EObject) classifier)) 
+				result.add((Classifier) classifier);
 		}		
 		return result;
 	}
@@ -1402,24 +1404,24 @@ public class OntoUMLParser {
 		return generalizations;
 	}
 	
-	public Property getWholeEnd(Meronymic m){
+	public static Property getWholeEnd(Meronymic m){
 		if (m.targetEnd().getAggregation()!=AggregationKind.NONE && m.sourceEnd().getAggregation()==AggregationKind.NONE)
 			return m.targetEnd();
 		else
 			return m.sourceEnd();
 	}
 	
-	public Property getPartEnd(Meronymic m){
+	public static Property getPartEnd(Meronymic m){
 		return getWholeEnd(m).getOpposite();
 	}
 	
-	public Property getCharacterizingEnd(Characterization c){
+	public static Property getCharacterizingEnd(Characterization c){
 		if (c.getMemberEnd().get(1).getType() instanceof Mode && !(c.getMemberEnd().get(0).getType() instanceof Mode))
 			return c.getMemberEnd().get(1);
 		return c.getMemberEnd().get(0);
 	}
 	
-	public Property getCharacterizedEnd(Characterization c){
+	public static Property getCharacterizedEnd(Characterization c){
 		return getCharacterizingEnd(c).getOpposite();
 	}
 	
