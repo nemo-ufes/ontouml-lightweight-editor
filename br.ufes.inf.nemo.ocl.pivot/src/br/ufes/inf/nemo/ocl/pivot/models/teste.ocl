@@ -1,0 +1,9 @@
+import 'Project.uml'
+
+context Person::exists():Set(OclAny)
+body: true
+
+context project::ternary
+inv: ternary.uni
+
+
