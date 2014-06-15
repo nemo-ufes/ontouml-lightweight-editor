@@ -125,7 +125,7 @@ public class InfoManager extends JTabbedPane {
 		addTab(" Find ",finderPane);
 		setIconAt(indexOfComponent(finderPane),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/find.png")));
 		
-		addTab(" OCL/TOCL Constraints ",ocleditor);	
+		addTab(" Constraints ",ocleditor);	
 		setIconAt(indexOfComponent(ocleditor),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/text-editor.png")));
 		
 		setTabPlacement(JTabbedPane.BOTTOM);				
