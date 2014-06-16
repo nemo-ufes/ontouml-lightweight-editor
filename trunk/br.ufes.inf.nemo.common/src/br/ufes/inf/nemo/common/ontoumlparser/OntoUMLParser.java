@@ -148,7 +148,9 @@ public class OntoUMLParser {
 			}else if (obj instanceof PackageableElement){
 				addToMap((PackageableElement)obj, nameHandler);
 			}
-		}				
+		}else{
+			updateElement(obj);
+		}
 	}
 
 	/**
