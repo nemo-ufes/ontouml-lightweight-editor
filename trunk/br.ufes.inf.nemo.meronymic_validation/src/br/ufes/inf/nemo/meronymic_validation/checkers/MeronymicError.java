@@ -11,11 +11,18 @@ public abstract class MeronymicError<T> {
 	T element;
 	Fix fix;
 	OutcomeFixer fixer;
+	OntoUMLParser parser;
 	
 	public MeronymicError(OntoUMLParser parser, T element){
 		this.element = element;
+		this.parser = parser;
+		
 		fix = new Fix();
 		fixer = new OutcomeFixer(parser.getModel());
+	}
+	
+	public T getElement(){
+		return element;
 	}
 	
 	public abstract String getType();
