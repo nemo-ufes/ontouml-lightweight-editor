@@ -617,7 +617,7 @@ public class OutcomeFixer{
 	}
 
 	/** Get class stereotype */
-	public ClassStereotype getClassStereotype(EObject element) 
+	public static ClassStereotype getClassStereotype(EObject element) 
 	{
 		if (element instanceof Kind) return ClassStereotype.KIND;
 		else if (element instanceof SubKind) return ClassStereotype.SUBKIND;
