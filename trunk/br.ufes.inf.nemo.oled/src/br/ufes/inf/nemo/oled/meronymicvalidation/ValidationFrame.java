@@ -1,6 +1,8 @@
 package br.ufes.inf.nemo.oled.meronymicvalidation;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -37,6 +39,8 @@ public class ValidationFrame extends JFrame {
 	private JButton closeButton;
 	private JButton applyButton;
 
+	private AppFrame appFrame;
+
 
 	/**
 	 * Create the frame.
@@ -55,10 +59,13 @@ public class ValidationFrame extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		
 		closeButton = new JButton("Close");
+		closeButton.addActionListener(closeAction);
 		
 		saveButton = new JButton("Save");
+		saveButton.addActionListener(saveAction);
 		
 		applyButton = new JButton("Apply");
+		applyButton.addActionListener(applyAction);
 		
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -109,7 +116,38 @@ public class ValidationFrame extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 
+	public ValidationFrame(OntoUMLParser parser, AppFrame parent) {
+		this(parser);
+		this.appFrame = parent;
+	}
+
+	private ActionListener applyAction = new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			Fix fix = fixAllPanels();
+			appFrame.getDiagramManager().updateOLED(fix);
+			clearAllTables();
+		}
+	};
 	
+	private ActionListener saveAction = new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			Fix fix = fixAllPanels();
+			appFrame.getDiagramManager().updateOLED(fix);
+			dispose();
+		}
+	};
+	
+	private ActionListener closeAction = new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			dispose();
+		}
+	};
 	
 	 /** Open the Dialog.
 	 */
@@ -118,7 +156,7 @@ public class ValidationFrame extends JFrame {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
-			ValidationFrame frame = new ValidationFrame( parser/*parent*/);
+			ValidationFrame frame = new ValidationFrame( parser, parent);
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			frame.setVisible(true);
 			frame.setLocationRelativeTo(parent);
@@ -133,28 +171,27 @@ public class ValidationFrame extends JFrame {
 	}
 	
 	 /** Open the Dialog.
-		 */
-		public static void open(OntoUMLParser parser)
-		{
-			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				
-				ValidationFrame frame = new ValidationFrame( parser/*parent*/);
-				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				frame.setVisible(true);
-				
-				MessageConsole mc = new MessageConsole(frame.consoleTextPane);
-				mc.redirectOut();
-				mc.setMessageLines(100);
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	 */
+	public static void open(OntoUMLParser parser)
+	{
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			
+			ValidationFrame frame = new ValidationFrame( parser/*parent*/);
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			frame.setVisible(true);
+			
+			MessageConsole mc = new MessageConsole(frame.consoleTextPane);
+			mc.redirectOut();
+			mc.setMessageLines(100);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
 	
 	public Fix fixAllPanels(){
-		Fix fix = new Fix();
-		fix.addAll(prePanel.runFixes());
+		Fix fix = prePanel.runFixes();
 		
 		if(tabbedPane.isEnabledAt(1))
 			fix.addAll(forbiddenPanel.runFixes());
@@ -165,4 +202,9 @@ public class ValidationFrame extends JFrame {
 		return fix;
 	}
 	
+	public void clearAllTables(){
+		prePanel.clearTable();
+		forbiddenPanel.clearTable();
+		derivedPanel.clearTable();
+	}
 }

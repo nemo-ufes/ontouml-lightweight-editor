@@ -23,7 +23,10 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -65,6 +68,18 @@ public class PreConditionPanel extends ValidationPanel<MeronymicError<?>> {
 		isComplete = false;
 		
 		table = new CheckerTable();
+	    ListSelectionModel selectionModel = table.getSelectionModel();
+	    selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+	    selectionModel.addListSelectionListener(new ListSelectionListener() {
+	      public void valueChanged(ListSelectionEvent e) {
+	       if(table.getSelectedRow()!=-1)
+	    	   fixButton.setEnabled(true);
+	       else
+	    	   fixButton.setEnabled(false);
+	      }
+	    });
+		
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(table);
 		
@@ -200,6 +215,7 @@ public class PreConditionPanel extends ValidationPanel<MeronymicError<?>> {
 		
 		fixButton = new JButton("Fix");
 		fixButton.addActionListener(fixAction);
+		fixButton.setEnabled(false);
 		
 		labelResult = new JLabel("The following erros were found on the model:");
 		labelResult.setHorizontalAlignment(SwingConstants.LEFT);
@@ -297,6 +313,7 @@ public class PreConditionPanel extends ValidationPanel<MeronymicError<?>> {
 			task.addPropertyChangeListener(progressListener);
 			
 			table.getModel().clear();
+			fixButton.setEnabled(false);
 			
 			task.execute();
 		}
@@ -306,7 +323,12 @@ public class PreConditionPanel extends ValidationPanel<MeronymicError<?>> {
 	private ActionListener fixAction = new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			JDialog dialog = table.getModel().getRow(table.getSelectedRow()).createDialog();
+			int row = table.getSelectedRow();
+			
+			if(row==-1) 
+				return;
+			
+			JDialog dialog = table.getModel().getRow(row).createDialog();
 			dialog.setAlwaysOnTop(true);
 			dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
@@ -348,5 +370,10 @@ public class PreConditionPanel extends ValidationPanel<MeronymicError<?>> {
 		}
 		
 		return fix;
+	}
+
+	@Override
+	public void clearTable() {
+		table.getModel().clear();
 	}
 }

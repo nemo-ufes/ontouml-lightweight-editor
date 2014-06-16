@@ -264,6 +264,11 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 	public ArrayList<DerivedMeronymic> getTableResults() {
 		return table.getModel().getAllRows();
 	}
+	
+	@Override
+	public void clearTable() {
+		table.getModel().clear();
+	}
 
 	@Override
 	public Fix runFixes() {

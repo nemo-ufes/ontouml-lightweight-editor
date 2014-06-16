@@ -12,5 +12,6 @@ public abstract class ValidationPanel<T> extends JPanel {
 
 	public abstract ArrayList<T> getTableResults();
 	public abstract Fix runFixes();
+	public abstract void clearTable();
 	
 }
