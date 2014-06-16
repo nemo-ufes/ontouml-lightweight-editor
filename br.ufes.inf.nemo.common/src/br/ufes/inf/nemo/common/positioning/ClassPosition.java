@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.common.positioning;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
+import java.util.ArrayList;
 
 public class ClassPosition {
 
@@ -35,7 +36,7 @@ public class ClassPosition {
 		return newpoint;
 	}
 	
-	// it returns a good position for a type in function of its supertype and its sibling. 
+	// it returns a good position for a type in function of its two supertypes.
 	public static Point2D.Double findPositionGeneralizationMember(Point2D.Double point, Point2D.Double point2){
 
 		Point2D.Double newpoint = new Point2D.Double();
@@ -46,6 +47,42 @@ public class ClassPosition {
 			newpoint.x=point.getX()-150;
 		}
 		return newpoint;
+	}
+	
+	//returns a good position in terms of n elements above. 
+	//type 1 pra baixo, type 2 pra cima
+	public static Point2D.Double findPositionGeneralizationMember(ArrayList<Point2D.Double> selected, int type){
+		double max_x,max_y,min_x,min_y, dif_x,dif_y;
+		max_x=selected.get(0).x;
+		min_x=selected.get(0).x;
+		max_y=selected.get(0).y;
+		min_y=selected.get(0).y;
+		for (Double element : selected) {
+			if(element.x > max_x)
+				max_x= element.x;
+			else if(element.x<min_x)
+				min_x= element.x;
+			if(element.y > max_y)
+				max_y= element.y;
+			else if(element.y<min_y)
+				min_y= element.y;
+		}
+		dif_x= max_x-min_x;
+		dif_y= max_y-min_y;
+		if(type==1){
+			if(dif_x>dif_y){
+				return new Point2D.Double(min_x + (dif_x/2),max_y+100);
+			}else{
+				return new Point2D.Double(max_x+100, min_y + (dif_y/2));
+			}
+		}else{
+			if(dif_x>dif_y){
+				return new Point2D.Double(min_x + (dif_x/2),max_y-100);
+			}else{
+				return new Point2D.Double(max_x-100, min_y + (dif_y/2));
+			}
+		}
+
 	}
 	
 	public static Point2D.Double[] GSpositioningDown(int qtd, Point2D.Double location) {
