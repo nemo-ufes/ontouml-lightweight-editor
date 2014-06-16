@@ -461,6 +461,11 @@ public class TreePopupMenu extends JPopupMenu {
     		createRenameItem();
     	}
     	
+    	if(selectedNode.getUserObject() instanceof StructureDiagram)
+    	{
+    		createDeleteItem();
+    	}
+    	
 		if (selectedNode.getUserObject() instanceof OntoUMLElement)
 		{
     		final OntoUMLElement ontoElement = ((OntoUMLElement)selectedNode.getUserObject());    		

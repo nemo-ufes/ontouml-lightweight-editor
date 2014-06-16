@@ -852,6 +852,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void updateOLEDFromModification(RefOntoUML.Element element, boolean redesign)
 	{
 		updateOLEDFromInclusion(element);
+		
 		// update the diagrams
 		if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType)
 		{
