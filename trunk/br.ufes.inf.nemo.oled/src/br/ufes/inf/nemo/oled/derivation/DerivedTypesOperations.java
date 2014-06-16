@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.oled.derivation;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -297,6 +298,7 @@ public class DerivedTypesOperations {
 		//UmlProject project = getCurrentEditor().getProject();
 		if(selected.size()<3){
 			of = new OutcomeFixer(project.getModel());
+			
 			Point2D.Double firstpoint = new Point2D.Double();
 			Point2D.Double secondpoint = new Point2D.Double();
 			ClassElement position = (ClassElement) selected.get(0);
@@ -310,13 +312,16 @@ public class DerivedTypesOperations {
 
 		}else{
 			of = new OutcomeFixer(project.getModel());
+			
 			Point2D.Double firstpoint = new Point2D.Double();
 			Point2D.Double secondpoint = new Point2D.Double();
-			ClassElement position = (ClassElement) selected.get(0);
-			ClassElement position2 = (ClassElement) selected.get(1);
-			firstpoint.setLocation(position.getAbsoluteX1(),position.getAbsoluteY1());
-			secondpoint.setLocation(position2.getAbsoluteX1(),position2.getAbsoluteY1());
-			Point2D.Double newElementPosition= ClassPosition.findPositionGeneralization(firstpoint, secondpoint);
+			ArrayList<Point2D.Double> positions= new ArrayList<Point2D.Double>();
+			for (DiagramElement select : selected) {
+				ClassElement position = (ClassElement) select;
+				Point2D.Double newElementPosition= new Point2D.Double(position.getAbsoluteX1(), position.getAbsoluteY1());
+				positions.add( newElementPosition);
+			}
+			Point2D.Double newElementPosition= ClassPosition.findPositionGeneralizationMember(positions,2);
 			Classifier newElement = includeElement(newElementPosition, name, stereotype);
 			ArrayList<Classifier> classifiers= new ArrayList<Classifier>();
 			for (Element element : refontoList) {
@@ -595,6 +600,7 @@ public class DerivedTypesOperations {
 			if(element.getClassifier() instanceof AntiRigidSortalClass){
 				if(specialCase.equals("Kind")){
 					wrongSelection("Kinds intersect only with Mixins");
+					return null;
 				}
 				if(element.getClassifier() instanceof Role){
 					specialCase= "Role";
@@ -606,6 +612,7 @@ public class DerivedTypesOperations {
 				if(element.getClassifier() instanceof RigidSortalClass){
 					if(specialCase.equals("Kind")){
 						wrongSelection("Kinds intersect only with Mixins");
+						return null;
 					}
 					if(element.getClassifier() instanceof SubKind){
 						if(!specialCase.equals("Role") && !specialCase.equals("Phase")){
@@ -621,6 +628,7 @@ public class DerivedTypesOperations {
 					}else{
 						if(specialCase.equals("Kind")|| specialCase.equals("Subkind")|| specialCase.equals("Role") || specialCase.equals("Phase")){
 							wrongSelection("Kinds intersect only with Mixins");
+							return null;
 						}else{
 							if(specialCase=="RoleMixin"){
 								specialCase="Role";
@@ -677,13 +685,14 @@ public class DerivedTypesOperations {
 		mainfix= new Fix();
 		String name=DefineNameDerivedType(); 
 		of = new OutcomeFixer(project.getModel());
-		Point2D.Double firstpoint = new Point2D.Double();
-		Point2D.Double secondpoint = new Point2D.Double();
-		ClassElement position = (ClassElement) activeEditor.getSelectedElements().get(0);
-		ClassElement position2 = (ClassElement) activeEditor.getSelectedElements().get(1);
-		firstpoint.setLocation(position.getAbsoluteY1(),position.getAbsoluteX1());
-		secondpoint.setLocation(position2.getAbsoluteY1(),position2.getAbsoluteX1());
-		Point2D.Double newElementPosition= ClassPosition.findPositionGeneralizationMember(firstpoint, secondpoint);
+
+		ArrayList<Point2D.Double> positions= new ArrayList<Point2D.Double>();
+		for (DiagramElement select : activeEditor.getSelectedElements()) {
+			ClassElement position = (ClassElement) select;
+			Point2D.Double newElementPosition= new Point2D.Double(position.getAbsoluteX1(), position.getAbsoluteY1());
+			positions.add( newElementPosition);
+		}
+		Point2D.Double newElementPosition= ClassPosition.findPositionGeneralizationMember(positions,1);
 		Classifier newElement = includeElement(newElementPosition, name, stereotype);
 		ArrayList<Classifier> classifiers= new ArrayList<Classifier>();
 		for (Element element : refontoList) {
