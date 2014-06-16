@@ -33,9 +33,9 @@ public class GeneralizationError extends MeronymicError<Generalization>{
 	public String getType() {
 		return "Forbidden Generalization";
 	}
-
+//TODO
 	@Override
-	public JDialog createDialog() {
+	public JDialog createDialog(JDialog parent) {
 		return new GeneralizationDialog(this);
 	}
 	

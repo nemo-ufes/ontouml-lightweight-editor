@@ -27,6 +27,6 @@ public abstract class MeronymicError<T> {
 	
 	public abstract String getType();
 	public abstract String getDescription();
-	public abstract JDialog createDialog();
+	public abstract JDialog createDialog(JDialog parent);
 	public abstract Fix fix();
 }
