@@ -262,6 +262,11 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void clearTable() {
+		table.getModel().clear();
+	}
 
 	@Override
 	public ArrayList<ForbiddenMeronymic<?>> getTableResults() {
