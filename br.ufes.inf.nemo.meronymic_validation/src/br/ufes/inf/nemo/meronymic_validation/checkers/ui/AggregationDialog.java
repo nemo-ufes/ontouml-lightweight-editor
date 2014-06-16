@@ -45,7 +45,7 @@ public class AggregationDialog extends JDialog {
 	private JRadioButton type1WholeRadio;
 	private JButton saveButton;
 	private JButton cancelButton;
-	private JComboBox<String> aggregationCombo;
+	private JComboBox<Object> aggregationCombo;
 	
 	private AggregationKindError error;
 	
@@ -244,9 +244,9 @@ public class AggregationDialog extends JDialog {
 		titlePane.setLayout(gl_titlePane);
 	}
 
-	private JComboBox<String> createAggregationCombo() {
-		String[] values = {"Shared", "Composite"};
-		JComboBox<String> combo = new JComboBox<String>(values);
+	private JComboBox<Object> createAggregationCombo() {
+		Object[] values = {"Shared", "Composite"};
+		JComboBox<Object> combo = new JComboBox<>(values);
 		combo.setSelectedIndex(0);
 		return combo;
 	}

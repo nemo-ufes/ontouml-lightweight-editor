@@ -37,7 +37,7 @@ public class MeronymicEndsError extends MeronymicError<Meronymic> {
 	}
 
 	@Override
-	public JDialog createDialog() {
+	public JDialog createDialog(JDialog parent) {
 		// TODO Auto-generated method stub
 		return null;
 	}

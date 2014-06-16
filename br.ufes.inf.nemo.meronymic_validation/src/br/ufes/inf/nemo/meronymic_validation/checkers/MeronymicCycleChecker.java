@@ -2,7 +2,7 @@ package br.ufes.inf.nemo.meronymic_validation.checkers;
 
 import java.util.ArrayList;
 
-import RefOntoUML.Classifier;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
 import br.ufes.inf.nemo.meronymic_validation.graph.Graph;
@@ -30,7 +30,7 @@ public class MeronymicCycleChecker extends Checker<MeronymicCycleError>{
 		Graph.removeDuplicateEdgeCycles(allPaths);
 	
 		for (EdgePath cycle : allPaths) {
-			errors.add( new MeronymicCycleError(parser, cycle.getNodeIdsOfType(Classifier.class)));
+			errors.add( new MeronymicCycleError(parser, cycle.getEdgeIdsOfType(Property.class)));
 		}	
 		
 		if(errors.size()>0)
