@@ -330,7 +330,7 @@ public abstract class DerivedResultPanel extends JPanel {
 		pathText = new JTextField();
 		pathText.setColumns(10);
 		
-		stereotypeCombo = new StereotypeCombo();
+		stereotypeCombo = new StereotypeCombo(true,false);
 		
 		isDerivedCheck = new JCheckBox("Derived");
 		

@@ -11,7 +11,7 @@ public class StereotypeCombo extends JComboBox<RelationStereotype> {
 	
 	private DefaultComboBoxModel<RelationStereotype> model;
 	
-	public StereotypeCombo(){
+	public StereotypeCombo(boolean addRelationStereotypes, boolean addClassStereotypes){
 		super();
 		
 		model = new DefaultComboBoxModel<>(RelationStereotype.values());
