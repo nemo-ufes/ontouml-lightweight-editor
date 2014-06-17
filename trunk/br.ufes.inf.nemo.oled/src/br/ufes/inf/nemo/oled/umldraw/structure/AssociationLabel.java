@@ -48,6 +48,7 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	private Label metapropertyLabel;
 	private BaseConnection association;
 	private boolean editable;
+	@SuppressWarnings("unused")
 	private transient DrawingContext context;
 	
 	/**
@@ -123,6 +124,11 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 		association = assoc;
 	}
 
+	public BaseConnection getAssociation()
+	{
+		return association;		
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -196,72 +202,54 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	 */
 	@Override
 	public void draw(DrawingContext drawingContext) {
-		context = drawingContext;
-		
+		context = drawingContext;		
 		if (association instanceof AssociationElement) {
 			final AssociationElement assocElement = (AssociationElement) association;
-
+			
 			if (assocElement.showOntoUmlStereotype()) {
-				// Classifier stereotype =
-				// ((UmlRelation)association.getModelElement()).getStereotype();
-				//typeLabel.setSource(new SimpleLabelSource());
-
 				typeLabel.setSource(new LabelSource() {
-
 					private static final long serialVersionUID = -5187481263917156632L;
-
 					@Override
-					public void setLabelText(String aText) { }
-					
+					public void setLabelText(String aText) { }					
 					@Override
 					public String getLabelText() {
 						return association.getOntoUmlStereotype();
 					}
 				});
-
-				// Calculate offset for vertical alignment of the stereotype
-				if (typeLabel.getOrigin().getY() == nameLabel.getOrigin()
-						.getY())
-					typeLabel.setOrigin(typeLabel.getOrigin().getX(), typeLabel
-							.getOrigin().getY()
-							- drawingContext.getFontMetrics(FontType.DEFAULT)
-									.getHeight());
-
-				if(association.showOntoUmlStereotype())
-					typeLabel.draw(drawingContext);
+				// Calculate offset for y and x alignment 
+				if(assocElement.showName()){										
+					typeLabel.setOrigin(typeLabel.getOrigin().getX(), nameLabel.getOrigin().getY()- drawingContext.getFontMetrics(FontType.DEFAULT).getHeight());					
+				}else{
+					typeLabel.setOrigin(typeLabel.getOrigin().getX(), nameLabel.getOrigin().getY());
+				}
+				typeLabel.draw(drawingContext);
 			}
 			
-			if (assocElement.showName() && getLabelText() != null) {								
-				
+			if (assocElement.showName() && getLabelText() != null) {				
 				nameLabel.setSource(new LabelSource() {
-
 					private static final long serialVersionUID = -5187481263917156632L;
-
 					@Override
-					public void setLabelText(String aText) { 
-						
-					}
-					
+					public void setLabelText(String aText) {}					
 					@Override
 					public String getLabelText() {
 						return assocElement.getAssociation().getName(); 
 					}
 				});
 				
+//				double offset = (context.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getSource().getLabelText()))/2;
+//				// Calculate offset for vertical alignment of the stereotype
+//				if (typeLabel.getOrigin().getY() == nameLabel.getOrigin().getY()){					
+//					nameLabel.setOrigin(getParent().getAbsoluteX1()-offset, nameLabel.getOrigin().getY());					
+//				}
 				nameLabel.draw(drawingContext);
 				drawDirection(drawingContext);
 			}
 			
 			if(assocElement.getRelationship() instanceof Meronymic && assocElement.showMetaProperties()){
 				metapropertyLabel.setSource(new LabelSource() {
-
 					private static final long serialVersionUID = -5187481263917156632L;
-
 					@Override
-					public void setLabelText(String aText) { 
-						
-					}
-					
+					public void setLabelText(String aText) {}					
 					@Override
 					public String getLabelText() {
 						Meronymic m = (Meronymic)assocElement.getRelationship();
@@ -280,20 +268,28 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 								i++;
 							}
 							str += "}";
-						}				
-						// Calculate offset for horizontal alignment of the meta property label
-						if (metapropertyLabel.getOrigin().getY() == nameLabel.getOrigin().getY())
-						{					
-							double offset = (context.getFontMetrics(FontType.DEFAULT).stringWidth(str))/2;
-							if(assocElement.showName()){
-								metapropertyLabel.setOrigin(nameLabel.getOrigin().getX()-offset, metapropertyLabel.getOrigin().getY() + context.getFontMetrics(FontType.DEFAULT).getHeight());
-							}else{
-								metapropertyLabel.setOrigin(nameLabel.getOrigin().getX()-offset, metapropertyLabel.getOrigin().getY());	
-							}					
-						}
+						}						
 						return str; 
 					}
-				});				
+				});		
+				
+				// Calculate offset for horizontal alignment of the meta property label
+//				if (metapropertyLabel.getOrigin().getY() == nameLabel.getOrigin().getY())
+//				{					
+//					double offset = (context.getFontMetrics(FontType.DEFAULT).stringWidth(metapropertyLabel.getSource().getLabelText()))/2;
+//					if(assocElement.showName()){
+//						metapropertyLabel.setOrigin(nameLabel.getOrigin().getX()-offset, metapropertyLabel.getOrigin().getY() + context.getFontMetrics(FontType.DEFAULT).getHeight());
+//					}else{
+//						metapropertyLabel.setOrigin(nameLabel.getOrigin().getX()-offset, metapropertyLabel.getOrigin().getY());	
+//					}					
+//				}
+				
+				// Calculate offset for y alignment 
+				if(assocElement.showName() || assocElement.showOntoUmlStereotype()){										
+					metapropertyLabel.setOrigin(metapropertyLabel.getOrigin().getX(), nameLabel.getOrigin().getY()+ drawingContext.getFontMetrics(FontType.DEFAULT).getHeight());					
+				}else{
+					metapropertyLabel.setOrigin(metapropertyLabel.getOrigin().getX(), nameLabel.getOrigin().getY());
+				}
 				metapropertyLabel.draw(drawingContext);				
 			}
 				
