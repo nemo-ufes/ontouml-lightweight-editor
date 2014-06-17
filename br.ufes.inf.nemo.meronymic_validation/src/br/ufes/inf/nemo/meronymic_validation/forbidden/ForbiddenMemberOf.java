@@ -170,7 +170,7 @@ public class ForbiddenMemberOf extends ForbiddenMeronymic<memberOf> {
 		OutcomeFixer fixer = new OutcomeFixer(getRootPackage());
 		
 		if(c instanceof Kind || c instanceof Quantity || c instanceof Collective){
-			if(fixer.getClassStereotype(c)==newNature)
+			if(OutcomeFixer.getClassStereotype(c)==newNature)
 				return fix;
 			else
 				return fixer.changeClassStereotypeTo(c, newNature);

@@ -88,6 +88,11 @@ public class MeronymicCycleError extends MeronymicError<ArrayList<Property>> {
 		return fix;
 	}
 	
+	@Override
+	public boolean hasAction(){
+		return getValidActions().size()>0;
+	}
+	
 	public Action getAction(Meronymic m){
 		for (Action action : actions) {
 			if(action.m.equals(m))

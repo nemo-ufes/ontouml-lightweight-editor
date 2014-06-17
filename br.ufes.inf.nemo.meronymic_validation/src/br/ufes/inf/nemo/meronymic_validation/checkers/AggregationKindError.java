@@ -102,6 +102,11 @@ public class AggregationKindError extends MeronymicError<Meronymic> {
 			
 		return fix;
 	}
+	
+	@Override
+	public boolean hasAction(){
+		return isVerified;
+	}
 
 	public void setSourceAsWhole(boolean isComposite) {
 		isSourceWhole = true;

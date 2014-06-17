@@ -21,12 +21,12 @@ public class CheckerTable extends JTable{
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
 		
 		getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
-		getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
-		getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
+		getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
 		
-		getColumnModel().getColumn(0).setPreferredWidth(30);
+		getColumnModel().getColumn(0).setPreferredWidth(20);
 		getColumnModel().getColumn(1).setPreferredWidth(200);
 		getColumnModel().getColumn(2).setPreferredWidth(400);
+		getColumnModel().getColumn(3).setPreferredWidth(20);
 		
 		getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
