@@ -152,4 +152,9 @@ public class HierarchyCycleError extends MeronymicError<ArrayList<Classifier>>{
 		
 		return fix;
 	}
+	
+	@Override
+	public boolean hasAction(){
+		return reverseList.size()>0 || removeList.size()>0;
+	}
 }

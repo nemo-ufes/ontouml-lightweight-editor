@@ -25,8 +25,15 @@ public abstract class MeronymicError<T> {
 		return element;
 	}
 	
+	public Fix getFix() {
+		return fix;
+	}
+	
+	public abstract boolean hasAction();
 	public abstract String getType();
 	public abstract String getDescription();
 	public abstract JDialog createDialog(JDialog parent);
 	public abstract Fix fix();
+
+	
 }

@@ -52,6 +52,11 @@ public class GeneralizationError extends MeronymicError<Generalization>{
 		return fix;
 	}
 	
+	@Override
+	public boolean hasAction(){
+		return action==Action.REVERSE || action==Action.REMOVE || action==Action.CHANGE_STEREOTYPE;
+	}
+	
 	public void setReverse(){
 		action = Action.REVERSE;
 	}

@@ -12,7 +12,7 @@ public class CheckerTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 3207003781085511173L;
 	
 	private ArrayList<MeronymicError<?>> errors = new ArrayList<MeronymicError<?>>();
-	private String[] columns={"#","Error Type","Description"};
+	private String[] columns={"#","Error Type","Description", "Has Fix?"};
 
 	public CheckerTableModel() {}
 
@@ -93,6 +93,10 @@ public class CheckerTableModel extends AbstractTableModel {
 		     return error.getType();
 		    case 2:
 		     return error.getDescription();
+		    case 3:
+			 if(error.hasAction())
+				 return "Yes";
+			 return "No";
 		    default:
 		     return null;
 		   }

@@ -78,6 +78,13 @@ public class IdentityError extends MeronymicError<Classifier> {
 		return fix;
 	}
 	
+	@Override
+	public boolean hasAction(){
+		if(action == Action.SET_AS_IDENTITY_PROVIDER || action == Action.SET_AS_INHERITS_IDENTITY)
+			return true;
+		return false;
+	}
+	
 	public int numberOfIdentityProviders(){
 		return identityProviders.size();
 	}
