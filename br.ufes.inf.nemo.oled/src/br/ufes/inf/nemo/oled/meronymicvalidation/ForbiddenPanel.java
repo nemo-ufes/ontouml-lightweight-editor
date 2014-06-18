@@ -15,6 +15,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -52,8 +53,8 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 	/**
 	 * Create the panel.
 	 */
-	public ForbiddenPanel(OntoUMLParser parser) {
-		
+	public ForbiddenPanel(JDialog dialog, OntoUMLParser parser, JButton saveButton, JButton applyButton) {
+		super(dialog,saveButton,applyButton);
 		this.parser = parser;
 		
 		table = new ForbiddenTable();

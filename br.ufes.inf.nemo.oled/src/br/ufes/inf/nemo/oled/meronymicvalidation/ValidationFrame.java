@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,7 +22,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
 
-public class ValidationFrame extends JFrame {
+public class ValidationFrame extends JDialog {
 
 	private static final long serialVersionUID = -5936280584643585555L;
 	
@@ -44,9 +45,13 @@ public class ValidationFrame extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @wbp.parser.constructor
 	 */
 	public ValidationFrame(OntoUMLParser parser) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Validation of Part-Whole Relations");
+		setModalityType(ModalityType.DOCUMENT_MODAL);
+		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 847, 581);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -63,10 +68,11 @@ public class ValidationFrame extends JFrame {
 		
 		saveButton = new JButton("Save");
 		saveButton.addActionListener(saveAction);
+		saveButton.setEnabled(false);
 		
 		applyButton = new JButton("Apply");
 		applyButton.addActionListener(applyAction);
-		
+		applyButton.setEnabled(false);
 		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -99,14 +105,14 @@ public class ValidationFrame extends JFrame {
 						.addComponent(applyButton)))
 		);
 		
-		prePanel = new PreConditionPanel(parser);
+		prePanel = new PreConditionPanel(this, parser,saveButton,applyButton);
 		tabbedPane.addTab("Pre-Condition", null, prePanel, null);
 		
-		forbiddenPanel = new ForbiddenPanel(parser);
+		forbiddenPanel = new ForbiddenPanel(this, parser,saveButton,applyButton);
 		tabbedPane.addTab("Forbidden", null, forbiddenPanel, null);
 		tabbedPane.setEnabledAt(1, true);
 		
-		derivedPanel = new DerivedPanel(parser);
+		derivedPanel = new DerivedPanel(this, parser,saveButton,applyButton);
 		tabbedPane.addTab("Derived", null, derivedPanel, null);
 		tabbedPane.setEnabledAt(2, false);
 		
@@ -128,6 +134,8 @@ public class ValidationFrame extends JFrame {
 			Fix fix = fixAllPanels();
 			appFrame.getDiagramManager().updateOLED(fix);
 			clearAllTables();
+			saveButton.setEnabled(false);
+			applyButton.setEnabled(false);
 		}
 	};
 	
@@ -158,12 +166,15 @@ public class ValidationFrame extends JFrame {
 			
 			ValidationFrame frame = new ValidationFrame( parser, parent);
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			frame.setVisible(true);
+			
+			frame.setModalityType(ModalityType.APPLICATION_MODAL);
 			frame.setLocationRelativeTo(parent);
 			
 			MessageConsole mc = new MessageConsole(frame.consoleTextPane);
 			mc.redirectOut();
 			mc.setMessageLines(100);
+			
+			frame.setVisible(true);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
