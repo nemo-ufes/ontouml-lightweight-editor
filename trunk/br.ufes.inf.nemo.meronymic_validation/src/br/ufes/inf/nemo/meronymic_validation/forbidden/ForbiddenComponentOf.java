@@ -2,11 +2,15 @@ package br.ufes.inf.nemo.meronymic_validation.forbidden;
 
 import java.util.ArrayList;
 
+import javax.swing.JDialog;
+
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.meronymic_validation.userinterface.FixDialog;
 
 public class ForbiddenComponentOf extends ForbiddenMeronymic<componentOf> {
 	
@@ -15,8 +19,8 @@ public class ForbiddenComponentOf extends ForbiddenMeronymic<componentOf> {
 	
 	ArrayList<Classifier> nodes;
 	
-	public ForbiddenComponentOf(componentOf m) {
-		super(m);
+	public ForbiddenComponentOf(componentOf m, OntoUMLParser parser) {
+		super(m, parser);
 		nodes = new ArrayList<Classifier>();
 	}
 
@@ -77,40 +81,16 @@ public class ForbiddenComponentOf extends ForbiddenMeronymic<componentOf> {
 	}
 	
 	@Override
-	public Fix runFix() {
-		
-//		if(action == Action.REMOVE_MEMBEROF)
-//			return removeMemberOf();
-//		if(action == Action.CHANGE_ALL_TO_COMPONENTOF)
-//			return changeAllToComponentOf();
-//		if(action == Action.CHANGE_ALL_TO_SUBCOLLECTIONOF)
-//			return changeAllToSubCollectionOf();
-//		if(action == Action.CHANGE_ALL_TO_SUBQUANTITYOF)
-//			return changeAllToSubQuantityOf();
-//		if(action == Action.MAKE_MEMBEROF_VALID)
-//			return makeMemberOfValid();
-		
+	public Fix fix() {
+		//TODO
 		return null;
-			
 	}
 
-//	private Fix removeMemberOf(){
-//		OutcomeFixer fixer = new OutcomeFixer(getRootPackage());
-//		return fixer.deleteElement(memberOfToRemove);
-//	}
-	
-//	private Fix changeAllTo(RelationStereotype stereotype){
-//		OutcomeFixer fixer = new OutcomeFixer(getRootPackage());
-//		Fix fix = new Fix();
-//		
-//		for (Property p : path) {
-//			fix.addAll(fixer.changeRelationStereotypeTo(p.getAssociation(), stereotype));
-//		}
-//		
-//		fix.addAll(fixer.changeRelationStereotypeTo(meronymic, stereotype));
-//		
-//		return fix;
-//	}
+	@Override
+	public FixDialog createDialog(JDialog parent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

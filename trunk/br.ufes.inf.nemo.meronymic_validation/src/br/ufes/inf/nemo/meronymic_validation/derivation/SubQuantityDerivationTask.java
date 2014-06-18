@@ -5,8 +5,8 @@ import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.derivation.DerivedMeronymic.PatternType;
+import br.ufes.inf.nemo.meronymic_validation.derivation.ui.DerivedTableModel;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.DerivedTableModel;
 
 public class SubQuantityDerivationTask extends DerivationTask<subQuantityOf>{
 	

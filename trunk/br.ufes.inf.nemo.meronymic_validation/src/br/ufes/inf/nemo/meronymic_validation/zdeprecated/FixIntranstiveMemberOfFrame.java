@@ -1,27 +1,26 @@
 package br.ufes.inf.nemo.meronymic_validation.zdeprecated;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTextArea;
-import javax.swing.UIManager;
-import javax.swing.JRadioButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JComboBox;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.meronymic_validation.forbidden.ForbiddenMemberOf;
-import javax.swing.JButton;
 
 public class FixIntranstiveMemberOfFrame extends JFrame {
+
+	private static final long serialVersionUID = -3222472785156507571L;
 
 	private JPanel contentPane;
 	private ForbiddenMemberOf forbidden;
@@ -89,8 +88,8 @@ public class FixIntranstiveMemberOfFrame extends JFrame {
 				else if(removeRelationRadio.isSelected())
 					FixIntranstiveMemberOfFrame.this.forbidden.setRemoveMemberOf(comboBox.getSelectedAssociation());
 				
-				if(FixIntranstiveMemberOfFrame.this.forbidden.isActionSet())
-					FixIntranstiveMemberOfFrame.this.forbidden.runFix();
+				if(FixIntranstiveMemberOfFrame.this.forbidden.hasAction())
+					FixIntranstiveMemberOfFrame.this.forbidden.fix();
 				
 				FixIntranstiveMemberOfFrame.this.dispose();
 				

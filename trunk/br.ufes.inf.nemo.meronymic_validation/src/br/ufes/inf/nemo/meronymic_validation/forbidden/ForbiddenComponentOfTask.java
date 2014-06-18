@@ -79,7 +79,7 @@ public class ForbiddenComponentOfTask extends ForbiddenTask<componentOf>{
 						+" EQUALS: "+(firstNode.equals(whole) && lastNode.equals(part)));
 				
 				if(firstNode.equals(whole) && lastNode.equals(part)){
-					ForbiddenComponentOf fcp = new ForbiddenComponentOf(cp);
+					ForbiddenComponentOf fcp = new ForbiddenComponentOf(cp, parser);
 					fcp.setPath(path.getEdgeIdsOfType(Property.class));
 					fcp.setNodes(path.getNodeIdsOfType(Classifier.class));
 					fcp.classifyPath();
