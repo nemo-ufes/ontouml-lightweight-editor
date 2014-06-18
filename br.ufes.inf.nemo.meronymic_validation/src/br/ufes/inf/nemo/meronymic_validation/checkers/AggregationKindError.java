@@ -66,10 +66,9 @@ public class AggregationKindError extends MeronymicError<Meronymic> {
 		return description;
 	}
 
-	//TODO
 	@Override
 	public JDialog createDialog(JDialog parent) {
-		return new AggregationDialog(this);
+		return new AggregationDialog(parent, this);
 	}
 
 	@Override

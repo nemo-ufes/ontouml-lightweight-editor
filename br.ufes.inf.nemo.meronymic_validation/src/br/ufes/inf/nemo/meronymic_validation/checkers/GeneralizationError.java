@@ -36,7 +36,7 @@ public class GeneralizationError extends MeronymicError<Generalization>{
 //TODO
 	@Override
 	public JDialog createDialog(JDialog parent) {
-		return new GeneralizationDialog(this);
+		return new GeneralizationDialog(parent, this);
 	}
 	
 	@Override

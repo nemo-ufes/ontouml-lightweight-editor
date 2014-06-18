@@ -52,8 +52,10 @@ public class HierarchyCycleDialog extends JDialog {
 	
 	/**
 	 * Create the dialog.
+	 * @param parent 
 	 */
-	public HierarchyCycleDialog(HierarchyCycleError error) {
+	public HierarchyCycleDialog(JDialog parent, HierarchyCycleError error) {
+		super(parent);
 		this.error = error;
 		
 		setBounds(100, 100, 779, 507);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JDialog;
 
+import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
@@ -52,16 +53,29 @@ public class MeronymicCycleError extends MeronymicError<ArrayList<Property>> {
 	@Override
 	public String getDescription(){
 		
-		String result = "";
-		int i = 0;
-		for (Type c : typeCycle) {
-			if(i!=0)
-				result += ", ";
-			
-			result += c.getName();
-			i++;
-		}
+		String result = getPropertyCycle().get(0).getOpposite().getType().getName();
 		
+		for (int i = 0; i < getPropertyCycle().size(); i++) {
+			Classifier part = (Classifier) getPropertyCycle().get(i).getType();
+			Classifier nextWhole;
+			
+			if(i<getPropertyCycle().size()-1){
+				result += ", ";
+				nextWhole = (Classifier) getPropertyCycle().get(i+1).getOpposite().getType();
+			}
+			else{
+				result += " and ";
+				nextWhole = (Classifier) getPropertyCycle().get(0).getOpposite().getType();
+			}
+			
+			result += part.getName();
+			
+			if(nextWhole.allParents().contains(part))
+				result += " (Sub: "+nextWhole.getName()+")";
+			if(nextWhole.allChildren().contains(part))
+				result += " (Super: "+nextWhole.getName()+")";
+		}
+
 		return result;
 	}
 	

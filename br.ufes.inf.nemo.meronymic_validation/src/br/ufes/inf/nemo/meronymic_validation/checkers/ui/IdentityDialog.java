@@ -77,8 +77,10 @@ public class IdentityDialog extends JDialog {
 	private ArrayList<Classifier> identityProviders;
 	/**
 	 * Create the dialog.
+	 * @param parent 
 	 */
-	public IdentityDialog(IdentityError error) {
+	public IdentityDialog(JDialog parent, IdentityError error) {
+		super(parent);
 		this.error = error;
 		this.identityProviders = createIdentityProviderList();
 		
