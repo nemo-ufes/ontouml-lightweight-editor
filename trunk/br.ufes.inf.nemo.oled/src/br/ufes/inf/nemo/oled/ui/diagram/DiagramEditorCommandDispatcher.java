@@ -246,6 +246,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("CREATE_DERIVATION_BY_EXCLUSION", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternCreationModeEx")));
 			
+			selectorMap.put("CREATE_DERIVATION_BY_SPECIALIZATION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternCreationModeSpecialization")));
+			
 			selectorMap.put("CREATE_DERIVATION_BY_INTERSECTION", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternCreationModeIntersection")));
 
@@ -313,6 +316,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("DERIVED_BY_EXCLUSION", new MethodCall(
 					getClass().getMethod("derivedByExclusion")));
+			
+			selectorMap.put("DERIVED_BY_SPECIALIZATION", new MethodCall(
+					getClass().getMethod("derivedBySpecialization")));
 			
 			selectorMap.put("DERIVED_BY_INTERSECTION", new MethodCall(
 					getClass().getMethod("derivedByIntersection")));
@@ -474,6 +480,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{
 		if (manager.isProjectLoaded()==false) return;
 		manager.deriveByIntersection();
+	}
+
+	public void derivedBySpecialization()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.deriveBySpecialization();
 	}
 
 

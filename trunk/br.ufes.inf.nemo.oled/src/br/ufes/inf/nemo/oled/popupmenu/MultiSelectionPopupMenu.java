@@ -143,6 +143,7 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		unionItem = createMenuItem(this, "derivedunion");
 		exclusionItem = createMenuItem(this, "derivedexclusion");
 		intersectionItem = createMenuItem(this, "derivedintersection");
+		//specializationItem = createMenuItem(this, "derivedspecialization");
 		
 		deleteItem = createMenuItem(this, "delete");	
 	}
