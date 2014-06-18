@@ -55,8 +55,10 @@ public class GeneralizationDialog extends JDialog {
 	
 	/**
 	 * Create the dialog.
+	 * @param parent 
 	 */
-	public GeneralizationDialog(GeneralizationError error) {
+	public GeneralizationDialog(JDialog parent, GeneralizationError error) {
+		super(parent);
 		this.error = error;
 		
 		setBounds(100, 100, 616, 514);

@@ -64,7 +64,7 @@ public class IdentityError extends MeronymicError<Classifier> {
 
 	@Override
 	public JDialog createDialog(JDialog parent) {
-		return new IdentityDialog(this);
+		return new IdentityDialog(parent, this);
 	}
 
 	@Override

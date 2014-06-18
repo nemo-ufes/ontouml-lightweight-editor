@@ -42,7 +42,7 @@ public class HierarchyCycleError extends MeronymicError<ArrayList<Classifier>>{
 	
 	@Override
 	public JDialog createDialog(JDialog parent) {
-		return new HierarchyCycleDialog(this);
+		return new HierarchyCycleDialog(parent, this);
 	}
 	
 	public ArrayList<Generalization> getGenCycle() {
