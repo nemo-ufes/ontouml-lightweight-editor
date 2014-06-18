@@ -41,6 +41,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	JMenuItem derivationItem = new JMenuItem("Derivation");
 	JMenuItem unionItem = new JMenuItem("Union");	
 	JMenuItem exclusionItem = new JMenuItem("Exclusion");
+	JMenuItem specializationItem = new JMenuItem("Specialization");
 	JMenuItem intersectionItem = new JMenuItem("Intersection");
 	public AppFrame frame;
 	public double x;
@@ -395,6 +396,18 @@ public class ToolboxPopupMenu extends JPopupMenu {
 			    if (SwingUtilities.isLeftMouseButton(e))
 	            {
 			    	frame.getDiagramManager().openDerivedTypePatternExclusion(x,y);
+	            }
+			}
+		});
+       
+       specializationItem.addMouseListener(new MouseAdapter()
+	    {    	   
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getDiagramManager().openDerivedTypePatternSpecialization(x,y);
 	            }
 			}
 		});

@@ -92,7 +92,7 @@ public class IntersectionPattern extends JDialog {
 		combo_base_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if(combo_base_1.getSelectedItem().toString().equals("Kind")){
+				if(combo_base_1.getSelectedItem().toString().equals("Kind") ||  combo_base_1.getSelectedItem().toString().equals("Collective") || combo_base_1.getSelectedItem().toString().equals("Quantity")){
 					
 					comboBoxItems2.removeAllElements();
 					
@@ -108,6 +108,8 @@ public class IntersectionPattern extends JDialog {
 					model.addElement("Subkind");
 					if(combo_base_1.getSelectedItem().toString().equals("Role Mixin") || combo_base_1.getSelectedItem().toString().equals("Mixin") || combo_base_1.getSelectedItem().toString().equals("Category")){
 						model.addElement("Kind");
+						model.addElement("Collective");
+						model.addElement("Quantity");
 					}
 					model.addElement("Role");
 					model.addElement("Phase");
@@ -124,7 +126,7 @@ public class IntersectionPattern extends JDialog {
 		});
 		
 		
-		combo_base_1.setModel(new DefaultComboBoxModel(new String[] {"Subkind", "Kind", "Role", "Phase", "Category", "Mixin", "Role Mixin"}));
+		combo_base_1.setModel(new DefaultComboBoxModel(new String[] {"Subkind", "Kind", "Collective", "Quantity", "Role", "Phase", "Category", "Mixin", "Role Mixin"}));
 		
 		
 		combo_base_2.addActionListener(new ActionListener() {

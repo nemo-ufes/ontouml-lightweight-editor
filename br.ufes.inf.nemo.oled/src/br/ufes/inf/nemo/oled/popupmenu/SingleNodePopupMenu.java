@@ -38,6 +38,8 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	final JMenuItem findInProjectItem;
 	private DiagramEditor editor;
 	private JMenuItem setColorItem;
+	@SuppressWarnings("unused")
+	private JMenuItem specializationItem;
 //	private ClassStereotypeChangeMenu changeMenu;
 	
 	public SingleNodePopupMenu()
@@ -137,7 +139,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		addSeparator();
 		
 		createMenuItem(this, "delete");	
-		
+		specializationItem = createMenuItem(this, "derivedspecialization");
 //		addSeparator();				
 //		changeMenu = new ClassStereotypeChangeMenu(editor.getDiagramManager());
 //		add(changeMenu);

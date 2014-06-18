@@ -82,6 +82,7 @@ import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
 import br.ufes.inf.nemo.oled.derivation.IntersectionPattern;
+import br.ufes.inf.nemo.oled.derivation.SpecializationPattern;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
 import br.ufes.inf.nemo.oled.dialog.AlloySettingsDialog;
 import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
@@ -2323,4 +2324,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ValidationFrame.open(ProjectBrowser.getParserFor(getCurrentProject()), frame);
 		
 	}
+	public void openDerivedTypePatternSpecialization(double x, double y) {
+		// TODO Auto-generated method stub
+		JDialog dialog = new SpecializationPattern(this);
+		this.setCenterDialog(dialog);
+		((SpecializationPattern) dialog).setPosition(x, y);
+		dialog.setModal(true);
+		dialog.setVisible(true);
+	}
+	public void deriveBySpecialization() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

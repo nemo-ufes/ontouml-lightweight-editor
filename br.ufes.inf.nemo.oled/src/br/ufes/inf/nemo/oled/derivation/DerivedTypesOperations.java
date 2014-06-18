@@ -470,7 +470,6 @@ public class DerivedTypesOperations {
 
 	public static void wrongSelection(String message){
 		JFrame frame = new JFrame("InputDialog Example #1");
-		System.out.println("error");
 		JOptionPane.showMessageDialog(frame, message);
 
 	}
@@ -703,6 +702,22 @@ public class DerivedTypesOperations {
 		// TODO Auto-generated method stub
 		return mainfix;
 
+	}
+
+
+
+
+	public static void createDerivedTypeBySpecialization(String nameBase,
+			String nameDerived, String stereotypeBase, String stereotypeDerived, String attribute,
+			String typeAttribute, DiagramManager dm, Double location) {
+		// TODO Auto-generated method stub
+//		dman=dm;
+//		of = new OutcomeFixer(dm.getCurrentProject().getModel());
+//		mainfix = new Fix();
+//		Classifier newElement_2= includeElement(location, nameBase, stereotypeBase);
+//		location.y=location.y+100;
+//		Classifier newElement= includeElement(location, nameDerived, stereotypeDerived);
+//		dm.updateOLED(mainfix);
 	}
 
 
