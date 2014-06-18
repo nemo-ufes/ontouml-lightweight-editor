@@ -6,6 +6,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -56,13 +59,14 @@ public class PreConditionPanel extends ValidationPanel<MeronymicError<?>> {
 	private OntoUMLParser parser;
 	private PreConditionTask task;
 	
+	
 	public boolean isComplete;
 	
 	/**
 	 * Create the panel.
 	 */
-	public PreConditionPanel(OntoUMLParser parser) {
-		
+	public PreConditionPanel(JDialog dialog, OntoUMLParser parser, JButton saveButton, JButton applyButton) {
+		super(dialog,saveButton,applyButton);
 		this.parser = parser;
 		
 		isComplete = false;
@@ -328,12 +332,31 @@ public class PreConditionPanel extends ValidationPanel<MeronymicError<?>> {
 			if(row==-1) 
 				return;
 			
-			JDialog dialog = table.getModel().getRow(row).createDialog();
+			JDialog dialog = table.getModel().getRow(row).createDialog(PreConditionPanel.this.dialogParent);
 			dialog.setAlwaysOnTop(true);
 			dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			dialog.addWindowListener(exitListener);
 			dialog.setVisible(true);
 		}
 	};
+	
+	WindowListener exitListener = new WindowAdapter() {
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+        	for (MeronymicError<?> error : table.getModel().getAllRows()) {
+    			if(error.hasAction()){
+    				saveButton.setEnabled(true);
+    				applyButton.setEnabled(true);
+    				table.getModel().fireTableDataChanged();
+    				return;
+    			}
+    		}
+        	
+        	saveButton.setEnabled(false);
+        	saveButton.setEnabled(false);
+        }
+    };
 	
 	PropertyChangeListener progressListener = new PropertyChangeListener() {			
 		@Override

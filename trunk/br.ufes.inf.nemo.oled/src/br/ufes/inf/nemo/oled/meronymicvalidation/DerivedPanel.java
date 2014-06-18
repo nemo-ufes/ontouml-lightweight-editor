@@ -15,6 +15,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
@@ -54,7 +55,8 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 	/**
 	 * Create the panel.
 	 */
-	public DerivedPanel(OntoUMLParser parser) {
+	public DerivedPanel(JDialog dialog, OntoUMLParser parser, JButton saveButton, JButton applyButton) {
+		super(dialog,saveButton,applyButton);
 		
 		this.parser = parser;
 		
