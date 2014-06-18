@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.meronymic_validation.userinterface;
+package br.ufes.inf.nemo.meronymic_validation.derivation.ui;
 
 import java.util.ArrayList;
 import java.util.List;

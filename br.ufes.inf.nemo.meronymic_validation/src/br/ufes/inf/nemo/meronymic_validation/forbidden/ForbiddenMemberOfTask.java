@@ -35,7 +35,7 @@ public class ForbiddenMemberOfTask extends ForbiddenTask<memberOf>{
 	}
 
 	private ForbiddenMemberOf createForbiddenMemberOf(memberOf direct, EdgePath path) {
-		ForbiddenMemberOf forbidden = new ForbiddenMemberOf(direct);
+		ForbiddenMemberOf forbidden = new ForbiddenMemberOf(direct, parser);
 		forbidden.setPath(path.getEdgeIdsOfType(Property.class));
 		
 		publish(forbidden);

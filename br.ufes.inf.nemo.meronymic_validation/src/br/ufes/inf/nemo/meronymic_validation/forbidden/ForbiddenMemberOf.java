@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.meronymic_validation.forbidden;
 
 import java.util.ArrayList;
 
+import javax.swing.JDialog;
+
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.Kind;
@@ -18,6 +20,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.meronymic_validation.userinterface.FixDialog;
 
 public class ForbiddenMemberOf extends ForbiddenMeronymic<memberOf> {
 	
@@ -28,8 +31,8 @@ public class ForbiddenMemberOf extends ForbiddenMeronymic<memberOf> {
 
 	private memberOf memberOfToRemove;
 	
-	public ForbiddenMemberOf(memberOf m) {
-		super(m);
+	public ForbiddenMemberOf(memberOf m, OntoUMLParser parser) {
+		super(m, parser);
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public class ForbiddenMemberOf extends ForbiddenMeronymic<memberOf> {
 	}
 	
 	@Override
-	public Fix runFix() {
+	public Fix fix() {
 		
 		if(action == Action.REMOVE_MEMBEROF)
 			return removeMemberOf();
@@ -193,7 +196,12 @@ public class ForbiddenMemberOf extends ForbiddenMeronymic<memberOf> {
 		
 		return fix;
 	}
-	
+
+	@Override
+	public FixDialog createDialog(JDialog parent) {
+		// TODO Auto-generated method stub
+		return null;
+	}	
 	
 	
 }
