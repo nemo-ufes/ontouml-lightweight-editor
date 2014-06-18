@@ -217,7 +217,7 @@ public class OntoUMLParser {
 	public void updateElement(EObject obj)
 	{
 		ParsingElement e = elementsHash.get(obj);
-		if (e!=null) {
+		if (e!=null && (e.getElement() instanceof NamedElement)) {
 			nameHandler.remove(e.getAlias());		
 			String alias = nameHandler.treatName((NamedElement)obj);
 			e.setAlias(alias);
