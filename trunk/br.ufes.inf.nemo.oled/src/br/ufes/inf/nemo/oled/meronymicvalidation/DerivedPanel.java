@@ -29,7 +29,7 @@ import br.ufes.inf.nemo.meronymic_validation.derivation.DerivedMeronymic;
 import br.ufes.inf.nemo.meronymic_validation.derivation.FunctionalParthoodDerivationTask;
 import br.ufes.inf.nemo.meronymic_validation.derivation.MembershipDerivationTask;
 import br.ufes.inf.nemo.meronymic_validation.derivation.SubQuantityDerivationTask;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.DerivedTable;
+import br.ufes.inf.nemo.meronymic_validation.derivation.ui.DerivedTable;
 
 public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 
