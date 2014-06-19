@@ -64,7 +64,7 @@ public final class AssociationElement extends BaseConnection {
 	/**
 	 * The direction to read the name.
 	 */
-	public enum ReadingDirection { UNDEFINED, LEFT_RIGHT, RIGHT_LEFT };
+	public enum ReadingDirection { UNDEFINED, LEFT_RIGHT, RIGHT_LEFT, BOTTOM_UP, UP_BOTTOM };
 	
 	private RelationType associationType = RelationType.ASSOCIATION;
 	private ReadingDirection readingDirection = ReadingDirection.UNDEFINED;
@@ -827,5 +827,5 @@ public final class AssociationElement extends BaseConnection {
 	 */
 	public void setNameReadingDirection(ReadingDirection dir) {
 		readingDirection = dir;
-	}
+	}	
 }
