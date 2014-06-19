@@ -636,21 +636,17 @@ public final class AssociationElement extends BaseConnection {
 	 * Sets the position for the name label.
 	 */
 	private void positionNameLabel(DrawingContext drawingContext) {
-		int labelWidth = 0;
-		int typeWidth = 0;
-		int nameWidth = 0;
-		int metaWidth = 0;
-		
+		int labelWidth=0;
 		if(showOntoUmlStereotype() && nameLabel.getTypeLabelText() != null){
-			typeWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getTypeLabelText());
+			int typeWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getTypeLabelText());
 			if(typeWidth> labelWidth) labelWidth = typeWidth;
 		}	
 		if(showName() && nameLabel.getNameLabelText() != null){
-			nameWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getNameLabelText());
+			int nameWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getNameLabelText());
 			if(nameWidth> labelWidth) labelWidth = nameWidth;
 		}
 		if(showMetaProperties() && nameLabel.getMetaPropertyLabelText() != null){
-			metaWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getMetaPropertyLabelText());
+			int metaWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getMetaPropertyLabelText());
 			if(metaWidth> labelWidth) labelWidth = metaWidth;
 		}
 		// medium segment
@@ -658,7 +654,7 @@ public final class AssociationElement extends BaseConnection {
 		if(segments.size()>0){
 			Line2D middlesegment = segments.get(segments.size() / 2);
 			double x = (double) (middlesegment.getX2() + middlesegment.getX1() - labelWidth) / 2;
-			double y = (double) middlesegment.getY2() + middlesegment.getY1();
+			double y = (double) (middlesegment.getY2() + middlesegment.getY1())/2;
 			nameLabel.setAbsolutePos(x, y);
 		}
 	}
