@@ -22,6 +22,9 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.AlignElementsCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AlignElementsCommand.Alignment;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetColorCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.SetVisibilityCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.SetVisibilityCommand.Visibility;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -31,17 +34,12 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 
 	private static final long serialVersionUID = 1L;
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
-	private ArrayList<DiagramElement> selected = new ArrayList<DiagramElement>();
+	private DiagramEditor editor;
+	private ArrayList<DiagramElement> selected = new ArrayList<DiagramElement>();	
 	private JMenuItem createGenSetItem;
-	private JMenuItem deleteGenSetItem;
-	@SuppressWarnings("unused")
-	private JMenuItem unionItem;
-	@SuppressWarnings("unused")
-	private JMenuItem exclusionItem;
-	@SuppressWarnings("unused")
-	private JMenuItem intersectionItem;
-	@SuppressWarnings("unused")
-	private JMenuItem deleteItem;
+	private JMenuItem deleteGenSetItem;	
+	private JMenuItem resetMenuItem;
+	private JMenu lineStyleItem;
 	@SuppressWarnings("unused")
 	private JMenuItem rectMenuItem;
 	@SuppressWarnings("unused")
@@ -50,8 +48,6 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	private JMenuItem treeStyleHorizontalMenuItem;
 	@SuppressWarnings("unused")
 	private JMenuItem directMenuItem;
-	private JMenuItem resetMenuItem;
-	private JMenu lineStyleItem;
 	private JMenu alignMenu;
 	private JMenuItem alignTop;
 	private JMenuItem alignBottom;
@@ -59,8 +55,20 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	private JMenuItem alignRight;
 	private JMenuItem alignCenterVertically;
 	private JMenuItem alignCenterHorizontally;
-	private DiagramEditor editor;
+	private JMenu visibilityMenu;
+	private JMenuItem showRolesItem;
+	private JMenuItem showNameItem;
+	private JMenuItem showMultiplicitiesItem;
+	private JMenuItem showStereotypeItem;
 	private JMenuItem setColorItem;
+	@SuppressWarnings("unused")
+	private JMenuItem unionItem;
+	@SuppressWarnings("unused")
+	private JMenuItem exclusionItem;
+	@SuppressWarnings("unused")
+	private JMenuItem intersectionItem;
+	@SuppressWarnings("unused")
+	private JMenuItem deleteItem;	
 	
 	public MultiSelectionPopupMenu()
 	{			
@@ -68,12 +76,12 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		deleteGenSetItem = createMenuItem(this, "deletegenset");
 		
 		resetMenuItem = createMenuItem(this, "resetpoints");
-		lineStyleItem = new JMenu("Line Style");
-		add(lineStyleItem);
+		lineStyleItem = new JMenu("Line Style");		
 		directMenuItem = createMenuItem(lineStyleItem, "recttodirect");
 		rectMenuItem = createMenuItem(lineStyleItem, "directtorect");
 		treeStyleVerticalMenuItem = createMenuItem(lineStyleItem, "treestyle.vertical");
 		treeStyleHorizontalMenuItem = createMenuItem(lineStyleItem, "treestyle.horizontal");
+		add(lineStyleItem);
 		
 		alignMenu = new JMenu("Align");
 		alignTop = new JMenuItem("Align Top");
@@ -126,6 +134,41 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		alignMenu.add(alignCenterVertically);
 		add(alignMenu);
 		
+		visibilityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.visibility.name"));
+		add(visibilityMenu);
+			
+		showRolesItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showroles");
+		showRolesItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {			
+				if(editor!=null) editor.execute(new SetVisibilityCommand((DiagramNotification)editor,selected,editor.getProject(),Visibility.ENDPOINTS,showRolesItem.isSelected()));				
+			}
+		});
+		
+		showMultiplicitiesItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showmultiplicities");
+		showMultiplicitiesItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {				
+				if(editor!=null) editor.execute(new SetVisibilityCommand((DiagramNotification)editor,selected,editor.getProject(),Visibility.MULTIPLICITY,showMultiplicitiesItem.isSelected()));					
+			}
+		});
+		
+		showNameItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showname");
+		showNameItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(editor!=null) editor.execute(new SetVisibilityCommand((DiagramNotification)editor,selected,editor.getProject(),Visibility.NAME,showNameItem.isSelected()));					
+			}
+		});
+			
+		showStereotypeItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showstereotype");
+		showStereotypeItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(editor!=null) editor.execute(new SetVisibilityCommand((DiagramNotification)editor,selected,editor.getProject(),Visibility.STEREOTYPE,showStereotypeItem.isSelected()));					
+			}
+		});
+		
 		setColorItem = new JMenuItem("Set Color");
 		setColorItem.addActionListener(new ActionListener() {				
 			private Color color;        	
@@ -154,16 +197,30 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		this.editor = editor;
 		// check if we can show the item that creates/delete generalization sets
 		boolean containGenset=false;
-		boolean areAllAssociations=true;
+		boolean areAllRelationships=true;
+		boolean areAllGeneralizations=true;
+		boolean showingName=false;
+		boolean showingStereo=false;
+		boolean showingMultiplicity=false;
+		boolean showingEndPoints=false;
 		ArrayList<Generalization> gens = new ArrayList<Generalization>();
 		for(DiagramElement dElem: selected){			
 			if (dElem instanceof GeneralizationElement){
+				if (((GeneralizationElement)dElem).showName()) showingName=true;
 				Generalization gen = ((GeneralizationElement)dElem).getGeneralization();
 				if(gen!=null)gens.add(gen);
 				if(gen.getGeneralizationSet()!=null && !gen.getGeneralizationSet().isEmpty()) containGenset=true;
 			}			
 			if(dElem instanceof ClassElement){
-				areAllAssociations=false;
+				areAllRelationships=false;
+				areAllGeneralizations=false;
+			}
+			if(dElem instanceof AssociationElement){
+				if (((AssociationElement)dElem).showName()) showingName=true;
+				if (((AssociationElement)dElem).showMultiplicities()) showingMultiplicity=true;
+				if (((AssociationElement)dElem).showOntoUmlStereotype()) showingStereo=true;
+				if (((AssociationElement)dElem).showRoles()) showingEndPoints=true;
+				areAllGeneralizations=false;
 			}
 		}
 		
@@ -171,14 +228,31 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		else { createGenSetItem.setVisible(true); deleteGenSetItem.setVisible(false); }
 		if(gens.size()>1 && containGenset==true) { deleteGenSetItem.setVisible(true); }	
 		
-		if(!areAllAssociations) { lineStyleItem.setVisible(false); resetMenuItem.setVisible(false); }
+		if(!areAllRelationships) { lineStyleItem.setVisible(false); resetMenuItem.setVisible(false); }
 		else { lineStyleItem.setVisible(true); resetMenuItem.setVisible(true); }
 		
-		if(!areAllAssociations) { alignMenu.setVisible(true); }
+		if(!areAllRelationships) { alignMenu.setVisible(true); }
 		else { alignMenu.setVisible(false); }
 		
-		if(!areAllAssociations) { setColorItem.setVisible(true); }
+		if(!areAllRelationships) { setColorItem.setVisible(true); }
 		else { setColorItem.setVisible(false); }
+		
+		if(areAllRelationships){			
+			visibilityMenu.setVisible(true);
+			if(!areAllGeneralizations){
+				showMultiplicitiesItem.setSelected(showingMultiplicity);
+				showRolesItem.setSelected(showingEndPoints);
+				showNameItem.setSelected(showingName);
+				showStereotypeItem.setSelected(showingStereo);
+			}else{
+				showMultiplicitiesItem.setEnabled(false);
+				showRolesItem.setEnabled(false);
+				showNameItem.setSelected(showingName);
+				showStereotypeItem.setEnabled(false);
+			}
+		} else { 
+			visibilityMenu.setVisible(false); 
+		}
 	}
 	
 	/**
@@ -249,7 +323,6 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	 *            the menuitem name
 	 * @return the menu item
 	 */
-	@SuppressWarnings("unused")
 	private JCheckBoxMenuItem createCheckBoxMenuItem(JComponent menu,
 			String name) {
 		String prefix = "menuitem." + name;

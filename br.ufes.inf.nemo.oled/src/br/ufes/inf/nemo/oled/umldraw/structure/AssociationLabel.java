@@ -348,6 +348,10 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 			drawTriangleLeftRight(drawingContext);
 		} else if (readingDirection == ReadingDirection.RIGHT_LEFT) {
 			drawTriangleRightLeft(drawingContext);
+		}else if (readingDirection == ReadingDirection.UP_BOTTOM) {
+			drawTriangleUpBottom(drawingContext);
+		}else if (readingDirection == ReadingDirection.BOTTOM_UP) {
+			drawTriangleBottomUp(drawingContext);
 		}
 	}
 
@@ -368,6 +372,28 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 		drawingContext.draw(trianglePath, Color.BLACK);
 	}
 
+	private void drawTriangleBottomUp(DrawingContext drawingContext) {
+		GeneralPath trianglePath = new GeneralPath();
+		double height = nameLabel.getSize().getHeight() - 6;
+		double x = nameLabel.getAbsoluteX1() - 3, y = nameLabel.getAbsoluteY1() + 3;
+		trianglePath.moveTo(x, y);
+		trianglePath.lineTo(x - 5, y + height / 2);
+		trianglePath.lineTo(x, y + height);
+		trianglePath.closePath();
+		drawingContext.draw(trianglePath, Color.BLACK);
+	}
+	
+	private void drawTriangleUpBottom(DrawingContext drawingContext) {
+		GeneralPath trianglePath = new GeneralPath();
+		double height = nameLabel.getSize().getHeight() - 6;
+		double x = nameLabel.getAbsoluteX1() - 3, y = nameLabel.getAbsoluteY1() + 3;
+		trianglePath.moveTo(x, y);
+		trianglePath.lineTo(x - 5, y + height / 2);
+		trianglePath.lineTo(x, y + height);
+		trianglePath.closePath();
+		drawingContext.draw(trianglePath, Color.BLACK);
+	}
+	
 	/**
 	 * Draws the triangle facing to the left.
 	 * 

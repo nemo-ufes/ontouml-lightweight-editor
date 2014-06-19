@@ -26,8 +26,11 @@ import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.SetVisibilityCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.SetVisibilityCommand.Visibility;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
@@ -126,9 +129,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			public void actionPerformed(ActionEvent arg0) {
 				if (con instanceof AssociationElement) {	
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-					((AssociationElement)con).setShowRoles(showRolesItem.isSelected());
 					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					if(editor!=null) {
+						editor.execute(new SetVisibilityCommand((DiagramNotification)editor,list,editor.getProject(),Visibility.ENDPOINTS,showRolesItem.isSelected()));					
+					}					
 				}
 			}
 		});
@@ -137,12 +141,12 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		showMultiplicitiesItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {				
-				
-				if (con instanceof AssociationElement) {					
+				if (con instanceof AssociationElement) {
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-					((AssociationElement)con).setShowMultiplicities(showMultiplicitiesItem.isSelected());
 					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					if(editor!=null) {
+						editor.execute(new SetVisibilityCommand((DiagramNotification)editor,list,editor.getProject(),Visibility.MULTIPLICITY,showMultiplicitiesItem.isSelected()));					
+					}					
 				}								
 			}
 		});
@@ -152,13 +156,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-				if (con instanceof AssociationElement) {					
-					((AssociationElement)con).setShowName(showNameItem.isSelected());					
-				}else{
-					((GeneralizationElement)con).setShowName(showNameItem.isSelected());
-				}
 				list.add(con);
-				editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				if(editor!=null) {
+					editor.execute(new SetVisibilityCommand((DiagramNotification)editor,list,editor.getProject(),Visibility.NAME,showNameItem.isSelected()));					
+				}
 			}
 		});
 			
@@ -166,11 +167,12 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		showStereotypeItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (con instanceof AssociationElement) {	
+				if (con instanceof AssociationElement) {					
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-					((AssociationElement)con).setShowOntoUmlStereotype(showStereotypeItem.isSelected());
 					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					if(editor!=null) {
+						editor.execute(new SetVisibilityCommand((DiagramNotification)editor,list,editor.getProject(),Visibility.STEREOTYPE,showStereotypeItem.isSelected()));					
+					}
 				}				
 			}
 		});

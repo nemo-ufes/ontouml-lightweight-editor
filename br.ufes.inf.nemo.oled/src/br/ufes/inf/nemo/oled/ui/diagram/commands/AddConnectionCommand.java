@@ -223,7 +223,9 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			Property p1 = ((Association)relationship).getMemberEnd().get(0);
 			Property p2 = ((Association)relationship).getMemberEnd().get(1);
 			p1.setType(source);
+			p1.setName(source.getName().trim().toLowerCase());
 			p2.setType(target);
+			p2.setName(target.getName().trim().toLowerCase());
 			
 			// add to model
 			if(eContainer==null){
