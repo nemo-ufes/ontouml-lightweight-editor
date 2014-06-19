@@ -30,6 +30,7 @@ import java.util.List;
 
 import RefOntoUML.Association;
 import RefOntoUML.Meronymic;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
@@ -70,6 +71,8 @@ public final class AssociationElement extends BaseConnection {
 	private Label multiplicity1Label;
 	private Label multiplicity2Label;
 	private Label role1Label;
+	private Label meta1Label;
+	private Label meta2Label;
 	private Label role2Label;
 	private AssociationLabel nameLabel;
 	private boolean showMultiplicities, showName, showRoles, showMetaProperties;
@@ -87,6 +90,7 @@ public final class AssociationElement extends BaseConnection {
 		setConnection(new RectilinearConnection());
 		setupMultiplicityLabels();
 		setupRoleLabels();
+		setupRolePropertiesLabels();
 		setupNameLabel();
 		
 		showMultiplicities = true;
@@ -148,6 +152,7 @@ public final class AssociationElement extends BaseConnection {
 		// label sources after a clone()
 		cloned.setupMultiplicityLabels();
 		cloned.setupRoleLabels();
+		cloned.setupRolePropertiesLabels();
 		cloned.setupNameLabel();
 		cloned.showMultiplicities = showMultiplicities;
 		cloned.showName = showName;
@@ -156,6 +161,8 @@ public final class AssociationElement extends BaseConnection {
 		cloned.multiplicity2Label.setParent(multiplicity2Label.getParent());
 		cloned.role1Label.setParent(role1Label.getParent());
 		cloned.role2Label.setParent(role2Label.getParent());
+		cloned.meta1Label.setParent(meta1Label.getParent());
+		cloned.meta2Label.setParent(meta2Label.getParent());				
 		cloned.nameLabel.setParent(nameLabel.getParent());		
 		return cloned;
 	}
@@ -215,6 +222,78 @@ public final class AssociationElement extends BaseConnection {
 		});
 	}
 
+	/**
+	 * Sets the role properties label sources.
+	 */
+	private void setupRolePropertiesLabels() {
+		meta1Label = new SimpleLabel();
+		meta1Label.setSource(new LabelSource() {
+						
+			private static final long serialVersionUID = -2578940157526321262L;
+
+			/**
+			 * {@inheritDoc}
+			 */
+			public String getLabelText() {
+				Association association = (Association) getRelationship();
+				Property p = association.getMemberEnd().get(0);
+				String str = new String();
+				if(p!=null){									
+					if (p.getSubsettedProperty().size()>0){
+						str = "{ subsets ";
+						int i=0;
+						for(Property property: p.getSubsettedProperty()){
+							if(i<p.getSubsettedProperty().size()-1) str += property.getName()+",";
+							else str += property.getName();
+							i++;
+						}
+						str += " }";
+					}
+				}
+				return str;				
+			}
+
+			/**
+			 * {@inheritDoc}
+			 */
+			public void setLabelText(String aText) { }
+		});
+
+		meta2Label = new SimpleLabel();
+		meta2Label.setSource(new LabelSource() {
+			
+			private static final long serialVersionUID = 7825254563121087998L;
+
+			/**
+			 * {@inheritDoc}
+			 */
+			public String getLabelText() {
+				Association association = (Association) getRelationship();				
+				Property p = association.getMemberEnd().get(1);
+				String str = new String();
+				if(p!=null){									
+					if (p.getSubsettedProperty().size()>0){
+						str = "{ subsets ";
+						int i=0;
+						for(Property property: p.getSubsettedProperty()){
+							if(i<p.getSubsettedProperty().size()-1) str += property.getName()+",";
+							else str += property.getName();
+							i++;
+						}
+						str += " }";
+					}
+				}
+				return str;				
+			}
+
+			/**
+			 * {@inheritDoc}
+			 */
+			public void setLabelText(String aText) { }
+		});
+		
+	}
+	
 	/**
 	 * Sets the role label sources.
 	 */
@@ -296,6 +375,9 @@ public final class AssociationElement extends BaseConnection {
 	 */
 	public Label getRole2Label() { return role2Label; }
 
+	public Label getRoleProperty1Label() {return meta1Label; }
+	public Label getRoleProperty2Label() {return meta2Label; }
+	
 	/**
 	 * Returns the AssociationType.
 	 * @return the AssociationType
@@ -324,6 +406,8 @@ public final class AssociationElement extends BaseConnection {
 		multiplicity2Label.setParent(parent);
 		role1Label.setParent(parent);
 		role2Label.setParent(parent);
+		meta1Label.setParent(parent);
+		meta2Label.setParent(parent);
 		nameLabel.setParent(parent);
 	}
 
@@ -472,6 +556,16 @@ public final class AssociationElement extends BaseConnection {
 		new SimpleArrowTip().draw(drawingContext, endpoint, rotationTransform);
 	}
 
+	public int getRoleProperty1Width(DrawingContext drawingContext)
+	{
+		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(meta1Label.getNameLabelText());
+	}
+
+	public int getRoleProperty2Width(DrawingContext drawingContext)
+	{
+		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(meta2Label.getNameLabelText());
+	}
+	
 	/**
 	 * Draws the connection labels.
 	 * @param drawingContext the DrawingContext
@@ -489,17 +583,34 @@ public final class AssociationElement extends BaseConnection {
 			multiplicity1Label.draw(drawingContext);
 			multiplicity2Label.draw(drawingContext);
 		}
+		double labelHeight = drawingContext.getFontMetrics(FontType.DEFAULT).getHeight();
 		if (showRoles) {
-			if (getNode1()!=null)
+			if (getNode1()!=null){
 				positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
-			else
+				Point2D point = getEndPoint1();
+				Point2D newpoint = new Point2D.Double(point.getX(),point.getY()+labelHeight);				
+				positionLabel(meta1Label, getNode1(), newpoint, drawingContext, true);
+			}else{
 				positionLabel(role1Label, getConnection1(), getEndPoint1(), drawingContext, true);
-			if (getNode2()!=null)
+				Point2D point = getEndPoint1();
+				Point2D newpoint = new Point2D.Double(point.getX(),point.getY()+labelHeight);				
+				positionLabel(meta1Label, getConnection1(), newpoint, drawingContext, true);
+			}
+			if (getNode2()!=null){
 				positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
-			else
+				Point2D point = getEndPoint2();
+				Point2D newpoint = new Point2D.Double(point.getX(),point.getY()+labelHeight);				
+				positionLabel(meta2Label, getNode2(), newpoint, drawingContext, true);
+			}else{
 				positionLabel(role2Label, getConnection2(), getEndPoint2(), drawingContext, true);
+				Point2D point = getEndPoint2();
+				Point2D newpoint = new Point2D.Double(point.getX(),point.getY()+labelHeight);				
+				positionLabel(meta2Label, getConnection2(), newpoint, drawingContext, true);
+			}
 			role1Label.draw(drawingContext);
 			role2Label.draw(drawingContext);
+			meta1Label.draw(drawingContext);
+			meta2Label.draw(drawingContext);
 		}
 		positionNameLabel(drawingContext);
 		nameLabel.draw(drawingContext);
