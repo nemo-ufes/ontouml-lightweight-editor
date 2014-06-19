@@ -27,6 +27,7 @@ import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
+import br.ufes.inf.nemo.oled.draw.GeometryUtil;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
@@ -46,9 +47,10 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	private Label typeLabel;
 	private Label nameLabel;
 	private Label metapropertyLabel;
+	private double xpos;
+	private double ypos;
 	private BaseConnection association;
 	private boolean editable;
-	@SuppressWarnings("unused")
 	private transient DrawingContext context;
 	
 	/**
@@ -194,9 +196,55 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	 * {@inheritDoc}
 	 */
 	public void centerHorizontally() {
-		nameLabel.centerHorizontally();		
+		nameLabel.centerHorizontally();	
+		typeLabel.centerHorizontally();
+		metapropertyLabel.centerHorizontally();
+	}
+	
+	public int getTypeWidth()
+	{
+		return context.getFontMetrics(FontType.DEFAULT).stringWidth(getTypeLabelText());
 	}
 
+	public int getNameWidth()
+	{
+		return context.getFontMetrics(FontType.DEFAULT).stringWidth(getNameLabelText());
+	}
+	
+	public int getMetaPropertyWidth()
+	{
+		return context.getFontMetrics(FontType.DEFAULT).stringWidth(getMetaPropertyLabelText());
+	}
+	
+	public int getLabelWidth()
+	{
+		int labelWidth=0;
+		if(typeLabel != null){
+			int typeWidth = context.getFontMetrics(FontType.DEFAULT).stringWidth(getTypeLabelText());
+			if(typeWidth> labelWidth) labelWidth = typeWidth;
+		}	
+		if(getNameLabelText() != null){
+			int nameWidth = context.getFontMetrics(FontType.DEFAULT).stringWidth(getNameLabelText());
+			if(nameWidth> labelWidth) labelWidth = nameWidth;
+		}
+		if(getMetaPropertyLabelText() != null){
+			int metaWidth = context.getFontMetrics(FontType.DEFAULT).stringWidth(getMetaPropertyLabelText());
+			if(metaWidth> labelWidth) labelWidth = metaWidth;
+		}
+		return labelWidth;
+	}
+	
+	@Override
+	public void setAbsolutePos(double xpos, double ypos) 
+	{	
+		super.setAbsolutePos(xpos, ypos);
+		if (!GeometryUtil.getInstance().equals(xpos, getAbsoluteX1()) ||
+		!GeometryUtil.getInstance().equals(ypos, getAbsoluteY1())) {
+			this.xpos=xpos-getParent().getAbsoluteX1();
+			this.ypos=ypos-getParent().getAbsoluteY1();
+		}
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -205,6 +253,11 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 		context = drawingContext;		
 		if (association instanceof AssociationElement) {
 			final AssociationElement assocElement = (AssociationElement) association;
+			
+			int labelWidth = getLabelWidth();
+			int typeWidth = getTypeWidth();
+			int nameWidth = getNameWidth();
+			int metaWidth = getMetaPropertyWidth();
 			
 			if (assocElement.showOntoUmlStereotype()) {
 				typeLabel.setSource(new LabelSource() {
@@ -216,11 +269,11 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 						return association.getOntoUmlStereotype();
 					}
 				});
-				// Calculate offset for y and x alignment 
+				
 				if(assocElement.showName()){										
-					typeLabel.setOrigin(typeLabel.getOrigin().getX(), nameLabel.getOrigin().getY()- drawingContext.getFontMetrics(FontType.DEFAULT).getHeight());					
+					typeLabel.setOrigin(xpos+((labelWidth-typeWidth)/2), ypos- drawingContext.getFontMetrics(FontType.DEFAULT).getHeight());					
 				}else{
-					typeLabel.setOrigin(typeLabel.getOrigin().getX(), nameLabel.getOrigin().getY());
+					typeLabel.setOrigin(xpos+((labelWidth-typeWidth)/2), ypos);
 				}
 				typeLabel.draw(drawingContext);
 			}
@@ -235,12 +288,9 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 						return assocElement.getAssociation().getName(); 
 					}
 				});
+
+				nameLabel.setOrigin(xpos+((labelWidth-nameWidth)/2), ypos);
 				
-//				double offset = (context.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getSource().getLabelText()))/2;
-//				// Calculate offset for vertical alignment of the stereotype
-//				if (typeLabel.getOrigin().getY() == nameLabel.getOrigin().getY()){					
-//					nameLabel.setOrigin(getParent().getAbsoluteX1()-offset, nameLabel.getOrigin().getY());					
-//				}
 				nameLabel.draw(drawingContext);
 				drawDirection(drawingContext);
 			}
@@ -254,10 +304,10 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 					public String getLabelText() {
 						Meronymic m = (Meronymic)assocElement.getRelationship();
 						ArrayList<String> result = new ArrayList<String>();
-						if (m.isIsEssential()) result.add("isEssential");
-						if (m.isIsInseparable()) result.add("isInseparable");
-						if (m.isIsImmutablePart()) result.add("isImmutablePart");
-						if (m.isIsImmutableWhole()) result.add("isImmutableWhole");
+						if (m.isIsEssential()) result.add("essential");
+						if (m.isIsInseparable()) result.add("inseparable");
+						if (m.isIsImmutablePart()) result.add("immutablePart");
+						if (m.isIsImmutableWhole()) result.add("immutableWhole");
 						String str =  new String();
 						if (result.size()>0){						
 							str +="{"; 
@@ -272,23 +322,11 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 						return str; 
 					}
 				});		
-				
-				// Calculate offset for horizontal alignment of the meta property label
-//				if (metapropertyLabel.getOrigin().getY() == nameLabel.getOrigin().getY())
-//				{					
-//					double offset = (context.getFontMetrics(FontType.DEFAULT).stringWidth(metapropertyLabel.getSource().getLabelText()))/2;
-//					if(assocElement.showName()){
-//						metapropertyLabel.setOrigin(nameLabel.getOrigin().getX()-offset, metapropertyLabel.getOrigin().getY() + context.getFontMetrics(FontType.DEFAULT).getHeight());
-//					}else{
-//						metapropertyLabel.setOrigin(nameLabel.getOrigin().getX()-offset, metapropertyLabel.getOrigin().getY());	
-//					}					
-//				}
-				
-				// Calculate offset for y alignment 
+
 				if(assocElement.showName() || assocElement.showOntoUmlStereotype()){										
-					metapropertyLabel.setOrigin(metapropertyLabel.getOrigin().getX(), nameLabel.getOrigin().getY()+ drawingContext.getFontMetrics(FontType.DEFAULT).getHeight());					
+					metapropertyLabel.setOrigin(xpos+((labelWidth-metaWidth)/2), ypos+ drawingContext.getFontMetrics(FontType.DEFAULT).getHeight());					
 				}else{
-					metapropertyLabel.setOrigin(metapropertyLabel.getOrigin().getX(), nameLabel.getOrigin().getY());
+					metapropertyLabel.setOrigin(xpos+((labelWidth-metaWidth)/2), ypos);
 				}
 				metapropertyLabel.draw(drawingContext);				
 			}
