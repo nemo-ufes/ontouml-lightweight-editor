@@ -1365,6 +1365,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 			if(de instanceof AssociationElement) { 
 				Association r = (Association)((AssociationElement)de).getRelationship();
+				elements.add(r.getMemberEnd().get(0));
+				elements.add(r.getMemberEnd().get(1));
 				elements.add(r);								
 			}
 			if(de instanceof GeneralizationElement) {
@@ -1410,6 +1412,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				}
 				if(de instanceof AssociationElement) { 
 					Association r = (Association)((AssociationElement)de).getRelationship();
+					elements.add(r.getMemberEnd().get(0));
+					elements.add(r.getMemberEnd().get(1));
 					elements.add(r);								
 				}
 				if(de instanceof GeneralizationElement) {

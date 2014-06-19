@@ -229,7 +229,7 @@ public final class AssociationElement extends BaseConnection {
 		meta1Label = new SimpleLabel();
 		meta1Label.setSource(new LabelSource() {
 						
-			private static final long serialVersionUID = -2578940157526321262L;
+			private static final long serialVersionUID = 8971899878055731312L;
 
 			/**
 			 * {@inheritDoc}
@@ -262,7 +262,7 @@ public final class AssociationElement extends BaseConnection {
 		meta2Label = new SimpleLabel();
 		meta2Label.setSource(new LabelSource() {
 			
-			private static final long serialVersionUID = 7825254563121087998L;
+			private static final long serialVersionUID = 6014955370882528767L;
 
 			/**
 			 * {@inheritDoc}
@@ -582,40 +582,87 @@ public final class AssociationElement extends BaseConnection {
 				positionLabel(multiplicity2Label, getConnection2(), getEndPoint2(), drawingContext, false);
 			multiplicity1Label.draw(drawingContext);
 			multiplicity2Label.draw(drawingContext);
+		}		
+		
+		if (getNode1()!=null){
+			if (showRoles) positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
+			if(meta1Label!=null)positionRolePropertiesLabel(meta1Label, getNode1(), getEndPoint1(), drawingContext);
+		}else{
+			if (showRoles) positionLabel(role1Label, getConnection1(), getEndPoint1(), drawingContext, true);
+			if(meta1Label!=null)positionRolePropertiesLabel(meta1Label, getConnection1(), getEndPoint1(), drawingContext);
 		}
-		double labelHeight = drawingContext.getFontMetrics(FontType.DEFAULT).getHeight();
-		if (showRoles) {
-			if (getNode1()!=null){
-				positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
-				Point2D point = getEndPoint1();
-				Point2D newpoint = new Point2D.Double(point.getX(),point.getY()+labelHeight);				
-				positionLabel(meta1Label, getNode1(), newpoint, drawingContext, true);
-			}else{
-				positionLabel(role1Label, getConnection1(), getEndPoint1(), drawingContext, true);
-				Point2D point = getEndPoint1();
-				Point2D newpoint = new Point2D.Double(point.getX(),point.getY()+labelHeight);				
-				positionLabel(meta1Label, getConnection1(), newpoint, drawingContext, true);
-			}
-			if (getNode2()!=null){
-				positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
-				Point2D point = getEndPoint2();
-				Point2D newpoint = new Point2D.Double(point.getX(),point.getY()+labelHeight);				
-				positionLabel(meta2Label, getNode2(), newpoint, drawingContext, true);
-			}else{
-				positionLabel(role2Label, getConnection2(), getEndPoint2(), drawingContext, true);
-				Point2D point = getEndPoint2();
-				Point2D newpoint = new Point2D.Double(point.getX(),point.getY()+labelHeight);				
-				positionLabel(meta2Label, getConnection2(), newpoint, drawingContext, true);
-			}
+		if (getNode2()!=null){
+			if (showRoles) positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
+			if(meta2Label!=null)positionRolePropertiesLabel(meta2Label, getNode2(), getEndPoint2(), drawingContext);
+		}else{
+			if (showRoles) positionLabel(role2Label, getConnection2(), getEndPoint2(), drawingContext, true);
+			if(meta2Label!=null)positionRolePropertiesLabel(meta2Label, getConnection2(), getEndPoint2(), drawingContext);				
+		}
+		if(showRoles){
 			role1Label.draw(drawingContext);
 			role2Label.draw(drawingContext);
-			meta1Label.draw(drawingContext);
-			meta2Label.draw(drawingContext);
 		}
+		if(meta1Label!=null)meta1Label.draw(drawingContext);
+		if(meta2Label!=null)meta2Label.draw(drawingContext);		
 		positionNameLabel(drawingContext);
 		nameLabel.draw(drawingContext);
 	}
 
+	private void positionRolePropertiesLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext) 
+	{
+		Direction direction=null;		
+		if (endPointDiagramElement instanceof Node) direction = getPointDirection((Node)endPointDiagramElement, endpoint);
+		else if (endPointDiagramElement instanceof Connection) direction = getPointDirection((Connection)endPointDiagramElement, endpoint);
+		double x = 0, y = 0, marging = 10;
+		double labelHeight = label.getSize().getHeight(); 
+		double labelWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(label.getSource().getLabelText());
+		switch (direction) {
+			case NORTH:{
+				if(showRoles()){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}
+			case SOUTH:{
+				if(showRoles()){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() + (labelHeight + marging);
+				}else{
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() + marging;
+				}
+				break;
+			}
+			case EAST:{
+				if(showRoles()){
+					x = endpoint.getX() + marging;								
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x = endpoint.getX() + marging;								
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}
+			case WEST:			
+			default:{
+				//west
+				if(showRoles()){
+					x = endpoint.getX() - (labelWidth + marging);								
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x = endpoint.getX() - (labelWidth + marging);								
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}				
+		}
+		label.setAbsolutePos(x, y);
+	}
+	
 	/**
 	 * Positions a label relative to an endpoint.
 	 * @param label the label
