@@ -34,11 +34,20 @@ public class ClassStereotypeChangeMenu extends JMenu{
 		this.type = element;
 	}
 	
+	public void setDiagramManager(DiagramManager diagramManager)
+	{
+		this.diagramManager=diagramManager;
+	}
+	
 	public ClassStereotypeChangeMenu(final DiagramManager diagramManager)
+	{		
+		this();
+		this.diagramManager=diagramManager;
+	}
+	
+	public ClassStereotypeChangeMenu()
 	{
 		super("Change to");
-		
-		this.diagramManager=diagramManager;
 		
 		JMenuItem kindItem = new JMenuItem("Kind");
 		JMenuItem collectiveItem  = new JMenuItem("Collective");
