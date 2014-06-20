@@ -71,12 +71,13 @@ public class MoveElementCommand extends BaseDiagramCommand {
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		
 		for (MoveOperation moveOperation : moveOperations) {			
-			moveOperation.run();
 			if(moveOperation instanceof MoveNodeOperation){
+				moveOperation.run();
 				elements.add(((MoveNodeOperation)moveOperation).getNode());				
-			}else if(moveOperation instanceof TranslateConnectionOperation){				
-				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());				
-			}
+			}//else if(moveOperation instanceof TranslateConnectionOperation){
+//				moveOperation.run();
+//				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());				
+//			}
 		}
 		
 		//move the connections related to every connection moved
