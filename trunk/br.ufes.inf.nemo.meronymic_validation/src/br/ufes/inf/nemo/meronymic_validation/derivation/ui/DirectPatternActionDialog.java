@@ -9,7 +9,7 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 
 import br.ufes.inf.nemo.meronymic_validation.derivation.DerivedMeronymic;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.FixDialog;
+import br.ufes.inf.nemo.meronymic_validation.ui.FixDialog;
 
 public class DirectPatternActionDialog extends FixDialog<DerivedMeronymic>{
 	

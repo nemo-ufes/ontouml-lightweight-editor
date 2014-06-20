@@ -13,7 +13,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.forbidden.ui.ForbiddenComponentOfDialog;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.FixDialog;
+import br.ufes.inf.nemo.meronymic_validation.ui.FixDialog;
 
 public class ForbiddenComponentOf extends ForbiddenMeronymic<componentOf> {
 	

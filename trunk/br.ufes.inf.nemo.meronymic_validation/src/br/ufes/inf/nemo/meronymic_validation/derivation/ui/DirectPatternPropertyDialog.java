@@ -9,7 +9,7 @@ import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.ufes.inf.nemo.meronymic_validation.derivation.DerivedMeronymic;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.FixDialog;
+import br.ufes.inf.nemo.meronymic_validation.ui.FixDialog;
 
 public class DirectPatternPropertyDialog extends FixDialog<DerivedMeronymic>{
 	

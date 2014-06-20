@@ -32,7 +32,7 @@ import javax.swing.text.StyledDocument;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.meronymic_validation.checkers.GeneralizationError;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.ClassStereotypeCombo;
+import br.ufes.inf.nemo.meronymic_validation.ui.ClassStereotypeCombo;
 
 public class GeneralizationDialog extends JDialog {
 

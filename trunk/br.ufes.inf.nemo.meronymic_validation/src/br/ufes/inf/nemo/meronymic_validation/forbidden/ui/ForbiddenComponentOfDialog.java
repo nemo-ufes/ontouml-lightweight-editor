@@ -23,7 +23,7 @@ import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.meronymic_validation.MeronymicItem;
 import br.ufes.inf.nemo.meronymic_validation.forbidden.ForbiddenComponentOf;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.FixDialog;
+import br.ufes.inf.nemo.meronymic_validation.ui.FixDialog;
 
 public class ForbiddenComponentOfDialog extends FixDialog<ForbiddenComponentOf>{
 	
