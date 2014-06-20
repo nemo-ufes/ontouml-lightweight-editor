@@ -168,7 +168,6 @@ public class Graph {
 				}
 				
 				if(basePath.containsAll(path) && path.containsAll(basePath)){
-//					System.out.println("Removing: "+path+" ----- Base Path: "+basePath);
 					allPaths.remove(path);
 				}
 				else

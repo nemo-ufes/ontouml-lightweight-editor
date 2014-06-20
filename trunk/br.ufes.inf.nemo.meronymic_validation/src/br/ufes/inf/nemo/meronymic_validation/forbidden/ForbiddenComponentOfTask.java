@@ -4,17 +4,14 @@ import java.util.ArrayList;
 
 import javax.swing.JTabbedPane;
 
-import org.eclipse.emf.ecore.EObject;
-
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
 import RefOntoUML.componentOf;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.meronymic_validation.forbidden.ui.ForbiddenTableModel;
 import br.ufes.inf.nemo.meronymic_validation.graph.DirectedEdge;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.ForbiddenTableModel;
 
 public class ForbiddenComponentOfTask extends ForbiddenTask<componentOf>{
 
@@ -31,15 +28,6 @@ public class ForbiddenComponentOfTask extends ForbiddenTask<componentOf>{
 		if(!arePathsSet())
 			setPaths(true, true);
 		
-		System.out.println("####################\nPATHS!");
-		
-		for (EdgePath path : paths) {
-			for (Object c : path.getNodeIds()) {
-				System.out.print(OntoUMLNameHelper.getName((EObject) c)+" -> ");
-			}
-			System.out.println();
-		}
-		
 		ArrayList<EdgePath> indirectPaths = new ArrayList<EdgePath>();
 		System.out.println("Intransitive ComponentOf: Identifying indirect functional parthood paths...");
 		//selects the paths which are indirect (ex: a wholeOf b; b' subtype of b; b' whole of c; path=a->b'->c)
@@ -54,15 +42,6 @@ public class ForbiddenComponentOfTask extends ForbiddenTask<componentOf>{
 			}
 		}
 		
-		System.out.println("####################\nINDIRECT PATHS!");
-		
-		for (EdgePath path : indirectPaths) {
-			for (Object c : path.getNodeIds()) {
-				System.out.print(OntoUMLNameHelper.getName((EObject) c)+" -> ");
-			}
-			System.out.println();
-		}
-		
 		System.out.println("Intransitive ComponentOf: Identifying alternative paths between functinal parthoods...");
 		for (componentOf cp : parser.getAllInstances(componentOf.class)) {
 			Type whole = OntoUMLParser.getWholeEnd(cp).getType();
@@ -72,11 +51,6 @@ public class ForbiddenComponentOfTask extends ForbiddenTask<componentOf>{
 				Object firstNode = path.getNodeIds().get(0);
 				Object lastNode = path.getNodeIds().get(path.nodes()-1);
 				
-				System.out.println("Whole: "+OntoUMLNameHelper.getName(whole)
-						+" Part: "+OntoUMLNameHelper.getName(part)
-						+" First: "+OntoUMLNameHelper.getName((EObject) firstNode)
-						+" Second: "+OntoUMLNameHelper.getName((EObject) lastNode)
-						+" EQUALS: "+(firstNode.equals(whole) && lastNode.equals(part)));
 				
 				if(firstNode.equals(whole) && lastNode.equals(part)){
 					ForbiddenComponentOf fcp = new ForbiddenComponentOf(cp, parser);
@@ -94,13 +68,11 @@ public class ForbiddenComponentOfTask extends ForbiddenTask<componentOf>{
 	@Override
 	protected Boolean doInBackground() throws Exception {
 		System.out.println("Intransitive ComponentOf: Analyzing model...");
-		setProgress(1);
 		System.out.println("Intransitive ComponentOf: Creating meronymic graph...");
 		setPaths(true, true);
-		setProgress(40);
 		System.out.println("Intransitve ComponentOf: Analyzing graph...");
 		findForbiddenComponentOf();
-		setProgress(100);
+		setProgress(50);
 		return true;
 	}
 	

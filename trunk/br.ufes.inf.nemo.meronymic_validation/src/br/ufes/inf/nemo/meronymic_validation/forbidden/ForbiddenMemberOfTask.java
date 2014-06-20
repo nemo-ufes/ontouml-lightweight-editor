@@ -6,8 +6,8 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import RefOntoUML.memberOf;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.meronymic_validation.forbidden.ui.ForbiddenTableModel;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.ForbiddenTableModel;
 
 public class ForbiddenMemberOfTask extends ForbiddenTask<memberOf>{
 
@@ -46,13 +46,11 @@ public class ForbiddenMemberOfTask extends ForbiddenTask<memberOf>{
 	@Override
 	protected Boolean doInBackground() throws Exception {
 		System.out.println("Intransitive MemberOf: Analyzing model...");
-		setProgress(1);
 		System.out.println("Intransitive MemberOf: Creating meronymic graph...");
 		setPaths(false, false);
-		setProgress(40);
 		System.out.println("Intransitve MemberOf: Analyzing graph...");
 		findIntransitiveMemberOf();
-		setProgress(100);
+		setProgress(50);
 		return true;
 	}
 	

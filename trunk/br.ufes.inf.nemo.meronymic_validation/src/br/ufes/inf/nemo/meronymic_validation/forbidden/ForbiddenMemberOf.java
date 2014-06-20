@@ -1,35 +1,22 @@
 package br.ufes.inf.nemo.meronymic_validation.forbidden;
 
-import java.util.ArrayList;
-
 import javax.swing.JDialog;
 
-import RefOntoUML.Classifier;
-import RefOntoUML.Collective;
-import RefOntoUML.Kind;
-import RefOntoUML.MixinClass;
-import RefOntoUML.Phase;
+import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
-import RefOntoUML.Quantity;
-import RefOntoUML.Role;
-import RefOntoUML.SubKind;
 import RefOntoUML.memberOf;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.meronymic_validation.forbidden.ui.ForbiddenMemberOfDialog;
 import br.ufes.inf.nemo.meronymic_validation.userinterface.FixDialog;
 
 public class ForbiddenMemberOf extends ForbiddenMeronymic<memberOf> {
 	
-	enum Action {REMOVE_MEMBEROF, CHANGE_ALL_TO_SUBCOLLECTIONOF, 
+	enum Action {REMOVE, REVERSE, CHANGE_ALL_TO_SUBCOLLECTIONOF, 
 				MAKE_MEMBEROF_VALID, CHANGE_ALL_TO_COMPONENTOF,
 				CHANGE_ALL_TO_SUBQUANTITYOF}
-
-
-	private memberOf memberOfToRemove;
 	
 	public ForbiddenMemberOf(memberOf m, OntoUMLParser parser) {
 		super(m, parser);
@@ -53,24 +40,37 @@ public class ForbiddenMemberOf extends ForbiddenMeronymic<memberOf> {
 	@Override
 	public Fix fix() {
 		
-		if(action == Action.REMOVE_MEMBEROF)
-			return removeMemberOf();
-		if(action == Action.CHANGE_ALL_TO_COMPONENTOF)
-			return changeAllToComponentOf();
-		if(action == Action.CHANGE_ALL_TO_SUBCOLLECTIONOF)
-			return changeAllToSubCollectionOf();
-		if(action == Action.CHANGE_ALL_TO_SUBQUANTITYOF)
-			return changeAllToSubQuantityOf();
-		if(action == Action.MAKE_MEMBEROF_VALID)
-			return makeMemberOfValid();
+		if(action == Action.REMOVE)
+			remove();
+		else if(action == Action.REVERSE)
+			reverse();
+		else if(action == Action.CHANGE_ALL_TO_COMPONENTOF){
+			makeFunctionalDerivationPath();
+			changeFobbidenTo(RelationStereotype.COMPONENTOF);
+		}
+		else if(action == Action.CHANGE_ALL_TO_SUBCOLLECTIONOF){
+			makeSubCollectionDerivationPath();
+			changeFobbidenTo(RelationStereotype.SUBCOLLECTIONOF);
+		}
+		else if(action == Action.CHANGE_ALL_TO_SUBQUANTITYOF){
+			makeSubQuantityDerivationPath();
+			changeFobbidenTo(RelationStereotype.SUBQUANTITYOF);
+		}
+		else if(action == Action.MAKE_MEMBEROF_VALID)
+			makeMembershipDerivationPath();
 		
-		return null;
+		return fix;
 			
 	}
+
+	public void setRemove(Meronymic meronymic){
+		this.relationToRemove = meronymic;
+		this.action = Action.REMOVE;
+	}
 	
-	public void setRemoveMemberOf(memberOf memberOfToRemove){
-		this.memberOfToRemove = memberOfToRemove;
-		this.action = Action.REMOVE_MEMBEROF;
+	public void setReverse(Meronymic meronymic) {
+		this.relationToReverse = meronymic;
+		this.action = Action.REVERSE;
 	}
 	
 	public void setChangeAllToSubCollectionOf(){
@@ -88,120 +88,39 @@ public class ForbiddenMemberOf extends ForbiddenMeronymic<memberOf> {
 	public void setMakeMemberOfValid(){
 		this.action = Action.MAKE_MEMBEROF_VALID;
 	}
-
-	private Fix removeMemberOf(){
-		OutcomeFixer fixer = new OutcomeFixer(getRootPackage());
-		return fixer.deleteElement(memberOfToRemove);
-	}
 	
-	private Fix changeAllTo(RelationStereotype stereotype){
-		OutcomeFixer fixer = new OutcomeFixer(getRootPackage());
-		Fix fix = new Fix();
-		
-		for (Property p : path) {
-			fix.addAll(fixer.changeRelationStereotypeTo(p.getAssociation(), stereotype));
-		}
-		
+	public void changeFobbidenTo(RelationStereotype stereotype){
 		fix.addAll(fixer.changeRelationStereotypeTo(meronymic, stereotype));
-		
-		return fix;
 	}
 	
-	private Fix changeAllToSubCollectionOf(){
-		Fix fix = new Fix();
-		ArrayList<Classifier> visited = new ArrayList<Classifier>();
-		fix.addAll(changeNature((Classifier) OntoUMLParser.getPartEnd(meronymic).getType(), visited, ClassStereotype.COLLECTIVE));
-		fix.addAll(changeAllTo(RelationStereotype.SUBCOLLECTIONOF));
-		
-		return fix;
-	}
-	
-	private Fix changeAllToComponentOf(){
-		ArrayList<Classifier> visited;
-		Fix fix = new Fix();
-	
-		for (Property p : path) {
-			visited = new ArrayList<Classifier>();
-			fix.addAll(changeNature((Classifier)p.getType(), visited, ClassStereotype.KIND));
-		}
-		
-		visited = new ArrayList<Classifier>();
-		fix.addAll(changeNature((Classifier) OntoUMLParser.getWholeEnd(meronymic).getType(), visited, ClassStereotype.KIND));
-		
-		fix.addAll(changeAllTo(RelationStereotype.COMPONENTOF));
-		
-		return fix;
-	}
-	
-	private Fix changeAllToSubQuantityOf(){
-		ArrayList<Classifier> visited;
-		Fix fix = new Fix();
-	
-		for (Property p : path) {
-			visited = new ArrayList<Classifier>();
-			fix.addAll(changeNature((Classifier)p.getType(), visited, ClassStereotype.QUANTITY));
-		}
-		
-		visited = new ArrayList<Classifier>();
-		fix.addAll(changeNature((Classifier) OntoUMLParser.getWholeEnd(meronymic).getType(), visited, ClassStereotype.QUANTITY));
-		
-		fix.addAll(changeAllTo(RelationStereotype.SUBQUANTITYOF));
-		
-		return fix;
-	}
-	
-	private Fix makeMemberOfValid(){
-		OutcomeFixer fixer = new OutcomeFixer(getRootPackage());
-		Fix fix = new Fix();
-		
-		for (int i = 0; i < path.size()-1; i++) {
-			Property p = path.get(i);
-			fix.addAll(fixer.changeRelationStereotypeTo(p.getAssociation(), RelationStereotype.SUBCOLLECTIONOF));
-		}
-		
-		return fix;
-	}
-	
-	private Fix changeNature(Classifier c, ArrayList<Classifier> visited, ClassStereotype newNature){
-		
-		if(newNature!=ClassStereotype.KIND && newNature!=ClassStereotype.COLLECTIVE && newNature!=ClassStereotype.QUANTITY)
-			return null;
-		
-		Fix fix = new Fix();
-		visited.add(c);
-		
-		OutcomeFixer fixer = new OutcomeFixer(getRootPackage());
-		
-		if(c instanceof Kind || c instanceof Quantity || c instanceof Collective){
-			if(OutcomeFixer.getClassStereotype(c)==newNature)
-				return fix;
-			else
-				return fixer.changeClassStereotypeTo(c, newNature);
-		}
-			
-		
-		if(c instanceof SubKind || c instanceof Role || c instanceof Phase){
-			for (Classifier parent : c.parents()) {
-				if(!visited.contains(parent))
-					fix.addAll(changeNature(parent, visited, newNature));
-			}
-		}
-		
-		if(c instanceof MixinClass){
-			for (Classifier child : c.children()) {
-				if(!visited.contains(child))
-					fix.addAll(changeNature(child, visited, newNature));
-			}
-		}
-		
-		return fix;
+	@Override
+	public FixDialog<?> createDialog(JDialog parent) {
+		ForbiddenMemberOfDialog dialog = new ForbiddenMemberOfDialog(parent, this);
+		dialog.setSize(600, 700);
+		return dialog;
 	}
 
-	@Override
-	public FixDialog createDialog(JDialog parent) {
-		// TODO Auto-generated method stub
-		return null;
-	}	
+	public boolean isRemove() {
+		return action==Action.REMOVE;
+	}
 	
+	public boolean isReverse() {
+		return action==Action.REVERSE;
+	}
 	
+	public boolean isChangeAllToSubCollectionOf() {
+		return action==Action.CHANGE_ALL_TO_SUBCOLLECTIONOF;
+	}
+	
+	public boolean isChangeAllToComponentOf() {
+		return action==Action.CHANGE_ALL_TO_COMPONENTOF;
+	}
+	
+	public boolean isChangeAllToSubQuantityOf() {
+		return action==Action.CHANGE_ALL_TO_SUBQUANTITYOF;
+	}
+	
+	public boolean isMakeMemberOfValid() {
+		return action==Action.MAKE_MEMBEROF_VALID;
+	}
 }
