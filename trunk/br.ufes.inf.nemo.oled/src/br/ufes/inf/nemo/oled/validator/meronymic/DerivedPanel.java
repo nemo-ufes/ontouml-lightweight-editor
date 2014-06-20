@@ -107,8 +107,8 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 		btnHelp1.setBorderPainted(false);
 		btnHelp1.setContentAreaFilled(false);
 		btnHelp1.setOpaque(false);
-		btnHelp1.setRolloverIcon(new ImageIcon(DerivedPanel.class.getResource("/br/ufes/inf/nemo/meronymic_validation/resources/help-rollover.png")));
-		btnHelp1.setIcon(new ImageIcon(DerivedPanel.class.getResource("/br/ufes/inf/nemo/meronymic_validation/resources/help.png")));
+		btnHelp1.setRolloverIcon(new ImageIcon(DerivedPanel.class.getResource("/br/ufes/inf/nemo/validator/meronymic/resources/help-rollover.png")));
+		btnHelp1.setIcon(new ImageIcon(DerivedPanel.class.getResource("/br/ufes/inf/nemo/validator/meronymic/resources/help.png")));
 		
 		functionalCheck = new JCheckBox("Derive Functional Parthood");
 		GridBagConstraints gbc_functionalCheck = new GridBagConstraints();
@@ -124,7 +124,7 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 		gbc_button.gridx = 0;
 		gbc_button.gridy = 1;
 		panel.add(button, gbc_button);
-		button.setIcon(new ImageIcon(DerivedPanel.class.getResource("/br/ufes/inf/nemo/meronymic_validation/resources/help.png")));
+		button.setIcon(new ImageIcon(DerivedPanel.class.getResource("/br/ufes/inf/nemo/validator/meronymic/resources/help.png")));
 		button.setPreferredSize(new Dimension(20, 20));
 		button.setOpaque(false);
 		button.setContentAreaFilled(false);
@@ -144,7 +144,7 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 		gbc_button_1.gridx = 0;
 		gbc_button_1.gridy = 2;
 		panel.add(button_1, gbc_button_1);
-		button_1.setIcon(new ImageIcon(DerivedPanel.class.getResource("/br/ufes/inf/nemo/meronymic_validation/resources/help.png")));
+		button_1.setIcon(new ImageIcon(DerivedPanel.class.getResource("/br/ufes/inf/nemo/validator/meronymic/resources/help.png")));
 		button_1.setPreferredSize(new Dimension(20, 20));
 		button_1.setOpaque(false);
 		button_1.setContentAreaFilled(false);
