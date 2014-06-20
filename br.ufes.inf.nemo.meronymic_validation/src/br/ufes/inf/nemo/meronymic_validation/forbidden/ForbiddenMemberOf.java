@@ -10,7 +10,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.forbidden.ui.ForbiddenMemberOfDialog;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.FixDialog;
+import br.ufes.inf.nemo.meronymic_validation.ui.FixDialog;
 
 public class ForbiddenMemberOf extends ForbiddenMeronymic<memberOf> {
 	

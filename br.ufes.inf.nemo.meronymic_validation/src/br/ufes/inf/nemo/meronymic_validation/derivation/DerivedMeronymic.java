@@ -19,7 +19,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.MeronymicItem;
 import br.ufes.inf.nemo.meronymic_validation.derivation.ui.DirectPatternActionDialog;
 import br.ufes.inf.nemo.meronymic_validation.derivation.ui.DirectPatternPropertyDialog;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.FixDialog;
+import br.ufes.inf.nemo.meronymic_validation.ui.FixDialog;
 
 public class DerivedMeronymic extends MeronymicItem{
 
