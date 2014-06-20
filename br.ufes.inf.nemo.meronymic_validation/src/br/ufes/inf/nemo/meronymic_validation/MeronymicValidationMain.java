@@ -14,10 +14,10 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class MeronymicValidationMain {
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		
 		ResourceSet resourceSet = new ResourceSetImpl();
-		@SuppressWarnings("unused")
 		RefOntoUMLPackage refMetaPack = RefOntoUMLPackage.eINSTANCE;
 		// Register the default resource factory -- only needed for stand-alone!
 		
