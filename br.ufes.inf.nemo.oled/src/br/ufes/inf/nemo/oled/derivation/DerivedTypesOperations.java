@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.oled.derivation;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -292,6 +291,7 @@ public class DerivedTypesOperations {
 	}
 
 
+	@SuppressWarnings("unused")
 	public static Fix createDerivedTypeUnion(String stereotype, Fix fix, List<DiagramElement> selected, String name, ArrayList<RefOntoUML.Element> refontoList, UmlProject project, DiagramManager dm){
 		dman = dm;
 		mainfix = fix;
@@ -579,6 +579,7 @@ public class DerivedTypesOperations {
 
 
 
+	@SuppressWarnings("unused")
 	public static Fix createIntersectionDerivation(DiagramEditor activeEditor,
 			UmlProject project, DiagramManager diagramManager) {
 		// TODO Auto-generated method stub
@@ -669,6 +670,7 @@ public class DerivedTypesOperations {
 
 
 
+	@SuppressWarnings("unused")
 	private static Fix createIntersectionDerivedType(String stereotype,
 			DiagramManager diagramManager, DiagramEditor activeEditor, UmlProject project) {
 		dman= diagramManager;

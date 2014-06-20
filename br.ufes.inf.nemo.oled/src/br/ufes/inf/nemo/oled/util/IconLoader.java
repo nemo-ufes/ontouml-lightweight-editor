@@ -111,6 +111,7 @@ public final class IconLoader {
 		COPYRIGHTS,		
 		ARROW_DOWN,
 		ANTIPATTERN,
+		PART_WHOLE_VALIDATION,
 		DERIVERELATIONS,
 		NEMO,		
 		DIRECT,
@@ -165,6 +166,7 @@ public final class IconLoader {
 		urlMap.put(IconType.STRAIGHT, "resources/icons/x16/straight.png");
 				
 		urlMap.put(IconType.ANTIPATTERN, "resources/icons/antipattern16.png");
+		urlMap.put(IconType.PART_WHOLE_VALIDATION, "resources/icons/x16/diamond.png");
 		
 		urlMap.put(IconType.GENERATE_ALLOY, "resources/icons/x16/alloy/alloy.png");
 				

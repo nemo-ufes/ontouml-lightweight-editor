@@ -74,32 +74,38 @@ public class AppToolbar implements ActionListener {
 		btnText.setToolTipText("" +
 			"<html>Transform the model into a glossary of terms<br><br>"+
 			"TIP: You may customize which packages or elements do you want to transform <br>" +
-			"by just deselecting/selecting them on the project browser.<br><br>" +
+			"just deselecting/selecting them on the project browser.<br><br>" +
 			"</html>");	
 		JButton btnSBVR = createButton("generatesbvr");
 		btnSBVR.setToolTipText("" +
 			"<html>Transform the model into SBVR<br><br>"+
 			"TIP: You may customize which packages or elements  do you want to transform <br>" +
-			"by just deselecting/selecting them on the project browser.<br><br>" +
+			"just deselecting/selecting them on the project browser.<br><br>" +
 			"</html>");	
 		JButton btnAlloy = createButton("generatealloy");
 		btnAlloy.setToolTipText("" +
 			"<html>Transform the model and all axioms into Alloy<br><br>"+
 			"TIP: You may customize which packages or elements do you want to transform <br>" +
-			"by just deselecting/selecting them on the project browser.<br><br>" +
+			"just deselecting/selecting them on the project browser.<br><br>" +
 			"</html>");		
 		JButton btnOWL = createButton("generateowlsettings");
 		btnOWL.setToolTipText("" +
 			"<html>Transform the model and all axioms into OWL<br><br>"+
 			"TIP: You may customize which packages or elements  do you want to transform <br>" +
-			"by just deselecting/selecting them on the project browser.<br><br>" +
+			"just deselecting/selecting them on the project browser.<br><br>" +
 			"</html>");		
 		//toolbar.addSeparator();
 		JButton btnAntiPattern = createButton("antipattern");
 		btnAntiPattern.setToolTipText("" +
 			"<html>Identify anti-pattern occurrences in the model<br><br>"+
 			"TIP: You may customize which packages or elements do you want to consider <br>" +
-			"by just deselecting/selecting them on the project browser.<br><br>" +
+			"just deselecting/selecting them on the project browser.<br><br>" +
+			"</html>");	
+		JButton btnMeronymic = createButton("partwhole");
+		btnMeronymic.setToolTipText("" +
+			"<html>Validate the transitivity of parthood relations<br><br>"+
+			"TIP: You may customize which packages or elements do you want to consider <br>" +
+			"just deselecting/selecting them on the project browser.<br><br>" +
 			"</html>");	
 		enableButton("UNDO", true);
 		enableButton("REDO", true);
