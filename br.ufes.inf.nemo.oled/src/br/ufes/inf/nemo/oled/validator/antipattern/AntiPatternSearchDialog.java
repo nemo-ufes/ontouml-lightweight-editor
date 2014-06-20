@@ -299,9 +299,8 @@ public class AntiPatternSearchDialog extends JDialog {
 		
 		this.frame = frame;
 		
-//		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternSearchDialog.class.getResource("/resources/icons/antipattern36.png")));
 		//Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternSearchDialog.class.getResource("/resources/icons/antipattern36.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AntiPatternSearchDialog.class.getResource("/resources/icons/antipattern16.png")));
 		setTitle("Anti-Pattern Identification");
 		setBounds(100, 100, 854, 511);
 		 
