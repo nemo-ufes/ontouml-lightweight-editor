@@ -92,7 +92,7 @@ import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
 import br.ufes.inf.nemo.oled.finder.ElementFound;
-import br.ufes.inf.nemo.oled.meronymicvalidation.ValidationFrame;
+import br.ufes.inf.nemo.oled.meronymicvalidation.ValidationDialog;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
@@ -2324,7 +2324,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	public void validatesParthood() {
-		ValidationFrame.open(ProjectBrowser.getParserFor(getCurrentProject()), frame);
+		ValidationDialog.open(ProjectBrowser.getParserFor(getCurrentProject()), frame);
 		
 	}
 	public void openDerivedTypePatternSpecialization(double x, double y) {
