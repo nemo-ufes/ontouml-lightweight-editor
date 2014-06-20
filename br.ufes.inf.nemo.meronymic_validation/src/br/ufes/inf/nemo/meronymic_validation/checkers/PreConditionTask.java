@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.meronymic_validation.checkers;
 
 import java.util.List;
 
-import javax.swing.JTabbedPane;
 import javax.swing.SwingWorker;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -12,7 +11,6 @@ public class PreConditionTask extends SwingWorker<Boolean, MeronymicError<?>>{
 	OntoUMLParser parser;
 	
 	CheckerTableModel tableModel;
-	JTabbedPane tabbedPane;
 	
 	boolean checkHierarchyCycle, checkGeneralization, checkIdentity, checkAggregation, checkEnds, checkMeronymicCycle;
 	public boolean canGoToNextStep;
@@ -24,11 +22,10 @@ public class PreConditionTask extends SwingWorker<Boolean, MeronymicError<?>>{
 	MeronymicEndsChecker meronymicEndsChecker;
 	MeronymicCycleChecker meronymicCycleChecker;
 	
-	public PreConditionTask(OntoUMLParser parser, CheckerTableModel tableModel, JTabbedPane tabbedPane) {
+	public PreConditionTask(OntoUMLParser parser, CheckerTableModel tableModel) {
 		this.parser = parser;
 		this.tableModel = tableModel;
 		this.canGoToNextStep = false;
-		this.tabbedPane = tabbedPane;
 		
 		hierachyCycleChecker = new HierarchyCycleChecker(parser);
 		generalizationChecker = new GeneralizationChecker(parser);
@@ -181,18 +178,6 @@ public class PreConditionTask extends SwingWorker<Boolean, MeronymicError<?>>{
 		for (MeronymicError<?> error : result) {
 			tableModel.addRow(error);
 		}
-	}
-	
-	@Override
-	protected void done() {
-		if(canGoToNextStep){
-			tabbedPane.setEnabledAt(1, true);
-		}
-		else{
-			tabbedPane.setEnabledAt(1, false);
-		}
-	}
-
-	
+	}	
 	
 }
