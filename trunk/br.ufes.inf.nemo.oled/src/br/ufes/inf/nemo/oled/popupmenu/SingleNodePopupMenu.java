@@ -65,6 +65,10 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		
 		createPatternMenu();
 		
+		JMenu deriveMenu = new JMenu("Derive by");
+		specializationItem = createMenuItem(deriveMenu, "derivedspecialization");		
+		add(deriveMenu);
+		
 		addSeparator();
 				
 		setColorItem = new JMenuItem("Set Color");
@@ -136,10 +140,8 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		
 		createMenuItem(this, "exclude");
 		
-		addSeparator();
-		
 		createMenuItem(this, "delete");	
-		specializationItem = createMenuItem(this, "derivedspecialization");
+		
 //		addSeparator();				
 //		changeMenu = new ClassStereotypeChangeMenu(editor.getDiagramManager());
 //		add(changeMenu);

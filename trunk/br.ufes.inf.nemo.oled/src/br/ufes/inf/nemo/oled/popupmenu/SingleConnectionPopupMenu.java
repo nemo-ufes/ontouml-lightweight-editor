@@ -114,8 +114,6 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		treeStyleVerticalMenuItem = createMenuItem(lineStyleItem, "treestyle.vertical");
 		treeStyleHorizontalMenuItem = createMenuItem(lineStyleItem, "treestyle.horizontal");
 		
-		addSeparator();
-		
 		createInvertMenu();
 		createEndPointItems();
 		createMetaProperties();
@@ -228,8 +226,6 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		addSeparator();
 		
 		createMenuItem(this, "exclude");
-		
-		addSeparator();
 		
 		createMenuItem(this, "delete");
 	}
