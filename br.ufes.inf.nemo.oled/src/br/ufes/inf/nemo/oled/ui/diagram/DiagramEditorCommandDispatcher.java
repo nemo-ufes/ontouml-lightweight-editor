@@ -29,13 +29,13 @@ import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.AppMenu;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.antipattern.AntiPatternSearchDialog;
 import br.ufes.inf.nemo.oled.dialog.AutoCompletionDialog;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.util.MethodCall;
+import br.ufes.inf.nemo.oled.validator.antipattern.AntiPatternSearchDialog;
 
 /**
  * This class receives BaseEditor related AppCommands and dispatches them to

@@ -12,13 +12,13 @@ import javax.swing.JColorChooser;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
-import br.ufes.inf.nemo.oled.antipattern.AntiPatternSearchDialog;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AlignElementsCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AlignElementsCommand.Alignment;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetColorCommand;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
+import br.ufes.inf.nemo.oled.validator.antipattern.AntiPatternSearchDialog;
 
 public class DiagramToolbar extends JToolBar {
 

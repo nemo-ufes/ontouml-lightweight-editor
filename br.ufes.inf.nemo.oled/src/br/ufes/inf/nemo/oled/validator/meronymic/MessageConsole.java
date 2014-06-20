@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.meronymicvalidation;
+package br.ufes.inf.nemo.oled.validator.meronymic;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

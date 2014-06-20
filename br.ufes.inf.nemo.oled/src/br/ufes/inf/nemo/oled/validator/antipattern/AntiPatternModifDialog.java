@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.antipattern;
+package br.ufes.inf.nemo.oled.validator.antipattern;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.dialogs.Dialog;

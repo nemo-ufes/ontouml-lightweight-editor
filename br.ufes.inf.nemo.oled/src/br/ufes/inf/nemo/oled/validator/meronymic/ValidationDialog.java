@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.meronymicvalidation;
+package br.ufes.inf.nemo.oled.validator.meronymic;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
+import java.awt.Toolkit;
 
 public class ValidationDialog extends JDialog {
 
@@ -48,6 +49,7 @@ public class ValidationDialog extends JDialog {
 	 * @wbp.parser.constructor
 	 */
 	public ValidationDialog(OntoUMLParser parser) {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ValidationDialog.class.getResource("/resources/icons/x16/diamond.png")));
 		setTitle("Validation of Part-Whole Relations");
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
