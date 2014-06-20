@@ -361,7 +361,7 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		if(association instanceof Meronymic){
 			Meronymic meronymic = (Meronymic) getOrCreateRelation(whole,part);
 			meronymic.setIsShareable(isShareable);
-			Property wholeEnd = parser.getWholeEnd(meronymic);
+			Property wholeEnd = OntoUMLParser.getWholeEnd(meronymic);
 			
 			boolean addToModified = !createdAssociations.contains(meronymic);
 			fix.addAll(fixer.changePropertyMultiplicity(wholeEnd, wholeEnd.getLower(), wholeEnd.getUpper(), addToModified));
@@ -371,6 +371,7 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		return false;
 	}
 	
+	@SuppressWarnings("static-access")
 	public boolean setIsReadOnly(Classifier source, Classifier target, boolean isReadOnlySource, boolean isReadOnlyTarget){
 		
 		Property pSource, pTarget;
@@ -406,6 +407,7 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		return true;
 	}
 	
+	@SuppressWarnings("static-access")
 	public boolean setIsDerived(Classifier source, Classifier target, boolean isDerivedSource, boolean isDerivedTarget){
 		
 		Property pSource, pTarget;
@@ -439,6 +441,7 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		return true;
 	}
 	
+	@SuppressWarnings("static-access")
 	public boolean setMultiplicity(Classifier source, Classifier target, int lowerSource, int upperSource, int lowerTarget, int upperTarget){
 		
 		Property pSource, pTarget;
@@ -491,6 +494,7 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		return null;
 	}
 	
+	@SuppressWarnings("static-access")
 	private Association createNewRelation(Classifier source, Classifier target){
 		Association newAssoc;
 		Property generalTarget, specificTarget;
