@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class DerivedPage extends ImpAbsPage<MetaPropertiesTableBuilder> {
 
@@ -25,8 +26,8 @@ public class DerivedPage extends ImpAbsPage<MetaPropertiesTableBuilder> {
 		setDescription("Association: "+occurrence.getParser().getStringRepresentation(occurrence.getAssociation())+" (isDerived)");
 		
 		if(occurrence.getAssociation() instanceof Meronymic){
-			sourceEnd = occurrence.getParser().getWholeEnd((Meronymic) occurrence.getAssociation());
-			targetEnd = occurrence.getParser().getPartEnd((Meronymic) occurrence.getAssociation());
+			sourceEnd = OntoUMLParser.getWholeEnd((Meronymic) occurrence.getAssociation());
+			targetEnd = OntoUMLParser.getPartEnd((Meronymic) occurrence.getAssociation());
 			SOURCE_IS_DERIVED = "Whole isDerived";
 			TARGET_IS_DERIVED = "Part isDerived";
 		}

@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class ShareablePage extends ImpAbsPage<MetaPropertiesTableBuilder> {
 
@@ -26,8 +27,8 @@ public class ShareablePage extends ImpAbsPage<MetaPropertiesTableBuilder> {
 		else
 			throw new Exception("Can't create isEssential Page! Association provided is not a Meronymic relation.");
 	
-		whole = (Classifier) occurrence.getParser().getWholeEnd(meronymic).getType();
-		part = (Classifier) occurrence.getParser().getPartEnd(meronymic).getType();
+		whole = (Classifier) OntoUMLParser.getWholeEnd(meronymic).getType();
+		part = (Classifier) OntoUMLParser.getPartEnd(meronymic).getType();
 	}
 
 	public void createControl(Composite parent) {

@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class EssentialPage extends ImpAbsPage<MetaPropertiesTableBuilder> {
 
@@ -31,8 +32,8 @@ public class EssentialPage extends ImpAbsPage<MetaPropertiesTableBuilder> {
 		else
 			throw new Exception("Can't create isEssential Page! Association provided is not a Meronymic relation.");
 	
-		whole = (Classifier) occurrence.getParser().getWholeEnd(meronymic).getType();
-		part = (Classifier) occurrence.getParser().getPartEnd(meronymic).getType();
+		whole = (Classifier) OntoUMLParser.getWholeEnd(meronymic).getType();
+		part = (Classifier) OntoUMLParser.getPartEnd(meronymic).getType();
 		
 		TBL_POS_Y += 80;
 		BTN_POS = TBL_POS_Y - 31;
