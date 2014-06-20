@@ -13,7 +13,7 @@ public class DerivedTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 3207003781085511173L;
 	
 	private ArrayList<DerivedMeronymic> derivedMeronymic = new ArrayList<DerivedMeronymic>();
-	private String[] columns={"Whole","Part","Stereotype","Pattern","Path","Exists?","Allowed?"};
+	private String[] columns={"Whole","Part","Stereotype","Pattern","Path","Exists?","Has Fix?"};
 
 	public DerivedTableModel() {
 		   
@@ -70,22 +70,6 @@ public class DerivedTableModel extends AbstractTableModel {
 	}
 	
 	@Override
-	public void setValueAt(Object value, int row, int col) {
-		DerivedMeronymic derived = derivedMeronymic.get(row);
-        
-		switch (col) {
-		case 6:
-			derived.setAllowed((boolean) value);
-			break;
-
-		default:
-			break;
-		}
-		
-		fireTableCellUpdated(row, col);
-    }
-	
-	@Override
 	public Object getValueAt(int row, int col) {
 		DerivedMeronymic derived = derivedMeronymic.get(row);
 		   switch (col) {
@@ -98,11 +82,11 @@ public class DerivedTableModel extends AbstractTableModel {
 		    case 3:
 		    	return derived.getPatternString();
 		    case 4:
-		    	return derived.getDerivationPathString();
+		    	return derived.getPathString();
 		    case 5:
 		    	return derived.existsMeronymic();
 		    case 6:
-		     return derived.isAllowed();
+		     return derived.hasAction();
 		    default:
 		     return null;
 		   }
@@ -110,13 +94,7 @@ public class DerivedTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		switch (col) {
-		case 6:
-			return true;
-
-		default:
-			return false;
-		}
+		return false;
 	}
 
 	public ArrayList<DerivedMeronymic> getAllRows() {
