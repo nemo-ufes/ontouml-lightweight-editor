@@ -21,6 +21,9 @@ public class MembershipDerivationTask extends DerivationTask<Meronymic>{
 	public MembershipDerivationTask(OntoUMLParser parser, DerivedTableModel tableModel) {
 		super(parser, tableModel);
 		
+		memberships = new ArrayList<DerivedMeronymic>();
+		subCollections = new ArrayList<DerivedMeronymic>();
+		
 		existing.addAll(parser.getAllInstances(subCollectionOf.class));
 		existing.addAll(parser.getAllInstances(memberOf.class));
 	}
@@ -110,11 +113,5 @@ public class MembershipDerivationTask extends DerivationTask<Meronymic>{
 		setProgress(33);
 		return true;
 	}
-	
-	@Override
-	protected void done() {
-//		setProgress(33);
-	}
-	
 	
 }
