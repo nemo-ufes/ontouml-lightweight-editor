@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.meronymic_validation.userinterface;
+package br.ufes.inf.nemo.meronymic_validation.forbidden.ui;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -22,14 +22,12 @@ public class ForbiddenTable extends JTable{
 		getColumnModel().getColumn(0).setPreferredWidth(100);
 		getColumnModel().getColumn(1).setPreferredWidth(100);
 		getColumnModel().getColumn(2).setPreferredWidth(100);
-		getColumnModel().getColumn(3).setPreferredWidth(100);
-		getColumnModel().getColumn(4).setPreferredWidth(100);
-		getColumnModel().getColumn(5).setPreferredWidth(100);
+		getColumnModel().getColumn(3).setPreferredWidth(50);
+		getColumnModel().getColumn(4).setPreferredWidth(200);
+		getColumnModel().getColumn(5).setPreferredWidth(20);
 		
-		getColumnModel().getColumn(0).setCellRenderer( centerRenderer );
-		getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
-		getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
 		getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
+		getColumnModel().getColumn(5).setCellRenderer( centerRenderer );
 		
 		getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}

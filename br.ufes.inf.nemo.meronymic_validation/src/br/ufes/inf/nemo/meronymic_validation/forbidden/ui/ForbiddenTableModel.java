@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.meronymic_validation.userinterface;
+package br.ufes.inf.nemo.meronymic_validation.forbidden.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public class ForbiddenTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = -1928067858298060225L;
 	
 	private ArrayList<ForbiddenMeronymic<? extends Meronymic>> forbiddenMeronymic = new ArrayList<>();
-	private static final String[] 	COLUMNS = {"Whole","Part","Name","Stereotype","Location","Description"};
+	private static final String[] 	COLUMNS = {"Whole","Part","Name","Stereotype","Description","Has Fix?",};
 	private static final Class<?>[] COLUMN_TYPES = new Class<?>[] {String.class, String.class, String.class, String.class, String.class, String.class};
 
 	public ForbiddenTableModel() { 
@@ -68,22 +68,6 @@ public class ForbiddenTableModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 	
-//	@Override
-//	public void setValueAt(Object value, int row, int col) {
-//		ForbiddenMeronymic<?> forbidden = forbiddenMeronymic.get(row);
-//        
-//		switch (col) {
-//		case 6:
-//			forbidden.setAllowed((boolean) value);
-//			break;
-//
-//		default:
-//			break;
-//		}
-//		
-//		fireTableCellUpdated(row, col);
-//    }
-	
 	@Override
 	public Object getValueAt(int row, int col) {
 		ForbiddenMeronymic<?> forbidden = forbiddenMeronymic.get(row);
@@ -97,9 +81,11 @@ public class ForbiddenTableModel extends AbstractTableModel {
 		    case 3:
 		    	return OntoUMLNameHelper.getTypeName(forbidden.getMeronymic(), false);
 		    case 4:
-		    	return OntoUMLNameHelper.getPath(forbidden.getMeronymic());
-		    case 5:
 		    	return forbidden.getDescription();
+		    case 5:
+		    	if(forbidden.hasAction()) 
+		    		return "Yes";
+		    	return "No";
 		    default:
 		    	return null;
 		   }
@@ -108,6 +94,11 @@ public class ForbiddenTableModel extends AbstractTableModel {
 	@Override
 	public boolean isCellEditable(int row, int col) {
 		return false;
+	}
+
+	public ArrayList<ForbiddenMeronymic<? extends Meronymic>> getAllRows() {
+		return forbiddenMeronymic;
+		
 	}
 	
 

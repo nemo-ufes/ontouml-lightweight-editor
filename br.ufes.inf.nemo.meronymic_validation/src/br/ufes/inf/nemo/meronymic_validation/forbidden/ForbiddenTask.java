@@ -10,11 +10,11 @@ import javax.swing.SwingWorker;
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.meronymic_validation.forbidden.ui.ForbiddenTableModel;
 import br.ufes.inf.nemo.meronymic_validation.graph.DirectedEdge;
 import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
 import br.ufes.inf.nemo.meronymic_validation.graph.Graph;
 import br.ufes.inf.nemo.meronymic_validation.graph.Node;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.ForbiddenTableModel;
 
 public abstract class ForbiddenTask <T extends Meronymic> extends SwingWorker<Boolean, ForbiddenMeronymic<T>>{
 
@@ -67,7 +67,6 @@ public abstract class ForbiddenTask <T extends Meronymic> extends SwingWorker<Bo
 		Graph genGraph = new Graph(parser);
 		//creates directed graph with classes and meronymics
 		genGraph.createMeronymicGraph(existing, addPartParents, addPartChildren);
-		System.out.println(genGraph.getAllNodes());
 		
 		for (Node node : genGraph.getAllNodes()) {
 			for (DirectedEdge egde : node.getEdges()) {
@@ -94,14 +93,8 @@ public abstract class ForbiddenTask <T extends Meronymic> extends SwingWorker<Bo
 
 	@Override
 	protected void process(final List<ForbiddenMeronymic<T>> result) {
-		System.out.println("PROCESSING!!!");
 		for (ForbiddenMeronymic<T> forbiddenMeronymic : result) {
 			tableModel.addRow(forbiddenMeronymic);
 		}
-	}
-	
-	@Override
-	protected void done() {
-		System.out.println("DONE!!!");
 	}
 }
