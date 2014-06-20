@@ -110,11 +110,11 @@ public class ValidationDialog extends JDialog {
 		
 		forbiddenPanel = new ForbiddenPanel(this, parser,saveButton,applyButton);
 		tabbedPane.addTab("Forbidden", null, forbiddenPanel, null);
-		tabbedPane.setEnabledAt(1, true);
+		tabbedPane.setEnabledAt(1, false);
 		
 		derivedPanel = new DerivedPanel(this, parser,saveButton,applyButton);
 		tabbedPane.addTab("Derived", null, derivedPanel, null);
-		tabbedPane.setEnabledAt(2, true);
+		tabbedPane.setEnabledAt(2, false);
 		
 		consoleTextPane = new JTextPane();
 		consoleTextPane.setBackground(new Color(255, 248, 220));
