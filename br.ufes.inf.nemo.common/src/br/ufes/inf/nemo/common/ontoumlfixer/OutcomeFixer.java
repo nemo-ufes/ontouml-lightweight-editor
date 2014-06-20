@@ -32,6 +32,7 @@ import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Mixin;
+import RefOntoUML.MixinClass;
 import RefOntoUML.Mode;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Package;
@@ -1539,6 +1540,44 @@ public class OutcomeFixer{
 		return fix;		
 	}
 	
-	
+	/**
+	 * 
+	 * @param c Classifier whose nature will be changed (Possible natures: Functional Complex, COllection and QUatity
+	 * @param visited 
+	 * @param newNature
+	 * @return
+	 */
+	public Fix changeNature(Classifier c, ArrayList<Classifier> visited, ClassStereotype newNature){
+		
+		if(newNature!=ClassStereotype.KIND && newNature!=ClassStereotype.COLLECTIVE && newNature!=ClassStereotype.QUANTITY)
+			return null;
+		
+		Fix fix = new Fix();
+		visited.add(c);
+		
+		if(c instanceof Kind || c instanceof Quantity || c instanceof Collective){
+			if(getClassStereotype(c)==newNature)
+				return fix;
+			else
+				return changeClassStereotypeTo(c, newNature);
+		}
+			
+		
+		if(c instanceof SubKind || c instanceof Role || c instanceof Phase){
+			for (Classifier parent : c.parents()) {
+				if(!visited.contains(parent))
+					fix.addAll(changeNature(parent, visited, newNature));
+			}
+		}
+		
+		if(c instanceof MixinClass){
+			for (Classifier child : c.children()) {
+				if(!visited.contains(child))
+					fix.addAll(changeNature(child, visited, newNature));
+			}
+		}
+		
+		return fix;
+	}
 	
 }
