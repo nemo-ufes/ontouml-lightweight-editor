@@ -32,11 +32,11 @@ import javax.swing.event.ListSelectionListener;
 
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.meronymic_validation.derivation.DerivedMeronymic;
-import br.ufes.inf.nemo.meronymic_validation.derivation.FunctionalParthoodDerivationTask;
-import br.ufes.inf.nemo.meronymic_validation.derivation.MembershipDerivationTask;
-import br.ufes.inf.nemo.meronymic_validation.derivation.SubQuantityDerivationTask;
-import br.ufes.inf.nemo.meronymic_validation.derivation.ui.DerivedTable;
+import br.ufes.inf.nemo.validator.meronymic.derivation.DerivedMeronymic;
+import br.ufes.inf.nemo.validator.meronymic.derivation.FunctionalParthoodDerivationTask;
+import br.ufes.inf.nemo.validator.meronymic.derivation.MembershipDerivationTask;
+import br.ufes.inf.nemo.validator.meronymic.derivation.SubQuantityDerivationTask;
+import br.ufes.inf.nemo.validator.meronymic.derivation.ui.DerivedTable;
 
 public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 

@@ -33,9 +33,9 @@ import javax.swing.event.ListSelectionListener;
 
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.meronymic_validation.checkers.MeronymicError;
-import br.ufes.inf.nemo.meronymic_validation.checkers.PreConditionTask;
-import br.ufes.inf.nemo.meronymic_validation.checkers.ui.CheckerTable;
+import br.ufes.inf.nemo.validator.meronymic.checkers.MeronymicError;
+import br.ufes.inf.nemo.validator.meronymic.checkers.PreConditionTask;
+import br.ufes.inf.nemo.validator.meronymic.checkers.ui.CheckerTable;
 
 public class PreConditionPanel extends ValidationPanel<MeronymicError<?>> {
 
