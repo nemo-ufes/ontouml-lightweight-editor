@@ -42,13 +42,14 @@ public class SubQuantityDerivationTask extends DerivationTask<subQuantityOf>{
 
 	@Override
 	protected Boolean doInBackground() throws Exception {
-		setProgress(1);
+		System.out.println("Quantity Derivation: creating quantities graph...");
 		setPaths();
-		setProgress(40);
+		System.out.println("Quantity Derivation: deriving sub-quantities...");
 		deriveSubQuantityOf();
-		setProgress(100);
+		System.out.println("Quantity Derivation: "+derived.size()+" quantities derived");
+		System.out.println("Quantity Derivation: derivation completed!");
+		System.out.println("Quantity Derivation: a total of "+derived.size()+" relations were derived!");
+		setProgress(34);
 		return true;
 	}	
-	
-	
 }

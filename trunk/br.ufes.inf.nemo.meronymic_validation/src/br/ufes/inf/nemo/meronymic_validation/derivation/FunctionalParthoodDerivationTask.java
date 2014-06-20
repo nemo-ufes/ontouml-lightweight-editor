@@ -50,7 +50,7 @@ public class FunctionalParthoodDerivationTask extends DerivationTask<componentOf
 			Classifier whole = (Classifier) path.getIdOfNode(0);
 			Classifier part = (Classifier) path.getIdOfNode(path.getEdges().size());
 			
-			derivedDirect.add(createDerivedComponentOf(path, whole, part, PatternType.DIRECT_FUNCTIONAL_PARTHOOD));
+			derivedDirect.add(createDerivedComponentOf(path, whole, part, PatternType.DIRECT_FUNCTIONAL));
 		}
 		
 		derived.addAll(derivedDirect);
@@ -67,7 +67,7 @@ public class FunctionalParthoodDerivationTask extends DerivationTask<componentOf
 			Classifier part = (Classifier) path.getIdOfNode(path.getEdges().size());
 			
 			for (Classifier partChild : parser.getAllChildren(part)) {
-				derivedIndirectType1.add(createDerivedComponentOf(path, whole, partChild, PatternType.INDIRECT_FUNCTIONAL_PATHOOD_TYPE1));
+				derivedIndirectType1.add(createDerivedComponentOf(path, whole, partChild, PatternType.INDIRECT_FUNCTIONAL_TYPE1));
 			}
 		}
 		
@@ -85,7 +85,7 @@ public class FunctionalParthoodDerivationTask extends DerivationTask<componentOf
 			Classifier part = (Classifier) path.getIdOfNode(path.getEdges().size());
 			
 			for (Classifier wholeChild : parser.getAllChildren(whole)) {
-				derivedIndirectType2.add(createDerivedComponentOf(path, wholeChild, part, PatternType.INDIRECT_FUNCTIONAL_PARTHOOD_TYPE2));
+				derivedIndirectType2.add(createDerivedComponentOf(path, wholeChild, part, PatternType.INDIRECT_FUNCTIONAL_TYPE2));
 			}
 		}
 		
@@ -98,16 +98,20 @@ public class FunctionalParthoodDerivationTask extends DerivationTask<componentOf
 
 	@Override
 	protected Boolean doInBackground() throws Exception {
-		setProgress(1);
+		System.out.println("Functional Parts Derivation: creating functional graph...");
 		setPaths();
-		setProgress(40);
+		System.out.println("Functional Parts Derivation: deriving direct functional parts");
 		deriveDirectFunctionalParthoodType1();
-		setProgress(60);
+		System.out.println("Functional Parts Derivation: "+derivedDirect.size()+" direct functional parts derived");
+		System.out.println("Functional Parts Derivation: deriving indirect functional parts (type 2)");
 		deriveDirectFunctionalParthoodType2();
-		setProgress(80);
+		System.out.println("Functional Parts Derivation: "+derivedIndirectType1.size()+" indirect functional parts (type 2) derived");
+		System.out.println("Functional Parts Derivation: deriving indirect functional parts (type 3)");
 		deriveDirectFunctionalParthoodType3();
-		setProgress(100);
+		System.out.println("Functional Parts Derivation: "+derivedIndirectType2.size()+" indirect functional parts (type 3) derived");
+		System.out.println("Functional Parts Derivation: derivation completed!");
+		System.out.println("Functional Parts Derivation: a total of "+derived.size()+" relations were derived!");
+		setProgress(33);
 		return true;
 	}
-		
 }

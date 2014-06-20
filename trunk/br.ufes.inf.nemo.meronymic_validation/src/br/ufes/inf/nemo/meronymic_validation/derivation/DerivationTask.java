@@ -23,7 +23,6 @@ public abstract class DerivationTask <T extends Meronymic> extends SwingWorker<B
 	protected Set<T> existing;
 	protected ArrayList<EdgePath> paths;
 	protected ArrayList<DerivedMeronymic> derived;
-	protected ArrayList<DerivedMeronymic> forbidden;
 	private boolean arePathsSet;
 	DerivedTableModel tableModel;
 	
@@ -33,7 +32,6 @@ public abstract class DerivationTask <T extends Meronymic> extends SwingWorker<B
 		
 		existing = new HashSet<T>();
 		paths = new ArrayList<EdgePath>();
-		forbidden = new ArrayList<DerivedMeronymic>();
 		derived = new ArrayList<DerivedMeronymic>();
 		arePathsSet = false;
 	}
@@ -57,11 +55,6 @@ public abstract class DerivationTask <T extends Meronymic> extends SwingWorker<B
 	public DerivedTableModel getTable() {
 		return tableModel;
 	}
-
-	public ArrayList<DerivedMeronymic> getForbidden() {
-		return forbidden;
-	}
-	
 	
 	public boolean arePathsSet() {
 		return arePathsSet;
@@ -82,37 +75,46 @@ public abstract class DerivationTask <T extends Meronymic> extends SwingWorker<B
 	}
 	
 	protected DerivedMeronymic createDerivedMeronymic(EdgePath path, Classifier whole,Classifier part, PatternType pattern, Meronymic currentRelation, RelationStereotype stereotype) {
-		String prefix = "";
+		String prefix = "",wholeName,partName;
 		DerivedMeronymic derived;
 		
-		if(pattern==PatternType.DIRECT_FUNCTIONAL_PARTHOOD)
+		if(pattern==PatternType.DIRECT_FUNCTIONAL)
 			prefix = "dfp_";
-		if(pattern==PatternType.INDIRECT_FUNCTIONAL_PATHOOD_TYPE1 || pattern==PatternType.INDIRECT_FUNCTIONAL_PARTHOOD_TYPE2)
+		if(pattern==PatternType.INDIRECT_FUNCTIONAL_TYPE1 || pattern==PatternType.INDIRECT_FUNCTIONAL_TYPE2)
 			prefix = "ifp_";
 		if(pattern==PatternType.DIRECT_SUBCOLLECTION_PARTHOOD)
 			prefix = "dscp_";
 		
 		if(currentRelation!=null)
-			derived = new DerivedMeronymic(currentRelation);
+			derived = new DerivedMeronymic(currentRelation, parser);
 		else
-			derived = new DerivedMeronymic(stereotype);
+			derived = new DerivedMeronymic(stereotype, parser);
 		
-		derived.setDerivationPath(path.getEdgeIdsOfType(Property.class));
+		derived.setPath(path.getEdgeIdsOfType(Property.class));
 		derived.setDerived(true);
 		
 		derived.setWhole(whole);
 		derived.setPart(part);
-				
-		derived.setName(prefix+whole.getName().trim()+"_"+part.getName().trim());
+
+		if(whole.getName()!=null)
+			wholeName = "whole";
+		else
+			wholeName = whole.getName().trim();
 		
-		derived.setWholeEnd(whole.getName().trim().toLowerCase());
-		derived.setPartEnd(part.getName().trim().toLowerCase());
+		if(part.getName()!=null)
+			partName = "part";
+		else
+			partName = part.getName().trim();
+		
+			derived.setName(prefix+wholeName+"_"+partName);
+		
+		derived.setWholeEnd(wholeName.toLowerCase());
+		derived.setPartEnd(partName.toLowerCase());
 		
 		derived.setEndsMetaPropertiesFromPath();
 		
-		derived.setAllowed(true);
 		derived.setPattern(pattern);
-		derived.generateOCLRule();
+		derived.generateOCLRule(true);
 		
 		publish(derived);
 		
@@ -131,13 +133,7 @@ public abstract class DerivationTask <T extends Meronymic> extends SwingWorker<B
 
 	@Override
 	protected void process(final List<DerivedMeronymic> result) {
-		System.out.println("PROCESSING!!!");
 		tableModel.addRows(result);
-	}
-	
-	@Override
-	protected void done() {
-		System.out.println("DONE!!!");
 	}
 
 }

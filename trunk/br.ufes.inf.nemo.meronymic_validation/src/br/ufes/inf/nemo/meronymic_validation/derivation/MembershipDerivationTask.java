@@ -15,7 +15,8 @@ import br.ufes.inf.nemo.meronymic_validation.graph.EdgePath;
 
 public class MembershipDerivationTask extends DerivationTask<Meronymic>{
 	
-	
+	ArrayList<DerivedMeronymic> memberships;
+	ArrayList<DerivedMeronymic> subCollections;
 	
 	public MembershipDerivationTask(OntoUMLParser parser, DerivedTableModel tableModel) {
 		super(parser, tableModel);
@@ -62,8 +63,10 @@ public class MembershipDerivationTask extends DerivationTask<Meronymic>{
 			Classifier whole = (Classifier) path.getIdOfNode(0);
 			Classifier part = (Classifier) path.getIdOfNode(path.getEdges().size());
 			
-			derived.add(createDerivedSubCollectionOf(path, whole, part));
+			subCollections.add(createDerivedSubCollectionOf(path, whole, part));
 		}
+		
+		derived.addAll(subCollections);
 	}
 	
 	public void deriveMemberOf(){
@@ -78,8 +81,10 @@ public class MembershipDerivationTask extends DerivationTask<Meronymic>{
 			Classifier whole = (Classifier) path.getIdOfNode(0);
 			Classifier part = (Classifier) path.getIdOfNode(path.getEdges().size());
 			
-			derived.add(createDerivedMemberOf(path, whole, part));
+			memberships.add(createDerivedMemberOf(path, whole, part));
 		}
+		
+		derived.addAll(memberships);
 	}
 
 	private DerivedMeronymic createDerivedSubCollectionOf(EdgePath path, Classifier whole, Classifier part) {
@@ -91,15 +96,24 @@ public class MembershipDerivationTask extends DerivationTask<Meronymic>{
 	}
 	
 	@Override
-	protected Boolean doInBackground() throws Exception {
-		setProgress(1);
+	protected Boolean doInBackground() throws Exception {		
+		System.out.println("Membership Derivation: creating collection and membership graph...");
 		setPaths();
-		setProgress(40);
+		System.out.println("Membership Derivation: deriving subcollections...");
 		deriveSubCollectionOf();
-		setProgress(70);
+		System.out.println("Membership Derivation: "+subCollections.size()+" subcollections derived");
+		System.out.println("Membership Derivation: deriving memberships");
 		deriveMemberOf();
-		setProgress(100);
+		System.out.println("Membership Derivation: "+memberships.size()+" memberships derived");
+		System.out.println("Membership Derivation: derivation completed!");
+		System.out.println("Membership Derivation: a total of "+derived.size()+" relations were derived!");
+		setProgress(33);
 		return true;
+	}
+	
+	@Override
+	protected void done() {
+//		setProgress(33);
 	}
 	
 	
