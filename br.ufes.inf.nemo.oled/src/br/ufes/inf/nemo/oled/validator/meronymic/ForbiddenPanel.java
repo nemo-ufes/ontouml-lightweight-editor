@@ -33,10 +33,10 @@ import javax.swing.event.ListSelectionListener;
 
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.meronymic_validation.forbidden.ForbiddenComponentOfTask;
-import br.ufes.inf.nemo.meronymic_validation.forbidden.ForbiddenMemberOfTask;
-import br.ufes.inf.nemo.meronymic_validation.forbidden.ForbiddenMeronymic;
-import br.ufes.inf.nemo.meronymic_validation.forbidden.ui.ForbiddenTable;
+import br.ufes.inf.nemo.validator.meronymic.forbidden.ForbiddenComponentOfTask;
+import br.ufes.inf.nemo.validator.meronymic.forbidden.ForbiddenMemberOfTask;
+import br.ufes.inf.nemo.validator.meronymic.forbidden.ForbiddenMeronymic;
+import br.ufes.inf.nemo.validator.meronymic.forbidden.ui.ForbiddenTable;
 
 public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 
