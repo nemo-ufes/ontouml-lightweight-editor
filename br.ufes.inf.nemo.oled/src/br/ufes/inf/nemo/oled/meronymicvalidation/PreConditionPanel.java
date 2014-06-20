@@ -305,7 +305,7 @@ public class PreConditionPanel extends ValidationPanel<MeronymicError<?>> {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			
-			task = new PreConditionTask(parser, table.getModel(), (JTabbedPane) PreConditionPanel.this.getParent());
+			task = new PreConditionTask(parser, table.getModel());
 			
 			task.setCheckHierarchyCycle(checkHierarchyCycle.isSelected());
 			task.setCheckGeneralization(checkValidSpecialization.isSelected());
@@ -372,7 +372,14 @@ public class PreConditionPanel extends ValidationPanel<MeronymicError<?>> {
 				else{
 					buttonCheck.setEnabled(true);
 					buttonStop.setEnabled(false);
-					progressBar.setIndeterminate(false);					
+					progressBar.setIndeterminate(false);
+					if(checkAggregationKind.isSelected() && checkHierarchyCycle.isSelected() && checkPartWholeCycles.isSelected() 
+							&& checkValidIdentities.isSelected() && checkValidSpecialization.isSelected() && checkWellFormedPartWhole.isSelected()
+							&& table.getModel().getAllRows().size()==0){
+						((JTabbedPane) getParent()).setEnabledAt(1,true);
+					}
+					else
+						((JTabbedPane) getParent()).setEnabledAt(1,false);
 				}
 				progressBar.setValue(value);
 			}
