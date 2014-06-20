@@ -44,6 +44,7 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnAntiPattern;
 	private JButton btnColor;
 	private JToggleButton btnInfo;
+	private JButton btnMeronymic;
 	
 	public void update(){
 		btnGrid.setSelected(editor.showGrid());
@@ -308,6 +309,21 @@ public class DiagramToolbar extends JToolBar {
         });
 		btnAntiPattern.setFocusable(false);
 		btnAntiPattern.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/antipattern16.png")));
-		add(btnAntiPattern);		
+		add(btnAntiPattern);
+		
+		btnMeronymic = new JButton("");
+		btnMeronymic.setToolTipText("Validate the transitivity of parthood relations in all OPENED diagrams");
+		btnMeronymic.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		ArrayList<StructureDiagram> diagrams = new ArrayList<StructureDiagram>();
+	    		for(DiagramEditor de: editor.getDiagramManager().getDiagramEditors()) diagrams.add(de.getDiagram());
+	    		editor.getDiagramManager().workingOnlyWith(diagrams);
+        		editor.getDiagramManager().validatesParthood();
+        	}
+        });
+		btnMeronymic.setFocusable(false);
+		btnMeronymic.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/diamond.png")));
+		add(btnMeronymic);
 	}
 }

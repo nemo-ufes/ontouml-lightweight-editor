@@ -36,14 +36,23 @@ import javax.swing.SwingConstants;
 
 public class IntersectionPattern extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7188569027915040661L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtBase;
 	private JTextField txtBase_1;
 	private JTextField txtDerived;
+	@SuppressWarnings("rawtypes")
 	JComboBox combo_base_1 = new JComboBox();
+	@SuppressWarnings("rawtypes")
 	JComboBox combo_base_2 = new JComboBox();
+	@SuppressWarnings("rawtypes")
 	JComboBox combo_derived = new JComboBox();
+	@SuppressWarnings("rawtypes")
 	Vector comboBoxItems2=new Vector();
+	@SuppressWarnings("rawtypes")
 	Vector comboBoxItemsDer=new Vector();
 	private Point2D.Double location= new Point2D.Double();
 	static DiagramManager dm;
@@ -56,6 +65,7 @@ public class IntersectionPattern extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public IntersectionPattern(final DiagramManager dm) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(IntersectionPattern.class.getResource("/resources/icons/x16/sitemap.png")));
 		setTitle("Derivation by Intersection");
@@ -90,6 +100,7 @@ public class IntersectionPattern extends JDialog {
 		
 		
 		combo_base_1.addActionListener(new ActionListener() {
+			@SuppressWarnings({ })
 			public void actionPerformed(ActionEvent e) {
 				
 				if(combo_base_1.getSelectedItem().toString().equals("Kind") ||  combo_base_1.getSelectedItem().toString().equals("Collective") || combo_base_1.getSelectedItem().toString().equals("Quantity")){
@@ -252,6 +263,7 @@ public class IntersectionPattern extends JDialog {
 			}
 		}
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void setDerivedStereotype() {
 		// TODO Auto-generated method stub
 		

@@ -536,7 +536,8 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 	public void validatesParthood()
 	{
-		if (manager.isProjectLoaded()==false) return;
+		if (manager.isProjectLoaded()==false) return;		
+		manager.workingOnlyWithChecked();
 		manager.validatesParthood();
 	}
 	
