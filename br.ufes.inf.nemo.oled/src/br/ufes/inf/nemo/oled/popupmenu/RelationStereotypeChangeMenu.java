@@ -32,11 +32,20 @@ public class RelationStereotypeChangeMenu extends JMenu{
 		this.type = (RefOntoUML.Relationship)element;
 	}
 	
+	public void setDiagramManager(DiagramManager diagramManager)
+	{
+		this.diagramManager = diagramManager;
+	}
+	
 	public RelationStereotypeChangeMenu(final DiagramManager diagramManager)
 	{
-		super("Change to");
+		this();		
+		this.diagramManager = diagramManager;
+	}
 		
-		this.diagramManager=diagramManager;
+	public RelationStereotypeChangeMenu()
+	{
+		super("Change to");		
 				
 		JMenuItem mediationItem = new JMenuItem("Mediation");	
 		JMenuItem materialItem = new JMenuItem("Material");

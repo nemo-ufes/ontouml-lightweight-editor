@@ -40,7 +40,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	private JMenuItem setColorItem;
 	@SuppressWarnings("unused")
 	private JMenuItem specializationItem;
-//	private ClassStereotypeChangeMenu changeMenu;
+	private ClassStereotypeChangeMenu changeMenu;
 	
 	public SingleNodePopupMenu()
 	{
@@ -86,6 +86,9 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
         	}
         });
 		add(setColorItem);
+		
+		changeMenu = new ClassStereotypeChangeMenu();
+		add(changeMenu);
 		
 		JMenu drawOrderMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.draworder.name"));
 		add(drawOrderMenu);
@@ -164,7 +167,10 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 			showAttrItem.setSelected(((ClassElement)node).showAttributes());
 			showOperItem.setSelected(((ClassElement)node).showOperations());
 		}
-//		if(changeMenu!=null) changeMenu.setElement(((ClassElement)node).getClassifier());		
+		if(changeMenu!=null) {
+			changeMenu.setElement(((ClassElement)node).getClassifier());
+			changeMenu.setDiagramManager(editor.getDiagramManager());
+		}
 	}	
 	
 	/**

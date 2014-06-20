@@ -34,6 +34,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.SetVisibilityCommand.Visibility
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
+import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
@@ -79,6 +80,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private JMenu lineStyleItem;
 	private JMenuItem invertEndPointsItem;
 	private JMenu invertMenu;
+	private RelationStereotypeChangeMenu changeMenu;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -113,6 +115,9 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		rectMenuItem = createMenuItem(lineStyleItem, "directtorect");
 		treeStyleVerticalMenuItem = createMenuItem(lineStyleItem, "treestyle.vertical");
 		treeStyleHorizontalMenuItem = createMenuItem(lineStyleItem, "treestyle.horizontal");
+		
+		changeMenu = new RelationStereotypeChangeMenu();
+		add(changeMenu);
 		
 		createInvertMenu();
 		createEndPointItems();
@@ -483,6 +488,11 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		
 		multiplicityMenu.setVisible(false);
 		endNameItem.setVisible(false);
+		if(((BaseConnection)con).getRelationship() instanceof Association)
+		{
+			changeMenu.setElement(((BaseConnection)con).getRelationship());
+			changeMenu.setDiagramManager(editor.getDiagramManager());
+		}
 	}		
 	
 	public void setConnection (UmlConnection con, DiagramEditor editor, boolean isSourceEndPoint)
