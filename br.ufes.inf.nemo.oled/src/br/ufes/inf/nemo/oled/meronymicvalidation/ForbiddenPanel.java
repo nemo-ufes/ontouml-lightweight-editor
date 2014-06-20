@@ -267,7 +267,7 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 					buttonCheck.setEnabled(true);
 					buttonStop.setEnabled(false);
 					progressBar.setIndeterminate(false);
-					if(memberOfTask.isDone() && componentOfTask.isDone()){
+					if(checkMemberOf.isSelected() && checkMemberOf.isSelected()){
 						if(table.getModel().getAllRows().size()>0)
 							((JTabbedPane) getParent()).setEnabledAt(2, false);
 						else
