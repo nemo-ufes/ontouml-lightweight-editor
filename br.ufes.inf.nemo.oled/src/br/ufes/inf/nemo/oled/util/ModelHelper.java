@@ -73,7 +73,7 @@ public class ModelHelper {
 
 	private ModelHelper() {
 	}
-
+	
 	public static Resource createResource() {
 		if (!initialized) {
 			initializeHelper();

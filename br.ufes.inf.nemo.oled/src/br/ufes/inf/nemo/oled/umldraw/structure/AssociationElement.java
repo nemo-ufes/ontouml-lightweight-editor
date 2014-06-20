@@ -808,11 +808,11 @@ public final class AssociationElement extends BaseConnection {
 			if(metaWidth> labelWidth) labelWidth = metaWidth;
 		}
 		// medium segment
-		List<Line2D> segments = getSegments();		
+		List<Line2D> segments = getSegments();
 		if(segments.size()>0){
-			Line2D middlesegment = segments.get(segments.size() / 2);
-			double x = (double) (middlesegment.getX2() + middlesegment.getX1() - labelWidth) / 2;
-			double y = (double) (middlesegment.getY2() + middlesegment.getY1())/2;
+			Line2D middleSegment = getMiddleSegment();
+			double x = (double) (middleSegment.getX2() + middleSegment.getX1() - labelWidth) / 2;
+			double y = (double) (middleSegment.getY2() + middleSegment.getY1())/2;
 			nameLabel.setAbsolutePos(x, y);
 		}
 	}

@@ -253,6 +253,31 @@ public class BaseConnection implements UmlConnection, Adapter {
 		return connection.getSegments();
 	}
 
+	private double length(double x1,double y1,double x2,double y2){
+        double length_in_pixel;
+        double x=Math.pow((x2-x1), 2);
+        double y=Math.pow((y2-y1), 2);
+        length_in_pixel = Math.sqrt(x+y);
+        return length_in_pixel;
+    }
+	
+	public Line2D getMiddleSegment()
+	{
+		List<Line2D> segments = getSegments();
+		if(segments.size()>0){
+			Line2D middleSegment = segments.get(segments.size() / 2);
+			double middleLength = length(middleSegment.getP1().getX(),middleSegment.getP1().getY(),middleSegment.getP2().getX(),middleSegment.getP2().getY());						
+			if(segments.size()%2==0){				
+				for(Line2D l: segments){
+					double x = length(l.getP1().getX(),l.getP1().getY(),l.getP2().getX(),l.getP2().getY());
+					if(x>middleLength) { middleLength=x; middleSegment=l; }
+				}
+			}
+			return middleSegment;
+		}
+		return null;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

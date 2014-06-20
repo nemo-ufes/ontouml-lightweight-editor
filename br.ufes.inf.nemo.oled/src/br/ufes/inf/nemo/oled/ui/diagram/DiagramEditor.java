@@ -953,7 +953,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	{
 		if (selectionHandler.getSelectedElements().size() > 0) 
 		{
-			diagram.bringChildToFront(selectionHandler.getSelectedElements().get(0));
+			for(DiagramElement de: getSelectedElements()){
+				if(!(de instanceof StructureDiagram)) diagram.bringChildToFront(de);				
+			}			
 			redraw();
 		}
 	}
@@ -1196,7 +1198,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	{
 		if (getSelectedElements().size() > 0) 
 		{
-			diagram.putChildToBack(getSelectedElements().get(0));
+			for(DiagramElement de: getSelectedElements()){
+				if(!(de instanceof StructureDiagram)) diagram.putChildToBack(de);				
+			}
 			redraw();
 		}
 	}

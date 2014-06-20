@@ -61,19 +61,22 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	private JMenuItem showMultiplicitiesItem;
 	private JMenuItem showStereotypeItem;
 	private JMenuItem setColorItem;
-	@SuppressWarnings("unused")
 	private JMenuItem unionItem;
-	@SuppressWarnings("unused")
 	private JMenuItem exclusionItem;
-	@SuppressWarnings("unused")
 	private JMenuItem intersectionItem;
 	@SuppressWarnings("unused")
-	private JMenuItem deleteItem;	
+	private JMenuItem deleteItem;
+	private JMenu genSetMenu;
+	private JMenu deriveMenu;	
 	
 	public MultiSelectionPopupMenu()
 	{			
+		genSetMenu = new JMenu("Genelization Set");
 		createGenSetItem = createMenuItem(this, "creategenset");
 		deleteGenSetItem = createMenuItem(this, "deletegenset");
+		genSetMenu.add(createGenSetItem);
+		genSetMenu.add(deleteGenSetItem);
+		add(genSetMenu);
 		
 		resetMenuItem = createMenuItem(this, "resetpoints");
 		lineStyleItem = new JMenu("Line Style");		
@@ -183,10 +186,17 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
         });
 		add(setColorItem);
 		
+		deriveMenu = new JMenu("Derive by");
 		unionItem = createMenuItem(this, "derivedunion");
 		exclusionItem = createMenuItem(this, "derivedexclusion");
 		intersectionItem = createMenuItem(this, "derivedintersection");
 		//specializationItem = createMenuItem(this, "derivedspecialization");
+		deriveMenu.add(unionItem);
+		deriveMenu.add(exclusionItem);
+		deriveMenu.add(intersectionItem);
+		add(deriveMenu);
+		
+		addSeparator();
 		
 		deleteItem = createMenuItem(this, "delete");	
 	}
@@ -224,9 +234,9 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 			}
 		}
 		
-		if(gens.size()<=1) { createGenSetItem.setVisible(false); deleteGenSetItem.setVisible(false); }
-		else { createGenSetItem.setVisible(true); deleteGenSetItem.setVisible(false); }
-		if(gens.size()>1 && containGenset==true) { deleteGenSetItem.setVisible(true); }	
+		if(gens.size()<=1) { genSetMenu.setVisible(false); }
+		else { genSetMenu.setVisible(true); createGenSetItem.setVisible(true); deleteGenSetItem.setVisible(false); }
+		if(gens.size()>1 && containGenset==true) { genSetMenu.setVisible(true); deleteGenSetItem.setVisible(true); }	
 		
 		if(!areAllRelationships) { lineStyleItem.setVisible(false); resetMenuItem.setVisible(false); }
 		else { lineStyleItem.setVisible(true); resetMenuItem.setVisible(true); }
