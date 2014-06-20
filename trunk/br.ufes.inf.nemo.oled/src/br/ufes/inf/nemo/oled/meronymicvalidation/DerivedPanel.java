@@ -6,6 +6,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -16,12 +19,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -46,7 +53,8 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 	private JLabel labelResult;
 	private JLabel labelIntroduction;
 	private JButton buttonFix;
-	
+	private JButton persistAllButton;
+
 	private OntoUMLParser parser;
 	private FunctionalParthoodDerivationTask functionalTask;
 	private MembershipDerivationTask membershipTask;
@@ -61,6 +69,15 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 		this.parser = parser;
 		
 		table = new DerivedTable();
+		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if(table.getSelectedRow()!=-1)
+					buttonFix.setEnabled(true);
+				else
+					buttonFix.setEnabled(false);
+			}
+		});
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(table);
 		
@@ -143,11 +160,15 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 		panel.add(quantityCheck, gbc_quantityCheck);
 		
 		buttonFix = new JButton("Fix");
-		
+		buttonFix.setEnabled(false);
+		buttonFix.addActionListener(actionFix);
 		labelResult = new JLabel("The following part-whole relations can be inferred from your model:");
 		labelResult.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		labelIntroduction = new JLabel("Please select the derivations you would like to validate on your model:");
+		
+		persistAllButton = new JButton("Persist All");
+		persistAllButton.setEnabled(false);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -159,10 +180,12 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(10)
 							.addComponent(panel, GroupLayout.DEFAULT_SIZE, 778, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(labelResult, GroupLayout.PREFERRED_SIZE, 690, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+							.addComponent(labelResult, GroupLayout.PREFERRED_SIZE, 507, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
+							.addComponent(persistAllButton)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(buttonFix, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
@@ -185,7 +208,9 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(buttonFix)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(buttonFix)
+							.addComponent(persistAllButton))
 						.addComponent(labelResult))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
@@ -199,15 +224,65 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 		setLayout(groupLayout);
 	}
 	
+	private ActionListener actionFix = new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			int row = table.getSelectedRow();
+			
+			if(row==-1) 
+				return;
+			
+			JDialog dialog = table.getModel().getRow(row).createDialog(DerivedPanel.this.dialogParent);
+			dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			dialog.addWindowListener(exitListener);
+			dialog.setVisible(true);
+			
+		}
+
+	};
+	
+	WindowListener exitListener = new WindowAdapter() {
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+        	for (DerivedMeronymic derived : table.getModel().getAllRows()) {
+    			if(derived.hasAction()){
+    				saveButton.setEnabled(true);
+    				applyButton.setEnabled(true);
+    				table.getModel().fireTableDataChanged();
+    				return;
+    			}
+    		}
+        	
+        	saveButton.setEnabled(false);
+        	applyButton.setEnabled(false);
+        }
+    };
+	
 	private ActionListener actionStop = new ActionListener() {
 		
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			functionalTask.cancel(true);
-			System.out.println("Pre-conditions analysis stopped by user!");
+			if(functionalTask!=null){
+				functionalTask.cancel(true);
+				System.out.println("Functional Parthood Derivation stopped!");
+			}
+			if(membershipTask!=null){
+				membershipTask.cancel(true);
+				System.out.println("Membership Derivation stopped!");
+			}
+			if(quantityTask!=null){
+				quantityTask.cancel(true);
+				System.out.println("Quantity Parthood Derivation stopped!");
+			}
 			progressBar.setValue(0);
+			progressBar.setIndeterminate(false);
 			buttonStop.setEnabled(false);
 			buttonCheck.setEnabled(true);
+			
+			if(table.getModel().getAllRows().size()>0)
+				persistAllButton.setEnabled(true);
 			
 		}
 
@@ -219,23 +294,36 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 		public void actionPerformed(ActionEvent event) {
 			
 			table.getModel().clear();
+			saveButton.setEnabled(false);
+			applyButton.setEnabled(false);
+			persistAllButton.setEnabled(false);
+			
+			if(functionalCheck.isSelected() || membershipCheck.isSelected() || quantityCheck.isSelected())
+				progressBar.setIndeterminate(true);
 			
 			if(functionalCheck.isSelected()){
 				functionalTask = new FunctionalParthoodDerivationTask(parser, table.getModel());
 				functionalTask.addPropertyChangeListener(progressListener);
 				functionalTask.execute();
+			}else{
+				progressBar.setValue(33);
 			}
 			
 			if(membershipCheck.isSelected()){
 				membershipTask = new MembershipDerivationTask(parser, table.getModel());
 				membershipTask.addPropertyChangeListener(progressListener);
 				membershipTask.execute();
+			}else{
+				progressBar.setValue(progressBar.getValue()+33);
 			}
 			
 			if(quantityCheck.isSelected()){
 				quantityTask = new SubQuantityDerivationTask(parser, table.getModel());
 				quantityTask.addPropertyChangeListener(progressListener);
 				quantityTask.execute();
+			}
+			else{
+				progressBar.setValue(progressBar.getValue()+34);
 			}
 		}
 
@@ -246,8 +334,9 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 		public void propertyChange(PropertyChangeEvent event) {
 			if(event.getPropertyName().compareTo("progress")==0){
 				Integer value = (Integer) event.getNewValue();
+				progressBar.setValue(progressBar.getValue()+value);
 				
-				if(value<100){
+				if(progressBar.getValue()<100){
 					buttonCheck.setEnabled(false);
 					buttonStop.setEnabled(true);
 					progressBar.setIndeterminate(true);
@@ -255,13 +344,16 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 				else{
 					buttonCheck.setEnabled(true);
 					buttonStop.setEnabled(false);
-					progressBar.setIndeterminate(false);					
+					progressBar.setIndeterminate(false);
+					if(table.getModel().getAllRows().size()>0)
+						persistAllButton.setEnabled(true);
 				}
-				progressBar.setValue(value);
+				
+				
 			}
 		}
 	};
-
+	
 	@Override
 	public ArrayList<DerivedMeronymic> getTableResults() {
 		return table.getModel().getAllRows();
