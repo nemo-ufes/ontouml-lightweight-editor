@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.antipattern;
+package br.ufes.inf.nemo.oled.validator.antipattern;
 
 import java.util.ArrayList;
 

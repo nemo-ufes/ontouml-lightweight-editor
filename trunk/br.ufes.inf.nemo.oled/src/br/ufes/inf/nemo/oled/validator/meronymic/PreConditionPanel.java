@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.oled.meronymicvalidation;
+package br.ufes.inf.nemo.oled.validator.meronymic;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
