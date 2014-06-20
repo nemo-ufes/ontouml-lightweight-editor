@@ -187,11 +187,9 @@ public class PreConditionTask extends SwingWorker<Boolean, MeronymicError<?>>{
 	protected void done() {
 		if(canGoToNextStep){
 			tabbedPane.setEnabledAt(1, true);
-			tabbedPane.setEnabledAt(2, true);
 		}
 		else{
 			tabbedPane.setEnabledAt(1, false);
-			tabbedPane.setEnabledAt(2, false);
 		}
 	}
 
