@@ -22,7 +22,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
 
-public class ValidationFrame extends JDialog {
+public class ValidationDialog extends JDialog {
 
 	private static final long serialVersionUID = -5936280584643585555L;
 	
@@ -47,7 +47,7 @@ public class ValidationFrame extends JDialog {
 	 * Create the frame.
 	 * @wbp.parser.constructor
 	 */
-	public ValidationFrame(OntoUMLParser parser) {
+	public ValidationDialog(OntoUMLParser parser) {
 		setTitle("Validation of Part-Whole Relations");
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
@@ -114,7 +114,7 @@ public class ValidationFrame extends JDialog {
 		
 		derivedPanel = new DerivedPanel(this, parser,saveButton,applyButton);
 		tabbedPane.addTab("Derived", null, derivedPanel, null);
-		tabbedPane.setEnabledAt(2, false);
+		tabbedPane.setEnabledAt(2, true);
 		
 		consoleTextPane = new JTextPane();
 		consoleTextPane.setBackground(new Color(255, 248, 220));
@@ -122,7 +122,7 @@ public class ValidationFrame extends JDialog {
 		contentPane.setLayout(gl_contentPane);
 	}
 
-	public ValidationFrame(OntoUMLParser parser, AppFrame parent) {
+	public ValidationDialog(OntoUMLParser parser, AppFrame parent) {
 		this(parser);
 		this.appFrame = parent;
 	}
@@ -164,7 +164,7 @@ public class ValidationFrame extends JDialog {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
-			ValidationFrame frame = new ValidationFrame( parser, parent);
+			ValidationDialog frame = new ValidationDialog( parser, parent);
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			
 			frame.setModalityType(ModalityType.APPLICATION_MODAL);
@@ -188,7 +188,7 @@ public class ValidationFrame extends JDialog {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
-			ValidationFrame frame = new ValidationFrame( parser/*parent*/);
+			ValidationDialog frame = new ValidationDialog( parser/*parent*/);
 			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			frame.setVisible(true);
 			

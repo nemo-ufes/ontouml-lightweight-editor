@@ -6,6 +6,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -16,20 +19,24 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.meronymic_validation.forbidden.ForbiddenComponentOfTask;
 import br.ufes.inf.nemo.meronymic_validation.forbidden.ForbiddenMemberOfTask;
 import br.ufes.inf.nemo.meronymic_validation.forbidden.ForbiddenMeronymic;
-import br.ufes.inf.nemo.meronymic_validation.userinterface.ForbiddenTable;
+import br.ufes.inf.nemo.meronymic_validation.forbidden.ui.ForbiddenTable;
 
 public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 
@@ -44,7 +51,7 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 	private JProgressBar progressBar;
 	private JLabel labelResult;
 	private JLabel labelIntroduction;
-	private JButton buttonFix;
+	private JButton fixButton;
 	
 	private OntoUMLParser parser;
 	private ForbiddenMemberOfTask memberOfTask;
@@ -58,8 +65,19 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 		this.parser = parser;
 		
 		table = new ForbiddenTable();
+		ListSelectionModel selectionModel = table.getSelectionModel();
+		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		selectionModel.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if(table.getSelectedRow()!=-1)
+					fixButton.setEnabled(true);
+				else
+					fixButton.setEnabled(false);
+			}
+		});
+		
 		scrollPane = new JScrollPane();
-//		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollPane.setViewportView(table);
 		
 		progressBar = new JProgressBar();
@@ -119,7 +137,9 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 		gbc_checkValidSpecialization.gridy = 1;
 		panel.add(checkComponentOf, gbc_checkValidSpecialization);
 		
-		buttonFix = new JButton("Fix");
+		fixButton = new JButton("Fix");
+		fixButton.setEnabled(false);
+		fixButton.addActionListener(actionFix);
 		
 		labelResult = new JLabel("The following part-whole relations characterize errors:");
 		labelResult.setHorizontalAlignment(SwingConstants.LEFT);
@@ -140,7 +160,7 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 							.addContainerGap()
 							.addComponent(labelResult, GroupLayout.PREFERRED_SIZE, 690, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-							.addComponent(buttonFix, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
+							.addComponent(fixButton, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(progressBar, GroupLayout.DEFAULT_SIZE, 624, Short.MAX_VALUE)
@@ -162,7 +182,7 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(buttonFix)
+						.addComponent(fixButton)
 						.addComponent(labelResult))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
@@ -197,8 +217,6 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 		}
 
 	};
-
-	
 	
 	private ActionListener actionCheck = new ActionListener() {
 		
@@ -206,18 +224,26 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 		public void actionPerformed(ActionEvent event) {
 			
 			table.getModel().clear();
+			saveButton.setEnabled(false);
+			applyButton.setEnabled(false);
+			
+			if(checkMemberOf.isSelected() || checkComponentOf.isSelected())
+				progressBar.setIndeterminate(true);
 			
 			if(checkMemberOf.isSelected()){
-				
 				memberOfTask = new ForbiddenMemberOfTask(parser, table.getModel(), (JTabbedPane) ForbiddenPanel.this.getParent());
 				memberOfTask.addPropertyChangeListener(progressListener);
 				memberOfTask.execute();
+			}else{
+				progressBar.setValue(50);
 			}
 			
 			if(checkComponentOf.isSelected()){
 				componentOfTask = new ForbiddenComponentOfTask(parser, table.getModel(), (JTabbedPane) ForbiddenPanel.this.getParent());
 				componentOfTask.addPropertyChangeListener(progressListener);
 				componentOfTask.execute();
+			}else{
+				progressBar.setValue(progressBar.getValue()+50);
 			}
 			
 		}
@@ -230,8 +256,9 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 			if(event.getPropertyName().compareTo("progress")==0){
 				
 				Integer value = (Integer) event.getNewValue();
+				progressBar.setValue(progressBar.getValue()+value);
 				
-				if((value)<100){
+				if(progressBar.getValue()<100){
 					buttonCheck.setEnabled(false);
 					buttonStop.setEnabled(true);
 					progressBar.setIndeterminate(true);
@@ -239,13 +266,51 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 				else{
 					buttonCheck.setEnabled(true);
 					buttonStop.setEnabled(false);
-					progressBar.setIndeterminate(false);					
+					progressBar.setIndeterminate(false);
+					if(memberOfTask.isDone() && componentOfTask.isDone()){
+						if(table.getModel().getAllRows().size()>0)
+							((JTabbedPane) getParent()).setEnabledAt(2, false);
+						else
+							((JTabbedPane) getParent()).setEnabledAt(2, true);
+					}
 				}
 				
-				progressBar.setValue(value);
 			}
 		}
 	};
+	
+	private ActionListener actionFix = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			int row = table.getSelectedRow();
+			
+			if(row==-1) 
+				return;
+			
+			JDialog dialog = table.getModel().getRow(row).createDialog(ForbiddenPanel.this.dialogParent);
+			dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			dialog.addWindowListener(exitListener);
+			dialog.setVisible(true);
+		}
+	};
+	
+	WindowListener exitListener = new WindowAdapter() {
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+        	for (ForbiddenMeronymic<?> forbidden : table.getModel().getAllRows()) {
+    			if(forbidden.hasAction()){
+    				saveButton.setEnabled(true);
+    				applyButton.setEnabled(true);
+    				table.getModel().fireTableDataChanged();
+    				return;
+    			}
+    		}
+        	
+        	saveButton.setEnabled(false);
+        	applyButton.setEnabled(false);
+        }
+    };
 	
 	public int getNumberOfSelected(){
 		int result = 0;
@@ -260,8 +325,13 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 	
 	@Override
 	public Fix runFixes() {
-		// TODO Auto-generated method stub
-		return null;
+		Fix fix = new Fix();
+		
+		for (ForbiddenMeronymic<?> forbidden : table.getModel().getAllRows()) {
+			fix.addAll(forbidden.fix());
+		}
+		
+		return fix;
 	}
 	
 	@Override
@@ -271,7 +341,6 @@ public class ForbiddenPanel extends ValidationPanel<ForbiddenMeronymic<?>> {
 
 	@Override
 	public ArrayList<ForbiddenMeronymic<?>> getTableResults() {
-		// TODO Auto-generated method stub
-		return null;
+		return table.getModel().getAllRows();
 	}
 }
