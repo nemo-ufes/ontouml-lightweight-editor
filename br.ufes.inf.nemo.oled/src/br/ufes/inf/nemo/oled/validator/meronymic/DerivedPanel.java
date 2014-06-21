@@ -169,6 +169,8 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 		
 		persistAllButton = new JButton("Persist All");
 		persistAllButton.setEnabled(false);
+		persistAllButton.addActionListener(persistAction);
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -325,6 +327,22 @@ public class DerivedPanel extends ValidationPanel<DerivedMeronymic> {
 			else{
 				progressBar.setValue(progressBar.getValue()+34);
 			}
+		}
+
+	};
+	
+	private ActionListener persistAction = new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			
+			for (DerivedMeronymic derived : table.getModel().getAllRows()) {
+				derived.setPersist();
+			}
+			
+			table.getModel().fireTableDataChanged();
+			saveButton.setEnabled(true);
+			applyButton.setEnabled(true);
 		}
 
 	};
