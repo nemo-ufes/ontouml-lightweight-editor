@@ -257,17 +257,17 @@ public class ExclusionPattern extends JDialog {
 									}
 									else{
 										DerivedTypesOperations.wrongSelection("Please set the names for generating the OCL rule");
+										return;
 									}
 								}
-							}
-							else{
-								DerivedTypesOperations.exclusionPattern(dman,values,location);
-								dispose();
 							}
 						}
 						else{
 							DerivedTypesOperations.wrongSelection("Please, select all the stereotypes");
+							return;
 						}
+						DerivedTypesOperations.exclusionPattern(dman,values,location);
+						dispose();
 					}
 				});
 				okButton.setActionCommand("OK");

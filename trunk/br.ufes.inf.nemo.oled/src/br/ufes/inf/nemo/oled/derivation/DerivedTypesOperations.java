@@ -381,9 +381,11 @@ public class DerivedTypesOperations {
 					Element e= ge.getGeneralization().getGeneral();
 					gen.add((GeneralizationElement) ge);
 					//refontoList.add((Element) selected.get(i));
-					if(e.equals(refontoList.get(1))){
-						pos=1;
-						pos2=0;
+					if(refontoList.size()>1){
+						if(e.equals(refontoList.get(1))){
+							pos=1;
+							pos2=0;
+						}
 					}
 				}
 			}
@@ -742,6 +744,8 @@ public class DerivedTypesOperations {
 				values.add("Phase");
 			}else if(element.getClassifier() instanceof Role || element.getClassifier() instanceof Phase  ){
 				values.add("Phase");
+			}else {
+				return null;
 			}
 			
 			stereo = values.toArray();
