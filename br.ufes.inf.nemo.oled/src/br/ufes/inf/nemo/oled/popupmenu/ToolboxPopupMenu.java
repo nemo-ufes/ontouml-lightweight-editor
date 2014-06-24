@@ -43,6 +43,9 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	JMenuItem exclusionItem = new JMenuItem("Exclusion");
 	JMenuItem specializationItem = new JMenuItem("Specialization");
 	JMenuItem intersectionItem = new JMenuItem("Intersection");
+	JMenuItem pastspecializationItem = new JMenuItem("Past Specialization");
+	JMenuItem participationItem = new JMenuItem("Participation");
+	
 	public AppFrame frame;
 	public double x;
 	public double y;
@@ -81,6 +84,8 @@ public class ToolboxPopupMenu extends JPopupMenu {
         add(unionItem);
         add(exclusionItem);
         add(intersectionItem);
+        add(pastspecializationItem);
+        add(participationItem);
         
         kindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/kind.png")));
         quantityItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/quantity.png")));
@@ -411,6 +416,31 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	            }
 			}
 		});
+       
+       pastspecializationItem.addMouseListener(new MouseAdapter()
+	    {    	   
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getDiagramManager().openDerivedTypePatternPastSpecialization(x,y);
+	            }
+			}
+		});
+       
+       participationItem.addMouseListener(new MouseAdapter()
+	    {    	   
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getDiagramManager().openDerivedTypePatternParticipation(x,y);
+	            }
+			}
+		});
+       
        pointerItem.addMouseListener(new MouseAdapter()
  	    {    	   
  			@Override

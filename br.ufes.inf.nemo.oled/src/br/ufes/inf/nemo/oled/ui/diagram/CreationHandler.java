@@ -201,6 +201,10 @@ public class CreationHandler implements EditorMode {
     		editor.getDiagramManager().openDerivedTypePatternIntersection(tmpPos.getX(),tmpPos.getY());
     	}else if (elementType == ElementType.SPECIALIZATION){
     		editor.getDiagramManager().openDerivedTypePatternSpecialization(tmpPos.getX(),tmpPos.getY());
+    	}else if (elementType == ElementType.PASTSPECIALIZATION){
+    		editor.getDiagramManager().openDerivedTypePatternPastSpecialization(tmpPos.getX(),tmpPos.getY());
+    	}else if (elementType == ElementType.PARTICIPATION){
+    		editor.getDiagramManager().openDerivedTypePatternParticipation(tmpPos.getX(),tmpPos.getY());
     	}
     	
     	//Victor 

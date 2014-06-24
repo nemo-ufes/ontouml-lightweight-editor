@@ -17,6 +17,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.Kind;
 import RefOntoUML.Mixin;
 import RefOntoUML.NamedElement;
+import RefOntoUML.Phase;
 import RefOntoUML.Property;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
@@ -720,6 +721,45 @@ public class DerivedTypesOperations {
 //		location.y=location.y+100;
 //		Classifier newElement= includeElement(location, nameDerived, stereotypeDerived);
 //		dm.updateOLED(mainfix);
+	}
+
+
+
+
+	public static Fix createSpecializationDerivation(
+			DiagramEditor activeEditor, UmlProject project,
+			DiagramManager diagramManager) {
+		// TODO Auto-generated method stub
+		String stereotype;
+		ArrayList<String> values = new ArrayList<String>();
+		String name;
+		Object[] stereo = null ;
+		List<DiagramElement> selected = activeEditor.getSelectedElements();
+		if(selected.size()==1 ){
+			ClassElement element = (ClassElement) selected.get(0);
+			if(element.getClassifier() instanceof Kind || element.getClassifier() instanceof SubKind  ){
+				values.add("Subkind");
+				values.add("Phase");
+			}else if(element.getClassifier() instanceof Role || element.getClassifier() instanceof Phase  ){
+				values.add("Phase");
+			}
+			
+			stereo = values.toArray();
+			stereotype= selectStereotype(stereo);
+			name=DefineNameDerivedType();
+			dman=diagramManager;
+			of = new OutcomeFixer(dman.getCurrentProject().getModel());
+			mainfix = new Fix();
+			Point2D.Double location = new Point2D.Double();
+			location.x= element.getAbsoluteX1();
+			location.y= element.getAbsoluteY1()+100;
+			Classifier newElement= includeElement(location, name, stereotype);
+			createGeneralizationSingle(element.getClassifier(), newElement);
+			dman.updateOLED(mainfix);
+		}
+
+		
+		return mainfix;
 	}
 
 

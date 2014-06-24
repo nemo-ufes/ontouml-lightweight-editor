@@ -861,6 +861,18 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		editorMode = creationHandler;
 	}
 	
+	public void setPatternCreationModePastSpecialization()
+	{
+		creationHandler.setPattern(ElementType.PASTSPECIALIZATION);
+		editorMode = creationHandler;
+	}
+	
+	public void setPatternCreationModeParticipation()
+	{
+		creationHandler.setPattern(ElementType.PARTICIPATION);
+		editorMode = creationHandler;
+	}
+	
 	/**
 	 * Switches the editor into connection creation mode.
 	 * @param relationType the RelationType to create

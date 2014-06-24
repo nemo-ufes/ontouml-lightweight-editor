@@ -251,6 +251,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			
 			selectorMap.put("CREATE_DERIVATION_BY_INTERSECTION", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternCreationModeIntersection")));
+			
+			selectorMap.put("CREATE_DERIVATION_BY_PAST_SPECIALIZATION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternCreationModePastSpecialization")));
+			
+			selectorMap.put("CREATE_DERIVATION_BY_PARTICIPATION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternCreationModeParticipation")));
 
 			selectorMap.put("SHOW_GRID", new MethodCall(
 					getClass().getMethod("showGrid")));
@@ -321,6 +327,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					getClass().getMethod("derivedBySpecialization")));
 			
 			selectorMap.put("DERIVED_BY_INTERSECTION", new MethodCall(
+					getClass().getMethod("derivedByIntersection")));
+			
+			selectorMap.put("DERIVED_BY_PAST_SPECIALIZATION", new MethodCall(
+					getClass().getMethod("derivedByIntersection")));
+			
+			selectorMap.put("DERIVED_BY_PARTICIPATION", new MethodCall(
 					getClass().getMethod("derivedByIntersection")));
 
 			selectorMap.put("PATTERN_CREATION_SUBKIND", new MethodCall(
@@ -486,6 +498,18 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{
 		if (manager.isProjectLoaded()==false) return;
 		manager.deriveBySpecialization();
+	}
+
+	public void derivedByPastSpecialization()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.deriveByPastSpecialization();
+	}
+
+	public void derivedByParticipation()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.deriveByParticipation();
 	}
 
 
