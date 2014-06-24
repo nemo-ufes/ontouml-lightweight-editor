@@ -2337,6 +2337,25 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	public void deriveBySpecialization() {
 		// TODO Auto-generated method stub
+		DiagramEditor activeEditor = getCurrentDiagramEditor();
+		UmlProject project = getCurrentEditor().getProject();
+		Fix fix = DerivedTypesOperations.createSpecializationDerivation(activeEditor, project,this);
+		if(fix!=null) updateOLED(fix);
+	}
+	public void openDerivedTypePatternPastSpecialization(double x, double y) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void openDerivedTypePatternParticipation(double x, double y) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void deriveByPastSpecialization() {
+		// TODO Auto-generated method stub
+		
+	}
+	public void deriveByParticipation() {
+		// TODO Auto-generated method stub
 		
 	}
 

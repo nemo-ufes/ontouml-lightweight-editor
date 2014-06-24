@@ -64,6 +64,8 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	private JMenuItem unionItem;
 	private JMenuItem exclusionItem;
 	private JMenuItem intersectionItem;
+	private JMenuItem pastspecializationItem;
+	private JMenuItem participationItem;
 	@SuppressWarnings("unused")
 	private JMenuItem deleteItem;
 	private JMenu genSetMenu;
@@ -190,10 +192,13 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		unionItem = createMenuItem(this, "derivedunion");
 		exclusionItem = createMenuItem(this, "derivedexclusion");
 		intersectionItem = createMenuItem(this, "derivedintersection");
-		//specializationItem = createMenuItem(this, "derivedspecialization");
+		pastspecializationItem = createMenuItem(this, "derivedpastspecialization");
+		participationItem = createMenuItem(this, "derivedparticipation");
 		deriveMenu.add(unionItem);
 		deriveMenu.add(exclusionItem);
 		deriveMenu.add(intersectionItem);
+		deriveMenu.add(pastspecializationItem);
+		deriveMenu.add(participationItem);
 		add(deriveMenu);
 		
 		addSeparator();

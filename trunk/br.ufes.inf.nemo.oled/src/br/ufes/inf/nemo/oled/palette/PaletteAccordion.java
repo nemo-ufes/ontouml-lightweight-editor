@@ -184,6 +184,8 @@ public class PaletteAccordion extends JPanel{
 		derivedPalette.createElement("staticpalette.patterns2", "derivationbyexclusion");
 		derivedPalette.createElement("staticpalette.patterns3", "derivationbyintersection");
 		derivedPalette.createElement("staticpalette.patterns4", "derivationbyspecialization");
+		derivedPalette.createElement("staticpalette.patterns5", "derivationbypastspecialization");
+		derivedPalette.createElement("staticpalette.patterns6", "derivationbyparticipation");
 		
 		derivedPalette.addCommandListener(editorDispatcher);
 		
