@@ -330,10 +330,10 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					getClass().getMethod("derivedByIntersection")));
 			
 			selectorMap.put("DERIVED_BY_PAST_SPECIALIZATION", new MethodCall(
-					getClass().getMethod("derivedByIntersection")));
+					getClass().getMethod("derivedByPastSpecialization")));
 			
 			selectorMap.put("DERIVED_BY_PARTICIPATION", new MethodCall(
-					getClass().getMethod("derivedByIntersection")));
+					getClass().getMethod("derivedByParticipation")));
 
 			selectorMap.put("PATTERN_CREATION_SUBKIND", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.SUBKINDPATTERN));
