@@ -84,6 +84,10 @@ public class TreePopupMenu extends JPopupMenu {
 					RefOntoUML.Element element = (RefOntoUML.Element)((OntoUMLElement)TreePopupMenu.this.element).getElement();    					
 					ProjectBrowser.frame.getDiagramManager().rename(element);					
 				}
+				else if (TreePopupMenu.this.element instanceof StructureDiagram)
+				{
+					ProjectBrowser.frame.getDiagramManager().renameDiagram((StructureDiagram)element);					
+				}
 			}
 		});
 	}
@@ -339,7 +343,7 @@ public class TreePopupMenu extends JPopupMenu {
         derivationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/derivation.png")));
 	}
 	
-	public void createAddItem()
+	public void createAddContainedItem()
 	{
 		OntoUMLElement ontoElement = ((OntoUMLElement)selectedNode.getUserObject());
 		final RefOntoUML.Type eContainer = (RefOntoUML.Type)ontoElement.getElement();
@@ -408,7 +412,7 @@ public class TreePopupMenu extends JPopupMenu {
 				}
 				else if (TreePopupMenu.this.element instanceof StructureDiagram)
 				{
-					frame.getDiagramManager().removeDiagram((StructureDiagram)TreePopupMenu.this.element);    					
+					frame.getDiagramManager().deleteDiagram((StructureDiagram)TreePopupMenu.this.element);    					
 				}
 			}
 		});
@@ -445,7 +449,9 @@ public class TreePopupMenu extends JPopupMenu {
     	
     	// Model Node: Model
     	if (tree.getModelRootNode().equals(selectedNode)) {
-    		createCompleteItem();
+    		createAddElementItem();
+			createAddRelationItem();
+    		//createCompleteItem();
     		return;
     	} 
     	
@@ -455,6 +461,11 @@ public class TreePopupMenu extends JPopupMenu {
     		return;
     	} 
 
+    	// Diagrams...
+    	if (TreePopupMenu.this.element instanceof StructureDiagram) {
+    		createRenameItem();
+    	}
+    	
     	// Model Elements...
     	
     	if ((!(TreePopupMenu.this.element instanceof StructureDiagram)) && !((RefOntoUML.Element)((OntoUMLElement)TreePopupMenu.this.element).getElement() instanceof Generalization)) {
@@ -476,7 +487,7 @@ public class TreePopupMenu extends JPopupMenu {
     		}		   		
     		if(ontoElement.getElement() instanceof RefOntoUML.Class || ontoElement.getElement() instanceof RefOntoUML.DataType)
     		{    			
-    			createAddItem();
+    			createAddContainedItem();
     			createClassChangeItem();    			
     		}
     		if(ontoElement.getElement() instanceof RefOntoUML.Association)

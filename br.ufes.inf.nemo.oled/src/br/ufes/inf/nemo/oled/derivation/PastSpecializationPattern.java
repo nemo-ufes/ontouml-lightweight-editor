@@ -24,12 +24,15 @@ import javax.swing.ImageIcon;
 
 public class PastSpecializationPattern extends JDialog {
 
+	private static final long serialVersionUID = 4236441153290954092L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txt_supertype;
 	private JTextArea txtrADerivedType;
 	private JTextField txt_special;
 	private JTextField txt_past;
+	@SuppressWarnings("rawtypes")
 	JComboBox cmb_past = new JComboBox();
+	@SuppressWarnings("rawtypes")
 	JComboBox cmb_special = new JComboBox();
 
 	/**
@@ -48,6 +51,7 @@ public class PastSpecializationPattern extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public PastSpecializationPattern() {
 		setTitle("Derivation By Past Specialzation");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(PastSpecializationPattern.class.getResource("/resources/icons/x16/sitemap.png")));

@@ -1489,7 +1489,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			else if(element instanceof BaseConnection) sb.append(ModelHelper.handleName(((BaseConnection)element).getRelationship()) + (i < elements.size()-1 ? ", " : ""));
 			else if (element instanceof SimpleLabel || element instanceof AssociationLabel) sb.append(((Label) element).getSource().getLabelText());
 		}
-		frame.showStatus(capitalize(sb.toString()));
+		frame.getDiagramManager().showStatus(this,capitalize(sb.toString()));
 	}
 
 	@Override
