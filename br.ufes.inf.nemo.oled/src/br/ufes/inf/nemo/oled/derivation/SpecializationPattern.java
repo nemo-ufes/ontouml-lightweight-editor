@@ -25,6 +25,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.DiagramManager;
+import javax.swing.JCheckBox;
 
 public class SpecializationPattern extends JDialog {
 
@@ -38,6 +39,7 @@ public class SpecializationPattern extends JDialog {
 	private DiagramManager dm;
 	@SuppressWarnings("rawtypes")
 	JComboBox cmb_stereo_base = new JComboBox();
+	JLabel lblAttribute = new JLabel("Attribute");
 	@SuppressWarnings("rawtypes")
 	JComboBox cmb_stereo_der = new JComboBox();
 	JLabel lblType = new JLabel("Type");
@@ -57,7 +59,7 @@ public class SpecializationPattern extends JDialog {
 		dm= diagramManager;
 		setTitle("Derivation By Specialization");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SpecializationPattern.class.getResource("/resources/icons/x16/sitemap.png")));
-		setBounds(100, 100, 412, 518);
+		setBounds(100, 100, 412, 541);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setForeground(Color.WHITE);
@@ -67,11 +69,13 @@ public class SpecializationPattern extends JDialog {
 		JLabel lblNewLabel = new JLabel("Base Type");
 		
 		lbl_base = new JTextField();
+		lbl_base.setText("Base");
 		lbl_base.setColumns(10);
 		
 		JLabel lblDerivedBySpecialization = new JLabel("Derived By Specialization");
 		
 		lbl_derived = new JTextField();
+		lbl_derived.setText("Derived");
 		lbl_derived.setColumns(10);
 		
 
@@ -92,13 +96,26 @@ public class SpecializationPattern extends JDialog {
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setIcon(new ImageIcon(SpecializationPattern.class.getResource("/resources/figures/derivation_by_specialization.jpg")));
 		
-		JLabel lblAttribute = new JLabel("Attribute");
+
 		
 		lbl_attribute = new JTextField();
+		lbl_attribute.setEnabled(false);
 		lbl_attribute.setColumns(10);
 		
 		lbl_type_att = new JTextField();
+		lbl_type_att.setEnabled(false);
 		lbl_type_att.setColumns(10);
+		
+		final JCheckBox chckbxNewCheckBox = new JCheckBox("set attribute");
+		chckbxNewCheckBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(chckbxNewCheckBox.isSelected()){
+					lbl_attribute.setEnabled(true);
+					lbl_type_att.setEnabled(true);
+				}
+			}
+		});
+		chckbxNewCheckBox.setBackground(Color.WHITE);
 		
 
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
@@ -120,18 +137,20 @@ public class SpecializationPattern extends JDialog {
 									.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
 										.addComponent(lbl_attribute, Alignment.LEADING)
 										.addComponent(lblAttribute, Alignment.LEADING)
-										.addComponent(lbl_derived, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE))
+										.addComponent(lbl_derived, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+										.addComponent(chckbxNewCheckBox, Alignment.LEADING))
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 										.addComponent(lblType)
 										.addComponent(cmb_stereo_der, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 										.addComponent(lbl_type_att, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(111)
-							.addComponent(lblNewLabel_1))
-						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addGap(75)
-							.addComponent(txtpnUseOclEditor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPanel.createSequentialGroup()
+									.addGap(36)
+									.addComponent(lblNewLabel_1))
+								.addComponent(txtpnUseOclEditor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap(53, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -159,7 +178,9 @@ public class SpecializationPattern extends JDialog {
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lbl_attribute, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lbl_type_att, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+					.addComponent(chckbxNewCheckBox)
+					.addGap(18)
 					.addComponent(txtpnUseOclEditor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(lblNewLabel_1)
@@ -175,8 +196,23 @@ public class SpecializationPattern extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						DerivedTypesOperations.createDerivedTypeBySpecialization(lbl_base.getText(),lbl_derived.getText(),cmb_stereo_base.getSelectedItem().toString(),cmb_stereo_der.getSelectedItem().toString(), lbl_attribute.getText(), lbl_type_att.getText(),dm,location);
-						dispose();
+						if(chckbxNewCheckBox.isEnabled()){
+							if(lblAttribute.getText().equals("")){
+								DerivedTypesOperations.wrongSelection("Please, set the atribute name");
+								return;
+							}
+							if(lbl_type_att.getText().equals("")){
+								DerivedTypesOperations.wrongSelection("Please, set the atribute type");
+								return;
+							}
+							
+							DerivedTypesOperations.createDerivedTypeBySpecialization(lbl_base.getText(),lbl_derived.getText(),cmb_stereo_base.getSelectedItem().toString(),cmb_stereo_der.getSelectedItem().toString(), lbl_attribute.getText(), lbl_type_att.getText(),dm,location);
+							dispose();
+						}else{
+							DerivedTypesOperations.createDerivedTypeBySpecialization(lbl_base.getText(),lbl_derived.getText(),cmb_stereo_base.getSelectedItem().toString(),cmb_stereo_der.getSelectedItem().toString(), dm,location);
+
+						}
+						
 					}
 				});
 				okButton.setActionCommand("OK");

@@ -5,8 +5,10 @@ import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import RefOntoUML.AntiRigidMixinClass;
 import RefOntoUML.AntiRigidSortalClass;
@@ -772,6 +774,49 @@ public class DerivedTypesOperations {
 
 		
 		return mainfix;
+	}
+
+
+
+	public static void createDerivedTypeBySpecialization(String nameBase,
+			String nameDerived, String stereotypeBase, String stereotypeDerived, DiagramManager dm, Double location)  {
+		// TODO Auto-generated method stub
+		dman=dm;
+		of = new OutcomeFixer(dm.getCurrentProject().getModel());
+		mainfix = new Fix();
+		Classifier newElement_2= includeElement(location, nameBase, stereotypeBase);
+		location.y=location.y+100;
+		Classifier newElement= includeElement(location, nameDerived, stereotypeDerived);
+		createGeneralizationSingle(newElement_2, newElement);
+		RefOntoUML.Class classe = (Class) newElement_2;
+
+		dm.updateOLED(mainfix);
+	}
+
+
+
+
+	public static void createPastSpecializationPattern(DiagramManager dman2,
+			Double location, String namesuper, String stereosuper,
+			String namespecial, String stereospecial, String namederived,
+			String stereoderived, boolean rule) {
+		// TODO Auto-generated method stub
+		dman=dman2;
+		of = new OutcomeFixer(dman2.getCurrentProject().getModel());
+		mainfix = new Fix();
+		Point2D.Double[] positions= ClassPosition.GSpositioning(2, location);
+		Classifier newElement= includeElement(location, namesuper, stereosuper);
+		Classifier newElement2= includeElement(positions[2], namespecial, stereospecial);
+		Classifier newElement3 = includeElement(positions[1], namederived, stereoderived);
+		createGeneralizationSingle(newElement, newElement2);
+		createGeneralizationSingle(newElement, newElement3);
+		
+		if(rule){
+			String rule_ocl= "context World \n  temp:_'"+namederived+"'.allInstances(self)->forAll( wk | self.allPrevious()->exists(w | wk.oclIsKindOf(_'"+namespecial+"',w)) and not wk.oclIsKindOf("+namespecial+",self))" ;
+			dman.getFrame().getInfoManager().getOcleditor().addText(rule_ocl);
+		}
+		
+		dman2.updateOLED(mainfix);	
 	}
 
 
