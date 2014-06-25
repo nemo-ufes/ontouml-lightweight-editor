@@ -404,8 +404,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		//from diagrams & model
 		for(DiagramEditor diagramEditor: getDiagramEditors(element))
 		{
-			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
-			cmd.run();
+			diagramEditor.execute(new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true));
 		}
 		// only from model
 		if(getDiagramEditors(element).size()==0)

@@ -101,7 +101,7 @@ implements DocumentListener, BaseTextEditor {
 	 * {@inheritDoc}
 	 */
 	public void insertUpdate(DocumentEvent e) {
-		// Here we need to implement the resizing method
+		// Here we need to implement the resizing method !!! TODO
 		MultilineLayout layout = MultilineLayouter.getInstance().calculateLayout(
 				((Graphics2D) getGraphics()).getFontRenderContext(), getFont(),
 				getText(), getSize().getWidth());

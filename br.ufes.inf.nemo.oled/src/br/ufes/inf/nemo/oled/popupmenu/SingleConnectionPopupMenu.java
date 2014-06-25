@@ -47,6 +47,8 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	//connection items
 	private Connection con;
 	final JMenuItem showRolesItem;
+	final JMenuItem showSubsettingItem;
+	final JMenuItem showRedefiningItem;
 	final JMenuItem showNameItem;
 	final JMenuItem showMultiplicitiesItem;
 	final JMenuItem showStereotypeItem;
@@ -135,6 +137,34 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 					list.add(con);
 					if(editor!=null) {
 						editor.execute(new SetVisibilityCommand((DiagramNotification)editor,list,editor.getProject(),Visibility.ENDPOINTS,showRolesItem.isSelected()));					
+					}					
+				}
+			}
+		});
+		
+		showSubsettingItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showsubsetting");
+		showSubsettingItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (con instanceof AssociationElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					list.add(con);
+					if(editor!=null) {
+						editor.execute(new SetVisibilityCommand((DiagramNotification)editor,list,editor.getProject(),Visibility.SUBSETS,showSubsettingItem.isSelected()));					
+					}					
+				}
+			}
+		});
+		
+		showRedefiningItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showredefining");
+		showRedefiningItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (con instanceof AssociationElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					list.add(con);
+					if(editor!=null) {
+						editor.execute(new SetVisibilityCommand((DiagramNotification)editor,list,editor.getProject(),Visibility.REDEFINES,showRedefiningItem.isSelected()));					
 					}					
 				}
 			}
@@ -438,17 +468,31 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		if (con instanceof AssociationElement){
 			visibilityMenu.setEnabled(true);
 			readingDirectionMenu.setEnabled(true);
+			showMultiplicitiesItem.setEnabled(true);
 			showMultiplicitiesItem.setSelected(((AssociationElement)con).showMultiplicities());
+			showRolesItem.setEnabled(true);
 			showRolesItem.setSelected(((AssociationElement)con).showRoles());
+			showSubsettingItem.setEnabled(true);
+			showSubsettingItem.setSelected(((AssociationElement)con).showSubsetting());
+			showRedefiningItem.setEnabled(true);
+			showRedefiningItem.setSelected(((AssociationElement)con).showRedefining());
 			showNameItem.setSelected(((AssociationElement)con).showName());
+			showStereotypeItem.setEnabled(true);
 			showStereotypeItem.setSelected(((AssociationElement)con).showOntoUmlStereotype());
 			invertMenu.setVisible(true);			
 		}else{			
 			showNameItem.setSelected(((GeneralizationElement)con).showName());
 			readingDirectionMenu.setEnabled(false);
-			showMultiplicitiesItem.setEnabled(false);
-			showRolesItem.setEnabled(false);			
-			showStereotypeItem.setEnabled(false);
+			showMultiplicitiesItem.setSelected(false);
+			showMultiplicitiesItem.setEnabled(false);			
+			showRolesItem.setSelected(false);
+			showRolesItem.setEnabled(false);
+			showSubsettingItem.setSelected(false);
+			showSubsettingItem.setEnabled(false);
+			showRedefiningItem.setSelected(false);
+			showRedefiningItem.setEnabled(false);
+			showStereotypeItem.setSelected(false);
+			showStereotypeItem.setEnabled(false);			
 			invertMenu.setVisible(false);
 		}
 		if(con instanceof AssociationElement){

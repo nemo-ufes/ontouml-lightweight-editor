@@ -71,6 +71,7 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 	public void run() {
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
+		DiagramEditor d = ((DiagramEditor)notification);
 		
 		String oldName = label.getNameLabelText();		
 		label.setNameLabelText(text);
@@ -91,9 +92,8 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 			
 		}
 		
-		elements.add(parent);
-		
-		DiagramEditor d = ((DiagramEditor)notification);
+		elements.add(parent);		
+				
 		//notify
 		if (d!=null) {
 			d.notifyChange((List<DiagramElement>) elements, ChangeType.LABEL_TEXT_SET, redo ? NotificationType.REDO : NotificationType.DO);			
@@ -121,7 +121,7 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		super.undo();
 		
 		label.setNameLabelText(oldText);
-		
+				
 		if (parent instanceof ClassElement) 
 		{
 			Classifier element = (((ClassElement)parent).getClassifier());

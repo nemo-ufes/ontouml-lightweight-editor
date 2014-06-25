@@ -22,7 +22,7 @@ public class SetVisibilityCommand extends BaseDiagramCommand{
 	public DiagramEditor editor;
 	public UmlProject project;
 	public ArrayList<DiagramElement> selected = new ArrayList<DiagramElement>();	
-	public enum Visibility { NAME, ENDPOINTS, STEREOTYPE, MULTIPLICITY }
+	public enum Visibility { NAME, ENDPOINTS, STEREOTYPE, MULTIPLICITY, SUBSETS, REDEFINES }
 	public Visibility visibility;
 	public boolean value;
 	
@@ -60,6 +60,8 @@ public class SetVisibilityCommand extends BaseDiagramCommand{
 						if(visibility==Visibility.STEREOTYPE) ce.setShowOntoUmlStereotype(!value);
 						if(visibility==Visibility.MULTIPLICITY) ce.setShowMultiplicities(!value);
 						if(visibility==Visibility.ENDPOINTS) ce.setShowRoles(!value);
+						if(visibility==Visibility.SUBSETS) ce.setShowSubsetting(!value);
+						if(visibility==Visibility.REDEFINES) ce.setShowRedefining(!value);
 					}else if(dElem instanceof GeneralizationElement){
 						GeneralizationElement ce = (GeneralizationElement)dElem;					
 						if(visibility==Visibility.NAME) ce.setShowName(!value);
@@ -88,7 +90,9 @@ public class SetVisibilityCommand extends BaseDiagramCommand{
 		if(visibility==Visibility.STEREOTYPE) editor.showStereotype(value);
 		if(visibility==Visibility.MULTIPLICITY) editor.showMultiplicities(value);
 		if(visibility==Visibility.ENDPOINTS) editor.showEndPoints(value);
-				
+		if(visibility==Visibility.SUBSETS) editor.showSubsetting(value);
+		if(visibility==Visibility.REDEFINES) editor.showRedefining(value);
+		
 		//notify
 		if (notification!=null) {
 			notification.notifyChange((List<DiagramElement>) selected, ChangeType.VISIBILITY_CHANGED, redo ? NotificationType.REDO : NotificationType.DO);			

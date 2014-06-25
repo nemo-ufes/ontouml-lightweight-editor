@@ -71,11 +71,13 @@ public final class AssociationElement extends BaseConnection {
 	private Label multiplicity1Label;
 	private Label multiplicity2Label;
 	private Label role1Label;
-	private Label meta1Label;
-	private Label meta2Label;
+	private Label subset1Label;
+	private Label subset2Label;
+	private Label redefine1Label;
+	private Label redefine2Label;
 	private Label role2Label;
 	private AssociationLabel nameLabel;
-	private boolean showMultiplicities, showName, showRoles, showMetaProperties;
+	private boolean showMultiplicities, showName, showRoles, showSubsetting, showRedefining, showMetaProperties;
 	
 	/**
 	 * Returns the prototype instance.
@@ -90,7 +92,8 @@ public final class AssociationElement extends BaseConnection {
 		setConnection(new RectilinearConnection());
 		setupMultiplicityLabels();
 		setupRoleLabels();
-		setupRolePropertiesLabels();
+		setupSubsettingLabels();
+		setupRedefiningLabels();
 		setupNameLabel();
 		
 		showMultiplicities = true;
@@ -131,6 +134,12 @@ public final class AssociationElement extends BaseConnection {
 	public boolean showRoles() {
 		return showRoles;
 	}
+	public boolean showSubsetting() {
+		return showSubsetting;
+	}
+	public boolean showRedefining() {
+		return showRedefining;
+	}
 	
 	public boolean showMetaProperties() { return showMetaProperties; }
 	
@@ -139,7 +148,15 @@ public final class AssociationElement extends BaseConnection {
 	 * @param flag the value of the showMultiplicities property
 	 */
 	public void setShowRoles(boolean flag) {
-		showRoles = flag;
+		showRoles = flag;		
+	}
+	
+	public void setShowSubsetting(boolean flag){
+		showSubsetting = flag;
+	}
+	
+	public void setShowRedefining(boolean flag){
+		showRedefining = flag;
 	}
 	
 	/**
@@ -152,17 +169,22 @@ public final class AssociationElement extends BaseConnection {
 		// label sources after a clone()
 		cloned.setupMultiplicityLabels();
 		cloned.setupRoleLabels();
-		cloned.setupRolePropertiesLabels();
+		cloned.setupSubsettingLabels();
+		cloned.setupRedefiningLabels();
 		cloned.setupNameLabel();
 		cloned.showMultiplicities = showMultiplicities;
 		cloned.showName = showName;
 		cloned.showRoles = showRoles;
+		cloned.showSubsetting = showSubsetting;
+		cloned.showRedefining = showRedefining;
 		cloned.multiplicity1Label.setParent(multiplicity1Label.getParent());
 		cloned.multiplicity2Label.setParent(multiplicity2Label.getParent());
 		cloned.role1Label.setParent(role1Label.getParent());
 		cloned.role2Label.setParent(role2Label.getParent());
-		cloned.meta1Label.setParent(meta1Label.getParent());
-		cloned.meta2Label.setParent(meta2Label.getParent());				
+		cloned.subset1Label.setParent(subset1Label.getParent());
+		cloned.subset2Label.setParent(subset2Label.getParent());
+		cloned.redefine1Label.setParent(redefine1Label.getParent());
+		cloned.redefine2Label.setParent(redefine2Label.getParent());				
 		cloned.nameLabel.setParent(nameLabel.getParent());		
 		return cloned;
 	}
@@ -221,13 +243,79 @@ public final class AssociationElement extends BaseConnection {
 			public void setLabelText(String aText) { }
 		});
 	}
+	
+	private void setupRedefiningLabels() {
+		redefine1Label = new SimpleLabel();
+		redefine1Label.setSource(new LabelSource() {
+						
+			private static final long serialVersionUID = 8971899878055731312L;
 
-	/**
-	 * Sets the role properties label sources.
-	 */
-	private void setupRolePropertiesLabels() {
-		meta1Label = new SimpleLabel();
-		meta1Label.setSource(new LabelSource() {
+			/**
+			 * {@inheritDoc}
+			 */
+			public String getLabelText() {
+				Association association = (Association) getRelationship();
+				Property p = association.getMemberEnd().get(0);
+				String str = new String();
+				if(p!=null){									
+					if (p.getRedefinedProperty().size()>0){
+						str = "{ redefines ";
+						int i=0;
+						for(Property property: p.getRedefinedProperty()){
+							if(i<p.getRedefinedProperty().size()-1) str += property.getName()+",";
+							else str += property.getName();
+							i++;
+						}
+						str += " }";
+					}
+				}
+				return str;				
+			}
+
+			/**
+			 * {@inheritDoc}
+			 */
+			public void setLabelText(String aText) { }
+		});
+
+		redefine2Label = new SimpleLabel();
+		redefine2Label.setSource(new LabelSource() {
+			
+			private static final long serialVersionUID = 6014955370882528767L;
+
+			/**
+			 * {@inheritDoc}
+			 */
+			public String getLabelText() {
+				Association association = (Association) getRelationship();				
+				Property p = association.getMemberEnd().get(1);
+				String str = new String();
+				if(p!=null){									
+					if (p.getRedefinedProperty().size()>0){
+						str = "{ redefines ";
+						int i=0;
+						for(Property property: p.getRedefinedProperty()){
+							if(i<p.getRedefinedProperty().size()-1) str += property.getName()+",";
+							else str += property.getName();
+							i++;
+						}
+						str += " }";
+					}
+				}
+				return str;				
+			}
+
+			/**
+			 * {@inheritDoc}
+			 */
+			public void setLabelText(String aText) { }
+		});
+		
+	}
+
+	private void setupSubsettingLabels() {
+		subset1Label = new SimpleLabel();
+		subset1Label.setSource(new LabelSource() {
 						
 			private static final long serialVersionUID = 8971899878055731312L;
 
@@ -259,8 +347,8 @@ public final class AssociationElement extends BaseConnection {
 			public void setLabelText(String aText) { }
 		});
 
-		meta2Label = new SimpleLabel();
-		meta2Label.setSource(new LabelSource() {
+		subset2Label = new SimpleLabel();
+		subset2Label.setSource(new LabelSource() {
 			
 			private static final long serialVersionUID = 6014955370882528767L;
 
@@ -290,8 +378,7 @@ public final class AssociationElement extends BaseConnection {
 			 * {@inheritDoc}
 			 */
 			public void setLabelText(String aText) { }
-		});
-		
+		});		
 	}
 	
 	/**
@@ -375,8 +462,8 @@ public final class AssociationElement extends BaseConnection {
 	 */
 	public Label getRole2Label() { return role2Label; }
 
-	public Label getRoleProperty1Label() {return meta1Label; }
-	public Label getRoleProperty2Label() {return meta2Label; }
+	public Label getSubsetting1Label() {return subset1Label; }
+	public Label getSubsetting2Label() {return subset2Label; }
 	
 	/**
 	 * Returns the AssociationType.
@@ -406,8 +493,10 @@ public final class AssociationElement extends BaseConnection {
 		multiplicity2Label.setParent(parent);
 		role1Label.setParent(parent);
 		role2Label.setParent(parent);
-		meta1Label.setParent(parent);
-		meta2Label.setParent(parent);
+		subset1Label.setParent(parent);
+		subset2Label.setParent(parent);
+		redefine1Label.setParent(parent);
+		redefine2Label.setParent(parent);
 		nameLabel.setParent(parent);
 	}
 
@@ -556,14 +645,14 @@ public final class AssociationElement extends BaseConnection {
 		new SimpleArrowTip().draw(drawingContext, endpoint, rotationTransform);
 	}
 
-	public int getRoleProperty1Width(DrawingContext drawingContext)
+	public int getSubset1Width(DrawingContext drawingContext)
 	{
-		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(meta1Label.getNameLabelText());
+		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(subset1Label.getNameLabelText());
 	}
 
-	public int getRoleProperty2Width(DrawingContext drawingContext)
+	public int getSubset2Width(DrawingContext drawingContext)
 	{
-		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(meta2Label.getNameLabelText());
+		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(subset2Label.getNameLabelText());
 	}
 	
 	/**
@@ -585,30 +674,104 @@ public final class AssociationElement extends BaseConnection {
 		}		
 		
 		if (getNode1()!=null){
-			if (showRoles) positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
-			if(meta1Label!=null)positionRolePropertiesLabel(meta1Label, getNode1(), getEndPoint1(), drawingContext);
+			if(role1Label!=null && showRoles) positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
+			if(subset1Label!=null && showSubsetting) positionSubsettingLabel(subset1Label, getNode1(), getEndPoint1(), drawingContext);			
+			if(redefine1Label!=null && showRedefining) positionRedefiningLabel(redefine1Label, getNode1(), getEndPoint1(), drawingContext);
 		}else{
-			if (showRoles) positionLabel(role1Label, getConnection1(), getEndPoint1(), drawingContext, true);
-			if(meta1Label!=null)positionRolePropertiesLabel(meta1Label, getConnection1(), getEndPoint1(), drawingContext);
+			if(role1Label!=null && showRoles) positionLabel(role1Label, getConnection1(), getEndPoint1(), drawingContext, true);
+			if(subset1Label!=null && showSubsetting) positionSubsettingLabel(subset1Label, getConnection1(), getEndPoint1(), drawingContext);
+			if(redefine1Label!=null && showRedefining) positionRedefiningLabel(redefine1Label, getNode1(), getEndPoint1(), drawingContext);
 		}
+		
 		if (getNode2()!=null){
-			if (showRoles) positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
-			if(meta2Label!=null)positionRolePropertiesLabel(meta2Label, getNode2(), getEndPoint2(), drawingContext);
+			if(role2Label!=null && showRoles) positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
+			if(subset2Label!=null && showSubsetting)positionSubsettingLabel(subset2Label, getNode2(), getEndPoint2(), drawingContext);
+			if(redefine2Label!=null && showRedefining) positionRedefiningLabel(redefine2Label, getNode1(), getEndPoint1(), drawingContext);
 		}else{
-			if (showRoles) positionLabel(role2Label, getConnection2(), getEndPoint2(), drawingContext, true);
-			if(meta2Label!=null)positionRolePropertiesLabel(meta2Label, getConnection2(), getEndPoint2(), drawingContext);				
+			if(role2Label!=null && showRoles) positionLabel(role2Label, getConnection2(), getEndPoint2(), drawingContext, true);
+			if(subset2Label!=null && showSubsetting) positionSubsettingLabel(subset2Label, getConnection2(), getEndPoint2(), drawingContext);
+			if(redefine2Label!=null && showRedefining) positionRedefiningLabel(redefine2Label, getNode1(), getEndPoint1(), drawingContext);
 		}
-		if(showRoles){
-			role1Label.draw(drawingContext);
-			role2Label.draw(drawingContext);
-		}
-		if(meta1Label!=null)meta1Label.draw(drawingContext);
-		if(meta2Label!=null)meta2Label.draw(drawingContext);		
+		
+		if(role2Label!=null && showRoles) role1Label.draw(drawingContext);
+		if(role2Label!=null && showRoles) role2Label.draw(drawingContext);		
+		if(subset1Label!=null && showSubsetting)subset1Label.draw(drawingContext);
+		if(subset2Label!=null && showSubsetting)subset2Label.draw(drawingContext);		
+		if(redefine1Label!=null && showRedefining)redefine1Label.draw(drawingContext);
+		if(redefine2Label!=null && showRedefining)redefine2Label.draw(drawingContext);
+		
 		positionNameLabel(drawingContext);
 		nameLabel.draw(drawingContext);
 	}
 
-	private void positionRolePropertiesLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext) 
+	private void positionRedefiningLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext) 
+	{
+		Direction direction=null;		
+		if (endPointDiagramElement instanceof Node) direction = getPointDirection((Node)endPointDiagramElement, endpoint);
+		else if (endPointDiagramElement instanceof Connection) direction = getPointDirection((Connection)endPointDiagramElement, endpoint);
+		double x = 0, y = 0, marging = 10;
+		double labelHeight = label.getSize().getHeight(); 
+		double labelWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(label.getSource().getLabelText());
+		switch (direction) {
+			case NORTH:{
+				if(showRoles() & showSubsetting()){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() - (3*labelHeight + marging);
+				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}
+			case SOUTH:{
+				if(showRoles() & showSubsetting()){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() + (2*labelHeight + marging);
+				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() + (labelHeight + marging);
+				}else{
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() + marging;
+				}
+				break;
+			}
+			case EAST:{
+				if(showRoles() & showSubsetting()){
+					x = endpoint.getX() + marging;
+					y = endpoint.getY() - (3*labelHeight + marging);
+				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
+					x = endpoint.getX() + marging;								
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x = endpoint.getX() + marging;								
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}
+			case WEST:			
+			default:{
+				//west
+				if(showRoles() & showSubsetting()){
+					x = endpoint.getX() - (labelWidth + marging);
+					y = endpoint.getY() - (3*labelHeight + marging);
+				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
+					x = endpoint.getX() - (labelWidth + marging);								
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x = endpoint.getX() - (labelWidth + marging);								
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}				
+		}
+		label.setAbsolutePos(x, y);
+	}
+	
+	private void positionSubsettingLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext) 
 	{
 		Direction direction=null;		
 		if (endPointDiagramElement instanceof Node) direction = getPointDirection((Node)endPointDiagramElement, endpoint);
