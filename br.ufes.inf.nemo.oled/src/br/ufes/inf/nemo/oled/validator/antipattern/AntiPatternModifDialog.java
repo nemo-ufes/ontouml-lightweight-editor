@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
-import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
@@ -97,7 +96,7 @@ public class AntiPatternModifDialog extends Dialog {
 		removedLabel.setText("Removed Elements:");
 		
 		modifiedList = new List(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-				
+			
 		addedList = new List(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		
 		removedList = new List(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -112,35 +111,23 @@ public class AntiPatternModifDialog extends Dialog {
 		statusLabel.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		statusLabel.setAlignment(SWT.CENTER);
 		statusLabel.setText("This antipattern did not characterized an error.");
-				
 		GroupLayout gl_container = new GroupLayout(container);
 		gl_container.setHorizontalGroup(
 			gl_container.createParallelGroup(GroupLayout.LEADING)
 				.add(gl_container.createSequentialGroup()
+					.add(10)
 					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
-						.add(gl_container.createSequentialGroup()
-							.add(10)
-							.add(introLabel, GroupLayout.PREFERRED_SIZE, 552, GroupLayout.PREFERRED_SIZE))
-						.add(gl_container.createSequentialGroup()
-							.addContainerGap()
-							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
-								.add(gl_container.createSequentialGroup()
-									.add(gl_container.createParallelGroup(GroupLayout.LEADING, false)
-										.add(modifiedLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.add(modifiedList, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE))
-									.addPreferredGap(LayoutStyle.RELATED)
-									.add(gl_container.createParallelGroup(GroupLayout.LEADING, false)
-										.add(GroupLayout.TRAILING, addedLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.add(GroupLayout.TRAILING, addedList, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE))
-									.addPreferredGap(LayoutStyle.UNRELATED)
-									.add(gl_container.createParallelGroup(GroupLayout.TRAILING, false)
-										.add(removedLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.add(removedList, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE)))
-								.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
-									.add(GroupLayout.LEADING, rulesLabel, GroupLayout.PREFERRED_SIZE, 551, GroupLayout.PREFERRED_SIZE)
-									.add(GroupLayout.LEADING, rulesText, GroupLayout.PREFERRED_SIZE, 551, GroupLayout.PREFERRED_SIZE))
-								.add(statusLabel, GroupLayout.PREFERRED_SIZE, 551, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.add(introLabel, GroupLayout.PREFERRED_SIZE, 764, GroupLayout.PREFERRED_SIZE)
+						.add(modifiedLabel, GroupLayout.PREFERRED_SIZE, 764, GroupLayout.PREFERRED_SIZE)
+						.add(modifiedList, GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE)
+						.add(addedLabel, GroupLayout.PREFERRED_SIZE, 764, GroupLayout.PREFERRED_SIZE)
+						.add(addedList, GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE)
+						.add(removedLabel, GroupLayout.PREFERRED_SIZE, 764, GroupLayout.PREFERRED_SIZE)
+						.add(removedList, GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE)
+						.add(rulesLabel, GroupLayout.PREFERRED_SIZE, 764, GroupLayout.PREFERRED_SIZE)
+						.add(rulesText, GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE)
+						.add(statusLabel, GroupLayout.DEFAULT_SIZE, 764, Short.MAX_VALUE))
+					.add(10))
 		);
 		gl_container.setVerticalGroup(
 			gl_container.createParallelGroup(GroupLayout.LEADING)
@@ -148,24 +135,25 @@ public class AntiPatternModifDialog extends Dialog {
 					.add(10)
 					.add(introLabel)
 					.add(18)
-					.add(gl_container.createParallelGroup(GroupLayout.BASELINE)
-						.add(modifiedLabel)
-						.add(removedLabel)
-						.add(addedLabel))
-					.addPreferredGap(LayoutStyle.RELATED)
-					.add(gl_container.createParallelGroup(GroupLayout.BASELINE, false)
-						.add(modifiedList, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
-						.add(addedList, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
-						.add(removedList, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(LayoutStyle.RELATED)
+					.add(modifiedLabel)
+					.add(8)
+					.add(modifiedList, GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+					.add(6)
+					.add(addedLabel)
+					.add(6)
+					.add(addedList, GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+					.add(10)
+					.add(removedLabel)
+					.add(6)
+					.add(removedList, GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+					.add(11)
 					.add(rulesLabel)
-					.addPreferredGap(LayoutStyle.RELATED)
-					.add(rulesText, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(LayoutStyle.RELATED)
+					.add(6)
+					.add(rulesText, GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+					.add(43)
 					.add(statusLabel)
-					.addContainerGap())
+					.add(21))
 		);
-		gl_container.linkSize(new Control[] {modifiedList, addedList, removedList}, GroupLayout.VERTICAL);
 		container.setLayout(gl_container);
 
 		return container;
@@ -210,7 +198,7 @@ public class AntiPatternModifDialog extends Dialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(588, 409);
+		return new Point(800, 697);
 	}
 
 }
