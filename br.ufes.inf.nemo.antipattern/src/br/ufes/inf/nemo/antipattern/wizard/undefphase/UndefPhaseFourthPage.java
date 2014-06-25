@@ -9,6 +9,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
@@ -18,8 +19,8 @@ public class UndefPhaseFourthPage  extends UndefPhasePage{
 	
 	Composite parent;
 	private Label lblPhasesCanAlso;
-	private Button btnNo;
-	private Button btnYes;
+	private Button noButton;
+	private Button yesButton;
 	private CreateModeComposite createModeComposite;
 	
 	/**
@@ -40,33 +41,57 @@ public class UndefPhaseFourthPage  extends UndefPhasePage{
 		setControl(container);
 		
 		lblPhasesCanAlso = new Label(container, SWT.WRAP);
-		lblPhasesCanAlso.setBounds(10, 10, 554, 62);
-		lblPhasesCanAlso.setText("Phases can also be defined by the appearance of modes. For example, a kind Person may own a partition containing the Sick and Healthy phases. A Sick Person is one that has a mode Disease. Is that is the case?");
+		lblPhasesCanAlso.setText("Phases can also be defined by the appearance of modes. For example, a kind Person may own a partition containing the Sick and Healthy phases. A Sick Person is one that has a mode Disease. \r\n\r\nIs that is the case?");
 		
-		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 78, 554, 16);
-		btnNo.setText("No");
+		noButton = new Button(container, SWT.RADIO);
+		noButton.setText("No");
 		
-		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 102, 554, 16);
-		btnYes.setText("Yes");
+		yesButton = new Button(container, SWT.RADIO);
+		yesButton.setText("Yes");
 		
-		createModeComposite = new CreateModeComposite(container, SWT.NONE, (UndefPhaseOccurrence) up);
-		createModeComposite.setBounds(10, 134, 554, 215);
+		createModeComposite = new CreateModeComposite(container, SWT.NONE, (UndefPhaseOccurrence) occurrence);
 		createModeComposite.setVisible(false);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, createModeComposite, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, yesButton, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, noButton, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, lblPhasesCanAlso, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblPhasesCanAlso, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
+					.add(9)
+					.add(noButton)
+					.add(3)
+					.add(yesButton)
+					.add(18)
+					.add(createModeComposite, GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 		SelectionAdapter listener = new SelectionAdapter() {
 		      public void widgetSelected(SelectionEvent e) {
-		    	  if(btnYes.getSelection()) createModeComposite.setVisible(true);
-		    	  if(btnNo.getSelection()) createModeComposite.setVisible(false);
+		    	  if(yesButton.getSelection()) createModeComposite.setVisible(true);
+		    	  if(noButton.getSelection()) createModeComposite.setVisible(false);
 		      }
 		};				
-		btnNo.addSelectionListener(listener);
-		btnYes.addSelectionListener(listener);
+		noButton.addSelectionListener(listener);
+		yesButton.addSelectionListener(listener);
+		setAsEnablingNextPageButton(noButton);
+		setAsEnablingNextPageButton(yesButton);
+		setPageComplete(false);
 	}
 	
 	@Override
 	public IWizardPage getNextPage() {
-		if(btnYes.getSelection())
+		if(yesButton.getSelection())
 		{
 			ArrayList<String> names = new ArrayList<String>();
 			ArrayList<String> cardinalities = new ArrayList<String>();
@@ -75,18 +100,18 @@ public class UndefPhaseFourthPage  extends UndefPhasePage{
 			ArrayList<Classifier> phases = createModeComposite.getPhases();
 			
 			//Action =============================
-			UndefPhaseAction newAction = new UndefPhaseAction(up);			
+			UndefPhaseAction newAction = new UndefPhaseAction(occurrence);			
 			newAction.setCreateModes(names, cardinalities,phases);
-			getUndefPhaseWizard().replaceAction(0,newAction);	
+			getAntipatternWizard().replaceAction(0,newAction);	
 			//======================================
 			
-			return getUndefPhaseWizard().getFinishing();
+			return getAntipatternWizard().getFinishing();
 		}
-		if(btnNo.getSelection())
+		if(noButton.getSelection())
 		{
-			return getUndefPhaseWizard().getFifthPage();
+			return getAntipatternWizard().getFifthPage();
 		}
 		
-		return getUndefPhaseWizard().getFinishing();
+		return getAntipatternWizard().getFinishing();
 	}
 }

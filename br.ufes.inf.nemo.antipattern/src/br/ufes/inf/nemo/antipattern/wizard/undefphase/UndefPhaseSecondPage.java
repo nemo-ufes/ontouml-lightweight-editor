@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Label;
 
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class UndefPhaseSecondPage extends UndefPhasePage{
 	
@@ -33,11 +34,29 @@ public class UndefPhaseSecondPage extends UndefPhasePage{
 		setControl(container);
 		
 		lblWhichDatatypesMust = new Label(container, SWT.NONE);
-		lblWhichDatatypesMust.setBounds(10, 10, 541, 15);
 		lblWhichDatatypesMust.setText("Which datatypes must be created to define the phases?");
 		
-		createDataTypeComposite = new CreateDataTypeComposite(container, SWT.NONE, (UndefPhaseOccurrence) up);
-		createDataTypeComposite.setBounds(10, 42, 554, 254);		
+		createDataTypeComposite = new CreateDataTypeComposite(container, SWT.NONE, (UndefPhaseOccurrence) occurrence, this);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, lblWhichDatatypesMust, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, createDataTypeComposite, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblWhichDatatypesMust)
+					.add(17)
+					.add(createDataTypeComposite, GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+					.add(8))
+		);
+		container.setLayout(gl_container);
 	}
 	
 	@Override
@@ -54,14 +73,14 @@ public class UndefPhaseSecondPage extends UndefPhasePage{
 			cardinalities.addAll(createDataTypeComposite.getCardinalities().values());
 			
 			//Action =============================
-			UndefPhaseAction newAction = new UndefPhaseAction(up);			
+			UndefPhaseAction newAction = new UndefPhaseAction(occurrence);			
 			newAction.setCreateAttributes(names, types, stereotypes, cardinalities);
-			getUndefPhaseWizard().replaceAction(0,newAction);	
+			getAntipatternWizard().replaceAction(0,newAction);	
 			//======================================
 			
-			return getUndefPhaseWizard().getThirdPage();
+			return getAntipatternWizard().getThirdPage();
 		}
 				
-		return getUndefPhaseWizard().getFinishing();
+		return getAntipatternWizard().getFinishing();
 	}
 }

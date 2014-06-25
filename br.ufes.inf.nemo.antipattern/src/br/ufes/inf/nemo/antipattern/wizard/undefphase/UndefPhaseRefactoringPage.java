@@ -14,6 +14,7 @@ import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class UndefPhaseRefactoringPage extends RefactoringPage {
 	
@@ -45,7 +46,6 @@ public class UndefPhaseRefactoringPage extends RefactoringPage {
 		setControl(container);
 		
 		expandBar = new ExpandBar(container, SWT.V_SCROLL);
-		expandBar.setBounds(10, 10, 554, 304);
 		
 		//===========================================
 		
@@ -56,8 +56,10 @@ public class UndefPhaseRefactoringPage extends RefactoringPage {
 		layout1.verticalSpacing = 3;
 		composite1.setLayout(layout1);
 		
-		createDataTypeComposite = new CreateDataTypeComposite(composite1, SWT.NONE,up);
-		createDataTypeComposite.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		createDataTypeComposite = new CreateDataTypeComposite(composite1, SWT.NONE,up,null);
+		GridData gd_createDataTypeComposite = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		gd_createDataTypeComposite.widthHint = 530;
+		createDataTypeComposite.setLayoutData(gd_createDataTypeComposite);
 		createDataTypeComposite.setVisible(true);
 				
 		ExpandItem item1 = new ExpandItem (expandBar, SWT.NONE, 0);
@@ -76,7 +78,9 @@ public class UndefPhaseRefactoringPage extends RefactoringPage {
 		composite2.setLayout(layout2);
 		
 		ctComposite = new ConstraintComposite(composite2, SWT.NONE,up);
-		ctComposite.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		GridData gd_ctComposite = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		gd_ctComposite.widthHint = 509;
+		ctComposite.setLayoutData(gd_ctComposite);
 		ctComposite.setVisible(true);
 				
 		ExpandItem item2 = new ExpandItem (expandBar, SWT.NONE, 1);
@@ -95,7 +99,9 @@ public class UndefPhaseRefactoringPage extends RefactoringPage {
 		composite3.setLayout(layout3);
 		
 		modeComposite = new CreateModeComposite(composite3, SWT.NONE,up);
-		modeComposite.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		GridData gd_modeComposite = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		gd_modeComposite.widthHint = 530;
+		modeComposite.setLayoutData(gd_modeComposite);
 		modeComposite.setVisible(true);
 				
 		ExpandItem item3 = new ExpandItem (expandBar, SWT.NONE, 2);
@@ -122,6 +128,21 @@ public class UndefPhaseRefactoringPage extends RefactoringPage {
 		item4.setHeight
 		(composite4.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item4.setControl(composite4);			
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(expandBar, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(expandBar, GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 	}
 	
 	@Override
