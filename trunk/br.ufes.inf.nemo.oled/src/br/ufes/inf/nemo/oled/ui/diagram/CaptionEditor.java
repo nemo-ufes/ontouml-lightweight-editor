@@ -48,17 +48,20 @@ implements DocumentListener, BaseTextEditor {
 	private static final long serialVersionUID = 4249755381822809715L;
 	
 	private Label currentLabel;
-
+	@SuppressWarnings("unused")
+	private DiagramEditor editor;
+	
 	/**
 	 * Constructor. Initially hidden.
 	 */
-	public CaptionEditor() {
+	public CaptionEditor(DiagramEditor editor) {
 		super();
+		this.editor=editor;
 		setBackground(ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST));
 		Border border = new CompoundBorder(new LineBorder(ColorPalette.getInstance().getColor(ThemeColor.GREEN_DARK), 1), new EmptyBorder(1, 3, 1, 1));	
 		setBorder(border);
 		hideEditor();
-		getDocument().addDocumentListener(this);
+		getDocument().addDocumentListener(this);		
 	}
 
 	/**
@@ -100,10 +103,8 @@ implements DocumentListener, BaseTextEditor {
 	public void insertUpdate(DocumentEvent e) {
 		String text = getText();
 		FontMetrics fm = getGraphics().getFontMetrics();
-		int width = fm.stringWidth(text);
-		if (width > getWidth()) {
-			setSize(width + 5, getHeight());
-		}
+		int width = fm.stringWidth(text);		
+		if(width>getWidth()) setSize(width + 5, getHeight());
 	}
 
 	/**
@@ -115,4 +116,21 @@ implements DocumentListener, BaseTextEditor {
 	 * {@inheritDoc}
 	 */
 	public void changedUpdate(DocumentEvent e) { }
+
+//	@Override
+//	public void actionPerformed(ActionEvent arg0) {
+//		String text = getText();
+//		FontMetrics fm = getGraphics().getFontMetrics();
+//		int width = fm.stringWidth(text);
+//		if(currentLabel.getSource() instanceof ClassElement){				
+//			currentLabel.setSize(width + 5, getHeight());
+//			ClassElement ce = (ClassElement)currentLabel.getSource();
+//			ce.recalculateSize(editor.getDrawingContext());
+//			ce.setSize(width + 5, ce.getSize().getHeight());		
+//			ce.setMinimumSize(width + 5, ce.getSize().getHeight());
+//			ResizeElementCommand re= new ResizeElementCommand(editor, ce, ce.getOrigin(), new DoubleDimension(width+5, ce.getSize().getHeight()));
+//			re.run();		
+//			System.out.println("action performed");
+//		}
+//	}
 }

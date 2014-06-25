@@ -147,7 +147,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private List<EditorStateListener> editorListeners = new ArrayList<EditorStateListener>();
 	
 	// To edit the captions in the diagram. 
-	private CaptionEditor captionEditor = new CaptionEditor();
+	private CaptionEditor captionEditor = new CaptionEditor(this);
 	private MultilineEditor multilineEditor = new MultilineEditor();
 	
 	// This is the root of the shape hierarchy. 
@@ -547,16 +547,16 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		BaseTextEditor currentEditor = null;
 		if (captionEditor.isVisible()) currentEditor = captionEditor;		
 		if (multilineEditor.isVisible()) currentEditor = multilineEditor;
-		
+				
 		//O problema esta aqui, eh necessario veirificar o modo do editor
 		if (currentEditor != null && currentEditor.isVisible()) 
-		{
+		{			
 			String text = currentEditor.getText();
 			Label label = currentEditor.getLabel();
 			SetLabelTextCommand command = new SetLabelTextCommand(this, label, text,diagramManager.getCurrentProject());
 			execute(command);
-			currentEditor.hideEditor();
-			repaint();
+			currentEditor.hideEditor();				
+//			repaint();
 			return true;
 		}
 		return false;
@@ -988,6 +988,26 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		{
 			if(de instanceof AssociationElement){
 				((AssociationElement)de).setShowRoles(value);		
+			}
+		}		
+	}
+
+	public void showRedefining(boolean value)
+	{		
+		for(DiagramElement de: selectionHandler.getSelectedElements())
+		{
+			if(de instanceof AssociationElement){
+				((AssociationElement)de).setShowRedefining(value);		
+			}
+		}		
+	}
+	
+	public void showSubsetting(boolean value)
+	{		
+		for(DiagramElement de: selectionHandler.getSelectedElements())
+		{
+			if(de instanceof AssociationElement){
+				((AssociationElement)de).setShowSubsetting(value);		
 			}
 		}		
 	}
@@ -1544,9 +1564,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 				multilineEditor.setFont(drawingContext.getFont(FontType.DEFAULT));
 				multilineEditor.showEditor(label, getGraphics());
 			} else {
-				captionEditor.showEditor(label, getGraphics());
-			}
+				captionEditor.showEditor(label, getGraphics());				
+			}			
 		}
+		
 	}
 
 	/*** {@inheritDoc} */
