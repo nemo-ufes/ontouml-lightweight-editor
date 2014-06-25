@@ -38,6 +38,10 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	final JMenuItem findInProjectItem;
 	private DiagramEditor editor;
 	private JMenuItem setColorItem;
+	private JMenuItem copyColorItem;
+	private JMenuItem pasteColorItem;
+	private Color copiedColor;
+	private JMenu colorMenu;
 	@SuppressWarnings("unused")
 	private JMenuItem specializationItem;
 	private ClassStereotypeChangeMenu changeMenu;
@@ -70,22 +74,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		add(deriveMenu);
 		
 		addSeparator();
-				
-		setColorItem = new JMenuItem("Set Color");
-		setColorItem.addActionListener(new ActionListener() {				
-			private Color color;        	
-			@Override
-        	public void actionPerformed(ActionEvent e) { 
-				ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-				list.add(node);
-				if(color==null) color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", Color.LIGHT_GRAY);
-				else color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", color);
-        		if (color != null){
-        			editor.execute(new SetColorCommand((DiagramNotification)editor,list,editor.getProject(),color));        			
-        		}        		        		
-        	}
-        });
-		add(setColorItem);
+		createColorMenu();	
 		
 		changeMenu = new ClassStereotypeChangeMenu();
 		add(changeMenu);
@@ -148,6 +137,50 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 //		addSeparator();				
 //		changeMenu = new ClassStereotypeChangeMenu(editor.getDiagramManager());
 //		add(changeMenu);
+	}
+	
+	public void createColorMenu()
+	{
+		colorMenu = new JMenu("Color");
+		add(colorMenu);
+		
+		setColorItem = new JMenuItem("Setup");
+		setColorItem.addActionListener(new ActionListener() {				
+			private Color color;        	
+			@Override
+        	public void actionPerformed(ActionEvent e) { 
+				ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+				list.add(node);
+				if(color==null) color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", Color.LIGHT_GRAY);
+				else color = JColorChooser.showDialog(editor.getDiagramManager().getFrame(), "Select a Background Color", color);
+        		if (color != null){
+        			editor.execute(new SetColorCommand((DiagramNotification)editor,list,editor.getProject(),color));        			
+        		}        		        		
+        	}
+        });
+		colorMenu.add(setColorItem);
+		
+		copyColorItem = new JMenuItem("Copy");		
+		copyColorItem.addActionListener(new ActionListener() {				
+			@Override
+        	public void actionPerformed(ActionEvent e) {
+				copiedColor = ((ClassElement)node).getBackgroundColor();				     		        		
+        	}
+        });
+		colorMenu.add(copyColorItem);
+		
+		pasteColorItem = new JMenuItem("Paste");
+		pasteColorItem.addActionListener(new ActionListener() {				
+			@Override
+        	public void actionPerformed(ActionEvent e) { 
+				ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+				list.add(node);				
+        		if (copiedColor != null){
+        			editor.execute(new SetColorCommand((DiagramNotification)editor,list,editor.getProject(),copiedColor));        			
+        		}        		        		
+        	}
+        });
+		colorMenu.add(pasteColorItem);
 	}
 	
 	@SuppressWarnings("unused")
