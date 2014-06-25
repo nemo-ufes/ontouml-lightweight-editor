@@ -407,7 +407,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void find()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		manager.getFrame().focusOnFinder();		
+		manager.getFrame().getDiagramManager().addFinderPanel();		
 	}
 
 	public void showGrid() {

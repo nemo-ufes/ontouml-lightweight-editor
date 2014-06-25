@@ -34,7 +34,6 @@ import br.ufes.inf.nemo.common.positioning.ClassPosition;
 import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
 import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.draw.Compartment;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -715,6 +714,7 @@ public class DerivedTypesOperations {
 
 
 
+	@SuppressWarnings("unused")
 	public static void createDerivedTypeBySpecialization(String nameBase,
 			String nameDerived, String stereotypeBase, String stereotypeDerived, String attribute,
 			String typeAttribute, DiagramManager dm, Double location) {

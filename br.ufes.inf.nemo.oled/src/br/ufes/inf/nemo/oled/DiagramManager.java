@@ -93,6 +93,7 @@ import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
 import br.ufes.inf.nemo.oled.finder.ElementFound;
+import br.ufes.inf.nemo.oled.finder.FinderPane;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
@@ -1758,6 +1759,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		this.addNonClosable("Start", start);
 	}
 
+	public void addFinderPanel()
+	{
+		for(Component c: getComponents()){
+			if(c instanceof FinderPane) { 
+				setSelectedComponent(c);
+				return;
+			}
+		}		
+		FinderPane finder = new FinderPane(frame.getDiagramManager().getCurrentProject());
+		this.addClosable("Find", finder);
+	}
+	
 	/**
 	 * Adds a new tab.
 	 * @param text the tabs text
@@ -1776,6 +1789,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		if(component instanceof TextEditor){
 			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/editor.png"));
+			tab.getLabel().setIcon(icon);
+			tab.getLabel().setIconTextGap(5);
+			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+		}
+		if(component instanceof FinderPane){
+			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/find.png"));
 			tab.getLabel().setIcon(icon);
 			tab.getLabel().setIconTextGap(5);
 			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);

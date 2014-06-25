@@ -9,11 +9,12 @@ public interface Editor extends IDisposable {
 
 	public enum EditorNature
 	{
-		ONTOUML,
+		ONTOUML,		
 		TEXT,
 		HTML,
 		INSTANCE_VISUALIZER,
-		READ_ONLY
+		READ_ONLY,
+		FINDER
 	}
 	
 	public boolean isSaveNeeded();

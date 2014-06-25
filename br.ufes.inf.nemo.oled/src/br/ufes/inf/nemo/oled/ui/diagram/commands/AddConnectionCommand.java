@@ -29,7 +29,6 @@ import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 
 import RefOntoUML.Association;
@@ -48,7 +47,6 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
-import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 
@@ -104,17 +102,6 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	public void undo() 
 	{
 		super.undo();
-				
-		if (relationship!=null){
-			if (relationship instanceof GeneralizationImpl == false){
-				project.getEditingDomain().getCommandStack().undo();
-				ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(relationship);
-			} else {
-				GeneralizationImpl generalization  = (GeneralizationImpl)relationship;
-	    		EcoreUtil.delete(generalization);
-	    		ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(relationship);
-			}
-		}
 		
 		if(addToDiagram && diagramElement!=null){				
 			parent.removeChild(diagramElement);
@@ -123,7 +110,12 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			List<DiagramElement> elements = new ArrayList<DiagramElement>();
 			elements.add(diagramElement);
 			notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);			
-		}		
+		}	
+		
+		if (relationship!=null){
+				project.getEditingDomain().getCommandStack().undo();
+				ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(relationship);
+		}			
 	}
 
 	/**
@@ -192,23 +184,9 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		parent.addChild(diagramElement);
 //		diagramElement.setParent((CompositeNode)parent);
 		
-		// bug in designing. not best solution, but works.
+		// bug in designing. not best solution, but it works.
 		Relationship relationship = ((UmlConnection)diagramElement).getRelationship();		
-		if (source instanceof Relationship || target instanceof Relationship)  diagramElement.invalidate(); 
-		
-		// notify change on the diagram		
-		if (diagramElement.getParent() instanceof StructureDiagram) {
-			DiagramEditor d = ((DiagramEditor)notification).getDiagramManager().getDiagramEditor((StructureDiagram)diagramElement.getParent());
-			//notify
-			if (d!=null) {
-				ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-				list.add(diagramElement);
-				d.notifyChange((List<DiagramElement>) list, ChangeType.ELEMENTS_ADDED, redo ? NotificationType.REDO : NotificationType.DO);			
-				UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)d), this);
-				for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
-			}	
-		}
-				
+		if (source instanceof Relationship || target instanceof Relationship)  diagramElement.invalidate();		
 	}
 	
 	/**

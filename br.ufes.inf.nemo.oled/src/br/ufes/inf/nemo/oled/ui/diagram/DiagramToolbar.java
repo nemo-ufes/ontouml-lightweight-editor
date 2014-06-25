@@ -106,8 +106,8 @@ public class DiagramToolbar extends JToolBar {
 		
 		btnInfo = new JToggleButton("");
 		btnInfo.setSelected(false);
-		btnInfo.setToolTipText("Show/hide bottom tabs view");
-		btnInfo.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/monitor.png")));
+		btnInfo.setToolTipText("Show/hide OCL constraint editor");
+		btnInfo.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/text-editor.png")));
 		btnInfo.setFocusable(false);
 		btnInfo.addActionListener(new ActionListener() {				
         	@Override
