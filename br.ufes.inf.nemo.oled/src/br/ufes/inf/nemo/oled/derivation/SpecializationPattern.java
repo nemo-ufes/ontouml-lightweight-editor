@@ -175,7 +175,8 @@ public class SpecializationPattern extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						DerivedTypesOperations.createDerivedTypeBySpecialization(lbl_base.getText(),lbl_derived.getText(),cmb_stereo_base.getSelectedItem().toString(),cmb_stereo_der.getSelectedItem().toString(), lbl_attribute.getText(), lblType.getText(),dm,location);
+						DerivedTypesOperations.createDerivedTypeBySpecialization(lbl_base.getText(),lbl_derived.getText(),cmb_stereo_base.getSelectedItem().toString(),cmb_stereo_der.getSelectedItem().toString(), lbl_attribute.getText(), lbl_type_att.getText(),dm,location);
+						dispose();
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -184,10 +185,16 @@ public class SpecializationPattern extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
+		
 	}
 
 	public void setPosition(double x, double y) {

@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import RefOntoUML.AntiRigidMixinClass;
 import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Association;
+import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
@@ -27,11 +28,13 @@ import RefOntoUML.SemiRigidMixinClass;
 import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.positioning.ClassPosition;
 import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
 import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
 import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.draw.Compartment;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -716,13 +719,18 @@ public class DerivedTypesOperations {
 			String nameDerived, String stereotypeBase, String stereotypeDerived, String attribute,
 			String typeAttribute, DiagramManager dm, Double location) {
 		// TODO Auto-generated method stub
-//		dman=dm;
-//		of = new OutcomeFixer(dm.getCurrentProject().getModel());
-//		mainfix = new Fix();
-//		Classifier newElement_2= includeElement(location, nameBase, stereotypeBase);
-//		location.y=location.y+100;
-//		Classifier newElement= includeElement(location, nameDerived, stereotypeDerived);
-//		dm.updateOLED(mainfix);
+		dman=dm;
+		of = new OutcomeFixer(dm.getCurrentProject().getModel());
+		mainfix = new Fix();
+		Classifier newElement_2= includeElement(location, nameBase, stereotypeBase);
+		location.y=location.y+100;
+		Classifier newElement= includeElement(location, nameDerived, stereotypeDerived);
+		createGeneralizationSingle(newElement_2, newElement);
+		RefOntoUML.Class classe = (Class) newElement_2;
+		of.createAttribute(newElement_2, attribute, ClassStereotype.PRIMITIVETYPE, typeAttribute);
+
+		//newElement_2.getAllAttributes().add(e)
+		dm.updateOLED(mainfix);
 	}
 
 
