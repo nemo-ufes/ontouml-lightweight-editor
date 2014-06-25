@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Label;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class UndefPhaseThirdPage extends UndefPhasePage{
 	
@@ -34,19 +35,41 @@ public class UndefPhaseThirdPage extends UndefPhasePage{
 		setControl(container);
 		
 		lblForEachPhase = new Label(container, SWT.NONE);
-		lblForEachPhase.setBounds(10, 84, 554, 15);
 		lblForEachPhase.setText("For each phase, please specify the OCL derivation rule to define its extension:");
 		
-		oclText = new StyledText(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		oclText.setBounds(10, 105, 554, 139);
+		oclText = new StyledText(container, SWT.BORDER);
 		
 		templateText = new StyledText(container, SWT.BORDER | SWT.READ_ONLY);
 		templateText.setText("context <Phase> :: allInstances() : Set(<Phase>)\r\nbody : <Supertype>.allInstances()->select ( x | <CONDITION>)");
-		templateText.setBounds(10, 31, 554, 34);
 		
 		Label lblOclderivationRuleTemplate = new Label(container, SWT.NONE);
-		lblOclderivationRuleTemplate.setBounds(10, 10, 554, 15);
 		lblOclderivationRuleTemplate.setText("Template:");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, oclText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, lblOclderivationRuleTemplate, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, templateText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, lblForEachPhase, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblOclderivationRuleTemplate)
+					.add(6)
+					.add(templateText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.add(19)
+					.add(lblForEachPhase)
+					.add(6)
+					.add(oclText, GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		container.setLayout(gl_container);
 	}
 	
 	@Override
@@ -55,12 +78,12 @@ public class UndefPhaseThirdPage extends UndefPhasePage{
 		if(oclText.getText()!=null && !oclText.getText().isEmpty() && !oclText.getText().trim().isEmpty())
 		{
 			//Action =============================
-			UndefPhaseAction newAction = new UndefPhaseAction(up);
+			UndefPhaseAction newAction = new UndefPhaseAction(occurrence);
 			newAction.setCreateOclDerivationRules(oclText.getText());
-			getUndefPhaseWizard().replaceAction(1,newAction);	
+			getAntipatternWizard().replaceAction(1,newAction);	
 			//======================================			
 		}
 		
-		return getUndefPhaseWizard().getFinishing();
+		return getAntipatternWizard().getFinishing();
 	}
 }

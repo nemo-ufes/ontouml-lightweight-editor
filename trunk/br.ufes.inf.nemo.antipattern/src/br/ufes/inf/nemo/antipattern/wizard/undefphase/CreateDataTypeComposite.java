@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.antipattern.wizard.undefphase;
 
 import java.util.HashMap;
 
+import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -12,6 +13,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class CreateDataTypeComposite extends Composite {
 	
@@ -24,93 +28,179 @@ public class CreateDataTypeComposite extends Composite {
 	private Text nameText;
 	private Text typeNameText;
 	public AttrTable sourceTable;	
-	private Button btnSourceDelete;	
-	public Button btnSourceCreate;	
+	private Button deleteButton;	
+	public Button createButton;	
+	private WizardPage currentPage;
 	
 	public UndefPhaseOccurrence up;
 	private Combo multCombo;
 	private Label lblCardinality;
 	private Label lblStereotype;
+	private Table table;
 		
 	/**
 	 * Create the composite.
 	 * @param parent
 	 * @param style
 	 */
-	public CreateDataTypeComposite(Composite parent, int style, UndefPhaseOccurrence up) 
+	public CreateDataTypeComposite(Composite parent, int style, UndefPhaseOccurrence up, WizardPage currentPage) 
 	{
 		super(parent, style);
 		this.up=up;
+		this.currentPage = currentPage;
 		
-		btnSourceCreate = new Button(this, SWT.NONE);
-		btnSourceCreate.setBounds(357, 75, 54, 25);
-		btnSourceCreate.setText("Create");
-		btnSourceCreate.addSelectionListener(new SelectionAdapter() {
+		createButton = new Button(this, SWT.NONE);
+		createButton.setText("Create");
+		createButton.addSelectionListener(new SelectionAdapter() {
 			 @Override
 	            public void widgetSelected(SelectionEvent e) {
-				 if (typeList.getItem(typeList.getSelectionIndex()).equals("Primitive type"))
-					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) sourceTable.addNewPrimitiveType(nameText.getText(),typeNameText.getText(),multCombo.getText());
-				 if (typeList.getItem(typeList.getSelectionIndex()).equals("DataType type"))
-					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) sourceTable.addNewDataType(nameText.getText(),typeNameText.getText(),multCombo.getText());
-//				 if (typeList.getItem(typeList.getSelectionIndex()).equals("Enumeration"))
-//					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) sourceTable.addNewEnumeration(nameText.getText(),typeNameText.getText(),multCombo.getText());
+				 if (typeList.getSelectionIndex()==0)
+					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty())
+						 sourceTable.addNewPrimitiveType(nameText.getText(),typeNameText.getText(),multCombo.getText());
+				 if (typeList.getSelectionIndex()==1)
+					 if (!nameText.getText().isEmpty() && !typeNameText.getText().isEmpty()) 
+						 sourceTable.addNewDataType(nameText.getText(),typeNameText.getText(),multCombo.getText());
+				 
+				 if( CreateDataTypeComposite.this.currentPage!=null){
+					 if(getValues().keySet().size()>=1)
+						 CreateDataTypeComposite.this.currentPage.setPageComplete(true);
+					 else
+						 CreateDataTypeComposite.this.currentPage.setPageComplete(false);
+				 }
+					 
 			 }
 		});	
 		
 		lblSource = new Label(this, SWT.NONE);
-		lblSource.setBounds(10, 80, 341, 15);
 		lblSource.setText("Atributes of "+up.getGeneral().getName()+":");
 		
 		typeList = new Combo(this, SWT.READ_ONLY);
-		typeList.setItems(new String[] {"Primitive type", "Data type", "Enumeration"});
-		typeList.setBounds(348, 36, 123, 23);
+		typeList.setItems(new String[] {"Primitive type", "Data type"});
 		typeList.select(0);
 		
 		nameText = new Text(this, SWT.BORDER);
-		nameText.setBounds(62, 7, 176, 23);
 		
 		typeNameText = new Text(this, SWT.BORDER);
-		typeNameText.setBounds(62, 36, 176, 23);
 		
 		lblAttributeName = new Label(this, SWT.NONE);
-		lblAttributeName.setBounds(10, 10, 46, 20);
 		lblAttributeName.setText("Name:");
 		
 		lblAttributeTypeName = new Label(this, SWT.NONE);
-		lblAttributeTypeName.setBounds(10, 39, 46, 15);
 		lblAttributeTypeName.setText("Type:");
 		
 		label = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
-		label.setBounds(10, 65, 462, 8);
 		
-		btnSourceDelete = new Button(this, SWT.NONE);
-		btnSourceDelete.setBounds(417, 75, 54, 25);
-		btnSourceDelete.setText("Delete");
+		deleteButton = new Button(this, SWT.NONE);
+		deleteButton.setText("Delete");
 		
 		multCombo = new Combo(this, SWT.NONE);
 		multCombo.setItems(new String[] {"1", "0..1", "1..*", "0..*"});
-		multCombo.setBounds(348, 7, 123, 23);
 		multCombo.select(0);
 		
 		lblCardinality = new Label(this, SWT.NONE);
-		lblCardinality.setBounds(244, 10, 98, 20);
 		lblCardinality.setText("Cardinality:");
 		
 		lblStereotype = new Label(this, SWT.NONE);
-		lblStereotype.setBounds(244, 39, 98, 15);
 		lblStereotype.setText("Stereotype:");
-		btnSourceDelete.addSelectionListener(new SelectionAdapter() {
+		deleteButton.addSelectionListener(new SelectionAdapter() {
 			 @Override
 	            public void widgetSelected(SelectionEvent e) {
-				sourceTable.removeLine();				 
+				 sourceTable.removeLine();
+				 
+				 if( CreateDataTypeComposite.this.currentPage!=null){
+					 if(getValues().keySet().size()>=1)
+						 CreateDataTypeComposite.this.currentPage.setPageComplete(true);
+					 else
+						 CreateDataTypeComposite.this.currentPage.setPageComplete(false);
+				 }
 			 }
 		});		
 		
 		sourceTable = new AttrTable(this, SWT.BORDER | SWT.V_SCROLL , ((RefOntoUML.Class)up.getGeneral()).getOwnedAttribute());
-		sourceTable.getTable().setBounds(10, 106, 462, 136);
 		
-//		Composite composite = new Composite(this, SWT.NONE);
-//		composite.setBounds(10, 106, 462, 136);		
+//		table = new Table(this, SWT.BORDER | SWT.FULL_SELECTION);
+		table = sourceTable.getTable();
+		
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(label, GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+						.add(GroupLayout.TRAILING, groupLayout.createSequentialGroup()
+							.add(lblSource, GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+							.add(6)
+							.add(createButton, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
+							.add(6)
+							.add(deleteButton, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
+							.add(1))
+						.add(groupLayout.createSequentialGroup()
+							.add(table, GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+							.add(1))
+						.add(groupLayout.createSequentialGroup()
+							.add(groupLayout.createParallelGroup(GroupLayout.TRAILING, false)
+								.add(GroupLayout.LEADING, lblAttributeTypeName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.add(GroupLayout.LEADING, lblAttributeName, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
+							.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+								.add(groupLayout.createSequentialGroup()
+									.addPreferredGap(LayoutStyle.UNRELATED)
+									.add(nameText, GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+									.add(18)
+									.add(lblCardinality, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+									.add(6)
+									.add(multCombo, GroupLayout.PREFERRED_SIZE, 123, GroupLayout.PREFERRED_SIZE))
+								.add(groupLayout.createSequentialGroup()
+									.add(11)
+									.add(typeNameText, GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+									.add(18)
+									.add(lblStereotype, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
+									.add(6)
+									.add(typeList, GroupLayout.PREFERRED_SIZE, 123, GroupLayout.PREFERRED_SIZE)))
+							.add(1)))
+					.add(9))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(7)
+							.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+								.add(nameText, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+								.add(groupLayout.createSequentialGroup()
+									.add(3)
+									.add(lblCardinality, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
+								.add(multCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.add(groupLayout.createSequentialGroup()
+							.add(10)
+							.add(lblAttributeName, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)))
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+								.add(typeNameText, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+								.add(groupLayout.createSequentialGroup()
+									.add(3)
+									.add(lblStereotype))
+								.add(typeList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.add(groupLayout.createSequentialGroup()
+							.add(11)
+							.add(lblAttributeTypeName)))
+					.add(6)
+					.add(label, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)
+					.add(2)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(5)
+							.add(lblSource))
+						.add(createButton)
+						.add(deleteButton))
+					.add(6)
+					.add(table, GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+					.add(10))
+		);
+		setLayout(groupLayout);
 	}
 
 	public void enable(boolean value)
@@ -124,8 +214,8 @@ public class CreateDataTypeComposite extends Composite {
 		typeList.setEnabled(value);	
 		nameText.setEnabled(value);
 		typeNameText.setEnabled(value);		
-		btnSourceDelete.setEnabled(value);		
-		btnSourceCreate.setEnabled(value);
+		deleteButton.setEnabled(value);		
+		createButton.setEnabled(value);
 	}
 	
 	public HashMap<String,String> getValues()

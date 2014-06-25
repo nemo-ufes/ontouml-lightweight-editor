@@ -10,12 +10,13 @@ import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class UndefPhaseFifthPage extends UndefPhasePage{
 	
 	Composite parent;
-	private Button btnNo;
-	private Button btnYes;
+	private Button noButton;
+	private Button yesButton;
 	private Label lblIfTheTypes;
 	private ChangeStereoTable changeStereoTable;
 	
@@ -37,50 +38,70 @@ public class UndefPhaseFifthPage extends UndefPhasePage{
 		setControl(container);
 		
 		lblIfTheTypes = new Label(container, SWT.WRAP);
-		lblIfTheTypes.setBounds(10, 10, 554, 50);
 		lblIfTheTypes.setText("If the types in the partition are not defined by changes in quality values and also not defined by mode appearances, they might not be phases. Would you like to change their stereotypes?");
 		
-		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 66, 554, 16);
-		btnNo.setText("No, keep the phases undefined [Not Recommended]");
+		noButton = new Button(container, SWT.RADIO);
+		noButton.setText("No, keep the phases undefined [Not Recommended]");
 		
-		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 92, 554, 16);
-		btnYes.setText("Yes");
+		yesButton = new Button(container, SWT.RADIO);
+		yesButton.setText("Yes");
 		
-		changeStereoTable = new ChangeStereoTable(container,SWT.BORDER | SWT.V_SCROLL,up);
+		changeStereoTable = new ChangeStereoTable(container,SWT.BORDER | SWT.V_SCROLL,occurrence);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(lblIfTheTypes, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(noButton, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(yesButton, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblIfTheTypes, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(noButton)
+					.add(10)
+					.add(yesButton))
+		);
+		container.setLayout(gl_container);
 		changeStereoTable.getTable().setBounds(10, 122, 297, 150);
 		
 		SelectionAdapter listener = new SelectionAdapter() {
 		      public void widgetSelected(SelectionEvent e) {
-		    	  if(btnYes.getSelection()) changeStereoTable.getTable().setVisible(true);
-		    	  if(btnNo.getSelection()) changeStereoTable.getTable().setVisible(false);
+		    	  if(yesButton.getSelection()) changeStereoTable.getTable().setVisible(true);
+		    	  if(noButton.getSelection()) changeStereoTable.getTable().setVisible(false);
 		      }
 		};				
-		btnNo.addSelectionListener(listener);
-		btnYes.addSelectionListener(listener);
+		noButton.addSelectionListener(listener);
+		yesButton.addSelectionListener(listener);
 		
-//		composite = new Composite(container, SWT.NONE);
-//		composite.setBounds(10, 122, 297, 150);
+		setAsEnablingNextPageButton(noButton);
+		setAsEnablingNextPageButton(yesButton);
+		setPageComplete(false);
 	}
 	
 	@Override
 	public IWizardPage getNextPage() {
-		if(btnYes.getSelection())
+		if(yesButton.getSelection())
 		{
 			//Action =============================
-			UndefPhaseAction newAction = new UndefPhaseAction(up);			
+			UndefPhaseAction newAction = new UndefPhaseAction(occurrence);			
 			newAction.setChangeStereotypes(changeStereoTable.getStereotypes());
-			getUndefPhaseWizard().replaceAction(0,newAction);	
+			getAntipatternWizard().replaceAction(0,newAction);	
 			//======================================
 			
-			getUndefPhaseWizard().getFinishing();
+			getAntipatternWizard().getFinishing();
 		}
-		if(btnNo.getSelection())
+		if(noButton.getSelection())
 		{
-			getUndefPhaseWizard().getFinishing();
+			getAntipatternWizard().getFinishing();
 		}
 		
-		return getUndefPhaseWizard().getFinishing();
+		return getAntipatternWizard().getFinishing();
 	}
 }
