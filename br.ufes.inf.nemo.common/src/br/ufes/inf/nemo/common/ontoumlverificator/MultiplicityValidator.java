@@ -32,11 +32,11 @@ public class MultiplicityValidator {
 		upper = 0;
 		
 		if(text==null){
-			System.out.println("FAILED: NULL");
+//			System.out.println("FAILED: NULL");
 			return false;
 		}
 		else if(text.trim().isEmpty()){
-			System.out.println("FAILED: EMPTY");
+//			System.out.println("FAILED: EMPTY");
 			return false;
 		}
 		
@@ -53,7 +53,7 @@ public class MultiplicityValidator {
 			}
 			else if(Character.isDigit(array[0])){
 				if(array[0]=='0'){
-					System.out.println("FAILED: CAN'T BE ZERO!");
+//					System.out.println("FAILED: CAN'T BE ZERO!");
 					return false;
 				}
 				
@@ -61,18 +61,18 @@ public class MultiplicityValidator {
 				upper = lower;
 			}
 			else{
-				System.out.println("FAILED: size 1 - only digit or star");
+//				System.out.println("FAILED: size 1 - only digit or star");
 				return false;
 			}
 			
-			System.out.println("SUCCESS: "+array[0]);
+//			System.out.println("SUCCESS: "+array[0]);
 			return true;
 		}
 		
 		for (int i = 0; i < array.length; i++) {
-			System.out.println("DefinedLower: "+afterDotDot);
+//			System.out.println("DefinedLower: "+afterDotDot);
 			if(!Character.isDigit(array[i]) && array[i]!='*' && array[i]!='.'){
-				System.out.println("FAILED: INVALID CHAR AT POSITION "+i);
+//				System.out.println("FAILED: INVALID CHAR AT POSITION "+i);
 				return false;
 			}
 			
@@ -83,16 +83,16 @@ public class MultiplicityValidator {
 			
 			if(i>0){
 				if(!afterDotDot && array[i]=='.'){
-					System.out.println("DOTDOT AT: "+i);
+//					System.out.println("DOTDOT AT: "+i);
 					afterDotDot = true;
 					upperStartIndex = i+2;
 					
 					if(i==array.length-1 || array[i+1]!='.'){
-						System.out.println("FAILED: MUST HAVE TWO DOTS");
+//						System.out.println("FAILED: MUST HAVE TWO DOTS");
 						return false;
 					}
 					else if (i==array.length-2){
-						System.out.println("FAILED: MUST HAVE SOMETHING AFTER TWO DOTS");
+//						System.out.println("FAILED: MUST HAVE SOMETHING AFTER TWO DOTS");
 						return false;
 					}
 					else {
@@ -102,31 +102,31 @@ public class MultiplicityValidator {
 					}	
 				}
 				else if(!afterDotDot && array[i]=='*'){
-					System.out.println("FAILED: STAR ONLY ON UPPER");
+//					System.out.println("FAILED: STAR ONLY ON UPPER");
 					return false;
 				}
 				else if(!afterDotDot && Character.isDigit(array[i]) && i==array.length-1){
-					System.out.println("SUCCES: ONLY DIGITS AND UPPER = LOWER");
+//					System.out.println("SUCCES: ONLY DIGITS AND UPPER = LOWER");
 					lower = Integer.parseInt(text);
 					upper = lower;
 					return true;
 				}
 				
 				if(afterDotDot && array[i]=='.'){
-					System.out.println("FAILED: ONLY TWO DOTS");
+//					System.out.println("FAILED: ONLY TWO DOTS");
 					return false;
 				}
 				else if(afterDotDot && array[i]=='*'){
 					if(hasDigitOnUpper){
-						System.out.println("FAILED: CANN ADD STAR AFTER DIGIT");
+//						System.out.println("FAILED: CANN ADD STAR AFTER DIGIT");
 						return false;
 					}
 					else if(i!=array.length-1){
-						System.out.println("FAILED: MUST END AFTER STAR");
+//						System.out.println("FAILED: MUST END AFTER STAR");
 						return false;
 					}
 					
-					System.out.println("SUCCESS: COMPOSITE MULT ENDING WITH STAR");
+//					System.out.println("SUCCESS: COMPOSITE MULT ENDING WITH STAR");
 					upper = -1;
 					return true;
 				}
@@ -135,18 +135,18 @@ public class MultiplicityValidator {
 					if(i==array.length-1){
 						upper = Integer.parseInt(text.substring(upperStartIndex));
 						if(upper==0){
-							System.out.println("FAILED: UPPER CAN'T BE ZERO.");
+//							System.out.println("FAILED: UPPER CAN'T BE ZERO.");
 							return false;
 						}
 						else if(upper<lower){
-							System.out.println("FAILED: UPPER MUST BE GREATER OR EQUAL LOWER");
+//							System.out.println("FAILED: UPPER MUST BE GREATER OR EQUAL LOWER");
 							return false;
 						}
 					}
 				}
 			}
 		}
-		System.out.println("SUCCES: "+text);
+//		System.out.println("SUCCES: "+text);
 		return true;
 	}
 	
