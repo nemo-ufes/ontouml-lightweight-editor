@@ -16,10 +16,12 @@ import javax.swing.JPanel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 
+import br.ufes.inf.nemo.oled.draw.Diagram;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.ui.diagram.Editor;
 
-public class FinderPane extends JPanel{
+public class FinderPane extends JPanel implements Editor {
 
 	private static final long serialVersionUID = -3183962658000841153L;
 	@SuppressWarnings("unused")
@@ -142,5 +144,30 @@ public class FinderPane extends JPanel{
 		status.setText("  "+result.size()+" items found.");
 	}
 	
-	public void resetResult() { finderScrollTable.reset(); repaint(); validate();}	
+	public void resetResult() { finderScrollTable.reset(); repaint(); validate(); }
+	
+	@Override
+	public boolean isSaveNeeded() {
+		return false;
+	}
+
+	@Override
+	public EditorNature getEditorNature() {
+		return EditorNature.FINDER;
+	}
+
+	@Override
+	public Diagram getDiagram() {
+		return null;
+	}
+
+	@Override
+	public void dispose() {
+		
+	}
+
+	@Override
+	public UmlProject getProject() {
+		return null;
+	}
 }

@@ -510,18 +510,12 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	
 	public void focusOnOclEditor()
 	{		
-		infoManager.setSelectedIndex(4);		
-	}
-	
-	public void focusOnFinder()
-	{		
-		infoManager.setSelectedIndex(3);
-		infoManager.getFinder().requestFindFocus();
+		infoManager.setSelectedIndex(3);		
 	}
 	
 	public boolean isFocusedOnOclEditor()
 	{
-		return infoManager.getSelectedIndex()==4;
+		return infoManager.getSelectedIndex()==3;
 	}
 	
 	public class Interceptor extends PrintStream

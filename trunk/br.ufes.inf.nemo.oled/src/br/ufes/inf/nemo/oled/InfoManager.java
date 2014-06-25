@@ -12,7 +12,6 @@ import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import br.ufes.inf.nemo.oled.finder.FinderPane;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.OutputPane;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
@@ -28,7 +27,6 @@ public class InfoManager extends JTabbedPane {
 	public static WarningTablePanel warnings;
 	public static OutputPane outputPane;
 	public static TOCLEditorPanel ocleditor;
-	public static FinderPane finderPane;
 	public AppFrame frame;
 	public UmlProject project;
 	public JMenuItem parserMenuItem = new JMenuItem("Parse");
@@ -38,8 +36,7 @@ public class InfoManager extends JTabbedPane {
 		this.project = project;
 		
 		errors.setProject(project);
-		warnings.setProject(project);
-		finderPane.setProject(project);
+		warnings.setProject(project);		
 	}
 	
 	public void eraseProject()
@@ -48,11 +45,9 @@ public class InfoManager extends JTabbedPane {
 		
 		errors.setProject(null);
 		warnings.setProject(null);
-		finderPane.setProject(null);
 		
 		errors.reset();
-		warnings.reset();
-		finderPane.resetResult();
+		warnings.reset();		
 		outputPane.write("");
 		ocleditor.setText("");
 		
@@ -65,8 +60,7 @@ public class InfoManager extends JTabbedPane {
 		this.project = project;
 				
 		errors = new ErrorTablePanel(project);
-		warnings = new WarningTablePanel(project);
-		finderPane = new FinderPane(project);
+		warnings = new WarningTablePanel(project);		
 		outputPane = new OutputPane();
 		ocleditor = new TOCLEditorPanel(frame);
 		
@@ -122,13 +116,10 @@ public class InfoManager extends JTabbedPane {
 		addTab(" Console ",outputPane);	
 		setIconAt(indexOfComponent(outputPane),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/monitor.png")));
 		
-		addTab(" Find ",finderPane);
-		setIconAt(indexOfComponent(finderPane),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/find.png")));
-		
-		addTab(" Constraints ",ocleditor);	
+		addTab(" OCL Editor ",ocleditor);	
 		setIconAt(indexOfComponent(ocleditor),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/text-editor.png")));
 		
-		setTabPlacement(JTabbedPane.BOTTOM);				
+		setTabPlacement(JTabbedPane.TOP);				
 	}
 	
 	public br.ufes.inf.nemo.tocl.editor.TOCLEditorPanel getOcleditor() {
@@ -137,10 +128,6 @@ public class InfoManager extends JTabbedPane {
 
 	public OutputPane getOutput(){
 		return outputPane;
-	}
-	
-	public FinderPane getFinder(){
-		return finderPane;
 	}
 	
 	public WarningTablePanel getWarnings(){
