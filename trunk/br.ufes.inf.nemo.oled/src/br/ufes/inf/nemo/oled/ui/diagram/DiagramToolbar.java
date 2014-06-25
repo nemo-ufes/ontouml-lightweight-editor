@@ -192,7 +192,7 @@ public class DiagramToolbar extends JToolBar {
 		btnBringToFront.setFocusable(false);
 		btnBringToFront.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_move_front.png")));
 		add(btnBringToFront);
-		
+			
 		btnPutToBack = new JButton("");
 		btnPutToBack.setToolTipText("Put to Back");
 		btnPutToBack.addActionListener(new ActionListener() {				
@@ -230,7 +230,7 @@ public class DiagramToolbar extends JToolBar {
         });	
 		add(btnColor);
 		btnColor.setFocusable(false);
-				
+								
 		btnExportPng.setFocusable(false);
 		btnExportPng.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/photo.png")));
 		add(btnExportPng);
