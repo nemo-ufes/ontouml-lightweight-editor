@@ -58,6 +58,8 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 	private JMenu visibilityMenu;
 	private JMenuItem showRolesItem;
 	private JMenuItem showNameItem;
+	private JMenuItem showSubsettingItem;
+	private JMenuItem showRedefiningItem;
 	private JMenuItem showMultiplicitiesItem;
 	private JMenuItem showStereotypeItem;
 	private JMenuItem setColorItem;
@@ -150,6 +152,22 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 			}
 		});
 		
+		showSubsettingItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showsubsetting");
+		showSubsettingItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(editor!=null) editor.execute(new SetVisibilityCommand((DiagramNotification)editor,selected,editor.getProject(),Visibility.SUBSETS,showSubsettingItem.isSelected()));				
+			}
+		});
+		
+		showRedefiningItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showredefining");
+		showRedefiningItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(editor!=null) editor.execute(new SetVisibilityCommand((DiagramNotification)editor,selected,editor.getProject(),Visibility.REDEFINES,showRedefiningItem.isSelected()));				
+			}
+		});
+		
 		showMultiplicitiesItem = createCheckBoxMenuItem(visibilityMenu, "visibility.showmultiplicities");
 		showMultiplicitiesItem.addActionListener(new ActionListener() {			
 			@Override
@@ -203,6 +221,7 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		
 		addSeparator();
 		
+		deleteItem = createMenuItem(this, "exclude");
 		deleteItem = createMenuItem(this, "delete");	
 	}
 	
@@ -218,6 +237,8 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		boolean showingStereo=false;
 		boolean showingMultiplicity=false;
 		boolean showingEndPoints=false;
+		boolean showingSubsetting=false;
+		boolean showingRedefining=false;
 		ArrayList<Generalization> gens = new ArrayList<Generalization>();
 		for(DiagramElement dElem: selected){			
 			if (dElem instanceof GeneralizationElement){
@@ -235,6 +256,8 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 				if (((AssociationElement)dElem).showMultiplicities()) showingMultiplicity=true;
 				if (((AssociationElement)dElem).showOntoUmlStereotype()) showingStereo=true;
 				if (((AssociationElement)dElem).showRoles()) showingEndPoints=true;
+				if (((AssociationElement)dElem).showSubsetting()) showingSubsetting=true;
+				if (((AssociationElement)dElem).showRedefining()) showingRedefining=true;
 				areAllGeneralizations=false;
 			}
 		}
@@ -255,14 +278,29 @@ public class MultiSelectionPopupMenu extends JPopupMenu implements ActionListene
 		if(areAllRelationships){			
 			visibilityMenu.setVisible(true);
 			if(!areAllGeneralizations){
+				showMultiplicitiesItem.setEnabled(true);
 				showMultiplicitiesItem.setSelected(showingMultiplicity);
+				showRolesItem.setEnabled(true);
 				showRolesItem.setSelected(showingEndPoints);
+				showSubsettingItem.setEnabled(true);
+				showSubsettingItem.setSelected(showingSubsetting);
+				showRedefiningItem.setEnabled(true);
+				showRedefiningItem.setSelected(showingRedefining);
+				showNameItem.setEnabled(true);
 				showNameItem.setSelected(showingName);
+				showStereotypeItem.setEnabled(true);
 				showStereotypeItem.setSelected(showingStereo);
 			}else{
+				showMultiplicitiesItem.setSelected(false);
 				showMultiplicitiesItem.setEnabled(false);
+				showRolesItem.setSelected(false);
 				showRolesItem.setEnabled(false);
+				showSubsettingItem.setSelected(false);
+				showSubsettingItem.setEnabled(false);
+				showRedefiningItem.setSelected(false);
+				showRedefiningItem.setEnabled(false);				
 				showNameItem.setSelected(showingName);
+				showStereotypeItem.setSelected(false);
 				showStereotypeItem.setEnabled(false);
 			}
 		} else { 

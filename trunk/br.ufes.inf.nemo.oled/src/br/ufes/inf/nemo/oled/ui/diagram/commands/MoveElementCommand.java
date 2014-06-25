@@ -34,6 +34,7 @@ import br.ufes.inf.nemo.oled.draw.TranslateConnectionOperation;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
+import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 
 
 /**
@@ -72,8 +73,10 @@ public class MoveElementCommand extends BaseDiagramCommand {
 		
 		for (MoveOperation moveOperation : moveOperations) {			
 			if(moveOperation instanceof MoveNodeOperation){
-				moveOperation.run();
-				elements.add(((MoveNodeOperation)moveOperation).getNode());				
+				if(!(((MoveNodeOperation)moveOperation).getNode() instanceof StructureDiagram)){
+					moveOperation.run();
+					elements.add(((MoveNodeOperation)moveOperation).getNode());
+				}
 			}//else if(moveOperation instanceof TranslateConnectionOperation){
 //				moveOperation.run();
 //				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());				
@@ -121,11 +124,13 @@ public class MoveElementCommand extends BaseDiagramCommand {
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		
 		for (MoveOperation moveOperation : moveOperations) {
-			moveOperation.undo();
-			if(moveOperation instanceof MoveNodeOperation)
-				elements.add(((MoveNodeOperation)moveOperation).getNode());
-			else if(moveOperation instanceof TranslateConnectionOperation)
-				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
+			if(moveOperation instanceof MoveNodeOperation){
+				if(!(((MoveNodeOperation)moveOperation).getNode() instanceof StructureDiagram)){
+					moveOperation.undo();			
+					elements.add(((MoveNodeOperation)moveOperation).getNode());
+				}
+			}//else if(moveOperation instanceof TranslateConnectionOperation)
+			//	elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
 		}
 		
 		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.UNDO);		
