@@ -810,11 +810,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
 		boolean found = tree.checkModelElement(element);
 		if(!found) {
-			if(element.eContainer()!=null)
-				tree.checkModelElement(element.eContainer());
-			else
-				tree.checkModelElement(project.getModel());
-			tree.addObject(element);
+			if(element.eContainer()!=null) tree.checkModelElement(element.eContainer());
+			else tree.checkModelElement(project.getModel());
+			tree.addObject(element);			
 		} else {
 			if(element instanceof Generalization){
 				tree.checkModelElement(element);
