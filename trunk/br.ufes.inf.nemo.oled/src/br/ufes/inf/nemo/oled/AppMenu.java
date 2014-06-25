@@ -125,7 +125,8 @@ public class AppMenu implements ActionListener {
 		menubar.add(toolMenu);
 		
 		JMenuItem assistantItem = createCheckBoxMenuItem(toolMenu, "assistant");
-
+		toolMenu.setVisible(false);
+		
 		//Victor comentar
 		assistantItem.setSelected(false);
 		assistantItem.setEnabled(true);

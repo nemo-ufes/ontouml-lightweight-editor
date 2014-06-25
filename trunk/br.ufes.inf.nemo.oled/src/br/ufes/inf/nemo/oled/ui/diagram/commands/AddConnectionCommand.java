@@ -221,11 +221,15 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			
 			//set sides on the element
 			Property p1 = ((Association)relationship).getMemberEnd().get(0);
-			Property p2 = ((Association)relationship).getMemberEnd().get(1);
-			p1.setType(source);
-			p1.setName(source.getName().trim().toLowerCase());
-			p2.setType(target);
-			p2.setName(target.getName().trim().toLowerCase());
+			Property p2 = ((Association)relationship).getMemberEnd().get(1);			
+			if(source!=null) {
+				p1.setType(source);
+				p1.setName(source.getName().trim().toLowerCase());
+			}			
+			if(target!=null) {
+				p2.setType(target);
+				p2.setName(target.getName().trim().toLowerCase());
+			}
 			
 			// add to model
 			if(eContainer==null){

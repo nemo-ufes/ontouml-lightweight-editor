@@ -28,11 +28,13 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 	private DiagramEditor editor;
 	private JScrollPane scrollpane;
 	private DiagramToolbar diagramToolbar;
+	private DiagramStatusBar diagramStatus;
 	
 	//TODO Remove me
 	private File projectFile;
 	
 	public DiagramToolbar getToolBar() { return diagramToolbar; }
+	public DiagramStatusBar getStatusBar() { return diagramStatus; }
 	
 	public DiagramEditorWrapper(final DiagramEditor editor, DiagramEditorCommandDispatcher editorDispatcher)
 	{
@@ -40,7 +42,8 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		this.editor = editor;		
 	
 		diagramToolbar = new DiagramToolbar(editor);
-				
+		diagramStatus = new DiagramStatusBar(editor);
+		
 		scrollpane = new JScrollPane();
 		scrollpane.setBackground(Color.WHITE);
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
@@ -51,6 +54,7 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		
 		add(diagramToolbar,BorderLayout.NORTH);
 		add(scrollpane,BorderLayout.CENTER);
+		add(diagramStatus,BorderLayout.SOUTH);
 		
 		setBorder(new EmptyBorder(0,0,0,0));
 	}	

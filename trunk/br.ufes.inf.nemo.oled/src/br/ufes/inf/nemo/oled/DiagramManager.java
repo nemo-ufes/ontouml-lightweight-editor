@@ -245,8 +245,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (currentProject!=null){
 			removeAll();
 			frame.getBrowserManager().getProjectBrowser().eraseProject();
-			frame.getInfoManager().eraseProject();
-			frame.getStatusBar().clearStatus();			
+			frame.getInfoManager().eraseProject();						
 			currentProject=null;
 			addStartPanel();
 		}
@@ -283,7 +282,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/** Remove Diagram from Tab, not from the Project. */
-	public void removeDiagram(StructureDiagram diagram)
+	public void deleteDiagram(StructureDiagram diagram)
 	{
 		//first remove all the elements in the diagram
 		for(DiagramElement dElem: diagram.getChildren()) {
@@ -337,7 +336,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		AddNodeCommand cmd = new AddNodeCommand(null,null,cmt,0,0,getCurrentProject(),eContainer);		
 		cmd.run();
 	}
-
+	
 	/** Add constraintx to the model instance (not to diagram) */
 	public void addConstraintx(String text, RefOntoUML.Element eContainer) 
 	{
@@ -377,7 +376,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (element instanceof NamedElement) 
 		{
 			String value = new String();    						
-			value = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename - "+((NamedElement)element).getName(),JOptionPane.INFORMATION_MESSAGE,null,null,((NamedElement)element).getName());    						
+			value = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename Element ",JOptionPane.INFORMATION_MESSAGE,null,null,((NamedElement)element).getName());    						
 			if(value!=null)
 			{
 				((NamedElement)element).setName(value);
@@ -394,6 +393,27 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.getDiagramManager().updateOLEDFromModification(element, false);
 			}
 		}   
+	}
+	
+	public void renameDiagram(final StructureDiagram diagram)
+	{
+		String text = new String();    						
+		text = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename Diagram",JOptionPane.INFORMATION_MESSAGE,null,null,diagram.getName());    						
+		final String newtext = text;
+		if(text!=null)
+		{
+			SwingUtilities.invokeLater(new Runnable() {				
+				@Override
+				public void run() {
+					diagram.setName(newtext);
+					int index = getTabIndex(diagram);					
+					setTitleAt(index, newtext);        
+			        getCurrentDiagramEditor().getDiagram().setName(newtext);
+			        ProjectBrowser.refreshTree(getCurrentProject());	
+			        updateUI();
+				}
+			});				
+		}		
 	}
 	
 	/** Delete element from the model and every diagram in each it appears. */
@@ -1893,6 +1913,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return null;
 	}
 
+	public void showStatus(DiagramEditor diagramEditor, String status) 
+	{
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) {
+				if(((DiagramEditorWrapper) c).getDiagramEditor().equals(diagramEditor)){
+					((DiagramEditorWrapper) c).getStatusBar().reportStatus(status);
+				}
+			}
+		}		
+	}
+
 	/** Return all opened diagram editors */
 	public ArrayList<DiagramEditor> getDiagramEditors()
 	{
@@ -1923,6 +1954,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return null;
 	}
 
+	public int getTabIndex(StructureDiagram diagram)
+	{		
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) {
+				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram))
+					return indexOfComponent(c);
+			}
+		}
+		return -1;
+	}
+	
 	/**
 	 * Gets all DiagramEditors that contains a given element. 
 	 * Some of them might appear opened in the Tab but others don't.
@@ -2355,5 +2397,4 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		// TODO Auto-generated method stub
 		
 	}
-
 }

@@ -102,22 +102,22 @@ public class StartPanel extends JPanel implements Editor {
 				.addGroup(gl_mainPanel.createSequentialGroup()
 					.addGap(182)
 					.addGroup(gl_mainPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(middlePanel, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblTitle, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE)
+						.addComponent(recentPanel, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblOpenRecent, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE)
-						.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE)
-						.addComponent(recentPanel, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblTitle, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE)
+						.addComponent(middlePanel, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE)
+						.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 365, GroupLayout.PREFERRED_SIZE))
 					.addGap(352))
 		);
 		gl_mainPanel.setVerticalGroup(
 			gl_mainPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_mainPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblTitle, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblTitle)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblOpenRecent)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(recentPanel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+					.addComponent(recentPanel, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(leftPanel, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -127,6 +127,7 @@ public class StartPanel extends JPanel implements Editor {
 		btnNewProject = new JHyperLinkLabel("New Project");
 		leftPanel.add(btnNewProject);
 		btnNewProject.setIconTextGap(10);
+		btnNewProject.setToolTipText("Create a new OLED project");
 		btnNewProject.setFocusable(false);
 		btnNewProject.setIcon(new ImageIcon(StartPanel.class.getResource("/resources/icons/x16/page_2.png")));
 		
@@ -136,12 +137,14 @@ public class StartPanel extends JPanel implements Editor {
 		btnOpenProject.setSize(new Dimension(105, 23));
 		leftPanel.add(btnOpenProject);
 		btnOpenProject.setIconTextGap(10);
+		btnOpenProject.setToolTipText("Open an existing OLED project");
 		btnOpenProject.setFocusable(false);
 		btnOpenProject.setIcon(new ImageIcon(StartPanel.class.getResource("/resources/icons/x16/folder.png")));
 		
 		rigidArea_4 = Box.createRigidArea(new Dimension(20, 20));
 		leftPanel.add(rigidArea_4);
 		btnImportFromEa = new JHyperLinkLabel("Import from EA");
+		btnImportFromEa.setToolTipText("<html>Bring your models from Enterprise Architect (version 10) into OLED <br>and benefit of all the editor capabilities.</html>");
 		leftPanel.add(btnImportFromEa);		
 		btnImportFromEa.setIcon(new ImageIcon(StartPanel.class.getResource("/resources/icons/x16/ea.jpg")));
 		btnImportFromEa.addMouseListener(new MouseAdapter() {			
@@ -167,7 +170,7 @@ public class StartPanel extends JPanel implements Editor {
 		lblResources.setPreferredSize(new Dimension(250, 16));
 		middlePanel.add(lblResources);
 		
-		lblEA = new JHyperLinkLabel("How to install and use OntoUML in Enterprise Architect (EA)");
+		lblEA = new JHyperLinkLabel("How to install and use OntoUML in Enterprise Architect (EA) version 10");
 		middlePanel.add(lblEA);
 		lblEA.setIcon(new ImageIcon(StartPanel.class.getResource("/resources/icons/x16/ea.jpg")));	
 		lblEA.setToolTipText("See how you can install and use OntoUML in EA");
