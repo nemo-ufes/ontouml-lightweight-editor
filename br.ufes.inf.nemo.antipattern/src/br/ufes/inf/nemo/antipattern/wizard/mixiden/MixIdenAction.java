@@ -58,7 +58,7 @@ public class MixIdenAction extends AntiPatternAction<MixIdenOccurrence>{
 				result += "«Role»";
 			else
 				result += "«Subkind»";
-			result+="\nAdd Generalization: from "+ap.getMixin()+" to "+ap.getIdentityProvider().getName()+"\n";
+			result+="\nAdd Generalization: from "+ap.getMixin().getName()+" to "+ap.getIdentityProvider().getName()+"\n";
 		}
 		else if(code==Action.ADD_SUBTYPES){
 			

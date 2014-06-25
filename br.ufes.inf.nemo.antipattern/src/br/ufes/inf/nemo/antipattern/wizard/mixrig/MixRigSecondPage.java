@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class MixRigSecondPage extends MixRigPage{
 
@@ -74,24 +75,52 @@ public class MixRigSecondPage extends MixRigPage{
 		setPageComplete(false);
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
-		styledText.setBounds(10, 10, 554, 35);
 		styledText.setText(	"Is the rigidity meta-property of all subtypes of "+mixRig.getMixin().getName()+" correct? If not, use the table below to change the stereotype:");
 		styledText.setJustify(true);
 		styledText.setBackground(styledText.getParent().getBackground());
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 51, 554, 16);
 		btnYes.setText("Yes");
 		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 73, 554, 16);
 		btnNo.setText("No");
 		btnNo.addSelectionListener(listener);
 		
 		tableComposite = new ChangeSubtypeRigidityComposite(container, SWT.NONE, mixRig, getMixRigWizard().allowedStereotypes(), comboListener);
-		tableComposite.setBounds(10, 103, 569, 168);
 		tableComposite.setEnabledToAllContents(false);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(styledText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+							.add(15))
+						.add(gl_container.createSequentialGroup()
+							.add(btnYes, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+							.add(15))
+						.add(gl_container.createSequentialGroup()
+							.add(btnNo, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+							.add(15))
+						.add(tableComposite, GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnYes)
+					.add(6)
+					.add(btnNo)
+					.add(14)
+					.add(tableComposite, GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+					.add(10))
+		);
+		container.setLayout(gl_container);
 	}
 	
 	@Override

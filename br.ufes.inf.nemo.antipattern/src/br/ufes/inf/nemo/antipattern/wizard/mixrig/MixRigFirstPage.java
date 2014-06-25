@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class MixRigFirstPage extends MixRigPage{
 
@@ -46,7 +47,6 @@ public class MixRigFirstPage extends MixRigPage{
 		setPageComplete(false);
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
-		styledText.setBounds(10, 10, 554, 102);
 		styledText.setText(	"Mixins are non-rigid types, which are used to generalize others that have different values for their rigidity meta-property. " +
 							"\r\n\r\n" +
 							"Even though all represented subtypes of the mixin type <"+getMixRigWizard().mixinName+"> are "+getMixRigWizard().subtypesRigidity+", " +
@@ -55,13 +55,33 @@ public class MixRigFirstPage extends MixRigPage{
 		styledText.setBackground(styledText.getParent().getBackground());
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 118, 554, 16);
 		btnYes.setText("Yes ("+getMixRigWizard().oppositeRigidity+" subtypes allowed)");
 		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 140, 554, 16);
 		btnNo.setText("No (only "+getMixRigWizard().subtypesRigidity+" subtypes)");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(styledText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(btnYes, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(btnNo, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnYes)
+					.add(6)
+					.add(btnNo))
+		);
+		container.setLayout(gl_container);
 		btnNo.addSelectionListener(listener);
 	}
 	

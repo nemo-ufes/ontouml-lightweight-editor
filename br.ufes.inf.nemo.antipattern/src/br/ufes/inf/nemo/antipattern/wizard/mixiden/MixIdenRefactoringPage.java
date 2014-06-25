@@ -16,6 +16,7 @@ import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class MixIdenRefactoringPage extends RefactoringPage {
 	
@@ -115,27 +116,22 @@ public class MixIdenRefactoringPage extends RefactoringPage {
 			newStereotype = "SubKind";
 		
 		Label lblPleaseChooseThe = new Label(container, SWT.NONE);
-		lblPleaseChooseThe.setBounds(10, 10, 554, 15);
 		lblPleaseChooseThe.setText("Please choose the appropriate a refactoring option: ");
 		
 		btnChangeStereotype = new Button(container, SWT.RADIO);
-		btnChangeStereotype.setBounds(10, 40, 554, 16);
 		btnChangeStereotype.setText("Change "+getMixIdenWizard().mixinName+" stereotype to «"+newStereotype+"»");
 		btnChangeStereotype.addSelectionListener(btnChangeStereotypeListener);
 		
 		btnChangeIdentity = new Button(container, SWT.RADIO);
 		btnChangeIdentity.setText("Change subtypes's identity providers");
-		btnChangeIdentity.setBounds(10, 62, 554, 16);
 		btnChangeIdentity.addSelectionListener(btnChangeIdentityListener);
 		
 		btnAddSelect = new Button(container, SWT.RADIO);
-		btnAddSelect.setBounds(10, 84, 554, 16);
 		btnAddSelect.setText("Create/Select subtypes with different identity principles");
 		btnAddSelect.addSelectionListener(btnCreateOrSelectListener);
 		
 		bar = new ExpandBar (container, SWT.V_SCROLL);
 		bar.setSpacing(0);
-		bar.setBounds(10, 119, 560, 312);
 		bar.setEnabled(true);
 		
 		try {
@@ -164,6 +160,35 @@ public class MixIdenRefactoringPage extends RefactoringPage {
 		itemAddSelect.setText("Add or Select Subtypes");
 		itemAddSelect.setHeight(addSelectComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		itemAddSelect.setControl(addSelectComposite);		
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, bar, GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, lblPleaseChooseThe, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, btnAddSelect, GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, btnChangeIdentity, GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, btnChangeStereotype, GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE))
+					.add(6))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblPleaseChooseThe)
+					.add(15)
+					.add(btnChangeStereotype)
+					.add(6)
+					.add(btnChangeIdentity)
+					.add(6)
+					.add(btnAddSelect)
+					.add(19)
+					.add(bar, GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		container.setLayout(gl_container);
 		
 	}
 	

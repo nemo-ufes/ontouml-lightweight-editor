@@ -115,18 +115,18 @@ public class PresentationPage extends WizardPage {
 					.add(13)
 					.add(lblModelElements)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(combinationText, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					.add(combinationText, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
 					.addPreferredGap(LayoutStyle.RELATED)
 					.add(lblAntipatternDescripton)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(descriptionText, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+					.add(descriptionText, GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
 					.addPreferredGap(LayoutStyle.RELATED)
 					.add(lblWouldYouLike)
 					.add(8)
 					.add(btnGoWizard)
 					.add(8)
 					.add(btnGoOptions)
-					.add(33))
+					.add(11))
 		);
 		container.setLayout(gl_container);
 	}	

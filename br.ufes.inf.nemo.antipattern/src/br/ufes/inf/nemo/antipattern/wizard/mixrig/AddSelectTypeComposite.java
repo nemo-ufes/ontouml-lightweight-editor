@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -22,10 +21,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import RefOntoUML.Classifier;
-import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class AddSelectTypeComposite extends Composite {
 	private Table table;
@@ -155,7 +155,6 @@ public class AddSelectTypeComposite extends Composite {
 		this.existingClassifiers = new ArrayList<Classifier>();
 				
 		table = new Table(this, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		table.setBounds(10, 103, 530, 113);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.addSelectionListener(tableListener);
@@ -173,34 +172,28 @@ public class AddSelectTypeComposite extends Composite {
 		tblclmnExisting.setText("Location");
 		
 		btnDeleteFromTable = new Button(this, SWT.NONE);
-		btnDeleteFromTable.setBounds(432, 72, 108, 25);
 		btnDeleteFromTable.setText("Delete From Table");
 		btnDeleteFromTable.addSelectionListener(btnDeleteToTableListener);
 		btnDeleteFromTable.addSelectionListener(addRemoveListener);
 		btnDeleteFromTable.setEnabled(true);
 		
 		btnAddToTable = new Button(this, SWT.NONE);
-		btnAddToTable.setBounds(318, 72, 108, 25);
 		btnAddToTable.setText("Add To Table");
 		btnAddToTable.addSelectionListener(btnAddToTableListener);
 		btnAddToTable.addSelectionListener(addRemoveListener);
 		btnAddToTable.setEnabled(false);
 				
 		btnNew = new Button(this, SWT.NONE);
-		btnNew.setBounds(204, 72, 108, 25);
 		btnNew.setText("New");
 		btnNew.addSelectionListener(btnNewListener);
 		
 		Label lblType = new Label(this, SWT.NONE);
-		lblType.setBounds(10, 10, 62, 21);
 		lblType.setText("Type:");
 		
 		Label lblStereotype = new Label(this, SWT.NONE);
-		lblStereotype.setBounds(10, 37, 62, 21);
 		lblStereotype.setText("Stereotype: \r\n");
 		
 		comboClassifier = new CCombo(this, SWT.BORDER);
-		comboClassifier.setBounds(78, 10, 462, 21);
 		setComboTypeItems();
 		comboClassifier.addSelectionListener(comboClassifierListener);
 		comboClassifier.addListener(SWT.KeyUp, new Listener() {
@@ -220,15 +213,67 @@ public class AddSelectTypeComposite extends Composite {
 	    });
 		
 		comboStereotype = new CCombo(this, SWT.BORDER);
-		comboStereotype.setBounds(78, 37, 462, 21);
 		comboStereotype.setEditable(false);
 		comboStereotype.addSelectionListener(comboStereotypeListener);
 		setComboStereotype();
 		
 		lblSavingFailed = new Label(this, SWT.NONE);
 		lblSavingFailed.setAlignment(SWT.RIGHT);
-		lblSavingFailed.setBounds(10, 222, 530, 15);
 		lblSavingFailed.setVisible(false);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(lblType, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(comboClassifier, GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+					.add(10))
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(lblStereotype)
+					.add(6)
+					.add(comboStereotype, GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+					.add(10))
+				.add(GroupLayout.TRAILING, groupLayout.createSequentialGroup()
+					.add(204)
+					.add(btnNew, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnAddToTable, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnDeleteFromTable)
+					.add(10))
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(table, GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+					.add(10))
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(lblSavingFailed, GroupLayout.PREFERRED_SIZE, 530, GroupLayout.PREFERRED_SIZE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(lblType, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.add(comboClassifier, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(6)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(lblStereotype, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.add(comboStereotype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(14)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(btnNew)
+						.add(btnAddToTable)
+						.add(btnDeleteFromTable))
+					.add(6)
+					.add(table, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+					.add(6)
+					.add(lblSavingFailed)
+					.add(14))
+		);
+		setLayout(groupLayout);
 
 	}
 
@@ -329,28 +374,13 @@ public class AddSelectTypeComposite extends Composite {
 			
 			tableItem.setText(0, comboClassifier.getText());
 			tableItem.setText(1, comboStereotype.getText());
-			tableItem.setText(2, getPath(existingClassifiers.get(comboClassifier.getSelectionIndex())));
+			tableItem.setText(2, OntoUMLNameHelper.getPath(existingClassifiers.get(comboClassifier.getSelectionIndex())));
 			return true;
 		}
 		
 		return false;
 	}
 		
-	private String getPath(EObject c){
-		if (c.eContainer()==null) 
-			return "";
-		else
-		{
-			String containerName = "";
-			if(c.eContainer() instanceof NamedElement)
-				containerName = ((NamedElement) c.eContainer()).getName();
-			else
-				containerName = "unnamed";
-			
-			return getPath(c.eContainer())+"::"+containerName;
-		}
-	}
-	
 	public ArrayList<Classifier> getSelectedClassifier(){
 		ArrayList<Classifier> selected = new ArrayList<Classifier>();
 		

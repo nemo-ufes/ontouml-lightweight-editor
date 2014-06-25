@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.antipattern.wizard.mixiden;
 import RefOntoUML.Category;
 import RefOntoUML.Mixin;
 import RefOntoUML.RoleMixin;
-import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
@@ -48,10 +47,10 @@ public class MixIdenWizard extends AntipatternWizard {
 		options = new MixIdenRefactoringPage(getAp());
 		
 		presentation = new PresentationPage(
-			DepPhaseAntipattern.getAntipatternInfo().name,
-			DepPhaseAntipattern.getAntipatternInfo().acronym,
+			MixIdenAntipattern.getAntipatternInfo().name,
+			MixIdenAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
-			DepPhaseAntipattern.getAntipatternInfo().description,
+			MixIdenAntipattern.getAntipatternInfo().description,
 			firstPage,
 			options
 		);
