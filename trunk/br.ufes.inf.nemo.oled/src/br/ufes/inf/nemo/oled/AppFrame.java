@@ -38,7 +38,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	private transient DiagramManager diagramManager;
 	private transient InfoManager infoManager;
 	private transient BrowserManager browserManager;
-	private transient AppStatusBar statusBar;
 	
 	private transient Map<String, MethodCall> selectorMap = new HashMap<String, MethodCall>();
 	
@@ -60,8 +59,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		installManagers();
 		installMainMenu();
 		installMainToolBar();
-		installStatusBar();
-	  
+			  
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				quitApplication();
@@ -125,12 +123,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public DiagramManager getDiagramManager() {
 		return diagramManager;
 	}
-		
-	public AppStatusBar getStatusBar()
-	{
-		return statusBar;		
-	}
-	
+			
 	public AppToolbar getMainToolBar()
 	{
 		return mainToolBar;
@@ -224,14 +217,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		}		
 		multiSplitPane.revalidate();
 	}
-	
-	/**
-	 * Adds the status bar.
-	 * */
-	private void installStatusBar() {
-		statusBar = new AppStatusBar();
-		this.getContentPane().add(statusBar, BorderLayout.SOUTH);
-	}
 
 	/**
 	 * Initializes the selector map.
@@ -323,9 +308,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		if (canQuit()) {		
 			
 			diagramManager.dispose();
-			
-			statusBar.getTimer().cancel();
-			statusBar.getTimer().purge();
+
 			dispose();
 			Thread.currentThread().interrupt();
 			
@@ -418,8 +401,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		mainMenu = null;
 		mainToolBar = null;
 		toolManager = null;
-		diagramManager = null;
-		statusBar = null;
+		diagramManager = null;		
 		infoManager = null;
 				
 		initSelectorMap();
@@ -503,15 +485,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		JOptionPane.showMessageDialog(
 			this,message,title,JOptionPane.INFORMATION_MESSAGE
 		);
-	}
-
-	/**
-	 * Shows the inputed text in the status bar
-	 * @param the text
-	 */
-	public void showStatus(String status)
-	{
-		statusBar.reportStatus(status);
 	}
 	
 	/** Get Alloy Analyzer.  */

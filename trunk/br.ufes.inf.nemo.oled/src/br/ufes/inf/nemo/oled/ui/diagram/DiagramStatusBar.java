@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.ui.StatusListener;
+import java.awt.Color;
 
 public class DiagramStatusBar extends JPanel implements StatusListener{
 	
@@ -24,10 +25,12 @@ public class DiagramStatusBar extends JPanel implements StatusListener{
 	public DiagramStatusBar(DiagramEditor d)
 	{
 		super(new BorderLayout());		
+		setBackground(Color.WHITE);
 		this.editor = d;
 		setBorder(new EmptyBorder(3, 3, 3, 3));		
+		statusLabel.setBackground(Color.WHITE);
 		add(statusLabel, BorderLayout.CENTER);
-		setPreferredSize(new Dimension(450,36));		
+		setPreferredSize(new Dimension(450, 28));		
 	}
 
 	public void reportStatus(String status)
