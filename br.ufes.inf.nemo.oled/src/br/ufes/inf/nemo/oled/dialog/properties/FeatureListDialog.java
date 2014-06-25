@@ -378,6 +378,9 @@ public class FeatureListDialog extends JDialog {
 		ArrayList<String> resultList = new ArrayList<String>();
 		if(attributeName.trim().compareToIgnoreCase("Redefined")==0 || attributeName.trim().compareToIgnoreCase("Subsetted")==0)
 		{
+			if (attributeName.trim().compareToIgnoreCase("Redefined")==0) ((Property)element).getRedefinedProperty().clear();
+			else if (attributeName.trim().compareToIgnoreCase("Subsetted")==0) ((Property)element).getSubsettedProperty().clear();
+			
 	    	int i=0;
 	    	for(Object p: getFeatures())
 	    	{
@@ -399,7 +402,7 @@ public class FeatureListDialog extends JDialog {
 	    			else if (attributeName.trim().compareToIgnoreCase("Subsetted")==0) ((Property)element).getSubsettedProperty().add(p2);
 	    		}
 	    		i++;
-	    	}		    	    			       				
+	    	}	    	
 		}			
 		
 		if (componentToUpdate instanceof JTextField){

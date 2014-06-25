@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import RefOntoUML.Association;
 import RefOntoUML.Generalization;
@@ -23,8 +24,10 @@ import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.oled.AppCommandListener;
+import br.ufes.inf.nemo.oled.dialog.properties.FeatureListDialog;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
@@ -44,23 +47,23 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private static final long serialVersionUID = 1L;
 	private Set<AppCommandListener> commandListeners = new HashSet<AppCommandListener>();
 	private DiagramEditor editor;
-	//connection items
 	private Connection con;
-	final JMenuItem showRolesItem;
-	final JMenuItem showSubsettingItem;
-	final JMenuItem showRedefiningItem;
-	final JMenuItem showNameItem;
-	final JMenuItem showMultiplicitiesItem;
-	final JMenuItem showStereotypeItem;
-	final JMenuItem rectMenuItem;
-	final JMenuItem treeStyleVerticalMenuItem;
-	final JMenuItem treeStyleHorizontalMenuItem;
-	final JMenuItem readToSourceItem;
-	final JMenuItem readToDestinationItem;
-	final JMenuItem readNoIndicatorItem;
-	final JMenu visibilityMenu;
-	final JMenu readingDirectionMenu;
-	// end-point items
+	private JMenuItem showRolesItem;
+	private JMenuItem showSubsettingItem;
+	private JMenuItem showRedefiningItem;
+	private JMenuItem showNameItem;
+	private JMenuItem showMultiplicitiesItem;
+	private JMenuItem showStereotypeItem;
+	private JMenuItem rectMenuItem;
+	@SuppressWarnings("unused")
+	private JMenuItem treeStyleVerticalMenuItem;
+	@SuppressWarnings("unused")
+	private JMenuItem treeStyleHorizontalMenuItem;
+	private JMenuItem readToSourceItem;
+	private JMenuItem readToDestinationItem;
+	private JMenuItem readNoIndicatorItem;
+	private JMenu visibilityMenu;
+	private JMenu readingDirectionMenu;
 	private boolean isSource;
 	private Property property;
 	private JMenu multiplicityMenu;
@@ -82,6 +85,8 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private JMenu lineStyleItem;
 	private JMenuItem invertEndPointsItem;
 	private JMenu invertMenu;
+	private JMenuItem subsettingItem;
+	private JMenuItem redefinesItem;
 	private RelationStereotypeChangeMenu changeMenu;
 	
 	public SingleConnectionPopupMenu()
@@ -91,26 +96,15 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		
 		addSeparator();
 		
-		findInProjectItem = new JMenuItem("Find in Project");
-		add(findInProjectItem);
-		findInProjectItem.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (con instanceof AssociationElement) {						
-					Relationship c = ((AssociationElement)con).getRelationship();
-					editor.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().checkModelElement(c);					
-				}
-				if (con instanceof GeneralizationElement) {						
-					Relationship c = ((GeneralizationElement)con).getRelationship();
-					editor.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().checkModelElement(c);					
-				}
-			}
-		});
+		createFindInProjectMenu();
 		
 		addSeparator();
+				
+		createEndPointMenu();
+		createSubsettingMenu();
+		createRedefiningMenu();
 		
 		createMenuItem(this, "resetpoints");
-				
 		lineStyleItem = new JMenu("Line Style");
 		add(lineStyleItem);
 		createMenuItem(lineStyleItem, "recttodirect");
@@ -121,10 +115,72 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		changeMenu = new RelationStereotypeChangeMenu();
 		add(changeMenu);
 		
-		createInvertMenu();
-		createEndPointItems();
-		createMetaProperties();
-				
+		createInvertMenu();		
+		createMultiplicityMenu();
+		createMetaPropertyMenu();
+		createVisibilityMenu();		
+		createReadingDirectionMenu();
+		
+		addSeparator();
+		
+		createMenuItem(this, "exclude");
+		
+		createMenuItem(this, "delete");
+	}
+	
+	public void createReadingDirectionMenu()
+	{
+		readingDirectionMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.readingdirection.name"));
+		add(readingDirectionMenu);
+		
+		ButtonGroup group = new ButtonGroup();
+		
+		readToSourceItem = createRadioMenuItem(readingDirectionMenu, "readingdirection.source");
+		group.add(readToSourceItem);
+		readToSourceItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (con instanceof AssociationElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setNameReadingDirection(ReadingDirection.RIGHT_LEFT);
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}
+			}
+		});
+
+		readToDestinationItem = createRadioMenuItem(readingDirectionMenu, "readingdirection.destination");
+		group.add(readToDestinationItem);
+		readToDestinationItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (con instanceof AssociationElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+					((AssociationElement)con).setNameReadingDirection(ReadingDirection.LEFT_RIGHT);
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}							
+			}
+		});
+		
+		readNoIndicatorItem = createRadioMenuItem(readingDirectionMenu, "readingdirection.none");
+		readNoIndicatorItem.setSelected(true);
+		group.add(readNoIndicatorItem);
+		readNoIndicatorItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {				
+				if (con instanceof AssociationElement) {	
+					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();					
+					((AssociationElement)con).setNameReadingDirection(ReadingDirection.UNDEFINED);
+					list.add(con);
+					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				}														
+			}
+		});		
+	}
+	
+	public void createVisibilityMenu()
+	{
 		visibilityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.visibility.name"));
 		add(visibilityMenu);
 			
@@ -209,60 +265,69 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 				}				
 			}
 		});
-		
-		readingDirectionMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.readingdirection.name"));
-		add(readingDirectionMenu);
-		
-		ButtonGroup group = new ButtonGroup();
-		
-		readToSourceItem = createRadioMenuItem(readingDirectionMenu, "readingdirection.source");
-		group.add(readToSourceItem);
-		readToSourceItem.addActionListener(new ActionListener() {			
+	}
+	
+	public void createFindInProjectMenu()
+	{
+		findInProjectItem = new JMenuItem("Find in Project");
+		add(findInProjectItem);
+		findInProjectItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (con instanceof AssociationElement) {	
-					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-					((AssociationElement)con).setNameReadingDirection(ReadingDirection.RIGHT_LEFT);
-					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+				if (con instanceof AssociationElement) {						
+					Relationship c = ((AssociationElement)con).getRelationship();
+					editor.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().checkModelElement(c);					
+				}
+				if (con instanceof GeneralizationElement) {						
+					Relationship c = ((GeneralizationElement)con).getRelationship();
+					editor.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().checkModelElement(c);					
 				}
 			}
 		});
-
-		readToDestinationItem = createRadioMenuItem(readingDirectionMenu, "readingdirection.destination");
-		group.add(readToDestinationItem);
-		readToDestinationItem.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (con instanceof AssociationElement) {	
-					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-					((AssociationElement)con).setNameReadingDirection(ReadingDirection.LEFT_RIGHT);
-					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
-				}							
-			}
-		});
-		
-		readNoIndicatorItem = createRadioMenuItem(readingDirectionMenu, "readingdirection.none");
-		readNoIndicatorItem.setSelected(true);
-		group.add(readNoIndicatorItem);
-		readNoIndicatorItem.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {				
-				if (con instanceof AssociationElement) {	
-					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();					
-					((AssociationElement)con).setNameReadingDirection(ReadingDirection.UNDEFINED);
-					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
-				}														
-			}
-		});
-		
-		addSeparator();
-		
-		createMenuItem(this, "exclude");
-		
-		createMenuItem(this, "delete");
+	}
+	
+	public void createSubsettingMenu()
+	{
+		subsettingItem = new JMenuItem("Subsets");
+		add(subsettingItem);
+		subsettingItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if(editor!=null){
+        			FeatureListDialog.open(editor.getDiagramManager().getFrame(),null, "Subsetted", property, ProjectBrowser.getParserFor(editor.getDiagramManager().getCurrentProject()));
+        			SwingUtilities.invokeLater(new Runnable() {						
+						@Override
+						public void run() {
+							ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+							list.add(con);					
+							editor.execute(new SetVisibilityCommand((DiagramNotification)editor,list,editor.getProject(),Visibility.SUBSETS,true));
+						}
+        			});
+        		}
+        	}
+        });
+	}
+	
+	public void createRedefiningMenu()
+	{
+		redefinesItem = new JMenuItem("Redefines");
+		add(redefinesItem);
+		redefinesItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if(editor!=null){
+        			FeatureListDialog.open(editor.getDiagramManager().getFrame(),null, "Redefined", property, ProjectBrowser.getParserFor(editor.getDiagramManager().getCurrentProject()));
+        			SwingUtilities.invokeLater(new Runnable() {						
+						@Override
+						public void run() {
+		        			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+							list.add(con);					
+							editor.execute(new SetVisibilityCommand((DiagramNotification)editor,list,editor.getProject(),Visibility.REDEFINES,true));							
+						}
+					});					
+        		}
+        	}
+        });
 	}
 	
 	public void createInvertMenu()
@@ -280,7 +345,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
         });
 	}
 	
-	public void createMetaProperties()
+	public void createMetaPropertyMenu()
 	{
 		metaPropertiesMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.metaproperties.name"));
 		add(metaPropertiesMenu);
@@ -353,9 +418,9 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		});
 	}
 	
-	public void createEndPointItems()
+	public void createEndPointMenu()
 	{	
-		endNameItem = new JMenuItem("Set End-Point Name...");
+		endNameItem = new JMenuItem("End-Point Name");
 		add(endNameItem);
 		endNameItem.addActionListener(new ActionListener() {			
 			@Override
@@ -375,7 +440,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 				 }
 			}
 		});
-		
+	}
+	
+	public void createMultiplicityMenu()
+	{		
 		multiplicityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.multiplicity.name"));
 		add(multiplicityMenu);
 				
@@ -532,6 +600,9 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		
 		multiplicityMenu.setVisible(false);
 		endNameItem.setVisible(false);
+		subsettingItem.setVisible(false);
+		redefinesItem.setVisible(false);
+		
 		if(((BaseConnection)con).getRelationship() instanceof Association)
 		{
 			changeMenu.setElement(((BaseConnection)con).getRelationship());
@@ -559,6 +630,8 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		
 		multiplicityMenu.setVisible(true);
 		endNameItem.setVisible(true);
+		subsettingItem.setVisible(true);
+		redefinesItem.setVisible(true);
 	}	
 	
 	/**
