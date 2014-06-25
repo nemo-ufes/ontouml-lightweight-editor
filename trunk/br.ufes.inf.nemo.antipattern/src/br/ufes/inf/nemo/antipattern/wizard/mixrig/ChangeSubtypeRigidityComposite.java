@@ -26,6 +26,7 @@ import RefOntoUML.impl.RoleImpl;
 import RefOntoUML.impl.RoleMixinImpl;
 import RefOntoUML.impl.SubKindImpl;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class ChangeSubtypeRigidityComposite extends Composite {
 
@@ -47,7 +48,6 @@ public class ChangeSubtypeRigidityComposite extends Composite {
 		
 		
 		table = new Table(this, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(0, 0, 554, 168);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		
@@ -62,6 +62,16 @@ public class ChangeSubtypeRigidityComposite extends Composite {
 		TableColumn tblclmnRigidity = new TableColumn(table, SWT.NONE);
 		tblclmnRigidity.setWidth(109);
 		tblclmnRigidity.setText("Rigidity");
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(table, GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(table, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+		);
+		setLayout(groupLayout);
 		
 		addRows(comboListener);
 

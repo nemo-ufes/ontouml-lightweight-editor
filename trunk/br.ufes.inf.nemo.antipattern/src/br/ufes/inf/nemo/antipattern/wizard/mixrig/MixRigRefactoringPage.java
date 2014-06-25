@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Label;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class MixRigRefactoringPage extends RefactoringPage {
 	
@@ -67,27 +68,22 @@ public class MixRigRefactoringPage extends RefactoringPage {
 			newStereotype = "RoleMixin";
 		
 		Label lblPleaseChooseThe = new Label(container, SWT.NONE);
-		lblPleaseChooseThe.setBounds(10, 10, 554, 15);
 		lblPleaseChooseThe.setText("Please choose the appropriate a refactoring option: ");
 		
 		btnChangeStereotype = new Button(container, SWT.RADIO);
-		btnChangeStereotype.setBounds(10, 31, 554, 16);
 		btnChangeStereotype.setText("Change "+getMixRigWizard().mixinName+" stereotype to «"+newStereotype+"»");
 		btnChangeStereotype.addSelectionListener(btnListener);
 		
 		btnChangeSubtype = new Button(container, SWT.RADIO);
 		btnChangeSubtype.setText("Change subtypes stereotypes");
-		btnChangeSubtype.setBounds(10, 53, 554, 16);
 		btnChangeSubtype.addSelectionListener(btnListener);
 		
 		btnAddSelect = new Button(container, SWT.RADIO);
-		btnAddSelect.setBounds(10, 75, 554, 16);
 		btnAddSelect.setText("Create/Select "+getMixRigWizard().oppositeRigidity+" subtypes for "+getMixRigWizard().mixinName+"");
 		btnAddSelect.addSelectionListener(btnListener);
 		
 		bar = new ExpandBar (container, SWT.V_SCROLL);
 		bar.setSpacing(0);
-		bar.setBounds(10, 120, 572, 266);
 		bar.setEnabled(true);
 		
 		try {
@@ -115,7 +111,43 @@ public class MixRigRefactoringPage extends RefactoringPage {
 		itemAddSelect.setControl(addSelectComposite);		
 		
 		Label label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
-		label.setBounds(10, 106, 572, 2);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(label, GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+								.add(bar, GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+								.add(btnAddSelect, GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+								.add(btnChangeSubtype, GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE))
+							.add(10))
+						.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+							.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+								.add(GroupLayout.LEADING, lblPleaseChooseThe, GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
+								.add(btnChangeStereotype, GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE))
+							.addContainerGap())))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblPleaseChooseThe)
+					.add(6)
+					.add(btnChangeStereotype)
+					.add(6)
+					.add(btnChangeSubtype)
+					.add(6)
+					.add(btnAddSelect)
+					.add(15)
+					.add(label)
+					.add(12)
+					.add(bar, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+					.add(10))
+		);
+		container.setLayout(gl_container);
 
 	}
 	

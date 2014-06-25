@@ -27,6 +27,7 @@ import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
 import br.ufes.inf.nemo.antipattern.mixiden.SortalToAdd;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class ChangeIdentityProviderComposite extends Composite {
 	
@@ -86,7 +87,6 @@ public class ChangeIdentityProviderComposite extends Composite {
 		existingIps.remove(mixIden.getIdentityProvider());
 		
 		table = new Table(this, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		table.setBounds(10, 102, 518, 113);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.addSelectionListener(tableListener);
@@ -112,71 +112,126 @@ public class ChangeIdentityProviderComposite extends Composite {
 		tblclmnIPStereotype.setText("IP's Stereotype");
 		
 		tblclmnIPLocation = new TableColumn(table, SWT.NONE);
-		tblclmnIPLocation.setWidth(100);
+		tblclmnIPLocation.setWidth(85);
 		tblclmnIPLocation.setText("IP's Location");
 		
 		btnDeleteFromTable = new Button(this, SWT.NONE);
-		btnDeleteFromTable.setBounds(420, 71, 108, 25);
 		btnDeleteFromTable.setText("Delete From Table");
 		btnDeleteFromTable.addSelectionListener(btnDeleteToTableListener);
 		btnDeleteFromTable.addSelectionListener(enableNextListener);
 		
 		btnSaveInTable = new Button(this, SWT.NONE);
-		btnSaveInTable.setBounds(306, 71, 108, 25);
 		btnSaveInTable.setText("Save In Table");
 		btnSaveInTable.addSelectionListener(btnSaveInTableListener);
 		btnSaveInTable.addSelectionListener(enableNextListener);
 		
 		btnClear = new Button(this, SWT.NONE);
-		btnClear.setBounds(192, 71, 108, 25);
 		btnClear.setText("Clear");
 		btnClear.addSelectionListener(btnClearListener);
 		
 		lblSubtype = new Label(this, SWT.NONE);
-		lblSubtype.setBounds(10, 10, 62, 21);
 		lblSubtype.setText("Subtype:");
 		
 		lblStereotype = new Label(this, SWT.NONE);
-		lblStereotype.setBounds(10, 37, 62, 21);
 		lblStereotype.setText("Stereotype: \r\n");
 		
 		lblIdentityProvider = new Label(this, SWT.NONE);
 		lblIdentityProvider.setText("New Identity Provider (IP):");
-		lblIdentityProvider.setBounds(236, 10, 138, 21);
 		
 		lblIpStereotype = new Label(this, SWT.NONE);
 		lblIpStereotype.setText("IP's Stereotype:");
-		lblIpStereotype.setBounds(236, 37, 138, 21);
 
 		comboSubtype = new CCombo(this, SWT.BORDER);
 		setClassifierComboItems(mixIden.getSubtypes(), comboSubtype);
-		comboSubtype.setBounds(78, 10, 148, 21);
 		comboSubtype.setEditable(false);
 		comboSubtype.addSelectionListener(combosListener);
 		
 		comboStereotype = new CCombo(this, SWT.BORDER);
 		setComboStereotypeItems(comboStereotype,allowedStereotypes);
-		comboStereotype.setBounds(78, 37, 148, 21);
 		comboStereotype.addSelectionListener(combosListener);
 		comboStereotype.setEditable(false);
 		
 		comboIP = new CCombo(this, SWT.BORDER);
 		setClassifierComboItems(existingIps, comboIP);
-		comboIP.setBounds(380, 10, 148, 21);
 		comboIP.setEditable(true);
 		comboIP.addSelectionListener(combosListener);
 		comboIP.addListener(SWT.KeyUp, keyUpListener);
 		
 		comboIPStereotype = new CCombo(this, SWT.BORDER);
 		setComboStereotypeItems(comboIPStereotype,allowedIpsStereotypes);
-		comboIPStereotype.setBounds(380, 37, 148, 21);
 		comboIPStereotype.addSelectionListener(combosListener);
 		comboIPStereotype.setEditable(false);
 		
 		lblOperationResult = new Label(this, SWT.NONE);
 		lblOperationResult.setAlignment(SWT.RIGHT);
-		lblOperationResult.setBounds(10, 221, 516, 15);
 		lblOperationResult.setVisible(false);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(lblSubtype, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(comboSubtype, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+					.add(10)
+					.add(lblIdentityProvider)
+					.add(6)
+					.add(comboIP, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+					.add(8))
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(lblStereotype)
+					.add(6)
+					.add(comboStereotype, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+					.add(10)
+					.add(lblIpStereotype, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(comboIPStereotype, GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+					.add(8))
+				.add(GroupLayout.TRAILING, groupLayout.createSequentialGroup()
+					.add(192)
+					.add(btnClear, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnSaveInTable, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnDeleteFromTable)
+					.add(8))
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(table, GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+					.add(8))
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(lblOperationResult, GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+					.add(10))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(lblSubtype, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.add(comboSubtype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(lblIdentityProvider, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.add(comboIP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(6)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(lblStereotype, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.add(comboStereotype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(lblIpStereotype, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.add(comboIPStereotype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(13)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(btnClear)
+						.add(btnSaveInTable)
+						.add(btnDeleteFromTable))
+					.add(6)
+					.add(table, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+					.add(6)
+					.add(lblOperationResult)
+					.add(7))
+		);
+		setLayout(groupLayout);
 		
 		setInitialState();
 	}

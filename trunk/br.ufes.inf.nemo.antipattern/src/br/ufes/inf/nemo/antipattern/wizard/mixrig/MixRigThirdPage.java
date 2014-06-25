@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Label;
 
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigAntipattern;
 import br.ufes.inf.nemo.antipattern.mixrig.MixRigOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class MixRigThirdPage  extends MixRigPage {
 
@@ -70,29 +71,57 @@ public class MixRigThirdPage  extends MixRigPage {
 		setPageComplete(false);
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
-		styledText.setBounds(10, 10, 554, 30);
 		styledText.setText("Are all "+getMixRigWizard().oppositeRigidity+" subtypes of "+getMixRigWizard().mixinName+" OUT of the scope of the ontology?");
 		styledText.setJustify(true);
 		styledText.setBackground(styledText.getParent().getBackground());
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 46, 39, 16);
 		btnYes.setText("Yes");
 		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 68, 39, 16);
 		btnNo.setText("No");
 		btnNo.addSelectionListener(listener);
 
 		try {
 			addSelect = new AddSelectTypeComposite(container, SWT.BORDER, mixRig.getParser(), getMixRigWizard().allowedStereotypes(),addRemoveListener);
-			addSelect.setBounds(10, 121, 554, 255);
 			addSelect.setEnabled(false);
 			
 			lblSelectExistingTypes = new Label(container, SWT.NONE);
-			lblSelectExistingTypes.setBounds(10, 100, 509, 15);
 			lblSelectExistingTypes.setText("If No, please select existing types or create new ones using the table below:");
+			GroupLayout gl_container = new GroupLayout(container);
+			gl_container.setHorizontalGroup(
+				gl_container.createParallelGroup(GroupLayout.LEADING)
+					.add(gl_container.createSequentialGroup()
+						.add(10)
+						.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+							.add(gl_container.createSequentialGroup()
+								.add(btnYes, GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
+								.addContainerGap())
+							.add(gl_container.createSequentialGroup()
+								.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+									.add(styledText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+									.add(addSelect, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+									.add(lblSelectExistingTypes, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+									.add(btnNo, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+								.add(10))))
+			);
+			gl_container.setVerticalGroup(
+				gl_container.createParallelGroup(GroupLayout.LEADING)
+					.add(gl_container.createSequentialGroup()
+						.add(10)
+						.add(styledText, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+						.add(6)
+						.add(btnYes)
+						.add(6)
+						.add(btnNo)
+						.add(16)
+						.add(lblSelectExistingTypes)
+						.add(6)
+						.add(addSelect, GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+						.add(9))
+			);
+			container.setLayout(gl_container);
 		} catch (Exception e) {
 			System.out.println("ERROR!");
 		}

@@ -34,6 +34,7 @@ import RefOntoUML.impl.QuantityImpl;
 import br.ufes.inf.nemo.antipattern.mixiden.SortalToAdd;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class AddSelectSortalComposite extends Composite {
 	private Table table;
@@ -93,7 +94,6 @@ public class AddSelectSortalComposite extends Composite {
 		this.existingIps.removeAll(forbiddenTypes);
 		
 		table = new Table(this, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		table.setBounds(10, 102, 530, 113);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.addSelectionListener(tableListener);
@@ -123,64 +123,117 @@ public class AddSelectSortalComposite extends Composite {
 		tblclmnIPLocation.setText("IP's Location");
 		
 		btnDeleteFromTable = new Button(this, SWT.NONE);
-		btnDeleteFromTable.setBounds(432, 71, 108, 25);
 		btnDeleteFromTable.setText("Delete From Table");
 		btnDeleteFromTable.addSelectionListener(btnDeleteToTableListener);
 		
 		btnSaveInTable = new Button(this, SWT.NONE);
-		btnSaveInTable.setBounds(318, 71, 108, 25);
 		btnSaveInTable.setText("Save In Table");
 		btnSaveInTable.addSelectionListener(btnSaveInTableListener);
 		
 		btnNew = new Button(this, SWT.NONE);
-		btnNew.setBounds(204, 71, 108, 25);
 		btnNew.setText("New");
 		btnNew.addSelectionListener(btnNewListener);
 		
 		lblType = new Label(this, SWT.NONE);
-		lblType.setBounds(10, 10, 62, 21);
 		lblType.setText("Type:");
 		
 		lblStereotype = new Label(this, SWT.NONE);
-		lblStereotype.setBounds(10, 37, 62, 21);
 		lblStereotype.setText("Stereotype: \r\n");
 		
 		lblIdentityProvider = new Label(this, SWT.NONE);
 		lblIdentityProvider.setText("Identity Provider (IP):");
-		lblIdentityProvider.setBounds(258, 10, 116, 21);
 		
 		lblIpStereotype = new Label(this, SWT.NONE);
 		lblIpStereotype.setText("IP's Stereotype:");
-		lblIpStereotype.setBounds(258, 37, 116, 21);
 
 		comboClassifier = new CCombo(this, SWT.BORDER);
 		setClassifierComboItems(existingClassifiers, comboClassifier);
-		comboClassifier.setBounds(78, 10, 160, 21);
 		comboClassifier.addSelectionListener(combosListener);
 		comboClassifier.addListener(SWT.KeyUp, keyUpListener);
 		
 		comboStereotype = new CCombo(this, SWT.BORDER);
 		setComboStereotypeItems(comboStereotype,allowedStereotypes);
-		comboStereotype.setBounds(78, 37, 160, 21);
 		comboStereotype.addSelectionListener(combosListener);
 		comboStereotype.setEditable(false);
 		
 		comboIPStereotype = new CCombo(this, SWT.BORDER);
 		setComboStereotypeItems(comboIPStereotype,allowedIpsStereotypes);
-		comboIPStereotype.setBounds(380, 37, 160, 21);
 		comboIPStereotype.addSelectionListener(combosListener);
 		comboIPStereotype.setEditable(false);
 		
 		comboIP = new CCombo(this, SWT.BORDER);
 		setClassifierComboItems(existingIps, comboIP);
-		comboIP.setBounds(380, 10, 160, 21);
 		comboIP.addSelectionListener(combosListener);
 		comboIP.addListener(SWT.KeyUp, keyUpListener);
 		
 		lblSavingFailed = new Label(this, SWT.NONE);
 		lblSavingFailed.setAlignment(SWT.RIGHT);
-		lblSavingFailed.setBounds(10, 221, 530, 15);
 		lblSavingFailed.setVisible(false);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(lblType, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(comboClassifier, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+					.add(20)
+					.add(lblIdentityProvider, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(comboIP, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+					.add(11))
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(lblStereotype)
+					.add(6)
+					.add(comboStereotype, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+					.add(20)
+					.add(lblIpStereotype, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(comboIPStereotype, GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+					.add(11))
+				.add(GroupLayout.TRAILING, groupLayout.createSequentialGroup()
+					.add(204)
+					.add(btnNew, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnSaveInTable, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnDeleteFromTable)
+					.add(11))
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(table, GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+					.add(11))
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(lblSavingFailed, GroupLayout.PREFERRED_SIZE, 530, GroupLayout.PREFERRED_SIZE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(lblType, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.add(comboClassifier, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(lblIdentityProvider, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.add(comboIP, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(6)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(lblStereotype, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.add(comboStereotype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(lblIpStereotype, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.add(comboIPStereotype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(13)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(btnNew)
+						.add(btnSaveInTable)
+						.add(btnDeleteFromTable))
+					.add(6)
+					.add(table, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+					.add(6)
+					.add(lblSavingFailed))
+		);
+		setLayout(groupLayout);
 		
 		setInitialState();
 	}

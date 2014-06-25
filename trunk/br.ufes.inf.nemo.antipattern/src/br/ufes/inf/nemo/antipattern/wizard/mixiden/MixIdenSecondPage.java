@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.Composite;
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class MixIdenSecondPage  extends MixIdenPage {
 
@@ -42,19 +44,16 @@ public class MixIdenSecondPage  extends MixIdenPage {
 		setPageComplete(false);
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
-		styledText.setBounds(10, 10, 554, 30);
 		styledText.setText(	"Do all subtypes indeed inherits their identity principle from <"+mixIden.getIdentityProvider().getName()+">? " +
 							"If No, use the table below to change the identity principle suppliers.");
 		styledText.setJustify(true);
 		styledText.setBackground(styledText.getParent().getBackground());
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 46, 554, 16);
 		btnYes.setText("Yes, they all inherit from it");
 		btnYes.addSelectionListener(btnYesListener);
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 68, 554, 16);
 		btnNo.setText("No");
 		btnNo.addSelectionListener(btnNoListener);
 		
@@ -63,8 +62,38 @@ public class MixIdenSecondPage  extends MixIdenPage {
 			forbbidenTypes.add(mixIden.getIdentityProvider());
 			
 			changeIdentityComposite = new ChangeIdentityProviderComposite(container, SWT.BORDER, mixIden,btnNoListener);
-			changeIdentityComposite.setBounds(10, 121, 554, 255);
 			changeIdentityComposite.setAllEnabled(false);
+			GroupLayout gl_container = new GroupLayout(container);
+			gl_container.setHorizontalGroup(
+				gl_container.createParallelGroup(GroupLayout.LEADING)
+					.add(gl_container.createSequentialGroup()
+						.addContainerGap()
+						.add(btnYes, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+						.add(9))
+					.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+						.add(10)
+						.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+							.add(GroupLayout.LEADING, styledText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+							.add(GroupLayout.LEADING, changeIdentityComposite, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+						.add(10))
+					.add(gl_container.createSequentialGroup()
+						.addContainerGap()
+						.add(btnNo, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+						.add(9))
+			);
+			gl_container.setVerticalGroup(
+				gl_container.createParallelGroup(GroupLayout.LEADING)
+					.add(gl_container.createSequentialGroup()
+						.add(10)
+						.add(styledText, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(LayoutStyle.RELATED)
+						.add(btnYes)
+						.addPreferredGap(LayoutStyle.UNRELATED)
+						.add(btnNo)
+						.add(20)
+						.add(changeIdentityComposite, GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE))
+			);
+			container.setLayout(gl_container);
 
 		} catch (Exception e) {
 			System.out.println("ERROR!");

@@ -10,6 +10,10 @@ import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class MixIdenFirstPage extends MixIdenPage{
 
@@ -48,23 +52,43 @@ public class MixIdenFirstPage extends MixIdenPage{
 		setPageComplete(false);
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
-		styledText.setBounds(10, 10, 554, 102);
-		styledText.setText(	"The "+getMixIdenWizard().mixinStereotype+" stereotype is used for "+getMixIdenWizard().mixinStereotype+" types whose extensions may " +
+		styledText.setText(	"The "+getMixIdenWizard().mixinStereotype+" stereotype is used for "+getMixIdenWizard().mixinRigidity+" types whose extensions may " +
 							"contain individuals that follow different identity principles. " +
 							"\r\n\r\n" +
-							"All subtypes of "+getMixIdenWizard().mixinName+" represented in the model follow the same identity principle. " +
+							"All subtypes of "+OntoUMLNameHelper.getTypeAndName(getMixIdenWizard().getAp().getMixin(), true, true)+" represented in the model follow the same identity principle. " +
 							"Is it possible for another type, which follows a different identity principle, to be generalized into "+getMixIdenWizard().mixinName+"?");
 		styledText.setJustify(true);
 		styledText.setBackground(styledText.getParent().getBackground());
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 118, 554, 16);
 		btnYes.setText("Yes - Allow different identity principles");
 		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 140, 554, 16);
 		btnNo.setText("No - Forbid different identity principles");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.TRAILING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(btnYes, GroupLayout.DEFAULT_SIZE, 651, Short.MAX_VALUE)
+						.add(GroupLayout.TRAILING, styledText, GroupLayout.DEFAULT_SIZE, 651, Short.MAX_VALUE)
+						.add(GroupLayout.TRAILING, btnNo, GroupLayout.DEFAULT_SIZE, 651, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnYes)
+					.addPreferredGap(LayoutStyle.UNRELATED)
+					.add(btnNo)
+					.add(232))
+		);
+		container.setLayout(gl_container);
 		btnNo.addSelectionListener(listener);
 	}
 	

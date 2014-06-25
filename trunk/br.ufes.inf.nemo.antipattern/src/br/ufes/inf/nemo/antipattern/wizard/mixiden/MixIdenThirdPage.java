@@ -14,6 +14,8 @@ import org.eclipse.swt.widgets.Label;
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenAntipattern;
 import br.ufes.inf.nemo.antipattern.mixiden.MixIdenOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class MixIdenThirdPage  extends MixIdenPage {
 
@@ -44,7 +46,6 @@ public class MixIdenThirdPage  extends MixIdenPage {
 		setPageComplete(false);
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
-		styledText.setBounds(10, 10, 554, 30);
 		styledText.setText(	"Are any of the types that can specialize <"+getMixIdenWizard().mixinName+"> and " +
 							"follow a different identity principle from the one supplied by <"+mixIden.getIdentityProvider().getName()+">, " +
 							"in the scope of the ontology?");
@@ -52,12 +53,10 @@ public class MixIdenThirdPage  extends MixIdenPage {
 		styledText.setBackground(styledText.getParent().getBackground());
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 46, 554, 16);
 		btnNo.setText("No, they are all out of scope");
 		btnNo.addSelectionListener(btnNoListener);
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 68, 554, 16);
 		btnYes.setText("Yes");
 		btnYes.addSelectionListener(btnYesListener);
 		
@@ -67,12 +66,48 @@ public class MixIdenThirdPage  extends MixIdenPage {
 			
 			addSelect = new AddSelectSortalComposite(container, SWT.BORDER, mixIden.getParser(), 
 					mixIden.allowedSubtypeStereotypes(), mixIden.identityProviderStereotypes(), forbbidenTypes);
-			addSelect.setBounds(10, 121, 554, 255);
 			addSelect.setAllEnabled(false);
 			
 			lblSelectExistingTypes = new Label(container, SWT.NONE);
-			lblSelectExistingTypes.setBounds(10, 100, 509, 15);
 			lblSelectExistingTypes.setText("If Yes, please select existing types or create new ones using the table below:");
+			GroupLayout gl_container = new GroupLayout(container);
+			gl_container.setHorizontalGroup(
+				gl_container.createParallelGroup(GroupLayout.LEADING)
+					.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+						.add(10)
+						.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+							.add(GroupLayout.LEADING, addSelect, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+							.add(GroupLayout.LEADING, styledText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+						.add(10))
+					.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+						.add(9)
+						.add(lblSelectExistingTypes, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.addContainerGap())
+					.add(gl_container.createSequentialGroup()
+						.addContainerGap()
+						.add(btnYes, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(9))
+					.add(gl_container.createSequentialGroup()
+						.addContainerGap()
+						.add(btnNo, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(9))
+			);
+			gl_container.setVerticalGroup(
+				gl_container.createParallelGroup(GroupLayout.LEADING)
+					.add(gl_container.createSequentialGroup()
+						.add(10)
+						.add(styledText, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+						.add(16)
+						.add(btnNo)
+						.addPreferredGap(LayoutStyle.RELATED)
+						.add(btnYes)
+						.add(14)
+						.add(lblSelectExistingTypes)
+						.addPreferredGap(LayoutStyle.RELATED)
+						.add(addSelect, GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+						.add(9))
+			);
+			container.setLayout(gl_container);
 		} catch (Exception e) {
 			System.out.println("ERROR!");
 		}
