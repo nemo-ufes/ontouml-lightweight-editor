@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.antipattern.decint;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Class;
@@ -44,28 +45,33 @@ public class DecIntAntipattern extends Antipattern<DecIntOccurrence> {
 	
 	@Override
 	public ArrayList<DecIntOccurrence> identify(){
-		
-		for (Class c : parser.getAllInstances(Class.class)) {
-		
+		Set<Class> allClasses = parser.getAllInstances(Class.class);
+		int size = allClasses.size();
+		int i = 0;
+		for (Class c : allClasses) {
+			i++;
+			System.out.println(info.acronym+": "+c.getName()+" ("+i+" of "+size+")");
 			if(c instanceof SubstanceSortal || c instanceof MixinClass)
 				continue;
 			
-			if(c.parents().size()<2)
+			
+			Set<Classifier> parents = parser.getParents(c);
+			
+			if(parents.size()<2)
 				continue;
 			
-			ArrayList<Classifier> relevantParents = new ArrayList<Classifier>(c.parents());
+			ArrayList<Classifier> relevantParents = new ArrayList<Classifier>(parents);
 			
 			//remove abstract parents and Mixin parents
-			for (Classifier parent : c.parents()) {
+			for (Classifier parent : parents) {
 				if(parent.isIsAbstract() || parent instanceof MixinClass)
 					relevantParents.remove(parent);
 			}
 
-
 			//remove "complete" parents
-			for (Generalization g : c.getGeneralization()) {
+			for (Generalization g : parser.retainSelected(c.getGeneralization())) {
 				if(relevantParents.contains(g.getGeneral())){
-					for (GeneralizationSet gs : g.getGeneralizationSet()) {
+					for (GeneralizationSet gs : parser.retainSelected(g.getGeneralizationSet())) {
 						if(gs.isIsCovering()){
 							relevantParents.remove(g.getGeneral());
 							break;
@@ -86,6 +92,7 @@ public class DecIntAntipattern extends Antipattern<DecIntOccurrence> {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
 			
 		}
 		
