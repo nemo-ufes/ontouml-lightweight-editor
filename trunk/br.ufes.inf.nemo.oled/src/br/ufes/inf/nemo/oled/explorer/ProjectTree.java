@@ -116,6 +116,19 @@ public class ProjectTree extends CheckboxTree {
 		}
 	}
 		
+	public void remove(RefOntoUML.Element deletedElement)
+	{				
+		checkModelElement(deletedElement);
+		removeCurrentNode();
+		if(deletedElement instanceof Generalization){
+			for(GeneralizationSet genSet: ((Generalization)deletedElement).getGeneralizationSet()){
+				if(genSet.getGeneralization().size()==1 && genSet.getGeneralization().get(0).equals(deletedElement)) { checkModelElement(genSet); removeCurrentNode(); }
+				if(genSet.getGeneralization().size()==0) { checkModelElement(genSet); removeCurrentNode(); }
+			}
+		}
+		updateUI();
+	}
+	
 	 /** Remove the currently selected node. */
     public void removeCurrentNode() 
     {

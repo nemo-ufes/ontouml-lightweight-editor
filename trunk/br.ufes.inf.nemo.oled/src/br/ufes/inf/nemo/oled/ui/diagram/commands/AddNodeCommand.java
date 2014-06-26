@@ -89,6 +89,11 @@ public class AddNodeCommand extends BaseDiagramCommand {
 	public void undo() 
 	{		
 		super.undo();
+				
+		if(element!=null){
+			project.getEditingDomain().getCommandStack().undo();
+			ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(element);
+		}
 		
 		if(addToDiagram && diagramElement != null){
 			parent.removeChild(diagramElement);			
@@ -99,10 +104,6 @@ public class AddNodeCommand extends BaseDiagramCommand {
 			notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);
 		}		
 		
-		if(element!=null){
-			project.getEditingDomain().getCommandStack().undo();
-			ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(element);
-		}
 	}
 
 	/**

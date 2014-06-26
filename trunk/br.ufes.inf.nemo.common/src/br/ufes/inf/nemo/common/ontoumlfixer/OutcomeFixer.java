@@ -1024,6 +1024,7 @@ public class OutcomeFixer{
 		// create generalization set
 		GeneralizationSet gs = createBasicGeneralizationSet(isDisjoint,isCovering);
 		gs.getGeneralization().addAll(generalizations);
+		for(Generalization g: generalizations) { g.getGeneralizationSet().add(gs); }
 		if (gsName != null) gs.setName(gsName);
 		else gs.setName("NewGS_" + generalizations.get(0).getGeneral().getName());
 		fix.includeAdded(gs);
