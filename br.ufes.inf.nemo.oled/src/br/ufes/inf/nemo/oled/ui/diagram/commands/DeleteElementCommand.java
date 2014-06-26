@@ -21,6 +21,7 @@ package br.ufes.inf.nemo.oled.ui.diagram.commands;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.event.UndoableEditEvent;
@@ -56,15 +57,19 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 public class DeleteElementCommand extends BaseDiagramCommand{
 
 	private static final long serialVersionUID = 2456036038567915529L;	
+	
 	private Collection<DiagramElement> diagramElemList = new ArrayList<DiagramElement>();
 	private Collection<DiagramElement> diagramElemDep1List = new ArrayList<DiagramElement>(); 
-	private Collection<DiagramElement> diagramElemDep2List = new ArrayList<DiagramElement>(); 		
+	private Collection<DiagramElement> diagramElemDep2List = new ArrayList<DiagramElement>();
+	
 	private Collection<Element> elemList= new ArrayList<Element>();
 	private Collection<Element> elemDep1List= new ArrayList<Element>(); 
-	private Collection<Element> elemDep2List= new ArrayList<Element>(); 	
+	private Collection<Element> elemDep2List= new ArrayList<Element>();
+	
 	private List<ParentChildRelation> parentChildRelations = new ArrayList<ParentChildRelation>();
 	private List<ParentChildRelation> parentChildRelationsDep1 = new ArrayList<ParentChildRelation>(); 
-	private List<ParentChildRelation> parentChildRelationsDep2 = new ArrayList<ParentChildRelation>();	
+	private List<ParentChildRelation> parentChildRelationsDep2 = new ArrayList<ParentChildRelation>();
+	
 	private boolean deleteFromModel;
 	private boolean deleteFromDiagram;
 	
@@ -124,10 +129,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			parentChildRelationsDep2.add(new ParentChildRelation(elem, elem.getParent()));
 		}
 	}
-	
-	/**
-	 * {@inheritDoc} - REDO
-	 */
+
 	@Override
 	public void redo() 
 	{	
@@ -136,106 +138,20 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		run();
 	}
 
-	/**
-	 * {@inheritDoc} - UNDO
-	 */
-	@Override
-	public void undo() 
-	{		
-		super.undo();
-		
-		//requested
-		if(deleteFromModel){
-			for (Element element : elemList) {
-				project.getEditingDomain().getCommandStack().undo();
-				ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);
-			}						
-		}
-		if(deleteFromDiagram){	
-			int i=0;
-			for (ParentChildRelation relation : parentChildRelations) {
-				//guess we dont need this
-//				if (relation.element instanceof Connection) {
-//					reattachConnectionToNodes((Connection) relation.element);
-//				} else if (relation.element instanceof Node) {
-//					reattachNodeConnections((Node) relation.element);
-//				}				
-				relation.parent.addChild(relation.element);
-				ModelHelper.addMapping(((ArrayList<Element>)elemList).get(i),relation.element);
-				i++;
-			}
-		}
-		
-		//dependencies of level1 (usually relationships)
-		if(deleteFromModel){
-			for (Element element : elemDep1List) {
-				project.getEditingDomain().getCommandStack().undo();
-				ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);
-			}						
-		}
-		if(deleteFromDiagram){
-			int i=0;
-			for (ParentChildRelation relation : parentChildRelationsDep1) {
-				//guess we dont need this
-//				if (relation.element instanceof Connection) {
-//					reattachConnectionToNodes((Connection) relation.element);
-//				} else if (relation.element instanceof Node) {
-//					reattachNodeConnections((Node) relation.element);
-//				}				
-				relation.parent.addChild(relation.element);			
-				ModelHelper.addMapping(((ArrayList<Element>)elemDep1List).get(i),relation.element);
-				i++;
-			}
-		}		
-		
-		//dependencies of level2 (true only for derivations)
-		if(deleteFromModel){
-			for (Element element : elemDep2List) {
-				project.getEditingDomain().getCommandStack().undo();
-				ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);
-			}						
-		}
-		if(deleteFromDiagram){
-			int i=0;
-			for (ParentChildRelation relation : parentChildRelationsDep2) {
-				//guess we dont need this
-//				if (relation.element instanceof Connection) {
-//					reattachConnectionToNodes((Connection) relation.element);
-//				} else if (relation.element instanceof Node) {
-//					reattachNodeConnections((Node) relation.element);
-//				}				
-				relation.parent.addChild(relation.element);
-				ModelHelper.addMapping(((ArrayList<Element>)elemDep2List).get(i),relation.element);
-				i++;
-			}
-		}		
-		
-		if(notification!=null){
-			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-			list.addAll(diagramElemList);
-			list.addAll(diagramElemDep1List);
-			list.addAll(diagramElemDep2List);
-			notification.notifyChange((List<DiagramElement>) list, ChangeType.ELEMENTS_REMOVED, NotificationType.UNDO);		
-		}
-	}
-	
-	/**
-	 * {@inheritDoc} - RUN
-	 */
 	public void run() 
 	{
 		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 		
 		// deletes dependencies level2 (derivations)
-		delete(diagramElemDep2List,elemDep2List);	
+		runDelete(diagramElemDep2List,elemDep2List);	
 		list.addAll(diagramElemDep2List);
 		
 		// deletes dependencies level1
-		delete(diagramElemDep1List,elemDep1List);
+		runDelete(diagramElemDep1List,elemDep1List);
 		list.addAll(diagramElemDep1List);
 		
 		// delete the element requested
-		delete(diagramElemList, elemList);
+		runDelete(diagramElemList, elemList);
 		list.addAll(diagramElemList);
 		
 		DiagramEditor d = ((DiagramEditor)notification);
@@ -246,55 +162,116 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
 		}
 	}
+
+	@Override
+	public void undo() 
+	{		
+		super.undo();
+		
+		// undo the element requested
+		runUndo(parentChildRelations,elemList);
+		
+		// undo dependencies level1
+		runUndo(parentChildRelationsDep1,elemDep1List);		
+		
+		// undo dependencies level2 (derivations)
+		runUndo(parentChildRelationsDep2,elemDep2List);	
+		
+		//notify
+		if(notification!=null){
+			ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
+			list.addAll(diagramElemList);
+			list.addAll(diagramElemDep1List);
+			list.addAll(diagramElemDep2List);
+			notification.notifyChange((List<DiagramElement>) list, ChangeType.ELEMENTS_REMOVED, NotificationType.UNDO);		
+		}
+	}
 	
-	public void delete(Collection<DiagramElement> diagramElemList, Collection<Element> elemList)
+	public void runDelete(Collection<DiagramElement> diagramElemList, Collection<Element> elemList)
 	{
-		if(deleteFromDiagram) deleteFromDiagram(diagramElemList);			
-				
+		if(deleteFromDiagram) {
+			runDeleteFromDiagram(diagramElemList);			
+		}
+		
 		if(deleteFromModel) {
-			deleteFromModel(elemList);
-			for(RefOntoUML.Element deletedElement: elemList)
-			{
-				ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(deletedElement);	
-			}
+			runDeleteFromModel(elemList);			
 		}						
 	}
 	
-	private void deleteFromDiagram(Collection<DiagramElement> diagramElemList)
+	public void runUndo(Collection<ParentChildRelation> parentChildList, Collection<Element> elemList)
+	{	
+		if(deleteFromModel) {
+			runUndoFromModel(elemList);			
+		}
+		
+		if(deleteFromDiagram) {
+			runUndoFromDiagram(parentChildList, elemList);			
+		}		
+	}
+	
+	private void runDeleteFromDiagram(Collection<DiagramElement> diagramElemList)
 	{
 		for (DiagramElement element : diagramElemList) 
 		{
-			delete(element);
+			deleteFromDiagram(element);	
 			ModelHelper.removeMapping(element);
 		}
 	}
 	
-	private void deleteFromModel(Collection<Element> elemList)
+	private void runUndoFromDiagram(Collection<ParentChildRelation> parentChildList, Collection<Element> elemList)
 	{
-		ArrayList<GeneralizationSet> genSets = new ArrayList<GeneralizationSet>();
-		
+		int i=0;
+		for (ParentChildRelation relation : parentChildList) 
+		{
+			undoFromDiagram(relation);	
+			ModelHelper.addMapping(((ArrayList<Element>)elemList).get(i),relation.element);
+			i++;
+		}
+	}
+	
+	private void deleteFromDiagram (DiagramElement element)
+	{
+		//detach ends
+		if (element instanceof Connection) detachConnectionFromNodes((Connection) element);				
+		else if (element instanceof Node) detachNodeConnections((Node)element);
+				
+		// delete
+		if(element instanceof BaseConnection || element instanceof ClassElement) {
+			element.getParent().removeChild(element);
+		}
+	}
+	
+	private void undoFromDiagram (ParentChildRelation relation)
+	{
+		//Guess we don't need this anymore...
+		/**
+		if (relation.element instanceof Connection) {
+			reattachConnectionToNodes((Connection) relation.element);
+		} else if (relation.element instanceof Node) {
+			reattachNodeConnections((Node) relation.element);
+		}
+		*/				
+		relation.parent.addChild(relation.element);
+	}
+	
+	private void runDeleteFromModel(Collection<Element> elemList)
+	{	
 		//delete first the derivations, comments and constraints (third level of dependence)
 		for(Element elem: elemList) {
-			if (elem instanceof RefOntoUML.Derivation) delete(elem);
+			if (elem instanceof RefOntoUML.Derivation)  delete(elem); 
 			if (elem instanceof RefOntoUML.Comment) delete(elem);
-			if (elem instanceof RefOntoUML.Constraintx) delete(elem);
-			if (elem instanceof RefOntoUML.Generalization) {
-				Generalization gen = (Generalization)elem;				
-				for(GeneralizationSet genSet: gen.getGeneralizationSet()) if(!genSets.contains(genSet))genSets.add(genSet);
-			}
+			if (elem instanceof RefOntoUML.Constraintx) delete(elem);					
 		}				
+		
 		// then generalization sets (third level of dependence)
 		for(Element elem: elemList) {			
 			if (elem instanceof RefOntoUML.GeneralizationSet) deleteGeneralizationSet((GeneralizationSet)elem);			
 		}
-		for(Element elem: genSets) {			
-			if (elem instanceof RefOntoUML.GeneralizationSet) deleteGeneralizationSet((GeneralizationSet)elem);			
-		}
-				
+						
 		//then the rest of associations and generalizations (second level of dependence)
 		for(Element elem: elemList) {				
 			if (elem instanceof RefOntoUML.Association) delete(elem);
-			if (elem instanceof RefOntoUML.Generalization) delete(elem);			
+			if (elem instanceof RefOntoUML.Generalization) deleteGeneralization((Generalization)elem);
 		}
 		
 		//then the classes and datatypes (first level of dependence)
@@ -303,36 +280,126 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		}		
 	}
 	
-	private void deleteGeneralizationSet(GeneralizationSet elem)
+	private void runUndoFromModel(Collection<Element> elemList)
 	{
-		ArrayList<Generalization> gens = new ArrayList<Generalization>(); 
-		for(Generalization gen: ((GeneralizationSet)elem).getGeneralization())
-		{				
-			if(gen!=null) gens.add(gen);			
-		}			
-		((GeneralizationSet)elem).getGeneralization().removeAll(gens);		
-		for(Generalization gen: gens) ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(gen, false);
-		delete(elem);
-		ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(elem);
+		// classes and datatypes (first level of dependence)
+		for(Element elem: elemList) {
+			if (elem instanceof RefOntoUML.Class || elem instanceof RefOntoUML.DataType) undo(elem);			
+		}
+		
+		//the rest of associations and generalizations (second level of dependence)
+		for(Element elem: elemList) {				
+			if (elem instanceof RefOntoUML.Association) undo(elem);
+			if (elem instanceof RefOntoUML.Generalization) undoGeneralization((Generalization)elem);
+		}
+
+		// generalization sets (third level of dependence)
+		for(Element elem: elemList) {			
+			if (elem instanceof RefOntoUML.GeneralizationSet) undoGeneralizationSet((GeneralizationSet)elem);			
+		}
+		
+		//derivations, comments and constraints (third level of dependence)
+		for(Element elem: elemList) {
+			if (elem instanceof RefOntoUML.Derivation)  undo(elem); 
+			if (elem instanceof RefOntoUML.Comment) undo(elem);
+			if (elem instanceof RefOntoUML.Constraintx) undo(elem);					
+		}				
+	}
+		
+	// deleted generalization and its dependent generalization sets
+	private HashMap<GeneralizationSet, Generalization> decoupledGenMap = new HashMap<GeneralizationSet,Generalization>();
+	// deleted generalization sets and its dependent generalizations
+	private HashMap<Generalization, GeneralizationSet> decoupledGenSetMap = new HashMap<Generalization,GeneralizationSet>();
+	// empty generalization sets that needed to be deleted
+	private ArrayList<GeneralizationSet> deletedEmptyGenSets = new ArrayList<GeneralizationSet>();
+	
+	private void deleteGeneralization(Generalization gen)
+	{		
+		//decouple generalization and its generalization sets		
+		for(GeneralizationSet genSet: gen.getGeneralizationSet()) {			
+			decoupledGenMap.put(genSet,gen);
+		}
+		for(GeneralizationSet genSet: decoupledGenMap.keySet()) { 
+			genSet.getGeneralization().remove(gen); 
+			gen.getGeneralizationSet().remove(genSet); 
+		}
+		
+		//delete remaining empty generalization sets		
+		for(GeneralizationSet genSet: decoupledGenMap.keySet()) {
+			if(genSet.getGeneralization().size()==0) deletedEmptyGenSets.add(genSet);
+		}				
+		for(GeneralizationSet genSet: deletedEmptyGenSets) {
+			deleteGeneralizationSet(genSet);			
+		}
+		
+		delete(gen);
 	}
 	
-	private void delete (DiagramElement element)
+	private void undoGeneralization(Generalization gen)
 	{
-		//detach ends
-		if (element instanceof Connection) detachConnectionFromNodes((Connection) element);				
-		else if (element instanceof Node) detachNodeConnections((Node)element);
-				
-		// delete
-		if(element instanceof BaseConnection || element instanceof ClassElement) 
-		{
-			element.getParent().removeChild(element);
+		undo(gen);
+		
+		//undo empty generalization sets that were emptied
+		ArrayList<GeneralizationSet> genSetsForAddition = new ArrayList<GeneralizationSet>();
+		for(GeneralizationSet genSet: deletedEmptyGenSets) {
+			if(genSet.getGeneralization().size()==0) genSetsForAddition.add(genSet);
+		}	
+		for(GeneralizationSet genSet: genSetsForAddition) {
+			undoGeneralizationSet(genSet);			
 		}
+		
+		//couple generalization and its generalization sets again
+		ArrayList<GeneralizationSet> genSets = new ArrayList<GeneralizationSet>();
+		for(GeneralizationSet genSet: decoupledGenMap.keySet()) {			
+			genSets.add(genSet);
+		}
+		for(GeneralizationSet genSet: genSets) { 
+			genSet.getGeneralization().add(gen); 
+			gen.getGeneralizationSet().add(genSet); 		
+		}
+	}
+	
+	private void deleteGeneralizationSet(GeneralizationSet elem)
+	{
+		//decouple generalization sets and its generalizations before deletion
+		for(Generalization gen: ((GeneralizationSet)elem).getGeneralization())
+		{				
+			if(gen!=null) decoupledGenSetMap.put(gen,elem);			
+		}			
+		((GeneralizationSet)elem).getGeneralization().removeAll(decoupledGenSetMap.keySet());		
+		for(Generalization gen: decoupledGenSetMap.keySet()) {
+			gen.getGeneralizationSet().remove(elem);
+			ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(gen, false);
+		}
+		
+		delete(elem);		
+	}
+	
+	private void undoGeneralizationSet(GeneralizationSet elem)
+	{
+		undo(elem);
+		
+		//couple generalization set and its generalizations again
+		((GeneralizationSet)elem).getGeneralization().addAll(decoupledGenSetMap.keySet());		
+		for(Generalization gen: decoupledGenSetMap.keySet()) {
+			gen.getGeneralizationSet().add(elem);
+			ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(gen, false);
+		}
+	}
+	
+	private void undo (RefOntoUML.Element elem)
+	{
+		//System.out.println("Undoing = "+elem);
+		project.getEditingDomain().getCommandStack().undo();
+		ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(elem);
 	}
 	
 	private void delete (RefOntoUML.Element elem)
 	{			
+		//System.out.println("Deleting = "+elem);
 		DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), elem);
-		project.getEditingDomain().getCommandStack().execute(cmd);		
+		project.getEditingDomain().getCommandStack().execute(cmd);
+		ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(elem);
 	}
 	
 	public Collection<DiagramElement> getDiagramElements() 
@@ -343,6 +410,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		list.addAll(diagramElemDep2List);
 		return list;
 	}
+	
+	//===========================================================================
 	
 	/**
 	 * Called when a node is removed. Detach the connections associated with

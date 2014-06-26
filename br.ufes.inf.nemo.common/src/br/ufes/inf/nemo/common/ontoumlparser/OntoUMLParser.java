@@ -200,7 +200,24 @@ public class OntoUMLParser {
 			//Enumeration can also have attributes
 			for(Property p: ((Enumeration)obj).getOwnedAttribute()) removeFromMap(p);
 			removeFromMap(obj);
-		}else{
+		}
+		//Generalization
+		else if (obj instanceof Generalization)
+		{	
+			//Generalization Set
+			for(GeneralizationSet genSet: ((Generalization)obj).getGeneralizationSet()){				
+				if(genSet.getGeneralization().size()==1 && genSet.getGeneralization().get(0).equals(obj)) removeFromMap(genSet);
+				if(genSet.getGeneralization().size()==0) removeFromMap(genSet);
+			}			
+			
+			removeFromMap(obj);
+		}
+		//Generalization Set
+		else if(obj instanceof GeneralizationSet)
+		{
+			removeFromMap(obj);
+		}
+		else{
 			removeFromMap(obj);
 		}
 	}

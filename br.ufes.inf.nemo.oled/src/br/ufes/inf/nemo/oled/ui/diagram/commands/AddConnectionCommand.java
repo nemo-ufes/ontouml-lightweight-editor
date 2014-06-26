@@ -102,6 +102,11 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 	public void undo() 
 	{
 		super.undo();
+						
+		if (relationship!=null){
+			project.getEditingDomain().getCommandStack().undo();			
+			ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(relationship);
+		}
 		
 		if(addToDiagram && diagramElement!=null){				
 			parent.removeChild(diagramElement);
@@ -111,11 +116,6 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			elements.add(diagramElement);
 			notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);			
 		}	
-		
-		if (relationship!=null){
-				project.getEditingDomain().getCommandStack().undo();
-				ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(relationship);
-		}			
 	}
 
 	/**

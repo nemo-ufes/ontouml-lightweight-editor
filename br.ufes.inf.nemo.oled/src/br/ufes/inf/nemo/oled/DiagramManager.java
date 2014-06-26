@@ -824,29 +824,34 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Update the application accordingly to the refontouml instance created. This instance must be already be inserted in its container. 
 	 * @param element: added element on refontouml root instance.
 	 */
-	public void updateOLEDFromInclusion(RefOntoUML.Element element)
+	public void updateOLEDFromInclusion(final RefOntoUML.Element element)
 	{		
-		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
-		// add to the parser
-		ProjectBrowser.getParserFor(project).addElement(element);		
-		// add to the tree
-		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
-		boolean found = tree.checkModelElement(element);
-		if(!found) {
-			if(element.eContainer()!=null) tree.checkModelElement(element.eContainer());
-			else tree.checkModelElement(project.getModel());
-			tree.addObject(element);			
-		} else {
-			if(element instanceof Generalization){
-				tree.checkModelElement(element);
-				tree.removeCurrentNode();
-				tree.checkModelElement(element.eContainer());
-				tree.addObject(element);
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+				UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
+				// add to the parser
+				ProjectBrowser.getParserFor(project).addElement(element);		
+				// add to the tree
+				ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
+				boolean found = tree.checkModelElement(element);
+				if(!found) {
+					if(element.eContainer()!=null) tree.checkModelElement(element.eContainer());
+					else tree.checkModelElement(project.getModel());
+					tree.addObject(element);			
+				} else {
+					if(element instanceof Generalization){
+						tree.checkModelElement(element);
+						tree.removeCurrentNode();
+						tree.checkModelElement(element.eContainer());
+						tree.addObject(element);
+					}
+				}
+				tree.updateUI();
+				//add to ocl completion		
+				ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(element);		
 			}
-		}
-		tree.updateUI();
-		//add to ocl completion		
-		ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(element);
+		});		
 	}
 
 	/** Invert end points of an association. This method switch the current properties of an association. THe source becomes the target and vice-versa. */
@@ -869,57 +874,65 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Update the application accordingly to the refontouml instance created
 	 * @param element: modified element on the refontouml root instance
 	 */
-	public void updateOLEDFromModification(RefOntoUML.Element element, boolean redesign)
+	public void updateOLEDFromModification(final RefOntoUML.Element element, final boolean redesign)
 	{
 		updateOLEDFromInclusion(element);
 		
-		// update the diagrams
-		if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType)
-		{
-			refreshDiagramElement((Classifier)element);			
-		}
-		if (element instanceof RefOntoUML.Association)
-		{
-			if (redesign) remakeDiagramElement((RefOntoUML.Element)element);
-			else refreshDiagramElement((RefOntoUML.Element)element);
-		}
-		if (element instanceof RefOntoUML.Property)
-		{
-			Association assoc= ((RefOntoUML.Property)element).getAssociation();								
-			if (assoc!=null){
-				if(redesign) remakeDiagramElement((RefOntoUML.Element)assoc);
-				else refreshDiagramElement((RefOntoUML.Element)assoc);
-			}else{
-				refreshDiagramElement((RefOntoUML.Element)(element).eContainer());
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+				// update the diagrams
+				if (element instanceof RefOntoUML.Class || element instanceof RefOntoUML.DataType)
+				{
+					refreshDiagramElement((Classifier)element);			
+				}
+				if (element instanceof RefOntoUML.Association)
+				{
+					if (redesign) remakeDiagramElement((RefOntoUML.Element)element);
+					else refreshDiagramElement((RefOntoUML.Element)element);
+				}
+				if (element instanceof RefOntoUML.Property)
+				{
+					Association assoc= ((RefOntoUML.Property)element).getAssociation();								
+					if (assoc!=null){
+						if(redesign) remakeDiagramElement((RefOntoUML.Element)assoc);
+						else refreshDiagramElement((RefOntoUML.Element)assoc);
+					}else{
+						refreshDiagramElement((RefOntoUML.Element)(element).eContainer());
+					}
+				}		
+				if (element instanceof RefOntoUML.Generalization)
+				{
+					if (redesign) remakeDiagramElement((RefOntoUML.Element)element); 
+					else refreshDiagramElement((RefOntoUML.Element)element);
+				}
+				if(element instanceof RefOntoUML.GeneralizationSet)
+				{
+					for(Generalization gen: ((RefOntoUML.GeneralizationSet) element).getGeneralization()) updateOLEDFromModification(gen,false);
+				}
 			}
-		}		
-		if (element instanceof RefOntoUML.Generalization)
-		{
-			if (redesign) remakeDiagramElement((RefOntoUML.Element)element); 
-			else refreshDiagramElement((RefOntoUML.Element)element);
-		}
-		if(element instanceof RefOntoUML.GeneralizationSet)
-		{
-			for(Generalization gen: ((RefOntoUML.GeneralizationSet) element).getGeneralization()) updateOLEDFromModification(gen,false);
-		}		
+		});
 	}
 	
 	/**
 	 * Update the application accordingly to the refontouml instance created
 	 * @param element: deleted element on the refontouml root instance
 	 */
-	public void updateOLEDFromDeletion(RefOntoUML.Element deletedElement)
+	public void updateOLEDFromDeletion(final RefOntoUML.Element deletedElement)
 	{		
-		UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
-		// delete from the parser
-		ProjectBrowser.getParserFor(project).removeElement(deletedElement);
-		// delete from ocl completion
-		ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(deletedElement);			
-		// delete from the tree
-		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
-		browser.getTree().checkModelElement(deletedElement);
-		browser.getTree().removeCurrentNode();
-		browser.getTree().updateUI();
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+				UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
+				// delete from the parser
+				ProjectBrowser.getParserFor(project).removeElement(deletedElement);
+				// delete from ocl completion
+				ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(deletedElement);			
+				// delete from the tree
+				ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);		
+				browser.getTree().remove(deletedElement);
+			}
+		});
 	}
 
 	/**
@@ -1580,41 +1593,41 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				updateOLEDFromInclusion((RefOntoUML.Element)obj);
 			}
 		}				
-		for(Object obj: fix.getModified())
-		{
-			if (obj instanceof RefOntoUML.Property)
-			{
-				Association assoc= ((RefOntoUML.Property)obj).getAssociation();								
-				if (assoc!=null) remakeDiagramElement((RefOntoUML.Element)assoc);
-				else refreshDiagramElement((RefOntoUML.Element)((RefOntoUML.Element)obj).eContainer());
-			}							
-			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)			
-			{
-				refreshDiagramElement((Classifier)obj);
-			}
-			if (obj instanceof Generalization){
-				remakeDiagramElement((Generalization)obj);
-			}
-		}
-		for(Object obj: fix.getDeleted()) 
-		{
-			if (obj instanceof RefOntoUML.GeneralizationSet)
-				ProjectBrowser.frame.getDiagramManager().deleteUnsafely((RefOntoUML.Element)obj);			
-		}
-		for(Object obj: fix.getDeleted()) 
-		{
-			if (obj instanceof RefOntoUML.Relationship)
-				ProjectBrowser.frame.getDiagramManager().deleteUnsafely((RefOntoUML.Element)obj);			
-		}
-		for(Object obj: fix.getDeleted()) 
-		{
-			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
-				ProjectBrowser.frame.getDiagramManager().deleteUnsafely((RefOntoUML.Element)obj);			
-		}
-		for(String str: fix.getAddedRules())
-		{
-			getFrame().getInfoManager().addConstraints(str+"\n");
-		}
+//		for(Object obj: fix.getModified())
+//		{
+//			if (obj instanceof RefOntoUML.Property)
+//			{
+//				Association assoc= ((RefOntoUML.Property)obj).getAssociation();								
+//				if (assoc!=null) remakeDiagramElement((RefOntoUML.Element)assoc);
+//				else refreshDiagramElement((RefOntoUML.Element)((RefOntoUML.Element)obj).eContainer());
+//			}							
+//			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)			
+//			{
+//				refreshDiagramElement((Classifier)obj);
+//			}
+//			if (obj instanceof Generalization){
+//				remakeDiagramElement((Generalization)obj);
+//			}
+//		}
+//		for(Object obj: fix.getDeleted()) 
+//		{
+//			if (obj instanceof RefOntoUML.GeneralizationSet)
+//				ProjectBrowser.frame.getDiagramManager().deleteUnsafely((RefOntoUML.Element)obj);			
+//		}
+//		for(Object obj: fix.getDeleted()) 
+//		{
+//			if (obj instanceof RefOntoUML.Relationship)
+//				ProjectBrowser.frame.getDiagramManager().deleteUnsafely((RefOntoUML.Element)obj);			
+//		}
+//		for(Object obj: fix.getDeleted()) 
+//		{
+//			if (obj instanceof RefOntoUML.Class || obj instanceof RefOntoUML.DataType)
+//				ProjectBrowser.frame.getDiagramManager().deleteUnsafely((RefOntoUML.Element)obj);			
+//		}
+//		for(String str: fix.getAddedRules())
+//		{
+//			getFrame().getInfoManager().addConstraints(str+"\n");
+//		}
 		return ;
 	}
 	
