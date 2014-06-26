@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.oled.dialog.properties;
 
 import java.awt.Color;
-import java.text.Normalizer;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -15,12 +14,11 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import org.eclipse.emf.ecore.EObject;
-
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
@@ -46,14 +44,6 @@ public class RelatedElementsPanel extends JPanel {
 	private JLabel lblTop;		
 	private JLabel lblBottom; 
 	
-	public static String getStereotype(EObject element)
-	{
-		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
-	    return type;
-	}
 	
 	/** Table Model for associations*/
 	class AssociationTableModel extends AbstractTableModel 
@@ -68,23 +58,27 @@ public class RelatedElementsPanel extends JPanel {
 	    	this.assocList = assocList;
 	    }
 	    
+	    @Override
 	    public int getColumnCount() {
 	        return columnNames.length;
 	    }
 
+	    @Override
 	    public int getRowCount() {
 	        return assocList.size();
 	    }
-
+	    
+	    @Override
 	    public String getColumnName(int col) {
 	        return columnNames[col];
 	    }
 
+	    @Override
 	    public Object getValueAt(int row, int col) 
 	    {
 	    	Association assoc = (Association)assocList.get(row);
 	    	if (col==1){
-	    		return "<"+getStereotype(assoc)+">";
+	    		return OntoUMLNameHelper.getTypeName(assoc, true);
 	    	}
 	    	else if(col==2){
 	    		return assoc.getName();
@@ -103,11 +97,11 @@ public class RelatedElementsPanel extends JPanel {
 	    	}
 	    	else return new String("<empty entry>");
 	    }
-
-	    @SuppressWarnings({ "unchecked", "rawtypes" })
-		public Class getColumnClass(int c) 
+	    
+	    @Override
+		public Class<?> getColumnClass(int column) 
 	    {
-	        return getValueAt(0, c).getClass();
+	       return String.class;
 	    }
 	}
 	   
@@ -123,24 +117,28 @@ public class RelatedElementsPanel extends JPanel {
 	    {
 	    	this.genList = genList;
 	    }
-	    
+
+	    @Override
 	    public int getColumnCount() {
 	        return columnNames.length;
 	    }
 
+	    @Override
 	    public int getRowCount() {
 	        return genList.size();
 	    }
 
+	    @Override
 	    public String getColumnName(int col) {
 	        return columnNames[col];
 	    }
 
+	    @Override
 	    public Object getValueAt(int row, int col) 
 	    {
 	    	Generalization gen = (Generalization)genList.get(row);
 	    	if (col==1){
-	    		return "<"+getStereotype(gen)+">";
+	    		return OntoUMLNameHelper.getTypeName(gen, true);
 	    	}	    	
 	    	else if(col==0){
 	    		if (gen.getGeneral().equals(element) || gen.getSpecific().equals(element))
@@ -157,10 +155,10 @@ public class RelatedElementsPanel extends JPanel {
 	    	else return new String("<empty entry>");
 	    }
 
-	    @SuppressWarnings({ "unchecked", "rawtypes" })
-		public Class getColumnClass(int c) 
+	    @Override
+		public Class<?> getColumnClass(int c) 
 	    {
-	        return getValueAt(0, c).getClass();
+	        return String.class;
 	    }
 	}
 	
