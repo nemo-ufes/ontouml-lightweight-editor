@@ -1,14 +1,16 @@
 /**
- * Copyright 2011 NEMO
+ * Copyright(C) 2011-2014 by John Guerson, Tiago Prince, Antognoni Albuquerque
  *
- * This file is part of OLED.
+ * This file is part of OLED (OntoUML Lightweight BaseEditor).
+ * OLED is based on TinyUML and so is distributed under the same
+ * license terms.
  *
  * OLED is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * TinyUML is distributed in the hope that it will be useful,
+ * OLED is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -39,7 +41,6 @@ import br.ufes.inf.nemo.oled.util.OLEDSettings;
  * This class writes the current model and diagram data to an XML file.
  * 
  * @author Antognoni Albuquerque
- * @version 1.0
  */
 public final class ProjectWriter extends FileWriter {
 

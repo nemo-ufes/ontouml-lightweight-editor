@@ -1,20 +1,22 @@
 /**
- * Copyright 2007 Wei-ju Wu
+ * Copyright(C) 2011-2014 by John Guerson, Tiago Prince, Antognoni Albuquerque
  *
- * This file is part of TinyUML.
+ * This file is part of OLED (OntoUML Lightweight BaseEditor).
+ * OLED is based on TinyUML and so is distributed under the same
+ * license terms.
  *
- * TinyUML is free software; you can redistribute it and/or modify
+ * OLED is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * TinyUML is distributed in the hope that it will be useful,
+ * OLED is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with TinyUML; if not, write to the Free Software
+ * along with OLED; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 package br.ufes.inf.nemo.oled.ui.diagram.commands;
@@ -34,12 +36,10 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
-
 /**
  * This class implements a resizing command.
  *
  * @author Wei-ju Wu, Antognoni Albuquerque, John Guerson
- * @version 1.1
  */
 public class ResizeElementCommand extends BaseDiagramCommand {
 

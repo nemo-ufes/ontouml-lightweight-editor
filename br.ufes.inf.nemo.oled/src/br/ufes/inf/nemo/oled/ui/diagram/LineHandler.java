@@ -1,9 +1,9 @@
 /**
- * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
+ * Copyright(C) 2011-2014 by John Guerson, Tiago Prince, Antognoni Albuquerque
  *
  * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
- * licence terms.
+ * license terms.
  *
  * OLED is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
  * along with OLED; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package br.ufes.inf.nemo.oled.ui.diagram;
 
 import java.awt.geom.Point2D;
@@ -45,8 +44,7 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 /**
  * This class is a handler for line shaped allElements.
  *
- * @author Wei-ju Wu, Antognoni Albuquerque
- * @version 1.1
+ * @author Wei-ju Wu, Antognoni Albuquerque, John Guerson
  */
 public class LineHandler implements EditorMode {
 

@@ -1,9 +1,9 @@
 /**
- * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
+ * Copyright(C) 2011-2014 by John Guerson, Tiago Prince, Antognoni Albuquerque
  *
  * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
- * licence terms.
+ * license terms.
  *
  * OLED is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ package br.ufes.inf.nemo.oled.model;
 /**
  * Possible roles an element can play in an relation.
  * @author Antognoni Albuquerque
- * @version 1.0
  */
 public enum RelationEndType {
   SOURCE, TARGET, UNSPECIFIED

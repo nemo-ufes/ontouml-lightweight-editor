@@ -1,9 +1,9 @@
 /**
- * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
+ * Copyright(C) 2011-2014 by John Guerson, Tiago Prince, Antognoni Albuquerque
  *
  * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
- * licence terms.
+ * license terms.
  *
  * OLED is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ package br.ufes.inf.nemo.oled.model;
 
 /**
  * Possible relation types
- * @author Tony
+ * @author Antognoni Albuquerque
  */
 public enum RelationType {
   GENERALIZATION, MATERIAL, FORMAL, CHARACTERIZATION, MEDIATION, DERIVATION, COMPONENTOF, MEMBEROF, SUBCOLLECTIONOF, SUBQUANTITYOF, ASSOCIATION, NOTE_CONNECTOR
