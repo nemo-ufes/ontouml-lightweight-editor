@@ -96,7 +96,7 @@ public class ChangeNodeCommand extends BaseDiagramCommand {
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
-		notification.notifyChange(elements, ChangeType.ELEMENTS_CHANGED, NotificationType.UNDO);
+		notification.notifyChange(elements, ChangeType.ELEMENTS_MODIFIED, NotificationType.UNDO);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class ChangeNodeCommand extends BaseDiagramCommand {
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
-		notification.notifyChange(elements, ChangeType.ELEMENTS_CHANGED, NotificationType.REDO);
+		notification.notifyChange(elements, ChangeType.ELEMENTS_MODIFIED, NotificationType.REDO);
 	}
 
 	/**
@@ -148,6 +148,6 @@ public class ChangeNodeCommand extends BaseDiagramCommand {
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
 		elements.add(element);
-		notification.notifyChange(elements, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);		
+		notification.notifyChange(elements, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);		
 	}
 }

@@ -431,7 +431,7 @@ public class TreePopupMenu extends JPopupMenu {
 				{
 					OntoUMLElement ontoElem = (OntoUMLElement) ((DefaultMutableTreeNode)tree.getSelectionPath().getLastPathComponent()).getUserObject();
 					RefOntoUML.Element elemForDeletion = (RefOntoUML.Element)ontoElem.getElement();
-					frame.getDiagramManager().delete(elemForDeletion);    					    					
+					frame.getDiagramManager().deleteFromOLED(elemForDeletion,true);    					    					
     				tree.setSelectionPath(new TreePath(tree.getModelRootNode().getPath()));    					    					
 				}
 				else if (TreePopupMenu.this.element instanceof StructureDiagram)

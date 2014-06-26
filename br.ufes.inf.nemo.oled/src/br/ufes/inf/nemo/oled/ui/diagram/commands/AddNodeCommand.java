@@ -79,15 +79,13 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		absy = y;
 	}
 
-	/**
-	 * {@inheritDoc} - UNDO
-	 */
 	@Override
 	public void undo() 
 	{		
 		super.undo();
 				
 		if(element!=null){
+//			System.out.println("Undoing = "+element);
 			project.getEditingDomain().getCommandStack().undo();
 			ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(element);
 		}
@@ -95,17 +93,16 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		if(addToDiagram && diagramElement != null){
 			parent.removeChild(diagramElement);			
 			ModelHelper.removeMapping(diagramElement);
-			
+		}		
+		
+		if(notification!=null){
 			List<DiagramElement> elements = new ArrayList<DiagramElement>();
 			elements.add(diagramElement);
 			notification.notifyChange(elements, ChangeType.ELEMENTS_ADDED, NotificationType.UNDO);
-		}		
+		}
 		
 	}
 
-	/**
-	 * {@inheritDoc} - REDO
-	 */
 	@Override
 	public void redo() 
 	{	
@@ -114,19 +111,18 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		run();
 	}
 
-	/**
-	 * {@inheritDoc} - RUN
-	 */
 	public void run() 
 	{				
 		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-		
-		addToModel(element);		
-		ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);
+				
+		if(element!=null){
+			addToModel(element);
+			ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);
+		}
 		
 		if(addToDiagram && diagramElement !=null){						
 			addToDiagram(diagramElement,redo);
-			if (ModelHelper.getDiagramElementByEditor(element,(DiagramEditor)notification)==null) ModelHelper.addMapping(element, ((ClassElement)diagramElement));
+			ModelHelper.addMapping(element, ((ClassElement)diagramElement));
 			list.add(diagramElement);
 		}		
 		
@@ -139,11 +135,6 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		}
 	}	
 	
-	/**
-	 * Add a element to the diagram (not to the model instance behind the scenes). In fact, the element instance already exists inside the diagram element.
-	 * @param element
-	 * @param redo
-	 */
 	private void addToDiagram (DiagramElement element, boolean redo)
 	{
 		//Adds the element to the diagram
@@ -168,15 +159,9 @@ public class AddNodeCommand extends BaseDiagramCommand {
 			}
 		}		
 	}
-	
-	/**
-	 * Add a element to the model instance behind the scenes and updates the application accordingly.
-	 * It only adds the element if it does not exists in the container.
-	 * 
-	 * @param elem
-	 */
 	private void addToModel(RefOntoUML.Element element)
 	{
+//		System.out.println("Adding = "+element);
 		if(eContainer==null){
 			
 			if (!(project.getModel().getPackagedElement().contains(element)))

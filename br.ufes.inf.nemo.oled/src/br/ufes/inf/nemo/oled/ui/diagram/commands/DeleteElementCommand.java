@@ -296,7 +296,9 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 
 		// generalization sets (third level of dependence)
 		for(Element elem: elemList) {			
-			if (elem instanceof RefOntoUML.GeneralizationSet) undoGeneralizationSet((GeneralizationSet)elem);			
+			if (elem instanceof RefOntoUML.GeneralizationSet) {			
+				undoGeneralizationSet((GeneralizationSet)elem);			
+			}
 		}
 		
 		//derivations, comments and constraints (third level of dependence)
@@ -389,15 +391,15 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	}
 	
 	private void undo (RefOntoUML.Element elem)
-	{
-		//System.out.println("Undoing = "+elem);
+	{		
+//		System.out.println("Undoing = "+elem);
 		project.getEditingDomain().getCommandStack().undo();
 		ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(elem);
 	}
 	
 	private void delete (RefOntoUML.Element elem)
 	{			
-		//System.out.println("Deleting = "+elem);
+//		System.out.println("Deleting = "+elem);
 		DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), elem);
 		project.getEditingDomain().getCommandStack().execute(cmd);
 		ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(elem);
