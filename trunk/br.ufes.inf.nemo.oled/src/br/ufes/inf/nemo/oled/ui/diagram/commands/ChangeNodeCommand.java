@@ -1,9 +1,9 @@
 /**
- * Copyright 2011 NEMO (http://nemo.inf.ufes.br/en)
+ * Copyright(C) 2011-2014 by John Guerson, Tiago Prince, Antognoni Albuquerque
  *
  * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
- * licence terms.
+ * license terms.
  *
  * OLED is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
  * along with OLED; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package br.ufes.inf.nemo.oled.ui.diagram.commands;
 
 import java.util.ArrayList;
@@ -35,14 +34,12 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
-
 /**
  * This class implements a command to add nodes. It is introduced, because
  * AddElementCommand can not handle setting positions with nesting very
  * well.
  *
- * @author Wei-ju Wu, Antognoni Albuquerque
- * @version 1.1
+ * @author Wei-ju Wu, Antognoni Albuquerque, John Guerson
  */
 public class ChangeNodeCommand extends BaseDiagramCommand {
 
