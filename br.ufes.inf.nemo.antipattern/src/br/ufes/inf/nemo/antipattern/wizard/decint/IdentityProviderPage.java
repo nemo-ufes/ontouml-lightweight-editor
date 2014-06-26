@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.List;
 
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class IdentityProviderPage  extends DecIntPage {
 	
@@ -36,11 +37,28 @@ public class IdentityProviderPage  extends DecIntPage {
 		questionText.setText(	"<"+subtypeName+"> specialize types which follow different identity principles. " +
 							"That generates a logical contradiction, so <"+subtypeName+"> cannot have any instances. " +
 							"The list below shows the current identity providers, please choose only one:");
-		questionText.setBounds(10, 10, 554, 49);
 		questionText.setJustify(true);
 		
-		identityProviderList = new List(container, SWT.BORDER);
-		identityProviderList.setBounds(10, 65, 554, 206);
+		identityProviderList = new List(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, identityProviderList, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, questionText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(identityProviderList, GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 		identityProviderList.addSelectionListener(new SelectionAdapter() {
 			
 			@Override

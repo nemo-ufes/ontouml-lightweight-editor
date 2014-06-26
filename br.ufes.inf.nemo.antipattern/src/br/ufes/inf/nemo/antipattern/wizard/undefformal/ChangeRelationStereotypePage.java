@@ -17,6 +17,8 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class ChangeRelationStereotypePage extends UndefFormalPage{
 	
@@ -52,11 +54,9 @@ public class ChangeRelationStereotypePage extends UndefFormalPage{
 		questionText.setJustify(true);
 		questionText.setBackground(questionText.getParent().getBackground());
 		questionText.setText("The question will go here!");
-		questionText.setBounds(10, 10, 586, 238);
 		questionText.setAlwaysShowScrollBars(false);
 		
 		Composite composite = new Composite(container, SWT.NONE);
-		composite.setBounds(10, 254, 586, 144);
 		
 		SelectionAdapter listener = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
@@ -82,37 +82,98 @@ public class ChangeRelationStereotypePage extends UndefFormalPage{
 	    }};
 					    
 		btnYes = new Button(composite, SWT.RADIO);
-		btnYes.setBounds(53, 10, 503, 16);
 		btnYes.setText("Yes");
 		btnYes.addSelectionListener(listener);
 		
 		btnNo = new Button(composite, SWT.RADIO);
-		btnNo.setBounds(0, 10, 47, 16);
 		btnNo.setText("No");
 		btnNo.addSelectionListener(listener);
 		
 		optionComposite = new Composite(composite, SWT.NONE);
-		optionComposite.setBounds(10, 32, 566, 102);
 		optionComposite.setVisible(false);
 		
 		btn1SourceWhole = new Button(optionComposite, SWT.RADIO);
-		btn1SourceWhole.setBounds(10, 10, 546, 16);
 		btn1SourceWhole.setVisible(false);
 		btn1SourceWhole.addSelectionListener(listener);
 		
 		btn1TargetWhole = new Button(optionComposite, SWT.RADIO);
-		btn1TargetWhole.setBounds(10, 32, 546, 16);
 		btn1TargetWhole.setVisible(false);
 		btn1TargetWhole.addSelectionListener(listener);
 		
 		btn2SourceWhole = new Button(optionComposite, SWT.RADIO);
-		btn2SourceWhole.setBounds(10, 54, 546, 16);
 		btn2SourceWhole.setVisible(false);
 		btn2SourceWhole.addSelectionListener(listener);
 		
 		btn2TargetWhole = new Button(optionComposite, SWT.RADIO);
-		btn2TargetWhole.setBounds(10, 76, 546, 16);
 		btn2TargetWhole.setVisible(false);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(questionText, GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
+						.add(composite, GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE))
+					.add(14))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(composite, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+					.add(12))
+		);
+		GroupLayout gl_composite = new GroupLayout(composite);
+		gl_composite.setHorizontalGroup(
+			gl_composite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_composite.createSequentialGroup()
+					.add(btnNo, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnYes, GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_composite.createSequentialGroup()
+					.add(10)
+					.add(optionComposite, GroupLayout.PREFERRED_SIZE, 566, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_composite.setVerticalGroup(
+			gl_composite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_composite.createSequentialGroup()
+					.add(10)
+					.add(gl_composite.createParallelGroup(GroupLayout.LEADING)
+						.add(btnNo)
+						.add(btnYes))
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(optionComposite, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE))
+		);
+		GroupLayout gl_optionComposite = new GroupLayout(optionComposite);
+		gl_optionComposite.setHorizontalGroup(
+			gl_optionComposite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_optionComposite.createSequentialGroup()
+					.add(10)
+					.add(gl_optionComposite.createParallelGroup(GroupLayout.LEADING)
+						.add(btn1SourceWhole, GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+						.add(btn1TargetWhole, GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+						.add(btn2SourceWhole, GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+						.add(btn2TargetWhole, GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_optionComposite.setVerticalGroup(
+			gl_optionComposite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_optionComposite.createSequentialGroup()
+					.add(10)
+					.add(btn1SourceWhole)
+					.add(6)
+					.add(btn1TargetWhole)
+					.add(6)
+					.add(btn2SourceWhole)
+					.add(6)
+					.add(btn2TargetWhole))
+		);
+		optionComposite.setLayout(gl_optionComposite);
+		composite.setLayout(gl_composite);
+		container.setLayout(gl_container);
 		btn2TargetWhole.addSelectionListener(listener);
 		
 		setQuestionUI();

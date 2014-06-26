@@ -6,6 +6,9 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class GeneralizationSetPage  extends DecIntPage {
 	
@@ -21,22 +24,38 @@ public class GeneralizationSetPage  extends DecIntPage {
 	 * @param parent
 	 */
 	public void createControl(Composite parent) {
-		String subtypeName = decint.getSubtype().getName();
 		
 		Composite container = new Composite(parent, SWT.NONE);
 		setControl(container);			
 		
 		StyledText questionText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
 		questionText.setBackground(questionText.getParent().getBackground());
-		questionText.setText("<"+subtypeName+"> specializes two or more types that are made disjoint by a generalization set, " +
+		questionText.setText(OntoUMLNameHelper.getTypeAndName(decint.getSubtype(), true, true)+" specializes two or more types that are made disjoint by a generalization set, " +
 							"that generates a logical contradiction and implies that it has an empty extension (no instances). " +
 							"\n\nTo fix that you must either remove the disjoint generalizations sets or set their isDisjoint " +
 							"meta-attribute to false.");
-		questionText.setBounds(10, 10, 585, 77);
 		questionText.setJustify(true);
 		
 		gsComposite = new GeneralizationSetComposite(container, SWT.BORDER, decint, this);
-		gsComposite.setBounds(10, 93, 585, 275);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, gsComposite, GroupLayout.DEFAULT_SIZE, 585, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, questionText, GroupLayout.DEFAULT_SIZE, 585, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(gsComposite, GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 		setPageComplete(false);
 
 	}

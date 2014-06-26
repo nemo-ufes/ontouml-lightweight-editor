@@ -14,6 +14,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class GSRigFirstPage extends GSRigPage {
 
@@ -59,28 +61,58 @@ public class GSRigFirstPage extends GSRigPage {
 							"That is a strong suggestion that there is more than one specialization criterion in the same generalization set. Is that the case?");
 		styledText.setJustify(true);
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		styledText.setBounds(10, 10, 644, 208);
 		
 		btnSameCriterion = new Button(container, SWT.RADIO);
-		btnSameCriterion.setBounds(10, 224, 644, 16);
 		btnSameCriterion.setText("No, all subtypes follow the same criterion");
 		btnSameCriterion.addSelectionListener(canGoToNextPageAdapter);
 		
 		btnMultipleCriteria = new Button(container, SWT.RADIO);
-		btnMultipleCriteria.setBounds(10, 268, 644, 16);
 		btnMultipleCriteria.setText("Yes, there are multiple criteria");
 		btnMultipleCriteria.addSelectionListener(canGoToNextPageAdapter);
 		
 		btnNoCommonCriterion = new Button(container, SWT.RADIO);
-		btnNoCommonCriterion.setBounds(10, 246, 644, 16);
 		btnNoCommonCriterion.setText("No, but in fact there is no common criterion");
 		btnNoCommonCriterion.addSelectionListener(canGoToNextPageAdapter);
 		
 		lblNote = new Label(container, SWT.NONE);
 		lblNote.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		lblNote.setAlignment(SWT.RIGHT);
-		lblNote.setBounds(100, 332, 554, 15);
 		lblNote.setText("(NOTE that Specialization Criteria and Identity Principle are two completely different definitions)");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(btnNoCommonCriterion, GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
+						.add(btnSameCriterion, GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
+						.add(btnMultipleCriteria, GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE))
+					.addContainerGap())
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.add(100)
+					.add(lblNote, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+					.add(11))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
+					.add(11))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnSameCriterion)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnNoCommonCriterion)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnMultipleCriteria)
+					.add(44)
+					.add(lblNote)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 		
 		setPageComplete(false);
 	}

@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.List;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class DepPhaseSecondPage  extends DepPhasePage {
 
@@ -41,7 +43,6 @@ public class DepPhaseSecondPage  extends DepPhasePage {
 		setControl(container);	
 		
 		StyledText textQuestion = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
-		textQuestion.setBounds(10, 10, 554, 75);
 		textQuestion.setText(	"Now, we should separate the relational dependencies." +
 								"\r\n\r\n" +
 								"Are all relational dependencies of <"+depPhase.getPhase().getName()+"> really mandatory, " +
@@ -51,14 +52,11 @@ public class DepPhaseSecondPage  extends DepPhasePage {
 		textQuestion.setJustify(true);
 		
 		listMandatory = new List(container, SWT.BORDER);
-		listMandatory.setBounds(10, 114, 238, 157);		
 		listOptional = new List(container, SWT.BORDER);
-		listOptional.setBounds(326, 114, 238, 157);
 		
 		getDepPhaseWizard().addAllDependencies(listMandatory, listOptional);
 		
 		btnFromMandatoryToOptional = new Button(container, SWT.NONE);
-		btnFromMandatoryToOptional.setBounds(269, 153, 37, 25);
 		btnFromMandatoryToOptional.setText("->");
 		btnFromMandatoryToOptional.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -80,7 +78,6 @@ public class DepPhaseSecondPage  extends DepPhasePage {
 		
 		btnFromOptionalToMandatory = new Button(container, SWT.NONE);
 		btnFromOptionalToMandatory.setText("<-");
-		btnFromOptionalToMandatory.setBounds(269, 184, 37, 25);
 		btnFromOptionalToMandatory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -99,12 +96,55 @@ public class DepPhaseSecondPage  extends DepPhasePage {
 		});
 		
 		Label lblMandatory = new Label(container, SWT.NONE);
-		lblMandatory.setBounds(10, 93, 238, 15);
 		lblMandatory.setText("Mandatory");
 		
 		Label lblOptional = new Label(container, SWT.NONE);
 		lblOptional.setText("Optional");
-		lblOptional.setBounds(326, 93, 238, 15);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(textQuestion, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(gl_container.createSequentialGroup()
+									.add(listMandatory, GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+									.add(21)
+									.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+										.add(btnFromMandatoryToOptional, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+										.add(btnFromOptionalToMandatory, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+									.add(20))
+								.add(gl_container.createSequentialGroup()
+									.add(lblMandatory, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
+									.add(78)))
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(lblOptional, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
+								.add(GroupLayout.TRAILING, listOptional, GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(textQuestion, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+					.add(8)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(lblMandatory)
+						.add(lblOptional))
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(listMandatory, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+						.add(gl_container.createSequentialGroup()
+							.add(39)
+							.add(btnFromMandatoryToOptional)
+							.add(6)
+							.add(btnFromOptionalToMandatory))
+						.add(listOptional, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE))
+					.add(10))
+		);
+		container.setLayout(gl_container);
 	}
 	
 	public ArrayList<Property> getMandatoryDependencies(){

@@ -26,6 +26,8 @@ import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 import br.ufes.inf.nemo.common.ontoumlverificator.MultiplicityValidator;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class changeToMaterialPage extends UndefFormalPage{
 	
@@ -68,10 +70,8 @@ public class changeToMaterialPage extends UndefFormalPage{
 		Composite container = new Composite(parent, SWT.NULL);
 		
 		setControl(container);
-		container.setLayout(null);
 		
 		questionText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.NO_BACKGROUND);
-		questionText.setBounds(10, 10, 530, 49);
 		questionText.setBackground(questionText.getParent().getBackground());
 		questionText.setJustify(true);
 	
@@ -79,91 +79,210 @@ public class changeToMaterialPage extends UndefFormalPage{
 							"please provide the following additional information to precisely characterize it as a material relation:");
 		
 		Label lblRelator = new Label(container, SWT.NONE);
-		lblRelator.setBounds(10, 74, 127, 21);
 		lblRelator.setText("Relator (Truth-Maker): ");
 		
 		Label lblNoticeThatYou = new Label(container, SWT.WRAP | SWT.RIGHT);
-		lblNoticeThatYou.setBounds(48, 332, 492, 35);
 		lblNoticeThatYou.setText("Notice that you can choose to create a new relator type or use an existing one. The same thing goes for the mediations.");
 		
 		relatorCombo = new Combo(container, SWT.NONE);
-		relatorCombo.setBounds(143, 74, 397, 23);
 		
 		Group grpTargetEnd = new Group(container, SWT.NONE);
-		grpTargetEnd.setBounds(278, 177, 262, 149);
 		
 		
 
 		grpTargetEnd.setText("Target End");
-		grpTargetEnd.setLayout(null);
 		
 		Label lblTarget = new Label(grpTargetEnd, SWT.NONE);
-		lblTarget.setBounds(16, 31, 37, 15);
 		lblTarget.setText("Target:");
 		
 		targetText = new Text(grpTargetEnd, SWT.BORDER | SWT.READ_ONLY);
-		targetText.setBounds(116, 28, 130, 21);
 		
 		Label label_5 = new Label(grpTargetEnd, SWT.NONE);
-		label_5.setBounds(16, 58, 57, 15);
 		label_5.setText("Mediation:");
 		
 		targetMediationCombo = new Combo(grpTargetEnd, SWT.NONE);
-		targetMediationCombo.setBounds(116, 54, 130, 23);
 		
 		Label label_6 = new Label(grpTargetEnd, SWT.NONE);
-		label_6.setBounds(16, 86, 95, 15);
 		label_6.setText("Multi. (Mediated):");
 		
 		targetMediatedMultCombo = new Combo(grpTargetEnd, SWT.NONE);
-		targetMediatedMultCombo.setBounds(116, 82, 130, 23);
 		
 		Label label_7 = new Label(grpTargetEnd, SWT.NONE);
-		label_7.setBounds(16, 114, 82, 15);
 		label_7.setText("Multi. (Relator):");
 		
 		targetRelatorMultCombo = new Combo(grpTargetEnd, SWT.NONE);
-		targetRelatorMultCombo.setBounds(116, 110, 130, 23);
 		
 		Group grpSourceEnd = new Group(container, SWT.NONE);
-		grpSourceEnd.setBounds(10, 177, 262, 149);
 		grpSourceEnd.setText("Source End");
-		grpSourceEnd.setLayout(null);
 		
 		Label label = new Label(grpSourceEnd, SWT.NONE);
-		label.setBounds(16, 31, 39, 15);
 		label.setText("Source:");
 		
 		sourceText = new Text(grpSourceEnd, SWT.BORDER | SWT.READ_ONLY);
-		sourceText.setBounds(116, 28, 130, 21);
 		
 		Label label_1 = new Label(grpSourceEnd, SWT.NONE);
-		label_1.setBounds(16, 58, 57, 15);
 		label_1.setText("Mediation:");
 		
 		sourceMediationCombo = new Combo(grpSourceEnd, SWT.NONE);
-		sourceMediationCombo.setBounds(116, 54, 130, 23);
 		
 		Label label_2 = new Label(grpSourceEnd, SWT.NONE);
-		label_2.setBounds(16, 86, 95, 15);
 		label_2.setText("Multi. (Mediated):");
 		
 		sourceMediatedMultCombo = new Combo(grpSourceEnd, SWT.NONE);
-		sourceMediatedMultCombo.setBounds(116, 82, 130, 23);
 		
 		Label label_3 = new Label(grpSourceEnd, SWT.NONE);
-		label_3.setBounds(16, 114, 82, 15);
 		label_3.setText("Multi. (Relator):");
 		
 		sourceRelatorMultCombo = new Combo(grpSourceEnd, SWT.NONE);
-		sourceRelatorMultCombo.setBounds(116, 110, 130, 23);
 		
 		Label lblTypesAlreadyMediated = new Label(container, SWT.WRAP);
-		lblTypesAlreadyMediated.setBounds(10, 113, 127, 58);
 		lblTypesAlreadyMediated.setText("Mediated by Relator:");
 		
 		mediatedList = new List(container, SWT.BORDER | SWT.V_SCROLL);
-		mediatedList.setBounds(143, 103, 397, 68);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblRelator, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(relatorCombo, GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblTypesAlreadyMediated, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(mediatedList, GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(grpSourceEnd, GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+					.add(6)
+					.add(grpTargetEnd, GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.add(48)
+					.add(lblNoticeThatYou, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+					.add(15)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(lblRelator, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+						.add(relatorCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(6)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(10)
+							.add(lblTypesAlreadyMediated, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE))
+						.add(mediatedList))
+					.add(6)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(grpSourceEnd, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
+						.add(grpTargetEnd, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE))
+					.add(6)
+					.add(lblNoticeThatYou, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+		);
+		GroupLayout gl_grpTargetEnd = new GroupLayout(grpTargetEnd);
+		gl_grpTargetEnd.setHorizontalGroup(
+			gl_grpTargetEnd.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_grpTargetEnd.createSequentialGroup()
+					.add(10)
+					.add(gl_grpTargetEnd.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_grpTargetEnd.createSequentialGroup()
+							.add(1)
+							.add(gl_grpTargetEnd.createParallelGroup(GroupLayout.TRAILING)
+								.add(GroupLayout.LEADING, gl_grpTargetEnd.createSequentialGroup()
+									.add(label_7, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(LayoutStyle.RELATED)
+									.add(targetRelatorMultCombo, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
+								.add(GroupLayout.LEADING, gl_grpTargetEnd.createSequentialGroup()
+									.add(label_6, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(LayoutStyle.RELATED)
+									.add(targetMediatedMultCombo, GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))))
+						.add(gl_grpTargetEnd.createSequentialGroup()
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(label_5, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(targetMediationCombo, GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))
+						.add(gl_grpTargetEnd.createSequentialGroup()
+							.add(lblTarget, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(targetText, GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)))
+					.add(10))
+		);
+		gl_grpTargetEnd.setVerticalGroup(
+			gl_grpTargetEnd.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_grpTargetEnd.createSequentialGroup()
+					.add(10)
+					.add(gl_grpTargetEnd.createParallelGroup(GroupLayout.BASELINE)
+						.add(lblTarget)
+						.add(targetText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(5)
+					.add(gl_grpTargetEnd.createParallelGroup(GroupLayout.TRAILING)
+						.add(label_5)
+						.add(targetMediationCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(5)
+					.add(gl_grpTargetEnd.createParallelGroup(GroupLayout.BASELINE)
+						.add(targetMediatedMultCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(label_6))
+					.add(5)
+					.add(gl_grpTargetEnd.createParallelGroup(GroupLayout.BASELINE)
+						.add(label_7)
+						.add(targetRelatorMultCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(25))
+		);
+		grpTargetEnd.setLayout(gl_grpTargetEnd);
+		GroupLayout gl_grpSourceEnd = new GroupLayout(grpSourceEnd);
+		gl_grpSourceEnd.setHorizontalGroup(
+			gl_grpSourceEnd.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_grpSourceEnd.createSequentialGroup()
+					.addContainerGap()
+					.add(gl_grpSourceEnd.createParallelGroup(GroupLayout.TRAILING)
+						.add(label, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+						.add(label_1, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+						.add(label_2, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+						.add(label_3, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(gl_grpSourceEnd.createParallelGroup(GroupLayout.LEADING)
+						.add(sourceText, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+						.add(sourceMediationCombo, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+						.add(sourceMediatedMultCombo, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+						.add(sourceRelatorMultCombo, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_grpSourceEnd.setVerticalGroup(
+			gl_grpSourceEnd.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_grpSourceEnd.createSequentialGroup()
+					.add(10)
+					.add(gl_grpSourceEnd.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_grpSourceEnd.createSequentialGroup()
+							.add(sourceText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.add(5)
+							.add(gl_grpSourceEnd.createParallelGroup(GroupLayout.BASELINE)
+								.add(sourceMediationCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.add(label_1))
+							.add(5)
+							.add(gl_grpSourceEnd.createParallelGroup(GroupLayout.BASELINE)
+								.add(sourceMediatedMultCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.add(label_2))
+							.add(5)
+							.add(gl_grpSourceEnd.createParallelGroup(GroupLayout.BASELINE)
+								.add(sourceRelatorMultCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.add(label_3)))
+						.add(label))
+					.addContainerGap(4, Short.MAX_VALUE))
+		);
+		grpSourceEnd.setLayout(gl_grpSourceEnd);
+		container.setLayout(gl_container);
 		
 		setData();
 		relatorCombo.addSelectionListener(relatorSelectionListener);

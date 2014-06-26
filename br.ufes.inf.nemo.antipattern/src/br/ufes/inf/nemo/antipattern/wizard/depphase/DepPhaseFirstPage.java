@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class DepPhaseFirstPage  extends DepPhasePage {
 
@@ -34,7 +35,6 @@ public class DepPhaseFirstPage  extends DepPhasePage {
 		setControl(container);
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
-		styledText.setBounds(10, 10, 554, 173);
 		styledText.setText(	"Phases and roles capture anti-rigid types, whose instances share the same identity principle. " +
 							"The main difference between them is that phases are instantiated when there is a change in an intrinsic property, such as a quality or a mode, " +
 							"whilst roles are instantiated when there is a change in a relational property, capture by mediations. " +
@@ -59,13 +59,33 @@ public class DepPhaseFirstPage  extends DepPhasePage {
 		};
 		
 		btnInstrinsic = new Button(container, SWT.RADIO);
-		btnInstrinsic.setBounds(10, 189, 554, 16);
 		btnInstrinsic.setText("By intrinsic properties");
 		btnInstrinsic.addSelectionListener(btnAdpater);
 		
 		btnRelational = new Button(container, SWT.RADIO);
-		btnRelational.setBounds(10, 211, 554, 16);
 		btnRelational.setText("By relational properties");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(styledText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(btnInstrinsic, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(btnRelational, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnInstrinsic)
+					.add(6)
+					.add(btnRelational))
+		);
+		container.setLayout(gl_container);
 		btnRelational.addSelectionListener(btnAdpater);
 		
 		setPageComplete(false);

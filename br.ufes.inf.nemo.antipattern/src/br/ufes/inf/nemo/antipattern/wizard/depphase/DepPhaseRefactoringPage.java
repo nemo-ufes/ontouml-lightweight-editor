@@ -15,6 +15,8 @@ import br.ufes.inf.nemo.antipattern.depphase.DepPhaseAntipattern;
 import br.ufes.inf.nemo.antipattern.depphase.DepPhaseOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class DepPhaseRefactoringPage extends RefactoringPage {
 	
@@ -72,23 +74,18 @@ public class DepPhaseRefactoringPage extends RefactoringPage {
 		};
 		
 		btnChangeToRole = new Button(container, SWT.RADIO);
-		btnChangeToRole.setBounds(10, 41, 554, 16);
 		btnChangeToRole.setText("Change <"+depPhase.getPhase().getName()+"> to «Role»");
 		btnChangeToRole.addSelectionListener(btnAdpater);
 		
 		btnKeepAsPhase = new Button(container, SWT.RADIO);
-		btnKeepAsPhase.setBounds(10, 63, 554, 16);
 		btnKeepAsPhase.setText("Keep <"+depPhase.getPhase().getName()+"> as «Phase»");
 		btnKeepAsPhase.addSelectionListener(btnAdpater);
 		
 		listMandatory = new List(container, SWT.BORDER);
-		listMandatory.setBounds(10, 114, 238, 157);
 		listOptional = new List(container, SWT.BORDER);
-		listOptional.setBounds(326, 114, 238, 157);
 		getDepPhaseWizard().addAllDependencies(listMandatory,listOptional);
 		
 		btnFromMandatoryToOptional = new Button(container, SWT.NONE);
-		btnFromMandatoryToOptional.setBounds(269, 153, 37, 25);
 		btnFromMandatoryToOptional.setText("->");
 		btnFromMandatoryToOptional.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -109,7 +106,6 @@ public class DepPhaseRefactoringPage extends RefactoringPage {
 		
 		btnFromOptionalToMandatory = new Button(container, SWT.NONE);
 		btnFromOptionalToMandatory.setText("<-");
-		btnFromOptionalToMandatory.setBounds(269, 184, 37, 25);
 		btnFromOptionalToMandatory.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -128,16 +124,64 @@ public class DepPhaseRefactoringPage extends RefactoringPage {
 		});
 		
 		Label lblMandatory = new Label(container, SWT.NONE);
-		lblMandatory.setBounds(10, 93, 238, 15);
 		lblMandatory.setText("Mandatory");
 		
 		Label lblOptional = new Label(container, SWT.NONE);
 		lblOptional.setText("Optional");
-		lblOptional.setBounds(326, 93, 238, 15);
 		
 		lblNewLabel = new Label(container, SWT.NONE);
-		lblNewLabel.setBounds(10, 10, 554, 15);
 		lblNewLabel.setText("Please select the refactoring option:");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(lblNewLabel, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(btnChangeToRole, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(btnKeepAsPhase, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(gl_container.createSequentialGroup()
+									.add(listMandatory, GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+									.add(21)
+									.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+										.add(btnFromMandatoryToOptional, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+										.add(btnFromOptionalToMandatory, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+									.add(20))
+								.add(gl_container.createSequentialGroup()
+									.add(lblMandatory, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
+									.add(78)))
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(lblOptional, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
+								.add(GroupLayout.TRAILING, listOptional, GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblNewLabel)
+					.add(16)
+					.add(btnChangeToRole)
+					.add(6)
+					.add(btnKeepAsPhase)
+					.add(14)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(lblMandatory)
+						.add(lblOptional))
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(listMandatory, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+						.add(gl_container.createSequentialGroup()
+							.add(39)
+							.add(btnFromMandatoryToOptional)
+							.add(6)
+							.add(btnFromOptionalToMandatory))
+						.add(listOptional, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE))
+					.add(8))
+		);
+		container.setLayout(gl_container);
 		
 		setPageComplete(false);
 		setEnableOfDependenciesUI(false);

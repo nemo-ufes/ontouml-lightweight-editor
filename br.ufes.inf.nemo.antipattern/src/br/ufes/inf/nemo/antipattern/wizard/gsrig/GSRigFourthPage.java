@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class GSRigFourthPage extends GSRigPage {
 	
@@ -36,34 +37,60 @@ public class GSRigFourthPage extends GSRigPage {
 		
 		styledText = new StyledText(container, SWT.WRAP);
 		styledText.setText("Now we must verify the rigidity of all the subtypes in the generalization set. Remember that a type is:\r\n\r\nRigid: if for every x that instantiates it in a given moment, it must always do so in every possible situation;\r\nAnti-rigid: if for every x that instantiates it in a given moment, there is at least one possible situation in which x does not do so;\r\n\r\nPlease choose the appropriate stereotypes for the subtypes, remembering that Kind, Collective, Quantity, Subkind and Category are rigid types, whilst Role, Phase and RoleMixin are anti-rigid.");
-		styledText.setBounds(10, 10, 644, 125);
 		styledText.setBackground(styledText.getParent().getBackground());
 		styledText.setJustify(true);
 		
 	    SelectionAdapter makeTableVisibleListener = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
 	    	  if(btnAll.getSelection()){
-	    		  rigSubTypeComposite.setVisible(false);
+	    		  rigSubTypeComposite.enable(false);
 	    	  }
 	    	  if(btnCustom.getSelection()){
-	    		  rigSubTypeComposite.setVisible(true);
+	    		  rigSubTypeComposite.enable(true);
 	    	  }
 	      }
 	    };
 		    
 		btnAll = new Button(container, SWT.RADIO);
-		btnAll.setBounds(10, 141, 644, 16);
 		btnAll.setText("All rigidity meta-properties are correct.");
 		btnAll.addSelectionListener(makeTableVisibleListener);
 		
 		btnCustom = new Button(container, SWT.RADIO);
-		btnCustom.setBounds(10, 163, 644, 16);
 		btnCustom.setText("Fix rigidity meta-properties. (Clicking on this option enables the table)");
 		btnCustom.addSelectionListener(makeTableVisibleListener);
 		
 		rigSubTypeComposite = new SubTypeComposite(container, SWT.NONE, (GSRigOccurrence) gsrig);
-		rigSubTypeComposite.setBounds(0, 192, 654, 140);
-		rigSubTypeComposite.setVisible(false);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(btnCustom, GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(btnAll, GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(rigSubTypeComposite, GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnAll)
+					.add(6)
+					.add(btnCustom)
+					.add(13)
+					.add(rigSubTypeComposite, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
+		rigSubTypeComposite.enable(false);
 	}
 	
 	@Override

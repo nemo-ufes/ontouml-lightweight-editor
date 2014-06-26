@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Label;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.undefformal.UndefFormalWizard.Nature;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class CantDefineNaturePage extends UndefFormalPage{
 
@@ -60,13 +61,11 @@ public class CantDefineNaturePage extends UndefFormalPage{
 		questionText.setBackground(questionText.getParent().getBackground());
 		questionText.setJustify(true);
 		questionText.setAlwaysShowScrollBars(false);
-		questionText.setBounds(10, 10, 554, 65);
 		questionText.setText(
 							"The wizard was unable to automatically identify if the related types of <Formal> are functional complexes, quantities or collectives. \r\n\r\nPlease choose the possible natures of the related types to continue the analysis:"
 							);
 		
 		Label lblNewLabel = new Label(container, SWT.NONE);
-		lblNewLabel.setBounds(10, 81, 554, 15);
 		lblNewLabel.setText("Source Type ("+occurrence.getSource().getName()+"):");
 		
 		sourceCheckFunctional = new Button(container, SWT.CHECK);
@@ -75,20 +74,16 @@ public class CantDefineNaturePage extends UndefFormalPage{
 			public void widgetSelected(SelectionEvent arg0) {
 			}
 		});
-		sourceCheckFunctional.setBounds(10, 102, 162, 16);
 		sourceCheckFunctional.setText("Functional Complex (Kind)");
 		
 		sourceCheckCollective = new Button(container, SWT.CHECK);
 		sourceCheckCollective.setText("Collective");
-		sourceCheckCollective.setBounds(10, 124, 162, 16);
 		
 		sourceCheckQuantity = new Button(container, SWT.CHECK);
 		sourceCheckQuantity.setText("Quantity");
-		sourceCheckQuantity.setBounds(10, 146, 162, 16);
 		
 		Label label = new Label(container, SWT.NONE);
 		label.setText("Target Type ("+occurrence.getTarget().getName()+"):");
-		label.setBounds(10, 178, 554, 15);
 		
 		targetCheckFunctional = new Button(container, SWT.CHECK);
 		targetCheckFunctional.addSelectionListener(new SelectionAdapter() {
@@ -97,39 +92,30 @@ public class CantDefineNaturePage extends UndefFormalPage{
 			}
 		});
 		targetCheckFunctional.setText("Functional Complex (Kind)");
-		targetCheckFunctional.setBounds(10, 199, 162, 16);
 		
 		targetCheckCollective = new Button(container, SWT.CHECK);
 		targetCheckCollective.setText("Collective");
-		targetCheckCollective.setBounds(10, 221, 162, 16);
 		
 		targetCheckQuantity = new Button(container, SWT.CHECK);
 		targetCheckQuantity.setText("Quantity");
-		targetCheckQuantity.setBounds(10, 243, 162, 16);
 		
 		sourceCheckRelator = new Button(container, SWT.CHECK);
 		sourceCheckRelator.setText("Relator");
-		sourceCheckRelator.setBounds(198, 102, 162, 16);
 		
 		sourceCheckMode = new Button(container, SWT.CHECK);
 		sourceCheckMode.setText("Mode");
-		sourceCheckMode.setBounds(198, 124, 162, 16);
 		
 		sourceCheckDataType = new Button(container, SWT.CHECK);
 		sourceCheckDataType.setText("DataType");
-		sourceCheckDataType.setBounds(198, 146, 162, 16);
 		
 		targetCheckDataType = new Button(container, SWT.CHECK);
 		targetCheckDataType.setText("DataType");
-		targetCheckDataType.setBounds(198, 243, 162, 16);
 		
 		targetCheckMode = new Button(container, SWT.CHECK);
 		targetCheckMode.setText("Mode");
-		targetCheckMode.setBounds(198, 221, 162, 16);
 		
 		targetCheckRelator = new Button(container, SWT.CHECK);
 		targetCheckRelator.setText("Relator");
-		targetCheckRelator.setBounds(198, 199, 162, 16);
 		
 		sourceCheckList = new HashMap<Nature,Button>();
 		sourceCheckList.put(Nature.COLLECTIVE,sourceCheckCollective);
@@ -146,6 +132,76 @@ public class CantDefineNaturePage extends UndefFormalPage{
 		targetCheckList.put(Nature.RELATOR,targetCheckRelator);
 		targetCheckList.put(Nature.MODE,targetCheckMode);
 		targetCheckList.put(Nature.DATATYPE,targetCheckDataType);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(questionText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(lblNewLabel, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(gl_container.createSequentialGroup()
+							.add(sourceCheckFunctional)
+							.add(26)
+							.add(sourceCheckRelator, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE))
+						.add(gl_container.createSequentialGroup()
+							.add(sourceCheckCollective, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE)
+							.add(26)
+							.add(sourceCheckMode, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE))
+						.add(gl_container.createSequentialGroup()
+							.add(sourceCheckQuantity, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE)
+							.add(26)
+							.add(sourceCheckDataType, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE))
+						.add(label, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(gl_container.createSequentialGroup()
+							.add(targetCheckFunctional)
+							.add(26)
+							.add(targetCheckRelator, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE))
+						.add(gl_container.createSequentialGroup()
+							.add(targetCheckCollective, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE)
+							.add(26)
+							.add(targetCheckMode, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE))
+						.add(gl_container.createSequentialGroup()
+							.add(targetCheckQuantity, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE)
+							.add(26)
+							.add(targetCheckDataType, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE)))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(lblNewLabel)
+					.add(6)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(sourceCheckFunctional)
+						.add(sourceCheckRelator))
+					.add(6)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(sourceCheckCollective)
+						.add(sourceCheckMode))
+					.add(6)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(sourceCheckQuantity)
+						.add(sourceCheckDataType))
+					.add(16)
+					.add(label)
+					.add(6)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(targetCheckFunctional)
+						.add(targetCheckRelator))
+					.add(6)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(targetCheckCollective)
+						.add(targetCheckMode))
+					.add(6)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(targetCheckQuantity)
+						.add(targetCheckDataType)))
+		);
+		container.setLayout(gl_container);
 		
 		if(getAntipatternWizard().canDefineSourceNature()){
 			setEnabledList(sourceCheckList.values(), false);

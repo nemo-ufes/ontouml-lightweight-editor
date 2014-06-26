@@ -21,6 +21,7 @@ import RefOntoUML.Quantity;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class GSRigRefactoringPage extends RefactoringPage {
 	
@@ -74,7 +75,6 @@ public class GSRigRefactoringPage extends RefactoringPage {
 				"Create OCL derivation rule and a common subtype for anti-rigids"});
 		
 		list.select(0);
-		list.setBounds(10, 10, 669, 96);
 
 		list.addSelectionListener(new SelectionAdapter() {
 		      public void widgetSelected(SelectionEvent e) {
@@ -97,7 +97,6 @@ public class GSRigRefactoringPage extends RefactoringPage {
 		      }
 		});
 		expandBar = new ExpandBar(container, SWT.V_SCROLL | SWT.H_SCROLL);
-		expandBar.setBounds(10, 118, 669, 217);
 		
 		//===============================
 		
@@ -144,6 +143,25 @@ public class GSRigRefactoringPage extends RefactoringPage {
 		item3_1.setHeight(composite3.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item3_1.setControl(composite3);
 		item3_1.setExpanded(false);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(list, GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE)
+						.add(expandBar, GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(list, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
+					.add(12)
+					.add(expandBar, GroupLayout.PREFERRED_SIZE, 233, GroupLayout.PREFERRED_SIZE))
+		);
+		container.setLayout(gl_container);
 		//===============================
 	}
 	

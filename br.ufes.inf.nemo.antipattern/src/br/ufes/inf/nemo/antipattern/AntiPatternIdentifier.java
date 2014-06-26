@@ -36,9 +36,9 @@ public class AntiPatternIdentifier {
 		
 		try {
 			Object o = OCLQueryExecuter.executeQuery(oclQuery, (EClassifier)model.eClass(), model);
-			System.out.println(o);
+//			System.out.println(o);
 			if (o instanceof Collection<?>){
-				System.out.println("Is collection. Size: "+((Collection)o).size());
+//				System.out.println("Is collection. Size: "+((Collection)o).size());
 				for (Object element : (Collection<?>) o ) {
 					
 					if (element instanceof Tuple){
