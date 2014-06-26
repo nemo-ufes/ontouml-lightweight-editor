@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class IsComparativeFormalPage extends UndefFormalPage{
 
@@ -32,10 +33,8 @@ public class IsComparativeFormalPage extends UndefFormalPage{
 		Composite container = new Composite(parent, SWT.NULL);
 		
 		setControl(container);
-		container.setLayout(null);
 		
 		StyledText questionText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.V_SCROLL);
-		questionText.setBounds(10, 10, 554, 257);
 		questionText.setAlwaysShowScrollBars(false);
 		questionText.setBackground(questionText.getParent().getBackground());
 		questionText.setJustify(true);
@@ -56,19 +55,42 @@ public class IsComparativeFormalPage extends UndefFormalPage{
 							);
 		
 		btnComparative = new Button(container, SWT.RADIO);
-		btnComparative.setBounds(10, 268, 554, 16);
 		btnComparative.setText("Yes, it is Domain Comparative");
 		setAsEnablingNextPageButton(btnComparative);
 		
 		btnNotComparative = new Button(container, SWT.RADIO);
-		btnNotComparative.setBounds(10, 290, 554, 16);
 		btnNotComparative.setText("No, it is Formal (Internal) but not Comparative");
 		setAsEnablingNextPageButton(btnNotComparative);
 		
 		btnMaterial = new Button(container, SWT.RADIO);
-		btnMaterial.setBounds(10, 312, 554, 16);
 		btnMaterial.setText("No, it is Material");
 		setAsEnablingNextPageButton(btnMaterial	);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, btnMaterial, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, btnNotComparative, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, btnComparative, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+						.add(questionText, GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE)
+					.add(1)
+					.add(btnComparative)
+					.add(6)
+					.add(btnNotComparative)
+					.add(6)
+					.add(btnMaterial)
+					.add(18))
+		);
+		container.setLayout(gl_container);
 		
 		setPageComplete(false);
 		

@@ -1,13 +1,11 @@
 package br.ufes.inf.nemo.antipattern.wizard.gsrig;
 
-import java.text.Normalizer;
-
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
@@ -15,6 +13,7 @@ import RefOntoUML.Kind;
 import RefOntoUML.Quantity;
 import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class GSRigThirdPage extends GSRigPage {
 	private StyledText lblNowThatWe;
@@ -27,15 +26,6 @@ public class GSRigThirdPage extends GSRigPage {
 		super(gsrig);		
 	}
 
-	public static String getStereotype(EObject element)
-	{
-		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
-	    return type;
-	}
-	
 	/**
 	 * Create contents of the wizard.
 	 * @param parent
@@ -46,22 +36,44 @@ public class GSRigThirdPage extends GSRigPage {
 		setControl(container);
 		
 		lblNowThatWe = new StyledText(container, SWT.WRAP | SWT.READ_ONLY);
-		lblNowThatWe.setBounds(10, 10, 644, 48);
-		lblNowThatWe.setText("Now that we established that all subtypes belong to the same generalization set, let's verify the rigidity of the GS's supertype. The options below are the possible rigidity options for <RigidSuperType>:");
+		lblNowThatWe.setText("Now that we established that all subtypes belong to the same generalization set, let's verify the rigidity of the GS's supertype. " +
+							"The options below are the possible rigidity options for "+OntoUMLNameHelper.getTypeAndName(gsrig.getParent(), true, true)+":");
 		lblNowThatWe.setBackground(lblNowThatWe.getParent().getBackground());
 		lblNowThatWe.setJustify(true);
 
 		btnRigid = new Button(container, SWT.RADIO);
-		btnRigid.setBounds(10, 68, 644, 16);
 		btnRigid.setText("Rigid: if x instantiates it in a given moment, it must always do so in every possible ");
 		
 		btnAntiRigid = new Button(container, SWT.RADIO);
-		btnAntiRigid.setBounds(10, 90, 644, 16);
 		btnAntiRigid.setText("Anti-Rigid: if x instantiates it in a given moment, there is at least one possible situation in which x does not do so");
 		
 		btnSemiRigid = new Button(container, SWT.RADIO);
-		btnSemiRigid.setBounds(10, 112, 644, 16);
 		btnSemiRigid.setText("Semi-Rigid: the type may act as rigid for some individuals and anti-rigid for others");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(btnSemiRigid, GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+						.add(btnAntiRigid, GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+						.add(btnRigid, GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+						.add(lblNowThatWe, GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblNowThatWe, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+					.add(10)
+					.add(btnRigid)
+					.add(6)
+					.add(btnAntiRigid)
+					.add(6)
+					.add(btnSemiRigid))
+		);
+		container.setLayout(gl_container);
 	}
 	
 	@Override

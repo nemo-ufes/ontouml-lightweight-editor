@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class CreateMediatedComposite extends Composite {
 	private Text typeNameText;
@@ -37,33 +38,26 @@ public class CreateMediatedComposite extends Composite {
 		
 		typeNameText = new Text(this, SWT.BORDER);
 		typeNameText.setEnabled(false);
-		typeNameText.setBounds(80, 7, 96, 21);
 		
 		lblName = new Label(this, SWT.NONE);
-		lblName.setText("(Name)");
+		lblName.setText("Name:");
 		lblName.setEnabled(false);
-		lblName.setAlignment(SWT.RIGHT);
-		lblName.setBounds(10, 10, 64, 15);
 		
 		lblStereo = new Label(this, SWT.NONE);
-		lblStereo.setText("(Stereotype)");
+		lblStereo.setText("Stereotype:");
 		lblStereo.setEnabled(false);
-		lblStereo.setBounds(10, 31, 64, 15);
 		
 		stereoCombo = new Combo(this, SWT.READ_ONLY);
 		stereoCombo.setItems(new String[] {"Kind", "SubKind", "Quantity", "Collective", "Role", "Phase", "Category", "RoleMixin", "Mixin", "Relator", "Mode", "DataType"});
 		stereoCombo.setEnabled(false);
-		stereoCombo.setBounds(80, 34, 96, 23);
 		stereoCombo.select(0);
 		
 		typeList = new List(this, SWT.BORDER | SWT.V_SCROLL);
 		typeList.setEnabled(false);
-		typeList.setBounds(182, 6, 213, 51);
 		
 		btnCreate = new Button(this, SWT.NONE);
 		btnCreate.setText("Create");
 		btnCreate.setEnabled(false);
-		btnCreate.setBounds(401, 5, 51, 25);
 		btnCreate.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {				
@@ -75,7 +69,6 @@ public class CreateMediatedComposite extends Composite {
 		btnDelete = new Button(this, SWT.NONE);
 		btnDelete.setText("Delete");
 		btnDelete.setEnabled(false);
-		btnDelete.setBounds(401, 31, 51, 25);
 		btnDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -89,7 +82,55 @@ public class CreateMediatedComposite extends Composite {
 		lblMediated = new Label(this, SWT.NONE);
 		lblMediated.setText("(mediated type)");
 		lblMediated.setEnabled(false);
-		lblMediated.setBounds(458, 10, 96, 15);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING, false)
+						.add(lblStereo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.add(lblName, GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE))
+					.add(6)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(typeNameText, GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+						.add(stereoCombo, GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE))
+					.add(6)
+					.add(typeList, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+					.add(6)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(btnCreate, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+						.add(btnDelete, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE))
+					.add(6)
+					.add(lblMediated, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(10)
+							.add(lblName)
+							.add(12)
+							.add(lblStereo))
+						.add(groupLayout.createSequentialGroup()
+							.add(7)
+							.add(typeNameText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.add(6)
+							.add(stereoCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.add(groupLayout.createSequentialGroup()
+							.add(6)
+							.add(typeList, GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE))
+						.add(groupLayout.createSequentialGroup()
+							.add(5)
+							.add(btnCreate)
+							.add(1)
+							.add(btnDelete))
+						.add(groupLayout.createSequentialGroup()
+							.add(10)
+							.add(lblMediated)))
+					.add(8))
+		);
+		setLayout(groupLayout);
 
 	}
 

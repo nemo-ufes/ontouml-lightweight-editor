@@ -22,6 +22,8 @@ import br.ufes.inf.nemo.antipattern.decint.GeneralizationSetReplica;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class GeneralizationSetComposite extends Composite {
 	
@@ -64,23 +66,18 @@ public class GeneralizationSetComposite extends Composite {
 		createReplicas();
 		
 		Label lblName = new Label(this, SWT.NONE);
-		lblName.setBounds(10, 10, 63, 21);
 		lblName.setText("Name:");
 		
 		checkIsDisjoint = new Button(this, SWT.CHECK);
-		checkIsDisjoint.setBounds(91, 86, 156, 16);
 		checkIsDisjoint.setText("Is Disjoint");
 		
 		checkIsCovering = new Button(this, SWT.CHECK);
-		checkIsCovering.setBounds(91, 64, 156, 16);
 		checkIsCovering.setText("Is Covering");
 		
 		textName = new Text(this, SWT.BORDER);
-		textName.setBounds(91, 10, 156, 21);
 		
 		table = new Table(this, SWT.BORDER | SWT.V_SCROLL | SWT.CHECK);
 		table.setHeaderVisible(true);
-		table.setBounds(10, 129, 237, 106);
 		
 		TableColumn tblColCheck = new TableColumn(table,SWT.NONE);
 		tblColCheck.setWidth(75);
@@ -93,57 +90,133 @@ public class GeneralizationSetComposite extends Composite {
 		
 		Label lblSupertype = new Label(this, SWT.NONE);
 		lblSupertype.setText("Supertype:");
-		lblSupertype.setBounds(10, 37, 63, 21);
 		
 		textSupertype = new Text(this, SWT.BORDER);
 		textSupertype.setEditable(false);
-		textSupertype.setBounds(91, 37, 156, 21);
 
 		Label lblGeneralizations = new Label(this, SWT.NONE);
-		lblGeneralizations.setBounds(10, 108, 237, 15);
 		lblGeneralizations.setText("Generalizations");
 		
 		Label label = new Label(this, SWT.SEPARATOR | SWT.VERTICAL);
-		label.setBounds(265, 10, 2, 225);
 		
 		listGenSet = new List(this, SWT.BORDER | SWT.H_SCROLL);
-		listGenSet.setBounds(284, 43, 290, 192);
 		listGenSet.addSelectionListener(gsListListener);
 		setGSList();
 		
 		Label lblGeneralizationSets = new Label(this, SWT.NONE);
-		lblGeneralizationSets.setBounds(284, 16, 130, 15);
 		lblGeneralizationSets.setText("Generalization Sets:");
 		
 		btnSave = new Button(this, SWT.NONE);
 		btnSave.setText("Save");
-		btnSave.setBounds(93, 241, 74, 25);
 		btnSave.addSelectionListener(saveListener);
 		btnSave.setToolTipText("Saves the modifications made in the current Generalization Set");
 		
 		btnDelete = new Button(this, SWT.NONE);
 		btnDelete.setText("Delete");
-		btnDelete.setBounds(173, 241, 74, 25);
 		btnDelete.addSelectionListener(deleteListener);
 		btnDelete.setToolTipText("Delete the current Generalization Set");
 		
 		btnReset = new Button(this, SWT.NONE);
 		btnReset.setText("Reset");
-		btnReset.setBounds(500, 10, 74, 25);
 		btnReset.addSelectionListener(resetListener);
 		btnReset.setToolTipText("Discard all changes and returns the Generalization Set list to its original state.");
 		
 		btnAllOverlapping = new Button(this, SWT.NONE);
 		btnAllOverlapping.setText("All Overlapping");
-		btnAllOverlapping.setBounds(480, 241, 94, 25);
 		btnAllOverlapping.addSelectionListener(allOverlappingListener);
 		btnAllOverlapping.setToolTipText("Set the isDisjoint meta-property of all Generalization Sets in the list to false.");
 		
 		btnRemoveAll = new Button(this, SWT.NONE);
 		btnRemoveAll.setText("Remove All");
-		btnRemoveAll.setBounds(380, 241, 94, 25);
 		btnRemoveAll.addSelectionListener(removeAllListener);
 		btnRemoveAll.setToolTipText("Removes all generalizations sets on the list.");
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(groupLayout.createParallelGroup(GroupLayout.TRAILING)
+						.add(groupLayout.createSequentialGroup()
+							.add(10)
+							.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+								.add(groupLayout.createSequentialGroup()
+									.add(lblName, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+									.add(18)
+									.add(textName, GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))
+								.add(groupLayout.createSequentialGroup()
+									.add(lblSupertype, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+									.add(18)
+									.add(textSupertype, GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))
+								.add(groupLayout.createSequentialGroup()
+									.add(81)
+									.add(checkIsCovering, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE))
+								.add(groupLayout.createSequentialGroup()
+									.add(81)
+									.add(checkIsDisjoint, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE))
+								.add(lblGeneralizations, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
+								.add(table, GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)))
+						.add(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.add(btnSave, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(btnDelete, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)))
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(18)
+							.add(label, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
+							.add(17)
+							.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+								.add(GroupLayout.TRAILING, groupLayout.createSequentialGroup()
+									.add(lblGeneralizationSets, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+									.addPreferredGap(LayoutStyle.RELATED)
+									.add(btnReset, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE))
+								.add(listGenSet, GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)))
+						.add(GroupLayout.TRAILING, groupLayout.createSequentialGroup()
+							.add(133)
+							.add(btnRemoveAll, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+							.add(6)
+							.add(btnAllOverlapping)))
+					.add(11))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, groupLayout.createSequentialGroup()
+					.add(10)
+					.add(groupLayout.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, label, GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, groupLayout.createSequentialGroup()
+							.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+								.add(lblName, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+								.add(textName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.add(6)
+							.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+								.add(lblSupertype, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+								.add(textSupertype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.add(6)
+							.add(checkIsCovering)
+							.add(6)
+							.add(checkIsDisjoint)
+							.add(6)
+							.add(lblGeneralizations)
+							.add(6)
+							.add(table, GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
+						.add(GroupLayout.LEADING, groupLayout.createSequentialGroup()
+							.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+								.add(btnReset)
+								.add(groupLayout.createSequentialGroup()
+									.add(6)
+									.add(lblGeneralizationSets)))
+							.add(8)
+							.add(listGenSet, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)))
+					.add(6)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createParallelGroup(GroupLayout.BASELINE)
+							.add(btnDelete)
+							.add(btnSave))
+						.add(btnRemoveAll)
+						.add(btnAllOverlapping))
+					.add(9))
+		);
+		setLayout(groupLayout);
 		
 		setNoSelectionState();
 	}

@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class CreateDataTypePage extends UndefFormalPage{
 
@@ -31,7 +32,6 @@ public class CreateDataTypePage extends UndefFormalPage{
 		setControl(container);
 		
 		createDataTypeComposite = new DataTypeComposite(container, SWT.NONE, (UndefFormalOccurrence) occurrence);
-		createDataTypeComposite.setBounds(10, 109, 553, 334);		
 		
 		StyledText questionText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.V_SCROLL);
 		questionText.setText(	"If <"+occurrence.getFormalName()+"> is a Domain Comparative Formal Relation it means that both related ends should own or inherit qualities, " +
@@ -41,7 +41,24 @@ public class CreateDataTypePage extends UndefFormalPage{
 		questionText.setBackground(questionText.getParent().getBackground());
 		questionText.setJustify(true);
 		questionText.setAlwaysShowScrollBars(false);
-		questionText.setBounds(10, 10, 554, 93);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(10))
+				.add(createDataTypeComposite, GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE)
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(createDataTypeComposite, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 	}
 	
 	@Override

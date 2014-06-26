@@ -45,7 +45,7 @@ public class MixIdenAntipattern extends Antipattern<MixIdenOccurrence> {
 		ArrayList<MixinClass> query_result;
 		
 		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, MixinClass.class);
-		System.out.println("OCL_RESULT_SIZE: "+query_result.size());
+//		System.out.println("OCL_RESULT_SIZE: "+query_result.size());
 		for (MixinClass mixin : query_result) 
 		{
 			try {

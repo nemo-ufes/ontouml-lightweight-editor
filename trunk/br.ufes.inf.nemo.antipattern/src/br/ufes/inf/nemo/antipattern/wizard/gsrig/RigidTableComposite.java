@@ -6,36 +6,72 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class RigidTableComposite extends Composite{
 
 	public GSRigOccurrence gsrig;
-	private RigidTable rigidTable;
+	private RigidTable tableCreator;
 	private Label lblNewStereotype;
 	public Combo stereoCombo;
 	
-	public RigidTable getRigidTable() { return rigidTable; }
+	public RigidTable getRigidTable() { return tableCreator; }
 	
 	public RigidTableComposite(Composite parent, int args, GSRigOccurrence gsrig) {
 		super(parent,args);
 		this.gsrig = gsrig;
-//				
-		rigidTable = new RigidTable(this, SWT.V_SCROLL ,gsrig);
-		rigidTable.getTable().setBounds(248, 21, 362, 95);
-						
-		Composite composite2 = new Composite(this, SWT.NONE);
-		composite2.setBounds(10, 21, 232, 95);
+		
+		
+		tableCreator = new RigidTable(this, SWT.BORDER | SWT.V_SCROLL ,gsrig);
+		Table table = tableCreator.getTable();
+//		Table table = new Table(this, SWT.BORDER);
+		
+		Composite composite2 = new Composite(this, SWT.BORDER);
 			
 		lblNewStereotype = new Label(composite2, SWT.NONE);
-		lblNewStereotype.setBounds(10, 10, 278, 15);
-		lblNewStereotype.setText("New "+gsrig.getGs().getGeneralization().get(0).getGeneral().getName()+" stereotype:");
+		lblNewStereotype.setText("New parent stereotype:");
 		
 		stereoCombo = new Combo(composite2, SWT.READ_ONLY);
-		stereoCombo.setBounds(10, 39, 155, 23);
 		stereoCombo.setItems(new String[] {"Role", "Phase", "RoleMixin"});
 		stereoCombo.select(0);
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(composite2, GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+				.add(table, GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(composite2, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(table, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
+		);
+		GroupLayout gl_composite2 = new GroupLayout(composite2);
+		gl_composite2.setHorizontalGroup(
+			gl_composite2.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_composite2.createSequentialGroup()
+					.add(10)
+					.add(lblNewStereotype, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(stereoCombo, GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+					.add(10))
+		);
+		gl_composite2.setVerticalGroup(
+			gl_composite2.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_composite2.createSequentialGroup()
+					.add(10)
+					.add(lblNewStereotype))
+				.add(gl_composite2.createSequentialGroup()
+					.add(7)
+					.add(stereoCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		);
+		composite2.setLayout(gl_composite2);
+		setLayout(groupLayout);
 		
 //		Composite composite = new Composite(this, SWT.NONE);
 //		composite.setBounds(248, 21, 362, 95);
@@ -57,13 +93,13 @@ public class RigidTableComposite extends Composite{
 
 	public void enable(boolean value)
 	{
-		rigidTable.enable(value);
+		tableCreator.enable(value);
 	}
 	public void limitChoiceToRoleMixin() {
-		rigidTable.limitChoiceToRoleMixin();		
+		tableCreator.limitChoiceToRoleMixin();		
 	}
 	
 	public void limitChoiceToRoleAndPhase() {
-		rigidTable.limitChoiceToRoleAndPhase();		
+		tableCreator.limitChoiceToRoleAndPhase();		
 	}
 }

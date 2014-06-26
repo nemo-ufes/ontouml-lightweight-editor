@@ -6,13 +6,11 @@ import java.util.HashMap;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.undefformal.UndefFormalWizard.Nature;
@@ -41,50 +39,51 @@ public class NoRelationTypePossiblePage extends UndefFormalPage{
 		Composite container = new Composite(parent, SWT.NULL);
 		
 		setControl(container);
-		container.setLayout(new FormLayout());
 		
 		questionText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.V_SCROLL | SWT.NO_BACKGROUND);
-		FormData fd_questionText = new FormData();
-		fd_questionText.bottom = new FormAttachment(0, 135);
-		fd_questionText.top = new FormAttachment(0, 10);
-		
-		questionText.setLayoutData(fd_questionText);
 		questionText.setJustify(true);
 		questionText.setAlwaysShowScrollBars(false);
 		questionText.setBackground(questionText.getParent().getBackground());
 		setQuestion();
 		
 		btnKeep = new Button(container, SWT.RADIO);
-		fd_questionText.left = new FormAttachment(btnKeep, -554);
-		fd_questionText.right = new FormAttachment(btnKeep, 0, SWT.RIGHT);
-		FormData fd_btnKeepItIn = new FormData();
-		fd_btnKeepItIn.right = new FormAttachment(0, 564);
-		fd_btnKeepItIn.top = new FormAttachment(0, 141);
-		fd_btnKeepItIn.left = new FormAttachment(0, 10);
-		btnKeep.setLayoutData(fd_btnKeepItIn);
 		btnKeep.setText("Keep it in the model");
 		
 		btnRemove = new Button(container, SWT.RADIO);
-		FormData fd_btnRemoveItFrom = new FormData();
-		fd_btnRemoveItFrom.right = new FormAttachment(0, 564);
-		fd_btnRemoveItFrom.top = new FormAttachment(0, 163);
-		fd_btnRemoveItFrom.left = new FormAttachment(0, 10);
-		btnRemove.setLayoutData(fd_btnRemoveItFrom);
 		btnRemove.setText("Remove it from the model");
 		
 		Label lblTip = new Label(container, SWT.WRAP | SWT.RIGHT);
-		FormData fd_lblTip = new FormData();
-		fd_lblTip.left = new FormAttachment(100, -564);
-		fd_lblTip.right = new FormAttachment(100, -10);
-		fd_lblTip.top = new FormAttachment(100, -45);
-		fd_lblTip.bottom = new FormAttachment(100, -10);
-		lblTip.setLayoutData(fd_lblTip);
 		lblTip.setForeground(SWTResourceManager.getColor(255, 0, 0));
 		lblTip.setAlignment(SWT.RIGHT);
 		lblTip.setText("Tip: Only keep the relation if it captures a type of relation not covered in OntoUML, like instantiation, constitution, etc...");
 		
 		setAsEnablingNextPageButton(btnKeep);
 		setAsEnablingNextPageButton(btnRemove);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(questionText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(btnKeep, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(btnRemove, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(lblTip, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnKeep)
+					.add(6)
+					.add(btnRemove)
+					.add(57)
+					.add(lblTip, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+		);
+		container.setLayout(gl_container);
 		
 		setPageComplete(false);
 	}

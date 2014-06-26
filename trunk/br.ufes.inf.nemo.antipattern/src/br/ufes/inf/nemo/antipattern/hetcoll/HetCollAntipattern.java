@@ -47,12 +47,12 @@ public class HetCollAntipattern extends Antipattern<HetCollOccurrence> {
 	@Override
 	public ArrayList<HetCollOccurrence> identify() {
 		Map<Classifier, ArrayList<Property>> query_result;
-		System.out.println("Procurou HETCOLL");
+//		System.out.println("Procurou HETCOLL");
 		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, Classifier.class, Property.class, "whole", "memberEnds");
 			
 		for (Classifier whole : query_result.keySet()) 
 		{
-			System.out.println("Encontrou HETCOLL");
+//			System.out.println("Encontrou HETCOLL");
 			try {
 					HetCollOccurrence occurrence = new HetCollOccurrence(whole, query_result.get(whole), this);
 					super.occurrence.add(occurrence);

@@ -48,7 +48,7 @@ public class DepPhaseAntipattern extends Antipattern<DepPhaseOccurrence> {
 		for (Phase phase : query_result.keySet()) 
 		{
 			try {
-				
+
 				DepPhaseOccurrence depPhase = new DepPhaseOccurrence(phase, query_result.get(phase), this);
 				super.occurrence.add(depPhase);
 				

@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class CreateMediatedPage extends UndefFormalPage{
 
@@ -36,7 +37,6 @@ public class CreateMediatedPage extends UndefFormalPage{
 		setControl(container);
 		
 		StyledText questionText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.V_SCROLL);
-		questionText.setBounds(10, 10, 554, 47);
 		questionText.setBackground(questionText.getParent().getBackground());
 		questionText.setAlwaysShowScrollBars(false);
 		questionText.setText("Relators are existentially dependent on two or more individuals. Does an instance of <"+occurrence.getSource().getName()+"> " +
@@ -56,26 +56,70 @@ public class CreateMediatedPage extends UndefFormalPage{
 	    };
 	    	    	    
 		btnDependence = new Button(container, SWT.RADIO);
-		btnDependence.setBounds(10, 70, 554, 16);
 		btnDependence.setText("Yes, "+occurrence.getSource().getName()+" is connected to (at least) N instances of "+occurrence.getTarget().getName()+"...");
 		btnDependence.addSelectionListener(listener);
 
 		btnNotCaptured = new Button(container, SWT.RADIO);
-		btnNotCaptured.setBounds(10, 150, 554, 16);
 		btnNotCaptured.setText("There are other mediated types not captured by the model...");
 		btnNotCaptured.addSelectionListener(listener);
 	    
 	    setLowerMultComposite = new SetUpperMultComposite(container, SWT.NONE);
-	    setLowerMultComposite.setBounds(10, 92, 554, 39);
 	    setLowerMultComposite.enable(false);
 	    
 	    createMediatedComposite = new CreateMediatedComposite(container, SWT.NONE);
-	    createMediatedComposite.setBounds(10, 179, 554, 64);
 	    createMediatedComposite.enable(false);
 	    
 	    setPageComplete(false);
 	    setAsEnablingNextPageButton(btnDependence);
 	    setAsEnablingNextPageButton(btnNotCaptured);
+	    GroupLayout gl_container = new GroupLayout(container);
+	    gl_container.setHorizontalGroup(
+	    	gl_container.createParallelGroup(GroupLayout.LEADING)
+	    		.add(gl_container.createSequentialGroup()
+	    			.add(10)
+	    			.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+	    				.add(questionText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+	    				.add(btnDependence, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+	    				.add(setLowerMultComposite, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+	    				.add(btnNotCaptured, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+	    				.add(createMediatedComposite))
+	    			.add(10))
+	    );
+	    gl_container.setVerticalGroup(
+	    	gl_container.createParallelGroup(GroupLayout.LEADING)
+	    		.add(gl_container.createSequentialGroup()
+	    			.add(10)
+	    			.add(questionText, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+	    			.add(13)
+	    			.add(btnDependence)
+	    			.add(6)
+	    			.add(setLowerMultComposite, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+	    			.add(19)
+	    			.add(btnNotCaptured)
+	    			.add(13)
+	    			.add(createMediatedComposite, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE))
+	    );
+	    GroupLayout gl_setLowerMultComposite = new GroupLayout(setLowerMultComposite);
+	    gl_setLowerMultComposite.setHorizontalGroup(
+	    	gl_setLowerMultComposite.createParallelGroup(GroupLayout.LEADING)
+	    		.add(gl_setLowerMultComposite.createSequentialGroup()
+	    			.add(10)
+	    			.add(setLowerMultComposite.spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+	    			.add(6)
+	    			.add(setLowerMultComposite.lblCardinality, GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
+	    			.addContainerGap())
+	    );
+	    gl_setLowerMultComposite.setVerticalGroup(
+	    	gl_setLowerMultComposite.createParallelGroup(GroupLayout.LEADING)
+	    		.add(gl_setLowerMultComposite.createSequentialGroup()
+	    			.add(10)
+	    			.add(gl_setLowerMultComposite.createParallelGroup(GroupLayout.LEADING)
+	    				.add(setLowerMultComposite.lblCardinality, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+	    				.add(setLowerMultComposite.spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+	    			.addContainerGap())
+	    );
+	    setLowerMultComposite.setLayout(gl_setLowerMultComposite);
+	    container.setLayout(gl_container);
 	}
 	
 	@Override
