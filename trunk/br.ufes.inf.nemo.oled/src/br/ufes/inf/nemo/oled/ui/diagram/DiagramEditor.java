@@ -346,14 +346,14 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void deleteSelection() {
 				
 		Collection<DiagramElement> diagramElementsList = getSelectedElements();
-		frame.getDiagramManager().delete(diagramElementsList);		
+		frame.getDiagramManager().deleteFromOLED(diagramElementsList,true);		
 	}
 	
 	/** Create a generalizations from selected elements in the diagram */
-	public void createGeneralizationSet()
+	public void AddGeneralizationSet()
 	{		
 		Collection<DiagramElement> diagramElementsList = getSelectedElements();
-		GeneralizationSet genSet = frame.getDiagramManager().createGeneralizationSetFrom(diagramElementsList);		
+		GeneralizationSet genSet = frame.getDiagramManager().addGeneralizationSet(this,diagramElementsList);		
 		if(genSet!=null){		
 			deselectAll();
 			cancelEditing();
@@ -367,7 +367,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void deleteGeneralizationSet()
 	{
 		Collection<DiagramElement> diagramElementsList = getSelectedElements();
-		frame.getDiagramManager().deleteGeneralizationSetFrom(diagramElementsList);		
+		frame.getDiagramManager().deleteGeneralizationSet(diagramElementsList);		
 		deselectAll();
 		cancelEditing();		
 	}
@@ -1422,7 +1422,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 		//In case of the three commands  
 		if(changeType == ChangeType.ELEMENTS_ADDED || changeType == ChangeType.ELEMENTS_REMOVED || changeType == ChangeType.LABEL_TEXT_SET || changeType == ChangeType.CONNECTION_NAVEGABILITY_SET 
-		|| changeType == ChangeType.ELEMENTS_MOVED || changeType == ChangeType.ELEMENTS_DRAGGED || changeType == ChangeType.ELEMENTS_CHANGED || changeType == ChangeType.ELEMENTS_ALIGNED
+		|| changeType == ChangeType.ELEMENTS_MOVED || changeType == ChangeType.ELEMENTS_DRAGGED || changeType == ChangeType.ELEMENTS_MODIFIED || changeType == ChangeType.ELEMENTS_ALIGNED
 		|| changeType == ChangeType.ELEMENTS_COLORED || changeType == ChangeType.VISIBILITY_CHANGED)				 
 		{
 			frame.getDiagramManager().saveDiagramNeeded(this.getDiagram(),true);	
@@ -1441,7 +1441,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 				if(notificationType == NotificationType.DO) sb.append("added"); else sb.append(" add");
 				break;
 			case ELEMENTS_REMOVED:
-				if(notificationType == NotificationType.DO) sb.append("removed"); else sb.append(" remove");
+				if(notificationType == NotificationType.DO) sb.append("deleted"); else sb.append(" delete");
 				break;
 			case ELEMENTS_DRAGGED:
 				if(notificationType == NotificationType.DO) sb.append("dragged"); else sb.append(" drag");
@@ -1458,8 +1458,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			case ELEMENTS_MOVED:
 				if(notificationType == NotificationType.DO) sb.append("moved"); else sb.append(" move");
 				break;
-			case ELEMENTS_CHANGED:
-				if(notificationType == NotificationType.DO) sb.append("changed"); else sb.append(" change");
+			case ELEMENTS_MODIFIED:
+				if(notificationType == NotificationType.DO) sb.append("modified"); else sb.append(" modify");
 				break;
 			case ELEMENTS_RESIZED:
 				if(notificationType == NotificationType.DO) sb.append("resized"); else sb.append(" resize");

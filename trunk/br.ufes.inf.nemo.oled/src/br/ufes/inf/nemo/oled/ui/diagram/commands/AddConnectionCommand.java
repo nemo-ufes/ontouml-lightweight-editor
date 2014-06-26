@@ -55,26 +55,15 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
  */
 public class AddConnectionCommand extends BaseDiagramCommand {
 
-	private static final long serialVersionUID = 2924451842640450250L;
-	
+	private static final long serialVersionUID = 2924451842640450250L;	
 	private CompositeElement parent;
-	private DiagramElement diagramElement;
-	
+	private DiagramElement diagramElement;	
 	private RefOntoUML.Element relationship;
 	private Classifier source;
 	private Classifier target;
-	private EObject eContainer;
-	
+	private EObject eContainer;	
 	private boolean addToDiagram;
 
-	/**
-	 * Constructor.
-	 * @param editorNotification a ModelNotification object
-	 * @param structureDiagram the parent component
-	 * @param conn the element created
-	 * @param aTarget 
-	 * @param aSource 
-	 */
 	public AddConnectionCommand(DiagramNotification editorNotification, CompositeElement parent, RefOntoUML.Element relationship, Classifier aSource, Classifier aTarget, UmlProject project, EObject eContainer) {
 		this.parent = parent;
 		this.project = project;
@@ -92,16 +81,14 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		diagramElement = ModelHelper.getDiagramElementByEditor(relationship,(DiagramEditor)notification);
 	}
 
-	/**
-	 * {@inheritDoc} - UNDO
-	 */
 	@Override
 	public void undo() 
 	{
 		super.undo();
 						
 		if (relationship!=null){
-			project.getEditingDomain().getCommandStack().undo();			
+//			System.out.println("Undoing ="+relationship);
+			project.getEditingDomain().getCommandStack().undo();
 			ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(relationship);
 		}
 		
@@ -115,9 +102,6 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		}	
 	}
 
-	/**
-	 * {@inheritDoc} - REDO
-	 */
 	@Override
 	public void redo() 
 	{
@@ -126,9 +110,6 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		run();
 	}
 
-	/**
-	 * {@inheritDoc} - RUN
-	 */
 	public void run() {	    
 					
 		ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
@@ -152,11 +133,6 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		}
 	}
 		
-	/**
-	 * Add a element to the diagram (not to the model instance behind the scenes). In fact, the element instance already exists inside the diagram element.
-	 * @param element
-	 * @param redo
-	 */
 	@SuppressWarnings("unused")
 	private void addToDiagram (boolean redo)
 	{
@@ -186,12 +162,9 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 		if (source instanceof Relationship || target instanceof Relationship)  diagramElement.invalidate();		
 	}
 	
-	/**
-	 * Add a element to the model instance behind the scenes and updates the application accordingly.
-	 * @param elem
-	 */
 	private void addToModel()
 	{			
+//		System.out.println("Adding = "+relationship);
 		if (relationship instanceof Association){
 			
 			//set sides on the element
@@ -228,6 +201,6 @@ public class AddConnectionCommand extends BaseDiagramCommand {
 			}
 						
 		}		
-	}
+	}	
 }
 

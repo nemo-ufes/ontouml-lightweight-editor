@@ -349,7 +349,7 @@ public class ConstraintEditionPanel extends JPanel {
 				toBeDeleted.add(c);
 			}
 		}
-		for(Constraintx cmt: toBeDeleted) { diagramManager.delete(cmt); }	
+		for(Constraintx cmt: toBeDeleted) { diagramManager.deleteFromOLED(cmt,false); }	
 		
 	}
 }

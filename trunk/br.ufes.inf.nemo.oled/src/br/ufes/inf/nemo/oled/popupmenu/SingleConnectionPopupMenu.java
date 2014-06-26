@@ -168,7 +168,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 					((AssociationElement)con).setNameReadingDirection(ReadingDirection.RIGHT_LEFT);
 					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}
 			}
 		});
@@ -182,7 +182,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 					((AssociationElement)con).setNameReadingDirection(ReadingDirection.LEFT_RIGHT);
 					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}							
 			}
 		});
@@ -197,7 +197,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();					
 					((AssociationElement)con).setNameReadingDirection(ReadingDirection.UNDEFINED);
 					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}														
 			}
 		});		
@@ -383,7 +383,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 					((AssociationElement)con).setShowMetaProperties(true);
 					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}
 			}
 		});
@@ -397,7 +397,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 					((AssociationElement)con).setShowMetaProperties(true);
 					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}
 			}
 		});
@@ -411,7 +411,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 					((AssociationElement)con).setShowMetaProperties(true);
 					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}
 			}
 		});
@@ -425,7 +425,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 					((AssociationElement)con).setShowMetaProperties(true);
 					list.add(con);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}
 			}
 		});

@@ -120,7 +120,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 					((ClassElement)node).setShowOperations(showOperItem.isSelected());
 					list.add(node);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}				
 			}
 		});
@@ -133,7 +133,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
 					((ClassElement)node).setShowAttributes(showAttrItem.isSelected());
 					list.add(node);
-					editor.notifyChange(list, ChangeType.ELEMENTS_CHANGED, NotificationType.DO);
+					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}				
 			}
 		});
