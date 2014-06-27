@@ -191,6 +191,219 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		setBorder(new EmptyBorder(0,0,0,0));		
 	}
 
+	/** Adds a start panel to the manager */
+	public void addStartPanel()
+	{
+		StartPanel start = new StartPanel(frame);
+		this.addNonClosable("Start", start);
+	}
+
+	/** Adds a Finder panel to the manager */
+	public void addFinderPanel()
+	{
+		for(Component c: getComponents()) {
+			if(c instanceof FinderPane) { setSelectedComponent(c); return; }
+		}		
+		FinderPane finder = new FinderPane(frame.getDiagramManager().getCurrentProject());
+		this.addClosable("Find", finder);
+	}
+	
+	/** Sets the dispatcher responsible for routing events of the editor */
+	public void setEditorDispatcher(DiagramEditorCommandDispatcher editorDispatcher) 
+	{
+		this.editorDispatcher = editorDispatcher;
+	}
+
+	/** Gets the dispatcher responsible for routing events of the editor */
+	public DiagramEditorCommandDispatcher getEditorDispatcher() 
+	{
+		return editorDispatcher;
+	}
+
+	/** Gets the current DiagramEditor (the editor displayed in the focused tab). If there's no suitable editor, returns null. */
+	public Editor getCurrentEditor() 
+	{
+		if(this.getSelectedIndex() != -1){
+			Object obj = this.getSelectedComponent();
+			if(obj instanceof Editor) return (Editor) obj;	
+		}
+		return null;
+	}
+
+	/** Gets the project being edited */
+	public UmlProject getCurrentProject() 
+	{
+		return currentProject;
+	}
+
+	/** Gets the wrapper for the selected DiagramEditor */
+	public DiagramEditorWrapper getCurrentWrapper()
+	{
+		if(this.getSelectedComponent() instanceof DiagramEditorWrapper) return ((DiagramEditorWrapper) this.getSelectedComponent());
+		return null;
+	}	
+
+	/** Open Link With Browser */
+	public void openLinkWithBrowser(String link)
+	{
+		Desktop desktop = Desktop.getDesktop();
+		if( !desktop.isSupported(Desktop.Action.BROWSE)){
+			System.err.println( "Desktop doesn't support the browse action (fatal)" );
+			return;
+		}
+		try {
+			java.net.URI uri = new java.net.URI(link);
+			desktop.browse(uri);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	/** Gets the selected DiagramEditor */
+	public DiagramEditor getCurrentDiagramEditor() 
+	{		
+		if(this.getSelectedComponent() instanceof DiagramEditorWrapper){			
+			return ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor();
+		}
+		return null;
+	}
+	
+	/** Useful method: Verifies if the element is contained in the list */
+	public boolean contains (ArrayList<CustomOntoUMLElement> list, RefOntoUML.Element elem)
+	{
+		for(CustomOntoUMLElement coe: list){
+			if(coe.getElement().equals(elem)) return true;
+		}
+		return false;
+	}
+	
+	/** Return all opened diagram editors */
+	public ArrayList<DiagramEditor> getDiagramEditors()
+	{
+		ArrayList<DiagramEditor> list = new ArrayList<DiagramEditor>();
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) list.add(((DiagramEditorWrapper)c).getDiagramEditor());
+		}
+		return list;
+	}
+
+	/** Select this diagram editor */
+	public void selectEditor(DiagramEditor editor)
+	{		
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) {
+				if(((DiagramEditorWrapper) c).getDiagramEditor().equals(editor)) setSelectedComponent(c);
+			}
+		}		
+	}
+	
+	/** Get the diagram editor which encapsulates this diagram */
+	public DiagramEditor getDiagramEditor(StructureDiagram diagram)
+	{		
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) {
+				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram))
+					return ((DiagramEditorWrapper)c).getDiagramEditor();
+			}
+		}
+		return null;
+	}
+	
+	/** Report message to the status bar on the respective diagram */
+	public void showStatus(DiagramEditor diagramEditor, String status) 
+	{
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) {
+				if(((DiagramEditorWrapper) c).getDiagramEditor().equals(diagramEditor)){
+					((DiagramEditorWrapper) c).getStatusBar().reportStatus(status);
+				}
+			}
+		}		
+	}
+
+	/** Get the tab index of this particular diagram */
+	public int getTabIndex(StructureDiagram diagram)
+	{		
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) {
+				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram))
+					return indexOfComponent(c);
+			}
+		}
+		return -1;
+	}
+	
+	/** Gets the file associated with the model. */
+	public File getProjectFile()
+	{
+		return projectFile;
+	}
+
+	/** Sets the file associated with the model. */
+	public void setProjectFile(File modelFile)
+	{
+		projectFile = modelFile;
+		if((this.getSelectedIndex() != -1)&& !(this.getSelectedComponent() instanceof StartPanel))
+		{
+			((DiagramEditorWrapper) this.getSelectedComponent()).setModelFile(modelFile);
+		}
+	}
+
+	/** Gets the MainMenu from the application frame */
+	public AppMenu getMainMenu() 
+	{
+		return frame.getMainMenu();
+	}
+	
+	/** Adds a new tab. */
+	public Component addClosable(String text, Component component)
+	{
+		if (component==null) component = new JPanel();
+		addTab(text, component);		
+		ClosableTabPanel tab = new ClosableTabPanel(this);
+		if(component instanceof DiagramEditorWrapper){
+			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/diagram.png"));
+			tab.getLabel().setIcon(icon);
+			tab.getLabel().setIconTextGap(5);
+			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+		}
+		if(component instanceof TextEditor){
+			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/editor.png"));
+			tab.getLabel().setIcon(icon);
+			tab.getLabel().setIconTextGap(5);
+			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+		}
+		if(component instanceof FinderPane){
+			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/find.png"));
+			tab.getLabel().setIcon(icon);
+			tab.getLabel().setIconTextGap(5);
+			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+		}
+		setTabComponentAt(indexOfComponent(component),tab);
+		setSelectedComponent(component);
+		return component;
+	}
+
+	/** Add Non Closable Tab */
+	public Component addNonClosable(String text, Component component)
+	{
+		if (component==null) component = new JPanel();
+		addTab(text, component);
+		//setTabComponentAt(indexOfComponent(component),null);
+		setSelectedComponent(component);
+		return component;
+	}
+
+	/** Dispose */
+	@Override
+	public void dispose() {
+		int totalTabs = getTabCount();
+		for(int i = 0; i < totalTabs; i++) {
+			IDisposable disposable = (IDisposable) getComponentAt(i);
+			if(disposable != null) disposable.dispose();			
+		}
+	}
+	
 	/** Tell the application that we need to save the project i.e. the project was modified */
 	public void saveProjectNeeded(boolean value)
 	{
@@ -604,6 +817,29 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 	}	
+
+	/** Exports graphics as PNG. */
+	public void exportGfx() 
+	{
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle(getResourceString("dialog.exportgfx.title"));
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Portable Network Graphics file (*.png)", "png");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {			
+			if (fileChooser.getFileFilter() == filter) {
+				try {
+					PngExporter exporter = new PngExporter();
+					exporter.writePNG(getCurrentDiagramEditor(), fileChooser.getSelectedFile());
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(this, ex.getMessage(),
+							getResourceString("error.exportgfx.title"),
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+	}
 	
 	/** 
 	 *  Tell the application to work only with the set of elements contained in the diagram.
@@ -838,8 +1074,73 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.getDiagramManager().updateOLEDFromModification(element, false);
 			}
 		}   
-	}
+	}	
 	
+	/** Delete element from the model and every diagram in each it appears. */
+	public void deleteFromOLED(RefOntoUML.Element element, boolean showwarning)
+	{	
+		int response = -1;
+		if (showwarning){
+			response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear? This action can still be undone.\n", "Delete from OLED", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
+		}
+		if(response==Window.OK)
+		{		
+			ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
+			deletionList.add(element);
+			ArrayList<DiagramEditor> editors = getDiagramEditors(element);
+			//from diagrams & model
+			for(DiagramEditor diagramEditor: editors)
+			{
+				if(element instanceof GeneralizationSet){	
+					diagramEditor.execute(new DeleteGeneralizationSetCommand(diagramEditor, element, getCurrentProject()));
+				}else{
+					diagramEditor.execute(new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true));
+				}
+			}
+			// only from model
+			if(editors==null || editors.size()==0)
+			{		
+				if(element instanceof GeneralizationSet){	
+					DeleteGeneralizationSetCommand cmd = new DeleteGeneralizationSetCommand(null, element,getCurrentProject());
+					cmd.run();
+				}else{
+					DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
+					cmd.run();	
+				}				
+			}
+		}
+	}
+
+	/** Delete elements from the model and every diagram in each they appear. It shows a message before deletion. */
+	public void deleteFromOLED(Collection<DiagramElement> diagramElementList, boolean showmessage)
+	{
+		int response =-1;	
+		ArrayList<RefOntoUML.Element> deletionList = (ArrayList<RefOntoUML.Element>)ModelHelper.getElements(diagramElementList);			
+		if(deletionList.size()>0){		
+			if(showmessage) response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear? This action can still be undone.\n", "Delete from OLED", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
+			if(response==Window.OK)
+			{							
+				if(deletionList.size()>0){
+					ArrayList<DiagramEditor> editors = getDiagramEditors(deletionList.get(0));
+					//from diagrams & model
+					for(DiagramEditor diagramEditor: editors)
+					{
+						DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
+						cmd.run();
+					}	
+					// only from model
+					if(editors.size()==0)
+					{		
+						DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
+						cmd.run();
+					}
+				}else{
+					System.err.println("FATAL ERROR: There is a diagram element without a corresponding refontouml instance... Weird Behaviour.");
+				}
+			}
+		}
+	}
+
 	/** Create a generalization set from selected diagram elements */
 	public GeneralizationSet addGeneralizationSet(DiagramEditor d, Collection<DiagramElement> diagramElementsList) 
 	{		
@@ -904,6 +1205,40 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}		
 		}			
 	}
+	
+	/** Delete element from all diagrams in the project. (not from the model) */
+	public void deleteFromAllDiagrams(RefOntoUML.Element element)
+	{	
+		if(element instanceof GeneralizationSet) return;
+		if(element instanceof Constraintx) return;
+		if(element instanceof Comment) return;
+		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
+		deletionList.add(element);
+		for(DiagramEditor diagramEditor: getDiagramEditors(element))
+		{			
+			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
+			cmd.run();
+		}		
+	}
+
+	/** Delete element from a particular diagram (do not delete it from the model). */
+	public void deleteFromDiagram(RefOntoUML.Element element, DiagramEditor diagramEditor)
+	{		
+		if(element instanceof GeneralizationSet) return;
+		if(element instanceof Constraintx) return;
+		if(element instanceof Comment) return;
+		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
+		deletionList.add(element);		
+		DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
+		cmd.run();		
+	}
+	
+	//======================================================================
+	//
+	//             THE CODE ABOVE IS CORRECTLY REVIWED BY JOHN
+	//              NOW, I NEED TO REVIEW THESE ONES BELOW....
+	//======================================================================
+	//======================================================================
 	
 	/** Change multiplicity and update the connections in diagram */
 	public void changeMultiplicity(RefOntoUML.Property property, int lowerValue, int upperValue)
@@ -1139,15 +1474,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
-	/** Useful method */
-	public boolean contains (ArrayList<CustomOntoUMLElement> list, RefOntoUML.Element elem)
-	{
-		for(CustomOntoUMLElement coe: list){
-			if(coe.getElement().equals(elem)) return true;
-		}
-		return false;
-	}
-	
 	/** Invert end points of an association. This method switch the current properties of an association. THe source becomes the target and vice-versa. */
 	public void invertEndPoints(RefOntoUML.Association association)
 	{
@@ -1339,98 +1665,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				browser.getTree().remove(deletedElement);
 			}
 		});
-	}
-		
-	/** Delete element from the model and every diagram in each it appears. */
-	public void deleteFromOLED(RefOntoUML.Element element, boolean showwarning)
-	{	
-		int response = -1;
-		if (showwarning){
-			response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear? This action can still be undone.\n", "Delete from OLED", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
-		}
-		if(response==Window.OK)
-		{		
-			ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
-			deletionList.add(element);
-			ArrayList<DiagramEditor> editors = getDiagramEditors(element);
-			//from diagrams & model
-			for(DiagramEditor diagramEditor: editors)
-			{
-				if(element instanceof GeneralizationSet){	
-					diagramEditor.execute(new DeleteGeneralizationSetCommand(diagramEditor, element, getCurrentProject()));
-				}else{
-					diagramEditor.execute(new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true));
-				}
-			}
-			// only from model
-			if(editors==null || editors.size()==0)
-			{		
-				if(element instanceof GeneralizationSet){	
-					DeleteGeneralizationSetCommand cmd = new DeleteGeneralizationSetCommand(null, element,getCurrentProject());
-					cmd.run();
-				}else{
-					DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
-					cmd.run();	
-				}				
-			}
-		}
-	}
-		
-	/** Delete element from all diagrams in the project. (not from the model) */
-	public void deleteFromAllDiagrams(RefOntoUML.Element element)
-	{	
-		if(element instanceof GeneralizationSet) return;
-		if(element instanceof Constraintx) return;
-		if(element instanceof Comment) return;
-		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
-		deletionList.add(element);
-		for(DiagramEditor diagramEditor: getDiagramEditors(element))
-		{			
-			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
-			cmd.run();
-		}		
-	}
-
-	/** Delete element from a particular diagram (do not delete it from the model). */
-	public void deleteFromDiagram(RefOntoUML.Element element, DiagramEditor diagramEditor)
-	{		
-		if(element instanceof GeneralizationSet) return;
-		if(element instanceof Constraintx) return;
-		if(element instanceof Comment) return;
-		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
-		deletionList.add(element);		
-		DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
-		cmd.run();		
-	}
-	
-	/** Delete elements from the model and every diagram in each they appear. It shows a message before deletion. */
-	public void deleteFromOLED(Collection<DiagramElement> diagramElementList, boolean showmessage)
-	{
-		int response =-1;	
-		ArrayList<RefOntoUML.Element> deletionList = (ArrayList<RefOntoUML.Element>)ModelHelper.getElements(diagramElementList);			
-		if(deletionList.size()>0){		
-			if(showmessage) response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear? This action can still be undone.\n", "Delete from OLED", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
-			if(response==Window.OK)
-			{							
-				if(deletionList.size()>0){
-					ArrayList<DiagramEditor> editors = getDiagramEditors(deletionList.get(0));
-					//from diagrams & model
-					for(DiagramEditor diagramEditor: editors)
-					{
-						DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
-						cmd.run();
-					}	
-					// only from model
-					if(editors.size()==0)
-					{		
-						DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
-						cmd.run();
-					}
-				}else{
-					System.err.println("ERROR: There is a diagram element without a corresponding refontouml instance...");
-				}
-			}
-		}
 	}
 	
 	/** Update OLED according to a Fix.  */
@@ -1750,31 +1984,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/**
-	 * Exports graphics as PNG.
-	 */
-	public void exportGfx() 
-	{
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle(getResourceString("dialog.exportgfx.title"));
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Portable Network Graphics file (*.png)", "png");
-		fileChooser.addChoosableFileFilter(filter);
-		fileChooser.setFileFilter(filter);
-		fileChooser.setAcceptAllFileFilterUsed(false);
-		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {			
-			if (fileChooser.getFileFilter() == filter) {
-				try {
-					PngExporter exporter = new PngExporter();
-					exporter.writePNG(getCurrentDiagramEditor(), fileChooser.getSelectedFile());
-				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(this, ex.getMessage(),
-							getResourceString("error.exportgfx.title"),
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		}
-	}
-
-	/**
 	 * Imports a Complete OCL document
 	 */
 	public void importOCL() 
@@ -1793,242 +2002,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}				
 	}
 
-	/**
-	 * Adds a start panel to the manager
-	 */
-	public void addStartPanel()
-	{
-		//StartPanel start = new StartPanel(frame);
-		StartPanel start = new StartPanel(frame);
-		this.addNonClosable("Start", start);
-	}
-
-	public void addFinderPanel()
-	{
-		for(Component c: getComponents()){
-			if(c instanceof FinderPane) { 
-				setSelectedComponent(c);
-				return;
-			}
-		}		
-		FinderPane finder = new FinderPane(frame.getDiagramManager().getCurrentProject());
-		this.addClosable("Find", finder);
-	}
-	
-	/**
-	 * Adds a new tab.
-	 * @param text the tabs text
-	 * @param component the component to be added as tab's content
-	 * */
-	public Component addClosable(String text, Component component)
-	{
-		if (component==null) component = new JPanel();
-		addTab(text, component);		
-		ClosableTabPanel tab = new ClosableTabPanel(this);
-		if(component instanceof DiagramEditorWrapper){
-			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/diagram.png"));
-			tab.getLabel().setIcon(icon);
-			tab.getLabel().setIconTextGap(5);
-			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
-		}
-		if(component instanceof TextEditor){
-			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/editor.png"));
-			tab.getLabel().setIcon(icon);
-			tab.getLabel().setIconTextGap(5);
-			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
-		}
-		if(component instanceof FinderPane){
-			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/find.png"));
-			tab.getLabel().setIcon(icon);
-			tab.getLabel().setIconTextGap(5);
-			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
-		}
-		setTabComponentAt(indexOfComponent(component),tab);
-		setSelectedComponent(component);
-		return component;
-	}
-
-	/**
-	 * Add Non Closable Tab
-	 */
-	public Component addNonClosable(String text, Component component)
-	{
-		if (component==null) component = new JPanel();
-		addTab(text, component);
-		//setTabComponentAt(indexOfComponent(component),null);
-		setSelectedComponent(component);
-		return component;
-	}
-
-	/**
-	 * Dispose
-	 */
-	@Override
-	public void dispose() {
-		int totalTabs = getTabCount();
-		for(int i = 0; i < totalTabs; i++)
-		{
-			IDisposable disposable = (IDisposable) getComponentAt(i);
-			if(disposable != null)
-			{
-				disposable.dispose();
-			}
-		}
-	}
-
-	/**
-	 * Open Isse Report Link
-	 */
-	public void openIssueReport()
-	{
-		openLinkWithBrowser("https://code.google.com/p/ontouml-lightweight-editor/issues/list");
-	}
-
-	/**
-	 * Open Link With Browser
-	 */
-	public void openLinkWithBrowser(String link)
-	{
-		Desktop desktop = Desktop.getDesktop();
-
-		if( !desktop.isSupported(Desktop.Action.BROWSE)){
-			System.err.println( "Desktop doesn't support the browse action (fatal)" );
-			return;
-		}
-
-		try {
-			java.net.URI uri = new java.net.URI(link);
-			desktop.browse(uri);
-		}
-		catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	/**
-	 * Sets the dispatcher for the editor events
-	 * 
-	 * @param editorDispatcher the dispatcher responsible for routing events 
-	 * */
-	public void setEditorDispatcher(DiagramEditorCommandDispatcher editorDispatcher) 
-	{
-		this.editorDispatcher = editorDispatcher;
-	}
-
-	/**
-	 * Gets the dispatcher for the editor events
-	 * 
-	 * @return DiagramEditorCommandDispatcher the dispatcher responsible for routing events
-	 * */
-	public DiagramEditorCommandDispatcher getEditorDispatcher() 
-	{
-		return editorDispatcher;
-	}
-
-	/**
-	 * Gets the current DiagramEditor (the editor displayed in the focused tab).
-	 * If there's no suitable editor, returns null.
-	 * 
-	 * @return DiagramEditor the current focused DiagramEditor
-	 * */
-	public Editor getCurrentEditor() 
-	{
-		if(this.getSelectedIndex() != -1)
-		{
-			Object obj = this.getSelectedComponent();
-			if(obj instanceof Editor)
-				return (Editor) obj;	
-		}
-		return null;
-	}
-
-	/**
-	 * Gets the project being edited 
-	 * 
-	 * @return {@link UmlProject} the project
-	 */
-	public UmlProject getCurrentProject() 
-	{
-		return currentProject;
-	}
-
-	/**
-	 * Gets the wrapper for the selected DiagramEditor
-	 * 
-	 * @return {@link UmlProject} the project
-	 */
-	public DiagramEditorWrapper getCurrentWrapper()
-	{
-		if(this.getSelectedComponent() instanceof DiagramEditorWrapper)
-			return ((DiagramEditorWrapper) this.getSelectedComponent());
-		return null;
-	}
-
-	/**
-	 * Gets the wrapper for the selected DiagramEditor
-	 * 
-	 * @return {@link UmlProject} the project
-	 */
-	public DiagramEditor getCurrentDiagramEditor() 
-	{		
-		if(this.getSelectedComponent() instanceof DiagramEditorWrapper){			
-			return ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor();
-		}
-		return null;
-	}
-
-	public void showStatus(DiagramEditor diagramEditor, String status) 
-	{
-		for(Component c: getComponents()){
-			if(c instanceof DiagramEditorWrapper) {
-				if(((DiagramEditorWrapper) c).getDiagramEditor().equals(diagramEditor)){
-					((DiagramEditorWrapper) c).getStatusBar().reportStatus(status);
-				}
-			}
-		}		
-	}
-
-	/** Return all opened diagram editors */
-	public ArrayList<DiagramEditor> getDiagramEditors()
-	{
-		ArrayList<DiagramEditor> list = new ArrayList<DiagramEditor>();
-		for(Component c: getComponents()){
-			if(c instanceof DiagramEditorWrapper) list.add(((DiagramEditorWrapper)c).getDiagramEditor());
-		}
-		return list;
-	}
-
-	public void selectEditor(DiagramEditor editor)
-	{		
-		for(Component c: getComponents()){
-			if(c instanceof DiagramEditorWrapper) {
-				if(((DiagramEditorWrapper) c).getDiagramEditor().equals(editor)) setSelectedComponent(c);
-			}
-		}		
-	}
-	
-	public DiagramEditor getDiagramEditor(StructureDiagram diagram)
-	{		
-		for(Component c: getComponents()){
-			if(c instanceof DiagramEditorWrapper) {
-				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram))
-					return ((DiagramEditorWrapper)c).getDiagramEditor();
-			}
-		}
-		return null;
-	}
-
-	public int getTabIndex(StructureDiagram diagram)
-	{		
-		for(Component c: getComponents()){
-			if(c instanceof DiagramEditorWrapper) {
-				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram))
-					return indexOfComponent(c);
-			}
-		}
-		return -1;
-	}
-	
 	/**
 	 * Gets all DiagramEditors that contains a given element. 
 	 * Some of them might appear opened in the Tab but others don't.
@@ -2066,38 +2039,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 		return list;
-	}
-
-	/**
-	 * Gets the file associated with the model.
-	 * 
-	 * @return File the model file
-	 * */
-	public File getProjectFile()
-	{
-		return projectFile;
-	}
-
-	/**
-	 * Sets the file associated with the model.
-	 * 
-	 * @param modelFile the model file
-	 * */
-	public void setProjectFile(File modelFile)
-	{
-		projectFile = modelFile;
-		if((this.getSelectedIndex() != -1)&& !(this.getSelectedComponent() instanceof StartPanel))
-			((DiagramEditorWrapper) this.getSelectedComponent()).setModelFile(modelFile);
-	}
-
-	/**
-	 * Gets the MainMenu from the application frame
-	 * 
-	 * @return MainMenu the applications' main menu
-	 * */
-	public AppMenu getMainMenu() 
-	{
-		return frame.getMainMenu();
 	}
 
 	/**
@@ -2302,7 +2243,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		for(int i = 0; i < totalTabs; i++)
 		{
 			Editor editor = (Editor)getComponentAt(i);
-
 			if(editor.getEditorNature() == nature && editor.getProject() == project)
 			{
 				return editor;
