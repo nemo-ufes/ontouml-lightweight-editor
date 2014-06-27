@@ -355,7 +355,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.ROLEPATTERN));
 						
 			selectorMap.put("CREATE_GEN_SET", new MethodCall(
-					DiagramEditor.class.getMethod("AddGeneralizationSet")));
+					DiagramEditor.class.getMethod("addGeneralizationSet")));
 			selectorMap.put("DELETE_GEN_SET", new MethodCall(
 					DiagramEditor.class.getMethod("deleteGeneralizationSet")));
 			
