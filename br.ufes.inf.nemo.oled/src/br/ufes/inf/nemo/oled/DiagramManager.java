@@ -61,6 +61,7 @@ import org.eclipse.ocl.SemanticException;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Comment;
 import RefOntoUML.Constraintx;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
@@ -120,6 +121,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.AddConnectionCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddGeneralizationSetCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.AddNodeCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteElementCommand;
+import br.ufes.inf.nemo.oled.ui.diagram.commands.DeleteGeneralizationSetCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
@@ -307,6 +309,27 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		browser.getTree().removeCurrentNode();
 	}
 		
+	public void renameDiagram(final StructureDiagram diagram)
+	{
+		String text = new String();    						
+		text = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename Diagram",JOptionPane.INFORMATION_MESSAGE,null,null,diagram.getName());    						
+		final String newtext = text;
+		if(text!=null)
+		{
+			SwingUtilities.invokeLater(new Runnable() {				
+				@Override
+				public void run() {
+					diagram.setName(newtext);
+					int index = getTabIndex(diagram);					
+					setTitleAt(index, newtext);        
+			        getCurrentDiagramEditor().getDiagram().setName(newtext);
+			        ProjectBrowser.refreshTree(getCurrentProject());	
+			        updateUI();
+				}
+			});				
+		}		
+	}
+	
 	/** Add relationship to the model instance (not to diagram). */
 	public RefOntoUML.Relationship addRelation(RelationType stereotype, EObject eContainer)
 	{
@@ -367,6 +390,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}else if (element instanceof RefOntoUML.Constraintx){
 			AddNodeCommand cmd = new AddNodeCommand(null,null,(RefOntoUML.Constraintx)element,0,0,getCurrentProject(),eContainer);		
 			cmd.run();
+		}else if (element instanceof RefOntoUML.GeneralizationSet){
+			AddGeneralizationSetCommand cmd = new AddGeneralizationSetCommand(null,null,(RefOntoUML.GeneralizationSet)element,((RefOntoUML.GeneralizationSet)element).getGeneralization(),getCurrentProject(),eContainer);		
+			cmd.run();
 		}else{
 			//to add only in the model do exactly as follow		
 			AddNodeCommand cmd = new AddNodeCommand(null,null,element,0,0,getCurrentProject(),eContainer);		
@@ -376,7 +402,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/** Rename an element. It updates the application accordingly (including the diagrams in which the element appears). It also shows a input dialog for text entry. */
-	public void rename(RefOntoUML.Element element)
+	public void renameElement(RefOntoUML.Element element)
 	{
 		if (element instanceof NamedElement) 
 		{
@@ -400,25 +426,37 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}   
 	}
 	
-	public void renameDiagram(final StructureDiagram diagram)
-	{
-		String text = new String();    						
-		text = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename Diagram",JOptionPane.INFORMATION_MESSAGE,null,null,diagram.getName());    						
-		final String newtext = text;
-		if(text!=null)
-		{
-			SwingUtilities.invokeLater(new Runnable() {				
-				@Override
-				public void run() {
-					diagram.setName(newtext);
-					int index = getTabIndex(diagram);					
-					setTitleAt(index, newtext);        
-			        getCurrentDiagramEditor().getDiagram().setName(newtext);
-			        ProjectBrowser.refreshTree(getCurrentProject());	
-			        updateUI();
-				}
-			});				
-		}		
+	/** Create a generalization set from selected diagram elements */
+	public GeneralizationSet addGeneralizationSet(DiagramEditor d, Collection<DiagramElement> diagramElementsList) 
+	{		
+		// retain only generalizations from selected
+		ArrayList<Generalization> gens = new ArrayList<Generalization>();
+		boolean genSetAlreadyExists = false;
+		for(DiagramElement dElem: diagramElementsList){
+			if (dElem instanceof GeneralizationElement){
+				Generalization gen = ((GeneralizationElement)dElem).getGeneralization();
+				if (gen.getGeneralizationSet()!=null && !gen.getGeneralizationSet().isEmpty()) genSetAlreadyExists=true;
+				if(gen!=null) gens.add(gen);
+			}
+		}
+		if(gens.size()<=1) return null; 
+		if(genSetAlreadyExists){
+			int response = JOptionPane.showConfirmDialog(getFrame(), "There is already a generalization set in the selected generalizations.\nAre you sure you want to continue?", "Adding Generalization Set", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+			if(response!=JOptionPane.OK_OPTION) return null;
+		}
+		//create default gen set
+		EObject eContainer = null;
+		if(gens.size()>1) eContainer = gens.get(0).getSpecific().eContainer();	
+		else eContainer = getCurrentProject().getModel();
+		PackageableElement newgenset = (PackageableElement)addElement(ElementType.GENERALIZATIONSET, (RefOntoUML.Package)eContainer);
+		// init data of generalization set
+		((GeneralizationSet)newgenset).setIsCovering(true);
+		((GeneralizationSet)newgenset).setIsDisjoint(true);
+		((GeneralizationSet)newgenset).setName("gs");
+		
+		d.execute(new AddGeneralizationSetCommand(d, d.getDiagram(), newgenset, gens, getCurrentProject(), getCurrentProject().getModel()));
+				
+		return (GeneralizationSet)newgenset;
 	}
 	
 	/** Change multiplicity and update the connections in diagram */
@@ -442,36 +480,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ProjectBrowser.refreshTree(currentProject);
 	}
 	
-	/** Delete elements from the model and every diagram in each they appear. It shows a message before deletion. */
-	public void deleteFromOLED(Collection<DiagramElement> diagramElementList, boolean showmessage)
-	{
-		int response =-1;	
-		ArrayList<RefOntoUML.Element> deletionList = (ArrayList<RefOntoUML.Element>)ModelHelper.getElements(diagramElementList);			
-		if(deletionList.size()>0){		
-			if(showmessage) response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear? This action can still be undone.\n", "Delete from OLED", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
-			if(response==Window.OK)
-			{							
-				if(deletionList.size()>0){
-					ArrayList<DiagramEditor> editors = getDiagramEditors(deletionList.get(0));
-					//from diagrams & model
-					for(DiagramEditor diagramEditor: editors)
-					{
-						DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
-						cmd.run();
-					}	
-					// only from model
-					if(editors.size()==0)
-					{		
-						DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
-						cmd.run();
-					}
-				}else{
-					System.err.println("ERROR: There is a diagram element without a corresponding refontouml instance...");
-				}
-			}
-		}
-	}
-
 	/** Change a class stereotype */ 
 	public void changeClassStereotype(Type type, String stereo) 
 	{   
@@ -495,27 +503,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
    		Fix fix = fixer.changeRelationStereotypeTo(type, fixer.getRelationshipStereotype(stereo));   		
    		updateOLED(fix);   		   		
    	}
-	
-	/** Delete element from all diagrams in the project. (not from the model) */
-	public void deleteFromDiagrams(RefOntoUML.Element element)
-	{		
-		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
-		deletionList.add(element);
-		for(DiagramEditor diagramEditor: getDiagramEditors(element))
-		{
-			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
-			cmd.run();
-		}		
-	}
-
-	/** Delete element from a particular diagram (do not delete it from the model). */
-	public void deleteFromDiagram(RefOntoUML.Element element, DiagramEditor diagramEditor)
-	{		
-		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
-		deletionList.add(element);		
-		DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
-		cmd.run();		
-	}
 
 	/** Re-make element in the diagram . 
 	 *  This actually deletes the current diagramElement and creates another diagramElement, including it in the diagram.*/
@@ -706,39 +693,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
-	/** Create a generalization set from selected diagram elements */
-	public GeneralizationSet addGeneralizationSet(DiagramEditor d, Collection<DiagramElement> diagramElementsList) 
-	{		
-		// retain only generalizations from selected
-		ArrayList<Generalization> gens = new ArrayList<Generalization>();
-		boolean genSetAlreadyExists = false;
-		for(DiagramElement dElem: diagramElementsList){
-			if (dElem instanceof GeneralizationElement){
-				Generalization gen = ((GeneralizationElement)dElem).getGeneralization();
-				if (gen.getGeneralizationSet()!=null && !gen.getGeneralizationSet().isEmpty()) genSetAlreadyExists=true;
-				if(gen!=null) gens.add(gen);
-			}
-		}
-		if(gens.size()<=1) return null; 
-		if(genSetAlreadyExists){
-			int response = JOptionPane.showConfirmDialog(getFrame(), "There is already a generalization set in the selected generalizations.\nAre you sure you want to continue?", "Adding Generalization Set", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
-			if(response!=JOptionPane.OK_OPTION) return null;
-		}
-		//create default gen set
-		EObject eContainer = null;
-		if(gens.size()>1) eContainer = gens.get(0).getSpecific().eContainer();	
-		else eContainer = getCurrentProject().getModel();
-		PackageableElement newgenset = (PackageableElement)addElement(ElementType.GENERALIZATIONSET, (RefOntoUML.Package)eContainer);
-		// init data of generalization set
-		((GeneralizationSet)newgenset).setIsCovering(true);
-		((GeneralizationSet)newgenset).setIsDisjoint(true);
-		((GeneralizationSet)newgenset).setName("gs");
-		
-		d.execute(new AddGeneralizationSetCommand(d, d.getDiagram(), newgenset, gens, getCurrentProject(), getCurrentProject().getModel()));
-				
-		return (GeneralizationSet)newgenset;
-	}
-	
 	/** Useful method */
 	public boolean contains (ArrayList<CustomOntoUMLElement> list, RefOntoUML.Element elem)
 	{
@@ -749,7 +703,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/** Delete a generalization set from a list of selected diagram elements */
-	public void deleteGeneralizationSet(Collection<DiagramElement> diagramElementsList) 
+	public void deleteGeneralizationSet(DiagramEditor d, Collection<DiagramElement> diagramElementsList) 
 	{	
 		// retain only generalization sets from selected
 		ArrayList<CustomOntoUMLElement> genSets = new ArrayList<CustomOntoUMLElement>();		
@@ -764,7 +718,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 		if(genSets.size()==0) return;
-		if(genSets.size()==1){
+		if(genSets.size()==1){			
 			frame.getDiagramManager().deleteFromOLED((RefOntoUML.Element)genSets.get(0).getElement(),true);
 		}else{
 			CustomOntoUMLElement chosen = (CustomOntoUMLElement) JOptionPane.showInputDialog(getFrame(), 
@@ -840,7 +794,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		//classes and datatypes
 		for(Object obj: fix.getAdded()){			
-			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType) {				
+			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType) {	
+				System.out.println("Including: "+obj);
 				if (fix.getAddedPosition(obj).x!=-1 && fix.getAddedPosition(obj).y!=-1) 
 				{						
 					AddNodeCommand cmd = new AddNodeCommand((DiagramNotification)getCurrentDiagramEditor(),getCurrentDiagramEditor().getDiagram(),(RefOntoUML.Element)obj,
@@ -856,10 +811,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		//relationships and attributes
 		for(Object obj: fix.getAdded()) {
 			if (obj instanceof RefOntoUML.Relationship) {
+				System.out.println("Including: "+obj);
 				updateOLEDFromInclusion((RefOntoUML.Element)obj);
 				moveToDiagram((RefOntoUML.Element)obj, getCurrentDiagramEditor());
 			}
-			if(obj instanceof RefOntoUML.Property){				
+			if(obj instanceof RefOntoUML.Property){		
+				System.out.println("Including: "+obj);
 				updateOLEDFromInclusion((RefOntoUML.Element)obj);
 			}
 		}	
@@ -867,6 +824,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		for(Object obj: fix.getAdded()) {
 			if (obj instanceof RefOntoUML.GeneralizationSet) 
 			{
+				System.out.println("Including: "+obj);
 				AddGeneralizationSetCommand cmd = new AddGeneralizationSetCommand((DiagramNotification)getCurrentDiagramEditor(),getCurrentDiagramEditor().getDiagram(),(RefOntoUML.Element)obj,
 				((GeneralizationSet)obj).getGeneralization(),getCurrentProject(),(RefOntoUML.Element)((EObject)obj).eContainer());
 				cmd.run(); 
@@ -942,6 +900,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			else {
 				redesign=false;
 			}
+			System.out.println("Modifying: "+obj);
 			updateOLEDFromModification((RefOntoUML.Element)obj,redesign);
 		}
 	}
@@ -976,23 +935,90 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear? This action can still be undone.\n", "Delete from OLED", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
 		}
 		if(response==Window.OK)
-		{
+		{		
 			ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
-			deletionList.add(element);		
+			deletionList.add(element);
+			ArrayList<DiagramEditor> editors = getDiagramEditors(element);
 			//from diagrams & model
-			for(DiagramEditor diagramEditor: getDiagramEditors(element))
+			for(DiagramEditor diagramEditor: editors)
 			{
-				diagramEditor.execute(new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true));
+				if(element instanceof GeneralizationSet){	
+					diagramEditor.execute(new DeleteGeneralizationSetCommand(diagramEditor, element, getCurrentProject()));
+				}else{
+					diagramEditor.execute(new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true));
+				}
 			}
 			// only from model
-			if(getDiagramEditors(element).size()==0)
+			if(editors==null || editors.size()==0)
 			{		
-				DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
-				cmd.run();
+				if(element instanceof GeneralizationSet){	
+					DeleteGeneralizationSetCommand cmd = new DeleteGeneralizationSetCommand(null, element,getCurrentProject());
+					cmd.run();
+				}else{
+					DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
+					cmd.run();	
+				}				
 			}
 		}
 	}
 		
+	/** Delete element from all diagrams in the project. (not from the model) */
+	public void deleteFromAllDiagrams(RefOntoUML.Element element)
+	{	
+		if(element instanceof GeneralizationSet) return;
+		if(element instanceof Constraintx) return;
+		if(element instanceof Comment) return;
+		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
+		deletionList.add(element);
+		for(DiagramEditor diagramEditor: getDiagramEditors(element))
+		{			
+			DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
+			cmd.run();
+		}		
+	}
+
+	/** Delete element from a particular diagram (do not delete it from the model). */
+	public void deleteFromDiagram(RefOntoUML.Element element, DiagramEditor diagramEditor)
+	{		
+		if(element instanceof GeneralizationSet) return;
+		if(element instanceof Constraintx) return;
+		if(element instanceof Comment) return;
+		ArrayList<RefOntoUML.Element> deletionList = new ArrayList<RefOntoUML.Element>();
+		deletionList.add(element);		
+		DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),false,true);
+		cmd.run();		
+	}
+	
+	/** Delete elements from the model and every diagram in each they appear. It shows a message before deletion. */
+	public void deleteFromOLED(Collection<DiagramElement> diagramElementList, boolean showmessage)
+	{
+		int response =-1;	
+		ArrayList<RefOntoUML.Element> deletionList = (ArrayList<RefOntoUML.Element>)ModelHelper.getElements(diagramElementList);			
+		if(deletionList.size()>0){		
+			if(showmessage) response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear? This action can still be undone.\n", "Delete from OLED", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
+			if(response==Window.OK)
+			{							
+				if(deletionList.size()>0){
+					ArrayList<DiagramEditor> editors = getDiagramEditors(deletionList.get(0));
+					//from diagrams & model
+					for(DiagramEditor diagramEditor: editors)
+					{
+						DeleteElementCommand cmd = new DeleteElementCommand(diagramEditor,deletionList, diagramEditor.getProject(),true,true);
+						cmd.run();
+					}	
+					// only from model
+					if(editors.size()==0)
+					{		
+						DeleteElementCommand cmd = new DeleteElementCommand(null,deletionList, getCurrentProject(),true,false);
+						cmd.run();
+					}
+				}else{
+					System.err.println("ERROR: There is a diagram element without a corresponding refontouml instance...");
+				}
+			}
+		}
+	}
+	
 	/** Update OLED according to a Fix.  */
 	public void updateOLED (final Fix fix)
 	{
@@ -1002,7 +1028,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				
 		updateOLEDFromModification(fix);
 		
-		for(Object obj: fix.getDeleted()) deleteFromOLED((RefOntoUML.Element)obj,false);				
+		for(Object obj: fix.getDeleted()) {
+			System.out.println("Deleting: "+obj);
+			deleteFromOLED((RefOntoUML.Element)obj,false);				
+		}
 		for(String str: fix.getAddedRules()) getFrame().getInfoManager().addConstraints(str+"\n");		
 		return ;
 	}
@@ -2015,10 +2044,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			{
 				StructureDiagram diagram = (StructureDiagram)d;
 				ArrayList<DiagramElement> elemList=null;
-				if(element instanceof Property) 
+				if(element instanceof Property){
 					elemList = ModelHelper.getDiagramElements((RefOntoUML.Element)element.eContainer());
-				else 
+				}else if (element instanceof GeneralizationSet){
+					for(Generalization gen: ((RefOntoUML.GeneralizationSet)element).getGeneralization()){
+						elemList = ModelHelper.getDiagramElements(gen);
+					}
+				}else{
 					elemList = ModelHelper.getDiagramElements(element);
+				}
 				for(DiagramElement elem: elemList){
 					if (diagram.containsChild(elem)) {
 						DiagramEditor editor = getDiagramEditor(diagram);
