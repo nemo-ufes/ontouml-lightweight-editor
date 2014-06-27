@@ -13,38 +13,35 @@ import RefOntoUML.Role;
 import RefOntoUML.SubKind;
 import RefOntoUML.memberOf;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class HetCollOccurrence extends AntipatternOccurrence {
 
-	public Classifier getWhole() {
-		return whole;
-	}
-
-	public ArrayList<Property> getMemberEnds() {
-		return memberEnds;
-	}
-
 	private Classifier whole;
-	private ArrayList<Property> memberEnds;
+	private ArrayList<Property> memberProperties;
+	private ArrayList<Property> collectionProperties;
 	
-	public HetCollOccurrence(Classifier whole, ArrayList<Property> memberEnds, HetCollAntipattern ap) throws Exception {
+	public HetCollOccurrence(Classifier whole, ArrayList<Property> memberProperties, ArrayList<Property> collectionProperties, HetCollAntipattern ap) throws Exception {
 		super(ap);
 		
-		if(whole==null || memberEnds==null || parser==null)
+		if(whole==null || memberProperties==null || parser==null)
 			throw new NullPointerException("HetColl: null inputs!");
-		if(memberEnds.size()<2)
+		if(memberProperties.size()<2)
 			throw new Exception("HetColl: more than two memberOfs are required!");
 		if(!(whole instanceof Collective) && !(whole instanceof SubKind) && !(whole instanceof Role) && !(whole instanceof Phase))
 			throw new Exception("HetColl: whole type not acceptable. Required to be Collective, Subkind, Role or Phase");
 		
-		for (Property p : memberEnds) {
+		for (Property p : memberProperties) {
 			if (!(p.getAssociation() instanceof memberOf))
 				throw new Exception("HetColl: All properties must refer to memberOf relations.");
 		}
 		
 		this.whole = whole;
-		this.memberEnds = memberEnds;
+		this.memberProperties = memberProperties;
+		this.collectionProperties = collectionProperties;
 	}
 
 	@Override
@@ -52,7 +49,7 @@ public class HetCollOccurrence extends AntipatternOccurrence {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
 		selection.add(this.whole);
-		for (Property p : this.memberEnds) {
+		for (Property p : this.memberProperties) {
 			selection.add(p.getAssociation());
 			selection.add(p.getType());
 		}
@@ -65,11 +62,24 @@ public class HetCollOccurrence extends AntipatternOccurrence {
 	
 	@Override
 	public String toString(){
-		String result = "Whole: "+parser.getStringRepresentation(this.whole)+"\n";
+		String result = "Collection: "+OntoUMLNameHelper.getTypeAndName(whole, true, false)+"\n";
 		
 		result+="Members: ";
-		for (Property p : this.memberEnds)
-			result+="\n\t"+parser.getStringRepresentation(p);
+		int direct = 0;
+		for (Property p : this.memberProperties){
+			if(p.getOpposite().getType().equals(whole)){
+				result+="\n\t"+OntoUMLNameHelper.getNameAndType(p);
+				direct++;
+			}
+		}
+		
+		if(memberProperties.size()>direct){
+			result+="\nInherited Members: ";
+			for (Property p : this.memberProperties) {
+				if(!p.getOpposite().getType().equals(whole))
+					result += "\n\t"+OntoUMLNameHelper.getNameAndType(p)+" (from "+OntoUMLNameHelper.getTypeAndName(p.getOpposite().getType(), true, false)+")";
+			}
+		}
 		
 		return result;
 		
@@ -77,25 +87,59 @@ public class HetCollOccurrence extends AntipatternOccurrence {
 
 	@Override
 	public String getShortName() {
-		return parser.getStringRepresentation(whole);
+		return "Collection: "+OntoUMLNameHelper.getTypeAndName(whole, true, true);
+	}
+	
+	public Classifier getWhole() {
+		return whole;
+	}
+
+	public ArrayList<Property> getMemberProperties() {
+		return memberProperties;
+	}
+	
+	public ArrayList<Property> getCollectionProperties() {
+		return collectionProperties;
 	}
 
 	// OUTCOMING FIXES ===============================================
 	
-	public void changeAllToComponentOf(ArrayList<Association> partOfList) 
-	{
+	public void changeToComponentOf() {
+		ArrayList<Association> assocList = new ArrayList<Association>();
+		
+		for (Property p : memberProperties)
+			assocList.add(p.getAssociation());
+		
+		for (Property p : collectionProperties)
+			assocList.add(p.getAssociation());
 	
-		fix.addAll(fixer.changeAllToComponentOf(partOfList));
+		fix.addAll(fixer.changeAllRelationsTo(assocList, RelationStereotype.COMPONENTOF, ClassStereotype.KIND, ClassStereotype.KIND));
+		
 	}
 
-	public void changeAllToCollectionAndSubCollectionOf(ArrayList<Association> partOfList) 
-	{
-		fix.addAll(fixer.changeAllToCollectionAndSubCollectionOf(partOfList));
+	public void changeToSubCollectionOf(ArrayList<Property> changeToSubCollectionOfList, ArrayList<Property> changeToMemberOfList) {
+		ArrayList<Association> subCollectionList = new ArrayList<Association>();
+		ArrayList<Association> memberOfList = new ArrayList<Association>();
+		
+		for (Property p : changeToSubCollectionOfList)
+			subCollectionList.add(p.getAssociation());
+		
+		for (Property p : changeToMemberOfList)
+			memberOfList.add(p.getAssociation());
+		
+		fix.addAll(fixer.changeAllRelationsTo(subCollectionList, RelationStereotype.SUBCOLLECTIONOF, ClassStereotype.COLLECTIVE, ClassStereotype.COLLECTIVE));
+		fix.addAll(fixer.changeAllRelationsTo(memberOfList, RelationStereotype.MEMBEROF, ClassStereotype.COLLECTIVE, null));
 	}
 
-	public void changeAllToOneSuperMember(ArrayList<Association> partOfList) 
-	{		
-		fix.addAll(fixer.changeAllToOneSuperMember(partOfList));
+	public void mergeToMemberOf() {
+		ArrayList<Association> assocList = new ArrayList<Association>();
+		
+		for (Property p : memberProperties)
+			assocList.add(p.getAssociation());
+		
+		fix.addAll(fixer.changeAllToOneSuperMember(assocList));
+		
 	}
+
 
 }

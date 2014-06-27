@@ -1,32 +1,18 @@
 package br.ufes.inf.nemo.antipattern.wizard.hetcoll;
 
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.widgets.Composite;
-
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
-import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
+import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
 
-public class HetCollPage extends WizardPage {
-
-	protected HetCollOccurrence hetColl;	
+public abstract class HetCollPage extends AntipatternWizardPage<HetCollOccurrence, HetCollWizard> {
 	
 	/**
 	 * Create the wizard.
 	 */
 	public HetCollPage(HetCollOccurrence hetColl) 
 	{
-		super("HetCollPage");		
-		this.hetColl = hetColl;		
+		super(hetColl);		
 		setTitle(HetCollAntipattern.getAntipatternInfo().getName());		
 	}
-	
-	public AntipatternWizard getHetCollWizard(){
-		return (AntipatternWizard)getWizard();
-	}
 
-	@Override
-	public void createControl(Composite arg0) {
-		
-	}
 }

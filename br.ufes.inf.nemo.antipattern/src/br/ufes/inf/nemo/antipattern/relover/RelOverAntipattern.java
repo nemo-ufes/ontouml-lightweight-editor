@@ -136,7 +136,7 @@ public class RelOverAntipattern extends OverlappingAntipattern<RelOverOccurrence
 		
 		for (Classifier relator : hash.keySet()) {
 			
-			System.out.println("RELATOR: "+relator.getName());
+//			System.out.println("RELATOR: "+relator.getName());
 			try {
 				RelOverOccurrence relOver = new RelOverOccurrence(relator, hash.get(relator), this);
 				getOccurrences().add(relOver);

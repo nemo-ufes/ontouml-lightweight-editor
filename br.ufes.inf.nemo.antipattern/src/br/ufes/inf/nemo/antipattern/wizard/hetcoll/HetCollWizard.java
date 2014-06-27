@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.hetcoll;
 
+import org.eclipse.jface.wizard.IWizardPage;
+
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollAntipattern;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
@@ -10,6 +12,7 @@ public class HetCollWizard extends AntipatternWizard {
 
 	public HetCollFirstPage firstPage;
 	public HetCollSecondPage secondPage;
+	public HetCollThirdPage thirdPage;
 		
 	public HetCollWizard(HetCollOccurrence ap) {
 		super(ap,HetCollAntipattern.getAntipatternInfo().name);		
@@ -20,6 +23,7 @@ public class HetCollWizard extends AntipatternWizard {
 	{
 		firstPage = new HetCollFirstPage((HetCollOccurrence)ap);
 		secondPage = new HetCollSecondPage((HetCollOccurrence)ap);
+		thirdPage = new HetCollThirdPage((HetCollOccurrence)ap);
 			
 		finishing = new FinishingPage();
 		options = new HetCollRefactoringPage(getAp());
@@ -35,7 +39,8 @@ public class HetCollWizard extends AntipatternWizard {
 			
 		addPage(presentation);	
 		addPage(firstPage);	
-		addPage(secondPage);
+		addPage(secondPage);	
+		addPage(thirdPage);
 		addPage(options);
 		addPage(finishing);
 	}
@@ -44,13 +49,17 @@ public class HetCollWizard extends AntipatternWizard {
 		return (HetCollOccurrence)ap;
 	}
 	
-	public HetCollFirstPage getFirstPage()
-	{
+	public HetCollFirstPage getFirstPage(){
 		return firstPage;
 	}
 	
-	public HetCollSecondPage getSecondPage()
-	{
+	public IWizardPage getSecondPage() {
 		return secondPage;
 	}
+	
+	public HetCollThirdPage getThirdPage(){
+		return thirdPage;
+	}
+
+	
 }
