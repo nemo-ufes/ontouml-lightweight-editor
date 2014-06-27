@@ -1,39 +1,33 @@
 package br.ufes.inf.nemo.antipattern.wizard.hetcoll;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
-
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
-import RefOntoUML.Association;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class HetCollFirstPage extends HetCollPage {
 
 	public Button btnYes;
 	public Button btnNo;
+	private Label label;
+	private Label lblAllParts;
+	private List partList;
 	
 	public HetCollFirstPage(HetCollOccurrence hetColl) 
 	{
 		super(hetColl);		
-		setDescription("Whole: <"+getStereotype(hetColl.getWhole())+"> "+hetColl.getWhole().getName());
-	}
-
-	public static String getStereotype(EObject element)
-	{
-		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
-	    return type;
+		setDescription("Whole: "+OntoUMLNameHelper.getTypeAndName(hetColl.getWhole(), true, true));
 	}
 	
 	/**
@@ -45,29 +39,74 @@ public class HetCollFirstPage extends HetCollPage {
 
 		setControl(container);
 		
-		Text lblDoAllParts = new Text(container, SWT.WRAP | SWT.V_SCROLL);
-		lblDoAllParts.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		lblDoAllParts.setBounds(10, 10, 554, 48);
-		lblDoAllParts.setText("Do all parts of a "+hetColl.getWhole().getName()+" have the same function (or play the same role) regarding their whole?  ");
-		
+		StyledText question = new StyledText(container, SWT.WRAP | SWT.V_SCROLL | SWT.READ_ONLY);
+		question.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		question.setAlwaysShowScrollBars(false);
+		question.setText("Do all parts of a "+OntoUMLNameHelper.getTypeAndName(occurrence.getWhole(), true, true)+" have the same function (or play the same role) regarding their whole?");
+						
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 163, 554, 16);
-		btnYes.setText("Yes, "+hetColl.getWhole().getName()+" is a collective.");
+		btnYes.setText("Yes, "+OntoUMLNameHelper.getName(occurrence.getWhole(), true, false)+" is a collective.");
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 185, 554, 16);
-		btnNo.setText("No, "+hetColl.getWhole().getName()+" is a functional complex.");
+		btnNo.setText("No, "+OntoUMLNameHelper.getName(occurrence.getWhole(), true, false)+" is a functional complex.");
 		
-		Text lblMustAnInstance = new Text(container, SWT.WRAP | SWT.V_SCROLL);
-		lblMustAnInstance.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		lblMustAnInstance.setBounds(10, 64, 554, 63);
+		label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
 		
-		if(hetColl.getMemberEnds().size()>=2){
-			lblMustAnInstance.setText("In other words, must an instance of "+hetColl.getWhole().getName()+" be composed of at least one instance of "+
-				hetColl.getMemberEnds().get(0).getType().getName()+", one of "+hetColl.getMemberEnds().get(1).getType().getName()+" and etc?");
-		}else{
-			lblMustAnInstance.setText("In other words, must an instance of "+hetColl.getWhole().getName()+" be composed of at least one instance of the parts ?");
+		lblAllParts = new Label(container, SWT.NONE);
+		lblAllParts.setText("All Parts (Members and SubCollections):");
+		
+		partList = new List(container, SWT.BORDER | SWT.V_SCROLL);
+		
+		for (Property p : occurrence.getMemberProperties()) {
+			partList.add(OntoUMLNameHelper.getNameAndType(p));
 		}
+		
+		for (Property p : occurrence.getCollectionProperties()) {
+			partList.add(OntoUMLNameHelper.getNameAndType(p));
+		}
+		
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(lblAllParts, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+						.add(partList, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(label, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(btnNo, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(btnYes, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(question, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(question, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnYes)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnNo)
+					.addPreferredGap(LayoutStyle.UNRELATED)
+					.add(label)
+					.addPreferredGap(LayoutStyle.UNRELATED)
+					.add(lblAllParts)
+					.add(3)
+					.add(partList, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
+		
+		setAsEnablingNextPageButton(btnNo);
+		setAsEnablingNextPageButton(btnYes);
+		setPageComplete(false);
 	}
 	
 	@Override
@@ -78,15 +117,12 @@ public class HetCollFirstPage extends HetCollPage {
 		}
 		
 		if(btnNo.getSelection()){
-			ArrayList<Association> assocList = new ArrayList<Association>();
-			for(Property p: hetColl.getMemberEnds()) { if (p!=null) assocList.add(p.getAssociation()); }
-			if(assocList.size()>0){
-				//Action =============================
-				HetCollAction newAction = new HetCollAction(hetColl);
-				newAction.setChangeAllToComponentOf(assocList); 
-				getHetCollWizard().replaceAction(0,newAction);	
-				//======================================
-			}
+			//Action =============================
+			HetCollAction newAction = new HetCollAction(occurrence);
+			newAction.setChangeAllToComponentOf(); 
+			getAntipatternWizard().replaceAction(0,newAction);	
+			//======================================
+		
 		}
 		return ((AntipatternWizard)getWizard()).getFinishing();
 	}

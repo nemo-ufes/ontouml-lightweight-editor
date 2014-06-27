@@ -1,10 +1,15 @@
 package br.ufes.inf.nemo.antipattern.hetcoll;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.Meronymic;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
+import RefOntoUML.memberOf;
+import RefOntoUML.subCollectionOf;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
@@ -44,17 +49,14 @@ public class HetCollAntipattern extends Antipattern<HetCollOccurrence> {
 		return info;
 	}
 	
-	@Override
-	public ArrayList<HetCollOccurrence> identify() {
+	public ArrayList<HetCollOccurrence> identifyOCL() {
 		Map<Classifier, ArrayList<Property>> query_result;
-//		System.out.println("Procurou HETCOLL");
 		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, Classifier.class, Property.class, "whole", "memberEnds");
 			
 		for (Classifier whole : query_result.keySet()) 
 		{
-//			System.out.println("Encontrou HETCOLL");
 			try {
-					HetCollOccurrence occurrence = new HetCollOccurrence(whole, query_result.get(whole), this);
+					HetCollOccurrence occurrence = new HetCollOccurrence(whole, query_result.get(whole), new ArrayList<Property>(), this);
 					super.occurrence.add(occurrence);
 				
 			} catch (Exception e) {
@@ -64,5 +66,70 @@ public class HetCollAntipattern extends Antipattern<HetCollOccurrence> {
 		}
 		
 		return this.getOccurrences();
+	}
+
+	@Override
+	public ArrayList<HetCollOccurrence> identify() {
+		HashMap<Classifier,HashSet<Property>> memberHash = buildPropertyHash(memberOf.class);
+		HashMap<Classifier,HashSet<Property>> collectionHash = buildPropertyHash(subCollectionOf.class);
+		
+		for (Classifier whole : memberHash.keySet()) {
+			
+			ArrayList<Property> memberProperties = new ArrayList<Property>(memberHash.get(whole));
+			ArrayList<Property> collectionProperties = new ArrayList<Property>();
+
+			if(collectionHash.get(whole)!=null)
+				collectionProperties.addAll(collectionHash.get(whole));
+			
+			if(memberProperties.size()>=2 && hasDirectPart(whole,memberProperties)){
+				try {
+					occurrence.add(new HetCollOccurrence(whole, memberProperties, collectionProperties, this));
+				} catch (Exception e) {
+					System.out.println(info.acronym+": Provided information does not characterize an occurrence of the anti-pattern!");
+					System.out.println(e.getMessage());
+				}
+			}
+		}
+		
+		return occurrence;
+	}
+	
+	public <B extends Meronymic> HashMap<Classifier,HashSet<Property>> buildPropertyHash(Class<B> type){
+		HashMap<Classifier,HashSet<Property>> hash = new HashMap<Classifier,HashSet<Property>>();
+		
+		//builds initial hash, with meronymics that are directly connected to the types
+		for (B m : parser.getAllInstances(type)) {
+			
+			try{
+				Property partEnd = OntoUMLParser.getPartEnd(m);
+				Classifier mainType = (Classifier) partEnd.getOpposite().getType();
+				
+				if (hash.keySet().contains(mainType))
+					hash.get(mainType).add(partEnd);
+				else{
+					HashSet<Property> properties = new HashSet<Property>();
+					properties.add(partEnd);
+					hash.put(mainType, properties);
+				}
+			}
+			catch(Exception e){ }
+		}
+		
+		//adds supertypes' parts
+		for (Classifier mainType : hash.keySet()) 
+			for (Classifier parent : mainType.allParents()) 
+				if(hash.keySet().contains(parent))
+					hash.get(mainType).addAll(hash.get(parent));
+			
+		return hash;
+	}
+	
+	public boolean hasDirectPart(Classifier c, ArrayList<Property> partEnds){
+		for (Property p : partEnds) {
+			if(p.getOpposite().getType().equals(c))
+				return true;
+		}
+		
+		return false;
 	}
 }

@@ -1,182 +1,134 @@
 package br.ufes.inf.nemo.antipattern.wizard.hetcoll;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
-
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
-import RefOntoUML.Association;
 import RefOntoUML.Property;
-import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizard;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class HetCollSecondPage extends HetCollPage {
 
 	public Button btnYes;
 	public Button btnNo;
-	public Button btnArrowLeft;
-	public Button btnArrowRight;
-	public List noList;
-	public List yesList;
+	private Label label;
+	private Label lblAllParts;
+	private List partList;
 	
 	public HetCollSecondPage(HetCollOccurrence hetColl) 
 	{
 		super(hetColl);		
-		setDescription("Whole: <"+getStereotype(hetColl.getWhole())+"> "+hetColl.getWhole().getName());
-	}
-
-	public static String getStereotype(EObject element)
-	{
-		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
-	    return type;
-	}
-	
-	public boolean contains(List list, String elem){
-		for(String str: list.getItems()){
-			if (str.equals(elem)) return true;
-		}
-		return false;
+		setDescription("Whole: "+OntoUMLNameHelper.getTypeAndName(hetColl.getWhole(), true, true));
 	}
 	
 	/**
 	 * Create contents of the wizard.
 	 * @param parent
 	 */
-	public void createControl(Composite parent) 
-	{
+	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 
 		setControl(container);
 		
-		Text lblAreTheParts = new Text(container, SWT.WRAP | SWT.V_SCROLL);
-		lblAreTheParts.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		lblAreTheParts.setBounds(10, 10, 554, 37);
-		lblAreTheParts.setText("Are the parts of the "+hetColl.getWhole().getName()+"’s parts also a part of "+hetColl.getWhole().getName()+"? ");
+		StyledText question = new StyledText(container, SWT.WRAP | SWT.V_SCROLL | SWT.READ_ONLY);
+		question.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		question.setAlwaysShowScrollBars(false);
+		question.setJustify(true);
+		question.setText("Are the cardinality constraints imposed by the multiple memberOf relations connected to "+OntoUMLNameHelper.getTypeAndName(occurrence.getWhole(), true, true)+", really necessary?" +
+						"\r\n\r\n" +
+						"In other words, must an instance of "+occurrence.getWhole().getName()+" be composed of at least one instance of "+
+						occurrence.getMemberProperties().get(0).getType().getName()+", one of "+occurrence.getMemberProperties().get(1).getType().getName()+" and etc?");
 		
-		Text lblNewLabel = new Text(container, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
-		lblNewLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		lblNewLabel.setBounds(10, 63, 227, 78);
-		lblNewLabel.setText("Yes.\nThe following parts are members of "+hetColl.getWhole().getName()+":");
+		btnYes = new Button(container, SWT.RADIO);
+		btnYes.setText("Yes");
 		
-		yesList = new List(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		yesList.setBounds(10, 147, 227, 125);
+		btnNo = new Button(container, SWT.RADIO);
+		btnNo.setText("No, create a single general memberOf");
 		
-		for(Property p: hetColl.getMemberEnds())
-		{		
-			Type type = p.getType();
-			yesList.add(getStereotype(type)+" "+type.getName());			
+		label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
+		
+		lblAllParts = new Label(container, SWT.NONE);
+		lblAllParts.setText("Cardinality constraints:");
+		
+		partList = new List(container, SWT.BORDER | SWT.V_SCROLL);
+		
+		for (Property p : occurrence.getMemberProperties()) {
+			partList.add(OntoUMLNameHelper.getAllDetails(p.getAssociation()));
 		}
-		yesList.setSelection(0);
 		
-		btnArrowRight = new Button(container, SWT.NONE);
-		btnArrowRight.setBounds(243, 182, 37, 25);
-		btnArrowRight.setText("->");
-		btnArrowRight.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				for(String str: yesList.getSelection()){
-					if(!contains(noList,str)) { noList.add(str); noList.select(noList.indexOf(str)); } 
-				}
-				if(yesList.getSelectionIndex()>=0) { 
-					int prev = yesList.getSelectionIndex()-1;
-					yesList.remove(yesList.getSelectionIndex());
-					yesList.select(prev); 
-				}				
-			}
-		});
-				
-		btnArrowLeft = new Button(container, SWT.NONE);
-		btnArrowLeft.setBounds(243, 213, 37, 25);
-		btnArrowLeft.setText("<-");
-		btnArrowLeft.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				for(String str: noList.getSelection()){
-					if(!contains(yesList,str)) { yesList.add(str); yesList.select(yesList.indexOf(str));  } 
-				}
-				if(noList.getSelectionIndex()>=0) {
-					int prev = noList.getSelectionIndex()-1;
-					noList.remove(noList.getSelectionIndex());
-					noList.select(prev);					 
-				}
-			}
-		});
-				
-		noList = new List(container, SWT.BORDER);
-		noList.setBounds(286, 147, 227, 125);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.TRAILING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(question, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, btnNo, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, btnYes, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(9))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(label, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(partList, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(lblAllParts, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(question, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnYes)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnNo)
+					.add(18)
+					.add(label)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(lblAllParts)
+					.add(3)
+					.add(partList, GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 		
-		Text lblNewLabel_3 = new Text(container, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
-		lblNewLabel_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		lblNewLabel_3.setBounds(286, 63, 227, 78);
-		lblNewLabel_3.setText("No.\nThe following parts are subcollections of "+hetColl.getWhole().getName()+":");
-	}
-	
-	public Property getProperty (String typeName){
-		for(Property p: hetColl.getMemberEnds()){
-			if(p.getType().getName().compareToIgnoreCase(typeName)==0) return p;			
-		}
-		return null;
-	}
-		
-	public ArrayList<Property> getYesList()
-	{
-		ArrayList<Property> result = new ArrayList<Property>();
-		for(String str: yesList.getItems()){
-			Property p = getProperty(str.substring(str.indexOf(" ")+1));
-			if (p!=null) result.add(p);
-		}
-		return result;
-	}
-	
-	public ArrayList<Property> getNoList()
-	{
-		ArrayList<Property> result = new ArrayList<Property>();
-		for(String str: noList.getItems()){
-			Property p = getProperty(str.substring(str.indexOf(" ")+1));
-			if (p!=null) result.add(p);
-		}
-		return result;
+		setAsEnablingNextPageButton(btnNo);
+		setAsEnablingNextPageButton(btnYes);
+		setPageComplete(false);
 	}
 	
 	@Override
 	public IWizardPage getNextPage() 
-	{
-		if(getYesList().size()>0){
-			ArrayList<Association> assocList = new ArrayList<Association>();
-			for(Property p: getNoList()) { if (p!=null) assocList.add(p.getAssociation()); }
-			if(assocList.size()>=2){
-				//Action =============================
-				HetCollAction newAction = new HetCollAction(hetColl);
-				newAction.setChangeAllToOneSuperMember(assocList); 
-				if (getYesList().size()>0) getHetCollWizard().replaceAction(1,newAction);
-				else getHetCollWizard().replaceAction(0,newAction);
-				//======================================
-			}
+	{	
+		if(btnYes.getSelection()){
+			return ((HetCollWizard)getWizard()).getThirdPage();
 		}
-		if(getNoList().size()>0){
-			ArrayList<Association> assocList = new ArrayList<Association>();
-			for(Property p: getYesList()) { if (p!=null) assocList.add(p.getAssociation()); }		
-			if(assocList.size()>0){
-				//Action =============================
-				HetCollAction newAction = new HetCollAction(hetColl);
-				newAction.setChangeAllToCollectionAndSubCollectionOf(assocList); 
-				getHetCollWizard().replaceAction(0,newAction);	
-				//======================================
-			}						
+		
+		if(btnNo.getSelection()){
+			//Action =============================
+			HetCollAction newAction = new HetCollAction(occurrence);
+			newAction.setMergeMemberOf();
+			getAntipatternWizard().replaceAction(0,newAction);	
+			//======================================
+		
 		}
-		return ((AntipatternWizard)getWizard()).getFinishing();		
-	}	
+		return ((AntipatternWizard)getWizard()).getFinishing();
+	}
 }
