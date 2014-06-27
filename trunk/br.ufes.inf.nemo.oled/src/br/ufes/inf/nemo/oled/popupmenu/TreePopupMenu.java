@@ -106,7 +106,7 @@ public class TreePopupMenu extends JPopupMenu {
 				if (TreePopupMenu.this.element instanceof OntoUMLElement)
 				{    					
 					RefOntoUML.Element element = (RefOntoUML.Element)((OntoUMLElement)TreePopupMenu.this.element).getElement();    					
-					ProjectBrowser.frame.getDiagramManager().rename(element);					
+					ProjectBrowser.frame.getDiagramManager().renameElement(element);					
 				}
 				else if (TreePopupMenu.this.element instanceof StructureDiagram)
 				{

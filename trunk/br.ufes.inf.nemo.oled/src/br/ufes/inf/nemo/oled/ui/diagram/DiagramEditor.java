@@ -350,7 +350,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	}
 	
 	/** Create a generalizations from selected elements in the diagram */
-	public void AddGeneralizationSet()
+	public void addGeneralizationSet()
 	{		
 		Collection<DiagramElement> diagramElementsList = getSelectedElements();
 		GeneralizationSet genSet = frame.getDiagramManager().addGeneralizationSet(this,diagramElementsList);		
@@ -367,7 +367,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void deleteGeneralizationSet()
 	{
 		Collection<DiagramElement> diagramElementsList = getSelectedElements();
-		frame.getDiagramManager().deleteGeneralizationSet(diagramElementsList);		
+		frame.getDiagramManager().deleteGeneralizationSet(this,diagramElementsList);		
 		deselectAll();
 		cancelEditing();		
 	}
