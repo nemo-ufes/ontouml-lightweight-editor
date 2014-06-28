@@ -14,7 +14,7 @@ public abstract class HomoFuncPage extends AntipatternWizardPage<HomoFuncOccurre
 	{
 		super(homoFunc);		
 		setTitle(HomoFuncAntipattern.getAntipatternInfo().getName());		
-//		setDescription(	"Whole: "+OntoUMLNameHelper.getTypeAndName(homoFunc.getWhole(), true, false)+", " +
-//						"Part: "+OntoUMLNameHelper.getTypeAndName(homoFunc.getPartEnd().getType(), true, false));
+		setDescription(	"Whole: "+OntoUMLNameHelper.getTypeAndName(homoFunc.getWhole(), true, false)+", " +
+						"Part: "+OntoUMLNameHelper.getTypeAndName(homoFunc.getPartEnd().getType(), true, false));
 	}
 }
