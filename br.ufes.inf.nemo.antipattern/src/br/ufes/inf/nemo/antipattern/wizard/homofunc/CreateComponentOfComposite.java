@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.antipattern.wizard.homofunc;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -16,8 +15,11 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
+import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Classifier;
-import RefOntoUML.ObjectClass;
+import RefOntoUML.Kind;
+import RefOntoUML.MixinClass;
+import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
@@ -75,16 +77,18 @@ public class CreateComponentOfComposite extends Composite {
 			typeList = new ArrayList<Classifier>(homoFunc.getParser().getAllChildren(homoFunc.getPart()));
 		}
 		else{
-			typeList = new ArrayList<Classifier>(homoFunc.getParser().getAllInstances(ObjectClass.class));
-			Iterator<Classifier> it = typeList.iterator();
+			typeList = new ArrayList<Classifier>(homoFunc.getParser().getAllInstances(Kind.class));
+			typeList.addAll(homoFunc.getParser().getAllInstances(SubKind.class));
+			typeList.addAll(homoFunc.getParser().getAllInstances(AntiRigidSortalClass.class));
+			typeList.addAll(homoFunc.getParser().getAllInstances(MixinClass.class));
 			
-			while(it.hasNext()) {
-				Classifier type = it.next();
-				if(!homoFunc.getParser().isFunctionalComplex(type) || 
-						type.equals(homoFunc.getWhole()) || homoFunc.getWhole().allChildren().contains(type) || homoFunc.getWhole().allParents().contains(type) ||
-						type.equals(homoFunc.getPart()) || homoFunc.getPart().allChildren().contains(type) || homoFunc.getPart().allParents().contains(type))
-					it.remove();
-			}
+//			while(it.hasNext()) {
+//				Classifier type = it.next();
+//				if(!homoFunc.getParser().isFunctionalComplex(type) || 
+//						type.equals(homoFunc.getWhole()) || homoFunc.getWhole().allChildren().contains(type) || homoFunc.getWhole().allParents().contains(type) ||
+//						type.equals(homoFunc.getPart()) || homoFunc.getPart().allChildren().contains(type) || homoFunc.getPart().allParents().contains(type))
+//					it.remove();
+//			}
 		}
 		
 		for(Classifier child : typeList)

@@ -81,13 +81,11 @@ public class HomoFuncRefactoringPage extends RefactoringPage {
 		
 		Composite item1Composite = new Composite (expandBar, SWT.NONE);
 			
-		createPartComposite = new CreatePartComposite(item1Composite, SWT.NONE,homoFunc,false);
-		createPartComposite.setVisible(true);
+		createPartComposite = new CreatePartComposite(item1Composite, SWT.NONE, homoFunc, false);
 		
-		ExpandItem item1 = new ExpandItem (expandBar, SWT.NONE, 0);
+		ExpandItem item1 = new ExpandItem (expandBar, SWT.NONE);
 		item1.setText("New functional complex types");
-		item1.setHeight
-		(item1Composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item1.setHeight(item1Composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		item1.setControl(item1Composite);
 		GroupLayout gl_item1Composite = new GroupLayout(item1Composite);
 		gl_item1Composite.setHorizontalGroup(
@@ -111,7 +109,7 @@ public class HomoFuncRefactoringPage extends RefactoringPage {
 		Composite item2Composite = new Composite (expandBar, SWT.NONE);
 		createComponentOfToExistingFunctional = new CreateComponentOfComposite(item2Composite, SWT.NONE, homoFunc, false);
 				
-		ExpandItem item2 = new ExpandItem (expandBar, SWT.NONE, 1);
+		ExpandItem item2 = new ExpandItem (expandBar, SWT.NONE);
 		item2.setText("Existing functional complex types");
 		item2.setHeight
 		(165);
@@ -138,9 +136,8 @@ public class HomoFuncRefactoringPage extends RefactoringPage {
 		Composite item4Composite = new Composite (expandBar, SWT.NONE);
 		
 		createComponentOfToSubtype = new CreateComponentOfComposite(item4Composite, SWT.NONE,homoFunc,true);
-		createComponentOfToSubtype.setVisible(true);
 		
-		ExpandItem item3 = new ExpandItem(expandBar, SWT.NONE, 2);
+		ExpandItem item3 = new ExpandItem(expandBar, SWT.NONE);
 		item3.setText("New part subtypes");
 		
 		Composite item3Composite = new Composite(expandBar, SWT.NONE);
@@ -148,7 +145,7 @@ public class HomoFuncRefactoringPage extends RefactoringPage {
 		item3.setHeight(165);
 		
 		createSubtypePartComposite = new CreatePartComposite(item3Composite, SWT.NONE,homoFunc,true);
-		createSubtypePartComposite.setVisible(true);
+
 		GroupLayout gl_item3Composite = new GroupLayout(item3Composite);
 		gl_item3Composite.setHorizontalGroup(
 			gl_item3Composite.createParallelGroup(GroupLayout.LEADING)
@@ -166,7 +163,7 @@ public class HomoFuncRefactoringPage extends RefactoringPage {
 		);
 		item3Composite.setLayout(gl_item3Composite);
 				
-		ExpandItem item4 = new ExpandItem (expandBar, SWT.NONE, 3);
+		ExpandItem item4 = new ExpandItem (expandBar, SWT.NONE);
 		item4.setText("Existing part subtypes");
 		item4.setHeight
 		(165);
