@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.TreeIterator;
@@ -48,7 +49,9 @@ import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
+import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
+import RefOntoUML.SubstanceSortal;
 import RefOntoUML.Type;
 import RefOntoUML.VisibilityKind;
 import RefOntoUML.componentOf;
@@ -826,6 +829,13 @@ public class OutcomeFixer{
 		return fixes;
 	}
 
+	public Fix createSuperTypeAs(EObject type, ClassStereotype supertypeStereo, String name){
+		Fix fix = createSuperTypeAs(type, supertypeStereo);
+		fix.getAddedByType(Class.class).get(0).setName(name);
+		return fix;
+		
+	}
+	
 	/** Create a supertype and connect it through a generalization to its type. */
 	public Fix createSuperTypeAs(EObject type, ClassStereotype supertypeStereo) 
 	{
@@ -1277,29 +1287,30 @@ public class OutcomeFixer{
 	    return type;
 	}	
 	
-	/** Change all partOf relations to ComponentOf relations */
-	public Fix changeAllToComponentOf(ArrayList<Association> partOfList)
+	/** Change stereotype of all relations, the nature of the source and the nature of the target types*/
+	public Fix changeAllRelationsTo(ArrayList<? extends Association> list, RelationStereotype relStereo, ClassStereotype sourceNature, ClassStereotype targetNature)
 	{
 		Fix fix = new Fix();		
-		for(Association assoc: partOfList)
-		{
-			fix.addAll(changeRelationStereotypeTo(assoc, RelationStereotype.COMPONENTOF));		
-		}
-		return fix;
-	}
-
-	/** Change all parts to Collection and all partOfs relations to SubCollectionOf relations */
-	public Fix changeAllToCollectionAndSubCollectionOf(ArrayList<Association> partOfList) 
-	{
-		Fix fix = new Fix();
-		for(Association assoc: partOfList)
-		{
-			fix.addAll(changeClassStereotypeTo(((Meronymic)assoc).part(), ClassStereotype.COLLECTIVE));
-			fix.addAll(changeRelationStereotypeTo(assoc, RelationStereotype.SUBCOLLECTIONOF));
-		}
-		return fix;
-	}
 		
+		for (Association a : list) {
+			
+			if(sourceNature!=null){
+				Classifier source = (Classifier) a.getMemberEnd().get(0).getType();
+				fix.addAll(changeNature(source, new ArrayList<Classifier>(), sourceNature));
+			}
+			
+			if(targetNature!=null){
+				Classifier target = (Classifier) a.getMemberEnd().get(1).getType();
+				fix.addAll(changeNature(target, new ArrayList<Classifier>(), targetNature));
+			}
+			
+			if(getRelationshipStereotype(a)!=relStereo)
+				fix.addAll(changeRelationStereotypeTo(a, relStereo));		
+		}
+		
+		return fix;
+	}
+	
 	/** Convenient method for getting duplicated elements of a list */
 	@SuppressWarnings({ "rawtypes", "hiding", "serial" })
 	public static <T,Integer> HashMap getDuplicated(Collection<T> list) {
@@ -1549,18 +1560,20 @@ public class OutcomeFixer{
 	 * @return
 	 */
 	public Fix changeNature(Classifier c, ArrayList<Classifier> visited, ClassStereotype newNature){
+		Fix fix = new Fix();
 		
 		if(newNature!=ClassStereotype.KIND && newNature!=ClassStereotype.COLLECTIVE && newNature!=ClassStereotype.QUANTITY)
-			return null;
+			return fix;
 		
-		Fix fix = new Fix();
 		visited.add(c);
 		
 		if(c instanceof Kind || c instanceof Quantity || c instanceof Collective){
 			if(getClassStereotype(c)==newNature)
 				return fix;
-			else
-				return changeClassStereotypeTo(c, newNature);
+			else{
+				fix.addAll(changeClassStereotypeTo(c, newNature));
+				return fix;
+			}
 		}
 			
 		
@@ -1581,4 +1594,69 @@ public class OutcomeFixer{
 		return fix;
 	}
 	
+	private boolean hasSubstanceSortalParent(SortalClass sortal){
+
+		for (Classifier parent : sortal.allParents()) {
+			if(parent instanceof SubstanceSortal)
+				return true;
+		}
+		
+		return false;
+	}
+	
+	public Fix removeIdentity(Classifier c, ArrayList<Classifier> visited) {
+		Fix currentFix = new Fix();
+		
+		if(!visited.contains(c))
+			visited.add(c);
+		else
+			return currentFix;
+		
+		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
+			
+			Iterator<Generalization> iterator = c.getGeneralization().iterator();
+			while(iterator.hasNext()){
+				Generalization g = iterator.next();
+				Classifier general = g.getGeneral();
+				
+				if(general instanceof SubstanceSortal || 
+						((general instanceof SubKind || general instanceof AntiRigidSortalClass) && hasSubstanceSortalParent((SortalClass) general))
+					){
+					iterator.remove();
+					currentFix.addAll(deleteElement(g));
+				}
+				else{
+					if(!visited.contains(general)){
+						currentFix.addAll(removeIdentity(general, visited));
+					}
+				}
+			}
+		}
+		else if (c instanceof MixinClass){
+			
+			ArrayList<Classifier> children = new ArrayList<Classifier>(c.children());
+			for (Classifier child : children) {
+				if(child instanceof SubstanceSortal || 
+						((child instanceof SubKind || child instanceof AntiRigidSortalClass) && hasSubstanceSortalParent((SortalClass) child))
+					){
+					
+					Iterator<Generalization> iterator = child.getGeneralization().iterator();
+					while(iterator.hasNext()){
+						Generalization g = iterator.next();
+						if(g.getGeneral().equals(c)){
+							iterator.remove();
+							currentFix.addAll(deleteElement(g));
+						}
+					}
+				}
+				else {
+					if(!visited.contains(child)){
+						currentFix.addAll(removeIdentity(child, visited));
+					}
+				}
+			}
+		}
+		
+		return currentFix;
+	}
 }
