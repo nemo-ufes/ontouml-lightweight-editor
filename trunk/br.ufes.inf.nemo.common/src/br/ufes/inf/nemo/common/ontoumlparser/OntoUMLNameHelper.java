@@ -281,4 +281,11 @@ public class OntoUMLNameHelper {
 			return getPath(c.eContainer())+"::"+containerName;
 		}
 	}
+	
+	public static String getAllDetails(Association a){
+		Property source = a.getMemberEnd().get(0);
+		Property target = a.getMemberEnd().get(1);
+		
+		return getTypeAndName(a, true, true)+" {"+getName(source.getType(), true, false)+" ("+getMultiplicity(source, true, "..")+") -> ("+getMultiplicity(target, true, "..")+") "+getName(target.getType(), true, false)+" }"; 
+	}
 }
