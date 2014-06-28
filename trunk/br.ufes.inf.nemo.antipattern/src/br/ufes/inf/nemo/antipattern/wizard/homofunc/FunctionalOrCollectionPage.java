@@ -122,7 +122,7 @@ public class FunctionalOrCollectionPage extends HomoFuncPage {
 			return getAntipatternWizard().getCreatePartPage();
 		}
 		
-		return super.getNextPage();
+		return getAntipatternWizard().getFinishing();
 	}
 	
 	

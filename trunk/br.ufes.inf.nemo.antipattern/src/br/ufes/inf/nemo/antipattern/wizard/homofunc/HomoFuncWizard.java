@@ -37,7 +37,7 @@ public class HomoFuncWizard extends AntipatternWizard {
 				HomoFuncAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
 			HomoFuncAntipattern.getAntipatternInfo().description,
-			funcColPage,
+			funcColPage, 
 			options
 		);
 			
