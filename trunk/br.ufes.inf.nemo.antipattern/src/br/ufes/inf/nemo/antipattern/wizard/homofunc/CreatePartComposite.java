@@ -23,21 +23,13 @@ import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class CreatePartComposite extends Composite {
 
 	public HomoFuncOccurrence homoFunc;
 	public boolean isSubpart;
 	
-	public CreatePartComposite(Composite parent, int style, HomoFuncOccurrence homoFunc, boolean isSubpart) 
-	{
-		super(parent, style);
-		this.isSubpart=isSubpart;
-		setSize(new Point(538, 164));
-		this.homoFunc=homoFunc;
-		createPartControl();
-	}
-
 	private Text partNameField;
 	private Text componentOfNameField;
 	private Combo stereoCombo;
@@ -50,26 +42,226 @@ public class CreatePartComposite extends Composite {
 	private Label label_1;
 	private Label lblComponentofName;
 	private Button btnCreateNewPart;
-	private Button btnDeletePart;	
+	private Button deleteButton;	
 	private List partsList;
 	public ArrayList<PartElement> parts = new ArrayList<PartElement>();
-		
-	public String getPartName()
+	
+	public CreatePartComposite(Composite parent, int style, HomoFuncOccurrence homoFunc, boolean isSubpart) 
 	{
+		super(parent, style);
+		this.isSubpart=isSubpart;
+		setSize(new Point(538, 165));
+		this.homoFunc=homoFunc;
+		createPartControl();
+	}
+			
+	public void createPartControl() 
+	{
+		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		label = new Label(this, SWT.NONE);
+		if(!isSubpart)
+			label.setText("Part stereotype:");
+		else
+			label.setText("Subtype stereotype:");
+		label.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		label_1 = new Label(this, SWT.NONE);
+		if(!isSubpart)
+			label_1.setText("Part name:");
+		else
+			label_1.setText("Subtype name:");
+		label_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		lblComponentofName = new Label(this, SWT.NONE);
+		lblComponentofName.setText("ComponentOf name:");
+		lblComponentofName.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		stereoCombo = new Combo(this, SWT.READ_ONLY);
+		if(!isSubpart){
+			stereoCombo.setItems(new String[] {"Kind", "SubKind", "Role", "Phase", "Mixin", "RoleMixin", "Category"});
+		}
+		else {
+			if(homoFunc.getPartEnd().getType() instanceof Kind || homoFunc.getPartEnd().getType() instanceof SubKind){
+				stereoCombo.setItems(new String[] {"SubKind", "Role", "Phase"});
+			}else if (homoFunc.getPartEnd().getType() instanceof Role){
+				stereoCombo.setItems(new String[] {"Role"});
+			}else if (homoFunc.getPartEnd().getType() instanceof Phase){
+				stereoCombo.setItems(new String[] {"Role","Phase"});				
+			}else if (homoFunc.getPartEnd().getType() instanceof Category){
+				stereoCombo.setItems(new String[] {"Category","RoleMixin","Kind"});
+			}else if (homoFunc.getPartEnd().getType() instanceof Mixin){
+				stereoCombo.setItems(new String[] {"Category","RoleMixin","Mixin","Kind"});
+			}else if (homoFunc.getPartEnd().getType() instanceof RoleMixin){
+				stereoCombo.setItems(new String[] {"RoleMixin"});
+			}else{
+				stereoCombo.setItems(new String[] {"Kind", "Collective", "Quantity", "SubKind", "Role", "Phase", "Mixin", "RoleMixin", "Category", "Relator", "Mode", "DataType"});
+			}
+		}
+		
+		partNameField = new Text(this, SWT.BORDER);
+		componentOfNameField = new Text(this, SWT.BORDER);
+		
+		btnIsShareable = new Button(this, SWT.CHECK);
+		btnIsShareable.setText("isShareable");
+		btnIsShareable.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		btnIsEssential = new Button(this, SWT.CHECK);
+		btnIsEssential.setText("isEssential");
+		btnIsEssential.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		btnIsInseparable = new Button(this, SWT.CHECK);
+		btnIsInseparable.setText("isInseparable");
+		btnIsInseparable.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		btnIsImmutablePart = new Button(this, SWT.CHECK);
+		btnIsImmutablePart.setText("isImmutablePart");
+		btnIsImmutablePart.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		btnIsImmutableWhole = new Button(this, SWT.CHECK);		
+		btnIsImmutableWhole.setText("isImmutableWhole");
+		btnIsImmutableWhole.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		btnCreateNewPart = new Button(this, SWT.NONE);
+		btnCreateNewPart.addSelectionListener(newAction);
+		btnCreateNewPart.setText("New");
+		
+		deleteButton = new Button(this, SWT.NONE);
+		deleteButton.setText("Delete");
+		deleteButton.addSelectionListener(deleteAction);
+		
+		partsList = new List(this, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(label, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(stereoCombo, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+					.add(6)
+					.add(btnIsEssential, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+					.add(16))
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(label_1, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(partNameField, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+					.add(6)
+					.add(btnIsImmutablePart, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+					.add(16))
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(lblComponentofName, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(componentOfNameField, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+					.add(6)
+					.add(btnIsInseparable, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+					.add(16))
+				.add(groupLayout.createSequentialGroup()
+					.add(43)
+					.add(btnCreateNewPart, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.add(3)
+					.add(deleteButton, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(partsList, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+					.add(6)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(btnIsImmutableWhole, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+						.add(btnIsShareable, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))
+					.add(16))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(3)
+							.add(label, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+						.add(stereoCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(groupLayout.createSequentialGroup()
+							.add(2)
+							.add(btnIsEssential)))
+					.add(3)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(3)
+							.add(label_1, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+						.add(partNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(groupLayout.createSequentialGroup()
+							.add(2)
+							.add(btnIsImmutablePart)))
+					.add(3)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(3)
+							.add(lblComponentofName, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+						.add(componentOfNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(groupLayout.createSequentialGroup()
+							.add(2)
+							.add(btnIsInseparable)))
+					.add(6)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(btnCreateNewPart)
+						.add(deleteButton)
+						.add(partsList, GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+						.add(groupLayout.createSequentialGroup()
+							.add(2)
+							.add(btnIsImmutableWhole)
+							.add(6)
+							.add(btnIsShareable, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))
+					.add(10))
+		);
+		setLayout(groupLayout);
+		
+		
+		
+	}
+	
+	private SelectionAdapter newAction = new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent arg0) {	
+			int index = stereoCombo.getSelectionIndex();
+			
+			if (index!=-1)
+			{
+				String stereo = stereoCombo.getItem(index);
+
+				//check admissible stereotypes
+				if(!isSubpart && !(stereo.compareToIgnoreCase("Kind")==0)) {
+					String message = "Plase notice that, by creating a part stereotyped as " + stereo +", your model will be incomplete. Please fix it after you are done analyzing this anti-patern."+"\n\n";						
+					MessageDialog.openInformation(getShell(), "WARNING", message);	
+				}
+				
+				PartElement newpart = new PartElement(stereo, getPartName(), getComponentOfName(), 
+						isShareable(), isEssential(), isImmutablePart(), isImmutableWhole(), isInseparable());
+				parts.add(newpart);
+				partsList.add(newpart.toString());				
+				
+				clearAll();
+			}
+		}
+	};
+	
+	private SelectionAdapter deleteAction = new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent arg0) {
+			int index = partsList.getSelectionIndex();
+			if(index!=-1){
+				parts.remove(index);
+				partsList.remove(index);
+			}
+		}
+	};
+	
+	public String getPartName() {
 		return partNameField.getText();
 	}
 	
-	public String getComponentOfName()
-	{
+	public String getComponentOfName() {
 		return componentOfNameField.getText();
-	}
-	
-	public String getPartStereotype()
-	{
-		if(stereoCombo.getSelectionIndex()>0)
-			return stereoCombo.getItem(stereoCombo.getSelectionIndex());
-		else
-			return "";
 	}
 	 
 	public boolean isShareable()
@@ -96,6 +288,11 @@ public class CreatePartComposite extends Composite {
 		return btnIsImmutableWhole.getSelection();
 	}
 	
+	public ArrayList<PartElement> getParts()
+	{
+		return parts;
+	}
+	
 	public void enableAll(boolean value)
 	{
 		label.setEnabled(value);		
@@ -109,164 +306,20 @@ public class CreatePartComposite extends Composite {
 		btnIsInseparable.setEnabled(value);		
 		btnIsImmutablePart.setEnabled(value);		
 		btnIsImmutableWhole.setEnabled(value);
-	}
-	
-	public void createPartControl() 
-	{		
-		setLayout(null);
-		
-		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		
-		label = new Label(this, SWT.NONE);
-		if(!isSubpart)
-			label.setText("Part stereotype:");
-		else
-			label.setText("Subart stereotype:");
-		label.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		label.setBounds(10, 13, 122, 21);
-		
-		label_1 = new Label(this, SWT.NONE);
-		if(!isSubpart)
-			label_1.setText("Part name:");
-		else
-			label_1.setText("Subpart name:");
-		label_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		label_1.setBounds(10, 40, 122, 21);
-		
-		lblComponentofName = new Label(this, SWT.NONE);
-		lblComponentofName.setText("ComponentOf name:");
-		lblComponentofName.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		lblComponentofName.setBounds(10, 67, 122, 21);
-		
-		stereoCombo = new Combo(this, SWT.NONE);
-		if(!isSubpart)
-			stereoCombo.setItems(new String[] {"Kind", "SubKind", "Role", "Phase", "Mixin", "RoleMixin", "Category"});
-		else {
-			if(homoFunc.getPartEnd().getType() instanceof Kind || homoFunc.getPartEnd().getType() instanceof SubKind){
-				stereoCombo.setItems(new String[] {"SubKind", "Role", "Phase"});
-			}else if (homoFunc.getPartEnd().getType() instanceof Role){
-				stereoCombo.setItems(new String[] {"Role"});
-			}else if (homoFunc.getPartEnd().getType() instanceof Phase){
-				stereoCombo.setItems(new String[] {"Role","Phase"});				
-			}else if (homoFunc.getPartEnd().getType() instanceof Category){
-				stereoCombo.setItems(new String[] {"Category","RoleMixin","Kind"});
-			}else if (homoFunc.getPartEnd().getType() instanceof Mixin){
-				stereoCombo.setItems(new String[] {"Category","RoleMixin","Mixin","Kind"});
-			}else if (homoFunc.getPartEnd().getType() instanceof RoleMixin){
-				stereoCombo.setItems(new String[] {"RoleMixin"});
-			}else{
-				stereoCombo.setItems(new String[] {"Kind", "Collective", "Quantity", "SubKind", "Role", "Phase", "Mixin", "RoleMixin", "Category", "Relator", "Mode", "DataType"});
-			}
-		}
-		stereoCombo.setBounds(138, 10, 256, 23);
-		
-		partNameField = new Text(this, SWT.BORDER);
-		partNameField.setBounds(138, 37, 256, 21);
-		
-		componentOfNameField = new Text(this, SWT.BORDER);
-		componentOfNameField.setBounds(138, 64, 256, 21);
-		
-		btnIsShareable = new Button(this, SWT.CHECK);
-		btnIsShareable.setText("isShareable");
-		btnIsShareable.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnIsShareable.setBounds(400, 118, 122, 21);
-		
-		btnIsEssential = new Button(this, SWT.CHECK);
-		btnIsEssential.setText("isEssential");
-		btnIsEssential.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnIsEssential.setBounds(400, 12, 122, 16);
-		
-		btnIsInseparable = new Button(this, SWT.CHECK);
-		btnIsInseparable.setText("isInseparable");
-		btnIsInseparable.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnIsInseparable.setBounds(400, 66, 122, 16);
-		
-		btnIsImmutablePart = new Button(this, SWT.CHECK);
-		btnIsImmutablePart.setText("isImmutablePart");
-		btnIsImmutablePart.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnIsImmutablePart.setBounds(400, 39, 122, 16);
-		
-		btnIsImmutableWhole = new Button(this, SWT.CHECK);		
-		btnIsImmutableWhole.setText("isImmutableWhole");
-		btnIsImmutableWhole.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnIsImmutableWhole.setBounds(400, 96, 122, 16);
-		
-		btnCreateNewPart = new Button(this, SWT.NONE);
-		btnCreateNewPart.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {	
-				if (getPartStereotype() !=null && !getPartStereotype().isEmpty())
-				{
-					//check admissible stereotypes
-					if(!(getPartStereotype().compareToIgnoreCase("Kind")==0))
-					{
-						String message = "by creating a part stereotyped as " + getPartStereotype()+", please notice that your model will be incomplete."+"\n\n";						
-						MessageDialog.openInformation(getShell(), "WARNING", message);	
-					}
-					
-					PartElement newpart = new PartElement(getPartStereotype(), getPartName(), getComponentOfName(), 
-							isShareable(), isEssential(), isImmutablePart(), isImmutableWhole(), isInseparable());
-					parts.add(newpart);
-					if (!contains(partsList,newpart.toString())) partsList.add(newpart.toString());				
-				}
-			}
-		});
-		btnCreateNewPart.setText("New");
-		btnCreateNewPart.setBounds(43, 94, 43, 25);
-		
-		setVisible(false);
-		
-		btnDeletePart = new Button(this, SWT.NONE);
-		btnDeletePart.setText("Delete");
-		btnDeletePart.setBounds(89, 94, 43, 25);
-		
-		partsList = new List(this, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		partsList.setBounds(138, 94, 256, 60);
-		
-		btnDeletePart.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				
-				removePart(partsList.getItem(partsList.getSelectionIndex()));
-				
-				partsList.remove(partsList.getSelectionIndex());
-			}
-		});
-	}		
-	
-	public ArrayList<PartElement> getParts()
-	{
-		return parts;
-	}
-	
-	public void enableCreation(boolean value)
-	{
-		enableAll(value);
 		btnCreateNewPart.setEnabled(value);
-		btnDeletePart.setEnabled(value);
+		deleteButton.setEnabled(value);
 		partsList.setEnabled(value);
-		setVisible(value);
+		
 	}
 	
-	public boolean contains(List list, String part)
-	{
-		for(int i=0;i< list.getItemCount();i++) 
-		{
-			if (partsList.getItem(i).compareToIgnoreCase(part)==0){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public void removePart(String part)
-	{
-		ArrayList<PartElement> deletion = new ArrayList<PartElement>();
-		for(PartElement p: parts) {
-			if (p.toString().compareToIgnoreCase(part)==0){
-				deletion.add(p);
-			}
-		}
-		parts.remove(part);
+	protected void clearAll() {
+		stereoCombo.select(-1);		
+		partNameField.setText("");		
+		componentOfNameField.setText("");		
+		btnIsShareable.setSelection(false);		
+		btnIsEssential.setSelection(false);
+		btnIsInseparable.setSelection(false);		
+		btnIsImmutablePart.setSelection(false);		
+		btnIsImmutableWhole.setSelection(false);
 	}
 }
