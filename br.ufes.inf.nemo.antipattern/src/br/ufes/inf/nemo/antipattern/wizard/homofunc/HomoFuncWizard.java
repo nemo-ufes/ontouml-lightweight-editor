@@ -8,12 +8,12 @@ import br.ufes.inf.nemo.antipattern.wizard.PresentationPage;
 
 public class HomoFuncWizard extends AntipatternWizard {
 
-	public HomoFuncFirstPage firstPage;
-	public HomoFuncSecondPage secondPage;
-	public HomoFuncThirdPage thirdPage;
-	public HomoFuncFifthPage fifthPage;
-	public HomoFuncSixthPage sixthPage;
-	public HomoFuncSeventhPage seventhPage;
+	public FunctionalOrCollectionPage funcColPage;
+	public CreatePartPage createPartPage;
+	public CreateSubPartPage createSubPartPage;
+	public FixNaturePage fixNaturePage;
+	public DefineIdentityProviderPage defineIdenPage;
+	public MemberOrSubCollectionPage memberColPage;
 	
 	public HomoFuncWizard(HomoFuncOccurrence ap) {
 		super(ap,HomoFuncAntipattern.getAntipatternInfo().name);		
@@ -22,12 +22,12 @@ public class HomoFuncWizard extends AntipatternWizard {
 	@Override
 	public void addPages() 
 	{
-		firstPage = new HomoFuncFirstPage((HomoFuncOccurrence)ap);
-		secondPage = new HomoFuncSecondPage((HomoFuncOccurrence)ap);
-		thirdPage = new HomoFuncThirdPage((HomoFuncOccurrence)ap);
-		fifthPage = new HomoFuncFifthPage((HomoFuncOccurrence)ap);
-		sixthPage = new HomoFuncSixthPage((HomoFuncOccurrence)ap);
-		seventhPage = new HomoFuncSeventhPage((HomoFuncOccurrence)ap);
+		funcColPage = new FunctionalOrCollectionPage((HomoFuncOccurrence)ap);
+		createPartPage = new CreatePartPage((HomoFuncOccurrence)ap);
+		createSubPartPage = new CreateSubPartPage((HomoFuncOccurrence)ap);
+		fixNaturePage = new FixNaturePage((HomoFuncOccurrence)ap);
+		defineIdenPage = new DefineIdentityProviderPage((HomoFuncOccurrence)ap);
+		memberColPage = new MemberOrSubCollectionPage((HomoFuncOccurrence)ap);
 		
 		finishing = new FinishingPage();
 		options = new HomoFuncRefactoringPage(getAp());
@@ -37,17 +37,17 @@ public class HomoFuncWizard extends AntipatternWizard {
 				HomoFuncAntipattern.getAntipatternInfo().acronym,
 			ap.toString(),
 			HomoFuncAntipattern.getAntipatternInfo().description,
-			firstPage,
+			funcColPage,
 			options
 		);
 			
 		addPage(presentation);	
-		addPage(firstPage);		
-		addPage(secondPage);
-		addPage(thirdPage);
-		addPage(fifthPage);
-		addPage(sixthPage);
-		addPage(seventhPage);
+		addPage(funcColPage);		
+		addPage(createPartPage);
+		addPage(createSubPartPage);
+		addPage(fixNaturePage);
+		addPage(defineIdenPage);
+		addPage(memberColPage);
 		addPage(options);
 		addPage(finishing);
 	}
@@ -56,29 +56,29 @@ public class HomoFuncWizard extends AntipatternWizard {
 		return (HomoFuncOccurrence)ap;
 	}
 	
-	public HomoFuncFirstPage getFirstPage()
+	public FunctionalOrCollectionPage getFunctionalOrCollectionPage()
 	{
-		return firstPage;
+		return funcColPage;
 	}
-	public HomoFuncSecondPage getSecondPage()
+	public CreatePartPage getCreatePartPage()
 	{
-		return secondPage;
+		return createPartPage;
 	}
-	public HomoFuncThirdPage getThirdPage()
+	public CreateSubPartPage getCreateSubPartPage()
 	{
-		return thirdPage;
+		return createSubPartPage;
 	}
-	public HomoFuncFifthPage getFifthPage()
+	public FixNaturePage getFixNaturePage()
 	{
-		return fifthPage;
+		return fixNaturePage;
 	}
-	public HomoFuncSixthPage getSixthPage()
+	public DefineIdentityProviderPage getDefineIdentityProviderPage()
 	{
-		return sixthPage;
+		return defineIdenPage;
 	}
-	public HomoFuncSeventhPage getSeventhPage()
+	public MemberOrSubCollectionPage getMemberOrSubCollectionPage()
 	{
-		return seventhPage;
+		return memberColPage;
 	}
 	
 }

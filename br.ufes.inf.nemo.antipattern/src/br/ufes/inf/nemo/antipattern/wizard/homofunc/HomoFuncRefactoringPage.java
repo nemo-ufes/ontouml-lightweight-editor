@@ -1,18 +1,17 @@
 package br.ufes.inf.nemo.antipattern.wizard.homofunc;
 
-import java.util.ArrayList;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.swt.widgets.ExpandItem;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
-import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
@@ -23,11 +22,13 @@ public class HomoFuncRefactoringPage extends RefactoringPage {
 	private Button btnNewTypeAsIdentityProvider;
 	private Button btnWholeAsIdentityProvider;
 	private Button btnChangeStereotypeIdentityProvider;
-	private CreatePartComposite createPartComposite;
-	private CreatePartComposite createSubPartComposite;
-	private CreateComponentOfComposite createSubComponentOf;
 	private Button btnMemberOf;
 	private Button btnSubCollectionOf;
+	
+	private CreatePartComposite createPartComposite;
+	private CreatePartComposite createSubtypePartComposite;
+	private CreateComponentOfComposite createComponentOfToSubtype;
+	private CreateComponentOfComposite createComponentOfToExistingFunctional;
 		
 	/**
 	 * Create the wizard.
@@ -55,91 +56,216 @@ public class HomoFuncRefactoringPage extends RefactoringPage {
 
 		setControl(container);
 		
-		Composite composite = new Composite(container, SWT.BORDER);
-		composite.setBounds(10, 96, 588, 55);
+		Group composite = new Group(container, SWT.NONE);
+		composite.setText("Change stereotype of componentOf relation:");
 		
 		btnMemberOf = new Button(composite, SWT.RADIO);
-		btnMemberOf.setBounds(10, 10, 534, 16);
-		btnMemberOf.setText("Change partOf relation to memberOf");
+		btnMemberOf.setText("Change stereotype to memberOf");
 		
 		btnSubCollectionOf = new Button(composite, SWT.RADIO);
-		btnSubCollectionOf.setBounds(10, 32, 534, 16);
 		btnSubCollectionOf.setText("Change partOf relation to subCollectionOf");
 		
-		Composite composite_1 = new Composite(container, SWT.BORDER);
-		composite_1.setBounds(10, 10, 588, 80);
+		Group composite_1 = new Group(container, SWT.NONE);
+		composite_1.setText("Change whole nature to Collection:");
 		
 		btnNewTypeAsIdentityProvider = new Button(composite_1, SWT.RADIO);
-		btnNewTypeAsIdentityProvider.setBounds(10, 10, 534, 16);
-		btnNewTypeAsIdentityProvider.setText("Create new Collective to act as the identity provider of Whole");
+		btnNewTypeAsIdentityProvider.setText("Set new collective as the identity provider");
 		
 		btnWholeAsIdentityProvider = new Button(composite_1, SWT.RADIO);
-		btnWholeAsIdentityProvider.setBounds(10, 32, 534, 16);
-		btnWholeAsIdentityProvider.setText("Make Whole the identity provider");
+		btnWholeAsIdentityProvider.setText("Change whole stereotype to «Collective»");
 		
 		btnChangeStereotypeIdentityProvider = new Button(composite_1, SWT.RADIO);
-		btnChangeStereotypeIdentityProvider.setBounds(10, 54, 534, 16);
-		btnChangeStereotypeIdentityProvider.setText("Change the stereotype of the identity provider to Collective");
+		btnChangeStereotypeIdentityProvider.setText("Change whole's identity providers' stereotype(s) to «Collective»");
 		
 		ExpandBar expandBar = new ExpandBar(container, SWT.V_SCROLL);
-		expandBar.setBounds(10, 157, 588, 185);
 		
-		//===========
-		
-		Composite composite2 = new Composite (expandBar, SWT.NONE);
-		GridLayout layout2 = new GridLayout ();
-		layout2.marginLeft = layout2.marginTop=3;
-		layout2.marginRight=layout2.marginBottom=3;
-		layout2.verticalSpacing = 3;
-		composite2.setLayout(layout2);
+		Composite item1Composite = new Composite (expandBar, SWT.NONE);
 			
-		createPartComposite = new CreatePartComposite(composite2, SWT.NONE,homoFunc,false);
-		createPartComposite.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+		createPartComposite = new CreatePartComposite(item1Composite, SWT.NONE,homoFunc,false);
 		createPartComposite.setVisible(true);
 		
-		ExpandItem item2 = new ExpandItem (expandBar, SWT.NONE, 0);
-		item2.setText("Create new parts via componentOf");
-		item2.setHeight
-		(composite2.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		item2.setControl(composite2);
+		ExpandItem item1 = new ExpandItem (expandBar, SWT.NONE, 0);
+		item1.setText("New functional complex types");
+		item1.setHeight
+		(item1Composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item1.setControl(item1Composite);
+		GroupLayout gl_item1Composite = new GroupLayout(item1Composite);
+		gl_item1Composite.setHorizontalGroup(
+			gl_item1Composite.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_item1Composite.createSequentialGroup()
+					.add(1)
+					.add(createPartComposite, GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
+					.add(1))
+		);
+		gl_item1Composite.setVerticalGroup(
+			gl_item1Composite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_item1Composite.createSequentialGroup()
+					.add(1)
+					.add(createPartComposite, GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+					.add(1))
+		);
+		item1Composite.setLayout(gl_item1Composite);
 		
 		//===========
 		
-		Composite composite3 = new Composite (expandBar, SWT.NONE);
-		GridLayout layout3 = new GridLayout ();
-		layout3.marginLeft = layout3.marginTop=3;
-		layout3.marginRight=layout3.marginBottom=3;
-		layout3.verticalSpacing = 3;
-		composite3.setLayout(layout3);
-		
-		createSubPartComposite = new CreatePartComposite(composite3, SWT.NONE,homoFunc,true);
-		createSubPartComposite.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		createSubPartComposite.setVisible(true);
+		Composite item2Composite = new Composite (expandBar, SWT.NONE);
+		createComponentOfToExistingFunctional = new CreateComponentOfComposite(item2Composite, SWT.NONE, homoFunc, false);
 				
-		ExpandItem item3 = new ExpandItem (expandBar, SWT.NONE, 1);
-		item3.setText("Create new subparts via subsetted componentOfs");
-		item3.setHeight
-		(composite3.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		item3.setControl(composite3);		
+		ExpandItem item2 = new ExpandItem (expandBar, SWT.NONE, 1);
+		item2.setText("Existing functional complex types");
+		item2.setHeight
+		(165);
+		item2.setControl(item2Composite);
+		GroupLayout gl_item2Composite = new GroupLayout(item2Composite);
+		gl_item2Composite.setHorizontalGroup(
+			gl_item2Composite.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_item2Composite.createSequentialGroup()
+					.add(1)
+					.add(createComponentOfToExistingFunctional, GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+					.add(1))
+		);
+		gl_item2Composite.setVerticalGroup(
+			gl_item2Composite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_item2Composite.createSequentialGroup()
+					.add(1)
+					.add(createComponentOfToExistingFunctional, GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+					.add(1))
+		);
+		item2Composite.setLayout(gl_item2Composite);
 		
 		//===========
 
-		Composite composite4 = new Composite (expandBar, SWT.NONE);
-		GridLayout layout4 = new GridLayout ();
-		layout4.marginLeft = layout4.marginTop=3;
-		layout4.marginRight=layout4.marginBottom=3;
-		layout4.verticalSpacing = 3;
-		composite4.setLayout(layout4);
+		Composite item4Composite = new Composite (expandBar, SWT.NONE);
 		
-		createSubComponentOf = new CreateComponentOfComposite(composite4, SWT.NONE,homoFunc);
-		createSubComponentOf.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		createSubComponentOf.setVisible(true);
+		createComponentOfToSubtype = new CreateComponentOfComposite(item4Composite, SWT.NONE,homoFunc,true);
+		createComponentOfToSubtype.setVisible(true);
+		
+		ExpandItem item3 = new ExpandItem(expandBar, SWT.NONE, 2);
+		item3.setText("New part subtypes");
+		
+		Composite item3Composite = new Composite(expandBar, SWT.NONE);
+		item3.setControl(item3Composite);
+		item3.setHeight(165);
+		
+		createSubtypePartComposite = new CreatePartComposite(item3Composite, SWT.NONE,homoFunc,true);
+		createSubtypePartComposite.setVisible(true);
+		GroupLayout gl_item3Composite = new GroupLayout(item3Composite);
+		gl_item3Composite.setHorizontalGroup(
+			gl_item3Composite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_item3Composite.createSequentialGroup()
+					.add(1)
+					.add(createSubtypePartComposite, GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
+					.add(1))
+		);
+		gl_item3Composite.setVerticalGroup(
+			gl_item3Composite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_item3Composite.createSequentialGroup()
+					.add(1)
+					.add(createSubtypePartComposite, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+					.add(1))
+		);
+		item3Composite.setLayout(gl_item3Composite);
 				
-		ExpandItem item4 = new ExpandItem (expandBar, SWT.NONE, 2);
-		item4.setText("Create new subsetted componentOfs from existing subparts");
+		ExpandItem item4 = new ExpandItem (expandBar, SWT.NONE, 3);
+		item4.setText("Existing part subtypes");
 		item4.setHeight
-		(composite4.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		item4.setControl(composite4);	
+		(165);
+		item4.setControl(item4Composite);	
+		GroupLayout gl_item4Composite = new GroupLayout(item4Composite);
+		gl_item4Composite.setHorizontalGroup(
+			gl_item4Composite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_item4Composite.createSequentialGroup()
+					.add(1)
+					.add(createComponentOfToSubtype, GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
+					.add(1))
+		);
+		gl_item4Composite.setVerticalGroup(
+			gl_item4Composite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_item4Composite.createSequentialGroup()
+					.add(1)
+					.add(createComponentOfToSubtype, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+					.add(1))
+		);
+		item4Composite.setLayout(gl_item4Composite);
+		
+		Label lblNewLabel = new Label(container, SWT.NONE);
+		lblNewLabel.setText("Define new componentOf relations using:");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.TRAILING)
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(composite, GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+					.add(9))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(composite_1, GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(lblNewLabel, GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.add(9)
+					.add(expandBar, GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.TRAILING)
+				.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
+					.add(10)
+					.add(composite_1, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(composite, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+					.add(18)
+					.add(lblNewLabel)
+					.add(5)
+					.add(expandBar, GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
+		);
+		GroupLayout gl_composite = new GroupLayout(composite);
+		gl_composite.setHorizontalGroup(
+			gl_composite.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_composite.createSequentialGroup()
+					.add(10)
+					.add(gl_composite.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, btnSubCollectionOf, GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, btnMemberOf, GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_composite.setVerticalGroup(
+			gl_composite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_composite.createSequentialGroup()
+					.add(10)
+					.add(btnMemberOf)
+					.add(6)
+					.add(btnSubCollectionOf)
+					.addContainerGap())
+		);
+		composite.setLayout(gl_composite);
+		GroupLayout gl_composite_1 = new GroupLayout(composite_1);
+		gl_composite_1.setHorizontalGroup(
+			gl_composite_1.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_composite_1.createSequentialGroup()
+					.add(10)
+					.add(gl_composite_1.createParallelGroup(GroupLayout.LEADING)
+						.add(btnWholeAsIdentityProvider, GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
+						.add(GroupLayout.TRAILING, btnNewTypeAsIdentityProvider, GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
+						.add(btnChangeStereotypeIdentityProvider, GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_composite_1.setVerticalGroup(
+			gl_composite_1.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_composite_1.createSequentialGroup()
+					.add(10)
+					.add(btnNewTypeAsIdentityProvider)
+					.add(6)
+					.add(btnWholeAsIdentityProvider)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnChangeStereotypeIdentityProvider)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		composite_1.setLayout(gl_composite_1);
+		container.setLayout(gl_container);
 		
 	}
 
@@ -152,91 +278,93 @@ public class HomoFuncRefactoringPage extends RefactoringPage {
 		{
 			//Action =============================
 			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-			newAction.setCreateNewIdentityProvider(homoFunc.getWhole()); 
-			getHomoFuncWizard().replaceAction(0,newAction);	
+			newAction.setCreateNewIdentityProvider(); 
+			getHomoFuncWizard().addAction(0,newAction);	
 			//======================================
 		}
-		if(btnWholeAsIdentityProvider.getSelection())
+		else if(btnWholeAsIdentityProvider.getSelection())
 		{
 			//Action =============================
 			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-			newAction.setChangeToCollective(homoFunc.getWhole()); 
-			getHomoFuncWizard().replaceAction(0,newAction);	
+			newAction.setChangeToCollective(); 
+			getHomoFuncWizard().addAction(0,newAction);	
 			//======================================
 		}
-		if(btnChangeStereotypeIdentityProvider.getSelection())
+		else if(btnChangeStereotypeIdentityProvider.getSelection())
 		{
-			ArrayList<Classifier> providers = homoFunc.getParser().getIdentityProvider(homoFunc.getWhole());
-			if (providers.size()>0){
-				//Action =============================
-				HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-				newAction.setChangeAllToCollective(providers); 
-				getHomoFuncWizard().replaceAction(0,newAction);	
-				//======================================				
-			}
+			//Action =============================
+			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+			newAction.setChangeNatureToCollection(); 
+			getHomoFuncWizard().addAction(0,newAction);	
+			//======================================
 		}
+		
 		if(btnSubCollectionOf.getSelection())
 		{
 			//Action =============================
 			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-			newAction.setChangeToSubCollectionOf(homoFunc.getPartEnd().getAssociation()); 
-			getHomoFuncWizard().replaceAction(1,newAction);	
+			newAction.setChangeToSubCollectionOf(); 
+			getHomoFuncWizard().addAction(0,newAction);	
 			//======================================
 		}
-		if(btnMemberOf.getSelection())
+		else if(btnMemberOf.getSelection())
 		{
 			//Action =============================
 			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-			newAction.setChangeToMemberOf(homoFunc.getPartEnd().getAssociation()); 
-			getHomoFuncWizard().replaceAction(1,newAction);	
+			newAction.setChangeToMemberOf(); 
+			getHomoFuncWizard().addAction(0,newAction);	
 			//======================================
-		}		
-		if(createPartComposite.getParts().size()>0)
+		}	
+		
+		int newParts = createPartComposite.getParts().size();
+		int newPartSubtype = createSubtypePartComposite.getParts().size();
+		
+		if(newParts>0)
 		{
 			//Action =============================
 			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
 			newAction.setCreateNewPart(createPartComposite.getParts(),true); 
-			getHomoFuncWizard().replaceAction(3,newAction);	
+			getHomoFuncWizard().addAction(0,newAction);	
 			//======================================	
 		}		
-		if(createSubPartComposite.getParts().size()>0)
+		
+		if(newPartSubtype>0)
 		{		
-			if (createSubPartComposite!=null){				
-				//Action =============================
-				HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-				newAction.setCreateNewPart(createSubPartComposite.getParts(),false); 
-				getHomoFuncWizard().replaceAction(4,newAction);	
-				//======================================		
-			}						
-			if (createSubPartComposite.parts.size()>=2){				
-				String message = "These created sub-parts might characterize a WholeOver/PartOver anti-pattern." +
-						"\n\n";
-				for(PartElement r: createSubPartComposite.parts){
-					message+=r.toString()+"\n";
-				}
-				message += "\nSearch for the WholeOver/PartOver antipattern when finished.";
-				MessageDialog.openInformation(getShell(), "WARNING", message);	
-			}			
-		}				
-		if(createSubComponentOf.getRelations().size()>0)
-		{			
-			if (createSubComponentOf!=null){
-				//Action =============================
-				HomoFuncAction newAction = new HomoFuncAction(homoFunc);
-				newAction.setCreateSubComponentOfToExistingSubPart(createSubComponentOf.getRelations()); 
-				getHomoFuncWizard().replaceAction(5,newAction);	
-				//======================================		
-			}						
-			if (createSubComponentOf.relations.size()>=2){
-				String message = "These created sub-parts might characterize a WholeOver/PartOver anti-pattern." +
-						"\n\n";
-				for(RelationElement r: createSubComponentOf.relations){
-					message+=r.toString()+"\n";
-				}
-				message +=  "\nSearch for the WholeOver/PartOver antipattern when finished.";
-				MessageDialog.openInformation(getShell(), "WARNING", message);
-			}
+			//Action =============================
+			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+			newAction.setCreateNewPart(createSubtypePartComposite.getParts(),false); 
+			getHomoFuncWizard().addAction(0,newAction);	
+			//======================================							
+					
+		}		
+		
+		int newComponentOfToSubtype = createComponentOfToSubtype.getRelations().size();
+		int newComponentOfToExistingType = createComponentOfToExistingFunctional.getRelations().size();
+				
+		if(newComponentOfToSubtype>0)
+		{
+			//Action =============================
+			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+			newAction.setCreateSubComponentOfToExistingSubPart(createComponentOfToSubtype.getRelations()); 
+			getHomoFuncWizard().addAction(0,newAction);	
+			//======================================		
 		}
+		
+		if(newComponentOfToExistingType>0)
+		{
+			//Action =============================
+			HomoFuncAction newAction = new HomoFuncAction(homoFunc);
+			newAction.setCreateComponentOfToExistingType(createComponentOfToExistingFunctional.getRelations());
+			getHomoFuncWizard().addAction(0,newAction);	
+			//======================================		
+		}
+		
+		if((newComponentOfToSubtype+newPartSubtype)>=2){				
+			String message ="The creation of new parthood relations might characterize a WholeOver/PartOver anti-pattern." +
+							"\r\n\r\n"+
+							"Please remember to search the model for the WholeOver and PartOver antipatterns.";
+			MessageDialog.openInformation(getShell(), "WARNING", message);	
+		}	
 		
 		return ((HomoFuncWizard)getWizard()).getFinishing();
 	}

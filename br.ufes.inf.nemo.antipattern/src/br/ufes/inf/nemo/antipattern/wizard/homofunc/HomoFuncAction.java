@@ -5,16 +5,14 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import RefOntoUML.Classifier;
-import RefOntoUML.NamedElement;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class HomoFuncAction extends AntiPatternAction<HomoFuncOccurrence>{
 
 	public ArrayList<PartElement> partList;
 	public ArrayList<RelationElement> relationList;
-	public RefOntoUML.Element element;
 	public ArrayList<RefOntoUML.Classifier> elemList;
 	
 	public HomoFuncAction(HomoFuncOccurrence ap) 
@@ -22,74 +20,72 @@ public class HomoFuncAction extends AntiPatternAction<HomoFuncOccurrence>{
 		super(ap);
 	}
 
-	public enum Action { CHANGE_TO_COLLECTIVE, CHANGE_ALL_TO_COLLECTIVE, CHANGE_TO_MEMBEROF, CHANGE_TO_SUBCOLLECTIONOF, CREATE_NEW_IDENTITY_PROVIDER, 
+	public enum Action { CHANGE_NATURE_TO_COLLECTION, CHANGE_TO_COLLECTIVE, CHANGE_TO_MEMBEROF, CHANGE_TO_SUBCOLLECTIONOF, CREATE_NEW_IDENTITY_PROVIDER, 
 		  				 CREATE_NEW_PART_TO_WHOLE, CREATE_NEW_SUBPART_TO_WHOLE, 
-		  				 CREATE_SUBCOMPONENTOF_TO_EXISTING_SUBPART }
+		  				 CREATE_COMPONENTOF_TO_EXISTING_SUBPART, CREATE_COMPONENTOF_TO_EXISTING_TYPE
+		  				 }
 	
 	@Override
 	public void run(){
 		if (code ==Action.CHANGE_TO_COLLECTIVE) {
-			ap.changeToCollective(element);
+			ap.changeToCollective();
 		}
-		if (code ==Action.CHANGE_TO_MEMBEROF) {
-			ap.changeToMemberOf(element);
+		else if (code ==Action.CHANGE_NATURE_TO_COLLECTION) {
+			ap.changeNatureToCollection();
 		}
-		if (code ==Action.CHANGE_TO_SUBCOLLECTIONOF) {
-			ap.changeToSubCollectionOf(element);
+		else if (code ==Action.CHANGE_TO_MEMBEROF) {
+			ap.changeToMemberOf();
 		}
-		if (code ==Action.CREATE_NEW_IDENTITY_PROVIDER) {
-			ap.createNewIdentityProvider(element);
+		else if (code ==Action.CHANGE_TO_SUBCOLLECTIONOF) {
+			ap.changeToSubCollectionOf();
 		}
-		if(code==Action.CREATE_NEW_PART_TO_WHOLE){
+		else if (code ==Action.CREATE_NEW_IDENTITY_PROVIDER) {
+			ap.createNewIdentityProvider();
+		}
+		else if(code==Action.CREATE_NEW_PART_TO_WHOLE){
 			for(PartElement part: partList){
 				ap.createNewPartToWhole(part.partStereotype, part.partName, part.componentOfName, part.isEssential, part.isInseparable,part.isShareable,part.isImmutablePart,part.isImmutableWhole);
 			}	
 		}
-		if(code==Action.CREATE_NEW_SUBPART_TO_WHOLE){
+		else if(code==Action.CREATE_NEW_SUBPART_TO_WHOLE){
 			for(PartElement part: partList){
 				ap.createNewSubPartToWhole(part.partStereotype, part.partName, part.componentOfName, part.isEssential, part.isInseparable,part.isShareable,part.isImmutablePart,part.isImmutableWhole);
 			}	
 		}
-		if(code==Action.CREATE_SUBCOMPONENTOF_TO_EXISTING_SUBPART){
+		else if(code==Action.CREATE_COMPONENTOF_TO_EXISTING_SUBPART){
 			for(RelationElement relation: relationList){
 				ap.createSubComponentOfToExistingSubPart(relation.getType(),relation.componentOfName,relation.isEssential,relation.isInseparable,relation.isShareable,relation.isImmutablePart,relation.isImmutableWhole);
 			}
 		}
-		if(code==Action.CHANGE_ALL_TO_COLLECTIVE) {
-			for(Classifier element: elemList){
-				ap.changeToCollective(element);
+		else if(code==Action.CREATE_COMPONENTOF_TO_EXISTING_TYPE){
+			for(RelationElement relation: relationList){
+				ap.createComponentOfToExistingType(relation.getType(),relation.componentOfName,relation.isEssential,relation.isInseparable,relation.isShareable,relation.isImmutablePart,relation.isImmutableWhole);
 			}
 		}
 	}
 	
-	public void setChangeToCollective(RefOntoUML.Element element)
-	{
+	public void setChangeToCollective() {
 		code = Action.CHANGE_TO_COLLECTIVE;
-		this.element = element;
 	}
 	
-	public void setChangeAllToCollective(ArrayList<RefOntoUML.Classifier> elemList)
+	public void setChangeNatureToCollection()
 	{
-		code = Action.CHANGE_ALL_TO_COLLECTIVE;
-		this.elemList=elemList;
+		code = Action.CHANGE_NATURE_TO_COLLECTION;
 	}
 	
-	public void setChangeToSubCollectionOf(RefOntoUML.Element element)
+	public void setChangeToSubCollectionOf()
 	{
 		code = Action.CHANGE_TO_SUBCOLLECTIONOF;
-		this.element = element;
 	}
 	
-	public void setChangeToMemberOf(RefOntoUML.Element element)
+	public void setChangeToMemberOf()
 	{
 		code = Action.CHANGE_TO_MEMBEROF;
-		this.element = element;
 	}
 	
-	public void setCreateNewIdentityProvider(RefOntoUML.Element element)
+	public void setCreateNewIdentityProvider()
 	{
 		code = Action.CREATE_NEW_IDENTITY_PROVIDER;
-		this.element = element;
 	}
 	
 	public void setCreateNewPart(ArrayList<PartElement> partList, boolean createNewPartToWhole)
@@ -101,7 +97,13 @@ public class HomoFuncAction extends AntiPatternAction<HomoFuncOccurrence>{
 	
 	public void setCreateSubComponentOfToExistingSubPart(ArrayList<RelationElement> relationList)
 	{
-		code=Action.CREATE_SUBCOMPONENTOF_TO_EXISTING_SUBPART;
+		code=Action.CREATE_COMPONENTOF_TO_EXISTING_SUBPART;
+		this.relationList=relationList;
+	}
+	
+	public void setCreateComponentOfToExistingType(ArrayList<RelationElement> relationList)
+	{
+		code=Action.CREATE_COMPONENTOF_TO_EXISTING_TYPE;
 		this.relationList=relationList;
 	}
 	
@@ -119,16 +121,19 @@ public class HomoFuncAction extends AntiPatternAction<HomoFuncOccurrence>{
 		String result = new String();
 		
 		if (code ==Action.CHANGE_TO_COLLECTIVE) {
-			result+="Change <<"+getStereotype(element)+">> "+((NamedElement)element).getName()+" to <<Collective>>";
+			result+="Change "+OntoUMLNameHelper.getTypeAndName(getAp().getWhole(),true,true)+" to «Collective»\n";
+		}	
+		if (code ==Action.CHANGE_NATURE_TO_COLLECTION) {
+			result+="Change nature of "+OntoUMLNameHelper.getTypeAndName(getAp().getWhole(),true,true)+" to Collection\n";
 		}	
 		if (code ==Action.CHANGE_TO_MEMBEROF) {
-			result+="Change <<"+getStereotype(element)+">> "+((NamedElement)element).getName()+" to <<memberOf>>";
+			result+="Change "+OntoUMLNameHelper.getTypeAndName(getAp().getPartEnd().getAssociation(),true,true)+" to «memberOf»\n";
 		}
 		if (code ==Action.CHANGE_TO_SUBCOLLECTIONOF) {		
-			result+="Change <<"+getStereotype(element)+">> "+((NamedElement)element).getName()+" to <<subCollectionOf>>";
+			result+="Change "+OntoUMLNameHelper.getTypeAndName(getAp().getPartEnd().getAssociation(),true,true)+" to «subCollectionOf»\n";
 		}
 		if (code ==Action.CREATE_NEW_IDENTITY_PROVIDER) {
-			result+="Create new identity provider to <<"+getStereotype(element)+">> "+((NamedElement)element).getName()+"";
+			result+="Create new identity provider to "+OntoUMLNameHelper.getTypeAndName(getAp().getWhole(),true,true);
 		}
 		if(code==Action.CREATE_NEW_PART_TO_WHOLE)
 		{			
@@ -142,17 +147,18 @@ public class HomoFuncAction extends AntiPatternAction<HomoFuncOccurrence>{
 				result+="Create new sub-part via subsetted-componentOf: ("+part+")\n";
 			}						
 		}
-		if(code==Action.CREATE_SUBCOMPONENTOF_TO_EXISTING_SUBPART)
+		if(code==Action.CREATE_COMPONENTOF_TO_EXISTING_SUBPART)
 		{
 			for(RelationElement relation: relationList){
 				result+="Create new subsetted-componentOf to existing sub-part: ("+relation+")\n";
 			}		
 		}
-		if(code==Action.CHANGE_ALL_TO_COLLECTIVE)
+		
+		if(code==Action.CREATE_COMPONENTOF_TO_EXISTING_TYPE)
 		{
-			for(Classifier c: elemList){
-				result+="Change <<"+getStereotype(c)+">> "+((NamedElement)c).getName()+" to <<Collective>>"+"\n";
-			}
+			for(RelationElement relation: relationList){
+				result+="Create new componentOf to existing type: ("+relation+")\n";
+			}		
 		}
 		return result;
 	}

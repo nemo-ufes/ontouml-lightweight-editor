@@ -1,12 +1,12 @@
 package br.ufes.inf.nemo.antipattern.wizard.homofunc;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -14,21 +14,18 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
+import RefOntoUML.Classifier;
+import RefOntoUML.ObjectClass;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
-import org.eclipse.swt.graphics.Point;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class CreateComponentOfComposite extends Composite {
 
 	public HomoFuncOccurrence homoFunc;
-	
-	public CreateComponentOfComposite(Composite parent, int style, HomoFuncOccurrence homoFunc) 
-	{
-		super(parent, style);
-		setSize(new Point(540, 149));
-		this.homoFunc=homoFunc;
-		createPartControl();
-	}
+	public ArrayList<RelationElement> relations = new ArrayList<RelationElement>();
+	private ArrayList<Classifier> typeList;
 	
 	private Text componentOfNameField;
 	private Combo typeCombo;
@@ -39,27 +36,215 @@ public class CreateComponentOfComposite extends Composite {
 	private Button btnIsImmutableWhole;
 	private Label lblType;
 	private Label lblComponentofName;
-	private Button btnCreateNewPart;
-	private Button btnDeletePart;	
+	private Button newButton;
+	private Button deleteButton;	
 	private List relationList;
-	public ArrayList<RelationElement> relations = new ArrayList<RelationElement>();
+	private boolean isSubPart;
+	private boolean canEnable;
+	
+	public CreateComponentOfComposite(Composite parent, int style, HomoFuncOccurrence homoFunc, boolean isSubPart) 
+	{
+		super(parent, style);
+		setSize(new Point(540, 149));
+		this.homoFunc=homoFunc;
+		this.isSubPart = isSubPart;
+		createPartControl();
+	}
+
+	public void createPartControl() 
+	{
 		
+		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		lblType = new Label(this, SWT.NONE);
+
+		if(isSubPart)
+			lblType.setText("Subtype:");
+		else
+			lblType.setText("Type:");
+		
+		lblType.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		lblComponentofName = new Label(this, SWT.NONE);
+		lblComponentofName.setText("ComponentOf name:");
+		lblComponentofName.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		typeCombo = new Combo(this, SWT.READ_ONLY);
+		
+		if(isSubPart){
+			typeList = new ArrayList<Classifier>(homoFunc.getParser().getAllChildren(homoFunc.getPart()));
+		}
+		else{
+			typeList = new ArrayList<Classifier>(homoFunc.getParser().getAllInstances(ObjectClass.class));
+			Iterator<Classifier> it = typeList.iterator();
+			
+			while(it.hasNext()) {
+				Classifier type = it.next();
+				if(!homoFunc.getParser().isFunctionalComplex(type) || 
+						type.equals(homoFunc.getWhole()) || homoFunc.getWhole().allChildren().contains(type) || homoFunc.getWhole().allParents().contains(type) ||
+						type.equals(homoFunc.getPart()) || homoFunc.getPart().allChildren().contains(type) || homoFunc.getPart().allParents().contains(type))
+					it.remove();
+			}
+		}
+		
+		for(Classifier child : typeList)
+			typeCombo.add(OntoUMLNameHelper.getTypeAndName(child, true, false));
+		
+		componentOfNameField = new Text(this, SWT.BORDER);
+		
+		btnIsShareable = new Button(this, SWT.CHECK);
+		btnIsShareable.setText("isShareable");
+		btnIsShareable.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		btnIsEssential = new Button(this, SWT.CHECK);
+		btnIsEssential.setText("isEssential");
+		btnIsEssential.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		btnIsInseparable = new Button(this, SWT.CHECK);
+		btnIsInseparable.setText("isInseparable");
+		btnIsInseparable.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		btnIsImmutablePart = new Button(this, SWT.CHECK);
+		btnIsImmutablePart.setText("isImmutablePart");
+		btnIsImmutablePart.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		btnIsImmutableWhole = new Button(this, SWT.CHECK);		
+		btnIsImmutableWhole.setText("isImmutableWhole");
+		btnIsImmutableWhole.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		
+		newButton = new Button(this, SWT.NONE);
+		newButton.setText("New");
+		newButton.addSelectionListener(newAction);
+		
+		deleteButton = new Button(this, SWT.NONE);
+		deleteButton.setText("Delete");
+		deleteButton.addSelectionListener(deleteAction);
+		
+		relationList = new List(this, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(10)
+							.add(lblType, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+							.add(6)
+							.add(typeCombo, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+							.add(6)
+							.add(btnIsEssential, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))
+						.add(groupLayout.createSequentialGroup()
+							.add(10)
+							.add(lblComponentofName, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+							.add(6)
+							.add(componentOfNameField, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+							.add(6)
+							.add(btnIsImmutablePart, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))
+						.add(groupLayout.createSequentialGroup()
+							.add(43)
+							.add(newButton, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+							.add(3)
+							.add(deleteButton, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+							.add(6)
+							.add(relationList, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+							.add(6)
+							.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+								.add(btnIsInseparable, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+								.add(btnIsImmutableWhole, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
+								.add(btnIsShareable, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE))))
+					.add(18))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(3)
+							.add(lblType, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+						.add(typeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(groupLayout.createSequentialGroup()
+							.add(2)
+							.add(btnIsEssential)))
+					.add(5)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(1)
+							.add(lblComponentofName, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
+						.add(componentOfNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(btnIsImmutablePart))
+					.add(5)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(1)
+							.add(newButton))
+						.add(groupLayout.createSequentialGroup()
+							.add(1)
+							.add(deleteButton))
+						.add(groupLayout.createSequentialGroup()
+							.add(1)
+							.add(relationList, GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
+						.add(groupLayout.createSequentialGroup()
+							.add(btnIsInseparable)
+							.add(13)
+							.add(btnIsImmutableWhole)
+							.add(6)
+							.add(btnIsShareable, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))
+					.add(11))
+		);
+		setLayout(groupLayout);
+		
+		canEnable = true;
+		
+		if(typeList.size()==0){
+			enableAll(false);
+			canEnable=false;
+		}
+	}
+	
+	private SelectionAdapter deleteAction = new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent arg0) {
+			int index = relationList.getSelectionIndex();
+			
+			if(index!=-1){
+				relationList.remove(index);
+				relations.remove(index);
+			}
+		}
+	};
+	
+	private SelectionAdapter newAction = new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent arg0) {
+			
+			if (getType() !=null){
+				RelationElement newrelation = new RelationElement(getType(), getComponentOfName(), isShareable(), isEssential(), isImmutablePart(), isImmutableWhole(), isInseparable());
+				relations.add(newrelation);
+				relationList.add(newrelation.toString());
+				
+				clearAll();
+			}
+		}
+	};
+	
+	public ArrayList<RelationElement> getRelations()
+	{
+		return relations;
+	}
+	
 	public String getComponentOfName()
 	{
 		return componentOfNameField.getText();
 	}
 	
-	public RefOntoUML.Class getType()
+	public Classifier getType()
 	{
-		for(RefOntoUML.Class type: homoFunc.getParser().getAllInstances(RefOntoUML.Class.class))
-		{
-			String str = getStereotype(type)+" "+type.getName();
-			if (str.compareToIgnoreCase(typeCombo.getItem(typeCombo.getSelectionIndex()))==0){
-				return type;
-			}
-		}
+		if(typeCombo.getSelectionIndex()==-1)
+			return null;
 		
-		return null;
+		return typeList.get(typeCombo.getSelectionIndex());
 	}
 	 
 	public boolean isShareable()
@@ -86,8 +271,25 @@ public class CreateComponentOfComposite extends Composite {
 		return btnIsImmutableWhole.getSelection();
 	}
 	
+	public boolean canEnable(){
+		return canEnable;
+	}
+	
+	protected void clearAll() {
+		typeCombo.select(-1);
+		componentOfNameField.setText("");
+		btnIsShareable.setSelection(false);
+		btnIsEssential.setSelection(false);	
+		btnIsInseparable.setSelection(false);
+		btnIsImmutablePart.setSelection(false);
+		btnIsImmutableWhole.setSelection(false);
+	}
+	
 	public void enableAll(boolean value)
 	{
+		if(!canEnable)
+			return;
+		
 		lblType.setEnabled(value);		
 		lblComponentofName.setEnabled(value);		
 		typeCombo.setEnabled(value);		
@@ -97,139 +299,17 @@ public class CreateComponentOfComposite extends Composite {
 		btnIsInseparable.setEnabled(value);		
 		btnIsImmutablePart.setEnabled(value);		
 		btnIsImmutableWhole.setEnabled(value);
-	}
-	
-	public static String getStereotype(EObject element)
-	{
-		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
-	    return type;
-	}
-	
-	public void createPartControl() 
-	{		
-		setLayout(null);
-		
-		setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		
-		lblType = new Label(this, SWT.NONE);
-		lblType.setText("Existing subpart:");
-		lblType.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		lblType.setBounds(10, 13, 122, 21);
-		
-		lblComponentofName = new Label(this, SWT.NONE);
-		lblComponentofName.setText("ComponentOf name:");
-		lblComponentofName.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		lblComponentofName.setBounds(10, 40, 122, 21);
-		
-		typeCombo = new Combo(this, SWT.READ_ONLY);
-		typeCombo.setItems(new String[] {});
-		typeCombo.setBounds(138, 10, 256, 23);
-		
-		for(RefOntoUML.Class type: homoFunc.getParser().getAllInstances(RefOntoUML.Class.class))
-		{
-			typeCombo.add(getStereotype(type)+" "+type.getName());
-		}
-		
-		componentOfNameField = new Text(this, SWT.BORDER);
-		componentOfNameField.setBounds(138, 39, 256, 21);
-		
-		btnIsShareable = new Button(this, SWT.CHECK);
-		btnIsShareable.setText("isShareable");
-		btnIsShareable.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnIsShareable.setBounds(400, 117, 122, 21);
-		
-		btnIsEssential = new Button(this, SWT.CHECK);
-		btnIsEssential.setText("isEssential");
-		btnIsEssential.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnIsEssential.setBounds(400, 12, 122, 16);
-		
-		btnIsInseparable = new Button(this, SWT.CHECK);
-		btnIsInseparable.setText("isInseparable");
-		btnIsInseparable.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnIsInseparable.setBounds(400, 66, 122, 16);
-		
-		btnIsImmutablePart = new Button(this, SWT.CHECK);
-		btnIsImmutablePart.setText("isImmutablePart");
-		btnIsImmutablePart.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnIsImmutablePart.setBounds(400, 39, 122, 16);
-		
-		btnIsImmutableWhole = new Button(this, SWT.CHECK);		
-		btnIsImmutableWhole.setText("isImmutableWhole");
-		btnIsImmutableWhole.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		btnIsImmutableWhole.setBounds(400, 95, 122, 16);
-		
-		btnCreateNewPart = new Button(this, SWT.NONE);
-		btnCreateNewPart.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				if (getType() !=null){
-					RelationElement newrelation = new RelationElement(getType(), getComponentOfName(), 
-							isShareable(), isEssential(), isImmutablePart(), isImmutableWhole(), isInseparable());
-					relations.add(newrelation);
-					if (!contains(relationList,newrelation.toString())) relationList.add(newrelation.toString());				
-				}
-			}
-		});
-		btnCreateNewPart.setText("New");
-		btnCreateNewPart.setBounds(43, 67, 43, 25);
-		
-		setVisible(false);
-		
-		btnDeletePart = new Button(this, SWT.NONE);
-		btnDeletePart.setText("Delete");
-		btnDeletePart.setBounds(89, 67, 43, 25);
-		
-		relationList = new List(this, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		relationList.setBounds(138, 67, 256, 71);
-		
-		btnDeletePart.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				
-				removeRelation(relationList.getItem(relationList.getSelectionIndex()));
-				
-				relationList.remove(relationList.getSelectionIndex());
-			}
-		});
-	}		
-	
-	public ArrayList<RelationElement> getRelations()
-	{
-		return relations;
+		newButton.setEnabled(value);
+		deleteButton.setEnabled(value);
+		relationList.setEnabled(value);
 	}
 	
 	public void enableCreation(boolean value)
 	{
 		enableAll(value);
-		btnCreateNewPart.setEnabled(value);
-		btnDeletePart.setEnabled(value);
+		newButton.setEnabled(value);
+		deleteButton.setEnabled(value);
 		relationList.setEnabled(value);
 		setVisible(value);
 	}
-	
-	public boolean contains(List list, String relation)
-	{
-		for(int i=0;i< list.getItemCount();i++) 
-		{
-			if (relationList.getItem(i).compareToIgnoreCase(relation)==0){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public void removeRelation(String relation)
-	{
-		ArrayList<RelationElement> deletion = new ArrayList<RelationElement>();
-		for(RelationElement p: relations) {
-			if (p.toString().compareToIgnoreCase(relation)==0){
-				deletion.add(p);
-			}
-		}
-		relations.remove(relation);
-	}			
-
 }
