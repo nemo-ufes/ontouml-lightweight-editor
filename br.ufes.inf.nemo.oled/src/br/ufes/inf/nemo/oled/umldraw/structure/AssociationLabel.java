@@ -224,11 +224,11 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 			int typeWidth = context.getFontMetrics(FontType.DEFAULT).stringWidth(getTypeLabelText());
 			if(typeWidth> labelWidth) labelWidth = typeWidth;
 		}	
-		if(getNameLabelText() != null){
+		if(nameLabel != null){
 			int nameWidth = context.getFontMetrics(FontType.DEFAULT).stringWidth(getNameLabelText());
 			if(nameWidth> labelWidth) labelWidth = nameWidth;
 		}
-		if(getMetaPropertyLabelText() != null){
+		if(metapropertyLabel != null){
 			int metaWidth = context.getFontMetrics(FontType.DEFAULT).stringWidth(getMetaPropertyLabelText());
 			if(metaWidth> labelWidth) labelWidth = metaWidth;
 		}
@@ -255,10 +255,14 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 		if (association instanceof AssociationElement) {
 			final AssociationElement assocElement = (AssociationElement) association;
 			
+			int nameWidth = 0;			
+			int typeWidth = 0;
+			int metaWidth = 0;			
 			int labelWidth = getLabelWidth();
-			int typeWidth = getTypeWidth();
-			int nameWidth = getNameWidth();
-			int metaWidth = getMetaPropertyWidth();
+			
+			if (assocElement.showOntoUmlStereotype()) typeWidth = getTypeWidth();
+			if (assocElement.showName() && getLabelText() != null) nameWidth = getNameWidth();
+			if (assocElement.getRelationship() instanceof Meronymic && assocElement.showMetaProperties()) metaWidth = getMetaPropertyWidth();
 			
 			if (assocElement.showOntoUmlStereotype()) {
 				typeLabel.setSource(new LabelSource() {
