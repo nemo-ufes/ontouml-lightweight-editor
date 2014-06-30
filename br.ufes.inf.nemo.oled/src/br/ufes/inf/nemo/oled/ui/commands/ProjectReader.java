@@ -33,6 +33,7 @@ import java.util.zip.ZipFile;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
+import br.ufes.inf.nemo.common.file.TimeHelper;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.oled.util.OLEDSettings;
@@ -87,6 +88,7 @@ public final class ProjectReader extends FileHandler {
 			entry = entries.nextElement();
 			if(entry.getName().equals(OLEDSettings.MODEL_DEFAULT_FILE.getValue()) && !modelLoaded)
 			{
+				System.out.println(TimeHelper.getTime()+" OLED: Loading ontouml model...");
 				InputStream in = inFile.getInputStream(entry);
 				resource.load(in, Collections.EMPTY_MAP);
 				in.close();
@@ -94,6 +96,7 @@ public final class ProjectReader extends FileHandler {
 			}
 			else if (entry.getName().equals(OLEDSettings.PROJECT_DEFAULT_FILE.getValue()) && !projectLoaded)
 			{
+				System.out.println(TimeHelper.getTime()+" OLED: Loading project information...");
 				InputStream in = inFile.getInputStream(entry);
 				ObjectInputStream oin = new ObjectInputStream(in);
 				project = (UmlProject) oin.readObject(); 
@@ -102,6 +105,7 @@ public final class ProjectReader extends FileHandler {
 			}
 			else if (entry.getName().equals(OLEDSettings.OCL_DEFAULT_FILE.getValue()) && !constraintLoaded)
 			{
+				System.out.println(TimeHelper.getTime()+" OLED: Loading constraints...");
 				InputStream is = inFile.getInputStream(entry);
 								
 				byte[] b = new byte[is.available()];
