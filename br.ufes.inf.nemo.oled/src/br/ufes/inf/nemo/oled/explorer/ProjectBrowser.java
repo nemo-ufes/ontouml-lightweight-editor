@@ -86,8 +86,9 @@ public class ProjectBrowser extends JPanel{
 	public void setProject(UmlProject project)
 	{
 		this.project = project;
-
+		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(project);
+		
 		refparser = new OntoUMLParser(project.getModel());
 		tree = new ProjectTree(frame, root,project,refparser);
 		tree.setBorder(new EmptyBorder(2,2,2,2));
@@ -112,7 +113,7 @@ public class ProjectBrowser extends JPanel{
 		scroll.setViewportView(tree);
 		
 		treeMap.put(project, this);
-		updateUI();
+		updateUI();		
 	}
 	
 	public void eraseProject()
