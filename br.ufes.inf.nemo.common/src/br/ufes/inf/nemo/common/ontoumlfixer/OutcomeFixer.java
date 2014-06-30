@@ -595,20 +595,57 @@ public class OutcomeFixer{
 	/** Change a class stereotype */
 	public Fix changeClassStereotypeTo(EObject element,	ClassStereotype newStereo) 
 	{
+		Classifier oldClass = (Classifier)element;
 		Fix fixes = new Fix();
+		
 		// create new element
-		RefOntoUML.PackageableElement newElement = createClass(newStereo);
-		copyMetaAttributes(element, newElement);
-		fixes.includeAdded(newElement);
+		Classifier newClass = (Classifier) createClass(newStereo);
+		copyMetaAttributes(element, newClass);
+		fixes.includeAdded(newClass);
+		
 		// the same container
-		copyContainer(element, newElement);
+		copyContainer(element, newClass);
 		fixes.includeModified(element.eContainer());
-		// change references
-		Fix references = changeModelReferences(element, newElement);
+		
+		// move attributes to new class -- doesn't add fix on purpose (source will be deleted and target is being created)
+		changeAttributeReferences(oldClass, newClass);
+		
+		// change references (generalizations and associations) to new class
+		Fix references = changeModelReferences(element, newClass);
 		fixes.includeAllModified(references.getModified());
+		
 		// delete element
 		fixes.addAll(deleteElement(element));
+		
 		return fixes;
+	}
+
+	private Fix changeAttributeReferences(Classifier source, Classifier target) {
+		Fix fix = new Fix();
+		Iterator<Property> iterator = null;
+		
+		if(source instanceof Class)
+			iterator = ((Class) source).getOwnedAttribute().iterator();
+		if(source instanceof DataType)
+			iterator = ((DataType) source).getOwnedAttribute().iterator();
+		
+		while(iterator!=null && iterator.hasNext()){
+			Property attr = iterator.next();
+			iterator.remove();
+			
+			if(source instanceof Class)
+				((Class) target).getOwnedAttribute().add(attr);
+			if(source instanceof DataType)
+				((DataType) target).getOwnedAttribute().add(attr);
+			
+			fix.includeModified(attr);
+		}
+		
+		fix.includeModified(source);
+		fix.includeModified(target);
+		
+		return fix;
+		
 	}
 
 	/** Delete an element from the model */

@@ -154,6 +154,16 @@ public class OntoUMLNameHelper {
 		return getTypeName(elem,addGuillemets)+name;
 	}
 	
+	public static String getNameAndType(EObject elem, boolean addGuillemets, boolean addSingleQuotes){
+		
+		String name = "";
+		
+		if(elem instanceof NamedElement)
+			name = getName(elem,addSingleQuotes,false);
+		
+		return name+" ("+getTypeName(elem,addGuillemets)+")";
+	}
+	
 	public static String getCommonName(EObject elem) 
 	{		
 		
