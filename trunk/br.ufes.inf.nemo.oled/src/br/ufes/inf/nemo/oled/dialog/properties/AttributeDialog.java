@@ -93,16 +93,12 @@ public class AttributeDialog extends JDialog {
 		
 		setTitle(getStereotype(attribute)+" "+attribute.getName()+": "+attribute.getType().getName());
 		
-		if (parent instanceof JFrame)
-			propertyEdition = new PropertyEditionPanel((JFrame)parent, diagramManager, classElement, element, attribute);
-		else if (parent instanceof JDialog)
-			propertyEdition = new PropertyEditionPanel((JDialog)parent, diagramManager, classElement, element, attribute);	
+		propertyEdition = new PropertyEditionPanel(parent, diagramManager, classElement, element, attribute);
 		
 		getContentPane().add(propertyEdition, BorderLayout.CENTER);
 		
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(100,50));
-		getContentPane().add(panel, BorderLayout.SOUTH);
 		
 		btnOk = new JButton("Ok");
 		btnOk.addActionListener(new ActionListener() {			
@@ -128,12 +124,12 @@ public class AttributeDialog extends JDialog {
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(153)
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addContainerGap(291, Short.MAX_VALUE)
 					.addComponent(btnOk, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnCancel)
-					.addGap(148))
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -145,6 +141,25 @@ public class AttributeDialog extends JDialog {
 					.addContainerGap(16, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(propertyEdition, GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(propertyEdition, GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+					.addGap(10)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(2))
+		);
+		getContentPane().setLayout(groupLayout);
 		
 		setSize(new Dimension(450, 330));
 	}

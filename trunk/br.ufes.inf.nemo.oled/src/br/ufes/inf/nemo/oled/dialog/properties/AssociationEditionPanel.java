@@ -22,7 +22,6 @@
 package br.ufes.inf.nemo.oled.dialog.properties;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Normalizer;
@@ -88,9 +87,10 @@ public class AssociationEditionPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
+	@SuppressWarnings({ "rawtypes", "unchecked"})
 	public AssociationEditionPanel(final DiagramManager diagramManager, final AssociationElement assocElement, Classifier relationship, boolean modal) 
 	{
+		setBorder(null);
 		this.diagramManager = diagramManager;
 		this.assocElement = assocElement;
 		this.element = (Classifier)relationship;
@@ -102,7 +102,6 @@ public class AssociationEditionPanel extends JPanel {
 		meronymicPanel.setBorder(BorderFactory.createTitledBorder("Meronymic"));
 		
 		directionPanel = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) directionPanel.getLayout();
 		directionPanel.setBorder(BorderFactory.createTitledBorder("Reading Direction"));
 		
 		panel = new JPanel();
@@ -110,30 +109,29 @@ public class AssociationEditionPanel extends JPanel {
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(meronymicPanel, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE)
-						.addComponent(assocPanel, GroupLayout.PREFERRED_SIZE, 430, GroupLayout.PREFERRED_SIZE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)
+							.addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(directionPanel, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
+							.addComponent(directionPanel, GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
+						.addComponent(assocPanel, GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))
+					.addGap(0))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(meronymicPanel, 0, 0, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(assocPanel, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+					.addComponent(assocPanel, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE, false)
-						.addComponent(directionPanel, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(directionPanel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(meronymicPanel, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
-					.addGap(14))
+					.addComponent(meronymicPanel, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
+					.addGap(0, 0, Short.MAX_VALUE))
 		);
 		
 		btnName = new JCheckBox("Name");
@@ -151,15 +149,19 @@ public class AssociationEditionPanel extends JPanel {
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(7)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(btnEndNames, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addGap(5)
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(7)
+							.addComponent(btnName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(btnEndNames, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(btnMultiplicity, 0, 0, Short.MAX_VALUE)
-						.addComponent(btnStereotype, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addGap(7))
+						.addComponent(btnStereotype, GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE))
+					.addContainerGap(22, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -168,29 +170,54 @@ public class AssociationEditionPanel extends JPanel {
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnStereotype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(5)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnEndNames, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnMultiplicity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addComponent(btnMultiplicity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		panel.setLayout(gl_panel);
 		
 		ButtonGroup group = new ButtonGroup();
 		
 		btnToSource = new JRadioButton("To source");
-		directionPanel.add(btnToSource);
 		group.add(btnToSource);
 		btnToSource.setPreferredSize(new Dimension(83, 25));
 		
 		btnUndefined = new JRadioButton("Undefined");
-		directionPanel.add(btnUndefined);
 		group.add(btnUndefined);
 		btnUndefined.setPreferredSize(new Dimension(90, 25));
 		
 		btnToDestination = new JRadioButton("To destination");
-		directionPanel.add(btnToDestination);
 		group.add(btnToDestination);
 		btnToDestination.setPreferredSize(new Dimension(180, 25));
+		GroupLayout gl_directionPanel = new GroupLayout(directionPanel);
+		gl_directionPanel.setHorizontalGroup(
+			gl_directionPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_directionPanel.createSequentialGroup()
+					.addGroup(gl_directionPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_directionPanel.createSequentialGroup()
+							.addGap(7)
+							.addComponent(btnToSource, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(btnUndefined, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_directionPanel.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(btnToDestination, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_directionPanel.setVerticalGroup(
+			gl_directionPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_directionPanel.createSequentialGroup()
+					.addGap(5)
+					.addGroup(gl_directionPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnToSource, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnUndefined, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnToDestination, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		directionPanel.setLayout(gl_directionPanel);
 		
 		cbxEssential = new JCheckBox("Essential");		
 		cbxEssential.setPreferredSize(new Dimension(85, 20));
@@ -290,12 +317,12 @@ public class AssociationEditionPanel extends JPanel {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_assocPanel.createSequentialGroup()
-							.addComponent(stereoCombo, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(stereoCombo, 0, 199, Short.MAX_VALUE)
+							.addGap(18)
 							.addComponent(cbxAbstract)
-							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGap(11)
 							.addComponent(cbxDerived))
-						.addComponent(nameField, GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE))
+						.addComponent(nameField, GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_assocPanel.setVerticalGroup(
@@ -309,8 +336,8 @@ public class AssociationEditionPanel extends JPanel {
 					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(gl_assocPanel.createParallelGroup(Alignment.BASELINE)
 							.addComponent(stereoCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(cbxAbstract, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(cbxDerived, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(cbxDerived, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(cbxAbstract, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 						.addComponent(lblStereo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);

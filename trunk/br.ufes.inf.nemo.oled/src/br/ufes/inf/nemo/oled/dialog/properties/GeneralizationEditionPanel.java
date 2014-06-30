@@ -59,6 +59,7 @@ import br.ufes.inf.nemo.oled.explorer.OntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
+import javax.swing.SwingConstants;
 
 /**
  * @author John Guerson
@@ -120,45 +121,73 @@ public class GeneralizationEditionPanel extends JPanel {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void initGUI()
 	{
-		JPanel generalPanel = new JPanel();
-		generalPanel.setBorder(BorderFactory.createTitledBorder(""));
 		
-		JPanel genSetPanel = new JPanel();
-		genSetPanel.setBorder(BorderFactory.createTitledBorder(""));
+		JPanel gsPanel = new JPanel();
+		gsPanel.setBorder(BorderFactory.createTitledBorder(""));
 		
-		JPanel specificPanel = new JPanel();
-		specificPanel.setBorder(BorderFactory.createTitledBorder(""));
+		JPanel generalSpecificPanel = new JPanel();
+		generalSpecificPanel.setBorder(BorderFactory.createTitledBorder(""));
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(specificPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(genSetPanel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 428, GroupLayout.PREFERRED_SIZE)
-						.addComponent(generalPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(gsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+						.addComponent(generalSpecificPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(specificPanel, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+					.addComponent(generalSpecificPanel, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(generalPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(genSetPanel, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(156, Short.MAX_VALUE))
+					.addComponent(gsPanel, GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+					.addGap(11))
 		);
 		
 		JLabel lblSpecific = new JLabel("Specific:");
-		specificPanel.add(lblSpecific);
 		
 		specificCombo = new JComboBox();
-		specificPanel.add(specificCombo);		
 		specificCombo.setPreferredSize(new Dimension(350, 20));
 		specificCombo.addItem(getStereotype(element.getSpecific())+" "+element.getSpecific().getName());
+		
+		JLabel lblGeneral = new JLabel("General:");
+		
+		generalCombo = new JComboBox();
+		generalCombo.setFocusable(false);
+		generalCombo.setPreferredSize(new Dimension(350, 20));
+		GroupLayout gl_generalSpecificPanel = new GroupLayout(generalSpecificPanel);
+		gl_generalSpecificPanel.setHorizontalGroup(
+			gl_generalSpecificPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_generalSpecificPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_generalSpecificPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblGeneral)
+						.addComponent(lblSpecific))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_generalSpecificPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(specificCombo, 0, 355, Short.MAX_VALUE)
+						.addComponent(generalCombo, 0, 355, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_generalSpecificPanel.setVerticalGroup(
+			gl_generalSpecificPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_generalSpecificPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_generalSpecificPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(generalCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblGeneral))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_generalSpecificPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(specificCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblSpecific))
+					.addGap(20))
+		);
+		gl_generalSpecificPanel.linkSize(SwingConstants.HORIZONTAL, new Component[] {lblSpecific, lblGeneral});
+		generalSpecificPanel.setLayout(gl_generalSpecificPanel);
 		
 		JLabel lblThisGeneralizationParticipates = new JLabel("Participating generalization sets :");
 		
@@ -250,48 +279,46 @@ public class GeneralizationEditionPanel extends JPanel {
 			}
 		});
 		
-		GroupLayout gl_genSetPanel = new GroupLayout(genSetPanel);
-		gl_genSetPanel.setHorizontalGroup(
-			gl_genSetPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_genSetPanel.createSequentialGroup()
+		GroupLayout gl_gsPanel = new GroupLayout(gsPanel);
+		gl_gsPanel.setHorizontalGroup(
+			gl_gsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_gsPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_genSetPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 404, GroupLayout.PREFERRED_SIZE)
-						.addGroup(Alignment.LEADING, gl_genSetPanel.createSequentialGroup()
-							.addComponent(lblThisGeneralizationParticipates, GroupLayout.PREFERRED_SIZE, 243, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_gsPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_gsPanel.createSequentialGroup()
+							.addGroup(gl_gsPanel.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_gsPanel.createSequentialGroup()
+									.addComponent(lblThisGeneralizationParticipates, GroupLayout.PREFERRED_SIZE, 243, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED, 46, Short.MAX_VALUE))
+								.addGroup(gl_gsPanel.createSequentialGroup()
+									.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)))
+							.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+							.addComponent(btnNew, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnNew, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
+					.addContainerGap())
 		);
-		gl_genSetPanel.setVerticalGroup(
-			gl_genSetPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_genSetPanel.createSequentialGroup()
-					.addGap(12)
-					.addGroup(gl_genSetPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnEdit)
+		gl_gsPanel.setVerticalGroup(
+			gl_gsPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_gsPanel.createSequentialGroup()
+					.addGap(3)
+					.addComponent(lblThisGeneralizationParticipates, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+					.addGap(4)
+					.addComponent(scrollPane)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_gsPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnNew)
-						.addComponent(btnRemove)
-						.addComponent(btnAdd)
-						.addComponent(lblThisGeneralizationParticipates, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnEdit))
+					.addContainerGap())
 		);
-		genSetPanel.setLayout(gl_genSetPanel);
-		
-		JLabel lblGeneral = new JLabel("General:");
-		generalPanel.add(lblGeneral);
-		
-		generalCombo = new JComboBox();
-		generalCombo.setFocusable(false);
-		generalCombo.setPreferredSize(new Dimension(350, 20));
-		generalPanel.add(generalCombo);
+		gl_gsPanel.linkSize(SwingConstants.VERTICAL, new Component[] {btnRemove, btnAdd, btnNew, btnEdit});
+		gl_gsPanel.linkSize(SwingConstants.HORIZONTAL, new Component[] {btnRemove, btnAdd, btnNew, btnEdit});
+		gsPanel.setLayout(gl_gsPanel);
 		
 		setLayout(groupLayout);
 		
