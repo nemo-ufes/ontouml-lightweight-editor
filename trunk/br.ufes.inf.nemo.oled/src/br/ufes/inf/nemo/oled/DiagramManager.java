@@ -599,23 +599,26 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			try {
+				System.out.println("Opening project");
 				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				closeCurrentProject();
 				File file = fileChooser.getSelectedFile();
 				setProjectFile(file);
 				lastOpenPath = file.getAbsolutePath();
-				currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);				
+				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
+				currentProject = (UmlProject) listFiles.get(0);				
 				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 				for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
 				saveProjectNeeded(false);
-				String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);
+				String constraints = (String) listFiles.get(1);
 				frame.getInfoManager().getOcleditor().setText(constraints);
 				frame.focusOnOclEditor();
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 				frame.setTitle("OLED - "+file.getName()+"");
+				System.out.println("Project opened");
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
@@ -635,14 +638,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				closeCurrentProject();
 				File file = new File(startPanel.getSelectedRecentFile());
 				setProjectFile(file);
-				currentProject = (UmlProject) ProjectReader.getInstance().readProject(file).get(0);								
+				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
+				currentProject = (UmlProject) listFiles.get(0);												
 				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 				for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
 				saveProjectNeeded(false);
-				String constraints = (String) ProjectReader.getInstance().readProject(file).get(1);
+				String constraints = (String) listFiles.get(1);
 				frame.getInfoManager().getOcleditor().setText(constraints);
 				frame.focusOnOclEditor();
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
@@ -719,7 +723,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	
 	/** Creates an editor for a given Diagram. */
 	public DiagramEditor createDiagramEditor(StructureDiagram diagram)
-	{
+	{		
 		DiagramEditor editor = new DiagramEditor(frame, this, diagram);
 		editor.addEditorStateListener(this);
 		editor.addSelectionListener(this);
@@ -729,7 +733,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ModelHelper.addMapping(editor.getDiagram());
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
-		addClosable(diagram.getLabelText(), wrapper);
+		addClosable(diagram.getLabelText(), wrapper);		
 		return editor;
 	}
 	

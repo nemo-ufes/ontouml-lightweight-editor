@@ -87,21 +87,26 @@ public final class ProjectReader extends FileHandler {
 			entry = entries.nextElement();
 			if(entry.getName().equals(OLEDSettings.MODEL_DEFAULT_FILE.getValue()) && !modelLoaded)
 			{
+				System.out.println("Loading reference model");
 				InputStream in = inFile.getInputStream(entry);
 				resource.load(in, Collections.EMPTY_MAP);
 				in.close();
 				modelLoaded = true;
+				System.out.println("Reference model loaded");
 			}
 			else if (entry.getName().equals(OLEDSettings.PROJECT_DEFAULT_FILE.getValue()) && !projectLoaded)
 			{
+				System.out.println("Loading diagrams");
 				InputStream in = inFile.getInputStream(entry);
 				ObjectInputStream oin = new ObjectInputStream(in);
 				project = (UmlProject) oin.readObject(); 
 				in.close();
 				projectLoaded = true;
+				System.out.println("Diagrams loaded");
 			}
 			else if (entry.getName().equals(OLEDSettings.OCL_DEFAULT_FILE.getValue()) && !constraintLoaded)
 			{
+				System.out.println("Loading constraints");
 				InputStream is = inFile.getInputStream(entry);
 								
 				byte[] b = new byte[is.available()];
@@ -110,6 +115,7 @@ public final class ProjectReader extends FileHandler {
 					
 				is.close();
 				constraintLoaded = true;
+				System.out.println("Constraints loaded");
 			}
 		}
 		
