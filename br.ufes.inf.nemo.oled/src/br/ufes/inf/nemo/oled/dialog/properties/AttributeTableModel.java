@@ -23,6 +23,7 @@ package br.ufes.inf.nemo.oled.dialog.properties;
 
 import java.text.ParseException;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import RefOntoUML.Classifier;
@@ -39,15 +40,15 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
 public class AttributeTableModel extends BaseTableModel {
 	
 	private static final long serialVersionUID = 156864519388945910L;
-	private EList<Property> attributes;
+	private EList<Property> attributes = new BasicEList<Property>();
 	public static boolean isPrimitive = true;
 	
 	public AttributeTableModel(Classifier owner)
 	{
 		super(new String[]{"Name", "Type", "Multiplicity"});
 		
-		if(owner instanceof DataTypeImpl) attributes = ((DataType) owner).getOwnedAttribute();
-		else attributes = ((RefOntoUML.Class) owner).getOwnedAttribute();
+		if(owner instanceof DataTypeImpl) attributes.addAll(((DataType) owner).getOwnedAttribute());
+		else attributes.addAll(((RefOntoUML.Class) owner).getOwnedAttribute());
 	}
 
 	public EList<Property> getEntries()
@@ -77,8 +78,10 @@ public class AttributeTableModel extends BaseTableModel {
 	public void addEntry(Object entry)
 	{
 		int size = attributes.size();
-		attributes.add((Property) entry);
-		fireTableRowsInserted(size, size);
+		if(!attributes.contains((Property)entry)){
+			attributes.add((Property) entry);			
+			fireTableRowsInserted(size, size);
+		}
 	}
 
 	@Override

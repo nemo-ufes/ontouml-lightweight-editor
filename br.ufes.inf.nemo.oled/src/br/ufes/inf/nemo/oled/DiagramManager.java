@@ -1082,6 +1082,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		int response = -1;
 		if (showwarning){
 			response = JOptionPane.showConfirmDialog(frame, "WARNING: Are you sure you want to delete the selected items from the model \nand all the diagrams they might appear? This action can still be undone.\n", "Delete from OLED", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null);
+		}else{
+			response = Window.OK;
 		}
 		if(response==Window.OK)
 		{		

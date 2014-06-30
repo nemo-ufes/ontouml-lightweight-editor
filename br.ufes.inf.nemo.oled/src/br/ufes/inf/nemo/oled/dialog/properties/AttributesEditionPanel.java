@@ -385,7 +385,36 @@ public class AttributesEditionPanel extends JPanel {
 		diagramManager.updateOLEDFromInclusion(element);
 		
 		transferDataTypes();	
-				
+		deleteAttributes(classAttributes);
+		transferAddedAttributes(classAttributes);
+	}
+	
+	private void deleteAttributes(List<Property> classAttributes )
+	{
+		ArrayList<Property> attributes = new ArrayList<Property>();
+		
+		if(element instanceof DataType){
+			attributes.addAll(((DataType)element).getOwnedAttribute());
+			for(Property p: attributes){
+				if(!classAttributes.contains(p)) {					
+					((DataType)element).getOwnedAttribute().remove(p);
+					diagramManager.updateOLEDFromDeletion(p);
+				}
+			}
+		}
+		if(element instanceof RefOntoUML.Class){
+			attributes.addAll(((RefOntoUML.Class)element).getOwnedAttribute());
+			for(Property p: attributes){
+				if(!classAttributes.contains(p)) {
+					((RefOntoUML.Class)element).getOwnedAttribute().remove(p);
+					diagramManager.updateOLEDFromDeletion(p);
+				}
+			}
+		}
+	}
+	
+	private void transferAddedAttributes(List<Property> classAttributes )
+	{
 		for (Property property : classAttributes) 
 		{			
 			if(!property.getName().isEmpty() || !property.getType().getName().isEmpty())
