@@ -173,12 +173,12 @@ public class ClassDialog extends JDialog{
 	}
 		
 	public void okActionPerformed(ActionEvent arg0)
-	{
-		classEdition.transferClassData();
+	{		
 		commentsEdition.transferCommentsData();
 		attributesEdition.transferAttributesData();		
 		constraintsEdition.transferConstraintsData();
 		if(getStereotype(element).compareTo((String) classEdition.stereoCombo.getSelectedItem())!=0)
 			diagramManager.changeClassStereotype(element, (String) classEdition.stereoCombo.getSelectedItem());
+		classEdition.transferClassData();
 	}
 }
