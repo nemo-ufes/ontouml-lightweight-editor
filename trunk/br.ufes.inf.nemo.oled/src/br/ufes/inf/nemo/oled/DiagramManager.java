@@ -74,6 +74,7 @@ import RefOntoUML.Relationship;
 import RefOntoUML.StringExpression;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.file.FileUtil;
+import br.ufes.inf.nemo.common.file.TimeHelper;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -463,11 +464,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void closeCurrentProject()
 	{
 		if (currentProject!=null){
+			System.out.println("OLED: Closing current project...");
 			removeAll();
 			frame.getBrowserManager().getProjectBrowser().eraseProject();
 			frame.getInfoManager().eraseProject();						
 			currentProject=null;
 			addStartPanel();
+			System.out.println("OLED: Current project closed...");
 		}
 		updateUI();
 	}
@@ -599,26 +602,40 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			try {
-				System.out.println("Opening project");
+				
 				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				closeCurrentProject();
+				
+				System.out.println(TimeHelper.getTime()+" OLED: Loading project...");
 				File file = fileChooser.getSelectedFile();
 				setProjectFile(file);
 				lastOpenPath = file.getAbsolutePath();
 				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
-				currentProject = (UmlProject) listFiles.get(0);				
+				currentProject = (UmlProject) listFiles.get(0);	
+				
+				System.out.println(TimeHelper.getTime()+" OLED: Loading project settings...");
 				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);
+				
+				for(UmlDiagram diagram: currentProject.getDiagrams()) {
+					System.out.println(TimeHelper.getTime()+" OLED: Loading diagram ("+diagram.getName()+")");	
+					createDiagramEditor((StructureDiagram)diagram);
+				}
+				
+				System.out.println(TimeHelper.getTime()+" OLED: Cleaning OLC Editor...");
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
+				System.out.println(TimeHelper.getTime()+" OLED: Adding auto-complete to OCL Editor...");
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
-				for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
-				saveProjectNeeded(false);
+				System.out.println(TimeHelper.getTime()+" OLED: Retrieving OCL constraints...");
 				String constraints = (String) listFiles.get(1);
+				System.out.println(TimeHelper.getTime()+" OLED: Setting OCL constraints...");
 				frame.getInfoManager().getOcleditor().setText(constraints);
 				frame.focusOnOclEditor();
+				
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 				frame.setTitle("OLED - "+file.getName()+"");
-				System.out.println("Project opened");
+				saveProjectNeeded(false);
+				System.out.println(TimeHelper.getTime()+" OLED: Project successfully opened!");
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
