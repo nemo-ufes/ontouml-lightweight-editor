@@ -250,27 +250,21 @@ public class RelatedElementsPanel extends JPanel {
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(20)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(topScroll, GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
-						.addComponent(lblTop, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(lblBottom, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(bottomScroll, 0, 0, Short.MAX_VALUE))
-					.addGap(23))
+				.addComponent(lblTop, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+				.addComponent(topScroll, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+				.addComponent(lblBottom, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+				.addComponent(bottomScroll, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(16)
 					.addComponent(lblTop)
-					.addGap(3)
-					.addComponent(topScroll, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
+					.addGap(5)
+					.addComponent(topScroll, GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
 					.addGap(18)
 					.addComponent(lblBottom)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(bottomScroll, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(14, Short.MAX_VALUE))
+					.addComponent(bottomScroll, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE))
 		);
 		setLayout(groupLayout);
 	}

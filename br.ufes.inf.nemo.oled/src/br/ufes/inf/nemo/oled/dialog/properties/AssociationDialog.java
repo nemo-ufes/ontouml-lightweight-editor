@@ -21,7 +21,7 @@
  */
 package br.ufes.inf.nemo.oled.dialog.properties;
 
-import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -36,6 +36,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.eclipse.emf.ecore.EObject;
@@ -67,6 +68,10 @@ public class AssociationDialog extends JDialog{
 	private PropertyEditionPanel end1Edition;
 	private PropertyEditionPanel end2Edition;
 	private CommentsEditionPanel commentsEdition;
+	private JPanel associationTab;
+	private JPanel sourceTab;
+	private JPanel targetTab;
+	private JPanel commentTab;
 	
 	public void selectTab (int index)
 	{
@@ -88,16 +93,12 @@ public class AssociationDialog extends JDialog{
 		
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle(""+""+getStereotype(relationship)+" "+ ((Classifier)relationship).getName());
-		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
-		getContentPane().add(tabbedPane, BorderLayout.CENTER);
-		
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(0, 0, 0, 0));
-		getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setPreferredSize(new Dimension(100, 50));
 		
 		btnConfirm = new JButton("Ok");		
@@ -116,15 +117,113 @@ public class AssociationDialog extends JDialog{
 				dispose();
 			}
 		});
+		
+		associationTab = new JPanel();
+		tabbedPane.addTab("Association", null, associationTab, null);
+		
+		assocEdition = new AssociationEditionPanel (diagramManager,assocElement,(Classifier)relationship,modal);
+		GroupLayout gl_associationTab = new GroupLayout(associationTab);
+		gl_associationTab.setHorizontalGroup(
+			gl_associationTab.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_associationTab.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(assocEdition, GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_associationTab.setVerticalGroup(
+			gl_associationTab.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_associationTab.createSequentialGroup()
+					.addGap(10)
+					.addComponent(assocEdition, GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+					.addGap(10))
+		);
+		associationTab.setLayout(gl_associationTab);
+		
+		sourceTab = new JPanel();
+		tabbedPane.addTab("Source End", null, sourceTab, null);
+		end1Edition = new PropertyEditionPanel(this,diagramManager,assocElement,(Classifier)relationship,((Association)relationship).getMemberEnd().get(0));
+		GroupLayout gl_sourceTab = new GroupLayout(sourceTab);
+		gl_sourceTab.setHorizontalGroup(
+			gl_sourceTab.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_sourceTab.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(end1Edition, GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_sourceTab.setVerticalGroup(
+			gl_sourceTab.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_sourceTab.createSequentialGroup()
+					.addGap(10)
+					.addComponent(end1Edition, GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+					.addGap(10))
+		);
+		sourceTab.setLayout(gl_sourceTab);
+		
+		targetTab = new JPanel();
+		tabbedPane.addTab("Target End", null, targetTab, null);
+		end2Edition = new PropertyEditionPanel(this,diagramManager,assocElement,(Classifier)relationship,((Association)relationship).getMemberEnd().get(1));
+		GroupLayout gl_targetTab = new GroupLayout(targetTab);
+		gl_targetTab.setHorizontalGroup(
+			gl_targetTab.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_targetTab.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(end2Edition, GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_targetTab.setVerticalGroup(
+			gl_targetTab.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_targetTab.createSequentialGroup()
+					.addGap(10)
+					.addComponent(end2Edition, GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+					.addGap(10))
+		);
+		targetTab.setLayout(gl_targetTab);
+		
+		commentTab = new JPanel();
+		tabbedPane.addTab("Comments", null, commentTab, null);
+		commentsEdition = new CommentsEditionPanel (diagramManager,assocElement,(Classifier)relationship);
+		GroupLayout gl_commentTab = new GroupLayout(commentTab);
+		gl_commentTab.setHorizontalGroup(
+			gl_commentTab.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_commentTab.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(commentsEdition, GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_commentTab.setVerticalGroup(
+			gl_commentTab.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_commentTab.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(commentsEdition, GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		commentTab.setLayout(gl_commentTab);
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addGap(3)
+					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 434, Short.MAX_VALUE)
+					.addGap(1))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(3)
+					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+					.addGap(5)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(158)
-					.addComponent(btnConfirm, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addContainerGap(308, Short.MAX_VALUE)
+					.addComponent(btnConfirm)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnCancel)
-					.addGap(162))
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -135,19 +234,9 @@ public class AssociationDialog extends JDialog{
 						.addComponent(btnConfirm))
 					.addContainerGap(16, Short.MAX_VALUE))
 		);
+		gl_panel.linkSize(SwingConstants.HORIZONTAL, new Component[] {btnConfirm, btnCancel});
 		panel.setLayout(gl_panel);
-		
-		assocEdition = new AssociationEditionPanel (diagramManager,assocElement,(Classifier)relationship,modal);
-		end1Edition = new PropertyEditionPanel(this,diagramManager,assocElement,(Classifier)relationship,((Association)relationship).getMemberEnd().get(0));
-		end2Edition = new PropertyEditionPanel(this,diagramManager,assocElement,(Classifier)relationship,((Association)relationship).getMemberEnd().get(1));
-		commentsEdition = new CommentsEditionPanel (diagramManager,assocElement,(Classifier)relationship);
-//		constraintsEdition = new ConstraintEditionPanel(diagramManager,assocElement);
-//		relatedElements = new RelatedElementsPanel(diagramManager,assocElement);
-				
-		tabbedPane.addTab("Association",assocEdition);
-		tabbedPane.addTab("Source", end1Edition);
-		tabbedPane.addTab("Target", end2Edition);
-		tabbedPane.addTab("Comments",commentsEdition);
+		getContentPane().setLayout(groupLayout);
 //		tabbedPane.addTab("Constraints",constraintsEdition);
 //		tabbedPane.addTab("Related Elements",relatedElements);
 				

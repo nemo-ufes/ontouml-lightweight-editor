@@ -78,17 +78,11 @@ public class ClassEditionPanel extends JPanel {
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(8)
-					.addComponent(classPropPanel, GroupLayout.PREFERRED_SIZE, 431, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(22, Short.MAX_VALUE))
+				.addComponent(classPropPanel, GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(classPropPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addComponent(classPropPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
 		);
 		
 		JLabel lblName = new JLabel("Name:");
@@ -113,15 +107,15 @@ public class ClassEditionPanel extends JPanel {
 						.addComponent(lblStereo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(lblName, GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_classPropPanel.createParallelGroup(Alignment.TRAILING)
-						.addGroup(Alignment.LEADING, gl_classPropPanel.createSequentialGroup()
-							.addComponent(stereoCombo, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_classPropPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_classPropPanel.createSequentialGroup()
+							.addComponent(stereoCombo, 0, 184, Short.MAX_VALUE)
+							.addGap(18)
 							.addComponent(btnAbstract)
-							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGap(7)
 							.addComponent(btnExtensional))
-						.addComponent(nameField, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 357, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(29, Short.MAX_VALUE))
+						.addComponent(nameField, GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE))
+					.addGap(17))
 		);
 		gl_classPropPanel.setVerticalGroup(
 			gl_classPropPanel.createParallelGroup(Alignment.LEADING)
@@ -134,8 +128,8 @@ public class ClassEditionPanel extends JPanel {
 					.addGroup(gl_classPropPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblStereo)
 						.addComponent(stereoCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnAbstract)
-						.addComponent(btnExtensional))
+						.addComponent(btnExtensional)
+						.addComponent(btnAbstract))
 					.addContainerGap(12, Short.MAX_VALUE))
 		);
 		
@@ -144,7 +138,7 @@ public class ClassEditionPanel extends JPanel {
 		
 		setInitialData();
 		
-		setPreferredSize(new Dimension(451, 105));
+		setPreferredSize(new Dimension(451, 80));
 	}
 	
 	public void setInitialData()

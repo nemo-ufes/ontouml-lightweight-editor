@@ -27,13 +27,13 @@ import java.awt.event.ActionListener;
 import java.text.Normalizer;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -64,22 +64,18 @@ public class CommentsEditionPanel extends JPanel {
 	private JComboBox commentCombo;
 	private JButton btnCreate;		
 	private JButton btnDelete;
-	private JPanel descriptionPanel;	
 	private JButton btnSave;
 	
 	@SuppressWarnings({ "rawtypes" })
 	public CommentsEditionPanel(DiagramManager diagramManager, DiagramElement diagramElement, Classifier element) 
 	{
+		setBorder(null);
 		this.diagramManager = diagramManager;
 		this.diagramElement =diagramElement;
 		this.element = element;
 		
-		descriptionPanel = new JPanel();
-		descriptionPanel.setBorder(BorderFactory.createTitledBorder(""));
-		
 		commentCombo = new JComboBox();
 		commentCombo.setFocusable(false);
-		commentCombo.setPreferredSize(new Dimension(350, 20));
 		//		((JLabel)commentCombo.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
 		//		commentCombo.addItemListener(new ItemListener(){
 		//		    @Override
@@ -134,42 +130,7 @@ public class CommentsEditionPanel extends JPanel {
 			}
 		});
 		
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(23)
-					.addComponent(commentCombo, GroupLayout.PREFERRED_SIZE, 398, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(29, Short.MAX_VALUE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(10)
-							.addComponent(btnCreate, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(descriptionPanel, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
-							.addGap(14))))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(18)
-					.addComponent(commentCombo, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(descriptionPanel, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnSave, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnCreate, GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
-					.addContainerGap(69, Short.MAX_VALUE))
-		);
+		JLabel lblComment = new JLabel("Comment:");
 		
 		descriptionText = new JTextArea();	
 		descriptionText.setToolTipText("Click here to start writing your comment");
@@ -178,27 +139,53 @@ public class CommentsEditionPanel extends JPanel {
 		scrollPaneText.setToolTipText("Click here to start writing your comment");
 		scrollPaneText.setViewportView(descriptionText);
 		
-		GroupLayout gl_descriptionPanel = new GroupLayout(descriptionPanel);
-		gl_descriptionPanel.setHorizontalGroup(
-			gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_descriptionPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 402, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+		JLabel lblNewLabel = new JLabel("Description:");
+		
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(lblComment, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(scrollPaneText, GroupLayout.DEFAULT_SIZE, 333, Short.MAX_VALUE)
+								.addComponent(commentCombo, 0, 333, Short.MAX_VALUE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(btnCreate, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))))
 		);
-		gl_descriptionPanel.setVerticalGroup(
-			gl_descriptionPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_descriptionPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPaneText, GroupLayout.PREFERRED_SIZE, 177, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(commentCombo, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblComment))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblNewLabel)
+							.addGap(14))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(scrollPaneText, GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnCreate, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
 		);
-		descriptionPanel.setLayout(gl_descriptionPanel);
 		this.setLayout(groupLayout);		
 		
 		setInitialData();
 		
-		setSize(new Dimension(450, 300));
+		setSize(new Dimension(400, 218));
 	}
 	
 	/** Private Class: Comment Element */

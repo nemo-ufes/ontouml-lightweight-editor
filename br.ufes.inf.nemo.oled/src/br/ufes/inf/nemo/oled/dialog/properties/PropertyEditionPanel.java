@@ -44,7 +44,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingConstants;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -96,27 +95,26 @@ public class PropertyEditionPanel extends JPanel {
 	JPanel mainPanel;
 	JPanel optionsPanel;
 	JPanel listPanel;
-	JPanel AggregPanel;
 	JPanel multPanel;
 	private JTextField subsettedText;
 	private JTextField redefinedText;
 	
-	public PropertyEditionPanel(JDialog parent, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, RefOntoUML.Classifier ownerElem, final Property property)
+	public PropertyEditionPanel(Component parent, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, RefOntoUML.Classifier ownerElem, final Property property)
 	{
 		this.parent=parent;
 		initData(diagramManager,ownerDiagramElement,ownerElem,property);
 		initGUI();		
 	}
 	
-	/**
-	 * @wbp.parser.constructor 
-	 */
-	public PropertyEditionPanel(JFrame parent, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, RefOntoUML.Classifier ownerElem, final Property property)
-	{
-		this.parent=parent;
-		initData(diagramManager,ownerDiagramElement,ownerElem,property);
-		initGUI();		
-	}
+//	/**
+//	 * @wbp.parser.constructor 
+//	 */
+//	public PropertyEditionPanel(JFrame parent, final DiagramManager diagramManager, DiagramElement ownerDiagramElement, RefOntoUML.Classifier ownerElem, final Property property)
+//	{
+//		this.parent=parent;
+//		initData(diagramManager,ownerDiagramElement,ownerElem,property);
+//		initGUI();		
+//	}
 		
 	public void initData(final DiagramManager diagramManager, DiagramElement ownerDiagramElement, RefOntoUML.Classifier ownerElem, final Property property)
 	{
@@ -138,20 +136,13 @@ public class PropertyEditionPanel extends JPanel {
 		listPanel = new JPanel();
 		listPanel.setBorder(BorderFactory.createTitledBorder(""));
 		
-		AggregPanel = new JPanel();
-		AggregPanel.setBorder(BorderFactory.createTitledBorder(""));
-		
 		multPanel = new JPanel();
 		multPanel.setBorder(BorderFactory.createTitledBorder(""));
 		
-		lblMultiplicity = new JLabel("(Multiplicity)");
-		
-		lblMultiplicity.setHorizontalAlignment(SwingConstants.CENTER);
-		multPanel.add(lblMultiplicity);
+		lblMultiplicity = new JLabel("Multiplicity:");
 		
 		multCombo = new JComboBox();
 		multCombo.setModel(new DefaultComboBoxModel(new String[] {"1", "0..1", "0..*", "1..*"}));
-		multPanel.add(multCombo);
 		multCombo.setPreferredSize(new Dimension(80, 20));
 		multCombo.setEditable(true);
 		
@@ -159,42 +150,58 @@ public class PropertyEditionPanel extends JPanel {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(listPanel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE)
-						.addGroup(Alignment.LEADING, groupLayout.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(mainPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
-							.addGroup(groupLayout.createSequentialGroup()
-								.addComponent(optionsPanel, GroupLayout.PREFERRED_SIZE, 190, Short.MAX_VALUE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(multPanel, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(AggregPanel, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))))
-					.addGap(25))
+					.addComponent(optionsPanel, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(multPanel, GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE))
+				.addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
+				.addComponent(listPanel, GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(15)
 					.addComponent(mainPanel, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(AggregPanel, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
-						.addComponent(multPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(optionsPanel, GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(optionsPanel, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+						.addComponent(multPanel, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(listPanel, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
-					.addGap(63))
+					.addComponent(listPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(2))
 		);
 		
-		lblAggregationKind = new JLabel("(Aggregation Kind)");
-		AggregPanel.add(lblAggregationKind);
-		lblAggregationKind.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAggregationKind = new JLabel("Aggregation Kind:");
 		
 		aggregCombo = new JComboBox();
 		aggregCombo.setModel(new DefaultComboBoxModel(new String[] {"none", "shared", "composite"}));
-		AggregPanel.add(aggregCombo);
 		aggregCombo.setPreferredSize(new Dimension(80, 20));
+		GroupLayout gl_multPanel = new GroupLayout(multPanel);
+		gl_multPanel.setHorizontalGroup(
+			gl_multPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_multPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_multPanel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lblMultiplicity, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblAggregationKind, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_multPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(aggregCombo, 0, 134, Short.MAX_VALUE)
+						.addComponent(multCombo, 0, 134, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_multPanel.setVerticalGroup(
+			gl_multPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_multPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_multPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblMultiplicity)
+						.addComponent(multCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_multPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(aggregCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblAggregationKind))
+					.addContainerGap())
+		);
+		multPanel.setLayout(gl_multPanel);
 		
 		btnSubsetted = new JButton("");
 		btnSubsetted.setPreferredSize(new Dimension(30, 25));
@@ -241,19 +248,19 @@ public class PropertyEditionPanel extends JPanel {
 			gl_listPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_listPanel.createSequentialGroup()
 					.addGap(10)
-					.addGroup(gl_listPanel.createParallelGroup(Alignment.TRAILING, false)
+					.addGroup(gl_listPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_listPanel.createSequentialGroup()
 							.addComponent(lblSubsetted)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(subsettedText, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnSubsetted, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(subsettedText, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE))
 						.addGroup(gl_listPanel.createSequentialGroup()
 							.addComponent(lblRedefined)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(redefinedText, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnRedefined, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(redefinedText, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)))
+					.addGap(6)
+					.addGroup(gl_listPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnSubsetted, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnRedefined, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		gl_listPanel.setVerticalGroup(
@@ -261,38 +268,59 @@ public class PropertyEditionPanel extends JPanel {
 				.addGroup(gl_listPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_listPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnSubsetted, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_listPanel.createParallelGroup(Alignment.BASELINE)
-							.addComponent(subsettedText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblSubsetted))
-						.addComponent(btnSubsetted, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGroup(gl_listPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_listPanel.createSequentialGroup()
-							.addGap(11)
-							.addGroup(gl_listPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(redefinedText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblRedefined)))
-						.addGroup(gl_listPanel.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnRedefined, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(subsettedText, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblSubsetted)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_listPanel.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_listPanel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(redefinedText, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblRedefined))
+						.addComponent(btnRedefined, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		listPanel.setLayout(gl_listPanel);
 		
 		cbxDerived = new JCheckBox("Derived");
 		cbxDerived.setPreferredSize(new Dimension(70, 20));
-		optionsPanel.add(cbxDerived);
 		
 		cbxUnique = new JCheckBox("Unique");
 		cbxUnique.setPreferredSize(new Dimension(95, 20));
-		optionsPanel.add(cbxUnique);
 		
 		cbxOrdered = new JCheckBox("Ordered");
 		cbxOrdered.setPreferredSize(new Dimension(75, 20));
-		optionsPanel.add(cbxOrdered);
 		
 		cbxReadOnly = new JCheckBox("Read Only");
 		cbxReadOnly.setPreferredSize(new Dimension(100, 20));
-		optionsPanel.add(cbxReadOnly);
+		GroupLayout gl_optionsPanel = new GroupLayout(optionsPanel);
+		gl_optionsPanel.setHorizontalGroup(
+			gl_optionsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_optionsPanel.createSequentialGroup()
+					.addGap(8)
+					.addGroup(gl_optionsPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_optionsPanel.createSequentialGroup()
+							.addComponent(cbxDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(cbxUnique, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_optionsPanel.createSequentialGroup()
+							.addComponent(cbxOrdered, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(cbxReadOnly, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+		);
+		gl_optionsPanel.setVerticalGroup(
+			gl_optionsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_optionsPanel.createSequentialGroup()
+					.addGap(11)
+					.addGroup(gl_optionsPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(cbxDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxUnique, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(5)
+					.addGroup(gl_optionsPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbxReadOnly, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxOrdered, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+		);
+		optionsPanel.setLayout(gl_optionsPanel);
 		
 		lblName = new JLabel("Name:");
 		
@@ -317,10 +345,10 @@ public class PropertyEditionPanel extends JPanel {
 						.addComponent(lblName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(lblType, GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_mainPanel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(nameField)
-						.addComponent(typeCombo, 0, 324, Short.MAX_VALUE))
-					.addContainerGap(20, Short.MAX_VALUE))
+					.addGroup(gl_mainPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(typeCombo, 0, 334, Short.MAX_VALUE)
+						.addComponent(nameField, GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_mainPanel.setVerticalGroup(
 			gl_mainPanel.createParallelGroup(Alignment.LEADING)
@@ -340,7 +368,7 @@ public class PropertyEditionPanel extends JPanel {
 		
 		setInitialData();
 		
-		setPreferredSize(new Dimension(450, 246));
+		setPreferredSize(new Dimension(456, 241));
 	}
 	
 	public static String getStereotype(EObject element)

@@ -293,15 +293,15 @@ public class FeatureListDialog extends JDialog {
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addComponent(scrollLeft, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE)
+							.addComponent(scrollLeft, GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(btnArrowRight)
 								.addComponent(btnArrowLeft))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(scrollRight, GroupLayout.PREFERRED_SIZE, 323, GroupLayout.PREFERRED_SIZE))
+							.addComponent(scrollRight, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addComponent(lblChoices, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
@@ -324,9 +324,9 @@ public class FeatureListDialog extends JDialog {
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(scrollLeft, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
-								.addComponent(scrollRight, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+								.addComponent(scrollLeft, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+								.addComponent(scrollRight, GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))))
+					.addGap(2))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
@@ -358,19 +358,19 @@ public class FeatureListDialog extends JDialog {
 			gl_buttonPane.setHorizontalGroup(
 				gl_buttonPane.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_buttonPane.createSequentialGroup()
-						.addGap(295)
+						.addContainerGap(589, Short.MAX_VALUE)
 						.addComponent(okButton, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(cancelButton)
-						.addGap(317))
+						.addGap(14))
 			);
 			gl_buttonPane.setVerticalGroup(
 				gl_buttonPane.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_buttonPane.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(gl_buttonPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(okButton)
-							.addComponent(cancelButton))
+							.addComponent(cancelButton)
+							.addComponent(okButton))
 						.addContainerGap(21, Short.MAX_VALUE))
 			);
 			buttonPane.setLayout(gl_buttonPane);
