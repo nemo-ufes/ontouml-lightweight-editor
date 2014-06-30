@@ -608,7 +608,7 @@ public class OutcomeFixer{
 		fixes.includeModified(element.eContainer());
 		
 		// move attributes to new class -- doesn't add fix on purpose (source will be deleted and target is being created)
-		changeAttributeReferences(oldClass, newClass);
+		fixes.addAll(changeAttributeReferences(oldClass, newClass));
 		
 		// change references (generalizations and associations) to new class
 		Fix references = changeModelReferences(element, newClass);

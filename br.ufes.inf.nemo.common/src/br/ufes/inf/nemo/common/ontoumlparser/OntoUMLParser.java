@@ -1424,14 +1424,23 @@ public class OntoUMLParser {
 	}
 	
 	public static Property getWholeEnd(Meronymic m){
-		if (m.targetEnd().getAggregation()!=AggregationKind.NONE && m.sourceEnd().getAggregation()==AggregationKind.NONE)
-			return m.targetEnd();
+		Property sourceEnd = m.getMemberEnd().get(0);
+		Property targetEnd = m.getMemberEnd().get(1);
+		
+		if (targetEnd.getAggregation()!=AggregationKind.NONE && sourceEnd.getAggregation()==AggregationKind.NONE)
+			return targetEnd;
 		else
-			return m.sourceEnd();
+			return sourceEnd;
 	}
 	
 	public static Property getPartEnd(Meronymic m){
-		return getWholeEnd(m).getOpposite();
+		Property sourceEnd = m.getMemberEnd().get(0);
+		Property targetEnd = m.getMemberEnd().get(1);
+		
+		if(getWholeEnd(m).equals(sourceEnd))
+			return targetEnd;
+		else
+			return sourceEnd;
 	}
 	
 	public static Property getCharacterizingEnd(Characterization c){
