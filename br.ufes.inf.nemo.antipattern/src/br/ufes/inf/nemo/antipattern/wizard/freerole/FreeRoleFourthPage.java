@@ -18,7 +18,7 @@ public class FreeRoleFourthPage extends FreeRolePage {
 	{
 		super(freeRole);		
 		this.index = freeRoleIndex;
-		setDescription(	"Defined Role: " +freeRole.getDefinedRole().getName()+
+		setDescription(	"Defined Role: " +freeRole.getDependentType().getName()+
 				"\nCurrent Free Role: "+freeRole.getFreeRoles().get(index).getName());
 	}
 

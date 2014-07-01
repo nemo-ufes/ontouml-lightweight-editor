@@ -31,10 +31,10 @@ public class FreeRoleSecondPage extends FreeRolePage {
 	{
 		super(freeRole);		
 		this.index = freeRoleIndex;
-		setDescription(	"Defined Role: " +freeRole.getDefinedRole().getName()+
+		setDescription(	"Defined Role: " +freeRole.getDependentType().getName()+
 						"\nCurrent Free Role: "+freeRole.getFreeRoles().get(index).getName());
 
-		String quotedDefinedRole = occurrence.addQuotes(occurrence.getDefinedRole().getName());
+		String quotedDefinedRole = occurrence.addQuotes(occurrence.getDependentType().getName());
 		String quotedFreeRole = occurrence.addQuotes(occurrence.getFreeRoles().get(index).getName());
 		
 		defaultDerivationText ="context "+quotedFreeRole+" :: allInstances() : Set("+quotedFreeRole+")" +

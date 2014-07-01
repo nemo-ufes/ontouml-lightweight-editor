@@ -22,14 +22,14 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 //Undefined Role Specialization
 public class FreeRoleOccurrence extends AntipatternOccurrence{
 
-	private Role definedRole;
+	private Classifier dependentType;
 	private ArrayList<Property> definingRelatorEnds;
 	private HashMap<Role,ArrayList<Property>> subRoleHash;
 	private ArrayList<Role> freeRoles;
 	private ArrayList<Role> definedRoles;
 	
-	public Role getDefinedRole() {
-		return definedRole;
+	public Classifier getDependentType() {
+		return dependentType;
 	}
 
 	public ArrayList<Property> getDefiningRelatorEnds() {
@@ -48,14 +48,14 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 		return definedRoles;
 	}
 
-	public FreeRoleOccurrence(Role role, ArrayList<Property> relatorEnds, FreeRoleAntipattern ap) throws Exception {
+	public FreeRoleOccurrence(Classifier mediated, ArrayList<Property> relatorEnds, FreeRoleAntipattern ap) throws Exception {
 		super(ap);
 		
-		if (role==null || relatorEnds==null || parser==null)
+		if (mediated==null || relatorEnds==null || parser==null)
 			throw new NullPointerException("FreeRole: It is not possible to create an occurence of the anti-pattern if one of the parameters is null");
 		
 		if (relatorEnds.size()==0)
-			throw new Exception("FreeRole: Defined Role must be connected to at least one mediation!!");
+			throw new Exception("FreeRole: Defined Type must be connected to at least one mediation!!");
 		
 		for (Property p : relatorEnds) {
 			if (!(p.getAssociation() instanceof Mediation))
@@ -64,16 +64,28 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 				throw new Exception("FreeRole: Provided properties must be connected to relators!!");
 		}
 		
-		definedRole = role;
+		dependentType = mediated;
 		definingRelatorEnds = relatorEnds;
 				
 		subRoleHash = new HashMap<Role, ArrayList<Property>>();
 		freeRoles = new ArrayList<Role>(); 
 		definedRoles = new ArrayList<Role>(); 
 		
-		for (Classifier child : ap.allChildrenHash.get(role)) {
+		for (Classifier child : ap.allChildrenHash.get(mediated)) {
 			
 			if (child instanceof Role) {
+				
+				boolean hasDependentMiddleParent = false;
+				
+				for (Classifier parent : parser.getAllParents(child)) {
+					if(ap.allChildrenHash.get(mediated).contains(parent) && ap.relatorHash.containsKey(parent)){
+						hasDependentMiddleParent = true;
+						break;
+					}
+				}
+				
+				if(hasDependentMiddleParent)
+					continue;
 				
 				ArrayList<Property> subRoleMediations = new ArrayList<Property>();
 				
@@ -99,7 +111,7 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 	public OntoUMLParser setSelected() {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
-		selection.add(definedRole);
+		selection.add(dependentType);
 		
 		for (Property p : this.definingRelatorEnds)
 			selection.add(p.getAssociation());
@@ -120,12 +132,12 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 	@Override
 	public String toString(){
 		
-		String result = "Defined Role: "+ OntoUMLNameHelper.getName(definedRole)+"\n"+
+		String result = "Dependent Type: "+ OntoUMLNameHelper.getName(dependentType)+"\n"+
 						"Defining Relator(s):";
 		
 		for (Property relatorEnd : definingRelatorEnds) {
 			result += "\r\n\t"+OntoUMLNameHelper.getTypeAndName(relatorEnd.getType(), true, false);
-			if(definedRole.equals(relatorEnd.getOpposite().getType()))
+			if(dependentType.equals(relatorEnd.getOpposite().getType()))
 				result += " (direct)";
 			else
 				result += " (from: "+OntoUMLNameHelper.getTypeAndName(relatorEnd.getOpposite().getType(), true, false)+")";
@@ -152,7 +164,7 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 
 	@Override
 	public String getShortName() {
-		return parser.getStringRepresentation(getDefinedRole());
+		return parser.getStringRepresentation(getDependentType());
 	}
 
 	// OUTCOMING FIXES ==========================================================
@@ -161,14 +173,20 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 		fix.includeRule(oclDerive);
 	}
 
-	public void createNewMediation(Relator relator, Role role,String relatorEndMultip, String roleEndMultip) {
+	public void createMediation(Relator relator, Role role,String relatorEndMultip, String roleEndMultip) {
 		fix.addAll(fixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, role));
 		Mediation med = null;
-		for(Object obj: fix.getAdded()) { if (obj instanceof Mediation) med = (Mediation)obj; }
+		
+		for(Object obj: fix.getAdded()) { 
+			if (obj instanceof Mediation) 
+				med = (Mediation)obj; 
+		}
+		
 		fix.addAll(fixer.changePropertyMultiplicity(med.getMemberEnd().get(0), relatorEndMultip));
 		fix.addAll(fixer.changePropertyMultiplicity(med.getMemberEnd().get(1), roleEndMultip));
+		
 		for(Property p: getDefiningRelatorEnds()){
-			if (p.getType().equals(relator)){
+			if (p.getType().equals(relator) || ((Classifier) p.getType()).allChildren().contains(relator)){
 				med.getMemberEnd().get(0).getSubsettedProperty().add(p);
 			}				
 		}		
@@ -252,7 +270,7 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 		}
 	}
 
-	public void createNewRelatorWithMediation(Role role, String subRelatorName, String relatorEndMultip, String roleEndMultip) 
+	public void createRelatorWithMediation(Role role, String subRelatorName, String relatorEndMultip, String roleEndMultip) 
 	{
 		//create new relator
 		RefOntoUML.Type relator = (RefOntoUML.Type)fixer.createClass(ClassStereotype.RELATOR);
@@ -272,6 +290,8 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 		fix.addAll(fixer.changePropertyMultiplicity(mediation.getMemberEnd().get(1), roleEndMultip));
 		
 	}
+
+	
 
 }
 

@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 
@@ -32,7 +33,7 @@ public class FreeRoleDependenceTable {
 		
 		String columnName1 = "Relator";
 		TableColumn tableColumn1 = new TableColumn(table, SWT.CENTER);
-		tableColumn1.setWidth(80);
+		tableColumn1.setWidth(150);
 		tableColumn1.setText(columnName1);
 		
 		String columnName2 = "Use?";
@@ -45,7 +46,7 @@ public class FreeRoleDependenceTable {
 		tableColumn3.setWidth(80);
 		tableColumn3.setText(columnName3);
 		
-		String columnName4 = "New Relator Name";
+		String columnName4 = "New Relator's Name";
 		TableColumn tableColumn4 = new TableColumn(table, SWT.CENTER);
 		tableColumn4.setWidth(120);
 		tableColumn4.setText(columnName4);
@@ -67,20 +68,31 @@ public class FreeRoleDependenceTable {
 		
 		table.setSize(418, 117);
 		
-		fulfillLines();
+		fillData();
 	}
 		
-	public void fulfillLines(){
+	public void fillData(){
 	
-		for(Property p: freeRole.getDefiningRelatorEnds())
+		ArrayList<Classifier> relators = new ArrayList<Classifier>();
+		
+		for(Property p: freeRole.getDefiningRelatorEnds()){
+			Classifier relator = (Classifier) p.getType();
+			relators.add(relator);
+			for (Classifier child : freeRole.getParser().getAllChildren(relator)) {
+				relators.add(child);
+			}
+		}
+		
+		for(Classifier relator: relators)
 		{
 			TableItem tableItem = new TableItem(table,SWT.NONE);	
-						
+			tableItem.setData("relator", relator);
+			
 			// Current Relator Name
 			TableEditor editor = new TableEditor(table);
 		    editor.grabHorizontal = true;
 			editor.horizontalAlignment = SWT.CENTER;
-			tableItem.setText(0, p.getType().getName());
+			tableItem.setText(0, relator.getName());
 			
 			// Use
 			editor = new TableEditor(table);
@@ -102,7 +114,7 @@ public class FreeRoleDependenceTable {
 			
 			// New Relator Name
 			editor = new TableEditor(table);
-			Text text = new Text(table, SWT.CHECK);
+			Text text = new Text(table, SWT.BORDER);
 			text.pack();
 			editor.minimumWidth = text.getSize().x;
 			editor.horizontalAlignment = SWT.CENTER;
