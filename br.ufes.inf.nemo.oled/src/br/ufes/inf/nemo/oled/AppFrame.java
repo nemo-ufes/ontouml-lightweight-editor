@@ -320,6 +320,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 * Quits the application without confirmation.
 	 * */
 	public void quitApplication() {
+		Main.printOutLine("OLED application closed");
+		
 		if (canQuit()) {		
 			
 			diagramManager.dispose();

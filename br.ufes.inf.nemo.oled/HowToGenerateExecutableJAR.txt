@@ -1,18 +1,24 @@
 Hot to generate an executable JAR for OLED. Follow the steps:
 
-1. Change the attribute OLED_VERSION in class Main.java to point to the version you're building.
-   ex: String OLED_VERSION = "x.x.xx";
+1. Change the attribute OLED_VERSION in Main.java to point to the version you're building.
+   ex: String OLED_VERSION = "0.9.32";
 
-2. Double click on the Main.java, go to Export -> Runnable Jar. 
+2. Change the attribute OLED_COMPILATION_DATE in Main.java to point to the date where you are building the application
+   ex: String OLED_COMPILATION_DATE = "Jul 01 2014"
+   
+3. Change the attribute USE_LOG_FILE in Main.java to tell whether or not are you going to use the log file.
+   In this case, change the attribute to true.
+   ex: boolean USE_LOG_FILE = true;
+   
+4. Double click on Main.java, go to Export -> Runnable Jar. 
    Choose to package the libraries instead of extract them. Also,you do not need to generate a ANT build script.
    Rename the jar name to "oled"+OLEd_VERSION_".jar, where OLED_VERSION is your build version.
    
-3. After generating the jar, open it with WinRAR/Unzip and delete the swt.jar file on the root of the jar.
-   It is among the other libraries. This is because this swt.jar in specific of Winx64 platform and we used it
-   only in the development process. We don't need it at runtime.
+5. After generating the jar, open it with WinRAR/Unzip and delete the swt.jar files on the root of the jar, they are among the other libraries. 
+   This is due to the fact that this swt.jar is specific of Winx64 platform and we used it only in the development process. We don't need it at runtime.
    
-4. Double click on the jar file created or type in a console java -jar oled+OLED_VERSION+.jar to execute OLED application.
+6. Double click on the jar file created or type in a console java -jar oled+OLED_VERSION+.jar to execute OLED application.
 
 =) 
 
-John - Updated: 21 Jan 2014
+John - Updated: 01 Jul 2014

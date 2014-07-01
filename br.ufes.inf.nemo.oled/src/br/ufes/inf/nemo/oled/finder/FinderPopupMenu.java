@@ -31,9 +31,6 @@ import javax.swing.JPopupMenu;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Element;
-import RefOntoUML.Enumeration;
-import RefOntoUML.EnumerationLiteral;
-import RefOntoUML.PrimitiveType;
 import br.ufes.inf.nemo.oled.dialog.DiagramListDialog;
 import br.ufes.inf.nemo.oled.dialog.properties.ElementDialogCaller;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
@@ -52,7 +49,8 @@ public class FinderPopupMenu extends JPopupMenu {
 	{
 		this.context = context;
 				
-		if((!(context instanceof PrimitiveType)) && (!(context instanceof Enumeration)) && (!(context instanceof EnumerationLiteral)) && (!(context instanceof Package)))
+		if((context instanceof RefOntoUML.Class)||(context instanceof RefOntoUML.DataType)||(context instanceof RefOntoUML.Association) || (context instanceof RefOntoUML.Property)
+		|| (context instanceof RefOntoUML.Generalization) || (context instanceof RefOntoUML.GeneralizationSet) || (context instanceof RefOntoUML.Constraintx) || (context instanceof RefOntoUML.Comment))
 		{
 			JMenuItem propertiesMenuItem = new JMenuItem("Properties");
 			add(propertiesMenuItem);
