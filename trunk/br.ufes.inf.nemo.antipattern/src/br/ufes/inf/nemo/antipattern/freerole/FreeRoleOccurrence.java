@@ -16,11 +16,18 @@ import RefOntoUML.Role;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Undefined Role Specialization
 public class FreeRoleOccurrence extends AntipatternOccurrence{
 
+	private Role definedRole;
+	private ArrayList<Property> definingRelatorEnds;
+	private HashMap<Role,ArrayList<Property>> subRoleHash;
+	private ArrayList<Role> freeRoles;
+	private ArrayList<Role> definedRoles;
+	
 	public Role getDefinedRole() {
 		return definedRole;
 	}
@@ -41,13 +48,6 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 		return definedRoles;
 	}
 
-
-	private Role definedRole;
-	private ArrayList<Property> definingRelatorEnds;
-	private HashMap<Role,ArrayList<Property>> subRoleHash;
-	private ArrayList<Role> freeRoles;
-	private ArrayList<Role> definedRoles;
-	
 	public FreeRoleOccurrence(Role role, ArrayList<Property> relatorEnds, FreeRoleAntipattern ap) throws Exception {
 		super(ap);
 		
@@ -55,42 +55,37 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 			throw new NullPointerException("FreeRole: It is not possible to create an occurence of the anti-pattern if one of the parameters is null");
 		
 		if (relatorEnds.size()==0)
-			throw new Exception("Defined Role must be connected to at least one mediation!!");
+			throw new Exception("FreeRole: Defined Role must be connected to at least one mediation!!");
 		
 		for (Property p : relatorEnds) {
-			if (!(p.getAssociation() instanceof Mediation) || !p.getOpposite().getType().equals(role) || !(p.getType() instanceof Relator))
-				throw new Exception("Defined Role must be connected to at least one mediation!!");
+			if (!(p.getAssociation() instanceof Mediation))
+				throw new Exception("FreeRole: Provided properties must be belong to mediations!!");
+			if(!(p.getType() instanceof Relator))
+				throw new Exception("FreeRole: Provided properties must be connected to relators!!");
 		}
 		
-		this.definedRole = role;
-		this.definingRelatorEnds = relatorEnds;
+		definedRole = role;
+		definingRelatorEnds = relatorEnds;
 				
-		this.subRoleHash = new HashMap<Role, ArrayList<Property>>();
-		this.freeRoles = new ArrayList<Role>(); 
-		this.definedRoles = new ArrayList<Role>(); 
+		subRoleHash = new HashMap<Role, ArrayList<Property>>();
+		freeRoles = new ArrayList<Role>(); 
+		definedRoles = new ArrayList<Role>(); 
 		
-		for (Classifier child : parser.getAllChildren(role)) {
+		for (Classifier child : ap.allChildrenHash.get(role)) {
 			
 			if (child instanceof Role) {
 				
 				ArrayList<Property> subRoleMediations = new ArrayList<Property>();
 				
-				for (Mediation m : parser.getAllInstances(Mediation.class)) {
-					Property source = m.getMemberEnd().get(0);
-					Property target = m.getMemberEnd().get(1);
-					
-					if (source.getType().equals(child))
-						subRoleMediations.add(target);
-					else if (target.getType().equals(child))
-						subRoleMediations.add(source);
-				}
+				if(ap.relatorHash.containsKey(child))
+					subRoleMediations.addAll(ap.relatorHash.get(child));
 				
-				this.subRoleHash.put((Role) child, subRoleMediations);
+				subRoleHash.put((Role) child, subRoleMediations);
 				
 				if (subRoleMediations.size()==0)
-					this.freeRoles.add((Role) child);
+					freeRoles.add((Role) child);
 				else
-					this.definedRoles.add((Role) child);
+					definedRoles.add((Role) child);
 				
 			}
 		}
@@ -125,25 +120,30 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 	@Override
 	public String toString(){
 		
-		String result = "Defined Role: "+ parser.getStringRepresentation(definedRole)+"\n"+
-						"Defining Relator(s): ";
+		String result = "Defined Role: "+ OntoUMLNameHelper.getName(definedRole)+"\n"+
+						"Defining Relator(s):";
 		
-		for (int i = 0; i < this.definingRelatorEnds.size(); i++) {
-			if(i>0)
-				result += ", ";
-			result += parser.getStringRepresentation(definingRelatorEnds.get(i).getType());
+		for (Property relatorEnd : definingRelatorEnds) {
+			result += "\r\n\t"+OntoUMLNameHelper.getTypeAndName(relatorEnd.getType(), true, false);
+			if(definedRole.equals(relatorEnd.getOpposite().getType()))
+				result += " (direct)";
+			else
+				result += " (from: "+OntoUMLNameHelper.getTypeAndName(relatorEnd.getOpposite().getType(), true, false)+")";
 		}
 		
-		result+="\nFree Roles: \n";
+		result+="\nFree Role(s):";
 		
 		for (Role undefinedRole : this.freeRoles) {
-			result += "\t"+parser.getStringRepresentation(undefinedRole)+"\n";
+			result += "\r\n\t"+OntoUMLNameHelper.getTypeAndName(undefinedRole, true, false);
 		}
 		
-		result+="\nDefined Sub Roles: \n";
+		if(definedRoles.size()==0)
+			return result;
+		
+		result+="\nDefined Sub Roles:";
 		
 		for (Role defined : this.definedRoles) {
-			result += "\t"+parser.getStringRepresentation(defined)+"\n";
+			result += "\r\n\t"+OntoUMLNameHelper.getTypeAndName(defined, true, false);
 		}
 		
 		return result;

@@ -102,14 +102,14 @@ public class HetCollAntipattern extends Antipattern<HetCollOccurrence> {
 			
 			try{
 				Property partEnd = OntoUMLParser.getPartEnd(m);
-				Classifier mainType = (Classifier) partEnd.getOpposite().getType();
+				Classifier whole = (Classifier) OntoUMLParser.getWholeEnd(m).getType();
 				
-				if (hash.keySet().contains(mainType))
-					hash.get(mainType).add(partEnd);
+				if (hash.containsKey(whole))
+					hash.get(whole).add(partEnd);
 				else{
 					HashSet<Property> properties = new HashSet<Property>();
 					properties.add(partEnd);
-					hash.put(mainType, properties);
+					hash.put(whole, properties);
 				}
 			}
 			catch(Exception e){ }
@@ -118,7 +118,7 @@ public class HetCollAntipattern extends Antipattern<HetCollOccurrence> {
 		//adds supertypes' parts
 		for (Classifier mainType : hash.keySet()) 
 			for (Classifier parent : mainType.allParents()) 
-				if(hash.keySet().contains(parent))
+				if(hash.containsKey(parent))
 					hash.get(mainType).addAll(hash.get(parent));
 			
 		return hash;

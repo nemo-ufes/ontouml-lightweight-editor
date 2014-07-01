@@ -24,6 +24,8 @@ import RefOntoUML.Role;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class FreeRoleRefactoringPage extends RefactoringPage {
 		
@@ -38,12 +40,13 @@ public class FreeRoleRefactoringPage extends RefactoringPage {
 	private Button fromDependentToDerived;
 	private Button fromDependentToIndependent;
 	private Button fromIndependentToDependent;
-	private Button btnProcessInformation;
+	private Button processButton;
 	private ExpandBar expandBar;
 	private Label label;
 	private HashMap<StyledText,Integer> oclRules = new HashMap<StyledText,Integer>();
 	private HashMap<FreeRoleDependenceTable,Integer> depTableList = new HashMap<FreeRoleDependenceTable,Integer>();
 	private HashMap<FreeRoleIndependenceComposite,Integer> indepCompositeList = new HashMap<FreeRoleIndependenceComposite,Integer>();
+	private Composite container;
 	
 	/**
 	 * Create the wizard.
@@ -83,34 +86,27 @@ public class FreeRoleRefactoringPage extends RefactoringPage {
 	 */
 	public void createControl(Composite parent) 
 	{
-		Composite container = new Composite(parent, SWT.NONE);
+		container = new Composite(parent, SWT.NONE);
 
 		setControl(container);				
 		
 		deriveList = new List(container, SWT.BORDER);
-		deriveList.setBounds(10, 31, 174, 68);
 		for(Role role: freeRole.getFreeRoles()) { deriveList.add(getStereotype(role)+" "+role.getName()); }
 		
 		dependentList = new List(container, SWT.BORDER);
-		dependentList.setBounds(231, 31, 174, 68);
 		
 		independentLilst = new List(container, SWT.BORDER);
-		independentLilst.setBounds(452, 31, 174, 68);
 		
 		lblRolesToBe = new Label(container, SWT.NONE);
-		lblRolesToBe.setBounds(27, 10, 140, 15);
 		lblRolesToBe.setText("Roles to be derived:");
 		
 		lblDependentRoles = new Label(container, SWT.NONE);
-		lblDependentRoles.setBounds(204, 10, 140, 15);
 		lblDependentRoles.setText("Dependent roles:");
 		
 		lblIndependentRoles = new Label(container, SWT.NONE);
-		lblIndependentRoles.setBounds(381, 10, 140, 15);
 		lblIndependentRoles.setText("Independent roles:");
 		
 		fromDerivedToDependent = new Button(container, SWT.NONE);
-		fromDerivedToDependent.setBounds(200, 30, 25, 25);
 		fromDerivedToDependent.setText("->");
 		fromDerivedToDependent.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -127,7 +123,6 @@ public class FreeRoleRefactoringPage extends RefactoringPage {
 		});
 		
 		fromDependentToDerived = new Button(container, SWT.NONE);
-		fromDependentToDerived.setBounds(200, 61, 25, 25);
 		fromDependentToDerived.setText("<-");
 		fromDependentToDerived.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -144,7 +139,6 @@ public class FreeRoleRefactoringPage extends RefactoringPage {
 		});
 		
 		fromDependentToIndependent = new Button(container, SWT.NONE);
-		fromDependentToIndependent.setBounds(421, 30, 25, 25);
 		fromDependentToIndependent.setText("->");
 		fromDependentToIndependent.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -161,7 +155,6 @@ public class FreeRoleRefactoringPage extends RefactoringPage {
 		});
 		
 		fromIndependentToDependent = new Button(container, SWT.NONE);
-		fromIndependentToDependent.setBounds(421, 61, 25, 25);
 		fromIndependentToDependent.setText("<-");
 		fromIndependentToDependent.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -178,17 +171,95 @@ public class FreeRoleRefactoringPage extends RefactoringPage {
 		});
 		
 		label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
-		label.setBounds(10, 105, 616, 9);
 		
 		expandBar = new ExpandBar(container, SWT.V_SCROLL | SWT.H_SCROLL);
-		expandBar.setBounds(10, 151, 616, 121);
 		
-		btnProcessInformation = new Button(container, SWT.NONE);
-		btnProcessInformation.setBounds(252, 120, 140, 25);
-		btnProcessInformation.setText("Process Information");
-		btnProcessInformation.addSelectionListener(new SelectionAdapter() {
+		processButton = new Button(container, SWT.NONE);
+		processButton.setText("Process Information");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.TRAILING)
+				.add(gl_container.createSequentialGroup()
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(10)
+							.add(expandBar, GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE))
+						.add(gl_container.createSequentialGroup()
+							.add(10)
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(gl_container.createSequentialGroup()
+									.add(lblRolesToBe, GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+									.add(16))
+								.add(gl_container.createSequentialGroup()
+									.add(deriveList, GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+									.addPreferredGap(LayoutStyle.RELATED)))
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(fromDependentToDerived)
+								.add(fromDerivedToDependent))
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(dependentList, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+								.add(lblDependentRoles, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(fromIndependentToDependent)
+								.add(fromDependentToIndependent))
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(independentLilst, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+								.add(lblIndependentRoles, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))))
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap(487, Short.MAX_VALUE)
+					.add(processButton, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(label, GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(8)
+					.add(gl_container.createParallelGroup(GroupLayout.BASELINE)
+						.add(lblRolesToBe)
+						.add(lblDependentRoles)
+						.add(lblIndependentRoles))
+					.add(3)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(31)
+							.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+								.add(fromDerivedToDependent)
+								.add(fromDependentToIndependent))
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(fromIndependentToDependent))
+						.add(gl_container.createSequentialGroup()
+							.add(62)
+							.add(fromDependentToDerived))
+						.add(GroupLayout.TRAILING, deriveList, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+						.add(GroupLayout.TRAILING, dependentList, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.add(GroupLayout.TRAILING, independentLilst, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(label, GroupLayout.PREFERRED_SIZE, 9, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(processButton)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(expandBar, GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
+		processButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				
+				
+				while(expandBar.getItemCount()>0){
+					expandBar.getItem(0).getControl().dispose();
+					expandBar.getItem(0).dispose();
+				}
+				
+				System.out.println("Item Count: "+expandBar.getItemCount());
 				
 				int i=0;
 				for(Role role: getDerivedSelected())

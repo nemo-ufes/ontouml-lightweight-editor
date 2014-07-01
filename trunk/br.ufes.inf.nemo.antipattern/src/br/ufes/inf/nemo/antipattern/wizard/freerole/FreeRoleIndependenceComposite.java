@@ -7,9 +7,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class FreeRoleIndependenceComposite extends Composite{
 
@@ -23,6 +26,7 @@ public class FreeRoleIndependenceComposite extends Composite{
 	private Label lblTypesToWhich;
 	private Button btnAdd;
 	private FreeRoleIndependenceTable independenceTable;
+	private Table table;
 	
 	public FreeRoleIndependenceTable getIndependenceTable()
 	{
@@ -50,39 +54,31 @@ public class FreeRoleIndependenceComposite extends Composite{
 		this.index = freeRoleIndex;
 		
 		lblTheNameOf = new Label(this, SWT.NONE);
-		lblTheNameOf.setBounds(10, 13, 189, 15);
-		lblTheNameOf.setText("The name of the new Relator:");
+		lblTheNameOf.setText("Name (New Relator):");
 		
 		relatorNameText = new Text(this, SWT.BORDER);
-		relatorNameText.setBounds(210, 10, 330, 21);
 		relatorNameText.setText("");
 		
 		lblMultiplicityOnEnd = new Label(this, SWT.NONE);
-		lblMultiplicityOnEnd.setBounds(10, 40, 189, 15);
-		lblMultiplicityOnEnd.setText("Multiplicity on "+freeRole.getFreeRoles().get(index).getName()+" End:");
+		lblMultiplicityOnEnd.setText("Mult. (Mediated):");
 		
 		lblMultiplicityOnRelator = new Label(this, SWT.NONE);
-		lblMultiplicityOnRelator.setBounds(292, 40, 189, 15);
-		lblMultiplicityOnRelator.setText("Multiplicity on Relator End: ");
+		lblMultiplicityOnRelator.setText("Mult. (New Relator):");
 		
 		relatorMultip = new Combo(this, SWT.NONE);
-		relatorMultip.setBounds(492, 37, 48, 23);
 		relatorMultip.setItems(new String[] {"0..1", "1", "1..*", "0..*"});
 		relatorMultip.select(2);
 		
 		roleMultip = new Combo(this, SWT.NONE);
-		roleMultip.setBounds(210, 37, 48, 23);
 		roleMultip.setItems(new String[] {"0..1", "1", "1..*", "0..*"});
 		roleMultip.select(2);
 		
 		lblTypesToWhich = new Label(this, SWT.WRAP);
-		lblTypesToWhich.setBounds(10, 81, 490, 15);
 		lblTypesToWhich.setText("Types to which "+freeRole.getFreeRoles().get(index).getName()+" is dependent on:");
 		
-	//	Composite composite_1 = new Composite(composite,SWT.NONE);
-	//	composite_1.setBounds(10, 111, 530, 73);
 		independenceTable = new FreeRoleIndependenceTable(this, SWT.BORDER, freeRole);
-		independenceTable.getTable().setBounds(10, 111, 530, 73);
+		table = independenceTable.getTable();
+//		table = new Table(this, SWT.BORDER);
 		
 		SelectionAdapter newLineListneer = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
@@ -91,15 +87,71 @@ public class FreeRoleIndependenceComposite extends Composite{
 	    };
 		    
 		btnAdd = new Button(this, SWT.NONE);
-		btnAdd.setBounds(506, 76, 34, 25);
 		btnAdd.setText("Add");
 		btnAdd.addSelectionListener(newLineListneer);
 		
 		Label label = new Label(this, SWT.SEPARATOR | SWT.HORIZONTAL);
-		label.setBounds(10, 66, 530, 8);
 		
 		Label lblyouCanUse = new Label(this, SWT.NONE);
-		lblyouCanUse.setBounds(10, 189, 530, 15);
 		lblyouCanUse.setText("You can use existing types or create new ones...");	
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(groupLayout.createSequentialGroup()
+							.add(label, GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+							)
+						.add(groupLayout.createSequentialGroup()
+							.add(lblTypesToWhich, GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+							.add(8)
+							.add(btnAdd))
+						.add(groupLayout.createSequentialGroup()
+							.add(table, GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+							)
+						.add(groupLayout.createSequentialGroup()
+							.add(lblyouCanUse, GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+							)
+						.add(groupLayout.createSequentialGroup()
+							.add(groupLayout.createParallelGroup(GroupLayout.LEADING, false)
+								.add(lblMultiplicityOnEnd, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.add(lblTheNameOf, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+								.add(relatorNameText, GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+								.add(groupLayout.createSequentialGroup()
+									.add(roleMultip, GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+									.addPreferredGap(LayoutStyle.UNRELATED)
+									.add(lblMultiplicityOnRelator, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(LayoutStyle.RELATED)
+									.add(relatorMultip, GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)))))
+					)
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(groupLayout.createParallelGroup(GroupLayout.BASELINE)
+						.add(relatorNameText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(lblTheNameOf))
+					.add(9)
+					.add(groupLayout.createParallelGroup(GroupLayout.BASELINE)
+						.add(lblMultiplicityOnEnd)
+						.add(roleMultip, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(relatorMultip, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(lblMultiplicityOnRelator))
+					.add(6)
+					.add(label, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)
+					.add(7)
+					.add(groupLayout.createParallelGroup(GroupLayout.BASELINE)
+						.add(lblTypesToWhich)
+						.add(btnAdd))
+					.add(6)
+					.add(table, GroupLayout.DEFAULT_SIZE, 73, Short.MAX_VALUE)
+					.add(5)
+					.add(lblyouCanUse)
+					)
+		);
+		setLayout(groupLayout);
 	}
 }

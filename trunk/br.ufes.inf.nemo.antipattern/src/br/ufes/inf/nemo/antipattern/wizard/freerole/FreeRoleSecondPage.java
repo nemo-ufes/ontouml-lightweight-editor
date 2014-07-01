@@ -11,6 +11,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class FreeRoleSecondPage extends FreeRolePage {
 	
@@ -55,38 +58,78 @@ public class FreeRoleSecondPage extends FreeRolePage {
 		questionText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY);
 		
 		questionText.setJustify(true);
-		questionText.setBounds(10, 10, 554, 36);
 		questionText.setText("Every derived type must be have an OCL constraint that define its instantiation, which can be achieved using an invariant or a derivation rule. " +
 							"Which type of rule would you like to create? ");
 		
 //							"\r\nPlease complete the OCL template provided below to define how an instance of <"+definedRole+"> becomes an <"+freeRole+">: ");
 		
 		constraintText = new StyledText(container, SWT.BORDER | SWT.V_SCROLL);
-		constraintText.setBounds(10, 149, 554, 92);
 		constraintText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		
 		btnInvariant = new Button(container, SWT.RADIO);
-		btnInvariant.setBounds(10, 52, 554, 16);
 		btnInvariant.setText("Invariant (supported by the simulation)");
 		btnInvariant.addSelectionListener(constraintTextAdapter);
 		
 		btnDerivation = new Button(container, SWT.RADIO);
 		btnDerivation.setText("Derivation");
-		btnDerivation.setBounds(10, 74, 554, 16);
 		btnDerivation.addSelectionListener(constraintTextAdapter);
 		
 		lblNewLabel = new Label(container, SWT.WRAP);
-		lblNewLabel.setBounds(10, 113, 554, 30);
-		lblNewLabel.setText("Please complete the OCL template below to define the instantiation of <"+occurrence.getFreeRoles().get(index).getName()+">:");
+		lblNewLabel.setText("Please complete the OCL template below to define the instantiation of "+OntoUMLNameHelper.getTypeAndName(occurrence.getFreeRoles().get(index), true, true)+":");
 		
 		setAsEnablingNextPageButton(btnDerivation);
 		setAsEnablingNextPageButton(btnInvariant);
 		setPageComplete(false);
 		
 		btnReset = new Button(container, SWT.NONE);
-		btnReset.setBounds(495, 246, 69, 25);
 		btnReset.setText("Reset");
 		btnReset.setEnabled(false);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(btnInvariant, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(btnDerivation, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblNewLabel, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(constraintText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(10))
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.add(495)
+					.add(btnReset, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(questionText, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnInvariant)
+					.add(6)
+					.add(btnDerivation)
+					.add(23)
+					.add(lblNewLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(constraintText, GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
+					.add(5)
+					.add(btnReset)
+					.add(10))
+		);
+		container.setLayout(gl_container);
 		btnReset.addSelectionListener(new SelectionAdapter() {
 			
 			@Override
