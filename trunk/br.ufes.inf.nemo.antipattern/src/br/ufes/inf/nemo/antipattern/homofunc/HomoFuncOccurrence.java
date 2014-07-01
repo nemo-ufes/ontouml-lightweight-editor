@@ -32,10 +32,10 @@ public class HomoFuncOccurrence extends AntipatternOccurrence {
 	private Classifier whole;
 	private Property partEnd;
 	private ArrayList<Classifier> wholeIdentityProvidersList;
+	private ArrayList<Property> functionalWholes;
 	
 	
-	
-	public HomoFuncOccurrence(Association compOf, HomoFuncAntipattern ap) throws Exception {
+	public HomoFuncOccurrence(Association compOf, ArrayList<Property> functionalWholes, HomoFuncAntipattern ap) throws Exception {
 		super(ap);
 		
 		if (compOf==null)
@@ -59,6 +59,8 @@ public class HomoFuncOccurrence extends AntipatternOccurrence {
 		
 		if (!partEnd.getOpposite().getType().equals(whole))
 			throw new Exception("HomoFunc: partEnd must refer to componentOf relation that is connected to the provided whole");
+		
+		setFunctionalWholes(functionalWholes);
 
 	}
 
@@ -72,6 +74,14 @@ public class HomoFuncOccurrence extends AntipatternOccurrence {
 
 	public Property getPartEnd() {
 		return partEnd;
+	}
+	
+	public ArrayList<Property> getFunctionalWholes() {
+		return functionalWholes;
+	}
+
+	public void setFunctionalWholes(ArrayList<Property> functionalWholes) {
+		this.functionalWholes = functionalWholes;
 	}
 	
 	public ArrayList<Classifier> getWholeIdentityProviders()
@@ -104,7 +114,7 @@ public class HomoFuncOccurrence extends AntipatternOccurrence {
 	public String toString(){
 		String result = 
 				"Functional Complex: "+OntoUMLNameHelper.getTypeAndName(whole, true, true)+"\n" +
-				"Part: "+OntoUMLNameHelper.getCommonName(partEnd);
+				"Part: "+OntoUMLNameHelper.getCommonName(partEnd.getType());
 		return result;
 	}
 
@@ -188,5 +198,7 @@ public class HomoFuncOccurrence extends AntipatternOccurrence {
 		
 		fix.addAll(fixes);
 	}
+
+	
 	
 }

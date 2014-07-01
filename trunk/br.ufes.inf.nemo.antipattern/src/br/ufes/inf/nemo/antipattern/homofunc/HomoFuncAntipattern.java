@@ -9,21 +9,18 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
+import RefOntoUML.Type;
 import RefOntoUML.componentOf;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class HomoFuncAntipattern extends Antipattern<HomoFuncOccurrence> {
-
-	public HomoFuncAntipattern(OntoUMLParser parser) throws NullPointerException {
-		super(parser);
-	}
 	
-	public HomoFuncAntipattern(Package pack) throws NullPointerException {
-		super(pack);
-	}
+	private HashMap<Classifier,HashSet<Property>> partsHash; 
+	private HashMap<Classifier,HashSet<Property>> wholesHash;
 	
 	private static final String oclQuery =	
 			
@@ -39,8 +36,18 @@ public class HomoFuncAntipattern extends Antipattern<HomoFuncOccurrence> {
 			"This anti-pattern is characterized by a functional complex whole connected to exactly one type of part, through a single «componentOf» relation. "+
 			"The whole must be stereotyped as «kind» or it must be stereotyped as «subkind», «phase», «role» and directly or indirectly generalize another type"+
 			"stereotyped as «whole».",
-			HomoFuncAntipattern.oclQuery); 
-		
+			HomoFuncAntipattern.oclQuery);
+	
+	public HomoFuncAntipattern(OntoUMLParser parser) throws NullPointerException {
+		super(parser);
+	}
+	
+	public HomoFuncAntipattern(Package pack) throws NullPointerException {
+		super(pack);
+	}
+	
+	
+
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
@@ -54,7 +61,7 @@ public class HomoFuncAntipattern extends Antipattern<HomoFuncOccurrence> {
 		{
 			try {
 				
-				HomoFuncOccurrence occurrence = new HomoFuncOccurrence(a, this);
+				HomoFuncOccurrence occurrence = new HomoFuncOccurrence(a, new ArrayList<Property>(), this);
 				super.occurrence.add(occurrence);
 			} catch (Exception e) {
 				System.out.println(info.getAcronym()+": Could not create occurrence!");
@@ -67,16 +74,31 @@ public class HomoFuncAntipattern extends Antipattern<HomoFuncOccurrence> {
 
 	@Override
 	public ArrayList<HomoFuncOccurrence> identify() {
-		HashMap<Classifier,HashSet<Property>> hash = buildPropertyHash(componentOf.class);
+		buildPropertyHash(componentOf.class);
 		
-		for (Classifier whole : hash.keySet()) {
+		for (Classifier whole : partsHash.keySet()) {
 			
-			ArrayList<Property> functionalParts = new ArrayList<Property>(hash.get(whole));
-
+			ArrayList<Property> functionalParts = new ArrayList<Property>(partsHash.get(whole));
+			
 			if(functionalParts.size()==1 && hasDirectPart(whole,functionalParts)){
 				try {
-					occurrence.add(new HomoFuncOccurrence(functionalParts.get(0).getAssociation(), this));
-				} catch (Exception e) {
+					
+					ArrayList<Property> functionalWholes = new ArrayList<Property>();
+					
+					if(wholesHash.containsKey(whole))
+						functionalWholes.addAll(wholesHash.get(whole));
+					
+					//adds supertypes' wholes
+					for (Classifier parent : whole.allParents()){
+						if(wholesHash.containsKey(parent)){
+							functionalWholes.addAll(wholesHash.get(parent));
+						}
+					}
+					
+					occurrence.add(new HomoFuncOccurrence(functionalParts.get(0).getAssociation(), functionalWholes, this));
+					
+				}
+				catch (Exception e) {
 					System.out.println(info.acronym+": Provided information does not characterize an occurrence of the anti-pattern!");
 					System.out.println(e.getMessage());
 				}
@@ -86,39 +108,70 @@ public class HomoFuncAntipattern extends Antipattern<HomoFuncOccurrence> {
 		return occurrence;
 	}
 	
-	public <B extends Meronymic> HashMap<Classifier,HashSet<Property>> buildPropertyHash(Class<B> type){
-		HashMap<Classifier,HashSet<Property>> hash = new HashMap<Classifier,HashSet<Property>>();
+	public <B extends Meronymic> void buildPropertyHash(Class<B> type){
+		partsHash = new HashMap<Classifier,HashSet<Property>>();
+		wholesHash = new HashMap<Classifier,HashSet<Property>>();
 		
 		//builds initial hash, with meronymics that are directly connected to the types
 		for (B m : parser.getAllInstances(type)) {
-			
 			try{
-				Property partEnd = OntoUMLParser.getPartEnd(m);
-				Classifier mainType = (Classifier) partEnd.getOpposite().getType();
 				
-				if (hash.keySet().contains(mainType))
-					hash.get(mainType).add(partEnd);
+				Property partEnd, wholeEnd; 
+				Classifier part = null, whole = null;
+				
+				partEnd = OntoUMLParser.getPartEnd(m);
+				wholeEnd = OntoUMLParser.getWholeEnd(m);
+				
+				if(wholeEnd!=null)
+					whole = (Classifier) wholeEnd.getType();
+				if(partEnd!=null)
+					part = (Classifier) partEnd.getType();
+				
+				if(partEnd==null || wholeEnd == null || part==null || whole ==null){
+					System.out.println("================================================");
+					System.out.println(OntoUMLNameHelper.getCommonName(partEnd));
+					System.out.println(OntoUMLNameHelper.getCommonName(part));
+					System.out.println(OntoUMLNameHelper.getCommonName(wholeEnd));
+					System.out.println(OntoUMLNameHelper.getCommonName(whole));
+					System.out.println();
+					continue;
+				}
+				
+				if (partsHash.containsKey(whole))
+					partsHash.get(whole).add(partEnd);
 				else{
 					HashSet<Property> properties = new HashSet<Property>();
 					properties.add(partEnd);
-					hash.put(mainType, properties);
+					partsHash.put(whole, properties);
+				}
+				
+				if (wholesHash.containsKey(part)){
+					wholesHash.get(part).add(wholeEnd);
+				}
+				else{
+					HashSet<Property> properties = new HashSet<Property>();
+					properties.add(wholeEnd);
+					wholesHash.put(part, properties);
 				}
 			}
-			catch(Exception e){ }
+			catch (Exception e){
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
+			
 		}
 		
 		//adds supertypes' parts
-		for (Classifier mainType : hash.keySet()) 
-			for (Classifier parent : mainType.allParents()) 
-				if(hash.keySet().contains(parent))
-					hash.get(mainType).addAll(hash.get(parent));
-			
-		return hash;
+		for (Classifier whole : partsHash.keySet()) 
+			for (Classifier parent : whole.allParents()) 
+				if(partsHash.containsKey(parent))
+					partsHash.get(whole).addAll(partsHash.get(parent));
 	}
 	
 	public boolean hasDirectPart(Classifier c, ArrayList<Property> partEnds){
 		for (Property p : partEnds) {
-			if(p.getOpposite().getType().equals(c))
+			Type wholeType = OntoUMLParser.getWholeEnd(((Meronymic)p.getAssociation())).getType();
+			if(wholeType.equals(c))
 				return true;
 		}
 		

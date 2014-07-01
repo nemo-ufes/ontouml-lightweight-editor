@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class MemberOrSubCollectionPage extends HomoFuncPage {
 
@@ -37,13 +38,14 @@ public class MemberOrSubCollectionPage extends HomoFuncPage {
 		question.setText("Now, both the whole the part are collections. " +
 						"To make sure that we correctly refactor the model, answer the following: " +
 						"\r\n\r\n" +
-						"Are the members of "+occurrence.getPartEnd().getType().getName()+" also members of "+occurrence.getWhole().getName()+"?");
+						"Are the members of "+OntoUMLNameHelper.getTypeAndName(occurrence.getPart(), true, true)+" also members of "+
+						OntoUMLNameHelper.getTypeAndName(occurrence.getWhole(), true, true)+"?");
 		
 		btnYes = new Button(container, SWT.RADIO);
 		btnYes.setText("Yes - change relation to subCollectionOf");
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setText("No - change relation to memberOf)");
+		btnNo.setText("No - change relation to memberOf");
 		GroupLayout gl_container = new GroupLayout(container);
 		gl_container.setHorizontalGroup(
 			gl_container.createParallelGroup(GroupLayout.LEADING)
