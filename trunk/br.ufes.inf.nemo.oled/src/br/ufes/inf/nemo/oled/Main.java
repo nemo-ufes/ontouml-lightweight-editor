@@ -26,6 +26,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -34,6 +35,11 @@ import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.jar.Manifest;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -43,6 +49,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.FontUIResource;
 
+import br.ufes.inf.nemo.common.file.TimeHelper;
 import br.ufes.inf.nemo.oled.util.BinaryLoader;
 import br.ufes.inf.nemo.oled.util.ExtractorUtil;
 import br.ufes.inf.nemo.oled.util.LoadingException;
@@ -57,12 +64,16 @@ public final class Main {
 	
 	public static AppFrame frame; 
 
-	public static String OLED_VERSION = "0.9.31"; 
-	public static String OLED_COMPILATION_DATE = "Jun 26 2014"; 
+	public static String OLED_VERSION = "0.9.32"; 
+	public static String OLED_COMPILATION_DATE = "Jul 01 2014";	
+	
+	public static boolean USE_LOG_FILE = false;
+	public static PrintStream psOut;
+	public static PrintStream psErr;
 	
 	/** This caches the result of the call to get all fonts. */
-	private static String[] allFonts = null;	
-    	   
+	private static String[] allFonts = null;
+	    	   
 	/**
 	 * Private constructor.
 	 */
@@ -177,12 +188,6 @@ public final class Main {
        setUIFont(new FontUIResource(new Font(fontName, Font.PLAIN, fontSize)));
 	}
 	
-	/** Makes System.out content to be printed in the output pane of the app. */
-	public static void redirectSystemOut()
-	{
-		frame.createSysOutInterceptor();
-	}	
-	
 	/** For now, useless. */
 	public static Manifest getManifest() throws IOException
 	{
@@ -246,9 +251,9 @@ public final class Main {
 	        	String workingDir = getSwtWorkingDir2();		        
 	        	File file = new File(workingDir.concat(swtFileName));
 	        	swtFileUrl = file.toURI().toURL();
-	        	if (!file.exists ()) System.err.println("Can't locate SWT Jar File" + file.getAbsolutePath());
+	        	if (!file.exists ()) Main.printErrLine("Can't locate SWT Jar File" + file.getAbsolutePath());
 	    	}	    	
-            System.out.println("Adding to classpath: " + swtFileUrl);            
+	        Main.printOutLine("Adding to classpath: " + swtFileUrl);            
             addUrlMethod.invoke (classLoader, swtFileUrl);		
             
             return swtFileUrl;
@@ -269,9 +274,9 @@ public final class Main {
 			Class classToLoad=null;
 			try {
 				classToLoad = cl.loadClass("org.eclipse.swt.widgets.Display");
-				if(classToLoad!=null) System.out.println("SWT loaded from org.eclipse.swt.widgets.Display in "+swtJarURLs[0]);						        
+				if(classToLoad!=null) Main.printOutLine("SWT loaded from org.eclipse.swt.widgets.Display in "+swtJarURLs[0]);						        
 			} catch (ClassNotFoundException exx) {
-				System.err.println("Launch failed: Failed to load SWT class from jar: " + swtJarURLs[0]);
+				Main.printErrLine("Launch failed: Failed to load SWT class from jar: " + swtJarURLs[0]);
 				throw new RuntimeException(exx);
 			}
 			Method method = classToLoad.getDeclaredMethod ("getDefault");
@@ -283,7 +288,7 @@ public final class Main {
 	}
 	
 	/** Load the SWT binaries (*.dlls, *.jnilib, *.so) according to the appropriate Operating System.  */
-	public static BinaryLoader loadBinaryFiles(String binTemp) throws LoadingException, URISyntaxException
+	public static BinaryLoader copyBinaryFilesTo(String binTemp) throws LoadingException, URISyntaxException
 	{
 		BinaryLoader loader = new BinaryLoader(null, getOSx(), getArch(), binTemp);
 		loader.extractSWTBinaryFiles();
@@ -309,7 +314,76 @@ public final class Main {
         	loadSwtJar(urls);
         }
 	}
-		
+	
+	private static void redirectSystemToALog() throws SecurityException, IOException 
+	{
+		 // initialize logging to go to rolling log file
+        LogManager logManager = LogManager.getLogManager();
+        logManager.reset();
+
+        File file = new File("oled.log");
+        if(file.exists()) file.delete();
+        
+        // log file max size 10M, 1 rolling files, append-on-open
+        Handler fileHandler = new FileHandler("oled.log", 10000000, 1, true);
+        SimpleFormatter formatter = new SimpleFormatter();        
+        fileHandler.setFormatter(formatter);
+        Logger.getLogger("").addHandler(fileHandler);        
+
+        // preserve old stdout/stderr streams in case they might be useful
+        //PrintStream stdout = System.out;
+        //PrintStream stderr = System.err;
+	
+        // now rebind stdout/stderr to logger
+        Logger logger;
+        
+        logger = Logger.getLogger("stdout");
+        LoggingOutputStream losOut = new LoggingOutputStream(logger, StdOutErrLevel.STDOUT);
+        psOut = new PrintStream(losOut, true);
+        System.setOut(psOut);
+	
+        logger = Logger.getLogger("stderr");
+        LoggingOutputStream losErr = new LoggingOutputStream(logger, StdOutErrLevel.STDERR);
+        psErr = new PrintStream(losErr, true);
+        System.setErr(psErr);
+    }
+	
+	public static void printOut(String msg)
+	{
+		if(!USE_LOG_FILE){
+			System.out.print(TimeHelper.getTime()+" - "+msg);
+		}else{
+			System.out.print(msg);
+		}
+	}
+
+	public static void printErr(String msg)
+	{
+		if(!USE_LOG_FILE){
+			System.err.print(TimeHelper.getTime()+" - "+msg);
+		}else{
+			System.err.print(msg);
+		}
+	}
+	
+	public static void printErrLine(String msg)
+	{
+		if(!USE_LOG_FILE){
+			System.err.println(TimeHelper.getTime()+" - "+msg);
+		}else{
+			System.err.println(msg);
+		}
+	}
+	
+	public static void printOutLine(String msg)
+	{
+		if(!USE_LOG_FILE){
+			System.out.println(TimeHelper.getTime()+" - "+msg);
+		}else{
+			System.out.println(msg);
+		}
+	}
+	
 	/**  
 	 * The start method for this application.
 	 * @param args the command line parameters
@@ -318,17 +392,17 @@ public final class Main {
 	{				
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				try {										
+				try {
+					if(USE_LOG_FILE) redirectSystemToALog();
 					setSystemProperties();				
-					chooseFont();	
-					frame = new AppFrame();	
+					chooseFont();
+					frame = new AppFrame();					
 					loadAppropriateSwtJar();
-					loadBinaryFiles("oled_bin");
+					copyBinaryFilesTo("oled_bin");
 					ExtractorUtil.extractAlloyJar();
 					frame.setLocationByPlatform(true);
 					frame.setVisible(true);
-					frame.toFront();
-					//redirectSystemout();					
+					frame.toFront();										
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}				

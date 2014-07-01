@@ -35,6 +35,8 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import br.ufes.inf.nemo.oled.Main;
+
 import edu.mit.csail.sdg.alloy4.Util;
 
 /**
@@ -170,7 +172,7 @@ public final class ConfigurationHelper {
 		String temp = System.getProperty("java.io.tmpdir");
 		
 		if (temp == null || temp.length() == 0)
-			System.out.println("Error. JVM need to specify a temporary directory using java.io.tmpdir property.");
+			Main.printErrLine("Error. JVM need to specify a temporary directory using java.io.tmpdir property.");
 		
 		//String username = System.getProperty("user.name");
 		File tempfile = new File(temp + File.separatorChar + "oled_tmp");
@@ -179,7 +181,7 @@ public final class ConfigurationHelper {
 		String ans = canon(tempfile.getPath());
 		
 		if (!tempfile.isDirectory()) {
-			System.out.println("Error. Cannot create the temporary directory "	+ ans);
+			Main.printErrLine("Error. Cannot create the temporary directory "	+ ans);
 		}
 		if (!onWindows()) {
 			String[] args = { "chmod", "700", ans };
@@ -296,7 +298,7 @@ public final class ConfigurationHelper {
 		if (!close(in))
 			result = false;
 		if (!result)
-			System.out.println("Error occurred in creating the file \"" + destname + "\"");
+			Main.printOutLine("Error occurred in creating the file \"" + destname + "\"");
 		return true;
 	}
 

@@ -27,6 +27,8 @@ import java.util.zip.ZipFile;
 
 import org.eclipse.swt.widgets.Display;
 
+import br.ufes.inf.nemo.oled.Main;
+
 /**
  * 
  * Enables SWT auto-loading from the jar file. A brief tutorial on how to use
@@ -69,7 +71,7 @@ public class BinaryLoader {
 			    if(!jarFile.exists()) return;
 			}
 			catch(UnsupportedEncodingException cantHappen){ /*Never gets here*/ }
-			System.out.println("Jar file: "+jarFile.getAbsolutePath());
+			Main.printOutLine("Jar file: "+jarFile.getAbsolutePath());
 		}
 	}
 	
@@ -192,8 +194,8 @@ public class BinaryLoader {
 		String binWorkingDir = URLDecoder.decode(getBinWorkingDir()+binPackage+File.separator+binName,"UTF-8");
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream(binResource);	
 		if(is==null) is = this.getClass().getClassLoader().getResourceAsStream(File.separator+binResource);	
-		if(is !=null) System.out.println("Reading from: "+binResource);
-		if(is ==null) System.out.println("Reading from: "+binWorkingDir);
+		if(is !=null) Main.printOutLine("Reading from: "+binResource);
+		if(is ==null) Main.printOutLine("Reading from: "+binWorkingDir);
 		if(is == null) is = new FileInputStream(binWorkingDir);
 		
 		OutputStream out = new FileOutputStream(outFile);
@@ -208,7 +210,7 @@ public class BinaryLoader {
 		out.flush();
 		out.close();
 		
-		System.out.println("Extracted: "+outFile.getAbsolutePath());
+		Main.printOutLine("Extracted: "+outFile.getAbsolutePath());
 		return outFile.getAbsolutePath();
 
 	}
@@ -224,7 +226,7 @@ public class BinaryLoader {
 				String workPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 				String decodedPath = URLDecoder.decode(workPath, "UTF-8");
 				File workDir = new File(decodedPath);				
-				System.out.println("Working Dir: "+workDir.getAbsolutePath());
+				Main.printOutLine("Working Dir: "+workDir.getAbsolutePath());
 				Process p = Runtime.getRuntime().exec(command, environment, workDir);
 				// Implementation to get the standard output, requires two VMs
 				// running
@@ -303,7 +305,7 @@ public class BinaryLoader {
 		}
 		in.close();
 		out.close();
-		System.out.println("Extracted: "+outFile.getAbsolutePath());
+		Main.printOutLine("Extracted: "+outFile.getAbsolutePath());
 	}	
 	
 	public String getBinWorkingDir()

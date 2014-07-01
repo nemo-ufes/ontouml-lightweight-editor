@@ -51,26 +51,24 @@ public class FinderPopupMenu extends JPopupMenu {
 	public FinderPopupMenu(final EObject context)
 	{
 		this.context = context;
+				
+		if((!(context instanceof PrimitiveType)) && (!(context instanceof Enumeration)) && (!(context instanceof EnumerationLiteral)) && (!(context instanceof Package)))
+		{
+			JMenuItem propertiesMenuItem = new JMenuItem("Properties");
+			add(propertiesMenuItem);
+			propertiesMenuItem.addActionListener(new ActionListener() {			
+				@Override
+				public void actionPerformed(ActionEvent arg0) {				
+					ElementDialogCaller.openDialog((RefOntoUML.Element)context, ProjectBrowser.frame);		
+				}
+			});
+		}
 		
-		JMenuItem propertiesMenuItem = new JMenuItem("Properties");
-		add(propertiesMenuItem);
-		
-		JMenuItem findInProjectMenuItem = new JMenuItem("Find in Project");
+		JMenuItem findInProjectMenuItem = new JMenuItem("Find in Project Browser");
 		add(findInProjectMenuItem);
 		
 		JMenuItem findInDiagramMenuItem = new JMenuItem("Find in Diagrams");
 		add(findInDiagramMenuItem);
-		
-		propertiesMenuItem.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {	
-				if(context instanceof PrimitiveType) return;
-				if(context instanceof Enumeration) return;
-				if(context instanceof EnumerationLiteral) return;
-				if(context instanceof Package) return;
-				ElementDialogCaller.openDialog((RefOntoUML.Element)context, ProjectBrowser.frame);		
-			}
-		});
 		
 		findInProjectMenuItem.addActionListener(new ActionListener() {			
 			@Override

@@ -39,9 +39,9 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import br.ufes.inf.nemo.assistant.ModellingAssistant;
-import br.ufes.inf.nemo.common.file.TimeHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.model.InferenceList;
@@ -90,10 +90,10 @@ public class ProjectBrowser extends JPanel{
 		
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(project);
 
-		System.out.println(TimeHelper.getTime()+" OLED: Creating OntoUML parser...");
+		Main.printOutLine("Creating OntoUML parser");
 		refparser = new OntoUMLParser(project.getModel());
 		
-		System.out.println(TimeHelper.getTime()+" OLED: Creating project explorer tree...");
+		Main.printOutLine("Creating project browser tree");
 		tree = new ProjectTree(frame, root,project,refparser);
 		tree.setBorder(new EmptyBorder(2,2,2,2));
 		tree.addTreeSelectionListener(new ProjectTreeSelectionListener());
@@ -102,32 +102,25 @@ public class ProjectBrowser extends JPanel{
 		if (name==null || name.isEmpty()) 
 			name = "model";
 		
-		System.out.println(TimeHelper.getTime()+" OLED: Setting simulation definitions...");
-		alloySpec = new AlloySpecification(project.getTempDir()+File.separator+name.toLowerCase()+".als");
 		
-		System.out.println(TimeHelper.getTime()+" OLED: Setting OCL document...");
-		oclmodel = new OCLDocument();
-		System.out.println(TimeHelper.getTime()+" OLED: Setting OCL2Alloy options...");
-		oclOptions = new TOCL2AlloyOption();
-		System.out.println(TimeHelper.getTime()+" OLED: Setting OntoUML2Alloy options...");
-		refOptions = new OntoUML2AlloyOptions();
-		System.out.println(TimeHelper.getTime()+" OLED: Setting antipattern options...");
-		antipatterns = new AntiPatternList();
-		System.out.println(TimeHelper.getTime()+" OLED: Setting inference options...");
+		alloySpec = new AlloySpecification(project.getTempDir()+File.separator+name.toLowerCase()+".als");		
+		oclmodel = new OCLDocument();		
+		oclOptions = new TOCL2AlloyOption();		
+		refOptions = new OntoUML2AlloyOptions();		
+		antipatterns = new AntiPatternList();		
 		inferences = new InferenceList();
 		
 		//VICTOR comentar
-		System.out.println(TimeHelper.getTime()+" OLED: Setting assistant options...");
+		Main.printOutLine("Creating modeling assistant");
 		assistant = new ModellingAssistant(project.getModel());
-	
-		System.out.println(TimeHelper.getTime()+" OLED: Setting project toolbar...");
+			
 		ptoolbar = new ProjectToolBar(tree,frame.getDiagramManager());
 		add(ptoolbar, BorderLayout.NORTH);
 		
 		scroll.setViewportView(tree);
 		
 		treeMap.put(project, this);
-		System.out.println(TimeHelper.getTime()+" OLED: Updating UI...");
+		
 		updateUI();		
 	}
 	

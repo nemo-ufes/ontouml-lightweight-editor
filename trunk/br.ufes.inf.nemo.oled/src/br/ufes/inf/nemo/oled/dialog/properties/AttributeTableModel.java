@@ -170,8 +170,7 @@ public class AttributeTableModel extends BaseTableModel {
 		if(columnIndex == 2){
 			try {
 				ModelHelper.setMultiplicityFromString(property, (String)value);
-			} catch (ParseException e) {
-				System.err.println(e.getLocalizedMessage());
+			} catch (ParseException e) {				
 				e.printStackTrace();
 			}
 		}

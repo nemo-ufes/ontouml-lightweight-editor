@@ -71,6 +71,7 @@ import RefOntoUML.impl.MediationImpl;
 import RefOntoUML.impl.MeronymicImpl;
 import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.impl.RefOntoUMLPackageImpl;
+import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.explorer.OntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
@@ -185,7 +186,7 @@ public class ModelHelper {
 			
 			if (mappings.get(element).size()==0)
 			{
-				System.err.println("ERROR: Trying to remove the Diagram Element {"+diagramElem+"} of the Map but the list is empty! We then will remove that entry.");
+				Main.printErrLine("Trying to remove the diagram element {"+diagramElem+"} of the Map but the list is empty. We then will remove that entry.");
 				mappings.remove(element);
 				return false;
 			}			
@@ -199,12 +200,12 @@ public class ModelHelper {
 	{
 		for(RefOntoUML.Element e: mappings.keySet())
 		{
-			if (e instanceof NamedElement) System.out.println("refonto = "+getStereotype(e)+" "+((NamedElement)e).getName());
-			else if (e instanceof Generalization) System.out.println("refonto = "+getStereotype(e)+" "+((Generalization)e).getGeneral()+"->"+((Generalization)e).getSpecific());
+			if (e instanceof NamedElement) Main.printOutLine("refonto = "+getStereotype(e)+" "+((NamedElement)e).getName());
+			else if (e instanceof Generalization) Main.printOutLine("refonto = "+getStereotype(e)+" "+((Generalization)e).getGeneral()+"->"+((Generalization)e).getSpecific());
 			for(DiagramElement de: mappings.get(e)){
-				System.out.println("diagram = "+de);
+				Main.printOutLine("diagram = "+de);
 			}
-			System.out.println("======================");
+			Main.printOutLine("======================");
 		}
 	}
 	
@@ -263,7 +264,7 @@ public class ModelHelper {
 
 		if(found.size()>1)
 		{
-			System.err.println("ERROR: The refonto element: {"+new OntoUMLElement(element,"")+"} has 2 diagram elements for the same diagram editor.");
+			Main.printErrLine("The model instance {"+new OntoUMLElement(element,"")+"} has 2 diagram elements for the same diagram editor.");
 			return null;
 		}
 		if(found.size()==0)

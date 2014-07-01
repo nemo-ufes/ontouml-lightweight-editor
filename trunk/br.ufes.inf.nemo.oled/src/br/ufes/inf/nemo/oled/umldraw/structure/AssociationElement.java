@@ -33,6 +33,7 @@ import java.util.List;
 import RefOntoUML.Association;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
@@ -522,7 +523,7 @@ public final class AssociationElement extends BaseConnection {
 			if((Meronymic)getRelationship()!=null){
 				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), null);
 			}else{
-				System.err.println("Trying to draw a memberOf decoration... null relationship!");
+				Main.printErrLine("Trying to draw a memberOf decoration... null relationship!");
 			}
 		}
 		
@@ -530,7 +531,7 @@ public final class AssociationElement extends BaseConnection {
 			if((Meronymic)getRelationship()!=null){
 				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "M");
 			}else{
-				System.err.println("Trying to draw a memberOf decoration... null relationship!");
+				Main.printErrLine("Trying to draw a memberOf decoration... null relationship!");
 			}
 		}
 

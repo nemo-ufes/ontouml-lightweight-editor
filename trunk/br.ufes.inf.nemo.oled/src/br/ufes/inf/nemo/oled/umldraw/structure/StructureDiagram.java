@@ -69,6 +69,7 @@ import RefOntoUML.impl.NonRigidMixinClassImpl;
 import RefOntoUML.impl.PackageImpl;
 import RefOntoUML.impl.SubstanceSortalImpl;
 import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.Connection;
@@ -172,10 +173,10 @@ public class StructureDiagram extends AbstractCompositeNode implements
 			if (obj instanceof AssociationElement){
 				AssociationElement assocElem = (AssociationElement)obj;
 				if (assocElem.getRelationship() ==null) {
-					System.err.println("Draw Exception: Association Element "+assocElem+" cannot be drawed! Cause: null relationship. ");
-					System.err.print("Fixing the problem... ");
-					if(ModelHelper.removeMapping(assocElem)) System.err.print("Association Element "+assocElem+" removed. ");
-					else System.err.print("Association Element "+assocElem+" ignored. ");
+					Main.printErrLine("Draw Exception: Association Element "+assocElem+" cannot be drawed! Cause: null relationship. ");
+					Main.printErr("Fixing the problem... ");
+					if(ModelHelper.removeMapping(assocElem)) Main.printErr("Association Element "+assocElem+" removed. ");
+					else Main.printErr("Association Element "+assocElem+" ignored. ");
 					iter.remove();
 				} 
 			}
@@ -183,10 +184,10 @@ public class StructureDiagram extends AbstractCompositeNode implements
 			else if (obj instanceof GeneralizationElement) {
 				GeneralizationElement genElem = (GeneralizationElement)obj;
 				if (genElem.getRelationship() ==null) {
-					System.err.println("Draw Exception: Generalization Element "+genElem+" cannot be drawed! Cause: null generalization. ");
-					System.err.print("Fixing the problem... ");
-					if(ModelHelper.removeMapping(genElem)) System.err.print("Generalization Element "+genElem+" removed. ");
-					else System.err.print("Generalization Element "+genElem+" ignored. ");
+					Main.printErrLine("Draw Exception: Generalization Element "+genElem+" cannot be drawed! Cause: null generalization. ");
+					Main.printErr("Fixing the problem... ");
+					if(ModelHelper.removeMapping(genElem)) Main.printErr("Generalization Element "+genElem+" removed. ");
+					else Main.printErr("Generalization Element "+genElem+" ignored. ");
 					iter.remove();
 				}
 			}			
