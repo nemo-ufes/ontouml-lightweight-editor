@@ -188,14 +188,14 @@ public class ClassDialog extends JDialog{
 			gl_constraintTab.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_constraintTab.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(constraintsEdition, GroupLayout.PREFERRED_SIZE, 455, GroupLayout.PREFERRED_SIZE)
+					.addComponent(constraintsEdition, GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		gl_constraintTab.setVerticalGroup(
-			gl_constraintTab.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_constraintTab.createSequentialGroup()
+			gl_constraintTab.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_constraintTab.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(constraintsEdition, GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+					.addComponent(constraintsEdition, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		constraintTab.setLayout(gl_constraintTab);
