@@ -1,9 +1,5 @@
 package br.ufes.inf.nemo.antipattern.wizard.freerole;
 
-import java.text.Normalizer;
-
-import org.eclipse.emf.ecore.EObject;
-
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
@@ -26,15 +22,15 @@ public class FreeRoleAction extends AntiPatternAction<FreeRoleOccurrence>{
 		super(ap);
 	}
 
-	public enum Action { CREATE_OCL_DERIVATION, CREATE_NEW_MEDIATION, CREATE_SUBRELATOR_WITH_MEDIATION, CREATE_NEW_RELATOR_WITH_MEDIATION, CREATE_DEPENDENT_OBJETCS }
+	public enum Action { CREATE_OCL_DERIVATION, CREATE_MEDIATION, CREATE_SUBRELATOR_WITH_MEDIATION, CREATE_NEW_RELATOR_WITH_MEDIATION, CREATE_DEPENDENT_OBJETCS }
 	
 	@Override
 	public void run()
 	{
 		if(code == Action.CREATE_OCL_DERIVATION) ap.createOCLDerivation(oclDerive);
-		if(code == Action.CREATE_NEW_MEDIATION) ap.createNewMediation(relator, role,relatorEndMultip,roleEndMultip);
+		if(code == Action.CREATE_MEDIATION) ap.createMediation(relator, role,relatorEndMultip,roleEndMultip);
 		if(code == Action.CREATE_SUBRELATOR_WITH_MEDIATION) ap.createSubRelatorWithMediation(relator,role,subRelatorName,relatorEndMultip,roleEndMultip);
-		if(code == Action.CREATE_NEW_RELATOR_WITH_MEDIATION) { ap.createNewRelatorWithMediation(role,subRelatorName,relatorEndMultip,roleEndMultip); }
+		if(code == Action.CREATE_NEW_RELATOR_WITH_MEDIATION) { ap.createRelatorWithMediation(role,subRelatorName,relatorEndMultip,roleEndMultip); }
 		if(code == Action.CREATE_DEPENDENT_OBJETCS) { ap.createDependentObjects(role, typeName,stereoName,relatorEndMultip,roleEndMultip,createMaterial); }
 	}
 	
@@ -47,7 +43,7 @@ public class FreeRoleAction extends AntiPatternAction<FreeRoleOccurrence>{
 	
 	public void setCreateMediation(Relator relator, Role role, String relatorEndMultip,String roleEndMultip)
 	{
-		code = Action.CREATE_NEW_MEDIATION;
+		code = Action.CREATE_MEDIATION;
 		this.relator=relator;
 		this.role = role;
 		this.relatorEndMultip=relatorEndMultip;
@@ -83,15 +79,6 @@ public class FreeRoleAction extends AntiPatternAction<FreeRoleOccurrence>{
 		this.roleEndMultip = mediatedMutiplicity;
 		this.createMaterial = createMaterial;
 	}
-	
-	public static String getStereotype(EObject element)
-	{
-		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
-	    return type;
-	}
 		
 	@Override
 	public String toString()
@@ -101,7 +88,7 @@ public class FreeRoleAction extends AntiPatternAction<FreeRoleOccurrence>{
 		if(code == Action.CREATE_OCL_DERIVATION) {
 			result += "Create OCL Derivation rule for <<role>> "+role.getName();
 		}
-		if(code == Action.CREATE_NEW_MEDIATION) {
+		if(code == Action.CREATE_MEDIATION) {
 			result += "Create a <<mediation>> from <<relator>> "+relator.getName()+" to <<role>> "+role.getName();
 		}
 		if(code == Action.CREATE_SUBRELATOR_WITH_MEDIATION) {

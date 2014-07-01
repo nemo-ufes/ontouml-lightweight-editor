@@ -417,11 +417,12 @@ public class FreeRoleRefactoringPage extends RefactoringPage {
 				Boolean specialize = dependenceTable.getSpecialize().get(i);
 				String relatorEndMultip = dependenceTable.getMultRelatorEnd().get(i);
 				String roleEndMultip = dependenceTable.getMultRoleEnd().get(i);
-							
+				Relator relator = (Relator) dependenceTable.getTable().getItem(i).getData("relator");
+				
 				if(use && !specialize) {
 					//Action =============================
 					FreeRoleAction newAction = new FreeRoleAction(freeRole);
-					newAction.setCreateMediation((Relator)freeRole.getDefiningRelatorEnds().get(i).getType(),freeRole.getFreeRoles().get(depTableList.get(dependenceTable)),relatorEndMultip,roleEndMultip); 
+					newAction.setCreateMediation(relator,freeRole.getFreeRoles().get(depTableList.get(dependenceTable)),relatorEndMultip,roleEndMultip); 
 					getFreeRoleWizard().addAction(depTableList.get(dependenceTable),newAction);	
 					//======================================				
 				}
@@ -430,7 +431,7 @@ public class FreeRoleRefactoringPage extends RefactoringPage {
 					String relatorName = dependenceTable.getRelatorNames().get(i);
 					//Action =============================
 					FreeRoleAction newAction = new FreeRoleAction(freeRole);
-					newAction.setCreateSubRelatorWithMediation((Relator)freeRole.getDefiningRelatorEnds().get(i).getType(),freeRole.getFreeRoles().get(depTableList.get(dependenceTable)),relatorName,relatorEndMultip,roleEndMultip); 
+					newAction.setCreateSubRelatorWithMediation(relator,freeRole.getFreeRoles().get(depTableList.get(dependenceTable)),relatorName,relatorEndMultip,roleEndMultip); 
 					getFreeRoleWizard().addAction(depTableList.get(dependenceTable),newAction);	
 					//======================================
 				}

@@ -22,7 +22,7 @@ public class FreeRoleFirstPage extends FreeRolePage {
 	{
 		super(freeRole);		
 		this.index = freeRoleIndex;
-		setDescription(	"Defined Role: " +freeRole.getDefinedRole().getName()+
+		setDescription(	"Defined Role: " +freeRole.getDependentType().getName()+
 						"\nCurrent Free Role: "+freeRole.getFreeRoles().get(index).getName());
 	}
 	
@@ -45,7 +45,7 @@ public class FreeRoleFirstPage extends FreeRolePage {
 		styledTextQuestion = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.V_SCROLL);
 		styledTextQuestion.setAlwaysShowScrollBars(false);
 		styledTextQuestion.setBackground(styledTextQuestion.getParent().getBackground());
-		styledTextQuestion.setText(	"Does an instance of "+OntoUMLNameHelper.getTypeAndName(occurrence.getDefinedRole(), true, true)+" becomes a "+
+		styledTextQuestion.setText(	"Does an instance of "+OntoUMLNameHelper.getTypeAndName(occurrence.getDependentType(), true, true)+" becomes a "+
 									OntoUMLNameHelper.getTypeAndName(occurrence.getFreeRoles().get(index), true, true)+" when a pre-determined set of conditions is valid? " +
 									"\r\n\r\n"+
 									"For example, on one hand a Student is a Freshman when he/she is in the first semester of his Enrollment (the relator which characterizes the Student type). " +

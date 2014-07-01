@@ -7,9 +7,14 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import RefOntoUML.Classifier;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
+import org.eclipse.swt.widgets.List;
 
 public class FreeRoleThirdPage extends FreeRolePage {
 	
@@ -21,7 +26,7 @@ public class FreeRoleThirdPage extends FreeRolePage {
 	{
 		super(freeRole);		
 		this.index = freeRoleIndex;
-		setDescription(	"Defined Role: " +freeRole.getDefinedRole().getName()+
+		setDescription(	"Defined Role: " +freeRole.getDependentType().getName()+
 						"\nCurrent Free Role: "+freeRole.getFreeRoles().get(index).getName());
 	}
 
@@ -30,7 +35,7 @@ public class FreeRoleThirdPage extends FreeRolePage {
 	 * @param parent
 	 */
 	public void createControl(Composite parent) {
-		String definedRoleName = OntoUMLNameHelper.getTypeAndName(occurrence.getDefinedRole(), true, true);
+		String definedRoleName = OntoUMLNameHelper.getTypeAndName(occurrence.getDependentType(), true, true);
 		Composite container = new Composite(parent, SWT.NULL);
 	
 		setControl(container);
@@ -39,12 +44,12 @@ public class FreeRoleThirdPage extends FreeRolePage {
 		styledText.setAlwaysShowScrollBars(false);
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setText(	"If "+OntoUMLNameHelper.getTypeAndName(occurrence.getFreeRoles().get(index), true, true)+" is indeed a intentional subtype of "+definedRoleName+", " +
-							"it must be characterized by another relational dependency, i.e., be related to a «relator» through a «mediation». " +
-							"Is the new dependency a particular type of the existing one(s), from <"+definedRoleName+">, or a completely independent one? " +
+							"it must be characterized by another relational dependency, i.e., be related to a «Relator» through a «Mediation». " +
+							"Is the new dependency a particular type of the existing one(s), owned or inherited by "+definedRoleName+", or a completely independent one? " +
 							"\r\n\r\n" +
 							"To help you decide which is your case, consider the following domain of education: " +
 							"\r\n\r\n" +
-							"There are Univerisities which provide Bachelor, Masters and Doctoral degrees. The general concept of Student is that one has an Enrollment in a University" +
+							"There are Univerisities which provide Bachelor, Masters and Doctoral degrees. The general concept of Student is that one has an Enrollment in a University. " +
 							"The difference between being a Bachelor, Masters or Doctoral students is the PARTICULAR types of enrollment one can have. " +
 							"Tutors, on the other hand, are Students which agree to help others in their academic efforts, and are characterized by an INDEPENDENT dependency, the Tutorship.");
 		styledText.setJustify(true);
@@ -57,6 +62,24 @@ public class FreeRoleThirdPage extends FreeRolePage {
 		
 		setAsEnablingNextPageButton(btnIndependentDependecy);
 		setAsEnablingNextPageButton(btnParticularDependency);
+		
+		Label label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
+		
+		Label lblCurrentRelatorSubtypes = new Label(container, SWT.NONE);
+		lblCurrentRelatorSubtypes.setText("Existing Relators and Their Subtypes:");
+		
+		List list = new List(container, SWT.BORDER);
+		
+		for (Property relatorEnd : occurrence.getDefiningRelatorEnds()) {	
+			String line = OntoUMLNameHelper.getTypeAndName(relatorEnd.getType(), true, false)+" (From: "+OntoUMLNameHelper.getTypeAndName(relatorEnd.getOpposite().getType(), true, false)+")";
+			list.add(line);
+			
+			for (Classifier child : occurrence.getParser().getAllChildren((Classifier) relatorEnd.getType())) {
+				line = OntoUMLNameHelper.getTypeAndName(child, true, false)+" (Parent: "+OntoUMLNameHelper.getTypeAndName(relatorEnd.getType(), true, false)+", From: "+OntoUMLNameHelper.getTypeAndName(relatorEnd.getOpposite().getType(), true, false)+")";
+				list.add(line);
+			}
+		}
+		
 		GroupLayout gl_container = new GroupLayout(container);
 		gl_container.setHorizontalGroup(
 			gl_container.createParallelGroup(GroupLayout.LEADING)
@@ -67,6 +90,18 @@ public class FreeRoleThirdPage extends FreeRolePage {
 						.add(btnParticularDependency, GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
 						.add(btnIndependentDependecy, GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE))
 					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(label, GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(lblCurrentRelatorSubtypes)
+					.addContainerGap(552, Short.MAX_VALUE))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(list, GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		gl_container.setVerticalGroup(
 			gl_container.createParallelGroup(GroupLayout.LEADING)
@@ -77,7 +112,12 @@ public class FreeRoleThirdPage extends FreeRolePage {
 					.add(btnParticularDependency)
 					.add(6)
 					.add(btnIndependentDependecy)
-					.add(42))
+					.add(18)
+					.add(label, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(lblCurrentRelatorSubtypes)
+					.add(4)
+					.add(list, GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE))
 		);
 		container.setLayout(gl_container);
 		setPageComplete(false);

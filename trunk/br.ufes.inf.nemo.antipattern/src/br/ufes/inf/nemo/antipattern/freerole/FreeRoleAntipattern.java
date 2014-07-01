@@ -100,9 +100,6 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 		
 		for (Classifier mediated : relatorHash.keySet()) {
 			
-			if(!(mediated instanceof Role))
-				continue;
-			
 			if(!childHash.containsKey(mediated))
 				continue;
 			
@@ -116,7 +113,7 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 				ArrayList<Property> properties = new ArrayList<Property>(relatorHash.get(mediated));
 				
 				try {
-					occurrence.add(new FreeRoleOccurrence((Role) mediated, properties, this));
+					occurrence.add(new FreeRoleOccurrence(mediated, properties, this));
 					break;
 				} catch (Exception e) {
 					System.out.println("FreeRole: Provided information does not characterize an occurrence of the anti-pattern!");
