@@ -92,7 +92,7 @@ public class CreateComponentOfComposite extends Composite {
 		}
 		
 		for(Classifier child : typeList)
-			typeCombo.add(OntoUMLNameHelper.getTypeAndName(child, true, false));
+			typeCombo.add(OntoUMLNameHelper.getNameAndType(child, true, false));
 		
 		componentOfNameField = new Text(this, SWT.BORDER);
 		
