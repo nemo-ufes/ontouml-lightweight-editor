@@ -6,6 +6,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class FreeRoleFourthPage extends FreeRolePage {
 	
@@ -25,16 +27,35 @@ public class FreeRoleFourthPage extends FreeRolePage {
 	 * @param parent
 	 */
 	public void createControl(Composite parent) {
+		String freeRoleName = OntoUMLNameHelper.getTypeAndName(occurrence.getFreeRoles().get(index), true, true);
+		
 		Composite container = new Composite(parent, SWT.NULL);
-	
 		setControl(container);
 		
 		lblToCharacterizeThe = new Label(container, SWT.WRAP);
-		lblToCharacterizeThe.setBounds(10, 10, 554, 38);
-		lblToCharacterizeThe.setText("To characterize the new independent relational dependency of "+occurrence.getFreeRoles().get(index).getName()+", we will need some additional information:");
 		
-		composite = new FreeRoleIndependenceComposite(container,SWT.BORDER,occurrence,index);
-		composite.setBounds(10, 54, 554, 218);
+		lblToCharacterizeThe.setText("To characterize the new independent relational dependency of "+freeRoleName+", we will need some additional information:");
+		
+		composite = new FreeRoleIndependenceComposite(container,SWT.NONE,occurrence,index);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, composite, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, lblToCharacterizeThe, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblToCharacterizeThe, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(composite, GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 	}
 	
 	@Override

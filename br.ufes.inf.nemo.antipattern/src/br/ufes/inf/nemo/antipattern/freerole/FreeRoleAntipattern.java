@@ -1,9 +1,13 @@
 package br.ufes.inf.nemo.antipattern.freerole;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
+import RefOntoUML.Class;
 import RefOntoUML.Classifier;
+import RefOntoUML.Mediation;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
 import RefOntoUML.Role;
@@ -14,14 +18,10 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 
-	public FreeRoleAntipattern(OntoUMLParser parser) throws NullPointerException {
-		super(parser);
-	}
+	protected HashMap<Classifier,HashSet<Property>> relatorHash;
+	protected HashMap<Classifier, HashSet<Classifier>> childHash;
+	protected HashMap<Classifier, HashSet<Classifier>> allChildrenHash; 
 	
-	public FreeRoleAntipattern(Package pack) throws NullPointerException {
-		this(new OntoUMLParser(pack));
-	}
-
 	private static final String oclQuery = 	
 		"let mediatedProperties : Bag (Property) = "+
 		"	Mediation.allInstances().memberEnd "+
@@ -54,21 +54,26 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 		"			) "+ 
 		"		)";
 				
-				
-				
-		
 	private static final AntipatternInfo info = new AntipatternInfo("Free Role Specialization", 
 			"FreeRole", 
 			"This anti-pattern identifies occurrences when a «role» type connected to a «relator» through a «mediation» association, " +
 			"is specialized in another «role» type, which in turn is not connected to an additional «mediation» association.",
-			oclQuery); 
-		
+			oclQuery);
+
+	
+	public FreeRoleAntipattern(OntoUMLParser parser) throws NullPointerException {
+		super(parser);
+	}
+	
+	public FreeRoleAntipattern(Package pack) throws NullPointerException {
+		this(new OntoUMLParser(pack));
+	}
+	
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
 	
-	@Override
-	public ArrayList<FreeRoleOccurrence> identify() {
+	public ArrayList<FreeRoleOccurrence> identifyOCL() {
 		Map<Classifier, ArrayList<Property>> query_result;
 		
 		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, Classifier.class, Property.class, "mediated", "relatorEnds");
@@ -86,6 +91,93 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 		}
 		
 		return this.getOccurrences();
+	}
+	
+	@Override
+	public ArrayList<FreeRoleOccurrence> identify() {
+		buildPropertyHash();
+		buildChildrenHashes();
+		
+		for (Classifier mediated : relatorHash.keySet()) {
+			
+			if(!(mediated instanceof Role))
+				continue;
+			
+			if(!childHash.containsKey(mediated))
+				continue;
+			
+			for (Classifier child : childHash.get(mediated)) {
+				if(!(child instanceof Role))
+					continue;
+				
+				if(relatorHash.containsKey(child))
+					continue;
+				
+				ArrayList<Property> properties = new ArrayList<Property>(relatorHash.get(mediated));
+				
+				try {
+					occurrence.add(new FreeRoleOccurrence((Role) mediated, properties, this));
+					break;
+				} catch (Exception e) {
+					System.out.println("FreeRole: Provided information does not characterize an occurrence of the anti-pattern!");
+					System.out.println(e.getMessage());
+				}	
+			}
+		}
+		
+		return this.getOccurrences();
+	}
+	
+	private void buildPropertyHash(){
+		relatorHash = new HashMap<Classifier,HashSet<Property>>();
+		
+		//builds initial hash, with mediations that are directly connected to the types
+		for (Mediation m : parser.getAllInstances(Mediation.class)) {
+			
+			try{
+				Property relatorEnd = OntoUMLParser.getRelatorEnd(m);
+				Classifier mediated = OntoUMLParser.getMediated(m);
+				
+				if (relatorHash.containsKey(mediated))
+					relatorHash.get(mediated).add(relatorEnd);
+				else{
+					HashSet<Property> properties = new HashSet<Property>();
+					properties.add(relatorEnd);
+					relatorHash.put(mediated, properties);
+				}
+			}
+			catch(Exception e){ }
+		}
+		
+		//adds supertypes' mediated
+		for (Classifier mainType : relatorHash.keySet()) 
+			for (Classifier parent : mainType.allParents()) 
+				if(relatorHash.containsKey(parent))
+					relatorHash.get(mainType).addAll(relatorHash.get(parent));
+			
+	}
+	
+	private void buildChildrenHashes(){
+		childHash = new HashMap<Classifier,HashSet<Classifier>>();
+		allChildrenHash = new HashMap<Classifier,HashSet<Classifier>>();
+		
+		for (RefOntoUML.Class c : parser.getAllInstances(Class.class)) {
+			for (Classifier parent : c.parents()) {
+				if(!childHash.containsKey(parent)){
+					HashSet<Classifier> children = new HashSet<Classifier>();
+					childHash.put(parent, children);
+				}		
+				childHash.get(parent).add(c);
+			}
+			
+			for (Classifier parent : c.allParents()) {
+				if(!allChildrenHash.containsKey(parent)){
+					HashSet<Classifier> allChildren = new HashSet<Classifier>();
+					allChildrenHash.put(parent, allChildren);
+				}		
+				allChildrenHash.get(parent).add(c);
+			}
+		}		
 	}
 
 }

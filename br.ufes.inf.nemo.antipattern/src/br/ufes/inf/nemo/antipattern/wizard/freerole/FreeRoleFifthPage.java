@@ -4,9 +4,11 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class FreeRoleFifthPage extends FreeRolePage {
 	
@@ -31,7 +33,6 @@ public class FreeRoleFifthPage extends FreeRolePage {
 		setControl(container);
 		
 		lblIsDirectlyOr = new Label(container, SWT.WRAP);
-		lblIsDirectlyOr.setBounds(10, 10, 554, 94);
 		String text = ""+occurrence.getDefinedRole().getName()+" is directly or indirectly connected to the following relators: ";
 		int i=0;
 		for(RefOntoUML.Property p: occurrence.getDefiningRelatorEnds()){
@@ -42,8 +43,31 @@ public class FreeRoleFifthPage extends FreeRolePage {
 		"Please select below the dependencies which are used to define "+occurrence.getFreeRoles().get(index).getName()+". For each, select if it is necessary to specialize the existing relator.";
 		lblIsDirectlyOr.setText(text);
 		
-		dependenceTable = new FreeRoleDependenceTable(container, SWT.NONE,occurrence);
-		dependenceTable.getTable().setBounds(10, 110, 554, 126);
+		dependenceTable = new FreeRoleDependenceTable(container, SWT.BORDER, occurrence);
+		Table table = dependenceTable.getTable();
+//		Table table = new Table(container, SWT.BORDER);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(table, GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
+							.add(10))
+						.add(gl_container.createSequentialGroup()
+							.add(lblIsDirectlyOr, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+							.add(10))))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblIsDirectlyOr, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(table, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 	}
 	
 	@Override
