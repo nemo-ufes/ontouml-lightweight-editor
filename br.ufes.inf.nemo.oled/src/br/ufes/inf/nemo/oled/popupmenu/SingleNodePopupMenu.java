@@ -77,7 +77,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		
 		addSeparator();
 		
-		findInProjectItem = new JMenuItem("Find in Project");
+		findInProjectItem = new JMenuItem("Find in Project Browser");
 		add(findInProjectItem);
 		findInProjectItem.addActionListener(new ActionListener() {			
 			@Override

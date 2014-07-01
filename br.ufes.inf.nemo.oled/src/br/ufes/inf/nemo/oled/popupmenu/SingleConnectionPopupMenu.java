@@ -293,7 +293,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	
 	public void createFindInProjectMenu()
 	{
-		findInProjectItem = new JMenuItem("Find in Project");
+		findInProjectItem = new JMenuItem("Find in Project Browser");
 		add(findInProjectItem);
 		findInProjectItem.addActionListener(new ActionListener() {			
 			@Override

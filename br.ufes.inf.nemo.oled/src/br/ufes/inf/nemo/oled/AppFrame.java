@@ -29,8 +29,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,6 +85,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				quitApplication();
+				Main.printOutLine("OLED application closed");
 			}
 		});
 
@@ -103,13 +102,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		this.setMinimumSize(minimumSize);
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
-	
-	public void createSysOutInterceptor()
-	{
-		PrintStream interceptor = new Interceptor(System.out);
-		System.setOut(interceptor);
-	}
-	
+			
 	public void setAlloyAnalyzer(SimpleGUICustom analyzer){
 		this.analyzer = analyzer;
 	}
@@ -358,7 +351,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		if(response==JOptionPane.YES_OPTION){
 			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			diagramManager.saveProject();
-			setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));			
 			return true;
 		}
 		if(response==JOptionPane.NO_OPTION){
@@ -538,26 +531,5 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public boolean isFocusedOnOclEditor()
 	{
 		return infoManager.getSelectedIndex()==3;
-	}
-	
-	public class Interceptor extends PrintStream
-	{
-	    public Interceptor(OutputStream out)
-	    {
-	        super(out,true);
-	    }
-	    @Override
-	    public void print(String s)
-	    {
-	        super.print(s);
-	        infoManager.getOutput().append(s);
-	    }
-
-	    @Override 
-	    public void println(String s)
-	    {
-	        super.println(s);
-	        infoManager.getOutput().append("\n");
-	    }       
 	}
 }

@@ -29,6 +29,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 
+import br.ufes.inf.nemo.oled.Main;
+
 /**
  * @author John Guerson
  */
@@ -59,7 +61,7 @@ public class ExtractorUtil {
 		out.flush();
 		out.close();
 		
-		System.out.println("Extracted: "+alloyJarFile.getAbsolutePath());
+		Main.printOutLine("Extracted: "+alloyJarFile.getAbsolutePath());
 		return alloyJarFile.getAbsolutePath();
 	}	
 }

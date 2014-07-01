@@ -22,6 +22,7 @@
 package br.ufes.inf.nemo.oled.validator.meronymic;
 
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -42,7 +43,6 @@ import javax.swing.border.EmptyBorder;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
-import java.awt.Toolkit;
 
 /**
  * @author Tiago Sales
@@ -182,6 +182,14 @@ public class ValidationDialog extends JDialog {
 			dispose();
 		}
 	};
+	
+	@Override 
+	public void dispose()
+	{
+		super.dispose();	
+		//if(Main.psErr!=null) System.setErr(Main.psErr); else System.setErr(System.err);
+		//if(Main.psOut!=null) System.setOut(Main.psOut); else System.setErr(System.out);
+	}
 	
 	 /** Open the Dialog.
 	 */
