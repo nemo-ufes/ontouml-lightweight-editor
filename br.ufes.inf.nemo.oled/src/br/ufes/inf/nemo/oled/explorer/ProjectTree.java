@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -50,7 +49,7 @@ import RefOntoUML.Package;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
-import br.ufes.inf.nemo.oled.dialog.properties.DialogCaller;
+import br.ufes.inf.nemo.oled.dialog.properties.ElementDialogCaller;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.popupmenu.TreePopupMenu;
@@ -779,60 +778,7 @@ public class ProjectTree extends CheckboxTree {
             	if(currentNode.getUserObject() instanceof OntoUMLElement)
             	{
             		RefOntoUML.Element element = (RefOntoUML.Element)((OntoUMLElement)currentNode.getUserObject()).getElement();
-            		if (element instanceof RefOntoUML.Class){
-            			DialogCaller.callClassDialog(
-            				(JFrame)ProjectTree.this.frame,
-            				ProjectTree.this.frame.getDiagramManager(),            				
-            				(RefOntoUML.Classifier)element,
-            				true
-            			);
-            		} else if (element instanceof RefOntoUML.Property){
-            			DialogCaller.callPropertyDialog(
-    						(JFrame)ProjectTree.this.frame,
-            				ProjectTree.this.frame.getDiagramManager(),            				
-            				(RefOntoUML.Property)element,
-            				true
-            			);
-            		} else if (element instanceof RefOntoUML.Association){
-            			DialogCaller.callAssociationDialog(
-    						(JFrame)ProjectTree.this.frame,
-            				ProjectTree.this.frame.getDiagramManager(),            				
-            				(RefOntoUML.Association)element,
-            				true
-            			);        				
-            		} else if (element instanceof RefOntoUML.Comment)
-            		{
-            			DialogCaller.callCommentDialog(
-	            			(JFrame)ProjectTree.this.frame,
-	            			ProjectTree.this.frame.getDiagramManager(),	            			
-	            			(RefOntoUML.Comment)element,
-	            			true
-	            		);	            			
-            		} else if (element instanceof RefOntoUML.Constraintx)
-            		{
-            			DialogCaller.callConstraintxDialog(
-	            			(JFrame)ProjectTree.this.frame,
-	            			ProjectTree.this.frame.getDiagramManager(),	            			
-	            			(RefOntoUML.Constraintx)element,
-	            			true
-	            		);
-            		}else if (element instanceof RefOntoUML.Generalization)
-            		{
-            			DialogCaller.callGeneralizationDialog(
-            				(JFrame)ProjectTree.this.frame,
-            				ProjectTree.this.frame.getDiagramManager(),            				
-            				(RefOntoUML.Generalization)element,
-            				true
-            			);
-            		} else if (element instanceof RefOntoUML.GeneralizationSet)
-            		{            			
-            			DialogCaller.callGeneralizationSetDialog(
-            				(JFrame)ProjectTree.this.frame,
-            				ProjectTree.this.frame.getDiagramManager(),
-            				(GeneralizationSet)element,            				
-            				true
-            			);
-            		}
+            		ElementDialogCaller.openDialog(element, frame);
             	}
         	}
         }

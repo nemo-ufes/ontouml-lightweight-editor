@@ -261,7 +261,7 @@ public class GeneralizationEditionPanel extends JPanel {
 					((GeneralizationSet)genSet).setIsDisjoint(true);
 					((GeneralizationSet)genSet).getGeneralization().add(element);
 					element.getGeneralizationSet().add((GeneralizationSet)genSet);					
-					DialogCaller.callGeneralizationSetDialog(diagramManager.getFrame(), diagramManager, (GeneralizationSet)genSet,true);
+					ElementDialogCaller.callGeneralizationSetDialog(diagramManager.getFrame(), (GeneralizationSet)genSet,true);
 					genSetModel.addElement(new OntoUMLElement(genSet,""));				
 				}
 			}
@@ -274,7 +274,7 @@ public class GeneralizationEditionPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				if(genSetModel.size()>0){
 					GeneralizationSet genSet = (GeneralizationSet)((OntoUMLElement)genSetList.getSelectedValue()).getElement();
-					DialogCaller.callGeneralizationSetDialog(diagramManager.getFrame(), diagramManager,genSet,true);
+					ElementDialogCaller.callGeneralizationSetDialog(diagramManager.getFrame(), genSet,true);
 				}
 			}
 		});

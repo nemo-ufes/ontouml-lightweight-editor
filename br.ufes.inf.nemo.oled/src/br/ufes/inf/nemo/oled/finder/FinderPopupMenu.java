@@ -31,7 +31,11 @@ import javax.swing.JPopupMenu;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Element;
+import RefOntoUML.Enumeration;
+import RefOntoUML.EnumerationLiteral;
+import RefOntoUML.PrimitiveType;
 import br.ufes.inf.nemo.oled.dialog.DiagramListDialog;
+import br.ufes.inf.nemo.oled.dialog.properties.ElementDialogCaller;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 
@@ -48,11 +52,25 @@ public class FinderPopupMenu extends JPopupMenu {
 	{
 		this.context = context;
 		
+		JMenuItem propertiesMenuItem = new JMenuItem("Properties");
+		add(propertiesMenuItem);
+		
 		JMenuItem findInProjectMenuItem = new JMenuItem("Find in Project");
 		add(findInProjectMenuItem);
 		
 		JMenuItem findInDiagramMenuItem = new JMenuItem("Find in Diagrams");
 		add(findInDiagramMenuItem);
+		
+		propertiesMenuItem.addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {	
+				if(context instanceof PrimitiveType) return;
+				if(context instanceof Enumeration) return;
+				if(context instanceof EnumerationLiteral) return;
+				if(context instanceof Package) return;
+				ElementDialogCaller.openDialog((RefOntoUML.Element)context, ProjectBrowser.frame);		
+			}
+		});
 		
 		findInProjectMenuItem.addActionListener(new ActionListener() {			
 			@Override

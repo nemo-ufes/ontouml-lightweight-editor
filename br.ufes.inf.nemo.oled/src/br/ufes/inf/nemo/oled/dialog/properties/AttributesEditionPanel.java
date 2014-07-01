@@ -249,7 +249,8 @@ public class AttributesEditionPanel extends JPanel {
 		
 		setSize(450,221);
 		
-		if (classElement !=null) cbxVisible.setSelected(classElement.showAttributes());
+		if (classElement !=null) { cbxVisible.setSelected(classElement.showAttributes());cbxVisible.setEnabled(true); }
+		else { cbxVisible.setSelected(false); cbxVisible.setEnabled(false); }
 		
 		myPostInit();
 	}	
@@ -262,7 +263,7 @@ public class AttributesEditionPanel extends JPanel {
 	private void myPostInit() 
 	{
 		modelDataTypes = new HashMap<String, DataType>();
-		List<DataType> dataTypes = ModelHelper.getModelDataTypes(diagramManager.getCurrentEditor().getProject());
+		List<DataType> dataTypes = ModelHelper.getModelDataTypes(diagramManager.getCurrentProject());
 		for (DataType item : dataTypes) {			
 			modelDataTypes.put(item.getName(), item);
 		}

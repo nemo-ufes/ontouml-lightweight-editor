@@ -65,7 +65,7 @@ import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.dialog.properties.DialogCaller;
+import br.ufes.inf.nemo.oled.dialog.properties.ElementDialogCaller;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
@@ -357,7 +357,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		if(genSet!=null){		
 			deselectAll();
 			cancelEditing();
-			DialogCaller.callGeneralizationSetDialog(frame, diagramManager, genSet,true);
+			ElementDialogCaller.callGeneralizationSetDialog(frame, genSet,true);
 			deselectAll();
 			cancelEditing();
 		}		
@@ -1519,15 +1519,15 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	{
 		if (element instanceof ClassElement) {
 			ClassElement classElement = (ClassElement) element;			
-			DialogCaller.callClassDialog(frame,diagramManager,classElement.getClassifier(),true);			
+			ElementDialogCaller.callClassDialog(frame,classElement.getClassifier(),true);			
 			redraw();
 		} else if (element instanceof AssociationElement) {
 			AssociationElement association = (AssociationElement) element;
-			DialogCaller.callAssociationDialog(frame,diagramManager,(Association)association.getRelationship(),true);
+			ElementDialogCaller.callAssociationDialog(frame,(Association)association.getRelationship(),true);
 			redraw();
 		} else if (element instanceof GeneralizationElement) {
 			Generalization generalization = ((GeneralizationElement)element).getGeneralization();
-			DialogCaller.callGeneralizationDialog(frame, diagramManager, generalization, true);			
+			ElementDialogCaller.callGeneralizationDialog(frame, generalization, true);			
 			redraw();
 		}
 	}
