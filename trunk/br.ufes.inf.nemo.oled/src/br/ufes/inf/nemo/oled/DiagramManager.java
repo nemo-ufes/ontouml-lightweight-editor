@@ -469,7 +469,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			frame.getInfoManager().eraseProject();						
 			currentProject=null;
 			addStartPanel();
-			Main.printOutLine("Ccurrent project closed");
+			Main.printOutLine("Current project closed");
 		}
 		updateUI();
 	}
@@ -604,7 +604,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		fileChooser.setFileFilter(filter);		
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			try {				
+			try {
 				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				closeCurrentProject();				
 				Main.printOutLine("Opening project");				
@@ -616,8 +616,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);				
 				for(UmlDiagram diagram: currentProject.getDiagrams()) {
-					Main.printOutLine("Loading diagram \""+diagram.getName()+"\"");	
-					createDiagramEditor((StructureDiagram)diagram);
+					if(currentProject.isOpened(diagram)){
+						Main.printOutLine("Loading diagram \""+diagram.getName()+"\"");	
+						createDiagramEditor((StructureDiagram)diagram);
+					}
 				}				
 				Main.printOutLine("Adding OCL code-completion information");				
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();				
@@ -655,10 +657,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.getInfoManager().setProject(currentProject);
 				Main.printOutLine("Adding OCL code-completion information");
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
-				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
+				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));				
 				for(UmlDiagram diagram: currentProject.getDiagrams()) {
-					Main.printOutLine("Loading diagram \""+diagram.getName()+"\"");
-					createDiagramEditor((StructureDiagram)diagram);
+					if(currentProject.isOpened(diagram)){
+						Main.printOutLine("Loading diagram \""+diagram.getName()+"\"");
+						createDiagramEditor((StructureDiagram)diagram);
+					}
 				}
 				saveProjectNeeded(false);
 				String constraints = (String) listFiles.get(1);
@@ -684,9 +688,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if(!file.getName().endsWith(".oled")) {
 				file = new File(file.getCanonicalFile() + ".oled");
 			}
+			
+			Main.printOutLine("Saving OLED project");
 			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());			
 			oclmodel.setConstraints(frame.getInfoManager().getConstraints(),"CONTENT");
-			result = ProjectWriter.getInstance().writeProject(this, file, getCurrentProject(), oclmodel);			
+			currentProject.clearOpenedDiagrams();
+			for(DiagramEditor editor: getDiagramEditors()){
+				currentProject.saveAsOpened(editor.getDiagram());
+			}
+			System.out.println(currentProject.getOpenedDiagrams());
+			result = ProjectWriter.getInstance().writeProject(this, file, currentProject, oclmodel);			
+			
 			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 			getCurrentProject().setName(file.getName().replace(".oled",""));
 			ProjectBrowser.refreshTree(getCurrentProject());
