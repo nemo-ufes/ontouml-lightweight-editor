@@ -32,6 +32,7 @@ public class TModelCompletionProvider {
 		   addCompletion(p);
 		}	
 	}
+	
 	public void addCompletion(RefOntoUML.Association p)
 	{
 	   for(Property pp: p.getMemberEnd()){

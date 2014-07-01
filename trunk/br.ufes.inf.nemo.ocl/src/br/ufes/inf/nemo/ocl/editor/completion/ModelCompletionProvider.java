@@ -33,21 +33,14 @@ public class ModelCompletionProvider {
 	   
 	public void addCompletions(OntoUMLParser refparser)
 	{
-		for(RefOntoUML.Class oc: refparser.getAllInstances(RefOntoUML.Class.class))
-	   {
-		   	addCompletion(oc);
-	   }
-	   for(RefOntoUML.DataType oc: refparser.getAllInstances(RefOntoUML.DataType.class))
-	   {
-		   if ((!(oc instanceof PrimitiveType)) && (!(oc instanceof Enumeration))){
-			   addCompletion(oc);
-		   }
-	   }
-	   for(RefOntoUML.Association p: refparser.getAllInstances(RefOntoUML.Association.class))
-	   {
-		   addCompletion(p);
-	   }	
+		for(EObject obj: refparser.getElements())
+		{
+		   	if(obj instanceof RefOntoUML.Class) addCompletion((RefOntoUML.Class)obj);
+		   	if((obj instanceof DataType) && (!(obj instanceof PrimitiveType)) && (!(obj instanceof Enumeration))) addCompletion((RefOntoUML.DataType)obj);			   
+		   	if((obj instanceof Association)) addCompletion((RefOntoUML.Association)obj);
+	   }	   	
 	}
+	
 	public void addCompletion(RefOntoUML.Association p)
 	{
 	   for(Property pp: p.getMemberEnd()){
