@@ -46,6 +46,7 @@ import javax.swing.border.EmptyBorder;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.DataType;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.NamedElement;
@@ -217,12 +218,38 @@ public class FeatureListDialog extends JDialog {
 					
 		leftListModel = new DefaultListModel();  
 		rightListModel = new DefaultListModel();
-		
+		 
 		for(RefOntoUML.Property p : refparser.getAllInstances(RefOntoUML.Property.class)) 
 		{
-			if(!featureList.contains(p) && !p.equals(element) && ((Classifier)(((Property)element).getType())).allParents().contains(p.getType())){
-				FeatureElement elem = new FeatureElement(p);
-				leftListModel.addElement(elem);
+			if(!featureList.contains(p) && !p.equals(element)){
+				Property baseProperty = (Property) element;
+				Classifier baseType = (Classifier) baseProperty.getType();
+				
+				//base property is an attribute
+				if(baseProperty.getAssociation()==null && p.getAssociation()==null &&
+						(baseType.equals(p.getType()) || baseType.allParents().contains(p.getType())) ){
+					
+					if(baseProperty.eContainer() instanceof RefOntoUML.Class && p.eContainer() instanceof RefOntoUML.Class &&
+							(baseProperty.getClass_().equals(p.getClass_()) || baseProperty.getClass_().allParents().contains(p.getClass_()))	){
+						FeatureElement elem = new FeatureElement(p);
+						leftListModel.addElement(elem);
+					}
+
+					else if(baseProperty.eContainer() instanceof DataType && p.eContainer() instanceof DataType &&
+							(baseProperty.getDatatype().equals(p.getDatatype()) || baseProperty.getDatatype().allParents().contains(p.getDatatype()))		){
+						FeatureElement elem = new FeatureElement(p);
+						leftListModel.addElement(elem);
+					}
+					
+				}
+				else if (baseProperty.getAssociation()!=null && p.getAssociation()!=null &&
+						(baseType.equals(p.getType()) || baseType.allParents().contains(p.getType())) &&
+						(baseProperty.getOpposite().getType().equals(p.getOpposite().getType()) || ((Classifier) baseProperty.getOpposite().getType()).allParents().contains(p.getOpposite().getType()))){
+					FeatureElement elem = new FeatureElement(p);
+					leftListModel.addElement(elem);
+				}
+				
+				
 			}
 		}
 		leftList = new JList<FeatureElement>(leftListModel);
