@@ -695,8 +695,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			currentProject.clearOpenedDiagrams();
 			for(DiagramEditor editor: getDiagramEditors()){
 				currentProject.saveAsOpened(editor.getDiagram());
-			}
-			System.out.println(currentProject.getOpenedDiagrams());
+			}			
 			result = ProjectWriter.getInstance().writeProject(this, file, currentProject, oclmodel);			
 			
 			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
