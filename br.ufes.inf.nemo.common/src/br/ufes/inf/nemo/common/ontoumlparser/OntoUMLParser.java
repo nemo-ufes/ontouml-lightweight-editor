@@ -1195,8 +1195,8 @@ public class OntoUMLParser {
 	}
 	
 	/*TODO: Temos algum método que pega o lado do relator corretamente?? Caso tenhamos, remover o método criado abaixo. Criado pois mediations podem vir erradas ou invertidas*/
-	
-	public Property getRelatorEnd (Mediation m)
+	//TIAGO: Esse é o método que pega corretamente.
+	public static Property getRelatorEnd (Mediation m)
 	{		
 		if (m.sourceEnd().getType() instanceof Relator)
 			return m.sourceEnd();
@@ -1216,12 +1216,12 @@ public class OntoUMLParser {
 		
 	}
 	
-	public Property getMediatedEnd (Mediation m)
+	public static Property getMediatedEnd (Mediation m)
 	{		
 		return getRelatorEnd(m).getOpposite();
 	}
 	
-	public Classifier getRelator(Mediation m) 
+	public static Classifier getRelator(Mediation m) 
 	{
 		return (Classifier) getRelatorEnd(m).getType();
 	}
@@ -1238,7 +1238,7 @@ public class OntoUMLParser {
 		return null;
 	}
 	
-	public Classifier getMediated(Mediation m) throws Exception
+	public static Classifier getMediated(Mediation m) throws Exception
 	{		
 		return (Classifier) getMediatedEnd(m).getType();
 	}
