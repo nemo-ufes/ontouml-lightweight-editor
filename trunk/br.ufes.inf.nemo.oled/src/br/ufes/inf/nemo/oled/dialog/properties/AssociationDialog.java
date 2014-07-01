@@ -44,6 +44,7 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Relationship;
+import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 
@@ -78,7 +79,7 @@ public class AssociationDialog extends JDialog{
 		tabbedPane.setSelectedIndex(index);
 	}
 	
-	public AssociationDialog(final JFrame parent, final DiagramManager diagramManager, final AssociationElement assocElement, RefOntoUML.Relationship relationship, boolean modal) 
+	public AssociationDialog(final AppFrame parent, final AssociationElement assocElement, RefOntoUML.Relationship relationship, boolean modal) 
 	{
 		super(parent, modal);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/icons/x16/cog.png")));
@@ -86,7 +87,7 @@ public class AssociationDialog extends JDialog{
 //		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
 //		setIconImage(icon);
 		
-		this.diagramManager = diagramManager;
+		this.diagramManager = parent.getDiagramManager();
 		this.assocElement = assocElement;
 		this.relationship = relationship;
 		this.parent = parent;

@@ -40,6 +40,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Generalization;
 import RefOntoUML.Relationship;
+import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 
@@ -59,17 +60,17 @@ public class GeneralizationDialog extends JDialog{
 	private JButton btnOk; 
 	private JButton btnCancel;
 	
-	public GeneralizationDialog(final JFrame parent, final DiagramManager diagramManager, final GeneralizationElement genElement, RefOntoUML.Relationship relationship, boolean modal) 
+	public GeneralizationDialog(final AppFrame parent, final GeneralizationElement genElement, RefOntoUML.Relationship relationship, boolean modal) 
 	{
 		super(parent, modal);
 		
-		initData(parent,diagramManager,genElement,relationship);
+		initData(parent,genElement,relationship);
 		initGUI();
 	}
 	
-	public void initData(final JFrame parent, final DiagramManager diagramManager, final GeneralizationElement genElement, RefOntoUML.Relationship relationship)
+	public void initData(final AppFrame parent, final GeneralizationElement genElement, RefOntoUML.Relationship relationship)
 	{
-		this.diagramManager = diagramManager;
+		this.diagramManager = parent.getDiagramManager();
 		this.genElement=genElement;
 		this.relationship = relationship;
 		this.parent = parent;

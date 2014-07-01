@@ -253,18 +253,20 @@ public class ModelHelper {
 		ArrayList<DiagramElement> found = new ArrayList<DiagramElement>();		
 		if(mappings.get(element)!=null && mappings.get(element).size()>0)
 		{			
-			for(DiagramElement de: mappings.get(element))
-			{					
-				if (editor.getDiagram().getChildren().contains(de)) { found.add(de); }				
-			}			
+			if(editor!=null){
+				for(DiagramElement de: mappings.get(element))
+				{					
+					if (editor.getDiagram().getChildren().contains(de)) { found.add(de); }				
+				}
+			}
 		}	
-		
+
 		if(found.size()>1)
 		{
 			System.err.println("ERROR: The refonto element: {"+new OntoUMLElement(element,"")+"} has 2 diagram elements for the same diagram editor.");
 			return null;
-					
-		}else if(found.size()==0)
+		}
+		if(found.size()==0)
 		{		
 			for(DiagramElement de: mappings.get(element))
 			{

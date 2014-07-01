@@ -40,6 +40,7 @@ import javax.swing.border.EmptyBorder;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
+import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
@@ -71,12 +72,12 @@ public class ClassDialog extends JDialog{
 		tabbedPane.setSelectedIndex(index);
 	}
 	
-	public ClassDialog(final JFrame parent, final DiagramManager diagramManager, final ClassElement classElement, Classifier element, boolean modal) 
+	public ClassDialog(final AppFrame parent, final ClassElement classElement, Classifier element, boolean modal) 
 	{
 		super(parent, modal);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassDialog.class.getResource("/resources/icons/x16/cog.png")));
 		
-		this.diagramManager = diagramManager;
+		this.diagramManager = parent.getDiagramManager();
 		this.classElement = classElement;		
 		this.element = element;
 		this.parent = parent;

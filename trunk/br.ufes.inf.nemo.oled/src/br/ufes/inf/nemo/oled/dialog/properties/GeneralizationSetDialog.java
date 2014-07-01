@@ -39,6 +39,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.GeneralizationSet;
+import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
 
 /**
@@ -55,17 +56,17 @@ public class GeneralizationSetDialog extends JDialog{
 	private JButton btnOk; 
 	private JButton btnCancel;
 	
-	public GeneralizationSetDialog(final JFrame parent, final DiagramManager diagramManager, final GeneralizationSet genSet, boolean modal) 
+	public GeneralizationSetDialog(final AppFrame parent, final GeneralizationSet genSet, boolean modal) 
 	{
 		super(parent, modal);
 		
-		initData(parent,diagramManager,genSet);
+		initData(parent,genSet);
 		initGUI();
 	}
 	
-	public void initData(final JFrame parent, final DiagramManager diagramManager, final GeneralizationSet genSet)
+	public void initData(final AppFrame parent, final GeneralizationSet genSet)
 	{
-		this.diagramManager = diagramManager;
+		this.diagramManager = parent.getDiagramManager();
 		this.genSet=genSet;
 		this.parent = parent;
 	}
