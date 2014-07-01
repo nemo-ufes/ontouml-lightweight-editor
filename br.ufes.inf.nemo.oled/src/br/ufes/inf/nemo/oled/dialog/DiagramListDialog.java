@@ -159,9 +159,9 @@ public class DiagramListDialog extends JDialog {
 			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(scroll, GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
-						.addComponent(lblText, GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE))
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scroll, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+						.addComponent(lblText, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE))
 					.addGap(8))
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -170,8 +170,8 @@ public class DiagramListDialog extends JDialog {
 					.addGap(20)
 					.addComponent(lblText)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scroll, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(18, Short.MAX_VALUE))
+					.addComponent(scroll, GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+					.addGap(8))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		
@@ -201,12 +201,12 @@ public class DiagramListDialog extends JDialog {
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(115)
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addContainerGap(200, Short.MAX_VALUE)
 					.addComponent(btnOk, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(95, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
