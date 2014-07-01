@@ -58,9 +58,10 @@ public class UmlProject implements Serializable {
 	private transient boolean saveNeeded = false;
 	public static transient String tempDir;
 	private List<UmlDiagram> diagrams = new ArrayList<UmlDiagram>();
+	private ArrayList<Integer> openedDiagrams = new ArrayList<Integer>();
 	private Properties properties;
-	private String name = new String();
-				
+	private String name = new String();	
+	
 	public UmlProject() {
 		super();
 		properties = new Properties();
@@ -70,6 +71,35 @@ public class UmlProject implements Serializable {
 		resource.getContents().add(model);		
 		getEditingDomain();
 		name = "New Project";		
+	}
+	
+	public void clearOpenedDiagrams()
+	{
+		if(openedDiagrams!=null) openedDiagrams.clear();
+		else openedDiagrams = new ArrayList<Integer>();
+	}
+	
+	public ArrayList<Integer> getOpenedDiagrams()
+	{
+		return openedDiagrams;
+	}
+	
+	public void saveAsOpened(UmlDiagram diagram)
+	{
+		int index = diagrams.indexOf(diagram);
+		if(index>=0) {
+			if(openedDiagrams!=null){
+				if(!openedDiagrams.contains(index)) openedDiagrams.add(index);
+			}
+		}
+	}
+	
+	public boolean isOpened(UmlDiagram diagram)
+	{
+		if (openedDiagrams!=null){
+			return openedDiagrams.contains(diagrams.indexOf(diagram));
+		}
+		return false;
 	}
 	
 	public UmlProject(RefOntoUML.Package model) {
