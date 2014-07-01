@@ -463,13 +463,32 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void closeCurrentProject()
 	{
 		if (currentProject!=null){
-			Main.printOutLine("Closing current project");
-			removeAll();
-			frame.getBrowserManager().getProjectBrowser().eraseProject();
-			frame.getInfoManager().eraseProject();						
-			currentProject=null;
-			addStartPanel();
-			Main.printOutLine("Current project closed");
+			
+			int response = JOptionPane.showOptionDialog(
+					this,
+					"Do you really want to close the current project?",
+					"Close project?", 
+					JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.QUESTION_MESSAGE,
+					null,
+					new String[]{"Save and Close", "Close", "Cancel"},
+					"default");
+			
+			if(response==JOptionPane.YES_OPTION){
+				setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				saveProject();
+				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));			
+			}
+			if(response==JOptionPane.YES_OPTION || response==JOptionPane.NO_OPTION){
+				Main.printOutLine("Closing current project");
+				removeAll();
+				frame.getBrowserManager().getProjectBrowser().eraseProject();
+				frame.getInfoManager().eraseProject();						
+				currentProject=null;
+				addStartPanel();
+				Main.printOutLine("Current project closed");
+			}
+			
 		}
 		updateUI();
 	}

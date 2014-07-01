@@ -317,7 +317,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	}
 
 	/**
-	 * Quits the application without confirmation.
+	 * Quits the application with confirmation.
 	 * */
 	public void quitApplication() {
 		Main.printOutLine("OLED application closed");
@@ -341,6 +341,9 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 */
 	private boolean canQuit() {
 		
+		if(diagramManager.getCurrentProject()==null)
+			return true;
+		
 		int response = JOptionPane.showOptionDialog(
 			this,
 			"Do you really want to quit?",
@@ -350,6 +353,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			null,
 			new String[]{"Save and Exit", "Exit without saving", "Cancel"},
 			"default");		
+		
 		if(response==JOptionPane.YES_OPTION){
 			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			diagramManager.saveProject();
