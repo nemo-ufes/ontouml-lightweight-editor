@@ -184,8 +184,8 @@ public class AntiPatternSearchDialog extends JDialog {
 	private JLabel lblDecIntRes;
 	
 	private JButton identifyButton;
-	private JButton btnNewButton_1;
-	private JButton btnShowResult;
+	private JButton closeButton;
+	private JButton showButton;
 	
 	@SuppressWarnings("unused")
 	private String result = new String();
@@ -381,16 +381,16 @@ public class AntiPatternSearchDialog extends JDialog {
 		panel_1.add(identifyButton);
 		identifyButton.setIcon(null);
 		
-		btnNewButton_1 = new JButton("Close");
-		panel_1.add(btnNewButton_1);
+		closeButton = new JButton("Close");
+		panel_1.add(closeButton);
 		
-		JButton btnStop = new JButton("Stop");
-		panel_1.add(btnStop);
+		JButton stopButton = new JButton("Stop");
+		panel_1.add(stopButton);
 		
-		btnShowResult = new JButton("Show Result");
-		panel_1.add(btnShowResult);
-		btnShowResult.setEnabled(false);		
-		btnShowResult.addActionListener(new ActionListener() {			
+		showButton = new JButton("Show Result");
+		panel_1.add(showButton);
+		showButton.setEnabled(false);		
+		showButton.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) 
 			{
@@ -398,14 +398,14 @@ public class AntiPatternSearchDialog extends JDialog {
 				showResult();
 			}
 		});
-		btnStop.addActionListener(new ActionListener() {			
+		stopButton.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				interruptAll();
 				if (searchThread!=null) searchThread.interrupt();				
 			}
 		});
-		btnNewButton_1.addActionListener(new ActionListener() {			
+		closeButton.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				interruptAll();
@@ -892,7 +892,7 @@ public class AntiPatternSearchDialog extends JDialog {
 	
 	public void activateShowResult()
 	{
-		btnShowResult.setEnabled(true);
+		showButton.setEnabled(true);
 	}
 	
 	/**
@@ -1524,7 +1524,7 @@ public class AntiPatternSearchDialog extends JDialog {
 						identifyButton.setEnabled(true);
 						progressBar.setValue(100);
 						progressBar.setString(Integer.toString(progressBar.getValue()) + "%");												
-						btnShowResult.setEnabled(true);
+						showButton.setEnabled(true);
 						updateStatus("Completed. "+totalOccurrences+" occurrences found.");
 					}
 				});				
@@ -1590,7 +1590,7 @@ public class AntiPatternSearchDialog extends JDialog {
 			if(UndefPhaseThread!=null) UndefPhaseThread.join();
 			if(WholeOverThread!=null) WholeOverThread.join();
 		} catch (InterruptedException e) {				
-			e.printStackTrace();
+			
 		}
 	}
 	

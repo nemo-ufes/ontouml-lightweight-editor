@@ -590,7 +590,10 @@ public class ProjectTree extends CheckboxTree {
 	    	EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
 	    	if (obj.equals(element)) { 
 	    		result =true;
+	    		
 	    		this.setSelectionPath(new TreePath(node.getPath()));
+	    		this.scrollPathToVisible(new TreePath(node.getPath())); //adicionado por Tiago
+		    		
 	    		return result;
 	    	}
 	    		
@@ -600,7 +603,10 @@ public class ProjectTree extends CheckboxTree {
 	    EObject obj = ((OntoUMLElement)node.getUserObject()).getElement();
 	    if (obj.equals(element)){ 
 	    	result =true;
-	    	this.setSelectionPath(new TreePath(node.getPath()));	 
+	    	
+	    	this.setSelectionPath(new TreePath(node.getPath()));
+	    	this.scrollPathToVisible(new TreePath(node.getPath())); //adicionado por Tiago
+	    	
 	    	return result;
 	    }	    
 	    return result;	    
@@ -608,7 +614,8 @@ public class ProjectTree extends CheckboxTree {
 	
 	public void select (DefaultMutableTreeNode  node)
 	{
-		this.setSelectionPath(new TreePath(node.getPath()));		
+		this.setSelectionPath(new TreePath(node.getPath()));
+		this.scrollPathToVisible(new TreePath(node.getPath()));	//adicionado por Tiago	
 	}
 		
 	@SuppressWarnings("rawtypes")
@@ -752,8 +759,12 @@ public class ProjectTree extends CheckboxTree {
 		if (SwingUtilities.isRightMouseButton(e))
         {	            	
         	TreePath path = getPathForLocation ( e.getX (), e.getY () );
+        	
+        	
         	setSelectionPath(path);
-            Rectangle pathBounds = getUI().getPathBounds(ProjectTree.this, path);
+        	scrollPathToVisible(path); //adicionado por Tiago
+            
+        	Rectangle pathBounds = getUI().getPathBounds(ProjectTree.this, path);
             if (pathBounds != null && pathBounds.contains(e.getX (),e.getY()))
             {
             	doPopup(e,ProjectTree.this);

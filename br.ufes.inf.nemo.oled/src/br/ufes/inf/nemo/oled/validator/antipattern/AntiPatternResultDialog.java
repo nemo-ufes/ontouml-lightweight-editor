@@ -521,34 +521,57 @@ public class AntiPatternResultDialog extends Dialog {
     	WizardDialog wizardDialog = null;    	
 
     	Display d = Display.getDefault();
-    	if (apOccur instanceof RelRigOccurrence) wizardDialog = new WizardDialog(new Shell(d), new RelRigWizard((RelRigOccurrence)apOccur));
-    	if (apOccur instanceof RelSpecOccurrence) wizardDialog = new WizardDialog(new Shell(d), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
-    	if (apOccur instanceof WholeOverOccurrence) wizardDialog = new WizardDialog(new Shell(d), new OverlappingWizard((WholeOverOccurrence)apOccur,"WholeOverWizard",WholeOverAntipattern.getAntipatternInfo()));
-    	if (apOccur instanceof PartOverOccurrence) wizardDialog = new WizardDialog(new Shell(d), new OverlappingWizard((PartOverOccurrence)apOccur,"PartOverWizard",PartOverAntipattern.getAntipatternInfo()));	
-    	if (apOccur instanceof RelOverOccurrence) wizardDialog = new WizardDialog(new Shell(d), new OverlappingWizard((RelOverOccurrence)apOccur,"RelOverWizard",RelOverAntipattern.getAntipatternInfo()));	
-    	if (apOccur instanceof RepRelOccurrence) wizardDialog = new WizardDialog(new Shell(d), new RepRelWizard((RepRelOccurrence)apOccur));
-    	if (apOccur instanceof MultiDepOccurrence) wizardDialog = new WizardDialog(new Shell(d), new MultiDepWizard((MultiDepOccurrence)apOccur));
-    	if (apOccur instanceof RelCompOccurrence) wizardDialog = new WizardDialog(new Shell(d), new RelCompWizard((RelCompOccurrence)apOccur));
-    	if (apOccur instanceof ImpAbsOccurrence) wizardDialog = new WizardDialog(new Shell(d), new ImpAbsWizard((ImpAbsOccurrence)apOccur));
-    	if (apOccur instanceof UndefFormalOccurrence) wizardDialog = new WizardDialog(new Shell(d), new UndefFormalWizard((UndefFormalOccurrence)apOccur));
-    	if (apOccur instanceof HetCollOccurrence) wizardDialog = new WizardDialog(new Shell(d), new HetCollWizard((HetCollOccurrence)apOccur));
-    	if (apOccur instanceof HomoFuncOccurrence) wizardDialog = new WizardDialog(new Shell(d), new HomoFuncWizard((HomoFuncOccurrence)apOccur));
-    	if (apOccur instanceof AssCycOccurrence) wizardDialog = new WizardDialog(new Shell(d), new AssCycWizard((AssCycOccurrence)apOccur));
-    	if (apOccur instanceof BinOverOccurrence) wizardDialog = new WizardDialog(new Shell(d), new BinOverWizard((BinOverOccurrence)apOccur));
-    	if (apOccur instanceof DepPhaseOccurrence) wizardDialog = new WizardDialog(new Shell(d), new DepPhaseWizard((DepPhaseOccurrence)apOccur));
-    	if (apOccur instanceof FreeRoleOccurrence) wizardDialog = new WizardDialog(new Shell(d), new FreeRoleWizard((FreeRoleOccurrence)apOccur));
-    	if (apOccur instanceof GSRigOccurrence) wizardDialog = new WizardDialog(new Shell(d), new GSRigWizard((GSRigOccurrence)apOccur));
-    	if (apOccur instanceof MixRigOccurrence) wizardDialog = new WizardDialog(new Shell(d), new MixRigWizard((MixRigOccurrence)apOccur));
-    	if (apOccur instanceof MixIdenOccurrence) wizardDialog = new WizardDialog(new Shell(d), new MixIdenWizard((MixIdenOccurrence)apOccur));
-    	if (apOccur instanceof UndefPhaseOccurrence) wizardDialog = new WizardDialog(new Shell(d), new UndefPhaseWizard((UndefPhaseOccurrence)apOccur));
-    	if (apOccur instanceof DecIntOccurrence) wizardDialog = new WizardDialog(new Shell(d), new DecIntWizard((DecIntOccurrence)apOccur));
-
+    	if (apOccur instanceof RelRigOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new RelRigWizard((RelRigOccurrence)apOccur));
+    	if (apOccur instanceof RelSpecOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new RelSpecWizard((RelSpecOccurrence)apOccur));	        		
+    	if (apOccur instanceof WholeOverOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new OverlappingWizard((WholeOverOccurrence)apOccur,"WholeOverWizard",WholeOverAntipattern.getAntipatternInfo()));
+    	if (apOccur instanceof PartOverOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new OverlappingWizard((PartOverOccurrence)apOccur,"PartOverWizard",PartOverAntipattern.getAntipatternInfo()));	
+    	if (apOccur instanceof RelOverOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new OverlappingWizard((RelOverOccurrence)apOccur,"RelOverWizard",RelOverAntipattern.getAntipatternInfo()));	
+    	if (apOccur instanceof RepRelOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new RepRelWizard((RepRelOccurrence)apOccur));
+    	if (apOccur instanceof MultiDepOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new MultiDepWizard((MultiDepOccurrence)apOccur));
+    	if (apOccur instanceof RelCompOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new RelCompWizard((RelCompOccurrence)apOccur));
+    	if (apOccur instanceof ImpAbsOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new ImpAbsWizard((ImpAbsOccurrence)apOccur));
+    	if (apOccur instanceof UndefFormalOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new UndefFormalWizard((UndefFormalOccurrence)apOccur));
+    	if (apOccur instanceof HetCollOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new HetCollWizard((HetCollOccurrence)apOccur));
+    	if (apOccur instanceof HomoFuncOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new HomoFuncWizard((HomoFuncOccurrence)apOccur));
+    	if (apOccur instanceof AssCycOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new AssCycWizard((AssCycOccurrence)apOccur));
+    	if (apOccur instanceof BinOverOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new BinOverWizard((BinOverOccurrence)apOccur));
+    	if (apOccur instanceof DepPhaseOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new DepPhaseWizard((DepPhaseOccurrence)apOccur));
+    	if (apOccur instanceof FreeRoleOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new FreeRoleWizard((FreeRoleOccurrence)apOccur));
+    	if (apOccur instanceof GSRigOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new GSRigWizard((GSRigOccurrence)apOccur));
+    	if (apOccur instanceof MixRigOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new MixRigWizard((MixRigOccurrence)apOccur));
+    	if (apOccur instanceof MixIdenOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new MixIdenWizard((MixIdenOccurrence)apOccur));
+    	if (apOccur instanceof UndefPhaseOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new UndefPhaseWizard((UndefPhaseOccurrence)apOccur));
+    	if (apOccur instanceof DecIntOccurrence) 
+    		wizardDialog = new WizardDialog(new Shell(d), new DecIntWizard((DecIntOccurrence)apOccur));
+    	
     	return wizardDialog;
 	}
 	
 	public void showWizard(final AntipatternOccurrence apOccur)
 	{
+		
 		WizardDialog wizardDialog = getWizardDialog(apOccur);		
+		
 		if(wizardDialog!=null && wizardDialog.open()==Window.OK){			
 			if(!apOccur.getFix().isEmpty()){
 				if(AntiPatternModifDialog.openDialog(apOccur.getFix(), frame)==Window.OK){					
