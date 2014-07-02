@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.freerole;
 
+import java.util.HashSet;
+
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -9,6 +11,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
@@ -68,15 +71,27 @@ public class FreeRoleThirdPage extends FreeRolePage {
 		Label lblCurrentRelatorSubtypes = new Label(container, SWT.NONE);
 		lblCurrentRelatorSubtypes.setText("Existing Relators and Their Subtypes:");
 		
-		List list = new List(container, SWT.BORDER);
+		List list = new List(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		HashSet<Classifier> relators = new HashSet<Classifier>();
+		String line;
 		
 		for (Property relatorEnd : occurrence.getDefiningRelatorEnds()) {	
-			String line = OntoUMLNameHelper.getTypeAndName(relatorEnd.getType(), true, false)+" (From: "+OntoUMLNameHelper.getTypeAndName(relatorEnd.getOpposite().getType(), true, false)+")";
-			list.add(line);
 			
-			for (Classifier child : occurrence.getParser().getAllChildren((Classifier) relatorEnd.getType())) {
-				line = OntoUMLNameHelper.getTypeAndName(child, true, false)+" (Parent: "+OntoUMLNameHelper.getTypeAndName(relatorEnd.getType(), true, false)+", From: "+OntoUMLNameHelper.getTypeAndName(relatorEnd.getOpposite().getType(), true, false)+")";
+			if(!relators.contains(relatorEnd.getType())){		
+				line = OntoUMLNameHelper.getTypeAndName(relatorEnd.getType(), true, false)+" (From: "+OntoUMLNameHelper.getTypeAndName(relatorEnd.getOpposite().getType(), true, false)+")";
 				list.add(line);
+				relators.add((Classifier) relatorEnd.getType());	
+			}
+			
+			 if(!((FreeRoleAntipattern)occurrence.getAntipattern()).allChildrenHash.containsKey(relatorEnd.getType()))
+				 continue;
+			
+			for (Classifier child : ((FreeRoleAntipattern)occurrence.getAntipattern()).allChildrenHash.get(relatorEnd.getType())) {
+				if(!relators.contains(child)){
+					line = OntoUMLNameHelper.getTypeAndName(child, true, false)+" (Parent: "+OntoUMLNameHelper.getTypeAndName(relatorEnd.getType(), true, false)+", From: "+OntoUMLNameHelper.getTypeAndName(relatorEnd.getOpposite().getType(), true, false)+")";
+					list.add(line);
+					relators.add(child);
+				}
 			}
 		}
 		

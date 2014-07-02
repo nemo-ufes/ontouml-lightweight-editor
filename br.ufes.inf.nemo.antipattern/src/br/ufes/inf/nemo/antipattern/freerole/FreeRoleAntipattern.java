@@ -11,6 +11,8 @@ import RefOntoUML.Mediation;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
 import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
+import RefOntoUML.SortalClass;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
@@ -18,9 +20,9 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 
-	protected HashMap<Classifier,HashSet<Property>> relatorHash;
-	protected HashMap<Classifier, HashSet<Classifier>> childHash;
-	protected HashMap<Classifier, HashSet<Classifier>> allChildrenHash; 
+	public HashMap<Classifier,HashSet<Property>> relatorHash;
+	public HashMap<Classifier, HashSet<Classifier>> childHash;
+	public HashMap<Classifier, HashSet<Classifier>> allChildrenHash; 
 	
 	private static final String oclQuery = 	
 		"let mediatedProperties : Bag (Property) = "+
@@ -100,6 +102,9 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 		
 		for (Classifier mediated : relatorHash.keySet()) {
 			
+			if(!(mediated instanceof SortalClass))
+				continue;
+			
 			if(!childHash.containsKey(mediated))
 				continue;
 			
@@ -108,6 +113,17 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 					continue;
 				
 				if(relatorHash.containsKey(child))
+					continue;
+				
+				boolean hasDefinedMixinParent = false;
+				for(Classifier parent : parser.getParents(child)){
+					if(parent instanceof RoleMixin && relatorHash.containsKey(parent)){
+						hasDefinedMixinParent = true;
+						break;
+					}
+				}
+				
+				if(hasDefinedMixinParent)
 					continue;
 				
 				ArrayList<Property> properties = new ArrayList<Property>(relatorHash.get(mediated));
@@ -151,7 +167,6 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 			for (Classifier parent : mainType.allParents()) 
 				if(relatorHash.containsKey(parent))
 					relatorHash.get(mainType).addAll(relatorHash.get(parent));
-			
 	}
 	
 	private void buildChildrenHashes(){

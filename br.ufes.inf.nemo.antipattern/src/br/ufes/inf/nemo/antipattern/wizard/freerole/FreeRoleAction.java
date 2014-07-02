@@ -1,6 +1,6 @@
 package br.ufes.inf.nemo.antipattern.wizard.freerole;
 
-import RefOntoUML.Relator;
+import RefOntoUML.Classifier;
 import RefOntoUML.Role;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
@@ -9,7 +9,7 @@ public class FreeRoleAction extends AntiPatternAction<FreeRoleOccurrence>{
 
 	public Role role;
 	public String oclDerive;
-	public Relator relator;
+	public Classifier relator;
 	public String subRelatorName;
 	public String relatorEndMultip;
 	public String roleEndMultip;
@@ -41,19 +41,19 @@ public class FreeRoleAction extends AntiPatternAction<FreeRoleOccurrence>{
 		this.role = role;
 	}
 	
-	public void setCreateMediation(Relator relator, Role role, String relatorEndMultip,String roleEndMultip)
+	public void setCreateMediation(Classifier relator2, Role role, String relatorEndMultip,String roleEndMultip)
 	{
 		code = Action.CREATE_MEDIATION;
-		this.relator=relator;
+		this.relator=relator2;
 		this.role = role;
 		this.relatorEndMultip=relatorEndMultip;
 		this.roleEndMultip=roleEndMultip;
 	}
 	
-	public void setCreateSubRelatorWithMediation(Relator relator, Role role, String subRelatorName, String relatorEndMultip,String roleEndMultip)
+	public void setCreateSubRelatorWithMediation(Classifier relator2, Role role, String subRelatorName, String relatorEndMultip,String roleEndMultip)
 	{
 		code = Action.CREATE_SUBRELATOR_WITH_MEDIATION;
-		this.relator = relator;
+		this.relator = relator2;
 		this.subRelatorName = subRelatorName;
 		this.role = role;
 		this.relatorEndMultip=relatorEndMultip;

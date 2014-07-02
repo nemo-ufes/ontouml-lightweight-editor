@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
+import RefOntoUML.Classifier;
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
@@ -83,11 +84,11 @@ public class FreeRoleFifthPage extends FreeRolePage {
 		for(Boolean use : dependenceTable.getUse())
 		{
 			Boolean specialize = dependenceTable.getSpecialize().get(i);
-			String relatorEndMultip = dependenceTable.getMultRelatorEnd().get(i);
-			String roleEndMultip = dependenceTable.getMultRoleEnd().get(i);
-			Relator relator = (Relator) dependenceTable.getTable().getItem(i).getData("relator");
 			
 			if(use && !specialize) {
+				String relatorEndMultip = dependenceTable.getMultRelatorEnd().get(i);
+				String roleEndMultip = dependenceTable.getMultRoleEnd().get(i);
+				Classifier relator = (Relator) dependenceTable.getTable().getItem(i).getData("relator");
 				//Action =============================
 				FreeRoleAction newAction = new FreeRoleAction(occurrence);
 				newAction.setCreateMediation(relator,occurrence.getFreeRoles().get(index),relatorEndMultip,roleEndMultip); 
@@ -95,7 +96,9 @@ public class FreeRoleFifthPage extends FreeRolePage {
 				//======================================				
 			}
 			if(use && specialize){
-				
+				String relatorEndMultip = dependenceTable.getMultRelatorEnd().get(i);
+				String roleEndMultip = dependenceTable.getMultRoleEnd().get(i);
+				Classifier relator = (Relator) dependenceTable.getTable().getItem(i).getData("relator");
 				String relatorName = dependenceTable.getRelatorNames().get(i);
 				//Action =============================
 				FreeRoleAction newAction = new FreeRoleAction(occurrence);
