@@ -7,6 +7,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class IsComparativeFormalPage extends UndefFormalPage{
@@ -50,7 +52,8 @@ public class IsComparativeFormalPage extends UndefFormalPage{
 							"The DCFR captures relations which can be reduced to the comparison of values from qualities (Data Types) that characterize the related types. " +
 							"An example of such relation is “heavier than”, which holds between two people and that can be derived from the comparison of their weights." +
 							"\r\n\r\n" +
-							"Is the relation <"+occurrence.getFormalName()+">, which holds between <"+occurrence.getSource().getName()+"> and <"+occurrence.getTarget().getName()+">, " +
+							"Is the relation "+OntoUMLNameHelper.getTypeAndName(occurrence.getFormal(), true, true)+", which holds between "+
+							OntoUMLNameHelper.getTypeAndName(occurrence.getSource(), true, true)+" and "+OntoUMLNameHelper.getTypeAndName(occurrence.getTarget(), true, true)+" " +
 							"really a Domain Comparative Formal Relation, as suggested by the stereotype choice?"
 							);
 		

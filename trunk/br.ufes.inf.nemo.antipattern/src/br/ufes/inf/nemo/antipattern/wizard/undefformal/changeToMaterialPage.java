@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.undefformal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
@@ -19,15 +20,18 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
+import br.ufes.inf.nemo.common.list.OntoUMLComparator;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.MultiplicityValidator;
-import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
-import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class changeToMaterialPage extends UndefFormalPage{
 	
@@ -87,9 +91,7 @@ public class changeToMaterialPage extends UndefFormalPage{
 		relatorCombo = new Combo(container, SWT.NONE);
 		
 		Group grpTargetEnd = new Group(container, SWT.NONE);
-		
-		
-
+	
 		grpTargetEnd.setText("Target End");
 		
 		Label lblTarget = new Label(grpTargetEnd, SWT.NONE);
@@ -400,9 +402,11 @@ public class changeToMaterialPage extends UndefFormalPage{
 	
 	private void setRelatorComboData(){
 		relatorList = new ArrayList<Relator>(occurrence.getParser().getAllInstances(Relator.class));
+				
+		Collections.sort(relatorList, new OntoUMLComparator<Relator>());
 		
 		for (Relator relator : relatorList) {
-			relatorCombo.add(relator.getName());
+			relatorCombo.add(OntoUMLNameHelper.getNameAndType(relator, true, false));
 		}
 	}
 	
@@ -414,8 +418,8 @@ public class changeToMaterialPage extends UndefFormalPage{
 		
 		Mediation m = mediationList.get(mediationIndex);
 
-		mediatedMultCombo.setText(getMultiplicityString(occurrence.getParser().getMediatedEnd(m)));
-		relatorMultCombo.setText(getMultiplicityString(occurrence.getParser().getRelatorEnd(m)));
+		mediatedMultCombo.setText(getMultiplicityString(OntoUMLParser.getMediatedEnd(m)));
+		relatorMultCombo.setText(getMultiplicityString(OntoUMLParser.getRelatorEnd(m)));
 	}
 	
 	private String getMultiplicityString(Property p){
@@ -460,7 +464,8 @@ public class changeToMaterialPage extends UndefFormalPage{
 			return;
 		
 		for (Mediation mediation : allMediationsList) {
-			try { mediatedList.add(occurrence.getParser().getMediated(mediation).getName()); } 
+			try { 
+				mediatedList.add(OntoUMLParser.getMediated(mediation).getName()); } 
 			catch (Exception e) {}
 		}
 	}
@@ -476,7 +481,7 @@ public class changeToMaterialPage extends UndefFormalPage{
 		
 		for (Mediation mediation : allMediationsList) {
 			try {
-				if(occurrence.getParser().getMediated(mediation).equals(mediated)){
+				if(OntoUMLParser.getMediated(mediation).equals(mediated)){
 					mediationList.add(mediation);
 					if(mediation.getName()!=null)
 						mediationCombo.add(mediation.getName());

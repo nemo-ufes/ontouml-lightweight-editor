@@ -17,6 +17,8 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
@@ -219,7 +221,7 @@ public class ChangeRelationStereotypePage extends UndefFormalPage{
 					"\nIn every Characterization, the multiplicity on the characterized end is exatcly 1" +
 					"\nIn every Characterization, the multiplicity on the Mode end must be equal or greater than 1"+
 					"\r\n\r\n" +
-					"Does the relation <Formal> fits in such conditions?");
+					"Does the relation "+OntoUMLNameHelper.getTypeAndName(occurrence.getFormal(),true,true)+" fits in such conditions?");
 			StyleRange styleRange = new StyleRange();
 			styleRange.metrics = new GlyphMetrics(0, 0, 40);
 			Bullet bullet = new Bullet(styleRange);
@@ -243,7 +245,7 @@ public class ChangeRelationStereotypePage extends UndefFormalPage{
 					"Note that the use of SubQuantityOf in OntoUML is restricted as follows: "+
 					"\n\nIt is always nonShareable" +
 					"\nThe upper cardinality on the whole end must be equal to 1."+
-					"\n\nIs the relation <Formal> if fact a SubQuantityOf?");
+					"\n\nIs the relation "+OntoUMLNameHelper.getTypeAndName(occurrence.getFormal(),true,true)+" if fact a SubQuantityOf?");
 			
 			StyleRange styleRange = new StyleRange();
 			styleRange.metrics = new GlyphMetrics(0, 0, 40);
@@ -263,7 +265,7 @@ public class ChangeRelationStereotypePage extends UndefFormalPage{
 					"If not Domain Comparative, there are two types of internal relations that can hold between two Collectives: MemberOf and SubCollectionOf."+
 					"\n\nThey are both part-whole relations, but MemberOf holds a between collection and its members, while SubCollectionOf holds between a collection and its sub-collections."+
 					"\n\n" +
-					"Shoudn't the relation <Formal> be categorized as MemberOf or SubCollectionOf?");
+					"Shoudn't the relation "+OntoUMLNameHelper.getTypeAndName(occurrence.getFormal(),true,true)+" be categorized as MemberOf or SubCollectionOf?");
 			
 			btnYes.setText("Yes, it should be a MemberOf or a SubCollectionOf");
 			
@@ -286,7 +288,7 @@ public class ChangeRelationStereotypePage extends UndefFormalPage{
 					"Acyclicity: if A is a member of B and and B is a member of C then C is not a member of A"+"\n"+
 					"Intransitivity: if A member of B and B member of C then A is not a member of C"+
 					"\r\n\r\n" +
-					"Does that capture the intended semantics of the relation <Formal>?");
+					"Does that capture the intended semantics of the relation "+OntoUMLNameHelper.getTypeAndName(occurrence.getFormal(),true,true)+"?");
 			StyleRange styleRange = new StyleRange();
 			styleRange.metrics = new GlyphMetrics(0, 0, 40);
 			Bullet bullet = new Bullet(styleRange);
@@ -307,7 +309,7 @@ public class ChangeRelationStereotypePage extends UndefFormalPage{
 					"Irreflexivity: A is not a part of A; and"+"\n"+ 
 					"Acyclicity: if A is a part of B and B is a part of C then C is not a part of A"+"\n"+
 					"Transitivity: if A is a part of B and B is a part of C then A is a part of C"+"\n\n"+
-					"Isn't the relation <Formal> a ComponentOf?");	
+					"Isn't the relation "+OntoUMLNameHelper.getTypeAndName(occurrence.getFormal(),true,true)+" a ComponentOf?");	
 			
 			StyleRange styleRange = new StyleRange();
 			styleRange.metrics = new GlyphMetrics(0, 0, 40);
