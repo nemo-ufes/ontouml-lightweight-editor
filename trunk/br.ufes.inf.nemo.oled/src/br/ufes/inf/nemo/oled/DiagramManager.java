@@ -613,6 +613,22 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}	
 
+	/** Open diagrams loaded from the project. It only opens those diagrams saved as opened. */
+	public void openDiagrams()
+	{
+		if(currentProject.isAllClosed() && currentProject.getDiagrams().size()>0){
+			Main.printOutLine("Loading diagram \""+currentProject.getDiagrams().get(0).getName()+"\"");	
+			createDiagramEditor((StructureDiagram)currentProject.getDiagrams().get(0));
+		}else{
+			for(UmlDiagram diagram: currentProject.getDiagrams()) {
+				if(currentProject.isOpened(diagram)){
+					Main.printOutLine("Loading diagram \""+diagram.getName()+"\"");	
+					createDiagramEditor((StructureDiagram)diagram);
+				}
+			}
+		}
+	}
+	
 	/** Open an existing project. */
 	public void openProject() 
 	{		
@@ -633,13 +649,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
 				currentProject = (UmlProject) listFiles.get(0);								
 				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
-				frame.getInfoManager().setProject(currentProject);				
-				for(UmlDiagram diagram: currentProject.getDiagrams()) {
-					if(currentProject.isOpened(diagram)){
-						Main.printOutLine("Loading diagram \""+diagram.getName()+"\"");	
-						createDiagramEditor((StructureDiagram)diagram);
-					}
-				}				
+				frame.getInfoManager().setProject(currentProject);
+				openDiagrams();
 				Main.printOutLine("Adding OCL code-completion information");				
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();				
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));				
@@ -677,12 +688,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				Main.printOutLine("Adding OCL code-completion information");
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));				
-				for(UmlDiagram diagram: currentProject.getDiagrams()) {
-					if(currentProject.isOpened(diagram)){
-						Main.printOutLine("Loading diagram \""+diagram.getName()+"\"");
-						createDiagramEditor((StructureDiagram)diagram);
-					}
-				}
+				openDiagrams();
 				saveProjectNeeded(false);
 				String constraints = (String) listFiles.get(1);
 				frame.getInfoManager().getOcleditor().setText(constraints);

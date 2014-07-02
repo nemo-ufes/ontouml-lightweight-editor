@@ -94,6 +94,16 @@ public class UmlProject implements Serializable {
 		}
 	}
 	
+	public boolean isAllClosed()
+	{
+		boolean allClosed = true;
+		if (openedDiagrams!=null){
+			for(UmlDiagram diagram: diagrams)
+			if(openedDiagrams.contains(diagram)) allClosed=false;
+		}
+		return allClosed;
+	}
+
 	public boolean isOpened(UmlDiagram diagram)
 	{
 		if (openedDiagrams!=null){
