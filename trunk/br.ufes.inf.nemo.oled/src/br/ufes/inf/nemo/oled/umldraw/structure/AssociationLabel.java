@@ -158,16 +158,25 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	 * {@inheritDoc}
 	 */
 	public String getNameLabelText() {
-		return nameLabel.getNameLabelText();
+		if (nameLabel.getNameLabelText()!=null)
+			return nameLabel.getNameLabelText();
+		else
+			return "";
 	}
 
 	public String getTypeLabelText() {
-		return typeLabel.getNameLabelText();
+		if (typeLabel.getNameLabelText()!=null)
+			return typeLabel.getNameLabelText();
+		else
+			return "";
 	}
 	
 	public String getMetaPropertyLabelText()
 	{
-		return metapropertyLabel.getNameLabelText();
+		if (metapropertyLabel.getNameLabelText()!=null)
+			return metapropertyLabel.getNameLabelText();
+		else
+			return "";
 	}
 
 	/**
