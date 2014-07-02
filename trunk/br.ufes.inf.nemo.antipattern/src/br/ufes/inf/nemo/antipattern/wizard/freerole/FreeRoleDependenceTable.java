@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.freerole;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -14,6 +15,7 @@ import org.eclipse.swt.widgets.Text;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 
 public class FreeRoleDependenceTable {
@@ -73,12 +75,16 @@ public class FreeRoleDependenceTable {
 		
 	public void fillData(){
 	
-		ArrayList<Classifier> relators = new ArrayList<Classifier>();
+		HashSet<Classifier> relators = new HashSet<Classifier>();
 		
 		for(Property p: freeRole.getDefiningRelatorEnds()){
 			Classifier relator = (Classifier) p.getType();
 			relators.add(relator);
-			for (Classifier child : freeRole.getParser().getAllChildren(relator)) {
+			
+			if(!((FreeRoleAntipattern)freeRole.getAntipattern()).allChildrenHash.containsKey(relator))
+				continue;
+			
+			for (Classifier child : ((FreeRoleAntipattern)freeRole.getAntipattern()).allChildrenHash.get(relator)) {
 				relators.add(child);
 			}
 		}

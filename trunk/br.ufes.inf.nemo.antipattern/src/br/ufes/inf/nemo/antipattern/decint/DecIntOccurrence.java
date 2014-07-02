@@ -61,7 +61,7 @@ public class DecIntOccurrence extends AntipatternOccurrence {
 				
 				int generalizationsLeadingToSubtype = 0;
 				for (Generalization g : gs.getGeneralization())
-					if(g.getSpecific().equals(subtype) || parser.getAllChildren(g.getSpecific()).contains(subtype))
+					if(g.getSpecific().equals(subtype) || parser.getAllParents(subtype).contains(g.getSpecific()))
 						generalizationsLeadingToSubtype++;
 				
 				if(generalizationsLeadingToSubtype>1 && gs.isIsDisjoint() && !disjointGSList.contains(gs)){
@@ -110,7 +110,7 @@ public class DecIntOccurrence extends AntipatternOccurrence {
 			if(ip.equals(selectedIp))
 				continue;
 			for (Classifier child : ip.children()) {
-				if(child.equals(subtype) || child.allChildren().contains(subtype)){
+				if(child.equals(subtype) || subtype.allParents().contains(child)){
 					for (Generalization g : child.getGeneralization()) {
 						if(g.getGeneral().equals(ip))
 							list.add(g);
