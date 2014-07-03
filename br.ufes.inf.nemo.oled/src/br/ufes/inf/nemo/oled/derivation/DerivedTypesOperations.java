@@ -50,6 +50,7 @@ import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.positioning.ClassPosition;
 import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
@@ -62,11 +63,21 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Category;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Mediation;
 
 /**
  * @author Cássio Reginato
  */
 public class DerivedTypesOperations {
+
+	
+	static Point2D.Double pointClicked;
+	
+	public static void setPointClicked(Point2D.Double pointClicked) {
+		pointClicked = pointClicked;
+	}
+
 
 	@SuppressWarnings("unused")
 	private class FeatureElement {
@@ -523,8 +534,9 @@ public class DerivedTypesOperations {
 				newElement3 = includeElement(location, values.get(4), stereotype);
 			}
 			createGeneralization(newElement3, newElement2, newElement);
+			System.out.println(mainfix.toString());
 			dm.updateOLED(mainfix);	
-		}	
+		}
 	}
 	//include an element acoording its position name and category
 	public static Classifier includeElement(Point2D.Double position, String name, String stereotype){
@@ -843,4 +855,104 @@ public class DerivedTypesOperations {
 	}
 
 
+	public static void createParticipationUni(DiagramManager dm, String name_base, String name_derived, String name_relator, String name_target, String stereo_base, String stereo_target, Double location){
+		dman=dm;
+		of = new OutcomeFixer(dm.getCurrentProject().getModel());
+		mainfix = new Fix();
+		
+		Classifier newElement= includeElement(location, name_base, stereo_base);
+		location.y= location.y +100;
+		Classifier newElement_2= null;
+		if(newElement instanceof Mixin || newElement instanceof RoleMixin || newElement instanceof RefOntoUML.Category){
+			newElement_2= includeElement(location,name_derived, "RoleMixin");
+		}else{
+			newElement_2= includeElement(location,name_derived, "Role");
+		}
+		createGeneralizationSingle(newElement, newElement_2);
+		location.x= location.x+160;
+		Classifier newElement_3= includeElement(location,name_relator, "Relator");
+		location.x= location.x+160;
+		Classifier newElement_4= includeElement(location,name_target, stereo_target);
+		Fix fix=of.createAssociationBetween(RelationStereotype.MEDIATION, "", newElement_2, newElement_3);
+		Fix fix2=of.createAssociationBetween(RelationStereotype.MEDIATION, "", newElement_3, newElement_4);
+		mainfix.addAll(fix);
+		mainfix.addAll(fix2);
+		dman.updateOLED(mainfix);
+	}
+
+
+
+
+	public static void createParticipationComp(DiagramManager dm, String name_base,
+			String name_whole, String name_derived, String stereo_base, String stereo_whole,
+			Point2D.Double location) {
+		// TODO Auto-generated method stub
+		dman=dm;
+		of = new OutcomeFixer(dm.getCurrentProject().getModel());
+		mainfix = new Fix();
+		
+		Classifier newElement= includeElement(location, name_base, stereo_base);
+		location.y= location.y +100;
+		Classifier newElement_2= null;
+		if(newElement instanceof Mixin || newElement instanceof RoleMixin || newElement instanceof RefOntoUML.Category){
+			newElement_2= includeElement(location,name_derived, "RoleMixin");
+		}else{
+			newElement_2= includeElement(location,name_derived, "Role");
+		}
+		createGeneralizationSingle(newElement, newElement_2);
+		location.x= location.x+160;
+		Classifier newElement_3= includeElement(location,name_whole, stereo_whole);
+		Fix fix;
+		if(stereo_whole.equals("Collective")){
+			fix=of.createAssociationBetween(RelationStereotype.MEMBEROF, "", newElement_3,newElement_2 );
+		}else{
+			fix=of.createAssociationBetween(RelationStereotype.COMPONENTOF, "", newElement_3,newElement_2 );
+		}
+		mainfix.addAll(fix);
+		dman.updateOLED(mainfix);
+	}
+
+
+
+
+	public static void createParticipationBi(DiagramManager dm, String name_base_left,
+			String name_base_right, String name_relator, String name_derived_base, String name_derived_right,
+			String stereo_base_left, String stereo_base_right, Point2D.Double location) {
+		// TODO Auto-generated method stub
+		dman=dm;
+		of = new OutcomeFixer(dm.getCurrentProject().getModel());
+		mainfix = new Fix();
+		
+		Classifier newElement= includeElement(location, name_base_left, stereo_base_left);
+		location.y= location.y +100;
+		Classifier newElement_2= null;
+		if(newElement instanceof Mixin || newElement instanceof RoleMixin || newElement instanceof RefOntoUML.Category){
+			newElement_2= includeElement(location,name_derived_base, "RoleMixin");
+		}else{
+			newElement_2= includeElement(location,name_derived_base, "Role");
+		}
+		createGeneralizationSingle(newElement, newElement_2);
+		location.x= location.x+160;
+		Classifier newElement_3= includeElement(location,name_relator, "Relator");
+
+		location.y= location.y -100;
+		location.x= location.x +160;
+		Classifier newElement_4= includeElement(location, name_base_right, stereo_base_right);
+	
+		Classifier newElement_5;
+		location.y= location.y +100;
+		if(newElement_4 instanceof Mixin || newElement_4 instanceof RoleMixin || newElement_4 instanceof RefOntoUML.Category){
+			newElement_5= includeElement(location,name_derived_base, "RoleMixin");
+		}else{
+			newElement_5= includeElement(location,name_derived_base, "Role");
+		}
+	
+		Fix fix=of.createAssociationBetween(RelationStereotype.MEDIATION, "", newElement_2, newElement_3);
+		Fix fix2=of.createAssociationBetween(RelationStereotype.MEDIATION, "", newElement_3, newElement_5);
+		mainfix.addAll(fix);
+		mainfix.addAll(fix2);
+		createGeneralizationSingle(newElement_4, newElement_5);
+		dman.updateOLED(mainfix);
+	}
+	
 }

@@ -25,9 +25,11 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -82,6 +84,7 @@ import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
 import br.ufes.inf.nemo.oled.derivation.IntersectionPattern;
+import br.ufes.inf.nemo.oled.derivation.ParticipationPatternTypeChoice;
 import br.ufes.inf.nemo.oled.derivation.PastSpecializationPattern;
 import br.ufes.inf.nemo.oled.derivation.SpecializationPattern;
 import br.ufes.inf.nemo.oled.derivation.UnionPattern;
@@ -464,7 +467,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void closeCurrentProject()
 	{
 		if (currentProject!=null){
-			
+						
 			int response = JOptionPane.showOptionDialog(
 					this,
 					"Do you really want to close the current project?",
@@ -1722,7 +1725,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		for(Object obj: fix.getModified())
 		{
 			boolean redesign=false;
-			
+						
 			if (obj instanceof RefOntoUML.Property) {												
 				if (((RefOntoUML.Property)obj).getAssociation()!=null) redesign=true;	else redesign=false;		
 			}							
@@ -2490,9 +2493,16 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		((PastSpecializationPattern) dialog).setPosition(x, y);
 		dialog.setModal(true);
 		dialog.setVisible(true);
+		
 	}
 	public void openDerivedTypePatternParticipation(double x, double y) {
 		// TODO Auto-generated method stub
+		
+		JDialog dialog = new ParticipationPatternTypeChoice(this);
+		this.setCenterDialog(dialog);
+		((ParticipationPatternTypeChoice) dialog).setPosition(x, y);
+		dialog.setModal(true);
+		dialog.setVisible(true);
 		
 	}
 	public void deriveByPastSpecialization() {
