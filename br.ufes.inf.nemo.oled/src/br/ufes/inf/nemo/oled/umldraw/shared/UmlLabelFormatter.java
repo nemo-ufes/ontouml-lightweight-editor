@@ -38,8 +38,10 @@ public class UmlLabelFormatter {
 	{
 		if(namedElement instanceof PropertyImpl)
 		{
-			Property property = (Property) namedElement;			
-			return property.getName() + " : " + property.getType().getName()+"["+ModelHelper.getMultiplicityString(property)+"]";			
+			Property property = (Property) namedElement;
+			String type = new String();
+			if(property.getType()!=null) type = property.getType().getName();
+			return property.getName() + " : " + type+"["+ModelHelper.getMultiplicityString(property)+"]";			
 		}
 		if(namedElement instanceof Generalization)
 		{

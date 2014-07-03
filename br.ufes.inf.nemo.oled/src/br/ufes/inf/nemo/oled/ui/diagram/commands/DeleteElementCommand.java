@@ -239,6 +239,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 		// delete
 		if(element instanceof BaseConnection || element instanceof ClassElement) {
 			element.getParent().removeChild(element);
+			element.getParent().invalidate();
 		}
 	}
 	
@@ -252,7 +253,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 			reattachNodeConnections((Node) relation.element);
 		}
 		*/				
-		relation.parent.addChild(relation.element);
+		relation.parent.addChild(relation.element);		
 	}
 	
 	private void runDeleteFromModel(Collection<Element> elemList)

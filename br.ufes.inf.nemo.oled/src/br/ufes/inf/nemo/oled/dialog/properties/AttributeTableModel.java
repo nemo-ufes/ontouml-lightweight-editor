@@ -127,7 +127,12 @@ public class AttributeTableModel extends BaseTableModel {
 						 
 			switch(columnIndex) {
 				case 0: return prp.getName();
-				case 1: return prp.getType().getName();
+				case 1: 
+				{
+					String type = new String(); 
+					if(prp.getType()!=null) type = prp.getType().getName();
+					return type;
+				}
 				case 2: {
 					if (prp.getLower()==prp.getUpper() && prp.getUpper()!=-1) return Integer.toString(prp.getLower());
 					else if (prp.getLower()==prp.getUpper() && prp.getUpper()==-1) return "*";
@@ -163,9 +168,17 @@ public class AttributeTableModel extends BaseTableModel {
 		if(columnIndex == 0) {
 			property.setName((String) value);
 		} 
-		if(columnIndex == 1){
-			DataType type = (DataType) property.getType();
-			type.setName((String) value);
+		if(columnIndex == 1){			 
+			if(property.getType()!=null){
+				DataType type = (DataType) property.getType();
+				type.setName((String) value);
+			}else{
+				DataType type = null;	
+				if (isPrimitive) type = ModelHelper.getFactory().createPrimitiveType();		
+				else type = ModelHelper.getFactory().createDataType();
+				property.setType(type);
+				type.setName((String) value);
+			}
 		}
 		if(columnIndex == 2){
 			try {
