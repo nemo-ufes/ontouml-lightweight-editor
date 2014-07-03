@@ -90,6 +90,7 @@ import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.LineStyle;
+import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
@@ -1483,15 +1484,55 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
+	/** Bring related elements to diagram */
+	public void bringRelatedElements(DiagramElement diagramElement, DiagramEditor d)
+	{
+		if(diagramElement instanceof Node){
+			ClassElement ce = (ClassElement)diagramElement;
+			Classifier element = ce.getClassifier();
+			double x = ce.getAbsoluteX2()+30;
+			double y = ce.getAbsoluteY1()-30;
+			int row = 0;
+			int column = 0;
+			OntoUMLParser refparser = ProjectBrowser.getParserFor(currentProject);
+			ArrayList<Relationship> relatedAssociations = new ArrayList<Relationship>();
+			relatedAssociations.addAll(refparser.getDirectAssociations(element));
+			relatedAssociations.addAll(refparser.getDirectGeneralizations(element));
+			for(Relationship rel: relatedAssociations){
+				if(rel instanceof Association){
+					Classifier source = (Classifier)((Association)rel).getMemberEnd().get(0).getType();
+					Classifier target = (Classifier)((Association)rel).getMemberEnd().get(1).getType();
+					if(!source.equals(element)) { moveToDiagram(source,x+100*column,y+75*row,d); row++; if(row>2) {row=0; column++;} }
+					if(!target.equals(element)) { moveToDiagram(target,x+100*column,y+75*row,d); row++; if(row>2) {row=0; column++;} }
+					moveToDiagram(rel, d);
+				}
+				if(rel instanceof Generalization){
+					Classifier general = (Classifier)((Generalization)rel).getGeneral();
+					Classifier specific = (Classifier)((Generalization)rel).getSpecific();
+					if(!general.equals(element)) { moveToDiagram(general,x+100*column,y+75*row,d); row++; if(row>2) {row=0; column++;} }
+					if(!specific.equals(element)) { moveToDiagram(specific,x+100*column,y+75*row,d); row++; if(row>2) {row=0; column++;} }
+					moveToDiagram(rel, d);
+				}
+			}
+		}
+	}
+	
+	/** Move element to a Diagram */
+	public void moveToDiagram(RefOntoUML.Element classifier, double x, double y, DiagramEditor d)
+	{
+		if((classifier instanceof RefOntoUML.Class) || (classifier instanceof RefOntoUML.DataType)){			
+			AddNodeCommand cmd = new AddNodeCommand(d,d.getDiagram(),classifier,x,y,getCurrentProject(),(RefOntoUML.Element)classifier.eContainer());		
+			cmd.run();			
+		}
+	}
+	
 	/** Move element to a Diagram */
 	public void moveToDiagram(RefOntoUML.Element element, DiagramEditor d)
 	{
 		if (d!=null && d.getDiagram().containsChild(element))
 		{
-			if (element instanceof NamedElement)
-				frame.showInformationMessageDialog("Moving to Diagram", "\""+ModelHelper.getStereotype(element)+" "+((NamedElement)element).getName()+"\" already exists in diagram \""+d.getDiagram().getName()+"\"");
-			else if (element instanceof Generalization)
-				frame.showInformationMessageDialog("Moving to Diagram", "\"Generalization "+((Generalization)element).getSpecific().getName()+"->"+((Generalization)element).getSpecific().getName()+"\" already exists in diagram \""+d.getDiagram().getName()+"\"");
+			if (element instanceof NamedElement) frame.showInformationMessageDialog("Moving to Diagram", "\""+ModelHelper.getStereotype(element)+" "+((NamedElement)element).getName()+"\" already exists in the diagram \""+d.getDiagram().getName()+"\"");
+			else if (element instanceof Generalization) frame.showInformationMessageDialog("Moving to Diagram", "\"Generalization "+((Generalization)element).getSpecific().getName()+"->"+((Generalization)element).getSpecific().getName()+"\" already exists in the diagram \""+d.getDiagram().getName()+"\"");
 			return;			
 		}
 		if (d!=null) 

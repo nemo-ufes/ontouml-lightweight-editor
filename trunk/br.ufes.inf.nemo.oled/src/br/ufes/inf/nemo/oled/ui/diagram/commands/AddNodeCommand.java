@@ -67,10 +67,10 @@ public class AddNodeCommand extends BaseDiagramCommand {
 		if(notification==null) this.addToDiagram = false; else this.addToDiagram=true;
 		this.element = element;		
 		this.eContainer = eContainer;
-		this.diagramElement = ModelHelper.getDiagramElementByEditor(element,(DiagramEditor)notification);
+		this.diagramElement = ModelHelper.getDiagramElementByEditor(element,(DiagramEditor)notification);		
 		if(this.diagramElement==null) {
 			if(element instanceof RefOntoUML.Class || element instanceof RefOntoUML.Association || element instanceof RefOntoUML.DataType || element instanceof RefOntoUML.Generalization)
-			{
+			{				
 				if(notification!=null)
 					this.diagramElement = ((DiagramEditor)this.notification).getCreationHandler().createNode((RefOntoUML.Type)element, eContainer);				
 			}
@@ -120,7 +120,7 @@ public class AddNodeCommand extends BaseDiagramCommand {
 			ProjectBrowser.frame.getDiagramManager().updateOLEDFromInclusion(element);
 		}
 		
-		if(addToDiagram && diagramElement !=null){						
+		if(addToDiagram && diagramElement !=null){			
 			addToDiagram(diagramElement,redo);
 			ModelHelper.addMapping(element, ((ClassElement)diagramElement));
 			list.add(diagramElement);
