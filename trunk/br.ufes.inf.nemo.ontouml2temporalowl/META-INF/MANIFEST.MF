@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: OntoUML to OWL
+Bundle-SymbolicName: br.ufes.inf.nemo.ontouml.transformation.ontouml2owl;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: NEMO
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy

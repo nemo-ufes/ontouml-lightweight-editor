@@ -22,11 +22,11 @@
 package br.ufes.inf.nemo.oled.util;
 
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
-import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.OWLStructure;
-import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.tree.TreeProcessor;
-import br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.verbose.FileManager;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
 import br.ufes.inf.nemo.ontouml2simpleowl.OntoUML2SimpleOWL;
+import br.ufes.inf.nemo.ontouml2temporalowl.auxiliary.OWLStructure;
+import br.ufes.inf.nemo.ontouml2temporalowl.tree.TreeProcessor;
+import br.ufes.inf.nemo.ontouml2temporalowl.verbose.FileManager;
 import br.ufes.inf.nemo.root.OntoUML2OWL;
 
 public class OWLHelper {
@@ -34,10 +34,10 @@ public class OWLHelper {
 	public static OperationResult generateOwl(RefOntoUML.Package model, String ontologyIRI, MappingType mappingType, boolean fileOutput, String filePath, String oclRules)
 	{
 		//System.out.println(ontologyIRI);
-		br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType mp = null;
+		br.ufes.inf.nemo.ontouml2temporalowl.auxiliary.MappingType mp = null;
 		String errors = "";
 		if(mappingType != null && !mappingType.equals(MappingType.RULES)){
-			mp = br.ufes.inf.nemo.ontouml.transformation.ontouml2owl.auxiliary.MappingType.valueOf(mappingType.toString());
+			mp = br.ufes.inf.nemo.ontouml2temporalowl.auxiliary.MappingType.valueOf(mappingType.toString());
 		}
     	try
     	{
