@@ -138,6 +138,10 @@ public class ToolboxPopupMenu extends JPopupMenu {
         unionItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));        
         exclusionItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
         intersectionItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
+        specializationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
+        pastspecializationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
+        participationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
+        
         
         pointerItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/mousepointer.png")));
         

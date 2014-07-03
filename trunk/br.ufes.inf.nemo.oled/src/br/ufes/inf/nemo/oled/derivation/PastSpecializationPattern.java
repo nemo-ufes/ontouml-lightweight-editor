@@ -133,6 +133,7 @@ public class PastSpecializationPattern extends JDialog {
 		lblNewLabel_3.setIcon(new ImageIcon(PastSpecializationPattern.class.getResource("/resources/figures/derivation_by_past.png")));
 		
 		final JCheckBox chckbxNewCheckBox = new JCheckBox("generate temporal OCL rule");
+		chckbxNewCheckBox.setSelected(true);
 		chckbxNewCheckBox.setBackground(Color.WHITE);
 		
 		JLabel lblTempexWorkerallinstancesselfforallwk = new JLabel("");
@@ -211,6 +212,7 @@ public class PastSpecializationPattern extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						DerivedTypesOperations.createPastSpecializationPattern(dman,location,txt_supertype.getText(),cmb_super.getSelectedItem().toString(),txt_special.getText(),cmb_special.getSelectedItem().toString(),txt_past.getText(),cmb_past.getSelectedItem().toString(),chckbxNewCheckBox.isSelected());
+						dispose();
 					}
 				});
 				okButton.setActionCommand("OK");

@@ -137,6 +137,9 @@ public class SpecializationPattern extends JDialog {
 				if(chckbxNewCheckBox.isSelected()){
 					lbl_attribute.setEnabled(true);
 					lbl_type_att.setEnabled(true);
+				}else{
+					lbl_attribute.setEnabled(false);
+					lbl_type_att.setEnabled(false);
 				}
 			}
 		});
