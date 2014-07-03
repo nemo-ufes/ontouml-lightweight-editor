@@ -69,6 +69,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	@SuppressWarnings("unused")
 	private JMenuItem specializationItem;
 	private ClassStereotypeChangeMenu changeMenu;
+	private JMenuItem relatedItem;
 	
 	public SingleNodePopupMenu()
 	{
@@ -91,6 +92,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		
 		addSeparator();
 		
+		createBringRelatedElementsMenu();
 		createPatternMenu();
 		
 		JMenu deriveMenu = new JMenu("Derive by");
@@ -161,6 +163,18 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 //		addSeparator();				
 //		changeMenu = new ClassStereotypeChangeMenu(editor.getDiagramManager());
 //		add(changeMenu);
+	}
+	
+	public void createBringRelatedElementsMenu()
+	{	
+		relatedItem = new JMenuItem("Bring Related Elements");
+		relatedItem.addActionListener(new ActionListener() {				
+			@Override
+        	public void actionPerformed(ActionEvent e) { 
+				editor.getDiagramManager().bringRelatedElements(node, editor);
+			}
+		});
+		add(relatedItem);
 	}
 	
 	public void createColorMenu()
