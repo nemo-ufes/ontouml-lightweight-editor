@@ -409,7 +409,8 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		eliminateTrash(connections);
 		
 		// Draw associations
-		for (Connection assoc : connections) assoc.draw(drawingContext);		
+		for (Connection assoc : connections) 
+			assoc.draw(drawingContext);		
 	}
 
 	/**
