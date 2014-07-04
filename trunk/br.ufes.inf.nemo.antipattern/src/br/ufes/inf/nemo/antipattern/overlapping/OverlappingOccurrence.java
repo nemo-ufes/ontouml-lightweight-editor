@@ -63,29 +63,52 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 	public void identifyVariations(){
 		Combination comb = new Combination(new ArrayList<>(allProperties), 0);
 		boolean hasDirectProperty;
+		boolean hasPropertyInheritance;
+		boolean hasRepeatedType;
 		
 		while(comb.hasNext()) {
+			
 			ArrayList<Property> result = comb.next();
 			
-			hasDirectProperty = false;
-			for (Property p : result) {
-				if(p.getOpposite()!=null && getMainType().equals(p.getOpposite().getType())){
-					hasDirectProperty = true;
-					break;
-				}
-			}
-			
-			if(!hasDirectProperty)
-				continue;
-			
 			if(result.size()>1) {
-				OverlappingGroup var;
-				try {
-					var = new SameType(result, antipattern);
-					addVariation(var);
-					continue;
+				
+				hasDirectProperty = false;
+				for (Property p : result) {
+					if(p.getOpposite()!=null && getMainType().equals(p.getOpposite().getType())){
+						hasDirectProperty = true;
+						break;
+					}
 				}
-				catch(Exception e){	}
+				
+				if(!hasDirectProperty)
+					continue;
+				
+				hasPropertyInheritance = false;
+				hasRepeatedType = false;
+				for (Property p : result) {
+					for (Property p2 : result) {
+						if(parser.allChildrenHash.get(p.getType()).contains(p2.getType())){
+							hasPropertyInheritance = true;
+							break;
+						}
+						
+						if(!p.equals(p2) && p.getType().equals(p2.getType())){
+							hasRepeatedType = true;
+							break;
+						}
+					}
+				}
+				
+				if(hasPropertyInheritance || hasRepeatedType)
+					continue;
+				
+				OverlappingGroup var;
+//				try {
+//					var = new SameType(result, antipattern);
+//					addVariation(var);
+//					continue;
+//				}
+//				catch(Exception e){	}
 				try {
 					var = new CommonSortalSupertype(result, antipattern);
 					addVariation(var);
