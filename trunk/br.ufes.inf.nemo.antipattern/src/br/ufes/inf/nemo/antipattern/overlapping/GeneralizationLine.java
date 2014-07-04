@@ -2,11 +2,14 @@ package br.ufes.inf.nemo.antipattern.overlapping;
 
 import java.util.ArrayList;
 
+import org.eclipse.swt.widgets.Composite;
+
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.overlapping.GeneralizationLineComposite;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
@@ -95,6 +98,16 @@ public class GeneralizationLine extends OverlappingGroup {
 
 	public Property getChild() {
 		return child;
+	}
+
+	@Override
+	public String getType() {
+		return "Generalization Line";
+	}
+
+	@Override
+	public Composite createComposite(Composite parent, int style) {
+		return new GeneralizationLineComposite(parent, style, this);
 	}
 	
 }

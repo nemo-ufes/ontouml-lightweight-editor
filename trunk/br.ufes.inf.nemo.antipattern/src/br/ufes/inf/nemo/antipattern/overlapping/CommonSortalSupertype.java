@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import org.eclipse.swt.widgets.Composite;
+
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
@@ -14,6 +16,7 @@ import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.overlapping.CommonSortalSupertypeComposite;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
@@ -86,12 +89,12 @@ public class CommonSortalSupertype extends OverlappingGroup {
 	}
 
 	private void setClosestSupertype(){
-		OntoUMLParser parser = antipattern.getParser();
+		OntoUMLParser parser = getAntipattern().getParser();
 		closestSupertypes = new ArrayList<Classifier>(commonSupertypes);
 		
 		for (Classifier common : commonSupertypes) {
 			
-			Iterator<Classifier> iterator = closestSupertypes.iterator();
+			Iterator<Classifier> iterator = getClosestSupertypes().iterator();
 			
 			while(iterator.hasNext()){
 				Classifier candidate = iterator.next();
@@ -119,7 +122,7 @@ public class CommonSortalSupertype extends OverlappingGroup {
 						"\nIdentity Provider: "+getIdentityProviderName()+
 						"\nClosest Common Supertypes: ";
 		
-		for (Classifier parent : this.closestSupertypes)
+		for (Classifier parent : this.getClosestSupertypes())
 			result+="\n\t"+OntoUMLNameHelper.getTypeAndName(parent, true, false);
 			
 		result += "\nPart Ends: ";
@@ -137,7 +140,7 @@ public class CommonSortalSupertype extends OverlappingGroup {
 		if(!this.overlappingProperties.containsAll(partEnds))
 			return false;
 		
-		ArrayList<GeneralizationSet> gss = antipattern.getParser().getSubtypesGeneralizationSets(closestSupertpe);
+		ArrayList<GeneralizationSet> gss = getAntipattern().getParser().getSubtypesGeneralizationSets(closestSupertpe);
 		
 		ArrayList<Classifier> subtypes = new ArrayList<> ();
 		for (Property property : partEnds) {
@@ -153,7 +156,7 @@ public class CommonSortalSupertype extends OverlappingGroup {
 				
 				for (Generalization g : gs.getGeneralization()) {
 					allGsChildren.add(g.getSpecific());
-					allGsChildren.addAll(antipattern.getParser().allChildrenHash.get(g.getSpecific()));
+					allGsChildren.addAll(getAntipattern().getParser().allChildrenHash.get(g.getSpecific()));
 				}
 				
 				if (allGsChildren.containsAll(subtypes)){
@@ -203,5 +206,18 @@ public class CommonSortalSupertype extends OverlappingGroup {
 		
 		return identityProvider.getName();
 	}
-	
+
+	@Override
+	public String getType() {
+		return "Common Sortal Supertype";
+	}
+
+	public ArrayList<Classifier> getClosestSupertypes() {
+		return closestSupertypes;
+	}
+
+	@Override
+	public Composite createComposite(Composite parent, int style) {
+		return new CommonSortalSupertypeComposite(parent, style, this);
+	}	
 }

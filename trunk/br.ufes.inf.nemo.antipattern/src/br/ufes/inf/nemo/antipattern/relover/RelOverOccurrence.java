@@ -14,6 +14,7 @@ import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.list.Combination;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelOverOccurrence extends OverlappingOccurrence{
@@ -82,7 +83,7 @@ public class RelOverOccurrence extends OverlappingOccurrence{
 		for (Property p : getAllMediatedProperties())
 			result+="\n\t"+getParser().getStringRepresentation(p);
 				
-		for (OverlappingGroup variation : getVariations()) {
+		for (OverlappingGroup variation : getGroups()) {
 			result+="\n\n"+variation.toString();
 		}
 		return result;
@@ -222,5 +223,9 @@ public class RelOverOccurrence extends OverlappingOccurrence{
 		return "Relator";
 	}
 	
+	@Override
+	public String getGroupTypeLine() {
+		return "The current overlapping group of relator "+OntoUMLNameHelper.getTypeAndName(getRelator(),true, true)+" is composed by the following mediated types:";
+	}
 	
 }

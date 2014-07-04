@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.antipattern.overlapping;
 
 import java.util.ArrayList;
 
+import org.eclipse.swt.widgets.Composite;
+
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.Antipattern;
@@ -13,7 +15,7 @@ public abstract class OverlappingGroup {
 
 	protected ArrayList<Property> overlappingProperties;
 	protected ArrayList<Classifier> overlappingTypes;
-	protected Antipattern<?> antipattern;
+	private Antipattern<?> antipattern;
 	boolean validGroup;
 	
 	
@@ -30,7 +32,6 @@ public abstract class OverlappingGroup {
 			throw new Exception("OVER_GROUP: More then one property is required.");
 	}
 	
-	public abstract boolean makeEndsDisjoint(AntipatternOccurrence occurrence, ArrayList<Property> overlappingProperties);
 	
 	public boolean makeEndsExclusive(OverlappingOccurrence overOccurrence, ArrayList<Property> selectedProperties) {
 		
@@ -91,4 +92,13 @@ public abstract class OverlappingGroup {
 	public boolean isValidVariation() {
 		return validGroup;
 	}
+	
+	public Antipattern<?> getAntipattern() {
+		return antipattern;
+	}
+	
+	public abstract String getType();
+	public abstract Composite createComposite(Composite parent, int style);
+	public abstract boolean makeEndsDisjoint(AntipatternOccurrence occurrence, ArrayList<Property> overlappingProperties);
+	
 }

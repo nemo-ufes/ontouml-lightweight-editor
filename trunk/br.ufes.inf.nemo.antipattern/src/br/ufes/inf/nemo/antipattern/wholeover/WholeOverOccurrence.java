@@ -46,7 +46,7 @@ public class WholeOverOccurrence extends OverlappingOccurrence {
 			else
 				result+=" (from: "+OntoUMLNameHelper.getTypeAndName(p.getOpposite().getType(), true, false)+")";
 		}
-		for (OverlappingGroup variation : getVariations()) {
+		for (OverlappingGroup variation : getGroups()) {
 			result+="\n\n"+variation.toString();
 		}
 		return result;
@@ -75,5 +75,12 @@ public class WholeOverOccurrence extends OverlappingOccurrence {
 	@Override
 	public String getBaseClassType() {
 		return "Whole";
-	}	
+	}
+
+	@Override
+	public String getGroupTypeLine() {
+		return "The current overlapping group of whole "+OntoUMLNameHelper.getTypeAndName(getWhole(),true, true)+" is composed by the following parts:";
+	}
+	
+		
 }

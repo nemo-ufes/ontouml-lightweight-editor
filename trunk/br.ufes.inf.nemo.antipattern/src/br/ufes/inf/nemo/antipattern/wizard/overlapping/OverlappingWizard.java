@@ -39,7 +39,7 @@ public class OverlappingWizard extends AntipatternWizard {
 		exclusiveDefinitionPage = new ExclusiveDefinitionPage(getAp(),info);
 		disjointOverlappingDefinitionPage = new DisjointOverlappingDefinitionPage(getAp(),info);
 		
-		for (Integer variationIndex = 0; variationIndex < getAp().getVariations().size(); variationIndex++){
+		for (Integer variationIndex = 0; variationIndex < getAp().getGroups().size(); variationIndex++){
 			disjointPages.add(new DisjointOverlappingGroupPage("DisjointPage "+variationIndex.toString(),getAp(),variationIndex));
 			exclusivePages.add(new ExclusiveGroupPage("ExclusivePage "+variationIndex.toString(),getAp(),variationIndex));
 		}
@@ -57,7 +57,7 @@ public class OverlappingWizard extends AntipatternWizard {
 		addPage(disjointOverlappingDefinitionPage);
 		addPage(exclusiveDefinitionPage);
 		
-		for (int i = 0; i < getAp().getVariations().size(); i++) {        
+		for (int i = 0; i < getAp().getGroups().size(); i++) {        
 			addPage(disjointPages.get(i));
 			addPage(exclusivePages.get(i));
 		}
@@ -83,7 +83,7 @@ public class OverlappingWizard extends AntipatternWizard {
 	}
 	
 	public boolean hasNextVariation(int variationIndex){
-		return variationIndex<getAp().getVariations().size()-1;
+		return variationIndex<getAp().getGroups().size()-1;
 	}
 	
 	public OverlappingOccurrence getAp(){

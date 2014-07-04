@@ -7,6 +7,7 @@ import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class PartOverOccurrence extends OverlappingOccurrence{
 
@@ -37,7 +38,7 @@ public class PartOverOccurrence extends OverlappingOccurrence{
 		for (Property p : getAllWholeEnds())
 			result+="\n\t"+getParser().getStringRepresentation(p);
 				
-		for (OverlappingGroup variation : getVariations()) {
+		for (OverlappingGroup variation : getGroups()) {
 			result+="\n\n"+variation.toString();
 		}
 		
@@ -62,6 +63,11 @@ public class PartOverOccurrence extends OverlappingOccurrence{
 	@Override
 	public String getBaseClassType() {
 		return "Part";
+	}
+
+	@Override
+	public String getGroupTypeLine() {
+		return "The current overlapping group of part "+OntoUMLNameHelper.getTypeAndName(getPart(),true, true)+" is composed by the following wholes:";
 	}
 	
 
