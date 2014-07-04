@@ -195,6 +195,10 @@ public class DrawingContextImpl implements DrawingContext {
 	 */
 	public void drawLabel(String text, double x, double y, FontType fontType) {
 		g2d.setFont(getFont(fontType));
+		
+		if(text==null)
+			text = "";
+		
 		g2d.drawString(text, (float) x, (float) y);
 	}
 
