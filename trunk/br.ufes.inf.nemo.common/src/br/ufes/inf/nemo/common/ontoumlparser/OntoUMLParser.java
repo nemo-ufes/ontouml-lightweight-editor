@@ -52,6 +52,7 @@ import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import RefOntoUML.Type;
+import br.ufes.inf.nemo.common.list.ArrayListOperations;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 /** 
@@ -78,6 +79,9 @@ public class OntoUMLParser {
 	 */
 	private HashMap<EObject,ParsingElement> elementsHash;
 	private NameHandler nameHandler = new NameHandler();
+
+	public HashMap<Classifier, HashSet<Classifier>> childHash;
+	public HashMap<Classifier, HashSet<Classifier>> allChildrenHash;
 	
 	/** Options for complete element selections in the model (transformation purposes). */
 	public static int NO_HIERARCHY = 0, SORTAL_ANCESTORS = 1, ALL_ANCESTORS = 2, ALL_DESCENDANTS = 3, COMPLETE_HIERARCHY = 4;		
@@ -1461,14 +1465,14 @@ public class OntoUMLParser {
 	 * @param c: Classifier
 	 * @return
 	 */
-	public ArrayList<Classifier> getIdentityProvider(Classifier c)
+	public HashSet<Classifier> getIdentityProvider(Classifier c)
 	{
-		ArrayList<Classifier> result = new ArrayList<Classifier>();
+		HashSet<Classifier> result = new HashSet<Classifier>();
 		if (c instanceof SubstanceSortal) result.add(c);
 		
 		if (c instanceof AntiRigidSortalClass || c instanceof SubKind)
 		{
-			for(Classifier p: c.allParents())
+			for(Classifier p: getAllParents(c))
 			{
 				if(p instanceof SubstanceSortal) result.add(p);
 			}
@@ -1476,7 +1480,7 @@ public class OntoUMLParser {
 		
 		if (c instanceof MixinClass)
 		{
-			for(Classifier child: c.allChildren())
+			for(Classifier child: getAllChildren(c))
 			{
 				if(child instanceof SubstanceSortal) result.add(child);
 				if(child instanceof AntiRigidSortalClass || child instanceof SubKind){
@@ -1485,9 +1489,9 @@ public class OntoUMLParser {
 					}
 				}
 			}
-			for(Classifier parent: c.allParents())
+			for(Classifier parent: getAllParents(c))
 			{
-				for(Classifier parentChild: parent.allChildren()){
+				for(Classifier parentChild: getAllChildren(parent)){
 					if (parentChild instanceof SubstanceSortal) result.add(parentChild);
 					if (parentChild instanceof AntiRigidSortalClass || parentChild instanceof SubKind) {
 						for(Classifier p: parentChild.allParents()){
@@ -1531,8 +1535,8 @@ public class OntoUMLParser {
 			return true;
 		
 		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
-			ArrayList<Classifier> identityProviders = getIdentityProvider(c);
-			if(identityProviders.size()==1 && identityProviders.get(0) instanceof Kind)
+			HashSet<Classifier> identityProviders = getIdentityProvider(c);
+			if(identityProviders.size()==1 && identityProviders.toArray()[0] instanceof Kind)
 				return true;
 		}
 		
@@ -1555,8 +1559,8 @@ public class OntoUMLParser {
 			return true;
 		
 		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
-			ArrayList<Classifier> identityProviders = getIdentityProvider(c);
-			if(identityProviders.size()==1 && identityProviders.get(0) instanceof Quantity)
+			HashSet<Classifier> identityProviders = getIdentityProvider(c);
+			if(identityProviders.size()==1 && identityProviders.toArray()[0] instanceof Quantity)
 				return true;
 		}
 		
@@ -1580,8 +1584,8 @@ public class OntoUMLParser {
 			return true;
 		
 		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
-			ArrayList<Classifier> identityProviders = getIdentityProvider(c);
-			if(identityProviders.size()==1 && identityProviders.get(0) instanceof Collective)
+			HashSet<Classifier> identityProviders = getIdentityProvider(c);
+			if(identityProviders.size()==1 && identityProviders.toArray()[0] instanceof Collective)
 				return true;
 		}
 		
@@ -1625,4 +1629,172 @@ public class OntoUMLParser {
 		
 		return false;
 	}
+
+	public ArrayList<Classifier> getCommonSubtypesFromClassifiers(ArrayList<Classifier> types) {
+		ArrayList<Classifier> subtypes = new ArrayList<Classifier>();
+		
+		if(types==null || types.size()==0)
+			return subtypes;
+		
+		subtypes.addAll(allChildrenHash.get(types.get(0)));
+		
+		for (int i = 1; i < types.size(); i++) {
+			ArrayList<Classifier> currentSubtypes = new ArrayList<Classifier>();
+			currentSubtypes.addAll(allChildrenHash.get(types.get(i)));
+			subtypes.retainAll(currentSubtypes);
+		}
+		
+		return subtypes;
+	}
+
+	public ArrayList<Classifier> getCommonSubtypesFromProperties(ArrayList<Property> partEnds) {
+		
+		ArrayList<Classifier> types = new ArrayList<Classifier>();
+		for (Property property : partEnds) {
+			types.add((Classifier) property.getType());
+		}
+	
+		return getCommonSubtypesFromClassifiers(types);
+	}
+
+	//Get generalization sets from a classifier's generalization
+	public ArrayList<GeneralizationSet> getGeneralizationSets(Classifier c){
+		Set<GeneralizationSet> genSets = new HashSet<GeneralizationSet>();
+		
+		for (Generalization g : c.getGeneralization()) {
+			genSets.addAll(g.getGeneralizationSet());
+		}
+		
+		ArrayList<GeneralizationSet> result = new ArrayList<GeneralizationSet>();
+		result.addAll(genSets);
+		return result;
+	}
+
+	//Get generalization sets from a classifier's generalization
+	public ArrayList<GeneralizationSet> getSubtypesGeneralizationSets(Classifier c){
+		if(c==null)
+			return null;
+		
+		Set<GeneralizationSet> genSets = new HashSet<GeneralizationSet>();
+		
+		if(childHash==null) 
+			buildChildrenHashes();
+		
+		for (Classifier child : childHash.get(c)) {
+			genSets.addAll(getGeneralizationSets(child));
+		}
+		
+		ArrayList<GeneralizationSet> result = new ArrayList<GeneralizationSet>();
+		result.addAll(genSets);
+		return result;
+	}
+
+	public boolean madeDisjointByGeneralizationSet(	ArrayList<Classifier> types, ArrayList<GeneralizationSet> genSets, ArrayList<Classifier> commonSupertypes) {
+		//collect generalizationSets
+		ArrayList<GeneralizationSet> generalizationSets = new ArrayList<GeneralizationSet>();
+		
+		if(childHash==null || allChildrenHash==null) 
+			buildChildrenHashes();
+		
+		for (Classifier parent : commonSupertypes) {
+			generalizationSets = getSubtypesGeneralizationSets(parent);
+		}
+		
+		//verifies if there is a generalization set which makes the subtypes disjoint
+		for (GeneralizationSet gs : generalizationSets) {
+			int typesInDifferentGeneralizations = 0;
+			
+			for (Generalization g1 : gs.getGeneralization())
+				if(types.contains(g1.getSpecific()) || ArrayListOperations.hasIntersection(types, allChildrenHash.get(g1.getSpecific())))
+					typesInDifferentGeneralizations++;
+			
+			if(typesInDifferentGeneralizations>1){
+				if(gs.isIsDisjoint())
+					return false;
+				else
+					genSets.add(gs);
+			}		
+		}
+		return true;
+	}
+
+	public ArrayList<Classifier> getCommonSupertypesFromClassifiers(ArrayList<Classifier> types) {
+		ArrayList<Classifier> superTypes = new ArrayList<Classifier>();
+		
+		if(types==null || types.size()==0)
+			return superTypes;
+		
+		superTypes.addAll(getAllParents(types.get(0)));
+		
+		for (int i = 1; i < types.size(); i++) {
+			ArrayList<Classifier> currentSupertypes = new ArrayList<Classifier>(types.get(i).allParents());
+			superTypes.retainAll(currentSupertypes);
+		}
+		
+		return superTypes;
+	}
+	
+	public void buildChildrenHashes() {
+		childHash = new HashMap<Classifier,HashSet<Classifier>>();
+		allChildrenHash = new HashMap<Classifier,HashSet<Classifier>>();
+		
+		for (Classifier c : getAllInstances(Classifier.class)) {
+			childHash.put(c, new HashSet<Classifier>());
+			allChildrenHash.put(c, new HashSet<Classifier>());
+		}
+		
+		for (Classifier c : childHash.keySet()) {
+			for (Classifier parent : c.parents())	
+				childHash.get(parent).add(c);
+			
+			for (Classifier parent : c.allParents())
+				allChildrenHash.get(parent).add(c);
+			
+		}		
+	}
+
+	//returns true if all types of the properties share a common supertype and there is no generalizationSet making them disjoint; returns false otherwise
+	//if it returns true, the parameters commonSupertypes and genSets are set with the common supertypes and the relevant generalizations sets 
+	public boolean allTypesOverlap( ArrayList<Classifier> types, ArrayList<Classifier> commonSupertypes, ArrayList<GeneralizationSet> genSets) throws Exception {
+		
+		if(commonSupertypes==null || commonSupertypes.size()>0)
+			throw new Exception();
+		
+		if(genSets==null || genSets.size()>0)
+			throw new Exception();
+		
+		//get commmon supertypes; there must be at least one
+		commonSupertypes.addAll(getCommonSupertypesFromClassifiers(types));
+		if(commonSupertypes.size()<1)
+			return false;
+		
+		return madeDisjointByGeneralizationSet(types, genSets,commonSupertypes);
+	}
+
+	//returns true if there is no generalizationSet making all property types disjoint; returns false otherwise
+	//if it returns true, the parameter genSets is set with the relevant generalizations sets 
+	public boolean allTypesOverlap(ArrayList<Classifier> types, ArrayList<GeneralizationSet> genSets) throws Exception {
+		
+		if(genSets==null || genSets.size()>0)
+			throw new Exception();
+		
+		//get commmon supertypes; there must be at least one
+		ArrayList<Classifier> commonSupertypes = getCommonSupertypesFromClassifiers(types);
+		if(commonSupertypes.size()==0)
+			return true;
+		
+		return madeDisjointByGeneralizationSet(types, genSets, commonSupertypes);
+	}
+
+	public ArrayList<Classifier> getCommonSupertypesFromProperties(ArrayList<Property> partEnds) {
+	
+		ArrayList<Classifier> types = new ArrayList<Classifier>();
+		for (Property property : partEnds) {
+			types.add((Classifier) property.getType());
+		}
+	
+		return getCommonSupertypesFromClassifiers(types);
+	}
+	
+	
 }
