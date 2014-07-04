@@ -429,7 +429,7 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	 * {@inheritDoc}
 	 */
 	public String getLabelText() {
-		if (association.getClassifier() == null)
+		if (association.getClassifier() == null || association.getClassifier().getName()==null)
 			return "";
 		return association.getClassifier().getName();
 	}
