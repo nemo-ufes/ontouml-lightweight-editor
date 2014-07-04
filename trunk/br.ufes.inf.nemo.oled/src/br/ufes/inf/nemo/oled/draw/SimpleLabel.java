@@ -83,10 +83,7 @@ public class SimpleLabel extends AbstractNode implements Label {
 		if (!isValid()) {
 			recalculateSize(drawingContext);
 		}
-		drawingContext.drawLabel(getNameLabelText(), getAbsoluteX1(),
-				getAbsoluteY1()
-						+ drawingContext.getFontMetrics(fontType)
-								.getMaxAscent(), fontType);
+		drawingContext.drawLabel(getNameLabelText(), getAbsoluteX1(), getAbsoluteY1() + drawingContext.getFontMetrics(fontType).getMaxAscent(), fontType);
 	}
 
 	/**
