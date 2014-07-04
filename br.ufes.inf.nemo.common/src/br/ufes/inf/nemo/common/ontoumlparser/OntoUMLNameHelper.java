@@ -39,6 +39,8 @@ import RefOntoUML.subQuantityOf;
 public class OntoUMLNameHelper {
 
 	public static String getTypeName(EObject elem){
+		if(elem==null)
+			return "Null";
 		if(elem instanceof Kind)
 			return "Kind";
 		if(elem instanceof Quantity)
