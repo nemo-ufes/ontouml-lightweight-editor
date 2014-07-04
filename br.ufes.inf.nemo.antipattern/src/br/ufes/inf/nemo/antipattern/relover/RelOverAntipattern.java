@@ -133,15 +133,11 @@ public class RelOverAntipattern extends OverlappingAntipattern<RelOverOccurrence
 		HashMap<Classifier,HashSet<Property>> hash = super.buildMainTypeAndPropertiesHash(Mediation.class);
 		
 		for (Classifier relator : hash.keySet()) {
-			
-//			System.out.println("RELATOR: "+relator.getName());
 			try {
 				RelOverOccurrence relOver = new RelOverOccurrence(relator, hash.get(relator), this);
 				getOccurrences().add(relOver);
 			}
-			catch (Exception e){
-				System.out.println(e.getMessage());
-			}
+			catch (Exception e){}
 		}
 		
 		return getOccurrences();

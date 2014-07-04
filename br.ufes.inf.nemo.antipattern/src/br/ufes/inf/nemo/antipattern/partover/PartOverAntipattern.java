@@ -95,15 +95,11 @@ public class PartOverAntipattern extends OverlappingAntipattern<PartOverOccurren
 		HashMap<Classifier,HashSet<Property>> hash = super.buildMainTypeAndPropertiesHash(Meronymic.class);
 		
 		for (Classifier part : hash.keySet()) {
-			
-			System.out.println("RELATOR: "+part.getName());
 			try {
 				PartOverOccurrence partOver = new PartOverOccurrence(part, hash.get(part), this);
 				getOccurrences().add(partOver);
 			}
-			catch (Exception e){
-				System.out.println(e.getMessage());
-			}
+			catch (Exception e){}
 		}
 		
 		return getOccurrences();
