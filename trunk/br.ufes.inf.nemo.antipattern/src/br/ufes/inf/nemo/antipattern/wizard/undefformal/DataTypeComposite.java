@@ -68,8 +68,8 @@ public class DataTypeComposite extends Composite {
 						"derive : <COMPLETE-HERE>";
 		
 		sourceTableCreator = new AttrTable(this, SWT.BORDER, ((RefOntoUML.Class)uf.getSource()).getOwnedAttribute());
-//		Table sourceTable = sourceTableCreator.getTable();
-		Table sourceTable = new Table(this, SWT.BORDER);
+		Table sourceTable = sourceTableCreator.getTable();
+//		Table sourceTable = new Table(this, SWT.BORDER);
 		
 		btnSourceCreate = new Button(this, SWT.NONE);
 		btnSourceCreate.setText("Create");
@@ -89,8 +89,8 @@ public class DataTypeComposite extends Composite {
 		lblSource.setText(""+uf.getSource().getName());
 		
 		targetTableCreator = new AttrTable(this, SWT.BORDER, ((RefOntoUML.Class)uf.getTarget()).getOwnedAttribute());
-//		Table targetTable = targetTableCreator.getTable();
-		Table targetTable = new Table(this, SWT.BORDER);
+		Table targetTable = targetTableCreator.getTable();
+//		Table targetTable = new Table(this, SWT.BORDER);
 				
 		
 		lblTarget = new Label(this, SWT.NONE);

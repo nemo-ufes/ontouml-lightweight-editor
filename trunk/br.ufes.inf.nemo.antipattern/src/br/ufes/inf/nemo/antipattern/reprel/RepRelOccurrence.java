@@ -148,10 +148,10 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 		expl += " of them are connected to '"+relator.getName()+"\' through mediations which have an upper bound multiplicity in the '"+relator.getName()+"\' side greater than one. They are:";
 		
 		for (Mediation m : problematicMediations) {
-			expl+="\n"+(parser.getMediated(m).getName())+" ";
+			expl+="\n"+(OntoUMLParser.getMediated(m).getName())+" ";
 			
-			Property relatorEnd = parser.getRelatorEnd(m);
-			Property mediatedEnd = parser.getMediatedEnd(m);
+			Property relatorEnd = OntoUMLParser.getRelatorEnd(m);
+			Property mediatedEnd = OntoUMLParser.getMediatedEnd(m);
 			
 			if (mediatedEnd.getLower()==-1)
 				expl+="0";

@@ -1,6 +1,8 @@
 package br.ufes.inf.nemo.antipattern.overlapping;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
@@ -10,8 +12,10 @@ import RefOntoUML.Property;
 import RefOntoUML.Role;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
-import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
+import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class CommonSortalSupertype extends OverlappingGroup {
 	
@@ -19,9 +23,10 @@ public class CommonSortalSupertype extends OverlappingGroup {
 	Classifier identityProvider,closestSupertpe;
 	ArrayList<Classifier> commonSupertypes;
 	ArrayList<GeneralizationSet> genSets;
+	private ArrayList<Classifier> closestSupertypes;
 	
-	public CommonSortalSupertype (ArrayList<Property> sortalOverlappingProperties)throws Exception {
-		super(sortalOverlappingProperties);
+	public CommonSortalSupertype (ArrayList<Property> sortalOverlappingProperties, Antipattern<?> antipattern)throws Exception {
+		super(sortalOverlappingProperties, antipattern);
 		
 		//all types must be subkinds, phases or roles
 		for (Classifier type : super.overlappingTypes) {
@@ -31,29 +36,71 @@ public class CommonSortalSupertype extends OverlappingGroup {
 		
 		//all types must be have the same identity provider or none at all (in case of partial models)
 		identityProvider = null;
+		boolean hasIdentitylessProperty = false;
+		boolean hasIdentifiableProperty = false;
+		
+		Classifier currentIdentityProvider;
+		HashSet<Classifier> allIdentityProviders;
+		
 		for (Property p : sortalOverlappingProperties) {
-			Classifier currentIdentityProvider = OverlappingTypesIdentificator.getIdentityProvider((SortalClass) p.getType());
-
-			if(identityProvider==null)
-				identityProvider=currentIdentityProvider;
-			else if (!identityProvider.equals(currentIdentityProvider))
-				throw new Exception("VAR4: Different identity providers.");
+			currentIdentityProvider = null;	
+			allIdentityProviders = antipattern.getParser().getIdentityProvider((SortalClass) p.getType());
+			
+			//found single identity provider
+			if(allIdentityProviders.size()==1){
+				currentIdentityProvider = (Classifier) allIdentityProviders.toArray()[0];
+				
+				if(hasIdentitylessProperty)
+					throw new Exception("VAR4: Either all types have the same identity or none at all.");
+				
+				if(hasIdentifiableProperty && !identityProvider.equals(currentIdentityProvider))
+					throw new Exception("VAR4: Different identity providers.");
+				
+				hasIdentifiableProperty = true;
+				identityProvider = currentIdentityProvider;
+			}
+			//found multiple identity providers
+			else if(allIdentityProviders.size()>1){
+				throw new Exception("VAR4: Multiple identity providers.");
+			}
+			else if(allIdentityProviders.size()==0){
+				hasIdentitylessProperty = true;
+				
+				if(hasIdentifiableProperty)
+					throw new Exception("VAR4: Either all types have the same identity or none at all.");
+			}
+			
 		}
 		
 		this.genSets = new ArrayList<GeneralizationSet>();
 		this.commonSupertypes = new ArrayList<Classifier>();
-		if (!OverlappingTypesIdentificator.allTypesOverlap(super.overlappingTypes, commonSupertypes,genSets))
+		if (!antipattern.getParser().allTypesOverlap(super.overlappingTypes, commonSupertypes,genSets))
 			throw new Exception("VAR: Disjoint by supertypes.");
 		
 		if(genSets.size()>0)
 			hasOverlappingGS = true;
 		
-		getClosestSupertype();
+		setClosestSupertype();
 		
 		super.validGroup = true;
 	}
 
-	private void getClosestSupertype(){
+	private void setClosestSupertype(){
+		OntoUMLParser parser = antipattern.getParser();
+		closestSupertypes = new ArrayList<Classifier>(commonSupertypes);
+		
+		for (Classifier common : commonSupertypes) {
+			
+			Iterator<Classifier> iterator = closestSupertypes.iterator();
+			
+			while(iterator.hasNext()){
+				Classifier candidate = iterator.next();
+				
+				if(parser.getAllParents(common).contains(candidate))
+					iterator.remove();
+			}
+			
+		}
 		
 		closestSupertpe = null;
 		
@@ -70,15 +117,15 @@ public class CommonSortalSupertype extends OverlappingGroup {
 	public String toString(){
 		String result =	"Overllaping Group: Sortals with Common Identity Provider" +
 						"\nIdentity Provider: "+getIdentityProviderName()+
-						"\nCommon Supertypes: ";
+						"\nClosest Common Supertypes: ";
 		
-		for (Classifier parent : this.commonSupertypes)
-			result+="\n\t"+parent.getName();
+		for (Classifier parent : this.closestSupertypes)
+			result+="\n\t"+OntoUMLNameHelper.getTypeAndName(parent, true, false);
 			
 		result += "\nPart Ends: ";
 	
 		for (Property p : overlappingProperties)
-			result+="\n\t("+p.getName()+") "+p.getType().getName();
+			result+="\n\t"+OntoUMLNameHelper.getNameAndType(p);
 		
 		return result;
 	}
@@ -90,7 +137,7 @@ public class CommonSortalSupertype extends OverlappingGroup {
 		if(!this.overlappingProperties.containsAll(partEnds))
 			return false;
 		
-		ArrayList<GeneralizationSet> gss = AntiPatternIdentifier.getSubtypesGeneralizationSets(closestSupertpe);
+		ArrayList<GeneralizationSet> gss = antipattern.getParser().getSubtypesGeneralizationSets(closestSupertpe);
 		
 		ArrayList<Classifier> subtypes = new ArrayList<> ();
 		for (Property property : partEnds) {
@@ -106,7 +153,7 @@ public class CommonSortalSupertype extends OverlappingGroup {
 				
 				for (Generalization g : gs.getGeneralization()) {
 					allGsChildren.add(g.getSpecific());
-					allGsChildren.addAll(g.getSpecific().allChildren());
+					allGsChildren.addAll(antipattern.getParser().allChildrenHash.get(g.getSpecific()));
 				}
 				
 				if (allGsChildren.containsAll(subtypes)){

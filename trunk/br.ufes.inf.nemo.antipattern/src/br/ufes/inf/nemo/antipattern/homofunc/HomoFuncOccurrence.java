@@ -87,7 +87,7 @@ public class HomoFuncOccurrence extends AntipatternOccurrence {
 	public ArrayList<Classifier> getWholeIdentityProviders()
 	{
 		if(wholeIdentityProvidersList==null)
-			wholeIdentityProvidersList = parser.getIdentityProvider(whole);
+			wholeIdentityProvidersList.addAll(parser.getIdentityProvider(whole));
 		
 		return wholeIdentityProvidersList;
 	}

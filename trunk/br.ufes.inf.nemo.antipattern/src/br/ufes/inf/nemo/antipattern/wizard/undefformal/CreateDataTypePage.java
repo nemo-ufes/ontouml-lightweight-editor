@@ -5,6 +5,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
@@ -34,8 +36,8 @@ public class CreateDataTypePage extends UndefFormalPage{
 		createDataTypeComposite = new DataTypeComposite(container, SWT.NONE, (UndefFormalOccurrence) occurrence);
 		
 		StyledText questionText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.V_SCROLL);
-		questionText.setText(	"If <"+occurrence.getFormalName()+"> is a Domain Comparative Formal Relation it means that both related ends should own or inherit qualities, " +
-							"which is not currently the case for <"+occurrence.getSource().getName()+"> and <"+occurrence.getTarget().getName()+">. " +
+		questionText.setText("If "+OntoUMLNameHelper.getTypeAndName(occurrence.getFormal(), true, true)+" is a Domain Comparative Formal Relation it means that both related ends should own or inherit qualities, " +
+							"which is not currently the case for "+OntoUMLNameHelper.getTypeAndName(occurrence.getSource(), true, true)+" and "+OntoUMLNameHelper.getTypeAndName(occurrence.getTarget(), true, true)+". " +
 							"\r\n\r\n" +
 							"Please create the missing qualities and specify the OCL rule that derives the relation:");
 		questionText.setBackground(questionText.getParent().getBackground());

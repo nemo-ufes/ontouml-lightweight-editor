@@ -4,6 +4,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class SetUpperMultComposite extends Composite {
 
@@ -19,12 +20,28 @@ public class SetUpperMultComposite extends Composite {
 		super(parent, style);
 		
 		spinner = new Spinner(this, SWT.BORDER);
-		spinner.setBounds(10, 10, 47, 22);
 		spinner.setMinimum(2);
 		
 		lblCardinality = new Label(this, SWT.NONE);
-		lblCardinality.setBounds(63, 10, 364, 22);
 		lblCardinality.setText("Upper cardinality on mediated side");
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(lblCardinality, GroupLayout.PREFERRED_SIZE, 364, GroupLayout.PREFERRED_SIZE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(10)
+					.add(groupLayout.createParallelGroup(GroupLayout.LEADING)
+						.add(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.add(lblCardinality, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)))
+		);
+		setLayout(groupLayout);
 	}
 
 	public void enable(boolean value){

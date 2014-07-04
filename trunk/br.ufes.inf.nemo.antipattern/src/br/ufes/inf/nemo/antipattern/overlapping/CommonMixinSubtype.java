@@ -10,20 +10,22 @@ import RefOntoUML.Mixin;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Property;
 import RefOntoUML.RoleMixin;
+import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.partover.PartOverOccurrence;
 import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 
 public class CommonMixinSubtype extends OverlappingGroup {
 	
 	ArrayList<Classifier> commonSubtypes;
 	
-	public CommonMixinSubtype (ArrayList<Property> mixinProperties)throws Exception {
-		super(mixinProperties);
+	public CommonMixinSubtype (ArrayList<Property> mixinProperties, Antipattern<?> antipattern)throws Exception {
+		super(mixinProperties, antipattern);
 		
 		//all types must be mixins, roleMixins or categories
 		for (Classifier type : super.overlappingTypes) {
@@ -32,13 +34,13 @@ public class CommonMixinSubtype extends OverlappingGroup {
 		}
 		
 		//get commmon subtypes; there must be at least one
-		commonSubtypes = OverlappingTypesIdentificator.getCommonSubtypesFromProperties(mixinProperties);
+		commonSubtypes = antipattern.getParser().getCommonSubtypesFromProperties(mixinProperties);
 		if(commonSubtypes.size()<1)
 			throw new Exception("VAR6: No common subtypes");
-		
+
 		//verify if there is a generalization set which makes them disjoint
 		ArrayList<GeneralizationSet> genSets = new ArrayList<GeneralizationSet>();
-		if(!OverlappingTypesIdentificator.allTypesOverlap(super.overlappingTypes, genSets))
+		if(!antipattern.getParser().allTypesOverlap(super.overlappingTypes, genSets))
 			throw new Exception("VAR6: Disjoint from supertypes.");
 		
 		super.validGroup = true;
@@ -51,12 +53,12 @@ public class CommonMixinSubtype extends OverlappingGroup {
 						"\nCommon Subtypes: ";
 		
 		for (Classifier child : this.commonSubtypes)
-			result+="\n\t"+child.getName();
+			result+="\n\t"+OntoUMLNameHelper.getTypeAndName(child, true, false);
 		
 		result += "\nProperties: ";
 		
 		for (Property p : overlappingProperties)
-			result+="\n\t("+p.getName()+") "+p.getType().getName();
+			result+="\n\t"+OntoUMLNameHelper.getNameAndType(p);
 		
 		return result;
 	}

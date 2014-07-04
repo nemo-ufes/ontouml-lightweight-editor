@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Package;
@@ -21,8 +20,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 
 	public HashMap<Classifier,HashSet<Property>> relatorHash;
-	public HashMap<Classifier, HashSet<Classifier>> childHash;
-	public HashMap<Classifier, HashSet<Classifier>> allChildrenHash; 
 	
 	private static final String oclQuery = 	
 		"let mediatedProperties : Bag (Property) = "+
@@ -98,17 +95,17 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 	@Override
 	public ArrayList<FreeRoleOccurrence> identify() {
 		buildPropertyHash();
-		buildChildrenHashes();
+		parser.buildChildrenHashes();
 		
 		for (Classifier mediated : relatorHash.keySet()) {
 			
 			if(!(mediated instanceof SortalClass))
 				continue;
 			
-			if(!childHash.containsKey(mediated))
+			if(!parser.childHash.containsKey(mediated))
 				continue;
 			
-			for (Classifier child : childHash.get(mediated)) {
+			for (Classifier child : parser.childHash.get(mediated)) {
 				if(!(child instanceof Role))
 					continue;
 				
@@ -167,29 +164,6 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 			for (Classifier parent : mainType.allParents()) 
 				if(relatorHash.containsKey(parent))
 					relatorHash.get(mainType).addAll(relatorHash.get(parent));
-	}
-	
-	private void buildChildrenHashes(){
-		childHash = new HashMap<Classifier,HashSet<Classifier>>();
-		allChildrenHash = new HashMap<Classifier,HashSet<Classifier>>();
-		
-		for (RefOntoUML.Class c : parser.getAllInstances(Class.class)) {
-			for (Classifier parent : c.parents()) {
-				if(!childHash.containsKey(parent)){
-					HashSet<Classifier> children = new HashSet<Classifier>();
-					childHash.put(parent, children);
-				}		
-				childHash.get(parent).add(c);
-			}
-			
-			for (Classifier parent : c.allParents()) {
-				if(!allChildrenHash.containsKey(parent)){
-					HashSet<Classifier> allChildren = new HashSet<Classifier>();
-					allChildrenHash.put(parent, allChildren);
-				}		
-				allChildrenHash.get(parent).add(c);
-			}
-		}		
 	}
 
 }

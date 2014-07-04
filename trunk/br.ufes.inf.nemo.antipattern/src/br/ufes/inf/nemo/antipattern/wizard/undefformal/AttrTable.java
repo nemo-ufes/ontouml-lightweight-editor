@@ -1,10 +1,9 @@
 package br.ufes.inf.nemo.antipattern.wizard.undefformal;
 
-import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -13,10 +12,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class AttrTable  {
 
-	private EList<Property> properties;
+	private ArrayList<Property> properties;
 	private HashMap<String,String> attrMap = new HashMap<String,String>();
 	private Table table;
 	
@@ -24,8 +24,13 @@ public class AttrTable  {
 	public AttrTable (Composite parent, int args, EList<Property> properties) 
 	{		
 		table = new Table(parent, args);
+		this.properties = new ArrayList<Property>();
 		
-		this.properties = properties;
+		for (Property p : properties) {
+			if(p.getType()!=null)
+				this.properties.add(p);
+		}
+		
 		table.setHeaderVisible(true);		
 		table.setLinesVisible(true);
 				
@@ -54,7 +59,7 @@ public class AttrTable  {
 		addExistentAttributes();
 	}
 		
-	public EList<Property> getProperties() {
+	public ArrayList<Property> getProperties() {
 		return properties;
 	}
 
@@ -129,34 +134,23 @@ public class AttrTable  {
 	private void addExistentAttributes()
 	{
 		for (int i = 0; i < properties.size(); i++) {
-			 new TableItem(table, SWT.NONE);
-		}
-		TableItem[] items = table.getItems();
-		for (Integer i = 0; i < items.length; i++) 
-		{
+			
+			TableItem item = new TableItem(table, SWT.NONE);
+		
 			TableEditor editor = new TableEditor(table);
 		    editor.grabHorizontal = true;
 			editor.horizontalAlignment = SWT.CENTER;
-			items[i].setText(0,properties.get(i).getName());
+			item.setText(0,properties.get(i).getName());
 			
 			editor = new TableEditor(table);			
 			editor.grabHorizontal = true;
 			editor.horizontalAlignment = SWT.CENTER;
-			items[i].setText(1,properties.get(i).getType().getName());
 			
-			items[i].setText(2,"("+getStereotype(properties.get(i).getType())+")");
+			item.setText(1,OntoUMLNameHelper.getName(properties.get(i).getType()));
+			item.setText(2,"("+OntoUMLNameHelper.getTypeName(properties.get(i).getType(), false)+")");
 			
 			attrMap.put(properties.get(i).getName(), properties.get(i).getType().getName());
 		}		
-	}
-	
-	public static String getStereotype(EObject element)
-	{
-		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
-	    return type;
 	}
 	
 	public Table getTable() {

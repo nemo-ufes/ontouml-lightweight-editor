@@ -6,6 +6,9 @@ import org.eclipse.jface.wizard.IWizardPage;
 
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
+import br.ufes.inf.nemo.antipattern.partover.PartOverOccurrence;
+import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
+import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 
 public class DisjointOverlappingGroupPage extends OverlappingWizardPage{
 	
@@ -29,11 +32,11 @@ public class DisjointOverlappingGroupPage extends OverlappingWizardPage{
 		
 		boolean showExclusive;
 		
-		if(btnYes.getSelection()){
+		if(noButton.getSelection()){
 			getOverlappingWizard().removeAllActions(getVariationIndex());
 			showExclusive = true;
 		}
-		else if(btnNo.getSelection()){
+		else if(yesButton.getSelection()){
 			
 			registerActions();
 			
@@ -78,10 +81,17 @@ public class DisjointOverlappingGroupPage extends OverlappingWizardPage{
 
 	@Override
 	public String getQuestion() {
-		return 	"Currently the model states that the types: "+variation.getOverlappingTypesString()+" are overlapping, i.e., " +
-				"it is possible for the same individual to instantiate all of them simultaneously." +
-				"\n\nIs that true? If not, use the table below to specify sub-groups of disjoint types. " +
-				"If more than one restriction is required, add extra lines in the table.";
+		String s = "Are there any DISJOINT types?";
+		
+		if(occurrence instanceof WholeOverOccurrence)
+			s = "Are there any DISJOINT parts?";
+		if(occurrence instanceof PartOverOccurrence)
+			s = "Are there any DISJOINT wholes?";
+		if(occurrence instanceof RelOverOccurrence)
+			s = "Are there any DISJOINT mediated types?";
+		
+		return 	s+"\r\n\r\nIf you answer is \"Yes\" use the table below to specify which are DISJOINT. " +
+				"If your answer is \"No\", just go directly to the next page.";
 	}
 	
 }

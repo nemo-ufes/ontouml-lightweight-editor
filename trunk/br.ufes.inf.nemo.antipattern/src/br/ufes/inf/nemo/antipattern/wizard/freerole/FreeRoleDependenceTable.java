@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Text;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.antipattern.freerole.FreeRoleAntipattern;
+import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 
 public class FreeRoleDependenceTable {
@@ -81,10 +81,10 @@ public class FreeRoleDependenceTable {
 			Classifier relator = (Classifier) p.getType();
 			relators.add(relator);
 			
-			if(!((FreeRoleAntipattern)freeRole.getAntipattern()).allChildrenHash.containsKey(relator))
+			if(!((Antipattern<FreeRoleOccurrence>)freeRole.getAntipattern()).getParser().allChildrenHash.containsKey(relator))
 				continue;
 			
-			for (Classifier child : ((FreeRoleAntipattern)freeRole.getAntipattern()).allChildrenHash.get(relator)) {
+			for (Classifier child : ((Antipattern<FreeRoleOccurrence>)freeRole.getAntipattern()).getParser().allChildrenHash.get(relator)) {
 				relators.add(child);
 			}
 		}
