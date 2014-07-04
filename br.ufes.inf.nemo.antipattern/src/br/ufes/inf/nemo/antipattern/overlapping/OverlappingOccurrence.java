@@ -15,7 +15,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 
 	Classifier mainType;
-	ArrayList<OverlappingGroup> variations;
+	ArrayList<OverlappingGroup> groups;
 	HashSet<Property> allProperties;
 	HashSet<Classifier> allOverlappingTypes;
 	
@@ -53,52 +53,53 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		this.allProperties = allProperties;
 		this.mainType = mainType;
 		
-		variations = new ArrayList<OverlappingGroup>();
+		groups = new ArrayList<OverlappingGroup>();
 		identifyVariations();
 		
-		if(variations.size()==0)
+		if(groups.size()==0)
 			throw new Exception("Overlapping: Could not find any variation in the occurrence");
 	}
 	
 	public void identifyVariations(){
 		Combination comb = new Combination(new ArrayList<>(allProperties), 0);
+		boolean hasDirectProperty;
 		
 		while(comb.hasNext()) {
 			ArrayList<Property> result = comb.next();
+			
+			hasDirectProperty = false;
+			for (Property p : result) {
+				if(p.getOpposite()!=null && getMainType().equals(p.getOpposite().getType())){
+					hasDirectProperty = true;
+					break;
+				}
+			}
+			
+			if(!hasDirectProperty)
+				continue;
+			
 			if(result.size()>1) {
 				OverlappingGroup var;
 				try {
-					var = new SameType(result);
+					var = new SameType(result, antipattern);
 					addVariation(var);
 					continue;
 				}
 				catch(Exception e){	}
 				try {
-	//				var = new WholeOverVariation2(this, result);
-	//				addVariation(var);
-	//				continue;
-				}
-				catch(Exception e){	}
-				try {
-	//				var = new WholeOverVariation3(this, result);
-	//				addVariation(var);
-	//				continue;
-				}
-				catch(Exception e){	}
-				try {
-					var = new CommonSortalSupertype(result);
+					var = new CommonSortalSupertype(result, antipattern);
 					addVariation(var);
 					continue;
 				}
 				catch(Exception e){	}
 				try {
-					var = new CommonMixinSupertype(result);
+					var = new CommonMixinSupertype(result, antipattern);
 					addVariation(var);
 					continue;
 				}
 				catch(Exception e){	}
 				try {
-					var = new CommonMixinSubtype(result);
+					var = new CommonMixinSubtype(result, antipattern);
 					addVariation(var);
 					continue;
 				}
@@ -112,11 +113,10 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		
 		ArrayList<OverlappingGroup> variationsToRemove = new ArrayList<OverlappingGroup>();
 		
-		for (OverlappingGroup existingVariation : variations) {
+		for (OverlappingGroup existingVariation : groups) {
 			if(existingVariation.getClass().equals(varToAdd.getClass())){
 				
 				if(varToAdd.overlappingProperties.containsAll(existingVariation.overlappingProperties)){
-				
 					variationsToRemove.add(existingVariation);
 				}
 				else if(existingVariation.overlappingProperties.containsAll(varToAdd.overlappingProperties)){
@@ -125,8 +125,8 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 			}
 		}
 		
-		variations.removeAll(variationsToRemove);
-		variations.add(varToAdd);
+		groups.removeAll(variationsToRemove);
+		groups.add(varToAdd);
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 	}
 	
 	public ArrayList<OverlappingGroup> getVariations() {
-		return variations;
+		return groups;
 	}
 
 	public HashSet<Property> getAllProperties() {

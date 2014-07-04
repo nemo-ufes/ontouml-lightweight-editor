@@ -70,15 +70,15 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 		rigidMediations = new ArrayList<>();
 		
 		for (Mediation med : parser.getRelatorsMediations(relator)) {
-			if(!parser.getRelator(med).equals(relator))
+			if(!OntoUMLParser.getRelator(med).equals(relator))
 				throw new Exception("RelRigid: Mediation '"+med.getName()+"' does not belong to Relator '"+relator.getName()+"'");
 			
 			allMediations.add(med);
-			allMediatedProperties.add(parser.getMediatedEnd(med));
+			allMediatedProperties.add(OntoUMLParser.getMediatedEnd(med));
 			
-			if (parser.getMediated(med) instanceof RigidSortalClass || parser.getMediated(med) instanceof RigidMixinClass){
+			if (OntoUMLParser.getMediated(med) instanceof RigidSortalClass || OntoUMLParser.getMediated(med) instanceof RigidMixinClass){
 				rigidMediations.add(med);
-				rigidMediatedProperties.add(parser.getMediatedEnd(med));
+				rigidMediatedProperties.add(OntoUMLParser.getMediatedEnd(med));
 			}
 		}
 		

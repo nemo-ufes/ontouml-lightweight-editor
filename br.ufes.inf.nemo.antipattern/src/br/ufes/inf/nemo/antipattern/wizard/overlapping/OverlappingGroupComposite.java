@@ -58,10 +58,10 @@ public class OverlappingGroupComposite extends Composite{
 		btnAddLine.setText("Add Line");
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(GroupLayout.LEADING)
+			groupLayout.createParallelGroup(GroupLayout.TRAILING)
 				.add(lblTableTitle, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
 				.add(table, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
-				.add(GroupLayout.TRAILING, groupLayout.createSequentialGroup()
+				.add(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.add(btnAddLine, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
 		);
@@ -70,10 +70,10 @@ public class OverlappingGroupComposite extends Composite{
 				.add(groupLayout.createSequentialGroup()
 					.add(lblTableTitle)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(table, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+					.add(table, GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
 					.addPreferredGap(LayoutStyle.RELATED)
 					.add(btnAddLine)
-					.addContainerGap(23, Short.MAX_VALUE))
+					.add(2))
 		);
 		setLayout(groupLayout);
 		btnAddLine.addSelectionListener(new SelectionAdapter() {

@@ -6,6 +6,9 @@ import org.eclipse.jface.wizard.IWizardPage;
 
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
+import br.ufes.inf.nemo.antipattern.partover.PartOverOccurrence;
+import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
+import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 
 public class ExclusiveGroupPage extends OverlappingWizardPage{
 
@@ -19,6 +22,9 @@ public class ExclusiveGroupPage extends OverlappingWizardPage{
 		//register one action for each valid action in the table
 		getOverlappingWizard().removeAllActions(getVariationIndex(),OverlappingAction.Action.EXCLUSIVE);
 		
+		if(noButton.getSelection())
+			return;
+		
 		for (ArrayList<Property> propertyEndList : getBuilder().getSelections()) {
 			OverlappingAction action = new OverlappingAction(getOccurrence(),getVariation());
 			action.setExclusive(propertyEndList);
@@ -29,7 +35,7 @@ public class ExclusiveGroupPage extends OverlappingWizardPage{
 	@Override
 	public IWizardPage getNextPage(){
 		
-		if(!btnNo.getSelection() && !btnYes.getSelection())
+		if(!yesButton.getSelection() && !noButton.getSelection())
 			return null;
 		
 		registerActions();
@@ -44,9 +50,17 @@ public class ExclusiveGroupPage extends OverlappingWizardPage{
 
 	@Override
 	public String getQuestion() {
-		return 	"Your first answer for this group confirms that at least two types in it are overlapping. " +
-				"So far, the types are still non-exclusive. Is that really the case? If not, use the table below to specify which types are exclusive. " +
-				"If not, just go directly to the next page.";
+		String s = "Are there any EXCLUSIVE types?";
+		
+		if(occurrence instanceof WholeOverOccurrence)
+			s = "Are there any EXCLUSIVE parts?";
+		if(occurrence instanceof PartOverOccurrence)
+			s = "Are there any EXCLUSIVE wholes?";
+		if(occurrence instanceof RelOverOccurrence)
+			s = "Are there any EXCLUSIVE mediated types?";
+		
+		return 	s+"\r\n\r\nIf you answer is \"Yes\" use the table below to specify which are EXCLUSIVE. " +
+				"If your answer is \"No\", just go directly to the next page.";
 	}
 	
 	

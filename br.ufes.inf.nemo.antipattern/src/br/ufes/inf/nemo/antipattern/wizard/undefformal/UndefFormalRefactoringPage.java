@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.List;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalAntipattern;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class UndefFormalRefactoringPage extends RefactoringPage {
 	
@@ -66,7 +67,6 @@ public class UndefFormalRefactoringPage extends RefactoringPage {
 			"create attributes/datatypes and OCL invariants",
 			"change to Mediation and set upper cardinality on mediated side",
 			"change to Mediation and create new mediated types "});
-		list.setBounds(10, 10, 554, 93);
 		list.select(0);
 		
 		list.addSelectionListener(new SelectionAdapter() {
@@ -92,13 +92,36 @@ public class UndefFormalRefactoringPage extends RefactoringPage {
 		});
 		
 		setCardinalityComposite = new SetUpperMultComposite(composite, SWT.BORDER);
-		setCardinalityComposite.setBounds(10, 109, 554, 45);
 		
 		createMediatedComposite = new CreateMediatedComposite(composite, SWT.BORDER);
-		createMediatedComposite.setBounds(10, 160, 554, 66);
 		
 		createDataTypeComposite = new DataTypeComposite(composite, SWT.BORDER, (UndefFormalOccurrence) uf);
-		createDataTypeComposite.setBounds(10, 232, 554, 287);
+		GroupLayout gl_composite = new GroupLayout(composite);
+		gl_composite.setHorizontalGroup(
+			gl_composite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_composite.createSequentialGroup()
+					.add(10)
+					.add(gl_composite.createParallelGroup(GroupLayout.LEADING)
+						.add(list, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(setCardinalityComposite, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(createMediatedComposite, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(createDataTypeComposite, GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_composite.setVerticalGroup(
+			gl_composite.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_composite.createSequentialGroup()
+					.add(10)
+					.add(list, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(setCardinalityComposite, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(createMediatedComposite, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(createDataTypeComposite, GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+					.add(10))
+		);
+		composite.setLayout(gl_composite);
 		
 		setCardinalityComposite.enable(false);
 		createMediatedComposite.enable(false);

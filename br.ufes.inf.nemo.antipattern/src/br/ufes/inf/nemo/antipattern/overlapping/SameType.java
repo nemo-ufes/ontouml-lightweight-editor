@@ -9,8 +9,10 @@ import RefOntoUML.Mode;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.SortalClass;
+import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 //partEnds with the same type
 public class SameType extends OverlappingGroup {
@@ -18,8 +20,8 @@ public class SameType extends OverlappingGroup {
 	//common type of all properties
 	Classifier commonType;
 	
-	public SameType (ArrayList<Property> overlappingProperties) throws Exception{
-		super(overlappingProperties);
+	public SameType(ArrayList<Property> overlappingProperties, Antipattern<?> antipattern) throws Exception{
+		super(overlappingProperties, antipattern);
 		
 		commonType = null;
 		
@@ -40,11 +42,11 @@ public class SameType extends OverlappingGroup {
 	@Override
 	public String toString(){
 		String result =	"Overllaping Group: Same Types" +
-						"\nCommon Type: "+commonType.getName()+
-						"\nProperties: ";
+						"\r\n\tCommon Type: "+OntoUMLNameHelper.getTypeAndName(commonType, true, false)+
+						"\r\n\tProperties: ";
 		
 		for (Property p : overlappingProperties) {
-			result+="\n\t("+p.getName()+") "+p.getType().getName();
+			result+="\r\n\t\t"+OntoUMLNameHelper.getNameAndType(p);
 		}
 		
 		return result;

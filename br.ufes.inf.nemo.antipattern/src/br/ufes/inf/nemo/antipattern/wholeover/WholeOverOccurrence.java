@@ -7,6 +7,7 @@ import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class WholeOverOccurrence extends OverlappingOccurrence {
 
@@ -35,12 +36,16 @@ public class WholeOverOccurrence extends OverlappingOccurrence {
 	public String toString() {
 		String result;
 		
-		result = "Whole: "+getParser().getStringRepresentation(getWhole())+"\n"+
+		result ="Whole: "+OntoUMLNameHelper.getTypeAndName(getWhole(), true, false)+"\n"+
 				"All Parts: ";
 				
-		for (Property p : getAllPartEnds())
-			result+="\n\t"+getParser().getStringRepresentation(p);
-				
+		for (Property p : getAllPartEnds()){
+			result+="\n\t"+OntoUMLNameHelper.getNameAndType(p);
+			if(p.getOpposite()!=null && p.getOpposite().getType().equals(getMainType()))
+				result+=" (direct)";
+			else
+				result+=" (from: "+OntoUMLNameHelper.getTypeAndName(p.getOpposite().getType(), true, false)+")";
+		}
 		for (OverlappingGroup variation : getVariations()) {
 			result+="\n\n"+variation.toString();
 		}
@@ -49,7 +54,7 @@ public class WholeOverOccurrence extends OverlappingOccurrence {
 
 	@Override
 	public String getShortName() {
-		return "Whole: "+ parser.getStringRepresentation(getWhole());
+		return "Whole: "+OntoUMLNameHelper.getTypeAndName(getWhole(), true, false);
 	}
 
 	@Override

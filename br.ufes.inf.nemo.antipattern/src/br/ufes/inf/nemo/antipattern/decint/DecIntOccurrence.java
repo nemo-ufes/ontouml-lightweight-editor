@@ -10,7 +10,6 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.SubstanceSortal;
-import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
@@ -57,7 +56,7 @@ public class DecIntOccurrence extends AntipatternOccurrence {
 		ArrayList<GeneralizationSet> disjointGSList = new ArrayList<GeneralizationSet>();
 		
 		for (Classifier parent : parser.getAllParents(subtype)) {
-			for (GeneralizationSet gs : AntiPatternIdentifier.getSubtypesGeneralizationSets(parent)) {
+			for (GeneralizationSet gs : getParser().getSubtypesGeneralizationSets(parent)) {
 				
 				int generalizationsLeadingToSubtype = 0;
 				for (Generalization g : gs.getGeneralization())

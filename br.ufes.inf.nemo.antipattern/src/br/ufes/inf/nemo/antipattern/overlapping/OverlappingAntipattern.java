@@ -22,6 +22,7 @@ public abstract class OverlappingAntipattern<T extends OverlappingOccurrence> ex
 	
 	public <B extends Association> HashMap<Classifier,HashSet<Property>> buildMainTypeAndPropertiesHash(Class<B> associationType ){
 		HashMap<Classifier,HashSet<Property>> hash = new HashMap<Classifier,HashSet<Property>>();
+		parser.buildChildrenHashes();
 		
 		//builds initial hash, with meronymics that are directly connected to the types
 		for (Association m : parser.getAllInstances(associationType)) {

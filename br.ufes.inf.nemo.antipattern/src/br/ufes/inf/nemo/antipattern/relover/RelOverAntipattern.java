@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 
 import RefOntoUML.Association;
-import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Package;
@@ -16,7 +15,6 @@ import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingAntipattern;
-import br.ufes.inf.nemo.antipattern.overlapping.OverlappingTypesIdentificator;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelOverAntipattern extends OverlappingAntipattern<RelOverOccurrence> {
@@ -147,121 +145,6 @@ public class RelOverAntipattern extends OverlappingAntipattern<RelOverOccurrence
 		}
 		
 		return getOccurrences();
-	}
-	
-	public ArrayList<RelOverOccurrence> identifyOLD() {
-		
-		ArrayList<Class> allClasses = new ArrayList<Class>();
-		allClasses.addAll(parser.getAllInstances(Class.class));
-		int i = 1, total=allClasses.size();
-		for (Class c : allClasses) {
-			i++;
-			if (isRelator(c)){
-				
-				System.out.println("("+i+" of "+total+") " +parser.getStringRepresentation(c)+": Analyzing...");
-				ArrayList<Mediation> mediations = new ArrayList<Mediation>();
-				HashSet<Property> mediatedEnds = new HashSet<Property>();
-				
-				try {
-					parser.getAllMediations(c, mediations);
-					for (Mediation m : mediations) {
-						mediatedEnds.add(parser.getMediatedEnd(m));
-					}
-					
-					boolean existsEndWithUnlimitedUpperCardinality = false;
-					int upperCardinalituSum = 0;
-					
-					for (Property end : mediatedEnds) {
-					
-						if (end.getUpper()==-1)
-							existsEndWithUnlimitedUpperCardinality=true;
-						else
-							upperCardinalituSum+=end.getUpper();
-					}
-					
-				//	System.out.println("\tMediations size: "+mediations.size());
-				//	System.out.println("\tCarinality Sum: "+upperCardinalituSum);
-				//	System.out.println("\tExists Unlimited: "+existsEndWithUnlimitedUpperCardinality);
-					
-					if (mediations.size()>1 && (existsEndWithUnlimitedUpperCardinality || upperCardinalituSum>2)){
-					
-						boolean foundOccurrence = false;
-						
-						for (Mediation m1 : mediations) {
-							for (Mediation m2 : mediations) {
-								if(!m1.equals(m2)){
-									//System.out.println("M1End: "+parser.getStringRepresentation(parser.getMediated(m1)));
-									//System.out.println("M2End: "+parser.getStringRepresentation(parser.getMediated(m2)));
-									if(OverlappingTypesIdentificator.isVariation1(parser.getMediated(m1),parser.getMediated(m2))) {
-										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
-											foundOccurrence = true;
-										//	System.out.println("Found Variation 1!");
-										} catch (Exception e) { System.out.println("RelOver: Can't create variation 1.\n"+e.getMessage());}
-										
-									}
-									else if(OverlappingTypesIdentificator.isVariation2(parser.getMediated(m1),parser.getMediated(m2))) {
-										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
-											foundOccurrence = true;
-										//	System.out.println("Found Variation 2!");
-										} catch (Exception e) { System.out.println("RelOver: Can't create variation 2.\n"+e.getMessage());}
-										
-									}
-									else if(OverlappingTypesIdentificator.isVariation3(parser.getMediated(m1),parser.getMediated(m2))) {
-										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
-											foundOccurrence = true;
-										//	System.out.println("Found Variation 3!");
-										} catch (Exception e) { System.out.println("RelOver: Can't create variation 3.\n"+e.getMessage());}
-										
-									}
-									else if(OverlappingTypesIdentificator.isVariation4(parser.getMediated(m1),parser.getMediated(m2))) {
-										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
-											foundOccurrence = true;
-										//	System.out.println("Found Variation 4!");
-										} catch (Exception e) { System.out.println("RelOver: Can't create variation 4.\n"+e.getMessage());}
-										
-									}
-									else if(OverlappingTypesIdentificator.isVariation5(parser.getMediated(m1),parser.getMediated(m2))) {
-										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
-											foundOccurrence = true;
-										//	System.out.println("Found Variation 5!");
-										} catch (Exception e) { System.out.println("RelOver: Can't create variation 5.\n"+e.getMessage());}
-										
-									}
-									else if(OverlappingTypesIdentificator.isVariation6(parser.getMediated(m1),parser.getMediated(m2))) {
-										try {
-											super.occurrence.add(new RelOverOccurrence(c, mediatedEnds, this));
-											foundOccurrence = true;
-										//	System.out.println("Found Variation 6!");
-										} catch (Exception e) { System.out.println("RelOver: Can't create variation 6.\n"+e.getMessage());}
-										
-									}
-								}
-								
-								if (foundOccurrence) {
-									//System.out.println("("+i+" of "+total+")" +parser.getStringRepresentation(c)+": 1 - BREAK IT");
-									break;
-								}
-							}
-							
-							if (foundOccurrence) {
-							//	System.out.println("("+i+" of "+total+")" +parser.getStringRepresentation(c)+": 2 - BREAK IT");
-								break;
-							}
-						}
-					}
-				} catch (Exception e) {	
-					System.out.println("ERROR!! Couldn't get mediations...");
-					System.out.println(e.getMessage());	}
-			}
-		}
-		
-		return super.getOccurrences();
-		
 	}
 	
 	private boolean isRelator (Type c){

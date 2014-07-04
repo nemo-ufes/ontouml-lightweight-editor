@@ -13,6 +13,7 @@ import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
+import org.eclipse.swt.widgets.Label;
 
 public abstract class OverlappingWizardPage extends AntipatternWizardPage<OverlappingOccurrence, OverlappingWizard> {
 
@@ -20,8 +21,8 @@ public abstract class OverlappingWizardPage extends AntipatternWizardPage<Overla
 	private OverlappingGroupComposite overlappingGroupComposite;
 	private StyledText contextualizationText;
 	int variationIndex;
-	protected Button btnYes;
-	protected Button btnNo;
+	protected Button noButton;
+	protected Button yesButton;
 
 	/**
 	 * Create the wizard.
@@ -45,11 +46,19 @@ public abstract class OverlappingWizardPage extends AntipatternWizardPage<Overla
 		setControl(container);
 		int currentIndex = variationIndex+1;
 		
-		String contextualizationContent = "This is the overlapping group "+currentIndex+" of "+occurrence.getVariations().size()+" ." +
+		
+		String contextualizationContent = 	"This is the overlapping group "+currentIndex+" of "+occurrence.getVariations().size()+" ." +
 											"\r\n\r\n"+
 											getQuestion();
 		
+//		String contextualizationContent = 	"This is the overlapping group "+currentIndex+" of "+occurrence.getVariations().size()+" ." +
+//											"\r\n\r\n"+
+//											"Are there any ___________ types?"+
+//											"\r\n\r\nIf you answer is \"Yes\" use the table below to specify which are ___________. " +
+//											"If your answer is \"No\", just go directly to the next page.";
+			
 		contextualizationText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
+		contextualizationText.setAlwaysShowScrollBars(false);
 		contextualizationText.setBackground(container.getBackground());
 		contextualizationText.setText(contextualizationContent);
 		contextualizationText.setEditable(false);
@@ -58,26 +67,33 @@ public abstract class OverlappingWizardPage extends AntipatternWizardPage<Overla
 		
 		overlappingGroupComposite = new OverlappingGroupComposite(container,SWT.NONE, variation, tableTitle, variationIndex);
 		
-		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setText("No");
+		yesButton = new Button(container, SWT.RADIO);
+		yesButton.setText("Yes");
 		
-		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setText("Yes");
+		noButton = new Button(container, SWT.RADIO);
+		noButton.setText("No");
+		
+		Label label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
 		
 		GroupLayout gl_container = new GroupLayout(container);
 		gl_container.setHorizontalGroup(
 			gl_container.createParallelGroup(GroupLayout.LEADING)
 				.add(gl_container.createSequentialGroup()
 					.addContainerGap()
-					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
-						.add(gl_container.createSequentialGroup()
-							.add(btnNo, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
-							.addContainerGap())
-						.add(gl_container.createSequentialGroup()
-							.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
-								.add(GroupLayout.LEADING, btnYes, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
-								.add(contextualizationText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
-							.add(9))))
+					.add(contextualizationText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(9))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(noButton, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(9))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(yesButton, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(label, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
 				.add(gl_container.createSequentialGroup()
 					.add(9)
 					.add(overlappingGroupComposite, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
@@ -87,19 +103,20 @@ public abstract class OverlappingWizardPage extends AntipatternWizardPage<Overla
 			gl_container.createParallelGroup(GroupLayout.LEADING)
 				.add(gl_container.createSequentialGroup()
 					.addContainerGap()
-					.add(contextualizationText, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+					.add(contextualizationText, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(btnYes)
+					.add(noButton)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(btnNo)
+					.add(yesButton)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(overlappingGroupComposite, GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
-					.addContainerGap())
+					.add(label)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(overlappingGroupComposite, GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
 		);
 		container.setLayout(gl_container);
 		
-		setAsEnablingNextPageButton(btnYes);
-		setAsEnablingNextPageButton(btnNo);
+		setAsEnablingNextPageButton(noButton);
+		setAsEnablingNextPageButton(yesButton);
 		setPageComplete(false);	
 	}
 	

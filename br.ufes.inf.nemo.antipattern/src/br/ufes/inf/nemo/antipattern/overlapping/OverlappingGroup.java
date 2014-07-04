@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.list.Combination;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
@@ -12,10 +13,12 @@ public abstract class OverlappingGroup {
 
 	protected ArrayList<Property> overlappingProperties;
 	protected ArrayList<Classifier> overlappingTypes;
+	protected Antipattern<?> antipattern;
 	boolean validGroup;
 	
-	public OverlappingGroup(ArrayList<Property> overlappingProperties) throws Exception{
-
+	
+	public OverlappingGroup(ArrayList<Property> overlappingProperties, Antipattern<?> antipattern) throws Exception{
+		this.antipattern = antipattern;
 		this.overlappingProperties = overlappingProperties;
 		this.overlappingTypes = new ArrayList<Classifier>();
 		
@@ -70,7 +73,7 @@ public abstract class OverlappingGroup {
 		String result = new String();
 		String typeName;
 		for (int i = 0; i < overlappingTypes.size(); i++) {
-			typeName = OntoUMLNameHelper.getTypeAndName(overlappingTypes.get(0), true, true);
+			typeName = OntoUMLNameHelper.getTypeAndName(overlappingTypes.get(i), true, true);
 			
 			if(i==0){
 				result += typeName;

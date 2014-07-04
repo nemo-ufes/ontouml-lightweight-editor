@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 
 public class GeneralizationLine extends OverlappingGroup {
@@ -15,8 +17,8 @@ public class GeneralizationLine extends OverlappingGroup {
 	ArrayList<Property> orderedProperties;
 	Property parent, child;
 	
-	public GeneralizationLine (ArrayList<Property> properties)throws Exception {
-		super(properties);
+	public GeneralizationLine (ArrayList<Property> properties, Antipattern<?> antipattern)throws Exception {
+		super(properties, antipattern);
 
 		if(properties.size()!=2)
 				throw new Exception("GeneralizationLine: Number of properties must be equal to 2.");
@@ -40,8 +42,8 @@ public class GeneralizationLine extends OverlappingGroup {
 	@Override
 	public String toString(){
 		return	"Overllaping Group: Generalization Line" +
-				"\nParent Property: "+"\n\t("+parent.getName()+") "+parent.getType().getName()+
-				"\nChild Property: "+"\n\t("+child.getName()+") "+child.getType().getName();
+				"\r\n\tParent: "+OntoUMLNameHelper.getNameAndType(parent)+
+				"\r\n\tChild: "+OntoUMLNameHelper.getNameAndType(child);
 	}
 
 	@Override

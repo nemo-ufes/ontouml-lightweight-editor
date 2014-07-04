@@ -1,15 +1,16 @@
 package br.ufes.inf.nemo.antipattern;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import RefOntoUML.Package;
 import java.util.ArrayList;
+
+import RefOntoUML.Package;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 
 public abstract class Antipattern<T extends AntipatternOccurrence> {
 	
 	protected OntoUMLParser parser;
 	protected ArrayList<T> occurrence;
-		
+	
 	/*basic constructors*/
 	public Antipattern (OntoUMLParser parser) throws NullPointerException{
 		if (parser == null)
@@ -28,6 +29,7 @@ public abstract class Antipattern<T extends AntipatternOccurrence> {
 	}
 		
 	public abstract ArrayList<T> identify();
+	
 	public ArrayList<T> getOccurrences(){
 		return occurrence;
 	}
@@ -35,4 +37,6 @@ public abstract class Antipattern<T extends AntipatternOccurrence> {
 	public OntoUMLParser getParser(){
 		return parser;
 	}
+
+	
 }

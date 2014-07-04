@@ -54,11 +54,11 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 	public OverlappingGroup identifyOverlappingGroup(){
 		ArrayList<Property> ends = new ArrayList<Property>(association.getMemberEnd());
 		
-		try { return new SameType(ends); } catch(Exception e){}
-		try { return new GeneralizationLine(ends); } catch(Exception e){}
-		try { return new CommonSortalSupertype(ends); } catch(Exception e){}
-		try { return new CommonMixinSupertype(ends); } catch(Exception e){}
-		try { return new CommonMixinSubtype(ends); } catch(Exception e){}
+		try { return new SameType(ends, antipattern); } catch(Exception e){}
+		try { return new GeneralizationLine(ends, antipattern); } catch(Exception e){}
+		try { return new CommonSortalSupertype(ends, antipattern); } catch(Exception e){}
+		try { return new CommonMixinSupertype(ends, antipattern); } catch(Exception e){}
+		try { return new CommonMixinSubtype(ends, antipattern); } catch(Exception e){}
 		
 		return null;
 

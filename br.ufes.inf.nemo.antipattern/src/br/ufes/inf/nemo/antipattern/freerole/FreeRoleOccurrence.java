@@ -72,14 +72,14 @@ public class FreeRoleOccurrence extends AntipatternOccurrence{
 		freeRoles = new ArrayList<Role>(); 
 		definedRoles = new ArrayList<Role>(); 
 		
-		for (Classifier child : ap.allChildrenHash.get(mediated)) {
+		for (Classifier child : ap.getParser().allChildrenHash.get(mediated)) {
 			
 			if (child instanceof Role) {
 				
 				boolean hasDependentMiddleParent = false;
 				
 				for (Classifier middleParent : parser.getAllParents(child)) {
-					if(ap.allChildrenHash.get(mediated).contains(middleParent) && ap.relatorHash.containsKey(middleParent)){
+					if(ap.getParser().allChildrenHash.get(mediated).contains(middleParent) && ap.relatorHash.containsKey(middleParent)){
 						hasDependentMiddleParent = true;
 						break;
 					}
