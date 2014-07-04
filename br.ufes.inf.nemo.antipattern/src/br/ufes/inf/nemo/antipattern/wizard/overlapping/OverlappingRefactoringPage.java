@@ -54,12 +54,12 @@ public class OverlappingRefactoringPage extends RefactoringPage {
 		lblInstruction.setLayoutData(gd_lblInstruction);
 		lblInstruction.setText("Please choose the appropriate refactoring options:");		
 				
-		for (int i = 0; i < occurrence.getVariations().size(); i++) {
+		for (int i = 0; i < occurrence.getGroups().size(); i++) {
 			createComponents(composite, i, 0);
 			createComponents(composite, i, 1);
 		}
 		
-		for (int i = 0; i < occurrence.getVariations().size(); i++) {
+		for (int i = 0; i < occurrence.getGroups().size(); i++) {
 			GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 			disjointCompositeList.get(i).setLayoutData(gridData);
 			
@@ -83,7 +83,7 @@ public class OverlappingRefactoringPage extends RefactoringPage {
 	//actiontype = 0 -> disjoint, actiontype = 1->exclusive
 	private void createComponents(Composite container, int variationIndex, int actionType){
 		
-		OverlappingGroup currentVariation = occurrence.getVariations().get(variationIndex);
+		OverlappingGroup currentVariation = occurrence.getGroups().get(variationIndex);
 		OverlappingGroupComposite builder;
 		
 		if (actionType==0){

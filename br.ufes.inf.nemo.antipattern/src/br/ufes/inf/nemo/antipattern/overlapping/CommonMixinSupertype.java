@@ -3,6 +3,8 @@ package br.ufes.inf.nemo.antipattern.overlapping;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.eclipse.swt.widgets.Composite;
+
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
@@ -10,6 +12,7 @@ import RefOntoUML.MixinClass;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.overlapping.CommonMixinSupertypeComposite;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
@@ -55,7 +58,7 @@ public class CommonMixinSupertype extends OverlappingGroup {
 	}
 	
 	private void getClosestSupertype(){
-		OntoUMLParser parser = antipattern.getParser();
+		OntoUMLParser parser = getAntipattern().getParser();
 		closestSupertypes = new ArrayList<Classifier>(commonSupertypes);
 		
 		for (Classifier common : commonSupertypes) {
@@ -119,7 +122,7 @@ public class CommonMixinSupertype extends OverlappingGroup {
 				
 				for (Generalization g : gs.getGeneralization()) {
 					allGsChildren.add(g.getSpecific());
-					allGsChildren.addAll(antipattern.getParser().allChildrenHash.get(g.getSpecific()));
+					allGsChildren.addAll(getAntipattern().getParser().allChildrenHash.get(g.getSpecific()));
 				}
 				
 				if (allGsChildren.containsAll(subtypes)){
@@ -153,4 +156,17 @@ public class CommonMixinSupertype extends OverlappingGroup {
 		return genSets;
 	}
 	
+	@Override
+	public String getType() {
+		return "Common Mixin Supertype";
+	}
+
+	public ArrayList<Classifier> getClosestSupertypes() {
+		return commonSupertypes;
+	}
+	
+	@Override
+	public Composite createComposite(Composite parent, int style) {
+		return new CommonMixinSupertypeComposite(parent, style, this);
+	}	
 }

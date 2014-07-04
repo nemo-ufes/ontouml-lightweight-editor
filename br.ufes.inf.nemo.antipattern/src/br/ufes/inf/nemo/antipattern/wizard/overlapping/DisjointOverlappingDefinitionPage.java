@@ -46,7 +46,7 @@ public class DisjointOverlappingDefinitionPage extends WizardPage{
 							"Always remember that both definitions consider simultaneous instantiations and not throughout time. " +
 							"A child can become an adult, but nobody can be an adult and a child at the same time." +
 							"\r\n\r\n" +
-							"This anti-pattern occurrence of the contains "+occurrence.getVariations().size()+" sets of overlapping types,  " +
+							"This anti-pattern occurrence of the contains "+occurrence.getGroups().size()+" sets of overlapping types,  " +
 							"which were obtained considering only the "+occurrence.getPropertyTypeString()+" "+OntoUMLNameHelper.getTypeAndName(occurrence.getMainType(), true, true)+". " +
 							"The wizard will present each of them individually.");
 		styledText.setJustify(true);

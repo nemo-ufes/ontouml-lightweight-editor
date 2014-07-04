@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.antipattern.overlapping;
 
 import java.util.ArrayList;
 
+import org.eclipse.swt.widgets.Composite;
+
 import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
 import RefOntoUML.MixinClass;
@@ -11,6 +13,7 @@ import RefOntoUML.Relator;
 import RefOntoUML.SortalClass;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.overlapping.SameTypeComposite;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
@@ -85,5 +88,18 @@ public class SameType extends OverlappingGroup {
 		return true;
 		
 	}
+
+	@Override
+	public String getType() {
+		return "Same Type";
+	}
 	
+	public Classifier getCommonType(){
+		return commonType;
+	}
+
+	@Override
+	public Composite createComposite(Composite parent, int style) {
+		return new SameTypeComposite(parent, style, this);
+	}
 }

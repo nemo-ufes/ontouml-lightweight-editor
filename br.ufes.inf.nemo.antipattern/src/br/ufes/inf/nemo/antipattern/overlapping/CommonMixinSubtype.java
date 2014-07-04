@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.antipattern.overlapping;
 
 import java.util.ArrayList;
 
+import org.eclipse.swt.widgets.Composite;
+
 import RefOntoUML.Category;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
@@ -15,6 +17,7 @@ import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.partover.PartOverOccurrence;
 import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.overlapping.CommonMixinSubtypeComposite;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
@@ -142,6 +145,16 @@ public class CommonMixinSubtype extends OverlappingGroup {
 	public ArrayList<Classifier> getCommonSubtypes() {
 		return commonSubtypes;
 	}
+
+	@Override
+	public String getType() {
+		return "Common Mixin Subtype";
+	}
+	
+	@Override
+	public Composite createComposite(Composite parent, int style) {
+		return new CommonMixinSubtypeComposite(parent, style, this);
+	}	
 	
 //	
 //	private ClassStereotype defineDefaultStereotype(Classifier mixinSupertype, Classifier commonSubtype){

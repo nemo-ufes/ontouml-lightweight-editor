@@ -168,7 +168,7 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		return parser;
 	}
 	
-	public ArrayList<OverlappingGroup> getVariations() {
+	public ArrayList<OverlappingGroup> getGroups() {
 		return groups;
 	}
 
@@ -208,4 +208,7 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 	public abstract String getExclusiveExample();
 
 	public abstract String getBaseClassType();
+
+	public abstract String getGroupTypeLine();
+	
 }

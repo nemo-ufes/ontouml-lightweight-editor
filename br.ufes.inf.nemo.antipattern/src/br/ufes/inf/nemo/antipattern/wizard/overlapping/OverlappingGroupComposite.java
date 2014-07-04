@@ -8,12 +8,10 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
-import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
@@ -25,7 +23,6 @@ public class OverlappingGroupComposite extends Composite{
 	private final int variationIndex;
 	protected Table table;
 	protected Button btnAddLine;
-	protected Label lblTableTitle;
 	
 	public OverlappingGroupComposite (Composite parent, int style, OverlappingGroup variation, String title, int variationIndex) {
 		super(parent,style);
@@ -51,15 +48,11 @@ public class OverlappingGroupComposite extends Composite{
 		
 		addLine();
 		
-		lblTableTitle = new Label(this, SWT.NONE);
-		lblTableTitle.setText(title);
-		
 		btnAddLine = new Button(this, SWT.NONE);
 		btnAddLine.setText("Add Line");
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(GroupLayout.TRAILING)
-				.add(lblTableTitle, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
 				.add(table, GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
 				.add(groupLayout.createSequentialGroup()
 					.addContainerGap()
@@ -67,13 +60,10 @@ public class OverlappingGroupComposite extends Composite{
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(GroupLayout.LEADING)
-				.add(groupLayout.createSequentialGroup()
-					.add(lblTableTitle)
-					.addPreferredGap(LayoutStyle.RELATED)
-					.add(table, GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-					.addPreferredGap(LayoutStyle.RELATED)
-					.add(btnAddLine)
-					.add(2))
+				.add(GroupLayout.TRAILING, groupLayout.createSequentialGroup()
+					.add(table, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+					.add(10)
+					.add(btnAddLine))
 		);
 		setLayout(groupLayout);
 		btnAddLine.addSelectionListener(new SelectionAdapter() {
