@@ -1,0 +1,36 @@
+StoriesFactory factory = StoriesFactory.eINSTANCE;
+
+isso cria o factory
+
+storycontainer = factory.createStory();
+
+esse é meu container... dai cria a instancia que quiser
+
+
+depois serializar (base no resourceUtil)
+
+public static Resource saveStory (String outputpath, Story container) 
+	{
+		ResourceSet rset = new ResourceSetImpl();					
+		
+		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi",new StoriesResourceFactoryImpl());
+		
+		rset.getPackageRegistry().put(stories.StoriesPackage.eNS_URI,	stories.StoriesPackage.eINSTANCE);
+    	
+		URI fileURI = URI.createFileURI(outputpath);    
+		
+	    final Resource resource = rset.createResource(fileURI);    	
+	    
+	    resource.getContents().add(container);    	
+	
+	    try{
+	    	resource.save(Collections.emptyMap());
+	    }catch(IOException e){
+	    	e.printStackTrace();
+	    }
+	    
+	    return resource;		   	
+	}
+
+
+
