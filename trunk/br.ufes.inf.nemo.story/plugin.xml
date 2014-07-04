@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated stories -->
+      <package
+            uri="http://stories.bernardofbbraga.com.br"
+            class="stories.StoriesPackage"
+            genModel="model/stories.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated stories -->
+      <parser
+            type="stories"
+            class="stories.util.StoriesResourceFactoryImpl"/>
+   </extension>
+
+</plugin>

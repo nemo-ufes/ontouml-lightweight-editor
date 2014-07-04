@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<stories:Story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stories="http://stories.bernardofbbraga.com.br">
+  <elements xsi:type="stories:Node" label="John" instance_of="file:/C:/Users/Bernardo/workspace/br.ufes.inf.nemo.story/test_data/input/model.refontouml#_F0n_kPCxEeOx_JpWFWcbbw"/>
+  <elements xsi:type="stories:Node" label="Mary" different_from="stories:Node storytest.xmi#John" instance_of="file:/C:/Users/Bernardo/workspace/br.ufes.inf.nemo.story/test_data/input/model.refontouml#_F0n_kPCxEeOx_JpWFWcbbw"/>
+  <elements xsi:type="stories:World" label="w1" present="stories:Node storytest.xmi#Mary stories:Node storytest.xmi#John" absent="stories:Link storytest.xmi#//@elements.4"/>
+  <elements xsi:type="stories:World" label="w2" present="stories:Node storytest.xmi#Mary stories:Node storytest.xmi#John stories:Link storytest.xmi#//@elements.4"/>
+  <elements xsi:type="stories:Link" source="storytest.xmi#Mary" target="storytest.xmi#John"/>
+</stories:Story>

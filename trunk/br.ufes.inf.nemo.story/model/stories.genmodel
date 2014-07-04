@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/br.ufes.inf.nemo.story/src" modelPluginID="br.ufes.inf.nemo.story"
+    modelName="Stories" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" copyrightFields="false"
+    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../br.ufes.inf.nemo.ontouml.refontouml/model/RefOntoUML.genmodel#//RefOntoUML"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>stories.ecore</foreignModel>
+  <genPackages prefix="Stories" resource="XML" disposableProviderFactory="true" ecorePackage="stories.ecore#/">
+    <genClasses ecoreClass="stories.ecore#//Story">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference stories.ecore#//Story/elements"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="stories.ecore#//Individual"/>
+    <genClasses ecoreClass="stories.ecore#//Node">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference stories.ecore#//Node/performed"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node/instance_of"/>
+    </genClasses>
+    <genClasses ecoreClass="stories.ecore#//Link">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Link/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Link/target"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Link/instance_of"/>
+    </genClasses>
+    <genClasses ecoreClass="stories.ecore#//World">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//World/present"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//World/enabled"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//World/brought_about_by"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="stories.ecore#//Event">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Event/directly_causes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Event/causes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Event/brings_about"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Event/happened_in"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="stories.ecore#//Story_element">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute stories.ecore#//Story_element/label"/>
+    </genClasses>
+    <genClasses ecoreClass="stories.ecore#//Happening"/>
+    <genClasses ecoreClass="stories.ecore#//Action">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Action/motivated_by"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference stories.ecore#//Action/performed_by"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

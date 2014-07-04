@@ -1,0 +1,259 @@
+/**
+ */
+package stories.impl;
+
+import RefOntoUML.Association;
+
+import java.util.Collection;
+
+import org.eclipse.emf.common.notify.Notification;
+
+import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+
+import stories.Link;
+import stories.Node;
+import stories.StoriesPackage;
+
+/**
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Link</b></em>'.
+ * <!-- end-user-doc -->
+ * <p>
+ * The following features are implemented:
+ * <ul>
+ *   <li>{@link stories.impl.LinkImpl#getSource <em>Source</em>}</li>
+ *   <li>{@link stories.impl.LinkImpl#getTarget <em>Target</em>}</li>
+ *   <li>{@link stories.impl.LinkImpl#getInstance_of <em>Instance of</em>}</li>
+ * </ul>
+ * </p>
+ *
+ * @generated
+ */
+public class LinkImpl extends IndividualImpl implements Link {
+	/**
+	 * The cached value of the '{@link #getSource() <em>Source</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSource()
+	 * @generated
+	 * @ordered
+	 */
+	protected Node source;
+
+	/**
+	 * The cached value of the '{@link #getTarget() <em>Target</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTarget()
+	 * @generated
+	 * @ordered
+	 */
+	protected Node target;
+
+	/**
+	 * The cached value of the '{@link #getInstance_of() <em>Instance of</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInstance_of()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Association> instance_of;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected LinkImpl() {
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return StoriesPackage.Literals.LINK;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Node getSource() {
+		if (source != null && source.eIsProxy()) {
+			InternalEObject oldSource = (InternalEObject)source;
+			source = (Node)eResolveProxy(oldSource);
+			if (source != oldSource) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, StoriesPackage.LINK__SOURCE, oldSource, source));
+			}
+		}
+		return source;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Node basicGetSource() {
+		return source;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setSource(Node newSource) {
+		Node oldSource = source;
+		source = newSource;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, StoriesPackage.LINK__SOURCE, oldSource, source));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Node getTarget() {
+		if (target != null && target.eIsProxy()) {
+			InternalEObject oldTarget = (InternalEObject)target;
+			target = (Node)eResolveProxy(oldTarget);
+			if (target != oldTarget) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, StoriesPackage.LINK__TARGET, oldTarget, target));
+			}
+		}
+		return target;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Node basicGetTarget() {
+		return target;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setTarget(Node newTarget) {
+		Node oldTarget = target;
+		target = newTarget;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, StoriesPackage.LINK__TARGET, oldTarget, target));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<Association> getInstance_of() {
+		if (instance_of == null) {
+			instance_of = new EObjectResolvingEList<Association>(Association.class, this, StoriesPackage.LINK__INSTANCE_OF);
+		}
+		return instance_of;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+			case StoriesPackage.LINK__SOURCE:
+				if (resolve) return getSource();
+				return basicGetSource();
+			case StoriesPackage.LINK__TARGET:
+				if (resolve) return getTarget();
+				return basicGetTarget();
+			case StoriesPackage.LINK__INSTANCE_OF:
+				return getInstance_of();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+			case StoriesPackage.LINK__SOURCE:
+				setSource((Node)newValue);
+				return;
+			case StoriesPackage.LINK__TARGET:
+				setTarget((Node)newValue);
+				return;
+			case StoriesPackage.LINK__INSTANCE_OF:
+				getInstance_of().clear();
+				getInstance_of().addAll((Collection<? extends Association>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+			case StoriesPackage.LINK__SOURCE:
+				setSource((Node)null);
+				return;
+			case StoriesPackage.LINK__TARGET:
+				setTarget((Node)null);
+				return;
+			case StoriesPackage.LINK__INSTANCE_OF:
+				getInstance_of().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+			case StoriesPackage.LINK__SOURCE:
+				return source != null;
+			case StoriesPackage.LINK__TARGET:
+				return target != null;
+			case StoriesPackage.LINK__INSTANCE_OF:
+				return instance_of != null && !instance_of.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
+
+} //LinkImpl

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+<stories:Story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stories="http://stories.bernardofbbraga.com.br">
+  <elements xsi:type="stories:Node" label="x" same_as="stories:Node storytest.xmi#John"/>
+</stories:Story>
