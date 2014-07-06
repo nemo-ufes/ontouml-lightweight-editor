@@ -47,7 +47,7 @@ Download the file: [https://drive.google.com/file/d/0B7WqSwi56QipMXhkdHFwdlRYaUk
 
 ----
 
-*Screenshot*
+*OntoUML in the Enterprise Architect version 10*
 
 https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png 
 
