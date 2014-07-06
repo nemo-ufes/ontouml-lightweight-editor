@@ -1,7 +1,6 @@
 #summary Explains how to install, access and create OntoUML diagrams using Enterprise Architect EA.
 #labels OntoUML,EnterpriseArchitect,EA
 
-----
 *Install OntoUML*
 
   * Delete any version that you might have of the OntoUML MDG Technology and the OntoUML Template: exclude the older XML files and replace them to the new XML files in the following folders:
@@ -46,6 +45,9 @@ Download the file: [https://drive.google.com/file/d/0B7WqSwi56QipMXhkdHFwdlRYaUk
 
   * To export the model in an EA format: _Right Click on the Package/View -> Import/Export -> Export Package to XMI file_.
 
+----
+
+*Screenshot*
 
 https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png 
 
