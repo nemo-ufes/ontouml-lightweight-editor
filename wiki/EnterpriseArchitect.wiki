@@ -1,5 +1,5 @@
 #summary Explains how to install, access and create OntoUML diagrams using Enterprise Architect EA.
-#labels OntoUML,EnterpriseArchitect,EA
+#labels OntoUML,Enterprise,EA,MDG,Technology,Architect
 
 *Install OntoUML*
 
