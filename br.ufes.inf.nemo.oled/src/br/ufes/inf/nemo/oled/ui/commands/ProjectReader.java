@@ -26,12 +26,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
 
 import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.model.UmlProject;
@@ -88,15 +91,23 @@ public final class ProjectReader extends FileHandler {
 			entry = entries.nextElement();
 			if(entry.getName().equals(OLEDSettings.MODEL_DEFAULT_FILE.getValue()) && !modelLoaded)
 			{
-				Main.printOutLine("Loading model XMI information from OLED file");
+				Main.printOutLine("Loading model XMI information from OLED file...");
 				InputStream in = inFile.getInputStream(entry);
-				resource.load(in, Collections.EMPTY_MAP);
+				
+				/**Load options that significantly improved the performance of loading EMF Model instances (by Tiago)*/
+				Map<Object,Object> loadOptions = ((XMLResourceImpl)resource).getDefaultLoadOptions();
+				loadOptions.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
+				loadOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
+				resource.load(in,loadOptions);
+				
+				//resource.load(in, Collections.EMPTY_MAP);
+
 				in.close();
 				modelLoaded = true;
 			}
 			else if (entry.getName().equals(OLEDSettings.PROJECT_DEFAULT_FILE.getValue()) && !projectLoaded)
 			{
-				Main.printOutLine("Loading project DAT information from OLED file");
+				Main.printOutLine("Loading project DAT information from OLED file...");
 				InputStream in = inFile.getInputStream(entry);
 				ObjectInputStream oin = new ObjectInputStream(in);
 				project = (UmlProject) oin.readObject(); 
@@ -105,7 +116,7 @@ public final class ProjectReader extends FileHandler {
 			}
 			else if (entry.getName().equals(OLEDSettings.OCL_DEFAULT_FILE.getValue()) && !constraintLoaded)
 			{
-				Main.printOutLine("Loading constraints information from OLED file");
+				Main.printOutLine("Loading constraints information from OLED file...");
 				InputStream is = inFile.getInputStream(entry);
 								
 				byte[] b = new byte[is.available()];
@@ -120,7 +131,7 @@ public final class ProjectReader extends FileHandler {
 		inFile.close();
 		
 		if(!projectLoaded || !modelLoaded)
-			throw new IOException("Project or model file not loaded.");
+			throw new IOException("Failed to load OLED Project!");
 		
 		project.setResource(resource);
 		
