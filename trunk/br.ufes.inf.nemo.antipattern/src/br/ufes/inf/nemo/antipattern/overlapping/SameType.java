@@ -84,7 +84,7 @@ public class SameType extends OverlappingGroup {
 			subtypes.add((Classifier) p.getType());
 		}
 		
-		occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(commonType, subtypes));
+		occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(commonType, subtypes, true, true));
 		return true;
 		
 	}

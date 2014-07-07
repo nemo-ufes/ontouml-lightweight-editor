@@ -171,16 +171,16 @@ public class GSRigOccurrence extends AntipatternOccurrence{
 	}
 
 	public void createGenSetForRigids() {
-		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getRigidSpecifics()));				
+		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getRigidSpecifics(), true, true));				
 	}
 
 	public void createGenSetForAntiRigids() {
-		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getAntiRigidSpecifics()));		
+		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getAntiRigidSpecifics(), true, true));		
 	}
 
 	public void createGenSetForBoth() {
-		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getAntiRigidSpecifics()));
-		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getRigidSpecifics()));
+		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getAntiRigidSpecifics(), true, true));
+		fix.addAll(fixer.createGeneralizationSet(getGs().getGeneralization().get(0).getGeneral(),getRigidSpecifics(), true, true));
 	}
 
 	public void changeSuperTypeToMixin() {

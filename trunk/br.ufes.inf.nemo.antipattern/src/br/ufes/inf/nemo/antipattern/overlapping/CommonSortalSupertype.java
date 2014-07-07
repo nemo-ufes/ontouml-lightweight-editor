@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.antipattern.overlapping;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -135,40 +136,24 @@ public class CommonSortalSupertype extends OverlappingGroup {
 
 
 	@Override
-	public boolean makeEndsDisjoint(AntipatternOccurrence occurrence, ArrayList<Property> partEnds) {
+	public boolean makeEndsDisjoint(AntipatternOccurrence occurrence, ArrayList<Property> selectedEnds) {
 		
-		if(!this.overlappingProperties.containsAll(partEnds))
+		if(!this.overlappingProperties.containsAll(selectedEnds))
 			return false;
 		
-		ArrayList<GeneralizationSet> gss = getAntipattern().getParser().getSubtypesGeneralizationSets(closestSupertpe);
-		
-		ArrayList<Classifier> subtypes = new ArrayList<> ();
-		for (Property property : partEnds) {
-			subtypes.add((Classifier) property.getType());
+		ArrayList<Classifier> selectedTypes = new ArrayList<> ();
+		for (Property property : selectedEnds) {
+			selectedTypes.add((Classifier) property.getType());
 		}
 		
-		if(gss.size()==0)
-			occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(closestSupertpe, subtypes));
+		
+		ArrayList<GeneralizationSet> candidates = getGSCandidate(selectedTypes);
+		if(candidates.size()==0)
+			occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(closestSupertpe, selectedTypes, true, false));
 		else{
-			boolean isFixed = false;
-			for (GeneralizationSet gs : gss) {
-				ArrayList<Classifier> allGsChildren = new ArrayList<Classifier>();
-				
-				for (Generalization g : gs.getGeneralization()) {
-					allGsChildren.add(g.getSpecific());
-					allGsChildren.addAll(getAntipattern().getParser().allChildrenHash.get(g.getSpecific()));
-				}
-				
-				if (allGsChildren.containsAll(subtypes)){
-					gs.setIsDisjoint(true);
-					occurrence.getFix().includeModified(gs);
-					isFixed = true;
-					break;
-				}
-			}
-			
-			if(!isFixed)
-				occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(closestSupertpe, subtypes));
+			GeneralizationSet gs = candidates.get(0); //TODO: Create interface to select the desired GeneralizationSet
+			gs.setIsDisjoint(true);
+			occurrence.getFix().includeModified(gs);
 		}
 			
 		return true;
@@ -219,5 +204,49 @@ public class CommonSortalSupertype extends OverlappingGroup {
 	@Override
 	public Composite createComposite(Composite parent, int style) {
 		return new CommonSortalSupertypeComposite(parent, style, this);
-	}	
+	}
+	
+	
+	public ArrayList<GeneralizationSet> getGSCandidate(ArrayList<Classifier> selectedTypes){
+		ArrayList<GeneralizationSet> candidates = new ArrayList<GeneralizationSet>();
+		
+		for (GeneralizationSet gs : genSets) {
+			
+			HashMap<Classifier,ArrayList<Generalization>> map = new HashMap<Classifier,ArrayList<Generalization>>();
+			for (Classifier c : selectedTypes) {
+				map.put(c, new ArrayList<Generalization>());
+			}
+			
+			for (Generalization g : gs.getGeneralization()) {
+				for (Classifier c : selectedTypes) {
+					if(c.equals(g.getSpecific()) || c.allParents().contains(g.getSpecific())){
+						map.get(c).add(g);
+					}
+				}
+			}
+			
+			boolean oneGeneralizationPerType = true;
+			for (Classifier c : selectedTypes) {
+				if(map.get(c).size()!=1){
+					oneGeneralizationPerType=false;
+					break;
+				}
+			}
+			
+			if(!oneGeneralizationPerType)
+				continue;
+			
+			HashSet<Generalization> gens = new HashSet<Generalization>();
+			for (Classifier c : selectedTypes) {
+				gens.addAll(map.get(c));
+			}
+			
+			if(gens.size()!=selectedTypes.size())
+				continue;
+			
+			candidates.add(gs);
+			
+		}
+		return candidates;
+	}
 }

@@ -24,7 +24,7 @@ public class CommonMixinSupertypeComposite extends Composite {
 		Label lblNewLabel_1 = new Label(this, SWT.NONE);
 		lblNewLabel_1.setText("Closest Common Supertype(s):");
 		
-		List list = new List(this, SWT.BORDER);
+		List list = new List(this, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		for (Classifier c : group.getClosestSupertypes()) {
 			list.add(OntoUMLNameHelper.getTypeAndName(c, true, true));
 		}

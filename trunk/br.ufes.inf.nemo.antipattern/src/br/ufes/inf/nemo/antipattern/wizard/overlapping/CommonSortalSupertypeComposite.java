@@ -27,7 +27,7 @@ public class CommonSortalSupertypeComposite extends Composite {
 		lblNewLabel.setText("Identity Provider:");
 		
 		text = new Text(this, SWT.BORDER);
-		
+		text.setText(OntoUMLNameHelper.getTypeAndName(group.getIdentityProvider(), true, false));
 		Label lblNewLabel_1 = new Label(this, SWT.NONE);
 		lblNewLabel_1.setText("Closest Supertype(s): ");
 		

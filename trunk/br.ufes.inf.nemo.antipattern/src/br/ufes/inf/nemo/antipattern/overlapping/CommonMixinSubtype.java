@@ -133,7 +133,7 @@ public class CommonMixinSubtype extends OverlappingGroup {
 			fix2.includeModified(p);
 		}
 		
-		fix3 = occurrence.getFixer().createGeneralizationSet(createdGeneralizations);
+		fix3 = occurrence.getFixer().createGeneralizationSet(createdGeneralizations, true, true);
 		
 		occurrence.getFix().addAll(fix1);
 		occurrence.getFix().addAll(fix2);

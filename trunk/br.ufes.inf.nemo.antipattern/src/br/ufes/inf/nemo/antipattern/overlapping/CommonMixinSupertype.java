@@ -106,18 +106,18 @@ public class CommonMixinSupertype extends OverlappingGroup {
 		if(!this.overlappingProperties.containsAll(partEnds))
 			return false;
 		
-		ArrayList<GeneralizationSet> gss = occurrence.getParser().getSubtypesGeneralizationSets(closestSupertpe);
+//		ArrayList<GeneralizationSet> genSets = occurrence.getParser().getSubtypesGeneralizationSets(closestSupertpe);
 		
 		ArrayList<Classifier> subtypes = new ArrayList<> ();
 		for (Property property : partEnds) {
 			subtypes.add((Classifier) property.getType());
 		}
 		
-		if(gss.size()==0)
-			occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(closestSupertpe, subtypes));
+		if(genSets.size()==0)
+			occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(closestSupertpe, subtypes, true, false));
 		else{
 			boolean isFixed = false;
-			for (GeneralizationSet gs : gss) {
+			for (GeneralizationSet gs : genSets) {
 				ArrayList<Classifier> allGsChildren = new ArrayList<Classifier>();
 				
 				for (Generalization g : gs.getGeneralization()) {
@@ -134,7 +134,7 @@ public class CommonMixinSupertype extends OverlappingGroup {
 			}
 			
 			if(!isFixed)
-				occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(closestSupertpe, subtypes));
+				occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(closestSupertpe, subtypes, true, false));
 		}
 			
 		return true;

@@ -61,17 +61,20 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 	}
 	
 	public void identifyVariations(){
+		
 		Combination comb = new Combination(new ArrayList<>(allProperties), 0);
 		boolean hasDirectProperty;
 		boolean hasPropertyInheritance;
 		boolean hasRepeatedType;
+		OverlappingGroup var;
+		ArrayList<Property> result;
 		
 		while(comb.hasNext()) {
 			
-			ArrayList<Property> result = comb.next();
+			result = comb.next();
 			
 			if(result.size()>1) {
-				
+						
 				hasDirectProperty = false;
 				for (Property p : result) {
 					if(p.getOpposite()!=null && getMainType().equals(p.getOpposite().getType())){
@@ -101,15 +104,11 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 				
 				if(hasPropertyInheritance || hasRepeatedType)
 					continue;
-				
-				OverlappingGroup var;
-//				try {
-//					var = new SameType(result, antipattern);
-//					addVariation(var);
-//					continue;
-//				}
-//				catch(Exception e){	}
+
 				try {
+					if(mainType.getName().compareTo("Bloco Parlamentar do Senado Federal")==0 && result.size()==2)
+						System.out.println("NOW!!");
+					
 					var = new CommonSortalSupertype(result, antipattern);
 					addVariation(var);
 					continue;
@@ -127,29 +126,28 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 					continue;
 				}
 				catch(Exception e){	}
-		}
-			
+			}	
 		}
 	}
 	
-	private void addVariation(OverlappingGroup varToAdd){
+	private void addVariation(OverlappingGroup groupToAdd){
 		
-		ArrayList<OverlappingGroup> variationsToRemove = new ArrayList<OverlappingGroup>();
+		ArrayList<OverlappingGroup> groupsToRemove = new ArrayList<OverlappingGroup>();
 		
-		for (OverlappingGroup existingVariation : groups) {
-			if(existingVariation.getClass().equals(varToAdd.getClass())){
+		for (OverlappingGroup g : groups) {
+			if(g.getClass().equals(groupToAdd.getClass())){
 				
-				if(varToAdd.overlappingProperties.containsAll(existingVariation.overlappingProperties)){
-					variationsToRemove.add(existingVariation);
+				if(groupToAdd.overlappingProperties.containsAll(g.overlappingProperties)){
+					groupsToRemove.add(g);
 				}
-				else if(existingVariation.overlappingProperties.containsAll(varToAdd.overlappingProperties)){
+				else if(g.overlappingProperties.containsAll(groupToAdd.overlappingProperties)){
 					return;
 				}
 			}
 		}
 		
-		groups.removeAll(variationsToRemove);
-		groups.add(varToAdd);
+		groups.removeAll(groupsToRemove);
+		groups.add(groupToAdd);
 	}
 
 	@Override
