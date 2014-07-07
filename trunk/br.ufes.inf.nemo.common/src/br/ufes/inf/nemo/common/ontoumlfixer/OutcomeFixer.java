@@ -1058,10 +1058,12 @@ public class OutcomeFixer{
 	/**
 	 * Create a default generalization set which is covering=true and
 	 * disjoint=true and its name is null
+	 * @param isDisjoint TODO
+	 * @param isCovering TODO
 	 */
-	public Fix createGeneralizationSet(ArrayList<Generalization> generalizations) 
+	public Fix createGeneralizationSet(ArrayList<Generalization> generalizations, boolean isDisjoint, boolean isCovering) 
 	{
-		return createGeneralizationSet(generalizations, true, true, null);
+		return createGeneralizationSet(generalizations, isDisjoint, isCovering, null);
 	}
 
 	/** Create a default generalization set from a list of generalizations */
@@ -1089,8 +1091,10 @@ public class OutcomeFixer{
 	 * Create a generalization set between a supertype and a list of subtypes.
 	 * Note that this method assumes the existence of generalizations between
 	 * the supertype and all the subtypes
+	 * @param isDisjoint TODO
+	 * @param isCovering TODO
 	 */
-	public Fix createGeneralizationSet(Classifier supertype, ArrayList<Classifier> subtypes) 
+	public Fix createGeneralizationSet(Classifier supertype, ArrayList<Classifier> subtypes, boolean isDisjoint, boolean isCovering) 
 	{
 		// get existent generalizations
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
@@ -1102,7 +1106,7 @@ public class OutcomeFixer{
 			}
 		}
 		// create generalization set from the generalizations
-		return createGeneralizationSet(generalizations);
+		return createGeneralizationSet(generalizations, isDisjoint, isCovering);
 	}
 
 	/** Create a Generalization from a specific and general classifiers */

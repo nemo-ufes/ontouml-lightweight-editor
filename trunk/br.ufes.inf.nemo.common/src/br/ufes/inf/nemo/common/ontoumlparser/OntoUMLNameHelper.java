@@ -9,9 +9,11 @@ import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.Comment;
+import RefOntoUML.Constraintx;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.Enumeration;
+import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.FormalAssociation;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
@@ -109,6 +111,12 @@ public class OntoUMLNameHelper {
 		
 		if(elem instanceof Comment)
 			return "Comment";
+		
+		if(elem instanceof Constraintx)
+			return "Constraint";
+		
+		if(elem instanceof EnumerationLiteral)
+			return "Enum Literal";
 		
 		return "Unknown Type";
 	}
@@ -272,6 +280,14 @@ public class OntoUMLNameHelper {
 	
 	public static String getNameAndType(Property p){
 		return getName(p, true, false)+" ("+getName(p.getType())+")";
+	}
+	
+	public static String getNameAndType(Property p, boolean addTypeStereotype){
+		
+		if(addTypeStereotype)
+			return getName(p, true, false)+" ("+getTypeAndName(p.getType(), true, false)+")";
+		else
+			return getName(p, true, false)+" ("+getName(p.getType())+")";
 	}
 
 	public static String getPath(EObject c){

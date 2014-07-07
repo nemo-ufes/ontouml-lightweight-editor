@@ -1,7 +1,5 @@
 package br.ufes.inf.nemo.common.ontoumlparser;
 
-import java.text.Normalizer;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
@@ -41,10 +39,7 @@ public class ParsingElement {
 		this.element = element;
 		this.selected = selected;
 		this.alias = alias;
-		type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);	
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
+		type = OntoUMLNameHelper.getTypeName(element);
 	}
 
 	/** Get OntoUML Element. */
