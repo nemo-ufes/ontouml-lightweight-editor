@@ -15,7 +15,7 @@ public abstract class OverlappingGroup {
 
 	protected ArrayList<Property> overlappingProperties;
 	protected ArrayList<Classifier> overlappingTypes;
-	private Antipattern<?> antipattern;
+	protected Antipattern<?> antipattern;
 	boolean validGroup;
 	
 	

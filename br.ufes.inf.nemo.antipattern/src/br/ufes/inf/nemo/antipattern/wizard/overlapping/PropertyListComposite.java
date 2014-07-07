@@ -24,10 +24,10 @@ public class PropertyListComposite extends Composite {
 		Label lblNewLabel_1 = new Label(this, SWT.NONE);
 		lblNewLabel_1.setText(((OverlappingOccurrence) group.getAntipattern().getOccurrences().get(0)).getGroupTypeLine());
 		
-		List list = new List(this, SWT.BORDER | SWT.V_SCROLL);
+		List list = new List(this, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		
 		for (Property p : group.getOverlappingProperties()) {
-			list.add(OntoUMLNameHelper.getNameAndType(p));
+			list.add(OntoUMLNameHelper.getNameAndType(p)+" -- "+OntoUMLNameHelper.getTypeAndName(p.getAssociation(), true, true));
 		}
 		
 		GroupLayout groupLayout = new GroupLayout(this);

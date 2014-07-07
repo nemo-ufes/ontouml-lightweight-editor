@@ -79,7 +79,7 @@ public class GeneralizationLine extends OverlappingGroup {
 			if(subtypes.size()!=2)
 				return false;
 			
-			occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(parentType, subtypes));
+			occurrence.getFix().addAll(occurrence.getFixer().createGeneralizationSet(parentType, subtypes, true, true));
 			occurrence.getFix().addAll(aux);
 			
 			return true;
