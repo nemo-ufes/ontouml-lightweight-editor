@@ -380,7 +380,7 @@ public class DerivedTypesOperations {
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
 		generalizations.add((Generalization) fix.getAdded().get(0));
 		generalizations.add(generalizationElement.getGeneralization());
-		Fix gs =  of.createGeneralizationSet(generalizations);
+		Fix gs =  of.createGeneralizationSet(generalizations,true, true);
 		//mainfix.addAll(fixG2);
 		mainfix.addAll(fix);
 		mainfix.addAll(gs);
@@ -553,7 +553,7 @@ public class DerivedTypesOperations {
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
 		generalizations.add((Generalization) fix.getAdded().get(0));
 		generalizations.add((Generalization) fixG2.getAdded().get(0));
-		Fix gs =  of.createGeneralizationSet(generalizations);
+		Fix gs =  of.createGeneralizationSet(generalizations,true, true);
 		mainfix.addAll(fixG2);
 		mainfix.addAll(fix);
 		mainfix.addAll(gs);
@@ -573,7 +573,7 @@ public class DerivedTypesOperations {
 			mainfix.addAll(fix);
 		}
 
-		Fix gs =  of.createGeneralizationSet(generalizations);
+		Fix gs =  of.createGeneralizationSet(generalizations,true, true);
 		mainfix.addAll(gs);
 	}
 	public  static void createMultipleGeneralizationIntersection(Classifier son, ArrayList<Classifier> parents){
