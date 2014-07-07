@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.validator.meronymic.checkers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Classifier;
@@ -133,8 +134,8 @@ public class MeronymicEndsChecker extends Checker<MeronymicEndsError>{
 			return true;
 		
 		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
-			ArrayList<Classifier> identityProviders = parser.getIdentityProvider(c);
-			if(identityProviders.size()==1 && identityProviders.get(0) instanceof Quantity)
+			HashSet<Classifier> identityProviders = parser.getIdentityProvider(c);
+			if(identityProviders.size()==1 && identityProviders.toArray()[0] instanceof Quantity)
 				return true;
 		}
 		
@@ -155,8 +156,8 @@ public class MeronymicEndsChecker extends Checker<MeronymicEndsError>{
 			return true;
 		
 		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
-			ArrayList<Classifier> identityProviders = parser.getIdentityProvider(c);
-			if(identityProviders.size()==1 && identityProviders.get(0) instanceof Collective)
+			HashSet<Classifier> identityProviders = parser.getIdentityProvider(c);
+			if(identityProviders.size()==1 && identityProviders.toArray()[0] instanceof Collective)
 				return true;
 		}
 		
