@@ -52,7 +52,6 @@ import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import RefOntoUML.Type;
-import br.ufes.inf.nemo.common.list.ArrayListOperations;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 /** 
@@ -269,7 +268,8 @@ public class OntoUMLParser {
 		{
 			addToMap(p, h2);
 			
-			if(p instanceof Package) initMap(p, h2);
+			if(p instanceof Package) 
+				initMap(p, h2);
 		}
 	}		
 
@@ -365,12 +365,13 @@ public class OntoUMLParser {
 			
 			//Enumeration Literals
 			for(EnumerationLiteral p: ((Enumeration)pe).getOwnedLiteral())
-			{
+			{			   	
 				e = new ParsingElement(p, true, h2.treatName(p));
 				this.elementsHash.put(p,e);
 			}
+		
 			//Enumeration can also have attributes
-			for(Property p: ((Enumeration)pe).getAttribute())
+			for(Property p: ((Enumeration)pe).getOwnedAttribute())
 			{
 				e = new ParsingElement(p, true, h2.treatName(p));
 				this.elementsHash.put(p,e);
@@ -1691,24 +1692,36 @@ public class OntoUMLParser {
 
 	public boolean madeDisjointByGeneralizationSet(	ArrayList<Classifier> types, ArrayList<GeneralizationSet> genSets, ArrayList<Classifier> commonSupertypes) {
 		//collect generalizationSets
-		ArrayList<GeneralizationSet> generalizationSets = new ArrayList<GeneralizationSet>();
+		HashSet<GeneralizationSet> generalizationSets = new HashSet<GeneralizationSet>();
 		
 		if(childHash==null || allChildrenHash==null) 
 			buildChildrenHashes();
 		
 		for (Classifier parent : commonSupertypes) {
-			generalizationSets = getSubtypesGeneralizationSets(parent);
+			generalizationSets.addAll(getSubtypesGeneralizationSets(parent));
 		}
 		
 		//verifies if there is a generalization set which makes the subtypes disjoint
+		ArrayList<Classifier> found;
 		for (GeneralizationSet gs : generalizationSets) {
-			int typesInDifferentGeneralizations = 0;
+			found = new ArrayList<Classifier>();
 			
-			for (Generalization g1 : gs.getGeneralization())
-				if(types.contains(g1.getSpecific()) || ArrayListOperations.hasIntersection(types, allChildrenHash.get(g1.getSpecific())))
-					typesInDifferentGeneralizations++;
+			for (Generalization g1 : gs.getGeneralization()){
+				
+				if(types.contains(g1.getSpecific())){
+					found.add(g1.getSpecific());
+				}
+				else {
+					for (Classifier child : allChildrenHash.get(g1.getSpecific())) {
+						if(types.contains(child)){
+							found.add(child);
+							break;
+						}
+					}
+				}
+			}
 			
-			if(typesInDifferentGeneralizations>1){
+			if(found.size()>1){
 				if(gs.isIsDisjoint())
 					return false;
 				else
