@@ -25,11 +25,9 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -655,7 +653,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);
 				openDiagrams();
-				Main.printOutLine("Adding OCL code-completion information");				
+				Main.printOutLine("Setting up OCL Editor...");				
 				frame.getInfoManager().getOcleditor().removeAllModelCompletions();				
 				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));				
 				String constraints = (String) listFiles.get(1);				
@@ -663,13 +661,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.focusOnOclEditor();				
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 				frame.setTitle("OLED - "+file.getName()+"");
-				saveProjectNeeded(false);
-				Main.printOutLine("OLED project successfully opened");				
+				saveProjectNeeded(false);			
 			} catch (Exception ex) {
+				Main.printOutLine("Failed to open OLED project!");	
 				JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
 			}
+			Main.printOutLine("Updating UI...");	
 			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			Main.printOutLine("OLED project successfully opened!");	
 		}		
 	}
 
@@ -699,17 +699,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.focusOnOclEditor();
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 				frame.setTitle("OLED - "+file.getName()+"");
-				Main.printOutLine("Recent OLED project successfully opened");
 			}
 		} catch (Exception ex) {
+			Main.printOutLine("Failed to open OLED project!");	
 			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
-		}		
+		}
+		Main.printOutLine("Updating UI...");	
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		Main.printOutLine("OLED project successfully opened!");	
 	}
 
 	/** Save current Project to a file *.oled */
 	private File saveCurrentProjectToFile(File file) 
 	{
+		Main.printOutLine("Saving OLED project...");
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		if (file.exists()) file.delete();
 		File result = null;
@@ -718,7 +721,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				file = new File(file.getCanonicalFile() + ".oled");
 			}
 			
-			Main.printOutLine("Saving OLED project");
 			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());			
 			oclmodel.setConstraints(frame.getInfoManager().getConstraints(),"CONTENT");
 			currentProject.clearOpenedDiagrams();
@@ -735,9 +737,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			invalidate();
 			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		} catch (Exception ex) {
+			Main.printOutLine("Failed to save OLED project!");
 			ex.printStackTrace();
 			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.savefile.title"), JOptionPane.ERROR_MESSAGE);
 		}
+		Main.printOutLine("OLED project successfully saved!");
 		return result;
 	}
 
