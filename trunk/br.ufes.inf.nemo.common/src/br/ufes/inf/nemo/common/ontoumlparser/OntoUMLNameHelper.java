@@ -289,6 +289,17 @@ public class OntoUMLNameHelper {
 		else
 			return getName(p, true, false)+" ("+getName(p.getType())+")";
 	}
+	
+	public static String getNameTypeAndMultiplicity(Property p, boolean quotePropertyName, boolean quoteTypeName, boolean alwaysShowLowerAndUpper, boolean addTypeStereotype, boolean guillemetTypeStereotype){
+		
+		String typeDesc = "";
+		if(addTypeStereotype)
+			typeDesc = getTypeAndName(p.getType(), guillemetTypeStereotype, quoteTypeName);
+		else
+			typeDesc = getName(p.getType(),quoteTypeName,false);
+		
+		return getName(p, quotePropertyName, false)+" ["+getMultiplicity(p, alwaysShowLowerAndUpper, "..")+"] ("+typeDesc+")";
+	}
 
 	public static String getPath(EObject c){
 		if(c == null)

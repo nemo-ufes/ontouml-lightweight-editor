@@ -1705,19 +1705,25 @@ public class OntoUMLParser {
 		ArrayList<Classifier> found;
 		for (GeneralizationSet gs : generalizationSets) {
 			found = new ArrayList<Classifier>();
-			
+					
 			for (Generalization g1 : gs.getGeneralization()){
 				
 				if(types.contains(g1.getSpecific())){
 					found.add(g1.getSpecific());
 				}
 				else {
-					for (Classifier child : allChildrenHash.get(g1.getSpecific())) {
-						if(types.contains(child)){
-							found.add(child);
+					for (Classifier type : types) {
+						if(getAllParents(type).contains(g1.getSpecific())){
+							found.add(type);
 							break;
 						}
 					}
+//					for (Classifier child : allChildrenHash.get(g1.getSpecific())) {
+//						if(types.contains(child)){
+//							found.add(child);
+//							break;
+//						}
+//					}
 				}
 			}
 			
