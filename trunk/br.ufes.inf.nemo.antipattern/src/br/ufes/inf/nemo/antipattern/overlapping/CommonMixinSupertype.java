@@ -92,7 +92,7 @@ public class CommonMixinSupertype extends OverlappingGroup {
 		for (Classifier parent : this.closestSupertypes)
 			result+="\n\t"+OntoUMLNameHelper.getTypeAndName(parent, true, false);
 		
-		result += "\nMixin Part Ends: ";
+		result += "\nProperties: ";
 		
 		for (Property p : overlappingProperties)
 			result+="\n\t"+OntoUMLNameHelper.getNameAndType(p);

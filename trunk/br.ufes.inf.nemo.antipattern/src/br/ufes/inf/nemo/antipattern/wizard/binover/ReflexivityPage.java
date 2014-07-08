@@ -12,6 +12,7 @@ import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class ReflexivityPage extends BinOverPage {
 
@@ -36,24 +37,46 @@ public class ReflexivityPage extends BinOverPage {
 				   "\nCurrent Stereotype: "+getBinOverWizard().getCurrentStereotypeName(this));	
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
+		styledText.setAlwaysShowScrollBars(false);
 		styledText.setText(	"Now, we begin the analysis focusing on the properties of binary relations. We start with reflexivity." +
 							"\r\n\r\nWhat can be said about an individual being connected to itself through relation " +
 							OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+"?");
 		styledText.setJustify(true);
 		styledText.setBackground(container.getBackground());
-		styledText.setBounds(10, 10, 754, 65);
 		
 		btnReflexive = new Button(container, SWT.RADIO);
-		btnReflexive.setBounds(10, 81, 554, 16);
 		btnReflexive.setText("It is a NECESSARY condition (Reflexive)");
 		
 		btnIrreflexive = new Button(container, SWT.RADIO);
 		btnIrreflexive.setText("It is FORBIDDEN (Irreflexive)");
-		btnIrreflexive.setBounds(10, 103, 554, 16);
 		
 		btnNonReflexive = new Button(container, SWT.RADIO);
 		btnNonReflexive.setText("It is POSSIBLE (NonReflexive)");
-		btnNonReflexive.setBounds(10, 124, 554, 16);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(styledText, GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
+						.add(btnReflexive, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(btnIrreflexive, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(btnNonReflexive, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnReflexive)
+					.add(6)
+					.add(btnIrreflexive)
+					.add(5)
+					.add(btnNonReflexive))
+		);
+		container.setLayout(gl_container);
 		
 		setPageComplete(false);
 		

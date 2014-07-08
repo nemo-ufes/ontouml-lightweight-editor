@@ -126,7 +126,7 @@ public class CommonSortalSupertype extends OverlappingGroup {
 		for (Classifier parent : this.getClosestSupertypes())
 			result+="\n\t"+OntoUMLNameHelper.getTypeAndName(parent, true, false);
 			
-		result += "\nPart Ends: ";
+		result += "\nProperties: ";
 	
 		for (Property p : overlappingProperties)
 			result+="\n\t"+OntoUMLNameHelper.getNameAndType(p);

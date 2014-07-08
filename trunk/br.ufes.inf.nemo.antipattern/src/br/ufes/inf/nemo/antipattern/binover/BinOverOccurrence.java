@@ -18,6 +18,7 @@ import br.ufes.inf.nemo.antipattern.overlapping.SameType;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class BinOverOccurrence extends AntipatternOccurrence {
@@ -34,7 +35,7 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 	Association association;
 	Classifier source,target;
 	Property sourceEnd, targetEnd;
-	OverlappingGroup overlappingGroup;
+	OverlappingGroup group;
 		
 	public BinOverOccurrence(Association a, Antipattern<?> ap) throws Exception {
 		super(ap);
@@ -45,8 +46,8 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 		this.sourceEnd = a.getMemberEnd().get(0);
 		this.targetEnd = a.getMemberEnd().get(1);
 		
-		overlappingGroup = identifyOverlappingGroup();
-		if(overlappingGroup == null)
+		group = identifyOverlappingGroup();
+		if(group == null)
 			throw new Exception(BinOverAntipattern.getAntipatternInfo().getAcronym()+": invalid occurrence");
 		
 	}
@@ -65,7 +66,7 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 	}
 
 	public OverlappingGroup getOverlappingGroup() {
-		return overlappingGroup;
+		return group;
 	}
 
 	public Association getAssociation() {
@@ -82,9 +83,10 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 
 	@Override
 	public String toString(){
-		return 	"Association: "+parser.getStringRepresentation(association)+
-				"\nSource: "+parser.getStringRepresentation(source)+
-				"\nTarget: "+parser.getStringRepresentation(target);
+		return 	group.getType()+
+				"\nAssociation: "+OntoUMLNameHelper.getTypeAndName(association,true,false)+
+				"\nSource: "+OntoUMLNameHelper.getNameTypeAndMultiplicity(sourceEnd,true,false,true,true,true)+
+				"\nTarget: "+OntoUMLNameHelper.getNameTypeAndMultiplicity(targetEnd,true,false,true,true,true);
 	}
 	
 	@Override
@@ -106,7 +108,7 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 	}
 	
 	public void makeEndsDisjoint(){
-		overlappingGroup.makeEndsDisjoint(this, new ArrayList<Property>(association.getMemberEnd()));
+		group.makeEndsDisjoint(this, new ArrayList<Property>(association.getMemberEnd()));
 	}
 	
 	public void changeStereotype(Class<? extends Association> newStereotype){
@@ -116,32 +118,32 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 	public String generateOCL(BinaryPropertyValue value){
 		String context = "", invRule ="", property="", quotedContext="";
 		
-		if(overlappingGroup instanceof SameType){
+		if(group instanceof SameType){
 			context = source.getName();
 			quotedContext = addQuotes(context);
 			fix.addAll(fixer.fixPropertyName(targetEnd));
 			property = addQuotes(targetEnd.getName())+"->asSet()"; 
 		}
-		else if (overlappingGroup instanceof GeneralizationLine){
-			GeneralizationLine gl = (GeneralizationLine) overlappingGroup;
+		else if (group instanceof GeneralizationLine){
+			GeneralizationLine gl = (GeneralizationLine) group;
 			context = gl.getParent().getType().getName();
 			quotedContext = addQuotes(context);
 			fix.addAll(fixer.fixPropertyName(gl.getChild()));
 			property = addQuotes(gl.getChild().getName())+"->asSet().oclAsType("+quotedContext+")";
 		}
-		else if(overlappingGroup instanceof CommonSortalSupertype || overlappingGroup instanceof CommonMixinSupertype){
+		else if(group instanceof CommonSortalSupertype || group instanceof CommonMixinSupertype){
 			
-			if(overlappingGroup instanceof CommonMixinSupertype)
-				context = ((CommonMixinSupertype) overlappingGroup).getClosestSupertpe().getName();
-			else if (overlappingGroup instanceof CommonSortalSupertype)
-				context = ((CommonSortalSupertype) overlappingGroup).getClosestSupertpe().getName();
+			if(group instanceof CommonMixinSupertype)
+				context = ((CommonMixinSupertype) group).getClosestSupertpe().getName();
+			else if (group instanceof CommonSortalSupertype)
+				context = ((CommonSortalSupertype) group).getClosestSupertpe().getName();
 			
 			quotedContext = addQuotes(context);
 			fix.addAll(fixer.fixPropertyName(targetEnd));
 			property = "oclAsType("+addQuotes(source.getName())+")."+addQuotes(targetEnd.getName())+"->asSet().oclAsType("+quotedContext+")"; 
 
 		}
-		else if(overlappingGroup instanceof CommonMixinSubtype){
+		else if(group instanceof CommonMixinSubtype){
 
 			ArrayList<Classifier> types = new ArrayList<Classifier>();
 			types.add(source);

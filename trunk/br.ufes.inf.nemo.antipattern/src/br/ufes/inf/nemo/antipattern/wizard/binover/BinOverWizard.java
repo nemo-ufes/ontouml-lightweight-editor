@@ -363,12 +363,12 @@ public class BinOverWizard extends AntipatternWizard {
 			boolean isNon = (boAction.getProperty()==BinaryPropertyValue.NON_REFLEXIVE || boAction.getProperty()==BinaryPropertyValue.NON_SYMMETRIC ||
 							boAction.getProperty()==BinaryPropertyValue.NON_TRANSITIVE || boAction.getProperty()==BinaryPropertyValue.NON_CYCLIC);	
 			
-			System.out.println("Getting Action: "+boAction.getCode());
-			System.out.println("\tisBP: "+isActionBPChange);
-			System.out.println("\tisNon: "+isNon);
-			System.out.println("\tisMaterial: "+isMaterial);
-			System.out.println("\tisFormal: "+isFormal);
-			System.out.println();
+//			System.out.println("Getting Action: "+boAction.getCode());
+//			System.out.println("\tisBP: "+isActionBPChange);
+//			System.out.println("\tisNon: "+isNon);
+//			System.out.println("\tisMaterial: "+isMaterial);
+//			System.out.println("\tisFormal: "+isFormal);
+//			System.out.println();
 			
 			if(isActionBPChange){
 				if(!isNon && (isMaterial || isFormal))

@@ -77,14 +77,16 @@ public class RelOverOccurrence extends OverlappingOccurrence{
 	public String toString() {
 		String result;
 		
-		result = "Relator: "+getParser().getStringRepresentation(getRelator())+
-				"\nAll Mediated Types: ";
-				
-		for (Property p : getAllMediatedProperties())
-			result+="\n\t"+getParser().getStringRepresentation(p);
-				
+//		result = "Relator: "+getParser().getStringRepresentation(getRelator())+
+//				"\nAll Mediated Types: ";
+//				
+//		for (Property p : getAllMediatedProperties())
+//			result+="\n\t"+getParser().getStringRepresentation(p);
+		
+		result = "Relator: "+getParser().getStringRepresentation(getRelator());
+		
 		for (OverlappingGroup variation : getGroups()) {
-			result+="\n\n"+variation.toString();
+			result+="\n"+variation.toString();
 		}
 		return result;
 	}

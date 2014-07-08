@@ -16,6 +16,7 @@ import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryProperty;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class ChangeStereotypePage extends BinOverPage {
 
@@ -68,21 +69,43 @@ public class ChangeStereotypePage extends BinOverPage {
 			setPageComplete(false);
 			
 			styledText = new StyledText(container, SWT.WRAP | SWT.READ_ONLY | SWT.V_SCROLL);
-			styledText.setBounds(10, 10, 754, 110);
+			styledText.setAlwaysShowScrollBars(false);
 			styledText.setBackground(container.getBackground());
 			styledText.setJustify(true);
 			
 			combo = new CCombo(container, SWT.BORDER | SWT.READ_ONLY);
-			combo.setBounds(10, 170, 138, 21);
 			combo.setEnabled(false);
 			
 			btnKeep = new Button(container, SWT.RADIO);
 			btnKeep.addSelectionListener(listener);
-			btnKeep.setBounds(10, 126, 554, 16);
 			
 			btnChangeAndEnforce = new Button(container, SWT.RADIO);
+			GroupLayout gl_container = new GroupLayout(container);
+			gl_container.setHorizontalGroup(
+				gl_container.createParallelGroup(GroupLayout.LEADING)
+					.add(gl_container.createSequentialGroup()
+						.add(10)
+						.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+							.add(styledText, GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
+							.add(combo, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+							.add(btnChangeAndEnforce, GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
+							.add(btnKeep, GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE))
+						.add(10))
+			);
+			gl_container.setVerticalGroup(
+				gl_container.createParallelGroup(GroupLayout.LEADING)
+					.add(gl_container.createSequentialGroup()
+						.add(10)
+						.add(styledText, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+						.add(6)
+						.add(btnKeep)
+						.add(6)
+						.add(btnChangeAndEnforce)
+						.add(6)
+						.add(combo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+			);
+			container.setLayout(gl_container);
 			btnChangeAndEnforce.addSelectionListener(listener);
-			btnChangeAndEnforce.setBounds(10, 148, 554, 16);
 		
 	}
 	

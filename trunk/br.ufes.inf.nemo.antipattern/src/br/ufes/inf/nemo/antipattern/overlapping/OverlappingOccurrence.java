@@ -106,8 +106,20 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 					continue;
 
 				try {
-					if(mainType.getName().compareTo("Bloco Parlamentar do Senado Federal")==0 && result.size()==2)
-						System.out.println("NOW!!");
+//					if(mainType.getName().compareTo("Atendimento Rodoviário")==0 && 
+//							(
+//									(
+//										result.size()==2 && result.get(0).getType().getName().compareTo("Entidade Pública em CA")==0 && 
+//										result.size()==2 && result.get(1).getType().getName().compareTo("Concessionária Rodoviária Convenente")==0
+//									) 
+//									||
+//									(
+//										result.size()==2 && result.get(1).getType().getName().compareTo("Entidade Pública em CA")==0 && 
+//										result.size()==2 && result.get(0).getType().getName().compareTo("Concessionária Rodoviária Convenente")==0
+//									)
+//							
+//							))
+//						System.out.println("NOWWW!");
 					
 					var = new CommonSortalSupertype(result, antipattern);
 					addVariation(var);
