@@ -14,6 +14,8 @@ import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class CyclicityPage extends BinOverPage {
 
@@ -43,6 +45,7 @@ public class CyclicityPage extends BinOverPage {
 				   "\nCurrent Stereotype: "+getBinOverWizard().getCurrentStereotypeName(this));	
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
+		styledText.setAlwaysShowScrollBars(false);
 		styledText.setText(	"The last binary property we analyze in this antipattern is the Ciclicity."+
 							"\r\n\r\n" +
 							"Consider three distinct individuals: a, b and c. " +
@@ -51,28 +54,54 @@ public class CyclicityPage extends BinOverPage {
 			
 		styledText.setJustify(true);
 		styledText.setBackground(container.getBackground());
-		styledText.setBounds(10, 10, 754, 71);
 				
 		btnCyclic = new Button(container, SWT.RADIO);
-		btnCyclic.setBounds(10, 87, 554, 16);
 		btnCyclic.setText("Connects c to a (Cyclic)");
 		
 		btnAcyclic = new Button(container, SWT.RADIO);
 		btnAcyclic.setText("DOES NOT connect c to a (Acyclic)");
-		btnAcyclic.setBounds(10, 109, 554, 16);
 		
 		btnNonCyclic = new Button(container, SWT.RADIO);
 		btnNonCyclic.setText("Nothing (Non-Cyclic)");
-		btnNonCyclic.setBounds(10, 130, 554, 16);
 		
 		lblIncompatibility = new Label(container, SWT.WRAP);
 		lblIncompatibility.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		lblIncompatibility.setBounds(10, 152, 554, 16);
 		lblIncompatibility.setText(	"(One or more options disable due to incompatibility with your previous answers.)");
 		
 		lblCurrentValues = new Label(container, SWT.WRAP | SWT.RIGHT);
-		lblCurrentValues.setBounds(10, 256, 754, 15);
 		lblCurrentValues.setText("Reflexivity = , Symmetry = , Transitivity =");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(styledText, GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
+						.add(btnCyclic, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(btnAcyclic, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(btnNonCyclic, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(lblIncompatibility, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(GroupLayout.TRAILING, lblCurrentValues, GroupLayout.PREFERRED_SIZE, 754, GroupLayout.PREFERRED_SIZE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnCyclic)
+					.add(6)
+					.add(btnAcyclic)
+					.add(5)
+					.add(btnNonCyclic)
+					.add(6)
+					.add(lblIncompatibility, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED, 88, Short.MAX_VALUE)
+					.add(lblCurrentValues)
+					.add(10))
+		);
+		container.setLayout(gl_container);
 		
 		setPageComplete(false);
 		

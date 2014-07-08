@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.binover;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
@@ -23,6 +24,7 @@ import RefOntoUML.Association;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class BinOverRefactoringPage extends RefactoringPage {
 
@@ -94,7 +96,7 @@ public class BinOverRefactoringPage extends RefactoringPage {
 		Composite container = new Composite(parent, SWT.NULL);
 		setControl(container);
 
-		new Label(container, SWT.NONE);
+		Label label_1 = new Label(container, SWT.NONE);
 		
 		ExpandAdapter expandAdapter = new ExpandAdapter() {
 			@Override
@@ -115,7 +117,6 @@ public class BinOverRefactoringPage extends RefactoringPage {
 		SelectionAdapter listenerDisjoint = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				
 				if(comboDisjoint.getSelectionIndex()==-1 || comboDisjoint.getSelectionIndex()==0){
 					itemReflexivity.setExpanded(false);
 					itemSymmetry.setExpanded(false);
@@ -134,18 +135,40 @@ public class BinOverRefactoringPage extends RefactoringPage {
 					bar.setEnabled(true);
 					itemReflexivity.setExpanded(true);
 					comboStereotype.setEnabled(true);
+				}
+			}
+		};
+		
+		SelectionAdapter listenerCheckboxes = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				
+				String selected = null;
+				int index = comboStereotype.getSelectionIndex();
+				
+				if(index!=-1)
+					selected = comboStereotype.getItem(index);
+				
+				possibleStereotypes = getBinOverWizard().allStereotypes();
+				for (BinaryPropertyValue property : getSelectedProperties())
+					possibleStereotypes.retainAll(getBinOverWizard().possibleStereotypes(property));
+				
+				ArrayList<String> possibleStereotypeNames = getBinOverWizard().getStereotypeNames(possibleStereotypes);
+				ArrayList<String> currentStereotypeNames = new ArrayList<String>(Arrays.asList(comboStereotype.getItems()));
+				
+				if(!possibleStereotypeNames.containsAll(currentStereotypeNames) || !currentStereotypeNames.containsAll(possibleStereotypeNames)){
+					comboStereotype.removeAll();	
 					
-					possibleStereotypes = getBinOverWizard().allStereotypes();
-					for (BinaryPropertyValue property : getSelectedProperties())
-						possibleStereotypes.retainAll(getBinOverWizard().possibleStereotypes(property));
-					
-						
-					for (String op : getBinOverWizard().getStereotypeNames(possibleStereotypes))
+					for (String op : possibleStereotypeNames)
 						comboStereotype.add(op);
 					
 					if(possibleStereotypes.size()>0 ){//&& BinOverOccurrence.validCombination(getReflexivityValue(), getSymmetryValue(), getTransitivityValue(), getCyclicityValue())){
+						if(selected!=null && possibleStereotypeNames.contains(selected))
+							comboStereotype.select(possibleStereotypeNames.indexOf(selected));
+						else
+							comboStereotype.select(0);
+						
 						comboStereotype.setEnabled(true);
-						comboStereotype.select(0);
 						lblimpossibleCombination.setVisible(false);
 						setPageComplete(true);
 					}
@@ -160,42 +183,35 @@ public class BinOverRefactoringPage extends RefactoringPage {
 			
 		
 		Label lblChoose = new Label(container, SWT.NONE);
-		lblChoose.setBounds(10, 10, 281, 15);
 		lblChoose.setText("Choose the appropriate refactoring options:");
 		
 		Label lblIsDisjoint = new Label(container, SWT.NONE);
-		lblIsDisjoint.setBounds(10, 41, 86, 21);
 		lblIsDisjoint.setText("Is Disjoint: ");
-		new Label(container, SWT.NONE);
+		Label label = new Label(container, SWT.NONE);
 		
 		comboDisjoint = new CCombo(container, SWT.BORDER | SWT.READ_ONLY);
-		comboDisjoint.setBounds(106, 41, 264, 21);
 		comboDisjoint.setItems(new String[] {"True", "False"});
 		comboDisjoint.addSelectionListener(listenerDisjoint);
 		
 		Label lblNewStereotype = new Label(container, SWT.NONE);
-		lblNewStereotype.setBounds(10, 68, 86, 21);
 		lblNewStereotype.setText("New Stereotype:");
-		new Label(container, SWT.NONE);
+		Label label_3 = new Label(container, SWT.NONE);
 
-		comboStereotype = new CCombo(container, SWT.BORDER | SWT.READ_ONLY);
-		comboStereotype.setBounds(106, 68, 264, 21);
-		comboStereotype.setItems(new String[] {"Formal", "Material", "MemberOf "});
+		comboStereotype = new CCombo(container, SWT.BORDER | SWT.READ_ONLY);		
 		comboStereotype.setEnabled(false);
-		comboStereotype.addSelectionListener(listenerDisjoint);
-
-		new Label(container, SWT.NONE);
+		for (String op : getBinOverWizard().getStereotypeNames(getBinOverWizard().allStereotypes()))
+			comboStereotype.add(op);
+		
+		Label label_2 = new Label(container, SWT.NONE);
 		
 		lblimpossibleCombination = new Label(container, SWT.WRAP);
-		lblimpossibleCombination.setBounds(10, 96, 360, 34);
+		lblimpossibleCombination.setVisible(false);
 		lblimpossibleCombination.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		lblimpossibleCombination.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		lblimpossibleCombination.setText("(No stereotype is suitable for the selected binary property values. Try modifying them!)");
-		lblimpossibleCombination.setVisible(false);
 		
 		bar = new ExpandBar (container, SWT.V_SCROLL);
 		bar.setSpacing(0);
-		bar.setBounds(10, 136, 360, 289);
 		bar.setBackground(container.getBackground());
 		bar.addExpandListener(expandAdapter);
 		bar.setEnabled(false);
@@ -221,32 +237,32 @@ public class BinOverRefactoringPage extends RefactoringPage {
 		  checkReflexive = new Button(compositeReflexivity, SWT.CHECK);
 		  checkReflexive.setText("Reflexive");
 		  checkReflexive.setBackground(checkReflexive.getParent().getBackground());
-		  checkReflexive.addSelectionListener(listenerDisjoint);
+		  checkReflexive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkQuasiReflexive = new Button(compositeReflexivity, SWT.CHECK);
 		  checkQuasiReflexive.setText("Quasi-Reflexive");
 		  checkQuasiReflexive.setBackground(checkQuasiReflexive.getParent().getBackground());
-		  checkQuasiReflexive.addSelectionListener(listenerDisjoint);
+		  checkQuasiReflexive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkCoReflexive = new Button(compositeReflexivity, SWT.CHECK);
 		  checkCoReflexive.setText("Co-Reflexive");
 		  checkCoReflexive.setBackground(checkCoReflexive.getParent().getBackground());
-		  checkCoReflexive.addSelectionListener(listenerDisjoint);
+		  checkCoReflexive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkAntiReflexive = new Button(compositeReflexivity, SWT.CHECK);
 		  checkAntiReflexive.setText("Anti-Reflexive");
 		  checkAntiReflexive.setBackground(checkAntiReflexive.getParent().getBackground());
-		  checkAntiReflexive.addSelectionListener(listenerDisjoint);
+		  checkAntiReflexive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkShiftReflexive = new Button(compositeReflexivity, SWT.CHECK);
 		  checkShiftReflexive.setText("Shift-Reflexive");
 		  checkShiftReflexive.setBackground(checkShiftReflexive.getParent().getBackground());
-		  checkShiftReflexive.addSelectionListener(listenerDisjoint);
+		  checkShiftReflexive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkNonReflexive = new Button(compositeReflexivity, SWT.CHECK);
 		  checkNonReflexive.setText("Non-Reflexive");
 		  checkNonReflexive.setBackground(checkNonReflexive.getParent().getBackground());
-		  checkNonReflexive.addSelectionListener(listenerDisjoint);
+		  checkNonReflexive.addSelectionListener(listenerCheckboxes);
 		  
 		  itemReflexivity = new ExpandItem (bar, SWT.NONE, 0);
 		  itemReflexivity.setExpanded(false);
@@ -257,22 +273,22 @@ public class BinOverRefactoringPage extends RefactoringPage {
 		  checkSymmetric = new Button(compositeSymmetry, SWT.CHECK);
 		  checkSymmetric.setText("Symmetric");
 		  checkSymmetric.setBackground(checkSymmetric.getParent().getBackground());
-		  checkSymmetric.addSelectionListener(listenerDisjoint);
+		  checkSymmetric.addSelectionListener(listenerCheckboxes);
 		  
 		  checkAntiSymmetric = new Button(compositeSymmetry, SWT.CHECK);
 		  checkAntiSymmetric.setText("Anti-Symmetric");
 		  checkAntiSymmetric.setBackground(checkAntiSymmetric.getParent().getBackground());
-		  checkAntiSymmetric.addSelectionListener(listenerDisjoint);
+		  checkAntiSymmetric.addSelectionListener(listenerCheckboxes);
 		  
 		  checkAsymmetric = new Button(compositeSymmetry, SWT.CHECK);
 		  checkAsymmetric.setText("Asymmetric");
 		  checkAsymmetric.setBackground(checkAsymmetric.getParent().getBackground());
-		  checkAsymmetric.addSelectionListener(listenerDisjoint);
+		  checkAsymmetric.addSelectionListener(listenerCheckboxes);
 		  
 		  checkNonSymmetric = new Button(compositeSymmetry, SWT.CHECK);
 		  checkNonSymmetric.setText("Non-Symmetric");
 		  checkNonSymmetric.setBackground(checkNonSymmetric.getParent().getBackground());
-		  checkNonSymmetric.addSelectionListener(listenerDisjoint);
+		  checkNonSymmetric.addSelectionListener(listenerCheckboxes);
 		  
 		  itemSymmetry = new ExpandItem (bar, SWT.NONE, 1);
 		  itemSymmetry.setText("Symmetry");
@@ -290,42 +306,42 @@ public class BinOverRefactoringPage extends RefactoringPage {
 		  checkTransitive = new Button(compositeTransitivity, SWT.CHECK);
 		  checkTransitive.setText("Transitive");
 		  checkTransitive.setBackground(checkTransitive.getParent().getBackground());
-		  checkTransitive.addSelectionListener(listenerDisjoint);
+		  checkTransitive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkCoTransitive = new Button(compositeTransitivity, SWT.CHECK);
 		  checkCoTransitive.setText("Co-Transitive");
 		  checkCoTransitive.setBackground(checkCoTransitive.getParent().getBackground());
-		  checkCoTransitive.addSelectionListener(listenerDisjoint);
+		  checkCoTransitive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkOpTransitive = new Button(compositeTransitivity, SWT.CHECK);
 		  checkOpTransitive.setText("Op-Transitive");
 		  checkOpTransitive.setBackground(checkOpTransitive.getParent().getBackground());
-		  checkOpTransitive.addSelectionListener(listenerDisjoint);
+		  checkOpTransitive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkAntiTransitive = new Button(compositeTransitivity, SWT.CHECK);
 		  checkAntiTransitive.setText("Anti-Transitive");
 		  checkAntiTransitive.setBackground(checkAntiTransitive.getParent().getBackground());
-		  checkAntiTransitive.addSelectionListener(listenerDisjoint);
+		  checkAntiTransitive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkNonTransitive = new Button(compositeTransitivity, SWT.CHECK);
 		  checkNonTransitive.setText("Non-Transitive");
 		  checkNonTransitive.setBackground(checkNonTransitive.getParent().getBackground());
-		  checkNonTransitive.addSelectionListener(listenerDisjoint);
+		  checkNonTransitive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkNegativelyTransitive = new Button(compositeTransitivity, SWT.CHECK);
 		  checkNegativelyTransitive.setText("Negatively Transitive");
 		  checkNegativelyTransitive.setBackground(checkNegativelyTransitive.getParent().getBackground());
-		  checkNegativelyTransitive.addSelectionListener(listenerDisjoint);
+		  checkNegativelyTransitive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkSemiTransitive = new Button(compositeTransitivity, SWT.CHECK);
 		  checkSemiTransitive.setText("Semi-Transitive");
 		  checkSemiTransitive.setBackground(checkSemiTransitive.getParent().getBackground());
-		  checkSemiTransitive.addSelectionListener(listenerDisjoint);
+		  checkSemiTransitive.addSelectionListener(listenerCheckboxes);
 		  
 		  checkQuasiTransitive = new Button(compositeTransitivity, SWT.CHECK);
 		  checkQuasiTransitive.setText("Quasi-Transitive");
 		  checkQuasiTransitive.setBackground(checkQuasiTransitive.getParent().getBackground());
-		  checkQuasiTransitive.addSelectionListener(listenerDisjoint);
+		  checkQuasiTransitive.addSelectionListener(listenerCheckboxes);
 		  
 		  itemTransitivity = new ExpandItem (bar, SWT.NONE, 2);
 		  itemTransitivity.setText("Transitivity");
@@ -343,12 +359,12 @@ public class BinOverRefactoringPage extends RefactoringPage {
 		  checkCyclic = new Button(compositeCyclicity, SWT.CHECK);
 		  checkCyclic.setText("Cyclic");
 		  checkCyclic.setBackground(checkCyclic.getParent().getBackground());
-		  checkCyclic.addSelectionListener(listenerDisjoint);
+		  checkCyclic.addSelectionListener(listenerCheckboxes);
 		  
 		  checkAcyclic = new Button(compositeCyclicity, SWT.CHECK);
 		  checkAcyclic.setText("Acyclic");
 		  checkAcyclic.setBackground(checkAcyclic.getParent().getBackground());
-		  checkAcyclic.addSelectionListener(listenerDisjoint);
+		  checkAcyclic.addSelectionListener(listenerCheckboxes);
 		  
 		  itemCyclicity = new ExpandItem (bar, SWT.NONE, 3);
 		  itemCyclicity.setText("Cyclicity");
@@ -366,42 +382,42 @@ public class BinOverRefactoringPage extends RefactoringPage {
 		  checkEuclidean = new Button(compositeOthers, SWT.CHECK);
 		  checkEuclidean.setText("(Right) Euclidean");
 		  checkEuclidean.setBackground(checkEuclidean.getParent().getBackground());
-		  checkEuclidean.addSelectionListener(listenerDisjoint);
+		  checkEuclidean.addSelectionListener(listenerCheckboxes);
 		  
 		  checkWeakConnected = new Button(compositeOthers, SWT.CHECK);
 		  checkWeakConnected.setText("Weak Connected (Tight)");
 		  checkWeakConnected.setBackground(checkWeakConnected.getParent().getBackground());
-		  checkWeakConnected.addSelectionListener(listenerDisjoint);
+		  checkWeakConnected.addSelectionListener(listenerCheckboxes);
 		  
 		  checkLeftEuclidean = new Button(compositeOthers, SWT.CHECK);
 		  checkLeftEuclidean.setText("Left Euclidean");
 		  checkLeftEuclidean.setBackground(checkLeftEuclidean.getParent().getBackground());
-		  checkLeftEuclidean.addSelectionListener(listenerDisjoint);
+		  checkLeftEuclidean.addSelectionListener(listenerCheckboxes);
 		  
 		  checkStrongConnected = new Button(compositeOthers, SWT.CHECK);
 		  checkStrongConnected.setText("Strong Connected");
 		  checkStrongConnected.setBackground(checkStrongConnected.getParent().getBackground());
-		  checkStrongConnected.addSelectionListener(listenerDisjoint);
+		  checkStrongConnected.addSelectionListener(listenerCheckboxes);
 		  
 		  checkWeakComplete = new Button(compositeOthers, SWT.CHECK);
 		  checkWeakComplete.setText("Weak Complete");
 		  checkWeakComplete.setBackground(checkWeakComplete.getParent().getBackground());
-		  checkWeakComplete.addSelectionListener(listenerDisjoint);
+		  checkWeakComplete.addSelectionListener(listenerCheckboxes);
 		  
 		  checkTrichotomous = new Button(compositeOthers, SWT.CHECK);
 		  checkTrichotomous.setText("Thrichotomous");
 		  checkTrichotomous.setBackground(checkTrichotomous.getParent().getBackground());
-		  checkTrichotomous.addSelectionListener(listenerDisjoint);
+		  checkTrichotomous.addSelectionListener(listenerCheckboxes);
 		  
 		  checkStrongComplete = new Button(compositeOthers, SWT.CHECK);
 		  checkStrongComplete.setText("Strong Complete (Total)");
 		  checkStrongComplete.setBackground(checkStrongComplete.getParent().getBackground());
-		  checkStrongComplete.addSelectionListener(listenerDisjoint);
+		  checkStrongComplete.addSelectionListener(listenerCheckboxes);
 		  
 		  checkFerrers = new Button(compositeOthers, SWT.CHECK);
 		  checkFerrers.setText("Ferrers");
 		  checkFerrers.setBackground(checkFerrers.getParent().getBackground());
-		  checkFerrers.addSelectionListener(listenerDisjoint);
+		  checkFerrers.addSelectionListener(listenerCheckboxes);
 		  
 		  itemOthers = new ExpandItem (bar, SWT.NONE, 4);
 		  itemOthers.setText("Others");
@@ -409,7 +425,6 @@ public class BinOverRefactoringPage extends RefactoringPage {
 		  itemOthers.setControl(compositeOthers);
 	
 		list = new List(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-		list.setBounds(387, 41, 377, 384);
 		list.setItems(new String[] {"Reflexive: ∀ x ∈ X. R(x,x)", 
 				  "Co-Reflexive: ∀ x, y ∈ X. R(x,y) ⟶ x = y", 
 				  "Shift-Reflexive: ∀ x, y ∈ X. R(x,y) ⟶ R(y,y)", 
@@ -442,6 +457,62 @@ public class BinOverRefactoringPage extends RefactoringPage {
 				  "Strong Connected: ∀ x, y ∈ X. x ≠ y ⟶ ( R(x,y) ∨ R(y,x) )", 
 				  "Trichotomous: ∀ x, y ∈ X. R(x,y) ∨ R(y,x) ∨ x = y", 
 				  "Ferrers: ∀ w, x, y, z ∈ X. ( R(w,x) ∧ R(y,z) ) ⟶ ( R(w,z) ∨ R(x,y) ) "});
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(label)
+				.add(label_1)
+				.add(label_2)
+				.add(label_3)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(lblIsDisjoint, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
+							.add(10)
+							.add(comboDisjoint, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+						.add(gl_container.createSequentialGroup()
+							.add(lblNewStereotype)
+							.add(10)
+							.add(comboStereotype, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+						.add(lblimpossibleCombination, GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
+						.add(bar, GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE))
+					.add(17)
+					.add(list, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblChoose, GroupLayout.DEFAULT_SIZE, 753, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(label, GroupLayout.PREFERRED_SIZE, 0, GroupLayout.PREFERRED_SIZE)
+						.add(label_1, GroupLayout.PREFERRED_SIZE, 0, GroupLayout.PREFERRED_SIZE)
+						.add(label_2, GroupLayout.PREFERRED_SIZE, 0, GroupLayout.PREFERRED_SIZE)
+						.add(label_3, GroupLayout.PREFERRED_SIZE, 0, GroupLayout.PREFERRED_SIZE))
+					.add(10)
+					.add(lblChoose)
+					.add(16)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(lblIsDisjoint, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+								.add(comboDisjoint, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.add(6)
+							.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+								.add(lblNewStereotype, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+								.add(comboStereotype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.add(7)
+							.add(lblimpossibleCombination, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+							.add(6)
+							.add(bar, GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE))
+						.add(list, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE))
+					.add(4))
+		);
+		container.setLayout(gl_container);
 		
 		setPageComplete(false);
 		

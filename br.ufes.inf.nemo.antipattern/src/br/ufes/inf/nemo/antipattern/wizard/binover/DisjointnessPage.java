@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class DisjointnessPage extends BinOverPage {
 
@@ -34,26 +35,45 @@ public class DisjointnessPage extends BinOverPage {
 		Composite container = new Composite(parent, SWT.NULL);
 
 		setControl(container);
-		container.setLayout(null);
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
-		styledText.setBounds(10, 10, 754, 99);
+		styledText.setAlwaysShowScrollBars(false);
 		styledText.setText(	"Before we analyze any binary property, we have to be sure that the ends of relation "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true) +
 							" are indeed overlapping. To achieve that, answer the following question:" +
 							"\r\n\r\n" +
 							"Is it possible for the same individual to act as the source end "+OntoUMLNameHelper.getNameAndType(binOver.getAssociation().getMemberEnd().get(0))+
-							" and the target "+OntoUMLNameHelper.getNameAndType(binOver.getAssociation().getMemberEnd().get(1))+" of the relation at the same time? " +
+							" and also as the target "+OntoUMLNameHelper.getNameAndType(binOver.getAssociation().getMemberEnd().get(1))+" of the relation at the same time? " +
 							"Notice that the question is not only if the individual can instantiate the association ends' types, but act as the roles defined by them.");
 		styledText.setJustify(true);
 		styledText.setBackground(container.getBackground());
 		
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 115, 554, 16);
 		btnYes.setText("Yes (Overlapping Ends)");
 		
 		btnNo = new Button(container, SWT.RADIO);
-		btnNo.setBounds(10, 136, 554, 16);
 		btnNo.setText("No (Disjoint Ends)");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(styledText, GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
+						.add(btnYes, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(btnNo, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnYes)
+					.add(5)
+					.add(btnNo))
+		);
+		container.setLayout(gl_container);
 		
 		setPageComplete(false);
 		

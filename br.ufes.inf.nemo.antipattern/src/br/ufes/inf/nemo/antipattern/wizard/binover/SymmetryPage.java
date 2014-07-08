@@ -8,6 +8,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
@@ -40,6 +41,7 @@ public class SymmetryPage extends BinOverPage {
 				   "\nCurrent Stereotype: "+getBinOverWizard().getCurrentStereotypeName(this));	
 		
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
+		styledText.setAlwaysShowScrollBars(false);
 		styledText.setText(	"Now lets analyze the symmetry of "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+". " +
 							"\r\n\r\n" +
 							"Consider two individuals, x and y, both instances of "+OntoUMLNameHelper.getTypeAndName(binOver.getSource(), true, true)+" " +
@@ -52,23 +54,55 @@ public class SymmetryPage extends BinOverPage {
 		
 		styledText.setJustify(true);
 		styledText.setBackground(container.getBackground());
-		styledText.setBounds(10, 10, 754, 120);
 		
 		btnSymmetric = new Button(container, SWT.RADIO);
-		btnSymmetric.setBounds(10, 136, 554, 16);
 		btnSymmetric.setText("Yes (Symmetric)");
 		
 		btnAsymmetric = new Button(container, SWT.RADIO);
 		btnAsymmetric.setText("No and it is forbidden (Anti-Symmetric)");
-		btnAsymmetric.setBounds(10, 158, 554, 16);
 		
 		btnNonSymmetric = new Button(container, SWT.RADIO);
 		btnNonSymmetric.setText("It does not imply, but it is possible (Non-symmetric)");
-		btnNonSymmetric.setBounds(10, 179, 554, 16);
 		
 		lblCurrentValues = new Label(container, SWT.WRAP | SWT.RIGHT);
-		lblCurrentValues.setBounds(210, 256, 554, 15);
 		lblCurrentValues.setText("Reflexivity = ");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(btnSymmetric, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(btnAsymmetric, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE))
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(btnNonSymmetric, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE))
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(lblCurrentValues, GroupLayout.DEFAULT_SIZE, 753, Short.MAX_VALUE)
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnSymmetric)
+					.add(6)
+					.add(btnAsymmetric)
+					.add(5)
+					.add(btnNonSymmetric)
+					.add(61)
+					.add(lblCurrentValues)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 		
 		setPageComplete(false);
 		SelectionAdapter listener = new SelectionAdapter() {

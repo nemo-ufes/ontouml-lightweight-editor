@@ -14,6 +14,8 @@ import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class TransitivityPage extends BinOverPage {
 	
@@ -43,6 +45,7 @@ public class TransitivityPage extends BinOverPage {
 				   "\nCurrent Stereotype: "+getBinOverWizard().getCurrentStereotypeName(this));	
 				
 		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL);
+		styledText.setAlwaysShowScrollBars(false);
 		styledText.setText(	"Now, lets analyze "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+" focusing on its transitivity." +
 							"\r\n\r\n" +
 							"Consider three distinct individuals: a, b and c. If "+OntoUMLNameHelper.getTypeAndName(binOver.getAssociation(), true, true)+" " +
@@ -50,28 +53,54 @@ public class TransitivityPage extends BinOverPage {
 		
 		styledText.setJustify(true);
 		styledText.setBackground(container.getBackground());
-		styledText.setBounds(10, 10, 754, 73);
 		
 		btnTransitive = new Button(container, SWT.RADIO);
-		btnTransitive.setBounds(10, 89, 554, 16);
 		btnTransitive.setText("Connects a to c (Transitive)");
 		
 		btnIntransitive = new Button(container, SWT.RADIO);
 		btnIntransitive.setText("DOES NOT connect a to c (Intransitive)");
-		btnIntransitive.setBounds(10, 111, 554, 16);
 		
 		btnNonTransitive = new Button(container, SWT.RADIO);
 		btnNonTransitive.setText("Nothing (Non-Transitive)");
-		btnNonTransitive.setBounds(10, 132, 554, 16);
 		
 		lblIncompatibility = new Label(container, SWT.WRAP);
 		lblIncompatibility.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		lblIncompatibility.setBounds(10, 154, 754, 16);
 		lblIncompatibility.setText(	"(One or more options disable due to incompatibility with your previous answers.)");
 		
 		lblCurrentValues = new Label(container, SWT.WRAP | SWT.RIGHT);
-		lblCurrentValues.setBounds(10, 256, 754, 15);
 		lblCurrentValues.setText("Reflexivity = , Symmetry = ");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(styledText, GroupLayout.DEFAULT_SIZE, 754, Short.MAX_VALUE)
+						.add(btnTransitive, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(btnIntransitive, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(btnNonTransitive, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(lblIncompatibility, GroupLayout.PREFERRED_SIZE, 754, GroupLayout.PREFERRED_SIZE)
+						.add(GroupLayout.TRAILING, lblCurrentValues, GroupLayout.PREFERRED_SIZE, 754, GroupLayout.PREFERRED_SIZE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnTransitive)
+					.add(6)
+					.add(btnIntransitive)
+					.add(5)
+					.add(btnNonTransitive)
+					.add(6)
+					.add(lblIncompatibility, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED, 86, Short.MAX_VALUE)
+					.add(lblCurrentValues)
+					.add(10))
+		);
+		container.setLayout(gl_container);
 		
 		setPageComplete(false);
 		
