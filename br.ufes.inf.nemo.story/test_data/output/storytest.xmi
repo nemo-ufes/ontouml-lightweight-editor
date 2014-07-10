@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="ASCII"?>
 <stories:Story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stories="http://stories.bernardofbbraga.com.br">
-  <elements xsi:type="stories:Node" label="John" instance_of="file:/C:/Users/Bernardo/workspace/br.ufes.inf.nemo.story/test_data/input/model.refontouml#_F0n_kPCxEeOx_JpWFWcbbw"/>
-  <elements xsi:type="stories:Node" label="Mary" different_from="stories:Node storytest.xmi#John" instance_of="file:/C:/Users/Bernardo/workspace/br.ufes.inf.nemo.story/test_data/input/model.refontouml#_F0n_kPCxEeOx_JpWFWcbbw"/>
-  <elements xsi:type="stories:World" label="w1" present="stories:Node storytest.xmi#Mary stories:Node storytest.xmi#John" absent="stories:Link storytest.xmi#//@elements.4"/>
-  <elements xsi:type="stories:World" label="w2" present="stories:Node storytest.xmi#Mary stories:Node storytest.xmi#John stories:Link storytest.xmi#//@elements.4"/>
-  <elements xsi:type="stories:Link" source="storytest.xmi#Mary" target="storytest.xmi#John"/>
+  <elements xsi:type="stories:Node" label="John" present_in="storytest.xmi#w1 storytest.xmi#w2" instance_of="file:/C:/Users/Bernardo/workspace/br.ufes.inf.nemo.story/test_data/input/model_phases.refontouml#_F0n_kPCxEeOx_JpWFWcbbw file:/C:/Users/Bernardo/workspace/br.ufes.inf.nemo.story/test_data/input/model_phases.refontouml#_CR0KsPCyEeOx_JpWFWcbbw">
+    <states label="element9" not_classified_in="storytest.xmi#w1" antiRigidClasses="file:/C:/Users/Bernardo/workspace/br.ufes.inf.nemo.story/test_data/input/model_phases.refontouml#_qgddIAhREeSEfYEI2zjzsA file:/C:/Users/Bernardo/workspace/br.ufes.inf.nemo.story/test_data/input/model_phases.refontouml#_WPLtgPCxEeOx_JpWFWcbbw"/>
+  </elements>
+  <elements xsi:type="stories:Node" label="Mary" different_from="stories:Node storytest.xmi#John" present_in="storytest.xmi#w1 storytest.xmi#w2" absent_from="storytest.xmi#w3" instance_of="file:/C:/Users/Bernardo/workspace/br.ufes.inf.nemo.story/test_data/input/model_phases.refontouml#_F0n_kPCxEeOx_JpWFWcbbw">
+    <states label="element8" classified_in="storytest.xmi#w1" antiRigidClasses="file:/C:/Users/Bernardo/workspace/br.ufes.inf.nemo.story/test_data/input/model_phases.refontouml#_qgddIAhREeSEfYEI2zjzsA file:/C:/Users/Bernardo/workspace/br.ufes.inf.nemo.story/test_data/input/model_phases.refontouml#_WPLtgPCxEeOx_JpWFWcbbw"/>
+  </elements>
+  <elements xsi:type="stories:Node" label="Kaka"/>
+  <elements xsi:type="stories:World" label="w1"/>
+  <elements xsi:type="stories:World" label="w2"/>
+  <elements xsi:type="stories:World" label="w3"/>
+  <elements xsi:type="stories:Link" label="element7" present_in="storytest.xmi#w2" absent_from="storytest.xmi#w1" source="storytest.xmi#Mary" target="storytest.xmi#John"/>
 </stories:Story>

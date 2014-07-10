@@ -76,13 +76,22 @@ public interface StoriesPackage extends EPackage {
 	int STORY__ELEMENTS = 0;
 
 	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STORY__LABEL = 1;
+
+	/**
 	 * The number of structural features of the '<em>Story</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STORY_FEATURE_COUNT = 1;
+	int STORY_FEATURE_COUNT = 2;
 
 	/**
 	 * The number of operations of the '<em>Story</em>' class.
@@ -168,13 +177,31 @@ public interface StoriesPackage extends EPackage {
 	int INDIVIDUAL__SAME_AS = STORY_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Present in</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INDIVIDUAL__PRESENT_IN = STORY_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Absent from</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INDIVIDUAL__ABSENT_FROM = STORY_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Individual</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INDIVIDUAL_FEATURE_COUNT = STORY_ELEMENT_FEATURE_COUNT + 2;
+	int INDIVIDUAL_FEATURE_COUNT = STORY_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Individual</em>' class.
@@ -223,6 +250,24 @@ public interface StoriesPackage extends EPackage {
 	int NODE__SAME_AS = INDIVIDUAL__SAME_AS;
 
 	/**
+	 * The feature id for the '<em><b>Present in</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE__PRESENT_IN = INDIVIDUAL__PRESENT_IN;
+
+	/**
+	 * The feature id for the '<em><b>Absent from</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE__ABSENT_FROM = INDIVIDUAL__ABSENT_FROM;
+
+	/**
 	 * The feature id for the '<em><b>Performed</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -241,13 +286,22 @@ public interface StoriesPackage extends EPackage {
 	int NODE__INSTANCE_OF = INDIVIDUAL_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>States</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE__STATES = INDIVIDUAL_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Node</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_FEATURE_COUNT = INDIVIDUAL_FEATURE_COUNT + 2;
+	int NODE_FEATURE_COUNT = INDIVIDUAL_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of operations of the '<em>Node</em>' class.
@@ -294,6 +348,24 @@ public interface StoriesPackage extends EPackage {
 	 * @ordered
 	 */
 	int LINK__SAME_AS = INDIVIDUAL__SAME_AS;
+
+	/**
+	 * The feature id for the '<em><b>Present in</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__PRESENT_IN = INDIVIDUAL__PRESENT_IN;
+
+	/**
+	 * The feature id for the '<em><b>Absent from</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__ABSENT_FROM = INDIVIDUAL__ABSENT_FROM;
 
 	/**
 	 * The feature id for the '<em><b>Source</b></em>' reference.
@@ -360,22 +432,13 @@ public interface StoriesPackage extends EPackage {
 	int WORLD__LABEL = STORY_ELEMENT__LABEL;
 
 	/**
-	 * The feature id for the '<em><b>Present</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int WORLD__PRESENT = STORY_ELEMENT_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Enabled</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORLD__ENABLED = STORY_ELEMENT_FEATURE_COUNT + 1;
+	int WORLD__ENABLED = STORY_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Brought about by</b></em>' reference list.
@@ -384,16 +447,7 @@ public interface StoriesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORLD__BROUGHT_ABOUT_BY = STORY_ELEMENT_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Absent</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int WORLD__ABSENT = STORY_ELEMENT_FEATURE_COUNT + 3;
+	int WORLD__BROUGHT_ABOUT_BY = STORY_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>World</em>' class.
@@ -402,7 +456,7 @@ public interface StoriesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int WORLD_FEATURE_COUNT = STORY_ELEMENT_FEATURE_COUNT + 4;
+	int WORLD_FEATURE_COUNT = STORY_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>World</em>' class.
@@ -451,7 +505,7 @@ public interface StoriesPackage extends EPackage {
 	int EVENT__CAUSES = STORY_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Brings about</b></em>' reference list.
+	 * The feature id for the '<em><b>Brings about</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -469,13 +523,22 @@ public interface StoriesPackage extends EPackage {
 	int EVENT__HAPPENED_IN = STORY_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Has part</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EVENT__HAS_PART = STORY_ELEMENT_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Event</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EVENT_FEATURE_COUNT = STORY_ELEMENT_FEATURE_COUNT + 4;
+	int EVENT_FEATURE_COUNT = STORY_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Event</em>' class.
@@ -524,7 +587,7 @@ public interface StoriesPackage extends EPackage {
 	int HAPPENING__CAUSES = EVENT__CAUSES;
 
 	/**
-	 * The feature id for the '<em><b>Brings about</b></em>' reference list.
+	 * The feature id for the '<em><b>Brings about</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -540,6 +603,15 @@ public interface StoriesPackage extends EPackage {
 	 * @ordered
 	 */
 	int HAPPENING__HAPPENED_IN = EVENT__HAPPENED_IN;
+
+	/**
+	 * The feature id for the '<em><b>Has part</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int HAPPENING__HAS_PART = EVENT__HAS_PART;
 
 	/**
 	 * The number of structural features of the '<em>Happening</em>' class.
@@ -597,7 +669,7 @@ public interface StoriesPackage extends EPackage {
 	int ACTION__CAUSES = EVENT__CAUSES;
 
 	/**
-	 * The feature id for the '<em><b>Brings about</b></em>' reference list.
+	 * The feature id for the '<em><b>Brings about</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -613,6 +685,15 @@ public interface StoriesPackage extends EPackage {
 	 * @ordered
 	 */
 	int ACTION__HAPPENED_IN = EVENT__HAPPENED_IN;
+
+	/**
+	 * The feature id for the '<em><b>Has part</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTION__HAS_PART = EVENT__HAS_PART;
 
 	/**
 	 * The feature id for the '<em><b>Motivated by</b></em>' reference list.
@@ -699,6 +780,70 @@ public interface StoriesPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link stories.impl.Node_stateImpl <em>Node state</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see stories.impl.Node_stateImpl
+	 * @see stories.impl.StoriesPackageImpl#getNode_state()
+	 * @generated
+	 */
+	int NODE_STATE = 10;
+
+	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE_STATE__LABEL = STORY_ELEMENT__LABEL;
+
+	/**
+	 * The feature id for the '<em><b>Classified in</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE_STATE__CLASSIFIED_IN = STORY_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Not classified in</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE_STATE__NOT_CLASSIFIED_IN = STORY_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Anti Rigid Classes</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE_STATE__ANTI_RIGID_CLASSES = STORY_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of structural features of the '<em>Node state</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE_STATE_FEATURE_COUNT = STORY_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of operations of the '<em>Node state</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE_STATE_OPERATION_COUNT = STORY_ELEMENT_OPERATION_COUNT + 0;
+
+	/**
 	 * Returns the meta object for class '{@link stories.Story <em>Story</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -718,6 +863,17 @@ public interface StoriesPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getStory_Elements();
+
+	/**
+	 * Returns the meta object for the attribute '{@link stories.Story#getLabel <em>Label</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Label</em>'.
+	 * @see stories.Story#getLabel()
+	 * @see #getStory()
+	 * @generated
+	 */
+	EAttribute getStory_Label();
 
 	/**
 	 * Returns the meta object for class '{@link stories.Individual <em>Individual</em>}'.
@@ -752,6 +908,28 @@ public interface StoriesPackage extends EPackage {
 	EReference getIndividual_Same_as();
 
 	/**
+	 * Returns the meta object for the reference list '{@link stories.Individual#getPresent_in <em>Present in</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Present in</em>'.
+	 * @see stories.Individual#getPresent_in()
+	 * @see #getIndividual()
+	 * @generated
+	 */
+	EReference getIndividual_Present_in();
+
+	/**
+	 * Returns the meta object for the reference list '{@link stories.Individual#getAbsent_from <em>Absent from</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Absent from</em>'.
+	 * @see stories.Individual#getAbsent_from()
+	 * @see #getIndividual()
+	 * @generated
+	 */
+	EReference getIndividual_Absent_from();
+
+	/**
 	 * Returns the meta object for class '{@link stories.Node <em>Node</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -782,6 +960,17 @@ public interface StoriesPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getNode_Instance_of();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link stories.Node#getStates <em>States</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>States</em>'.
+	 * @see stories.Node#getStates()
+	 * @see #getNode()
+	 * @generated
+	 */
+	EReference getNode_States();
 
 	/**
 	 * Returns the meta object for class '{@link stories.Link <em>Link</em>}'.
@@ -837,17 +1026,6 @@ public interface StoriesPackage extends EPackage {
 	EClass getWorld();
 
 	/**
-	 * Returns the meta object for the reference list '{@link stories.World#getPresent <em>Present</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Present</em>'.
-	 * @see stories.World#getPresent()
-	 * @see #getWorld()
-	 * @generated
-	 */
-	EReference getWorld_Present();
-
-	/**
 	 * Returns the meta object for the reference list '{@link stories.World#getEnabled <em>Enabled</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -868,17 +1046,6 @@ public interface StoriesPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getWorld_Brought_about_by();
-
-	/**
-	 * Returns the meta object for the reference list '{@link stories.World#getAbsent <em>Absent</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Absent</em>'.
-	 * @see stories.World#getAbsent()
-	 * @see #getWorld()
-	 * @generated
-	 */
-	EReference getWorld_Absent();
 
 	/**
 	 * Returns the meta object for class '{@link stories.Event <em>Event</em>}'.
@@ -913,10 +1080,10 @@ public interface StoriesPackage extends EPackage {
 	EReference getEvent_Causes();
 
 	/**
-	 * Returns the meta object for the reference list '{@link stories.Event#getBrings_about <em>Brings about</em>}'.
+	 * Returns the meta object for the reference '{@link stories.Event#getBrings_about <em>Brings about</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Brings about</em>'.
+	 * @return the meta object for the reference '<em>Brings about</em>'.
 	 * @see stories.Event#getBrings_about()
 	 * @see #getEvent()
 	 * @generated
@@ -933,6 +1100,17 @@ public interface StoriesPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getEvent_Happened_in();
+
+	/**
+	 * Returns the meta object for the reference list '{@link stories.Event#getHas_part <em>Has part</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Has part</em>'.
+	 * @see stories.Event#getHas_part()
+	 * @see #getEvent()
+	 * @generated
+	 */
+	EReference getEvent_Has_part();
 
 	/**
 	 * Returns the meta object for class '{@link stories.Story_element <em>Story element</em>}'.
@@ -1019,6 +1197,49 @@ public interface StoriesPackage extends EPackage {
 	EReference getAllDifferent_Distinct_members();
 
 	/**
+	 * Returns the meta object for class '{@link stories.Node_state <em>Node state</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Node state</em>'.
+	 * @see stories.Node_state
+	 * @generated
+	 */
+	EClass getNode_state();
+
+	/**
+	 * Returns the meta object for the reference list '{@link stories.Node_state#getClassified_in <em>Classified in</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Classified in</em>'.
+	 * @see stories.Node_state#getClassified_in()
+	 * @see #getNode_state()
+	 * @generated
+	 */
+	EReference getNode_state_Classified_in();
+
+	/**
+	 * Returns the meta object for the reference list '{@link stories.Node_state#getNot_classified_in <em>Not classified in</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Not classified in</em>'.
+	 * @see stories.Node_state#getNot_classified_in()
+	 * @see #getNode_state()
+	 * @generated
+	 */
+	EReference getNode_state_Not_classified_in();
+
+	/**
+	 * Returns the meta object for the reference list '{@link stories.Node_state#getAntiRigidClasses <em>Anti Rigid Classes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Anti Rigid Classes</em>'.
+	 * @see stories.Node_state#getAntiRigidClasses()
+	 * @see #getNode_state()
+	 * @generated
+	 */
+	EReference getNode_state_AntiRigidClasses();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1060,6 +1281,14 @@ public interface StoriesPackage extends EPackage {
 		EReference STORY__ELEMENTS = eINSTANCE.getStory_Elements();
 
 		/**
+		 * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute STORY__LABEL = eINSTANCE.getStory_Label();
+
+		/**
 		 * The meta object literal for the '{@link stories.impl.IndividualImpl <em>Individual</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1086,6 +1315,22 @@ public interface StoriesPackage extends EPackage {
 		EReference INDIVIDUAL__SAME_AS = eINSTANCE.getIndividual_Same_as();
 
 		/**
+		 * The meta object literal for the '<em><b>Present in</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference INDIVIDUAL__PRESENT_IN = eINSTANCE.getIndividual_Present_in();
+
+		/**
+		 * The meta object literal for the '<em><b>Absent from</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference INDIVIDUAL__ABSENT_FROM = eINSTANCE.getIndividual_Absent_from();
+
+		/**
 		 * The meta object literal for the '{@link stories.impl.NodeImpl <em>Node</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1110,6 +1355,14 @@ public interface StoriesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference NODE__INSTANCE_OF = eINSTANCE.getNode_Instance_of();
+
+		/**
+		 * The meta object literal for the '<em><b>States</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference NODE__STATES = eINSTANCE.getNode_States();
 
 		/**
 		 * The meta object literal for the '{@link stories.impl.LinkImpl <em>Link</em>}' class.
@@ -1156,14 +1409,6 @@ public interface StoriesPackage extends EPackage {
 		EClass WORLD = eINSTANCE.getWorld();
 
 		/**
-		 * The meta object literal for the '<em><b>Present</b></em>' reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference WORLD__PRESENT = eINSTANCE.getWorld_Present();
-
-		/**
 		 * The meta object literal for the '<em><b>Enabled</b></em>' reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1178,14 +1423,6 @@ public interface StoriesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference WORLD__BROUGHT_ABOUT_BY = eINSTANCE.getWorld_Brought_about_by();
-
-		/**
-		 * The meta object literal for the '<em><b>Absent</b></em>' reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference WORLD__ABSENT = eINSTANCE.getWorld_Absent();
 
 		/**
 		 * The meta object literal for the '{@link stories.impl.EventImpl <em>Event</em>}' class.
@@ -1214,7 +1451,7 @@ public interface StoriesPackage extends EPackage {
 		EReference EVENT__CAUSES = eINSTANCE.getEvent_Causes();
 
 		/**
-		 * The meta object literal for the '<em><b>Brings about</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Brings about</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -1228,6 +1465,14 @@ public interface StoriesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference EVENT__HAPPENED_IN = eINSTANCE.getEvent_Happened_in();
+
+		/**
+		 * The meta object literal for the '<em><b>Has part</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference EVENT__HAS_PART = eINSTANCE.getEvent_Has_part();
 
 		/**
 		 * The meta object literal for the '{@link stories.impl.Story_elementImpl <em>Story element</em>}' class.
@@ -1300,6 +1545,40 @@ public interface StoriesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference ALL_DIFFERENT__DISTINCT_MEMBERS = eINSTANCE.getAllDifferent_Distinct_members();
+
+		/**
+		 * The meta object literal for the '{@link stories.impl.Node_stateImpl <em>Node state</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see stories.impl.Node_stateImpl
+		 * @see stories.impl.StoriesPackageImpl#getNode_state()
+		 * @generated
+		 */
+		EClass NODE_STATE = eINSTANCE.getNode_state();
+
+		/**
+		 * The meta object literal for the '<em><b>Classified in</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference NODE_STATE__CLASSIFIED_IN = eINSTANCE.getNode_state_Classified_in();
+
+		/**
+		 * The meta object literal for the '<em><b>Not classified in</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference NODE_STATE__NOT_CLASSIFIED_IN = eINSTANCE.getNode_state_Not_classified_in();
+
+		/**
+		 * The meta object literal for the '<em><b>Anti Rigid Classes</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference NODE_STATE__ANTI_RIGID_CLASSES = eINSTANCE.getNode_state_AntiRigidClasses();
 
 	}
 

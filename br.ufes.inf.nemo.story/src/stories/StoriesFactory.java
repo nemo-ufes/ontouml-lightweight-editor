@@ -85,6 +85,15 @@ public interface StoriesFactory extends EFactory {
 	AllDifferent createAllDifferent();
 
 	/**
+	 * Returns a new object of class '<em>Node state</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Node state</em>'.
+	 * @generated
+	 */
+	Node_state createNode_state();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

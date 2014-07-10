@@ -12,10 +12,8 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link stories.World#getPresent <em>Present</em>}</li>
  *   <li>{@link stories.World#getEnabled <em>Enabled</em>}</li>
  *   <li>{@link stories.World#getBrought_about_by <em>Brought about by</em>}</li>
- *   <li>{@link stories.World#getAbsent <em>Absent</em>}</li>
  * </ul>
  * </p>
  *
@@ -24,22 +22,6 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface World extends Story_element {
-	/**
-	 * Returns the value of the '<em><b>Present</b></em>' reference list.
-	 * The list contents are of type {@link stories.Individual}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Present</em>' reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Present</em>' reference list.
-	 * @see stories.StoriesPackage#getWorld_Present()
-	 * @model
-	 * @generated
-	 */
-	EList<Individual> getPresent();
-
 	/**
 	 * Returns the value of the '<em><b>Enabled</b></em>' reference list.
 	 * The list contents are of type {@link stories.Event}.
@@ -75,21 +57,5 @@ public interface World extends Story_element {
 	 * @generated
 	 */
 	EList<Event> getBrought_about_by();
-
-	/**
-	 * Returns the value of the '<em><b>Absent</b></em>' reference list.
-	 * The list contents are of type {@link stories.Individual}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Absent</em>' reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Absent</em>' reference list.
-	 * @see stories.StoriesPackage#getWorld_Absent()
-	 * @model
-	 * @generated
-	 */
-	EList<Individual> getAbsent();
 
 } // World

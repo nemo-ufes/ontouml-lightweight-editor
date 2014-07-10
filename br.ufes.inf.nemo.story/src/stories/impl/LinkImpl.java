@@ -7,19 +7,16 @@ import RefOntoUML.Association;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 import stories.Link;
 import stories.Node;
 import stories.StoriesPackage;
+import stories.World;
 
 /**
  * <!-- begin-user-doc -->
@@ -255,5 +252,43 @@ public class LinkImpl extends IndividualImpl implements Link {
 		}
 		return super.eIsSet(featureID);
 	}
+
+	@Override
+	public String existance() {
+		String predicate = "";
+		String sourceName,targetName;
+		if(this.getSource() != null){
+			sourceName = this.getSource().getLabel();
+		}else{
+			sourceName = "Object+Property";//any Node
+		}
+		
+		if(this.getTarget() != null){
+			targetName = this.getTarget().getLabel();
+		}else{
+			targetName = "Object+Property";//any Node
+		}
+		
+		EList<World> world_list = this.getPresent_in();
+		EList<World> absent_world_list = this.getAbsent_from();
+		if(world_list.isEmpty()){
+			if(absent_world_list.isEmpty()){
+				predicate = predicate+'\t'+"direct_rel["+sourceName+","+targetName+"]"+'\n';//no definition, just setting it to happen, no constrains
+			}					
+		}else{
+			for(World w: world_list){
+				predicate = predicate+'\t'+ "direct_rel_in_w[("+sourceName+")->("+targetName+"),"+w.getLabel()+"]"+'\n';
+			}
+			
+		}
+		if(! absent_world_list.isEmpty()){
+			for(World w: absent_world_list){
+				predicate = predicate+'\t'+ "not direct_rel_in_w[("+sourceName+")->("+targetName+"),"+w.getLabel()+"]"+'\n';
+			}
+		}
+		return predicate;
+	}
+	
+	
 
 } //LinkImpl

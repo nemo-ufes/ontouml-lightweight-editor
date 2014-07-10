@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 public interface Story_element extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Label</b></em>' attribute.
+	 * The default value is <code>"element"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Label</em>' attribute isn't clear,
@@ -32,7 +33,7 @@ public interface Story_element extends EObject {
 	 * @return the value of the '<em>Label</em>' attribute.
 	 * @see #setLabel(String)
 	 * @see stories.StoriesPackage#getStory_element_Label()
-	 * @model id="true"
+	 * @model default="element" id="true"
 	 * @generated
 	 */
 	String getLabel();

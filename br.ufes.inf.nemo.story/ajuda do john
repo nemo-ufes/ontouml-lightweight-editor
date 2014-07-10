@@ -34,3 +34,24 @@ public static Resource saveStory (String outputpath, Story container)
 
 
 
+
+
+
+
+
+Preciso:
+nomes genericos pra quando não estiver definido
+
+Classificação estática de Individuals
+	Classificação estática de nós
+	Classificação estática de links
+
+Pode ter um predicado isolado que faz o que cada individuo precisa, ou pode estar tudo no corpo do predicado total da historia	
+	
+	
+Existencia/ausencia de individuals
+	Existencia/ausencia de nós
+	Existencia/ausencia de links
+
+
+

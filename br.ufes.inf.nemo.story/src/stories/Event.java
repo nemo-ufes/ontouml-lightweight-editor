@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link stories.Event#getCauses <em>Causes</em>}</li>
  *   <li>{@link stories.Event#getBrings_about <em>Brings about</em>}</li>
  *   <li>{@link stories.Event#getHappened_in <em>Happened in</em>}</li>
+ *   <li>{@link stories.Event#getHas_part <em>Has part</em>}</li>
  * </ul>
  * </p>
  *
@@ -57,8 +58,7 @@ public interface Event extends Story_element {
 	EList<Event> getCauses();
 
 	/**
-	 * Returns the value of the '<em><b>Brings about</b></em>' reference list.
-	 * The list contents are of type {@link stories.World}.
+	 * Returns the value of the '<em><b>Brings about</b></em>' reference.
 	 * It is bidirectional and its opposite is '{@link stories.World#getBrought_about_by <em>Brought about by</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -66,13 +66,24 @@ public interface Event extends Story_element {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Brings about</em>' reference list.
+	 * @return the value of the '<em>Brings about</em>' reference.
+	 * @see #setBrings_about(World)
 	 * @see stories.StoriesPackage#getEvent_Brings_about()
 	 * @see stories.World#getBrought_about_by
-	 * @model opposite="brought_about_by"
+	 * @model opposite="brought_about_by" required="true"
 	 * @generated
 	 */
-	EList<World> getBrings_about();
+	World getBrings_about();
+
+	/**
+	 * Sets the value of the '{@link stories.Event#getBrings_about <em>Brings about</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Brings about</em>' reference.
+	 * @see #getBrings_about()
+	 * @generated
+	 */
+	void setBrings_about(World value);
 
 	/**
 	 * Returns the value of the '<em><b>Happened in</b></em>' reference.
@@ -101,5 +112,21 @@ public interface Event extends Story_element {
 	 * @generated
 	 */
 	void setHappened_in(World value);
+
+	/**
+	 * Returns the value of the '<em><b>Has part</b></em>' reference list.
+	 * The list contents are of type {@link stories.Event}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Has part</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Has part</em>' reference list.
+	 * @see stories.StoriesPackage#getEvent_Has_part()
+	 * @model
+	 * @generated
+	 */
+	EList<Event> getHas_part();
 
 } // Event
