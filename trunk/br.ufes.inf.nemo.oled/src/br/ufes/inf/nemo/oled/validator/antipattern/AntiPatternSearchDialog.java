@@ -904,6 +904,9 @@ public class AntiPatternSearchDialog extends JDialog {
 	{
 		try{
 		
+		Main.printOutLine("Retrieving checked elements...");
+		frame.getDiagramManager().workingOnlyWithChecked();
+			
 		totalOccurrences=0;
 		interruptAll();
 		if (searchThread!=null) searchThread.interrupt();

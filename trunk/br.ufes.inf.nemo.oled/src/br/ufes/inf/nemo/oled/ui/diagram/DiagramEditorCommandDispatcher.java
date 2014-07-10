@@ -31,6 +31,7 @@ import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.AppMenu;
 import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.dialog.AutoCompletionDialog;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.ElementType;
@@ -517,7 +518,8 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void manageAntiPatterns()
 	{			
 		if (manager.isProjectLoaded()==false) return;
-		manager.workingOnlyWithChecked();
+		
+		Main.printOutLine("Opening anti-pattern dialog...");
 		AntiPatternSearchDialog.open(manager.getFrame());		
 	}
 	
