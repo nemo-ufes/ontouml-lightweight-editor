@@ -16,8 +16,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
+import stories.AntiRigidClass;
 import stories.Link;
 import stories.Node;
+import stories.Node_state;
 import stories.StoriesFactory;
 import stories.Story;
 import stories.Story_element;
@@ -40,7 +42,7 @@ public class OntoUMLStoryCrafter {
 		//filePath = fPath;
 		//dirPath = filePath.substring(0,filePath.lastIndexOf(File.separator)+1);
 		//ontoparser = refparser;	
-		Resource resource = ResourceUtil.loadReferenceOntoUML("test_data/input/model.refontouml");
+		Resource resource = ResourceUtil.loadReferenceOntoUML("test_data/input/model_phases.refontouml");
 		RefOntoUML.Package root = (RefOntoUML.Package)resource.getContents().get(0);
 		OntoUMLParser gambiparser = new OntoUMLParser(root);
 		ontoparser = gambiparser;
@@ -109,43 +111,71 @@ public class OntoUMLStoryCrafter {
 		Node m = factory.createNode();
 		m.setLabel("Mary");
 		m.getDifferent_from().add(j);
+		Node k = factory.createNode();
+		k.setLabel("Kaka");
 		
 		World w1 = factory.createWorld();
 		World w2 = factory.createWorld();
+		World w3 = factory.createWorld();
 		w1.setLabel("w1");
 		w2.setLabel("w2");
-		w1.getPresent().add(m);
-		w2.getPresent().add(m);
-		w1.getPresent().add(j);		
-		w2.getPresent().add(j);
-		
+		w3.setLabel("w3");
+		m.getPresent_in().add(w1);
+		m.getPresent_in().add(w2);
+		j.getPresent_in().add(w1);		
+		j.getPresent_in().add(w2);
+		m.getAbsent_from().add(w3);
 		
 		Link l1 = factory.createLink();
 		l1.setSource(m);
 		l1.setTarget(j);
 		
-		w1.getAbsent().add(l1);
-		w2.getPresent().add(l1);
+		l1.getAbsent_from().add(w1);
+		l1.getPresent_in().add(w2);
+		
+		
+		Node_state ns = factory.createNode_state();
+		m.getStates().add(ns);
+		ns.getClassified_in().add(w1);
+		
+		Node_state nsj = factory.createNode_state();
+		j.getStates().add(nsj);
+		nsj.getNot_classified_in().add(w1);
+		
 		
 		Story container = factory.createStory();
 		container.getElements().add(j);
 		container.getElements().add(m);
+		container.getElements().add(k);
 		container.getElements().add(w1);
 		container.getElements().add(w2);
+		container.getElements().add(w3);
 		container.getElements().add(l1);
 		
-		RefOntoUML.Class pessoa;
 		for(RefOntoUML.Class c: ont.ontoparser.getAllInstances(RefOntoUML.Class.class))		
 		{
-			
+			System.out.println(c.getName());
 			if( "Pessoa".equals(c.getName())){
-				System.out.println(c.getName());
-				pessoa = c;
-				j.getInstance_of().add(pessoa);
-				m.getInstance_of().add(pessoa);
+				
+				
+				j.getInstance_of().add(c);
+				m.getInstance_of().add(c);
+			}
+			if( "Homem".equals(c.getName())){
+				j.getInstance_of().add(c);
+			}
+			if( "Estudante".equals(c.getName())){
+				ns.getAntiRigidClasses().add(c);
+				nsj.getAntiRigidClasses().add(c);
+			}
+			if( "Vivo".equals(c.getName())){
+				ns.getAntiRigidClasses().add(c);
+				nsj.getAntiRigidClasses().add(c);
 			}
 		}
 		
+		System.out.println(OntoUMLStoryCrafter.getAuxPredicates());//por enquanto está vazio
+		System.out.println(container.generatePredicates());
 		OntoUMLStoryCrafter.saveStory("storytest.xmi", "test_data/output/", container);
 		//para usar várias histórias, precisarei usar essa combinação de xmi... mas vou deixar pra depois
 		/*
@@ -163,18 +193,18 @@ public class OntoUMLStoryCrafter {
 		System.out.println(map.toString());
 		
 		TreeIterator<EObject> titer = res.getAllContents();
+		System.out.println("-----");
 		while(titer.hasNext()){
-			System.out.println(titer.next());
-		}
+			EObject abc = titer.next();
+			System.out.println(abc.getClass());
 			
-		*/
-		System.out.print("pred total[");
-		for(Story_element n : container.getElements())		
-		{
-			System.out.print(n.getLabel()+":");
-			System.out.print(n.eClass().getName());
-			System.out.print(",");
 		}
-		System.out.print("]{}");
+		System.out.println("-----");
+		*/
+		
+	}
+	
+	private static final String getAuxPredicates() {
+		return "";//TODO: gerar os predicados auxiliares em associations.als
 	}
 }

@@ -9,11 +9,18 @@
   <genPackages prefix="Stories" resource="XML" disposableProviderFactory="true" ecorePackage="stories.ecore#/">
     <genClasses ecoreClass="stories.ecore#//Story">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference stories.ecore#//Story/elements"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute stories.ecore#//Story/label"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="stories.ecore#//Individual"/>
+    <genClasses image="false" ecoreClass="stories.ecore#//Individual">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Individual/different_from"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Individual/same_as"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Individual/present_in"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Individual/absent_from"/>
+    </genClasses>
     <genClasses ecoreClass="stories.ecore#//Node">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference stories.ecore#//Node/performed"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node/instance_of"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node/states"/>
     </genClasses>
     <genClasses ecoreClass="stories.ecore#//Link">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Link/source"/>
@@ -21,7 +28,6 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Link/instance_of"/>
     </genClasses>
     <genClasses ecoreClass="stories.ecore#//World">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//World/present"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//World/enabled"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//World/brought_about_by"/>
     </genClasses>
@@ -30,6 +36,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Event/causes"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Event/brings_about"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Event/happened_in"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Event/has_part"/>
     </genClasses>
     <genClasses image="false" ecoreClass="stories.ecore#//Story_element">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute stories.ecore#//Story_element/label"/>
@@ -38,6 +45,14 @@
     <genClasses ecoreClass="stories.ecore#//Action">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Action/motivated_by"/>
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference stories.ecore#//Action/performed_by"/>
+    </genClasses>
+    <genClasses ecoreClass="stories.ecore#//AllDifferent">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//AllDifferent/distinct_members"/>
+    </genClasses>
+    <genClasses ecoreClass="stories.ecore#//Node_state">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node_state/classified_in"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node_state/not_classified_in"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node_state/anti_rigid_clases"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

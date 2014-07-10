@@ -34,7 +34,7 @@ public abstract class Story_elementImpl extends MinimalEObjectImpl.Container imp
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String LABEL_EDEFAULT = null;
+	protected static final String LABEL_EDEFAULT = "element";
 
 	/**
 	 * The cached value of the '{@link #getLabel() <em>Label</em>}' attribute.
@@ -45,14 +45,19 @@ public abstract class Story_elementImpl extends MinimalEObjectImpl.Container imp
 	 * @ordered
 	 */
 	protected String label = LABEL_EDEFAULT;
-
+	
+	protected static int label_modifier = 1;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 	protected Story_elementImpl() {
 		super();
+		if(label.equals(LABEL_EDEFAULT)){
+			label = label+label_modifier;
+			label_modifier++;
+		}
 	}
 
 	/**
@@ -159,5 +164,5 @@ public abstract class Story_elementImpl extends MinimalEObjectImpl.Container imp
 		result.append(')');
 		return result.toString();
 	}
-
+	
 } //Story_elementImpl

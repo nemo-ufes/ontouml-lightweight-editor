@@ -15,6 +15,8 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link stories.Individual#getDifferent_from <em>Different from</em>}</li>
  *   <li>{@link stories.Individual#getSame_as <em>Same as</em>}</li>
+ *   <li>{@link stories.Individual#getPresent_in <em>Present in</em>}</li>
+ *   <li>{@link stories.Individual#getAbsent_from <em>Absent from</em>}</li>
  * </ul>
  * </p>
  *
@@ -55,4 +57,38 @@ public interface Individual extends Story_element {
 	 * @generated
 	 */
 	EList<Individual> getSame_as();
+
+	/**
+	 * Returns the value of the '<em><b>Present in</b></em>' reference list.
+	 * The list contents are of type {@link stories.World}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Present in</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Present in</em>' reference list.
+	 * @see stories.StoriesPackage#getIndividual_Present_in()
+	 * @model
+	 * @generated
+	 */
+	EList<World> getPresent_in();
+
+	/**
+	 * Returns the value of the '<em><b>Absent from</b></em>' reference list.
+	 * The list contents are of type {@link stories.World}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Absent from</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Absent from</em>' reference list.
+	 * @see stories.StoriesPackage#getIndividual_Absent_from()
+	 * @model
+	 * @generated
+	 */
+	EList<World> getAbsent_from();
+	
+	public String identity();
 } // Individual

@@ -93,4 +93,6 @@ public interface Link extends Individual {
 	 */
 	EList<Association> getInstance_of();
 
+	String existance();
+
 } // Link

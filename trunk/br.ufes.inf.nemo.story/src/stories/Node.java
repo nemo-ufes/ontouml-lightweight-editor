@@ -14,6 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link stories.Node#getPerformed <em>Performed</em>}</li>
  *   <li>{@link stories.Node#getInstance_of <em>Instance of</em>}</li>
+ *   <li>{@link stories.Node#getStates <em>States</em>}</li>
  * </ul>
  * </p>
  *
@@ -55,5 +56,31 @@ public interface Node extends Individual {
 	 * @generated
 	 */
 	EList<RefOntoUML.Class> getInstance_of();
+	
+	
+
+	/**
+	 * Returns the value of the '<em><b>States</b></em>' containment reference list.
+	 * The list contents are of type {@link stories.Node_state}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>States</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>States</em>' containment reference list.
+	 * @see stories.StoriesPackage#getNode_States()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<Node_state> getStates();
+
+	public String static_classification();
+
+	public String existance();
+
+	String states();
+
+	
 
 } // Node

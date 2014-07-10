@@ -4,18 +4,26 @@
   <eClassifiers xsi:type="ecore:EClass" name="Story">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//Story_element" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral="story"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Individual" abstract="true" eSuperTypes="#//Story_element">
     <eStructuralFeatures xsi:type="ecore:EReference" name="different_from" upperBound="-1"
         eType="#//Individual"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="same_as" upperBound="-1"
         eType="#//Individual"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="present_in" upperBound="-1"
+        eType="#//World"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="absent_from" upperBound="-1"
+        eType="#//World"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//Individual">
     <eStructuralFeatures xsi:type="ecore:EReference" name="performed" upperBound="-1"
         eType="#//Action" containment="true" eOpposite="#//Action/performed_by"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="instance_of" upperBound="-1"
-        eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Class"/>
+        eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml.refontouml/model/RefOntoUML.ecore#//Class"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="states" upperBound="-1"
+        eType="#//Node_state" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//Individual">
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
@@ -23,31 +31,29 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
         eType="#//Node"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="instance_of" upperBound="-1"
-        eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Association"/>
+        eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml.refontouml/model/RefOntoUML.ecore#//Association"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="World" eSuperTypes="#//Story_element">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="present" upperBound="-1"
-        eType="#//Individual"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="enabled" upperBound="-1"
         eType="#//Event" eOpposite="#//Event/happened_in"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="brought_about_by" upperBound="-1"
         eType="#//Event" eOpposite="#//Event/brings_about"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="absent" upperBound="-1"
-        eType="#//Individual"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Event" abstract="true" eSuperTypes="#//Story_element">
     <eStructuralFeatures xsi:type="ecore:EReference" name="directly_causes" upperBound="-1"
         eType="#//Event"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="causes" upperBound="-1"
         eType="#//Event"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="brings_about" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="brings_about" lowerBound="1"
         eType="#//World" eOpposite="#//World/brought_about_by"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="happened_in" lowerBound="1"
         eType="#//World" eOpposite="#//World/enabled"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="has_part" upperBound="-1"
+        eType="#//Event"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Story_element" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        iD="true"/>
+        defaultValueLiteral="element" iD="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Happening" eSuperTypes="#//Event"/>
   <eClassifiers xsi:type="ecore:EClass" name="Action" eSuperTypes="#//Event">
@@ -59,5 +65,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="AllDifferent" eSuperTypes="#//Story_element">
     <eStructuralFeatures xsi:type="ecore:EReference" name="distinct_members" lowerBound="2"
         upperBound="-1" eType="#//Individual"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Node_state" eSuperTypes="#//Story_element">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classified_in" upperBound="-1"
+        eType="#//World"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="not_classified_in" upperBound="-1"
+        eType="#//World"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="antiRigidClasses" lowerBound="1"
+        upperBound="-1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml.refontouml/model/RefOntoUML.ecore#//Class"/>
   </eClassifiers>
 </ecore:EPackage>

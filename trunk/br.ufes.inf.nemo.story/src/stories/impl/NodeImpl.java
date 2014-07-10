@@ -5,19 +5,20 @@ package stories.impl;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import RefOntoUML.Class;
 import stories.Action;
 import stories.Node;
+import stories.Node_state;
 import stories.StoriesPackage;
+import stories.World;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,6 +29,7 @@ import stories.StoriesPackage;
  * <ul>
  *   <li>{@link stories.impl.NodeImpl#getPerformed <em>Performed</em>}</li>
  *   <li>{@link stories.impl.NodeImpl#getInstance_of <em>Instance of</em>}</li>
+ *   <li>{@link stories.impl.NodeImpl#getStates <em>States</em>}</li>
  * </ul>
  * </p>
  *
@@ -53,6 +55,16 @@ public class NodeImpl extends IndividualImpl implements Node {
 	 * @ordered
 	 */
 	protected EList<RefOntoUML.Class> instance_of;
+
+	/**
+	 * The cached value of the '{@link #getStates() <em>States</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStates()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Node_state> states;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -102,6 +114,18 @@ public class NodeImpl extends IndividualImpl implements Node {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Node_state> getStates() {
+		if (states == null) {
+			states = new EObjectContainmentEList<Node_state>(Node_state.class, this, StoriesPackage.NODE__STATES);
+		}
+		return states;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -122,6 +146,8 @@ public class NodeImpl extends IndividualImpl implements Node {
 		switch (featureID) {
 			case StoriesPackage.NODE__PERFORMED:
 				return ((InternalEList<?>)getPerformed()).basicRemove(otherEnd, msgs);
+			case StoriesPackage.NODE__STATES:
+				return ((InternalEList<?>)getStates()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -138,6 +164,8 @@ public class NodeImpl extends IndividualImpl implements Node {
 				return getPerformed();
 			case StoriesPackage.NODE__INSTANCE_OF:
 				return getInstance_of();
+			case StoriesPackage.NODE__STATES:
+				return getStates();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -159,6 +187,10 @@ public class NodeImpl extends IndividualImpl implements Node {
 				getInstance_of().clear();
 				getInstance_of().addAll((Collection<? extends RefOntoUML.Class>)newValue);
 				return;
+			case StoriesPackage.NODE__STATES:
+				getStates().clear();
+				getStates().addAll((Collection<? extends Node_state>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -177,6 +209,9 @@ public class NodeImpl extends IndividualImpl implements Node {
 			case StoriesPackage.NODE__INSTANCE_OF:
 				getInstance_of().clear();
 				return;
+			case StoriesPackage.NODE__STATES:
+				getStates().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -193,8 +228,39 @@ public class NodeImpl extends IndividualImpl implements Node {
 				return performed != null && !performed.isEmpty();
 			case StoriesPackage.NODE__INSTANCE_OF:
 				return instance_of != null && !instance_of.isEmpty();
+			case StoriesPackage.NODE__STATES:
+				return states != null && !states.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
+	
+	public String static_classification(){
+		String rule = "";
+		for(Class c : this.getInstance_of()){
+			rule = rule + '\t'+ this.getLabel() + " in World." +c.getName()+'\n';
+		}
+		return  rule;
+	}
+	
+	public String existance(){
+		String exists ="";
+		for(World w : this.getPresent_in()){
+			exists = exists+'\t'+this.getLabel()+" in "+w.getLabel()+".exists" +'\n';
+		}
+		for(World w : this.getAbsent_from()){
+			exists = exists+'\t'+this.getLabel()+" not in "+w.getLabel()+".exists" +'\n';
+		}
+		return exists;
+	}
 
+	@Override
+	public String states() {
+		String states ="";
+		for(Node_state ns: this.getStates()){
+			states = states + ns.existance(this);
+		}
+		return states;
+	}
+	
+	
 } //NodeImpl
