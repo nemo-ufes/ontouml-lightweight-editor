@@ -12,48 +12,91 @@ import org.eclipse.swt.widgets.TableItem;
 
 import RefOntoUML.Property;
 
-public class MultiDepComboTable {
+public class MultiDepComboTable extends Table{
 
-	private ArrayList<Property> properties;
-	private Table table;
+	private static final String DEPENDEE_COMBO_EDITOR = Integer.toString(1);
+	private static final String DEPENDER_COMBO_EDITOR = Integer.toString(0);
 	
-	@SuppressWarnings("unused")
-	public MultiDepComboTable (Composite parent, int args, ArrayList<Property> properties) 
+	private ArrayList<Property> properties = new ArrayList<Property>();
+	
+	public MultiDepComboTable (Composite parent, int args) 
 	{		
-		table = new Table(parent, args);
+		super(parent, args);
 		
-		this.properties = properties;
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
+		this.setHeaderVisible(true);
+		this.setLinesVisible(true);
+		
+		String columnName0 = "#";
+		TableColumn tableColumn0 = new TableColumn(this, SWT.CENTER);
+		tableColumn0.setWidth(25);
+		tableColumn0.setText(columnName0);
 		
 		String columnName1 = "Depender";
-		TableColumn tableColumn1 = new TableColumn(table, SWT.CENTER);
-		tableColumn1.setWidth(150);
+		TableColumn tableColumn1 = new TableColumn(this, SWT.CENTER);
+		tableColumn1.setWidth(275);
 		tableColumn1.setText(columnName1);
 		
 		String columnName2 = "Dependee";
-		TableColumn tableColumn2 = new TableColumn(table, SWT.CENTER);
-		tableColumn2.setWidth(150);
+		TableColumn tableColumn2 = new TableColumn(this, SWT.CENTER);
+		tableColumn2.setWidth(275);
 		tableColumn2.setText(columnName2);
-		
-		int tableWidth = 0;		
-		for (TableColumn tc : table.getColumns()) {
-			tableWidth+=tc.getWidth();
-		}
-		
-		table.setSize(418, 117);		
+
 	}
+	
+	public void setProperties(ArrayList<Property> list){
+		properties.clear(); 
 		
+		if(!list.containsAll(properties) || !properties.containsAll(list)){
+			removeLines();
+			properties.addAll(list);
+		}
+	}
+	
 	public ArrayList<Property> getProperties() {
 		return properties;
+	}
+	
+	public void removeLines(){
+		while(getItemCount()>0){
+			removeLine(0);
+		}		
+	}
+
+	public void updateEditors(){
+		Integer i = 1;
+		for (TableItem item : getItems()) {
+			item.setText(0, i.toString());
+			((TableEditor) item.getData(DEPENDER_COMBO_EDITOR)).layout();
+			((TableEditor) item.getData(DEPENDEE_COMBO_EDITOR)).layout();
+			i++;
+		}
+	}
+	
+	public void removeLine(int index) {
+		if(index<0 || index>=getItemCount())
+			return;
+		 
+		TableEditor editor = (TableEditor) this.getItem(index).getData(DEPENDER_COMBO_EDITOR);
+		editor.getEditor().dispose();
+		editor.dispose();
+		
+		editor = (TableEditor) this.getItem(index).getData(DEPENDEE_COMBO_EDITOR);
+		editor.getEditor().dispose();
+		editor.dispose();
+		
+		remove(index);
+		
+		updateEditors();
 	}
 
 	public void addLine(){
 	
-		TableItem tableItem = new TableItem(table,SWT.NONE);
-				
-		TableEditor editor = new TableEditor(table);
-		Combo combo = new Combo(table, SWT.NONE);
+		TableItem item = new TableItem(this,SWT.NONE);
+		
+		item.setText(0, Integer.toString(getItemCount()));
+		
+		TableEditor editor = new TableEditor(this);
+		Combo combo = new Combo(this, SWT.NONE);
 		for(Property p: properties){
 			combo.add(p.getType().getName());
 		}
@@ -62,37 +105,29 @@ public class MultiDepComboTable {
 		//editor.minimumWidth = combo.getSize().x;
 		editor.grabHorizontal = true;
 		editor.horizontalAlignment = SWT.CENTER;
-		editor.setEditor(combo, tableItem, 0);
-		tableItem.setData(Integer.toString(0),combo);
+		editor.setEditor(combo, item, 1);
+		item.setData(DEPENDER_COMBO_EDITOR,editor);
 		
-		editor = new TableEditor(table);
-		combo = new Combo(table, SWT.NONE);
+		editor = new TableEditor(this);
+		combo = new Combo(this, SWT.NONE);
 		for(Property p: properties){
 			combo.add(p.getType().getName());
 		}
 		combo.select(1);
 		combo.pack();
-		//editor.minimumWidth = combo.getSize().x;
 		editor.grabHorizontal = true;
 		editor.horizontalAlignment = SWT.CENTER;
-		editor.setEditor(combo, tableItem, 1);		
-		tableItem.setData(Integer.toString(1),combo);
+		editor.setEditor(combo, item, 2);		
+		item.setData(DEPENDEE_COMBO_EDITOR,editor);
 	}
 	
 	public Table getTable() {
-		return table;
-	}
-	
-	public Property getProperty (String typeName){
-		for(Property p: properties){
-			if(p.getType().getName().compareToIgnoreCase(typeName)==0) return p;			
-		}
-		return null;
+		return this;
 	}
 	
 	public ArrayList<ArrayList<Property>> getSelections (){
 		ArrayList<ArrayList<Property>> result = new ArrayList<ArrayList<Property>>();		
-		for (TableItem ti : table.getItems()){			
+		for (TableItem ti : this.getItems()){			
 			ArrayList<Property> selectedProperties = getSelected(ti);
 			result.add(selectedProperties);
 		}		
@@ -100,17 +135,23 @@ public class MultiDepComboTable {
 	}
 		
 	private ArrayList<Property> getSelected(TableItem ti){
-		ArrayList<Property> line = new ArrayList<Property>();		
-		for (Integer i = 0; i < 2; i++) {
-			Combo combo = (Combo) ti.getData(i.toString());
-			String selected = combo.getText();
-			if (selected!=null && !selected.isEmpty()){
-				Property p = getProperty(selected);
-				if (p!=null) line.add(p);
-			}			
-		}		
+		ArrayList<Property> line = new ArrayList<Property>();
+		
+		Combo combo = (Combo) ((TableEditor) ti.getData(DEPENDER_COMBO_EDITOR)).getEditor();
+		int index = combo.getSelectionIndex();
+		if(index!=-1)
+			line.add(properties.get(index));
+		
+		combo = (Combo) ((TableEditor) ti.getData(DEPENDEE_COMBO_EDITOR)).getEditor();
+		index = combo.getSelectionIndex();
+		if(index!=-1)
+			line.add(properties.get(index));
+		
 		return line;
 	}
+	
+	@Override
+	protected void checkSubclass() {}
 	
 }		 
 

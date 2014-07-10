@@ -12,29 +12,28 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import RefOntoUML.Property;
-import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
-public class MultiDepFirstPage  extends MultiDepPage {
+public class MultiDepFirstPage extends MultiDepPage {
 
 	//GUI
-	public List remainderList;
-	public List connectedList;
-	private Button btnArrwoLeft;
-	private Button btnArrowRight;
+	public List optionalList;
+	public ArrayList<Property> optional = new ArrayList<Property>();
+	
+	public List requiredList;
+	public ArrayList<Property> required = new ArrayList<Property>();
+	
+	private Button upButton;
+	private Button downButton;
 	private Label lblAllRelators_1;
 	
 	public MultiDepFirstPage(MultiDepOccurrence multiDep) {
 		super(multiDep);
-	}
-	
-	public boolean contains(List list, String elem){
-		for(String str: list.getItems()){
-			if (str.equals(elem)) return true;
-		}
-		return false;
 	}
 	
 	/**
@@ -47,117 +46,137 @@ public class MultiDepFirstPage  extends MultiDepPage {
 		setControl(container);
 		
 		StyledText styledText = new StyledText(container, SWT.WRAP);
-		styledText.setText("When an instance of "+multiDep.getType().getName()+" is created, to which relators must it be connected to?");
+		styledText.setText("When an instance of "+OntoUMLNameHelper.getTypeAndName(occurrence.getType(), true, true)+" is created, to which relators must it be connected to?");
 		styledText.setMarginColor(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		styledText.setBounds(10, 10, 537, 55);
 		
-		remainderList = new List(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL );
-		remainderList.setBounds(301, 92, 246, 160);
+		optionalList = new List(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL );
+		requiredList = new List(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL );
+		required.addAll(occurrence.getRelatorEnds());
 		
-		connectedList = new List(container, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL );
-		connectedList.setBounds(10, 92, 246, 160);
-		
-		for(Property p: multiDep.getRelatorEnds())
-		{		
-			Type relator = p.getType();
-			connectedList.add("Relator "+relator.getName());			
+		for(Property p: occurrence.getRelatorEnds()) {		
+			requiredList.add(OntoUMLNameHelper.getTypeAndName(p.getType(), true, false));			
 		}
-		connectedList.setSelection(0);
+		requiredList.setSelection(0);
 		
 		Label lblAllRelators = new Label(container, SWT.NONE);
-		lblAllRelators.setBounds(10, 71, 246, 15);
-		lblAllRelators.setText(multiDep.getType().getName()+" is mandatorily connected to:");
+		lblAllRelators.setText("Necessarily connected to:");
 		
-		btnArrowRight = new Button(container, SWT.NONE);
-		btnArrowRight.setBounds(262, 141, 33, 25);
-		btnArrowRight.setText("->");
-		btnArrowRight.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				for(String str: connectedList.getSelection()){
-					if(!contains(remainderList,str)) { remainderList.add(str); remainderList.select(remainderList.indexOf(str)); } 
-				}
-				if(connectedList.getSelectionIndex()>=0) { 
-					int prev = connectedList.getSelectionIndex()-1;
-					connectedList.remove(connectedList.getSelectionIndex());
-					connectedList.select(prev); 
-				}				
-			}
-		});
+		downButton = new Button(container, SWT.NONE);
+		downButton.setText("Down");
+		downButton.addSelectionListener(downAction);
 		
-		btnArrwoLeft = new Button(container, SWT.NONE);
-		btnArrwoLeft.setBounds(262, 172, 33, 25);
-		btnArrwoLeft.setText("<-");
-		btnArrwoLeft.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				for(String str: remainderList.getSelection()){
-					if(!contains(connectedList,str)) { connectedList.add(str); connectedList.select(connectedList.indexOf(str));  } 
-				}
-				if(remainderList.getSelectionIndex()>=0) {
-					int prev = remainderList.getSelectionIndex()-1;
-					remainderList.remove(remainderList.getSelectionIndex());
-					remainderList.select(prev);					 
-				}
-			}
-		});
+		upButton = new Button(container, SWT.NONE);
+		upButton.setText("Up");
+		upButton.addSelectionListener(upAction);
 		
 		lblAllRelators_1 = new Label(container, SWT.NONE);
-		lblAllRelators_1.setBounds(301, 71, 246, 15);
-		lblAllRelators_1.setText(multiDep.getType().getName()+" is optionally connected to:");
+		lblAllRelators_1.setText("Optionally connected to:");
+		
+		Label lblNewLabel = new Label(container, SWT.NONE);
+		lblNewLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		lblNewLabel.setAlignment(SWT.RIGHT);
+		lblNewLabel.setText("For each optional relator, a subtype of "+OntoUMLNameHelper.getTypeAndName(occurrence.getType(), true, true)+" will be created with a default name. Please remember to rename them after the analysis. ");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.addContainerGap()
+							.add(requiredList, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
+						.add(gl_container.createSequentialGroup()
+							.add(10)
+							.add(styledText, GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE))
+						.add(gl_container.createSequentialGroup()
+							.addContainerGap()
+							.add(lblAllRelators, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
+						.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+							.addContainerGap()
+							.add(lblAllRelators_1, GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+							.add(43)
+							.add(upButton, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(downButton))
+						.add(gl_container.createSequentialGroup()
+							.addContainerGap()
+							.add(optionalList, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
+						.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+							.addContainerGap()
+							.add(lblNewLabel, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)))
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(lblAllRelators)
+					.add(3)
+					.add(requiredList, GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(gl_container.createParallelGroup(GroupLayout.BASELINE)
+						.add(downButton)
+						.add(upButton)
+						.add(lblAllRelators_1))
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(optionalList, GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(lblNewLabel, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+					.add(23))
+		);
+		container.setLayout(gl_container);
 	}
 		
-	public Property getProperty (String typeName){
-		for(Property p: multiDep.getRelatorEnds()){
-			if(p.getType().getName().compareToIgnoreCase(typeName)==0) return p;			
+	private SelectionAdapter upAction = new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent arg0) {
+			int index = optionalList.getSelectionIndex();
+			if(index!=-1) { 
+				Property p = optional.remove(index);
+				optionalList.remove(index);
+				required.add(p);
+				requiredList.add(OntoUMLNameHelper.getTypeAndName(p.getType(), true, false));
+			}	
 		}
-		return null;
-	}
+	};
 	
-	public ArrayList<Property> getConnectedSelected(){
-		ArrayList<Property> result = new ArrayList<Property>();
-		for(String str: connectedList.getItems()){
-			Property p = getProperty(str.replace("Relator ", ""));
-			if (p!=null) result.add(p);
+	private SelectionAdapter downAction = new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent arg0) {
+			int index = requiredList.getSelectionIndex();
+			if(index!=-1) { 
+				Property p = required.remove(index);
+				requiredList.remove(index);
+				optional.add(p);
+				optionalList.add(OntoUMLNameHelper.getTypeAndName(p.getType(), true, false));
+			}				
 		}
-		return result;
-	}
+	};
 	
-	public ArrayList<Property> getRemainderSelected(){
-		ArrayList<Property> result = new ArrayList<Property>();
-		for(String str: remainderList.getItems()){
-			Property p = getProperty(str.replace("Relator ", ""));
-			if (p!=null) result.add(p);
-		}
-		return result;
-	}
-	
-	public boolean isAllConnectedSelected()
-	{		
-		return connectedList.getItemCount() == multiDep.getRelatorEnds().size();
-	}
-	
-	
-	public boolean isAllRemainderSelected()
-	{		
-		return remainderList.getItemCount() == multiDep.getRelatorEnds().size();
-	}
-	
-	@SuppressWarnings("unused")
 	@Override
 	public IWizardPage getNextPage() 
 	{	
-		boolean allConnected = isAllConnectedSelected();
-		boolean allRemainder = isAllRemainderSelected();		
 		
-		if (allConnected) {
-			MultiDepThirdPage thirdPage = ((MultiDepWizard)getWizard()).getThirdPage();
-			return thirdPage;
-		}else{
+		if(optional.size()>=2){
 			MultiDepSecondPage secondPage = ((MultiDepWizard)getWizard()).getSecondPage();
-			secondPage.setProperties(getRemainderSelected());			
+			secondPage.setProperties(optional);			
 			return secondPage;
 		}
+		else if(optional.size()==1){				
+			//Action =============================
+			MultiDepAction newAction = new MultiDepAction(occurrence);
+			newAction.setAddSubtypesInNoOrder(optional);
+			getAntipatternWizard().replaceAction(0,newAction);	
+			//====================================
+		}
+		else{
+			getAntipatternWizard().removeAllActions(0);
+		}
+		
+		MultiDepThirdPage thirdPage = getAntipatternWizard().getThirdPage();
+		return thirdPage;
+		
 	}
 }

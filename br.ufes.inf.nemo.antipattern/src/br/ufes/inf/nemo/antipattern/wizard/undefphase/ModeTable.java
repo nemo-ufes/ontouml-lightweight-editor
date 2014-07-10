@@ -44,37 +44,7 @@ public class ModeTable {
 
 	}		
 
-	/*
-	 
-	  TableItem item = items[i]; 
-      TableEditor editor = new TableEditor(table); 
-      
-      CCombo combo = new CCombo(table, SWT.NONE); 
-      combo.setText("Combo " + i); 
-      combo.add("item 1"); 
-      combo.add("item 2"); 
-      
-      editor.grabHorizontal = true; 
-      editor.setEditor(combo, item, 0); 
-      
-      item.setData("ComboEditor", editor); 
-      editor = new TableEditor(table); 
-      Text text = new Text(table, SWT.NONE); 
-      text.setText("Text " + i); 
-      editor.grabHorizontal = true; 
-      editor.setEditor(text, item, 1); 
-      item.setData("TextEditor", editor); 
-      editor = new TableEditor(table); 
-      Button button = new Button(table, SWT.CHECK); 
-      button.setText("" + i); 
-      button.pack(); 
-      editor.minimumWidth = button.getSize().x; 
-      editor.horizontalAlignment = SWT.LEFT; 
-      editor.setEditor(button, item, 2); 
-      item.setData("ButtonEditor", editor); 
-	 
-	 */
-	
+		
 	public void addNewMode(String name, String mult, int selectedPhase)
 	{
 		TableItem item = new TableItem(table, SWT.NONE);
@@ -109,27 +79,10 @@ public class ModeTable {
 				table.remove(index);
 			}
 			
-//			table.pack();
 			table.update();
-//			table.setRedraw(true);
-//			table.redraw();
 		}
 	}
 	
-	/*
-	
-	TableEditor editor = (TableEditor) item.getData("ComboEditor"); 
-                                    editor.getEditor().dispose(); 
-                                    editor.dispose(); 
-                                    editor = (TableEditor) item.getData("TextEditor"); 
-                                    editor.getEditor().dispose(); 
-                                    editor.dispose(); 
-                                    editor = (TableEditor) item.getData("ButtonEditor"); 
-                                    editor.getEditor().dispose(); 
-                                    editor.dispose(); 
-                                    table.remove(table.indexOf(item)); 
-	
-	*/
 	public Table getTable() {
 		return table;
 	}

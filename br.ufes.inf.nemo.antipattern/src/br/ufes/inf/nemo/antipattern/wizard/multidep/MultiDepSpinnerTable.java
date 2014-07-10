@@ -13,121 +13,115 @@ import org.eclipse.swt.widgets.TableItem;
 
 import RefOntoUML.Property;
 
-public class MultiDepSpinnerTable {
+public class MultiDepSpinnerTable extends Table{
 
-	private ArrayList<Property> properties;
-	private Table table;
+	private static final String SPINNER_EDITOR = "spinner";
+	private ArrayList<Property> properties = new ArrayList<Property>();
+
+	public MultiDepSpinnerTable (Composite parent, int args) 
+	{	super(parent,args);
 	
-	@SuppressWarnings("unused")
-	public MultiDepSpinnerTable (Composite parent, int args, ArrayList<Property> properties) 
-	{		
-		table = new Table(parent, args);
-		
-		this.properties = properties;
-		table.setHeaderVisible(true);		
-		table.setLinesVisible(true);
+		setHeaderVisible(true);		
+		setLinesVisible(true);
 		
 		String columnName1 = "Relator";
-		TableColumn tableColumn1 = new TableColumn(table, SWT.CENTER);
-		tableColumn1.setWidth(250);
+		TableColumn tableColumn1 = new TableColumn(this, SWT.CENTER);
+		tableColumn1.setWidth(400);
 		tableColumn1.setText(columnName1);
 		
 		String columnName2 = "Order";
-		TableColumn tableColumn2 = new TableColumn(table, SWT.CENTER);
+		TableColumn tableColumn2 = new TableColumn(this, SWT.CENTER);
 		tableColumn2.setWidth(100);
 		tableColumn2.setText(columnName2);
-	
-		int tableWidth = 0;		
-		for (TableColumn tc : table.getColumns()) {
-			tableWidth+=tc.getWidth();
-		}
-			
-		table.setSize(418, 117);
 		
-		addLines();	
 	}
+	
+	public void setProperties(ArrayList<Property> list)
+	{
+		if(!list.containsAll(properties) || !properties.containsAll(list)){
+			removeLines();
+			properties.clear();
+			properties.addAll(list);
+			addLines();
+		}
 		
+	}
+	
 	public ArrayList<Property> getProperties() {
-		return properties;
+		return new ArrayList<Property>(properties);
 	}
 
-	public void addLine(String str, int order)
+	public void addLine(Property p, int order)
 	{
-		TableItem item = new TableItem(table, SWT.NONE);
-		
-		TableEditor editor = new TableEditor(table);
-//		Text text = new Text(table, SWT.NONE);
-//		text.setEditable(false);
-//		text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
-//	    text.setText(str);
-	    editor.grabHorizontal = true;
-		editor.horizontalAlignment = SWT.CENTER;
-	    //editor.minimumWidth = text.getSize().x;
-		//editor.setEditor(text, item, 0);	
-		item.setText(0,str);
-		
-		editor = new TableEditor(table);			
-		Spinner spinner = new Spinner(table, SWT.NONE);
+		TableItem item = new TableItem(this, SWT.NONE);
+		item.setText(0,p.getType().getName());
+		TableEditor editor = new TableEditor(this);			
+		Spinner spinner = new Spinner(this, SWT.NONE);
 		spinner.pack();
 		spinner.setSelection(order);
-		editor.grabHorizontal = true;		
-		editor.horizontalAlignment = SWT.CENTER;		
+		editor.grabHorizontal = true;
+		editor.horizontalAlignment = SWT.CENTER;
 		editor.setEditor(spinner, item, 1);	
-		item.setData(Integer.toString(1),spinner);
+		item.setData(SPINNER_EDITOR,editor);
+	}
+		
+	
+	public void removeLines(){
+		while(getItemCount()>0){
+			removeLine(0);
+		}
+		
+		properties.clear();
+	}
+
+	public void updateEditors(){
+		for (TableItem item : getItems()) {
+			((TableEditor) item.getData(SPINNER_EDITOR)).layout();
+		}
 	}
 	
-	public void addLines()
-	{
-		for (int i = 0; i < properties.size(); i++) {
-			 new TableItem(table, SWT.NONE);
-		}
-		TableItem[] items = table.getItems();
-		for (Integer i = 0; i < items.length; i++) 
-		{
-			TableEditor editor = new TableEditor(table);
-//			Text text = new Text(table, SWT.NONE);
-//			text.setEditable(false);
-//			text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
-//		    text.setText(properties.get(i).getType().getName());
-		    editor.grabHorizontal = true;
-			editor.horizontalAlignment = SWT.CENTER;
-			//editor.setEditor(text, items[i], 0);	
-			items[i].setText(0,properties.get(i).getType().getName());
-			
-			editor = new TableEditor(table);			
-			Spinner spinner = new Spinner(table, SWT.NONE);
-			spinner.pack();
-			spinner.setSelection(i);
-			editor.grabHorizontal = true;
-			editor.horizontalAlignment = SWT.CENTER;
-			editor.setEditor(spinner, items[i], 1);	
-			items[i].setData(Integer.toString(1),spinner);
-		}		
+	public void removeLine(int index) {
+		
+		if(index<0 || index>=getItemCount())
+			return;
+		
+		TableItem item = getItem(index);
+		TableEditor editor = (TableEditor) item.getData(SPINNER_EDITOR);
+		editor.getEditor().dispose();
+		editor.dispose();
+		remove(index);
+	
+		updateEditors();
+	}
+		
+	public void addLines(){
+		for (int i = 0; i < properties.size(); i++) 
+			addLine(properties.get(i), i);
 	}
 	
 	public Table getTable() {
-		return table;
-	}
-
-	public Property getProperty (String typeName){
-		for(Property p: properties){
-			if(p.getType().getName().compareToIgnoreCase(typeName)==0) return p;			
-		}
-		return null;
+		return this;
 	}
 	
 	public HashMap<Property,Integer> getValues()
 	{
-		HashMap<Property, Integer> valueHashMap = new HashMap<Property,Integer>();
-		for (TableItem ti : table.getItems()){	
-			String str = ti.getText(0);
-			Property p = getProperty(str.replace("Relator ", ""));
-			Spinner spinner = (Spinner)ti.getData("1");
-			int order = spinner.getSelection();
-			valueHashMap.put(p,order);			
+		HashMap<Property, Integer> hash = new HashMap<Property,Integer>();
+		for (int i = 0; i < getItems().length; i++) {
+			hash.put(properties.get(i), getOrder(i));
 		}
-		return valueHashMap;
+		return hash;
 	}	
+	
+	@Override
+	protected void checkSubclass() {}
+
+	public Integer getOrder(int index) {
+		if(index<0 || index>=getItemCount())
+			return null;
+	
+		Spinner spinner = (Spinner)((TableEditor)getItem(index).getData(SPINNER_EDITOR)).getEditor();
+		return spinner.getSelection();
+	}
 	
 }		 
 

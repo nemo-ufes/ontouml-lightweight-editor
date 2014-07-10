@@ -11,19 +11,80 @@ import org.eclipse.swt.widgets.Label;
 
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 public class MultiDepThirdPage  extends MultiDepPage {
 
-	public ArrayList<Property> properties = new ArrayList<Property>();
 	public MultiDepComboTable table;
 	public Composite container;
-	public Button btnAddLine;
+	private Button addButton;
+	private Button removeButton;
+	private Button noRadio;
+	private Button yesRadio;
+	private Label lblNewLabel_1;
+	
+	
+	private SelectionAdapter radioAction = new SelectionAdapter() {
+		public void widgetSelected(SelectionEvent e) {
+    	 
+	    	if(noRadio.getSelection()){
+	    		addButton.setEnabled(false);
+	    		removeButton.setEnabled(false);
+	    		table.setEnabled(false);
+	    		setPageComplete(true);
+	    	}
+	    	if(yesRadio.getSelection()){
+	    		addButton.setEnabled(true);
+	    		table.setEnabled(true);
+	    		
+	    		if(table.getSelections().size()>0){
+	    			setPageComplete(true);
+	    			removeButton.setEnabled(true);
+	    		}
+	    		else{
+	    			setPageComplete(false);
+	    			removeButton.setEnabled(false);
+	    		}
+	    	}
+    	
+		}
+	};
+	
+	private SelectionAdapter addAction = new SelectionAdapter() {
+		 @Override
+           public void widgetSelected(SelectionEvent e) {
+			 setPageComplete(true);
+			 table.addLine();
+			 removeButton.setEnabled(true);
+		 }
+	};
+	
+	private SelectionAdapter removeAction = new SelectionAdapter() {
+		 @Override
+          public void widgetSelected(SelectionEvent e) {
+			 int index = table.getSelectionIndex();
+			 
+			 if(index<0 || index>=table.getItemCount())
+				 return;
+			 
+			 table.removeLine(index);
+			 
+			 if(table.getItemCount()>0)
+				 removeButton.setEnabled(true);
+			 else
+				 removeButton.setEnabled(false);
+		 }
+	};
+	
 	
 	public MultiDepThirdPage(MultiDepOccurrence multiDep) 
 	{
 		super(multiDep);
-		this.properties = multiDep.getRelatorEnds();
 	}
 
 	/**
@@ -32,40 +93,111 @@ public class MultiDepThirdPage  extends MultiDepPage {
 	 */
 	public void createControl(Composite parent) {
 		container = new Composite(parent, SWT.NULL);
-
 		setControl(container);
+		setPageComplete(false);
 		
-		table = new MultiDepComboTable(container, SWT.BORDER,properties);
-		table.getTable().setBounds(10, 36, 554, 104);
-//		Composite composite = new Composite(container,SWT.NONE);
-//		composite.setBounds(10, 36, 554, 104);
+		table = new MultiDepComboTable(container, SWT.BORDER);
+		table.setProperties(occurrence.getRelatorEnds());
+		table.setEnabled(false);
 		
-		Label lblNewLabel = new Label(container, SWT.NONE);
-		lblNewLabel.setBounds(10, 10, 554, 15);
-		lblNewLabel.setText("Is there a dependency between these relators?");
+		Label lblNewLabel = new Label(container, SWT.WRAP);
+		lblNewLabel.setText("Is there a dependency between the relators connected to "+OntoUMLNameHelper.getTypeAndName(occurrence.getType(), true, true)+"?");
 		
-		btnAddLine = new Button(container, SWT.NONE);
-		btnAddLine.setBounds(489, 146, 75, 25);
-		btnAddLine.setText("Add Line");
-		btnAddLine.addSelectionListener(new SelectionAdapter() {
-			 @Override
-	            public void widgetSelected(SelectionEvent e) {
-				 table.addLine();				 
-			 }
-		});	
+		addButton = new Button(container, SWT.NONE);
+		addButton.setText("Add");
+		addButton.setEnabled(false);
+		addButton.addSelectionListener(addAction);	
+		
+		noRadio = new Button(container, SWT.RADIO);
+		noRadio.setText("No");
+		noRadio.addSelectionListener(radioAction);
+		
+		yesRadio = new Button(container, SWT.RADIO);
+		yesRadio.setText("Yes");
+		yesRadio.addSelectionListener(radioAction);
+		
+		Label lblPleaseUseThe = new Label(container, SWT.NONE);
+		lblPleaseUseThe.setText("Please, use the table below to specify which relators depend on which:");
+		
+		lblNewLabel_1 = new Label(container, SWT.WRAP | SWT.RIGHT);
+		lblNewLabel_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		lblNewLabel_1.setText("Each line indicate the need to specify a new formal relation between the relators. Please remember to define the appropriate name and multiplicities.");
+		
+		removeButton = new Button(container, SWT.NONE);
+		removeButton.setText("Remove");
+		removeButton.setEnabled(false);
+		removeButton.addSelectionListener(removeAction);	
+		
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.TRAILING)
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(yesRadio, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(9))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(noRadio, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(9))
+				.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, table, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, lblNewLabel, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
+							.add(lblPleaseUseThe, GroupLayout.PREFERRED_SIZE, 386, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(LayoutStyle.RELATED, 35, Short.MAX_VALUE)
+							.add(removeButton)
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(addButton, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblNewLabel, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(noRadio)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(yesRadio)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(23)
+							.add(lblPleaseUseThe))
+						.add(gl_container.createSequentialGroup()
+							.addPreferredGap(LayoutStyle.UNRELATED)
+							.add(gl_container.createParallelGroup(GroupLayout.BASELINE)
+								.add(addButton)
+								.add(removeButton))))
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(table, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+		);
+		container.setLayout(gl_container);
+		
 	}
 	
 	@Override
 	public IWizardPage getNextPage() 
-	{		
-		ArrayList<ArrayList<Property>> matrix = table.getSelections();
-		
-		//Action =============================
-		MultiDepAction newAction = new MultiDepAction(multiDep);
-		newAction.setCreateFormalAssocs(matrix); 
-		getMultiDepWizard().replaceAction(1,newAction);
-		//====================================
-		
-		return ((MultiDepWizard)getWizard()).getFinishing();
+	{	
+		if(yesRadio.getSelection()){
+			ArrayList<ArrayList<Property>> matrix = table.getSelections();
+			
+			//Action =============================
+			MultiDepAction newAction = new MultiDepAction(occurrence);
+			newAction.setCreateDependencies(matrix); 
+			getAntipatternWizard().replaceAction(1,newAction);
+			//====================================
+		}
+		else{
+			getAntipatternWizard().removeAllActions(1);
+		}
+		return getAntipatternWizard().getFinishing();
 	}
 }

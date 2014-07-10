@@ -1,20 +1,27 @@
 package br.ufes.inf.nemo.antipattern.multidep;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Category;
+import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.Mediation;
+import RefOntoUML.Mixin;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
+import RefOntoUML.RoleMixin;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Multiple Relational Dependency
@@ -76,11 +83,11 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 	
 	@Override
 	public String toString(){
-		String result = "Type: "+super.parser.getStringRepresentation(this.type)+"\n"+
+		String result = "Type: "+OntoUMLNameHelper.getTypeAndName(type, true, false)+"\n"+
 						"Relators: ";
 		
 		for (Property p : relatorEnds){
-			result += "\n\t"+super.parser.getStringRepresentation(p);
+			result += "\n\t"+OntoUMLNameHelper.getNameTypeAndMultiplicity(p, true, false, true, false, false);
 		}
 		
 		return result;
@@ -100,22 +107,18 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 	{
 		for(ArrayList<Property> list: matrix){
 			if (list.size()==2){
-				fix.addAll( fixer.createAssociationBetween(RelationStereotype.FORMAL, "", list.get(0).getType(), list.get(1).getType()) );
+				fix.addAll(fixer.createAssociationBetween(RelationStereotype.FORMAL, "", list.get(0).getType(), list.get(1).getType()) );
 			}
 		}		
 	}
 
-	public void addSubTypeInvolvingMediation(ArrayList<Property> properties) 
+	public void addSubtypesPerProperty(ArrayList<Property> properties) 
 	{
 		ArrayList<Generalization> genList = new ArrayList<Generalization>();
 		for(Property p : properties)
 		{
-			Fix partial = new Fix();
-			if(getType() instanceof Category){
-				partial = fixer.createSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLEMIXIN, p.getAssociation());
-			}else{
-				partial = fixer.createSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLE, p.getAssociation());
-			}
+			Fix partial = fixer.createSubTypeAsInvolvingLink(getType(), getSubtypeStereotype(type), p.getAssociation());
+			
 			for(Object obj: fix.getAdded()) { if (obj instanceof Generalization) { genList.add((Generalization)obj); }}
 			
 			fix.addAll(partial);
@@ -123,21 +126,62 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 		if (genList.size()>1) fix.addAll(fixer.createGeneralizationSet(genList, false, true, ""));
 	}
 
-	public void addSubTypeWithIntermediate(ArrayList<Property> properties) {
-		ArrayList<Generalization> genList = new ArrayList<Generalization>();
-		for(Property p : properties)
-		{
-			Fix partial = new Fix();
-			if(getType() instanceof Category){
-				partial = fixer.createSubSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLEMIXIN, ClassStereotype.ROLEMIXIN, p.getAssociation());
-			}else{
-				partial = fixer.createSubSubTypeAsInvolvingLink(getType(), ClassStereotype.ROLE, ClassStereotype.ROLE, p.getAssociation());
+	public void addOrderedSubtypes(HashMap<Property, Integer> order) {
+		
+		ArrayList<Integer> valuesList = new ArrayList<Integer>(new HashSet<Integer>(order.values()));
+		Collections.sort(valuesList);
+		
+		Classifier currentParent = type;
+		Fix currentFix;
+		while(valuesList.size()>0){
+			ArrayList<Property> samePositionList = new ArrayList<Property>();
+			
+			for (Property p : order.keySet()) {
+				if(order.get(p)==valuesList.get(0)){
+					samePositionList.add(p);
+				}
 			}
 			
-			for(Object obj: fix.getAdded()) { if (obj instanceof Generalization && ((Generalization)obj).getGeneral().equals(getType())) genList.add((Generalization)obj); }
-			
-			fix.addAll(partial);
-		}		
-		if (genList.size()>1) fix.addAll(fixer.createGeneralizationSet(genList, false, true, ""));
+			if(samePositionList.size()==1){
+				Property p = samePositionList.get(0);
+				currentFix = fixer.createSubTypeAs(currentParent, getSubtypeStereotype(currentParent), "MediatedBy_"+p.getType().getName());
+				currentParent = currentFix.getAddedByType(RefOntoUML.Class.class).get(0);
+				p.getOpposite().setType(currentParent);
+				currentFix.includeModified(p.getAssociation());
+				
+				fix.addAll(currentFix);
+			}
+			else{
+				if(valuesList.size()>1){
+					currentFix = fixer.createSubTypeAs(currentParent, getSubtypeStereotype(currentParent), "SubtypeOf_"+currentParent.getName());
+					currentParent = currentFix.getAddedByType(RefOntoUML.Class.class).get(0);
+					fix.addAll(currentFix);
+				}
+				
+				ArrayList<Classifier> subtypes = new ArrayList<Classifier>();
+				Class subtype;
+				for (Property p : samePositionList) {
+					currentFix = fixer.createSubTypeAs(currentParent, getSubtypeStereotype(currentParent), "MediatedBy_"+p.getType().getName());
+					subtype = currentFix.getAddedByType(RefOntoUML.Class.class).get(0);
+					subtypes.add(subtype);
+					p.getOpposite().setType(subtype);
+					currentFix.includeModified(p.getAssociation());
+					fix.addAll(currentFix);
+				}
+				
+				fix.addAll(fixer.createGeneralizationSet(currentParent, subtypes, false, true));
+			}
+			valuesList.remove(0);	
+		}
+	}
+	
+	public ClassStereotype getSubtypeStereotype(Classifier c){
+		
+		if(c instanceof Category || c instanceof RoleMixin)
+			return ClassStereotype.ROLEMIXIN;
+		if(c instanceof Mixin)
+			return ClassStereotype.MIXIN;
+		
+		return ClassStereotype.ROLE;
 	}
 }
