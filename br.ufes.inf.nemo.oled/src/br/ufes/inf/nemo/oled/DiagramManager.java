@@ -654,8 +654,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.getInfoManager().setProject(currentProject);
 				openDiagrams();
 				Main.printOutLine("Setting up OCL Editor...");				
-				frame.getInfoManager().getOcleditor().removeAllModelCompletions();				
-				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));				
+//				frame.getInfoManager().getOcleditor().removeAllModelCompletions();				
+//				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));				
 				String constraints = (String) listFiles.get(1);				
 				frame.getInfoManager().getOcleditor().setText(constraints);
 				frame.focusOnOclEditor();				
@@ -689,9 +689,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				currentProject = (UmlProject) listFiles.get(0);												
 				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 				frame.getInfoManager().setProject(currentProject);
-				Main.printOutLine("Adding OCL code-completion information");
-				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
-				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));				
+				Main.printOutLine("Setting up OCL Editor...");	
+//				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
+//				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));				
 				openDiagrams();
 				saveProjectNeeded(false);
 				String constraints = (String) listFiles.get(1);
