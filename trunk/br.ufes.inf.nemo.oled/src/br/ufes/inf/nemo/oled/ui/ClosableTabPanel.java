@@ -59,6 +59,8 @@ import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.palette.ColorPalette;
 import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.popupmenu.TabPopupMenu;
+import br.ufes.inf.nemo.oled.ui.diagram.ConstraintEditor;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.ui.diagram.Editor;
 import br.ufes.inf.nemo.oled.ui.diagram.TextEditor;
@@ -85,6 +87,13 @@ public class ClosableTabPanel extends JPanel {
 			if(obj instanceof DiagramEditorWrapper)
 			{
 				Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/diagram.png"));
+				label.setIcon(icon);
+				label.setIconTextGap(5);
+				label.setHorizontalTextPosition(SwingConstants.RIGHT);
+			}
+			else if(obj instanceof ConstraintEditor)
+			{
+				Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/text-editor.png"));
 				label.setIcon(icon);
 				label.setIconTextGap(5);
 				label.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -177,7 +186,9 @@ public class ClosableTabPanel extends JPanel {
                 {                    
                     pane.setTitleAt(index, editor.getText());
                     pane.setTabComponentAt(index, ClosableTabPanel.this);
-                    ((DiagramManager)pane).getCurrentDiagramEditor().getDiagram().setName(editor.getText());
+                    Editor currentEditor = ((DiagramManager)pane).getCurrentEditor();
+                    if(currentEditor instanceof DiagramEditor) ((DiagramEditor)currentEditor).getDiagram().setName(editor.getText());
+                    if(currentEditor instanceof ConstraintEditor)((ConstraintEditor)currentEditor).getOCLDocument().setName(editor.getText());
                     ProjectBrowser.refreshTree(((DiagramManager)pane).getCurrentProject());
                 } 
             } 
@@ -188,8 +199,10 @@ public class ClosableTabPanel extends JPanel {
             {             	
             	pane.setTitleAt(index, editor.getText());
             	pane.setTabComponentAt(index, ClosableTabPanel.this); 
-            	((DiagramManager)pane).getCurrentDiagramEditor().getDiagram().setName(editor.getText());
-            	ProjectBrowser.refreshTree(((DiagramManager)pane).getCurrentProject());
+            	Editor currentEditor = ((DiagramManager)pane).getCurrentEditor();
+                if(currentEditor instanceof DiagramEditor) ((DiagramEditor)currentEditor).getDiagram().setName(editor.getText());
+                if(currentEditor instanceof ConstraintEditor)((ConstraintEditor)currentEditor).getOCLDocument().setName(editor.getText());
+                ProjectBrowser.refreshTree(((DiagramManager)pane).getCurrentProject());
             } 
         }); 
         return editor; 
@@ -232,16 +245,25 @@ public class ClosableTabPanel extends JPanel {
 		 * @param e the triggered {@link ActionEvent}
 		 * */
 		public void actionPerformed(ActionEvent e) {
-			if(((DiagramManager)manager).getCurrentProject() != null){
-				if (((DiagramManager)manager).getCurrentDiagramEditor() != null) {				
-					if(((DiagramManager)manager).getCurrentDiagramEditor().isSaveNeeded()) 
+			Editor editor = ((DiagramManager)manager).getCurrentEditor();
+			if(editor!=null){
+				if(editor instanceof DiagramEditorWrapper){
+					if(((DiagramEditorWrapper) editor).getDiagramEditor().isSaveNeeded()) 
 					{				
 						int option = JOptionPane.showConfirmDialog(((DiagramManager)manager).getFrame(), "Your diagram has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
 						if (option== JOptionPane.YES_OPTION) {((DiagramManager)manager).saveProject(); }
 						else if (option==JOptionPane.CANCEL_OPTION) { return; }
 					}
 				}
-			}
+				if(editor instanceof ConstraintEditor){
+					if(((ConstraintEditor) editor).isSaveNeeded()) 
+					{
+						int option = JOptionPane.showConfirmDialog(((DiagramManager)manager).getFrame(), "Your constraints has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
+						if (option== JOptionPane.YES_OPTION) {((DiagramManager)manager).saveProject(); }
+						else if (option==JOptionPane.CANCEL_OPTION) { return; }
+					}
+				}
+			}		
 			removeTab();
 		}
 

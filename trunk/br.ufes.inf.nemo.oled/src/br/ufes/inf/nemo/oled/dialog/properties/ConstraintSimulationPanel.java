@@ -91,7 +91,7 @@ public class ConstraintSimulationPanel extends JPanel {
 		for(Constraint ct : oclOptions.getConstraintList())
 		{
 			SingleConstraintPanel singleConstraint = new SingleConstraintPanel(ct,oclOptions.getConstraintType(ct),
-			ProjectBrowser.getOCLModelFor(frame.getDiagramManager().getCurrentProject()).getOCLParser().getUMLEnvironment());			
+			ProjectBrowser.getOCLDocumentFor(frame.getDiagramManager().getCurrentProject()).getParser().getUMLEnvironment());			
 			singleConstraintsListPanel.add(singleConstraint);
 			ctpanel.add(singleConstraint);			
 		}		

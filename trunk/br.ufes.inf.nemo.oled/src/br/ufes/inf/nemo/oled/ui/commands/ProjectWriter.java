@@ -96,7 +96,7 @@ public final class ProjectWriter extends FileWriter {
 		//Save the OCL content in the editor inside the file
 		ZipEntry  constraintEntry = new ZipEntry(OLEDSettings.OCL_DEFAULT_FILE.getValue());
 		out.putNextEntry(constraintEntry);
-		out.write(oclDocument.getOCLString().getBytes());
+		out.write(oclDocument.getContent().getBytes());
 		out.closeEntry();
 		
 		Main.printOutLine("Finalizing OLED file...");

@@ -35,7 +35,8 @@ public interface Editor extends IDisposable {
 		HTML,
 		INSTANCE_VISUALIZER,
 		READ_ONLY,
-		FINDER
+		FINDER,
+		OCL
 	}
 	
 	public boolean isSaveNeeded();

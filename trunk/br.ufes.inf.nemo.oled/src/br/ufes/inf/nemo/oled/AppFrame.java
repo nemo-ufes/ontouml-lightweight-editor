@@ -527,15 +527,5 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public void focusOnOutput()
 	{	
 		infoManager.setSelectedIndex(2);
-	}
-	
-	public void focusOnOclEditor()
-	{		
-		infoManager.setSelectedIndex(3);		
-	}
-	
-	public boolean isFocusedOnOclEditor()
-	{
-		return infoManager.getSelectedIndex()==3;
-	}
+	}	
 }

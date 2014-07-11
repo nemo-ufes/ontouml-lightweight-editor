@@ -56,8 +56,7 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnAlignCenterHorizontally;
 	private JButton btnBringToFront;
 	private JButton btnPutToBack;
-	private JToggleButton btnGrid;
-	private JToggleButton btnToolBox;
+	private JToggleButton btnGrid;	
 	private JButton btnExportPng;
 	private JButton btnZoomOut;
 	private JButton btnZoomIn;
@@ -72,8 +71,7 @@ public class DiagramToolbar extends JToolBar {
 	
 	public void update(){
 		btnGrid.setSelected(editor.showGrid());
-		btnZoomStatus.setText(editor.getZoomPercentualValue()+"%");
-		btnToolBox.setSelected(editor.getDiagramManager().getFrame().showToolBox());
+		btnZoomStatus.setText(editor.getZoomPercentualValue()+"%");		
 	}
 	
 	public DiagramToolbar (final DiagramEditor editor)
@@ -106,19 +104,6 @@ public class DiagramToolbar extends JToolBar {
 		btnGrid.setFocusable(false);
 		btnGrid.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/grid.png")));
 		add(btnGrid);
-		
-		btnToolBox = new JToggleButton("");
-		btnToolBox.setSelected(true);
-		btnToolBox.setToolTipText("Show/hide Toolbox");
-		btnToolBox.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {        		
-        		editor.getDiagramManager().getFrame().showToolBox(btnToolBox.isSelected());
-        	}
-        });
-		btnToolBox.setFocusable(false);
-		btnToolBox.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/hammer_screwdriver.png")));
-		add(btnToolBox);
 		
 		btnAlignBottom = new JButton("");
 		btnAlignBottom.addActionListener(new ActionListener() {				

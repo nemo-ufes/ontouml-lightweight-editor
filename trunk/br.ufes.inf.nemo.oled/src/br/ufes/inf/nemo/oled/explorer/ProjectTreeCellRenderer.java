@@ -47,6 +47,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.palette.PaletteAccordion;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
@@ -151,7 +152,16 @@ public class ProjectTreeCellRenderer extends DefaultTreeCellRenderer implements 
 			expanded = true;
 			label.setText(value.toString());
 		}
-
+		else if( ((DefaultMutableTreeNode)value).getUserObject() instanceof OCLDocument ) 
+		{
+			if ((((DefaultMutableTreeNode)((DefaultMutableTreeNode)value).getParent()).getUserObject()) instanceof OCLDocument)
+				label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/text-editor.png")));				
+			else 
+				label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/view.png")));
+			expanded = true;
+			label.setText(value.toString());
+		}
+		
 		uniqueName.setForeground(Color.gray);
 
 		if (selected){    			

@@ -21,8 +21,14 @@
  */
 package br.ufes.inf.nemo.oled;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+
 import javax.swing.ImageIcon;
-import javax.swing.JTabbedPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import br.ufes.inf.nemo.oled.palette.Palette;
 import br.ufes.inf.nemo.oled.palette.PaletteAccordion;
@@ -32,7 +38,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 /**
  * @author John Guerson
  */
-public class ToolManager extends JTabbedPane {
+public class ToolManager extends JPanel {
 
 	private static final long serialVersionUID = 1752050268631906319L;
 	@SuppressWarnings("unused")
@@ -43,19 +49,40 @@ public class ToolManager extends JTabbedPane {
 	public ToolManager(AppFrame frame, DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		super();
+		setBackground(Color.WHITE);
 		
 		this.frame = frame;
 		this.editorDispatcher = editorDispatcher;
 		
 		setFocusable(false);
-				
+		setLayout(new BorderLayout(0,0));
+		
 		palettes = new PaletteAccordion(frame);
+		palettes.setBackground(Color.WHITE);
 		palettes.createStaticStructurePalettes(editorDispatcher);
+		
+		JPanel panel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		flowLayout.setVgap(3);
+		flowLayout.setHgap(3);
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		//panel.setBorder(new LineBorder(UIManager.getColor("TabbedPane.darkShadow")));
+		panel.setBackground(Color.WHITE);
+		JLabel title = new JLabel();
+		title.setAlignmentY(Component.TOP_ALIGNMENT);
+		panel.add(title);
+		title.setBackground(Color.WHITE);
+		title.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/hammer_screwdriver.png")));
+		title.setText("Toolbox");
+		
+		add(palettes,BorderLayout.CENTER);
+		add(panel,BorderLayout.NORTH);
+		
+		//addTab("Toolbox", palettes); //TODO Localize these
+		//setIconAt(indexOfComponent(palettes),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/hammer_screwdriver.png")));
+		
 		//Assistent assistent = new Assistent();
 		//Assistent patternsPanel = new Assistent();
-		
-		addTab("Toolbox", palettes); //TODO Localize these
-		setIconAt(indexOfComponent(palettes),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/hammer_screwdriver.png")));
 		//this.addTab("Assistent", assistent);
 		//this.addTab("Patterns", patternsPanel);
 	}

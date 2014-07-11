@@ -32,6 +32,7 @@ import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
+import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
@@ -81,10 +82,11 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		{
 			Classifier element = (((ClassElement)parent).getClassifier());
 						
-			// replace all references in constraints at the OCL editor
-			String currentConstraints = ProjectBrowser.frame.getInfoManager().getConstraints();
+			// replace all references in constraints
+			OCLDocument oclDoc = ProjectBrowser.getOCLDocumentFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+			String currentConstraints = oclDoc.getContent();
 			String newConstraints = currentConstraints.replaceAll(oldName,text);
-			ProjectBrowser.frame.getInfoManager().setConstraints(newConstraints);
+			oclDoc.setContent(newConstraints);
 			
 			// update application accordingly
 			ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(element, false);
@@ -127,11 +129,12 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		{
 			Classifier element = (((ClassElement)parent).getClassifier());
 						
-			// replace all references in constraints at the OCL editor
-			String currentConstraints = ProjectBrowser.frame.getInfoManager().getConstraints();
+			// replace all references in constraints
+			OCLDocument oclDoc = ProjectBrowser.getOCLDocumentFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+			String currentConstraints = oclDoc.getContent();
 			String newConstraints = currentConstraints.replaceAll(text,oldText);
-			ProjectBrowser.frame.getInfoManager().setConstraints(newConstraints);
-			
+			oclDoc.setContent(newConstraints);
+						
 			// update application accordingly
 			ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(element, false);
 						

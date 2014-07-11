@@ -29,9 +29,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramToolbar;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 
@@ -50,6 +53,7 @@ public class AppToolbar implements ActionListener {
 	private Map<String, JButton> jbuttonMap = new HashMap<String, JButton>();
 	
 	private JButton save;	
+	private JToggleButton btnToolBox;
 	
 	/**
 	 * Constructor.
@@ -66,6 +70,20 @@ public class AppToolbar implements ActionListener {
 		//createButton("paste");
 		createButton("undo");
 		createButton("redo");
+		
+		btnToolBox = new JToggleButton("");
+		btnToolBox.setSelected(true);
+		btnToolBox.setToolTipText("Show/hide Toolbox");
+		btnToolBox.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		frame.showToolBox(btnToolBox.isSelected());
+        	}
+        });
+		btnToolBox.setFocusable(false);
+		btnToolBox.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/hammer_screwdriver.png")));
+		toolbar.add(btnToolBox);
+		
 		//toolbar.addSeparator();
 		createButton("warning");
 		createButton("error");		
