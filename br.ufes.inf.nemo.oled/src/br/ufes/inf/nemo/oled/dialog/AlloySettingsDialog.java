@@ -167,8 +167,8 @@ public class AlloySettingsDialog extends JDialog {
 		
 		ProjectBrowser.setOntoUMLOptionsFor(frame.getDiagramManager().getCurrentProject(),ontoumlOptions);
 		
-		OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(frame.getDiagramManager().getCurrentProject());
-		TOCL2AlloyOption oclOptions = new TOCL2AlloyOption(oclmodel.getOCLParser());		
+		OCLDocument oclmodel = ProjectBrowser.getOCLDocumentFor(frame.getDiagramManager().getCurrentProject());
+		TOCL2AlloyOption oclOptions = new TOCL2AlloyOption(oclmodel.getParser());		
 		oclOptions.setTransformationType(constraintSimulationPanel.getTransformationsTypesListSelected());
     	oclOptions.setCommandScope(constraintSimulationPanel.getScopesListSelected());    			
     	oclOptions.setBiwidth(constraintSimulationPanel.getBitWidthListSelected());

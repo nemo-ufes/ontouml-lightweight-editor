@@ -50,6 +50,7 @@ import RefOntoUML.Property;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.dialog.properties.ElementDialogCaller;
+import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.popupmenu.TreePopupMenu;
@@ -61,34 +62,46 @@ import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 public class ProjectTree extends CheckboxTree {
 
 	private static final long serialVersionUID = 1L;
+	
+	public AppFrame frame;
+	public UmlProject project;
+	public OntoUMLParser refparser;
+	public OCLDocument oclDoc;
+	
 	public DefaultMutableTreeNode rootNode;
 	public DefaultMutableTreeNode modelRootNode;
 	public DefaultMutableTreeNode diagramRootNode;
+	public DefaultMutableTreeNode oclRootNode;	
 	private DefaultTreeModel treeModel;
-	private Toolkit toolkit = Toolkit.getDefaultToolkit();
-	public AppFrame frame;
-	public UmlProject project;
+	private Toolkit toolkit = Toolkit.getDefaultToolkit();	
 	private TreeCheckingModel checkingModel;
 	
 	/**
 	 * Constructor.
 	 */
-	public ProjectTree (AppFrame frame, DefaultMutableTreeNode rootNode, UmlProject project, OntoUMLParser refparser)
+	public ProjectTree (AppFrame frame, DefaultMutableTreeNode rootNode, UmlProject project, OntoUMLParser refparser, OCLDocument oclDoc)
 	{
 		super(rootNode);
 		
 		this.frame = frame;
-		this.rootNode = rootNode;
 		this.project = project;
+		this.refparser=refparser;
+		this.oclDoc=oclDoc;
+		
+		this.rootNode = rootNode;		
 		this.treeModel = new DefaultTreeModel(rootNode);
 		setModel(treeModel);
-				
+		
 		modelRootNode = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
 		StructureDiagram diagram = new StructureDiagram(project, frame.getDiagramManager().getElementFactory());
-		diagram.setName("Diagram");
-		diagramRootNode = new DefaultMutableTreeNode(diagram);
+		diagram.setName("Diagrams");
+		diagramRootNode = new DefaultMutableTreeNode(diagram);		
+		OCLDocument rootOclDoc = new OCLDocument();
+		rootOclDoc.setName("Constraints");
+		oclRootNode = new DefaultMutableTreeNode(rootOclDoc);
 		rootNode.add(diagramRootNode);
-		rootNode.add(modelRootNode);		
+		rootNode.add(oclRootNode);
+		rootNode.add(modelRootNode);
 		
 		setDragEnabled(true);
 		
@@ -101,11 +114,13 @@ public class ProjectTree extends CheckboxTree {
 		
 		drawModel(modelRootNode, project.getModel(), checkingModel, refparser);	
 		drawDiagram(diagramRootNode, (List<? extends UmlDiagram>)project.getDiagrams());
+		drawConstraints(oclRootNode, oclDoc);
 		
 		addCheckingPath(new TreePath(rootNode.getPath()));		
 		expandPath(new TreePath(rootNode.getPath()));
 		expandPath(new TreePath(diagramRootNode.getPath()));
-		expandPath(new TreePath(modelRootNode.getPath()));
+		expandPath(new TreePath(oclRootNode.getPath()));
+		//expandPath(new TreePath(modelRootNode.getPath()));
 		
 		/** Right Click Mouse Listener */
 		addMouseListener(new MouseAdapter()
@@ -132,11 +147,9 @@ public class ProjectTree extends CheckboxTree {
 	public void doPopup (MouseEvent e, ProjectTree tree)
 	{
 		TreePath path = getPathForLocation(e.getX(), e.getY());
-		DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode)(path.getLastPathComponent());
-		if ((currentNode.getUserObject() instanceof OntoUMLElement)||(currentNode.getUserObject() instanceof StructureDiagram)){
-			TreePopupMenu menu = new TreePopupMenu(frame, tree, currentNode.getUserObject());
-	    	menu.show(e.getComponent(), e.getX(), e.getY());
-		}
+		DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode)(path.getLastPathComponent());		
+		TreePopupMenu menu = new TreePopupMenu(frame, tree, currentNode.getUserObject());
+	    menu.show(e.getComponent(), e.getX(), e.getY());		
 	}
 		
 	public void remove(RefOntoUML.Element deletedElement)
@@ -238,13 +251,17 @@ public class ProjectTree extends CheckboxTree {
 		return diagramRootNode;
 	}
 	
+	public DefaultMutableTreeNode getConstraintRootNode(){
+		return oclRootNode;
+	}
+	
 	public DefaultMutableTreeNode getRootNode(){
 		return rootNode;
 	}
 	
 	private DefaultMutableTreeNode createNode(Object object)
 	{
-		if (object instanceof StructureDiagram)
+		if (object instanceof StructureDiagram || object instanceof OCLDocument)
 		{
 			return new DefaultMutableTreeNode(object);
 			
@@ -340,6 +357,12 @@ public class ProjectTree extends CheckboxTree {
 				parent.add(newNode);
 			}
 		}
+	}
+
+	private void drawConstraints(DefaultMutableTreeNode parent, OCLDocument oclDoc)
+	{
+		DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(oclDoc);
+		parent.add(newNode);		
 	}
 
 	/**
@@ -526,10 +549,11 @@ public class ProjectTree extends CheckboxTree {
 		Object obj=null;
 		if (userobj instanceof OntoUMLElement) obj = ((OntoUMLElement)userobj).getElement();
 		else if (userobj instanceof StructureDiagram) obj = ((StructureDiagram)userobj);
+		else if (userobj instanceof OCLDocument) obj = ((OCLDocument)userobj);
 		else if (userobj instanceof UmlProject) obj = ((UmlProject)userobj);
 		
 		//unselected children only if was different than Association, Diagram or Project
-    	if(safe && obj!=null && node.getChildCount()>0 && !(obj instanceof Association) && !(obj instanceof StructureDiagram) && !(obj instanceof UmlProject)) 
+    	if(safe && obj!=null && node.getChildCount()>0 && !(obj instanceof Association) && !(obj instanceof StructureDiagram) && !(obj instanceof UmlProject) && !(obj instanceof OCLDocument)) 
     	{
 			Enumeration e = node.breadthFirstEnumeration();
 			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)e.nextElement();		
@@ -560,10 +584,11 @@ public class ProjectTree extends CheckboxTree {
 		Object obj=null;
 		if (userobj instanceof OntoUMLElement) obj = ((OntoUMLElement)userobj).getElement();
 		else if (userobj instanceof StructureDiagram) obj = ((StructureDiagram)userobj);
+		else if (userobj instanceof OCLDocument) obj = ((OCLDocument)userobj);
 		else if (userobj instanceof UmlProject) obj = ((UmlProject)userobj);
 		
 		//unselected children only if was different than Association, Diagram or Project
-    	if(safe && obj!=null && node.getChildCount()>0 && !(obj instanceof Association) && !(obj instanceof StructureDiagram) && !(obj instanceof UmlProject)) 
+    	if(safe && obj!=null && node.getChildCount()>0 && !(obj instanceof Association) && !(obj instanceof StructureDiagram) && !(obj instanceof UmlProject)&& !(obj instanceof OCLDocument)) 
     	{
 			Enumeration e = node.breadthFirstEnumeration();
 			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)e.nextElement();		
@@ -783,6 +808,16 @@ public class ProjectTree extends CheckboxTree {
             		if (!ProjectTree.this.frame.getDiagramManager().isDiagramOpened(diagram)) {
             			// create the diagram visualization again
             			ProjectTree.this.frame.getDiagramManager().createDiagramEditor(diagram);
+            		}
+            	}
+            	
+            	// open diagram
+            	if (currentNode.getUserObject() instanceof OCLDocument && !currentNode.equals(oclRootNode))
+            	{
+            		OCLDocument oclDoc = (OCLDocument)currentNode.getUserObject();
+            		if (!ProjectTree.this.frame.getDiagramManager().isConstraintOpened(oclDoc)) {
+            			// create the constraint visualization again
+            			ProjectTree.this.frame.getDiagramManager().createConstraintEditor(oclDoc);
             		}
             	}
             	

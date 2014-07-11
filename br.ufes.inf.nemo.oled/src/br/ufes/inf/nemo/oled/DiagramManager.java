@@ -21,6 +21,7 @@
  */
 package br.ufes.inf.nemo.oled;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
@@ -110,6 +111,7 @@ import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
 import br.ufes.inf.nemo.oled.ui.commands.PngExporter;
 import br.ufes.inf.nemo.oled.ui.commands.ProjectReader;
 import br.ufes.inf.nemo.oled.ui.commands.ProjectWriter;
+import br.ufes.inf.nemo.oled.ui.diagram.ConstraintEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorCommandDispatcher;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
@@ -191,6 +193,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		elementFactory = new DiagramElementFactoryImpl(null); //doesn't have yet any diagram
 		ModelHelper.initializeHelper();		
 		setBorder(new EmptyBorder(0,0,0,0));		
+		setBackground(Color.white);
 	}
 
 	/** Adds a start panel to the manager */
@@ -245,6 +248,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return null;
 	}	
 
+	/** Gets the selected DiagramEditor */
+	public DiagramEditor getCurrentDiagramEditor() 
+	{		
+		if(this.getSelectedComponent() instanceof DiagramEditorWrapper){			
+			return ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor();
+		}
+		return null;
+	}
+	
+	public ConstraintEditor getCurrentConstraintEditor()
+	{
+		if(this.getSelectedComponent() instanceof ConstraintEditor) return ((ConstraintEditor) this.getSelectedComponent());
+		return null;
+	}
+	
 	/** Open Link With Browser */
 	public void openLinkWithBrowser(String link)
 	{
@@ -259,15 +277,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-	}
-
-	/** Gets the selected DiagramEditor */
-	public DiagramEditor getCurrentDiagramEditor() 
-	{		
-		if(this.getSelectedComponent() instanceof DiagramEditorWrapper){			
-			return ((DiagramEditorWrapper) this.getSelectedComponent()).getDiagramEditor();
-		}
-		return null;
 	}
 	
 	/** Useful method: Verifies if the element is contained in the list */
@@ -288,13 +297,25 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		return list;
 	}
+	
+	/** Return all opened constraint editors */
+	public ArrayList<ConstraintEditor> getConstraintEditors()
+	{
+		ArrayList<ConstraintEditor> list = new ArrayList<ConstraintEditor>();
+		for(Component c: getComponents()){
+			if(c instanceof ConstraintEditor) list.add((ConstraintEditor)c);
+		}
+		return list;
+	}
 
 	/** Select this diagram editor */
-	public void selectEditor(DiagramEditor editor)
+	public void selectEditor(Editor editor)
 	{		
 		for(Component c: getComponents()){
 			if(c instanceof DiagramEditorWrapper) {
 				if(((DiagramEditorWrapper) c).getDiagramEditor().equals(editor)) setSelectedComponent(c);
+			}else{
+				if(c.equals(editor)) setSelectedComponent(c);
 			}
 		}		
 	}
@@ -306,6 +327,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if(c instanceof DiagramEditorWrapper) {
 				if (((DiagramEditorWrapper)c).getDiagramEditor().getDiagram().equals(diagram))
 					return ((DiagramEditorWrapper)c).getDiagramEditor();
+			}
+		}
+		return null;
+	}
+	
+	/** Get the diagram editor which encapsulates this ocl document */
+	public ConstraintEditor getConstraintEditor(OCLDocument oclDoc)
+	{		
+		for(Component c: getComponents()){
+			if(c instanceof ConstraintEditor) {
+				if (((ConstraintEditor)c).getOCLDocument().equals(oclDoc))
+					return (ConstraintEditor)c;
 			}
 		}
 		return null;
@@ -333,6 +366,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}
 		return -1;
+	}
+	
+	public int getTabIndex(OCLDocument oclDoc)
+	{
+		for(Component c: getComponents()){
+			if(c instanceof ConstraintEditor) {
+				if (((ConstraintEditor)c).getOCLDocument().equals(oclDoc))
+					return indexOfComponent(c);
+			}
+		}
+		return -1;		
 	}
 	
 	/** Gets the file associated with the model. */
@@ -365,6 +409,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ClosableTabPanel tab = new ClosableTabPanel(this);
 		if(component instanceof DiagramEditorWrapper){
 			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/diagram.png"));
+			tab.getLabel().setIcon(icon);
+			tab.getLabel().setIconTextGap(5);
+			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+		}
+		if(component instanceof ConstraintEditor){
+			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/text-editor.png"));
 			tab.getLabel().setIcon(icon);
 			tab.getLabel().setIconTextGap(5);
 			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -434,7 +484,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		saveProjectNeeded(false);
 		frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 		frame.getInfoManager().setProject(currentProject);
-		frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));
 		for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
 		if(currentProject.getDiagrams().size()==0) newDiagram();
 		return currentProject;
@@ -557,8 +606,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				public void run() {
 					diagram.setName(newtext);
 					int index = getTabIndex(diagram);					
-					setTitleAt(index, newtext);        
-			        getCurrentDiagramEditor().getDiagram().setName(newtext);
+					if(index>=0) setTitleAt(index, newtext);			        
 			        ProjectBrowser.refreshTree(getCurrentProject());	
 			        updateUI();
 				}
@@ -566,6 +614,25 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}		
 	}
 	
+	public void renameOCLDocument(final OCLDocument oclDoc)
+	{
+		String text = new String();    						
+		text = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,"Please, enter the new name:","Rename OCL Document",JOptionPane.INFORMATION_MESSAGE,null,null,oclDoc.getName());    						
+		final String newtext = text;
+		if(text!=null)
+		{
+			SwingUtilities.invokeLater(new Runnable() {				
+				@Override
+				public void run() {
+					oclDoc.setName(newtext);
+					int index = getTabIndex(oclDoc);					
+					if(index>=0) setTitleAt(index, newtext);			        
+			        ProjectBrowser.refreshTree(getCurrentProject());	
+			        updateUI();
+				}
+			});				
+		}		
+	}
 	/** Verifies if this diagram is already opened in a tab. */
 	public boolean isDiagramOpened (StructureDiagram diagram)
 	{
@@ -575,6 +642,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return false;
 	}
 
+	/** Verifies if this ocl document is already opened in a tab. */
+	public boolean isConstraintOpened (OCLDocument oclDoc)
+	{
+		for(Component c: getComponents())
+			if (c instanceof ConstraintEditor)
+				if (((ConstraintEditor)c).getOCLDocument().equals(oclDoc)) return true;
+		return false;
+	}
+	
 	/** New OLED Project. */
 	public void newProject() 
 	{				
@@ -599,10 +675,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					}
 				}				
 				setProjectFile(file);
-				createEmptyCurrentProject();	
-				Main.printOutLine("Adding OCL code-completion information");
-				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
-				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));				
+				createEmptyCurrentProject();				
 				saveCurrentProjectToFile(file);
 				frame.setTitle("OLED - "+file.getName()+"");				
 				Main.printOutLine("New project succesffully created");
@@ -649,16 +722,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				setProjectFile(file);
 				lastOpenPath = file.getAbsolutePath();
 				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
+				ProjectBrowser pb = frame.getBrowserManager().getProjectBrowser();
 				currentProject = (UmlProject) listFiles.get(0);								
-				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
+				pb.setProject(currentProject);				
 				frame.getInfoManager().setProject(currentProject);
-				openDiagrams();
-				Main.printOutLine("Setting up OCL Editor...");				
-//				frame.getInfoManager().getOcleditor().removeAllModelCompletions();				
-//				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));				
+				openDiagrams();								
 				String constraints = (String) listFiles.get(1);				
-				frame.getInfoManager().getOcleditor().setText(constraints);
-				frame.focusOnOclEditor();				
+				ProjectBrowser.getOCLDocumentFor(currentProject).setConstraints(constraints, "CONTENT");								
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 				frame.setTitle("OLED - "+file.getName()+"");
 				saveProjectNeeded(false);			
@@ -686,17 +756,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				File file = new File(startPanel.getSelectedRecentFile());
 				setProjectFile(file);
 				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
-				currentProject = (UmlProject) listFiles.get(0);												
-				frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
-				frame.getInfoManager().setProject(currentProject);
-				Main.printOutLine("Setting up OCL Editor...");	
-//				frame.getInfoManager().getOcleditor().removeAllModelCompletions();
-//				frame.getInfoManager().getOcleditor().addCompletions(ProjectBrowser.getParserFor(currentProject));				
+				ProjectBrowser pb = frame.getBrowserManager().getProjectBrowser();
+				currentProject = (UmlProject) listFiles.get(0);								
+				pb.setProject(currentProject);				
+				frame.getInfoManager().setProject(currentProject);								
 				openDiagrams();
 				saveProjectNeeded(false);
 				String constraints = (String) listFiles.get(1);
-				frame.getInfoManager().getOcleditor().setText(constraints);
-				frame.focusOnOclEditor();
+				ProjectBrowser.getOCLDocumentFor(currentProject).setConstraints(constraints, "CONTENT");
 				ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 				frame.setTitle("OLED - "+file.getName()+"");
 			}
@@ -721,14 +788,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				file = new File(file.getCanonicalFile() + ".oled");
 			}
 			
-			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());			
-			oclmodel.setConstraints(frame.getInfoManager().getConstraints(),"CONTENT");
+			OCLDocument oclmodel = ProjectBrowser.getOCLDocumentFor(getCurrentProject());			
+			ConstraintEditor ce = getConstraintEditor(oclmodel);
+			if(ce!=null) oclmodel.setContent(ce.getText());			
 			currentProject.clearOpenedDiagrams();
 			for(DiagramEditor editor: getDiagramEditors()){
 				currentProject.saveAsOpened(editor.getDiagram());
 			}			
-			result = ProjectWriter.getInstance().writeProject(this, file, currentProject, oclmodel);			
-			
+			result = ProjectWriter.getInstance().writeProject(this, file, currentProject, oclmodel);		
 			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 			getCurrentProject().setName(file.getName().replace(".oled",""));
 			ProjectBrowser.refreshTree(getCurrentProject());
@@ -794,6 +861,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
 		addClosable(diagram.getLabelText(), wrapper);		
+		return editor;
+	}
+	
+	/** Creates an editor for a given OCL document. */
+	public ConstraintEditor createConstraintEditor(OCLDocument oclDoc)
+	{		
+		ConstraintEditor editor = new ConstraintEditor(frame, oclDoc);
+		addClosable(oclDoc.getName(), editor);		
 		return editor;
 	}
 	
@@ -1624,9 +1699,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 						tree.addObject(addedElement);
 					}
 				}
-				tree.updateUI();
-				//add to ocl completion		
-				ProjectBrowser.frame.getInfoManager().getOcleditor().updateCompletion(addedElement);		
+				tree.updateUI();						
 			}
 		});		
 	}
@@ -1758,9 +1831,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			public void run() {
 				UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
 				// delete from the parser
-				ProjectBrowser.getParserFor(project).removeElement(deletedElement);
-				// delete from ocl completion
-				ProjectBrowser.frame.getInfoManager().getOcleditor().removeCompletion(deletedElement);			
+				ProjectBrowser.getParserFor(project).removeElement(deletedElement);							
 				// delete from the tree
 				ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);		
 				browser.getTree().remove(deletedElement);
@@ -1780,7 +1851,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		for(Object obj: fix.getDeleted()) {
 			deleteFromOLED((RefOntoUML.Element)obj,false);				
 		}
-		for(String str: fix.getAddedRules()) getFrame().getInfoManager().addConstraints(str+"\n");		
+		for(String str: fix.getAddedRules()){
+			ProjectBrowser.getOCLDocumentFor(currentProject).addContent(str);		
+		}
 		return ;
 	}
 	
@@ -1821,15 +1894,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());		
 		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to create an OLED project first."); return; }		
 		try {
-			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
+			OCLDocument oclmodel = ProjectBrowser.getOCLDocumentFor(getCurrentProject());
 			// set parser 
 			String name = ((RefOntoUML.Package)getCurrentProject().getResource().getContents().get(0)).getName();
 			if (name==null || name.isEmpty()) name = "model";
 			oclmodel.setParser( new TOCLParser(refparser,getCurrentProject().getTempDir()+File.separator,name.toLowerCase()));
 			//parsing...
-			oclmodel.getParser().parseTemporalOCL(frame.getInfoManager().getConstraints());
+			ConstraintEditor ce = getConstraintEditor(oclmodel);
+			if(ce!=null) oclmodel.getParser().parseTemporalOCL(ce.getText());
+			else oclmodel.getParser().parseTemporalOCL(oclmodel.getContent());
 			// set options 
-			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new TOCL2AlloyOption(oclmodel.getOCLParser()));
+			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new TOCL2AlloyOption(oclmodel.getParser()));
 			// show Message
 			String msg =  "Constraints are syntactically correct.\n";
 			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing Constraints",msg);			
@@ -1881,11 +1956,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void runTOCL2Alloy()
 	{
 		OntoUMLParser refparser = ProjectBrowser.getParserFor(getCurrentProject());
-		OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
+		OCLDocument oclmodel = ProjectBrowser.getOCLDocumentFor(getCurrentProject());
 		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
 		AlloySpecification alloySpec = ProjectBrowser.getAlloySpecFor(getCurrentProject());
 		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }
-		if (oclmodel.getOCLParser()==null) { /*frame.showErrorMessageDialog("Error","Inexistent constraints. You need to first create constraints.");*/  return; }
+		if (oclmodel.getParser()==null) { /*frame.showErrorMessageDialog("Error","Inexistent constraints. You need to first create constraints.");*/  return; }
 		try {						
 			// transforming...
 			String logMessage = alloySpec.addConstraints(refparser, oclmodel,oclOptions);
@@ -2061,12 +2136,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void exportOCL() 
 	{
 		try{
-			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
-			String path = FileChoosersUtil.saveOCLPathLocation(frame,oclmodel.getOCLPath());	    		
-			if (path==null) return;		
-			oclmodel.setConstraints(frame.getInfoManager().getConstraints(),"CONTENT");
-			oclmodel.setOCLPath(path);
-			FileUtil.copyStringToFile(frame.getInfoManager().getConstraints(), path);
+			OCLDocument oclmodel = ProjectBrowser.getOCLDocumentFor(getCurrentProject());
+			String path = FileChoosersUtil.saveOCLPathLocation(frame,oclmodel.getPath());	    		
+			if (path==null) return;			
+			if(getCurrentConstraintEditor()!=null){
+				oclmodel.setConstraints(getCurrentConstraintEditor().getText(),"CONTENT");
+				oclmodel.setPath(path);
+				FileUtil.copyStringToFile(getCurrentConstraintEditor().getText(), path);
+			}
 		}catch(IOException exception){
 			String msg = "An error ocurred while saving the constraints to an OCL document.\n"+exception.getMessage();
 			frame.showErrorMessageDialog("Saving OCL",msg);		       			
@@ -2090,11 +2167,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		try{
 			if (getCurrentProject()==null) newProject();			
-			OCLDocument oclmodel = ProjectBrowser.getOCLModelFor(getCurrentProject());
-			String path = FileChoosersUtil.openOCLPathLocation(frame,oclmodel.getOCLPath());
+			OCLDocument oclmodel = ProjectBrowser.getOCLDocumentFor(getCurrentProject());
+			String path = FileChoosersUtil.openOCLPathLocation(frame,oclmodel.getPath());
 			if (path==null) return;
-			oclmodel.setConstraints(path,"PATH");
-			frame.getInfoManager().addConstraints("\n"+oclmodel.getOCLString());
+			oclmodel.setConstraints(path,"PATH");			
 		} catch (IOException exception) {				
 			String msg = "An error ocurred while opening the OCL document.\n"+exception.getMessage();
 			frame.showErrorMessageDialog("Opening OCL",msg);
@@ -2160,14 +2236,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void showOutputPane() 
 	{
 		frame.focusOnOutput();
-	}
-
-	/**
-	 * Shows or hides the ocl editor pane, in case the current editor is a DiagramEditor. 
-	 */
-	public void showOclEditor() 
-	{		
-		frame.focusOnOclEditor();
 	}
 	
 	/** Strictly find by name */
@@ -2305,8 +2373,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		UmlProject project = getCurrentProject();
 		String owlType = ProjectSettings.OWL_MAPPING_TYPE.getValue(project);
 		MappingType mappingType = null;
-		if(!owlType.equals("SIMPLE")) mappingType = MappingType.valueOf(owlType);		
-		String oclRules = getFrame().getInfoManager().getOcleditor().getText();
+		if(!owlType.equals("SIMPLE")) mappingType = MappingType.valueOf(owlType);
+		String oclRules = new String();		
+		ConstraintEditor ce = getConstraintEditor(ProjectBrowser.getOCLDocumentFor(currentProject));
+		if(ce!=null) oclRules = ce.getText();
+		else oclRules = ProjectBrowser.getOCLDocumentFor(currentProject).getContent();		
 		RefOntoUML.Package model = ProjectBrowser.getParserFor(project).createPackageFromSelections(new Copier());
 		OperationResult result = OWLHelper.generateOwl(model, 
 			ProjectSettings.OWL_ONTOLOGY_IRI.getValue(project),

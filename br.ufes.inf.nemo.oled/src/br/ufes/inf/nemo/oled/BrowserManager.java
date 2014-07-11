@@ -21,8 +21,14 @@
  */
 package br.ufes.inf.nemo.oled;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+
 import javax.swing.ImageIcon;
-import javax.swing.JTabbedPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
@@ -30,7 +36,7 @@ import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 /**
  * @author John Guerson
  */
-public class BrowserManager extends JTabbedPane {
+public class BrowserManager extends JPanel {
 
 	private static final long serialVersionUID = 1752050268631906319L;
 	@SuppressWarnings("unused")
@@ -40,16 +46,34 @@ public class BrowserManager extends JTabbedPane {
 	public BrowserManager(AppFrame frame)
 	{
 		super();
+		setBackground(Color.WHITE);
 		
 		this.frame = frame;	
 		
 		setFocusable(false);
+		setLayout(new BorderLayout(3,3));
 		
-		browser = new ProjectBrowser(frame,null);
+		browser = new ProjectBrowser(frame,null,null);
 		browser.setBorder(new EmptyBorder(0, 0, 0, 0));
-				
-		addTab("Project Browser", browser); 
-		setIconAt(indexOfComponent(browser),new ImageIcon(BrowserManager.class.getResource("/resources/icons/x16/drawer.png")));
+			
+		JPanel panel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		flowLayout.setVgap(3);
+		flowLayout.setHgap(3);
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		//panel.setBorder(new LineBorder(UIManager.getColor("TabbedPane.darkShadow")));
+		panel.setBackground(Color.WHITE);
+		JLabel title = new JLabel();
+		title.setAlignmentY(Component.TOP_ALIGNMENT);
+		panel.add(title);
+		title.setBackground(Color.WHITE);
+		title.setIcon(new ImageIcon(BrowserManager.class.getResource("/resources/icons/x16/drawer.png")));
+		title.setText("Project Browser");
+		
+		add(browser,BorderLayout.CENTER);
+		add(panel,BorderLayout.NORTH);
+		//addTab("Project Browser", browser); 
+		//setIconAt(indexOfComponent(browser),new ImageIcon(BrowserManager.class.getResource("/resources/icons/x16/drawer.png")));
 	}
 	
 	public ProjectBrowser getProjectBrowser() { return browser; }

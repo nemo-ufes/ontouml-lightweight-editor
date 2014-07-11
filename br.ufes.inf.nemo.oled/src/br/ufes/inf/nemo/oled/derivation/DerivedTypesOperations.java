@@ -63,8 +63,6 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
-import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Category;
-import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionFunctions.Mediation;
 
 /**
  * @author Cássio Reginato
@@ -441,7 +439,7 @@ public class DerivedTypesOperations {
 					if(!(refontoList.get(pos2).eClass().getName().equals("Role") && (refontoList.get(pos).eClass().getName().equals("Kind")) ))
 					{
 						String rule="\n context: _'"+((Classifier) refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+name+"')";
-						dm.getFrame().getInfoManager().getOcleditor().addText(rule);
+						ProjectBrowser.getOCLDocumentFor(dm.getCurrentProject()).addContent(rule);						
 					}	
 					//String rule="context: "
 					if(stereotypes.size()==1)
@@ -848,7 +846,7 @@ public class DerivedTypesOperations {
 		
 		if(rule){
 			String rule_ocl= "context World \n  temp:_'"+namederived+"'.allInstances(self)->forAll( wk | self.allPrevious()->exists(w | wk.oclIsKindOf(_'"+namespecial+"',w)) and not wk.oclIsKindOf("+namespecial+",self))" ;
-			dman.getFrame().getInfoManager().getOcleditor().addText(rule_ocl);
+			ProjectBrowser.getOCLDocumentFor(dman.getCurrentProject()).addContent(rule_ocl);
 		}
 		
 		dman2.updateOLED(mainfix);	

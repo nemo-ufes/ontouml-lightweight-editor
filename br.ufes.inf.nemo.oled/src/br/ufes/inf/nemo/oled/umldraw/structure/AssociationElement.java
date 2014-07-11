@@ -493,10 +493,10 @@ public final class AssociationElement extends BaseConnection {
 		multiplicity2Label.setParent(parent);
 		role1Label.setParent(parent);
 		role2Label.setParent(parent);
-		subset1Label.setParent(parent);
-		subset2Label.setParent(parent);
-		redefine1Label.setParent(parent);
-		redefine2Label.setParent(parent);
+		if(subset1Label!=null)subset1Label.setParent(parent);
+		if(subset2Label!=null)subset2Label.setParent(parent);
+		if(redefine1Label!=null)redefine1Label.setParent(parent);
+		if(redefine2Label!=null)redefine2Label.setParent(parent);
 		nameLabel.setParent(parent);
 	}
 

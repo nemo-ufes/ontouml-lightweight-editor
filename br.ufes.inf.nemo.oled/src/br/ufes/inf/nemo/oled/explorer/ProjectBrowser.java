@@ -75,7 +75,7 @@ public class ProjectBrowser extends JPanel{
 	private UmlProject project;	
 	private OntoUMLParser refparser;	
 	private AlloySpecification alloySpec;
-	private OCLDocument oclmodel;
+	private OCLDocument oclDoc;
 	private AntiPatternList antipatterns;	
 	private InferenceList inferences;
 	private OntoUML2AlloyOptions refOptions;
@@ -93,8 +93,10 @@ public class ProjectBrowser extends JPanel{
 		Main.printOutLine("Creating OntoUML parser");
 		refparser = new OntoUMLParser(project.getModel());
 		
+		if(oclDoc==null) this.oclDoc = new OCLDocument(); 
+				
 		Main.printOutLine("Creating project browser tree");
-		tree = new ProjectTree(frame, root,project,refparser);
+		tree = new ProjectTree(frame, root,project,refparser,oclDoc);
 		tree.setBorder(new EmptyBorder(2,2,2,2));
 		tree.addTreeSelectionListener(new ProjectTreeSelectionListener());
 		
@@ -103,8 +105,7 @@ public class ProjectBrowser extends JPanel{
 			name = "model";
 		
 		
-		alloySpec = new AlloySpecification(project.getTempDir()+File.separator+name.toLowerCase()+".als");		
-		oclmodel = new OCLDocument();		
+		alloySpec = new AlloySpecification(project.getTempDir()+File.separator+name.toLowerCase()+".als");				
 		oclOptions = new TOCL2AlloyOption();		
 		refOptions = new OntoUML2AlloyOptions();		
 		antipatterns = new AntiPatternList();		
@@ -165,7 +166,7 @@ public class ProjectBrowser extends JPanel{
 		}
 	}
 	
-	public ProjectBrowser(AppFrame appframe, UmlProject project)
+	public ProjectBrowser(AppFrame appframe, UmlProject project, OCLDocument oclDoc)
 	{
 		super(new BorderLayout());
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -196,7 +197,7 @@ public class ProjectBrowser extends JPanel{
 		ProjectBrowser browser = treeMap.get(project);
 		if(browser == null)
 		{
-			browser = new ProjectBrowser(frame, project);
+			browser = new ProjectBrowser(frame, project,null);
 			treeMap.put(project, browser);			
 		}
 		return browser;
@@ -222,9 +223,9 @@ public class ProjectBrowser extends JPanel{
 		ProjectBrowser.getProjectBrowserFor(frame,project).alloySpec = alloySpec;
 	}
 	
-	public static OCLDocument getOCLModelFor(UmlProject project)
+	public static OCLDocument getOCLDocumentFor(UmlProject project)
 	{
-		return ProjectBrowser.getProjectBrowserFor(frame,project).oclmodel;
+		return ProjectBrowser.getProjectBrowserFor(frame,project).oclDoc;
 	}
 	
 	public static void setOCLOptionsFor(UmlProject project, TOCL2AlloyOption oclOptions)

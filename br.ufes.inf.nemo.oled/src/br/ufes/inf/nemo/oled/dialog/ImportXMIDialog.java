@@ -61,6 +61,7 @@ import org.jdesktop.swingx.error.ErrorInfo;
 
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.xmi2ontouml.Creator;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefConstraint;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefModel;
@@ -496,7 +497,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		if (chckbxImportConstraints.isSelected())
 		{
 			for (XMI2RefConstraint constr : XMI2RefModel.getConstraints())
-				diagManager.getFrame().getInfoManager().getOcleditor().addText(constr.getStringRepresentation());
+				ProjectBrowser.getOCLDocumentFor(diagManager.getCurrentProject()).addContent(constr.getStringRepresentation());				
 		}
 		
 		this.dispose();

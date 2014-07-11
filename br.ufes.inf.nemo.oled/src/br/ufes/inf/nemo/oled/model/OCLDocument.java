@@ -22,6 +22,7 @@
  */
 package br.ufes.inf.nemo.oled.model;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -39,23 +40,28 @@ public class OCLDocument implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/** All OCL Constraints in one single String. This is our "model.*/
-	private String oclstring;
+	private String oclstring = new String();
 	
 	/** Absolute path of ocl document. */
-	private String oclpath;	
+	private String oclpath =  new String();	
 	
 	/** OCL Parser . */
 	private TOCLParser oclparser;
 		
+	private String name = new String("New Constraints");
+	
 	/**
 	 * Creates an empty ocl model.
 	 */
 	public OCLDocument() {}
-		
+	
+	public void setName(String name) { this.name = name; }
+	public String getName() { return this.name; }
+	
 	/**
 	 * Clear this model.
 	 */
-	public void clearModel()
+	public void clear()
 	{		
 		oclstring="";
 		oclpath="";
@@ -75,6 +81,7 @@ public class OCLDocument implements Serializable {
 			String content = FileUtil.readFile(str);			
 			this.oclstring = content;						
 			this.oclpath = str;
+			this.name = str.substring(str.lastIndexOf(File.separator),str.lastIndexOf("."));
 			
 		} else  if (type=="CONTENT") {
 			
@@ -93,26 +100,36 @@ public class OCLDocument implements Serializable {
 	public TOCLParser getParser() { return oclparser; }
 	
 	/** Get OCL single String containing all Constraints. */
-	public String getOCLString() { return oclstring; }
+	public String getContent() { return oclstring; }
 	
 	/**
 	 * Set OCL single String containing all Constraints.
 	 * 
 	 * @param text
 	 */
-	public void setOCLString(String text) { oclstring = text; }
+	public void setContent(String text) { 
+		String content = text;			
+		this.oclstring = content;
+	}
+	
+	public void addContent(String text) {
+		oclstring += "\n"+text+"\n";
+	}
 	
 	/** Get Absolute path of OCL document.	*/
-	public String getOCLPath() { return oclpath; }
+	public String getPath() { return oclpath; }
 	
 	/**
 	 * Set Absolute path of OCL document.
 	 * 
 	 * @param path
 	 */
-	public void setOCLPath (String path) { oclpath = path; }
+	public void setPath (String path) { oclpath = path; }
 		
-	/** Get OCL Parser. */
-	public TOCLParser getOCLParser () { return oclparser; }
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }
 

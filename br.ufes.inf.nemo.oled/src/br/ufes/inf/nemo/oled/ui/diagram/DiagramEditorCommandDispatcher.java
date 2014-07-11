@@ -310,9 +310,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("WARNING", new MethodCall(
 					getClass().getMethod("searchWarnings")));
 			
-			selectorMap.put("OCLEDITOR", new MethodCall(
-					getClass().getMethod("showOclEditor")));
-
 			selectorMap.put("OUTPUT", new MethodCall(
 					getClass().getMethod("showOutputPane")));
 
@@ -542,11 +539,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void showOutputPane()
 	{	
 		manager.showOutputPane();
-	}
-
-	public void showOclEditor()
-	{
-		manager.showOclEditor();
 	}
 
 	public void autoComplete()

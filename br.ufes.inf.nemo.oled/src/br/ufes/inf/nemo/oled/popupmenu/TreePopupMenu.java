@@ -43,6 +43,7 @@ import br.ufes.inf.nemo.oled.explorer.OntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
 import br.ufes.inf.nemo.oled.model.ElementType;
+import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
@@ -111,6 +112,10 @@ public class TreePopupMenu extends JPopupMenu {
 				else if (TreePopupMenu.this.element instanceof StructureDiagram)
 				{
 					ProjectBrowser.frame.getDiagramManager().renameDiagram((StructureDiagram)element);					
+				}
+				else if (TreePopupMenu.this.element instanceof OCLDocument)
+				{
+					ProjectBrowser.frame.getDiagramManager().renameOCLDocument((OCLDocument)element);					
 				}
 			}
 		});
@@ -486,13 +491,19 @@ public class TreePopupMenu extends JPopupMenu {
     	} 
 
     	// Diagrams...
-    	if (TreePopupMenu.this.element instanceof StructureDiagram) {
+    	if (selectedNode.getUserObject() instanceof StructureDiagram) {
+    		createRenameItem();
+    	}
+    	
+    	// OCL Documents...
+    	if (selectedNode.getUserObject() instanceof OCLDocument) {
     		createRenameItem();
     	}
     	
     	// Model Elements...
     	
-    	if ((!(TreePopupMenu.this.element instanceof StructureDiagram)) && !((RefOntoUML.Element)((OntoUMLElement)TreePopupMenu.this.element).getElement() instanceof Generalization)) {
+    	if ((!(TreePopupMenu.this.element instanceof StructureDiagram)) && (!(TreePopupMenu.this.element instanceof OCLDocument)) && 
+    		!((RefOntoUML.Element)((OntoUMLElement)TreePopupMenu.this.element).getElement() instanceof Generalization)) {
     		createRenameItem();
     	}
     	

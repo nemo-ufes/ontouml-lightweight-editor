@@ -49,6 +49,7 @@ import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
 import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 
 /**
  * @author Cássio Reginato
@@ -275,7 +276,7 @@ public class ExclusionPattern extends JDialog {
 								{
 									if(!((txtSupertype.getText().equals("") || txtBase.getText().equals("") || txtDerived.getText().equals("")))){
 										String rule="\n context: _'"+txtSupertype.getText()+"'\n"+"inv: not oclIsTypeOf(_'"+txtBase.getText()+"') implies oclIsTypeOf(_'"+txtDerived.getText()+"')";
-										dman.getFrame().getInfoManager().getOcleditor().addText(rule);
+										ProjectBrowser.getOCLDocumentFor(dman.getCurrentProject()).addContent(rule);
 										DerivedTypesOperations.exclusionPattern(dman,values,location);
 										dispose();
 									}
