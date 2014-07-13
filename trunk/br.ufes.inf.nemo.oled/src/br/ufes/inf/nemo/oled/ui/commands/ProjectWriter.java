@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -69,7 +70,7 @@ public final class ProjectWriter extends FileWriter {
 	 * @throws IOException
 	 *             if error occurred
 	 */
-	public File writeProject(Component comp, File file, UmlProject project, OCLDocument oclDocument) throws IOException {
+	public File writeProject(Component comp, File file, UmlProject project, ArrayList<OCLDocument> oclDocList) throws IOException {
 
 		File outFile = getFileWithExtension(file);
 		FileOutputStream dest = new FileOutputStream(outFile);
@@ -94,10 +95,14 @@ public final class ProjectWriter extends FileWriter {
 		
 		Main.printOutLine("Saving OCL constraints in OLED file...");
 		//Save the OCL content in the editor inside the file
-		ZipEntry  constraintEntry = new ZipEntry(OLEDSettings.OCL_DEFAULT_FILE.getValue());
-		out.putNextEntry(constraintEntry);
-		out.write(oclDocument.getContent().getBytes());
-		out.closeEntry();
+		for(OCLDocument oclDoc: oclDocList){
+			String filename = new String();			
+			filename = oclDoc.getName();
+			ZipEntry  constraintEntry = new ZipEntry(filename+".ocl");			
+			out.putNextEntry(constraintEntry);
+			out.write(oclDoc.getContent().getBytes());
+			out.closeEntry();
+		}
 		
 		Main.printOutLine("Finalizing OLED file...");
 		//Flushes and closes the zip file

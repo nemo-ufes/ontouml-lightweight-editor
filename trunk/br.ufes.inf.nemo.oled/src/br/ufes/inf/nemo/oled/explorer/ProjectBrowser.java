@@ -74,8 +74,9 @@ public class ProjectBrowser extends JPanel{
 	//Models
 	private UmlProject project;	
 	private OntoUMLParser refparser;	
-	private AlloySpecification alloySpec;
-	private OCLDocument oclDoc;
+	private ArrayList<OCLDocument> oclDocList = new ArrayList<OCLDocument>();
+	
+	private AlloySpecification alloySpec;	
 	private AntiPatternList antipatterns;	
 	private InferenceList inferences;
 	private OntoUML2AlloyOptions refOptions;
@@ -92,11 +93,10 @@ public class ProjectBrowser extends JPanel{
 
 		Main.printOutLine("Creating OntoUML parser");
 		refparser = new OntoUMLParser(project.getModel());
-		
-		if(oclDoc==null) this.oclDoc = new OCLDocument(); 
 				
 		Main.printOutLine("Creating project browser tree");
-		tree = new ProjectTree(frame, root,project,refparser,oclDoc);
+		
+		tree = new ProjectTree(frame, root,project,refparser,oclDocList);
 		tree.setBorder(new EmptyBorder(2,2,2,2));
 		tree.addTreeSelectionListener(new ProjectTreeSelectionListener());
 		
@@ -128,6 +128,8 @@ public class ProjectBrowser extends JPanel{
 	public void eraseProject()
 	{
 		this.project = null;
+		this.refparser=null;
+		this.oclDocList.clear();
 		
 		JPanel emptyTempPanel = new JPanel();
 		emptyTempPanel.setBackground(Color.WHITE);
@@ -222,12 +224,12 @@ public class ProjectBrowser extends JPanel{
 	{		
 		ProjectBrowser.getProjectBrowserFor(frame,project).alloySpec = alloySpec;
 	}
-	
-	public static OCLDocument getOCLDocumentFor(UmlProject project)
+		
+	public static ArrayList<OCLDocument> getOCLDocuments(UmlProject project)
 	{
-		return ProjectBrowser.getProjectBrowserFor(frame,project).oclDoc;
+		return ProjectBrowser.getProjectBrowserFor(frame,project).oclDocList;
 	}
-	
+		
 	public static void setOCLOptionsFor(UmlProject project, TOCL2AlloyOption oclOptions)
 	{
 		ProjectBrowser.getProjectBrowserFor(frame,project).oclOptions = oclOptions;
@@ -345,4 +347,9 @@ public class ProjectBrowser extends JPanel{
 	public UmlProject getProject() {
 		return project;
 	}
+	
+	public ArrayList<OCLDocument> getOCLDocuments() { 
+		return oclDocList; 
+	}
+	
 }

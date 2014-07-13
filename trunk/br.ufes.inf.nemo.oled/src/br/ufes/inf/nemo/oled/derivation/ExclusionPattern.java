@@ -276,7 +276,7 @@ public class ExclusionPattern extends JDialog {
 								{
 									if(!((txtSupertype.getText().equals("") || txtBase.getText().equals("") || txtDerived.getText().equals("")))){
 										String rule="\n context: _'"+txtSupertype.getText()+"'\n"+"inv: not oclIsTypeOf(_'"+txtBase.getText()+"') implies oclIsTypeOf(_'"+txtDerived.getText()+"')";
-										ProjectBrowser.getOCLDocumentFor(dman.getCurrentProject()).addContent(rule);
+										ProjectBrowser.getOCLDocuments(dman.getCurrentProject()).get(0).addContent(rule);
 										DerivedTypesOperations.exclusionPattern(dman,values,location);
 										dispose();
 									}

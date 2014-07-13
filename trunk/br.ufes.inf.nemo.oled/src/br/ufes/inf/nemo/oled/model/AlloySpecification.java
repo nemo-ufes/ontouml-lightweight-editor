@@ -28,6 +28,7 @@ import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
+import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2Alloy;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 
@@ -150,12 +151,12 @@ public class AlloySpecification {
 	 * 
 	 * @return
 	 */
-	public String addConstraints(OntoUMLParser refparser, OCLDocument oclmodel, TOCL2AlloyOption oclOptions) throws IOException
+	public String addConstraints(OntoUMLParser refparser, TOCLParser toclparser, TOCL2AlloyOption oclOptions) throws IOException
 	{
 		String result = new String();
 		result = "\n";
 		
-		result += TOCL2Alloy.convertToAlloy(oclmodel.getParser(), oclOptions);
+		result += TOCL2Alloy.convertToAlloy(toclparser, oclOptions);
 		
 		FileUtil.writeToFile(result, alsPath);
 		

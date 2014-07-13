@@ -48,7 +48,7 @@ public class OCLDocument implements Serializable {
 	/** OCL Parser . */
 	private TOCLParser oclparser;
 		
-	private String name = new String("New Constraints");
+	private String name = new String("Document");
 	
 	/**
 	 * Creates an empty ocl model.

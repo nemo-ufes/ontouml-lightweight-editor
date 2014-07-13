@@ -97,6 +97,18 @@ public class TreePopupMenu extends JPopupMenu {
 		});
 	}
 	
+	public void createAddOCLDocumentItem()
+	{
+		JMenuItem addOCLDocumentItem = new JMenuItem("Add Document");
+		add(addOCLDocumentItem);
+		addOCLDocumentItem.addActionListener(new ActionListener() {				
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.getDiagramManager().newOCLDocument();    				
+			}
+		});
+	}
+	
 	public void createRenameItem()
 	{
 		JMenuItem setNameItem = new JMenuItem("Rename");
@@ -443,6 +455,10 @@ public class TreePopupMenu extends JPopupMenu {
 				{
 					frame.getDiagramManager().deleteDiagram((StructureDiagram)TreePopupMenu.this.element);    					
 				}
+				else if (TreePopupMenu.this.element instanceof OCLDocument)
+				{
+					frame.getDiagramManager().deleteOCLDocument((OCLDocument)TreePopupMenu.this.element);    					
+				}
 			}
 		});
 	}
@@ -490,14 +506,20 @@ public class TreePopupMenu extends JPopupMenu {
     		return;
     	} 
 
+    	if(tree.getConstraintRootNode().equals(selectedNode)){
+    		createAddOCLDocumentItem();
+    		return;
+    	}
+    	
     	// Diagrams...
-    	if (selectedNode.getUserObject() instanceof StructureDiagram) {
+    	if ((TreePopupMenu.this.element instanceof StructureDiagram)) {
     		createRenameItem();
     	}
     	
     	// OCL Documents...
-    	if (selectedNode.getUserObject() instanceof OCLDocument) {
-    		createRenameItem();
+    	if (TreePopupMenu.this.element instanceof OCLDocument) {
+    		createRenameItem(); 
+    		createDeleteItem();
     	}
     	
     	// Model Elements...
