@@ -2,4 +2,5 @@
 
 <ul>
 <li>[EnterpriseArchitect Enterprise Architect]</li>
+<li>[FAQ Frequently Asked Questions]</li>
 </ul>
