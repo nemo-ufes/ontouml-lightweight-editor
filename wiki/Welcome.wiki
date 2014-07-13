@@ -1,8 +1,1 @@
-#summary Welcome
 #labels OLED
-
-=== Table of Contents ===
-
-<ul>
-<li>[EnterpriseArchitect Enterprise Architect]</li>
-</ul>
