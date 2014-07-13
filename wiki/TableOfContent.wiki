@@ -1,6 +1,6 @@
 #summary Table of Content
 
-Wiki pages:
+Learn how to use OntoUML in the Enterprise Architect (EA):
 <ul>
-<li>[EnterpriseArchitect OntoUML in the Enterprise Architect ]</li>
+<li>[EnterpriseArchitect Enterprise Architect/OntoUML ]</li>
 </ul>
