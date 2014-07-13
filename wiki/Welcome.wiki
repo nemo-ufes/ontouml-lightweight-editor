@@ -1,6 +1,6 @@
 #labels OLED
 Welcome to OLED project!
 
-Please, navigate through the left side bar to learn how to use OLED.
+Please, navigate through the left side bar to learn how to use the OLED tool.
 
 =)
