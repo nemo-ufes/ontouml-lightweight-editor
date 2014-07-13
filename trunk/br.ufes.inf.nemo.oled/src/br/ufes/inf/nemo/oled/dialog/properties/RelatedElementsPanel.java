@@ -43,7 +43,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.palette.ColorPalette;
 import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 
@@ -194,7 +193,7 @@ public class RelatedElementsPanel extends JPanel {
 		this.diagramManager = diagramManager;
 		this.diagramElement = diagramElement;
 		this.element = element;
-		this.refparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
+		this.refparser = diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser();
 		
 		lblTop = new JLabel("Related associations:");		
 		lblBottom = new JLabel("Related generalizations:");

@@ -318,7 +318,8 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if(editor!=null){
-        			FeatureListDialog.open(editor.getDiagramManager().getFrame(),null, "Subsetted", property, ProjectBrowser.getParserFor(editor.getDiagramManager().getCurrentProject()));
+        			FeatureListDialog.open(editor.getDiagramManager().getFrame(),null, "Subsetted", property, 
+        			ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser());
         			SwingUtilities.invokeLater(new Runnable() {						
 						@Override
 						public void run() {
@@ -340,7 +341,8 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if(editor!=null){
-        			FeatureListDialog.open(editor.getDiagramManager().getFrame(),null, "Redefined", property, ProjectBrowser.getParserFor(editor.getDiagramManager().getCurrentProject()));
+        			FeatureListDialog.open(editor.getDiagramManager().getFrame(),null, "Redefined", property, 
+        			ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser());
         			SwingUtilities.invokeLater(new Runnable() {						
 						@Override
 						public void run() {

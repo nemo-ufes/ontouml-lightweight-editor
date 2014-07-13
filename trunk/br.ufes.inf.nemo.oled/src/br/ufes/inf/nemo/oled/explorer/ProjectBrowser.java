@@ -57,164 +57,137 @@ import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
  */
 public class ProjectBrowser extends JPanel{
 
-	private static final long serialVersionUID = 5598591779372431118L;
-	
 	//Keeps track of the trees instantiated in order to not re-instantite them 
 	private static Map<UmlProject, ProjectBrowser> treeMap = new HashMap<UmlProject, ProjectBrowser>();
+	
+	private static final long serialVersionUID = 5598591779372431118L;	
 	public static AppFrame frame;
-	
+	private ProjectToolBar ptoolbar;
 	private JScrollPane scroll;
-	private ProjectTree tree; 
-	
-	//Find in Tree Feature
-	private ArrayList<DefaultMutableTreeNode> resultFindList;	
-	private int indexActualFind=0;
-	private String oldText = new String();
-	
-	//Models
+	private ProjectTree tree;
+	//======
 	private UmlProject project;	
 	private OntoUMLParser refparser;	
 	private ArrayList<OCLDocument> oclDocList = new ArrayList<OCLDocument>();
-	
+	//======
 	private AlloySpecification alloySpec;	
 	private AntiPatternList antipatterns;	
 	private InferenceList inferences;
 	private OntoUML2AlloyOptions refOptions;
 	private TOCL2AlloyOption oclOptions;	
 	private ModellingAssistant assistant;
+		
+	public void addTreeSelectionListener(TreeSelectionListener selectionListener)
+	{
+		tree.addTreeSelectionListener(selectionListener);
+	}	
+	
+	public ProjectTree getTree() 
+	{
+		return tree;
+	}
 
-	private ProjectToolBar ptoolbar;
-				
-	public void setProject(UmlProject project)
+	public OntoUMLParser getParser()
 	{
-		this.project = project;
-		
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(project);
+		return refparser;
+	}
+	public void setParser(OntoUMLParser refparser)
+	{
+		this.refparser = refparser;
+	}
+	
+	public UmlProject getProject() 
+	{
+		return project;
+	}
+	
+	public ArrayList<OCLDocument> getOCLDocuments() 
+	{ 
+		return oclDocList; 
+	}
 
-		Main.printOutLine("Creating OntoUML parser");
-		refparser = new OntoUMLParser(project.getModel());
-				
-		Main.printOutLine("Creating project browser tree");
-		
-		tree = new ProjectTree(frame, root,project,refparser,oclDocList);
-		tree.setBorder(new EmptyBorder(2,2,2,2));
-		tree.addTreeSelectionListener(new ProjectTreeSelectionListener());
-		
-		String name = ((RefOntoUML.Package)project.getResource().getContents().get(0)).getName();
-		if (name==null || name.isEmpty()) 
-			name = "model";
-		
-		
-		alloySpec = new AlloySpecification(project.getTempDir()+File.separator+name.toLowerCase()+".als");				
-		oclOptions = new TOCL2AlloyOption();		
-		refOptions = new OntoUML2AlloyOptions();		
-		antipatterns = new AntiPatternList();		
-		inferences = new InferenceList();
-		
-		//VICTOR comentar
-		Main.printOutLine("Creating modeling assistant");
-		assistant = new ModellingAssistant(project.getModel());
-			
-		ptoolbar = new ProjectToolBar(tree,frame.getDiagramManager());
-		add(ptoolbar, BorderLayout.NORTH);
-		
-		scroll.setViewportView(tree);
-		
-		treeMap.put(project, this);
-		
-		updateUI();		
-	}
-	
-	public void eraseProject()
-	{
-		this.project = null;
-		this.refparser=null;
-		this.oclDocList.clear();
-		
-		JPanel emptyTempPanel = new JPanel();
-		emptyTempPanel.setBackground(Color.WHITE);
-		emptyTempPanel.setBorder(new EmptyBorder(0,0, 0, 0));
-		scroll.setViewportView(emptyTempPanel);
-		
-		emptyTempPanel.setPreferredSize(new Dimension(200,250));
-		
-		updateUI();
-	}
-	
-	public void select()
-	{
-		if (indexActualFind >= resultFindList.size())
-		{
-			indexActualFind=0;			
-		}
-		if(resultFindList.size()>0){
-			getTree().select(resultFindList.get(indexActualFind));
-			indexActualFind++;
-		}
-				
-	}
-	
-	public void find(String text)
-	{
-		if (!oldText.equals(text))
-		{
-			resultFindList = getTree().find(text);		
-			indexActualFind=0;
-			oldText = text;
-		}
-		if (oldText.equals(text))
-		{
-			select();
-		}
-	}
-	
 	public ProjectBrowser(AppFrame appframe, UmlProject project, OCLDocument oclDoc)
 	{
 		super(new BorderLayout());
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		this.project = project;
-		frame = appframe;
-		
-		scroll = new JScrollPane();
-		
-		if (project!=null)
-		{
-			setProject(project);
-		}
-		
-		add(scroll, BorderLayout.CENTER);	
-		
+		frame = appframe;		
+		scroll = new JScrollPane();		
+		if (project!=null) setProject(project);
+		add(scroll, BorderLayout.CENTER);			
 		JPanel emptyTempPanel = new JPanel();
 		emptyTempPanel.setBackground(Color.WHITE);
 		emptyTempPanel.setBorder(new EmptyBorder(0,0, 0, 0));
-		scroll.setViewportView(emptyTempPanel);
-		
+		scroll.setViewportView(emptyTempPanel);		
 		emptyTempPanel.setPreferredSize(new Dimension(200,250));
 		scroll.setPreferredSize(new Dimension(200,250));
 		setPreferredSize(new Dimension(216, 317));
 	}
 	
+	public void setProject(UmlProject project)
+	{
+		this.project = project;		
+		DefaultMutableTreeNode root = new DefaultMutableTreeNode(project);
+		Main.printOutLine("Creating OntoUML parser");
+		refparser = new OntoUMLParser(project.getModel());				
+		Main.printOutLine("Creating project browser tree");		
+		tree = new ProjectTree(frame, root,project,refparser,oclDocList);
+		tree.setBorder(new EmptyBorder(2,2,2,2));
+		tree.addTreeSelectionListener(new ProjectTreeSelectionListener());		
+		String name = ((RefOntoUML.Package)project.getResource().getContents().get(0)).getName();
+		if (name==null || name.isEmpty()) name = "model";		
+		alloySpec = new AlloySpecification(project.getTempDir()+File.separator+name.toLowerCase()+".als");				
+		oclOptions = new TOCL2AlloyOption();		
+		refOptions = new OntoUML2AlloyOptions();		
+		antipatterns = new AntiPatternList();		
+		inferences = new InferenceList();		
+		Main.printOutLine("Creating modeling assistant");
+		assistant = new ModellingAssistant(project.getModel());			
+		ptoolbar = new ProjectToolBar(tree,frame.getDiagramManager());
+		add(ptoolbar, BorderLayout.NORTH);		
+		scroll.setViewportView(tree);		
+		treeMap.put(project, this);		
+		updateUI();		
+	}
+
+	public void setTree(ProjectTree tree)
+	{
+		remove(scroll);		
+		this.tree = tree;
+		this.tree.setBorder(new EmptyBorder(2,2,2,2));		
+		this.addTreeSelectionListener(new ProjectTreeSelectionListener());	
+		scroll = new JScrollPane();
+		scroll.setViewportView(tree);
+		add(scroll, BorderLayout.CENTER);				
+		scroll.validate();
+		scroll.repaint();
+		this.validate();
+		this.repaint();
+	}
+	
+	public void clear()
+	{
+		this.project = null;
+		this.refparser=null;
+		this.oclDocList.clear();
+		JPanel emptyTempPanel = new JPanel();
+		emptyTempPanel.setBackground(Color.WHITE);
+		emptyTempPanel.setBorder(new EmptyBorder(0,0, 0, 0));
+		scroll.setViewportView(emptyTempPanel);		
+		emptyTempPanel.setPreferredSize(new Dimension(200,250));		
+		updateUI();
+	}
+		
 	public static ProjectBrowser getProjectBrowserFor(AppFrame frame, UmlProject project) 
 	{
 		ProjectBrowser browser = treeMap.get(project);
-		if(browser == null)
-		{
+		if(browser == null){
 			browser = new ProjectBrowser(frame, project,null);
 			treeMap.put(project, browser);			
 		}
 		return browser;
 	}
-	
-	public static OntoUMLParser getParserFor(UmlProject project) 
-	{		
-		return ProjectBrowser.getProjectBrowserFor(frame, project).refparser;
-	}
-	
-	public static void setParserFor(UmlProject project, OntoUMLParser refparser) 
-	{		
-		ProjectBrowser.getProjectBrowserFor(frame,project).refparser = refparser;
-	}
-	
+			
 	public static AlloySpecification getAlloySpecFor(UmlProject project) 
 	{		
 		return ProjectBrowser.getProjectBrowserFor(frame,project).alloySpec;
@@ -274,34 +247,11 @@ public class ProjectBrowser extends JPanel{
 		ProjectBrowser.getProjectBrowserFor(frame,project).inferences = inferences;
 	}
 	
-	/**
-	 * Refresh the Project Browser.
-	 */
-	public static void refreshTree(UmlProject project)
-	{
-		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame,project);		
-		browser.tree.updateUI();				
-		browser.validate();
-		browser.repaint();		
-	}
-	
-	public void setTree(ProjectTree tree)
-	{
-		remove(scroll);
-		
-		this.tree = tree;
-		this.tree.setBorder(new EmptyBorder(2,2,2,2));
-		
-		this.addTreeSelectionListener(new ProjectTreeSelectionListener());
-	
-		scroll = new JScrollPane();
-		scroll.setViewportView(tree);
-		add(scroll, BorderLayout.CENTER);		
-		
-		scroll.validate();
-		scroll.repaint();
-		this.validate();
-		this.repaint();
+	public void refreshTree()
+	{				
+		tree.updateUI();				
+		validate();
+		repaint();		
 	}
 	
 	class ProjectTreeSelectionListener implements TreeSelectionListener 
@@ -328,28 +278,4 @@ public class ProjectBrowser extends JPanel{
 			}
 		}		
 	 }
-	
-	public void setParser(OntoUMLParser refparser)
-	{
-		this.refparser = refparser;
-	}
-	
-	public void addTreeSelectionListener(TreeSelectionListener selectionListener)
-	{
-		tree.addTreeSelectionListener(selectionListener);
-	}	
-	
-	public ProjectTree getTree() 
-	{
-		return tree;
-	}
-
-	public UmlProject getProject() {
-		return project;
-	}
-	
-	public ArrayList<OCLDocument> getOCLDocuments() { 
-		return oclDocList; 
-	}
-	
 }

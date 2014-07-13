@@ -58,7 +58,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.explorer.OntoUMLElement;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**
@@ -210,9 +209,11 @@ public class PropertyEditionPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (parent instanceof JFrame)
-					FeatureListDialog.open((JFrame)parent,subsettedText, "Subsetted", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));
+					FeatureListDialog.open((JFrame)parent,subsettedText, "Subsetted", property, 
+					diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser());
 				else
-					FeatureListDialog.open((JDialog)parent,subsettedText, "Subsetted", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));
+					FeatureListDialog.open((JDialog)parent,subsettedText, "Subsetted", property, 
+					diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser());
 			}
 		});
 		
@@ -233,9 +234,11 @@ public class PropertyEditionPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (parent instanceof JFrame)
-					FeatureListDialog.open((JFrame)parent,redefinedText, "Redefined", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));
+					FeatureListDialog.open((JFrame)parent,redefinedText, "Redefined", property, 
+					diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser());
 				else
-					FeatureListDialog.open((JDialog)parent,redefinedText, "Redefined", property, ProjectBrowser.getParserFor(diagramManager.getCurrentProject()));
+					FeatureListDialog.open((JDialog)parent,redefinedText, "Redefined", property,
+					diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser());
 			}
 		});
 		
@@ -435,7 +438,7 @@ public class PropertyEditionPanel extends JPanel {
 		
 		ArrayList<OntoUMLElement> list = new ArrayList<OntoUMLElement>();
 		OntoUMLElement value = null;
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
+		OntoUMLParser refparser = diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser();
 		if (property.getType()!=null) value = new OntoUMLElement(property.getType(),"");
 		else value = new OntoUMLElement(null,"");			    	
     	for(RefOntoUML.Type t: refparser.getAllInstances(RefOntoUML.Type.class))

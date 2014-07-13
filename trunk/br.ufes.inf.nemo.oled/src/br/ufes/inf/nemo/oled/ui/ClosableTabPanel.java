@@ -55,7 +55,6 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import org.eclipse.emf.edit.provider.IDisposable;
 
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.palette.ColorPalette;
 import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.popupmenu.TabPopupMenu;
@@ -189,7 +188,7 @@ public class ClosableTabPanel extends JPanel {
                     Editor currentEditor = ((DiagramManager)pane).getCurrentEditor();
                     if(currentEditor instanceof DiagramEditor) ((DiagramEditor)currentEditor).getDiagram().setName(editor.getText());
                     if(currentEditor instanceof ConstraintEditor)((ConstraintEditor)currentEditor).getOCLDocument().setName(editor.getText());
-                    ProjectBrowser.refreshTree(((DiagramManager)pane).getCurrentProject());
+                    ((DiagramManager)pane).getFrame().getBrowserManager().getProjectBrowser().refreshTree();
                 } 
             } 
         }); 
@@ -202,7 +201,7 @@ public class ClosableTabPanel extends JPanel {
             	Editor currentEditor = ((DiagramManager)pane).getCurrentEditor();
                 if(currentEditor instanceof DiagramEditor) ((DiagramEditor)currentEditor).getDiagram().setName(editor.getText());
                 if(currentEditor instanceof ConstraintEditor)((ConstraintEditor)currentEditor).getOCLDocument().setName(editor.getText());
-                ProjectBrowser.refreshTree(((DiagramManager)pane).getCurrentProject());
+                ((DiagramManager)pane).getFrame().getBrowserManager().getProjectBrowser().refreshTree();
             } 
         }); 
         return editor; 

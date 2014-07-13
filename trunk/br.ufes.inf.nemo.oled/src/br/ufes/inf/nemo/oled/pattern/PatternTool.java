@@ -59,7 +59,7 @@ public class PatternTool {
 	 */
 
 	public static Fix createSubkindPattern(JFrame frame, UmlProject project, double x, double y) {
-		SubkindCreation subkindCreation = new SubkindCreation(ProjectBrowser.getParserFor(project));
+		SubkindCreation subkindCreation = new SubkindCreation(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser());
 		ImagePanel imagePanel = new ImagePanel(PatternType.SubkindCreation);
 
 		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, subkindCreation, imagePanel);
@@ -69,7 +69,7 @@ public class PatternTool {
 	}
 
 	public static Fix createRelatorPattern(JFrame frame, UmlProject project, double x, double y) {
-		RelatorCreation relatorCreation = new RelatorCreation(ProjectBrowser.getParserFor(project));
+		RelatorCreation relatorCreation = new RelatorCreation(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser());
 		ImagePanel imagePanel = new ImagePanel(PatternType.RelatorCreation);
 
 		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, relatorCreation, imagePanel);
@@ -79,7 +79,7 @@ public class PatternTool {
 	}
 	
 	public static Fix createRoleMixinPattern(JFrame frame, UmlProject project, double x, double y) {
-		RoleMixinPattern roleMixinPattern = new RoleMixinPattern(ProjectBrowser.getParserFor(project));
+		RoleMixinPattern roleMixinPattern = new RoleMixinPattern(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser());
 		ImagePanel imagePanel = new ImagePanel(PatternType.RoleMixinPattern);
 
 		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, roleMixinPattern, imagePanel);

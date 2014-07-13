@@ -47,7 +47,6 @@ import RefOntoUML.StringExpression;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 
 /**
  * @author John Guerson
@@ -244,7 +243,7 @@ public class ConstraintEditionPanel extends JPanel {
 	@SuppressWarnings("unchecked")
 	public void setInitialData()
 	{		
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
+		OntoUMLParser refparser = diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser();
 		for(Constraintx c: refparser.getAllInstances(RefOntoUML.Constraintx.class)){		
 			for(RefOntoUML.Element elem: c.getConstrainedElement()) {
 				if (elem.equals(element)) comboConstraint.addItem(new ConstraintElement(c));

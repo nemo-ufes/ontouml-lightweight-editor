@@ -33,7 +33,6 @@ import br.ufes.inf.nemo.oled.AppMenu;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.dialog.AutoCompletionDialog;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
@@ -49,8 +48,7 @@ import br.ufes.inf.nemo.oled.validator.antipattern.AntiPatternSearchDialog;
  * @author Wei-ju Wu, John Guerson 
  */
 public class DiagramEditorCommandDispatcher implements AppCommandListener {
-
-	@SuppressWarnings("unused")
+	
 	private AppFrame frame;
 	private DiagramManager manager;
 	private Map<String, MethodCall> selectorMap = new HashMap<String, MethodCall>();
@@ -446,7 +444,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	{
 		if (manager.isProjectLoaded()==false) return;
 		manager.workingOnlyWithChecked();
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(manager.getCurrentProject());
+		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
 		manager.generateSbvr((RefOntoUML.Model)refparser.createPackageFromSelections(new Copier()));
 	}
 		

@@ -46,6 +46,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -56,10 +57,8 @@ import RefOntoUML.PackageableElement;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.explorer.OntoUMLElement;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
-import javax.swing.SwingConstants;
 
 /**
  * @author John Guerson
@@ -221,7 +220,7 @@ public class GeneralizationEditionPanel extends JPanel {
 		btnAdd.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				OntoUMLParser refparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
+				OntoUMLParser refparser = diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser();
 				ArrayList<OntoUMLElement> genSetList = new ArrayList<OntoUMLElement>();
 				for(GeneralizationSet gs: refparser.getAllInstances(GeneralizationSet.class))
 				{
@@ -340,7 +339,7 @@ public class GeneralizationEditionPanel extends JPanel {
 		ArrayList<OntoUMLElement> specificlist = new ArrayList<OntoUMLElement>();
 		OntoUMLElement generalValue = null;
 		OntoUMLElement specificValue = null;
-		OntoUMLParser refparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
+		OntoUMLParser refparser = diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser();
 		if (element.getGeneral()!=null) generalValue = new OntoUMLElement(element.getGeneral(),"");
 		else generalValue = new OntoUMLElement(null,"");
 		if (element.getSpecific()!=null) specificValue = new OntoUMLElement(element.getSpecific(),"");
