@@ -1,7 +1,7 @@
 #summary Learn how to use OntoUML in the Enterprise Architect (EA) version 10.
 #labels OntoUML,Enterprise,EA,MDG,Technology,Architect
 
-In this wiki we explain how you can install, access and use the OntoUML modeling language in the Enterprise Architect (EA) version 10 of Sparx System. 
+In this wiki we explain how you can install, access and use the OntoUML modeling language in the Enterprise Architect (EA) version 10.
 
 OLED support models designed in the Enterprise Architect i.e. you can import models designed with EA into the OLED tool. First, we explain how to install, access and use OntoUML in the Enterprise Architect and latter explain how you can export your EA model to benefit from all our tool capabilities such as simulation and model checking, semantic anti-patterns identification, transformations to OWL, SBVR and so on.
 
