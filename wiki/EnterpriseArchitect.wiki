@@ -66,3 +66,22 @@ Step-by-step:
 Step-by-step:
 
   * To export the model in an EA format: _Right Click on the Package/View -> Import/Export -> Export Package to XMI file_.
+
+----
+*OLED*
+----
+
+Step-by-step:
+
+  * To bring your EA model into OLED, first open the OLED application through a double click on the JAR file or through the command line "java -jar oled.jar" in a console. 
+
+  * Go to: _File -> Import from -> Enterprise Architect (EA)_.
+
+  * When the window prompts, select the XMI file which you exported from EA in previous steps.
+
+  * Customize your options (if you want to) before hit the "Parse File" button. OLED will parse your entered XMI file.
+
+  * When OLED asks you to filter your model this means that if you don't want to bring your entire model to OLED you can select which diagrams or packages do you want to bring. In this case, when OLED asks you to filter the model, just click in "Yes". Otherwise, to bring your entire model from EA, just click on the button "No".
+
+  * If you previous answer was to filter your model. Just select which packages/diagrams do you want to bring and press "Import to OLED".
+
