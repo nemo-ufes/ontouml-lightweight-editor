@@ -1388,6 +1388,40 @@ public class OntoUMLParser {
 		return relations;
 	}
 	
+	public ArrayList<Association> getAssociationsBetween(HashSet<Type> typeList)
+	{
+		ArrayList<Association> relations = new ArrayList<>();		
+		for (Association assoc : getAllInstances(Association.class)) 
+		{
+			try{
+				RefOntoUML.Type source = assoc.getMemberEnd().get(0).getType();
+				RefOntoUML.Type target = assoc.getMemberEnd().get(1).getType();
+			
+				if (source !=null && target!=null && typeList.contains(source) && typeList.contains(target)) 
+					relations.add(assoc);	
+			
+			}catch (Exception e){}
+		}
+		return relations;
+	}
+	
+	public ArrayList<Generalization> getGeneralizationsBetween(HashSet<Type> typeList)
+	{
+		ArrayList<Generalization> generalizations = new ArrayList<>();		
+		for (Generalization gen : getAllInstances(Generalization.class)) 
+		{
+			try{
+				RefOntoUML.Type specific = gen.getSpecific();
+				RefOntoUML.Type general = gen.getGeneral();
+			
+				if (specific !=null && general!=null && typeList.contains(specific) && typeList.contains(general)) 
+					generalizations.add(gen);	
+			
+			}catch (Exception e){}
+		}
+		return generalizations;
+	}
+	
 	public ArrayList<Generalization> getDirectGeneralizations(EObject eObject)
 	{
 		ArrayList<Generalization> generalizations = new ArrayList<>();		
