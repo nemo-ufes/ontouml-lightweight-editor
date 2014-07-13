@@ -3,7 +3,9 @@
 
 In this wiki we explain how you can install, access and use the OntoUML modeling language in the Enterprise Architect (EA) version 10.
 
-OLED support models designed in the Enterprise Architect i.e. you can import models designed with EA into the OLED tool. First, we explain how to install, access and use OntoUML in the Enterprise Architect and latter explain how you can export your EA model to benefit from all our tool capabilities such as simulation and model checking, semantic anti-patterns identification, transformations to OWL, SBVR and so on.
+OLED support models designed in the Enterprise Architect i.e. you can import EA models into the OLED tool. First, we explain how to install, access and use OntoUML in the Enterprise Architect and latter explain how you can export your EA model to benefit from all our tool capabilities such as simulation and model checking, semantic anti-patterns identification, transformations to OWL, SBVR and so on. Here a screenshot of the Enterprise Architect with OntoUML.
+
+https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png 
 
 *Installing...*
 
@@ -13,11 +15,11 @@ Step-by-step:
 
   * Copy the file *ontoumlMDG1.3.xml* to the folder MDGTechnologies at EA home, usually C:\Program Files\Sparx Systems\EA\MDGTechnologies .
 
-    Download the file : [https://drive.google.com/file/d/0B7WqSwi56QipbkhCcHpkdnQ4MWs/edit?usp=sharing ontoumlMDG1.3.xml]
+    Download the file here: [https://drive.google.com/file/d/0B7WqSwi56QipbkhCcHpkdnQ4MWs/edit?usp=sharing ontoumlMDG1.3.xml]
  
   * Copy the file *ontoumlTemplate.xml* to the folder modelPatterns at EA home, usually C:\Program Files\Sparx Systems\EA\modelPatterns.
 
-    Download the file: [https://drive.google.com/file/d/0B7WqSwi56QipMXhkdHFwdlRYaUk/edit?usp=sharing ontoumlTemplate.xml]
+    Download the file here: [https://drive.google.com/file/d/0B7WqSwi56QipMXhkdHFwdlRYaUk/edit?usp=sharing ontoumlTemplate.xml]
 
   * Start the Enterprise Architect EA
 
@@ -44,5 +46,3 @@ Step-by-step:
 *Exporting model as a XMI file...*
 
   * To export the model in an EA format: _Right Click on the Package/View -> Import/Export -> Export Package to XMI file_.
-
-https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png 
