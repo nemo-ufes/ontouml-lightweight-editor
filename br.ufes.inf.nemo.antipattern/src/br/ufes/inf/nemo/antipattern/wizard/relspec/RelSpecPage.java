@@ -1,9 +1,8 @@
 package br.ufes.inf.nemo.antipattern.wizard.relspec;
 
-import org.eclipse.jface.wizard.WizardPage;
-
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
 
 /**
  * @author Tiago Sales
@@ -11,24 +10,16 @@ import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
  *
  */
 
-public abstract class RelSpecPage extends WizardPage {
-
-	protected RelSpecOccurrence relSpec;
-	
+public abstract class RelSpecPage extends AntipatternWizardPage<RelSpecOccurrence, RelSpecWizard> {
 	/**
 	 * Create the wizard.
 	 */
 	public RelSpecPage(RelSpecOccurrence rs) 
 	{
-		super("RelSpecPage");				
-		this.relSpec = rs;
+		super(rs);				
 				
 		setTitle(RelSpecAntipattern.getAntipatternInfo().getName());
 	
-	}
-	
-	public RelSpecWizard getRelSpecWizard(){
-		return (RelSpecWizard)getWizard();
 	}
 
 }

@@ -3,14 +3,15 @@ package br.ufes.inf.nemo.antipattern.wizard.relspec;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * @author Tiago Sales
@@ -31,7 +32,7 @@ public class RelSpecThirdPage extends RelSpecPage {
 	public RelSpecThirdPage(RelSpecOccurrence relSpec) 
 	{
 		super(relSpec);	
-		setDescription("Associations: "+relSpec.getParser().getStringRepresentation(relSpec.getGeneral())+" and "+relSpec.getParser().getStringRepresentation(relSpec.getSpecific()));
+		setDescription("Associations: "+OntoUMLNameHelper.getTypeAndName(relSpec.getGeneral(), true, true)+" and "+OntoUMLNameHelper.getTypeAndName(relSpec.getSpecific(), true, true));
 	}
 
 	/**
@@ -40,47 +41,83 @@ public class RelSpecThirdPage extends RelSpecPage {
 	 */
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
-
-		setControl(container);
+		setControl(container);	
+		
+	    setPageComplete(false);
 		
 		StyledText styledText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL);
+		styledText.setAlwaysShowScrollBars(false);
 		styledText.setMarginColor(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		
 		styledText.setText(
-			"General-Relation: <<"+OutcomeFixer.getStereotype(relSpec.getSpecific())+">> "+relSpec.getGeneral().getMemberEnd().get(0).getType().getName()+"->"+relSpec.getGeneral().getMemberEnd().get(1).getType().getName()+"\n"+
-			"Specific-Relation: <<"+OutcomeFixer.getStereotype(relSpec.getSpecific())+">> "+relSpec.getSpecific().getMemberEnd().get(0).getType().getName()+"->"+relSpec.getSpecific().getMemberEnd().get(1).getType().getName()+"\n\n"+
-						
-			"When two associations have exactly the same domain and exactly the same range, if said that one redefines the other, " +
-			"they turn out to be replicas, increasing the model’s complexity, without adding new information.\n\nIf you would like to keep both associations and it is true that " +
-			"one redefines the other (as your previous answers suggested), at least one of end types must be specialized into a new class. " +
-			"\n\nWith that in mind, would you like to:");
-
+			"When two distinct associations connected the very same types, if said that one redefines the other, " +
+			"they turn out to be replicas, increasing the model’s complexity, without adding new information." +
+			"\n\n" +
+			"If you would like to keep both associations and it is true that one redefines the other, at least one of end types should be specialized into a new class. " +
+			"Would you like to:");
 		styledText.setEditable(false);
-		styledText.setBounds(10, 10, 554, 182);
-				
-		SelectionAdapter listener = new SelectionAdapter() {
-	      public void widgetSelected(SelectionEvent e) {
-	        if (isPageComplete()==false) setPageComplete(true);
-	      }
-	    };
-		    
-	    setPageComplete(false);
-		    
+		styledText.setJustify(true);
+				    
 		btnSpecialize = new Button(container, SWT.RADIO);
-		btnSpecialize.setBounds(10, 198, 449, 16);
 		btnSpecialize.setText("Specialize ends and include the redefinition constraint");
-		btnSpecialize.addSelectionListener(listener);
+		setAsEnablingNextPageButton(btnSpecialize);
 		
 		btnKeep = new Button(container, SWT.RADIO);
 		btnKeep.setText("Keep the model as it is and include the redefinition constraint");
-		btnKeep.setBounds(10, 220, 449, 16);
-		btnKeep.addSelectionListener(listener);
+		setAsEnablingNextPageButton(btnKeep);
 		
 		btnDelete = new Button(container, SWT.RADIO);
 		btnDelete.setText("Delete one of the associations (redefinition constraint will not be included)");
-		btnDelete.setBounds(10, 242, 449, 16);
-		btnDelete.addSelectionListener(listener);		
+		setAsEnablingNextPageButton(btnDelete);
+		
+		Composite composite = new AssociationComposite(container, SWT.NONE,occurrence);
+		
+		Label label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, btnSpecialize, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
+							.add(btnKeep, GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+							.add(4))
+						.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
+							.add(btnDelete, GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
+							.add(7)))
+					.add(9))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(label, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(composite, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnSpecialize)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnKeep)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnDelete)
+					.add(40)
+					.add(label, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(composite, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
+					)
+		);
+		container.setLayout(gl_container);
 	}
 	
 	@Override
@@ -88,17 +125,17 @@ public class RelSpecThirdPage extends RelSpecPage {
 		
 		if(btnKeep.getSelection()) {
 			// Action =====================
-			RelSpecAction newAction = new RelSpecAction(relSpec);
+			RelSpecAction newAction = new RelSpecAction(occurrence);
 			newAction.setRedefine();
-			getRelSpecWizard().replaceAction(0,newAction);
+			getAntipatternWizard().replaceAction(0,newAction);
 						
-			return getRelSpecWizard().getFinishing();
+			return getAntipatternWizard().getFinishing();
 		}	
 		else if(btnSpecialize.getSelection()){			
-			return getRelSpecWizard().getFourthPage();			
+			return getAntipatternWizard().getFourthPage();			
 		}
 		else if (btnDelete.getSelection()){
-			return getRelSpecWizard().getFifthPage();
+			return getAntipatternWizard().getFifthPage();
 		}
 		return super.getNextPage();
 	}

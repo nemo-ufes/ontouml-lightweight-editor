@@ -22,9 +22,9 @@ public class RelRigAction extends AntiPatternAction<RelRigOccurrence>{
 		if(code==Action.CHANGE_TO_ROLE_OR_ROLEMIXIN)
 			ap.changeToRoleOrRoleMixin(rigidType);
 		else if(code==Action.CHANGE_TO_MODE)
-			ap.createRoleSubType(rigidType,mediation);
-		else if(code==Action.ADD_ROLE_SUBTYPE)
 			ap.changeToMode(rigidType,mediation);
+		else if(code==Action.ADD_ROLE_SUBTYPE)
+			ap.createRoleSubType(rigidType,mediation);
 		else if(code==Action.BOTH_READ_ONLY)	
 			ap.setBothReadOnly(mediation);
 	}

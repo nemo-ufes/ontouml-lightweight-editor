@@ -118,7 +118,8 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 		for(Property p : properties)
 		{
 			Fix partial = fixer.createSubTypeAsInvolvingLink(getType(), getSubtypeStereotype(type), p.getAssociation());
-			
+			Class subtype = partial.getAddedByType(Class.class).get(0);
+			subtype.setName("MediatedBy_"+OntoUMLNameHelper.getName(p.getType()));
 			for(Object obj: fix.getAdded()) { if (obj instanceof Generalization) { genList.add((Generalization)obj); }}
 			
 			fix.addAll(partial);
@@ -144,7 +145,7 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 			
 			if(samePositionList.size()==1){
 				Property p = samePositionList.get(0);
-				currentFix = fixer.createSubTypeAs(currentParent, getSubtypeStereotype(currentParent), "MediatedBy_"+p.getType().getName());
+				currentFix = fixer.createSubTypeAs(currentParent, getSubtypeStereotype(currentParent), "MediatedBy_"+OntoUMLNameHelper.getName(p.getType()));
 				currentParent = currentFix.getAddedByType(RefOntoUML.Class.class).get(0);
 				p.getOpposite().setType(currentParent);
 				currentFix.includeModified(p.getAssociation());
@@ -153,7 +154,7 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 			}
 			else{
 				if(valuesList.size()>1){
-					currentFix = fixer.createSubTypeAs(currentParent, getSubtypeStereotype(currentParent), "SubtypeOf_"+currentParent.getName());
+					currentFix = fixer.createSubTypeAs(currentParent, getSubtypeStereotype(currentParent), "SubtypeOf_"+OntoUMLNameHelper.getName(currentParent));
 					currentParent = currentFix.getAddedByType(RefOntoUML.Class.class).get(0);
 					fix.addAll(currentFix);
 				}
@@ -161,7 +162,7 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 				ArrayList<Classifier> subtypes = new ArrayList<Classifier>();
 				Class subtype;
 				for (Property p : samePositionList) {
-					currentFix = fixer.createSubTypeAs(currentParent, getSubtypeStereotype(currentParent), "MediatedBy_"+p.getType().getName());
+					currentFix = fixer.createSubTypeAs(currentParent, getSubtypeStereotype(currentParent), "MediatedBy_"+OntoUMLNameHelper.getName(p.getType()));
 					subtype = currentFix.getAddedByType(RefOntoUML.Class.class).get(0);
 					subtypes.add(subtype);
 					p.getOpposite().setType(subtype);

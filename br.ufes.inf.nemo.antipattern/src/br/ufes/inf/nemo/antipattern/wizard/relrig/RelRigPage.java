@@ -1,16 +1,14 @@
 package br.ufes.inf.nemo.antipattern.wizard.relrig;
 
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.widgets.Composite;
-
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
-public abstract class RelRigPage extends WizardPage {
+public abstract class RelRigPage extends AntipatternWizardPage<RelRigOccurrence, RelRigWizard> {
 
-		protected RelRigOccurrence relRig;
 		protected int rigid;
 		protected Classifier rigidType;
 		protected Property rigidEnd;
@@ -20,23 +18,19 @@ public abstract class RelRigPage extends WizardPage {
 		 */
 		public RelRigPage(RelRigOccurrence relRig, int rigid) 
 		{
-			super("RelRigPage");				
+			super(relRig);				
 			
-			this.relRig = relRig;
+			this.occurrence = relRig;
 			this.rigid = rigid;	
+			
 			if(relRig!=null){
 				this.rigidEnd = relRig.getRigidMediatedProperties().get(rigid);
 				this.rigidType = (Classifier) rigidEnd.getType();
 			}
-			setTitle(RelRigAntipattern.getAntipatternInfo().getName());		
-		}
-		
-		public RelRigWizard getRelRigWizard(){
-			return (RelRigWizard)getWizard();
-		}
-		
-		@Override
-		public void createControl(Composite arg0) {
 			
+			int n = rigid+1;
+			setTitle(RelRigAntipattern.getAntipatternInfo().getName()+" ("+n+" of "+occurrence.getRigidMediatedProperties().size()+")");	
+			setDescription("Relator: "+OntoUMLNameHelper.getName(relRig.getRelator()));	
 		}
+	
 	}

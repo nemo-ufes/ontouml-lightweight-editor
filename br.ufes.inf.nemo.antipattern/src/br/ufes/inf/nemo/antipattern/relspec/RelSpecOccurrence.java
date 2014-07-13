@@ -10,6 +10,7 @@ import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.SpecializationType;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Relation Specialization*/
@@ -360,14 +361,18 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 	@Override
 	public String toString() {
 		
-		String result = "General: \n\t"+parser.getStringRepresentation(general.getMemberEnd().get(0).getType())+
-						" - "+parser.getStringRepresentation(general)+
-						" - "+parser.getStringRepresentation(general.getMemberEnd().get(1).getType())+"\n"+
-						"Specific: \n\t"+parser.getStringRepresentation(specific.getMemberEnd().get(0).getType())+
-						" - "+parser.getStringRepresentation(specific)+
-						" - "+parser.getStringRepresentation(specific.getMemberEnd().get(1).getType());
-				
-		return result;
+		String s =	"Parent Assoc.: "+OntoUMLNameHelper.getTypeAndName(general, true, true)+"\r\n"+
+					"\tSource: "+OntoUMLNameHelper.getNameTypeAndMultiplicity(generalSourceEnd, false, false, true, true, true)+"\r\n"+
+					"\tTarget: "+OntoUMLNameHelper.getNameTypeAndMultiplicity(generalTargetEnd, false, false, true, true, true)+
+					"\r\n\r\n"+
+					"Child Assoc.: "+OntoUMLNameHelper.getTypeAndName(specific, true, true)+"\r\n"+
+					"\tSource: "+OntoUMLNameHelper.getNameTypeAndMultiplicity(specificSourceEnd, false, false, true, true, true)+"\r\n"+
+					"\tTarget: "+OntoUMLNameHelper.getNameTypeAndMultiplicity(specificTargetEnd, false, false, true, true, true);
+		
+		if(isReverse)
+			s+="\r\n\r\nIs Reversed";
+		
+		return s;
 	}
 	
 	@Override
@@ -388,7 +393,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 
 	@Override
 	public String getShortName() {
-		return parser.getStringRepresentation(general)+" & "+parser.getStringRepresentation(specific);
+		return "Parent: "+OntoUMLNameHelper.getTypeAndName(general, true, true)+", Child: "+OntoUMLNameHelper.getTypeAndName(specific, true, true);
 	}
 	
 	////////////////FIX OUTCOMES//////////////
@@ -534,6 +539,14 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 	
 	public boolean isEqual(Association a1, Association a2){
 		return (a1.equals(general) && a2.equals(specific)) || (a1.equals(specific) && a2.equals(general)) ;
+	}
+
+	public Property getGeneralTargetEnd() {
+		return generalTargetEnd;
+	}
+
+	public Property getGeneralSourceEnd() {
+		return generalSourceEnd;
 	}
 	
 }

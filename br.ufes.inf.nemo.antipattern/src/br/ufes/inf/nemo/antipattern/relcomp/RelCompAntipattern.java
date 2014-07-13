@@ -21,21 +21,21 @@ public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
 		this(new OntoUMLParser(pack));
 	}
 	
-	/*TODO: Check if the new one works*/
-	@SuppressWarnings("unused")
-	private static final String oclQuery_unidented =	
-			"Association.allInstances()->product(Association.allInstances())->collect( x | "+
-			"Tuple {	a1:Association = x.first, a1Source:Classifier = x.first.memberEnd.type->at(1).oclAsType(Classifier), a1Target:Classifier = x.first.memberEnd.type->at(2).oclAsType(Classifier), a2:Association = x.second}) "+
-			"->select( x |  "+
-			"	x.a1<>x.a2 " +
-			"	and  "+
-			"	(" +
-			"		((x.a1.memberEnd->at(2).upper=-1 or x.a1.memberEnd->at(2).upper>1) and x.a1Target.allChildren()->including(x.a1Target)->includesAll(x.a2.endType.oclAsType(Classifier))) "+
-			"		or "+
-			"		((x.a1.memberEnd->at(1).upper=-1 or x.a1.memberEnd->at(1).upper>1) and x.a1Source.allChildren()->including(x.a1Source)->includesAll(x.a2.endType.oclAsType(Classifier))) " +
-			"	)"+
-			")->collect(x | Tuple { a1:Association = x.a1, a2:Association = x.a2})"; 
-		
+//	
+//	private static final String oclQuery_unidented =	
+//			"Association.allInstances()->product(Association.allInstances())->collect( x | "+
+//			"Tuple {	a1:Association = x.first, a1Source:Classifier = x.first.memberEnd.type->at(1).oclAsType(Classifier), a1Target:Classifier = x.first.memberEnd.type->at(2).oclAsType(Classifier), a2:Association = x.second}) "+
+//			"->select( x |  "+
+//			"	x.a1<>x.a2 " +
+//			"	and  "+
+//			"	(" +
+//			"		((x.a1.memberEnd->at(2).upper=-1 or x.a1.memberEnd->at(2).upper>1) and x.a1Target.allChildren()->including(x.a1Target)->includesAll(x.a2.endType.oclAsType(Classifier))) "+
+//			"		or "+
+//			"		((x.a1.memberEnd->at(1).upper=-1 or x.a1.memberEnd->at(1).upper>1) and x.a1Source.allChildren()->including(x.a1Source)->includesAll(x.a2.endType.oclAsType(Classifier))) " +
+//			"	)"+
+//			")->collect(x | Tuple { a1:Association = x.a1, a2:Association = x.a2})"; 
+//	
+	@Deprecated
 	private static final String oclQuery =	
 			"Association.allInstances()->product(Association.allInstances())->collect( x | "+
 			"Tuple {	a1:Association = x.first, a1Source:Classifier = x.first.memberEnd.type->at(1).oclAsType(Classifier), a1Target:Classifier = x.first.memberEnd.type->at(2).oclAsType(Classifier), a2:Association = x.second}) "+
@@ -72,6 +72,7 @@ public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
 		return info;
 	}
 	
+	@Deprecated
 	public ArrayList<RelCompOccurrence> identifyOCL() {
 		ArrayList<SimpleTuple<Association, Association>> query_result;
 		
@@ -92,18 +93,20 @@ public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
 		return this.getOccurrences();
 	}
 	
-
+	
+	
+	
 	@Override
 	public ArrayList<RelCompOccurrence> identify() {
 		ArrayList<Association> allAssociations = new ArrayList<Association>();
 		allAssociations.addAll(parser.getAllInstances(Association.class));
 		
-		int current = 1, total = allAssociations.size()*allAssociations.size();
+//		int current = 1, total = allAssociations.size()*allAssociations.size();
 		
 		for (Association a1 : allAssociations) {
 			for (Association a2 : allAssociations) {
-				current++;
-				System.out.println("("+current+" of "+total+") "+parser.getStringRepresentation(a1)+", "+parser.getStringRepresentation(a2)+": Analyzing...");
+//				current++;
+//				System.out.println("("+current+" of "+total+") "+parser.getStringRepresentation(a1)+", "+parser.getStringRepresentation(a2)+": Analyzing...");
 				Classifier 	sourceA1 = (Classifier) a1.getMemberEnd().get(0).getType(), 
 							targetA1 = (Classifier) a1.getMemberEnd().get(1).getType(), 
 							sourceA2 = (Classifier) a2.getMemberEnd().get(0).getType(), 
@@ -121,8 +124,8 @@ public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
 							try {
 								this.occurrence.add(new RelCompOccurrence(a1, a2, this));
 							} catch (Exception e) {
-								System.out.println(info.acronym+"[java]: Provided information does not characterize an occurrence of the anti-pattern!");
-								System.out.println(e.getMessage());
+//								System.out.println(info.acronym+"[java]: Provided information does not characterize an occurrence of the anti-pattern!");
+//								System.out.println(e.getMessage());
 							}
 					}
 					else { 
@@ -138,8 +141,8 @@ public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
 						try {
 							this.occurrence.add(new RelCompOccurrence(a2, a1, this));
 						} catch (Exception e) {
-							System.out.println(info.acronym+"[java]: Provided information does not characterize an occurrence of the anti-pattern!");
-							System.out.println(e.getMessage());
+//							System.out.println(info.acronym+"[java]: Provided information does not characterize an occurrence of the anti-pattern!");
+//							System.out.println(e.getMessage());
 						}
 					}
 				}

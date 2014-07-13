@@ -53,7 +53,7 @@ public class DepPhaseAntipattern extends Antipattern<DepPhaseOccurrence> {
 				super.occurrence.add(depPhase);
 				
 			} catch (Exception e) {
-				System.out.println("DepPhase: Provided information does not characterize an occurrence of the anti-pattern!");
+//				System.out.println("DepPhase: Provided information does not characterize an occurrence of the anti-pattern!");
 			}
 		}
 		
