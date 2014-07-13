@@ -13,15 +13,13 @@ Step-by-step:
 
   * Copy the file *ontoumlMDG1.3.xml* to the folder MDGTechnologies at EA home, usually C:\Program Files\Sparx Systems\EA\MDGTechnologies .
 
-Download the file : [https://drive.google.com/file/d/0B7WqSwi56QipbkhCcHpkdnQ4MWs/edit?usp=sharing ontoumlMDG1.3.xml]
+    Download the file : [https://drive.google.com/file/d/0B7WqSwi56QipbkhCcHpkdnQ4MWs/edit?usp=sharing ontoumlMDG1.3.xml]
  
   * Copy the file *ontoumlTemplate.xml* to the folder modelPatterns at EA home, usually C:\Program Files\Sparx Systems\EA\modelPatterns.
 
-Download the file: [https://drive.google.com/file/d/0B7WqSwi56QipMXhkdHFwdlRYaUk/edit?usp=sharing ontoumlTemplate.xml]
+    Download the file: [https://drive.google.com/file/d/0B7WqSwi56QipMXhkdHFwdlRYaUk/edit?usp=sharing ontoumlTemplate.xml]
 
   * Start the Enterprise Architect EA
-
-----
 
 *Accessing...*
 
@@ -35,28 +33,16 @@ Step-by-step:
  
   * If the option _OntoUML_ does not appear in the Model Wizard windows, go to: _Settings -> MDG Technologies_, locate _OntoUML_, select the checkbox, and later click _OK_.
 
-----
-
 *Creating diagrams...*
 
-Step-by-step:
-
   * To create OntoUML diagrams, just click into a folder in the Project Browser and do: _Right Click on the Package/Folder -> Add -> Add Diagram… -> OntoUML_.
-
-----
 
 *Activating the toolbox...*
 
   * To activate the OntoUML Toolbox, if is not already activated, go to _Toolbox -> More Tools -> OntoUML_.
 
-----
-
 *Exporting model as a XMI file...*
 
   * To export the model in an EA format: _Right Click on the Package/View -> Import/Export -> Export Package to XMI file_.
 
-----
-
 https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png 
-
-----
