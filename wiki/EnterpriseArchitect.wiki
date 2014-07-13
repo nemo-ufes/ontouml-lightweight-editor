@@ -1,9 +1,9 @@
 #summary Learn how to use OntoUML in the Enterprise Architect (EA) version 10.
 #labels OntoUML,Enterprise,EA,MDG,Technology,Architect
 
-In this wiki we explain how you can install, access and use the OntoUML modeling language in the Enterprise Architect (EA) version 10.
+OLED support models designed in the Enterprise Architect version 10 i.e. you can import EA models into the OLED tool. First, we explain how to install, access and use OntoUML in the Enterprise Architect and latter explain how you can export your EA model to benefit from all our tool capabilities such as simulation and model checking, semantic anti-patterns identification, transformations to OWL, SBVR and so on. Here a screenshot of the Enterprise Architect with OntoUML.
 
-OLED support models designed in the Enterprise Architect i.e. you can import EA models into the OLED tool. First, we explain how to install, access and use OntoUML in the Enterprise Architect and latter explain how you can export your EA model to benefit from all our tool capabilities such as simulation and model checking, semantic anti-patterns identification, transformations to OWL, SBVR and so on. Here a screenshot of the Enterprise Architect with OntoUML.
+<g:plusone size="medium"></g:plusone>
 
 https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png 
 
@@ -54,5 +54,3 @@ Step-by-step:
 Step-by-step:
 
   * To export the model in an EA format: _Right Click on the Package/View -> Import/Export -> Export Package to XMI file_.
-
-<g:plusone size="medium"></g:plusone>
