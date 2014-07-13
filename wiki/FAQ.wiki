@@ -1,6 +1,6 @@
 #summary Frequently Asked Questions
 #labels FAQ
 
-1. Why there is not a Derivation relationship in the plugin for Enterprise Architect (EA)?
+1. Why there is not a Derivation relationship in the OntoUML plugin for Enterprise Architect (EA)?
 
-Asnwer: Cooming soon...
+Answer: Cooming soon...
