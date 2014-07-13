@@ -1,4 +1,4 @@
-#summary Frequently Asked Question
+#summary Frequently Asked Questions
 #labels FAQ
 
 1. Why there is not a Derivation relationship in the plugin for Enterprise Architect (EA)?
