@@ -156,7 +156,6 @@ public class GeneralizationEditionPanel extends JPanel {
 		JLabel lblGeneral = new JLabel("General:");
 		
 		generalCombo = new JComboBox();
-		generalCombo.setFocusable(false);
 		generalCombo.setPreferredSize(new Dimension(350, 20));
 		GroupLayout gl_generalSpecificPanel = new GroupLayout(generalSpecificPanel);
 		gl_generalSpecificPanel.setHorizontalGroup(

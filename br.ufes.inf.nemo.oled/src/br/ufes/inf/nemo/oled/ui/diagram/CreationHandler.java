@@ -186,7 +186,11 @@ public class CreationHandler implements EditorMode {
 	        
 	    //move all its generalizations too
 	    editor.getDiagramManager().moveGeneralizationsToDiagram(elem, elem.eContainer(), editor);
-	    	    
+	    
+	    //FIXME: Inseri esse código para mover as generalizações. by Tiago
+	    editor.getDiagramManager().moveAssociationsToDiagram(elem, elem.eContainer(),editor);
+	    
+	    
 	    if (!isDragging) {
 	    	editor.getDiagramManager().openModellingAssistant(elem);
 	    }

@@ -167,11 +167,11 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	
 	public void createBringRelatedElementsMenu()
 	{	
-		relatedItem = new JMenuItem("Bring Related Elements");
+		relatedItem = new JMenuItem("Add All Related Elements");
 		relatedItem.addActionListener(new ActionListener() {				
 			@Override
         	public void actionPerformed(ActionEvent e) { 
-				editor.getDiagramManager().bringRelatedElements(node, editor);
+				editor.getDiagramManager().addAllRelatedElements(node, editor);
 			}
 		});
 		add(relatedItem);
