@@ -1,5 +1,4 @@
 #summary Table of Contents
-#labels Table,Contents
 
 <ul>
 <li>[EnterpriseArchitect Enterprise Architect]</li>
