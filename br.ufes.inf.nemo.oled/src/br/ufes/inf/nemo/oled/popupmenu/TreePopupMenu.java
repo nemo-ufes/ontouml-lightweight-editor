@@ -67,7 +67,7 @@ public class TreePopupMenu extends JPopupMenu {
 		refreshItem.addActionListener(new ActionListener() {				
 			@Override
 			public void actionPerformed(ActionEvent e) {    				
-				ProjectBrowser.refreshTree(frame.getDiagramManager().getCurrentProject());
+				frame.getBrowserManager().getProjectBrowser().refreshTree();
 			}
 		});    	    	
 	}

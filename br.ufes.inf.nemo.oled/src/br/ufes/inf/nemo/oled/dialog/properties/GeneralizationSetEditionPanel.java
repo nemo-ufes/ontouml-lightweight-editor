@@ -49,7 +49,6 @@ import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 
 /**
  * @author John Guerson
@@ -127,7 +126,7 @@ public class GeneralizationSetEditionPanel extends JPanel {
 		btnAdd.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				OntoUMLParser refparser = ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
+				OntoUMLParser refparser = diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser();
 				ArrayList<CustomOntoUMLElement> list = new ArrayList<CustomOntoUMLElement>();
 				for(Generalization g: refparser.getAllInstances(Generalization.class))
 				{

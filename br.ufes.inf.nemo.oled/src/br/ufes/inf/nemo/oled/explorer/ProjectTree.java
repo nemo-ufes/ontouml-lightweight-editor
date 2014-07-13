@@ -272,7 +272,7 @@ public class ProjectTree extends CheckboxTree {
 		}else if (object instanceof RefOntoUML.Property)
 		{
 			String alias = new String();
-			OntoUMLParser refparser = ProjectBrowser.getParserFor(project);
+			OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
 			if (refparser!=null) alias = refparser.getAlias((RefOntoUML.Property)object);
 			else alias = "";		
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),alias));
@@ -282,7 +282,7 @@ public class ProjectTree extends CheckboxTree {
 		}else if(object instanceof RefOntoUML.Classifier)
 		{
 			String alias = new String();
-			OntoUMLParser refparser = ProjectBrowser.getParserFor(project);
+			OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
 			if (refparser!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
 			else alias = "";		
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),alias));
@@ -297,7 +297,7 @@ public class ProjectTree extends CheckboxTree {
 			{				
 				for (Property o: ((RefOntoUML.Class)object).getOwnedAttribute())
 				{
-					if (ProjectBrowser.getParserFor(project)!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
+					if (frame.getBrowserManager().getProjectBrowser().getParser()!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
 					else alias = "";		
 					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)o),alias));
 					node.add(child);
@@ -313,7 +313,7 @@ public class ProjectTree extends CheckboxTree {
 			{				
 				for (Property o: ((RefOntoUML.DataType)object).getOwnedAttribute())
 				{
-					if (ProjectBrowser.getParserFor(project)!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
+					if (frame.getBrowserManager().getProjectBrowser().getParser()!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
 					else alias = "";		
 					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)o),alias));
 					node.add(child);
@@ -328,7 +328,7 @@ public class ProjectTree extends CheckboxTree {
 			if (object instanceof RefOntoUML.Association){
 				for (RefOntoUML.Property o: ((RefOntoUML.Association)object).getMemberEnd())
 				{
-					if (ProjectBrowser.getParserFor(project)!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
+					if (frame.getBrowserManager().getProjectBrowser().getParser()!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
 					else alias = "";		
 					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)o),alias));
 					node.add(child);
@@ -817,7 +817,7 @@ public class ProjectTree extends CheckboxTree {
             	if (currentNode.getUserObject() instanceof OCLDocument && !currentNode.equals(oclRootNode))
             	{
             		OCLDocument oclDoc = (OCLDocument)currentNode.getUserObject();
-            		if (!ProjectTree.this.frame.getDiagramManager().isConstraintOpened(oclDoc)) {
+            		if (!ProjectTree.this.frame.getDiagramManager().isOCLDocumentOpened(oclDoc)) {
             			// create the constraint visualization again
             			ProjectTree.this.frame.getDiagramManager().createConstraintEditor(oclDoc);
             		}

@@ -245,7 +245,7 @@ public class DerivedTypesOperations {
 		}
 
 		Property element = (Property) associations.get(0).getMemberEnd().get(0);		
-		OntoUMLParser refparser= ProjectBrowser.getParserFor(diagramManager.getCurrentProject());
+		OntoUMLParser refparser= diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser();
 
 
 		for(RefOntoUML.Property p : refparser.getAllInstances(RefOntoUML.Property.class)) 
