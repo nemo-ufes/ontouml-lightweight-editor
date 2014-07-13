@@ -1,5 +1,0 @@
-#summary Table of Contents
-
-<ul>
-<li>[EnterpriseArchitect Enterprise Architect]</li>
-</ul>
