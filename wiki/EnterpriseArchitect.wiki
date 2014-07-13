@@ -15,11 +15,11 @@ Step-by-step:
 
   * Copy the file *ontoumlMDG1.3.xml* to the folder MDGTechnologies at EA home, usually C:\Program Files\Sparx Systems\EA\MDGTechnologies .
 
-    Download the file here: [https://drive.google.com/file/d/0B7WqSwi56QipbkhCcHpkdnQ4MWs/edit?usp=sharing ontoumlMDG1.3.xml]
+    Newest: [https://drive.google.com/file/d/0B7WqSwi56QipbkhCcHpkdnQ4MWs/edit?usp=sharing ontoumlMDG1.3.xml]
  
   * Copy the file *ontoumlTemplate.xml* to the folder modelPatterns at EA home, usually C:\Program Files\Sparx Systems\EA\modelPatterns.
 
-    Download the file here: [https://drive.google.com/file/d/0B7WqSwi56QipMXhkdHFwdlRYaUk/edit?usp=sharing ontoumlTemplate.xml]
+    Newest: [https://drive.google.com/file/d/0B7WqSwi56QipMXhkdHFwdlRYaUk/edit?usp=sharing ontoumlTemplate.xml]
 
   * Start the Enterprise Architect EA
 
