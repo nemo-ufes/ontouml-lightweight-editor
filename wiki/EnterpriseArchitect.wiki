@@ -19,8 +19,7 @@ Step-by-step:
 
   * Copy the file *ontoumlMDG1.3.xml* to the folder MDGTechnologies at EA home, usually C:\Program Files\Sparx Systems\EA\MDGTechnologies .
 
-    Newest:
-[https://drive.google.com/file/d/0B7WqSwi56QipbkhCcHpkdnQ4MWs/edit?usp=sharing ontoumlMDG1.3.xml] ~3MB - Updated: Nov 7 2013
+    Newest: [https://drive.google.com/file/d/0B7WqSwi56QipbkhCcHpkdnQ4MWs/edit?usp=sharing ontoumlMDG1.3.xml] ~3MB - Updated: Nov 7 2013
 
     Previous: [https://drive.google.com/file/d/0B7WqSwi56QipcUVMZ2JHSUMtNUU/edit?usp=sharing ontoumlMDG1.2.xml] ~3MB - Updated: Aug 28 2013
  
