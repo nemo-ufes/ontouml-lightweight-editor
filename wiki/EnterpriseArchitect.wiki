@@ -54,3 +54,5 @@ Step-by-step:
 Step-by-step:
 
   * To export the model in an EA format: _Right Click on the Package/View -> Import/Export -> Export Package to XMI file_.
+
+<g:plusone size="medium"></g:plusone>
