@@ -66,7 +66,7 @@ public class ProjectTree extends CheckboxTree {
 	public AppFrame frame;
 	public UmlProject project;
 	public OntoUMLParser refparser;
-	public OCLDocument oclDoc;
+	public ArrayList<OCLDocument> oclDocList = new ArrayList<OCLDocument>();
 	
 	public DefaultMutableTreeNode rootNode;
 	public DefaultMutableTreeNode modelRootNode;
@@ -79,14 +79,14 @@ public class ProjectTree extends CheckboxTree {
 	/**
 	 * Constructor.
 	 */
-	public ProjectTree (AppFrame frame, DefaultMutableTreeNode rootNode, UmlProject project, OntoUMLParser refparser, OCLDocument oclDoc)
+	public ProjectTree (AppFrame frame, DefaultMutableTreeNode rootNode, UmlProject project, OntoUMLParser refparser, ArrayList<OCLDocument> oclDocList)
 	{
 		super(rootNode);
 		
 		this.frame = frame;
 		this.project = project;
 		this.refparser=refparser;
-		this.oclDoc=oclDoc;
+		this.oclDocList=oclDocList;
 		
 		this.rootNode = rootNode;		
 		this.treeModel = new DefaultTreeModel(rootNode);
@@ -114,7 +114,7 @@ public class ProjectTree extends CheckboxTree {
 		
 		drawModel(modelRootNode, project.getModel(), checkingModel, refparser);	
 		drawDiagram(diagramRootNode, (List<? extends UmlDiagram>)project.getDiagrams());
-		drawConstraints(oclRootNode, oclDoc);
+		drawConstraints(oclRootNode, oclDocList);
 		
 		addCheckingPath(new TreePath(rootNode.getPath()));		
 		expandPath(new TreePath(rootNode.getPath()));
@@ -359,10 +359,12 @@ public class ProjectTree extends CheckboxTree {
 		}
 	}
 
-	private void drawConstraints(DefaultMutableTreeNode parent, OCLDocument oclDoc)
+	private void drawConstraints(DefaultMutableTreeNode parent, ArrayList<OCLDocument> oclDocList)
 	{
-		DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(oclDoc);
-		parent.add(newNode);		
+		for(OCLDocument oclDoc: oclDocList){
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(oclDoc);
+			parent.add(newNode);
+		}
 	}
 
 	/**

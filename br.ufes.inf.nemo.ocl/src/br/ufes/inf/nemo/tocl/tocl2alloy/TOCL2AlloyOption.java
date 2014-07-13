@@ -10,7 +10,7 @@ import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 public class TOCL2AlloyOption extends OCL2AlloyOption {
 
 	public ArrayList<Integer> indexes = new ArrayList<Integer>();
-	
+		
 	public TOCL2AlloyOption(TOCLParser toclparser)
 	{
 		super(toclparser);
@@ -18,6 +18,11 @@ public class TOCL2AlloyOption extends OCL2AlloyOption {
 	}
 
 	public TOCL2AlloyOption() { }
+		
+	public TOCLParser getParser()
+	{
+		return (TOCLParser)super.getParser();
+	}
 	
 	@Override
 	public String getConstraintType(Constraint ct) 

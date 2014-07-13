@@ -25,12 +25,17 @@ public class OCL2AlloyOption {
 	// World Scope
 	private ArrayList<Integer> worldScope = new ArrayList<Integer>();
 		
+	private OCLParser oclparser;
+	
 	public OCL2AlloyOption() {}
+	
+	public OCLParser getParser() { return oclparser; }
 	
 	@SuppressWarnings("unchecked")
 	public OCL2AlloyOption(OCLParser oclparser)
 	{		
 		if (oclparser==null) return;
+		this.oclparser = oclparser;
 		
 		for(Constraint ct: oclparser.getConstraints())
 		{

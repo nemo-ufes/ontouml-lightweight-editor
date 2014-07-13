@@ -37,6 +37,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
 
 import br.ufes.inf.nemo.oled.Main;
+import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.oled.util.OLEDSettings;
@@ -70,13 +71,14 @@ public final class ProjectReader extends FileHandler {
 	 *             if I/O error occurred
 	 * @throws ClassNotFoundException 
 	 */
+	@SuppressWarnings("unused")
 	public ArrayList<Object> readProject(File file) throws IOException, ClassNotFoundException {
 		
 		// first element is UmlProject, the second the OCL String content.
 		ArrayList<Object> list = new ArrayList<Object>();
 		
 		boolean modelLoaded = false, projectLoaded = false, constraintLoaded = false;
-		String constraintContent = new String();
+		ArrayList<OCLDocument> constraintContent = new ArrayList<OCLDocument>();
 		ZipFile inFile = new ZipFile(file);	
 		
 		//Read the model and the project file 
@@ -88,7 +90,7 @@ public final class ProjectReader extends FileHandler {
 		   
 		ZipEntry entry;
 		while(entries.hasMoreElements()) {
-			entry = entries.nextElement();
+			entry = entries.nextElement();			
 			if(entry.getName().equals(OLEDSettings.MODEL_DEFAULT_FILE.getValue()) && !modelLoaded)
 			{
 				Main.printOutLine("Loading model XMI information from OLED file...");
@@ -114,14 +116,17 @@ public final class ProjectReader extends FileHandler {
 				in.close();
 				projectLoaded = true;
 			}
-			else if (entry.getName().equals(OLEDSettings.OCL_DEFAULT_FILE.getValue()) && !constraintLoaded)
+			else if (entry.getName().contains("ocl"))
 			{
 				Main.printOutLine("Loading constraints information from OLED file...");
 				InputStream is = inFile.getInputStream(entry);
 								
 				byte[] b = new byte[is.available()];
 				is.read(b);
-				constraintContent= new String(b);
+				OCLDocument oclDoc = new OCLDocument();
+				oclDoc.setName(entry.getName().replace(".ocl",""));
+				oclDoc.addContent(new String(b));
+				constraintContent.add(oclDoc);
 					
 				is.close();
 				constraintLoaded = true;
@@ -136,7 +141,7 @@ public final class ProjectReader extends FileHandler {
 		project.setResource(resource);
 		
 		list.add(project);
-		list.add(constraintContent);
+		list.addAll(constraintContent);
 		
 		return list;
 	}

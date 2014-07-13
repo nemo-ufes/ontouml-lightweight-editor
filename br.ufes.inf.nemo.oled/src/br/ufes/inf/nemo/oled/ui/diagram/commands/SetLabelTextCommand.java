@@ -83,10 +83,12 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 			Classifier element = (((ClassElement)parent).getClassifier());
 						
 			// replace all references in constraints
-			OCLDocument oclDoc = ProjectBrowser.getOCLDocumentFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
-			String currentConstraints = oclDoc.getContent();
-			String newConstraints = currentConstraints.replaceAll(oldName,text);
-			oclDoc.setContent(newConstraints);
+			for(OCLDocument oclDoc: ProjectBrowser.getOCLDocuments(ProjectBrowser.frame.getDiagramManager().getCurrentProject()))
+			{
+				String currentConstraints = oclDoc.getContent();
+				String newConstraints = currentConstraints.replaceAll(oldName,text);
+				oclDoc.setContent(newConstraints);
+			}
 			
 			// update application accordingly
 			ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(element, false);
@@ -130,11 +132,13 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 			Classifier element = (((ClassElement)parent).getClassifier());
 						
 			// replace all references in constraints
-			OCLDocument oclDoc = ProjectBrowser.getOCLDocumentFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
-			String currentConstraints = oclDoc.getContent();
-			String newConstraints = currentConstraints.replaceAll(text,oldText);
-			oclDoc.setContent(newConstraints);
-						
+			for(OCLDocument oclDoc: ProjectBrowser.getOCLDocuments(ProjectBrowser.frame.getDiagramManager().getCurrentProject()))
+			{
+				String currentConstraints = oclDoc.getContent();
+				String newConstraints = currentConstraints.replaceAll(text,oldText);
+				oclDoc.setContent(newConstraints);
+			}
+			
 			// update application accordingly
 			ProjectBrowser.frame.getDiagramManager().updateOLEDFromModification(element, false);
 						

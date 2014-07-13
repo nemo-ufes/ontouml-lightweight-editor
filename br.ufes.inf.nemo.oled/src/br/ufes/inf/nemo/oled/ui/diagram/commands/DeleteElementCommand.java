@@ -235,8 +235,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	{
 //		System.out.println("delete from diagram="+element);
 		//detach ends
-		if (element instanceof Connection) detachConnectionFromNodes((Connection) element);				
-		else if (element instanceof Node) detachNodeConnections((Node)element);
+//		if (element instanceof Connection) detachConnectionFromNodes((Connection) element);				
+//		else if (element instanceof Node) detachNodeConnections((Node)element);
 				
 		// delete
 		if(element instanceof BaseConnection || element instanceof ClassElement) {
@@ -248,8 +248,8 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	private void undoFromDiagram (ParentChildRelation relation)
 	{
 //		System.out.println("undo from diagram="+relation.element);
-		if (relation.element instanceof Connection) reattachConnectionToNodes((Connection) relation.element);
-		else if (relation.element instanceof Node) reattachNodeConnections((Node) relation.element);		
+//		if (relation.element instanceof Connection) reattachConnectionToNodes((Connection) relation.element);
+//		else if (relation.element instanceof Node) reattachNodeConnections((Node) relation.element);		
 		
 		if(relation.element instanceof BaseConnection || relation.element instanceof ClassElement) {
 			relation.element.getParent().addChild(relation.element);
@@ -426,6 +426,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 *            the node that is removed
 	 * @return 
 	 */
+	@SuppressWarnings("unused")
 	private Collection<DiagramElement> detachNodeConnections(Node node) 
 	{
 		ArrayList<DiagramElement> detachedConnections = new ArrayList<>();
@@ -458,6 +459,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * @param node
 	 *            the node that is readded
 	 */
+	@SuppressWarnings({ "unused" })
 	private void reattachNodeConnections(Node node) 
 	{
 		for (Connection conn : node.getConnections()) 
@@ -484,6 +486,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * @param conn
 	 *            the connection that is removed
 	 */
+	@SuppressWarnings("unused")
 	private void detachConnectionFromNodes(Connection conn) 
 	{
 		if (conn.getNode1()!=null) conn.getNode1().removeConnection(conn);
@@ -499,6 +502,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	 * @param conn
 	 *            the connection that is readded
 	 */
+	@SuppressWarnings("unused")
 	private void reattachConnectionToNodes(Connection conn) 
 	{
 		if (conn.getNode1()!=null)

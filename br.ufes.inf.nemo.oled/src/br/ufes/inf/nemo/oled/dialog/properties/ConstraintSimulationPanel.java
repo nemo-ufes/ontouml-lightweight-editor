@@ -41,7 +41,6 @@ import org.eclipse.uml2.uml.Constraint;
 
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.dialog.SingleConstraintPanel;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 
 /**
@@ -91,7 +90,7 @@ public class ConstraintSimulationPanel extends JPanel {
 		for(Constraint ct : oclOptions.getConstraintList())
 		{
 			SingleConstraintPanel singleConstraint = new SingleConstraintPanel(ct,oclOptions.getConstraintType(ct),
-			ProjectBrowser.getOCLDocumentFor(frame.getDiagramManager().getCurrentProject()).getParser().getUMLEnvironment());			
+			oclOptions.getParser().getUMLEnvironment());			
 			singleConstraintsListPanel.add(singleConstraint);
 			ctpanel.add(singleConstraint);			
 		}		

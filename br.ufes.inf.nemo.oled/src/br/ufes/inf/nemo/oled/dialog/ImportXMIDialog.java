@@ -497,7 +497,7 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		if (chckbxImportConstraints.isSelected())
 		{
 			for (XMI2RefConstraint constr : XMI2RefModel.getConstraints())
-				ProjectBrowser.getOCLDocumentFor(diagManager.getCurrentProject()).addContent(constr.getStringRepresentation());				
+				ProjectBrowser.getOCLDocuments(diagManager.getCurrentProject()).get(0).addContent(constr.getStringRepresentation());				
 		}
 		
 		this.dispose();
