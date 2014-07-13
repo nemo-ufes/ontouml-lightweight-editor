@@ -17,6 +17,8 @@ Step-by-step:
 
     Newest: [https://drive.google.com/file/d/0B7WqSwi56QipbkhCcHpkdnQ4MWs/edit?usp=sharing ontoumlMDG1.3.xml]
  
+    Note: The MDG 1.3 introduces 3 design patterns. Moreover, patterns with partitions do not create generalization sets anymore for this was a bug. 
+
   * Copy the file *ontoumlTemplate.xml* to the folder modelPatterns at EA home, usually C:\Program Files\Sparx Systems\EA\modelPatterns.
 
     Newest: [https://drive.google.com/file/d/0B7WqSwi56QipMXhkdHFwdlRYaUk/edit?usp=sharing ontoumlTemplate.xml]
