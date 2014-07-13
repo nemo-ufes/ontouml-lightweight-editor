@@ -1,4 +1,9 @@
-#summary Getting Started
-#labels OLED,How,to,use
+#summary Table of Contents
+#labels OLED
 
-Please, navigate through the left side bar to learn how to start using OLED.
+<ul>
+<li>[EnterpriseArchitect Enterprise Architect]</li>
+<li>[transformation Transformation]</li>
+<li>[develop Developing]</li>
+<li>[eclipse Eclipse]</li>
+</ul>
