@@ -31,6 +31,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -50,6 +51,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+
+import org.eclipse.emf.ecore.EObject;
 
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
@@ -983,14 +986,19 @@ public class AntiPatternSearchDialog extends JDialog {
   			
 			preTask = new SwingWorker<Void, Void>() {
 				
+				private List<EObject> checked;
+
 				@Override
 				protected Void doInBackground() throws Exception {
-					frame.getDiagramManager().workingOnlyWithChecked();
+					checked = frame.getDiagramManager().workingOnlyWithChecked();
 					return null;
 				}
 				
 				@Override
 				protected void done() {
+					ProjectBrowser modeltree = frame.getBrowserManager().getProjectBrowser();	
+					modeltree.getTree().checkModelElements(checked, true);			
+					modeltree.getTree().updateUI();
 					preLatch.countDown();
 				}
 			};
