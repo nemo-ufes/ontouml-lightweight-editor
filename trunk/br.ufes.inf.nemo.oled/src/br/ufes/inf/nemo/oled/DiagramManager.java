@@ -35,6 +35,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -1645,7 +1646,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/** Bring related elements to diagram */
-	public void bringRelatedElements(DiagramElement diagramElement, DiagramEditor d)
+	public void addAllRelatedElements(DiagramElement diagramElement, DiagramEditor d)
 	{
 		if(diagramElement instanceof Node){
 			ClassElement ce = (ClassElement)diagramElement;
@@ -1654,26 +1655,83 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			double y = ce.getAbsoluteY1()-30;
 			int row = 0;
 			int column = 0;
+
 			OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
+
+			
+			HashSet<Type> addedTypes = new HashSet<Type>();
+			
 			ArrayList<Relationship> relatedAssociations = new ArrayList<Relationship>();
 			relatedAssociations.addAll(refparser.getDirectAssociations(element));
 			relatedAssociations.addAll(refparser.getDirectGeneralizations(element));
+		
 			for(Relationship rel: relatedAssociations){
-				if(rel instanceof Association){
-					Classifier source = (Classifier)((Association)rel).getMemberEnd().get(0).getType();
-					Classifier target = (Classifier)((Association)rel).getMemberEnd().get(1).getType();
-					if(!source.equals(element)) { moveToDiagram(source,x+100*column,y+75*row,d); row++; if(row>2) {row=0; column++;} }
-					if(!target.equals(element)) { moveToDiagram(target,x+100*column,y+75*row,d); row++; if(row>2) {row=0; column++;} }
-					moveToDiagram(rel, d);
-				}
-				if(rel instanceof Generalization){
-					Classifier general = (Classifier)((Generalization)rel).getGeneral();
-					Classifier specific = (Classifier)((Generalization)rel).getSpecific();
-					if(!general.equals(element)) { moveToDiagram(general,x+100*column,y+75*row,d); row++; if(row>2) {row=0; column++;} }
-					if(!specific.equals(element)) { moveToDiagram(specific,x+100*column,y+75*row,d); row++; if(row>2) {row=0; column++;} }
-					moveToDiagram(rel, d);
-				}
+				try{
+					if(d.getDiagram().containsChild(rel))
+						continue;
+					
+					Classifier source = null, target = null;
+					
+					if(rel instanceof Association){
+						source = (Classifier)((Association)rel).getMemberEnd().get(0).getType();
+						target = (Classifier)((Association)rel).getMemberEnd().get(1).getType();
+						addedTypes.add((Association)rel);
+					}
+					
+					if(rel instanceof Generalization){
+						source = (Classifier)((Generalization)rel).getGeneral();
+						target = (Classifier)((Generalization)rel).getSpecific();
+					}
+					
+					if(source!=null && !d.getDiagram().containsChild(source)) { 
+						moveToDiagram(source,x+100*column,y+75*row,d); 
+						row++; 
+						
+						if(row>2) {
+							row=0; column++;
+						} 
+						addedTypes.add(source);
+					}
+						
+					if(target!=null && !d.getDiagram().containsChild(target)) {  
+						moveToDiagram(target,x+100*column,y+75*row,d); 
+						row++; 
+						
+						if(row>2) {
+							row=0; 
+							column++;
+						}
+						addedTypes.add(target);
+					}
+					
+					if(d.getDiagram().containsChild(source) && d.getDiagram().containsChild(target)) 
+						moveToDiagram(rel, d);
+					
+				}catch(Exception e){}
 			}
+			
+			HashSet<Type> typesInDiagram = new HashSet<Type>();
+			for (DiagramElement de : d.getDiagram().getChildren()) {
+				if(de instanceof ClassElement)
+					typesInDiagram.add(((ClassElement) de).getClassifier());
+			}
+			
+			for (Association a : refparser.getAssociationsBetween(typesInDiagram)) {
+				Type source = a.getMemberEnd().get(0).getType();
+				Type target = a.getMemberEnd().get(1).getType();
+				
+				if(!d.getDiagram().containsChild(a) && (addedTypes.contains(source) || addedTypes.contains(target)))
+					moveToDiagram(a,d);
+			}
+			
+			for (Generalization g : refparser.getGeneralizationsBetween(typesInDiagram)) {
+				RefOntoUML.Type specific = g.getSpecific();
+				RefOntoUML.Type general = g.getGeneral();
+				
+				if(!d.getDiagram().containsChild(g) && (addedTypes.contains(specific) || addedTypes.contains(general)))
+					moveToDiagram(g,d);
+			}
+			
 		}
 	}
 	
@@ -1700,7 +1758,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if (element instanceof RefOntoUML.Class) 
 			{
 				RefOntoUML.Class oClass = (RefOntoUML.Class)element;
-				d.setDragElementMode(oClass,oClass.eContainer());				
+				d.setDragElementMode(oClass,oClass.eContainer());
 			}			
 			if ((element instanceof RefOntoUML.DataType)&&!(element instanceof RefOntoUML.PrimitiveType)&&!(element instanceof RefOntoUML.Enumeration))
 			{
@@ -1730,6 +1788,23 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			{	
 				d.dragRelation(gen,gen.eContainer());
 			}
+		}
+	}
+	
+	/**FIXME: Adicionei esse método. By Tiago
+	 *  Move associations of an element to the diagram. 
+	 *  It will only move the association whose other end appears in the diagram
+	 */
+	public void moveAssociationsToDiagram(RefOntoUML.Element element, EObject eContainer, DiagramEditor d)
+	{
+		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
+		
+		for(RefOntoUML.Association a: refparser.getDirectAssociations((RefOntoUML.Classifier)element))
+		{
+			try{
+				if (d.getDiagram().containsChild(a.getMemberEnd().get(0).getType()) && d.getDiagram().containsChild(a.getMemberEnd().get(1).getType()))
+					d.dragRelation(a,a.eContainer());
+			}catch (Exception e){}
 		}
 	}
 	
