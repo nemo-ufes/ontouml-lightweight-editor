@@ -3,7 +3,7 @@
 
 OLED support models designed in the Enterprise Architect version 10 i.e. you can import EA models into the OLED tool. 
 
-First, we explain how to install, access and use OntoUML in the Enterprise Architect and latter  how you can export your EA model and benefit from all our tool capabilities such as simulation and model checking, semantic anti-patterns identification, transformations to OWL, SBVR and so on. Here is a screenshot of the Enterprise Architect with OntoUML.
+First, we explain how to install, access and use OntoUML in the Enterprise Architect and latter  how you can export your EA model so that you can benefit from all our tool's capabilities such as simulation and model checking, semantic anti-patterns identification, transformations to OWL, SBVR and so on. Here is a screenshot of the Enterprise Architect with OntoUML.
 
 <g:plusone size="medium"></g:plusone>
 
