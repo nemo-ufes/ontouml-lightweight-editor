@@ -7,8 +7,6 @@ First, we explain how to install, access and use OntoUML in the Enterprise Archi
 
 <g:plusone size="medium"></g:plusone>
 
-https://drive.google.com/file/d/0B7WqSwi56QipWUlQZVg1VlNLb1k/edit?usp=sharing
-
 https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png 
 
 *Installing...*
