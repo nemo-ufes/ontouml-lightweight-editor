@@ -1,7 +1,13 @@
 #summary Learn how to use OntoUML in the Enterprise Architect (EA) version 10.
 #labels OntoUML,Enterprise,EA,MDG,Technology,Architect
 
-*Install OntoUML*
+In this wiki we explain how you can install, access and use the OntoUML modeling language in the Enterprise Architect (EA) version 10 of Sparx System. 
+
+OLED support models designed in the Enterprise Architect i.e. you can import models designed with EA into the OLED tool. First, we explain how to install, access and use OntoUML in the Enterprise Architect and latter explain how you can export your EA model to benefit from all our tool capabilities such as simulation and model checking, semantic anti-patterns identification, transformations to OWL, SBVR and so on.
+
+*Installing...*
+
+Step-by-step:
 
   * Delete any version that you might have of the OntoUML MDG Technology and the OntoUML Template: exclude the older XML files and replace them to the new XML files in the following folders:
 
@@ -17,7 +23,9 @@ Download the file: [https://drive.google.com/file/d/0B7WqSwi56QipMXhkdHFwdlRYaUk
 
 ----
 
-*Access OntoUML*
+*Accessing...*
+
+Step-by-step:
 
   * Choose _new Project_.
 
@@ -29,25 +37,25 @@ Download the file: [https://drive.google.com/file/d/0B7WqSwi56QipMXhkdHFwdlRYaUk
 
 ----
 
-*Create OntoUML Diagrams*
+*Creating diagrams...*
+
+Step-by-step:
 
   * To create OntoUML diagrams, just click into a folder in the Project Browser and do: _Right Click on the Package/Folder -> Add -> Add Diagram… -> OntoUML_.
 
 ----
 
-*Activate OntoUML Toolbox*
+*Activating the toolbox...*
 
   * To activate the OntoUML Toolbox, if is not already activated, go to _Toolbox -> More Tools -> OntoUML_.
 
 ----
 
-*Export OntoUML model as a XMI file*
+*Exporting model as a XMI file...*
 
   * To export the model in an EA format: _Right Click on the Package/View -> Import/Export -> Export Package to XMI file_.
 
 ----
-
-*OntoUML in the Enterprise Architect version 10*
 
 https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png 
 
