@@ -9,7 +9,9 @@ First, we explain how to install, access and use OntoUML in the Enterprise Archi
 
 https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png 
 
+----
 *INSTALLATION*
+----
 
 Step-by-step:
 
@@ -27,7 +29,9 @@ Step-by-step:
 
   * Start the Enterprise Architect EA
 
+----
 *ACCESS*
+----
 
 Step-by-step:
 
@@ -39,19 +43,25 @@ Step-by-step:
  
   * If the option _OntoUML_ does not appear in the Model Wizard windows, go to: _Settings -> MDG Technologies_, locate _OntoUML_, select the checkbox, and later click _OK_.
 
+----
 *DIAGRAM*
+----
 
 Step-by-step:
 
   * To create OntoUML diagrams, just click into a folder in the Project Browser and do: _Right Click on the Package/Folder -> Add -> Add Diagram… -> OntoUML_.
 
+----
 *TOOLBOX*
+----
 
 Step-by-step:
 
   * To activate the OntoUML Toolbox, if is not already activated, go to _Diagram-> Diagram Toolbox.
 
+----
 *EXPORT*
+----
 
 Step-by-step:
 
