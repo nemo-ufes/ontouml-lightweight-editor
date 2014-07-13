@@ -1,1 +1,3 @@
 #labels OLED
+
+Navigate through the left side bar to learn how to use OLED.
