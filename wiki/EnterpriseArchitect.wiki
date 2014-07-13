@@ -49,7 +49,7 @@ Step-by-step:
 
 Step-by-step:
 
-  * To activate the OntoUML Toolbox, if is not already activated, go to _Toolbox -> More Tools -> OntoUML_.
+  * To activate the OntoUML Toolbox, if is not already activated, go to _Diagram-> Diagram Toolbox.
 
 *Exporting model as a XMI file...*
 
