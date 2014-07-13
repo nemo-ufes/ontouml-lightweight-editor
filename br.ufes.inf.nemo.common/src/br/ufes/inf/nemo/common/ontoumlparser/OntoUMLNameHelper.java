@@ -136,7 +136,7 @@ public class OntoUMLNameHelper {
 			String name = ((NamedElement) elem).getName();
 			
 			if(name == null)
-				return "unnamed";
+				return "";
 			
 			return name;
 		}

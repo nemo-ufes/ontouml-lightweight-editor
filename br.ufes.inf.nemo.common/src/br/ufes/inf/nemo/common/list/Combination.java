@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.common.list;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Combination {
 	
@@ -24,7 +25,11 @@ public class Combination {
         this.N = 1;
     }
 
-    /** Retorna true quando ha pelo menos
+    public <T> Combination(HashSet<T> input, int r) {
+		this(new ArrayList<T>(input), r);
+	}
+
+	/** Retorna true quando ha pelo menos
      *  uma combinacao disponivel.
      */
     public boolean hasNext() {

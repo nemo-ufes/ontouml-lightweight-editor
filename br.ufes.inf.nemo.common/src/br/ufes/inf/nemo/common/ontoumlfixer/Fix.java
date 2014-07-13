@@ -9,7 +9,6 @@ import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
 public class Fix{
 
 	private ArrayList<Object> deletedElements = new ArrayList<Object>();
-	//private ArrayList<Object> addedElements = new ArrayList<Object>();
 	private ArrayList<Object> modifiedElements = new ArrayList<Object>();
 	private ArrayList<String> addedRules = new ArrayList<String>();
 	private HashMap<Object,Point2D.Double> addedElements = new HashMap<Object,Point2D.Double>();
@@ -90,16 +89,25 @@ public class Fix{
 	
 	// Include and exclude methods...	
 	public void includeModified(Object modified){
-		if (!modifiedElements.contains(modified)) modifiedElements.add(modified);
+		if (!modifiedElements.contains(modified) && !deletedElements.contains(modified) && !addedElements.keySet().contains(modified)) 
+			modifiedElements.add(modified);
 	}
 	public void includeRule(String rule){
-		addedRules.add(rule);
+		if(!addedRules.contains(rule))
+			addedRules.add(rule);
 	}	
 	public void includeAdded(Object added){
-		if (!addedElements.keySet().contains(added)) addedElements.put(added,new Point2D.Double(-1,-1));
+		if (!deletedElements.contains(added) && !addedElements.keySet().contains(added)) 
+			addedElements.put(added,new Point2D.Double(-1,-1));
+		
+		modifiedElements.remove(added);
 	}
 	public void includeDeleted(Object deleted){
-		if (!deletedElements.contains(deleted)) deletedElements.add(deleted);
+		if (!deletedElements.contains(deleted)) 
+			deletedElements.add(deleted);
+		
+		addedElements.remove(deleted);
+		modifiedElements.remove(deleted);
 	}
 	public void excludeRule(String rule){
 		addedRules.remove(rule);
