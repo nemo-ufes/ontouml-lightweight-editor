@@ -24,16 +24,18 @@ package br.ufes.inf.nemo.oled.validator.antipattern;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
@@ -45,10 +47,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import br.ufes.inf.nemo.antipattern.Antipattern;
+import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
@@ -88,30 +92,14 @@ public class AntiPatternSearchDialog extends JDialog {
 		
 	private AppFrame frame;	
 	private final JPanel contentPanel = new JPanel();
+		
+	private AntipatternTask assCycTask, binOverTask, depPhaseTask, freeRoleTask, gsRigTask,
+							hetCollTask, homoFuncTask, impAbsTask, MixIdenTask, MixRigTask,
+							MultiDepTask, RelCompTask, RelOverTask, RelRigTask, RelSpecTask,
+							RepRelTask, UndefFormalTask, UndefPhaseTask, WholeOverTask, 
+							PartOverTask, DecIntTask;
 	
-	private Thread searchThread;
-	
-	private Thread AssCycThread;
-	private Thread BinOverThread;
-	private Thread DepPhaseThread;
-	private Thread FreeRoleThread;
-	private Thread GSRigThread;
-	private Thread HetCollThread;
-	private Thread HomoFuncThread;
-	private Thread ImpAbsThread;
-	private Thread MixIdenThread;
-	private Thread MixRigThread;
-	private Thread MultiDepThread;
-	private Thread RelCompThread;
-	private Thread RelOverThread;
-	private Thread RelRigThread;
-	private Thread RelSpecThread;
-	private Thread RepRelThread;
-	private Thread UndefFormalThread;
-	private Thread UndefPhaseThread;
-	private Thread WholeOverThread;
-	private Thread PartOverThread;
-	private Thread DecIntThread;
+	private ArrayList<AntipatternTask> allTasks = new ArrayList<AntipatternTask>();
 	
 	private JCheckBox cbxAssCyc;	
 	private JCheckBox cbxBinOver;	
@@ -135,6 +123,8 @@ public class AntiPatternSearchDialog extends JDialog {
 	private JCheckBox cbxPartOver;
 	private JCheckBox cbxDecInt;
 	
+	ArrayList<JCheckBox> cbxList = new ArrayList<JCheckBox>();
+	
 	private JButton lblAssCycIco;	
 	private JButton lblBinOverIco;	
 	private JButton lblDepPhaseIco;
@@ -156,9 +146,10 @@ public class AntiPatternSearchDialog extends JDialog {
 	private JButton lblWholeOverIco;
 	private JButton lblPartOverIco;
 	private JButton lblDecIntIco;
-		
-	private DefaultBoundedRangeModel progressModel = new DefaultBoundedRangeModel();
-	private JProgressBar progressBar = new JProgressBar(progressModel);
+	
+	ArrayList<JButton> lblIcoList = new ArrayList<JButton>();
+	
+	private JProgressBar progressBar;
 	private JLabel progressBarDescr;
 		
 	private JLabel lblAssCycRes;
@@ -183,15 +174,27 @@ public class AntiPatternSearchDialog extends JDialog {
 	private JLabel lblPartOverRes;
 	private JLabel lblDecIntRes;
 	
+	ArrayList<JLabel> lblResultList = new ArrayList<JLabel>();
+	
 	private JButton identifyButton;
 	private JButton closeButton;
 	private JButton showButton;
+	private JButton stopButton;
 	
 	@SuppressWarnings("unused")
 	private String result = new String();
-	private int totalOccurrences = 0;
 	private JPanel panel_1;
-	
+
+	private int incrementalValue;
+
+	private ExecutorService executor;
+
+	private CountDownLatch latch;
+
+	private AntiPatternList antipatternList;
+
+	private SwingWorker<Void,Void> preTask;
+
 	/** 
 	 * Check if AntiPattern is selected.
 	 */
@@ -200,8 +203,8 @@ public class AntiPatternSearchDialog extends JDialog {
 	public Boolean BinOverisSelected() { return cbxBinOver.isSelected(); }
 	public Boolean DecIntisSelected() { return cbxDecInt.isSelected(); }
 	public Boolean DepPhaseisSelected() { return cbxDepPhase.isSelected(); }
-	public Boolean FreeRoleisSelected() { return cbxFreeRole.isSelected(); }
-	public Boolean GSRigisSelected() { return cbxGSRig.isSelected(); }
+	public Boolean freeRoleIsSelected() { return cbxFreeRole.isSelected(); }
+	public Boolean gsRigIsSelected() { return cbxGSRig.isSelected(); }
 	public Boolean HetCollisSelected() { return cbxHetColl.isSelected(); }
 	public Boolean HomoFuncisSelected() { return cbxHomoFunc.isSelected(); }
 	public Boolean ImpAbsisSelected() { return cbxImpAbs.isSelected(); }
@@ -218,98 +221,7 @@ public class AntiPatternSearchDialog extends JDialog {
 	public Boolean UndefPhaseisSelected() { return cbxUndefPhase.isSelected(); }
 	public Boolean WholeOverisSelected() { return cbxWholeOver.isSelected(); }
 	
-	/**
-	 * Open the Dialog.
-	 */
-	public static void  open (AppFrame parent)
-	{
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			
-			AntiPatternSearchDialog dialog = new AntiPatternSearchDialog(parent);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-			dialog.setLocationRelativeTo(parent);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
-	public void cleanAllResultlabels ()
-	{
-		lblAssCycRes.setText("");
-		lblBinOverRes.setText("");
-		lblDepPhaseRes.setText("");
-		lblFreeRoleRes.setText("");
-		lblGSRigRes.setText("");
-		lblHetCollRes.setText("");
-		lblHomoFuncRes.setText("");
-		lblImpAbsRes.setText("");
-		lblMixIdenRes.setText("");
-		lblMixRigRes.setText("");
-		lblMultiDepRes.setText("");
-		lblRelCompRes.setText("");
-		lblRelOverRes.setText("");
-		lblRelRigRes.setText("");
-		lblRelSpecRes.setText("");
-		lblRepRelRes.setText("");
-		lblUndefFormalRes.setText("");
-		lblUndefPhaseRes.setText("");
-		lblWholeOverRes.setText("");
-		lblPartOverRes.setText("");
-		lblDecIntRes.setText("");
-	}
-		
-	public void ShowAllAntiPatternIconLabels(boolean show)
-	{
-		lblAssCycIco.setVisible(show);
-		lblBinOverIco.setVisible(show);
-		lblDecIntIco.setVisible(show);
-		lblDepPhaseIco.setVisible(show);
-		lblFreeRoleIco.setVisible(show);
-		lblGSRigIco.setVisible(show);
-		lblHetCollIco.setVisible(show);
-		lblHomoFuncIco.setVisible(show);
-		lblImpAbsIco.setVisible(show);
-		lblMixIdenIco.setVisible(show);
-		lblMixRigIco.setVisible(show);
-		lblMultiDepIco.setVisible(show);
-		lblPartOverIco.setVisible(show);
-		lblRelCompIco.setVisible(show);
-		lblRelOverIco.setVisible(show);
-		lblRelRigIco.setVisible(show);
-		lblRelSpecIco.setVisible(show);
-		lblRepRelIco.setVisible(show);
-		lblUndefFormalIco.setVisible(show);
-		lblUndefPhaseIco.setVisible(show);
-		lblWholeOverIco.setVisible(show);
-	}
-	
-	public void HideBoldnessOnAllCheckBoxes()
-	{
-		cbxAssCyc.setFont(new Font(cbxAssCyc.getFont().getName(), Font.PLAIN, cbxAssCyc.getFont().getSize()));	
-		cbxBinOver.setFont(new Font(cbxBinOver.getFont().getName(), Font.PLAIN, cbxBinOver.getFont().getSize()));
-		cbxDecInt.setFont(new Font(cbxDecInt.getFont().getName(), Font.PLAIN, cbxDecInt.getFont().getSize()));	
-		cbxDepPhase.setFont(new Font(cbxDepPhase.getFont().getName(), Font.PLAIN, cbxDepPhase.getFont().getSize()));
-		cbxFreeRole.setFont(new Font(cbxFreeRole.getFont().getName(), Font.PLAIN, cbxFreeRole.getFont().getSize()));
-		cbxGSRig.setFont(new Font(cbxGSRig.getFont().getName(), Font.PLAIN, cbxGSRig.getFont().getSize()));
-		cbxHetColl.setFont(new Font(cbxHetColl.getFont().getName(), Font.PLAIN, cbxHetColl.getFont().getSize()));
-		cbxHomoFunc.setFont(new Font(cbxHomoFunc.getFont().getName(), Font.PLAIN, cbxHomoFunc.getFont().getSize()));
-		cbxImpAbs.setFont(new Font(cbxImpAbs.getFont().getName(), Font.PLAIN, cbxImpAbs.getFont().getSize()));	
-		cbxMixIden.setFont(new Font(cbxMixIden.getFont().getName(), Font.PLAIN, cbxMixIden.getFont().getSize()));	
-		cbxMixRig.setFont(new Font(cbxMixRig.getFont().getName(), Font.PLAIN, cbxMixRig.getFont().getSize()));	
-		cbxMultiDep.setFont(new Font(cbxMultiDep.getFont().getName(), Font.PLAIN, cbxMultiDep.getFont().getSize()));
-		cbxPartOver.setFont(new Font(cbxPartOver.getFont().getName(), Font.PLAIN, cbxPartOver.getFont().getSize()));
-		cbxRelComp.setFont(new Font(cbxRelComp.getFont().getName(), Font.PLAIN, cbxRelComp.getFont().getSize()));	
-		cbxRelOver.setFont(new Font(cbxRelOver.getFont().getName(), Font.PLAIN, cbxRelOver.getFont().getSize()));	
-		cbxRelRig.setFont(new Font(cbxRelRig.getFont().getName(), Font.PLAIN, cbxRelRig.getFont().getSize()));	
-		cbxRelSpec.setFont(new Font(cbxRelSpec.getFont().getName(), Font.PLAIN, cbxRelSpec.getFont().getSize()));	
-		cbxRepRel.setFont(new Font(cbxRepRel.getFont().getName(), Font.PLAIN, cbxRepRel.getFont().getSize()));	
-		cbxUndefFormal.setFont(new Font(cbxUndefFormal.getFont().getName(), Font.PLAIN, cbxUndefFormal.getFont().getSize()));	
-		cbxUndefPhase.setFont(new Font(cbxUndefPhase.getFont().getName(), Font.PLAIN, cbxUndefPhase.getFont().getSize()));
-		cbxWholeOver.setFont(new Font(cbxWholeOver.getFont().getName(), Font.PLAIN, cbxWholeOver.getFont().getSize()));	
-	}
 	
 	/**
 	 * Create the dialog.
@@ -384,7 +296,8 @@ public class AntiPatternSearchDialog extends JDialog {
 		closeButton = new JButton("Close");
 		panel_1.add(closeButton);
 		
-		JButton stopButton = new JButton("Stop");
+		stopButton = new JButton("Stop");
+		stopButton.setEnabled(false);
 		panel_1.add(stopButton);
 		
 		showButton = new JButton("Show Result");
@@ -398,90 +311,44 @@ public class AntiPatternSearchDialog extends JDialog {
 				showResult();
 			}
 		});
+		
 		stopButton.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				interruptAll();
-				if (searchThread!=null) searchThread.interrupt();				
+				updateStatus("Antipattern: analysis stopped by the user!");
+				interruptAll();			
 			}
 		});
+		
 		closeButton.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				interruptAll();
-				if (searchThread!=null) searchThread.interrupt();				
+				interruptAll();			
 				dispose();
-				
 			}
 		});
 		
-		identifyButton.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
+		identifyButton.addActionListener(new ActionListener() {
+       		public void actionPerformed(ActionEvent event) {
        			IdentifyButtonActionPerformed(event);				
        		}
        	});
+		
 		JButton btnEnableall = new JButton("Enable All");
 		panel.add(btnEnableall);
-		JButton btnDisableall = new JButton("Disable All");
-		panel.add(btnDisableall);
 		
-		btnDisableall.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			if (AssCycisSelected()) cbxAssCyc.setSelected(false);
-       			if (BinOverisSelected()) cbxBinOver.setSelected(false);
-       			if (DecIntisSelected()) cbxDecInt.setSelected(false);
-       			if (DepPhaseisSelected()) cbxDepPhase.setSelected(false);
-       			if (FreeRoleisSelected()) cbxFreeRole.setSelected(false);
-       			if (GSRigisSelected()) cbxGSRig.setSelected(false);
-       			if (HetCollisSelected()) cbxHetColl.setSelected(false);
-       			if (HomoFuncisSelected()) cbxHomoFunc.setSelected(false);
-       			if (ImpAbsisSelected()) cbxImpAbs.setSelected(false);
-       			if (MixIdenisSelected()) cbxMixIden.setSelected(false);
-       			if (MixRigisSelected()) cbxMixRig.setSelected(false);
-       			if (MultiDepisSelected()) cbxMultiDep.setSelected(false);
-       			if (PartOverisSelected()) cbxPartOver.setSelected(false);
-       			if (RelCompisSelected()) cbxRelComp.setSelected(false);
-       			if (RelOverisSelected()) cbxRelOver.setSelected(false);
-       			if (RelRigisSelected()) cbxRelRig.setSelected(false);
-       			if (RelSpecisSelected()) cbxRelSpec.setSelected(false);
-       			if (RepRelisSelected()) cbxRepRel.setSelected(false);
-       			if (UndefFormalisSelected()) cbxUndefFormal.setSelected(false);
-       			if (UndefPhaseisSelected()) cbxUndefPhase.setSelected(false);
-       			if (WholeOverisSelected()) cbxWholeOver.setSelected(false);
-       			
-       			
+		btnEnableall.addActionListener(new ActionListener() {
+       		public void actionPerformed(ActionEvent event) {
+       			setSelectedCheckboxes(true);
        		}
        	});
 		
-		btnEnableall.addActionListener(new ActionListener() 
-		{
-       		public void actionPerformed(ActionEvent event) 
-       		{
-       			if (!AssCycisSelected()) cbxAssCyc.setSelected(true);
-       			if (!BinOverisSelected()) cbxBinOver.setSelected(true);
-       			if (!DecIntisSelected()) cbxDecInt.setSelected(true);
-       			if (!DepPhaseisSelected()) cbxDepPhase.setSelected(true);
-       			if (!FreeRoleisSelected()) cbxFreeRole.setSelected(true);
-       			if (!GSRigisSelected()) cbxGSRig.setSelected(true);
-       			if (!HetCollisSelected()) cbxHetColl.setSelected(true);
-       			if (!HomoFuncisSelected()) cbxHomoFunc.setSelected(true);
-       			if (!ImpAbsisSelected()) cbxImpAbs.setSelected(true);
-       			if (!MixIdenisSelected()) cbxMixIden.setSelected(true);
-       			if (!MixRigisSelected()) cbxMixRig.setSelected(true);
-       			if (!MultiDepisSelected()) cbxMultiDep.setSelected(true);
-       			if (!PartOverisSelected()) cbxPartOver.setSelected(true);
-       			if (!RelCompisSelected()) cbxRelComp.setSelected(true);
-       			if (!RelOverisSelected()) cbxRelOver.setSelected(true);
-       			if (!RelRigisSelected()) cbxRelRig.setSelected(true);
-       			if (!RelSpecisSelected()) cbxRelSpec.setSelected(true);
-       			if (!RepRelisSelected()) cbxRepRel.setSelected(true);
-       			if (!UndefFormalisSelected()) cbxUndefFormal.setSelected(true);
-       			if (!UndefPhaseisSelected()) cbxUndefPhase.setSelected(true);
-       			if (!WholeOverisSelected()) cbxWholeOver.setSelected(true);
+		JButton btnDisableall = new JButton("Disable All");
+		panel.add(btnDisableall);
+		
+		btnDisableall.addActionListener(new ActionListener() {
+       		public void actionPerformed(ActionEvent event) {
+       			setSelectedCheckboxes(false);       			
        		}
        	});
 		
@@ -854,6 +721,11 @@ public class AntiPatternSearchDialog extends JDialog {
 		progressBarDescr = new JLabel("");		
 		progressBarDescr.setForeground(Color.BLUE);		
 		
+		progressBar = new JProgressBar();
+		progressBar.setStringPainted(true);
+		progressBar.setMinimum(0);
+		progressBar.setMaximum(100);	
+		
 		GroupLayout gl_buttonPane = new GroupLayout(buttonPane);
 		gl_buttonPane.setHorizontalGroup(
 			gl_buttonPane.createParallelGroup(Alignment.TRAILING)
@@ -875,751 +747,91 @@ public class AntiPatternSearchDialog extends JDialog {
 		);
 		buttonPane.setLayout(gl_buttonPane);
 		
-		ShowAllAntiPatternIconLabels(true);
+		 cbxList.add(cbxAssCyc);
+		 cbxList.add(cbxBinOver);	
+		 cbxList.add(cbxDepPhase);
+		 cbxList.add( cbxFreeRole);
+		 cbxList.add(cbxGSRig);
+		 cbxList.add(cbxHetColl);
+		 cbxList.add(cbxHomoFunc);
+		 cbxList.add(cbxImpAbs);
+		 cbxList.add(cbxMixIden);
+		 cbxList.add(cbxMixRig);
+		 cbxList.add(cbxMultiDep);
+		 cbxList.add(cbxRelComp);
+		 cbxList.add(cbxRelOver);
+		 cbxList.add(cbxRelRig);
+		 cbxList.add(cbxRelSpec);	
+		 cbxList.add(cbxRepRel);
+		 cbxList.add(cbxUndefFormal);
+		 cbxList.add(cbxUndefPhase);
+		 cbxList.add(cbxWholeOver);
+		 cbxList.add(cbxPartOver);
+		 cbxList.add(cbxDecInt);
+		 
+		 lblIcoList.add(lblAssCycIco);	
+		 lblIcoList.add(lblBinOverIco);	
+		 lblIcoList.add(lblDepPhaseIco);
+		 lblIcoList.add(lblFreeRoleIco);
+		 lblIcoList.add(lblGSRigIco);
+		 lblIcoList.add(lblHetCollIco);
+		 lblIcoList.add(lblHomoFuncIco);
+		 lblIcoList.add(lblImpAbsIco);
+		 lblIcoList.add(lblMixIdenIco);
+		 lblIcoList.add(lblMixRigIco);
+		 lblIcoList.add(lblMultiDepIco);
+		 lblIcoList.add(lblRelCompIco);
+		 lblIcoList.add(lblRelOverIco);
+		 lblIcoList.add(lblRelRigIco);
+		 lblIcoList.add(lblRelSpecIco);
+		 lblIcoList.add(lblRepRelIco);
+		 lblIcoList.add(lblUndefFormalIco);
+		 lblIcoList.add(lblUndefPhaseIco);
+		 lblIcoList.add(lblWholeOverIco);
+		 lblIcoList.add(lblPartOverIco);
+		 lblIcoList.add(lblDecIntIco);
+		
+		 lblResultList.add(lblAssCycRes);
+		 lblResultList.add(lblBinOverRes);
+		 lblResultList.add(lblDepPhaseRes);
+		 lblResultList.add(lblFreeRoleRes);
+		 lblResultList.add(lblGSRigRes);
+		 lblResultList.add(lblHetCollRes);
+		 lblResultList.add(lblHomoFuncRes);
+		 lblResultList.add(lblImpAbsRes);
+		 lblResultList.add(lblMixIdenRes);
+		 lblResultList.add(lblMixRigRes);
+		 lblResultList.add(lblMultiDepRes);
+		 lblResultList.add(lblRelCompRes);
+		 lblResultList.add(lblRelOverRes);
+		 lblResultList.add(lblRelRigRes);
+		 lblResultList.add(lblRelSpecRes);
+		 lblResultList.add(lblRepRelRes);
+		 lblResultList.add(lblUndefFormalRes);
+		 lblResultList.add(lblUndefPhaseRes);
+		 lblResultList.add(lblWholeOverRes);
+		 lblResultList.add(lblPartOverRes);
+		 lblResultList.add(lblDecIntRes);
+		
+		showAllAntiPatternIconLabels(true);	
 	}
 		
-	public void updateStatus(final String text)
-	{
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				progressBarDescr.setText(text);
-				progressBarDescr.repaint();
-				progressBarDescr.revalidate();
-			}
-		});
-	}
-	
-	public void activateShowResult()
-	{
-		showButton.setEnabled(true);
-	}
-	
 	/**
-	 * Identifying AntiPatterns...
-	 * 
-	 * @param event
+	 * Open the Dialog.
 	 */
-	public void IdentifyButtonActionPerformed(ActionEvent event)
-	{
-		try{
-		
-		Main.printOutLine("Retrieving checked elements...");
-		frame.getDiagramManager().workingOnlyWithChecked();
-			
-		totalOccurrences=0;
-		interruptAll();
-		if (searchThread!=null) searchThread.interrupt();
-		
-		searchThread= new Thread(new Runnable() {			
-			@Override
-			public void run() {
-				
-				 SwingUtilities.invokeLater(new Runnable() {					
-					@Override
-					public void run() {
-						cleanAllResultlabels();
-						HideBoldnessOnAllCheckBoxes();		
-						frame.focusOnOutput();				
-						progressBar.setStringPainted(true);
-						progressBar.setMinimum(0);
-						progressBar.setMaximum(100);								
-						progressBar.setValue(0);
-						progressBar.setString("0%");
-						identifyButton.setEnabled(false);			
-						setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));						
-					}
-				 });
-				
-				 OntoUMLParser parser = frame.getBrowserManager().getProjectBrowser().getParser();
-				 
-				 final AssCycAntipattern assCyc = new AssCycAntipattern(parser); 	
-				 final BinOverAntipattern binOver = new BinOverAntipattern(parser);		
-				 final DepPhaseAntipattern depPhase = new DepPhaseAntipattern(parser);
-				 final FreeRoleAntipattern freeRole = new FreeRoleAntipattern(parser);
-				 final GSRigAntipattern gsRig = new GSRigAntipattern(parser);
-				 final HetCollAntipattern hetColl = new HetCollAntipattern(parser);
-				 final HomoFuncAntipattern homoFunc = new HomoFuncAntipattern(parser);
-				 final ImpAbsAntipattern impAbs = new ImpAbsAntipattern(parser);
-				 final MixIdenAntipattern mixIden = new MixIdenAntipattern(parser);
-				 final MixRigAntipattern mixRig = new MixRigAntipattern(parser);
-				 final MultiDepAntipattern multiDep = new MultiDepAntipattern(parser);
-				 final RelCompAntipattern relComp = new RelCompAntipattern(parser);
-				 final RelOverAntipattern relOver = new RelOverAntipattern(parser);
-				 final RelRigAntipattern relRig = new RelRigAntipattern(parser);
-				 final RelSpecAntipattern relSpec = new RelSpecAntipattern(parser);
-				 final RepRelAntipattern repRel = new RepRelAntipattern(parser);
-				 final UndefFormalAntipattern undefFormal = new UndefFormalAntipattern(parser);
-				 final UndefPhaseAntipattern undefPhase = new UndefPhaseAntipattern(parser);
-				 final WholeOverAntipattern wholeOver = new WholeOverAntipattern(parser);
-				 final PartOverAntipattern partOver = new PartOverAntipattern(parser);
-				 final DecIntAntipattern decInt = new DecIntAntipattern(parser);
-			
-				if (parser.getElements() == null) return;
-				
-				int totalItemsSelected = getTotalSelected();				
-				int incValue=0;
-				if(totalItemsSelected==0) incValue=100;
-				else incValue=100/totalItemsSelected; 				
-				final int incrementalValue = incValue;
-				
-				if (AssCycisSelected()) 
-				{
-					AssCycThread = new Thread(new Runnable() {						
-						@Override
-						public void run() {
-							updateStatus("Identifying AssCyc...");
-							assCyc.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {
-									progressBar.setValue(progressBar.getValue()+incrementalValue);						
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("AssCyc: "+assCyc.getOccurrences().size()+" items found");
-									
-									if (assCyc.getOccurrences().size()>0) { 
-										result += AssCycAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+assCyc.getOccurrences().size()+" items found.\n";
-										totalOccurrences += assCyc.getOccurrences().size();
-										lblAssCycRes.setText("("+assCyc.getOccurrences().size()+")");						
-										cbxAssCyc.setFont(new Font(cbxAssCyc.getFont().getFontName(), Font.BOLD,cbxAssCyc.getFont().getSize()));
-									}
-								}
-							});
-						}
-					});		
-					AssCycThread.start();
-				}			
-				
-				if (BinOverisSelected())
-				{
-					BinOverThread = new Thread(new Runnable() {						
-						@Override
-						public void run() {
-							updateStatus("Identifying BinOver... ");
-							binOver.identify();				
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("BinOver: "+binOver.getOccurrences().size()+" items found");						
-				
-									if (binOver.getOccurrences().size()>0) { 
-										result += BinOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+binOver.getOccurrences().size()+" items found.\n"; 
-										totalOccurrences += binOver.getOccurrences().size();
-										lblBinOverRes.setText("("+binOver.getOccurrences().size()+")");
-										cbxBinOver.setFont(new Font(cbxBinOver.getFont().getFontName(), Font.BOLD,cbxBinOver.getFont().getSize()));
-									}
-								}
-							});		
-						}
-					});
-					BinOverThread.start();
-				}
-				
-				if (DepPhaseisSelected())
-				{		
-					DepPhaseThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {
-							updateStatus("Identifying DepPhase... ");
-							depPhase.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("DepPhase: "+depPhase.getOccurrences().size()+" items found");			
-									
-									if (depPhase.getOccurrences().size()>0) {
-										result += DepPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+depPhase.getOccurrences().size()+" items found.\n";
-										totalOccurrences += depPhase.getOccurrences().size();
-										lblDepPhaseRes.setText("("+depPhase.getOccurrences().size()+")");
-										cbxDepPhase.setFont(new Font(cbxDepPhase.getFont().getFontName(), Font.BOLD,cbxDepPhase.getFont().getSize()));
-									}								
-								}
-							});
-						}
-					});
-					DepPhaseThread.start();
-				}
-				
-				if (FreeRoleisSelected())
-				{
-					FreeRoleThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {			
-							updateStatus("Identifying FreeRole... ");
-							freeRole.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("FreeRole: "+freeRole.getOccurrences().size()+" items found");									
-									if (freeRole.getOccurrences().size()>0) {
-										result += FreeRoleAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+freeRole.getOccurrences().size()+" items found.\n";
-										totalOccurrences += freeRole.getOccurrences().size();
-										lblFreeRoleRes.setText("("+freeRole.getOccurrences().size()+")");
-										cbxFreeRole.setFont(new Font(cbxFreeRole.getFont().getFontName(), Font.BOLD,cbxFreeRole.getFont().getSize()));
-									}									
-								}
-							});
-						}
-					});
-					FreeRoleThread.start();
-				}
-				
-				if (GSRigisSelected())
-				{
-					GSRigThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying GSRig... ");
-							gsRig.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("GSRig: "+gsRig.getOccurrences().size()+" items found");									
-									if (gsRig.getOccurrences().size()>0) {
-										result += GSRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+gsRig.getOccurrences().size()+" items found.\n";		
-										totalOccurrences += gsRig.getOccurrences().size();
-										lblGSRigRes.setText("("+gsRig.getOccurrences().size()+")");	
-										cbxGSRig.setFont(new Font(cbxGSRig.getFont().getFontName(), Font.BOLD,cbxGSRig.getFont().getSize()));
-									}
-								}
-							});									
-						}
-					});
-					GSRigThread.start();
-				}
-				
-				if (HetCollisSelected())
-				{	
-					HetCollThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying HetColl... ");
-							hetColl.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("HetColl: "+hetColl.getOccurrences().size()+" items found");									
-									if (hetColl.getOccurrences().size()>0) {
-										result += HetCollAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+hetColl.getOccurrences().size()+" items found.\n";
-										totalOccurrences += hetColl.getOccurrences().size();
-										lblHetCollRes.setText("("+hetColl.getOccurrences().size()+")");	
-										cbxHetColl.setFont(new Font(cbxHetColl.getFont().getFontName(), Font.BOLD,cbxHetColl.getFont().getSize()));
-									}   
-								}
-							});
-						}
-					});
-					HetCollThread.start();					
-				}
-				
-				if (HomoFuncisSelected())
-				{
-					HomoFuncThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {						
-							updateStatus("Identifying HomoFunc... ");
-							homoFunc.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("HomoFunc: "+homoFunc.getOccurrences().size()+" items found");		
-									if (homoFunc.getOccurrences().size()>0) {
-										result += HomoFuncAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+homoFunc.getOccurrences().size()+" items found.\n";
-										totalOccurrences += homoFunc.getOccurrences().size();
-										lblHomoFuncRes.setText("("+homoFunc.getOccurrences().size()+")");
-										cbxHomoFunc.setFont(new Font(cbxHomoFunc.getFont().getFontName(), Font.BOLD,cbxHomoFunc.getFont().getSize()));
-									}									
-								}
-							});
-						}
-					});
-					HomoFuncThread.start();	
-				}
-				
-				if (ImpAbsisSelected())
-				{					
-					ImpAbsThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying ImpAbs... ");
-							impAbs.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("ImpAbs: "+impAbs.getOccurrences().size()+" items found");							
-									if (impAbs.getOccurrences().size()>0) {
-										result += ImpAbsAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+impAbs.getOccurrences().size()+" items found.\n";
-										totalOccurrences += impAbs.getOccurrences().size();
-										lblImpAbsRes.setText("("+impAbs.getOccurrences().size()+")");
-										cbxImpAbs.setFont(new Font(cbxImpAbs.getFont().getFontName(), Font.BOLD,cbxImpAbs.getFont().getSize()));
-									}    
-								}
-							});
-						}
-					});
-					ImpAbsThread.start();	
-				}
-				
-				
-				if (MixIdenisSelected())
-				{				
-					MixIdenThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying MixIden... ");
-							mixIden.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("MixIden: "+mixIden.getOccurrences().size()+" items found");							
-									if (mixIden.getOccurrences().size()>0) {
-										result += MixIdenAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixIden.getOccurrences().size()+" items found.\n";
-										totalOccurrences += mixIden.getOccurrences().size();
-										lblMixIdenRes.setText("("+mixIden.getOccurrences().size()+")");
-										cbxMixIden.setFont(new Font(cbxMixIden.getFont().getFontName(), Font.BOLD,cbxMixIden.getFont().getSize()));
-									}									
-								}
-							});
-						}
-					});
-					MixIdenThread.start();
-				}
-				
-				if (MixRigisSelected())
-				{			
-					MixRigThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying MixRig... ");
-							mixRig.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("MixRig: "+mixRig.getOccurrences().size()+" items found");							
-									if (mixRig.getOccurrences().size()>0) {
-										result += MixRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+mixRig.getOccurrences().size()+" items found.\n";
-										totalOccurrences += mixRig.getOccurrences().size();
-										lblMixRigRes.setText("("+mixRig.getOccurrences().size()+")");
-										cbxMixRig.setFont(new Font(cbxMixRig.getFont().getFontName(), Font.BOLD,cbxMixRig.getFont().getSize()));
-									}  
-								}
-							});
-						}
-					});
-					MixRigThread.start();
-				}
-				
-				if (MultiDepisSelected())
-				{			
-					MultiDepThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying MultiDep... ");
-							multiDep.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("MultiDep: "+multiDep.getOccurrences().size()+" items found");							
-									if (multiDep.getOccurrences().size()>0) {
-										result += MultiDepAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+multiDep.getOccurrences().size()+" items found.\n";
-										totalOccurrences += multiDep.getOccurrences().size();
-										lblMultiDepRes.setText("("+multiDep.getOccurrences().size()+")");
-										cbxMultiDep.setFont(new Font(cbxMultiDep.getFont().getFontName(), Font.BOLD,cbxMultiDep.getFont().getSize()));
-									}									
-								}
-							});
-						}
-					});
-					MultiDepThread.start();
-				}
-				
-				if (RelCompisSelected())
-				{				
-					RelCompThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying RelComp... ");
-							relComp.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("RelComp: "+relComp.getOccurrences().size()+" items found");							
-									if (relComp.getOccurrences().size()>0) {
-										result += RelCompAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relComp.getOccurrences().size()+" items found.\n";
-										totalOccurrences += relComp.getOccurrences().size();
-										lblRelCompRes.setText("("+relComp.getOccurrences().size()+")");	
-										cbxRelComp.setFont(new Font(cbxRelComp.getFont().getFontName(), Font.BOLD,cbxRelComp.getFont().getSize()));
-									}									
-								}
-							});
-						}
-					});
-					RelCompThread.start();
-				}
-				
-				if (RelOverisSelected())
-				{				
-					RelOverThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying RelOver... ");
-							relOver.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("RelOver: "+relOver.getOccurrences().size()+" items found");							
-									if (relOver.getOccurrences().size()>0) {
-										result += RelOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relOver.getOccurrences().size()+" items found.\n";
-										totalOccurrences += relOver.getOccurrences().size();
-										lblRelOverRes.setText("("+relOver.getOccurrences().size()+")");
-										cbxRelOver.setFont(new Font(cbxRelOver.getFont().getFontName(), Font.BOLD,cbxRelOver.getFont().getSize()));
-									}								
-								}
-							});
-						}
-					});
-					RelOverThread.start();
-				}
-				
-				if (RelRigisSelected())
-				{			
-					RelRigThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying RelRig... ");
-							relRig.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("RelRig... "+relRig.getOccurrences().size()+" items found");							
-									if (relRig.getOccurrences().size()>0) {
-										result += RelRigAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relRig.getOccurrences().size()+" items found.\n";
-										totalOccurrences += relRig.getOccurrences().size();
-										lblRelRigRes.setText("("+relRig.getOccurrences().size()+")");
-										cbxRelRig.setFont(new Font(cbxRelRig.getFont().getFontName(), Font.BOLD,cbxRelRig.getFont().getSize()));
-									}									
-								}
-							});
-						}
-					});
-					RelRigThread.start();					
-				}
-				
-				if (RelSpecisSelected())
-				{	
-					RelSpecThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying RelSpec... ");
-							relSpec.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("RelSpec: "+relSpec.getOccurrences().size()+" items found");							
-									if (relSpec.getOccurrences().size()>0) {
-										result += RelSpecAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+relSpec.getOccurrences().size()+" items found.\n";
-										totalOccurrences += relSpec.getOccurrences().size();
-										lblRelSpecRes.setText("("+relSpec.getOccurrences().size()+")");
-										cbxRelSpec.setFont(new Font(cbxRelSpec.getFont().getFontName(), Font.BOLD,cbxRelSpec.getFont().getSize()));
-									}									
-								}
-							});
-						}
-					});
-					RelSpecThread.start();		
-				}
-				
-				if (RepRelisSelected())
-				{	
-					RepRelThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying RepRel... ");
-							repRel.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("RepRel: "+repRel.getOccurrences().size()+" items found");							
-									if (repRel.getOccurrences().size()>0) {
-										result += RepRelAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+repRel.getOccurrences().size()+" items found.\n";
-										totalOccurrences += repRel.getOccurrences().size();
-										lblRepRelRes.setText("("+repRel.getOccurrences().size()+")");	
-										cbxRepRel.setFont(new Font(cbxRepRel.getFont().getFontName(), Font.BOLD,cbxRepRel.getFont().getSize()));
-									}
-								}
-							});
-						}						
-					});
-					RepRelThread.start();	
-				}
-				
-				if (UndefFormalisSelected())
-				{	
-					UndefFormalThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying UndefFormal... ");
-							undefFormal.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("UndefFormal: "+undefFormal.getOccurrences().size()+" items found");							
-									if (undefFormal.getOccurrences().size()>0) {
-										result += UndefFormalAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefFormal.getOccurrences().size()+" items found.\n";
-										totalOccurrences += undefFormal.getOccurrences().size();
-										lblUndefFormalRes.setText("("+undefFormal.getOccurrences().size()+")");
-										cbxUndefFormal.setFont(new Font(cbxUndefFormal.getFont().getFontName(), Font.BOLD,cbxUndefFormal.getFont().getSize()));
-									}
-								}
-							});							
-						}
-					});
-					UndefFormalThread.start();						
-				}
-				
-				if (UndefPhaseisSelected())
-				{	
-					UndefPhaseThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying UndefPhase... ");
-							undefPhase.identify();
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("UndefPhase: "+undefPhase.getOccurrences().size()+" items found");							
-									if (undefPhase.getOccurrences().size()>0) {
-										result += UndefPhaseAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+undefPhase.getOccurrences().size()+" items found.\n";
-										totalOccurrences += undefPhase.getOccurrences().size();
-										lblUndefPhaseRes.setText("("+undefPhase.getOccurrences().size()+")");
-										cbxUndefPhase.setFont(new Font(cbxUndefPhase.getFont().getFontName(), Font.BOLD,cbxUndefPhase.getFont().getSize()));
-									}   	
-								}
-							});
-						}
-					});
-					UndefPhaseThread.start();		
-				}
-				
-				if (WholeOverisSelected())
-				{	
-					WholeOverThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying WholeOver... ");
-							wholeOver.identify();				
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("WholeOver: "+wholeOver.getOccurrences().size()+" items found");							
-									if (wholeOver.getOccurrences().size()>0) {
-										result += WholeOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+wholeOver.getOccurrences().size()+" items found.\n";
-										totalOccurrences += wholeOver.getOccurrences().size();
-										lblWholeOverRes.setText("("+wholeOver.getOccurrences().size()+")");
-										cbxWholeOver.setFont(new Font(cbxWholeOver.getFont().getFontName(), Font.BOLD,cbxWholeOver.getFont().getSize()));
-									}								
-								}
-							});
-						}
-					});
-					WholeOverThread.start();									
-				}
-				
-				if (PartOverisSelected())
-				{	
-					PartOverThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying PartOver... ");
-							partOver.identify();				
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("PartOver: "+partOver.getOccurrences().size()+" items found");							
-									if (partOver.getOccurrences().size()>0) {
-										result += PartOverAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+partOver.getOccurrences().size()+" items found.\n";
-										totalOccurrences += partOver.getOccurrences().size();
-										lblPartOverRes.setText("("+partOver.getOccurrences().size()+")");
-										cbxPartOver.setFont(new Font(cbxPartOver.getFont().getFontName(), Font.BOLD,cbxPartOver.getFont().getSize()));
-									}								
-								}
-							});
-						}
-					});
-					PartOverThread.start();									
-				}
-				
-				if (DecIntisSelected())
-				{	
-					DecIntThread = new Thread(new Runnable() {				
-						@Override
-						public void run() {	
-							updateStatus("Identifying DecInt... ");
-							decInt.identify();				
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {									
-									progressBar.setValue(progressBar.getValue()+incrementalValue);
-									progressBar.setString(Integer.toString(progressBar.getValue()) + "%");
-									updateStatus("DecInt: "+decInt.getOccurrences().size()+" items found");							
-									if (decInt.getOccurrences().size()>0) {
-										result += DecIntAntipattern.getAntipatternInfo().getAcronym()+" AntiPattern : "+decInt.getOccurrences().size()+" items found.\n";
-										totalOccurrences += decInt.getOccurrences().size();
-										lblDecIntRes.setText("("+decInt.getOccurrences().size()+")");
-										cbxDecInt.setFont(new Font(cbxDecInt.getFont().getFontName(), Font.BOLD,cbxDecInt.getFont().getSize()));
-									}								
-								}
-							});
-						}
-					});
-					DecIntThread.start();									
-				}
-			
-				joinAll();
-				
-				AntiPatternList antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, mixIden,
-						   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver, partOver, decInt);
-
-				ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
-				
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));				
-						identifyButton.setEnabled(true);
-						progressBar.setValue(100);
-						progressBar.setString(Integer.toString(progressBar.getValue()) + "%");												
-						showButton.setEnabled(true);
-						updateStatus("Completed. "+totalOccurrences+" occurrences found.");
-					}
-				});				
-			}
-		});		
-		searchThread.start();		
-		
-		}catch(Exception e){
-			JOptionPane.showMessageDialog(this,e.getMessage(),"Anti-Pattern Search",JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
-		}
-	}
-	
-	public int getTotalSelected()
-	{
-		int totalItemsSelected = 0;			
-		if (AssCycisSelected()) totalItemsSelected++;
-		if (BinOverisSelected()) totalItemsSelected++;
-		if (DecIntisSelected()) totalItemsSelected++;
-		if (DepPhaseisSelected()) totalItemsSelected++;
-		if (FreeRoleisSelected()) totalItemsSelected++;
-		if (GSRigisSelected()) totalItemsSelected++;
-		if (HetCollisSelected()) totalItemsSelected++;
-		if (HomoFuncisSelected()) totalItemsSelected++;
-		if (ImpAbsisSelected()) totalItemsSelected++;
-		if (MixIdenisSelected()) totalItemsSelected++;
-		if (MixRigisSelected()) totalItemsSelected++;
-		if (MultiDepisSelected()) totalItemsSelected++;
-		if (PartOverisSelected()) totalItemsSelected++;
-		if (RelCompisSelected()) totalItemsSelected++;
-		if (RelOverisSelected()) totalItemsSelected++;
-		if (RelRigisSelected()) totalItemsSelected++;
-		if (RelSpecisSelected()) totalItemsSelected++;
-		if (RepRelisSelected()) totalItemsSelected++;			
-		if (UndefFormalisSelected()) totalItemsSelected++;
-		if (UndefPhaseisSelected()) totalItemsSelected++;
-		if (WholeOverisSelected()) totalItemsSelected++;
-
-		return totalItemsSelected;
-	}
-	public void joinAll()
+	public static void  open (AppFrame parent)
 	{
 		try {
-			if(AssCycThread!=null)AssCycThread.join();				
-			if(BinOverThread!=null) BinOverThread.join();
-			if(DecIntThread!=null) DecIntThread.join();
-			if(DepPhaseThread!=null) DepPhaseThread.join();
-			if(FreeRoleThread!=null) FreeRoleThread.join();
-			if(GSRigThread!=null) GSRigThread.join();
-			if(HetCollThread!=null) HetCollThread.join();
-			if(HomoFuncThread!=null) HomoFuncThread.join();
-			if(ImpAbsThread!=null) ImpAbsThread.join();
-			if(MixIdenThread!=null) MixIdenThread.join();
-			if(MixRigThread!=null) MixRigThread.join();
-			if(MultiDepThread!=null) MultiDepThread.join();
-			if(PartOverThread!=null) PartOverThread.join();
-			if(RelCompThread!=null) RelCompThread.join();
-			if(RelOverThread!=null) RelOverThread.join();
-			if(RelRigThread!=null) RelRigThread.join();
-			if(RelSpecThread!=null) RelSpecThread.join();
-			if(RepRelThread!=null) RepRelThread.join();
-			if(UndefFormalThread!=null) UndefFormalThread.join();
-			if(UndefPhaseThread!=null) UndefPhaseThread.join();
-			if(WholeOverThread!=null) WholeOverThread.join();
-		} catch (InterruptedException e) {				
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
+			AntiPatternSearchDialog dialog = new AntiPatternSearchDialog(parent);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+			dialog.setLocationRelativeTo(parent);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-	}
-	
-	public void interruptAll()
-	{
-		if(AssCycThread!=null)AssCycThread.interrupt();				
-		if(BinOverThread!=null) BinOverThread.interrupt();
-		if(DecIntThread!=null) DecIntThread.interrupt();
-		if(DepPhaseThread!=null) DepPhaseThread.interrupt();
-		if(FreeRoleThread!=null) FreeRoleThread.interrupt();
-		if(GSRigThread!=null) GSRigThread.interrupt();
-		if(HetCollThread!=null) HetCollThread.interrupt();
-		if(HomoFuncThread!=null) HomoFuncThread.interrupt();
-		if(ImpAbsThread!=null) ImpAbsThread.interrupt();
-		if(MixIdenThread!=null) MixIdenThread.interrupt();
-		if(MixRigThread!=null) MixRigThread.interrupt();
-		if(MultiDepThread!=null) MultiDepThread.interrupt();
-		if(PartOverThread!=null) PartOverThread.interrupt();
-		if(RelCompThread!=null) RelCompThread.interrupt();
-		if(RelOverThread!=null) RelOverThread.interrupt();
-		if(RelRigThread!=null) RelRigThread.interrupt();
-		if(RelSpecThread!=null) RelSpecThread.interrupt();
-		if(RepRelThread!=null) RepRelThread.interrupt();
-		if(UndefFormalThread!=null) UndefFormalThread.interrupt();
-		if(UndefPhaseThread!=null) UndefPhaseThread.interrupt();
-		if(WholeOverThread!=null) WholeOverThread.interrupt();
 	}
 	
 	/**
@@ -1640,4 +852,264 @@ public class AntiPatternSearchDialog extends JDialog {
 	    	AntiPatternResultDialog.openDialog(apList,frame);
 		}
 	}
+	
+	public void cleanResultlabels () {
+		for (JLabel label : lblResultList) 
+			label.setText("");
+	}
+		
+	public void showAllAntiPatternIconLabels(boolean b){
+		for (JButton ico : lblIcoList)
+			ico.setVisible(b);
+	}
+	
+	public void setPlainFontOnCheckboxes() {
+		for (JCheckBox cbx : cbxList)
+			cbx.setFont(new Font(cbx.getFont().getName(), Font.PLAIN, cbx.getFont().getSize()));	
+	}
+	
+	private void setSelectedCheckboxes(boolean b) {
+		for (JCheckBox cbx : cbxList)
+			if(cbx.isSelected()!=b)
+				cbx.setSelected(b);
+	}
+	
+	public int getTotalSelected()
+	{
+		int totalItemsSelected = 0;	
+		
+		for (JCheckBox cbx : cbxList) {
+			if(cbx.isSelected()) 
+				totalItemsSelected++;
+		}
+
+		return totalItemsSelected;
+	}
+	
+	public void interruptAll()
+	{
+		if(preTask!=null && !preTask.isDone())
+			preTask.cancel(true);
+		
+		for (AntipatternTask task : allTasks) {
+			if(task!=null && !task.isDone())
+					task.cancel(true);
+		}
+		
+		if(executor!=null && !executor.isShutdown()) 
+			executor.shutdownNow();
+	
+	}
+	
+	public void activateShowResult()
+	{
+		showButton.setEnabled(true);
+	}
+	
+	private void updateStatus(String s) {
+		progressBarDescr.setText(s);
+		Main.printOutLine(s);
+	}
+	
+	private void executeAntipattern(AntipatternTask task, Antipattern<?> antipattern, AntipatternInfo info, JLabel label, JCheckBox checkBox, 
+			int incrementalValue, CountDownLatch latch, ExecutorService executor, CountDownLatch preLatch) {
+		
+		task = new AntipatternTask(antipattern, info, label, checkBox, progressBar, progressBarDescr, incrementalValue, latch, preLatch);
+		allTasks.add(task);
+		
+		executor.execute(task);
+	}
+	
+	private class Supervisor extends SwingWorker<Void, Void> {
+
+        CountDownLatch latch;
+
+        public Supervisor(CountDownLatch latch) {
+            this.latch = latch;
+        }
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            latch.await();
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        	progressBar.setValue(100);
+        	progressBar.setIndeterminate(false);
+        	
+        	identifyButton.setEnabled(true);
+        	showButton.setEnabled(true);
+        	stopButton.setEnabled(false);
+        	
+        	updateStatus("Antipatterns: Completed! "+antipatternList.getAll().size()+" occurrence(s) found");
+    
+        }
+    }
+	
+	/**
+	 * Identifying AntiPatterns...
+	 * 
+	 * @param event
+	 */
+	public void IdentifyButtonActionPerformed(ActionEvent event)
+	{
+		updateStatus("Antipatterns: Interrupting current tasks...");
+		interruptAll();
+		int selected = getTotalSelected();
+		
+		if(selected == 0){
+			updateStatus("Antipatterns: No antipattern selected!");
+			return;
+		}
+		else{
+			updateStatus("Antipatterns: "+selected+" antipattern(s) selected.");
+		}
+		
+		try{
+		
+        	identifyButton.setEnabled(false);
+  			showButton.setEnabled(false);
+  			stopButton.setEnabled(true);
+  			cleanResultlabels();
+			setPlainFontOnCheckboxes();		
+			frame.focusOnOutput();							
+			progressBar.setValue(0);
+			progressBar.setIndeterminate(true);
+  			updateStatus("Antipatterns: Retrieving checked elements...");
+			
+  			final CountDownLatch preLatch = new CountDownLatch(1);
+  			
+			preTask = new SwingWorker<Void, Void>() {
+				
+				@Override
+				protected Void doInBackground() throws Exception {
+					frame.getDiagramManager().workingOnlyWithChecked();
+					return null;
+				}
+				
+				@Override
+				protected void done() {
+					preLatch.countDown();
+				}
+			};
+			preTask.execute();
+			
+			OntoUMLParser parser = frame.getBrowserManager().getProjectBrowser().getParser();
+			
+			if (parser.getElements() == null) 
+				return;
+									
+			 AssCycAntipattern assCyc = new AssCycAntipattern(parser); 	
+			 BinOverAntipattern binOver = new BinOverAntipattern(parser);		
+			 DepPhaseAntipattern depPhase = new DepPhaseAntipattern(parser);
+			 FreeRoleAntipattern freeRole = new FreeRoleAntipattern(parser);
+			 GSRigAntipattern gsRig = new GSRigAntipattern(parser);
+			 HetCollAntipattern hetColl = new HetCollAntipattern(parser);
+			 HomoFuncAntipattern homoFunc = new HomoFuncAntipattern(parser);
+			 ImpAbsAntipattern impAbs = new ImpAbsAntipattern(parser);
+			 MixIdenAntipattern mixIden = new MixIdenAntipattern(parser);
+			 MixRigAntipattern mixRig = new MixRigAntipattern(parser);
+			 MultiDepAntipattern multiDep = new MultiDepAntipattern(parser);
+			 RelCompAntipattern relComp = new RelCompAntipattern(parser);
+			 RelOverAntipattern relOver = new RelOverAntipattern(parser);
+			 RelRigAntipattern relRig = new RelRigAntipattern(parser);
+			 RelSpecAntipattern relSpec = new RelSpecAntipattern(parser);
+			 RepRelAntipattern repRel = new RepRelAntipattern(parser);
+			 UndefFormalAntipattern undefFormal = new UndefFormalAntipattern(parser);
+			 UndefPhaseAntipattern undefPhase = new UndefPhaseAntipattern(parser);
+			 WholeOverAntipattern wholeOver = new WholeOverAntipattern(parser);
+			 PartOverAntipattern partOver = new PartOverAntipattern(parser);
+			 DecIntAntipattern decInt = new DecIntAntipattern(parser);		
+			
+			incrementalValue=100;
+			
+			if(selected>1) 
+				incrementalValue=100/selected; 				
+			
+			allTasks.clear();
+			
+			 latch = new CountDownLatch(selected);
+             executor = Executors.newFixedThreadPool(4);
+			
+             
+			if (AssCycisSelected()) 
+				executeAntipattern(assCycTask, assCyc, AssCycAntipattern.getAntipatternInfo(), lblAssCycRes, cbxAssCyc, incrementalValue, latch, executor, preLatch);
+			
+			if (BinOverisSelected())
+				executeAntipattern(binOverTask, binOver, BinOverAntipattern.getAntipatternInfo(), lblBinOverRes, cbxBinOver, incrementalValue, latch, executor, preLatch);
+			
+			if (DepPhaseisSelected())
+				executeAntipattern(depPhaseTask, depPhase, DepPhaseAntipattern.getAntipatternInfo(), lblDepPhaseRes, cbxDepPhase, incrementalValue, latch, executor, preLatch);
+
+			if (freeRoleIsSelected())
+				executeAntipattern(freeRoleTask, freeRole, FreeRoleAntipattern.getAntipatternInfo(), lblFreeRoleRes, cbxFreeRole, incrementalValue, latch, executor, preLatch);
+
+			if (gsRigIsSelected())
+				executeAntipattern(gsRigTask, gsRig, GSRigAntipattern.getAntipatternInfo(), lblGSRigRes, cbxGSRig, incrementalValue, latch, executor, preLatch);
+
+			if (HetCollisSelected())
+				executeAntipattern(hetCollTask, hetColl, HetCollAntipattern.getAntipatternInfo(), lblHetCollRes, cbxHetColl, incrementalValue, latch, executor, preLatch);
+
+			if (HomoFuncisSelected())
+				executeAntipattern(homoFuncTask, homoFunc, HomoFuncAntipattern.getAntipatternInfo(), lblHomoFuncRes, cbxHomoFunc, incrementalValue, latch, executor, preLatch);
+
+			if (ImpAbsisSelected())
+				executeAntipattern(impAbsTask, impAbs, ImpAbsAntipattern.getAntipatternInfo(), lblImpAbsRes, cbxImpAbs, incrementalValue, latch, executor, preLatch);
+
+			if (MixIdenisSelected())
+				executeAntipattern(MixIdenTask, mixIden, MixIdenAntipattern.getAntipatternInfo(), lblMixIdenRes, cbxMixIden, incrementalValue, latch, executor, preLatch);
+
+			if (MixRigisSelected())
+				executeAntipattern(MixRigTask, mixRig, MixRigAntipattern.getAntipatternInfo(), lblMixRigRes, cbxMixRig, incrementalValue, latch, executor, preLatch);
+
+			if (MultiDepisSelected())
+				executeAntipattern(MultiDepTask, multiDep, MultiDepAntipattern.getAntipatternInfo(), lblMultiDepRes, cbxMultiDep, incrementalValue, latch, executor, preLatch);
+
+			if (RelCompisSelected())
+				executeAntipattern(RelCompTask, relComp, RelCompAntipattern.getAntipatternInfo(), lblRelCompRes, cbxRelComp, incrementalValue, latch, executor, preLatch);
+
+			if (RelOverisSelected())
+				executeAntipattern(RelOverTask, relOver, RelOverAntipattern.getAntipatternInfo(), lblRelOverRes, cbxRelOver, incrementalValue, latch, executor, preLatch);
+
+			if (RelRigisSelected())
+				executeAntipattern(RelRigTask, relRig, RelRigAntipattern.getAntipatternInfo(), lblRelRigRes, cbxRelRig, incrementalValue, latch, executor, preLatch);
+
+			if (RelSpecisSelected())
+				executeAntipattern(RelSpecTask, relSpec, RelSpecAntipattern.getAntipatternInfo(), lblRelSpecRes, cbxRelSpec, incrementalValue, latch, executor, preLatch);
+
+			if (RepRelisSelected())
+				executeAntipattern(RepRelTask, repRel, RepRelAntipattern.getAntipatternInfo(), lblRepRelRes, cbxRepRel, incrementalValue, latch, executor, preLatch);
+
+			if (UndefFormalisSelected())
+				executeAntipattern(UndefFormalTask, undefFormal, UndefFormalAntipattern.getAntipatternInfo(), lblUndefFormalRes, cbxUndefFormal, incrementalValue, latch, executor, preLatch);
+
+			if (UndefPhaseisSelected())
+				executeAntipattern(UndefPhaseTask, undefPhase, UndefPhaseAntipattern.getAntipatternInfo(), lblUndefPhaseRes, cbxUndefPhase, incrementalValue, latch, executor, preLatch);
+
+			if (WholeOverisSelected())
+				executeAntipattern(WholeOverTask, wholeOver, WholeOverAntipattern.getAntipatternInfo(), lblWholeOverRes, cbxWholeOver, incrementalValue, latch, executor, preLatch);
+
+			if (PartOverisSelected())
+				executeAntipattern(PartOverTask, partOver, PartOverAntipattern.getAntipatternInfo(), lblPartOverRes, cbxPartOver, incrementalValue, latch, executor, preLatch);
+
+			if (DecIntisSelected())
+				executeAntipattern(DecIntTask, decInt, DecIntAntipattern.getAntipatternInfo(), lblDecIntRes, cbxDecInt, incrementalValue, latch, executor, preLatch);
+
+			antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, mixIden,
+					   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver, partOver, decInt);
+			ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
+			
+			new Supervisor(latch).execute();
+				
+		
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(this,e.getMessage(),"Anti-Pattern Search",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
 }
