@@ -1,9 +1,8 @@
-#summary Table of Contents
+#summary Welcome
 #labels OLED
+
+=== Table of Contents ===
 
 <ul>
 <li>[EnterpriseArchitect Enterprise Architect]</li>
-<li>[transformation Transformation]</li>
-<li>[develop Developing]</li>
-<li>[eclipse Eclipse]</li>
 </ul>
