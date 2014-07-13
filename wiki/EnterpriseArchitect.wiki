@@ -1,4 +1,4 @@
-#summary How to install, access , create diagrams and export OntoUML models using the Enterprise Architect EA.
+#summary Learn how to use OntoUML in the Enterprise Architect (EA) version 10.
 #labels OntoUML,Enterprise,EA,MDG,Technology,Architect
 
 *Install OntoUML*
