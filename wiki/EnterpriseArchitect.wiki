@@ -3,13 +3,13 @@
 
 OLED support models designed in the Enterprise Architect version 10 i.e. you can import EA models into the OLED tool. 
 
-First, we explain how to install, access and use OntoUML in the Enterprise Architect and latter explain how you can export your EA model to benefit from all our tool capabilities such as simulation and model checking, semantic anti-patterns identification, transformations to OWL, SBVR and so on. Here a screenshot of the Enterprise Architect with OntoUML.
+First, we explain how to install, access and use OntoUML in the Enterprise Architect and latter  how you can export your EA model and benefit from all our tool capabilities such as simulation and model checking, semantic anti-patterns identification, transformations to OWL, SBVR and so on. Here is a screenshot of the Enterprise Architect with OntoUML.
 
 <g:plusone size="medium"></g:plusone>
 
 https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png 
 
-*Installing...*
+*Installation*
 
 Step-by-step:
 
@@ -27,7 +27,7 @@ Step-by-step:
 
   * Start the Enterprise Architect EA
 
-*Accessing...*
+*Access*
 
 Step-by-step:
 
@@ -39,19 +39,19 @@ Step-by-step:
  
   * If the option _OntoUML_ does not appear in the Model Wizard windows, go to: _Settings -> MDG Technologies_, locate _OntoUML_, select the checkbox, and later click _OK_.
 
-*Creating diagrams...*
+*Diagrams*
 
 Step-by-step:
 
   * To create OntoUML diagrams, just click into a folder in the Project Browser and do: _Right Click on the Package/Folder -> Add -> Add Diagram… -> OntoUML_.
 
-*Activating the toolbox...*
+*Toolbox*
 
 Step-by-step:
 
   * To activate the OntoUML Toolbox, if is not already activated, go to _Diagram-> Diagram Toolbox.
 
-*Exporting model as a XMI file...*
+*Exportation*
 
 Step-by-step:
 
