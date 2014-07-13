@@ -21,14 +21,13 @@
  */
 package br.ufes.inf.nemo.oled.explorer;
 
-import java.text.Normalizer;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Generalization;
 import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 /**
  * @author John Guerson
@@ -50,15 +49,15 @@ public class OntoUMLElement {
 	{
 		this.element = refElement;
 		
-		if (refElement instanceof NamedElement) 
-		{
-			this.name = ((NamedElement)refElement).getName();
+		if (refElement instanceof NamedElement) {
+			NamedElement ne = (NamedElement) refElement;
+			if(ne.getName()==null)
+				name = "";
+			else
+				name = ne.getName();
 		}
 		if (refElement!=null){
-			type = refElement.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-		    type = type.replaceAll("Impl","");
-		    type = Normalizer.normalize(type, Normalizer.Form.NFD);	
-		    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
+			type = OntoUMLNameHelper.getTypeName(refElement);
 		}
 		if(refElement==null){
 			type = "";
@@ -111,7 +110,7 @@ public class OntoUMLElement {
 		
 		if (element instanceof RefOntoUML.Classifier)
 		{
-			return type +" "+ ((NamedElement)element).getName();
+			return ((NamedElement)element).getName()+" ("+OntoUMLNameHelper.getTypeName(element, true)+")";
 		}
 		
 		if (element instanceof RefOntoUML.Comment)

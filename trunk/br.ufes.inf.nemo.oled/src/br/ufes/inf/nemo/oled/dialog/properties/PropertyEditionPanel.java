@@ -25,7 +25,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,8 +44,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import org.eclipse.emf.ecore.EObject;
-
 import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.Characterization;
@@ -54,6 +51,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
@@ -333,11 +331,11 @@ public class PropertyEditionPanel extends JPanel {
 		lblType = new JLabel("Type:");
 		
 		typeCombo = new JComboBox();
-		typeCombo.setFocusable(false);
-		
-		if (property.getType()!=null){
-			typeCombo.setModel(new DefaultComboBoxModel(new String[] {property.getType().getName()}));
-		}
+
+//USELESS: model is set later
+//		if (property.getType()!=null){
+//			typeCombo.setModel(new DefaultComboBoxModel(new String[] {property.getType().getName()}));
+//		}
 		
 		GroupLayout gl_mainPanel = new GroupLayout(mainPanel);
 		gl_mainPanel.setHorizontalGroup(
@@ -373,16 +371,7 @@ public class PropertyEditionPanel extends JPanel {
 		
 		setPreferredSize(new Dimension(456, 241));
 	}
-	
-	public static String getStereotype(EObject element)
-	{
-		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
-	    return type;
-	}
-		
+			
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void setInitialData()
 	{
@@ -419,9 +408,10 @@ public class PropertyEditionPanel extends JPanel {
 		String str = new String();
     	int i=0;    	
     	for(Property p: property.getSubsettedProperty())
-    	{    		
-    		if (i==property.getSubsettedProperty().size()-1) str += "<"+getStereotype(p)+"> "+p.getName()+": "+p.getType().getName()+"";
-    		else str += "<"+getStereotype(p)+"> "+p.getName()+": "+p.getType().getName()+", ";    		
+    	{    
+    		str += OntoUMLNameHelper.getNameAndType(p, false);
+    		if (i<property.getSubsettedProperty().size()-1) 
+    			str+=", ";    		
     		i++;
     	}	
 		subsettedText.setText(str);
@@ -430,8 +420,9 @@ public class PropertyEditionPanel extends JPanel {
     	i=0;    	
     	for(Property p: property.getRedefinedProperty())
     	{    		
-    		if (i==property.getRedefinedProperty().size()-1) str += "<"+getStereotype(p)+"> "+p.getName()+": "+p.getType().getName()+"";
-    		else str += "<"+getStereotype(p)+"> "+p.getName()+": "+p.getType().getName()+", ";    		
+    		str += OntoUMLNameHelper.getNameAndType(p, false);
+    		if (i<property.getRedefinedProperty().size()-1) 
+    			str+=", ";    		
     		i++;
     	}	
 		redefinedText.setText(str);		
