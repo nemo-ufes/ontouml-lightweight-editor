@@ -3,14 +3,16 @@ package br.ufes.inf.nemo.antipattern.wizard.relrig;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import RefOntoUML.Mediation;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 /**
  * @author Tiago Sales
@@ -23,17 +25,14 @@ public class RelRigSecondPage extends RelRigPage {
 	//GUI
 	public Button btnYes;
 	public Button btnNo;
+	private Label label;
+	private Composite composite;
 	
 	/**
 	 * Create the wizard.
 	 */
 	public RelRigSecondPage(RelRigOccurrence relRig, int rigid) {
 		super(relRig,rigid);
-		
-		String text = relRig.getOntoUMLParser().getStringRepresentation(rigidType);
-		int n = (rigid+1);		
-		setTitle("Rigid Type #"+n+": "+text);
-		setDescription("2/4");
 	}
 
 	/**
@@ -42,30 +41,60 @@ public class RelRigSecondPage extends RelRigPage {
 	 */
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
-
 		setControl(container);
+		setPageComplete(false);
 		
-		StyledText styledText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL);
-		styledText.setEditable(false);
+		StyledText styledText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
+		styledText.setAlwaysShowScrollBars(false);
+		styledText.setJustify(true);
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		styledText.setText("Is it always necessary for an instance of "+rigidType.getName()+" to be connected to an instance of "+relRig.getRelator().getName()+"?");
-		styledText.setBounds(10, 10, 554, 71);
-		
-		SelectionAdapter listener = new SelectionAdapter() {
-		      public void widgetSelected(SelectionEvent e) {
-		        if (isPageComplete()==false) setPageComplete(true);
-		      }
-		    };
+		styledText.setText(	"Is it always necessary for an instance of "+OntoUMLNameHelper.getTypeAndName(rigidType, true, true)+
+							" to be connected to an instance of "+OntoUMLNameHelper.getTypeAndName(occurrence.getRelator(), true, true)+"?");
 		
 		btnYes = new Button(container, SWT.RADIO);
 		btnYes.setText("Yes");
-		btnYes.setBounds(10, 87, 554, 16);
-		btnYes.addSelectionListener(listener);
+		setAsEnablingNextPageButton(btnYes);
 		
 		btnNo = new Button(container, SWT.RADIO);
 		btnNo.setText("No");
-		btnNo.setBounds(10, 111, 554, 16);
-		btnNo.addSelectionListener(listener);
+		setAsEnablingNextPageButton(btnNo);
+		
+		label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
+		
+		composite = new RigidMediatedComposite(container, SWT.NONE, rigidEnd, rigid+1, occurrence.getRigidMediatedProperties().size());
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(styledText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(btnYes, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(btnNo, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE))
+					.add(10))
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, composite, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, label, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnYes)
+					.add(8)
+					.add(btnNo)
+					.add(18)
+					.add(label, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(composite, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(30, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 	}	
 	
 	@Override
@@ -76,13 +105,13 @@ public class RelRigSecondPage extends RelRigPage {
 			
 		else if(btnNo.getSelection()){			
 
-			RelRigAction newAction = new RelRigAction(relRig);
+			RelRigAction newAction = new RelRigAction(occurrence);
 			newAction.setAddRoleSubtype(rigidType,(Mediation) rigidEnd.getAssociation());
-			getRelRigWizard().replaceAction(rigid,newAction);
+			getAntipatternWizard().replaceAction(rigid,newAction);
 			
 			//=============================
 									
-			if(rigid < relRig.getRigidMediatedProperties().size()-1)
+			if(rigid < occurrence.getRigidMediatedProperties().size()-1)
 				return ((RelRigWizard)getWizard()).getFirstPage(rigid+1);				
 			else{								
 				return ((RelRigWizard)getWizard()).getFinishing();

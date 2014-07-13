@@ -3,14 +3,15 @@ package br.ufes.inf.nemo.antipattern.wizard.relspec;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 /**
  * @author Tiago Sales
@@ -23,6 +24,8 @@ public class RelSpecSecondPage extends RelSpecPage {
 	//GUI
 	public Button btnYes;
 	public Button btnNo;
+	private AssociationComposite group;
+	private Label label;
 	
 	/**
 	 * Create the wizard.
@@ -30,7 +33,7 @@ public class RelSpecSecondPage extends RelSpecPage {
 	public RelSpecSecondPage(RelSpecOccurrence relSpec) 
 	{
 		super(relSpec);
-		setDescription("Associations: "+relSpec.getParser().getStringRepresentation(relSpec.getGeneral())+" and "+relSpec.getParser().getStringRepresentation(relSpec.getSpecific()));
+		setDescription("Associations: "+OntoUMLNameHelper.getTypeAndName(relSpec.getGeneral(), true, true)+" and "+OntoUMLNameHelper.getTypeAndName(relSpec.getSpecific(), true, true));	
 	}
 
 	/**
@@ -39,43 +42,79 @@ public class RelSpecSecondPage extends RelSpecPage {
 	 */
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
-
 		setControl(container);
+		
+		setPageComplete(false);
 		
 		StyledText styledText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL);
 		styledText.setMarginColor(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		styledText.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		
 		String question =
-			"General-Relation: <<"+OutcomeFixer.getStereotype(relSpec.getSpecific())+">> "+relSpec.getGeneral().getMemberEnd().get(0).getType().getName()+"->"+relSpec.getGeneral().getMemberEnd().get(1).getType().getName()+"\n"+
-			"Specific-Relation: <<"+OutcomeFixer.getStereotype(relSpec.getSpecific())+">> "+relSpec.getSpecific().getMemberEnd().get(0).getType().getName()+"->"+relSpec.getSpecific().getMemberEnd().get(1).getType().getName()+"\n\n"+
-									
-			"By your previous answer, we conclude that there is a missing restriction in your model. Specific-Relation either subsets or redefines General-Relation. "+
+			"By your previous answer, we conclude that there is a missing restriction in your model. The CHILD association either subsets or redefines the PARENT association. "+
 			"To figure out which restriction should be added, answer the following question: "+
-			"\n\nMust an instance 'x' of "+relSpec.getSpecificSource().getName()+" (or an instance 'y' of "+relSpec.getSpecificTarget().getName()+") be connected to exactly the same instances by General-Relation and Specific-Relation?"; 
+			"\n\n" +
+			"Must an instance 'x' of "+OntoUMLNameHelper.getTypeAndName(occurrence.getAlignedSpecificSource(), true, true)+" (or an instance 'y' of "+OntoUMLNameHelper.getTypeAndName(occurrence.getAlignedSpecificTarget(),true,true)+
+			") be connected to exactly the same instances by CHILD and the PARENT associations?"; 
 		  
 		styledText.setText(question);
-
 		styledText.setEditable(false);
-		styledText.setBounds(10, 10, 554, 155);
-		
-		SelectionAdapter listener = new SelectionAdapter() {
-	      public void widgetSelected(SelectionEvent e) {
-	        if (isPageComplete()==false) setPageComplete(true);
-	      }
-	    };
-		    
-	    setPageComplete(false);
-		    
+		styledText.setJustify(true);
+		styledText.setAlwaysShowScrollBars(false);
+			    
 		btnYes = new Button(container, SWT.RADIO);
-		btnYes.setBounds(10, 171, 163, 16);
 		btnYes.setText("Yes (Redefinition)");
-		btnYes.addSelectionListener(listener);
+		setAsEnablingNextPageButton(btnYes);
 		
 		btnNo = new Button(container, SWT.RADIO);
 		btnNo.setText("No (Subsetting)");
-		btnNo.setBounds(10, 193, 163, 16);
-		btnNo.addSelectionListener(listener);		
+		setAsEnablingNextPageButton(btnNo);
+		
+		group = new AssociationComposite(container, SWT.NONE,occurrence);
+		
+		label = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
+		
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.TRAILING)
+				.add(gl_container.createSequentialGroup()
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(10)
+							.add(styledText, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+						.add(gl_container.createSequentialGroup()
+							.addContainerGap()
+							.add(btnYes)))
+					.add(10))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(btnNo, GroupLayout.PREFERRED_SIZE, 163, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(400, Short.MAX_VALUE))
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(label, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(group, GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(styledText, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnYes)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(btnNo)
+					.add(40)
+					.add(label, GroupLayout.PREFERRED_SIZE, 2, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(group, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(1, Short.MAX_VALUE))
+		);
+		container.setLayout(gl_container);
 	}
 	
 	@Override
@@ -83,26 +122,26 @@ public class RelSpecSecondPage extends RelSpecPage {
 		
 		if(btnNo.getSelection()) {
 			// Action =====================
-			RelSpecAction newAction = new RelSpecAction(relSpec);
+			RelSpecAction newAction = new RelSpecAction(occurrence);
 			newAction.setSubset();
 			
-			getRelSpecWizard().replaceAction(0,newAction);
+			getAntipatternWizard().replaceAction(0,newAction);
 						
-			return getRelSpecWizard().getFinishing(); 
+			return getAntipatternWizard().getFinishing(); 
 		}
 			
 		else if(btnYes.getSelection()){			
 			
 			//CONDITION
-			if(relSpec.isVariation4() || relSpec.isVariation5())
-				return getRelSpecWizard().getThirdPage();
+			if(occurrence.isVariation4() || occurrence.isVariation5())
+				return getAntipatternWizard().getThirdPage();
 			else{
 				// Action =====================
-				RelSpecAction newAction = new RelSpecAction(relSpec);
+				RelSpecAction newAction = new RelSpecAction(occurrence);
 				newAction.setRedefine();
-				getRelSpecWizard().replaceAction(0,newAction);
+				getAntipatternWizard().replaceAction(0,newAction);
 				
-				return getRelSpecWizard().getFinishing();
+				return getAntipatternWizard().getFinishing();
 			}
 		}
 		return super.getNextPage();

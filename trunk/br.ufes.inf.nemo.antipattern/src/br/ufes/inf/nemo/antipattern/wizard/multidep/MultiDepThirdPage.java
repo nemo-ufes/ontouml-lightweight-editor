@@ -121,7 +121,7 @@ public class MultiDepThirdPage  extends MultiDepPage {
 		
 		lblNewLabel_1 = new Label(container, SWT.WRAP | SWT.RIGHT);
 		lblNewLabel_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		lblNewLabel_1.setText("Each line indicate the need to specify a new formal relation between the relators. Please remember to define the appropriate name and multiplicities.");
+		lblNewLabel_1.setText("Each line indicate the need to specify a new formal relation between the relators. Please remember to define the appropriate name and multiplicities after completing this wizard.");
 		
 		removeButton = new Button(container, SWT.NONE);
 		removeButton.setText("Remove");
@@ -130,7 +130,7 @@ public class MultiDepThirdPage  extends MultiDepPage {
 		
 		GroupLayout gl_container = new GroupLayout(container);
 		gl_container.setHorizontalGroup(
-			gl_container.createParallelGroup(GroupLayout.TRAILING)
+			gl_container.createParallelGroup(GroupLayout.LEADING)
 				.add(gl_container.createSequentialGroup()
 					.addContainerGap()
 					.add(yesRadio, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
@@ -139,18 +139,18 @@ public class MultiDepThirdPage  extends MultiDepPage {
 					.addContainerGap()
 					.add(noRadio, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
 					.add(9))
-				.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
+				.add(gl_container.createSequentialGroup()
 					.addContainerGap()
 					.add(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
 					.addContainerGap())
 				.add(gl_container.createSequentialGroup()
 					.add(10)
-					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
-						.add(GroupLayout.LEADING, table, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
-						.add(GroupLayout.LEADING, lblNewLabel, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
-						.add(GroupLayout.LEADING, gl_container.createSequentialGroup()
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(table, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(lblNewLabel, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+						.add(gl_container.createSequentialGroup()
 							.add(lblPleaseUseThe, GroupLayout.PREFERRED_SIZE, 386, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(LayoutStyle.RELATED, 35, Short.MAX_VALUE)
+							.addPreferredGap(LayoutStyle.RELATED, 55, Short.MAX_VALUE)
 							.add(removeButton)
 							.addPreferredGap(LayoutStyle.RELATED)
 							.add(addButton, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)))
@@ -175,9 +175,9 @@ public class MultiDepThirdPage  extends MultiDepPage {
 								.add(addButton)
 								.add(removeButton))))
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(table, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+					.add(table, GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+					.add(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
 		);
 		container.setLayout(gl_container);
 		

@@ -16,6 +16,7 @@ import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelRigOccurrence extends AntipatternOccurrence {
@@ -116,18 +117,18 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 		
 		String result;
 
-		result = super.parser.getStringRepresentation(this.relator)+
+		result =OntoUMLNameHelper.getTypeAndName(this.relator, true, false)+
 				"\nRigid Mediated Types:";
 		
 		for (Property p : this.rigidMediatedProperties) {
-			result += "\n\t"+super.parser.getStringRepresentation(p);
+			result += "\n\t"+OntoUMLNameHelper.getNameTypeAndMultiplicity(p, true, false, true, true, false);
 		}
 		
 		result += "\nOther Mediated Types:";
 		
 		for (Property p : this.allMediatedProperties){
 			if (!this.rigidMediatedProperties.contains(p))
-				result += "\n\t"+super.parser.getStringRepresentation(p);
+				result += "\n\t"+OntoUMLNameHelper.getNameTypeAndMultiplicity(p, true, false, true, true, false);
 		}
 		
 		return result;

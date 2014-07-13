@@ -3,8 +3,8 @@ package br.ufes.inf.nemo.antipattern.wizard.multidep;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.TableEditor;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -96,10 +96,11 @@ public class MultiDepComboTable extends Table{
 		item.setText(0, Integer.toString(getItemCount()));
 		
 		TableEditor editor = new TableEditor(this);
-		Combo combo = new Combo(this, SWT.NONE);
+		CCombo combo = new CCombo(this, SWT.NONE);
 		for(Property p: properties){
 			combo.add(p.getType().getName());
 		}
+		combo.setEditable(false);
 		combo.pack();
 		combo.select(0);
 		//editor.minimumWidth = combo.getSize().x;
@@ -109,10 +110,11 @@ public class MultiDepComboTable extends Table{
 		item.setData(DEPENDER_COMBO_EDITOR,editor);
 		
 		editor = new TableEditor(this);
-		combo = new Combo(this, SWT.NONE);
+		combo = new CCombo(this, SWT.NONE);
 		for(Property p: properties){
 			combo.add(p.getType().getName());
 		}
+		combo.setEditable(false);
 		combo.select(1);
 		combo.pack();
 		editor.grabHorizontal = true;
@@ -137,12 +139,12 @@ public class MultiDepComboTable extends Table{
 	private ArrayList<Property> getSelected(TableItem ti){
 		ArrayList<Property> line = new ArrayList<Property>();
 		
-		Combo combo = (Combo) ((TableEditor) ti.getData(DEPENDER_COMBO_EDITOR)).getEditor();
+		CCombo combo = (CCombo) ((TableEditor) ti.getData(DEPENDER_COMBO_EDITOR)).getEditor();
 		int index = combo.getSelectionIndex();
 		if(index!=-1)
 			line.add(properties.get(index));
 		
-		combo = (Combo) ((TableEditor) ti.getData(DEPENDEE_COMBO_EDITOR)).getEditor();
+		combo = (CCombo) ((TableEditor) ti.getData(DEPENDEE_COMBO_EDITOR)).getEditor();
 		index = combo.getSelectionIndex();
 		if(index!=-1)
 			line.add(properties.get(index));

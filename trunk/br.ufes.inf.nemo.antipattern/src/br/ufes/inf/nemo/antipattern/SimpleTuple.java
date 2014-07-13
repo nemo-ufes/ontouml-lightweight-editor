@@ -37,4 +37,13 @@ public class SimpleTuple<T,S>{
 		return second;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof SimpleTuple){
+			SimpleTuple<?,?> tuple = (SimpleTuple<?, ?>)obj;
+			return tuple.first.equals(first) && tuple.second.equals(second);
+		}
+		return false;
+	}
+	
 }

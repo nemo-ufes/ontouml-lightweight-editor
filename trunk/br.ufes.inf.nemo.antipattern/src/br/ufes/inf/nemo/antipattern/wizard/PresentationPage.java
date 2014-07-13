@@ -70,11 +70,12 @@ public class PresentationPage extends WizardPage {
 		
 		btnGoWizard = new Button(container, SWT.RADIO);
 		btnGoWizard.setText("use the step-by-step wizard?");
-		btnGoWizard.setSelection(true);
+		
 		
 		btnGoOptions = new Button(container, SWT.RADIO);
 		btnGoOptions.setText("go directly to the refactoring options?");
-				
+		btnGoOptions.setSelection(true);
+		
 		combinationText = new StyledText(container, SWT.BORDER | SWT.V_SCROLL | SWT.READ_ONLY | SWT.MULTI | SWT.WRAP);
 		combinationText.setText(elements);
 		

@@ -46,11 +46,11 @@ public class DecIntAntipattern extends Antipattern<DecIntOccurrence> {
 	@Override
 	public ArrayList<DecIntOccurrence> identify(){
 		Set<Class> allClasses = parser.getAllInstances(Class.class);
-		int size = allClasses.size();
-		int i = 0;
+//		int size = allClasses.size();
+//		int i = 0;
 		for (Class c : allClasses) {
-			i++;
-			System.out.println(info.acronym+": "+c.getName()+" ("+i+" of "+size+")");
+//			i++;
+//			System.out.println(info.acronym+": "+c.getName()+" ("+i+" of "+size+")");
 			if(c instanceof SubstanceSortal || c instanceof MixinClass)
 				continue;
 			
