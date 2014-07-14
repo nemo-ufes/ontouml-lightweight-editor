@@ -265,8 +265,10 @@ public class ClassDialog extends JDialog{
 		commentsEdition.transferCommentsData();
 		attributesEdition.transferAttributesData();		
 		constraintsEdition.transferConstraintsData();
+		classEdition.transferClassData();				
 		if(getStereotype(element).compareTo((String) classEdition.stereoCombo.getSelectedItem())!=0)
+		{
 			diagramManager.changeClassStereotype(element, (String) classEdition.stereoCombo.getSelectedItem());
-		classEdition.transferClassData();
+		}
 	}
 }
