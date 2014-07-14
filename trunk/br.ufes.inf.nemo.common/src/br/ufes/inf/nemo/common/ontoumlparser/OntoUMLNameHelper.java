@@ -66,7 +66,7 @@ public class OntoUMLNameHelper {
 		if(elem instanceof Mode)
 			return "Mode";
 		if(elem instanceof PrimitiveType)
-			return "Primitive Type";
+			return "PrimitiveType";
 		if(elem instanceof Enumeration)
 			return "Enumeration";
 		if(elem instanceof DataType)
@@ -104,7 +104,7 @@ public class OntoUMLNameHelper {
 		
 		if(elem instanceof Property){
 			if(((Property) elem).getAssociation() instanceof Association)
-				return "Association End";
+				return "AssociationEnd";
 			else
 				return "Attribute";
 		}
@@ -116,9 +116,9 @@ public class OntoUMLNameHelper {
 			return "Constraint";
 		
 		if(elem instanceof EnumerationLiteral)
-			return "Enum Literal";
+			return "EnumLiteral";
 		
-		return "Unknown Type";
+		return "UnknownType";
 	}
 	
 	public static String getTypeName(EObject elem, boolean addGuillemets){

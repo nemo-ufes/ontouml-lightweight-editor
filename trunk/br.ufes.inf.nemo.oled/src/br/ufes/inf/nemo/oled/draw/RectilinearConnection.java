@@ -25,6 +25,7 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import br.ufes.inf.nemo.oled.draw.GeometryUtil.Orientation;
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 
 /**
  * This class implements a connection that is constructed and drawn in
@@ -36,7 +37,15 @@ public class RectilinearConnection extends AbstractConnection {
 
 	private static final long serialVersionUID = -1969143695568555407L;
 	protected Point2D node1ConnectPoint = null, node2ConnectPoint = null;
-
+	private UmlConnection owner;
+	
+	public UmlConnection getOwnerConnection() { return owner; }
+	
+	public RectilinearConnection (UmlConnection owner)
+	{
+		this.owner = owner;	
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

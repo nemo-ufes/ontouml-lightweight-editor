@@ -26,6 +26,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
+
 /**
  * This class implements a simple connection which simply consists of a
  * sequence of connected points. It can be either drawn dashed or as a
@@ -37,6 +39,15 @@ public class SimpleConnection extends AbstractConnection {
 
   private static final long serialVersionUID = -8016036142125462914L;
 
+  private UmlConnection owner;
+	
+  public UmlConnection getOwnerConnection() { return owner; }
+  
+  public SimpleConnection (UmlConnection owner)
+  {
+	this.owner = owner;	
+  }
+	
   /**
    * Constructor.
    */

@@ -21,7 +21,6 @@
  */
 package br.ufes.inf.nemo.oled.util;
 
-import java.text.MessageFormat;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -71,6 +70,7 @@ import RefOntoUML.impl.MediationImpl;
 import RefOntoUML.impl.MeronymicImpl;
 import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.impl.RefOntoUMLPackageImpl;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.explorer.OntoUMLElement;
@@ -528,7 +528,7 @@ public class ModelHelper {
 				name = namedElement.getName();
 		}
 		
-		return MessageFormat.format("{0} ({1})", name, getClassAsStereotype((EObject) element));
+		return OntoUMLNameHelper.getTypeName((EObject) element,true)+" "+name;
 	}
 	
 	public static String getClassAsStereotype(EObject eObject) {

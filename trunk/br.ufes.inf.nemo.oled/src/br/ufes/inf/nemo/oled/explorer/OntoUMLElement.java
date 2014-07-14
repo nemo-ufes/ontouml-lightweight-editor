@@ -110,7 +110,7 @@ public class OntoUMLElement {
 		
 		if (element instanceof RefOntoUML.Classifier)
 		{
-			return ((NamedElement)element).getName()+" ("+OntoUMLNameHelper.getTypeName(element, true)+")";
+			return OntoUMLNameHelper.getTypeName(element, true)+" "+((NamedElement)element).getName();
 		}
 		
 		if (element instanceof RefOntoUML.Comment)
@@ -136,7 +136,7 @@ public class OntoUMLElement {
 		    
 		    String result = new String();
 		    
-		    result += "Generalization Set" + " " + ((NamedElement)element).getName() + " ";
+		    result += "GeneralizationSet" + " " + ((NamedElement)element).getName() + " ";
 		   
 		    if (genset.parent()!=null){
 		    	result += "{ ";
@@ -169,7 +169,7 @@ public class OntoUMLElement {
 			if (lower == -1) lowerString = "*";
 			if (upper == -1) upperString = "*";
 						 
-			return type+" "+TypeName+" ("+name+")"+" ["+lowerString+","+upperString+"]";			
+			return type+" "+name+"("+TypeName+")"+" ["+lowerString+","+upperString+"]";			
 		}
 		
 		if (element instanceof RefOntoUML.Package && !(element instanceof RefOntoUML.Model))
