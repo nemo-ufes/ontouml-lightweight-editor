@@ -104,7 +104,7 @@ public class BaseConnection implements UmlConnection, Adapter {
 				cloned.relationship.eAdapters().add(cloned);
 			}
 			if (connection != null) {
-				cloned.connection = (Connection) connection.clone();
+				cloned.connection = (Connection) connection.clone();				
 			}
 		} catch (CloneNotSupportedException ignore) {
 			ignore.printStackTrace();

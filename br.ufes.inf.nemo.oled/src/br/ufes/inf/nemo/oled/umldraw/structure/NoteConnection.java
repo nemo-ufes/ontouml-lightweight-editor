@@ -46,7 +46,7 @@ public final class NoteConnection extends BaseConnection {
 	 * Constructor.
 	 */
 	private NoteConnection() {
-		setConnection(new SimpleConnection());
+		setConnection(new SimpleConnection(this));
 		setIsDashed(true);
 	}
 
