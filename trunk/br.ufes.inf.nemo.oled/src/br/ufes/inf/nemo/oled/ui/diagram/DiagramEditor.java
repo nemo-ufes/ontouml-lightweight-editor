@@ -124,6 +124,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 	private AppFrame frame;
 	private DiagramManager diagramManager;
+	private DiagramEditorWrapper wrapper;
 	
 	private transient DrawingContext drawingContext = new DrawingContextImpl();
 	private transient EditorMode editorMode;
@@ -191,6 +192,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		scaling = Scaling.SCALING_100;
 	}
 	
+	public void setWrapper(DiagramEditorWrapper wrapper)
+	{
+		this.wrapper = wrapper;
+	}
 	/** Empty constructor for testing. Do not use !  */
 	public DiagramEditor() { }
 
@@ -596,11 +601,15 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		{
             if (e.getWheelRotation() < 0)
             {
-            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) zoomIn();
+            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) {
+            		zoomIn();            		
+            	}
             }
             if (e.getWheelRotation() > 0)
             {
-            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) zoomOut();
+            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) {
+            		zoomOut();            		
+            	}
             }
 		}
 	}
@@ -754,9 +763,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 */
 	public void setScaling(Scaling aScaling) 
 	{
-		scaling = aScaling;		
-		revalidate();
-		repaint();
+		scaling = aScaling;	
+		setPreferredSize(new Dimension((int)(getWidth()*scaling.getScaleFactor()),(int)(getHeight()*scaling.getScaleFactor())));
+		wrapper.getScrollPane().updateUI();
 	}
 		
 	public String getZoomPercentualValue()

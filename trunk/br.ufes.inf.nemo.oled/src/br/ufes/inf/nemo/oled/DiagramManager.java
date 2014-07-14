@@ -954,6 +954,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ModelHelper.addMapping(editor.getDiagram());
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
+		editor.setWrapper(wrapper);
 		addClosable(diagram.getLabelText(), wrapper);		
 		return editor;
 	}
