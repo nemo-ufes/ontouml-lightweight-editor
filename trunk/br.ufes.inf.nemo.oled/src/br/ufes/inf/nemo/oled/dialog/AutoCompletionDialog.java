@@ -39,7 +39,6 @@ import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 
 /**
@@ -88,7 +87,7 @@ public class AutoCompletionDialog extends JDialog {
 	{
 		if (rbAllAncestors.isSelected())
 		{
-			if (ProjectBrowser.getProjectBrowserFor(frame,project)==null) return;       		    	
+			if (frame.getProjectBrowser()==null) return;       		    	
 		   	String msg = frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.ALL_ANCESTORS,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
 	   			frame,msg,"All ancestors",JOptionPane.INFORMATION_MESSAGE	   			
@@ -96,7 +95,7 @@ public class AutoCompletionDialog extends JDialog {
 		}
 		if (rbAllAncestorsDescendants.isSelected())
 		{
-			if (ProjectBrowser.getProjectBrowserFor(frame,project)==null) return;       		    	
+			if (frame.getProjectBrowser()==null) return;       		    	
 		   	String msg = frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.COMPLETE_HIERARCHY,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
 	   			frame,msg,"All ancestors and descendants",JOptionPane.INFORMATION_MESSAGE	   			
@@ -104,7 +103,7 @@ public class AutoCompletionDialog extends JDialog {
 		}
 		if (rbAllAncestorsUntil.isSelected())
 		{
-			if (ProjectBrowser.getProjectBrowserFor(frame,project)==null) return;       		    	
+			if (frame.getProjectBrowser()==null) return;       		    	
 		   	String msg = frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.SORTAL_ANCESTORS,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
 	   			frame,msg,"All ancestors until a Substance Sortal",JOptionPane.INFORMATION_MESSAGE	   			
@@ -112,7 +111,7 @@ public class AutoCompletionDialog extends JDialog {
 		}
 		if (rbAllDescendants.isSelected())
 		{
-			if (ProjectBrowser.getProjectBrowserFor(frame,project)==null) return;       		    	
+			if (frame.getProjectBrowser()==null) return;       		    	
 		   	String msg = frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.ALL_DESCENDANTS,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
 	   			frame,msg,"All descendants",JOptionPane.INFORMATION_MESSAGE	   			
@@ -120,7 +119,7 @@ public class AutoCompletionDialog extends JDialog {
 		}
 		if (rbMandatory.isSelected())
 		{
-			if (ProjectBrowser.getProjectBrowserFor(frame,project)==null) return;       		    	
+			if (frame.getProjectBrowser()==null) return;       		    	
 		   	String msg = frame.getDiagramManager().autoCompleteSelection(OntoUMLParser.NO_HIERARCHY,project);       	   				    	
 	   		JOptionPane.showMessageDialog(
 	   			frame,msg,"Only mandatory dependencies",JOptionPane.INFORMATION_MESSAGE	   			

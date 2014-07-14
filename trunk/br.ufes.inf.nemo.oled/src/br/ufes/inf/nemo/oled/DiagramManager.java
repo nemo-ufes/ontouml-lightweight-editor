@@ -306,14 +306,34 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return list;
 	}
 
-	/** Select this diagram editor */
-	public void selectEditor(Editor editor)
+	/** Select the tab which contains this editor */
+	public void select(Editor editor)
 	{		
 		for(Component c: getComponents()){
 			if(c instanceof DiagramEditorWrapper) {
 				if(((DiagramEditorWrapper) c).getDiagramEditor().equals(editor)) setSelectedComponent(c);
 			}else{
 				if(c.equals(editor)) setSelectedComponent(c);
+			}
+		}		
+	}
+
+	/** Select the tab which constains this diagram */
+	public void select(StructureDiagram diagram)
+	{		
+		for(Component c: getComponents()){
+			if(c instanceof DiagramEditorWrapper) {
+				if(((DiagramEditorWrapper) c).getDiagramEditor().getDiagram().equals(diagram)) setSelectedComponent(c);
+			}
+		}		
+	}
+	
+	/** Select the tab which contains this ocl document */
+	public void select(OCLDocument oclDoc)
+	{		
+		for(Component c: getComponents()){
+			if(c instanceof ConstraintEditor) {
+				if(((ConstraintEditor) c).getOCLDocument().equals(oclDoc)) setSelectedComponent(c);
 			}
 		}		
 	}
@@ -551,7 +571,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		saveDiagramNeeded(diagram,false);
 		createDiagramEditor(diagram);		
 		//add the diagram from the browser
-		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, project);
+		ProjectBrowser browser = frame.getProjectBrowser();
 		browser.getTree().addObject(browser.getTree().getDiagramRootNode(),diagram);
 	}
 
@@ -559,12 +579,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void newOCLDocument(UmlProject project)
 	{
 		OCLDocument oclDoc = new OCLDocument();
-		ArrayList<OCLDocument> docs = ProjectBrowser.getOCLDocuments(project);			
+		ArrayList<OCLDocument> docs = frame.getBrowserManager().getProjectBrowser().getOCLDocuments();			
 		oclDoc.setName("Document"+docs.size());			
 		docs.add(oclDoc);
 		createConstraintEditor(oclDoc);		
 		//add the ocl document from the browser
-		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, project);
+		ProjectBrowser browser = frame.getProjectBrowser();
 		browser.getTree().addObject(browser.getTree().getConstraintRootNode(),oclDoc);
 	}
 	
@@ -579,7 +599,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			saveDiagramNeeded(diagram,true);
 			createDiagramEditor(diagram);			
 			//add the diagram from the browser
-			ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
+			ProjectBrowser browser = frame.getProjectBrowser();
 			browser.getTree().addObject(browser.getTree().getDiagramRootNode(),diagram);			
 		}
 	}
@@ -590,12 +610,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (currentProject!=null)
 		{
 			OCLDocument oclDoc = new OCLDocument();			
-			ArrayList<OCLDocument> docs = ProjectBrowser.getOCLDocuments(currentProject);			
+			ArrayList<OCLDocument> docs = frame.getBrowserManager().getProjectBrowser().getOCLDocuments();			
 			oclDoc.setName("Document"+docs.size());			
 			docs.add(oclDoc);
 			createConstraintEditor(oclDoc);				
 			//add the ocl document from the browser
-			ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
+			ProjectBrowser browser = frame.getProjectBrowser();
 			browser.getTree().addObject(browser.getTree().getConstraintRootNode(),oclDoc);	
 		}
 	}
@@ -617,7 +637,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}		
 		//remove the diagram from the browser
-		ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
+		ProjectBrowser browser = frame.getProjectBrowser();
 		browser.getTree().removeCurrentNode();
 	}
 
@@ -648,7 +668,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public ArrayList<String> getOCLDocumentNames()
 	{
 		ArrayList<String> result = new ArrayList<String>();
-		for(OCLDocument d: ProjectBrowser.getOCLDocuments(currentProject)){
+		for(OCLDocument d: frame.getBrowserManager().getProjectBrowser().getOCLDocuments()){
 			result.add(d.getName());			
 		}
 		return result;
@@ -869,7 +889,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			for(DiagramEditor editor: getDiagramEditors()){
 				currentProject.saveAsOpened(editor.getDiagram());
 			}			
-			result = ProjectWriter.getInstance().writeProject(this, file, currentProject, ProjectBrowser.getOCLDocuments(currentProject));		
+			result = ProjectWriter.getInstance().writeProject(this, file, currentProject, frame.getBrowserManager().getProjectBrowser().getOCLDocuments());		
 			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
 			getCurrentProject().setName(file.getName().replace(".oled",""));
 			getFrame().getBrowserManager().getProjectBrowser().refreshTree();
@@ -1102,10 +1122,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		elements.removeAll(added);
 		elements.addAll(added);
 		//check in the tree the selected elements of the parser
-		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
-		modeltree.getTree().check(elements, true);					
-		modeltree.getTree().updateUI();	
-		ProjectBrowser pb = frame.getBrowserManager().getProjectBrowser();
+		ProjectBrowser pb = frame.getProjectBrowser();
+		pb.getTree().check(elements, true);					
+		pb.getTree().updateUI();		
 		pb.setParser(refparser);
 	}
 
@@ -1145,13 +1164,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}		
 		}			
 		//complete missing/mandatory dependencies on the parser
-		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();				
+		OntoUMLParser refparser = frame.getProjectBrowser().getParser();				
 		refparser.selectThisElements((ArrayList<EObject>)elements,true);
 		List<EObject> added = refparser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY,false);
 		elements.removeAll(added);
 		elements.addAll(added);
 		//check in the tree the selected elements of the parser
-		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);
+		ProjectBrowser modeltree = frame.getProjectBrowser();
 		modeltree.getTree().check(elements, true);					
 		modeltree.getTree().updateUI();		
 		ProjectBrowser pb = frame.getBrowserManager().getProjectBrowser();
@@ -1167,8 +1186,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void workingOnlyWithChecked()
 	{
-		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
-		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);			
+		OntoUMLParser refparser = frame.getProjectBrowser().getParser();
+		ProjectBrowser modeltree = frame.getProjectBrowser();			
 		List<EObject> selected = modeltree.getTree().getModelCheckedElements();
 		refparser.selectThisElements((ArrayList<EObject>)selected,true);		
 		List<EObject> added = refparser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY,false);		
@@ -1188,12 +1207,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void workingWithAll()
 	{
-		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
-		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, currentProject);			
-		modeltree.getTree().checkModelElement(currentProject.getModel());
+		OntoUMLParser refparser = frame.getProjectBrowser().getParser();
+		ProjectBrowser pb = frame.getProjectBrowser();			
+		pb.getTree().checkModelElement(currentProject.getModel());
 		refparser.selectAllElements();		
-		modeltree.getTree().updateUI();
-		ProjectBrowser pb = frame.getBrowserManager().getProjectBrowser();
+		pb.getTree().updateUI();		
 		pb.setParser(refparser);
 	}
 	
@@ -1455,7 +1473,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	
 	//======================================================================
 	//
-	//             THE CODE ABOVE IS CORRECTLY REVIWED BY JOHN
+	//             THE CODE ABOVE WAS REVIWED BY JOHN
 	//              NOW, I NEED TO REVIEW THESE ONES BELOW....
 	//======================================================================
 	//======================================================================
@@ -1816,7 +1834,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
    		association.getMemberEnd().clear();	
    		association.getMemberEnd().add(target);
    		association.getMemberEnd().add(source);   		
-   		ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, currentProject).getTree();
+   		ProjectTree tree = frame.getProjectBrowser().getTree();
    		tree.checkModelElement(source);
    		tree.removeCurrentNode();
    		tree.checkModelElement(association);
@@ -1838,7 +1856,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				// add to the parser
 				frame.getBrowserManager().getProjectBrowser().getParser().addElement(addedElement);		
 				// add to the tree
-				ProjectTree tree = ProjectBrowser.getProjectBrowserFor(ProjectBrowser.frame, project).getTree();
+				ProjectTree tree = frame.getProjectBrowser().getTree();
 				boolean found = tree.checkModelElement(addedElement);
 				if(!found) {
 					if(addedElement.eContainer()!=null) tree.checkModelElement(addedElement.eContainer());
@@ -1988,7 +2006,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				// delete from the parser
 				frame.getBrowserManager().getProjectBrowser().getParser().removeElement(deletedElement);							
 				// delete from the tree
-				ProjectBrowser browser = ProjectBrowser.getProjectBrowserFor(frame, currentProject);		
+				ProjectBrowser browser = frame.getProjectBrowser();		
 				browser.getTree().remove(deletedElement);
 			}
 		});
@@ -2007,7 +2025,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			deleteFromOLED((RefOntoUML.Element)obj,false);				
 		}
 		for(String str: fix.getAddedRules()){
-			ProjectBrowser.getOCLDocuments(currentProject).get(0).addContent(str);		
+			frame.getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(str);		
 		}
 		return ;
 	}
@@ -2031,9 +2049,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		//parse TOCL
 		parseConstraints(false);
-		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
+		TOCL2AlloyOption oclOptions = frame.getProjectBrowser().getOCLOption();
 		//configure a default ontouml2alloy option
-		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
+		OntoUML2AlloyOptions refOptions = frame.getProjectBrowser().getOntoUMLOption();
 		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
 		refOptions.check(refparser);
 		// open settings
@@ -2045,7 +2063,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public String getWorkingConstraints()
 	{
 		String result = new String();
-		for(OCLDocument oclmodel: ProjectBrowser.getOCLDocuments(getCurrentProject()))
+		for(OCLDocument oclmodel: frame.getBrowserManager().getProjectBrowser().getOCLDocuments())
 		{				
 			ConstraintEditor ce = getConstraintEditor(oclmodel);
 			if(ce!=null) result+=ce.getText();
@@ -2065,7 +2083,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if (name==null || name.isEmpty()) name = "model";
 			TOCLParser toclparser = new TOCLParser(refparser,getCurrentProject().getTempDir()+File.separator,name.toLowerCase());
 			toclparser.parseTemporalOCL(getWorkingConstraints());			
-			ProjectBrowser.setOCLOptionsFor(getCurrentProject(), new TOCL2AlloyOption(toclparser));
+			frame.getProjectBrowser().setOCLOption(new TOCL2AlloyOption(toclparser));
 			String msg =  "Constraints are syntactically correct.\n";
 			if(showSuccesfullyMessage) frame.showSuccessfulMessageDialog("Parsing Constraints",msg);			
 		}catch(SemanticException e2){
@@ -2089,10 +2107,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		runOntoUML2Alloy();
 		runTOCL2Alloy();
 		
-		if (ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject()).openAnalyzer) openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),true, -1);
-		else openAnalyzer(ProjectBrowser.getAlloySpecFor(getCurrentProject()),false, 0);	
+		if (frame.getProjectBrowser().getOntoUMLOption().openAnalyzer) openAnalyzer(frame.getProjectBrowser().getAlloySpec(),true, -1);
+		else openAnalyzer(frame.getProjectBrowser().getAlloySpec(),false, 0);	
 		
-		String umlpath = ProjectBrowser.getAlloySpecFor(getCurrentProject()).getAlloyPath().replace(".als", ".uml");
+		String umlpath = frame.getProjectBrowser().getAlloySpec().getAlloyPath().replace(".als", ".uml");
 		File umlfile = new File(umlpath);
 		umlfile.deleteOnExit();		
 	}
@@ -2100,12 +2118,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** Run transformation from OntoUML into Alloy */
 	public void runOntoUML2Alloy()
 	{
-		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
-		OntoUML2AlloyOptions refOptions = ProjectBrowser.getOntoUMLOptionsFor(getCurrentProject());
+		OntoUMLParser refparser = frame.getProjectBrowser().getParser();
+		OntoUML2AlloyOptions refOptions = frame.getProjectBrowser().getOntoUMLOption();
 		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }
 		try {			
 			// transforming...
-			ProjectBrowser.getAlloySpecFor(getCurrentProject()).setAlloyModel(refparser,refOptions);
+			frame.getProjectBrowser().getAlloySpec().setAlloyModel(refparser,refOptions);
 		} catch (Exception e) {
 			frame.showErrorMessageDialog("Transforming OntoUML into Alloy",e.getLocalizedMessage());					
 			e.printStackTrace();
@@ -2116,8 +2134,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void runTOCL2Alloy()
 	{
 		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();		
-		TOCL2AlloyOption oclOptions = ProjectBrowser.getOCLOptionsFor(getCurrentProject());
-		AlloySpecification alloySpec = ProjectBrowser.getAlloySpecFor(getCurrentProject());
+		TOCL2AlloyOption oclOptions = frame.getProjectBrowser().getOCLOption();
+		AlloySpecification alloySpec = frame.getProjectBrowser().getAlloySpec();
 		if (refparser==null) { frame.showErrorMessageDialog("Error","Inexistent model. You need to first create an OLED project."); return; }
 		if (oclOptions.getParser()==null) { /*frame.showErrorMessageDialog("Error","Inexistent constraints. You need to first create constraints.");*/  return; }
 		try {						
@@ -2182,12 +2200,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute(new Runnable(){        	
 					@Override
 					public void run() {
-						Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);						
+						Fix fix = frame.getProjectBrowser().getAssistant().runPattern(elem);						
 						if(fix != null) updateOLED(fix);
 					}
 				});
 			}else{
-				final Fix fix = ProjectBrowser.getAssistantFor(getCurrentProject()).runPattern(elem);
+				final Fix fix = frame.getProjectBrowser().getAssistant().runPattern(elem);
 				if(fix != null){
 					SwingUtilities.invokeLater(new Runnable() {						
 						@Override
@@ -2234,8 +2252,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public String autoCompleteSelection(int option, UmlProject project)
 	{		
-		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
-		ProjectBrowser modeltree = ProjectBrowser.getProjectBrowserFor(frame, project);
+		OntoUMLParser refparser = frame.getProjectBrowser().getParser();
+		ProjectBrowser modeltree = frame.getProjectBrowser();
 
 		if (refparser==null) { return ""; }	
 

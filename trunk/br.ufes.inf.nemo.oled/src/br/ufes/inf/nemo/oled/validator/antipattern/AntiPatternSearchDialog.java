@@ -846,12 +846,12 @@ public class AntiPatternSearchDialog extends JDialog {
 			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
 				@Override
 				public void run() {
-			    	AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+			    	AntiPatternList apList = frame.getProjectBrowser().getAntiPatternList();
 			    	AntiPatternResultDialog.openDialog(apList,frame);
 				}
 			});
 		}else{
-			AntiPatternList apList = ProjectBrowser.getAntiPatternListFor(ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+			AntiPatternList apList = frame.getProjectBrowser().getAntiPatternList();
 	    	AntiPatternResultDialog.openDialog(apList,frame);
 		}
 	}
@@ -1107,7 +1107,7 @@ public class AntiPatternSearchDialog extends JDialog {
 
 			antipatternList = new AntiPatternList (assCyc, binOver, depPhase, freeRole, gsRig, hetColl, homoFunc, impAbs, mixIden,
 					   mixRig, multiDep, relComp, relOver, relRig, relSpec, repRel, undefFormal, undefPhase, wholeOver, partOver, decInt);
-			ProjectBrowser.setAntiPatternListFor(frame.getDiagramManager().getCurrentProject(),antipatternList);
+			frame.getProjectBrowser().setAntiPatternList(antipatternList);
 			
 			new Supervisor(latch).execute();
 				
