@@ -41,6 +41,7 @@ import javax.swing.border.EtchedBorder;
 import org.jdesktop.swingx.MultiSplitLayout;
 import org.jdesktop.swingx.MultiSplitPane;
 
+import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
 import br.ufes.inf.nemo.oled.util.IconLoader;
 import br.ufes.inf.nemo.oled.util.MethodCall;
@@ -133,6 +134,10 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		//this.getContentPane().add(mainToolBar.getToolbar(), BorderLayout.NORTH);
 	}
 
+	public ProjectBrowser getProjectBrowser(){
+		return browserManager.getProjectBrowser();
+	}
+	
 	public BrowserManager getBrowserManager() {
 		return browserManager;
 	}

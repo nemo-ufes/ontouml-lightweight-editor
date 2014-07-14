@@ -81,9 +81,10 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		if (parent instanceof ClassElement) 
 		{
 			Classifier element = (((ClassElement)parent).getClassifier());
-						
+			
+			ProjectBrowser pb = ProjectBrowser.frame.getBrowserManager().getProjectBrowser();						
 			// replace all references in constraints
-			for(OCLDocument oclDoc: ProjectBrowser.getOCLDocuments(ProjectBrowser.frame.getDiagramManager().getCurrentProject()))
+			for(OCLDocument oclDoc: pb.getOCLDocuments())
 			{
 				String currentConstraints = oclDoc.getContent();
 				String newConstraints = currentConstraints.replaceAll(oldName,text);
@@ -131,8 +132,9 @@ public class SetLabelTextCommand extends BaseDiagramCommand {
 		{
 			Classifier element = (((ClassElement)parent).getClassifier());
 						
+			ProjectBrowser pb = ProjectBrowser.frame.getBrowserManager().getProjectBrowser();
 			// replace all references in constraints
-			for(OCLDocument oclDoc: ProjectBrowser.getOCLDocuments(ProjectBrowser.frame.getDiagramManager().getCurrentProject()))
+			for(OCLDocument oclDoc: pb.getOCLDocuments())
 			{
 				String currentConstraints = oclDoc.getContent();
 				String newConstraints = currentConstraints.replaceAll(text,oldText);

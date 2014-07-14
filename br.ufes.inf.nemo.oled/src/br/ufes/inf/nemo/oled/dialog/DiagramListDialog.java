@@ -134,7 +134,7 @@ public class DiagramListDialog extends JDialog {
 		            if (!frame.getDiagramManager().isDiagramOpened(de.getDiagram())) {
 		            	frame.getDiagramManager().createDiagramEditor(de.getDiagram());
 		            }else{
-		            	frame.getDiagramManager().selectEditor(de);
+		            	frame.getDiagramManager().select(de);
 		            }
 		        } else if (evt.getClickCount() == 3) { // Triple-click
 		            int index = list.locationToIndex(evt.getPoint());
@@ -142,7 +142,7 @@ public class DiagramListDialog extends JDialog {
 		            if (!frame.getDiagramManager().isDiagramOpened(de.getDiagram())) {
 		            	frame.getDiagramManager().createDiagramEditor(de.getDiagram());
 		            }else{
-		            	frame.getDiagramManager().selectEditor(de);
+		            	frame.getDiagramManager().select(de);
 		            }
 		        }
 		    }

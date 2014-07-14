@@ -23,7 +23,6 @@ package br.ufes.inf.nemo.oled.explorer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +46,6 @@ import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.model.InferenceList;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.UmlProject;
-import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
@@ -77,35 +75,10 @@ public class ProjectBrowser extends JPanel{
 	private TOCL2AlloyOption oclOptions;	
 	private ModellingAssistant assistant;
 		
-	public void addTreeSelectionListener(TreeSelectionListener selectionListener)
-	{
+	public void addTreeSelectionListener(TreeSelectionListener selectionListener) {
 		tree.addTreeSelectionListener(selectionListener);
 	}	
 	
-	public ProjectTree getTree() 
-	{
-		return tree;
-	}
-
-	public OntoUMLParser getParser()
-	{
-		return refparser;
-	}
-	public void setParser(OntoUMLParser refparser)
-	{
-		this.refparser = refparser;
-	}
-	
-	public UmlProject getProject() 
-	{
-		return project;
-	}
-	
-	public ArrayList<OCLDocument> getOCLDocuments() 
-	{ 
-		return oclDocList; 
-	}
-
 	public ProjectBrowser(AppFrame appframe, UmlProject project, OCLDocument oclDoc)
 	{
 		super(new BorderLayout());
@@ -123,6 +96,32 @@ public class ProjectBrowser extends JPanel{
 		scroll.setPreferredSize(new Dimension(200,250));
 		setPreferredSize(new Dimension(216, 317));
 	}
+	
+	public void refreshTree()
+	{				
+		tree.updateUI();				
+		validate();
+		repaint();		
+	}
+	
+	public void clear()
+	{
+		this.project = null;
+		this.refparser=null;
+		this.oclDocList.clear();
+		JPanel emptyTempPanel = new JPanel();
+		emptyTempPanel.setBackground(Color.WHITE);
+		emptyTempPanel.setBorder(new EmptyBorder(0,0, 0, 0));
+		scroll.setViewportView(emptyTempPanel);		
+		emptyTempPanel.setPreferredSize(new Dimension(200,250));		
+		updateUI();
+	}
+	
+	public OntoUMLParser getParser() { return refparser; }
+	public void setParser(OntoUMLParser refparser) { this.refparser = refparser; }
+	public ArrayList<OCLDocument> getOCLDocuments(){ return oclDocList; }
+	public UmlProject getProject(){ return project; }	
+	public ProjectTree getTree() { return tree; }
 	
 	public void setProject(UmlProject project)
 	{
@@ -165,117 +164,40 @@ public class ProjectBrowser extends JPanel{
 		this.repaint();
 	}
 	
-	public void clear()
-	{
-		this.project = null;
-		this.refparser=null;
-		this.oclDocList.clear();
-		JPanel emptyTempPanel = new JPanel();
-		emptyTempPanel.setBackground(Color.WHITE);
-		emptyTempPanel.setBorder(new EmptyBorder(0,0, 0, 0));
-		scroll.setViewportView(emptyTempPanel);		
-		emptyTempPanel.setPreferredSize(new Dimension(200,250));		
-		updateUI();
-	}
+	public AlloySpecification getAlloySpec() { return alloySpec; }
+	public void setAlloySpec(AlloySpecification alloySpec) { this.alloySpec = alloySpec; }
+	
+	public TOCL2AlloyOption getOCLOption() { return oclOptions; }
+	public void setOCLOption(TOCL2AlloyOption oclOptions) { this.oclOptions = oclOptions; }
+	
+	public OntoUML2AlloyOptions getOntoUMLOption() { return refOptions; }
+	public void setOntoUMLOption(OntoUML2AlloyOptions refOptions) { this.refOptions = refOptions; }
+	
+	public AntiPatternList getAntiPatternList() { return antipatterns; }
+	public void setAntiPatternList(AntiPatternList antipatterns) { this.antipatterns = antipatterns; }
+	
+	public ModellingAssistant getAssistant() { return assistant; }	
+	
+	public InferenceList getInferences() { return inferences; }	
+	public void setInferences(InferenceList inferences) {this.inferences = inferences; }
 		
-	public static ProjectBrowser getProjectBrowserFor(AppFrame frame, UmlProject project) 
-	{
-		ProjectBrowser browser = treeMap.get(project);
-		if(browser == null){
-			browser = new ProjectBrowser(frame, project,null);
-			treeMap.put(project, browser);			
-		}
-		return browser;
-	}
-			
-	public static AlloySpecification getAlloySpecFor(UmlProject project) 
-	{		
-		return ProjectBrowser.getProjectBrowserFor(frame,project).alloySpec;
-	}
-	
-	public static void setAlloySpecFor(UmlProject project, AlloySpecification alloySpec) 
-	{		
-		ProjectBrowser.getProjectBrowserFor(frame,project).alloySpec = alloySpec;
-	}
-		
-	public static ArrayList<OCLDocument> getOCLDocuments(UmlProject project)
-	{
-		return ProjectBrowser.getProjectBrowserFor(frame,project).oclDocList;
-	}
-		
-	public static void setOCLOptionsFor(UmlProject project, TOCL2AlloyOption oclOptions)
-	{
-		ProjectBrowser.getProjectBrowserFor(frame,project).oclOptions = oclOptions;
-	}
-	
-	public static TOCL2AlloyOption getOCLOptionsFor(UmlProject project)
-	{
-		return ProjectBrowser.getProjectBrowserFor(frame,project).oclOptions;
-	}
-
-	public static OntoUML2AlloyOptions getOntoUMLOptionsFor(UmlProject project)
-	{
-		return ProjectBrowser.getProjectBrowserFor(frame,project).refOptions;
-	}
-
-	public static void setOntoUMLOptionsFor(UmlProject project, OntoUML2AlloyOptions refOptions)
-	{
-		ProjectBrowser.getProjectBrowserFor(frame,project).refOptions = refOptions;
-	}
-	
-	public static AntiPatternList getAntiPatternListFor(UmlProject project)
-	{
-		return ProjectBrowser.getProjectBrowserFor(frame,project).antipatterns;
-	}
-
-	public static void setAntiPatternListFor(UmlProject project, AntiPatternList antipatterns)
-	{
-		ProjectBrowser.getProjectBrowserFor(frame,project).antipatterns = antipatterns;
-	}
-	
-	public static ModellingAssistant getAssistantFor(UmlProject project)
-	{
-		return ProjectBrowser.getProjectBrowserFor(frame,project).assistant;
-	}	
-	
-	public static InferenceList getInferences(UmlProject project) {
-		return ProjectBrowser.getProjectBrowserFor(frame,project).inferences;
-	}
-
-	
-	public static void setDerivations(UmlProject project, InferenceList inferences) {
-		ProjectBrowser.getProjectBrowserFor(frame,project).inferences = inferences;
-	}
-	
-	public void refreshTree()
-	{				
-		tree.updateUI();				
-		validate();
-		repaint();		
-	}
-	
 	class ProjectTreeSelectionListener implements TreeSelectionListener 
-	 {
+	{
 		@Override
 		public void valueChanged(TreeSelectionEvent e) 
 		{
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath().getLastPathComponent();
 			if(node!=null)
-			{
-				if (node.getUserObject() instanceof OntoUMLElement){
-					
-				}
-				else if (node.getUserObject()!=null && node.getParent() != null && (node.getUserObject() instanceof StructureDiagram) && !(((DefaultMutableTreeNode)node.getParent()).getUserObject() instanceof UmlProject))
+			{				
+				if (node.getUserObject()!=null && node.getParent() != null && (node.getUserObject() instanceof StructureDiagram) && !(((DefaultMutableTreeNode)node.getParent()).getUserObject() instanceof UmlProject))
 				{
-					 StructureDiagram diagram = ((StructureDiagram)node.getUserObject());
-					 for(Component c: frame.getDiagramManager().getComponents())
-					 {
-						 if (c instanceof DiagramEditorWrapper){
-							 if (((DiagramEditorWrapper)c).getDiagram().equals(diagram)) frame.getDiagramManager().setSelectedComponent(c);
-						 }
-					 }
+					frame.getDiagramManager().select((StructureDiagram)node.getUserObject());
+				}
+				else if(node.getUserObject()!=null && node.getParent() != null && (node.getUserObject() instanceof OCLDocument) && (((DefaultMutableTreeNode)node.getParent()).getUserObject() instanceof OCLDocument))
+				{					
+					frame.getDiagramManager().select((OCLDocument)node.getUserObject());
 				}
 			}
 		}		
-	 }
+	}
 }

@@ -439,7 +439,7 @@ public class DerivedTypesOperations {
 					if(!(refontoList.get(pos2).eClass().getName().equals("Role") && (refontoList.get(pos).eClass().getName().equals("Kind")) ))
 					{
 						String rule="\n context: _'"+((Classifier) refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+name+"')";
-						ProjectBrowser.getOCLDocuments(dm.getCurrentProject()).get(0).addContent(rule);						
+						dm.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);						
 					}	
 					//String rule="context: "
 					if(stereotypes.size()==1)
@@ -846,7 +846,7 @@ public class DerivedTypesOperations {
 		
 		if(rule){
 			String rule_ocl= "context World \n  temp:_'"+namederived+"'.allInstances(self)->forAll( wk | self.allPrevious()->exists(w | wk.oclIsKindOf(_'"+namespecial+"',w)) and not wk.oclIsKindOf("+namespecial+",self))" ;
-			ProjectBrowser.getOCLDocuments(dman.getCurrentProject()).get(0).addContent(rule_ocl);
+			dman.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule_ocl);
 		}
 		
 		dman2.updateOLED(mainfix);	

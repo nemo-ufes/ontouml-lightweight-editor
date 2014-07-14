@@ -35,7 +35,6 @@ import javax.swing.JPanel;
 
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.dialog.properties.ConstraintSimulationPanel;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
@@ -167,7 +166,7 @@ public class AlloySettingsDialog extends JDialog {
 		ontoumlOptions.weakSupplementation = modelSimulationPanel.isSelectedWeakSupplementation();
 		ontoumlOptions.relatorConstraint = modelSimulationPanel.isSelectedRelatorConstraint();			    	
 		
-		ProjectBrowser.setOntoUMLOptionsFor(frame.getDiagramManager().getCurrentProject(),ontoumlOptions);
+		frame.getProjectBrowser().setOntoUMLOption(ontoumlOptions);
 				
 		TOCL2AlloyOption oclOptions = new TOCL2AlloyOption(toclparser);		
 		oclOptions.setTransformationType(constraintSimulationPanel.getTransformationsTypesListSelected());
@@ -176,7 +175,7 @@ public class AlloySettingsDialog extends JDialog {
     	oclOptions.setWorldScope(constraintSimulationPanel.getWorldScopeListSelected());
 		oclOptions.setConstraintList(constraintSimulationPanel.getConstraintListSelected());
     	
-    	ProjectBrowser.setOCLOptionsFor(frame.getDiagramManager().getCurrentProject(), oclOptions);
+		frame.getProjectBrowser().setOCLOption(oclOptions);
 		  
 //    	dispose();
     
