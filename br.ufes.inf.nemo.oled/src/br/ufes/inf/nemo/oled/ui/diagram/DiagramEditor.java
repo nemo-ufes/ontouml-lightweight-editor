@@ -1298,13 +1298,13 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void setLineStyle(UmlConnection connection, LineStyle style)
 	{
 		if(style == LineStyle.RECTILINEAR){
-			execute(new ConvertConnectionTypeCommand(this, connection, new RectilinearConnection()));
+			execute(new ConvertConnectionTypeCommand(this, connection, new RectilinearConnection(connection)));
 		} else if (style == LineStyle.DIRECT) {
-			execute(new ConvertConnectionTypeCommand(this, connection, new SimpleConnection()));
+			execute(new ConvertConnectionTypeCommand(this, connection, new SimpleConnection(connection)));
 		} else if (style == LineStyle.TREESTYLE_VERTICAL) {
-			execute(new ConvertConnectionTypeCommand(this, connection, new TreeConnection(true)));
+			execute(new ConvertConnectionTypeCommand(this, connection, new TreeConnection(connection,true)));
 		} else if (style == LineStyle.TREESTYLE_HORIZONTAL) {
-			execute(new ConvertConnectionTypeCommand(this, connection, new TreeConnection(false)));
+			execute(new ConvertConnectionTypeCommand(this, connection, new TreeConnection(connection,false)));
 		}
 	}
 
@@ -1315,7 +1315,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		{
 			if(dElem instanceof UmlConnection){
 				UmlConnection conn = (UmlConnection) dElem;
-				execute(new ConvertConnectionTypeCommand(this, conn, new RectilinearConnection()));
+				execute(new ConvertConnectionTypeCommand(this, conn, new RectilinearConnection(conn)));
 			}
 		}		
 		// we can only tell the selection handler to forget about the selection
@@ -1329,7 +1329,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		{
 			if(dElem instanceof UmlConnection){
 				UmlConnection conn = (UmlConnection) dElem;
-				execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection(true)));
+				execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection(conn,true)));
 			}
 		}		
 		// we can only tell the selection handler to forget about the selection
@@ -1343,7 +1343,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		{
 			if(dElem instanceof UmlConnection){
 				UmlConnection conn = (UmlConnection) dElem;
-				execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection(false)));
+				execute(new ConvertConnectionTypeCommand(this, conn, new TreeConnection(conn,false)));
 			}
 		}		
 		// we can only tell the selection handler to forget about the selection
@@ -1477,10 +1477,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 				if(notificationType == NotificationType.DO) sb.append("navegability set"); else sb.append(" set navegability");
 				break;
 			case CONNECTION_TYPE_CONVERTED:
-				if(notificationType == NotificationType.DO) sb.append("connnection type changed"); else sb.append(" change connnection type");
+				if(notificationType == NotificationType.DO) sb.append("connnection type converted"); else sb.append(" convert connnection type");
 				break;
 			case CONNECTION_POINT_EDITED:
-				if(notificationType == NotificationType.DO) sb.append("connection point changed"); else sb.append(" change connnection point");
+				if(notificationType == NotificationType.DO) sb.append("connection point edited"); else sb.append(" edit connnection point");
 				break;
 			case CONNECTION_POINTS_RESET:
 				if(notificationType == NotificationType.DO) sb.append("connection points reset"); else sb.append(" reset connection points");
@@ -1491,13 +1491,17 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			default:
 				break;	
 		}
-		sb.append(" : ");
+		sb.append(": ");
 		for (int i = 0; i < elements.size(); i++) 
 		{
 			DiagramElement element = elements.get(i);
 			if(element instanceof ClassElement) sb.append(ModelHelper.handleName(((ClassElement)element).getClassifier()) + (i < elements.size()-1 ? ", " : ""));
-			else if(element instanceof BaseConnection) sb.append(ModelHelper.handleName(((BaseConnection)element).getRelationship()) + (i < elements.size()-1 ? ", " : ""));
-			else if (element instanceof SimpleLabel || element instanceof AssociationLabel) sb.append(((Label) element).getSource().getLabelText());
+			if(element instanceof BaseConnection) sb.append(ModelHelper.handleName(((BaseConnection)element).getRelationship()) + (i < elements.size()-1 ? ", " : ""));			
+			if(element instanceof RectilinearConnection) {
+				if(element instanceof AssociationElement) sb.append(ModelHelper.handleName(((AssociationElement)element).getRelationship()) + (i < elements.size()-1 ? ", " : ""));
+				if(element instanceof GeneralizationElement) sb.append(ModelHelper.handleName(((GeneralizationElement)element).getRelationship()) + (i < elements.size()-1 ? ", " : ""));
+			}
+			if (element instanceof SimpleLabel || element instanceof AssociationLabel) sb.append(((Label) element).getSource().getLabelText());			
 		}
 		frame.getDiagramManager().showStatus(this,capitalize(sb.toString()));
 	}

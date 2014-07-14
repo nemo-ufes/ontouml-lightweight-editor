@@ -98,7 +98,7 @@ public final class GeneralizationElement extends BaseConnection {
 	 * Private constructor.
 	 */
 	private GeneralizationElement() {
-		setConnection(new RectilinearConnection());
+		setConnection(new RectilinearConnection(this));
 		setIsDashed(false);
 		setupNameLabel();
 	}

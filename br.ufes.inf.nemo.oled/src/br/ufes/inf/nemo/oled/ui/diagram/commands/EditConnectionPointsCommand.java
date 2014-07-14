@@ -25,8 +25,15 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.draw.RectilinearConnection;
+import br.ufes.inf.nemo.oled.draw.SimpleConnection;
+import br.ufes.inf.nemo.oled.draw.TreeConnection;
+import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
 
@@ -60,15 +67,25 @@ public class EditConnectionPointsCommand extends BaseDiagramCommand {
 	public void run() {
 		oldpoints = clonePointList(connection.getPoints());
 		connection.setPoints(newpoints);
+		
 		if(connection.getConnections()!=null){
 			for(Connection c : connection.getConnections()){
 				c.resetPoints();
 			}
 		}			
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		elements.add(connection);
-		notification.notifyChange(elements, ChangeType.CONNECTION_POINT_EDITED, redo ? NotificationType.REDO : NotificationType.DO);
-
+		
+		if(connection instanceof RectilinearConnection) elements.add(((RectilinearConnection)connection).getOwnerConnection());
+		if(connection instanceof SimpleConnection) elements.add(((SimpleConnection)connection).getOwnerConnection());
+		if(connection instanceof TreeConnection) elements.add(((TreeConnection)connection).getOwnerConnection());
+		
+		DiagramEditor d = ((DiagramEditor)notification);
+		//notify
+		if (d!=null) {
+			d.notifyChange((List<DiagramElement>) elements, ChangeType.CONNECTION_POINT_EDITED, redo ? NotificationType.REDO : NotificationType.DO);			
+			UndoableEditEvent event = new UndoableEditEvent(((DiagramEditor)d), this);
+			for (UndoableEditListener l : ((DiagramEditor)d).editListeners)  l.undoableEditHappened(event);			
+		}
 	}
 
 	/**
@@ -93,7 +110,11 @@ public class EditConnectionPointsCommand extends BaseDiagramCommand {
 		connection.setPoints(oldpoints);
 		
 		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		elements.add(connection);
+		
+		if(connection instanceof RectilinearConnection) elements.add(((RectilinearConnection)connection).getOwnerConnection());
+		if(connection instanceof SimpleConnection) elements.add(((SimpleConnection)connection).getOwnerConnection());
+		if(connection instanceof TreeConnection) elements.add(((TreeConnection)connection).getOwnerConnection());
+		
 		notification.notifyChange(elements, ChangeType.CONNECTION_POINT_EDITED, NotificationType.UNDO);
 	}
 

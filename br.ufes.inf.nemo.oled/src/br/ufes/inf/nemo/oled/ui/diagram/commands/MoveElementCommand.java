@@ -32,7 +32,6 @@ import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.MoveNodeOperation;
 import br.ufes.inf.nemo.oled.draw.MoveOperation;
 import br.ufes.inf.nemo.oled.draw.Node;
-import br.ufes.inf.nemo.oled.draw.TranslateConnectionOperation;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
@@ -142,20 +141,8 @@ public class MoveElementCommand extends BaseDiagramCommand {
 	 */
 	@Override
 	public void redo() {
-		redo = true;
-	
-		super.redo();
-	
-		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		
-		for (MoveOperation moveOperation : moveOperations) {
-			moveOperation.redo();
-			if(moveOperation instanceof MoveNodeOperation)
-				elements.add(((MoveNodeOperation)moveOperation).getNode());
-			else if(moveOperation instanceof TranslateConnectionOperation)
-				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
-		}
-		
-		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.REDO);
+		redo = true;	
+		super.redo();	
+		run();
 	}
 }

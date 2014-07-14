@@ -21,6 +21,8 @@
  */
 package br.ufes.inf.nemo.oled.draw;
 
+import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
+
 /**
  * @author John Guerson
  */
@@ -29,9 +31,9 @@ public class TreeConnection extends RectilinearConnection {
 	private static final long serialVersionUID = 3266764084036485018L;	
 	boolean vertical = true;
 	
-	public TreeConnection(boolean vertical)
+	public TreeConnection(UmlConnection conn, boolean vertical)
 	{
-		super();
+		super(conn);
 		this.vertical = vertical;
 	}
 	

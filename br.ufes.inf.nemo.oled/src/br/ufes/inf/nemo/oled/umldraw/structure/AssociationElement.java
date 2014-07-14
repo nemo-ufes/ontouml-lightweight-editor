@@ -89,7 +89,7 @@ public final class AssociationElement extends BaseConnection {
 	 * Constructor.
 	 */
 	private AssociationElement() {
-		setConnection(new RectilinearConnection());
+		setConnection(new RectilinearConnection(this));
 		setupMultiplicityLabels();
 		setupRoleLabels();
 		setupSubsettingLabels();
