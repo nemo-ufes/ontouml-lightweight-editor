@@ -40,8 +40,6 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.MixinClass;
-import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 
@@ -167,21 +165,21 @@ public class ClassEditionPanel extends JPanel {
 		nameField.selectAll();
 	}
 	
-	public Fix changeStereotype(){
-		Fix fix = new Fix();
-		if(getStereotype(element).compareTo((String) stereoCombo.getSelectedItem())!=0){
-			OutcomeFixer fixer = new OutcomeFixer(diagramManager.getCurrentProject().getModel());
-			fix.addAll(fixer.changeClassStereotypeTo(element, fixer.getClassStereotype((String) stereoCombo.getSelectedItem())));
-		}
-		return fix;
-	}
+//	public Fix changeStereotype(){
+//		Fix fix = new Fix();
+//		if(getStereotype(element).compareTo((String) stereoCombo.getSelectedItem())!=0){
+//			OutcomeFixer fixer = new OutcomeFixer(diagramManager.getCurrentProject().getModel());
+//			fix.addAll(fixer.changeClassStereotypeTo(element, fixer.getClassStereotype((String) stereoCombo.getSelectedItem())));
+//		}
+//		return fix;
+//	}
 	
 	public void transferClassData()
 	{
 		element.setName(nameField.getText());
 		if (element instanceof Collective) ((Collective) element).setIsExtensional(btnExtensional.isSelected());
 		element.setIsAbstract(btnAbstract.isSelected());
-	
+		
 		diagramManager.updateOLEDFromModification(element,false);	
 	}
 }

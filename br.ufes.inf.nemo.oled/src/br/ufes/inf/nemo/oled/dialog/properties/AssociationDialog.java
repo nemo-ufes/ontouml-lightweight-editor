@@ -254,14 +254,16 @@ public class AssociationDialog extends JDialog{
 	}
 		
 	public void okActionPerformed(ActionEvent arg0)
-	{
-		assocEdition.transferAssocData();
+	{		
 		end1Edition.transferPropertyData();
 		end2Edition.transferPropertyData();
 		commentsEdition.transferCommentsData();
+		//constraintsEdition.transferConstraintsData();
+		assocEdition.transferAssocData();
 		if(getStereotype(relationship).compareTo((String) assocEdition.stereoCombo.getSelectedItem())!=0)
+		{
 			diagramManager.changeRelationStereotype(relationship, (String) assocEdition.stereoCombo.getSelectedItem());
-//		constraintsEdition.transferConstraintsData();
+		}
 	}	
 }
 
