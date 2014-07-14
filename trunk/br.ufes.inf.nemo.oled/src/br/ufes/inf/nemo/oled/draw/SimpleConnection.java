@@ -42,7 +42,7 @@ public class SimpleConnection extends AbstractConnection {
   private UmlConnection owner;
 	
   public UmlConnection getOwnerConnection() { return owner; }
-  
+    
   public SimpleConnection (UmlConnection owner)
   {
 	this.owner = owner;	

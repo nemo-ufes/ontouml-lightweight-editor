@@ -1288,7 +1288,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		{
 			if(dElem instanceof UmlConnection){
 				UmlConnection conn = (UmlConnection) dElem;
-				execute(new ConvertConnectionTypeCommand(this, conn, new SimpleConnection()));
+				execute(new ConvertConnectionTypeCommand(this, conn, new SimpleConnection(conn)));
 			}
 		}		
 		// we can only tell the selection handler to forget about the selection
@@ -1491,16 +1491,15 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			default:
 				break;	
 		}
-		sb.append(": ");
+		if(elements.size()>0) sb.append(": "); else sb.append("...");
 		for (int i = 0; i < elements.size(); i++) 
 		{
-			DiagramElement element = elements.get(i);
+			DiagramElement element = elements.get(i);			
 			if(element instanceof ClassElement) sb.append(ModelHelper.handleName(((ClassElement)element).getClassifier()) + (i < elements.size()-1 ? ", " : ""));
 			if(element instanceof BaseConnection) sb.append(ModelHelper.handleName(((BaseConnection)element).getRelationship()) + (i < elements.size()-1 ? ", " : ""));			
-			if(element instanceof RectilinearConnection) {
-				if(element instanceof AssociationElement) sb.append(ModelHelper.handleName(((AssociationElement)element).getRelationship()) + (i < elements.size()-1 ? ", " : ""));
-				if(element instanceof GeneralizationElement) sb.append(ModelHelper.handleName(((GeneralizationElement)element).getRelationship()) + (i < elements.size()-1 ? ", " : ""));
-			}
+//			if(element instanceof RectilinearConnection) sb.append(ModelHelper.handleName(((RectilinearConnection)element).getOwnerConnection()) + (i < elements.size()-1 ? ", " : ""));
+//			if(element instanceof SimpleConnection) sb.append(ModelHelper.handleName(((SimpleConnection)element).getOwnerConnection()) + (i < elements.size()-1 ? ", " : ""));
+//			if(element instanceof TreeConnection) sb.append(ModelHelper.handleName(((TreeConnection)element).getOwnerConnection()) + (i < elements.size()-1 ? ", " : ""));
 			if (element instanceof SimpleLabel || element instanceof AssociationLabel) sb.append(((Label) element).getSource().getLabelText());			
 		}
 		frame.getDiagramManager().showStatus(this,capitalize(sb.toString()));
