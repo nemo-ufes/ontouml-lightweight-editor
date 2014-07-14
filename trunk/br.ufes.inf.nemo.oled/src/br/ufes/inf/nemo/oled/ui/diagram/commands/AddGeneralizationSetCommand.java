@@ -63,7 +63,7 @@ public class AddGeneralizationSetCommand extends BaseDiagramCommand {
 		if (notification==null) this.addToDiagram = false; else this.addToDiagram=true;		
 		this.genSet = genSet;		
 		this.generalizations .addAll(generalizations);
-		if(generalizations!=null){
+		if(generalizations!=null && notification!=null){			
 			for(DiagramElement dElem: ((DiagramEditor)notification).getDiagram().getChildren()){
 				if(dElem instanceof GeneralizationElement){
 					GeneralizationElement genElem = (GeneralizationElement)dElem;

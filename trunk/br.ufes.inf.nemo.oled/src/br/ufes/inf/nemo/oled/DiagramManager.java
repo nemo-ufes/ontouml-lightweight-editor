@@ -70,7 +70,6 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.LiteralInteger;
 import RefOntoUML.LiteralUnlimitedNatural;
 import RefOntoUML.NamedElement;
-import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.StringExpression;
@@ -1383,7 +1382,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		EObject eContainer = null;
 		if(gens.size()>1) eContainer = gens.get(0).getSpecific().eContainer();	
 		else eContainer = getCurrentProject().getModel();
-		PackageableElement newgenset = (PackageableElement)addElement(ElementType.GENERALIZATIONSET, (RefOntoUML.Package)eContainer);
+		RefOntoUML.GeneralizationSet newgenset = (GeneralizationSet)elementFactory.createElement(ElementType.GENERALIZATIONSET);
+		((RefOntoUML.Package)eContainer).getPackagedElement().add(newgenset);
 		// init data of generalization set
 		((GeneralizationSet)newgenset).setIsCovering(true);
 		((GeneralizationSet)newgenset).setIsDisjoint(true);
@@ -1843,7 +1843,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				if(!found) {
 					if(addedElement.eContainer()!=null) tree.checkModelElement(addedElement.eContainer());
 					else tree.checkModelElement(project.getModel());
-					tree.addObject(addedElement);			
+					tree.addObject(addedElement);	
+					
 				} else {
 					if(addedElement instanceof Generalization){
 						tree.checkModelElement(addedElement);
@@ -2348,7 +2349,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if(d instanceof StructureDiagram)
 			{
 				StructureDiagram diagram = (StructureDiagram)d;
-				ArrayList<DiagramElement> elemList=null;
+				ArrayList<DiagramElement> elemList=new ArrayList<DiagramElement>();
 				if(element instanceof Property){
 					elemList = ModelHelper.getDiagramElements((RefOntoUML.Element)element.eContainer());
 				}else if (element instanceof GeneralizationSet){

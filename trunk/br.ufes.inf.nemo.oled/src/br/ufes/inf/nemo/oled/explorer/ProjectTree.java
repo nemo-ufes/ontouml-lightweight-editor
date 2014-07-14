@@ -276,7 +276,10 @@ public class ProjectTree extends CheckboxTree {
 			if (refparser!=null) alias = refparser.getAlias((RefOntoUML.Property)object);
 			else alias = "";		
 			DefaultMutableTreeNode node = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),alias));
-			checkingModel.setPathEnabled(new TreePath(node.getPath()),false);
+			if(object instanceof RefOntoUML.Property){
+				if(((RefOntoUML.Property)object).getAssociation()!=null)
+					checkingModel.setPathEnabled(new TreePath(node.getPath()),false);
+			}
 			return node;
 			
 		}else if(object instanceof RefOntoUML.Classifier)
@@ -331,8 +334,8 @@ public class ProjectTree extends CheckboxTree {
 					if (frame.getBrowserManager().getProjectBrowser().getParser()!=null) alias = refparser.getAlias((RefOntoUML.Classifier)object);
 					else alias = "";		
 					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)o),alias));
-					node.add(child);
-					checkingModel.setPathEnabled(new TreePath(child.getPath()),false);
+					node.add(child);					
+					checkingModel.setPathEnabled(new TreePath(child.getPath()),false);					
 				}
 				for (Comment o: ((RefOntoUML.Association)object).getOwnedComment())
 				{
