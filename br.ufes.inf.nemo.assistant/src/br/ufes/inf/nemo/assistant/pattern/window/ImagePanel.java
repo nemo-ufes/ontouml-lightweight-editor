@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 public class ImagePanel extends JPanel {
 
 	public enum PatternType {
-		RelatorCreation,SubkindCreation,RoleMixinPattern
+		RelatorCreation,SubkindCreation,RoleMixinPattern,PrincipleIdentity, GeneralizationAndSpecialization_Sukind, GeneralizationAndSpecialization_Role
 	}
 
 	public ImagePanel(PatternType type){
@@ -23,9 +23,12 @@ public class ImagePanel extends JPanel {
 			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/SubkindCreation.png"));
 		else if(type.equals(PatternType.RoleMixinPattern))
 			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/RoleMixinCreation.png"));
+		else if(type.equals(PatternType.PrincipleIdentity))
+			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/PrincipleIdentity.png"));
+		else if(type.equals(PatternType.GeneralizationAndSpecialization_Sukind))
+			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/GeneralizationSpecialization_Subkind.png"));
 
 		setLayout(null);
-		
 		
 		Image img = iconLogo.getImage() ;  
 		Image newimg = img.getScaledInstance( 445, 259,  java.awt.Image.SCALE_SMOOTH ) ;  

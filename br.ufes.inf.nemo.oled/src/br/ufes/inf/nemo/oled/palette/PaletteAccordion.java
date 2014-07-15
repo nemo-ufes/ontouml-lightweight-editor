@@ -181,20 +181,26 @@ public class PaletteAccordion extends JPanel{
 	
 	private void createOntoUMLPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher) 
 	{
-		String pelleteName = "Patterns";
+		String pelleteName = "OntoUML Language Patterns";
 		ontopatternPalette = new Palette(this, pelleteName);
 		ontopatternPalette.createElement("staticpalette.classes", "select");
-		ontopatternPalette.createElement("staticpalette.patterncreation", "subkindcreation");
-		ontopatternPalette.createElement("staticpalette.patterncreation", "relatorcreation");
-		ontopatternPalette.createElement("staticpalette.patterncreation", "rolemixinpattern");
-		ontopatternPalette.createElement("staticpalette.patterncreation", "rolecreation");
-		ontopatternPalette.createElement("staticpalette.patterncreation", "subkindpartition");
-		ontopatternPalette.createElement("staticpalette.patterncreation", "phasepartition");
+		ontopatternPalette.createElement("staticpalette.patterncreation", "principleidentity");
 		
 		ontopatternPalette.addCommandListener(editorDispatcher);
 		
 		paletteMap.put(pelleteName, ontopatternPalette);
 
+		
+		pelleteName = "OntoUML Design Patterns";
+		ontopatternPalette = new Palette(this, pelleteName);
+		ontopatternPalette.createElement("staticpalette.classes", "select");
+		ontopatternPalette.createElement("staticpalette.patterncreation", "relatorcreation");
+		ontopatternPalette.createElement("staticpalette.patterncreation", "rolemixinpattern");
+		
+		ontopatternPalette.addCommandListener(editorDispatcher);
+		
+		paletteMap.put(pelleteName, ontopatternPalette);
+		
 		if(openPalette == null)
 			openPalette = pelleteName;		
 	}

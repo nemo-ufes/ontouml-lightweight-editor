@@ -2686,22 +2686,22 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void runPattern(ElementType elementType, double x, double y) {
 		Fix fix = null;
 		
-		if(elementType == ElementType.SUBKINDPATTERN){
-			fix = PatternTool.createSubkindPattern(frame, getCurrentProject(),x,y);
-    	}else if(elementType == ElementType.RELATORPATTERN){
+    	if(elementType == ElementType.RELATORPATTERN){
     		fix = PatternTool.createRelatorPattern(frame, getCurrentProject(),x,y);		
-    	}if(elementType == ElementType.ROLEMIXIN){
+    	}else if(elementType == ElementType.ROLEMIXIN){
 			fix = PatternTool.createRoleMixinPattern(frame, getCurrentProject(),x,y);
-    	}else if(elementType == ElementType.SUBKINDPARTITIONPATTERN){
-    		fix = PatternTool.createSubkindPattern(frame, getCurrentProject(),x,y);		
-    	}else if(elementType == ElementType.PHASEPARTITION){
-    		fix = PatternTool.createPhasePartitionPattern(frame, getCurrentProject(),x,y);		
+    	}else if(elementType == ElementType.PRINCIPLEIDENTITY){
+			fix = PatternTool.principleIdentity(frame, getCurrentProject(),x,y);
+    	}else if(elementType == ElementType.GENERALIZATIONSPECIALIZATION){
+    		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
+    		fix = PatternTool.generalizationAndSpecialization(frame, getCurrentProject(),selectedElements);
     	}
 		
 		if(fix != null){
 			updateOLED(fix);
 		}
 	}
+
 	public void openDerivedTypePatternIntersection(Double x, Double y) {
 		JDialog dialog = new IntersectionPattern(this);
 		this.setCenterDialog(dialog);

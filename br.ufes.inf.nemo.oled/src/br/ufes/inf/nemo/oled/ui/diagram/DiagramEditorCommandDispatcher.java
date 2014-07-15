@@ -332,24 +332,18 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("DERIVED_BY_PARTICIPATION", new MethodCall(
 					getClass().getMethod("derivedByParticipation")));
 
-			selectorMap.put("PATTERN_CREATION_SUBKIND", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.SUBKINDPATTERN));
+			selectorMap.put("LANGUAGE_PATTERN_PRINCIPLE_IDENTITY", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PRINCIPLEIDENTITY));
 			
-			selectorMap.put("PATTERN_CREATION_SUBKIND_PARTITION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.SUBKINDPARTITIONPATTERN));
-
 			selectorMap.put("PATTERN_CREATION_ROLEMIXIN_PATTERN", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.ROLEMIXIN));
 			
-			selectorMap.put("PATTERN_CREATION_PHASE_PARTITION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PHASEPARTITION));
-			
 			selectorMap.put("PATTERN_CREATION_RELATOR", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.RELATORPATTERN));
+
+			selectorMap.put("LANGUAGE_GENERALIZATION_SPECIALIZATION", new MethodCall(
+					getClass().getMethod("runPatternByMenu",ElementType.class),ElementType.GENERALIZATIONSPECIALIZATION));
 			
-			selectorMap.put("PATTERN_CREATION_ROLE", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.ROLEPATTERN));
-						
 			selectorMap.put("CREATE_GEN_SET", new MethodCall(
 					DiagramEditor.class.getMethod("addGeneralizationSet")));
 			selectorMap.put("DELETE_GEN_SET", new MethodCall(
@@ -362,6 +356,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		}
 	}
 
+	public void runPatternByMenu(ElementType type)
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.runPattern(type, 0, 0);
+	}
+	
 	@Override
 	public void handleCommand(String command) {
 		MethodCall methodcall = selectorMap.get(command);

@@ -20,6 +20,11 @@ import RefOntoUML.SubKind;
 
 public class UtilAssistant {
 
+	public static int cont = 0;
+	public static int getCont(){
+		return ++cont;
+	}
+	
 	/**
 	 * Return the result of the mapping the RefOntoUML.Classifer to a StereotypeOntoUMLEnum
 	 * or return null if the elem is not treat yet.
