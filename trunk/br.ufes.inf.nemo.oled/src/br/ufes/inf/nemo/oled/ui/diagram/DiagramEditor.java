@@ -51,6 +51,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.UndoableEditListener;
@@ -88,6 +89,8 @@ import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.RelationEndType;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.palette.ColorPalette;
+import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.popupmenu.DiagramPopupMenu;
 import br.ufes.inf.nemo.oled.popupmenu.ToolboxPopupMenu;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.ConvertConnectionTypeCommand;
@@ -132,19 +135,14 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private transient CreationHandler creationHandler;
 	private transient LineHandler lineHandler;
 	public transient List<UndoableEditListener> editListeners = new ArrayList<UndoableEditListener>();
-	private transient Scaling scaling = Scaling.SCALING_100;
+	private transient Scaling scaling = Scaling.SCALING_100;		
+	private static final double MARGIN_TOP=0;
+	private static final double MARGIN_LEFT=0;
+	private static final double MARGIN_RIGHT=AppFrame.GetScreenWorkingWidth();
+	private static final double MARGIN_BOTTOM=AppFrame.GetScreenWorkingHeight();
+	private static final double ADDSCROLL_HORIZONTAL=0;
+	private static final double ADDSCROLL_VERTICAL=0;
 		
-	// For now, we define the margins of the diagram as constants
-	private static final double MARGIN_TOP = 0;
-	private static final double MARGIN_LEFT = 0;
-	private static final double MARGIN_RIGHT = 0;
-	private static final double MARGIN_BOTTOM = 0;
-	private static final double ADDSCROLL_HORIZONTAL = 0;
-	private static final double ADDSCROLL_VERTICAL = 0;
-	
-	private double widthWithZoom;
-	private double heightWithZoom;
-	
 	// It is nice to report the mapped coordinates to listeners, so it can be used for debug output. 
 	private List<EditorStateListener> editorListeners = new ArrayList<EditorStateListener>();
 	
@@ -229,7 +227,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		diagram.setOrigin(MARGIN_LEFT, MARGIN_TOP);
 
 		installHandlers();
-		setToDiagramSize();
+		
+		double width = diagram.getSize().getWidth()+MARGIN_RIGHT + MARGIN_LEFT + ADDSCROLL_HORIZONTAL;
+		double height = diagram.getSize().getHeight()+MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL;		
+		setPreferredSize(new Dimension((int)width,(int)height));		
+		setSize(new Dimension((int)width,(int)height));		
 	}
 
 	public DiagramManager getManager() { return diagramManager; }
@@ -244,11 +246,24 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Adjusts this component's preferredSize attribute to the diagram's size.
 	 * This also influences the scroll pane which the component is contained in.
 	 */
-	private void setToDiagramSize() 
+	private void recalculateSize() 
 	{
-		setPreferredSize(new Dimension((int) (diagram.getSize().getWidth() + MARGIN_RIGHT + MARGIN_LEFT + ADDSCROLL_HORIZONTAL),
-		(int) (diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL)));
-		invalidate();
+		double diagramWidth = diagram.getSize().getWidth()*scaling.getScaleFactor();		
+		double diagramHeight = diagram.getSize().getHeight()*scaling.getScaleFactor();
+		double width = (diagramWidth+MARGIN_RIGHT + MARGIN_LEFT + ADDSCROLL_HORIZONTAL);
+		double height = (diagramHeight+MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL);
+		setPreferredSize(new Dimension((int)width,(int)height));		
+		setSize(new Dimension((int)width,(int)height));		
+		if(wrapper!=null){
+			if(scaling == Scaling.SCALING_50) {
+				wrapper.getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+				wrapper.getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+			}else{
+				wrapper.getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+				wrapper.getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			}
+			wrapper.getScrollPane().updateUI();								
+		}
 	}
 
 	/** Adds the event handlers. */
@@ -452,18 +467,15 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		}
 		boolean gridVisible = diagram.isGridVisible();
-		Color background = Color.WHITE;
+		Color background = ColorPalette.getInstance().getColor(ThemeColor.GREEN_LIGHTEST);
 		if (toScreen) {
 			scaleDiagram(g2d); // Scaling is only interesting if rendering to screen			
 		} else {
 			diagram.setGridVisible(false);
 			background = Color.WHITE;
 		}
-		int width = (int)(diagram.getSize().getWidth()+ MARGIN_RIGHT + MARGIN_LEFT + ADDSCROLL_HORIZONTAL);
-		int height = (int)(diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL);
-		heightWithZoom = (height*scaling.getScaleFactor());
-		widthWithZoom = (width*scaling.getScaleFactor());
-		setPreferredSize(new Dimension((int)widthWithZoom, (int)heightWithZoom));		
+		int width = (int)(diagram.getSize().getWidth()+ MARGIN_RIGHT + MARGIN_RIGHT + ADDSCROLL_HORIZONTAL);
+		int height = (int)(diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL);		
 		bounds = new Rectangle((int)width,(int)height);
 		clearScreen(g, bounds, background);
 		drawingContext.setGraphics2D(g2d, bounds);				
@@ -476,14 +488,16 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		diagram.setGridVisible(gridVisible);
 	}
 
-	public double getWidthConsideringZoom()
+	/** Get the width of the diagram considering the zoom */
+	public double getDiagramWidth()
 	{
-		return widthWithZoom*scaling.getScaleFactor();
+		return diagram.getSize().getWidth()*scaling.getScaleFactor();
 	}
 	
-	public double getHeightConsideringZoom()
+	/** Get the height of the diagram considering the zoom */
+	public double getDiagramHeight()
 	{
-		return heightWithZoom*scaling.getScaleFactor();		
+		return diagram.getSize().getHeight()*scaling.getScaleFactor();		
 	}
 	
 	/**
@@ -712,11 +726,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * @return the total canvas size
 	 */
 	public Dimension getTotalCanvasSize() 
-	{
-		Dimension2D diagramSize = diagram.getSize();
+	{		
 		Dimension result = new Dimension();		
-		result.width = (int) (diagramSize.getWidth() + MARGIN_LEFT + MARGIN_RIGHT);
-		result.height = (int) (diagramSize.getHeight() + MARGIN_TOP + MARGIN_BOTTOM);
+		result.width = (int) (diagram.getSize().getWidth() + MARGIN_LEFT + MARGIN_RIGHT);
+		result.height = (int) (diagram.getSize().getHeight() + MARGIN_TOP + MARGIN_BOTTOM);
 		return result;
 	}
 
@@ -763,9 +776,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 */
 	public void setScaling(Scaling aScaling) 
 	{
-		scaling = aScaling;	
-		setPreferredSize(new Dimension((int)(getWidth()*scaling.getScaleFactor()),(int)(getHeight()*scaling.getScaleFactor())));
-		wrapper.getScrollPane().updateUI();
+		scaling = aScaling;
+		recalculateSize();				
 	}
 		
 	public String getZoomPercentualValue()
@@ -933,7 +945,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void showGrid(boolean flag) 
 	{
 		diagram.setGridVisible(flag);
-		repaint();
+		wrapper.getScrollPane().updateUI();
 	}
 
 	public boolean showGrid()
@@ -1187,7 +1199,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 				ce.setBackgroundColor(color);
 			}
 		}
-		repaint();
+		wrapper.getScrollPane().updateUI();
 	}
 	
 	/** Align Center Vertically */
@@ -1424,7 +1436,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		{
 			l.stateChanged(this, changeType);
 		}
-		repaint();
+		
+		wrapper.getScrollPane().updateUI();
+		
 		if(changeType == ChangeType.ELEMENTS_REMOVED || (changeType == ChangeType.ELEMENTS_ADDED && notificationType == NotificationType.UNDO))
 		{
 			selectionHandler.elementRemoved(elements);
@@ -1584,7 +1598,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	}
 
 	/*** {@inheritDoc} */
-	public void nodeResized(Node node) { setToDiagramSize(); }
+	public void nodeResized(Node node) { recalculateSize(); }
 	/** {@inheritDoc} */
 	public void nodeMoved(Node node) { }
 	

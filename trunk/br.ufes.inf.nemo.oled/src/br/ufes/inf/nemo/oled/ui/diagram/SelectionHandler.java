@@ -73,8 +73,8 @@ public class SelectionHandler implements EditorMode {
 		selection = selector;
 		selection.updatePosition(0,0);
 		selection.startDragging(0,0);
-		selection.updatePosition(editor.getWidthConsideringZoom(), editor.getHeightConsideringZoom());
-		selection.stopDragging(editor.getWidthConsideringZoom(),  editor.getHeightConsideringZoom());
+		selection.updatePosition(editor.getDiagramWidth(), editor.getDiagramHeight());
+		selection.stopDragging(editor.getDiagramWidth(),  editor.getDiagramHeight());
 		if (selection instanceof RubberbandSelector) setRubberbandSelection((RubberbandSelector) selection);
 		editor.redraw();
 		notifyListeners();
