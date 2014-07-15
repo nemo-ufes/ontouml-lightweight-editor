@@ -336,19 +336,12 @@ public class OntoUMLParser {
 			this.elementsHash.put(pe,e);
 			
 			//Properties			
-			if(((Association)pe).getMemberEnd().size()>=1)
-			{
-				Property property0 = ((Association)pe).getMemberEnd().get(0);							
-				e = new ParsingElement(property0, true, h2.treatName(property0));
-				this.elementsHash.put(property0,e);
+			for(RefOntoUML.Property property: ((Association)pe).getMemberEnd())
+			{											
+				e = new ParsingElement(property, true, h2.treatName(property));
+				this.elementsHash.put(property,e);
 			}			
-			if(((Association)pe).getMemberEnd().size()>=2)
-			{
-				Property property1 = ((Association)pe).getMemberEnd().get(1);
-				e = new ParsingElement(property1, true, h2.treatName(property1));
-				this.elementsHash.put(property1,e);
-			}
-			
+						
 			//Generalization
 			for (Generalization g : ((Classifier)pe).getGeneralization()) 
 			{
@@ -408,7 +401,9 @@ public class OntoUMLParser {
 	 */
 	public String getAlias(EObject elem) 
 	{
-		return elementsHash.get(elem).getAlias();
+		ParsingElement pe = elementsHash.get(elem);
+		if(pe!=null) return pe.getAlias();
+		else return "#NULL-PARSING-ELEMENT";
 	}
 	
 	/**

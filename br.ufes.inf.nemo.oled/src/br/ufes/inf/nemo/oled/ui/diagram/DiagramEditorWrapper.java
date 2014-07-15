@@ -72,6 +72,8 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
 		scrollpane.setWheelScrollingEnabled(true);
+		scrollpane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollpane.setViewportView(editor);
 		scrollpane.setBorder(new EmptyBorder(0,0,0,0));
 		
