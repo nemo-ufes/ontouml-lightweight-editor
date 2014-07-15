@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window.selctionbox;
+package br.ufes.inf.nemo.assistant.pattern.window.selctionbox.design;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Set;
@@ -19,6 +19,7 @@ import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
+import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;

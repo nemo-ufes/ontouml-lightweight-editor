@@ -221,13 +221,11 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		colorMenu.add(pasteColorItem);
 	}
 	
-	@SuppressWarnings("unused")
 	public void createPatternMenu()
 	{
 		JMenu applyPatternMenu = new JMenu("Apply Pattern");
+		createMenuItem(applyPatternMenu,"pattern.generalizationspecialization");
 		add(applyPatternMenu);
-		
-		JMenuItem subkindItem = createMenuItem(applyPatternMenu,"pattern.subkind");		
 	}
 	
 	public void setNode (UmlNode node, DiagramEditor editor)
