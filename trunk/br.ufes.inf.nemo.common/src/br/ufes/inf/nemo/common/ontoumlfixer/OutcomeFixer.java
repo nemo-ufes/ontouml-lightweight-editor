@@ -1511,7 +1511,12 @@ public class OutcomeFixer{
 	{
 		Fix fix = new Fix();		
 		
-		if(p!=null && (p.getName()==null || p.getName().trim().isEmpty()))
+		if(p==null)
+			return fix;
+		
+		String name = p.getName();
+		
+		if(name==null || name.replaceAll("\\s+","").isEmpty())
 		{
 			String p1Name, p2Name;
 			
@@ -1525,20 +1530,20 @@ public class OutcomeFixer{
 				p2Name = p.getType().getName().trim().toLowerCase()+"_2";
 				p2Name.replaceAll("\\s+","");
 				p.getOpposite().setName(p2Name);
-				fix.includeAdded(p);
-				fix.includeAdded(p.getOpposite());
+				fix.includeModified(p);
+				fix.includeModified(p.getOpposite());
 			} else{
 				p1Name = p.getType().getName().trim().toLowerCase();
 				p1Name.replaceAll("\\s+","");
 				p.setName(p1Name);
-				fix.includeAdded(p);
+				fix.includeModified(p);
 			}			
 		}
 		
 		if(p!=null && p.getOpposite()!=null && p.getName()!=null && p.getOpposite().getName()!=null && p.getName().compareToIgnoreCase(p.getOpposite().getName())==0)
 		{
 			p.setName(p.getName()+"_1");
-			fix.includeAdded(p);
+			fix.includeModified(p);
 		}		
 		return fix;
 	}
