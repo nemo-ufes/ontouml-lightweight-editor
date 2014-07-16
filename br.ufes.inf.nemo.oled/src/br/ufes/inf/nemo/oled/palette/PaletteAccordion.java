@@ -181,7 +181,7 @@ public class PaletteAccordion extends JPanel{
 	
 	private void createOntoUMLPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher) 
 	{
-		String pelleteName = "OntoUML Language Patterns";
+		String pelleteName = "Language Patterns";
 		ontopatternPalette = new Palette(this, pelleteName);
 		ontopatternPalette.createElement("staticpalette.classes", "select");
 		ontopatternPalette.createElement("staticpalette.patterncreation", "principleidentity");
@@ -189,9 +189,8 @@ public class PaletteAccordion extends JPanel{
 		ontopatternPalette.addCommandListener(editorDispatcher);
 		
 		paletteMap.put(pelleteName, ontopatternPalette);
-
 		
-		pelleteName = "OntoUML Design Patterns";
+		pelleteName = "Design Patterns";
 		ontopatternPalette = new Palette(this, pelleteName);
 		ontopatternPalette.createElement("staticpalette.classes", "select");
 		ontopatternPalette.createElement("staticpalette.patterncreation", "relatorcreation");

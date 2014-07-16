@@ -38,7 +38,6 @@ import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language.Generaliza
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language.PrincipleIdentiy;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;

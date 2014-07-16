@@ -1287,6 +1287,9 @@ public class OutcomeFixer{
 		Property srcProperty = createProperty((Classifier) source, 1, 1, source.getName().trim().toLowerCase());
 		Property tgtProperty = createProperty((Classifier) target, 1, 1, target.getName().trim().toLowerCase());
 		setEnds((Association) rel, srcProperty, tgtProperty);
+		if(stereo == RelationStereotype.MEDIATION) tgtProperty.setIsReadOnly(true);
+		if(stereo == RelationStereotype.CHARACTERIZATION) tgtProperty.setIsReadOnly(true);
+		if(stereo == RelationStereotype.DERIVATION) tgtProperty.setIsReadOnly(true);
 		return fix;
 	}
 

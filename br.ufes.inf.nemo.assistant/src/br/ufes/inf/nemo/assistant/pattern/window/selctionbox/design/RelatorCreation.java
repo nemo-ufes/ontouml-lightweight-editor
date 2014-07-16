@@ -15,7 +15,6 @@ import javax.swing.border.TitledBorder;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Package;
-import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
@@ -28,6 +27,9 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelatorCreation extends ClassSelectionPanel {
+
+	private static final long serialVersionUID = 1L;
+	
 	private JTextField genEdit0;
 	private JTextField spcEdit1;
 	
@@ -53,6 +55,7 @@ public class RelatorCreation extends ClassSelectionPanel {
 	private JCheckBox relChk0;
 	private JComboBox<String> relCB0;
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public RelatorCreation(OntoUMLParser parser) {
 		setLayout(null);
 				
@@ -241,29 +244,21 @@ public class RelatorCreation extends ClassSelectionPanel {
 
 		//Left Mediations
 		Association leftMediation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, leftSpecific).getAdded().get(0);
-
-		Property srcProperty = outcomeFixer.createProperty(relator, 1, 1);
-		Property tgtProperty = outcomeFixer.createProperty(leftSpecific, 1, 1);
-
-		outcomeFixer.setEnds((Association) leftMediation, srcProperty, tgtProperty);
+		
 		fix.includeAdded(leftMediation);
 
 		//Right Mediations
 		Association rightMediation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, rightSpecific).getAdded().get(0);
 
-		tgtProperty = outcomeFixer.createProperty(rightSpecific, 1, 1);
-
-		outcomeFixer.setEnds((Association) rightMediation, srcProperty, tgtProperty);
 		fix.includeAdded(rightMediation);
-
+		
 		//Material
 		Association material = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.MATERIAL, "", leftSpecific, rightSpecific).getAdded().get(0);
 
-		srcProperty = outcomeFixer.createProperty(leftSpecific, 1, 1);
-		tgtProperty = outcomeFixer.createProperty(rightSpecific, 1, 1);
-
-		outcomeFixer.setEnds((Association) material, srcProperty, tgtProperty);
+		Association derivation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.DERIVATION, "", relator, material).getAdded().get(0);
+		
 		fix.includeAdded(material);
+		fix.includeAdded(derivation);
 	}
 
 	@Override

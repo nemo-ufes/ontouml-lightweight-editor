@@ -13,24 +13,23 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
-import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
-import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Package;
-import RefOntoUML.Property;
-import RefOntoUML.RoleMixin;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RoleMixinPattern extends ClassSelectionPanel {
+
+	private static final long serialVersionUID = 7669043593008401411L;
+	
 	private JTextField genEdit0;
 	private JTextField spcEdit1;
 	
@@ -56,6 +55,7 @@ public class RoleMixinPattern extends ClassSelectionPanel {
 	private JCheckBox relChk0;
 	private JComboBox<String> relCB0;
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public RoleMixinPattern(OntoUMLParser parser) {
 		setLayout(null);
 				
@@ -243,12 +243,14 @@ public class RoleMixinPattern extends ClassSelectionPanel {
 		//Center side
 		Classifier roleMixin = createClassifier(ClassStereotype.ROLEMIXIN, relChk0, x+(verticalDistance/2), y+(horizontalDistance/2));
 		
-		_fix.addAll(outcomeFixer.createGeneralization(leftSpecific, roleMixin));
-		generalizations.add((Generalization) _fix.getAdded().get(0));
+		Fix partialFix2 = outcomeFixer.createGeneralization(leftSpecific, roleMixin);
+		_fix.addAll(partialFix2);
+		generalizations.add((Generalization) partialFix2.getAdded().get(0));
 		fix.addAll(_fix);
 		
-		_fix.addAll(outcomeFixer.createGeneralization(rightSpecific, roleMixin));
-		generalizations.add((Generalization) _fix.getAdded().get(0));
+		Fix partialFix = outcomeFixer.createGeneralization(rightSpecific, roleMixin);
+		_fix.addAll(partialFix);
+		generalizations.add((Generalization) partialFix.getAdded().get(0));
 		fix.addAll(_fix);
 		
 		fix.addAll(outcomeFixer.createGeneralizationSet(generalizations, true, true, "roleMixinGS"));
