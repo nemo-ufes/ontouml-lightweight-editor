@@ -26,9 +26,12 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import RefOntoUML.Category;
 import RefOntoUML.Classifier;
+import RefOntoUML.MixinClass;
 import RefOntoUML.Role;
 import RefOntoUML.SubKind;
+import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel;
 import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel.PatternType;
 import br.ufes.inf.nemo.assistant.pattern.window.PatternAbstractWindowAssistant;
@@ -105,6 +108,12 @@ public class PatternTool {
 				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_Sukind);
 			}else if(selectedClassifier instanceof Role){
 				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_Role);
+			}else if(selectedClassifier instanceof SubstanceSortal){
+				return principleIdentity(frame, currentProject, x, y);
+			}else if(selectedClassifier instanceof Category){
+				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_Category);
+			}else if(selectedClassifier instanceof MixinClass){
+				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_Mixin);
 			}else{
 				JOptionPane.showMessageDialog(null, "Pattern do not applied to "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" stereotype");
 				return null;		

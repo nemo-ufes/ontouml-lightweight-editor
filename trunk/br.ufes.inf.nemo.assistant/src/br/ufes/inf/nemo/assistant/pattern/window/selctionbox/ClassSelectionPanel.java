@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -154,5 +155,21 @@ public abstract class ClassSelectionPanel extends JPanel {
 
 			return classifier;
 		}
+	}
+	
+	protected DefaultComboBoxModel<String> getCBModelFromSets(Set<? extends Classifier>... sets){
+	    DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel<String>();
+	    
+		for(Set<? extends Classifier> set : sets){
+	        if(!set.isEmpty()){
+	        	String[] vector = UtilAssistant.getStringRepresentationClassStereotype(set);
+	        	
+	        	for(String p:vector){
+					cbModel.addElement(p);
+				}
+	        }
+	    }
+		
+		return cbModel;
 	}
 }
