@@ -196,7 +196,8 @@ public class AntiPatternModifDialog extends Dialog {
 	public void bringToFront(final Shell shell) {
 	    shell.getDisplay().asyncExec(new Runnable() {
 	        public void run() {
-	            shell.forceActive();
+	        	if(!shell.isDisposed())
+	        		shell.forceActive();
 	        }
 	    });
 	}
