@@ -14,12 +14,20 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import RefOntoUML.AntiRigidMixinClass;
+import RefOntoUML.AntiRigidSortalClass;
+import RefOntoUML.Category;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
+import RefOntoUML.Mixin;
+import RefOntoUML.MixinClass;
 import RefOntoUML.Package;
 import RefOntoUML.Phase;
+import RefOntoUML.RigidMixinClass;
+import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.SubKind;
+import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
@@ -30,11 +38,11 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 	private static final long serialVersionUID = 1L;
 	private JTextField genEdit;
 	private JTextField spcEdit;
-	
+
 	private JCheckBox genChk;
 	private JCheckBox spcChk;
-	private JCheckBox spc1chk;
-	
+	private JCheckBox spc1Chk;
+
 	private JComboBox<String> genCB;
 	private JComboBox<String> spcCB;
 	private JComboBox<String> spc1CB;
@@ -42,142 +50,173 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 	private JComboBox<String> specificTypesCB;
 	private JComboBox<String> specific1TypesCB;
 	private JLabel lblSpcCB;
-	
+
 	private Classifier selectedClassifier;
 	private JTextField spc1Edit;
-	
+
+	private JPanel generalPanel;	
+	private JPanel specific1Panel;
 	private JPanel specific2Panel;
-	
+
+	private ArrayList<String> thirdClasses = new ArrayList<String>();
+
 	public GeneralizationAndSpecializationPattern(OntoUMLParser parser, Classifier selectedClassifier) {
 		setLayout(null);
 		setSize(new Dimension(450, 299));
 		this.selectedClassifier = selectedClassifier;
-		
+
+		if(selectedClassifier instanceof Category)
+			thirdClasses.add("SubKind");
+		if(selectedClassifier instanceof MixinClass){
+			thirdClasses.add("Phase");
+			thirdClasses.add("Role");
+			thirdClasses.add("RoleMixin");
+		}else
+			thirdClasses.add("Phase");
+
 		/* RIGID SORTAL */
-		JPanel rigidSortalPanel = new JPanel();
-		rigidSortalPanel.setBorder(new TitledBorder(null, "General class", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		rigidSortalPanel.setBounds(0, 11, 450, 86);
-		add(rigidSortalPanel);
-		rigidSortalPanel.setLayout(null);
+		generalPanel = new JPanel();
+		generalPanel.setBorder(new TitledBorder(null, "General class", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		generalPanel.setBounds(0, 11, 450, 86);
+		add(generalPanel);
+		generalPanel.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("General:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNewLabel.setBounds(20, 22, 59, 14);
-		rigidSortalPanel.add(lblNewLabel);
+		generalPanel.add(lblNewLabel);
 
 		genEdit = new JTextField();
 		genEdit.setEditable(false);
 		genEdit.setBounds(109, 19, 149, 20);
-		rigidSortalPanel.add(genEdit);
+		generalPanel.add(genEdit);
 		genEdit.setColumns(10);
 
 		genCB = new JComboBox<String>();
 		genCB.setEnabled(false);
 		genCB.setBounds(109, 19, 149, 20);
-		rigidSortalPanel.add(genCB);
+		generalPanel.add(genCB);
 
 		JLabel lblOntoumlType = new JLabel("OntoUML type:");
 		lblOntoumlType.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblOntoumlType.setBounds(20, 47, 97, 14);
-		rigidSortalPanel.add(lblOntoumlType);
+		generalPanel.add(lblOntoumlType);
 
 		genChk = new JCheckBox("Reuse class?");
 		genChk.setBounds(271, 18, 97, 23);
-		rigidSortalPanel.add(genChk);
+		generalPanel.add(genChk);
 		genChk.setVisible(false);
 
 		generalTypesCB = new JComboBox<String>();
 		generalTypesCB.setBounds(109, 44, 149, 20);
-		rigidSortalPanel.add(generalTypesCB);
+		generalPanel.add(generalTypesCB);
 
 		/* SUBKIND */
-		JPanel subkindPanel = new JPanel();
-		subkindPanel.setBorder(new TitledBorder(null, "Specific class", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		subkindPanel.setBounds(0, 108, 450, 86);
-		add(subkindPanel);
-		subkindPanel.setLayout(null);
+		specific1Panel = new JPanel();
+		specific1Panel.setBorder(new TitledBorder(null, "Specific class", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		specific1Panel.setBounds(0, 108, 450, 86);
+		add(specific1Panel);
+		specific1Panel.setLayout(null);
 
 		JLabel lblSpecific = new JLabel("Specific:");
 		lblSpecific.setBounds(20, 22, 56, 14);
 		lblSpecific.setFont(new Font("Tahoma", Font.BOLD, 11));
-		subkindPanel.add(lblSpecific);
+		specific1Panel.add(lblSpecific);
 
 		spcEdit = new JTextField();
 		spcEdit.setBounds(109, 19, 149, 20);
-		subkindPanel.add(spcEdit);
+		specific1Panel.add(spcEdit);
 		spcEdit.setColumns(10);
 
 		spcCB = new JComboBox<String>();
 		spcCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				specific2Panel.setVisible(((String)spcCB.getSelectedItem()).contains("Phase"));
+				for(String thirdClass : thirdClasses){
+					if(((String)spcCB.getSelectedItem()).toLowerCase().contains(thirdClass.toLowerCase())){
+						specific2Panel.setVisible(true);
+						return;
+					}
+				}
+				specific2Panel.setVisible(false);
 			}
 		});
 		spcCB.setEnabled(false);
 		spcCB.setBounds(109, 19, 149, 20);
-		subkindPanel.add(spcCB);
+		specific1Panel.add(spcCB);
 
 		spcChk = new JCheckBox("Reuse class?");
 		spcChk.setBounds(271, 18, 97, 23);
-		subkindPanel.add(spcChk);
-		
+		specific1Panel.add(spcChk);
+
 		spcChk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	specific2Panel.setVisible(specificTypesCB.getSelectedItem().equals("Phase"));
-            }
-        });
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for(String thirdClass : thirdClasses){
+					if(((String)specificTypesCB.getSelectedItem()).equalsIgnoreCase(thirdClass)){
+						specific2Panel.setVisible(true);
+						return;
+					}
+				}
+				specific2Panel.setVisible(false);
+			}
+		});
 
 		lblSpcCB = new JLabel("OntoUML type:");
 		lblSpcCB.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblSpcCB.setBounds(21, 53, 97, 14);
-		subkindPanel.add(lblSpcCB);
-		
+		specific1Panel.add(lblSpcCB);
+
 		specificTypesCB = new JComboBox<String>();
 		specificTypesCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				specific2Panel.setVisible(specificTypesCB.getSelectedItem().equals("Phase"));
+				for(String thirdClass : thirdClasses){
+					if(((String)specificTypesCB.getSelectedItem()).equalsIgnoreCase(thirdClass)){
+						specific2Panel.setVisible(true);
+						return;
+					}
+				}
+				specific2Panel.setVisible(false);
 			}
 		});
 		specificTypesCB.setBounds(110, 50, 149, 20);
-		subkindPanel.add(specificTypesCB);
-		
+		specific1Panel.add(specificTypesCB);
+
 		specific2Panel = new JPanel();
 		specific2Panel.setLayout(null);
 		specific2Panel.setBorder(new TitledBorder(null, "Specific1 class", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		specific2Panel.setBounds(0, 205, 450, 86);
 		add(specific2Panel);
-		
+
 		JLabel label = new JLabel("Specific:");
 		label.setFont(new Font("Tahoma", Font.BOLD, 11));
 		label.setBounds(20, 22, 56, 14);
 		specific2Panel.add(label);
-		
+
 		spc1Edit = new JTextField();
 		spc1Edit.setColumns(10);
 		spc1Edit.setBounds(109, 19, 149, 20);
 		specific2Panel.add(spc1Edit);
-		
+
 		spc1CB = new JComboBox<String>();
 		spc1CB.setEnabled(false);
 		spc1CB.setBounds(109, 19, 149, 20);
 		specific2Panel.add(spc1CB);
-		
-		spc1chk = new JCheckBox("Reuse class?");
-		spc1chk.setBounds(271, 18, 97, 23);
-		specific2Panel.add(spc1chk);
-		
+
+		spc1Chk = new JCheckBox("Reuse class?");
+		spc1Chk.setBounds(271, 18, 97, 23);
+		specific2Panel.add(spc1Chk);
+
 		JLabel lblSpc1CB = new JLabel("OntoUML type:");
 		lblSpc1CB.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblSpc1CB.setBounds(21, 53, 97, 14);
 		specific2Panel.add(lblSpc1CB);
-		
+
 		specific1TypesCB = new JComboBox<String>();
 		specific1TypesCB.setBounds(110, 50, 149, 20);
 		specific2Panel.add(specific1TypesCB);
-		
+
 		specific2Panel.setVisible(false);
-		
+
 		hashChkEdit.put(genChk, genEdit);
 		hashEditCombo.put(genEdit, generalTypesCB);
 		hashChkCombo.put(genChk, genCB);
@@ -185,18 +224,18 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 		hashChkEdit.put(spcChk, spcEdit);
 		hashEditCombo.put(spcEdit, specificTypesCB);
 		hashChkCombo.put(spcChk, spcCB);
-		
-		hashChkEdit.put(spc1chk, spc1Edit);
+
+		hashChkEdit.put(spc1Chk, spc1Edit);
 		hashEditCombo.put(spc1Edit, specific1TypesCB);
-		hashChkCombo.put(spc1chk, spc1CB);
-		
+		hashChkCombo.put(spc1Chk, spc1CB);
+
 		genChk.addActionListener(getCheckBoxActionListener(generalTypesCB,lblOntoumlType));
 		spcChk.addActionListener(getCheckBoxActionListener(specificTypesCB,lblSpcCB));
-		spc1chk.addActionListener(getCheckBoxActionListener(specific1TypesCB,lblSpc1CB));
-		
+		spc1Chk.addActionListener(getCheckBoxActionListener(specific1TypesCB,lblSpc1CB));
+
 		this.parser = parser;
-		
-		getModelValues(parser);
+
+		getModelValues(parser);	
 	}
 
 	@Override
@@ -204,25 +243,39 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 		Package root = parser.getModel();
 		outcomeFixer = new OutcomeFixer(root);
 		fix = new Fix();
-		
-		if(specific2Panel.isVisible()){
-			ArrayList<Generalization> generalizationList = new ArrayList<>();
-			//Specific1	
-			Classifier specific = createClassifier(spcChk, x+(0*verticalDistance)/3, y+horizontalDistance);
-			Fix _fix = outcomeFixer.createGeneralization(specific, selectedClassifier);
-			
-			Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
-			generalizationList.add(generalization);
-			
-			//Specific2	
-			specific = createClassifier(spc1chk, x+(1*verticalDistance)/3, y+horizontalDistance);
-			_fix = outcomeFixer.createGeneralization(specific, selectedClassifier);
-			
-			generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
-			generalizationList.add(generalization);
 
-			fix.addAll(_fix);
-			fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"+UtilAssistant.getCont()));
+		if(specific2Panel.isVisible()){
+			if(selectedClassifier instanceof Category){
+				Classifier specific = createClassifier(spcChk, x+(0*verticalDistance)/3, y+horizontalDistance);
+				fix.addAll(outcomeFixer.createGeneralization(specific, selectedClassifier));	
+
+				Classifier substance = createClassifier(spc1Chk, x-(verticalDistance/2), y);
+				fix.addAll(outcomeFixer.createGeneralization(specific, substance));
+			}else if(selectedClassifier instanceof MixinClass){
+				Classifier specific1 = createClassifier(spcChk, x+(0*verticalDistance)/3, y+horizontalDistance);
+				fix.addAll(outcomeFixer.createGeneralization(specific1, selectedClassifier));	
+
+				Classifier specific2 = createClassifier(spc1Chk, x+(1*verticalDistance)/3, y+horizontalDistance);
+				fix.addAll(outcomeFixer.createGeneralization(specific2, selectedClassifier));
+			}else{
+				ArrayList<Generalization> generalizationList = new ArrayList<>();
+				//Specific1	
+				Classifier specific = createClassifier(spcChk, x+(0*verticalDistance)/3, y+horizontalDistance);
+				Fix _fix = outcomeFixer.createGeneralization(specific, selectedClassifier);
+
+				Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
+				generalizationList.add(generalization);
+
+				//Specific2	
+				specific = createClassifier(spc1Chk, x+(1*verticalDistance)/3, y+horizontalDistance);
+				_fix = outcomeFixer.createGeneralization(specific, selectedClassifier);
+
+				generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
+				generalizationList.add(generalization);
+
+				fix.addAll(_fix);
+				fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"+UtilAssistant.getCont()));
+			}
 		}else{
 			Classifier specific = createClassifier(spcChk, x, y+horizontalDistance);
 			fix.addAll(outcomeFixer.createGeneralization(specific, selectedClassifier));	
@@ -236,65 +289,94 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 		generalTypesCB.setModel(model);
 		generalTypesCB.setEnabled(false);
 		genEdit.setText(UtilAssistant.getStringRepresentationClass(selectedClassifier));
-		
+
 		if(selectedClassifier instanceof SubKind){
-			Set<SubKind> specific = parser.getAllInstances(RefOntoUML.SubKind.class);
-			DefaultComboBoxModel<String> model1 = null;
-			if(specific.size() > 0){
-				String[] subkindVector = UtilAssistant.getStringRepresentationClassStereotype(specific);
-				model1 = new DefaultComboBoxModel<String>(subkindVector);  
-				spcCB.setModel(model1);
-			}else{
-				spcChk.setVisible(false);
-			}
-			
-			Set<Role> specific2 = parser.getAllInstances(RefOntoUML.Role.class);
-			if(specific2.size() > 0){
-				String[] vector = UtilAssistant.getStringRepresentationClassStereotype(specific2);
-				
-				if(model1 == null)
-					model1 = new DefaultComboBoxModel<String>(vector);
-				
-				for(String p:vector){
-					model1.addElement(p);
-				}
-				spcCB.setModel(model1);
-				spcChk.setVisible(true);
-			}
-			
-			Set<Phase> specific3 = parser.getAllInstances(RefOntoUML.Phase.class);
-			if(specific3.size() > 0){
-				String[] vector = UtilAssistant.getStringRepresentationClassStereotype(specific3);
-				
-				if(model1 == null)
-					model1 = new DefaultComboBoxModel<String>(vector);
-				
-				for(String p:vector){
-					model1.addElement(p);
-				}
-				spcCB.setModel(model1);
-				spcChk.setVisible(true);
-			}
-			
-			
+			Set<SubKind> subkinds = parser.getAllInstances(RefOntoUML.SubKind.class);
+			Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
+			Set<Phase> phases = parser.getAllInstances(RefOntoUML.Phase.class);
+
+			model = this.getCBModelFromSets(subkinds,roles,phases);
+			spcCB.setModel(model);
+			spcChk.setVisible(model.getSize() != 0);			
+
 			types = new String[]{"Role", "Subkind","Phase"};
 			model = new DefaultComboBoxModel<String>(types);  
 			specificTypesCB.setModel(model);
-			
-			Set<Phase> specific4 = parser.getAllInstances(RefOntoUML.Phase.class);
-			if(specific4.size() > 0){
-				String[] vector = UtilAssistant.getStringRepresentationClassStereotype(specific4);
-				model = new DefaultComboBoxModel<String>(vector);
-				
-				spc1CB.setModel(model);
-				spc1chk.setVisible(true);
-			}else{
-				spc1chk.setVisible(false);
-			}
-			
+
+			model = this.getCBModelFromSets(phases);
+
+			spc1CB.setModel(model);
+			spc1Chk.setVisible(model.getSize() != 0);	
+
 			types = new String[]{"Phase"};
 			model = new DefaultComboBoxModel<String>(types);  
 			specific1TypesCB.setModel(model);
+		}else if(selectedClassifier instanceof Role){
+			Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
+			Set<Phase> phases = parser.getAllInstances(RefOntoUML.Phase.class);
+
+			model = this.getCBModelFromSets(roles,phases);
+			spcCB.setModel(model);
+			spcChk.setVisible(model.getSize() != 0);			
+
+			types = new String[]{"Role", "Phase"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specificTypesCB.setModel(model);
+
+			model = this.getCBModelFromSets(phases);
+
+			spc1CB.setModel(model);
+			spc1Chk.setVisible(model.getSize() != 0);
+
+			types = new String[]{"Phase"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specific1TypesCB.setModel(model);
+		}else if(selectedClassifier instanceof Category){
+			Set<Category> categories = parser.getAllInstances(RefOntoUML.Category.class);
+			Set<SubKind> subkinds = parser.getAllInstances(RefOntoUML.SubKind.class);
+			Set<SubstanceSortal> substancesortais = parser.getAllInstances(RefOntoUML.SubstanceSortal.class);
+
+			model = this.getCBModelFromSets(categories, subkinds, substancesortais);
+			spcCB.setModel(model);
+			spcChk.setVisible(model.getSize() != 0);			
+
+			types = new String[]{"Category", "Subkind", "Kind","Collective","Quantity"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specificTypesCB.setModel(model);
+
+			model = this.getCBModelFromSets(substancesortais);
+
+			spc1CB.setModel(model);
+			spc1Chk.setVisible(model.getSize() != 0);
+
+			types = new String[]{"Kind","Collective","Quantity"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specific1TypesCB.setModel(model);
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Substance Sortal class");
+		}else if(selectedClassifier instanceof MixinClass){
+			Set<RigidSortalClass> rigidSortalClass = parser.getAllInstances(RefOntoUML.RigidSortalClass.class);
+			Set<RigidMixinClass> rigidMixinClass = parser.getAllInstances(RefOntoUML.RigidMixinClass.class);
+			Set<AntiRigidSortalClass> antiRigidSortalClass = parser.getAllInstances(RefOntoUML.AntiRigidSortalClass.class);
+			Set<AntiRigidMixinClass> antiRigidMixinClass = parser.getAllInstances(RefOntoUML.AntiRigidMixinClass.class);
+			Set<Mixin> mixinClass = parser.getAllInstances(RefOntoUML.Mixin.class);
+
+			model = this.getCBModelFromSets(antiRigidSortalClass, antiRigidMixinClass, mixinClass);
+			spcCB.setModel(model);
+			spcChk.setVisible(model.getSize() != 0);			
+
+			types = new String[]{"Mixin", "Role", "Phase", "RoleMixin"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specificTypesCB.setModel(model);
+
+			model = this.getCBModelFromSets(rigidSortalClass, rigidMixinClass);
+
+			spc1CB.setModel(model);
+			spc1Chk.setVisible(model.getSize() != 0);
+
+			types = new String[]{"Kind","Collective","Quantity", "Subkind","Category"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specific1TypesCB.setModel(model);
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Rigid Sortal class");
 		}
 	}
 }
