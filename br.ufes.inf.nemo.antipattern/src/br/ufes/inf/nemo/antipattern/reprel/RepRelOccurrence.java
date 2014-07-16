@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.antipattern.reprel;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -11,15 +12,80 @@ import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RepRelOccurrence extends AntipatternOccurrence {
 	
 	private Classifier relator;
-	private ArrayList<Mediation> mediations, problematicMediations;
-	private ArrayList<Property> mediatedProperties, problematicMediatedProperties;
-
 	
+	private ArrayList<Mediation> mediations = new ArrayList<Mediation>();
+	private ArrayList<Mediation> problematicMediations = new ArrayList<Mediation>();
+	private ArrayList<Property> mediatedProperties = new ArrayList<Property>();
+	private ArrayList<Property> problematicMediatedProperties = new ArrayList<Property>(); 
+		
+	
+	@Deprecated
+	public RepRelOccurrence(Relator relator, RepRelAntipattern ap) throws Exception 
+	{
+		super(ap);
+		this.setRelator(relator,parser);
+	}
+	
+	public RepRelOccurrence(Relator relator, HashSet<Property> allMediated, HashSet<Property> problematicMediated, RepRelAntipattern ap) throws Exception 
+	{
+		super(ap);
+		
+		this.relator = relator;
+		this.mediatedProperties.addAll(allMediated);
+		this.problematicMediatedProperties.addAll(problematicMediated);
+		
+		for (Property p : problematicMediated)
+			problematicMediations.add((Mediation) p.getAssociation());
+		
+		for (Property p : allMediated)
+			mediations.add((Mediation) p.getAssociation());
+		
+		if (problematicMediations.size()<2)
+			throw new Exception("RepRel: The required cardinalities are not met for "+parser.getStringRepresentation(relator));
+
+	}
+	
+	@Deprecated
+	public void setRelator (Classifier relator, OntoUMLParser parser) throws Exception {
+			
+		this.relator = relator;
+		
+		
+		
+		for (Mediation med : parser.getAllInstances(Mediation.class)) {
+			Property sourceEnd = med.getMemberEnd().get(0);
+			Property targetEnd = med.getMemberEnd().get(1);
+			
+			if(sourceEnd.getType().equals(relator) || relator.allParents().contains(sourceEnd.getType()))
+				mediatedProperties.add(sourceEnd);
+			else if (targetEnd.getType().equals(relator) || relator.allParents().contains(targetEnd.getType()))
+				mediatedProperties.add(targetEnd);
+		
+		}
+		
+		setAuxilaryLists();
+		
+		if (problematicMediations.size()<2)
+			throw new Exception("==========\n\t\t\tRepRel: The required cardinalities are not met for "+parser.getStringRepresentation(relator));
+	}
+	
+	@Deprecated
+	private void setAuxilaryLists() {
+		for (Property end : mediatedProperties) {
+			mediations.add((Mediation) end.getAssociation());
+			if(end.getUpper()==-1 || end.getUpper()>1){
+				problematicMediatedProperties.add(end);
+				problematicMediations.add((Mediation) end.getAssociation());
+			}
+		}
+	}
+
 	public ArrayList<Mediation> getMediations() {
 		return mediations;
 	}
@@ -41,19 +107,6 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 	}
 	
 	/**
-	 * Constructor
-	 *
-	 * @param relator
-	 * @param parser
-	 * @throws Exception
-	 */
-	public RepRelOccurrence(Relator relator, RepRelAntipattern ap) throws Exception 
-	{
-		super(ap);
-		this.setRelator(relator,parser);
-	}
-
-	/**
 	 * Select in the OntoUML model only those elements related with this antipattern...
 	 */
 	@Override
@@ -70,43 +123,7 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 		return parser;
 	}
 	
-	/**
-	 * Set AntiPattern data...
-	 * 
-	 * @param mediation
-	 * @throws Exception
-	 */
-	public void setRelator (Classifier relator, OntoUMLParser parser) throws Exception {
-			
-		this.relator = relator;
-		
-		mediations = new ArrayList<Mediation>();
-		problematicMediations = new ArrayList<Mediation>();
-		mediatedProperties = new ArrayList<Property>();
-		problematicMediatedProperties = new ArrayList<Property>(); 
-		
-		for (Mediation med : parser.getAllInstances(Mediation.class)) {
-			Property sourceEnd = med.getMemberEnd().get(0);
-			Property targetEnd = med.getMemberEnd().get(1);
-			
-			if(sourceEnd.getType().equals(relator) || relator.allParents().contains(sourceEnd.getType()))
-				mediatedProperties.add(sourceEnd);
-			else if (targetEnd.getType().equals(relator) || relator.allParents().contains(targetEnd.getType()))
-				mediatedProperties.add(targetEnd);
-		
-		}
-		
-		for (Property end : mediatedProperties) {
-			mediations.add((Mediation) end.getAssociation());
-			if(end.getUpper()==-1 || end.getUpper()>1){
-				problematicMediatedProperties.add(end);
-				problematicMediations.add((Mediation) end.getAssociation());
-			}
-		}
-		
-		if (problematicMediations.size()<2)
-			throw new Exception("==========\n\t\t\tRepRel: The required cardinalities are not met for "+parser.getStringRepresentation(relator));
-	}
+	
 	
 	/**
 	 * To String method...
@@ -117,68 +134,12 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 		
 		String result;
 
-		result= super.parser.getStringRepresentation(this.relator)+"\n"+
-				"Mediations:";
+		result= OntoUMLNameHelper.getTypeAndName(relator,false,false)+"\n"+
+				"Highlighted Mediated Types:";
 		
-		for(Property p: mediatedProperties)
-			result+="\n\t"+super.parser.getStringRepresentation(p.getOpposite())+"  -  "+super.parser.getStringRepresentation(p);
-	
+		for(Property p: problematicMediatedProperties)
+			result+="\n\t"+OntoUMLNameHelper.getTypeAndName(p.getType(),true,false)+" (from: "+OntoUMLNameHelper.getName(p.getOpposite().getType())+" ["+OntoUMLNameHelper.getMultiplicity(p.getOpposite(), true, "..")+"])";
 		return result;
-	}
-	
-	public String explanation(OntoUMLParser parser) throws Exception{
-		String expl = 	"The relator \'"+relator.getName()+"\' mediates "+mediations.size()+" types: ";
-						
-		for (int i = 0; i < mediatedProperties.size(); i++) {
-			if (i==mediatedProperties.size()-1)
-				expl += " and ";
-			else if (i!=0)
-				expl += ", ";
-			
-			expl+="'"+mediatedProperties.get(i).getType().getName()+"'";
-		}
-		
-		expl += ".\n";
-		
-		if(mediations.size()==problematicMediations.size())
-			expl+="All";
-		else
-			expl += "Exactly "+problematicMediations.size();
-		
-		expl += " of them are connected to '"+relator.getName()+"\' through mediations which have an upper bound multiplicity in the '"+relator.getName()+"\' side greater than one. They are:";
-		
-		for (Mediation m : problematicMediations) {
-			expl+="\n"+(OntoUMLParser.getMediated(m).getName())+" ";
-			
-			Property relatorEnd = OntoUMLParser.getRelatorEnd(m);
-			Property mediatedEnd = OntoUMLParser.getMediatedEnd(m);
-			
-			if (mediatedEnd.getLower()==-1)
-				expl+="0";
-			else expl+= mediatedEnd.getLower();
-			
-			expl+="..";
-			
-			if (mediatedEnd.getUpper()==-1)
-				expl+="*";
-			else expl+= mediatedEnd.getUpper();
-			
-			expl+=" "+m.getName()+" ";
-			
-			if (relatorEnd.getLower()==-1)
-				expl+="0";
-			else expl+= relatorEnd.getLower();
-			
-			expl+="..";
-			
-			if (relatorEnd.getUpper()==-1)
-				expl+="*";
-			else expl+= relatorEnd.getUpper();
-		
-			expl += " "+relator.getName();
-		}
-			
-		return expl;
 	}
 
 	@Override
@@ -208,34 +169,30 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 	}
 	
 	public String generateOCLInvariant(ArrayList<Mediation> mediationList, int n)
-	{
-		String relator = "_'"+mediationList.get(0).relator().getName()+"'";
+	{	
 		
+		String relatorName = addQuotes(this.relator.getName());
+	
 		String expr = new String();
 		int i=0;
 		for(Mediation m: mediationList)
 		{
-			Property src = m.getMemberEnd().get(0);
-			String srcName = new String();
-			Property tgt = m.getMemberEnd().get(1);
-			String tgtName = new String();
-			if(src.getName()==null || src.getName().isEmpty())  srcName = src.getType().getName().toLowerCase().trim();
-			if(tgt.getName()==null || tgt.getName().isEmpty())  tgtName = tgt.getType().getName().toLowerCase().trim();
-			srcName = "_'"+srcName+"'";
-			tgtName = "_'"+tgtName+"'";			
-			String localExpr = new String();
-			if (src.getType() instanceof Relator){
-				localExpr += "r."+srcName+" = self."+srcName;
-			}else if (tgt.getType() instanceof Relator){
-				localExpr += "r."+tgtName+" = self."+tgtName;
-			}
-			if(i==0) expr += localExpr;
-			else expr += " and "+localExpr;			
+			Property mediatedEnd = OntoUMLParser.getMediatedEnd(m);
+			fix.addAll(fixer.fixPropertyName(mediatedEnd));
+			
+			String mediatedName = addQuotes(mediatedEnd.getName());
+			String localExpr = "r."+mediatedName+" = self."+mediatedName;
+			
+			if(i==0) 
+				expr += localExpr;
+			else 
+				expr += " and "+localExpr;			
+			
 			i++;
 		}
 		return
-		"context "+relator+"\n"+
-		"inv: "+relator+".allInstances()->select( r : "+relator+" | r<>self and "+expr+")->size() = "+n;
+		"context "+relatorName+"\n"+
+		"inv: "+relatorName+".allInstances()->select( r : "+relatorName+" | r<>self and "+expr+")->size() = "+n;
 	}
 	
 	public String generateOCLDerivationConcurrentWith(Relator relator)
@@ -253,32 +210,27 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 	public String generateOCLInvariantWithQualities(ArrayList<Mediation> mediationList, int n)
 	{
 		String relator = "_'"+mediationList.get(0).relator().getName()+"'";
-		
 		String expr = new String();
+		
 		int i=0;
 		for(Mediation m: mediationList)
 		{
-			Property src = m.getMemberEnd().get(0);
-			String srcName = new String();
-			Property tgt = m.getMemberEnd().get(1);
-			String tgtName = new String();
-			if(src.getName()==null || src.getName().isEmpty())  srcName = src.getType().getName().toLowerCase().trim();
-			if(tgt.getName()==null || tgt.getName().isEmpty())  tgtName = tgt.getType().getName().toLowerCase().trim();
-			srcName = "_'"+srcName+"'";
-			tgtName = "_'"+tgtName+"'";			
-			String localExpr = new String();
-			if (src.getType() instanceof Relator){
-				localExpr += "r."+srcName+" = self."+srcName;
-			}else if (tgt.getType() instanceof Relator){
-				localExpr += "r."+tgtName+" = self."+tgtName;
-			}
-			if(i==0) expr += localExpr;
-			else if (i<=mediationList.size()) expr += " and "+localExpr;			
+			Property mediatedEnd = OntoUMLParser.getMediatedEnd(m);
+			fix.addAll(fixer.fixPropertyName(mediatedEnd));
+			
+			String mediatedName = addQuotes(mediatedEnd.getName());	
+			String localExpr = "r."+mediatedName+" = self."+mediatedName;
+			
+			if(i==0) 
+				expr += localExpr;
+			else 
+				expr += " and "+localExpr;			
+			
 			i++;
 		}
 		expr+= " and r.concurrentWith(self)";
-		return 
-		"context "+relator+"\n"+
-		"inv: "+relator+".allInstances()->select( r : "+relator+" | r<>self and "+expr+")->size() = "+n+"\n";		
+		
+		return 	"context "+relator+"\n"+
+				"inv: "+relator+".allInstances()->select( r : "+relator+" | r<>self and "+expr+")->size() = "+n+"\n";		
 	}
 }

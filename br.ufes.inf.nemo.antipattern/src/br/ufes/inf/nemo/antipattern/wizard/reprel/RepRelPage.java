@@ -1,27 +1,27 @@
 package br.ufes.inf.nemo.antipattern.wizard.reprel;
 
-import org.eclipse.jface.wizard.WizardPage;
-
 import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
+import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
-public abstract class RepRelPage extends WizardPage {
+public abstract class RepRelPage extends AntipatternWizardPage<RepRelOccurrence, RepRelWizard> {
 
-	protected RepRelOccurrence repRel;
+	protected String relator = "";
 	
-	/**
-	 * Create the wizard.
-	 */
 	public RepRelPage(RepRelOccurrence rr) 
 	{
-		super("RepRelPage");				
-		this.repRel = rr;
-				
+		super(rr);				
+			
 		setTitle(RepRelAntipattern.getAntipatternInfo().getName());
+		
+		if(rr!=null){
+			setDescription("Relator: "+OntoUMLNameHelper.getName(rr.getRelator(), true, false));
+			relator = OntoUMLNameHelper.getTypeAndName(rr.getRelator(), true, true);
+		}
 	}
 	
-	public RepRelWizard getRepRelWizard(){
-		return (RepRelWizard)getWizard();
-	}
+	
+	
 
 }
