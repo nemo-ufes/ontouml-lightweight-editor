@@ -1184,9 +1184,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * This method check if some dependence is missing in the checking, completing it with the missing elements.
 	 * The elements checked  in the tree are then properly selected in the OntoUML parser.
 	 * This  enables all the application to work only with the checked elements in the parser/tree.
+	 * @return 
 	 */
-	public void workingOnlyWithChecked()
-	{
+	public List<EObject> workingOnlyWithChecked()
+	{	
+		// This method does a lot of processing and updates the UI -- 
+		//This causes lag and frozen ui because they take a lot of time on big models.
+		//Suggestion: Call this method from a "doInBackground" of a SwingWorker and the commented ones from "done".
 		OntoUMLParser refparser = frame.getProjectBrowser().getParser();
 		ProjectBrowser modeltree = frame.getProjectBrowser();			
 		List<EObject> selected = modeltree.getTree().getModelCheckedElements();
@@ -1194,10 +1198,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		List<EObject> added = refparser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY,false);		
 		selected.removeAll(added);
 		selected.addAll(added);	
-		modeltree.getTree().checkModelElements(selected, true);			
-		modeltree.getTree().updateUI();
+		
+//		modeltree.getTree().checkModelElements(selected, true);			
+//		modeltree.getTree().updateUI();
+		
 		ProjectBrowser pb = frame.getBrowserManager().getProjectBrowser();
 		pb.setParser(refparser);
+		
+		return selected;
 	}
 	
 	/** 
