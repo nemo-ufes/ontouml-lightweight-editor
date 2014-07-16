@@ -1,10 +1,7 @@
 package br.ufes.inf.nemo.antipattern.wizard.relrig;
 
-import java.text.Normalizer;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -23,6 +20,7 @@ import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 /**
  * @author Tiago Sales
@@ -67,9 +65,10 @@ public class RelRigRefactoringPage extends RefactoringPage {
 		Label lblChooseTheAppropriate = new Label(container, SWT.NONE);
 		lblChooseTheAppropriate.setText("Choose the appropriate refactoring options:");
 		
-		scroll = new ScrolledComposite(container, SWT.NONE | SWT.V_SCROLL | SWT.H_SCROLL);		
-		scroll.setLayout(new FillLayout());		
-		scroll.setAlwaysShowScrollBars(true);
+		scroll = new ScrolledComposite(container, SWT.NONE | SWT.V_SCROLL | SWT.H_SCROLL);
+		scroll.setExpandHorizontal(true);
+		scroll.setExpandVertical(true);
+		scroll.setLayout(new FillLayout());
 		
 		content = new Composite(scroll, SWT.NONE);
 		content.setLayout(new GridLayout(3, false));
@@ -78,11 +77,11 @@ public class RelRigRefactoringPage extends RefactoringPage {
 		gl_container.setHorizontalGroup(
 			gl_container.createParallelGroup(GroupLayout.TRAILING)
 				.add(gl_container.createSequentialGroup()
-					.addContainerGap()
+					.add(10)
 					.add(gl_container.createParallelGroup(GroupLayout.TRAILING)
 						.add(GroupLayout.LEADING, scroll, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
-						.add(lblChooseTheAppropriate, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
-					.addContainerGap())
+						.add(GroupLayout.LEADING, lblChooseTheAppropriate, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
+					.add(10))
 		);
 		gl_container.setVerticalGroup(
 			gl_container.createParallelGroup(GroupLayout.LEADING)
@@ -90,8 +89,8 @@ public class RelRigRefactoringPage extends RefactoringPage {
 					.addContainerGap()
 					.add(lblChooseTheAppropriate)
 					.addPreferredGap(LayoutStyle.RELATED)
-					.add(scroll, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
-					.add(36))
+					.add(scroll, GroupLayout.PREFERRED_SIZE, 244, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(1, Short.MAX_VALUE))
 		);
 		container.setLayout(gl_container);
 				
@@ -105,27 +104,33 @@ public class RelRigRefactoringPage extends RefactoringPage {
 
 	private void createOptions()	
 	{	
-		ArrayList<Property> list = relRig.getRigidMediatedProperties();				
-		for(Property p: list)
+		Label stereoLabel = new Label(content, SWT.NONE);
+		stereoLabel.setText("Stereotype");
+		stereoLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		
+		Label nameLabel = new Label(content, SWT.NONE);
+		nameLabel.setText("Name");
+		nameLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		
+		Label actionLabel = new Label(content, SWT.NONE);
+		actionLabel.setText("Action");
+		actionLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		
+		for(Property p: relRig.getRigidMediatedProperties())
 		{	
-			Label stereoLabel = new Label(content, SWT.NONE);
-			stereoLabel.setText("Stereotype");
-			
-			Label nameLabel = new Label(content, SWT.NONE);
-			nameLabel.setText("Name");
-			
-			Label actionLabel = new Label(content, SWT.NONE);
-			actionLabel.setText("Action");
-			
 			RefOntoUML.Type type = p.getType();
 			
 			Label stereotype = new Label(content, SWT.NONE);
-			if(type!=null) stereotype.setText(""+getStereotype(type)+"");
+			stereotype.setText(OntoUMLNameHelper.getTypeName(type, false));
+			stereotype.setLayoutData(new GridData(SWT.FILL, SWT.LEFT, false, false, 1, 1));	
 			
 			Label name = new Label(content, SWT.NONE);
-			name.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));						
-			if(type!=null) name.setText(p.getType().getName());
-			else name.setText("null");
+			name.setLayoutData(new GridData(SWT.FILL, SWT.LEFT, false, false, 1, 1));						
+			
+			if(type!=null) 
+				name.setText(p.getType().getName());
+			else
+				name.setText("null");
 			
 			Combo combo = new Combo(content, SWT.READ_ONLY);
 			combo.setItems(new String[] {"Transform to Role or RoleMixin", "Add Role or RoleMixin subtype", "Transform to Mode", "Enforce existential dependency on relator's end", "Do nothing"});
@@ -135,16 +140,7 @@ public class RelRigRefactoringPage extends RefactoringPage {
 			mapping.put(p,combo);			
 		}
 	}
-	
-	public static String getStereotype(EObject element)
-	{
-		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
-	    return type;
-	}
-	
+		
 	public int getActionIndex(String typeName){
 		Combo combo = mapping.get(typeName);
 		if(combo!=null) return combo.getSelectionIndex();

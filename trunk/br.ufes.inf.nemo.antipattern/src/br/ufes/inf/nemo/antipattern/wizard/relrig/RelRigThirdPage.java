@@ -103,7 +103,7 @@ public class RelRigThirdPage extends RelRigPage {
 		else if(btnYes.getSelection()){		
 
 			// Action =====================			
-			getAntipatternWizard().removeAllActions();
+			getAntipatternWizard().removeAllActions(rigid);
 			//=============================
 			
 			if(rigid < occurrence.getRigidMediatedProperties().size()-1)

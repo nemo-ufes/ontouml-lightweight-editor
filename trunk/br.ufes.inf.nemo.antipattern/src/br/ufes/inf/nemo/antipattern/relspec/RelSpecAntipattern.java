@@ -186,7 +186,7 @@ public class RelSpecAntipattern extends Antipattern<RelSpecOccurrence> {
 		return this.getOccurrences();
 	}
 
-	private boolean isSubsettingOrRedefinition(Association child, Association parent){
+	public static boolean isSubsettingOrRedefinition(Association child, Association parent){
 		Property 	soParent = parent.getMemberEnd().get(0),
 					tgParent = parent.getMemberEnd().get(1),
 					soChild = child.getMemberEnd().get(0),
@@ -198,7 +198,7 @@ public class RelSpecAntipattern extends Antipattern<RelSpecOccurrence> {
 				subsetsOrRedefinesProperty(soParent, tgChild) || subsetsOrRedefinesProperty(tgParent, tgChild);
 	}
 	
-	private boolean subsetsOrRedefinesProperty(Property child, Property parent){
+	public static boolean subsetsOrRedefinesProperty(Property child, Property parent){
 		
 		for (Property subsetted : child.getSubsettedProperty()) {
 			if(subsetted.equals(parent))
@@ -241,7 +241,7 @@ public class RelSpecAntipattern extends Antipattern<RelSpecOccurrence> {
 //		return false;
 //	}
 	
-	private boolean isSpecialization(Association child, Association parent) {
+	public static boolean isSpecialization(Association child, Association parent) {
 		Classifier	sourceChild = (Classifier) child.getMemberEnd().get(0).getType(), 
 					targetChild = (Classifier) child.getMemberEnd().get(1).getType(),
 					sourceParent = (Classifier) parent.getMemberEnd().get(0).getType(), 

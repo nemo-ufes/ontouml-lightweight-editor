@@ -8,10 +8,15 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import RefOntoUML.Mediation;
+import RefOntoUML.Property;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class TimeOptionComposite extends Composite {
 	public Button btnAtTheSame;
@@ -23,18 +28,13 @@ public class TimeOptionComposite extends Composite {
 	public TimeOptionComposite(Composite arg0, int arg1, RepRelOccurrence repRel, Mediation m) {
 		super(arg0, arg1);		
 		
-		Type source = m.getMemberEnd().get(0).getType();
-		Type target = m.getMemberEnd().get(1).getType();
-		String upperSource = "*";
-		if(m.getMemberEnd().get(0).getUpper() != -1) upperSource = Integer.toString(m.getMemberEnd().get(0).getUpper());
-		String lowerSource = "*";
-		if (m.getMemberEnd().get(0).getLower() != -1) lowerSource = Integer.toString(m.getMemberEnd().get(0).getLower());	
+		Property relatorEnd = OntoUMLParser.getRelatorEnd(m);
+		Type mediated = relatorEnd.getOpposite().getType();
 		
-		setSize(560,97);
+		setSize(560,95);
 		
 		lblType = new Label(this,SWT.NONE);
-		lblType.setBounds(10, 10, 540, 15);
-		lblType.setText(target.getName()+" -> ["+lowerSource+","+upperSource+"] "+source.getName());
+		lblType.setText(OntoUMLNameHelper.getTypeAndName(mediated,true,true)+" - Multiplicity on relator end: "+OntoUMLNameHelper.getMultiplicity(relatorEnd, true, ".."));
 		
 		SelectionAdapter listener = new SelectionAdapter() {
 	      public void widgetSelected(SelectionEvent e) {
@@ -48,21 +48,52 @@ public class TimeOptionComposite extends Composite {
 	    };
 		    
 		btnAtTheSame = new Button(this, SWT.RADIO);
-		btnAtTheSame.setBounds(10, 62, 118, 25);
-		btnAtTheSame.setText("at the same time");
+		btnAtTheSame.setText("At the same time");
 		btnAtTheSame.addSelectionListener(listener);
 		
 		btnThroughoutTime = new Button(this, SWT.RADIO);
-		btnThroughoutTime.setBounds(10, 31, 118, 25);
-		btnThroughoutTime.setText("throughout time...");		
+		btnThroughoutTime.setText("Throughout time...");		
 		
 		lblHowManySimoutanesouly = new Label(this, SWT.NONE);
-		lblHowManySimoutanesouly.setBounds(134, 36, 206, 15);
 		lblHowManySimoutanesouly.setText("How many simoutanesouly? (at most)");
 		
 		spinner = new Spinner(this, SWT.BORDER);
-		spinner.setBounds(346, 31, 47, 22);
 		spinner.setSelection(1);
+		spinner.setEnabled(false);
+		
+		GroupLayout groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.add(btnThroughoutTime)
+					.add(18)
+					.add(lblHowManySimoutanesouly, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(152, Short.MAX_VALUE))
+				.add(GroupLayout.TRAILING, groupLayout.createSequentialGroup()
+					.add(10)
+					.add(groupLayout.createParallelGroup(GroupLayout.TRAILING)
+						.add(GroupLayout.LEADING, btnAtTheSame, GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
+						.add(GroupLayout.LEADING, lblType, GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(GroupLayout.LEADING)
+				.add(groupLayout.createSequentialGroup()
+					.add(5)
+					.add(lblType, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(btnAtTheSame, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(groupLayout.createParallelGroup(GroupLayout.BASELINE)
+						.add(btnThroughoutTime, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+						.add(lblHowManySimoutanesouly)
+						.add(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.add(5))
+		);
+		setLayout(groupLayout);
 		btnThroughoutTime.addSelectionListener(listener);
 		
 	}
@@ -102,7 +133,7 @@ public class TimeOptionComposite extends Composite {
 	public void setColor(Color swtColor)
 	{
 		lblHowManySimoutanesouly.setBackground(swtColor);
-		//lblType.setBackground(swtColor);
+		lblType.setBackground(swtColor);
 		btnAtTheSame.setBackground(swtColor);
 		btnThroughoutTime.setBackground(swtColor);
 		setBackground(swtColor);

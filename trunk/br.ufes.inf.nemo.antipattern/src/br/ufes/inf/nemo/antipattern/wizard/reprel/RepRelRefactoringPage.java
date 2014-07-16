@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -23,6 +24,9 @@ import RefOntoUML.Mediation;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
+import org.eclipse.swt.widgets.Control;
 
 public class RepRelRefactoringPage extends RefactoringPage {
 	
@@ -30,13 +34,22 @@ public class RepRelRefactoringPage extends RefactoringPage {
 		
 	//GUI
 	protected Composite content;
-	public Button historicalCheck;
-	public Button currentCheck;
+	public Button historicalButton;
+	public Button currentButton;
 	public ScrolledComposite scroll;
 	public HashMap<Button,Spinner> mapping = new HashMap<Button,Spinner>();
-	private Button btnAddLine;
+	private Button addButton;
 	private RepRelTable rrtable;
+	private Button removeButton;
+	private Button resetButton;
 
+	private SelectionListener verifyAction = new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			setPageComplete();
+		 }
+	};
+	
 	/**
 	 * Create the wizard.
 	 */
@@ -66,10 +79,8 @@ public class RepRelRefactoringPage extends RefactoringPage {
 		Composite container = new Composite(parent, SWT.NONE);
 
 		setControl(container);
-		container.setLayout(null);
 		
 		Label lblChooseTheAppropriate = new Label(container, SWT.NONE);
-		lblChooseTheAppropriate.setBounds(11, 13, 552, 15);
 		lblChooseTheAppropriate.setText("Choose the appropriate refactoring options:");
 		
 		scroll = new ScrolledComposite(container, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);		
@@ -78,39 +89,121 @@ public class RepRelRefactoringPage extends RefactoringPage {
 		
 		content = new Composite(scroll, SWT.NONE);
 		content.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		scroll.setBounds(11, 36, 552, 95);
 		content.setLayout(new GridLayout(3, false));
 		
-		currentCheck = new Button(container, SWT.RADIO);
-		currentCheck.setBounds(10, 222, 472, 15);
-		currentCheck.setText("(Current Relator) "+repRel.getRelator().getName());
+		currentButton = new Button(container, SWT.RADIO);
+		currentButton.setText("(Current Relator) "+repRel.getRelator().getName());
 		
-		historicalCheck = new Button(container, SWT.RADIO);
-		historicalCheck.setBounds(11, 243, 471, 16);
-		historicalCheck.setText("(Historical Relator) "+repRel.getRelator().getName());
+		historicalButton = new Button(container, SWT.RADIO);
+		historicalButton.setText("(Historical Relator) "+repRel.getRelator().getName());
+	
+		rrtable = new RepRelTable(container,SWT.BORDER, repRel.getProblematicMediations(),verifyAction);
 		
-		rrtable = new RepRelTable(container,SWT.BORDER, repRel.getMediations(),repRel.getRelator().getName());
-		rrtable.getTable().setBounds(10, 147, 554, 64);
+		addButton = new Button(container, SWT.NONE);
+		addButton.setText("Add");
 		
-		btnAddLine = new Button(container, SWT.NONE);
-		btnAddLine.setBounds(488, 217, 75, 25);
-		btnAddLine.setText("Add Line");
+		removeButton = new Button(container, SWT.NONE);
+		removeButton.setText("Remove");
+		
+		resetButton = new Button(container, SWT.NONE);
+		resetButton.setText("Reset");
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(gl_container.createSequentialGroup()
+							.add(11)
+							.add(scroll, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
+						.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+							.addContainerGap()
+							.add(addButton, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(removeButton)
+							.addPreferredGap(LayoutStyle.RELATED)
+							.add(resetButton)
+							.addPreferredGap(LayoutStyle.RELATED))
+						.add(gl_container.createSequentialGroup()
+							.addContainerGap()
+							.add(historicalButton, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+							.addPreferredGap(LayoutStyle.RELATED))
+						.add(gl_container.createSequentialGroup()
+							.addContainerGap()
+							.add(currentButton, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+							.addPreferredGap(LayoutStyle.RELATED)))
+					.add(11))
+				.add(GroupLayout.TRAILING, gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(rrtable, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(lblChooseTheAppropriate, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.addContainerGap()
+					.add(lblChooseTheAppropriate)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(scroll, GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+					.addPreferredGap(LayoutStyle.UNRELATED)
+					.add(gl_container.createParallelGroup(GroupLayout.BASELINE)
+						.add(resetButton)
+						.add(removeButton)
+						.add(addButton))
+					.add(4)
+					.add(rrtable, GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+					.add(13)
+					.add(currentButton, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(LayoutStyle.RELATED)
+					.add(historicalButton)
+					.add(1))
+		);
+		gl_container.linkSize(new Control[] {addButton, removeButton, resetButton}, GroupLayout.HORIZONTAL);
+		container.setLayout(gl_container);
 				
-		btnAddLine.addSelectionListener(new SelectionAdapter() {
+		addButton.addSelectionListener(new SelectionAdapter() {
 			 @Override
 	            public void widgetSelected(SelectionEvent e) {
-				 rrtable.addLine();				 
+				 rrtable.addLine();	
+				 setPageComplete();
+			 }
+		});
+		
+		removeButton.addSelectionListener(new SelectionAdapter() {
+			 @Override
+	         public void widgetSelected(SelectionEvent e) {
+				 rrtable.removeLine(rrtable.getSelectionIndex(), true);			
+				 setPageComplete();
 			 }
 		});	
 		
-		createOptions();
+		resetButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				rrtable.removeLines();
+				rrtable.addLine();
+				setPageComplete();
+			 }
+		});	
 		
+		historicalButton.addSelectionListener(verifyAction);
+		currentButton.addSelectionListener(verifyAction);
+		
+		createOptions();
 		container.redraw();
+	}
+	
+	//TODO: Can go to next page listener
+	public void setPageComplete(){
+		setPageComplete(true);
 	}
 	
 	private void createOptions()	
 	{			
-		ArrayList<Mediation> list = repRel.getMediations();				
+		ArrayList<Mediation> list = repRel.getProblematicMediations();				
 		for(Mediation m: list)
 		{	
 			RefOntoUML.Type source = m.getMemberEnd().get(0).getType();
@@ -166,12 +259,12 @@ public class RepRelRefactoringPage extends RefactoringPage {
 			if(b.getSelection()){
 				// Action =====================	
 				RepRelAction newAction = new RepRelAction(repRel);
-				newAction.setChangeUpperMult(repRel.getMediations().get(i), mapping.get(b).getSelection());
+				newAction.setChangeUpperMult(repRel.getProblematicMediations().get(i), mapping.get(b).getSelection());
 				getRepRelWizard().replaceAction(i,newAction);
 				//=============================
 				upperList.add(mapping.get(b).getSelection());
 			}else{
-				int upper = repRel.getMediations().get(i).getMemberEnd().get(0).getUpper();
+				int upper = repRel.getProblematicMediations().get(i).getMemberEnd().get(0).getUpper();
 				upperList.add(upper);
 			}
 			i++;
@@ -197,22 +290,22 @@ public class RepRelRefactoringPage extends RefactoringPage {
 	
 	private void doFinalActions()
 	{
-		if(historicalCheck.getSelection()){	
+		if(historicalButton.getSelection()){	
 			ArrayList<ArrayList<Mediation>> mMatrix = rrtable.getSelections();
 			ArrayList<Integer> ns = rrtable.getNs();			
 			// Action =====================	
 			RepRelAction newAction = new RepRelAction(repRel);
 			newAction.setCreateInvariantWithQualities(mMatrix,ns);
-			getRepRelWizard().replaceAction(repRel.getMediations().size(),newAction);	
+			getRepRelWizard().replaceAction(repRel.getProblematicMediations().size(),newAction);	
 			//=============================
 		}
-		if(currentCheck.getSelection()){
+		if(currentButton.getSelection()){
 			ArrayList<ArrayList<Mediation>> mMatrix = rrtable.getSelections();
 			ArrayList<Integer> ns = rrtable.getNs();
 			// Action =====================	
 			RepRelAction newAction = new RepRelAction(repRel);
 			newAction.setCreateInvariant(mMatrix, ns);
-			getRepRelWizard().replaceAction(repRel.getMediations().size(), newAction);
+			getRepRelWizard().replaceAction(repRel.getProblematicMediations().size(), newAction);
 			//=============================
 		}
 	}

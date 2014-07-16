@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.antipattern.relrig;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -22,8 +23,8 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 public class RelRigOccurrence extends AntipatternOccurrence {
 	
 	private Relator relator;	
-	private ArrayList<Mediation> allMediations, rigidMediations;
-	private ArrayList<Property> allMediatedProperties, rigidMediatedProperties;
+	private ArrayList<Mediation> allMediations = new ArrayList<Mediation>(), rigidMediations = new ArrayList<Mediation>();
+	private ArrayList<Property> allMediatedProperties = new ArrayList<Property>(), rigidMediatedProperties = new ArrayList<Property>();
 		
 	public ArrayList<Mediation> getAllMediations() {
 		return allMediations;
@@ -51,6 +52,24 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 		return rigidMediatedProperties;
 	}
 	
+	public RelRigOccurrence(Relator relator, RelRigAntipattern ap, HashSet<Property> allMediatedProperties, HashSet<Property> rigidMediatedProperties){
+		super(ap);
+		
+		this.relator = relator;
+		this.allMediatedProperties.addAll(allMediatedProperties);
+		this.rigidMediatedProperties.addAll(rigidMediatedProperties);
+		
+		for (Property p : rigidMediatedProperties) {
+			if(p.getAssociation() instanceof Mediation)
+				rigidMediations.add((Mediation) p.getAssociation());
+		}
+		
+		for (Property p : allMediatedProperties) {
+			if(p.getAssociation() instanceof Mediation)
+				allMediations.add((Mediation) p.getAssociation());
+		}
+	}
+	
 	public RelRigOccurrence(Relator relator, RelRigAntipattern ap) throws Exception 
 	{
 		super(ap);
@@ -65,10 +84,6 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 			throw new NullPointerException("RelRigid: Relator is null");
 		
 		this.relator = relator;  
-		allMediatedProperties = new ArrayList<>();
-		allMediations = new ArrayList<>();
-		rigidMediatedProperties = new ArrayList<>();
-		rigidMediations = new ArrayList<>();
 		
 		for (Mediation med : parser.getRelatorsMediations(relator)) {
 			if(!OntoUMLParser.getRelator(med).equals(relator))
@@ -123,6 +138,9 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 		for (Property p : this.rigidMediatedProperties) {
 			result += "\n\t"+OntoUMLNameHelper.getNameTypeAndMultiplicity(p, true, false, true, true, false);
 		}
+		
+		if(allMediatedProperties.size()==rigidMediatedProperties.size())
+			return result;
 		
 		result += "\nOther Mediated Types:";
 		
