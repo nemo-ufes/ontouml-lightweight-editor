@@ -181,7 +181,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     ClassElement datatypeElement = (ClassElement) ClassElement.getPrototype().clone();
     datatypeElement.setClassifier(datatype);
     datatypeElement.setShowAttributes(true);
-    elementPrototypes.put(ElementType.DATATYPE, datatypeElement);
+    elementPrototypes.put(ElementType.DATATYPE, datatypeElement);    
   }
 
   public void createPropertiesByDefault(Association association)
@@ -344,6 +344,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 	  if (elementType.equals(ElementType.MODE)) { type = factory.createMode();}
 	  if (elementType.equals(ElementType.RELATOR)) { type = factory.createRelator();  }
 	  if (elementType.equals(ElementType.DATATYPE)) { type = factory.createDataType();  }	  
+	  if (elementType.equals(ElementType.ENUMERATION)) { type = factory.createEnumeration();  }
 	  if (elementType.equals(ElementType.GENERALIZATIONSET)) { type = factory.createGeneralizationSet();  }
 	  if (elementType.equals(ElementType.COMMENT)) { type = createComment();  }
 	  if (elementType.equals(ElementType.CONSTRAINT)) { type = createConstraintx();  }

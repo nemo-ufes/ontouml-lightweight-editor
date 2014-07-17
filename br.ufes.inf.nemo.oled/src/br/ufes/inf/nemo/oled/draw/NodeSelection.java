@@ -593,7 +593,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	 */
 	private void drawSilhouette(DrawingContext drawingContext) {
 		drawingContext.drawRectangle(tmpPos.getX(), tmpPos.getY(),
-				tmpSize.getWidth(), tmpSize.getHeight(), ColorPalette.getInstance().getColor(ThemeColor.GREEN_MEDIUM),null);
+				tmpSize.getWidth(), tmpSize.getHeight(), null/*ColorPalette.getInstance().getColor(ThemeColor.GREEN_MEDIUM),null*/);
 	}
 
 	/**

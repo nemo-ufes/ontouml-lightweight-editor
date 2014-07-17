@@ -1,5 +1,5 @@
 /**
- * Copyright(C) 2011-2014 by John Guerson, Tiago Prince, Antognoni Albuquerque
+  * Copyright(C) 2011-2014 by John Guerson, Tiago Prince, Antognoni Albuquerque
  *
  * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same
@@ -1869,9 +1869,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				boolean found = tree.checkModelElement(addedElement);
 				if(!found) {
 					if(addedElement.eContainer()!=null) tree.checkModelElement(addedElement.eContainer());
-					else tree.checkModelElement(project.getModel());
-					tree.addObject(addedElement);	
-					
+					else tree.checkModelElement(project.getModel());					
+					tree.addObject(addedElement);					
 				} else {
 					if(addedElement instanceof Generalization){
 						tree.checkModelElement(addedElement);

@@ -94,7 +94,7 @@ public class ClassEditionPanel extends JPanel {
 		lblStereo = new JLabel("Stereo:");
 		
 		stereoCombo = new JComboBox();
-		stereoCombo.setModel(new DefaultComboBoxModel(new String[] {"Kind", "SubKind", "Collective", "Quantity", "Role", "Phase", "Category", "Mixin", "RoleMixin", "Relator", "Mode", "DataType"}));
+		stereoCombo.setModel(new DefaultComboBoxModel(new String[] {"Kind", "SubKind", "Collective", "Quantity", "Role", "Phase", "Category", "Mixin", "RoleMixin", "Relator", "Mode", "DataType", "Enumeration", "PrimitiveType"}));
 		
 		GroupLayout gl_classPropPanel = new GroupLayout(classPropPanel);
 		gl_classPropPanel.setHorizontalGroup(
@@ -164,15 +164,6 @@ public class ClassEditionPanel extends JPanel {
 	{
 		nameField.selectAll();
 	}
-	
-//	public Fix changeStereotype(){
-//		Fix fix = new Fix();
-//		if(getStereotype(element).compareTo((String) stereoCombo.getSelectedItem())!=0){
-//			OutcomeFixer fixer = new OutcomeFixer(diagramManager.getCurrentProject().getModel());
-//			fix.addAll(fixer.changeClassStereotypeTo(element, fixer.getClassStereotype((String) stereoCombo.getSelectedItem())));
-//		}
-//		return fix;
-//	}
 	
 	public void transferClassData()
 	{

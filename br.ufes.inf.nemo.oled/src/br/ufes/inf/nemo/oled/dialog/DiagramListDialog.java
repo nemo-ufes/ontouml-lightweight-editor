@@ -82,7 +82,7 @@ public class DiagramListDialog extends JDialog {
 	public void okPerformed(ActionEvent event)
 	{
 		DiagramEditor de = diagramList.getSelectedValue();
-		if (!frame.getDiagramManager().isDiagramOpened(de.getDiagram())) {
+		if (de!=null && !frame.getDiagramManager().isDiagramOpened(de.getDiagram())) {
 			frame.getDiagramManager().createDiagramEditor(de.getDiagram());
 		}else{
 			

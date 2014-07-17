@@ -40,6 +40,7 @@ import javax.swing.border.EmptyBorder;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.Enumeration;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
@@ -64,6 +65,7 @@ public class ClassDialog extends JDialog{
 	private ClassEditionPanel classEdition;
 	private CommentsEditionPanel commentsEdition;
 	private AttributesEditionPanel attributesEdition;
+	private EnumLiteralEditionPanel literalsEdition;
 	private ConstraintEditionPanel constraintsEdition;
 	private RelatedElementsPanel relatedElements;
 	
@@ -133,32 +135,56 @@ public class ClassDialog extends JDialog{
 		panel.setLayout(gl_panel);
 		
 		classEdition = new ClassEditionPanel (diagramManager,classElement,element);
-		attributesEdition = new AttributesEditionPanel(this,diagramManager,classElement,element);
-		
+				
 		JPanel classTab = new JPanel();
 		classTab.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
 		tabbedPane.addTab("Class",classTab);		
 		GroupLayout gl_classTab = new GroupLayout(classTab);
-		gl_classTab.setHorizontalGroup(
-			gl_classTab.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_classTab.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_classTab.createParallelGroup(Alignment.LEADING)
-						.addComponent(classEdition, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
-						.addComponent(attributesEdition, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addContainerGap())
-		);
-		gl_classTab.setVerticalGroup(
-			gl_classTab.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_classTab.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(classEdition, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(attributesEdition, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE)
-					.addGap(10))
-		);
-		classTab.setLayout(gl_classTab);
+		
+		if(element instanceof Enumeration){
+			literalsEdition = new EnumLiteralEditionPanel(this,diagramManager,classElement,element);
+			gl_classTab.setHorizontalGroup(
+				gl_classTab.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_classTab.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(gl_classTab.createParallelGroup(Alignment.LEADING)
+							.addComponent(classEdition, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+							.addComponent(literalsEdition, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addContainerGap())
+			);
+			gl_classTab.setVerticalGroup(
+				gl_classTab.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_classTab.createSequentialGroup()
+						.addContainerGap()
+						.addComponent(classEdition, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(literalsEdition, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE)
+						.addGap(10))
+			);
+			classTab.setLayout(gl_classTab);
+		}else{
+			attributesEdition = new AttributesEditionPanel(this,diagramManager,classElement,element);
+			gl_classTab.setHorizontalGroup(
+				gl_classTab.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_classTab.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(gl_classTab.createParallelGroup(Alignment.LEADING)
+							.addComponent(classEdition, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+							.addComponent(attributesEdition, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addContainerGap())
+			);
+			gl_classTab.setVerticalGroup(
+				gl_classTab.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_classTab.createSequentialGroup()
+						.addContainerGap()
+						.addComponent(classEdition, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(attributesEdition, GroupLayout.PREFERRED_SIZE, 10, Short.MAX_VALUE)
+						.addGap(10))
+			);
+			classTab.setLayout(gl_classTab);	
+		}	
 		
 		JPanel commentTab = new JPanel();
 		tabbedPane.addTab("Comments", null, commentTab, null);
@@ -244,11 +270,17 @@ public class ClassDialog extends JDialog{
 		setSize(new Dimension(500, 452));
 		
 		classEdition.selectNameText();
+		if(element instanceof Enumeration) classEdition.stereoCombo.setEnabled(false);
 	}
 		
 	public void refreshAttributesData()
 	{		
 		attributesEdition.refreshData();		
+	}
+	
+	public void refreshLiteralsData()
+	{
+		literalsEdition.refreshData();
 	}
 	
 	public static String getStereotype(EObject element)
@@ -263,7 +295,8 @@ public class ClassDialog extends JDialog{
 	public void okActionPerformed(ActionEvent arg0)
 	{		
 		commentsEdition.transferCommentsData();
-		attributesEdition.transferAttributesData();		
+		if(attributesEdition!=null) attributesEdition.transferAttributesData();		
+		if(literalsEdition!=null) literalsEdition.transferLiteralData();
 		constraintsEdition.transferConstraintsData();
 		classEdition.transferClassData();				
 		if(getStereotype(element).compareTo((String) classEdition.stereoCombo.getSelectedItem())!=0)

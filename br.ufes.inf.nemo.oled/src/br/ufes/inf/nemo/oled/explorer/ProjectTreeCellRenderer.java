@@ -119,7 +119,7 @@ public class ProjectTreeCellRenderer extends DefaultTreeCellRenderer implements 
     			else if(element instanceof Package) uniqueName.setText("");
     			else if(element instanceof Classifier) uniqueName.setText(" ("+treeNodeElem.getUniqueName()+")");
     			else if(element instanceof Association) uniqueName.setText(" ("+treeNodeElem.getUniqueName()+")");
-    			else if(element instanceof Property) uniqueName.setText(" ("+treeNodeElem.getUniqueName()+")");      			
+    			else if(element instanceof Property) uniqueName.setText(" ("+treeNodeElem.getUniqueName()+")");    			
     		} else {
     			uniqueName.setText("");        			
     		}
@@ -131,7 +131,7 @@ public class ProjectTreeCellRenderer extends DefaultTreeCellRenderer implements 
 				if (value.toString().contains("Model")) label.setText(value.toString().replaceFirst("Model ", ""));
     		}else{
     			
-			    if (elementType.toLowerCase().equals("property"))
+			    if (elementType.toLowerCase().equals("property") || elementType.toLowerCase().equals("enumerationliteral"))
 	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/property.gif")));
 	    		else
 	    			label.setIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/"+elementType.toLowerCase()+".png")));

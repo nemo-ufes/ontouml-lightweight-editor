@@ -139,7 +139,11 @@ public class ElementDialogCaller {
 		if (element instanceof RefOntoUML.Class)
 		{
 			ElementDialogCaller.callClassDialog(frame, (RefOntoUML.Classifier)element, true);
-		} 
+		}
+		if ((element instanceof RefOntoUML.DataType) || (element instanceof RefOntoUML.Enumeration))
+		{
+			ElementDialogCaller.callClassDialog(frame, (RefOntoUML.Classifier)element, true);
+		}		 
 		else if (element instanceof RefOntoUML.Property)
 		{
 			ElementDialogCaller.callPropertyDialog(frame, (RefOntoUML.Property)element, true);

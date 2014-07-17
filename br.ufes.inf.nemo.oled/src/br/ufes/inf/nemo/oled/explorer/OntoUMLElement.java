@@ -113,6 +113,10 @@ public class OntoUMLElement {
 			return OntoUMLNameHelper.getTypeName(element, true)+" "+((NamedElement)element).getName();
 		}
 		
+		if(element instanceof RefOntoUML.EnumerationLiteral){
+			return OntoUMLNameHelper.getTypeName(element, true)+" "+((NamedElement)element).getName();
+		}
+		
 		if (element instanceof RefOntoUML.Comment)
 		{
 			if(((RefOntoUML.Comment)element).getBody().length()>15)
