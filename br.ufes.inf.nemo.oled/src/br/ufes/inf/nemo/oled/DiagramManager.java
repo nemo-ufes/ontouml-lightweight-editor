@@ -2704,6 +2704,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
     	}else if(elementType == ElementType.GENERALIZATIONSPECIALIZATION){
     		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
     		fix = PatternTool.generalizationAndSpecialization(frame, getCurrentProject(),selectedElements);
+    	}else if(elementType == ElementType.PARTITIONPATTERN){
+    		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
+    		fix = PatternTool.partitionPattern(frame, getCurrentProject(),selectedElements);
     	}
 		
 		if(fix != null){

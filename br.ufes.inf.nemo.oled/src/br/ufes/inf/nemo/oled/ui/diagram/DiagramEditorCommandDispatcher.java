@@ -352,6 +352,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("LANGUAGE_GENERALIZATION_SPECIALIZATION", new MethodCall(
 					getClass().getMethod("runPatternByMenu",ElementType.class),ElementType.GENERALIZATIONSPECIALIZATION));
 			
+			selectorMap.put("LANGUAGE_PARTITION_PATTERN", new MethodCall(
+					getClass().getMethod("runPatternByMenu",ElementType.class),ElementType.PARTITIONPATTERN));
+			
 			selectorMap.put("CREATE_GEN_SET", new MethodCall(
 					DiagramEditor.class.getMethod("addGeneralizationSet")));
 			selectorMap.put("DELETE_GEN_SET", new MethodCall(

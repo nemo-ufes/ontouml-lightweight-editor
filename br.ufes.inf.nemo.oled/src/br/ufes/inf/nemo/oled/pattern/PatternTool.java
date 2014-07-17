@@ -29,7 +29,10 @@ import javax.swing.JOptionPane;
 import RefOntoUML.Category;
 import RefOntoUML.Classifier;
 import RefOntoUML.MixinClass;
+import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
+import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel;
@@ -38,6 +41,7 @@ import br.ufes.inf.nemo.assistant.pattern.window.PatternAbstractWindowAssistant;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.design.RelatorCreation;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.design.RoleMixinPattern;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language.GeneralizationAndSpecializationPattern;
+import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language.PartitionPattern;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language.PrincipleIdentiy;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
@@ -112,6 +116,8 @@ public class PatternTool {
 				return principleIdentity(frame, currentProject, x, y);
 			}else if(selectedClassifier instanceof Category){
 				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_Category);
+			}else if(selectedClassifier instanceof RoleMixin){
+				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_RoleMixin);
 			}else if(selectedClassifier instanceof MixinClass){
 				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_Mixin);
 			}else{
@@ -131,6 +137,38 @@ public class PatternTool {
 		return null;
 	}
 	
+	
+	public static Fix partitionPattern(JFrame frame, UmlProject currentProject, List<DiagramElement> selectedElements) {
+		ImagePanel imagePanel = null;
+		PartitionPattern pattern = null;
+		double x, y;
+		
+		if (selectedElements.size() == 1){
+			ClassElement selectedElement = (ClassElement) selectedElements.get(0);
+			x = selectedElement.getAbsoluteX1();
+			y = selectedElement.getAbsoluteY1();
+					
+			Classifier selectedClassifier = selectedElement.getClassifier();
+			if(selectedClassifier instanceof SortalClass){
+				imagePanel = new ImagePanel(PatternType.PartitionPattern_Sortal);
+			}else if(selectedClassifier instanceof RigidSortalClass){
+				imagePanel = new ImagePanel(PatternType.PartitionPattern_Rigid);
+			}else{
+				JOptionPane.showMessageDialog(null, "Pattern do not applied to "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" stereotype");
+				return null;		
+			}
+			
+			pattern = new PartitionPattern(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser(), selectedClassifier);
+			
+			PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, pattern, imagePanel);
+			window.setVisible(true);
+			window.setLocationRelativeTo(frame);
+			return window.getFix();
+		}
+		
+		JOptionPane.showMessageDialog(null, "Pattern do not applied to multiple selections");
+		return null;
+	}
 	
 //	public static Fix createSubkindPattern(JFrame frame, UmlProject project, double x, double y) {
 //		SubkindCreation subkindCreation = new SubkindCreation(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser());

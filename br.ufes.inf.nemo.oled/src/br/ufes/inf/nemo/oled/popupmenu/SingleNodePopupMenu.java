@@ -224,7 +224,10 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	public void createPatternMenu()
 	{
 		JMenu applyPatternMenu = new JMenu("Apply Pattern");
+		
 		createMenuItem(applyPatternMenu,"pattern.generalizationspecialization");
+		createMenuItem(applyPatternMenu,"pattern.partitionpattern");
+		
 		add(applyPatternMenu);
 	}
 	
