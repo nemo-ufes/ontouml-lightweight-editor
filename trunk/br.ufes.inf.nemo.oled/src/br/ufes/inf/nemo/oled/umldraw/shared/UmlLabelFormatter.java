@@ -22,6 +22,7 @@
 package br.ufes.inf.nemo.oled.umldraw.shared;
 
 import RefOntoUML.Element;
+import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.NamedElement;
@@ -53,7 +54,10 @@ public class UmlLabelFormatter {
 			}
 			return name;
 		}
-		
+		if(namedElement instanceof EnumerationLiteral){
+			EnumerationLiteral literal = (EnumerationLiteral) namedElement;			
+			return literal.getName();
+		}
 		/*else if(namedElement instanceof GeneralizationSetImpl)
 		{
 			GeneralizationSet genSet = (GeneralizationSet) namedElement; 

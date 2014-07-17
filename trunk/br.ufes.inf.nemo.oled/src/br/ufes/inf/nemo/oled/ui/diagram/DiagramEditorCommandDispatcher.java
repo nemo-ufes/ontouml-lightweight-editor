@@ -149,7 +149,15 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("CREATE_DATATYPE", new MethodCall(
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.DATATYPE));
+			
+			selectorMap.put("CREATE_ENUMERATION", new MethodCall(
+					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
+					ElementType.ENUMERATION));
 
+			selectorMap.put("CREATE_PRIMITIVETYPE", new MethodCall(
+					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
+					ElementType.PRIMITIVETYPE));
+			
 			//Commands for creating relations		
 			selectorMap.put("CREATE_GENERALIZATION", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",

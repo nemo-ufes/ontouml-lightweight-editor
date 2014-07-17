@@ -1787,7 +1787,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				RefOntoUML.Class oClass = (RefOntoUML.Class)element;
 				d.setDragElementMode(oClass,oClass.eContainer());
 			}			
-			if ((element instanceof RefOntoUML.DataType)&&!(element instanceof RefOntoUML.PrimitiveType)&&!(element instanceof RefOntoUML.Enumeration))
+			if (element instanceof RefOntoUML.DataType)
 			{
 				RefOntoUML.DataType oClass = (RefOntoUML.DataType)element;
 				d.setDragElementMode(oClass,oClass.eContainer());				

@@ -29,6 +29,8 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.Enumeration;
+import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Property;
 import RefOntoUML.impl.ClassImpl;
 import RefOntoUML.impl.DataTypeImpl;
@@ -727,12 +729,21 @@ public final class ClassElement extends AbstractCompositeNode implements
 		{
 			ClassImpl aclass = (ClassImpl) getClassifier(); 
 			for (Property property : aclass.getOwnedAttribute()) {
-				Label label = new SimpleLabel();
+				Label label = new SimpleLabel();				
 				label.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),property));
 				attributesCompartment.addLabel(label);
 			}
 		}
-		else if(getClassifier() instanceof DataTypeImpl)
+		else if(getClassifier() instanceof Enumeration)
+		{
+			Enumeration aclass = (Enumeration) getClassifier(); 
+			for (EnumerationLiteral literal : aclass.getOwnedLiteral()) {
+				Label label = new SimpleLabel();				
+				label.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),literal));
+				attributesCompartment.addLabel(label);
+			}
+		}
+		else if((getClassifier() instanceof DataTypeImpl))
 		{
 			DataTypeImpl dataType = (DataTypeImpl) getClassifier();
 			for (Property property : dataType.getOwnedAttribute()) {
@@ -741,7 +752,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 				attributesCompartment.addLabel(label);
 			}	
 		}
-
+		
 		reinitMainCompartment();
 		invalidate();
 	}

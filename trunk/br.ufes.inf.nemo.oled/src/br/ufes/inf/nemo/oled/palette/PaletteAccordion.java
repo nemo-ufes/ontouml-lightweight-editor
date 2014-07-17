@@ -245,6 +245,8 @@ public class PaletteAccordion extends JPanel{
 		elementsPalette.createElement("staticpalette.classes", "relator");
 		//palette.addSpacer(0,PALLETE_VSPACE);
 		elementsPalette.createElement("staticpalette.classes", "datatype");
+		elementsPalette.createElement("staticpalette.classes", "enumeration");
+		elementsPalette.createElement("staticpalette.classes", "primitivetype");
 		
 		//palette.addSpacer(0,PALLETE_VSPACE);		
 		

@@ -562,7 +562,7 @@ public class TreePopupMenu extends JPopupMenu {
     		}
     		if(ontoElement.getElement() instanceof RefOntoUML.Enumeration)
     		{    			
-    			    			 	
+    			createAddContainedItem();
     		}
     		if(ontoElement.getElement() instanceof RefOntoUML.PrimitiveType)
     		{    			
