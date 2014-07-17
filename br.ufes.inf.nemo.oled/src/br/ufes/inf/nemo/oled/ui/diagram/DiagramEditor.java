@@ -360,6 +360,12 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));		
 	}
 
+	public void select(DiagramElement element)
+	{
+		selectionHandler.deselectAll();
+		selectionHandler.select(element);
+	}
+	
 	/**
 	 * Removes the elements selected. From the diagram and the model.
 	 */

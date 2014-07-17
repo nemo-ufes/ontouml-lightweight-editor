@@ -167,6 +167,11 @@ public class SelectionHandler implements EditorMode {
 		}
 	}
 
+	public void select (DiagramElement element)
+	{
+		selection = element.getSelection(editor);
+	}
+	
 	/**
 	 * Displays the context menu.
 	 * @param e the EditorMouseEvent

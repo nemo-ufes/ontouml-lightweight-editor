@@ -25,6 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -52,6 +53,8 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	JMenuItem relatorItem = new JMenuItem("Relator");
 	JMenuItem modeItem = new JMenuItem("Mode");	
 	JMenuItem datatypeItem = new JMenuItem("DataType");
+	JMenuItem enumerationItem = new JMenuItem("Enumeration");
+	JMenuItem primitiveItem = new JMenuItem("PrimitiveType");
 	JMenuItem genItem = new JMenuItem("Generalization");
 	JMenuItem mediationItem = new JMenuItem("Mediation");	
 	JMenuItem materialItem = new JMenuItem("Material");
@@ -79,7 +82,17 @@ public class ToolboxPopupMenu extends JPopupMenu {
     	this.frame = frame;
     	this.x=x;
     	this.y=y;
-    	add(pointerItem);
+    	//add(pointerItem);
+    	
+        JMenu derivationMenu = new JMenu("Derived Patterns");
+        derivationMenu.add(unionItem);        
+        derivationMenu.add(exclusionItem);
+        derivationMenu.add(intersectionItem);
+        derivationMenu.add(pastspecializationItem);
+        derivationMenu.add(participationItem);
+        add(derivationMenu);
+        addSeparator();
+        
     	add(kindItem);
     	add(quantityItem);
     	add(collectiveItem);        
@@ -92,6 +105,8 @@ public class ToolboxPopupMenu extends JPopupMenu {
         add(modeItem); 
         add(relatorItem);
         add(datatypeItem);        
+        add(enumerationItem);
+        add(primitiveItem);
         add(genItem);
         add(materialItem);
         add(formalItem);
@@ -104,12 +119,6 @@ public class ToolboxPopupMenu extends JPopupMenu {
         add(associationItem);
         add(derivationItem);
         
-        addSeparator();
-        add(unionItem);
-        add(exclusionItem);
-        add(intersectionItem);
-        add(pastspecializationItem);
-        add(participationItem);
         
         kindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/kind.png")));
         quantityItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/quantity.png")));
@@ -123,6 +132,8 @@ public class ToolboxPopupMenu extends JPopupMenu {
         modeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/mode.png")));
         relatorItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/relator.png")));
         datatypeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        enumerationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        primitiveItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/datatype.png")));
         genItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/generalization.png")));
         associationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/association-arrow.png")));
         materialItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/materialassociation.png")));
@@ -141,8 +152,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
         specializationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
         pastspecializationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
         participationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
-        
-        
+                
         pointerItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/mousepointer.png")));
         
         kindItem.addMouseListener(new MouseAdapter()
@@ -274,6 +284,28 @@ public class ToolboxPopupMenu extends JPopupMenu {
 			    if (SwingUtilities.isLeftMouseButton(e))
 	            {
 			    	frame.getToolManager().getElementsPalette().getPalleteElement("datatype").setSelected(true);
+	            }
+       		}
+		});
+        enumerationItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getElementsPalette().getPalleteElement("enumeration").setSelected(true);
+	            }
+       		}
+		});
+        primitiveItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getElementsPalette().getPalleteElement("primitivetype").setSelected(true);
 	            }
        		}
 		});
