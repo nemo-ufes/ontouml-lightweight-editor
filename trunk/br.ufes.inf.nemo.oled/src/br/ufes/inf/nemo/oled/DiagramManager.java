@@ -1776,8 +1776,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		if (d!=null && d.getDiagram().containsChild(element))
 		{
-			if (element instanceof NamedElement) frame.showInformationMessageDialog("Moving to Diagram", "\""+ModelHelper.getStereotype(element)+" "+((NamedElement)element).getName()+"\" already exists in the diagram \""+d.getDiagram().getName()+"\"");
+			if (element instanceof NamedElement) frame.showInformationMessageDialog("Moving to Diagram", "\""+ModelHelper.getStereotype(element)+" "+((NamedElement)element).getName()+"\" already exists in the diagram \""+d.getDiagram().getName()+"\"");			
 			else if (element instanceof Generalization) frame.showInformationMessageDialog("Moving to Diagram", "\"Generalization "+((Generalization)element).getSpecific().getName()+"->"+((Generalization)element).getSpecific().getName()+"\" already exists in the diagram \""+d.getDiagram().getName()+"\"");
+			DiagramElement de = ModelHelper.getDiagramElementByEditor(element, d);
+			if(de!=null) d.select(de);
 			return;			
 		}
 		if (d!=null) 
