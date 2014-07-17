@@ -1,13 +1,14 @@
 package br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -21,18 +22,10 @@ import RefOntoUML.Phase;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.PatternHelpPage;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class PrincipleIdentiy extends ClassSelectionPanel {
 	private static final long serialVersionUID = 1L;

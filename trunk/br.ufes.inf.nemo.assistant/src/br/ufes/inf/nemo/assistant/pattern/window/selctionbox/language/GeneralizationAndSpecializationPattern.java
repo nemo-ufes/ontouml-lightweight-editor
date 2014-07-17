@@ -20,12 +20,12 @@ import RefOntoUML.Category;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.Mixin;
-import RefOntoUML.MixinClass;
 import RefOntoUML.Package;
 import RefOntoUML.Phase;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
@@ -65,9 +65,9 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 		setSize(new Dimension(450, 299));
 		this.selectedClassifier = selectedClassifier;
 
-		if(selectedClassifier instanceof Category)
+		if(selectedClassifier instanceof Category){
 			thirdClasses.add("SubKind");
-		if(selectedClassifier instanceof MixinClass){
+		}else if(selectedClassifier instanceof Mixin){
 			thirdClasses.add("Phase");
 			thirdClasses.add("Role");
 			thirdClasses.add("RoleMixin");
@@ -151,11 +151,20 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 		spcChk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for(String thirdClass : thirdClasses){
-					if(((String)specificTypesCB.getSelectedItem()).equalsIgnoreCase(thirdClass)){
-						specific2Panel.setVisible(true);
-						return;
+				if(spcChk.isSelected()){
+					for(String thirdClass : thirdClasses){
+						if(((String)spcCB.getSelectedItem()).toLowerCase().contains(thirdClass.toLowerCase())){
+							specific2Panel.setVisible(true);
+							return;
+						}
 					}
+				}else{
+					for(String thirdClass : thirdClasses){
+						if(((String)specificTypesCB.getSelectedItem()).equalsIgnoreCase(thirdClass)){
+							specific2Panel.setVisible(true);
+							return;
+						}
+					}					
 				}
 				specific2Panel.setVisible(false);
 			}
@@ -251,7 +260,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 
 				Classifier substance = createClassifier(spc1Chk, x-(verticalDistance/2), y);
 				fix.addAll(outcomeFixer.createGeneralization(specific, substance));
-			}else if(selectedClassifier instanceof MixinClass){
+			}else if(selectedClassifier instanceof Mixin){
 				Classifier specific1 = createClassifier(spcChk, x+(0*verticalDistance)/3, y+horizontalDistance);
 				fix.addAll(outcomeFixer.createGeneralization(specific1, selectedClassifier));	
 
@@ -311,6 +320,10 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			types = new String[]{"Phase"};
 			model = new DefaultComboBoxModel<String>(types);  
 			specific1TypesCB.setModel(model);
+
+			((TitledBorder)generalPanel.getBorder()).setTitle("Selected Subkind class");
+			((TitledBorder)specific1Panel.getBorder()).setTitle("Subkinds and AntiRigid Sortal classes");
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Counter Part Phase");
 		}else if(selectedClassifier instanceof Role){
 			Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
 			Set<Phase> phases = parser.getAllInstances(RefOntoUML.Phase.class);
@@ -331,6 +344,10 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			types = new String[]{"Phase"};
 			model = new DefaultComboBoxModel<String>(types);  
 			specific1TypesCB.setModel(model);
+
+			((TitledBorder)generalPanel.getBorder()).setTitle("Selected Role class");
+			((TitledBorder)specific1Panel.getBorder()).setTitle("AntiRigid Sortal classes");
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Counter Part Phase");
 		}else if(selectedClassifier instanceof Category){
 			Set<Category> categories = parser.getAllInstances(RefOntoUML.Category.class);
 			Set<SubKind> subkinds = parser.getAllInstances(RefOntoUML.SubKind.class);
@@ -352,8 +369,11 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			types = new String[]{"Kind","Collective","Quantity"};
 			model = new DefaultComboBoxModel<String>(types);  
 			specific1TypesCB.setModel(model);
-			((TitledBorder)specific2Panel.getBorder()).setTitle("Substance Sortal class");
-		}else if(selectedClassifier instanceof MixinClass){
+
+			((TitledBorder)generalPanel.getBorder()).setTitle("Selected Category class");
+			((TitledBorder)specific1Panel.getBorder()).setTitle("Rigid classes");
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Substance Sortal classes");
+		}else if(selectedClassifier instanceof Mixin){
 			Set<RigidSortalClass> rigidSortalClass = parser.getAllInstances(RefOntoUML.RigidSortalClass.class);
 			Set<RigidMixinClass> rigidMixinClass = parser.getAllInstances(RefOntoUML.RigidMixinClass.class);
 			Set<AntiRigidSortalClass> antiRigidSortalClass = parser.getAllInstances(RefOntoUML.AntiRigidSortalClass.class);
@@ -376,7 +396,35 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			types = new String[]{"Kind","Collective","Quantity", "Subkind","Category"};
 			model = new DefaultComboBoxModel<String>(types);  
 			specific1TypesCB.setModel(model);
-			((TitledBorder)specific2Panel.getBorder()).setTitle("Rigid Sortal class");
+
+			((TitledBorder)generalPanel.getBorder()).setTitle("Selected Mixin class");
+			((TitledBorder)specific1Panel.getBorder()).setTitle("Anti Rigid classes");
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Rigid classes");
+		}else if(selectedClassifier instanceof RoleMixin){
+			Set<RoleMixin> roleMixins = parser.getAllInstances(RefOntoUML.RoleMixin.class);
+			Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
+			Set<Phase> phases = parser.getAllInstances(RefOntoUML.Phase.class);
+
+			model = this.getCBModelFromSets(roles,phases,roleMixins);
+			spcCB.setModel(model);
+			spcChk.setVisible(model.getSize() != 0);			
+
+			types = new String[]{"Role", "Phase", "RoleMixin"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specificTypesCB.setModel(model);
+
+			model = this.getCBModelFromSets(phases);
+
+			spc1CB.setModel(model);
+			spc1Chk.setVisible(model.getSize() != 0);
+
+			types = new String[]{"Phase"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specific1TypesCB.setModel(model);
+
+			((TitledBorder)generalPanel.getBorder()).setTitle("Selected RoleMixin class");
+			((TitledBorder)specific1Panel.getBorder()).setTitle("Anti Rigid classes");
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Phases classes");
 		}
 	}
 }

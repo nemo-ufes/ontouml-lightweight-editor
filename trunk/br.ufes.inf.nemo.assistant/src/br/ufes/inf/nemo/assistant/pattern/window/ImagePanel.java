@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 public class ImagePanel extends JPanel {
 
 	public enum PatternType {
-		RelatorCreation,SubkindCreation,RoleMixinPattern,PrincipleIdentity, GeneralizationAndSpecialization_Sukind, GeneralizationAndSpecialization_Role, GeneralizationAndSpecialization_Category, GeneralizationAndSpecialization_Mixin
+		RelatorCreation,SubkindCreation,RoleMixinPattern,PrincipleIdentity, GeneralizationAndSpecialization_Sukind, GeneralizationAndSpecialization_Role, GeneralizationAndSpecialization_Category, GeneralizationAndSpecialization_Mixin, GeneralizationAndSpecialization_RoleMixin, PartitionPattern_Sortal, PartitionPattern_Rigid
 	}
 
 	public ImagePanel(PatternType type){
@@ -41,6 +41,15 @@ public class ImagePanel extends JPanel {
 			break;
 		case GeneralizationAndSpecialization_Mixin:
 			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/GeneralizationSpecialization_Mixin.png"));
+			break;
+		case GeneralizationAndSpecialization_RoleMixin:
+			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/GeneralizationSpecialization_RoleMixin.png"));
+			break;
+		case PartitionPattern_Sortal:
+			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/PartitionPattern_Sortal.png"));
+			break;
+		case PartitionPattern_Rigid:
+			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/PartitionPattern_Rigid.png"));
 			break;
 		}
 

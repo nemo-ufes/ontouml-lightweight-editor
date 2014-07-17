@@ -137,7 +137,7 @@ public abstract class ClassSelectionPanel extends JPanel {
 			while (clsIte.hasNext()) {
 				RefOntoUML.Class cls = clsIte.next();
 				if(UtilAssistant.getStringRepresentationClassStereotype(cls).equals(_name)){
-					fix.includeAdded(cls,x,y);
+					fix.includeAdded(cls);
 					return cls;
 				}
 			}
