@@ -36,6 +36,7 @@ import stories.World;
  * @generated
  */
 public class NodeImpl extends IndividualImpl implements Node {
+	protected static final String LABEL_EDEFAULT = "Node";
 	/**
 	 * The cached value of the '{@link #getPerformed() <em>Performed</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -72,9 +73,14 @@ public class NodeImpl extends IndividualImpl implements Node {
 	 * @generated
 	 */
 	protected NodeImpl() {
-		super();
+		super();		
 	}
-
+	
+	@Override
+	protected String getDefaultLabel() {
+		
+		return NodeImpl.LABEL_EDEFAULT;
+	}
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

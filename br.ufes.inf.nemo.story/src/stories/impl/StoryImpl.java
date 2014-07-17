@@ -3,17 +3,27 @@
 package stories.impl;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.util.EcoreUtil.ExternalCrossReferencer;
+
 import stories.Link;
 import stories.Node;
+import stories.StoriesFactory;
 import stories.StoriesPackage;
 import stories.Story;
 import stories.Story_element;
@@ -204,17 +214,18 @@ public class StoryImpl extends MinimalEObjectImpl.Container implements Story {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (label: ");
-		result.append(label);
-		result.append(')');
-		return result.toString();
+		//StringBuffer result = new StringBuffer(super.toString());
+		//result.append(" (label: ");
+		//result.append(label);
+		//result.append(')');
+		//return result.toString();
+		return this.label;
 	}
 
 	public String predicateHead(){
@@ -259,5 +270,38 @@ public class StoryImpl extends MinimalEObjectImpl.Container implements Story {
 			//}
 		}
 		return predicate+"}";
+	}
+	
+	public Story mergeReferences(){
+		int counter = 0; 
+		
+		//set of all stories. This story plus any nested story
+		Set<Story> all_stories = new HashSet<Story>();
+		all_stories.add(this);
+		
+		//the story that combines this and all nested stories
+		Story merged = StoriesFactory.eINSTANCE.createStory();
+		//here we look for any external references in the story. They may be other story's elements or classes from a model
+		Map<EObject, Collection<EStructuralFeature.Setting>> map = ExternalCrossReferencer.find(this);
+		
+		for (Map.Entry<EObject, Collection<EStructuralFeature.Setting>> entry : map.entrySet()) { 
+			EObject proxyEObject = entry. getKey (); 
+			if(stories.StoriesPackage.Literals.STORY_ELEMENT.isSuperTypeOf(proxyEObject.eClass())){
+				//here we have story elements. We will gather all stories (containers) and create a unique container with all story elements
+				
+				all_stories.add((Story)proxyEObject.eContainer());
+			}
+			
+		} 
+		for(Story s: all_stories){
+			 merged.getElements().addAll(s.getElements());
+			System.out.println("adding elements...");
+		}
+		
+		for(Story_element se:merged.getElements()){
+			System.out.println(se.getLabel());
+		}
+		System.out.println("return");
+		return merged;
 	}
 } //StoryImpl

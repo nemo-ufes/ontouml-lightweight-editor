@@ -3,12 +3,14 @@
 package stories.impl;
 
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
 import stories.Event;
 import stories.StoriesPackage;
 import stories.World;
@@ -28,6 +30,7 @@ import stories.World;
  * @generated
  */
 public class WorldImpl extends Story_elementImpl implements World {
+	protected static final String LABEL_EDEFAULT = "World";
 	/**
 	 * The cached value of the '{@link #getEnabled() <em>Enabled</em>}' reference list.
 	 * <!-- begin-user-doc -->
@@ -56,7 +59,11 @@ public class WorldImpl extends Story_elementImpl implements World {
 	protected WorldImpl() {
 		super();
 	}
-
+	@Override
+	protected String getDefaultLabel() {
+		
+		return WorldImpl.LABEL_EDEFAULT;
+	}
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -34,6 +34,7 @@ import stories.World;
  * @generated
  */
 public class LinkImpl extends IndividualImpl implements Link {
+	protected static final String LABEL_EDEFAULT = "Link";
 	/**
 	 * The cached value of the '{@link #getSource() <em>Source</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -71,6 +72,12 @@ public class LinkImpl extends IndividualImpl implements Link {
 	 */
 	protected LinkImpl() {
 		super();
+	}
+	
+	@Override
+	protected String getDefaultLabel() {
+		
+		return LinkImpl.LABEL_EDEFAULT;
 	}
 
 	/**

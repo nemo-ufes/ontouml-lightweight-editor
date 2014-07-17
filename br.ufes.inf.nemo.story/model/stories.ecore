@@ -38,6 +38,10 @@
         eType="#//Event" eOpposite="#//Event/happened_in"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="brought_about_by" upperBound="-1"
         eType="#//Event" eOpposite="#//Event/brings_about"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="next" eType="#//World"
+        eOpposite="#//World/prev"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="prev" eType="#//World"
+        eOpposite="#//World/next"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Event" abstract="true" eSuperTypes="#//Story_element">
     <eStructuralFeatures xsi:type="ecore:EReference" name="directly_causes" upperBound="-1"
