@@ -36,6 +36,7 @@ import RefOntoUML.Comment;
 import RefOntoUML.Constraintx;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
+import RefOntoUML.Enumeration;
 import RefOntoUML.FormalAssociation;
 import RefOntoUML.Generalization;
 import RefOntoUML.Kind;
@@ -47,6 +48,7 @@ import RefOntoUML.Mode;
 import RefOntoUML.NamedElement;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Phase;
+import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
 import RefOntoUML.Quantity;
 import RefOntoUML.RefOntoUMLFactory;
@@ -181,7 +183,18 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     ClassElement datatypeElement = (ClassElement) ClassElement.getPrototype().clone();
     datatypeElement.setClassifier(datatype);
     datatypeElement.setShowAttributes(true);
-    elementPrototypes.put(ElementType.DATATYPE, datatypeElement);    
+    elementPrototypes.put(ElementType.DATATYPE, datatypeElement);
+    
+    Enumeration enumeration = (RefOntoUML.Enumeration)createElement(ElementType.ENUMERATION);
+    ClassElement enumElement = (ClassElement) ClassElement.getPrototype().clone();
+    enumElement.setClassifier(enumeration);
+    enumElement.setShowAttributes(true);
+    elementPrototypes.put(ElementType.ENUMERATION, enumElement);    
+    
+    PrimitiveType primitive = (RefOntoUML.PrimitiveType)createElement(ElementType.PRIMITIVETYPE);
+    ClassElement primitiveElement = (ClassElement) ClassElement.getPrototype().clone();
+    primitiveElement.setClassifier(primitive);    
+    elementPrototypes.put(ElementType.PRIMITIVETYPE, primitiveElement);    
   }
 
   public void createPropertiesByDefault(Association association)
@@ -345,6 +358,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 	  if (elementType.equals(ElementType.RELATOR)) { type = factory.createRelator();  }
 	  if (elementType.equals(ElementType.DATATYPE)) { type = factory.createDataType();  }	  
 	  if (elementType.equals(ElementType.ENUMERATION)) { type = factory.createEnumeration();  }
+	  if (elementType.equals(ElementType.PRIMITIVETYPE)) { type = factory.createPrimitiveType();  }
 	  if (elementType.equals(ElementType.GENERALIZATIONSET)) { type = factory.createGeneralizationSet();  }
 	  if (elementType.equals(ElementType.COMMENT)) { type = createComment();  }
 	  if (elementType.equals(ElementType.CONSTRAINT)) { type = createConstraintx();  }

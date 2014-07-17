@@ -52,7 +52,6 @@ public class EnumLiteralEditionPanel extends JPanel{
 	private JTable table;
 	private EnumLiteralTableModel enumLiteralTableModel;
 	private JPanel panel;
-	private JButton btnEdit;
 	private JCheckBox cbxVisible;
 			
 	public EnumLiteralEditionPanel(final Component parent, final DiagramManager diagramManager, final ClassElement classElement, final Classifier element) 
@@ -139,38 +138,14 @@ public class EnumLiteralEditionPanel extends JPanel{
 			}
 		});
 		
-		btnEdit = new JButton("");
-		btnEdit.setEnabled(true);
-		btnEdit.setFocusable(false);
-		btnEdit.setToolTipText("Edit selected value");
-		btnEdit.setIcon(new ImageIcon(AttributesEditionPanel.class.getResource("/resources/icons/x16/pencil.png")));
-		btnEdit.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-//				int row = table.getSelectedRow();
-//				if(row>=0){
-//					EnumerationLiteral p = enumLiteralTableModel.getEntry(row);
-//					if (parent instanceof JFrame){
-//						AttributeDialog dialog = new AttributeDialog((JFrame)parent,diagramManager,	classElement, element, p, false);
-//		    			dialog.setLocationRelativeTo(parent);
-//		    			dialog.setVisible(true);	
-//					}else if (parent instanceof JDialog) {
-//						AttributeDialog dialog = new AttributeDialog((JDialog)parent,diagramManager, classElement, element, p, false);
-//		    			dialog.setLocationRelativeTo(parent);
-//		    			dialog.setVisible(true);
-//					}
-//				}
-			}
-		});
-		
 		cbxVisible = new JCheckBox("Turn literals visible");
 		cbxVisible.setPreferredSize(new Dimension(140, 20));
 		cbxVisible.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+			gl_panel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 						.addComponent(scrollpane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
@@ -179,13 +154,11 @@ public class EnumLiteralEditionPanel extends JPanel{
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnDown, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cbxVisible, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
-							.addGap(10)
+							.addComponent(cbxVisible, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnCreate, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -195,12 +168,11 @@ public class EnumLiteralEditionPanel extends JPanel{
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnDown, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnUp, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbxVisible, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnCreate, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnCreate, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbxVisible, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollpane, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+					.addComponent(scrollpane, GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
 					.addGap(10))
 		);
 		panel.setLayout(gl_panel);
