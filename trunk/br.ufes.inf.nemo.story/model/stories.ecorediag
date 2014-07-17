@@ -549,4 +549,32 @@
     <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_cEW2YwhFEeSwNd6KBS0weA" points="[31, 20, -185, -117]$[217, 127, 1, -10]"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_cEYrkAhFEeSwNd6KBS0weA" id="(0.13725490196078433,0.2558139534883721)"/>
   </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_4XedoAzuEeS67P_xJU7caA" type="3002" source="_EWj-yJjQEeOml8TPbZlsHw" target="_EWj-yJjQEeOml8TPbZlsHw">
+    <children xmi:type="notation:Node" xmi:id="_4XgS0AzuEeS67P_xJU7caA" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_4XgS0QzuEeS67P_xJU7caA" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_4Xg54AzuEeS67P_xJU7caA" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_4Xg54QzuEeS67P_xJU7caA" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_4XedoQzuEeS67P_xJU7caA" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_4XedogzuEeS67P_xJU7caA" fontColor="4210752" fontName="Segoe UI" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="stories.ecore#//World/next"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_4XedowzuEeS67P_xJU7caA" points="[0, -20, 36, -13]$[0, -70, 36, -63]$[-36, -70, 0, -63]$[-36, -20, 0, -13]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ErbikAzvEeS67P_xJU7caA" id="(0.5,0.5)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ErbikQzvEeS67P_xJU7caA" id="(0.14705882352941177,0.3333333333333333)"/>
+  </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_-WI0cAzuEeS67P_xJU7caA" type="3002" source="_EWj-yJjQEeOml8TPbZlsHw" target="_EWj-yJjQEeOml8TPbZlsHw">
+    <children xmi:type="notation:Node" xmi:id="_-WJbgAzuEeS67P_xJU7caA" type="4011">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_-WJbgQzuEeS67P_xJU7caA" x="-10" y="-10"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_-WJbggzuEeS67P_xJU7caA" type="4012">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_-WJbgwzuEeS67P_xJU7caA" x="10" y="10"/>
+    </children>
+    <styles xmi:type="notation:ConnectorStyle" xmi:id="_-WI0cQzuEeS67P_xJU7caA" lineColor="4210752"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_-WI0cgzuEeS67P_xJU7caA" fontColor="4210752" fontName="Segoe UI" fontHeight="10"/>
+    <element xmi:type="ecore:EReference" href="stories.ecore#//World/prev"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_-WI0cwzuEeS67P_xJU7caA" points="[0, -13, -36, -20]$[0, -63, -36, -70]$[36, -63, 0, -70]$[36, -13, 0, -20]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ErZtYAzvEeS67P_xJU7caA" id="(0.14705882352941177,0.3333333333333333)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_ErZtYQzvEeS67P_xJU7caA" id="(0.5,0.5)"/>
+  </edges>
 </notation:Diagram>

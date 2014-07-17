@@ -67,5 +67,7 @@ public interface Story extends EObject {
 	void setLabel(String value);
 	
 	public String generatePredicates();
+	
+	public Story mergeReferences();
 
 } // Story

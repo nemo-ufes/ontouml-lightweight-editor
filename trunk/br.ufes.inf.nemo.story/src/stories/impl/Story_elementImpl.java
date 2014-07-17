@@ -3,9 +3,7 @@
 package stories.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
@@ -55,9 +53,14 @@ public abstract class Story_elementImpl extends MinimalEObjectImpl.Container imp
 	protected Story_elementImpl() {
 		super();
 		if(label.equals(LABEL_EDEFAULT)){
-			label = label+label_modifier;
+			label = this.getDefaultLabel()+label_modifier;
 			label_modifier++;
 		}
+	}
+
+	protected String getDefaultLabel() {
+		System.out.println("A");
+		return Story_elementImpl.LABEL_EDEFAULT;
 	}
 
 	/**
@@ -152,17 +155,18 @@ public abstract class Story_elementImpl extends MinimalEObjectImpl.Container imp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * 
 	 */
 	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (label: ");
-		result.append(label);
-		result.append(')');
-		return result.toString();
+		//StringBuffer result = new StringBuffer(super.toString());
+		//result.append(" (label: ");
+		//result.append(label);
+		//result.append(')');
+		//return result.toString();
+		return this.label;
 	}
 	
 } //Story_elementImpl
