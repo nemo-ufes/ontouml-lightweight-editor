@@ -184,6 +184,7 @@ public class TreePopupMenu extends JPopupMenu {
 		JMenuItem relatorItem = new JMenuItem("Relator");
 		JMenuItem modeItem = new JMenuItem("Mode");	
 		JMenuItem datatypeItem = new JMenuItem("DataType");
+		JMenuItem enumItem = new JMenuItem("Enumeration");
 		JMenuItem genSetItem = new JMenuItem("Generalization Set");
 		addElementMenu.add(packageItem);
         packageItem.addActionListener(new ActionListener() {				
@@ -264,26 +265,33 @@ public class TreePopupMenu extends JPopupMenu {
 				frame.getDiagramManager().addElement(ElementType.DATATYPE,eContainer);
 			}
 		});
+		addElementMenu.add(enumItem);
+		enumItem.addActionListener(new ActionListener() {				
+			public void actionPerformed(ActionEvent e) {
+				frame.getDiagramManager().addElement(ElementType.ENUMERATION,eContainer);
+			}
+		});
 		addElementMenu.add(genSetItem);
 		genSetItem.addActionListener(new ActionListener() {				
 			public void actionPerformed(ActionEvent e) {
 				frame.getDiagramManager().addElement(ElementType.GENERALIZATIONSET,eContainer);
 			}
 		});
-		packageItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/package.png")));
-        kindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/kind.png")));
-        quantityItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/quantity.png")));
-        collectiveItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/collective.png")));
-        subkindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/subkind.png")));
-        phaseItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/phase.png")));
-        roleItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/role.png")));
-        categoryItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/category.png")));
-        rolemixinItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/rolemixin.png")));
-        mixinItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/mixin.png")));
-        modeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/mode.png")));
-        relatorItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/relator.png")));
-        datatypeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/datatype.png")));
-        genSetItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/generalization.png")));	
+		packageItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/package.png")));
+        kindItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/kind.png")));
+        quantityItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/quantity.png")));
+        collectiveItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/collective.png")));
+        subkindItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/subkind.png")));
+        phaseItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/phase.png")));
+        roleItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/role.png")));
+        categoryItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/category.png")));
+        rolemixinItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/rolemixin.png")));
+        mixinItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/mixin.png")));
+        modeItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/mode.png")));
+        relatorItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/relator.png")));
+        datatypeItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        enumItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        genSetItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/generalization.png")));	
 	}
 	
 	public void createAddRelationItem()
@@ -372,16 +380,16 @@ public class TreePopupMenu extends JPopupMenu {
 	        		frame.getDiagramManager().addRelation(RelationType.DERIVATION,eContainer);
 	        	}
 	        });      			
-		associationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/association-arrow.png")));
-        materialItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/materialassociation.png")));
-        formalItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/formalassociation.png")));
-        characterizationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/characterization.png")));
-        mediationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/mediation.png")));
-        componentOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/componentof.png")));
-        memberOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/memberof.png")));
-        subcollectionOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/subcollectionof.png")));
-        subquantityOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/subquantityof.png")));
-        derivationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/derivation.png")));
+		associationItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/association-arrow.png")));
+        materialItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/materialassociation.png")));
+        formalItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/formalassociation.png")));
+        characterizationItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/characterization.png")));
+        mediationItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/mediation.png")));
+        componentOfItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/componentof.png")));
+        memberOfItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/memberof.png")));
+        subcollectionOfItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/subcollectionof.png")));
+        subquantityOfItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/subquantityof.png")));
+        derivationItem.setIcon(new ImageIcon(TreePopupMenu.class.getResource("/resources/icons/x16/tree/derivation.png")));
 	}
 	
 	public void createAddContainedItem()
@@ -542,10 +550,23 @@ public class TreePopupMenu extends JPopupMenu {
     			createMoveToDiagramItem();
     			createFinInDiagramItem();
     		}		   		
-    		if(ontoElement.getElement() instanceof RefOntoUML.Class || ontoElement.getElement() instanceof RefOntoUML.DataType)
+    		if(ontoElement.getElement() instanceof RefOntoUML.Class)
     		{    			
     			createAddContainedItem();
     			createClassChangeItem();    			
+    		}
+    		if((ontoElement.getElement() instanceof RefOntoUML.DataType) && !(ontoElement.getElement() instanceof RefOntoUML.PrimitiveType) && !(ontoElement.getElement() instanceof RefOntoUML.Enumeration))
+    		{
+    			createAddContainedItem();
+    			createClassChangeItem();    			 	
+    		}
+    		if(ontoElement.getElement() instanceof RefOntoUML.Enumeration)
+    		{    			
+    			    			 	
+    		}
+    		if(ontoElement.getElement() instanceof RefOntoUML.PrimitiveType)
+    		{    			
+    			    			 	
     		}
     		if(ontoElement.getElement() instanceof RefOntoUML.Association)
     		{ 

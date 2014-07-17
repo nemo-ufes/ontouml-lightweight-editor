@@ -269,6 +269,16 @@ public class ProjectTree extends CheckboxTree {
 		{		
 			return new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),""));
 			
+		}else if (object instanceof RefOntoUML.EnumerationLiteral){
+			
+			String alias = new String();
+			OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
+			if (refparser!=null) alias = refparser.getAlias((RefOntoUML.EnumerationLiteral)object);
+			else alias = "";		
+			DefaultMutableTreeNode node = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),alias));
+			checkingModel.setPathEnabled(new TreePath(node.getPath()),false);
+			return node; 
+					
 		}else if (object instanceof RefOntoUML.Property)
 		{
 			String alias = new String();
