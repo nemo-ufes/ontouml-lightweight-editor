@@ -157,6 +157,24 @@ public abstract class ClassSelectionPanel extends JPanel {
 		}
 	}
 	
+	protected DefaultComboBoxModel<String> getCBModelFromSets(Classifier current, Set<? extends Classifier>... sets){
+	    DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel<String>();
+	    String currentStringRepresentation = UtilAssistant.getStringRepresentationStereotype(current) +" - "+ UtilAssistant.getStringRepresentationClass(current);
+	    
+		for(Set<? extends Classifier> set : sets){
+	        if(!set.isEmpty()){
+	        	String[] vector = UtilAssistant.getStringRepresentationClassStereotype(set);
+	        	
+	        	for(String p:vector){
+	        		if(!p.equals(currentStringRepresentation))
+	        			cbModel.addElement(p);
+				}
+	        }
+	    }
+		
+		return cbModel;
+	}
+	
 	protected DefaultComboBoxModel<String> getCBModelFromSets(Set<? extends Classifier>... sets){
 	    DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel<String>();
 	    
@@ -165,7 +183,7 @@ public abstract class ClassSelectionPanel extends JPanel {
 	        	String[] vector = UtilAssistant.getStringRepresentationClassStereotype(set);
 	        	
 	        	for(String p:vector){
-					cbModel.addElement(p);
+        			cbModel.addElement(p);
 				}
 	        }
 	    }

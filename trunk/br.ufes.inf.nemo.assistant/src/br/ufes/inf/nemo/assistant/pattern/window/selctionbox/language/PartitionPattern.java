@@ -20,7 +20,6 @@ import RefOntoUML.Package;
 import RefOntoUML.Phase;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
-import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
@@ -136,21 +135,21 @@ public class PartitionPattern extends ClassSelectionPanel {
 		spcCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(spcChk.isSelected()){
-					
+
 					spc1CB.setModel(new DefaultComboBoxModel<String>());
 					String selectedStereotype = (String) ((String)spcCB.getSelectedItem()).subSequence(0, ((String)spcCB.getSelectedItem()).indexOf("-")+1);
 					for(int i = 0; i < spcCB.getModel().getSize(); i++){
 						if(((String)spcCB.getItemAt(i)).contains(selectedStereotype) && !((String)spcCB.getItemAt(i)).equals(((String)spcCB.getSelectedItem())))
 							spc1CB.addItem(spcCB.getModel().getElementAt(i));
 					}
-					
+
 					if(spc1CB.getModel().getSize() == 0){
 						spc1Chk.setSelected(false);
 						spc1Chk.setVisible(false);
 					}else{
 						spc1Chk.setVisible(true);	
 					}
-					
+
 					specificTypesCB.setModel(new DefaultComboBoxModel<String>(new String[]{selectedStereotype.substring(0, selectedStereotype.length()-2)}));					
 				}
 			}
@@ -169,37 +168,37 @@ public class PartitionPattern extends ClassSelectionPanel {
 				if(spcChk.isSelected()){
 					spcEdit.setVisible(false);
 					spcEdit.setEnabled(false);
-					
+
 					spcCB.setVisible(true);
 					spcCB.setEnabled(true);
-					
+
 					lblSpecific.setVisible(false);
 					lblSpecific.setEnabled(false);
-					
+
 					spc1Chk.setVisible(true);
 					spcCB.setSelectedIndex(0);
 				}else{
 					spcEdit.setVisible(true);
 					spcEdit.setEnabled(true);
-					
+
 					spcCB.setVisible(false);
 					spcCB.setEnabled(false);
-					
+
 					lblSpecific.setVisible(true);
 					lblSpecific.setEnabled(true);
-					
+
 					specificTypesCB.setVisible(true);
 					lblSpcCB.setVisible(true);
-					
+
 					spc1Chk.setSelected(false);
 					spc1Chk.setVisible(false);
-					
+
 					spc1Edit.setVisible(true);
 					spc1Edit.setEnabled(true);
-					
+
 					spc1CB.setVisible(false);
 					spc1CB.setEnabled(false);
-					
+
 					lblSpecific1.setVisible(true);
 					lblSpecific1.setEnabled(true);
 				}
@@ -213,7 +212,7 @@ public class PartitionPattern extends ClassSelectionPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(!spcChk.isSelected() && !spc1Chk.isSelected())
 					specificTypesCB.setModel(new DefaultComboBoxModel<String>(types));
-				
+
 				if(spcChk.isSelected() && spc1Chk.isSelected()){
 					specificTypesCB.setVisible(false);
 					lblSpcCB.setVisible(false);
@@ -221,23 +220,23 @@ public class PartitionPattern extends ClassSelectionPanel {
 					specificTypesCB.setVisible(true);
 					lblSpcCB.setVisible(true);
 				}
-				
+
 				if(spc1Chk.isSelected()){
 					spc1Edit.setVisible(false);
 					spc1Edit.setEnabled(false);
-					
+
 					spc1CB.setVisible(true);
 					spc1CB.setEnabled(true);
-					
+
 					lblSpecific1.setVisible(false);
 					lblSpecific1.setEnabled(false);
 				}else{
 					spc1Edit.setVisible(true);
 					spc1Edit.setEnabled(true);
-					
+
 					spc1CB.setVisible(false);
 					spc1CB.setEnabled(false);
-					
+
 					lblSpecific1.setVisible(true);
 					lblSpecific1.setEnabled(true);
 				}
@@ -254,11 +253,11 @@ public class PartitionPattern extends ClassSelectionPanel {
 		specific1Panel.add(specificTypesCB);
 
 		this.parser = parser;
-		
+
 		hashChkEdit.put(spcChk, spcEdit);
 		hashEditCombo.put(spcEdit, specificTypesCB);
 		hashChkCombo.put(spcChk, spcCB);
-		
+
 		hashChkEdit.put(spc1Chk, spc1Edit);
 		hashEditCombo.put(spc1Edit, specificTypesCB);
 		hashChkCombo.put(spc1Chk, spc1CB);
@@ -271,7 +270,7 @@ public class PartitionPattern extends ClassSelectionPanel {
 		Package root = parser.getModel();
 		outcomeFixer = new OutcomeFixer(root);
 		fix = new Fix();
-		
+
 		ArrayList<Generalization> generalizationList = new ArrayList<>();
 		//Specific1	
 		Classifier specific = createClassifier(spcChk, x+(0*verticalDistance)/3, y+horizontalDistance);
@@ -301,39 +300,39 @@ public class PartitionPattern extends ClassSelectionPanel {
 		genEdit.setText(UtilAssistant.getStringRepresentationClass(selectedClassifier));
 
 		DefaultComboBoxModel<String> cbModel;
-		if(selectedClassifier instanceof SortalClass){
-			Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
-			Set<Phase> phases = parser.getAllInstances(RefOntoUML.Phase.class);
+		Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
+		Set<Phase> phases = parser.getAllInstances(RefOntoUML.Phase.class);
 
-			cbModel = this.getCBModelFromSets(roles,phases);
-			
-			spcCB.setModel(cbModel);
-			spcChk.setVisible(cbModel.getSize() != 0);
-			
-			spc1CB.setModel(this.getCBModelFromSets(roles,phases));
-			
-			types = new String[]{"Role", "Phase"};
-			model = new DefaultComboBoxModel<String>(types);  
-			specificTypesCB.setModel(model);
+		cbModel = this.getCBModelFromSets(selectedClassifier,roles,phases);
 
-			((TitledBorder)generalPanel.getBorder()).setTitle("Selected "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" class");
-			((TitledBorder)specific1Panel.getBorder()).setTitle("AntiRigid Sortal classes");
-		}else if(selectedClassifier instanceof RigidSortalClass){
+		spcCB.setModel(cbModel);
+		spcChk.setVisible(cbModel.getSize() != 0);
+
+		spc1CB.setModel(this.getCBModelFromSets(selectedClassifier,roles,phases));
+
+		types = new String[]{"Role", "Phase"};
+		model = new DefaultComboBoxModel<String>(types);  
+		specificTypesCB.setModel(model);
+
+		((TitledBorder)generalPanel.getBorder()).setTitle("Selected "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" class");
+		((TitledBorder)specific1Panel.getBorder()).setTitle("AntiRigid Sortal classes");
+		
+		if(selectedClassifier instanceof RigidSortalClass){
 			Set<SubKind> subkinds = parser.getAllInstances(RefOntoUML.SubKind.class);
 
-			cbModel = this.getCBModelFromSets(subkinds);
-			
+			cbModel = this.getCBModelFromSets(selectedClassifier,roles,phases,subkinds);
+
 			spcCB.setModel(cbModel);
 			spcChk.setVisible(cbModel.getSize() != 0);
-			
-			spc1CB.setModel(this.getCBModelFromSets(subkinds));
-			
-			types = new String[]{"Subkind"};
+
+			spc1CB.setModel(this.getCBModelFromSets(selectedClassifier,roles,phases,subkinds));
+
+			types = new String[]{"Role", "Phase", "Subkind"};
 			model = new DefaultComboBoxModel<String>(types);  
 			specificTypesCB.setModel(model);
 
 			((TitledBorder)generalPanel.getBorder()).setTitle("Selected "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" class");
-			((TitledBorder)specific1Panel.getBorder()).setTitle("Subkind class");
+			((TitledBorder)specific1Panel.getBorder()).setTitle("AntiRigid Sortals and Subkinds class");
 		}
 		spc1Chk.setVisible(false);
 	}

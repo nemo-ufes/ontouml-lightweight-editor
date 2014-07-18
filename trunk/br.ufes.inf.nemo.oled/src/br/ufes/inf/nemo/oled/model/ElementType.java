@@ -1,5 +1,5 @@
 /**
- * Copyright(C) 2011-2014 by John Guerson, Tiago Prince, Antognoni Albuquerque
+ * Copyright(C) 2011-2014 by Victor Amorim, John Guerson, Tiago Prince, Antognoni Albuquerque
  *
  * This file is part of OLED (OntoUML Lightweight BaseEditor).
  * OLED is based on TinyUML and so is distributed under the same

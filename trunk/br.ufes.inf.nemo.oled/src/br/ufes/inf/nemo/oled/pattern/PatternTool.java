@@ -149,10 +149,10 @@ public class PatternTool {
 			y = selectedElement.getAbsoluteY1();
 					
 			Classifier selectedClassifier = selectedElement.getClassifier();
-			if(selectedClassifier instanceof SortalClass){
-				imagePanel = new ImagePanel(PatternType.PartitionPattern_Sortal);
-			}else if(selectedClassifier instanceof RigidSortalClass){
+			if(selectedClassifier instanceof RigidSortalClass){
 				imagePanel = new ImagePanel(PatternType.PartitionPattern_Rigid);
+			}else if(selectedClassifier instanceof SortalClass){
+				imagePanel = new ImagePanel(PatternType.PartitionPattern_Sortal);
 			}else{
 				JOptionPane.showMessageDialog(null, "Pattern do not applied to "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" stereotype");
 				return null;		
