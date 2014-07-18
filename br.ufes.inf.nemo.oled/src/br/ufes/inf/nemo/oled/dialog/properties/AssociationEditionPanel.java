@@ -301,7 +301,7 @@ public class AssociationEditionPanel extends JPanel {
 		JLabel lblStereo = new JLabel("Stereo:");
 		
 		stereoCombo = new JComboBox();
-		stereoCombo.setModel(new DefaultComboBoxModel(new String[] {"Mediation", "componentOf", "memberOf", "subCollectionOf", "subQuantityOf", "Material", "Characterization", "Formal", "Association", "Derivation"}));
+		stereoCombo.setModel(new DefaultComboBoxModel(new String[] {"Mediation", "componentOf", "memberOf", "subCollectionOf", "subQuantityOf", "Material", "Characterization", "Formal", "Structuration","Association", "Derivation"}));
 		
 		cbxAbstract = new JCheckBox("Abstract");		
 		cbxDerived = new JCheckBox("Derived");

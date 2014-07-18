@@ -41,7 +41,6 @@ import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 
 /**
  * @author John Guerson
@@ -80,11 +79,14 @@ public class ClassStereotypeChangeMenu extends JMenu{
 		JMenuItem phaseItem = new JMenuItem("Phase");
 		JMenuItem roleItem = new JMenuItem("Role");
 		JMenuItem categoryItem = new JMenuItem("Category");
-		JMenuItem rolemixinItem = new JMenuItem("RoleMixin");
+		JMenuItem rolemixinItem = new JMenuItem("Role Mixin");
 		JMenuItem mixinItem = new JMenuItem("Mixin");	
 		JMenuItem relatorItem = new JMenuItem("Relator");
 		JMenuItem modeItem = new JMenuItem("Mode");	
-		JMenuItem datatypeItem = new JMenuItem("DataType");    			
+		JMenuItem datatypeItem = new JMenuItem("Data Type");
+		JMenuItem perceivableItem = new JMenuItem("Perceivable Quality");    			
+		JMenuItem nonperceivableItem = new JMenuItem("NonPerceivable Quality");
+		JMenuItem nominalItem = new JMenuItem("Nominal Quality");
 		add(kindItem);
 		kindItem.addActionListener(new ActionListener() {				
         	@Override
@@ -168,18 +170,42 @@ public class ClassStereotypeChangeMenu extends JMenu{
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof DataType))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"DataType");
         	}
-        }); 			
-   	    kindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/kind.png")));
-        quantityItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/quantity.png")));
-        collectiveItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/collective.png")));
-        subkindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/subkind.png")));
-        phaseItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/phase.png")));
-        roleItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/role.png")));
-        categoryItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/category.png")));
-        rolemixinItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/rolemixin.png")));
-        mixinItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/mixin.png")));
-        modeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/mode.png")));
-        relatorItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/relator.png")));
-        datatypeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        }); 
+        add(perceivableItem);
+        perceivableItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if (!(type instanceof DataType))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"PerceivableQuality");
+        	}
+        }); 
+        add(nonperceivableItem);
+        nonperceivableItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if (!(type instanceof DataType))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"NonPerceivableQuality");
+        	}
+        }); 
+        add(nominalItem);
+        nominalItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if (!(type instanceof DataType))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"NominalQuality");
+        	}
+        }); 
+   	    kindItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/kind.png")));
+        quantityItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/quantity.png")));
+        collectiveItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/collective.png")));
+        subkindItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/subkind.png")));
+        phaseItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/phase.png")));
+        roleItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/role.png")));
+        categoryItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/category.png")));
+        rolemixinItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/rolemixin.png")));
+        mixinItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/mixin.png")));
+        modeItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/mode.png")));
+        relatorItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/relator.png")));
+        datatypeItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        perceivableItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        nonperceivableItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        nominalItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
 	}
 }

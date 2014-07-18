@@ -46,7 +46,10 @@ import RefOntoUML.Meronymic;
 import RefOntoUML.Mixin;
 import RefOntoUML.Mode;
 import RefOntoUML.NamedElement;
+import RefOntoUML.NominalQuality;
+import RefOntoUML.NonPerceivableQuality;
 import RefOntoUML.PackageableElement;
+import RefOntoUML.PerceivableQuality;
 import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
@@ -56,6 +59,7 @@ import RefOntoUML.Relator;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.StringExpression;
+import RefOntoUML.Structuration;
 import RefOntoUML.SubKind;
 import RefOntoUML.VisibilityKind;
 import RefOntoUML.componentOf;
@@ -71,7 +75,7 @@ import RefOntoUML.impl.FormalAssociationImpl;
 import RefOntoUML.impl.MaterialAssociationImpl;
 import RefOntoUML.impl.MediationImpl;
 import RefOntoUML.impl.MeronymicImpl;
-import RefOntoUML.impl.componentOfImpl;
+import RefOntoUML.impl.StructurationImpl;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.LineConnectMethod;
 import br.ufes.inf.nemo.oled.model.ElementType;
@@ -195,14 +199,30 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     ClassElement primitiveElement = (ClassElement) ClassElement.getPrototype().clone();
     primitiveElement.setClassifier(primitive);    
     elementPrototypes.put(ElementType.PRIMITIVETYPE, primitiveElement);    
+    
+    PerceivableQuality perceivableQuality = (RefOntoUML.PerceivableQuality)createElement(ElementType.PERCEIVABLEQUALITY);
+    ClassElement pqualityElement = (ClassElement) ClassElement.getPrototype().clone();
+    pqualityElement.setClassifier(perceivableQuality);    
+    elementPrototypes.put(ElementType.PERCEIVABLEQUALITY, pqualityElement);
+    
+    NonPerceivableQuality nonperceivableQuality = (RefOntoUML.NonPerceivableQuality)createElement(ElementType.NONPERCEIVABLEQUALITY);
+    ClassElement npqualityElement = (ClassElement) ClassElement.getPrototype().clone();
+    npqualityElement.setClassifier(nonperceivableQuality);    
+    elementPrototypes.put(ElementType.NONPERCEIVABLEQUALITY, npqualityElement);
+    
+    NominalQuality nominalQuality = (RefOntoUML.NominalQuality)createElement(ElementType.NOMINALQUALITY);
+    ClassElement nqElement = (ClassElement) ClassElement.getPrototype().clone();
+    nqElement.setClassifier(nominalQuality);    
+    elementPrototypes.put(ElementType.NOMINALQUALITY, nqElement);
   }
 
   public void createPropertiesByDefault(Association association)
   {
-		Property node1Property, node2Property;	    		
+		Property node1Property, node2Property;	
+		
 		node1Property = ModelHelper.createDefaultOwnedEnd(null, 1, 1);	    		
 		//If the association is a ComponentOf, set the default cardinality to 2..*, to help in validation
-		if(association instanceof componentOfImpl) node2Property = ModelHelper.createDefaultOwnedEnd(null, 2, -1);
+		if(association instanceof MeronymicImpl) node2Property = ModelHelper.createDefaultOwnedEnd(null, 2, -1);
 		else node2Property = ModelHelper.createDefaultOwnedEnd(null, 1, 1);
 		
 		if(association instanceof MeronymicImpl)
@@ -239,7 +259,9 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 			association.getNavigableOwnedEnd().add(node1Property);
 			association.getNavigableOwnedEnd().add(node2Property);	    			
 			//If the association is Mediation or Characterization, set target readonly to help in validation
-			if(association instanceof MediationImpl || association instanceof CharacterizationImpl || association instanceof DerivationImpl) node2Property.setIsReadOnly(true);
+			if(association instanceof MediationImpl || association instanceof CharacterizationImpl || 
+			   association instanceof DerivationImpl || association instanceof StructurationImpl) 
+			node2Property.setIsReadOnly(true);
 		}
 		else
 		{
@@ -327,6 +349,14 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     derivationeElement.setIsDashed(true);
     relationPrototypes.put(RelationType.DERIVATION, derivationeElement);
     createPropertiesByDefault(derivation); 
+
+    Structuration structuration = (RefOntoUML.Structuration)createRelationship(RelationType.STRUCTURATION);
+    AssociationElement structurationElement = (AssociationElement) AssociationElement.getPrototype().clone();
+    structurationElement.setRelationship(structuration);
+    structurationElement.setShowOntoUmlStereotype(true);
+    structurationElement.setAssociationType(RelationType.STRUCTURATION);
+    relationPrototypes.put(RelationType.STRUCTURATION, structurationElement);     
+    createPropertiesByDefault(structuration); 
     
     Association datatyperelationship = (RefOntoUML.Association)createRelationship(RelationType.ASSOCIATION);
     AssociationElement datatyperelationshipElement = (AssociationElement) AssociationElement.getPrototype().clone();
@@ -359,6 +389,9 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 	  if (elementType.equals(ElementType.DATATYPE)) { type = factory.createDataType();  }	  
 	  if (elementType.equals(ElementType.ENUMERATION)) { type = factory.createEnumeration();  }
 	  if (elementType.equals(ElementType.PRIMITIVETYPE)) { type = factory.createPrimitiveType();  }
+	  if (elementType.equals(ElementType.PERCEIVABLEQUALITY)) { type = factory.createPerceivableQuality();  }
+	  if (elementType.equals(ElementType.NONPERCEIVABLEQUALITY)) { type = factory.createNonPerceivableQuality();  }
+	  if (elementType.equals(ElementType.NOMINALQUALITY)) { type = factory.createNominalQuality();  }
 	  if (elementType.equals(ElementType.GENERALIZATIONSET)) { type = factory.createGeneralizationSet();  }
 	  if (elementType.equals(ElementType.COMMENT)) { type = createComment();  }
 	  if (elementType.equals(ElementType.CONSTRAINT)) { type = createConstraintx();  }
@@ -416,6 +449,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
 	  if (relationType.equals(RelationType.COMPONENTOF)) { rel = factory.createcomponentOf(); ((componentOf)rel).setIsShareable(true); }
 	  if (relationType.equals(RelationType.DERIVATION)) rel = factory.createDerivation();
 	  if (relationType.equals(RelationType.ASSOCIATION)) rel = factory.createAssociation();	  
+	  if (relationType.equals(RelationType.STRUCTURATION)) rel = factory.createStructuration();
 	  if (rel instanceof Classifier){
 		  ((Classifier)rel).setName(ModelHelper.getStereotype(rel)+nextRelationCount(relationType));		  
 		  ((Classifier)rel).setVisibility(VisibilityKind.PUBLIC);

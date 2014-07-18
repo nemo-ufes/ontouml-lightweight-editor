@@ -24,7 +24,10 @@ import RefOntoUML.Mixin;
 import RefOntoUML.Mode;
 import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
+import RefOntoUML.NominalQuality;
+import RefOntoUML.NonPerceivableQuality;
 import RefOntoUML.Package;
+import RefOntoUML.PerceivableQuality;
 import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
@@ -32,6 +35,7 @@ import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
+import RefOntoUML.Structuration;
 import RefOntoUML.SubKind;
 import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
@@ -71,6 +75,12 @@ public class OntoUMLNameHelper {
 			return "Enumeration";
 		if(elem instanceof DataType)
 			return "Datatype";
+		if(elem instanceof PerceivableQuality)
+			return "PerceivableQuality";
+		if(elem instanceof NonPerceivableQuality)
+			return "NonPerceivableQuality";
+		if(elem instanceof NominalQuality)
+			return "NominalQuality";
 		if(elem instanceof Class)
 			return "Class";
 		if(elem instanceof FormalAssociation)
@@ -85,6 +95,8 @@ public class OntoUMLNameHelper {
 			return "MemberOf";
 		if(elem instanceof subCollectionOf)
 			return "SubCollectionOf";
+		if(elem instanceof Structuration)
+			return "Structuration";
 		if(elem instanceof Mediation)
 			return "Mediation";
 		if(elem instanceof Characterization)

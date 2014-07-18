@@ -32,6 +32,7 @@ public class RelationCreationMenu  extends JMenu{
 		JMenuItem formalItem = new JMenuItem("Formal");
 		JMenuItem componentOfItem = new JMenuItem("ComponentOf");
 		JMenuItem memberOfItem = new JMenuItem("MemberOf");
+		JMenuItem structurationItem = new JMenuItem("Structuration");
 		JMenuItem associationItem = new JMenuItem("Association");
 		JMenuItem characterizationItem = new JMenuItem("Characterization");
 		JMenuItem subquantityOfItem = new JMenuItem("SubQuantityOf");
@@ -92,7 +93,14 @@ public class RelationCreationMenu  extends JMenu{
         	public void actionPerformed(ActionEvent e) {
         		diagramManager.addRelation(RelationType.SUBQUANTITYOF,eContainer);
         	}
-        });    			
+        });    	
+		add(structurationItem);
+		structurationItem.addActionListener(new ActionListener() {				
+	    	@Override
+	    	public void actionPerformed(ActionEvent e) {
+	    		diagramManager.addRelation(RelationType.STRUCTURATION,eContainer);
+	    	}
+	    });
 		add(associationItem);
 		associationItem.addActionListener(new ActionListener() {				
         	@Override
@@ -114,6 +122,7 @@ public class RelationCreationMenu  extends JMenu{
         mediationItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/mediation.png")));
         componentOfItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/componentof.png")));
         memberOfItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/memberof.png")));
+        structurationItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/structuration.png")));
         subcollectionOfItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/subcollectionof.png")));
         subquantityOfItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/subquantityof.png")));
         derivationItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/derivation.png")));	

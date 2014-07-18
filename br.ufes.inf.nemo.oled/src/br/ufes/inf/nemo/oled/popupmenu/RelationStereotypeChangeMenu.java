@@ -39,7 +39,6 @@ import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 
 /**
  * @author John Guerson
@@ -76,18 +75,12 @@ public class RelationStereotypeChangeMenu extends JMenu{
 		JMenuItem formalItem = new JMenuItem("Formal");
 		JMenuItem componentOfItem = new JMenuItem("ComponentOf");
 		JMenuItem memberOfItem = new JMenuItem("MemberOf");
+		JMenuItem structurationItem = new JMenuItem("Structuration");
 		JMenuItem associationItem = new JMenuItem("Association");
 		JMenuItem characterizationItem = new JMenuItem("Characterization");
 		JMenuItem subquantityOfItem = new JMenuItem("SubQuantityOf");
-		JMenuItem subcollectionOfItem = new JMenuItem("SubCollectionOf");	
+		JMenuItem subcollectionOfItem = new JMenuItem("SubCollectionOf");		
 		JMenuItem derivationItem = new JMenuItem("Derivation");    			
-		add(mediationItem);
-		mediationItem.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		if (!(type instanceof Mediation)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Mediation");
-        	}
-        });
 		add(materialItem);
 		materialItem.addActionListener(new ActionListener() {				
         	@Override
@@ -101,7 +94,21 @@ public class RelationStereotypeChangeMenu extends JMenu{
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof FormalAssociation)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Formal");
         	}
+		});
+        add(characterizationItem);
+        characterizationItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if (!(type instanceof Characterization))diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Characterization");
+        	}
         });
+		add(mediationItem);
+		mediationItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if (!(type instanceof Mediation)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Mediation");
+        	}
+        });		
 		add(componentOfItem);
 		componentOfItem.addActionListener(new ActionListener() {				
         	@Override
@@ -116,18 +123,11 @@ public class RelationStereotypeChangeMenu extends JMenu{
         		if (!(type instanceof memberOf)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"MemberOf");
         	}
         });
-        add(associationItem);
-        associationItem.addActionListener(new ActionListener() {				
+        add(subcollectionOfItem);
+        subcollectionOfItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		if (!(type instanceof Association))diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Association");
-        	}
-        });
-        add(characterizationItem);
-        characterizationItem.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		if (!(type instanceof Characterization))diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Characterization");
+        		if (!(type instanceof subCollectionOf))diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"SubCollectionOf");
         	}
         });
         add(subquantityOfItem);
@@ -137,11 +137,18 @@ public class RelationStereotypeChangeMenu extends JMenu{
         		if (!(type instanceof subQuantityOf)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"SubQuantityOf");
         	}
         });
-        add(subcollectionOfItem);
-        subcollectionOfItem.addActionListener(new ActionListener() {				
+        add(structurationItem);
+		structurationItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		if (!(type instanceof subCollectionOf))diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"SubCollectionOf");
+        		if (!(type instanceof Mediation)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Structuration");
+        	}
+        });
+        add(associationItem);
+        associationItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		if (!(type instanceof Association))diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Association");
         	}
         });
         add(derivationItem);
@@ -151,16 +158,17 @@ public class RelationStereotypeChangeMenu extends JMenu{
         		if (!(type instanceof Derivation))diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Derivation");
         	}
         });       	        		
-        associationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/association-arrow.png")));
-        materialItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/materialassociation.png")));
-        formalItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/formalassociation.png")));
-        characterizationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/characterization.png")));
-        mediationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/mediation.png")));
-        componentOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/componentof.png")));
-        memberOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/memberof.png")));
-        subcollectionOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/subcollectionof.png")));
-        subquantityOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/subquantityof.png")));
-        derivationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/derivation.png")));	
+        associationItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/association-arrow.png")));
+        materialItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/materialassociation.png")));
+        formalItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/formalassociation.png")));
+        characterizationItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/characterization.png")));
+        mediationItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/mediation.png")));
+        componentOfItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/componentof.png")));
+        memberOfItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/memberof.png")));
+        subcollectionOfItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/subcollectionof.png")));
+        structurationItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/structuration.png")));
+        subquantityOfItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/subquantityof.png")));
+        derivationItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/derivation.png")));	
         
 	}
 }

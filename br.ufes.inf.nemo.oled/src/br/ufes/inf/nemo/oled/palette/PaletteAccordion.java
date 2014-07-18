@@ -79,6 +79,8 @@ public class PaletteAccordion extends JPanel{
 	private Palette derivedPalette;
 
 	private Palette elementsPalette;
+
+	private JScrollPane openContentScroll;
 		
 	public AppFrame getFrame()
 	{
@@ -96,9 +98,9 @@ public class PaletteAccordion extends JPanel{
 		bottomTitles = new JPanel();
 		openContent = new JPanel();
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setViewportView(openContent);
-		scrollPane.setBorder(null);
+		openContentScroll = new JScrollPane();
+		openContentScroll.setViewportView(openContent);
+		openContentScroll.setBorder(null);
 		
 		topTitles.setLayout(new BoxLayout(topTitles, BoxLayout.Y_AXIS));
 		bottomTitles.setLayout(new BoxLayout(bottomTitles, BoxLayout.Y_AXIS));
@@ -106,7 +108,7 @@ public class PaletteAccordion extends JPanel{
 
 		this.add(topTitles, BorderLayout.NORTH);
 		this.add(bottomTitles, BorderLayout.SOUTH);
-		this.add(scrollPane, BorderLayout.CENTER);
+		this.add(openContentScroll, BorderLayout.CENTER);
 
 	}
 
@@ -142,7 +144,7 @@ public class PaletteAccordion extends JPanel{
 			if(item == openPalette)
 			{
 				found = true;
-				openContent.add(paletteMap.get(item).getContent(), BorderLayout.CENTER);
+				openContent.add(paletteMap.get(item).getContent(), BorderLayout.CENTER);				
 				paletteMap.get(item).setSelectedLayout();
 			}			
 		}
@@ -247,8 +249,9 @@ public class PaletteAccordion extends JPanel{
 		elementsPalette.createElement("staticpalette.classes", "datatype");
 		elementsPalette.createElement("staticpalette.classes", "enumeration");
 		elementsPalette.createElement("staticpalette.classes", "primitivetype");
-		
-		//palette.addSpacer(0,PALLETE_VSPACE);		
+		elementsPalette.createElement("staticpalette.classes", "perceivablequality");
+		elementsPalette.createElement("staticpalette.classes", "nonperceivablequality");
+		elementsPalette.createElement("staticpalette.classes", "nominalquality");
 		
 		elementsPalette.createElement("staticpalette.relations", "generalization");
 		//palette.addSpacer(0,PALLETE_VSPACE);
@@ -264,7 +267,14 @@ public class PaletteAccordion extends JPanel{
 		elementsPalette.createElement("staticpalette.relations", "subcollectionof");
 		elementsPalette.createElement("staticpalette.relations", "subquantityof");
 		//palette.addSpacer(0,PALLETE_VSPACE);
+		elementsPalette.createElement("staticpalette.relations", "structuration");
 		elementsPalette.createElement("staticpalette.relations", "association");
+		
+//		elementsPalette.addSpacer(0,PALLETE_VSPACE);
+//		elementsPalette.addSpacer(0,PALLETE_VSPACE);
+//		elementsPalette.addSpacer(0,PALLETE_VSPACE);
+//		elementsPalette.addSpacer(0,PALLETE_VSPACE);
+//		elementsPalette.createElement("", "");
 		
 		elementsPalette.addCommandListener(editorDispatcher);
 		
