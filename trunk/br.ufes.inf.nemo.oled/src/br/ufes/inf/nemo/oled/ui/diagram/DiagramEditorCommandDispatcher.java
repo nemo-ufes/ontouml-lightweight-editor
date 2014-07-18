@@ -158,6 +158,18 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
 					ElementType.PRIMITIVETYPE));
 			
+			selectorMap.put("CREATE_PERCEIVABLEQUALITY", new MethodCall(
+					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
+					ElementType.PERCEIVABLEQUALITY));
+			
+			selectorMap.put("CREATE_NONPERCEIVABLEQUALITY", new MethodCall(
+					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
+					ElementType.NONPERCEIVABLEQUALITY));
+			
+			selectorMap.put("CREATE_NOMINALQUALITY", new MethodCall(
+					DiagramEditor.class.getMethod("setCreationMode", ElementType.class),
+					ElementType.NOMINALQUALITY));
+			
 			//Commands for creating relations		
 			selectorMap.put("CREATE_GENERALIZATION", new MethodCall(
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
@@ -203,6 +215,10 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					DiagramEditor.class.getMethod("setCreateConnectionMode",
 							RelationType.class), RelationType.ASSOCIATION));
 
+			selectorMap.put("CREATE_STRUCTURATION", new MethodCall(
+					DiagramEditor.class.getMethod("setCreateConnectionMode",
+							RelationType.class), RelationType.STRUCTURATION));
+			
 			//selectorMap.put("CREATE_CONDITION", new MethodCall(
 			//		DiagramEditor.class.getMethod("setCreateConnectionMode",
 			//				RelationType.class), RelationType.ASSOCIATION));//Asso

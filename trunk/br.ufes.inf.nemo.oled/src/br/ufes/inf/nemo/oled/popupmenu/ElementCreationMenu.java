@@ -35,13 +35,16 @@ public class ElementCreationMenu extends JMenu{
 		JMenuItem phaseItem = new JMenuItem("Phase");
 		JMenuItem roleItem = new JMenuItem("Role");
 		JMenuItem categoryItem = new JMenuItem("Category");
-		JMenuItem rolemixinItem = new JMenuItem("RoleMixin");
+		JMenuItem rolemixinItem = new JMenuItem("Role Mixin");
 		JMenuItem mixinItem = new JMenuItem("Mixin");	
 		JMenuItem relatorItem = new JMenuItem("Relator");
 		JMenuItem modeItem = new JMenuItem("Mode");	
-		JMenuItem datatypeItem = new JMenuItem("DataType");
+		JMenuItem datatypeItem = new JMenuItem("Data Type");
 		JMenuItem enumItem = new JMenuItem("Enumeration");
-		JMenuItem primitiveItem = new JMenuItem("PrimitiveType");
+		JMenuItem primitiveItem = new JMenuItem("Primitive Type");
+		JMenuItem perceivableItem = new JMenuItem("Perceivable Quality");
+		JMenuItem nonperceivableItem = new JMenuItem("Non Perceivable Quality");
+		JMenuItem nominalItem = new JMenuItem("Nominal Quality");
 		JMenuItem genSetItem = new JMenuItem("Generalization Set");
 		add(packageItem);
         packageItem.addActionListener(new ActionListener() {				
@@ -133,6 +136,24 @@ public class ElementCreationMenu extends JMenu{
 			public void actionPerformed(ActionEvent e) {
 				diagramManager.addElement(ElementType.PRIMITIVETYPE,eContainer);
 			}			
+		});
+		add(perceivableItem);
+		perceivableItem.addActionListener(new ActionListener() {				
+			public void actionPerformed(ActionEvent e) {
+				diagramManager.addElement(ElementType.PERCEIVABLEQUALITY,eContainer);
+			}			
+		});
+		add(nonperceivableItem);
+		nonperceivableItem.addActionListener(new ActionListener() {				
+			public void actionPerformed(ActionEvent e) {
+				diagramManager.addElement(ElementType.NONPERCEIVABLEQUALITY,eContainer);
+			}			
+		});		
+		add(nominalItem);
+		nominalItem.addActionListener(new ActionListener() {				
+			public void actionPerformed(ActionEvent e) {
+				diagramManager.addElement(ElementType.NOMINALQUALITY,eContainer);
+			}			
 		});		
 		add(genSetItem);
 		genSetItem.addActionListener(new ActionListener() {				
@@ -155,6 +176,9 @@ public class ElementCreationMenu extends JMenu{
         datatypeItem.setIcon(new ImageIcon(ElementCreationMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
         enumItem.setIcon(new ImageIcon(ElementCreationMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
         primitiveItem.setIcon(new ImageIcon(ElementCreationMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        perceivableItem.setIcon(new ImageIcon(ElementCreationMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        nonperceivableItem.setIcon(new ImageIcon(ElementCreationMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        nominalItem.setIcon(new ImageIcon(ElementCreationMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
         genSetItem.setIcon(new ImageIcon(ElementCreationMenu.class.getResource("/resources/icons/x16/tree/generalization.png")));
 	}
 }

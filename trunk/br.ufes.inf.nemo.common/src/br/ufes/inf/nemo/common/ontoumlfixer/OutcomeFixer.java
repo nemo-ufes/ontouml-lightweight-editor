@@ -93,11 +93,11 @@ public class OutcomeFixer{
 	}
 	
 	public enum ClassStereotype {
-		KIND, SUBKIND, COLLECTIVE, QUANTITY, PHASE, ROLE, ROLEMIXIN, CATEGORY, MIXIN, RELATOR, MODE, DATATYPE, PRIMITIVETYPE
+		KIND, SUBKIND, COLLECTIVE, QUANTITY, PHASE, ROLE, ROLEMIXIN, CATEGORY, MIXIN, RELATOR, MODE, DATATYPE, PRIMITIVETYPE, PERCEIVABLEQUALITY,NONPERCEIVABLEQUALITY, NOMINALQUALITY
 	}
 
 	public enum RelationStereotype {
-		FORMAL, MATERIAL, CHARACTERIZATION, MEDIATION, DERIVATION, ASSOCIATION, COMPONENTOF, SUBQUANTITYOF, SUBCOLLECTIONOF, MEMBEROF, GENERALIZATION
+		FORMAL, MATERIAL, CHARACTERIZATION, MEDIATION, DERIVATION, ASSOCIATION, COMPONENTOF, SUBQUANTITYOF, SUBCOLLECTIONOF, MEMBEROF, GENERALIZATION, STRUCTURATION
 	}
 
 	public RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
@@ -724,6 +724,9 @@ public class OutcomeFixer{
 		else if (stereo.compareToIgnoreCase("Mode")==0) return ClassStereotype.MODE;
 		else if (stereo.compareToIgnoreCase("DataType")==0) return ClassStereotype.DATATYPE;
 		else if (stereo.compareToIgnoreCase("PrimitiveType")==0) return ClassStereotype.PRIMITIVETYPE;
+		else if (stereo.compareToIgnoreCase("PerceivableQuality")==0) return ClassStereotype.PERCEIVABLEQUALITY;
+		else if (stereo.compareToIgnoreCase("NonPerceivableQuality")==0) return ClassStereotype.NONPERCEIVABLEQUALITY;
+		else if (stereo.compareToIgnoreCase("NominalQuality")==0) return ClassStereotype.NOMINALQUALITY;
 		else return ClassStereotype.KIND;
 	}
 	
@@ -1151,6 +1154,7 @@ public class OutcomeFixer{
 		else if (stereo.compareToIgnoreCase("Material")==0) return RelationStereotype.MATERIAL;
 		else if (stereo.compareToIgnoreCase("Derivation")==0) return RelationStereotype.DERIVATION;		
 		else if (stereo.compareToIgnoreCase("Generalization")==0) return RelationStereotype.GENERALIZATION;
+		else if (stereo.compareToIgnoreCase("Structuration")==0) return RelationStereotype.STRUCTURATION;
 		else if (stereo.compareToIgnoreCase("Association")==0) return RelationStereotype.ASSOCIATION;
 		return RelationStereotype.ASSOCIATION;
 	}

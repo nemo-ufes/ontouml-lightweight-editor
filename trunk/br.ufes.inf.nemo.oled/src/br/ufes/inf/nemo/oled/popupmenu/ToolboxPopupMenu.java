@@ -55,12 +55,16 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	JMenuItem datatypeItem = new JMenuItem("DataType");
 	JMenuItem enumerationItem = new JMenuItem("Enumeration");
 	JMenuItem primitiveItem = new JMenuItem("PrimitiveType");
+	JMenuItem perceivableItem = new JMenuItem("Perceivable Quality");
+	JMenuItem nonperceivableItem = new JMenuItem("Non Perceivable Quality");
+	JMenuItem nominalItem = new JMenuItem("Nominal Quality");	
 	JMenuItem genItem = new JMenuItem("Generalization");
 	JMenuItem mediationItem = new JMenuItem("Mediation");	
 	JMenuItem materialItem = new JMenuItem("Material");
 	JMenuItem formalItem = new JMenuItem("Formal");
 	JMenuItem componentOfItem = new JMenuItem("ComponentOf");
 	JMenuItem memberOfItem = new JMenuItem("MemberOf");
+	JMenuItem structurationItem = new JMenuItem("Structuration");
 	JMenuItem associationItem = new JMenuItem("Association");
 	JMenuItem characterizationItem = new JMenuItem("Characterization");
 	JMenuItem subquantityOfItem = new JMenuItem("SubQuantityOf");
@@ -107,6 +111,9 @@ public class ToolboxPopupMenu extends JPopupMenu {
         add(datatypeItem);        
         add(enumerationItem);
         add(primitiveItem);
+        add(perceivableItem);
+        add(nonperceivableItem);
+        add(nominalItem);
         add(genItem);
         add(materialItem);
         add(formalItem);
@@ -116,42 +123,46 @@ public class ToolboxPopupMenu extends JPopupMenu {
         add(memberOfItem);        
         add(subcollectionOfItem);
         add(subquantityOfItem);
+        add(structurationItem);
         add(associationItem);
         add(derivationItem);
+                
+        kindItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/kind.png")));
+        quantityItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/quantity.png")));
+        collectiveItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/collective.png")));
+        subkindItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/subkind.png")));
+        phaseItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/phase.png")));
+        roleItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/role.png")));
+        categoryItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/category.png")));
+        rolemixinItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/rolemixin.png")));
+        mixinItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/mixin.png")));
+        modeItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/mode.png")));
+        relatorItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/relator.png")));
+        datatypeItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        enumerationItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        primitiveItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        perceivableItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        nonperceivableItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        nominalItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        genItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/generalization.png")));        
+        associationItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/association-arrow.png")));
+        materialItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/materialassociation.png")));
+        formalItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/formalassociation.png")));
+        characterizationItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/characterization.png")));
+        mediationItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/mediation.png")));
+        structurationItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/structuration.png")));
+        componentOfItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/componentof.png")));
+        memberOfItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/memberof.png")));
+        subcollectionOfItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/subcollectionof.png")));
+        subquantityOfItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/subquantityof.png")));
+        derivationItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/derivation.png")));
         
-        
-        kindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/kind.png")));
-        quantityItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/quantity.png")));
-        collectiveItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/collective.png")));
-        subkindItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/subkind.png")));
-        phaseItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/phase.png")));
-        roleItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/role.png")));
-        categoryItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/category.png")));
-        rolemixinItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/rolemixin.png")));
-        mixinItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/mixin.png")));
-        modeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/mode.png")));
-        relatorItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/relator.png")));
-        datatypeItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/datatype.png")));
-        enumerationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/datatype.png")));
-        primitiveItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/datatype.png")));
-        genItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/generalization.png")));
-        associationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/association-arrow.png")));
-        materialItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/materialassociation.png")));
-        formalItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/formalassociation.png")));
-        characterizationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/characterization.png")));
-        mediationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/mediation.png")));
-        componentOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/componentof.png")));
-        memberOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/memberof.png")));
-        subcollectionOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/subcollectionof.png")));
-        subquantityOfItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/subquantityof.png")));
-        derivationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/tree/derivation.png")));
-        
-        unionItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));        
-        exclusionItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
-        intersectionItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
-        specializationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
-        pastspecializationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
-        participationItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/sitemap.png")));
+        unionItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/sitemap.png")));        
+        exclusionItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/sitemap.png")));
+        intersectionItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/sitemap.png")));
+        specializationItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/sitemap.png")));
+        pastspecializationItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/sitemap.png")));
+        participationItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/sitemap.png")));
                 
         pointerItem.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/mousepointer.png")));
         
@@ -298,14 +309,36 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	            }
        		}
 		});
-        primitiveItem.addMouseListener(new MouseAdapter()
+        perceivableItem.addMouseListener(new MouseAdapter()
 	    {
 			@Override
 			public void mousePressed(MouseEvent e) 
 			{			
 			    if (SwingUtilities.isLeftMouseButton(e))
 	            {
-			    	frame.getToolManager().getElementsPalette().getPalleteElement("primitivetype").setSelected(true);
+			    	frame.getToolManager().getElementsPalette().getPalleteElement("perceivablequality").setSelected(true);
+	            }
+       		}
+		});
+        nonperceivableItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getElementsPalette().getPalleteElement("nonperceivablequality").setSelected(true);
+	            }
+       		}
+		});
+        nominalItem.addMouseListener(new MouseAdapter()
+	    {
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getElementsPalette().getPalleteElement("nominalquality").setSelected(true);
 	            }
        		}
 		});
@@ -416,6 +449,17 @@ public class ToolboxPopupMenu extends JPopupMenu {
 			    if (SwingUtilities.isLeftMouseButton(e))
 	            {
 			    	frame.getToolManager().getElementsPalette().getPalleteElement("association").setSelected(true);
+	            }
+			}
+		});
+       structurationItem.addMouseListener(new MouseAdapter()
+	    {    	   
+			@Override
+			public void mousePressed(MouseEvent e) 
+			{			
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {
+			    	frame.getToolManager().getElementsPalette().getPalleteElement("structuration").setSelected(true);
 	            }
 			}
 		});
