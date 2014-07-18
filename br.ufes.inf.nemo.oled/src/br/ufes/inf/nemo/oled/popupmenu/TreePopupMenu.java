@@ -104,7 +104,7 @@ public class TreePopupMenu extends JPopupMenu {
 		addOCLDocumentItem.addActionListener(new ActionListener() {				
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getDiagramManager().newOCLDocument();    				
+				frame.getDiagramManager().newOCLDocument(true);    				
 			}
 		});
 	}

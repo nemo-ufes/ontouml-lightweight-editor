@@ -515,6 +515,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 		frame.getInfoManager().setProject(currentProject);
 		newDiagram(currentProject);
+		newOCLDocument(currentProject,false);
 	}
 
 	/** Verifies if there is a project opened/loaded. */
@@ -576,13 +577,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/** Creates a new OCL document with in existing Project */
-	public void newOCLDocument(UmlProject project)
+	public void newOCLDocument(UmlProject project, boolean openInTab)
 	{
 		OCLDocument oclDoc = new OCLDocument();
 		ArrayList<OCLDocument> docs = frame.getBrowserManager().getProjectBrowser().getOCLDocuments();			
 		oclDoc.setName("Document"+docs.size());			
 		docs.add(oclDoc);
-		createConstraintEditor(oclDoc);		
+		if(openInTab)createConstraintEditor(oclDoc);		
 		//add the ocl document from the browser
 		ProjectBrowser browser = frame.getProjectBrowser();
 		browser.getTree().addObject(browser.getTree().getConstraintRootNode(),oclDoc);
@@ -605,7 +606,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/** Creates a new ocl document on the current Project */
-	public void newOCLDocument()
+	public void newOCLDocument(boolean openInTab)
 	{
 		if (currentProject!=null)
 		{
@@ -613,7 +614,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			ArrayList<OCLDocument> docs = frame.getBrowserManager().getProjectBrowser().getOCLDocuments();			
 			oclDoc.setName("Document"+docs.size());			
 			docs.add(oclDoc);
-			createConstraintEditor(oclDoc);				
+			if(openInTab) createConstraintEditor(oclDoc);				
 			//add the ocl document from the browser
 			ProjectBrowser browser = frame.getProjectBrowser();
 			browser.getTree().addObject(browser.getTree().getConstraintRootNode(),oclDoc);	
