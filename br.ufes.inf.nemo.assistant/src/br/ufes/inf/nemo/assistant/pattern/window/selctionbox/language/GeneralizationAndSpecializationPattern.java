@@ -304,7 +304,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
 			Set<Phase> phases = parser.getAllInstances(RefOntoUML.Phase.class);
 
-			model = this.getCBModelFromSets(subkinds,roles,phases);
+			model = this.getCBModelFromSets(selectedClassifier,subkinds,roles,phases);
 			spcCB.setModel(model);
 			spcChk.setVisible(model.getSize() != 0);			
 
@@ -312,7 +312,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			model = new DefaultComboBoxModel<String>(types);  
 			specificTypesCB.setModel(model);
 
-			model = this.getCBModelFromSets(phases);
+			model = this.getCBModelFromSets(selectedClassifier,phases);
 
 			spc1CB.setModel(model);
 			spc1Chk.setVisible(model.getSize() != 0);	
@@ -328,7 +328,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
 			Set<Phase> phases = parser.getAllInstances(RefOntoUML.Phase.class);
 
-			model = this.getCBModelFromSets(roles,phases);
+			model = this.getCBModelFromSets(selectedClassifier,roles,phases);
 			spcCB.setModel(model);
 			spcChk.setVisible(model.getSize() != 0);			
 
@@ -336,7 +336,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			model = new DefaultComboBoxModel<String>(types);  
 			specificTypesCB.setModel(model);
 
-			model = this.getCBModelFromSets(phases);
+			model = this.getCBModelFromSets(selectedClassifier,phases);
 
 			spc1CB.setModel(model);
 			spc1Chk.setVisible(model.getSize() != 0);
@@ -353,7 +353,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			Set<SubKind> subkinds = parser.getAllInstances(RefOntoUML.SubKind.class);
 			Set<SubstanceSortal> substancesortais = parser.getAllInstances(RefOntoUML.SubstanceSortal.class);
 
-			model = this.getCBModelFromSets(categories, subkinds, substancesortais);
+			model = this.getCBModelFromSets(selectedClassifier,categories, subkinds, substancesortais);
 			spcCB.setModel(model);
 			spcChk.setVisible(model.getSize() != 0);			
 
@@ -361,7 +361,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			model = new DefaultComboBoxModel<String>(types);  
 			specificTypesCB.setModel(model);
 
-			model = this.getCBModelFromSets(substancesortais);
+			model = this.getCBModelFromSets(selectedClassifier,substancesortais);
 
 			spc1CB.setModel(model);
 			spc1Chk.setVisible(model.getSize() != 0);
@@ -380,7 +380,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			Set<AntiRigidMixinClass> antiRigidMixinClass = parser.getAllInstances(RefOntoUML.AntiRigidMixinClass.class);
 			Set<Mixin> mixinClass = parser.getAllInstances(RefOntoUML.Mixin.class);
 
-			model = this.getCBModelFromSets(antiRigidSortalClass, antiRigidMixinClass, mixinClass);
+			model = this.getCBModelFromSets(selectedClassifier,antiRigidSortalClass, antiRigidMixinClass, mixinClass);
 			spcCB.setModel(model);
 			spcChk.setVisible(model.getSize() != 0);			
 
@@ -388,7 +388,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			model = new DefaultComboBoxModel<String>(types);  
 			specificTypesCB.setModel(model);
 
-			model = this.getCBModelFromSets(rigidSortalClass, rigidMixinClass);
+			model = this.getCBModelFromSets(selectedClassifier,rigidSortalClass, rigidMixinClass);
 
 			spc1CB.setModel(model);
 			spc1Chk.setVisible(model.getSize() != 0);
@@ -405,7 +405,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
 			Set<Phase> phases = parser.getAllInstances(RefOntoUML.Phase.class);
 
-			model = this.getCBModelFromSets(roles,phases,roleMixins);
+			model = this.getCBModelFromSets(selectedClassifier,roles,phases,roleMixins);
 			spcCB.setModel(model);
 			spcChk.setVisible(model.getSize() != 0);			
 
@@ -413,7 +413,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			model = new DefaultComboBoxModel<String>(types);  
 			specificTypesCB.setModel(model);
 
-			model = this.getCBModelFromSets(phases);
+			model = this.getCBModelFromSets(selectedClassifier,phases);
 
 			spc1CB.setModel(model);
 			spc1Chk.setVisible(model.getSize() != 0);
