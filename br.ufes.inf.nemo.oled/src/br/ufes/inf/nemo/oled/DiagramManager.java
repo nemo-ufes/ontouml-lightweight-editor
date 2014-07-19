@@ -76,6 +76,7 @@ import RefOntoUML.StringExpression;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
@@ -95,8 +96,8 @@ import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
-import br.ufes.inf.nemo.oled.finder.ElementFound;
 import br.ufes.inf.nemo.oled.finder.FinderPane;
+import br.ufes.inf.nemo.oled.finder.FoundElement;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
@@ -104,6 +105,8 @@ import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.pattern.PatternTool;
+import br.ufes.inf.nemo.oled.statistician.StatisticalElement;
+import br.ufes.inf.nemo.oled.statistician.StatisticsPane;
 import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
 import br.ufes.inf.nemo.oled.ui.StartPanel;
 import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
@@ -209,6 +212,16 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}		
 		FinderPane finder = new FinderPane(frame.getDiagramManager().getCurrentProject());
 		this.addClosable("Find", finder);
+	}
+	
+	/** Adds a Statistics panel to the manager */
+	public void addStatisticsPanel()
+	{
+		for(Component c: getComponents()) {
+			if(c instanceof StatisticsPane) { setSelectedComponent(c); return; }
+		}		
+		StatisticsPane statPanel = new StatisticsPane(frame.getDiagramManager().getCurrentProject());
+		this.addClosable("Statistics", statPanel);
 	}
 	
 	/** Sets the dispatcher responsible for routing events of the editor */
@@ -445,6 +458,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		if(component instanceof FinderPane){
 			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/find.png"));
+			tab.getLabel().setIcon(icon);
+			tab.getLabel().setIconTextGap(5);
+			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+		}
+		if(component instanceof StatisticsPane){
+			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/diagnostic.png"));
 			tab.getLabel().setIcon(icon);
 			tab.getLabel().setIconTextGap(5);
 			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -1481,6 +1500,106 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		cmd.run();		
 	}
 	
+	/** Strictly find by name */
+	public ArrayList<FoundElement> strictlyFindByName(String text)
+	{		
+		ArrayList<FoundElement> result = new ArrayList<FoundElement>();
+		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
+		if(refparser!=null && text!=null /*&& !text.isEmpty()*/){
+			for(EObject eobj: refparser.getAllInstances(EObject.class)){
+				if (eobj instanceof NamedElement){
+					String name = ((NamedElement)eobj).getName();
+					if(name!=null){
+						if(text.trim().isEmpty()) result.add(new FoundElement(eobj));
+						else {
+							if(name.trim().toLowerCase().compareToIgnoreCase(text)==0) result.add(new FoundElement(eobj));
+							else if(name.trim().toLowerCase().contains(text.toLowerCase().trim())) result.add(new FoundElement(eobj));
+						}
+						
+					}
+				}
+			}
+		}		
+		return result;
+	}
+	
+	/** Collect Statistics */
+	public ArrayList<StatisticalElement> collectStatistic()
+	{
+		ArrayList<StatisticalElement> result = new ArrayList<StatisticalElement>();
+		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
+		if(refparser!=null){
+			OntoUMLModelStatistic diagnostic = new OntoUMLModelStatistic(refparser);
+			diagnostic.run();
+			StatisticalElement se = new StatisticalElement("Kind",diagnostic.getKindCount(),diagnostic.getKindPercentageClasses(),diagnostic.getKindPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Quantity",diagnostic.getQuantityCount(),diagnostic.getQuantityPercentageClasses(),diagnostic.getQuantityPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Collective",diagnostic.getCollectiveCount(),diagnostic.getCollectivePercentageClasses(),diagnostic.getCollectivePercentageElements());
+			result.add(se);
+			se = new StatisticalElement("SubKind",diagnostic.getSubKindCount(),diagnostic.getSubKindPercentageClasses(),diagnostic.getSubKindPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Phase",diagnostic.getPhaseCount(),diagnostic.getPhasePercentageClasses(),diagnostic.getPhasePercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Role",diagnostic.getRoleCount(),diagnostic.getRolePercentageClasses(),diagnostic.getRolePercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Category",diagnostic.getCategoryCount(),diagnostic.getCategoryPercentageClasses(),diagnostic.getCategoryPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Role Mixin",diagnostic.getRoleMixinCount(),diagnostic.getRoleMixinPercentageClasses(),diagnostic.getRoleMixinPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Mixin",diagnostic.getMixinCount(),diagnostic.getMixinPercentageClasses(),diagnostic.getMixinPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Mode",diagnostic.getModeCount(),diagnostic.getModePercentageClasses(),diagnostic.getModePercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Relator",diagnostic.getRelatorCount(),diagnostic.getRelatorPercentageClasses(),diagnostic.getRelatorPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Perceivable Quality",diagnostic.getPerceivableQualityCount(),diagnostic.getPerceivableQualityPercentageClasses(),diagnostic.getPerceivableQualityPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("NonPerceivable Quality",diagnostic.getNonPerceivableQualityCount(),diagnostic.getNonPerceivableQualityPercentageClasses(),diagnostic.getNonPerceivableQualityPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Nominal Quality",diagnostic.getNominalQualityCount(),diagnostic.getNominalQualityPercentageClasses(),diagnostic.getNominalQualityPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Enumeration",diagnostic.getEnumerationCount(),diagnostic.getEnumerationPercentageDataType(),diagnostic.getEnumerationPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Primitive Type",diagnostic.getPrimitiveTypeCount(),diagnostic.getPrimitiveTypePercentageDataType(),diagnostic.getPrimitiveTypePercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Data Type",diagnostic.getDataTypeCount(),diagnostic.getDataTypePercentageDataType(),diagnostic.getDataTypePercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Moment Type",diagnostic.getMomentCount(),diagnostic.getMomentPercentageClasses(),diagnostic.getMomentPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Sortal Type",diagnostic.getSortalCount(),diagnostic.getSortalPercentageClasses(),diagnostic.getSortalPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("NonSortal Type",diagnostic.getNonSortalCount(),diagnostic.getNonSortalPercentageClasses(),diagnostic.getNonSortalPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Rigid Type",diagnostic.getRigidCount(),diagnostic.getRigidPercentageClasses(),diagnostic.getRigidPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("AntiRigid Type",diagnostic.getAntiRigidCount(),diagnostic.getAntiRigidPercentageClasses(),diagnostic.getAntiRigidPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("NonRigid Type",diagnostic.getNonRigidCount(),diagnostic.getNonRigidPercentageClasses(),diagnostic.getNonRigidPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Class",diagnostic.getClassCount(),diagnostic.getClassPercentageType(),diagnostic.getClassPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Association",diagnostic.getAssociationCount(),diagnostic.getAssociationPercentageType(),diagnostic.getAssociationPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Material",diagnostic.getMaterialCount(),diagnostic.getMaterialPercentageType(),diagnostic.getMaterialPercentageElements());
+			result.add(se);	
+			se = new StatisticalElement("Formal",diagnostic.getFormalCount(),diagnostic.getFormalPercentageType(),diagnostic.getFormalPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Characterization",diagnostic.getCharacterizationCount(),diagnostic.getCharacterizationPercentageType(),diagnostic.getCharacterizationPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("Mediation",diagnostic.getMediationCount(),diagnostic.getMediationPercentageType(),diagnostic.getMediationPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("MemberOf",diagnostic.getMemberOfCount(),diagnostic.getMemberOfPercentageType(),diagnostic.getMemberOfPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("SubCollectionOf",diagnostic.getSubCollectionOfCount(),diagnostic.getSubCollectionOfPercentageType(),diagnostic.getSubCollectionOfPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("SubQuantityOf",diagnostic.getSubQuantityOfCount(),diagnostic.getSubQuantityOfPercentageType(),diagnostic.getSubQuantityOfPercentageElements());
+			result.add(se);
+			se = new StatisticalElement("ComponentOf",diagnostic.getComponentOfCount(),diagnostic.getComponentOfPercentageType(),diagnostic.getComponentOfPercentageElements());
+			result.add(se);
+		}
+		return result;
+	}
 	//======================================================================
 	//
 	//             THE CODE ABOVE WAS REVIWED BY JOHN
@@ -1911,12 +2030,19 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		//relationships and attributes
 		for(Object obj: fix.getAdded()) {
-			if (obj instanceof RefOntoUML.Relationship) {
+			if (obj instanceof RefOntoUML.Relationship && !(obj instanceof RefOntoUML.Derivation)) {
 				updateOLEDFromInclusion((RefOntoUML.Element)obj);
 				moveToDiagram((RefOntoUML.Element)obj, getCurrentDiagramEditor());
 			}
 			if(obj instanceof RefOntoUML.Property){		
 				updateOLEDFromInclusion((RefOntoUML.Element)obj);
+			}
+		}	
+		//derivations
+		for(Object obj: fix.getAdded()) {
+			if (obj instanceof RefOntoUML.Derivation) {
+				updateOLEDFromInclusion((RefOntoUML.Element)obj);
+				moveToDiagram((RefOntoUML.Element)obj, getCurrentDiagramEditor());
 			}
 		}	
 		//generalization sets
@@ -2425,29 +2551,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		frame.focusOnOutput();
 	}
-	
-	/** Strictly find by name */
-	public ArrayList<ElementFound> strictlyFindByName(String text)
-	{		
-		ArrayList<ElementFound> result = new ArrayList<ElementFound>();
-		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
-		if(refparser!=null && text!=null /*&& !text.isEmpty()*/){
-			for(EObject eobj: refparser.getAllInstances(EObject.class)){
-				if (eobj instanceof NamedElement){
-					String name = ((NamedElement)eobj).getName();
-					if(name!=null){
-						if(text.trim().isEmpty()) result.add(new ElementFound(eobj));
-						else {
-							if(name.trim().toLowerCase().compareToIgnoreCase(text)==0) result.add(new ElementFound(eobj));
-							else if(name.trim().toLowerCase().contains(text.toLowerCase().trim())) result.add(new ElementFound(eobj));
-						}
-						
-					}
-				}
-			}
-		}		
-		return result;
-	}
+		
 	
 	/**
 	 * Search for warnings in the model

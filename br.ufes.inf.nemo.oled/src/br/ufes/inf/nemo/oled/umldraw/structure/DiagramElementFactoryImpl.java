@@ -347,6 +347,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     derivationeElement.setAssociationType(RelationType.DERIVATION);
     derivationeElement.setRelationship(derivation);
     derivationeElement.setIsDashed(true);
+    derivationeElement.setShowOntoUmlStereotype(false);
     relationPrototypes.put(RelationType.DERIVATION, derivationeElement);
     createPropertiesByDefault(derivation); 
 

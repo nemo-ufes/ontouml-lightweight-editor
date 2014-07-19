@@ -137,24 +137,24 @@ public class FinderPane extends JPanel implements Editor {
 		validate();
 	}
 	
-	public class NameComparator implements Comparator<ElementFound> 
+	public class NameComparator implements Comparator<FoundElement> 
     {
         @Override
-        public int compare(ElementFound o1, ElementFound o2) {
+        public int compare(FoundElement o1, FoundElement o2) {
             return o1.getName().compareToIgnoreCase(o2.getName());
         }
     }
-	public class StereotypeComparator implements Comparator<ElementFound> 
+	public class StereotypeComparator implements Comparator<FoundElement> 
     {
         @Override
-        public int compare(ElementFound o1, ElementFound o2) {
+        public int compare(FoundElement o1, FoundElement o2) {
             return o1.getType().compareToIgnoreCase(o2.getType());
         }
     }
-	public class PathComparator implements Comparator<ElementFound> 
+	public class PathComparator implements Comparator<FoundElement> 
     {
         @Override
-        public int compare(ElementFound o1, ElementFound o2) {
+        public int compare(FoundElement o1, FoundElement o2) {
             return o1.getPath().compareToIgnoreCase(o2.getPath());
         }
     }
@@ -162,7 +162,7 @@ public class FinderPane extends JPanel implements Editor {
 	{
 		resetResult();		
 		// find
-		ArrayList<ElementFound> result = ProjectBrowser.frame.getDiagramManager().strictlyFindByName(finderHeadPane.getText());
+		ArrayList<FoundElement> result = ProjectBrowser.frame.getDiagramManager().strictlyFindByName(finderHeadPane.getText());
 		Collections.sort(result,new StereotypeComparator());
 		finderScrollTable.setData(result);
 		status.setText("  "+result.size()+" items found.");

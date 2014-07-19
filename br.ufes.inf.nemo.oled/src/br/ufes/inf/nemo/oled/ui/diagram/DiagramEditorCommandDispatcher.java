@@ -77,6 +77,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("FIND", new MethodCall(
 					getClass().getMethod("find")));
 			
+			selectorMap.put("STATISTICS", new MethodCall(
+					getClass().getMethod("collectStatistics")));
+			
 			selectorMap.put("UNDO", new MethodCall(
 					getClass().getMethod("undo")));
 			
@@ -434,6 +437,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		manager.getFrame().getDiagramManager().addFinderPanel();		
 	}
 
+	public void collectStatistics()
+	{
+		if (manager.isProjectLoaded()==false) return;
+		manager.getFrame().getDiagramManager().addStatisticsPanel();
+	}
+	
 	public void showGrid() {
 		if (manager.isProjectLoaded()==false) return;
 

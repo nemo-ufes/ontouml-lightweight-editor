@@ -31,7 +31,7 @@ import RefOntoUML.NamedElement;
 /**
  * @author John Guerson
  */
-public class ElementFound {
+public class FoundElement {
 
 	protected EObject eobject;
 	protected String name;
@@ -39,7 +39,7 @@ public class ElementFound {
 	protected ArrayList<EObject> pathHierarchyList = new ArrayList<EObject>();
 	protected String stereotype;
 	
-	public ElementFound(EObject eobject)
+	public FoundElement(EObject eobject)
 	{
 		this.eobject = eobject;
 		name = getName(eobject);
