@@ -1,8 +1,5 @@
 package br.ufes.inf.nemo.antipattern.wizard.asscyc;
 
-import java.text.Normalizer;
-
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -11,13 +8,14 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import RefOntoUML.Association;
-import RefOntoUML.NamedElement;
-import RefOntoUML.Relationship;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class AssCycRefactoringPage extends RefactoringPage {
 	
@@ -42,15 +40,6 @@ public class AssCycRefactoringPage extends RefactoringPage {
 
 	public AssCycWizard getAssCycWizard(){
 		return (AssCycWizard)getWizard();
-	}
-	
-	public static String getStereotype(EObject element)
-	{
-		String type = element.getClass().toString().replaceAll("class RefOntoUML.impl.","");
-	    type = type.replaceAll("Impl","");
-	    type = Normalizer.normalize(type, Normalizer.Form.NFD);
-	    if (!type.equalsIgnoreCase("association")) type = type.replace("Association","");
-	    return type;
 	}
 	
 	SelectionAdapter enableNextPageListener = new SelectionAdapter() {
@@ -84,38 +73,66 @@ public class AssCycRefactoringPage extends RefactoringPage {
 		setControl(container);
 
 		lblCreateOclDerivation = new Label(container, SWT.NONE);
-		lblCreateOclDerivation.setBounds(10, 119, 554, 16);
 		lblCreateOclDerivation.setText("Please, choose the association to be derived:");
 		
 		assocCombo = new Combo(container, SWT.READ_ONLY);
-		assocCombo.setBounds(10, 141, 554, 23);
 		assocCombo.addSelectionListener(enableNextPageListener);
 		
-		for(Relationship rel: asscyc.getCycleRelationship()){
-			assocCombo.add(getStereotype(rel)+" "+((NamedElement)rel).getName()+": "+((Association)rel).getMemberEnd().get(0).getType().getName()+"->"+((Association)rel).getMemberEnd().get(1).getType().getName());
+		for(Association a: asscyc.getOnlyAssociations()){
+			Type source = a.getMemberEnd().get(0).getType();
+			Type target = a.getMemberEnd().get(1).getType();
+			
+			assocCombo.add(OntoUMLNameHelper.getTypeAndName(source, true, false)+" - "+OntoUMLNameHelper.getTypeAndName(target, true, false)+" ("+OntoUMLNameHelper.getTypeAndName(a, false, false)+")");
 		}
 		
 		btnDerive = new Button(container, SWT.RADIO);
-		btnDerive.setBounds(10, 87, 554, 16);
 		btnDerive.setText("Create OCL derivation rule for one of the associations");
 		btnDerive.addSelectionListener(enableNextPageListener);
 		
 		btnForbid = new Button(container, SWT.RADIO);
-		btnForbid.setBounds(10, 65, 554, 16);
 		btnForbid.setText("Create OCL invariant FORBIDDING the instance level cycle");
 		btnForbid.addSelectionListener(enableNextPageListener);
 		
 		btnEnforce = new Button(container, SWT.RADIO);
-		btnEnforce.setBounds(10, 43, 554, 16);
 		btnEnforce.setText("Create OCL invariant ENFORCING the instance level cycle");
 		btnEnforce.addSelectionListener(enableNextPageListener);
 		
 		Label lblPleaseChooseWhich = new Label(container, SWT.NONE);
-		lblPleaseChooseWhich.setBounds(10, 10, 554, 15);
 		lblPleaseChooseWhich.setText("Please choose which action to perform on the model:");
 		
 		setPageComplete(false);
 		assocCombo.setEnabled(false);
+		GroupLayout gl_container = new GroupLayout(container);
+		gl_container.setHorizontalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(gl_container.createParallelGroup(GroupLayout.LEADING)
+						.add(lblPleaseChooseWhich, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(btnEnforce, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(btnForbid, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(btnDerive, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(lblCreateOclDerivation, GroupLayout.PREFERRED_SIZE, 554, GroupLayout.PREFERRED_SIZE)
+						.add(assocCombo, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
+					.add(10))
+		);
+		gl_container.setVerticalGroup(
+			gl_container.createParallelGroup(GroupLayout.LEADING)
+				.add(gl_container.createSequentialGroup()
+					.add(10)
+					.add(lblPleaseChooseWhich)
+					.add(18)
+					.add(btnEnforce)
+					.add(6)
+					.add(btnForbid)
+					.add(6)
+					.add(btnDerive)
+					.add(16)
+					.add(lblCreateOclDerivation, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+					.add(6)
+					.add(assocCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+		);
+		container.setLayout(gl_container);
 	}
 
 	@Override
@@ -125,7 +142,7 @@ public class AssCycRefactoringPage extends RefactoringPage {
 		
 		if (btnDerive.getSelection() && assocCombo.getSelectionIndex()>=0)
 		{
-			Association assoc = (Association)asscyc.getCycleRelationship().get(assocCombo.getSelectionIndex());
+			Association assoc = (Association)asscyc.getOnlyAssociations().get(assocCombo.getSelectionIndex());
 			//Action =============================
 			AssCycAction newAction = new AssCycAction(asscyc);
 			newAction.setDeriveAssociation(assoc); 
