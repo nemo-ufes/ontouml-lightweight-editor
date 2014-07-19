@@ -67,6 +67,8 @@ public class AppMenu implements ActionListener {
 		createDiagramMenu();
 		//View
 		createViewMenu();
+		//Project
+		createProjectMenu();
 		//Verification
 		createVerificationMenu();
 		//Simulation/Transformation/Tool
@@ -232,10 +234,7 @@ public class AppMenu implements ActionListener {
 		
 		JMenuItem redoItem = createMenuItem(editMenu, "redo");
 		redoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
-		
-		JMenuItem findItem = createMenuItem(editMenu, "find");
-		findItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
-
+				
 		//JMenuItem findItem = createMenuItem(editMenu, "find");
 		//findItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
 		
@@ -283,6 +282,18 @@ public class AppMenu implements ActionListener {
 		//createMenuItem(viewMenu, "redraw");
 	}
 
+	public void createProjectMenu()
+	{
+		JMenu projectMenu = createMenu("project");
+		menubar.add(projectMenu);
+		
+		JMenuItem findItem = createMenuItem(projectMenu, "find");
+		findItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+
+		createMenuItem(projectMenu, "statistics");
+		//statisticItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+
+	}
 	/**
 	 * Creates the Help menu.
 	 */

@@ -19,7 +19,7 @@
  * along with OLED; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package br.ufes.inf.nemo.oled.finder;
+package br.ufes.inf.nemo.oled.statistician;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,19 +41,19 @@ import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 /**
  * @author John Guerson
  */
-public class FinderScrollTable extends JScrollPane{
+public class StatisticsScrollTable extends JScrollPane{
 
 	private static final long serialVersionUID = 1732036629191359696L;
 	private JTable table;
-	private FinderTableModel tablemodel;
-	private ArrayList<FoundElement> foundList = new ArrayList<FoundElement>();
+	private StatisticsTableModel tablemodel;
+	private ArrayList<StatisticalElement> resultList = new ArrayList<StatisticalElement>();
 	
 	public JTable getTable() { return table; }
-	public ArrayList<FoundElement> getResult() { return foundList; }
+	public ArrayList<StatisticalElement> getResult() { return resultList; }
 	
-	public FinderScrollTable()
+	public StatisticsScrollTable()
 	{				
-		String[] columnNames = {"Name","Stereotype","Location"};
+		String[] columnNames = {"Measure", "Count", "Type Percentage", "Total Percentage"};
         Object[][] data = {};
         
 	    setMinimumSize(new Dimension(0, 0));
@@ -94,8 +94,8 @@ public class FinderScrollTable extends JScrollPane{
 	    			// variable for the beginning and end selects only that one row.
 	    			model.setSelectionInterval( rowNumber, rowNumber );
 	    			
-	    			FinderPopupMenu menu = new FinderPopupMenu(foundList.get(rowNumber).getElement());
-	    			menu.show(e.getComponent(),e.getX(),e.getY());
+	    			//FinderPopupMenu menu = new FinderPopupMenu(resultList.get(rowNumber).getElement());
+	    			//menu.show(e.getComponent(),e.getX(),e.getY());
 	    		}
 	    	}
 	    });
@@ -104,7 +104,7 @@ public class FinderScrollTable extends JScrollPane{
 	public void reset()
 	{
 		Object[][] data = {};String[] columnNames = {};
-		tablemodel = new FinderTableModel(columnNames,data);
+		tablemodel = new StatisticsTableModel(columnNames,data);
 		table.setModel(tablemodel);	
 		table.repaint();
 		table.validate();		
@@ -115,23 +115,24 @@ public class FinderScrollTable extends JScrollPane{
 		table.setRowSelectionInterval(row, row);
 	}
 	
-	public void setData(ArrayList<FoundElement> foundList)
+	public void setData(ArrayList<StatisticalElement> foundList)
 	{
-		this.foundList = foundList;
+		this.resultList = foundList;
 		int rows=foundList.size();
 				
-		String[][] data = new String[rows][3];
+		String[][] data = new String[rows][4];
 		
 		int i=0;		
-		for(FoundElement elem: this.foundList){						
-			data[i][0]="    "+elem.getName();
-			data[i][1]=" "+elem.getType();
-			data[i][2]=" "+elem.getPath();				
+		for(StatisticalElement elem: this.resultList){						
+			data[i][0]="    "+elem.getMeasure();
+			data[i][1]=" "+elem.getCount();							
+			data[i][2]=" "+elem.getTypePercentage();
+			data[i][3]=" "+elem.getAllPercentage();
 			i++;
 		}
 		
-		String[] columnNames = {"Name","Stereotype","Location"};
-		tablemodel = new FinderTableModel(columnNames,data);
+		String[] columnNames = {"Measure", "Count", "Type Percentage", "Total Percentage"};
+		tablemodel = new StatisticsTableModel(columnNames,data);
 		
 		table.setModel(tablemodel);
 		
