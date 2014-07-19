@@ -53,45 +53,46 @@ public class AssCycAntipattern extends Antipattern<AssCycOccurrence> {
 		GraphAlgo.fundamentalCycles(classes.size()-1, relationships.size()-1, nodei, nodej, fundcycle);
 		
 		for (int i=1; i<=fundcycle[0][0]; i++) { 
-			
-			cycle = new ArrayList<RefOntoUML.Class>();
-			cycle_ass = new ArrayList<Relationship>();
-			
-			for (int j=1; j<=fundcycle[i][0]; j++)
-				cycle.add(classes.get(fundcycle[i][j]));
-			
-			for (int j = 0; j < cycle.size(); j++) {
+			try{
+				cycle = new ArrayList<RefOntoUML.Class>();
+				cycle_ass = new ArrayList<Relationship>();
 				
-				int pos1, pos2;
-				if(j<cycle.size()-1) {
-					pos1 = j;
-					pos2 = j+1;
-				}
-				else {
-					pos1=j;
-					pos2=0;
-				}
+				for (int j=1; j<=fundcycle[i][0]; j++)
+					cycle.add(classes.get(fundcycle[i][j]));
 				
-				for (Relationship r : relationships) {
-					if(r instanceof Association){
-						Type source, target;
-						if (((Association) r).getMemberEnd().size()==2) {
-							source = ((Association)r).getMemberEnd().get(0).getType();
-							target = ((Association)r).getMemberEnd().get(1).getType();
-							if( (source.equals(cycle.get(pos1)) && target.equals(cycle.get(pos2))) || (source.equals(cycle.get(pos2)) && target.equals(cycle.get(pos1))))
-								cycle_ass.add(r);
-						}
+				for (int j = 0; j < cycle.size(); j++) {
+					
+					int pos1, pos2;
+					if(j<cycle.size()-1) {
+						pos1 = j;
+						pos2 = j+1;
 					}
-					if (r instanceof Generalization){
-						Classifier general, specific;
-						general = ((Generalization)r).getGeneral();
-						specific = ((Generalization)r).getSpecific();
-						if ( (general.equals(cycle.get(pos1)) && specific.equals(cycle.get(pos2))) || (general.equals(cycle.get(pos2)) && specific.equals(cycle.get(pos1))) )
-							cycle_ass.add(r);
-					}	
+					else {
+						pos1=j;
+						pos2=0;
+					}
+					
+					for (Relationship r : relationships) {
+						if(r instanceof Association){
+							Type source, target;
+							if (((Association) r).getMemberEnd().size()==2) {
+								source = ((Association)r).getMemberEnd().get(0).getType();
+								target = ((Association)r).getMemberEnd().get(1).getType();
+								if( (source.equals(cycle.get(pos1)) && target.equals(cycle.get(pos2))) || (source.equals(cycle.get(pos2)) && target.equals(cycle.get(pos1))))
+									cycle_ass.add(r);
+							}
+						}
+						if (r instanceof Generalization){
+							Classifier general, specific;
+							general = ((Generalization)r).getGeneral();
+							specific = ((Generalization)r).getSpecific();
+							if ( (general.equals(cycle.get(pos1)) && specific.equals(cycle.get(pos2))) || (general.equals(cycle.get(pos2)) && specific.equals(cycle.get(pos1))) )
+								cycle_ass.add(r);
+						}	
+					}
 				}
-			}
-			super.occurrence.add(new AssCycOccurrence(cycle,cycle_ass,this));
+				super.occurrence.add(new AssCycOccurrence(cycle,cycle_ass,this));
+			}catch (Exception e) {}
 		}
 		return super.getOccurrences();
 	}
