@@ -1,45 +1,45 @@
 package br.ufes.inf.nemo.oled.derivation;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
 
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.DiagramManager;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
-
 public class CompositionParticipationPattern extends JDialog {
 
+	private static final long serialVersionUID = -6465565848240589757L;
+	
 	private final JPanel contentPanel = new JPanel();
 	private JTextField lbl_base;
 	private JTextField lbl_whole;
 	private JTextField lbl_derived;
 	JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Member Of");
+	@SuppressWarnings("rawtypes")
 	JComboBox cmb_whole = new JComboBox();
 	ButtonGroup bt = new ButtonGroup();
 	JRadioButton rdbtnNewRadioButton = new JRadioButton("Component Of");
 	DiagramManager dm;
+	@SuppressWarnings({ "rawtypes" })
 	JComboBox cmb_base = new JComboBox();
 	Point2D.Double location;
 	/**
@@ -50,19 +50,20 @@ public class CompositionParticipationPattern extends JDialog {
 	 * Create the dialog.
 	 * @param dman 
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public CompositionParticipationPattern(DiagramManager dman) {
 		dm=dman;
 		setResizable(false);
-		setTitle("Derivation by Participation - Part-Whole\r\n");
+		setTitle("Derivation by Participation: Part-Whole\r\n");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(CompositionParticipationPattern.class.getResource("/resources/icons/x16/sitemap.png")));
-		setBounds(100, 100, 407, 493);
+		setBounds(100, 100, 407, 475);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		JLabel lblNewLabel = new JLabel("Base Type");
-		JLabel lblNewLabel_1 = new JLabel("Whole");
-		JLabel lblNewLabel_3 = new JLabel("Derived Type");
+		JLabel lblNewLabel = new JLabel("Base Type:");
+		JLabel lblNewLabel_1 = new JLabel("Whole:");
+		JLabel lblNewLabel_3 = new JLabel("Derived Type:");
 		lbl_base = new JTextField();
 		lbl_base.setText("Base");
 		lbl_base.setColumns(10);
@@ -112,31 +113,33 @@ public class CompositionParticipationPattern extends JDialog {
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addContainerGap()
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblNewLabel_3)
-								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(lbl_derived, Alignment.LEADING)
-										.addComponent(lblNewLabel_1, Alignment.LEADING)
-										.addComponent(lblNewLabel, Alignment.LEADING)
-										.addComponent(lbl_base, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
-										.addComponent(lbl_whole, Alignment.LEADING)
-										.addComponent(rdbtnNewRadioButton_1, Alignment.LEADING)
-										.addComponent(rdbtnNewRadioButton, Alignment.LEADING))
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-										.addComponent(cmb_base, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(cmb_whole, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
+								.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+									.addComponent(lblNewLabel_3, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(rdbtnNewRadioButton_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(rdbtnNewRadioButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(lbl_derived, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE))
+								.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+									.addComponent(lblNewLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
+										.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+											.addComponent(lbl_base, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+											.addComponent(lbl_whole, Alignment.LEADING))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+											.addComponent(cmb_base, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+											.addComponent(cmb_whole, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))))
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(20)
+							.addGap(41)
 							.addComponent(lblNewLabel_2)))
-					.addContainerGap(29, Short.MAX_VALUE))
+					.addContainerGap(20, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(18)
+					.addContainerGap()
 					.addComponent(lblNewLabel)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lbl_base, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(cmb_base, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -150,13 +153,13 @@ public class CompositionParticipationPattern extends JDialog {
 					.addComponent(lblNewLabel_3)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lbl_derived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(rdbtnNewRadioButton)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(rdbtnNewRadioButton_1)
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblNewLabel_2)
-					.addContainerGap())
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{

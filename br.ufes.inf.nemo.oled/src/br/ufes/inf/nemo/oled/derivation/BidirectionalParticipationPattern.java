@@ -1,34 +1,32 @@
 package br.ufes.inf.nemo.oled.derivation;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JComboBox;
-import javax.swing.JCheckBox;
-import javax.swing.ImageIcon;
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.DiagramManager;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class BidirectionalParticipationPattern extends JDialog {
 
+	private static final long serialVersionUID = 4168572467135624163L;
+	
 	private final JPanel contentPanel = new JPanel();
 	private JTextField lbl_base_left;
 	private JTextField lbl_base_right;
@@ -37,7 +35,9 @@ public class BidirectionalParticipationPattern extends JDialog {
 	private JTextField lbl_derived_right;
 	Point2D.Double location;
 	DiagramManager dm;
+	@SuppressWarnings("rawtypes")
 	JComboBox cmb_base_left = new JComboBox();
+	@SuppressWarnings("rawtypes")
 	JComboBox cmb_base_right = new JComboBox();
 	/**
 	 * Launch the application.
@@ -48,22 +48,23 @@ public class BidirectionalParticipationPattern extends JDialog {
 	 * Create the dialog.
 	 * @param dman 
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public BidirectionalParticipationPattern(DiagramManager dman) {
 		dm=dman;
 		setResizable(false);
 		getContentPane().setBackground(Color.WHITE);
-		setTitle("Derivation by Participation Bidirectional");
+		setTitle("Derivation by Participation: Bidirectional");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(BidirectionalParticipationPattern.class.getResource("/resources/icons/x16/sitemap.png")));
-		setBounds(100, 100, 468, 510);
+		setBounds(100, 100, 429, 510);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.WEST);
-		JLabel lblNewLabel = new JLabel("Base Left");
-		JLabel lblNewLabel_1 = new JLabel("Base Right");
-		JLabel lblNewLabel_2 = new JLabel("Relator");
-		JLabel lblNewLabel_3 = new JLabel("Derived Left");
-		JLabel lblNewLabel_4 = new JLabel("Derived Right");
+		JLabel lblNewLabel = new JLabel("Base Left:");
+		JLabel lblNewLabel_1 = new JLabel("Base Right:");
+		JLabel lblNewLabel_2 = new JLabel("Relator:");
+		JLabel lblNewLabel_3 = new JLabel("Derived Left:");
+		JLabel lblNewLabel_4 = new JLabel("Derived Right:");
 		
 		lbl_base_left = new JTextField();
 		lbl_base_left.setText("Base_1");
@@ -92,8 +93,7 @@ public class BidirectionalParticipationPattern extends JDialog {
 		
 		JLabel lblNewLabel_5 = new JLabel("");
 		lblNewLabel_5.setIcon(new ImageIcon(BidirectionalParticipationPattern.class.getResource("/resources/figures/derivationbyparticipation_bi.PNG")));
-		
-		
+				
 		cmb_base_right.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collective", "Quantity", "Subkind", "Role", "Phase", "Category", "RoleMixin", "Mixin"}));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
@@ -101,60 +101,64 @@ public class BidirectionalParticipationPattern extends JDialog {
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(26)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblNewLabel_2)
-								.addComponent(lblNewLabel_1)
-								.addComponent(lbl_base_left, GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addComponent(lblNewLabel)
-									.addGap(128))
-								.addComponent(lbl_base_right, GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-								.addComponent(lbl_relator, GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-								.addComponent(lbl_derived_right, GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-								.addComponent(lblNewLabel_4)
-								.addComponent(lbl_derived_left, GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-								.addComponent(lblNewLabel_3))
-							.addGap(18)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(cmb_base_left, Alignment.TRAILING, 0, 82, Short.MAX_VALUE)
-								.addComponent(cmb_base_right, Alignment.TRAILING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGap(189)
-							.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addGap(64)
-							.addComponent(lblNewLabel_5)))
+							.addComponent(lblNewLabel_5))
+						.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblNewLabel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPanel.createSequentialGroup()
+									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+										.addComponent(lbl_base_left, GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+										.addComponent(lbl_base_right, GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+										.addComponent(cmb_base_right, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+										.addComponent(cmb_base_left, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(lblNewLabel_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNewLabel_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lbl_relator, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNewLabel_3, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lbl_derived_left, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNewLabel_4, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lbl_derived_right, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 391, GroupLayout.PREFERRED_SIZE))
+							.addGap(205)
+							.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel)
-					.addGap(4)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lbl_base_left, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cmb_base_left, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblNewLabel_1)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lbl_base_right, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cmb_base_right, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblNewLabel_2)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lbl_relator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblNewLabel_3)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lbl_derived_left, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblNewLabel_4)
-					.addGap(8)
-					.addComponent(lbl_derived_right, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addGap(80)
+							.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblNewLabel)
+							.addGap(4)
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lbl_base_left, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cmb_base_left, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(lblNewLabel_1)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lbl_base_right, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cmb_base_right, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblNewLabel_2)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lbl_relator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblNewLabel_3)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lbl_derived_left, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblNewLabel_4)
+							.addGap(8)
+							.addComponent(lbl_derived_right, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(11)
 					.addComponent(lblNewLabel_5)
 					.addGap(6))
 		);
