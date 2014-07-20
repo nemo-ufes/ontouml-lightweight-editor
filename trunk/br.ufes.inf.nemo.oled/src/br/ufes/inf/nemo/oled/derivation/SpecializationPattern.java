@@ -24,7 +24,6 @@ package br.ufes.inf.nemo.oled.derivation;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,18 +34,17 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.DiagramManager;
-import javax.swing.JCheckBox;
 
 /**
  * @author Cássio Reginato
@@ -64,10 +62,10 @@ public class SpecializationPattern extends JDialog {
 	private DiagramManager dm;
 	@SuppressWarnings("rawtypes")
 	JComboBox cmb_stereo_base = new JComboBox();
-	JLabel lblAttribute = new JLabel("Attribute");
+	JLabel lblAttribute = new JLabel("Attribute:");
 	@SuppressWarnings("rawtypes")
 	JComboBox cmb_stereo_der = new JComboBox();
-	JLabel lblType = new JLabel("Type");
+	JLabel lblType = new JLabel("Type:");
 	private Point2D.Double location= new Point2D.Double();
 	/**
 	 * Launch the application.
@@ -84,20 +82,20 @@ public class SpecializationPattern extends JDialog {
 		dm= diagramManager;
 		setTitle("Derivation By Specialization");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SpecializationPattern.class.getResource("/resources/icons/x16/sitemap.png")));
-		setBounds(100, 100, 412, 541);
+		setBounds(100, 100, 509, 491);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setForeground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		JLabel lblNewLabel = new JLabel("Base Type");
+		JLabel lblNewLabel = new JLabel("Base Type:");
 		
 		lbl_base = new JTextField();
 		lbl_base.setText("Base");
 		lbl_base.setColumns(10);
 		
-		JLabel lblDerivedBySpecialization = new JLabel("Derived By Specialization");
+		JLabel lblDerivedBySpecialization = new JLabel("Derived By Specialization:");
 		
 		lbl_derived = new JTextField();
 		lbl_derived.setText("Derived");
@@ -109,14 +107,12 @@ public class SpecializationPattern extends JDialog {
 
 		cmb_stereo_der.setModel(new DefaultComboBoxModel(new String[] {"Phase", "Subkind"}));
 		
-		JTextArea txtrATypeIs = new JTextArea();
-		txtrATypeIs.setFont(new Font("Arial", Font.PLAIN, 13));
-		txtrATypeIs.setLineWrap(true);
+		JTextPane txtrATypeIs = new JTextPane();		
 		txtrATypeIs.setText("A type is derived by specialization when it specializes a base type for some condition.");
 		
 		JTextPane txtpnUseOclEditor = new JTextPane();
 		txtpnUseOclEditor.setEditable(false);
-		txtpnUseOclEditor.setText("Use the OCL editor to describe the condition.");
+		txtpnUseOclEditor.setText("Use the OCL constraints to describe the condition.");
 		
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setIcon(new ImageIcon(SpecializationPattern.class.getResource("/resources/figures/derivation_by_specialization.jpg")));
@@ -131,7 +127,7 @@ public class SpecializationPattern extends JDialog {
 		lbl_type_att.setEnabled(false);
 		lbl_type_att.setColumns(10);
 		
-		final JCheckBox chckbxNewCheckBox = new JCheckBox("set attribute");
+		final JCheckBox chckbxNewCheckBox = new JCheckBox("Set attribute");
 		chckbxNewCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(chckbxNewCheckBox.isSelected()){
@@ -152,41 +148,42 @@ public class SpecializationPattern extends JDialog {
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(22)
+							.addContainerGap()
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(txtrATypeIs, GroupLayout.PREFERRED_SIZE, 316, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblDerivedBySpecialization)
-								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addComponent(lbl_base, GroupLayout.PREFERRED_SIZE, 225, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(cmb_stereo_base, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addComponent(lblNewLabel)
-								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(lbl_attribute, Alignment.LEADING)
-										.addComponent(lblAttribute, Alignment.LEADING)
-										.addComponent(lbl_derived, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-										.addComponent(chckbxNewCheckBox, Alignment.LEADING))
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblType)
-										.addComponent(cmb_stereo_der, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addComponent(lbl_type_att, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
+								.addComponent(chckbxNewCheckBox)
+								.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+									.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(lblDerivedBySpecialization, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addGroup(gl_contentPanel.createSequentialGroup()
+										.addComponent(lbl_base)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(cmb_stereo_base, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE))
+									.addGroup(gl_contentPanel.createSequentialGroup()
+										.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+											.addGroup(gl_contentPanel.createSequentialGroup()
+												.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+													.addComponent(lblAttribute, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+													.addComponent(lbl_attribute, Alignment.LEADING, 126, 126, Short.MAX_VALUE))
+												.addPreferredGap(ComponentPlacement.RELATED)
+												.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+													.addComponent(lbl_type_att, 0, 0, Short.MAX_VALUE)
+													.addComponent(lblType, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+											.addComponent(lbl_derived, GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(cmb_stereo_der, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE))
+									.addComponent(txtpnUseOclEditor, Alignment.LEADING)
+									.addComponent(txtrATypeIs))))
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(75)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addGap(36)
-									.addComponent(lblNewLabel_1))
-								.addComponent(txtpnUseOclEditor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(53, Short.MAX_VALUE))
+							.addGap(166)
+							.addComponent(lblNewLabel_1)))
+					.addContainerGap(7, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(txtrATypeIs, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addComponent(txtrATypeIs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblNewLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
@@ -196,8 +193,8 @@ public class SpecializationPattern extends JDialog {
 					.addComponent(lblDerivedBySpecialization)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lbl_derived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cmb_stereo_der, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(cmb_stereo_der, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lbl_derived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblAttribute)
@@ -206,13 +203,13 @@ public class SpecializationPattern extends JDialog {
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lbl_attribute, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lbl_type_att, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(chckbxNewCheckBox)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(txtpnUseOclEditor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblNewLabel_1)
-					.addContainerGap())
+					.addContainerGap(24, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{

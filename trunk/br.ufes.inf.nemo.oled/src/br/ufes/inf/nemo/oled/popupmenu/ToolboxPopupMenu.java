@@ -74,7 +74,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	JMenuItem exclusionItem = new JMenuItem("Exclusion");
 	JMenuItem specializationItem = new JMenuItem("Specialization");
 	JMenuItem intersectionItem = new JMenuItem("Intersection");
-	JMenuItem pastspecializationItem = new JMenuItem("PastSpecialization");
+	JMenuItem pastspecializationItem = new JMenuItem("Past Specialization");
 	JMenuItem participationItem = new JMenuItem("Participation");
 	
 	public AppFrame frame;
@@ -92,6 +92,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
         derivationMenu.add(unionItem);        
         derivationMenu.add(exclusionItem);
         derivationMenu.add(intersectionItem);
+        derivationMenu.add(specializationItem);
         derivationMenu.add(pastspecializationItem);
         derivationMenu.add(participationItem);
         add(derivationMenu);

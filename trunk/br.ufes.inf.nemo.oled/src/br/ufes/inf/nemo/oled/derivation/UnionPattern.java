@@ -24,7 +24,6 @@ package br.ufes.inf.nemo.oled.derivation;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -66,7 +65,7 @@ public class UnionPattern extends JDialog {
 	private JComboBox comboBox = new JComboBox();
 	@SuppressWarnings({ "rawtypes", "unused" })
 	private JComboBox comboBox1 = new JComboBox();
-	private JLabel lblNewLabel = new JLabel("Types");
+	private JLabel lblNewLabel = new JLabel("Types:");
 	private DiagramManager diagramMan;
 	private JLabel lblNewLabel_1;
 	private Point2D.Double location= new Point2D.Double();
@@ -116,20 +115,20 @@ public class UnionPattern extends JDialog {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(UnionPattern.class.getResource("/resources/icons/x16/sitemap.png")));
 		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"Category"}));
 		this.diagramMan= diagramManager;
-		setBounds(100, 100, 438, 484);
+		setBounds(100, 100, 413, 469);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		location.x= this.getLocation().getX();
 		location.y= this.getLocation().getY();
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		getContentPane().add(contentPanel, BorderLayout.NORTH);
 		{
 
 			lblNewLabel.setForeground(Color.BLACK);
 		}
 		{
 			txtBase = new JTextField();
-			txtBase.setText("base 1");
+			txtBase.setText("Base 1");
 			txtBase.setColumns(10);
 		}
 		{
@@ -152,7 +151,7 @@ public class UnionPattern extends JDialog {
 		}
 		{
 			txtBase_1 = new JTextField();
-			txtBase_1.setText("base 2");
+			txtBase_1.setText("Base 2");
 			txtBase_1.setColumns(10);
 		}
 		{
@@ -160,21 +159,21 @@ public class UnionPattern extends JDialog {
 			comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Category", "Role", "Phase", "Role Mixin", "Mixin"}));
 		}
 		{
-			lblNewLabel_1 = new JLabel("Derived Type");
+			lblNewLabel_1 = new JLabel("Derived Type:");
 			lblNewLabel_1.setForeground(Color.BLACK);
 		}
 		{
 			txtDerived = new JTextField();
-			txtDerived.setText("derived");
+			txtDerived.setText("Derived");
 			txtDerived.setColumns(10);
 		}
 		
 		JTextPane txtpnATypeIs = new JTextPane();
-		txtpnATypeIs.setEditable(false);
-		txtpnATypeIs.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtpnATypeIs.setText("The population of the type derived by union is the sum of all individuals of the base types .");
+		txtpnATypeIs.setEditable(false);		
+		txtpnATypeIs.setText("The population of the type derived by union is the sum of all individuals of the base types.");
 		
 		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setBackground(Color.WHITE);
 		lblNewLabel_2.setIcon(new ImageIcon(UnionPattern.class.getResource("/resources/figures/derivationbyunion.PNG")));
 		
 		
@@ -182,43 +181,46 @@ public class UnionPattern extends JDialog {
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addContainerGap()
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(txtpnATypeIs, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
-								.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
-								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))
-								.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
 								.addGroup(gl_contentPanel.createSequentialGroup()
 									.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(txtBase_1, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
-										.addComponent(txtBase, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE))
+										.addComponent(txtBase_1)
+										.addComponent(txtBase, GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-										.addComponent(comboBox_1, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
-										.addComponent(comboBox, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)))))
-						.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
-							.addGap(79)
-							.addComponent(lblNewLabel_2, 0, 0, Short.MAX_VALUE)))
-					.addContainerGap())
+										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+										.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addGroup(gl_contentPanel.createSequentialGroup()
+									.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 269, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))
+								.addComponent(txtpnATypeIs, 0, 0, Short.MAX_VALUE)))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addGap(61)
+							.addComponent(lblNewLabel_2))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 373, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+					.addGap(12))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGap(10)
-					.addComponent(txtpnATypeIs, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+					.addComponent(txtpnATypeIs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblNewLabel_1)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblNewLabel)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -227,13 +229,13 @@ public class UnionPattern extends JDialog {
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtBase_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-					.addContainerGap())
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 208, GroupLayout.PREFERRED_SIZE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
+			buttonPane.setBackground(Color.WHITE);
 			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
