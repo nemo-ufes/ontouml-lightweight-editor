@@ -22,38 +22,33 @@
 package br.ufes.inf.nemo.oled.derivation;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import java.awt.Color;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JComboBox;
-import javax.swing.JTextPane;
-import javax.swing.DefaultComboBoxModel;
-
-import java.awt.Font;
-
-import javax.swing.ImageIcon;
-
-import br.ufes.inf.nemo.derivedtypes.DerivedByIntersection;
-import br.ufes.inf.nemo.oled.DiagramManager;
-
-import java.awt.event.ActionListener;
+import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.awt.Toolkit;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import br.ufes.inf.nemo.derivedtypes.DerivedByIntersection;
+import br.ufes.inf.nemo.oled.DiagramManager;
+import java.awt.Dimension;
 
 /**
  * @author Cássio Reginato
@@ -94,15 +89,16 @@ public class IntersectionPattern extends JDialog {
 	
 		//this.setLocation(Integer., y);
 		getContentPane().setBackground(Color.WHITE);
-		setBounds(100, 100, 450, 480);
+		setBounds(100, 100, 477, 410);
 		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setPreferredSize(new Dimension(400, 350));
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.NORTH);
 		
-		JLabel lblNewLabel = new JLabel("Base Types");
+		JLabel lblNewLabel = new JLabel("Base Types:");
 		
-		JLabel lblNewLabel_2 = new JLabel("Derived Type");
+		JLabel lblNewLabel_2 = new JLabel("Derived Type:");
 		
 		txtBase = new JTextField();
 		txtBase.setForeground(Color.DARK_GRAY);
@@ -178,84 +174,66 @@ public class IntersectionPattern extends JDialog {
 		combo_derived.setModel(new DefaultComboBoxModel(new String[] {"Subkind"}));
 		
 		JTextPane txtpnTheDerivedType = new JTextPane();
-		txtpnTheDerivedType.setEditable(false);
-		txtpnTheDerivedType.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		txtpnTheDerivedType.setEditable(false);		
 		txtpnTheDerivedType.setText("The population of a derived type by intersection is the overlap of the base types");
 		
-		JLabel lblNewLabel_3 = new JLabel("");
-		
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon(IntersectionPattern.class.getResource("/resources/figures/derivation_by_intersection.png")));
-		
-		JLabel lblNewLabel_1 = new JLabel("");
+		label.setIcon(new ImageIcon(IntersectionPattern.class.getResource("/resources/figures/derivationbyintersection.PNG")));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(28)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(txtpnTheDerivedType, GroupLayout.PREFERRED_SIZE, 377, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel_1)
+							.addContainerGap()
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
+								.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(txtpnTheDerivedType, GroupLayout.PREFERRED_SIZE, 437, GroupLayout.PREFERRED_SIZE)
+									.addGroup(gl_contentPanel.createSequentialGroup()
+										.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+											.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, 345, GroupLayout.PREFERRED_SIZE)
+											.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 345, GroupLayout.PREFERRED_SIZE))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+											.addComponent(combo_base_1, 0, 90, Short.MAX_VALUE)
+											.addComponent(combo_derived, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE))))
 								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addComponent(lblNewLabel_3)
-									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(lblNewLabel_2)
-										.addGroup(gl_contentPanel.createSequentialGroup()
-											.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addComponent(combo_derived, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-										.addGroup(gl_contentPanel.createSequentialGroup()
-											.addComponent(lblNewLabel)
-											.addGap(10))
-										.addGroup(gl_contentPanel.createSequentialGroup()
-											.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-												.addComponent(txtBase_1)
-												.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, 294, GroupLayout.PREFERRED_SIZE))
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-												.addComponent(combo_base_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(combo_base_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-									.addPreferredGap(ComponentPlacement.RELATED))))
+									.addComponent(txtBase_1, GroupLayout.PREFERRED_SIZE, 345, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(combo_base_2, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(104)
+							.addContainerGap()
+							.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 441, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addGap(124)
 							.addComponent(label)))
-					.addContainerGap(13, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addContainerGap()
 					.addComponent(txtpnTheDerivedType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblNewLabel)
+					.addGap(6)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(combo_base_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(7)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(143)
-							.addComponent(lblNewLabel_3)
-							.addGap(18)
-							.addComponent(lblNewLabel_1))
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(18)
-							.addComponent(lblNewLabel)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(combo_base_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(18)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(txtBase_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(combo_base_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addComponent(lblNewLabel_2)
-									.addGap(28))
-								.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-									.addComponent(combo_derived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))))
-					.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+						.addComponent(txtBase_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(combo_base_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(lblNewLabel_2)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(combo_derived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(label)
-					.addContainerGap())
+					.addContainerGap(18, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
