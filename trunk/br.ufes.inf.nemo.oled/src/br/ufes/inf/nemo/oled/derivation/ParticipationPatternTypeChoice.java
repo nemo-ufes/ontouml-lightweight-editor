@@ -15,7 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
@@ -45,7 +45,7 @@ public class ParticipationPatternTypeChoice extends JDialog {
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ParticipationPatternTypeChoice.class.getResource("/resources/icons/x16/sitemap.png")));
 		setTitle("Participation Options");
-		setBounds(100, 100, 486, 230);
+		setBounds(100, 100, 486, 200);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(new Color(245, 245, 245));
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -64,39 +64,35 @@ public class ParticipationPatternTypeChoice extends JDialog {
 		rdbtnNewRadioButton_2.setBackground(new Color(245, 245, 245));
 		bt.add(rdbtnNewRadioButton_2);
 		
-		JTextArea txtrWhatsTheType = new JTextArea();
+		JTextPane txtrWhatsTheType = new JTextPane();
 		txtrWhatsTheType.setBackground(new Color(245, 245, 245));
 		txtrWhatsTheType.setEditable(false);
-		txtrWhatsTheType.setForeground(Color.DARK_GRAY);
+		txtrWhatsTheType.setForeground(Color.BLACK);
 		txtrWhatsTheType.setText("What's the type of the derivation by participation?\r\n");
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(27)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(rdbtnNewRadioButton_2)
-								.addComponent(rdbtnNewRadioButton_1)
-								.addComponent(rdbtnNewRadioButton)))
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(98)
-							.addComponent(txtrWhatsTheType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(rdbtnNewRadioButton, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 446, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtrWhatsTheType, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+						.addComponent(rdbtnNewRadioButton_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 446, GroupLayout.PREFERRED_SIZE)
+						.addComponent(rdbtnNewRadioButton_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(txtrWhatsTheType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+					.addComponent(txtrWhatsTheType, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(rdbtnNewRadioButton)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(rdbtnNewRadioButton_1)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(rdbtnNewRadioButton_2)
-					.addGap(56))
+					.addContainerGap(34, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
