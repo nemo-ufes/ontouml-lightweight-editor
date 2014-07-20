@@ -57,7 +57,6 @@ import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
 import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
@@ -73,7 +72,7 @@ public class DerivedTypesOperations {
 	static Point2D.Double pointClicked;
 	
 	public static void setPointClicked(Point2D.Double pointClicked) {
-		pointClicked = pointClicked;
+		DerivedTypesOperations.pointClicked = pointClicked;
 	}
 
 
