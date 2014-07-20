@@ -531,8 +531,22 @@ public class OntoUMLModelStatistic {
 		public TypeDetail(String typeName, int typesize, int supertype, int all) {
 			this.typeName = typeName; 
 			size = typesize;
-			percentageSupertype = ((float) size/supertype)*100;
-			percentageAllElements = ((float)size/all)*100;
+			if(size==0) {
+				percentageSupertype = 0;
+				percentageAllElements = 0;					
+			}else{
+				if(supertype==0) {
+					percentageSupertype=0;
+					percentageAllElements = ((float)size/all)*100;
+				}
+				else if(all==0) {
+					percentageSupertype = ((float) size/supertype)*100;
+					percentageAllElements = 0;
+				} else{
+					percentageSupertype = ((float) size/supertype)*100;
+					percentageAllElements = ((float)size/all)*100;
+				}					
+			}			
 		}
 		
 		@Override
