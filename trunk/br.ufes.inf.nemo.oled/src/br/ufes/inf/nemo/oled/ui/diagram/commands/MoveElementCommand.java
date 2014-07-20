@@ -32,6 +32,7 @@ import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.MoveNodeOperation;
 import br.ufes.inf.nemo.oled.draw.MoveOperation;
 import br.ufes.inf.nemo.oled.draw.Node;
+import br.ufes.inf.nemo.oled.draw.TranslateConnectionOperation;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.ChangeType;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.NotificationType;
@@ -50,7 +51,8 @@ public class MoveElementCommand extends BaseDiagramCommand {
 
 	private static final long serialVersionUID = 2523534899493234371L;
 	private MoveOperation[] moveOperations;
-
+	private List<DiagramElement> elements = new ArrayList<DiagramElement>();
+	
 	/**
 	 * Constructor.
 	 * @param aNotification the notification
@@ -62,27 +64,41 @@ public class MoveElementCommand extends BaseDiagramCommand {
 		for (int i = 0; i < aMoveOperations.length; i++) {
 			moveOperations[i] = aMoveOperations[i];
 		}
+		for (MoveOperation moveOperation : moveOperations) {			
+			if(moveOperation instanceof MoveNodeOperation){
+				if(!(((MoveNodeOperation)moveOperation).getNode() instanceof StructureDiagram)){					
+					elements.add(((MoveNodeOperation)moveOperation).getNode());
+				}
+			}else {
+				if(moveOperation instanceof TranslateConnectionOperation){
+					elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
+				}
+			}
+		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public void run() {
-		
-		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		
-		for (MoveOperation moveOperation : moveOperations) {			
+				
+		for (MoveOperation moveOperation : moveOperations) {
 			if(moveOperation instanceof MoveNodeOperation){
-				if(!(((MoveNodeOperation)moveOperation).getNode() instanceof StructureDiagram)){
-					moveOperation.run();
-					elements.add(((MoveNodeOperation)moveOperation).getNode());
-				}
-			}//else if(moveOperation instanceof TranslateConnectionOperation){
-//				moveOperation.run();
-//				elements.add(((TranslateConnectionOperation)moveOperation).getConnection());				
-//			}
+				moveOperation.run();
+			}
+			if(moveOperation instanceof TranslateConnectionOperation){
+				Connection conn = ((TranslateConnectionOperation)moveOperation).getConnection();
+				Node node1 = conn.getNode1();
+				Node node2 = conn.getNode2();
+				Connection conn1 = conn.getConnection1();
+				Connection conn2 = conn.getConnection2();
+				if(node1 != null && node2 !=null && elements.contains(node1) && elements.contains(node2)) moveOperation.run();
+				if(conn1 != null && conn2 !=null && elements.contains(conn1) && elements.contains(conn2)) moveOperation.run();
+				if(conn1 != null && node2 !=null && elements.contains(conn1) && elements.contains(node2)) moveOperation.run();
+				if(node1 != null && conn2 !=null && elements.contains(node1) && elements.contains(conn2)) moveOperation.run();
+			}
 		}
-		
+				
 		//move the connections related to every connection moved
 		//this should be done through the MoveOperation and not by reseting points
 		for(DiagramElement elem: elements){			
@@ -120,17 +136,22 @@ public class MoveElementCommand extends BaseDiagramCommand {
 	public void undo() {
 		
 		super.undo();
-		
-		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		
+						
 		for (MoveOperation moveOperation : moveOperations) {
 			if(moveOperation instanceof MoveNodeOperation){
-				if(!(((MoveNodeOperation)moveOperation).getNode() instanceof StructureDiagram)){
-					moveOperation.undo();			
-					elements.add(((MoveNodeOperation)moveOperation).getNode());
-				}
-			}//else if(moveOperation instanceof TranslateConnectionOperation)
-			//	elements.add(((TranslateConnectionOperation)moveOperation).getConnection());
+				moveOperation.undo();
+			}
+			if(moveOperation instanceof TranslateConnectionOperation){
+				Connection conn = ((TranslateConnectionOperation)moveOperation).getConnection();
+				Node node1 = conn.getNode1();
+				Node node2 = conn.getNode2();
+				Connection conn1 = conn.getConnection1();
+				Connection conn2 = conn.getConnection2();
+				if(node1 != null && node2 !=null && elements.contains(node1) && elements.contains(node2)) moveOperation.undo();
+				if(conn1 != null && conn2 !=null && elements.contains(conn1) && elements.contains(conn2)) moveOperation.undo();
+				if(conn1 != null && node2 !=null && elements.contains(conn1) && elements.contains(node2)) moveOperation.undo();
+				if(node1 != null && conn2 !=null && elements.contains(node1) && elements.contains(conn2)) moveOperation.undo();
+			}
 		}
 		
 		notification.notifyChange(elements, ChangeType.ELEMENTS_MOVED, NotificationType.UNDO);		
