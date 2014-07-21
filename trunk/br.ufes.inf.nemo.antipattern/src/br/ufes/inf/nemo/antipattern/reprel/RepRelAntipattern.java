@@ -66,8 +66,8 @@ public class RepRelAntipattern extends Antipattern<RepRelOccurrence> {
 	
 	private static final AntipatternInfo info = new AntipatternInfo("Repeatable Relator Instances", 
 			"RepRel", 
-			"This anti-pattern occurs when a «relator» is connected through a «mediation» association to at least one " +
-			"rigid object type, stereotyped as «kind», «quantity», «collective», «subkind» or «category».",
+			"This anti-pattern occurs when a «relator» is connected to two or more «mediation» associations, " +
+			"such that the upper bound cardinalities at the relator end are greater than one.",
 			oclQuery);
 
 	private HashMap<Classifier,HashSet<Property>> problematicMediatedHash;
