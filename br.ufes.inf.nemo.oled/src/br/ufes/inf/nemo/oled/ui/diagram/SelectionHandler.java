@@ -148,8 +148,7 @@ public class SelectionHandler implements EditorMode {
 			if (element == NullElement.getInstance()) {
 				element = editor.getDiagram();
 			}			
-			selection = element.getSelection(editor);
-			
+			selection = element.getSelection(editor);			
 		}
 		editor.redraw();
 		notifyListeners();

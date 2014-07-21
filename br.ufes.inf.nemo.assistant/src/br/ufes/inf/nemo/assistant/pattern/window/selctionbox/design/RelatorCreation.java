@@ -228,19 +228,19 @@ public class RelatorCreation extends ClassSelectionPanel {
 		
 		//Left side
 		Classifier leftGeneral = createClassifier(genChk0, x, y);
-		Classifier leftSpecific = createClassifier(ClassStereotype.ROLE, spcChk0, x, y+horizontalDistance);
+		Classifier leftSpecific = createClassifier(ClassStereotype.ROLE, spcChk0, x, y+(horizontalDistance/2));
 
 		fix.addAll(outcomeFixer.createGeneralization(leftSpecific,leftGeneral));
 
 		//Right side
 		
 		Classifier rightGeneral = createClassifier(genChk1, x+verticalDistance, y);
-		Classifier rightSpecific = createClassifier(ClassStereotype.ROLE, spcChk1, x+verticalDistance, y+horizontalDistance);
+		Classifier rightSpecific = createClassifier(ClassStereotype.ROLE, spcChk1, x+verticalDistance, y+(horizontalDistance/2));
 
 		fix.addAll(outcomeFixer.createGeneralization(rightSpecific, rightGeneral));
 
 		//Center side
-		Classifier relator = createClassifier(ClassStereotype.RELATOR, relChk0, x+(verticalDistance/2), y+(horizontalDistance/2));
+		Classifier relator = createClassifier(ClassStereotype.RELATOR, relChk0, x+(verticalDistance/2), y);
 
 		//Left Mediations
 		Association leftMediation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, leftSpecific).getAdded().get(0);
