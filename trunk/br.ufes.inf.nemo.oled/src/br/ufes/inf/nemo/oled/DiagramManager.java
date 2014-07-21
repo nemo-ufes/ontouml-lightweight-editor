@@ -1784,6 +1784,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				ClassElement generalElem = (ClassElement)ModelHelper.getDiagramElementByEditor(general, d);
 				ClassElement specificElem = (ClassElement)ModelHelper.getDiagramElementByEditor(specific, d);
 				if (generalElem.getAbsoluteY1() < specificElem.getAbsoluteY1()) d.setLineStyle(conn, LineStyle.TREESTYLE_VERTICAL);
+				else if (generalElem.getAbsoluteY1() > specificElem.getAbsoluteY1()) d.setLineStyle(conn, LineStyle.TREESTYLE_VERTICAL);
 				else d.setLineStyle(conn, LineStyle.TREESTYLE_HORIZONTAL);
 			}
 			else if (isRectilinear) d.setLineStyle(conn,  LineStyle.RECTILINEAR);
@@ -2812,6 +2813,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
     	}else if(elementType == ElementType.PARTITIONPATTERN){
     		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
     		fix = PatternTool.partitionPattern(frame, getCurrentProject(),selectedElements);
+    	}else if(elementType == ElementType.ADDSUPERTYPE){
+    		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
+    		fix = PatternTool.partitionPattern(frame, getCurrentProject(),selectedElements);
+    	}else if(elementType == ElementType.ADDSUBTYPE){
+    		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
+    		fix = PatternTool.partitionPattern(frame, getCurrentProject(),selectedElements);
     	}
 		
 		if(fix != null){
@@ -2840,7 +2847,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 	}
 	public void openDerivedTypePatternSpecialization(double x, double y) {
-		// TODO Auto-generated method stub
+		
 		JDialog dialog = new SpecializationPattern(this);
 		this.setCenterDialog(dialog);
 		((SpecializationPattern) dialog).setPosition(x, y);

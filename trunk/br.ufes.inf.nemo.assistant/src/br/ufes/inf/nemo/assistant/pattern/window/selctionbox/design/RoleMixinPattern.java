@@ -344,25 +344,25 @@ public class RoleMixinPattern extends ClassSelectionPanel {
 		ArrayList<Generalization> generalizations = new ArrayList<>();
 
 		//portion1
-		Classifier ss1 = createClassifier(ssChk1, x, y);
-		Classifier role1 = createClassifier(ClassStereotype.ROLE, role1Chk, x, y+horizontalDistance);
+		Classifier ss1 = createClassifier(ssChk1, x-120, y-157);
+		Classifier role1 = createClassifier(ClassStereotype.ROLE, role1Chk, x-120, y-70);
 
 		fix.addAll(outcomeFixer.createGeneralization(role1,ss1));
 
 		//portion2
-		Classifier ss2 = createClassifier(ssChk2, x+verticalDistance, y);
-		Classifier role2 = createClassifier(ClassStereotype.ROLE, role2Chk, x+verticalDistance, y+horizontalDistance);
+		Classifier ss2 = createClassifier(ssChk2, x-23, y-157);
+		Classifier role2 = createClassifier(ClassStereotype.ROLE, role2Chk, x-23, y-70);
 
 		fix.addAll(outcomeFixer.createGeneralization(role2, ss2));
 
 		//dependency
-		Classifier ss3 = createClassifier(ssChk3, x+verticalDistance, y);
-		Classifier role3 = createClassifier(ClassStereotype.ROLE, role3Chk, x+(2*verticalDistance), y+horizontalDistance);
+		Classifier ss3 = createClassifier(ssChk3, x+150, y-70);
+		Classifier role3 = createClassifier(ClassStereotype.ROLE, role3Chk, x+150, y+28);
 
 		fix.addAll(outcomeFixer.createGeneralization(role3, ss3));
 
 		//mixin
-		Classifier roleMixin = createClassifier(ClassStereotype.ROLEMIXIN, rmChk, x+(verticalDistance/2), y+(horizontalDistance/2));
+		Classifier roleMixin = createClassifier(ClassStereotype.ROLEMIXIN, rmChk, x-71, y+28);
 
 		Fix partialFix2 = outcomeFixer.createGeneralization(role1, roleMixin);
 		_fix.addAll(partialFix2);
@@ -377,7 +377,7 @@ public class RoleMixinPattern extends ClassSelectionPanel {
 		fix.addAll(outcomeFixer.createGeneralizationSet(generalizations, true, true, "roleMixinGS"+UtilAssistant.getCont()));
 
 		//Center side
-		Classifier relator = createClassifier(ClassStereotype.RELATOR, relChk, x+(verticalDistance/2), y+(horizontalDistance/2));
+		Classifier relator = createClassifier(ClassStereotype.RELATOR, relChk, x+40, y+170);
 
 		//Left Mediations
 		Association leftMediation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, roleMixin).getAdded().get(0);

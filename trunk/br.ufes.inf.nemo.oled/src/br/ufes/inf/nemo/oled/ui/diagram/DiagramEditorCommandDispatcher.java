@@ -374,6 +374,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("LANGUAGE_PARTITION_PATTERN", new MethodCall(
 					getClass().getMethod("runPatternByMenu",ElementType.class),ElementType.PARTITIONPATTERN));
 			
+			selectorMap.put("ADD_SUPERTYPE", new MethodCall(
+					getClass().getMethod("runPatternByMenu",ElementType.class),ElementType.ADDSUPERTYPE));
+			
+			selectorMap.put("ADD_SUBTYPE", new MethodCall(
+					getClass().getMethod("runPatternByMenu",ElementType.class),ElementType.ADDSUBTYPE));
+			
 			selectorMap.put("CREATE_GEN_SET", new MethodCall(
 					DiagramEditor.class.getMethod("addGeneralizationSet")));
 			selectorMap.put("DELETE_GEN_SET", new MethodCall(
