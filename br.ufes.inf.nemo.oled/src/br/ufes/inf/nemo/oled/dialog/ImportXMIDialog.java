@@ -32,6 +32,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 import javax.swing.BorderFactory;
@@ -61,6 +62,7 @@ import org.jdesktop.swingx.error.ErrorInfo;
 
 import RefOntoUML.Model;
 import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.xmi2ontouml.Creator;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefConstraint;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefModel;
@@ -495,8 +497,13 @@ public class ImportXMIDialog extends JDialog implements ActionListener, TreeSele
 		
 		if (chckbxImportConstraints.isSelected())
 		{
-			for (XMI2RefConstraint constr : XMI2RefModel.getConstraints())
-				diagManager.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(constr.getStringRepresentation());				
+			ArrayList<OCLDocument> documents;
+			for (XMI2RefConstraint constr : XMI2RefModel.getConstraints()){
+				documents = diagManager.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments();
+				if(documents.size() > 0){
+					documents.get(0).addContent(constr.getStringRepresentation());
+				}				
+			}
 		}
 		
 		this.dispose();
