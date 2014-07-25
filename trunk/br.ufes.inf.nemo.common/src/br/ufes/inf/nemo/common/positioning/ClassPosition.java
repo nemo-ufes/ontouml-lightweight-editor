@@ -7,7 +7,9 @@ import java.util.ArrayList;
 public class ClassPosition {
 
 	
-	//it returns a good position for a generic type acording to the position of its two subtypes
+	/**
+	 * It returns a good position for a generic type acording to the position of its two subtypes
+	 * */
 	public static Point2D.Double findPositionGeneralization(Point2D.Double point, Point2D.Double point2){
 
 		Point2D.Double newpoint = new Point2D.Double();
@@ -128,7 +130,6 @@ public class ClassPosition {
 
 	// this method receive the number of childs of the generic type and the position base and returns a list of positions where the first member is the father position and the rest is the childs positions
 	public static Point2D.Double[] GSpositioning(int qtd, Point2D.Double location) {
-		// TODO Auto-generated method stub
 		boolean par=true;
 		Point2D.Double[] positions= new Point2D.Double[qtd+1];
 		positions[0]= location;
