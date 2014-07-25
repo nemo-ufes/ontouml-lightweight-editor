@@ -255,10 +255,10 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 
 		if(specific2Panel.isVisible()){
 			if(selectedClassifier instanceof Category){
-				Classifier specific = createClassifier(spcChk, x+(0*verticalDistance)/3, y+horizontalDistance);
+				Classifier specific = createClassifier(spcChk, x, y+85);
 				fix.addAll(outcomeFixer.createGeneralization(specific, selectedClassifier));	
 
-				Classifier substance = createClassifier(spc1Chk, x-(verticalDistance/2), y);
+				Classifier substance = createClassifier(spc1Chk, x+80, y+85);
 				fix.addAll(outcomeFixer.createGeneralization(specific, substance));
 			}else if(selectedClassifier instanceof Mixin){
 				Classifier specific1 = createClassifier(spcChk, x+(0*verticalDistance)/3, y+horizontalDistance);
@@ -267,16 +267,17 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 				Classifier specific2 = createClassifier(spc1Chk, x+(1*verticalDistance)/3, y+horizontalDistance);
 				fix.addAll(outcomeFixer.createGeneralization(specific2, selectedClassifier));
 			}else{
+				//Phases
 				ArrayList<Generalization> generalizationList = new ArrayList<>();
 				//Specific1	
-				Classifier specific = createClassifier(spcChk, x+(0*verticalDistance)/3, y+horizontalDistance);
+				Classifier specific = createClassifier(spcChk, x+60, y+85);
 				Fix _fix = outcomeFixer.createGeneralization(specific, selectedClassifier);
 
 				Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
 				generalizationList.add(generalization);
 
 				//Specific2	
-				specific = createClassifier(spc1Chk, x+(1*verticalDistance)/3, y+horizontalDistance);
+				specific = createClassifier(spc1Chk, x-60, y+85);
 				_fix = outcomeFixer.createGeneralization(specific, selectedClassifier);
 
 				generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
@@ -425,6 +426,31 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 			((TitledBorder)generalPanel.getBorder()).setTitle("Selected RoleMixin class");
 			((TitledBorder)specific1Panel.getBorder()).setTitle("Anti Rigid classes");
 			((TitledBorder)specific2Panel.getBorder()).setTitle("Phases classes");
+		}else if(selectedClassifier instanceof SubstanceSortal){
+			Set<SubKind> subkinds = parser.getAllInstances(RefOntoUML.SubKind.class);
+			Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
+			Set<Phase> phases = parser.getAllInstances(RefOntoUML.Phase.class);
+
+			model = this.getCBModelFromSets(selectedClassifier,subkinds,roles,phases);
+			spcCB.setModel(model);
+			spcChk.setVisible(model.getSize() != 0);			
+
+			types = new String[]{"Role", "Subkind","Phase"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specificTypesCB.setModel(model);
+
+			model = this.getCBModelFromSets(selectedClassifier,phases);
+
+			spc1CB.setModel(model);
+			spc1Chk.setVisible(model.getSize() != 0);	
+
+			types = new String[]{"Phase"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specific1TypesCB.setModel(model);
+
+			((TitledBorder)generalPanel.getBorder()).setTitle("Selected "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" class");
+			((TitledBorder)specific1Panel.getBorder()).setTitle("Subkinds and AntiRigid Sortal classes");
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Counter Part Phase");			
 		}
 	}
 }

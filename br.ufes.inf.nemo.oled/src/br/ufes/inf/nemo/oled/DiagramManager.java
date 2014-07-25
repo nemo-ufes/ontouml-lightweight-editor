@@ -2815,10 +2815,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
     		fix = PatternTool.partitionPattern(frame, getCurrentProject(),selectedElements);
     	}else if(elementType == ElementType.ADDSUPERTYPE){
     		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
-    		fix = PatternTool.partitionPattern(frame, getCurrentProject(),selectedElements);
+    		fix = PatternTool.addSupertype(frame, getCurrentProject(),selectedElements);
     	}else if(elementType == ElementType.ADDSUBTYPE){
     		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
-    		fix = PatternTool.partitionPattern(frame, getCurrentProject(),selectedElements);
+    		fix = PatternTool.addSubtype(frame, getCurrentProject(),selectedElements);
     	}
 		
 		if(fix != null){
