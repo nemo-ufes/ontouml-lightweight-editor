@@ -47,16 +47,16 @@ public class AddSupertype extends ClassSelectionPanel {
 
 	private Classifier selectedClassifier;
 	private JPanel specific2Panel;
-	private JLabel lblSpecific2;
-	private JTextField spc2Edit;
-	private JComboBox<String> spc2CB;
-	private JLabel lblSpc2CB;
-	private JComboBox<String> specificTypes2CB;
+	private JLabel lblSpecific1;
+	private JTextField spc1Edit;
+	private JComboBox<String> spc1CB;
+	private JLabel lblSpc1CB;
+	private JComboBox<String> specific1TypesCB;
 	private JCheckBox spcChk;
 	private JPanel generalPanel;
 	private JPanel specific1Panel;
 	private JLabel lblSpecific;
-	private JCheckBox spc2Chk;
+	private JCheckBox spc1Chk;
 	private ArrayList<String> thirdClasses = new ArrayList<String>();
 	
 	public AddSupertype(OntoUMLParser parser, Classifier selectedClassifier) {
@@ -65,14 +65,9 @@ public class AddSupertype extends ClassSelectionPanel {
 
 		this.selectedClassifier = selectedClassifier;
 
-		if(selectedClassifier instanceof SubstanceSortal){
-			thirdClasses.add("SubKind");
-		}else if(selectedClassifier instanceof Mixin){
-			thirdClasses.add("Phase");
-			thirdClasses.add("Role");
-			thirdClasses.add("RoleMixin");
-		}else
-			thirdClasses.add("Phase");
+		if(selectedClassifier instanceof RigidSortalClass){
+			thirdClasses.add("Mixin");
+		}
 
 		/* RIGID SORTAL */
 		generalPanel = new JPanel();
@@ -87,6 +82,7 @@ public class AddSupertype extends ClassSelectionPanel {
 		generalPanel.add(lblNewLabel);
 
 		genEdit = new JTextField();
+		genEdit.setEditable(false);
 		genEdit.setBounds(109, 19, 149, 20);
 		generalPanel.add(genEdit);
 		genEdit.setColumns(10);
@@ -119,6 +115,28 @@ public class AddSupertype extends ClassSelectionPanel {
 		spcChk = new JCheckBox("Reuse class?");
 		spcChk.setBounds(272, 17, 97, 23);
 		specific1Panel.add(spcChk);
+		
+		spcChk.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(spcChk.isSelected()){
+					for(String thirdClass : thirdClasses){
+						if(((String)spcCB.getSelectedItem()).toLowerCase().contains(thirdClass.toLowerCase())){
+							specific2Panel.setVisible(true);
+							return;
+						}
+					}
+				}else{
+					for(String thirdClass : thirdClasses){
+						if(((String)specificTypesCB.getSelectedItem()).equalsIgnoreCase(thirdClass)){
+							specific2Panel.setVisible(true);
+							return;
+						}
+					}					
+				}
+				specific2Panel.setVisible(false);
+			}
+		});
 
 		lblSpecific = new JLabel("Specific:");
 		lblSpecific.setBounds(20, 22, 56, 14);
@@ -126,8 +144,6 @@ public class AddSupertype extends ClassSelectionPanel {
 		specific1Panel.add(lblSpecific);
 
 		spcEdit = new JTextField();
-		spcEdit.setEditable(false);
-		spcEdit.setEnabled(false);
 		spcEdit.setBounds(109, 19, 149, 20);
 		specific1Panel.add(spcEdit);
 		spcEdit.setColumns(10);
@@ -158,7 +174,13 @@ public class AddSupertype extends ClassSelectionPanel {
 		specific1Panel.add(specificTypesCB);
 		specificTypesCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				specific2Panel.setVisible(specificTypesCB.getSelectedItem().equals("Phase"));
+				for(String thirdClass : thirdClasses){
+					if(((String)specificTypesCB.getSelectedItem()).equalsIgnoreCase(thirdClass)){
+						specific2Panel.setVisible(true);
+						return;
+					}
+				}
+				specific2Panel.setVisible(false);
 			}
 		});
 
@@ -168,41 +190,49 @@ public class AddSupertype extends ClassSelectionPanel {
 		specific2Panel.setBounds(0, 213, 450, 86);
 		add(specific2Panel);
 
-		lblSpecific2 = new JLabel("Specific:");
-		lblSpecific2.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblSpecific2.setBounds(20, 22, 56, 14);
-		specific2Panel.add(lblSpecific2);
+		lblSpecific1 = new JLabel("Specific:");
+		lblSpecific1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblSpecific1.setBounds(20, 22, 56, 14);
+		specific2Panel.add(lblSpecific1);
 
-		spc2Edit = new JTextField();
-		spc2Edit.setEnabled(false);
-		spc2Edit.setEditable(false);
-		spc2Edit.setColumns(10);
-		spc2Edit.setBounds(109, 19, 149, 20);
-		specific2Panel.add(spc2Edit);
+		spc1Edit = new JTextField();
+		spc1Edit.setColumns(10);
+		spc1Edit.setBounds(109, 19, 149, 20);
+		specific2Panel.add(spc1Edit);
 
-		spc2CB = new JComboBox<String>();
-		spc2CB.setEnabled(false);
-		spc2CB.setBounds(109, 19, 149, 20);
-		specific2Panel.add(spc2CB);
+		spc1CB = new JComboBox<String>();
+		spc1CB.setEnabled(false);
+		spc1CB.setBounds(109, 19, 149, 20);
+		specific2Panel.add(spc1CB);
 
-		lblSpc2CB = new JLabel("OntoUML type:");
-		lblSpc2CB.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblSpc2CB.setBounds(21, 53, 97, 14);
-		specific2Panel.add(lblSpc2CB);
+		lblSpc1CB = new JLabel("OntoUML type:");
+		lblSpc1CB.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblSpc1CB.setBounds(21, 53, 97, 14);
+		specific2Panel.add(lblSpc1CB);
 
-		specificTypes2CB = new JComboBox<String>();
-		specificTypes2CB.setBounds(110, 50, 149, 20);
-		specific2Panel.add(specificTypes2CB);
+		specific1TypesCB = new JComboBox<String>();
+		specific1TypesCB.setBounds(110, 50, 149, 20);
+		specific2Panel.add(specific1TypesCB);
 
-		spc2Chk = new JCheckBox("Reuse class?");
-		spc2Chk.setBounds(276, 18, 97, 23);
-		specific2Panel.add(spc2Chk);
+		spc1Chk = new JCheckBox("Reuse class?");
+		spc1Chk.setBounds(276, 18, 97, 23);
+		specific2Panel.add(spc1Chk);
 
 		hashChkEdit.put(genChk, genEdit);
 		hashEditCombo.put(genEdit, generalTypesCB);
 		hashChkCombo.put(genChk, genCB);
 
+		hashChkEdit.put(spcChk, spcEdit);
+		hashEditCombo.put(spcEdit, specificTypesCB);
+		hashChkCombo.put(spcChk, spcCB);
+
+		hashChkEdit.put(spc1Chk, spc1Edit);
+		hashEditCombo.put(spc1Edit, specific1TypesCB);
+		hashChkCombo.put(spc1Chk, spc1CB);
+
 		genChk.addActionListener(getCheckBoxActionListener(generalTypesCB,lblOntoumlType));
+		spcChk.addActionListener(getCheckBoxActionListener(specificTypesCB,lblSpcCB));
+		spc1Chk.addActionListener(getCheckBoxActionListener(specific1TypesCB,lblSpc1CB));
 
 		this.parser = parser;
 
@@ -218,24 +248,25 @@ public class AddSupertype extends ClassSelectionPanel {
 		Classifier general = createClassifier(genChk, x, y);
 
 		if(specific2Panel.isVisible()){
-			ArrayList<Generalization> generalizationList = new ArrayList<>();
+			if(selectedClassifier instanceof RigidSortalClass){
+				ArrayList<Generalization> generalizationList = new ArrayList<>();
+				//Specific1	
+				Classifier specific = createClassifier(spcChk, x+60, y+85);
+				Fix _fix = outcomeFixer.createGeneralization(specific, selectedClassifier);
 
-			//Specific1
-			Classifier specific = createClassifier(spcChk, x+(0*verticalDistance)/3, y+horizontalDistance);
-			Fix _fix = outcomeFixer.createGeneralization(specific, general);
+				Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
+				generalizationList.add(generalization);
 
-			Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
-			generalizationList.add(generalization);
+				//Specific2	
+				specific = createClassifier(spc1Chk, x-60, y+85);
+				_fix = outcomeFixer.createGeneralization(specific, selectedClassifier);
 
-			//Specific2	
-			specific = createClassifier(null, x+(1*verticalDistance)/3, y+horizontalDistance);
-			_fix = outcomeFixer.createGeneralization(specific, general);
+				generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
+				generalizationList.add(generalization);
 
-			generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
-			generalizationList.add(generalization);
-
-			fix.addAll(_fix);
-			fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"+UtilAssistant.getCont()));
+				fix.addAll(_fix);
+				fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"+UtilAssistant.getCont()));
+			}
 		}else{
 			Classifier specific = createClassifier(spcChk, x, y+horizontalDistance);
 			fix.addAll(outcomeFixer.createGeneralization(specific, general));	
@@ -266,13 +297,15 @@ public class AddSupertype extends ClassSelectionPanel {
 
 			model = this.getCBModelFromSets(selectedClassifier,antirigids);
 
-			spc2CB.setModel(model);
-			spc2Chk.setVisible(model.getSize() != 0);	
+			spc1CB.setModel(model);
+			spc1Chk.setVisible(model.getSize() != 0);	
 
 			types = new String[]{"Role","Phase"};
 			model = new DefaultComboBoxModel<String>(types);  
-			specificTypes2CB.setModel(model);
+			specific1TypesCB.setModel(model);
 
+			specific2Panel.setVisible(false);
+			
 			((TitledBorder)generalPanel.getBorder()).setTitle("Selected "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" class");
 			((TitledBorder)specific1Panel.getBorder()).setTitle("Category or Mixin");
 			((TitledBorder)specific2Panel.getBorder()).setTitle("Anti Rigid Sortals");
