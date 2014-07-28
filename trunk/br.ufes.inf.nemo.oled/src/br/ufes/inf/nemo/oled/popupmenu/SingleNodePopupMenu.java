@@ -227,8 +227,8 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		
 		createMenuItem(applyPatternMenu,"pattern.generalizationspecialization");
 		createMenuItem(applyPatternMenu,"pattern.partitionpattern");
-		//Victor refazer
-		//createMenuItem(applyPatternMenu,"pattern.addsupertype");
+
+		createMenuItem(applyPatternMenu,"pattern.addsupertype");
 		createMenuItem(applyPatternMenu,"pattern.addsubtype");
 		
 		add(applyPatternMenu);

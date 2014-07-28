@@ -38,6 +38,8 @@ import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel;
 import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel.PatternType;
 import br.ufes.inf.nemo.assistant.pattern.window.PatternAbstractWindowAssistant;
+import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
+import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.design.AddSupertype;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.design.RelatorCreation;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.design.RoleMixinPattern;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language.GeneralizationAndSpecializationPattern;
@@ -168,7 +170,7 @@ public class PatternTool {
 
 	public static Fix addSupertype(AppFrame frame, UmlProject currentProject,List<DiagramElement> selectedElements) {
 		ImagePanel imagePanel = null;
-		PartitionPattern pattern = null;
+		ClassSelectionPanel pattern = null;
 		double x, y;
 		
 		if (selectedElements.size() == 1){
@@ -179,14 +181,12 @@ public class PatternTool {
 			Classifier selectedClassifier = selectedElement.getClassifier();
 			if(selectedClassifier instanceof SubstanceSortal){
 				imagePanel = new ImagePanel(PatternType.AddSupertype_SubstanceSortal);
-			}else if(selectedClassifier instanceof SortalClass){
-				imagePanel = new ImagePanel(PatternType.PartitionPattern_Sortal);
 			}else{
 				JOptionPane.showMessageDialog(null, "Pattern do not applied to "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" stereotype");
 				return null;		
 			}
 			
-			pattern = new PartitionPattern(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser(), selectedClassifier);
+			pattern = new AddSupertype(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser(), selectedClassifier);
 			
 			PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, pattern, imagePanel);
 			window.setVisible(true);
