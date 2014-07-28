@@ -68,6 +68,34 @@ public class DerivedByIntersection extends DerivedType {
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
+		values.put("Quantity"+"RoleMixin", possibilites);
+		
+		possibilites = new ArrayList<String>();
+		possibilites.add("Subkind");
+		values.put("Quantity"+"Category", possibilites);
+		
+		possibilites = new ArrayList<String>();
+		possibilites.add("Role");
+		possibilites.add("Phase");
+		possibilites.add("Subkind");
+		values.put("Quantity"+"Mixin", possibilites);
+		
+		possibilites = new ArrayList<String>();
+		possibilites.add("Role");
+		values.put("Collective"+"RoleMixin", possibilites);
+		
+		possibilites = new ArrayList<String>();
+		possibilites.add("Subkind");
+		values.put("Collective"+"Category", possibilites);
+		
+		possibilites = new ArrayList<String>();
+		possibilites.add("Role");
+		possibilites.add("Phase");
+		possibilites.add("Subkind");
+		values.put("Collective"+"Mixin", possibilites);
+		
+		possibilites = new ArrayList<String>();
+		possibilites.add("Role");
 		values.put("Subkind"+"Role", possibilites);
 		
 		possibilites = new ArrayList<String>();
@@ -179,7 +207,6 @@ public class DerivedByIntersection extends DerivedType {
 	@Override
 	public ArrayList<String> inferStereotype(String stereotype_1,
 			String stereotype_2) {
-		// TODO Auto-generated method stub
 		return values.get(stereotype_1+stereotype_2);
 	}
 	
