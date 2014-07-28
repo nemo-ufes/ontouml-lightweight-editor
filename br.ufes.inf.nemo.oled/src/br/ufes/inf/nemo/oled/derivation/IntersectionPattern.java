@@ -125,7 +125,7 @@ public class IntersectionPattern extends JDialog {
 					comboBoxItems2.removeAllElements();
 					
 					DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems2);	
-					model.addElement("Role Mixin");
+					model.addElement("RoleMixin");
 					model.addElement("Mixin");
 					model.addElement("Category");
 					combo_base_2.setModel(model);
@@ -141,7 +141,7 @@ public class IntersectionPattern extends JDialog {
 					}
 					model.addElement("Role");
 					model.addElement("Phase");
-					model.addElement("Role Mixin");
+					model.addElement("RoleMixin");
 					model.addElement("Mixin");
 					model.addElement("Category");
 					combo_base_2.setModel(model);
@@ -154,7 +154,7 @@ public class IntersectionPattern extends JDialog {
 		});
 		
 		
-		combo_base_1.setModel(new DefaultComboBoxModel(new String[] {"Subkind", "Kind", "Collective", "Quantity", "Role", "Phase", "Category", "Mixin", "Role Mixin"}));
+		combo_base_1.setModel(new DefaultComboBoxModel(new String[] {"Subkind", "Kind", "Collective", "Quantity", "Role", "Phase", "Category", "Mixin", "RoleMixin"}));
 		
 		
 		combo_base_2.addActionListener(new ActionListener() {
@@ -162,7 +162,7 @@ public class IntersectionPattern extends JDialog {
 				setDerivedStereotype();
 			}
 		});
-		combo_base_2.setModel(new DefaultComboBoxModel(new String[] {"Subkind", "Role", "Phase", "Category", "Mixin", "Role Mixin"}));
+		combo_base_2.setModel(new DefaultComboBoxModel(new String[] {"Subkind", "Role", "Phase", "Category", "Mixin", "RoleMixin"}));
 		
 		
 		combo_derived.addActionListener(new ActionListener() {

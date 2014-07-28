@@ -531,11 +531,10 @@ public class DerivedTypesOperations {
 				newElement3 = includeElement(location, values.get(4), stereotype);
 			}
 			createGeneralization(newElement3, newElement2, newElement);
-			System.out.println(mainfix.toString());
 			dm.updateOLED(mainfix);	
 		}
 	}
-	//include an element acoording its position name and category
+	//include an element according its position name and category
 	public static Classifier includeElement(Point2D.Double position, String name, String stereotype){
 		Classifier newElement= (Classifier) of.createClass(of.getClassStereotype(stereotype));
 		dman.getCurrentProject().getModel().getPackagedElement().add(newElement);
@@ -585,7 +584,6 @@ public class DerivedTypesOperations {
 
 	public static void exclusionPattern(DiagramManager dman2,
 			ArrayList<String> values, Double location) {
-		// TODO Auto-generated method stub
 		dman=dman2;
 		of = new OutcomeFixer(dman2.getCurrentProject().getModel());
 		mainfix = new Fix();
@@ -596,6 +594,28 @@ public class DerivedTypesOperations {
 		createGeneralization(newElement, newElement2, newElement3);
 		dman2.updateOLED(mainfix);	
 
+		
+//		dman=dm;
+//		of = new OutcomeFixer(dm.getCurrentProject().getModel());
+//		mainfix = new Fix();
+//		Point2D.Double[] positions= ClassPosition.GSpositioning(2, location);
+//		Classifier newElement= includeElement(positions[1], values.get(2), values.get(0));
+//		Classifier newElement2= includeElement(positions[2], values.get(3), values.get(1));
+//		ArrayList<String> stereotypes= DerivedByUnion.getInstance().inferStereotype(newElement.eClass().getName() , newElement2.eClass().getName());
+//		Classifier newElement3=null;
+//		if(stereotypes!=null){
+//			if(stereotypes.size()==1){
+//				newElement3 = includeElement(location, values.get(4), stereotypes.get(0));
+//			}
+//			else{
+//				Object[] stereo;
+//				stereo=  stereotypes.toArray();
+//				String stereotype= selectStereotype(stereo);
+//				newElement3 = includeElement(location, values.get(4), stereotype);
+//			}
+//			createGeneralization(newElement3, newElement2, newElement);
+//			dm.updateOLED(mainfix);	
+//		
 	}
 
 
@@ -751,7 +771,6 @@ public class DerivedTypesOperations {
 	public static void createDerivedTypeBySpecialization(String nameBase,
 			String nameDerived, String stereotypeBase, String stereotypeDerived, String attribute,
 			String typeAttribute, DiagramManager dm, Double location) {
-		// TODO Auto-generated method stub
 		dman=dm;
 		of = new OutcomeFixer(dm.getCurrentProject().getModel());
 		mainfix = new Fix();
@@ -760,8 +779,7 @@ public class DerivedTypesOperations {
 		Classifier newElement= includeElement(location, nameDerived, stereotypeDerived);
 		createGeneralizationSingle(newElement_2, newElement);
 		RefOntoUML.Class classe = (Class) newElement_2;
-		of.createAttribute(newElement_2, attribute, ClassStereotype.PRIMITIVETYPE, typeAttribute);
-
+		mainfix.addAll(of.createAttribute(newElement_2, attribute, ClassStereotype.PRIMITIVETYPE, typeAttribute));
 		//newElement_2.getAllAttributes().add(e)
 		dm.updateOLED(mainfix);
 	}
@@ -844,7 +862,7 @@ public class DerivedTypesOperations {
 		createGeneralizationSingle(newElement, newElement3);
 		
 		if(rule){
-			String rule_ocl= "context World \n  temp:_'"+namederived+"'.allInstances(self)->forAll( wk | self.allPrevious()->exists(w | wk.oclIsKindOf(_'"+namespecial+"',w)) and not wk.oclIsKindOf("+namespecial+",self))" ;
+			String rule_ocl= "\ncontext World \ntemp:_'"+namederived+"'.allInstances(self)->forAll( wk | self.allPrevious()->exists(w | wk.oclIsKindOf(_'"+namespecial+"',w)) and not wk.oclIsKindOf("+namespecial+",self))" ;
 			dman.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule_ocl);
 		}
 		

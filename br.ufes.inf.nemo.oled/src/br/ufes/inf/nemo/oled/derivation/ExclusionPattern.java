@@ -172,7 +172,7 @@ public class ExclusionPattern extends JDialog {
 
 			}
 		});
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Kind", "SubKind", "Role", "Phase", "Quantity", "Collection", "Mixin", "Role Mixin", "Category"}));
+		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Kind", "SubKind", "Role", "Phase", "Quantity", "Collection", "Mixin", "RoleMixin", "Category"}));
 
 		final JCheckBox chckbxNewCheckBox = new JCheckBox("Generate OCL Constraint");
 		chckbxNewCheckBox.setBackground(Color.WHITE);
@@ -288,6 +288,8 @@ public class ExclusionPattern extends JDialog {
 										DerivedTypesOperations.wrongSelection("Please set the names for generating the OCL rule");
 										return;
 									}
+								}else{
+									DerivedTypesOperations.exclusionPattern(dman,values,location);
 								}
 							}
 						}
@@ -295,7 +297,6 @@ public class ExclusionPattern extends JDialog {
 							DerivedTypesOperations.wrongSelection("Please, select all the stereotypes");
 							return;
 						}
-						DerivedTypesOperations.exclusionPattern(dman,values,location);
 						dispose();
 					}
 				});
