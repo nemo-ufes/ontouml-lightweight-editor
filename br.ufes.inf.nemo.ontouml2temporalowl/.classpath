@@ -18,5 +18,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.osgi_3.6.2.R36x_v20110210.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.ui_3.6.2.M20110203-1100.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.core.runtime.compatibility_3.2.100.v20100505.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/owl/owlapi-distribution-3.4.4-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
