@@ -256,6 +256,11 @@ public class IntersectionPattern extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						dispose();
+					}
+				});
 				cancelButton.setHorizontalAlignment(SwingConstants.RIGHT);
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);

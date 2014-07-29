@@ -47,25 +47,25 @@ public class ParticipationPatternTypeChoice extends JDialog {
 		setTitle("Participation Options");
 		setBounds(100, 100, 486, 200);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBackground(new Color(245, 245, 245));
+		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		ButtonGroup bt = new ButtonGroup();
 		rdbtnNewRadioButton.setSelected(true);
 		
 		
-		rdbtnNewRadioButton.setBackground(new Color(245, 245, 245));
+		rdbtnNewRadioButton.setBackground(Color.WHITE);
 		bt.add(rdbtnNewRadioButton);
 		
-		rdbtnNewRadioButton_1.setBackground(new Color(245, 245, 245));
+		rdbtnNewRadioButton_1.setBackground(Color.WHITE);
 		bt.add(rdbtnNewRadioButton_1);
 		
 		
-		rdbtnNewRadioButton_2.setBackground(new Color(245, 245, 245));
+		rdbtnNewRadioButton_2.setBackground(Color.WHITE);
 		bt.add(rdbtnNewRadioButton_2);
 		
 		JTextPane txtrWhatsTheType = new JTextPane();
-		txtrWhatsTheType.setBackground(new Color(245, 245, 245));
+		txtrWhatsTheType.setBackground(Color.WHITE);
 		txtrWhatsTheType.setEditable(false);
 		txtrWhatsTheType.setForeground(Color.BLACK);
 		txtrWhatsTheType.setText("What's the type of the derivation by participation?\r\n");
@@ -97,7 +97,7 @@ public class ParticipationPatternTypeChoice extends JDialog {
 		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
-			buttonPane.setBackground(new Color(245, 245, 245));
+			buttonPane.setBackground(Color.WHITE);
 			buttonPane.setLayout(new FlowLayout(FlowLayout.CENTER));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
@@ -136,6 +136,11 @@ public class ParticipationPatternTypeChoice extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
