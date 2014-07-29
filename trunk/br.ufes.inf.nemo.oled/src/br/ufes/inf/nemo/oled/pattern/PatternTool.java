@@ -181,6 +181,8 @@ public class PatternTool {
 			Classifier selectedClassifier = selectedElement.getClassifier();
 			if(selectedClassifier instanceof SubstanceSortal){
 				imagePanel = new ImagePanel(PatternType.AddSupertype_SubstanceSortal);
+			}else if(selectedClassifier instanceof SubKind){
+				imagePanel = new ImagePanel(PatternType.AddSupertype_Subkind);
 			}else{
 				JOptionPane.showMessageDialog(null, "Pattern do not applied to "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" stereotype");
 				return null;		
