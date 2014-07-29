@@ -161,15 +161,16 @@ public class DerivedTypesOperations {
 			String specialCase=multipleElementsUnionDerivation(selected);
 			String specialCaseRelation=tryunionassociationderivation(selected,dm);
 
+			if(specialCaseRelation.equals("union_relation_derivation")){
+				return null;
+			}
+			
 			if(specialCase.equals("")){
 				wrongSelection("Wrong Selection");
 				return null;
 			}
 
-			if(specialCaseRelation.equals("union_relation_derivation")){
-				return null;
-			}
-
+			
 
 			if(specialCase=="Rigid+NonRigid"){
 				stereotype= "Mixin";
@@ -268,14 +269,35 @@ public class DerivedTypesOperations {
 				options.add(((NamedElement)p.eContainer()).getName());
 			}
 		}
+		ArrayList<Property> twoProp = new ArrayList<Property>();
+		ArrayList<Property> twoPropTarget = new ArrayList<Property>();
+		Property f = null;
+		Property f1 = null;
 		String option =selectRelation(options.toArray());
 		for (Property feature : featureList) {
 			if(((NamedElement)feature.eContainer()).getName().equals(option)){
 				for (Property prop : properties) {
 					prop.getSubsettedProperty().add(feature);
-					prop.setIsDerivedUnion(true);
+					//feature.setIsDerivedUnion(true);
+					twoProp.add(prop);
+					f=feature;
 				}
-
+				for (Property prop : propertiesTarget) {
+					prop.getSubsettedProperty().add(feature);
+					//feature.setIsDerivedUnion(true);
+					twoPropTarget.add(prop);
+					f1=feature.getOpposite();
+				}
+			}
+		}
+		if(twoProp.size()==2){
+			if(twoProp.get(0).isIsReadOnly() && twoProp.get(1).isIsReadOnly()){
+				f.setIsReadOnly(true);
+			}
+		}
+		if(twoPropTarget.size()==2){
+			if(twoPropTarget.get(0).isIsReadOnly() && twoPropTarget.get(1).isIsReadOnly()){
+				f1.setIsReadOnly(true);
 			}
 		}
 		return "union_relation_derivation";
@@ -491,15 +513,7 @@ public class DerivedTypesOperations {
 	}
 
 	public  static  JPanel selectStereotype(Object[] stereo) {
-//		JFrame frame = new JFrame("Input Dialog Example 3");
-//		String stereotype = (String) JOptionPane.showInputDialog(frame, 
-//				"Choose between the possible options ?",
-//				"New Type Derived By Union",
-//				JOptionPane.QUESTION_MESSAGE, 
-//				null, 
-//				stereo, 
-//				stereo[0]);
-//		return stereotype;
+
 		
 		
 		JPanel p = new JPanel(new BorderLayout(5,5));
@@ -519,12 +533,8 @@ public class DerivedTypesOperations {
 		}
 		combo_stereotype.setModel(model2);
 		combo_stereotype.getModel().setSelectedItem(model2.getElementAt(0));
-        //password.addAncestorListener(new RequestFocusListener(false));
         controls.add(combo_stereotype);
         p.add(controls, BorderLayout.CENTER);
-
-        //LayoutManager l = new GroupLayout(p);
-        //p.setLayout(l);
         JOptionPane.showMessageDialog(
             null, p, "Choose the name and the Stereotype", JOptionPane.QUESTION_MESSAGE);
 
