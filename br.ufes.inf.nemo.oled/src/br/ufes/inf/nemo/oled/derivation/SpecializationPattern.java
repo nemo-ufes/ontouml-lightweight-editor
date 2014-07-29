@@ -221,11 +221,11 @@ public class SpecializationPattern extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if(chckbxNewCheckBox.isEnabled()){
+						if(chckbxNewCheckBox.isSelected()){
 							if(lblAttribute.getText().equals("")){
 								DerivedTypesOperations.wrongSelection("Please, set the atribute name");
 								return;
-							}
+							}else
 							if(lbl_type_att.getText().equals("")){
 								DerivedTypesOperations.wrongSelection("Please, set the atribute type");
 								return;

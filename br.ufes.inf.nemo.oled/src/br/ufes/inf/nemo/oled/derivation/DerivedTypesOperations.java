@@ -21,13 +21,21 @@
  */
 package br.ufes.inf.nemo.oled.derivation;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import RefOntoUML.AntiRigidMixinClass;
 import RefOntoUML.AntiRigidSortalClass;
@@ -116,6 +124,9 @@ public class DerivedTypesOperations {
 	@SuppressWarnings("unused")
 	public static Fix createUnionDerivation(DiagramEditor activeEditor, UmlProject project, DiagramManager dm){
 
+		String name="";
+		JPanel panel= new JPanel();
+		
 		Fix mainfix = new Fix();
 		List<DiagramElement> selected = activeEditor.getSelectedElements();
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
@@ -133,15 +144,14 @@ public class DerivedTypesOperations {
 				ArrayList<String>stereotypes= DerivedByUnion.getInstance().inferStereotype(refontoList.get(0).eClass().getName(), refontoList.get(1).eClass().getName());
 				if(stereotypes!=null)
 					if(stereotypes.size()<2){
-						String name=DefineNameDerivedType();
+						name=DefineNameDerivedType();
 						mainfix =createDerivedTypeUnion(stereotypes.get(0), mainfix, selected,name,refontoList,project,dm);			
 					}
 					else{
 						Object[] stereo;
 						stereo=  stereotypes.toArray();
-						String name=DefineNameDerivedType();
-						String stereotype= selectStereotype(stereo);
-						mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+						panel= selectStereotype(stereo);
+						mainfix= createDerivedTypeUnion(((JComboBox)panel.getComponents()[1]).getSelectedItem().toString(),mainfix, selected,((JTextField)panel.getComponents()[0]).getText(),refontoList,project,dm);
 					}
 			}
 
@@ -160,10 +170,11 @@ public class DerivedTypesOperations {
 				return null;
 			}
 
-			String name=DefineNameDerivedType();
+
 			if(specialCase=="Rigid+NonRigid"){
 				stereotype= "Mixin";
-				//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+				name=DefineNameDerivedType();
+				mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
 			}else{
 				if(specialCase=="SemiRigid+Non-Rigid"){
 					Object[] stereo;
@@ -171,18 +182,20 @@ public class DerivedTypesOperations {
 					stereotypes.add("Category");
 					stereotypes.add("RoleMixin");
 					stereo=  stereotypes.toArray();
-					stereotype= selectStereotype(stereo);
-					//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+					panel= selectStereotype(stereo);
+					mainfix= createDerivedTypeUnion(((JComboBox)panel.getComponents()[1]).getSelectedItem().toString(), mainfix, selected,((JTextField)panel.getComponents()[0]).getText(),refontoList,project,dm);
 				}
 			}
 			if(gs_with_nonsortal_or_kind){
 				if(specialCase=="AllRigid"){
 					stereotype= "Category";
-					//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+					name=DefineNameDerivedType();
+					mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
 				}else{
 					if(specialCase=="AllAntiRigid"){
 						stereotype= "RoleMixin";
-						//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+						name=DefineNameDerivedType();
+						mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
 					}
 				}
 			}else{
@@ -195,8 +208,8 @@ public class DerivedTypesOperations {
 					stereotypes.add("Subkind");
 					stereotypes.add("Category");
 					stereo=  stereotypes.toArray();
-					stereotype= selectStereotype(stereo);
-					//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+					panel= selectStereotype(stereo);
+					mainfix= createDerivedTypeUnion(((JComboBox)panel.getComponents()[1]).getSelectedItem().toString(), mainfix, selected,((JTextField)panel.getComponents()[0]).getText(),refontoList,project,dm);
 				}else{
 					if(specialCase=="AllAntiRigid"){
 						Object[] stereo;
@@ -209,13 +222,14 @@ public class DerivedTypesOperations {
 						stereotypes.add("Phase");
 						stereotypes.add("RoleMixin");
 						stereo=  stereotypes.toArray();
-						stereotype= selectStereotype(stereo);
-						//mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+						panel= selectStereotype(stereo);
+						mainfix= createDerivedTypeUnion(((JComboBox)panel.getComponents()[1]).getSelectedItem().toString(), mainfix, selected,((JTextField)panel.getComponents()[0]).getText(),refontoList,project,dm);
 					}
 				}
 			}
-			mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
-			//wrongSelection("Wrong Selection, check the documentation");
+			if(name!=""){
+				mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+			}
 		}
 		return mainfix;
 	}
@@ -315,7 +329,7 @@ public class DerivedTypesOperations {
 						}
 						if(ce.getClassifier() instanceof RigidMixinClass || ce.getClassifier() instanceof RigidSortalClass || ce.getClassifier() instanceof Kind ){
 							specialCase="Rigid+NonRigid";
-							break;
+							return specialCase;
 						}
 					}
 					specialCase="AllAntiRigid";
@@ -425,6 +439,10 @@ public class DerivedTypesOperations {
 			}
 
 			if(gen.size()==1 && classList.size()==2){
+				Object[] stereo;
+				stereo=  stereotypes.toArray();
+				JPanel panel= selectStereotype(stereo);
+				
 				if(pos==1){
 					stereotypes= DerivedByExclusion.getInstance().inferStereotype(refontoList.get(pos).eClass().getName() , refontoList.get(pos2).eClass().getName());
 					pos2=0;
@@ -433,21 +451,17 @@ public class DerivedTypesOperations {
 					pos2=1;
 				}
 				if(stereotypes!=null){
-					String name = DefineNameDerivedType();
 					//DerivedByExclusion.getInstance().createExclusionRule(((Classifier) refontoList.get(pos)).getName(), ((Classifier) refontoList.get(pos2)).getName(), name);
 					if(!(refontoList.get(pos2).eClass().getName().equals("Role") && (refontoList.get(pos).eClass().getName().equals("Kind")) ))
 					{
-						String rule="\n context: _'"+((Classifier) refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+name+"')";
+						String rule="\ncontext: _'"+((Classifier) refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+((JTextField)panel.getComponents()[1]).getText()+"')";
 						dm.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);						
 					}	
 					//String rule="context: "
 					if(stereotypes.size()==1)
-						return createDerivedTypeExclusion(stereotypes.get(0), mainfix, selected, name, classList.get(pos), classList.get(pos2),gen.get(0), project);
+						return createDerivedTypeExclusion(stereotypes.get(0), mainfix, selected, ((JTextField)panel.getComponents()[1]).getText(), classList.get(pos), classList.get(pos2),gen.get(0), project);
 					else{
-						Object[] stereo;
-						stereo=  stereotypes.toArray();
-						String stereotype= selectStereotype(stereo);
-						return createDerivedTypeExclusion(stereotype, mainfix, selected, name, classList.get(pos), classList.get(pos2),gen.get(0), project);
+						return createDerivedTypeExclusion(((JComboBox)panel.getComponents()[0]).getSelectedItem().toString(), mainfix, selected, ((JTextField)panel.getComponents()[1]).getText(), classList.get(pos), classList.get(pos2),gen.get(0), project);
 					}
 				}
 			}
@@ -476,18 +490,45 @@ public class DerivedTypesOperations {
 		return name;
 	}
 
-	public  static  String selectStereotype(Object[] stereo) {
-		// TODO Auto-generated method stub
-		JFrame frame = new JFrame("Input Dialog Example 3");
-		String stereotype = (String) JOptionPane.showInputDialog(frame, 
-				"Choose between the possible options ?",
-				"New Type Derived By Union",
-				JOptionPane.QUESTION_MESSAGE, 
-				null, 
-				stereo, 
-				stereo[0]);
-		return stereotype;
+	public  static  JPanel selectStereotype(Object[] stereo) {
+//		JFrame frame = new JFrame("Input Dialog Example 3");
+//		String stereotype = (String) JOptionPane.showInputDialog(frame, 
+//				"Choose between the possible options ?",
+//				"New Type Derived By Union",
+//				JOptionPane.QUESTION_MESSAGE, 
+//				null, 
+//				stereo, 
+//				stereo[0]);
+//		return stereotype;
+		
+		
+		JPanel p = new JPanel(new BorderLayout(5,5));
 
+        JPanel labels = new JPanel(new GridLayout(0,1,2,2));
+        labels.add(new JLabel("Name", SwingConstants.RIGHT));
+        labels.add(new JLabel("Stereotype", SwingConstants.RIGHT));
+        p.add(labels, BorderLayout.WEST);
+
+        JPanel controls = new JPanel(new GridLayout(0,1,2,2));
+        JTextField name = new JTextField("");
+        controls.add(name);
+        JComboBox combo_stereotype = new JComboBox();
+        DefaultComboBoxModel model2 = new DefaultComboBoxModel();	
+		for (Object string : stereo) {
+			model2.addElement(string);
+		}
+		combo_stereotype.setModel(model2);
+		combo_stereotype.getModel().setSelectedItem(model2.getElementAt(0));
+        //password.addAncestorListener(new RequestFocusListener(false));
+        controls.add(combo_stereotype);
+        p.add(controls, BorderLayout.CENTER);
+
+        //LayoutManager l = new GroupLayout(p);
+        //p.setLayout(l);
+        JOptionPane.showMessageDialog(
+            null, p, "Choose the name and the Stereotype", JOptionPane.QUESTION_MESSAGE);
+
+        return controls;
 	}
 
 	public  static  String selectRelation(Object[] stereo) {
@@ -523,12 +564,6 @@ public class DerivedTypesOperations {
 		if(stereotypes!=null){
 			if(stereotypes.size()==1){
 				newElement3 = includeElement(location, values.get(4), stereotypes.get(0));
-			}
-			else{
-				Object[] stereo;
-				stereo=  stereotypes.toArray();
-				String stereotype= selectStereotype(stereo);
-				newElement3 = includeElement(location, values.get(4), stereotype);
 			}
 			createGeneralization(newElement3, newElement2, newElement);
 			dm.updateOLED(mainfix);	
@@ -732,6 +767,9 @@ public class DerivedTypesOperations {
 	private static Fix createIntersectionDerivedType(String stereotype,
 			DiagramManager diagramManager, DiagramEditor activeEditor, UmlProject project) {
 		dman= diagramManager;
+		
+		
+		
 		int j=0;
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
 		for (int i = 0; i < activeEditor.getSelectedElements().size(); i++) {
@@ -741,10 +779,22 @@ public class DerivedTypesOperations {
 				refontoList.add(ce.getClassifier());
 			}		
 		}
+		String name;
 		mainfix= new Fix();
-		String name=DefineNameDerivedType(); 
 		of = new OutcomeFixer(project.getModel());
-
+		if(stereotype.equals("KindMixin")){
+			Object[] stereo = null;
+			ArrayList<String> values = new ArrayList<String>();
+			values.add("Role");
+			values.add("Phase");
+			values.add("Subkind");
+			stereo=values.toArray();
+			JPanel panel = selectStereotype(stereo);
+			name= ((JTextField)panel.getComponents()[0]).getText();
+			stereotype=((JComboBox)panel.getComponents()[1]).getSelectedItem().toString();
+		}else{
+			name=DefineNameDerivedType(); 
+		}
 		ArrayList<Point2D.Double> positions= new ArrayList<Point2D.Double>();
 		for (DiagramElement select : activeEditor.getSelectedElements()) {
 			ClassElement position = (ClassElement) select;
@@ -759,13 +809,9 @@ public class DerivedTypesOperations {
 		}
 		createMultipleGeneralizationIntersection(newElement,classifiers);
 		mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
-		// TODO Auto-generated method stub
 		return mainfix;
 
 	}
-
-
-
 
 	@SuppressWarnings("unused")
 	public static void createDerivedTypeBySpecialization(String nameBase,
@@ -791,7 +837,7 @@ public class DerivedTypesOperations {
 			DiagramEditor activeEditor, UmlProject project,
 			DiagramManager diagramManager) {
 		// TODO Auto-generated method stub
-		String stereotype;
+		JPanel panel;
 		ArrayList<String> values = new ArrayList<String>();
 		String name;
 		Object[] stereo = null ;
@@ -808,15 +854,14 @@ public class DerivedTypesOperations {
 			}
 			
 			stereo = values.toArray();
-			stereotype= selectStereotype(stereo);
-			name=DefineNameDerivedType();
+			panel= selectStereotype(stereo);
 			dman=diagramManager;
 			of = new OutcomeFixer(dman.getCurrentProject().getModel());
 			mainfix = new Fix();
 			Point2D.Double location = new Point2D.Double();
 			location.x= element.getAbsoluteX1();
 			location.y= element.getAbsoluteY1()+100;
-			Classifier newElement= includeElement(location, name, stereotype);
+			Classifier newElement= includeElement(location, ((JTextField)panel.getComponents()[0]).getText(), ((JComboBox)panel.getComponents()[1]).getSelectedItem().toString());
 			createGeneralizationSingle(element.getClassifier(), newElement);
 			dman.updateOLED(mainfix);
 		}
