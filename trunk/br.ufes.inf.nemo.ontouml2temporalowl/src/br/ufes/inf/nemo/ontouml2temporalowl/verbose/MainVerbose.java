@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.ontouml2temporalowl.verbose;
 
 import java.util.Calendar;
 
+import org.semanticweb.owlapi.model.IRI;
+
 public class MainVerbose
 {
 	private static String modelId;
@@ -14,13 +16,28 @@ public class MainVerbose
 	
 	public static void setModelId (String name)
 	{
-		// FIXME: What if the model name has spaces in it? Replace " " by "_"?
-		modelName = name.replace(".owl", "");
+		//code fixed by Freddy Brasileiro (freddybrasileiro@gmail.com)
+		//since OLED call this the temporal transformation with full IRI in the name variable,
+		//this transformation was resulting some mistakes
+		//the modelName variable was resulting in something like "http://www.semanticweb.org/ontologies/2014/6/ontology"
+		//and the modelId was resulting in something like "http://www.semanticweb.org/ontologies/2014/6/ontology/http://www.semanticweb.org/ontologies/2014/6/ontology.owl"
+		//then, the resulting model was not parsing in Protege
+		name = name.replace(" ", "_");
 		
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH) + 1;
-		modelId = "http://www.semanticweb.org/ontologies/" + year + "/" + month + "/" + name;
+		IRI iri = IRI.create(name);
+		modelName = iri.getFragment();
+		
+		int lastDot = modelName.lastIndexOf(".");
+		modelName = modelName.substring(0, lastDot);
+		
+		modelId = name;
+		// FIXME: What if the model name has spaces in it? Replace " " by "_"?
+		//modelName = name.replace(".owl", "");
+		
+//		Calendar cal = Calendar.getInstance();
+//		int year = cal.get(Calendar.YEAR);
+//		int month = cal.get(Calendar.MONTH) + 1;
+//		modelId = "http://www.semanticweb.org/ontologies/" + year + "/" + month + "/" + name;
 	}
 	
 	public static String header (String hashTagId)
