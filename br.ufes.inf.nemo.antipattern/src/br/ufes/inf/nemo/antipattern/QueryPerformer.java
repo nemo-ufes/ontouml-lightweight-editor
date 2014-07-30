@@ -44,7 +44,7 @@ public class QueryPerformer {
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/ImpreciseAbstraction.xmi").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RoaadTrafficAccident.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/teste_comp_inference.refontouml").getAbsolutePath());
-		URI fileURI = URI.createFileURI(new File("models/XML Models/mgic.refontouml").getAbsolutePath());
+		URI fileURI = URI.createFileURI(new File("models/mgic.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/twin_test.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOS_regular_and_inverted.refontouml").getAbsolutePath());
 		//URI fileURI = URI.createFileURI(new File("models/XML Models/RBOSSimple.xmi").getAbsolutePath());
@@ -57,6 +57,9 @@ public class QueryPerformer {
 		System.out.println("Model loaded: "+ m.getName());
 		
 		m = (Model) resource.getContents().get(0);
+		
+		
+		
 		
 		OntoUMLParser parser = new OntoUMLParser(m);
 		System.out.println("Parser loaded: "+ m.getName());

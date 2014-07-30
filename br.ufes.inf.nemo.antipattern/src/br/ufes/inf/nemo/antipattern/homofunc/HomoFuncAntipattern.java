@@ -51,7 +51,11 @@ public class HomoFuncAntipattern extends Antipattern<HomoFuncOccurrence> {
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
-	
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	public ArrayList<HomoFuncOccurrence> identifyOCL() {
 		ArrayList<Association> query_result;
 		

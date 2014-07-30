@@ -38,7 +38,11 @@ public class MultiDepAntipattern extends Antipattern<MultiDepOccurrence> {
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
-	
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	@Override
 	public ArrayList<MultiDepOccurrence> identify() {
 		ArrayList<ObjectClass> query_result;

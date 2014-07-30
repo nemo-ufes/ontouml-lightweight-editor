@@ -53,7 +53,11 @@ public class GSRigAntipattern extends Antipattern<GSRigOccurrence> {
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
-	
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	@Override
 	public ArrayList<GSRigOccurrence> identify() {
 		ArrayList<GeneralizationSet> query_result;

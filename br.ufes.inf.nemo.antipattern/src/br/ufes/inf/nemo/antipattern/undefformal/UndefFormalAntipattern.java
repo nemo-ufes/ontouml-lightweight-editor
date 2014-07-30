@@ -42,6 +42,12 @@ public class UndefFormalAntipattern extends Antipattern<UndefFormalOccurrence> {
 		return info;
 	}
 
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
+	
 	@Override
 	public ArrayList<UndefFormalOccurrence> identify() {
 		ArrayList<FormalAssociation> query_result;

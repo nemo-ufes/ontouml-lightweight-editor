@@ -28,8 +28,12 @@ public class AssCycAntipattern extends Antipattern<AssCycOccurrence> {
 			"AssCyc", 
 			"This anti-pattern occurs when...",
 			null); 
-		
+	
 	public static AntipatternInfo getAntipatternInfo(){
+		return info;
+	}
+	
+	public AntipatternInfo info(){
 		return info;
 	}
 

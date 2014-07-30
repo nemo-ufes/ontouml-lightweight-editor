@@ -68,7 +68,11 @@ public class WholeOverAntipattern extends OverlappingAntipattern<WholeOverOccurr
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
-	
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	@Deprecated
 	public ArrayList<WholeOverOccurrence> identifyOCL() {
 		Map<Classifier, ArrayList<Property>> query_result;

@@ -28,7 +28,6 @@ public class AssCycSecondPage  extends AssCycPage {
 	 */
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
-	
 		setControl(container);			
 		
 		introText = new StyledText(container, SWT.WRAP | SWT.V_SCROLL | SWT.READ_ONLY);

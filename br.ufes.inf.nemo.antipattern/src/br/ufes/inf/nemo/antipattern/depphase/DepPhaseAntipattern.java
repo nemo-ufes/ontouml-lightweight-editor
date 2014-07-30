@@ -37,7 +37,11 @@ public class DepPhaseAntipattern extends Antipattern<DepPhaseOccurrence> {
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
-	
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	@Override
 	public ArrayList<DepPhaseOccurrence> identify() {
 		

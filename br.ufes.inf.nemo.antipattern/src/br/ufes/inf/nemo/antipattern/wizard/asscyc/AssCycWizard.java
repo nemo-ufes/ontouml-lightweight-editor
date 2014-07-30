@@ -52,4 +52,6 @@ public class AssCycWizard extends AntipatternWizard {
 	{
 		return secondPage;
 	}
+	
+	
 }

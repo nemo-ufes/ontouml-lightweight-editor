@@ -1,9 +1,12 @@
 package br.ufes.inf.nemo.antipattern.impabs;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import RefOntoUML.Association;
+import RefOntoUML.Classifier;
 import RefOntoUML.Package;
+import RefOntoUML.Property;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
@@ -32,8 +35,12 @@ public class ImpAbsAntipattern extends Antipattern<ImpAbsOccurrence> {
 		return info;
 	}
 
-	@Override
-	public ArrayList<ImpAbsOccurrence> identify() {
+	public AntipatternInfo info(){
+		return info;
+	}
+
+	@Deprecated
+	public ArrayList<ImpAbsOccurrence> identifyOCL() {
 		ArrayList<Association> query_result;
 		
 		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, Association.class);
@@ -49,6 +56,34 @@ public class ImpAbsAntipattern extends Antipattern<ImpAbsOccurrence> {
 		}
 		
 		return this.getOccurrences();
+	}
+	
+	@Override
+	public ArrayList<ImpAbsOccurrence> identify() {
+		parser.buildChildrenHashes();
+		
+		for (Association a : parser.getAllInstances(Association.class)) {
+			try{
+				Property source = a.getMemberEnd().get(0);
+				Property target = a.getMemberEnd().get(1);
+				
+				Classifier sourceType = (Classifier) source.getType();
+				Classifier targetType = (Classifier) target.getType();
+				
+				HashSet<Classifier> sourceChildren = parser.allChildrenHash.get(sourceType);
+				HashSet<Classifier> targetChildren = parser.allChildrenHash.get(targetType);
+				
+				if(sourceChildren!=null && sourceChildren.size()>=2 && (source.getUpper()==-1 || source.getUpper()>1) || 
+						targetChildren!=null && targetChildren.size()>=2 && (target.getUpper()==-1 || target.getUpper()>1) )
+					occurrence.add(new ImpAbsOccurrence(a, this));
+			}
+			catch (Exception e) {
+				System.out.println(info.getAcronym()+": Could not create occurrence!");
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		return occurrence;
 	}
 
 }

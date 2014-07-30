@@ -41,7 +41,10 @@ public class DecIntAntipattern extends Antipattern<DecIntOccurrence> {
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
-	
+
+	public AntipatternInfo info(){
+		return info;
+	}
 	
 	@Override
 	public ArrayList<DecIntOccurrence> identify(){

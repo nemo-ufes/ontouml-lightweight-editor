@@ -48,7 +48,11 @@ public class HetCollAntipattern extends Antipattern<HetCollOccurrence> {
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
-	
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	public ArrayList<HetCollOccurrence> identifyOCL() {
 		Map<Classifier, ArrayList<Property>> query_result;
 		query_result = AntiPatternIdentifier.runOCLQuery(parser, oclQuery, Classifier.class, Property.class, "whole", "memberEnds");

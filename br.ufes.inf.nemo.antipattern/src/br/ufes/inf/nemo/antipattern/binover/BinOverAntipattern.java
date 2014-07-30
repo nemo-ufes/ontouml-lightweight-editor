@@ -22,6 +22,9 @@ public class BinOverAntipattern extends Antipattern<BinOverOccurrence> {
 		return info;
 	}
 	
+	public AntipatternInfo info(){
+		return info;
+	}
 
 	@Override
 	public ArrayList<BinOverOccurrence> identify() {
