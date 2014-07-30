@@ -52,6 +52,8 @@ public class AppMenu implements ActionListener {
 	private List<AppCommandListener> listeners = new ArrayList<AppCommandListener>();
 	private Map<String, JMenuItem> itemMap = new HashMap<String, JMenuItem>();
 	private AppFrame frame;
+	private JMenuItem toolboxItem;
+	private JMenuItem browserItem;
 	
 	/**
 	 * Creates a new instance of MainMenu.
@@ -275,13 +277,26 @@ public class AppMenu implements ActionListener {
 		//JMenuItem snapToGrid = createCheckBoxMenuItem(viewMenu, "snaptogrid");
 		//snapToGrid.setSelected(true);
 		
-		JMenuItem toolboxItem = createCheckBoxMenuItem(viewMenu,"toolbox");
+		toolboxItem = createCheckBoxMenuItem(viewMenu,"toolbox");
 		toolboxItem.setSelected(true);
+		
+		browserItem = createCheckBoxMenuItem(viewMenu,"browser");
+		browserItem.setSelected(true);
 		
 		//viewMenu.addSeparator();
 		//createMenuItem(viewMenu, "redraw");
 	}
 
+	public JMenuItem getToolBoxItem()
+	{
+		return toolboxItem;
+	}
+	
+	public JMenuItem getProjectBrowserItem()
+	{
+		return browserItem;
+	}
+	
 	public void createProjectMenu()
 	{
 		JMenu projectMenu = createMenu("project");

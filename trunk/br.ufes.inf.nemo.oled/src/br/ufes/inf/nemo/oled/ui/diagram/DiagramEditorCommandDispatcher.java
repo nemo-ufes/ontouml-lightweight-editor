@@ -291,6 +291,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("TOOLBOX", new MethodCall(
 					getClass().getMethod("showToolbox")));
 			
+			selectorMap.put("BROWSER", new MethodCall(
+					getClass().getMethod("showBrowser")));
+			
 			selectorMap.put("ZOOM_IN", new MethodCall(
 					getClass().getMethod("zoomIn"))
 					);
@@ -457,7 +460,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	}
 
 	public void showToolbox() {
-		manager.getFrame().showToolBox(getMenuManager().isSelected("TOOLBOX"));
+		manager.getFrame().showToolBox();
+		manager.getCurrentWrapper().getToolBar().update();
+	}
+	
+	public void showBrowser() {
+		manager.getFrame().showProjectBrowser();
 		manager.getCurrentWrapper().getToolBar().update();
 	}
 	

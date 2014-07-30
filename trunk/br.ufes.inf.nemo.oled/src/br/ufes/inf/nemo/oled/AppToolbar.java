@@ -54,6 +54,10 @@ public class AppToolbar implements ActionListener {
 	
 	private JButton save;	
 	private JToggleButton btnToolBox;
+	private JToggleButton btnBrowser;
+	
+	public JToggleButton getToolBoxButton() { return btnToolBox; }
+	public JToggleButton getProjectBrowserButton() { return btnBrowser; }
 	
 	/**
 	 * Constructor.
@@ -72,17 +76,32 @@ public class AppToolbar implements ActionListener {
 		createButton("redo");
 		
 		btnToolBox = new JToggleButton("");
-		btnToolBox.setSelected(true);
+		btnToolBox.setSelected(frame.getMainMenu().isSelected("TOOLBOX"));
 		btnToolBox.setToolTipText("Show/hide Toolbox");
 		btnToolBox.addActionListener(new ActionListener() {				
         	@Override
-        	public void actionPerformed(ActionEvent e) {        		
-        		frame.showToolBox(btnToolBox.isSelected());
+        	public void actionPerformed(ActionEvent e) {
+        		frame.getMainMenu().getToolBoxItem().setSelected(btnToolBox.isSelected());
+        		frame.showToolBox();
         	}
         });
 		btnToolBox.setFocusable(false);
 		btnToolBox.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/hammer_screwdriver.png")));
 		toolbar.add(btnToolBox);
+		
+		btnBrowser = new JToggleButton("");
+		btnBrowser.setSelected(frame.getMainMenu().isSelected("BROWSER"));
+		btnBrowser.setToolTipText("Show/hide Project Browser");
+		btnBrowser.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		frame.getMainMenu().getProjectBrowserItem().setSelected(btnBrowser.isSelected());
+        		frame.showProjectBrowser();
+        	}
+        });
+		btnBrowser.setFocusable(false);
+		btnBrowser.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/drawer.png")));
+		toolbar.add(btnBrowser);
 		
 		//toolbar.addSeparator();
 		createButton("warning");

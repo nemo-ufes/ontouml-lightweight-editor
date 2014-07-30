@@ -196,9 +196,14 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		getContentPane().add(multiSplitPane, BorderLayout.CENTER);
 	}	
 	
-	public boolean showToolBox()
+	public boolean isShowToolBox()
 	{
 		return !(toolManager.getPreferredSize().width == 0);
+	}
+	
+	public boolean isShowBrowser()
+	{
+		return !(browserManager.getPreferredSize().width==0);
 	}
 	
 	public boolean showInfoManager()
@@ -219,23 +224,40 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		multiSplitPane.revalidate();	
 	}
 	
-	public void showToolBox(boolean value)
+	public void showProjectBrowser()
 	{
 		multiSplitPane.getMultiSplitLayout().setFloatingDividers(true);
-		if(value){
-			toolManager.setPreferredSize(new Dimension(230,250));
-			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(230,250));
+		if(getMainMenu().isSelected("BROWSER")){
 			browserManager.getProjectBrowser().setPreferredSize(new Dimension(230,250));
 			browserManager.setPreferredSize(new Dimension(230,250));	
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,(int)infoManager.getPreferredSize().getHeight()));
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,(int)diagramManager.getPreferredSize().getHeight()));											
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-toolManager.getPreferredSize().width-10,(int)infoManager.getPreferredSize().getHeight()));
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-toolManager.getPreferredSize().width-10,(int)diagramManager.getPreferredSize().getHeight()));	
+			getMainToolBar().getProjectBrowserButton().setSelected(true);
+		}else{
+			browserManager.getProjectBrowser().setPreferredSize(new Dimension(0,250));
+			browserManager.setPreferredSize(new Dimension(0,250));			
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolManager.getPreferredSize().width-10,(int)infoManager.getPreferredSize().getHeight()));						
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolManager.getPreferredSize().width-10,(int)diagramManager.getPreferredSize().getHeight()));
+			getMainToolBar().getProjectBrowserButton().setSelected(false);
+		}		
+		multiSplitPane.revalidate();
+	}
+	
+	public void showToolBox()
+	{
+		multiSplitPane.getMultiSplitLayout().setFloatingDividers(true);
+		if(getMainMenu().isSelected("TOOLBOX")){
+			toolManager.setPreferredSize(new Dimension(230,250));
+			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(230,250));
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-browserManager.getPreferredSize().width-10,(int)infoManager.getPreferredSize().getHeight()));
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-browserManager.getPreferredSize().width-10,(int)diagramManager.getPreferredSize().getHeight()));	
+			getMainToolBar().getToolBoxButton().setSelected(true);			
 		}else{
 			toolManager.setPreferredSize(new Dimension(0,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(0,250));
-			browserManager.getProjectBrowser().setPreferredSize(new Dimension(230,250));
-			browserManager.setPreferredSize(new Dimension(230,250));
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240,(int)infoManager.getPreferredSize().getHeight()));						
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240,(int)diagramManager.getPreferredSize().getHeight()));			
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserManager.getPreferredSize().width-10,(int)infoManager.getPreferredSize().getHeight()));						
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserManager.getPreferredSize().width-10,(int)diagramManager.getPreferredSize().getHeight()));
+			getMainToolBar().getToolBoxButton().setSelected(false);
 		}		
 		multiSplitPane.revalidate();
 	}
@@ -387,7 +409,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public AppMenu getMainMenu() {
 		return mainMenu;
 	}
-
+	
 	/**
 	 * Gets the tool manager (the tabbed pane responsible for managing the
 	 * tools).
