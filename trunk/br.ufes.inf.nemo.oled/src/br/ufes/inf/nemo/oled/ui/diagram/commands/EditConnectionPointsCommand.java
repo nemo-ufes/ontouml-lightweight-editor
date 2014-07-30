@@ -66,6 +66,13 @@ public class EditConnectionPointsCommand extends BaseDiagramCommand {
 	 */
 	public void run() {
 		oldpoints = clonePointList(connection.getPoints());
+		
+		List<DiagramElement> elements = new ArrayList<DiagramElement>();		
+		
+		if(connection instanceof RectilinearConnection) elements.add(((RectilinearConnection)connection).getOwnerConnection());
+		if(connection instanceof SimpleConnection) elements.add(((SimpleConnection)connection).getOwnerConnection());
+		if(connection instanceof TreeConnection) elements.add(((TreeConnection)connection).getOwnerConnection());
+		
 		connection.setPoints(newpoints);
 		
 		if(connection.getConnections()!=null){
@@ -73,11 +80,6 @@ public class EditConnectionPointsCommand extends BaseDiagramCommand {
 				c.resetPoints();
 			}
 		}			
-		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		
-		if(connection instanceof RectilinearConnection) elements.add(((RectilinearConnection)connection).getOwnerConnection());
-		if(connection instanceof SimpleConnection) elements.add(((SimpleConnection)connection).getOwnerConnection());
-		if(connection instanceof TreeConnection) elements.add(((TreeConnection)connection).getOwnerConnection());
 		
 		DiagramEditor d = ((DiagramEditor)notification);
 		//notify

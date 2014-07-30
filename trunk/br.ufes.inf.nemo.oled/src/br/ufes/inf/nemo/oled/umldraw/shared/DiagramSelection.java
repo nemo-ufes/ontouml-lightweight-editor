@@ -21,8 +21,8 @@
  */
 package br.ufes.inf.nemo.oled.umldraw.shared;
 
+import br.ufes.inf.nemo.oled.draw.AbstractNode;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
-import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.draw.NodeSelection;
 
 
@@ -39,7 +39,7 @@ public class DiagramSelection extends NodeSelection {
    * @param anEditor the editor
    * @param aNode the node
    */
-  public DiagramSelection(DiagramOperations anEditor, Node aNode) {
+  public DiagramSelection(DiagramOperations anEditor, AbstractNode aNode) {
     super(anEditor, aNode);
   }
 

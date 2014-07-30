@@ -41,14 +41,21 @@ public class PaletteElement extends JPanel implements MouseListener
 	private boolean selected = false;
 	private Palette parent = null;
 	private String command = ""; 
-
-	public PaletteElement(Icon icon, String caption, String command, Palette palette)
+	private String caption = new String();
+	private String type = new String();
+	
+	public String getCaption() { return caption; }
+	public String getType() { return type; }
+	
+	public PaletteElement(Icon icon, String caption, String command, Palette palette, String type)
 	{
 		super();
 
 		this.command = command;
 		this.parent = palette;
-
+		this.caption = caption;
+		this.type = type;
+		
 		this.setMaximumSize(new Dimension(32767, 24));
 		this.setSize(new Dimension(200, 24));
 		this.setPreferredSize(new Dimension(200, 24));

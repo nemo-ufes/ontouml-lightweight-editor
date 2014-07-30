@@ -57,7 +57,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	private static final int HANDLE_EAST = 7;
 	private Rectangle2D[] handles = new Rectangle2D[8];
 
-	private Node node;
+	private AbstractNode node;
 	private DiagramOperations editor;
 	private boolean isMoving, isResizing;
 	private Point2D startPos = new Point2D.Double();
@@ -78,14 +78,14 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	 * @param anEditor the editor instance this selection belongs to
 	 * @param aNode the node
 	 */
-	public NodeSelection(DiagramOperations anEditor, Node aNode) {
+	public NodeSelection(DiagramOperations anEditor, AbstractNode aNode) {
 		editor = anEditor;
 		for (int i = 0; i < 8; i++) {
 			handles[i] = new Rectangle2D.Double();
 		}
 		node = aNode;
 		node.addNodeChangeListener(this);
-		updateDimensions();
+		updateDimensions();		
 	}
 
 	/**

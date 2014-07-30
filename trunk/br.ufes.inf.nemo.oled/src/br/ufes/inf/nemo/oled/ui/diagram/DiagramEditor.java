@@ -286,6 +286,12 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	            {	            	     	
 			    	openDiagramPopupMenu(e);
 	            }
+			    if (SwingUtilities.isLeftMouseButton(e))
+	            {	            	  
+			    	if(e.getClickCount()==2){
+			    		openToolBoxPopupMenu();
+			    	}	
+	            }			    
 			}	       
 	    });					
 		

@@ -124,7 +124,7 @@ public class SimpleLabel extends AbstractNode implements Label {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDoc} This is only needed if we choose to not move the labels in the diagram.
 	 */
 	@Override
 	public Selection getSelection(DiagramOperations operations) {
