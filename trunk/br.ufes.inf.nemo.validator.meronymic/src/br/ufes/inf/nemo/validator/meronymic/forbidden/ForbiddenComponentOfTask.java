@@ -8,10 +8,10 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
 import RefOntoUML.componentOf;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.DirectedEdge;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.EdgePath;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.validator.meronymic.forbidden.ui.ForbiddenTableModel;
-import br.ufes.inf.nemo.validator.meronymic.graph.DirectedEdge;
-import br.ufes.inf.nemo.validator.meronymic.graph.EdgePath;
 
 public class ForbiddenComponentOfTask extends ForbiddenTask<componentOf>{
 

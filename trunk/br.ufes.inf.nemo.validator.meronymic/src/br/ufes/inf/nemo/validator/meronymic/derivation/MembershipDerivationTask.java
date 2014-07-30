@@ -7,11 +7,11 @@ import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.EdgePath;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.validator.meronymic.derivation.DerivedMeronymic.PatternType;
 import br.ufes.inf.nemo.validator.meronymic.derivation.ui.DerivedTableModel;
-import br.ufes.inf.nemo.validator.meronymic.graph.EdgePath;
 
 public class MembershipDerivationTask extends DerivationTask<Meronymic>{
 	
