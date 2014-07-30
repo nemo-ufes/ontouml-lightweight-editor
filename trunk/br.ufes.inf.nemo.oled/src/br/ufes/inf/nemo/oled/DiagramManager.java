@@ -1959,7 +1959,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
-	/** Invert end points of an association. This method switch the current properties of an association. THe source becomes the target and vice-versa. */
+	/** Invert end points of an association. This method switch the current properties of an association. 
+	 *  The source becomes the target and vice-versa. */
 	public void invertEndPoints(RefOntoUML.Association association)
 	{
 		Property source = association.getMemberEnd().get(0);
@@ -1975,6 +1976,53 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
    		frame.getDiagramManager().updateOLEDFromModification(association, true);
 	}
 	
+	/** Invert names of end points of an association. This method switch the current end names of an association. 
+	 *  The source end name becomes the target end name and vice-versa. */
+	public void invertEndNames(RefOntoUML.Association association)
+	{
+		Property source = association.getMemberEnd().get(0);
+   		Property target = association.getMemberEnd().get(1);
+   		String sourceName = source.getName();
+   		String targetName = target.getName();
+   		source.setName(targetName);
+   		target.setName(sourceName);
+   		frame.getDiagramManager().updateOLEDFromModification(association, false);
+	}
+	
+	/** Invert multiplicities of end points of an association. This method switch the current multiplicities of an association. 
+	 *  The source end multiplicity becomes the target end multiplicity and vice-versa. */
+	public void invertEndMultiplicities(RefOntoUML.Association association)
+	{
+		Property source = association.getMemberEnd().get(0);
+   		Property target = association.getMemberEnd().get(1);
+   		LiteralInteger sourceLower = getElementFactory().getFactory().createLiteralInteger();
+   		LiteralUnlimitedNatural sourceUpper = getElementFactory().getFactory().createLiteralUnlimitedNatural();
+   		sourceLower.setValue(target.getLower());
+   		sourceUpper.setValue(target.getUpper());   		
+   		LiteralInteger targetLower = getElementFactory().getFactory().createLiteralInteger();
+   		LiteralUnlimitedNatural targetUpper = getElementFactory().getFactory().createLiteralUnlimitedNatural();
+   		targetUpper.setValue(source.getUpper());
+   		targetLower.setValue(source.getLower());  	
+   		source.setUpperValue(sourceUpper);
+   		source.setLowerValue(sourceLower);
+   		target.setUpperValue(targetUpper);
+   		target.setLowerValue(targetLower);
+   		frame.getDiagramManager().updateOLEDFromModification(association, false);
+	}
+	
+	/** Invert types of end points of an association. This method switch the current types of an association. 
+	 *  The source end type becomes the target end type and vice-versa. */
+	public void invertEndTypes(RefOntoUML.Association association)
+	{
+		Property source = association.getMemberEnd().get(0);
+   		Property target = association.getMemberEnd().get(1);
+   		Type sourceType = source.getType();
+   		Type targetType = target.getType();
+   		source.setType(targetType);
+   		target.setType(sourceType);
+   		frame.getDiagramManager().updateOLEDFromModification(association, true);
+	}
+		
 	/** 
 	 * Update the application accordingly to the refontouml instance created. This instance must be already be inserted in its container.
 	 *  

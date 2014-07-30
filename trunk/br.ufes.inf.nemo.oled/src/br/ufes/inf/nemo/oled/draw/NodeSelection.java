@@ -183,7 +183,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 		startPos.setLocation(x, y);
 		resizeDirection = getResizeHandle(x, y);
 		isResizing = (resizeDirection >= 0);
-		isMoving = !isResizing;
+		isMoving = !isResizing;		
 		anchor.setLocation(x, y);
 	}
 
@@ -195,7 +195,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 		//Test if there was an effective move or resize
 		if(x != startPos.getX() || y != startPos.getY())
 		{
-			if (isMoving) {
+			if (isMoving) {				
 				moveSelectedNode(x, y);
 				//moved = true;
 			} else if (isResizing) {
@@ -312,6 +312,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	 * @param diffy the difference to the selection anchor y coordinate
 	 */
 	protected void moveSelection(double diffx, double diffy) {
+		
 		Diagram diagram = editor.getDiagram();
 		// Can not move out of the left border
 		if (node.getAbsoluteX1() + diffx < diagram.getOrigin().getX()) {
@@ -653,26 +654,32 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	 * {@inheritDoc}
 	 */
 	public Cursor getCursorForPosition(double x, double y) {
+		
 		switch (getResizeHandle(x, y)) {
-		case HANDLE_NW:
-			return Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
-		case HANDLE_NE:
-			return Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
-		case HANDLE_SW:
-			return Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR);
-		case HANDLE_SE:
-			return Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
-		case HANDLE_NORTH:
-			return Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
-		case HANDLE_SOUTH:
-			return Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR);
-		case HANDLE_WEST:
-			return Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
-		case HANDLE_EAST:
-			return Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);			
-		default:
-			return Cursor.getDefaultCursor();
-		}
+			case HANDLE_NW:
+				return Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
+			case HANDLE_NE:
+				return Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
+			case HANDLE_SW:
+				return Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR);
+			case HANDLE_SE:
+				return Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
+			case HANDLE_NORTH:
+				return Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
+			case HANDLE_SOUTH:
+				return Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR);
+			case HANDLE_WEST:
+				return Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
+			case HANDLE_EAST:
+				return Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);			
+			default:
+			{
+				if(isMoving)
+					return Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+				else
+					return Cursor.getDefaultCursor();
+			}
+		}		
 	}
 
 	/**
@@ -685,5 +692,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void nodeMoved(Node aNode) { }
+	public void nodeMoved(Node aNode) { 
+		
+	}
 }

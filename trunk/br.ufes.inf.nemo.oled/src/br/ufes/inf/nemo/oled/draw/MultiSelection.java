@@ -86,6 +86,7 @@ public class MultiSelection implements Selection {
    * {@inheritDoc}
    */
   public void startDragging(double x, double y) {
+	
     isDragging = true;
     startPos.setLocation(x, y);
     anchor.setLocation(x, y);
@@ -125,7 +126,7 @@ public class MultiSelection implements Selection {
  
 	    updateDimensions();
 	}
-    isDragging = false;
+    isDragging = false;    
   }
 
   /**

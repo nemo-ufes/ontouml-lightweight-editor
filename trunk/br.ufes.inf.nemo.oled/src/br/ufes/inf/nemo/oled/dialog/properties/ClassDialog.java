@@ -302,6 +302,6 @@ public class ClassDialog extends JDialog{
 		if(getStereotype(element).compareTo((String) classEdition.stereoCombo.getSelectedItem())!=0)
 		{
 			diagramManager.changeClassStereotype(element, (String) classEdition.stereoCombo.getSelectedItem());
-		}
+		}		
 	}
 }
