@@ -1,7 +1,8 @@
 package br.ufes.inf.nemo.common.ontoumlparser;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import RefOntoUML.Association;
 import RefOntoUML.Category;
@@ -9,8 +10,11 @@ import RefOntoUML.Characterization;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
+import RefOntoUML.Comment;
+import RefOntoUML.Constraintx;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
+import RefOntoUML.Element;
 import RefOntoUML.Enumeration;
 import RefOntoUML.FormalAssociation;
 import RefOntoUML.Generalization;
@@ -21,6 +25,7 @@ import RefOntoUML.Mixin;
 import RefOntoUML.Mode;
 import RefOntoUML.NominalQuality;
 import RefOntoUML.NonPerceivableQuality;
+import RefOntoUML.Package;
 import RefOntoUML.PerceivableQuality;
 import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
@@ -43,15 +48,18 @@ public class OntoUMLModelStatistic {
 	ArrayList<GeneralizationSet> genSets;
 	ArrayList<Property> attributes;
 	
-	private ArrayList<Object> 	classifiers, classes, kinds, quantities, collectives, subkinds, roles, phases, categories,
+	private ArrayList<Object> 	classifiers, classes, kinds, quantities, collectives, subkinds, roles, phases, categories, regularDatatypes, packages, comments, constraintx,
 								roleMixins, mixins, relators, modes, perceivable, nonperceivable, nominal, datatypes, associations, materials, mediations, derivations,
 								enumerations, primitives, characterizations, componentOfs, subCollectionOfs, memberOfs, subQuantityOfs, formals, unknownClasses, unknownAssociations;
 	
 	private TypeDetail 	kindDetail, collectiveDetail, quantityDetail, subkindDetail, roleDetail, phaseDetail,
-						mixinDetail, categoryDetail, perceivableDetail, nonperceivableDetail, nominalDetail, roleMixinDetail, datatypeDetail, materialDetail, mediationDetail,
-						enumerationsDetail, primitivesDetail, formalDetail, characterizationDetail, componentOfDetail, subQuantityOfDetail,
-						subCollectionOfDetail, memberOfDetail, relatorDetail, modeDetail, classesDetail,
-						rigidDetail, antiRigidDetail, sortalDetail, nonSortalDetail, momentDetail, nonRigidDetail, associationsDetail;
+						mixinDetail, categoryDetail, perceivableDetail, nonperceivableDetail, nominalDetail, roleMixinDetail, allDatatypesDetail, materialDetail, mediationDetail,
+						enumerationsDetail, primitivesDetail, formalDetail, characterizationDetail, componentOfDetail, subQuantityOfDetail, regularDatatypeDetail, generalizationDetail, genSetDetail,
+						subCollectionOfDetail, memberOfDetail, relatorDetail, modeDetail, classesDetail, unknownAssociationDetail, unknownClassDetail, attributeDetail, packagesDetail, commentsDetail, constraintxDetail,
+						rigidDetail, antiRigidDetail, sortalDetail, nonSortalDetail, momentDetail, nonRigidDetail, associationsDetail, derivationDetail;
+	
+	private HashSet<TypeDetail> details = new HashSet<TypeDetail>();
+	private HashMap<LineType, ArrayList<TypeDetail>> hashMap;
 	
 	public OntoUMLModelStatistic(OntoUMLParser parser) {
 		
@@ -71,6 +79,7 @@ public class OntoUMLModelStatistic {
 		nonperceivable = new ArrayList<>();
 		nominal = new ArrayList<>();
 		datatypes = new ArrayList<>();
+		regularDatatypes = new ArrayList<>();
 		associations = new ArrayList<>();
 		materials = new ArrayList<>();
 		mediations = new ArrayList<>();
@@ -90,147 +99,174 @@ public class OntoUMLModelStatistic {
 		generalizations = new ArrayList<>();
 		attributes = new ArrayList<>();
 		genSets = new ArrayList<>();
+		packages = new ArrayList<>();
+		comments = new ArrayList<>();
+		constraintx = new ArrayList<>();
 		
 		this.parser = parser;		
 	}	
 	
 	public void run () {
-		
-		this.generalizations.addAll(parser.getAllInstances(Generalization.class));
-		
-		this.genSets.addAll(parser.getAllInstances(GeneralizationSet.class));
-		
-		for (Property p : parser.getAllInstances(Property.class)) {
-			if(p.getAssociation()==null)
-				attributes.add(p);
-		}
-		
-		Set<Classifier> classi = parser.getAllInstances(Classifier.class);	  	   
-		for (Object c : classi) {
 			
-			if (c instanceof Classifier){
-				classifiers.add(c);
-				if (c instanceof RefOntoUML.Class){
-					classes.add((Class) c);
+		for (Element modelElement : parser.getAllInstances(Element.class)) {
+			if (modelElement instanceof Classifier){
+				classifiers.add(modelElement);
+				if (modelElement instanceof RefOntoUML.Class){
+					classes.add((Class) modelElement);
 				   
-					if (c instanceof RefOntoUML.Kind)
-					   kinds.add((RefOntoUML.Kind) c);
+					if (modelElement instanceof RefOntoUML.Kind)
+					   kinds.add((RefOntoUML.Kind) modelElement);
 				   
-					else if (c instanceof Quantity)
-					   quantities.add((Quantity) c);
+					else if (modelElement instanceof Quantity)
+					   quantities.add((Quantity) modelElement);
 				   
-					else if (c instanceof Collective)
-					   collectives.add((Collective) c);
+					else if (modelElement instanceof Collective)
+					   collectives.add((Collective) modelElement);
 					
-					else if (c instanceof SubKind)
-					   subkinds.add((SubKind) c);
+					else if (modelElement instanceof SubKind)
+					   subkinds.add((SubKind) modelElement);
 				   
-					else if (c instanceof Role)
-					   roles.add((Role) c);
+					else if (modelElement instanceof Role)
+					   roles.add((Role) modelElement);
 				   
-					else if (c instanceof Phase)
-						phases.add((Phase) c);
+					else if (modelElement instanceof Phase)
+						phases.add((Phase) modelElement);
 				   
-					else if (c instanceof Category)
-						categories.add((Category) c);
+					else if (modelElement instanceof Category)
+						categories.add((Category) modelElement);
 				   
-					else if (c instanceof RoleMixin)
-						roleMixins.add((RoleMixin) c);
+					else if (modelElement instanceof RoleMixin)
+						roleMixins.add((RoleMixin) modelElement);
 				   
-					else if (c instanceof Mixin)
-						mixins.add((Mixin) c);
+					else if (modelElement instanceof Mixin)
+						mixins.add((Mixin) modelElement);
 				   
-					else if (c instanceof Mode)
-						modes.add((Mode) c);
-					else if (c instanceof Relator)
-						relators.add((Relator) c);
+					else if (modelElement instanceof Mode)
+						modes.add((Mode) modelElement);
 					
-					else if (c instanceof PerceivableQuality)
-						perceivable.add((PerceivableQuality) c);
-					else if (c instanceof NonPerceivableQuality)
-						nonperceivable.add((NonPerceivableQuality) c);
-					else if (c instanceof NominalQuality)
-						nominal.add((NominalQuality) c);
+					else if (modelElement instanceof Relator)
+						relators.add((Relator) modelElement);
+					
+					else if (modelElement instanceof PerceivableQuality)
+						perceivable.add((PerceivableQuality) modelElement);
+					
+					else if (modelElement instanceof NonPerceivableQuality)
+						nonperceivable.add((NonPerceivableQuality) modelElement);
+					
+					else if (modelElement instanceof NominalQuality)
+						nominal.add((NominalQuality) modelElement);
 					
 					else
-						unknownClasses.add(c);
+						unknownClasses.add(modelElement);
 				}
 			   
-				else if (c instanceof Association){
+				else if (modelElement instanceof Association){
 				   
-					associations.add((Association) c);
+					associations.add((Association) modelElement);
 				   
-					if (c instanceof MaterialAssociation)
-						materials.add((MaterialAssociation) c);
+					if (modelElement instanceof MaterialAssociation)
+						materials.add((MaterialAssociation) modelElement);
 					
-					else if (c instanceof Mediation)
-						mediations.add((Mediation) c);
+					else if (modelElement instanceof Mediation)
+						mediations.add((Mediation) modelElement);
 				   
-					else if (c instanceof FormalAssociation)
-						formals.add((FormalAssociation) c);
+					else if (modelElement instanceof FormalAssociation)
+						formals.add((FormalAssociation) modelElement);
 				   
-					else if (c instanceof Characterization)
-						characterizations.add((Characterization) c);
+					else if (modelElement instanceof Characterization)
+						characterizations.add((Characterization) modelElement);
 				   
-					else if (c instanceof componentOf)
-						componentOfs.add((componentOf) c);
+					else if (modelElement instanceof componentOf)
+						componentOfs.add((componentOf) modelElement);
 				   
-					else if (c instanceof subCollectionOf)
-						subCollectionOfs.add((subCollectionOf) c);
+					else if (modelElement instanceof subCollectionOf)
+						subCollectionOfs.add((subCollectionOf) modelElement);
 				   
-					else if (c instanceof memberOf)
-						memberOfs.add((memberOf) c);
+					else if (modelElement instanceof memberOf)
+						memberOfs.add((memberOf) modelElement);
 				   
-					else if (c instanceof subQuantityOf)
-						subQuantityOfs.add((subQuantityOf) c);
+					else if (modelElement instanceof subQuantityOf)
+						subQuantityOfs.add((subQuantityOf) modelElement);
 					
-					else if (c instanceof Derivation)
-						derivations.add(c);
+					else if (modelElement instanceof Derivation)
+						derivations.add(modelElement);
 					
 					else
-						unknownAssociations.add(c);
+						unknownAssociations.add(modelElement);
 					
 				}
-
-				else if (c instanceof PrimitiveType)
-					primitives.add((PrimitiveType) c);					
-				else if (c instanceof Enumeration)
-					enumerations.add((Enumeration) c);
-				else if (c instanceof DataType)
-					datatypes.add((DataType) c);
 				
+				if (modelElement instanceof DataType){
+					datatypes.add((DataType) modelElement);
+					
+					if (modelElement instanceof PrimitiveType)
+						primitives.add((PrimitiveType) modelElement);					
+					else if (modelElement instanceof Enumeration)
+						enumerations.add((Enumeration) modelElement);
+					else
+						regularDatatypes.add((DataType) modelElement);
+				}
+			}
+			
+			if(modelElement instanceof Package){
+				packages.add((Package)modelElement);
+			}
+			
+			if(modelElement instanceof Comment){
+				comments.add((Comment)modelElement);
+			}
+			
+			if(modelElement instanceof Constraintx){
+				constraintx.add((Package)modelElement);
+			}
+			
+			if(modelElement instanceof Property){
+				if(((Property) modelElement).getAssociation()==null)
+					attributes.add((Property) modelElement);
+			}
+			
+			if(modelElement instanceof Generalization){
+				generalizations.add((Generalization)modelElement);
+			}
+			
+			if(modelElement instanceof GeneralizationSet){
+				genSets.add((GeneralizationSet)modelElement);
 			}
 	   }
+
+		kindDetail = new TypeDetail("Kind", kinds.size(), classes.size());
+		quantityDetail = new TypeDetail("Quantity",quantities.size(), classes.size());
+		collectiveDetail = new TypeDetail("Collective",collectives.size(), classes.size());
+		subkindDetail = new TypeDetail("Subkind",subkinds.size(), classes.size());
+		roleDetail = new TypeDetail("Role",roles.size(), classes.size());
+		phaseDetail = new TypeDetail("Phase",phases.size(), classes.size());
+		categoryDetail = new TypeDetail("Category",categories.size(), classes.size());
+		roleMixinDetail = new TypeDetail("RoleMixin",roleMixins.size(), classes.size());
+		mixinDetail = new TypeDetail("Mixin",mixins.size(), classes.size());
+		relatorDetail = new TypeDetail("Relator",relators.size(), classes.size());
+		modeDetail = new TypeDetail("Mode",modes.size(), classes.size());
+		perceivableDetail = new TypeDetail("Perceivable Quality",perceivable.size(), classes.size());
+		nonperceivableDetail = new TypeDetail("NonPerceivable Quality",nonperceivable.size(), classes.size());
+		nominalDetail = new TypeDetail("Nominal Quality",nominal.size(), classes.size());
+		unknownClassDetail = new TypeDetail("Unknown Class",unknownClasses.size(), classes.size());
+		classesDetail = new TypeDetail("Class",classes.size(), classes.size());
 		
-		kindDetail = new TypeDetail("Kind", kinds.size(), classes.size(), classifiers.size());
-		quantityDetail = new TypeDetail("Quantity",quantities.size(), classes.size(), classifiers.size());
-		collectiveDetail = new TypeDetail("Collective",collectives.size(), classes.size(), classifiers.size());
-		subkindDetail = new TypeDetail("Subkind",subkinds.size(), classes.size(), classifiers.size());
-		roleDetail = new TypeDetail("Role",roles.size(), classes.size(), classifiers.size());
-		phaseDetail = new TypeDetail("Phase",phases.size(), classes.size(), classifiers.size());
-		categoryDetail = new TypeDetail("Category",categories.size(), classes.size(), classifiers.size());
-		roleMixinDetail = new TypeDetail("RoleMixin",roleMixins.size(), classes.size(), classifiers.size());
-		mixinDetail = new TypeDetail("Mixin",mixins.size(), classes.size(), classifiers.size());
-		relatorDetail = new TypeDetail("Relator",relators.size(), classes.size(), classifiers.size());
-		modeDetail = new TypeDetail("Mode",modes.size(), classes.size(), classifiers.size());
-		perceivableDetail = new TypeDetail("Perceivable Quality",perceivable.size(), classes.size(), classifiers.size());
-		nonperceivableDetail = new TypeDetail("NonPerceivable Quality",nonperceivable.size(), classes.size(), classifiers.size());
-		nominalDetail = new TypeDetail("Nominal Quality",nominal.size(), classes.size(), classifiers.size());
-		classesDetail = new TypeDetail("Class",classes.size(), classes.size(), classifiers.size());
+		materialDetail = new TypeDetail("Material",materials.size(), associations.size());
+		mediationDetail = new TypeDetail("Mediation",mediations.size(), associations.size());
+		derivationDetail = new TypeDetail("Derivation",derivations.size(), associations.size());
+		characterizationDetail = new TypeDetail("Characterization",characterizations.size(), associations.size());
+		componentOfDetail = new TypeDetail("ComponentOf",componentOfs.size(), associations.size());
+		memberOfDetail = new TypeDetail("MemberOf",memberOfs.size(), associations.size());
+		subCollectionOfDetail = new TypeDetail("SubCollectionOf",subCollectionOfs.size(), associations.size());
+		subQuantityOfDetail= new TypeDetail("SubQuantityOf",subQuantityOfs.size(), associations.size());
+		formalDetail = new TypeDetail("Formal",formals.size(), associations.size());
+		unknownAssociationDetail = new TypeDetail("Unknown Association",unknownAssociations.size(), associations.size());
+		associationsDetail = new TypeDetail("Association",associations.size(), associations.size());
 		
-		materialDetail = new TypeDetail("Material",materials.size(), associations.size(), classifiers.size());
-		mediationDetail = new TypeDetail("Mediation",mediations.size(), associations.size(), classifiers.size());
-		characterizationDetail = new TypeDetail("Characterization",characterizations.size(), associations.size(), classifiers.size());
-		componentOfDetail = new TypeDetail("ComponentOf",componentOfs.size(), associations.size(), classifiers.size());
-		memberOfDetail = new TypeDetail("MemberOf",memberOfs.size(), associations.size(), classifiers.size());
-		subCollectionOfDetail = new TypeDetail("SubCollectionOf",subCollectionOfs.size(), associations.size(), classifiers.size());
-		subQuantityOfDetail= new TypeDetail("SubQuantityOf",subQuantityOfs.size(), associations.size(), classifiers.size());
-		formalDetail = new TypeDetail("Formal",formals.size(), associations.size(), classifiers.size());
-		associationsDetail = new TypeDetail("Association",associations.size(), associations.size(), classifiers.size());
-		
-		enumerationsDetail = new TypeDetail("Enumeration", enumerations.size(), datatypes.size(), classifiers.size());
-		primitivesDetail = new TypeDetail("PrimitiveType", primitives.size(), datatypes.size(), classifiers.size());
-		datatypeDetail = new TypeDetail("DataType", datatypes.size(), datatypes.size(), classifiers.size());
+		enumerationsDetail = new TypeDetail("Enumeration", enumerations.size(), datatypes.size());
+		primitivesDetail = new TypeDetail("PrimitiveType", primitives.size(), datatypes.size());
+		regularDatatypeDetail = new TypeDetail("DataType", regularDatatypes.size(), datatypes.size());
+		allDatatypesDetail = new TypeDetail("All DataType", datatypes.size(), datatypes.size());
 		
 		rigidDetail = createRigidDetail();
 		antiRigidDetail = createAntiRigidDetail();
@@ -239,15 +275,29 @@ public class OntoUMLModelStatistic {
 		sortalDetail = createSortalDetail();
 		nonSortalDetail = createNonSortalDetail();
 		momentDetail = createMomentDetail();
+		
+		genSetDetail = new TypeDetail("Generalization Set", genSets.size(), genSets.size());
+		generalizationDetail = new TypeDetail("Generalization", generalizations.size(), generalizations.size());
+		attributeDetail = new TypeDetail("Attribute", attributes.size(), attributes.size());
+		packagesDetail = new TypeDetail("Package", packages.size(), packages.size());
+		commentsDetail = new TypeDetail("Comment", comments.size(), comments.size());
+		constraintxDetail = new TypeDetail("ConstraintX", constraintx.size(), constraintx.size());
+		
+		buildSequences();
+		
+	}
+	
+	public HashSet<TypeDetail> getDetails(){
+		return details;
 	}
 	
 	private TypeDetail createRigidDetail(){
 		int rigidSize = 0;
 		
-		rigidSize = kinds.size()+collectives.size()+quantities.size()+subkinds.size()+
-					categories.size()+relators.size()+modes.size();
+		rigidSize = kindDetail.getCount()+collectiveDetail.getCount()+quantityDetail.getCount()+subkindDetail.getCount()+
+					categoryDetail.getCount()+relatorDetail.getCount()+modeDetail.getCount()+perceivableDetail.getCount()+nonperceivableDetail.getCount()+nominalDetail.getCount();
 		
-		TypeDetail rigidDetail = new TypeDetail("Rigid Type", rigidSize, classes.size(), classifiers.size());
+		TypeDetail rigidDetail = new TypeDetail("Rigid Type", rigidSize, classes.size());
 		
 		return rigidDetail;
 	}
@@ -257,7 +307,7 @@ public class OntoUMLModelStatistic {
 		
 		antiRigidSize = roles.size()+phases.size()+roleMixins.size();
 		
-		TypeDetail antiRigidDetail = new TypeDetail("AntiRigid Type", antiRigidSize, classes.size(), classifiers.size());
+		TypeDetail antiRigidDetail = new TypeDetail("AntiRigid Type", antiRigidSize, classes.size());
 		
 		return antiRigidDetail;
 	}
@@ -267,7 +317,7 @@ public class OntoUMLModelStatistic {
 		
 		nonRigidSize = mixins.size();
 		
-		TypeDetail nonRigidDetail = new TypeDetail("NonRigid Type", nonRigidSize, classes.size(), classifiers.size());
+		TypeDetail nonRigidDetail = new TypeDetail("NonRigid Type", nonRigidSize, classes.size());
 		
 		return nonRigidDetail;
 	}
@@ -277,7 +327,7 @@ public class OntoUMLModelStatistic {
 		
 		sortalSize = kinds.size()+collectives.size()+quantities.size()+subkinds.size()+roles.size()+phases.size();
 		
-		TypeDetail sortalDetail = new TypeDetail("Sortal Type", sortalSize, classes.size(), classifiers.size());
+		TypeDetail sortalDetail = new TypeDetail("Sortal Type", sortalSize, classes.size());
 		
 		return sortalDetail;
 	}
@@ -287,7 +337,7 @@ public class OntoUMLModelStatistic {
 		
 		nonSortalSize = categories.size()+roleMixins.size()+mixins.size();
 		
-		TypeDetail nonSortalDetail = new TypeDetail("Non Sortal Type", nonSortalSize, classes.size(), classifiers.size());
+		TypeDetail nonSortalDetail = new TypeDetail("Non Sortal Type", nonSortalSize, classes.size());
 		
 		return nonSortalDetail;
 	}
@@ -295,142 +345,10 @@ public class OntoUMLModelStatistic {
 	private TypeDetail createMomentDetail(){
 		
 		int momentSize = relators.size()+modes.size()+perceivable.size()+nonperceivable.size()+nominal.size();
-		TypeDetail momentDetail = new TypeDetail("Moment Type", momentSize, classes.size(), classifiers.size());
+		TypeDetail momentDetail = new TypeDetail("Moment Type", momentSize, classes.size());
 		
 		return momentDetail;
 	}
-
-	public int getMomentCount(){ return momentDetail.size; }
-	public String getMomentPercentageClasses(){ return String.format("%.1f", momentDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getMomentPercentageElements(){ return String.format("%.1f", momentDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getSortalCount(){ return sortalDetail.size; }
-	public String getSortalPercentageClasses(){ return String.format("%.1f", sortalDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getSortalPercentageElements(){ return String.format("%.1f", sortalDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getNonSortalCount(){ return nonSortalDetail.size; }
-	public String getNonSortalPercentageClasses(){ return String.format("%.1f", nonSortalDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getNonSortalPercentageElements(){ return String.format("%.1f", nonSortalDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getRigidCount(){ return rigidDetail.size; }
-	public String getRigidPercentageClasses(){ return String.format("%.1f", rigidDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getRigidPercentageElements(){ return String.format("%.1f", rigidDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getNonRigidCount(){ return nonRigidDetail.size; }
-	public String getNonRigidPercentageClasses(){ return String.format("%.1f", nonRigidDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getNonRigidPercentageElements(){ return String.format("%.1f", nonRigidDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getAntiRigidCount(){ return antiRigidDetail.size; }
-	public String getAntiRigidPercentageClasses(){ return String.format("%.1f", antiRigidDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getAntiRigidPercentageElements(){ return String.format("%.1f", antiRigidDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getKindCount(){ return kindDetail.size; }
-	public String getKindPercentageClasses(){ return String.format("%.1f", kindDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getKindPercentageElements(){ return String.format("%.1f", kindDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getSubKindCount(){ return subkindDetail.size; }
-	public String getSubKindPercentageClasses(){ return String.format("%.1f", subkindDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getSubKindPercentageElements(){ return String.format("%.1f", subkindDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getQuantityCount(){ return quantityDetail.size; }
-	public String getQuantityPercentageClasses(){ return String.format("%.1f", quantityDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getQuantityPercentageElements(){ return String.format("%.1f", quantityDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getCollectiveCount(){ return collectiveDetail.size; }
-	public String getCollectivePercentageClasses(){ return String.format("%.1f", collectiveDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getCollectivePercentageElements(){ return String.format("%.1f", collectiveDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getRoleCount(){ return roleDetail.size; }
-	public String getRolePercentageClasses(){ return String.format("%.1f", roleDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getRolePercentageElements(){ return String.format("%.1f", roleDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getPhaseCount(){ return phaseDetail.size; }
-	public String getPhasePercentageClasses(){ return String.format("%.1f", phaseDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getPhasePercentageElements(){ return String.format("%.1f", phaseDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getCategoryCount(){ return categoryDetail.size; }
-	public String getCategoryPercentageClasses(){ return String.format("%.1f", categoryDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getCategoryPercentageElements(){ return String.format("%.1f", categoryDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getMixinCount(){ return mixinDetail.size; }
-	public String getMixinPercentageClasses(){ return String.format("%.1f", mixinDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getMixinPercentageElements(){ return String.format("%.1f", mixinDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getRoleMixinCount(){ return roleDetail.size; }
-	public String getRoleMixinPercentageClasses(){ return String.format("%.1f", roleDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getRoleMixinPercentageElements(){ return String.format("%.1f", roleDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getModeCount(){ return modeDetail.size; }
-	public String getModePercentageClasses(){ return String.format("%.1f", modeDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getModePercentageElements(){ return String.format("%.1f", modeDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getRelatorCount(){ return relatorDetail.size; }
-	public String getRelatorPercentageClasses(){ return String.format("%.1f", relatorDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getRelatorPercentageElements(){ return String.format("%.1f", relatorDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getPerceivableQualityCount(){ return perceivableDetail.size; }
-	public String getPerceivableQualityPercentageClasses(){ return String.format("%.1f", perceivableDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getPerceivableQualityPercentageElements(){ return String.format("%.1f", perceivableDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getNonPerceivableQualityCount(){ return nonperceivableDetail.size; }
-	public String getNonPerceivableQualityPercentageClasses(){ return String.format("%.1f", nonperceivableDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getNonPerceivableQualityPercentageElements(){ return String.format("%.1f", nonperceivableDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getNominalQualityCount(){ return nominalDetail.size; }
-	public String getNominalQualityPercentageClasses(){ return String.format("%.1f", nominalDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getNominalQualityPercentageElements(){ return String.format("%.1f", nominalDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getEnumerationCount(){ return enumerationsDetail.size; }
-	public String getEnumerationPercentageDataType(){ return String.format("%.1f", enumerationsDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getEnumerationPercentageElements(){ return String.format("%.1f", enumerationsDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getPrimitiveTypeCount(){ return primitivesDetail.size; }
-	public String getPrimitiveTypePercentageDataType(){ return String.format("%.1f", primitivesDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getPrimitiveTypePercentageElements(){ return String.format("%.1f", primitivesDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getDataTypeCount(){ return datatypeDetail.size; }
-	public String getDataTypePercentageDataType(){ return String.format("%.1f", datatypeDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getDataTypePercentageElements(){ return String.format("%.1f", datatypeDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getMaterialCount(){ return materialDetail.size; }
-	public String getMaterialPercentageType(){ return String.format("%.1f", materialDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getMaterialPercentageElements(){ return String.format("%.1f", materialDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getFormalCount(){ return formalDetail.size; }
-	public String getFormalPercentageType(){ return String.format("%.1f", formalDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getFormalPercentageElements(){ return String.format("%.1f", formalDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getMediationCount(){ return mediationDetail.size; }
-	public String getMediationPercentageType(){ return String.format("%.1f", mediationDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getMediationPercentageElements(){ return String.format("%.1f", mediationDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getCharacterizationCount(){ return characterizationDetail.size; }
-	public String getCharacterizationPercentageType(){ return String.format("%.1f", characterizationDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getCharacterizationPercentageElements(){ return String.format("%.1f", characterizationDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getComponentOfCount(){ return componentOfDetail.size; }
-	public String getComponentOfPercentageType(){ return String.format("%.1f", componentOfDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getComponentOfPercentageElements(){ return String.format("%.1f", componentOfDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getMemberOfCount(){ return memberOfDetail.size; }
-	public String getMemberOfPercentageType(){ return String.format("%.1f", memberOfDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getMemberOfPercentageElements(){ return String.format("%.1f", memberOfDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getSubCollectionOfCount(){ return subCollectionOfDetail.size; }
-	public String getSubCollectionOfPercentageType(){ return String.format("%.1f", subCollectionOfDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getSubCollectionOfPercentageElements(){ return String.format("%.1f", subCollectionOfDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getSubQuantityOfCount(){ return subQuantityOfDetail.size; }
-	public String getSubQuantityOfPercentageType(){ return String.format("%.1f", subQuantityOfDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getSubQuantityOfPercentageElements(){ return String.format("%.1f", subQuantityOfDetail.percentageAllElements).replace(",", ".")+"%"; }
-	
-	public int getAssociationCount(){ return associationsDetail.size; }
-	public String getAssociationPercentageType(){ return String.format("%.1f", associationsDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getAssociationPercentageElements(){ return String.format("%.1f", associationsDetail.percentageAllElements).replace(",", ".")+"%"; }
-
-	public int getClassCount(){ return classesDetail.size; }
-	public String getClassPercentageType(){ return String.format("%.1f", classesDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getClassPercentageElements(){ return String.format("%.1f", classesDetail.percentageAllElements).replace(",", ".")+"%"; }
 	
 	public String allResults (){
 		return 	classResults() + "\n\n" + 
@@ -479,80 +397,385 @@ public class OntoUMLModelStatistic {
 	}
 	
 	public String datatypeResults(){
-		return datatypeDetail + "\n" +
+		return allDatatypesDetail + "\n" +
 			   enumerationsDetail + "\n" +
 			   primitivesDetail + "\n";
 	}
 	
-	public String generateCSVLine(){
-		return 
-			parser.getModelName()+","+
-			classes.size()+","+
-			generalizations.size()+","+
-			genSets.size()+","+
-			associations.size()+","+
-			attributes.size()+","+
-    
-			kinds.size()+","+
-			collectives.size()+","+
-			quantities.size()+","+
-			subkinds.size()+","+
-			roles.size()+","+
-			phases.size()+","+
-			categories.size()+","+
-			roleMixins.size()+","+
-			mixins.size()+","+
-			relators.size()+","+
-			modes.size()+","+
-			datatypes.size()+","+
-			perceivable.size()+","+
-			nonperceivable.size()+","+
-			nominal.size()+","+
-			unknownClasses.size()+","+
-			
-    		materials.size()+","+
-    		formals.size()+","+
-    		mediations.size()+","+
-    		characterizations.size()+","+
-    		componentOfs.size()+","+
-    		memberOfs.size()+","+
-    		subCollectionOfs.size()+","+
-    		subQuantityOfs.size()+","+
-    		derivations.size()+","+
-    		unknownAssociations.size()+"\n";
+	
+	public enum LineType {BASIC, CLASS, ASSOCIATION, DATATYPE, RIGIDITY, NATURE};
+	
+	private void buildSequences(){
+		hashMap = new HashMap<LineType, ArrayList<TypeDetail>>();
+		
+		ArrayList<TypeDetail> list = new ArrayList<TypeDetail>();
+		list.add(classesDetail); 
+		list.add(allDatatypesDetail);
+		list.add(associationsDetail);
+		list.add(generalizationDetail);
+		list.add(genSetDetail);
+		list.add(attributeDetail);
+		list.add(packagesDetail);
+		list.add(commentsDetail);
+		list.add(constraintxDetail);
+		hashMap.put(LineType.BASIC, list);
+		
+		list = new ArrayList<TypeDetail>();
+		list.add(rigidDetail);
+		list.add(nonRigidDetail);
+		list.add(antiRigidDetail);
+		list.add(unknownClassDetail);
+		hashMap.put(LineType.RIGIDITY, list);
+		
+		list = new ArrayList<TypeDetail>();
+		list.add(sortalDetail);
+		list.add(nonSortalDetail);
+		list.add(momentDetail);
+		list.add(unknownClassDetail);
+		hashMap.put(LineType.NATURE, list);
+		
+		list = new ArrayList<TypeDetail>();
+		list.add(enumerationsDetail);
+		list.add(primitivesDetail);
+		list.add(regularDatatypeDetail);
+		hashMap.put(LineType.DATATYPE, list);
+		
+		list = new ArrayList<TypeDetail>();
+		list.add(kindDetail);
+		list.add(quantityDetail);
+		list.add(collectiveDetail);
+		list.add(subkindDetail);
+		list.add(roleDetail);
+		list.add(phaseDetail);
+		list.add(categoryDetail);
+		list.add(roleMixinDetail);
+		list.add(mixinDetail);
+		list.add(relatorDetail);
+		list.add(modeDetail);
+		list.add(perceivableDetail);
+		list.add(nonperceivableDetail);
+		list.add(nominalDetail);
+		list.add(unknownClassDetail);
+		hashMap.put(LineType.CLASS, list);
+		
+		list = new ArrayList<TypeDetail>();
+		list.add(materialDetail);
+		list.add(mediationDetail);
+		list.add(derivationDetail);
+		list.add(characterizationDetail);
+		list.add(componentOfDetail);
+		list.add(memberOfDetail);
+		list.add(subCollectionOfDetail);
+		list.add(subQuantityOfDetail);
+		list.add(formalDetail);
+		list.add(unknownAssociationDetail);
+		hashMap.put(LineType.ASSOCIATION, list);
+		
+		for (ArrayList<TypeDetail> detailList : hashMap.values()) {
+			details.addAll(detailList);
+		}
 	}
 	
-	private class TypeDetail{
+	
+	public enum InfoType {MEASURE, COUNT, TYPE_PERCENTAGE, ALL_PERCENTAGE};
+	
+	public String getCSVLine(LineType lt, InfoType it, String separator, boolean addModelName){
+		ArrayList<TypeDetail> detailList = hashMap.get(lt);
+		String s = "";
+		int i = 0;
+		
+		if(detailList==null)
+			return "";
+		
+		if(addModelName){
+			if(it==InfoType.MEASURE)	
+				s += "Model"+separator+" ";
+			else
+				s += parser.getModelName()+separator+" ";
+		}
+		
+		for (TypeDetail detail : detailList) {
+			
+			if(it==InfoType.MEASURE)
+				s+=detail.getMeasure();
+			else if(it==InfoType.COUNT)
+				s+=detail.getCount();
+			else if(it==InfoType.TYPE_PERCENTAGE)
+				s+=detail.getTypePercentage();
+			else if(it==InfoType.ALL_PERCENTAGE)
+				s+=detail.getAllPercentage();
+			
+			if(i<detailList.size()-1)
+				s+=separator+" ";
+			i++;
+		}
+		
+		return s;
+	}
+	
+	public String getCSVHeader(LineType lt, String separator, boolean addModelName){
+		return getCSVLine(lt, InfoType.MEASURE, separator, addModelName);
+	}
+	
+	public String getCSVCountLine(LineType lt, String separator, boolean addModelName){
+		return getCSVLine(lt, InfoType.COUNT, separator, addModelName);
+	}
+	
+	public String getCSVTypePercentageLine(LineType lt, String separator, boolean addModelName){
+		return getCSVLine(lt, InfoType.TYPE_PERCENTAGE, separator, addModelName);
+	}
+	
+	public String getCSVAllPercentageLine(LineType lt, String separator, boolean addModelName){
+		return getCSVLine(lt, InfoType.ALL_PERCENTAGE, separator, addModelName);
+	}
+	
+	public class TypeDetail{
 		String typeName;
-		int size;
+		int count;
 		float percentageSupertype;		
 		float percentageAllElements;
 		
-		public TypeDetail(String typeName, int typesize, int supertype, int all) {
+		private TypeDetail(String typeName, int typesize, int supertype) {
 			this.typeName = typeName; 
-			size = typesize;
-			if(size==0) {
+			count = typesize;
+			int all = classes.size()+associations.size()+generalizations.size()+genSets.size()+datatypes.size()+
+						attributes.size()+comments.size()+constraintx.size()+packages.size();
+			
+			if(typesize==0) {
 				percentageSupertype = 0;
 				percentageAllElements = 0;					
 			}else{
 				if(supertype==0) {
 					percentageSupertype=0;
-					percentageAllElements = ((float)size/all)*100;
+					percentageAllElements = ((float)typesize/all)*100;
 				}
 				else if(all==0) {
-					percentageSupertype = ((float) size/supertype)*100;
+					percentageSupertype = ((float) typesize/supertype)*100;
 					percentageAllElements = 0;
 				} else{
-					percentageSupertype = ((float) size/supertype)*100;
-					percentageAllElements = ((float)size/all)*100;
+					percentageSupertype = ((float) typesize/supertype)*100;
+					percentageAllElements = ((float)typesize/all)*100;
 				}					
 			}			
 		}
 		
+		public String getMeasure() {
+			return typeName;
+		}
+		
+		public int getCount(){ 
+			return count; 
+		}
+		
+		public String getTypePercentage(){ 
+			return String.format("%.2f", percentageSupertype).replace(",", ".")+"%"; 
+		}
+		
+		public float getTypePercentageAsFloat(){ 
+			return percentageSupertype/100;
+		}
+		
+		public String getAllPercentage(){ 
+			return String.format("%.2f", percentageAllElements).replace(",", ".")+"%"; 
+		}
+		
+		public float getAllPercentageAsFloat(){ 
+			return percentageAllElements/100;
+		}
+		
 		@Override
 		public String toString(){
-			return 	typeName+": "+size+" ("+String.format("%.1f", percentageSupertype).replace(",", ".")+"%)";
+			return 	typeName+": "+count+" ("+String.format("%.2f", percentageSupertype).replace(",", ".")+"%)";
 		}
+
+		
 	}
+
+	public int getMomentCount(){ return momentDetail.count; }
+	public String getMomentPercentageClasses(){ return String.format("%.1f", momentDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getMomentPercentageElements(){ return String.format("%.1f", momentDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getSortalCount(){ return sortalDetail.count; }
+	public String getSortalPercentageClasses(){ return String.format("%.1f", sortalDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getSortalPercentageElements(){ return String.format("%.1f", sortalDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getNonSortalCount(){ return nonSortalDetail.count; }
+	public String getNonSortalPercentageClasses(){ return String.format("%.1f", nonSortalDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getNonSortalPercentageElements(){ return String.format("%.1f", nonSortalDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getRigidCount(){ return rigidDetail.count; }
+	public String getRigidPercentageClasses(){ return String.format("%.1f", rigidDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getRigidPercentageElements(){ return String.format("%.1f", rigidDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getNonRigidCount(){ return nonRigidDetail.count; }
+	public String getNonRigidPercentageClasses(){ return String.format("%.1f", nonRigidDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getNonRigidPercentageElements(){ return String.format("%.1f", nonRigidDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getAntiRigidCount(){ return antiRigidDetail.count; }
+	public String getAntiRigidPercentageClasses(){ return String.format("%.1f", antiRigidDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getAntiRigidPercentageElements(){ return String.format("%.1f", antiRigidDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getKindCount(){ return kindDetail.count; }
+	public String getKindPercentageClasses(){ return String.format("%.1f", kindDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getKindPercentageElements(){ return String.format("%.1f", kindDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getSubKindCount(){ return subkindDetail.count; }
+	public String getSubKindPercentageClasses(){ return String.format("%.1f", subkindDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getSubKindPercentageElements(){ return String.format("%.1f", subkindDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getQuantityCount(){ return quantityDetail.count; }
+	public String getQuantityPercentageClasses(){ return String.format("%.1f", quantityDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getQuantityPercentageElements(){ return String.format("%.1f", quantityDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getCollectiveCount(){ return collectiveDetail.count; }
+	public String getCollectivePercentageClasses(){ return String.format("%.1f", collectiveDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getCollectivePercentageElements(){ return String.format("%.1f", collectiveDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getRoleCount(){ return roleDetail.count; }
+	public String getRolePercentageClasses(){ return String.format("%.1f", roleDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getRolePercentageElements(){ return String.format("%.1f", roleDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getPhaseCount(){ return phaseDetail.count; }
+	public String getPhasePercentageClasses(){ return String.format("%.1f", phaseDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getPhasePercentageElements(){ return String.format("%.1f", phaseDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getCategoryCount(){ return categoryDetail.count; }
+	public String getCategoryPercentageClasses(){ return String.format("%.1f", categoryDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getCategoryPercentageElements(){ return String.format("%.1f", categoryDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getMixinCount(){ return mixinDetail.count; }
+	public String getMixinPercentageClasses(){ return String.format("%.1f", mixinDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getMixinPercentageElements(){ return String.format("%.1f", mixinDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getRoleMixinCount(){ return roleDetail.count; }
+	public String getRoleMixinPercentageClasses(){ return String.format("%.1f", roleDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getRoleMixinPercentageElements(){ return String.format("%.1f", roleDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getModeCount(){ return modeDetail.count; }
+	public String getModePercentageClasses(){ return String.format("%.1f", modeDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getModePercentageElements(){ return String.format("%.1f", modeDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getRelatorCount(){ return relatorDetail.count; }
+	public String getRelatorPercentageClasses(){ return String.format("%.1f", relatorDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getRelatorPercentageElements(){ return String.format("%.1f", relatorDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getPerceivableQualityCount(){ return perceivableDetail.count; }
+	public String getPerceivableQualityPercentageClasses(){ return String.format("%.1f", perceivableDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getPerceivableQualityPercentageElements(){ return String.format("%.1f", perceivableDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getNonPerceivableQualityCount(){ return nonperceivableDetail.count; }
+	public String getNonPerceivableQualityPercentageClasses(){ return String.format("%.1f", nonperceivableDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getNonPerceivableQualityPercentageElements(){ return String.format("%.1f", nonperceivableDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getNominalQualityCount(){ return nominalDetail.count; }
+	public String getNominalQualityPercentageClasses(){ return String.format("%.1f", nominalDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getNominalQualityPercentageElements(){ return String.format("%.1f", nominalDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getEnumerationCount(){ return enumerationsDetail.count; }
+	public String getEnumerationPercentageDataType(){ return String.format("%.1f", enumerationsDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getEnumerationPercentageElements(){ return String.format("%.1f", enumerationsDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getPrimitiveTypeCount(){ return primitivesDetail.count; }
+	public String getPrimitiveTypePercentageDataType(){ return String.format("%.1f", primitivesDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getPrimitiveTypePercentageElements(){ return String.format("%.1f", primitivesDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getDataTypeCount(){ return allDatatypesDetail.count; }
+	public String getDataTypePercentageDataType(){ return String.format("%.1f", allDatatypesDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getDataTypePercentageElements(){ return String.format("%.1f", allDatatypesDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getMaterialCount(){ return materialDetail.count; }
+	public String getMaterialPercentageType(){ return String.format("%.1f", materialDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getMaterialPercentageElements(){ return String.format("%.1f", materialDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getFormalCount(){ return formalDetail.count; }
+	public String getFormalPercentageType(){ return String.format("%.1f", formalDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getFormalPercentageElements(){ return String.format("%.1f", formalDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getMediationCount(){ return mediationDetail.count; }
+	public String getMediationPercentageType(){ return String.format("%.1f", mediationDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getMediationPercentageElements(){ return String.format("%.1f", mediationDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getCharacterizationCount(){ return characterizationDetail.count; }
+	public String getCharacterizationPercentageType(){ return String.format("%.1f", characterizationDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getCharacterizationPercentageElements(){ return String.format("%.1f", characterizationDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getComponentOfCount(){ return componentOfDetail.count; }
+	public String getComponentOfPercentageType(){ return String.format("%.1f", componentOfDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getComponentOfPercentageElements(){ return String.format("%.1f", componentOfDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getMemberOfCount(){ return memberOfDetail.count; }
+	public String getMemberOfPercentageType(){ return String.format("%.1f", memberOfDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getMemberOfPercentageElements(){ return String.format("%.1f", memberOfDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getSubCollectionOfCount(){ return subCollectionOfDetail.count; }
+	public String getSubCollectionOfPercentageType(){ return String.format("%.1f", subCollectionOfDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getSubCollectionOfPercentageElements(){ return String.format("%.1f", subCollectionOfDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getSubQuantityOfCount(){ return subQuantityOfDetail.count; }
+	public String getSubQuantityOfPercentageType(){ return String.format("%.1f", subQuantityOfDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getSubQuantityOfPercentageElements(){ return String.format("%.1f", subQuantityOfDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getAssociationCount(){ return associationsDetail.count; }
+	public String getAssociationPercentageType(){ return String.format("%.1f", associationsDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getAssociationPercentageElements(){ return String.format("%.1f", associationsDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public int getDerivationCount(){ return derivationDetail.count; }
+	public String getDerivationPercentageType(){ return String.format("%.1f", derivationDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getDerivationPercentageElements(){ return String.format("%.1f", derivationDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getUnknownClassCount(){ return unknownClassDetail.count; }
+	public String getUnknownClassPercentageType(){ return String.format("%.1f", unknownClassDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getUnknownClassPercentageElements(){ return String.format("%.1f", unknownClassDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getUnknownAssociationCount(){ return unknownAssociationDetail.count; }
+	public String getUnknownAssociationPercentageType(){ return String.format("%.1f", unknownAssociationDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getUnknownAssociationPercentageElements(){ return String.format("%.1f", unknownAssociationDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getGeneralizationCount(){ return generalizationDetail.count; }
+	public String getGeneralizationPercentageType(){ return String.format("%.1f", generalizationDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getGeneralizationPercentageElements(){ return String.format("%.1f", generalizationDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getGeneralizationSetCount(){ return genSetDetail.count; }
+	public String getGeneralizationSetPercentageType(){ return String.format("%.1f", genSetDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getGeneralizationSetPercentageElements(){ return String.format("%.1f", genSetDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getRegularDatatypeCount(){ return regularDatatypeDetail.count; }
+	public String getRegularDatatypePercentageType(){ return String.format("%.1f", regularDatatypeDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getRegularDatatypePercentageElements(){ return String.format("%.1f", regularDatatypeDetail.percentageAllElements).replace(",", ".")+"%"; }
+	
+	public int getClassCount(){ return classesDetail.count; }
+	public String getClassPercentageType(){ return String.format("%.1f", classesDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getClassPercentageElements(){ return String.format("%.1f", classesDetail.percentageAllElements).replace(",", ".")+"%"; }
+
+	public ArrayList<Object> createList(LineType lt, InfoType it, boolean addModelName) {
+		ArrayList<Object> list = new ArrayList<Object>();		
+		ArrayList<TypeDetail> detailList = hashMap.get(lt);
+		
+		if(detailList==null)
+			return list;
+		
+		if(addModelName){
+			if(it==InfoType.MEASURE)	
+				list.add("Model");
+			else
+				list.add(parser.getModelName());
+		}
+		
+		for (TypeDetail detail : detailList) {
+			
+			if(it==InfoType.MEASURE)
+				list.add(detail.getMeasure());
+			else if(it==InfoType.COUNT)
+				list.add(detail.getCount());
+			else if(it==InfoType.TYPE_PERCENTAGE)
+				list.add(detail.getTypePercentageAsFloat());
+			else if(it==InfoType.ALL_PERCENTAGE)
+				list.add(detail.getAllPercentageAsFloat());
+		}
+		
+		return list;
+		
+	}
+
 	
 }

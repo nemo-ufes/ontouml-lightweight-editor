@@ -3,11 +3,15 @@ package br.ufes.inf.nemo.common.resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
 
 
 /**
@@ -24,14 +28,17 @@ public class ResourceUtil {
 		ResourceSet rset = new ResourceSetImpl();					
 			
 		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("refontouml",new RefOntoUMLResourceFactoryImpl());
-		
 		rset.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI,	RefOntoUML.RefOntoUMLPackage.eINSTANCE);		
 		
 	    File file = new File(refontoumlpath);
 		URI fileURI = URI.createFileURI(file.getAbsolutePath());		
 		Resource resource = rset.createResource(fileURI);		
 		
-		resource.load(Collections.emptyMap());
+		/**Load options that significantly improved the performance of loading EMF Model instances (by Tiago)*/
+		Map<Object,Object> loadOptions = ((XMLResourceImpl)resource).getDefaultLoadOptions();
+		loadOptions.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
+		loadOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
+		resource.load(loadOptions);
 		
 		return resource;		
 	}
