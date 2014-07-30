@@ -523,6 +523,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		frame.getInfoManager().setProject(currentProject);
 		for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
 		if(currentProject.getDiagrams().size()==0) newDiagram();
+		newOCLDocument(currentProject,false);
 		return currentProject;
 	}
 
