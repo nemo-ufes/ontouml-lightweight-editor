@@ -93,7 +93,7 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	{
 		metapropertyLabel = aLabel;
 		metapropertyLabel.setSource(this);
-		metapropertyLabel.setParent(this);
+		metapropertyLabel.setParent(this);		
 	}
 	
 	/**

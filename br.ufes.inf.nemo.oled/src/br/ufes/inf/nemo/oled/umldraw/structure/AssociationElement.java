@@ -381,6 +381,49 @@ public final class AssociationElement extends BaseConnection {
 		});		
 	}
 	
+//  /** If is allowable to move the labels, than we need to reposition the labels at every move in the association*/
+//	public void repositionLabels(List<Point2D> oldpoints, List<Point2D> newpoints)
+//	{
+//		if (oldpoints.size()<0) return;
+//		if (newpoints.size()<0) return;
+//		
+//		double sourceX = oldpoints.get(0).getX();
+//		double sourceY = oldpoints.get(0).getY();
+//		double targetX = oldpoints.get(oldpoints.size()-1).getX();
+//		double targetY = oldpoints.get(oldpoints.size()-1).getY();
+//		double newSourceX = newpoints.get(0).getX();
+//		double newSourceY = newpoints.get(0).getY();
+//		double newTargetX = newpoints.get(newpoints.size()-1).getX();
+//		double newTargetY = newpoints.get(newpoints.size()-1).getY();
+//		
+//		double mult1X1 = multiplicity1Label.getAbsoluteX1();
+//		double mult1Y1 = multiplicity1Label.getAbsoluteY1();
+//		double mult2X1 = multiplicity2Label.getAbsoluteX1();
+//		double mult2Y1 = multiplicity2Label.getAbsoluteY1();
+//		
+//		double newposSrcX = 0;
+//		double newposTgtX = 0;
+//		double newposSrcY = 0;
+//		double newposTgtY = 0;
+//		
+//		if(sourceX > newSourceX) newposSrcX = mult1X1-(sourceX-newSourceX);
+//		if(sourceX < newSourceX) newposSrcX = mult1X1+(newSourceX-sourceX);
+//		if(targetX > newTargetX) newposTgtX = mult2X1-(targetX-newTargetX);
+//		if(targetX < newTargetX) newposTgtX = mult2X1+(newTargetX-targetX);
+//		
+//		if(sourceY > newSourceY) newposSrcY = mult1Y1-(sourceY-newSourceY);
+//		if(sourceY < newSourceY) newposSrcY = mult1Y1+(newSourceY-sourceY);
+//		if(targetY > newTargetY) newposTgtY = mult2Y1-(targetY-newTargetY);
+//		if(targetY < newTargetY) newposTgtY = mult2Y1+(newTargetY-targetY);
+//		
+//		multiplicity1Label.setAbsolutePos(newposSrcX, newposSrcY);
+//		multiplicity2Label.setAbsolutePos(newposTgtX, newposTgtY);
+//		
+//		super.setPoints(newpoints);
+//		multiplicity1Label.invalidate();
+//		multiplicity2Label.invalidate();		
+//	}
+	
 	/**
 	 * Sets the role label sources.
 	 */
@@ -660,14 +703,14 @@ public final class AssociationElement extends BaseConnection {
 	 * @param drawingContext the DrawingContext
 	 */
 	private void drawLabels(DrawingContext drawingContext) {
-		if (showMultiplicities) {
-			if (getNode1()!=null)
+		if (showMultiplicities) {			
+			if (getNode1()!=null && multiplicity1Label.getParent()!=null)
 				positionLabel(multiplicity1Label, getNode1(), getEndPoint1(), drawingContext, false);
-			else
+			else if (getNode1()==null && multiplicity1Label.getParent()!=null)
 				positionLabel(multiplicity1Label, getConnection1(), getEndPoint1(), drawingContext, false);
-			if (getNode2()!=null)
+			if (getNode2()!=null && multiplicity2Label.getParent()!=null)
 				positionLabel(multiplicity2Label, getNode2(), getEndPoint2(), drawingContext, false);
-			else
+			else if(getNode2()==null && multiplicity2Label.getParent()!=null)
 				positionLabel(multiplicity2Label, getConnection2(), getEndPoint2(), drawingContext, false);
 			multiplicity1Label.draw(drawingContext);
 			multiplicity2Label.draw(drawingContext);

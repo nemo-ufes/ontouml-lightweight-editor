@@ -185,16 +185,18 @@ public class PaletteAccordion extends JPanel{
 	{
 		String pelleteName = "Language Patterns";
 		ontopatternPalette = new Palette(this, pelleteName);
-		ontopatternPalette.createElement("staticpalette.classes", "select");
+		
 		ontopatternPalette.createElement("staticpalette.patterncreation", "principleidentity");
 		
 		ontopatternPalette.addCommandListener(editorDispatcher);
 		
 		paletteMap.put(pelleteName, ontopatternPalette);
 		
+		ontopatternPalette.sort();
+		
 		pelleteName = "Design Patterns";
 		ontopatternPalette = new Palette(this, pelleteName);
-		ontopatternPalette.createElement("staticpalette.classes", "select");
+		
 		ontopatternPalette.createElement("staticpalette.patterncreation", "relatorcreation");
 		ontopatternPalette.createElement("staticpalette.patterncreation", "rolemixinpattern");
 		
@@ -203,13 +205,15 @@ public class PaletteAccordion extends JPanel{
 		paletteMap.put(pelleteName, ontopatternPalette);
 		
 		if(openPalette == null)
-			openPalette = pelleteName;		
+			openPalette = pelleteName;	
+		
+		ontopatternPalette.sort();
 	}
 	
 	private void createPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		derivedPalette = new Palette(this, "Derived Patterns");
-		derivedPalette.createElement("staticpalette.classes", "select");
+		
 		//palette.addSpacer(0,PALLETE_VSPACE);
 		derivedPalette.createElement("staticpalette.patterns", "derivationbyunion");
 		derivedPalette.createElement("staticpalette.patterns2", "derivationbyexclusion");
@@ -224,12 +228,14 @@ public class PaletteAccordion extends JPanel{
 
 		if(openPalette == null)
 			openPalette = "Derived Patterns";
+		
+		derivedPalette.sort();
 	}
 	
 	private void createStaticClassesPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		elementsPalette = new Palette(this, "Elements");
-		elementsPalette.createElement("staticpalette.classes", "select");
+		
 		//palette.addSpacer(0,PALLETE_VSPACE);
 		elementsPalette.createElement("staticpalette.classes", "kind");
 		elementsPalette.createElement("staticpalette.classes", "quantity");
@@ -281,7 +287,9 @@ public class PaletteAccordion extends JPanel{
 		paletteMap.put("Elements", elementsPalette);
 
 		if(openPalette == null)
-			openPalette = "Elements";
+			openPalette = "Elements";	
+		
+		elementsPalette.sort();
 	}
 
 	@SuppressWarnings("unused")

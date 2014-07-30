@@ -125,7 +125,7 @@ public class SelectionHandler implements EditorMode {
 		// this is a pretty ugly cast, it is needed in order to use the getLabel()
 		// method which is not a base DiagramElement method
 		List<DiagramElement> previousSelected = selection.getElements();
-		
+				
 		DiagramElement element = editor.getDiagram().getChildAt(mx, my);
 			
 		if (element instanceof UmlDiagramElement && previousSelected.contains(element)) {	
@@ -260,7 +260,7 @@ public class SelectionHandler implements EditorMode {
 		if (!nothingSelected() && selection.contains(mx, my)) {
 			return selection;
 		}
-		DiagramElement element = editor.getDiagram().getChildAt(mx, my);
+		DiagramElement element = editor.getDiagram().getChildAt(mx, my);			
 		if (element != NullElement.getInstance()) {
 			// select the element
 			return element.getSelection(editor);

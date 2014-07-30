@@ -27,6 +27,9 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +70,7 @@ public class Palette extends JPanel
 		createTitle();
 		createContent();
 	}
-
+	
 	private void createContent()
 	{
 		content = new JPanel();
@@ -101,22 +104,54 @@ public class Palette extends JPanel
 		this.add(title, BorderLayout.NORTH);
 	}
 
-	public void createElement(String type, String name)
+	public PaletteElement createElement(String type, String name)
 	{
 		String prefix = type + "." + name;
 		String command = getResourceString(prefix + ".command");
 		String caption = getResourceString(prefix + ".caption");
 
 		Icon icon = IconLoader.getInstance().getIcon(getResourceString(prefix + ".icon"));
-		PaletteElement element = new PaletteElement(icon, caption, command, this);
+		PaletteElement element = new PaletteElement(icon, caption, command, this,type);
 		if (name.equals("derivation")) element.setEnabled(false);
 		element.setToolTipText(getResourceString(prefix + ".tooltip"));
 
 		elementMap.put(name, element);
-		content.add(element);
-		content.add(PaletteAccordion.getSpacer(0,1));
+		//content.add(element);
+		//content.add(PaletteAccordion.getSpacer(0,1));
+		return element;
 	}
-
+	
+	public void sort()
+	{
+		ArrayList<PaletteElement> result = sort(elementMap.values());
+		content.add(createElement("staticpalette.classes", "select"));
+		for(PaletteElement pe: result){
+			content.add(pe);
+			content.add(PaletteAccordion.getSpacer(0,1));;
+		}
+	}
+	
+	class PalleteElementComparator implements Comparator<PaletteElement> 
+    {
+        @Override
+        public int compare(PaletteElement o1, PaletteElement o2) {        	
+        	if(o1.getType().contains("classes") && o2.getType().contains("relations")){
+        		return -1;        	
+        	}else if (o1.getType().contains("relations") && o2.getType().contains("classes")){        		
+        		return 1;
+        	} else
+        		return o1.getCaption().compareToIgnoreCase(o2.getCaption());
+        }
+    }
+	
+	public ArrayList<PaletteElement> sort(Collection<PaletteElement> list)
+	{
+		ArrayList<PaletteElement> result = new ArrayList<PaletteElement>();
+		result.addAll(list);
+		Collections.sort(result,new PalleteElementComparator());
+		return result;
+	}
+	
 	public void addSpacer(int width, int height)
 	{
 		content.add(PaletteAccordion.getSpacer(width, height));
@@ -189,6 +224,11 @@ public class Palette extends JPanel
 	public PaletteElement getPalleteElement(String name)
 	{
 		return elementMap.get(name);
+	}
+	
+	public Collection<PaletteElement> getPaletteElements()
+	{
+		return elementMap.values();
 	}
 	
 	public JPanel getTitle() {
