@@ -9,12 +9,12 @@ import javax.swing.SwingWorker;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.DirectedEdge;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.EdgePath;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.Graph;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.Node;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.validator.meronymic.forbidden.ui.ForbiddenTableModel;
-import br.ufes.inf.nemo.validator.meronymic.graph.DirectedEdge;
-import br.ufes.inf.nemo.validator.meronymic.graph.EdgePath;
-import br.ufes.inf.nemo.validator.meronymic.graph.Graph;
-import br.ufes.inf.nemo.validator.meronymic.graph.Node;
 
 public abstract class ForbiddenTask <T extends Meronymic> extends SwingWorker<Boolean, ForbiddenMeronymic<T>>{
 

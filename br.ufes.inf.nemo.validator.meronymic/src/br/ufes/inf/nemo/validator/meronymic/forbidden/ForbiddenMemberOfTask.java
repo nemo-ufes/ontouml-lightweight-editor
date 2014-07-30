@@ -5,9 +5,9 @@ import javax.swing.JTabbedPane;
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import RefOntoUML.memberOf;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.EdgePath;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.validator.meronymic.forbidden.ui.ForbiddenTableModel;
-import br.ufes.inf.nemo.validator.meronymic.graph.EdgePath;
 
 public class ForbiddenMemberOfTask extends ForbiddenTask<memberOf>{
 

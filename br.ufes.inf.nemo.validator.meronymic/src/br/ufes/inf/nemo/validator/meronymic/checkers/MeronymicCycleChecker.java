@@ -3,9 +3,9 @@ package br.ufes.inf.nemo.validator.meronymic.checkers;
 import java.util.ArrayList;
 
 import RefOntoUML.Property;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.EdgePath;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.Graph;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.validator.meronymic.graph.EdgePath;
-import br.ufes.inf.nemo.validator.meronymic.graph.Graph;
 
 public class MeronymicCycleChecker extends Checker<MeronymicCycleError>{
 	
