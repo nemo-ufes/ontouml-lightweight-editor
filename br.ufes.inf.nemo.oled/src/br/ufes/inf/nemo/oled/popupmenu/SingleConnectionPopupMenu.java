@@ -112,6 +112,9 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private JMenuItem subsettingItem;
 	private JMenuItem redefinesItem;
 	private RelationStereotypeChangeMenu changeMenu;
+	private JMenuItem invertEndMultiplicitiesItem;
+	private JMenuItem invertEndNamesItem;
+	private JMenuItem invertEndTypesItem;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -369,6 +372,34 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
         		editor.getDiagramManager().invertEndPoints((Association)((AssociationElement)con).getRelationship());
         	}
         });
+		
+		invertEndNamesItem = new JMenuItem("End Names");
+		invertMenu.add(invertEndNamesItem);    			
+		invertEndNamesItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		editor.getDiagramManager().invertEndNames((Association)((AssociationElement)con).getRelationship());
+        	}
+        });
+		
+		invertEndMultiplicitiesItem = new JMenuItem("End Multiplicities");
+		invertMenu.add(invertEndMultiplicitiesItem);    			
+		invertEndMultiplicitiesItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		editor.getDiagramManager().invertEndMultiplicities((Association)((AssociationElement)con).getRelationship());
+        	}
+        });
+		
+		invertEndTypesItem = new JMenuItem("End Types");
+		invertMenu.add(invertEndTypesItem);    			
+		invertEndTypesItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		editor.getDiagramManager().invertEndTypes((Association)((AssociationElement)con).getRelationship());
+        	}
+        });
+		
 	}
 	
 	public void createMetaPropertyMenu()

@@ -24,10 +24,6 @@ package br.ufes.inf.nemo.oled.umldraw.structure;
 import java.awt.Color;
 import java.awt.geom.Dimension2D;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.Notifier;
-
 import RefOntoUML.Classifier;
 import RefOntoUML.Enumeration;
 import RefOntoUML.EnumerationLiteral;
@@ -57,7 +53,7 @@ import br.ufes.inf.nemo.oled.util.ModelHelper;
  * @author Wei-ju Wu, John Guerson
  */
 public final class ClassElement extends AbstractCompositeNode implements
-		LabelSource, UmlNode, Adapter {
+		LabelSource, UmlNode  {
 
 	private transient Classifier classData;
 	private String classUUID; 
@@ -134,7 +130,7 @@ public final class ClassElement extends AbstractCompositeNode implements
 		
 		return cloned;
 	}
-
+ 
 	public void setBackgroundColor(Color color)
 	{
 		mainCompartment.setBackground(color);
@@ -280,10 +276,11 @@ public final class ClassElement extends AbstractCompositeNode implements
 		if(classifier.eResource() != null)
 			classUUID = ModelHelper.getUUIDFromElement(classifier);
 		
-		if (classData != null) {
-			classData.eAdapters().add(this);
+		if (classData != null) {			
 			ontoUmlStereotype = ModelHelper.getClassAsStereotype(classData);
 		}
+		reinitMainCompartment();
+		reinitAttributesCompartment();
 	}
 
 	/**
@@ -483,6 +480,35 @@ public final class ClassElement extends AbstractCompositeNode implements
 		mainCompartment.addLabel(mainLabel);
 	}
 
+	public void reinitAttributesCompartment() 
+	{		
+		attributesCompartment.removeAllLabels();
+		if(getClassifier() instanceof ClassImpl) {
+			ClassImpl aclass = (ClassImpl) getClassifier(); 
+			for (Property property : aclass.getOwnedAttribute()) {
+ 				Label label = new SimpleLabel();				
+				label.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),property));
+				attributesCompartment.addLabel(label);
+			}
+		} else if(getClassifier() instanceof Enumeration) 
+		{
+			Enumeration aclass = (Enumeration) getClassifier(); 
+			for (EnumerationLiteral literal : aclass.getOwnedLiteral()) {
+				Label label = new SimpleLabel();				
+				label.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),literal));
+				attributesCompartment.addLabel(label);
+			}
+		} else if((getClassifier() instanceof DataTypeImpl)) 
+		{
+			DataTypeImpl dataType = (DataTypeImpl) getClassifier();
+			for (Property property : dataType.getOwnedAttribute()) {
+				Label label = new SimpleLabel();
+				label.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),property));
+				attributesCompartment.addLabel(label);
+			}	
+		}		
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -700,69 +726,5 @@ public final class ClassElement extends AbstractCompositeNode implements
 	public boolean isNestable() {
 		return true;
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Notifier getTarget() {
-		return classData;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean isAdapterForType(Object obj) {
-		return obj instanceof Class;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void notifyChanged(Notification arg0) {
-		
-		attributesCompartment.removeAllLabels();
-		
-		if(getClassifier() instanceof ClassImpl)
-		{
-			ClassImpl aclass = (ClassImpl) getClassifier(); 
-			for (Property property : aclass.getOwnedAttribute()) {
-				Label label = new SimpleLabel();				
-				label.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),property));
-				attributesCompartment.addLabel(label);
-			}
-		}
-		else if(getClassifier() instanceof Enumeration)
-		{
-			Enumeration aclass = (Enumeration) getClassifier(); 
-			for (EnumerationLiteral literal : aclass.getOwnedLiteral()) {
-				Label label = new SimpleLabel();				
-				label.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),literal));
-				attributesCompartment.addLabel(label);
-			}
-		}
-		else if((getClassifier() instanceof DataTypeImpl))
-		{
-			DataTypeImpl dataType = (DataTypeImpl) getClassifier();
-			for (Property property : dataType.getOwnedAttribute()) {
-				Label label = new SimpleLabel();
-				label.setSource(new UmlModelElementLabelSource((StructureDiagram)getDiagram(),property));
-				attributesCompartment.addLabel(label);
-			}	
-		}
-		
-		reinitMainCompartment();
-		invalidate();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setTarget(Notifier arg0) {
-	}
-
 }
 

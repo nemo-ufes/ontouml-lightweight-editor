@@ -1566,9 +1566,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 	/** {@inheritDoc} */
 	public void moveElements(MoveOperation[] moveOperations) 
-	{
+	{		
 		MoveElementCommand cmd = new MoveElementCommand(this, moveOperations);
-		execute(cmd);
+		execute(cmd);		
 	}
 
 	/** {@inheritDoc} */

@@ -396,6 +396,31 @@ public class ModelHelper {
 		cloned.setName(classifier.getName());
 		cloned.setIsAbstract(classifier.isIsAbstract());
 		cloned.setVisibility(classifier.getVisibility());
+		
+		if(cloned instanceof RefOntoUML.Class)
+		{
+			RefOntoUML.Class clonedClass = (RefOntoUML.Class)cloned;
+			RefOntoUML.Class classifierClass = (RefOntoUML.Class)classifier;
+			
+			for(Property p: classifierClass.getOwnedAttribute())
+			{
+				RefOntoUML.Property clonedAttr = clone(p);
+				clonedClass.getOwnedAttribute().add(clonedAttr);
+			}
+		}
+
+		if(cloned instanceof RefOntoUML.DataType)
+		{
+			RefOntoUML.DataType clonedClass = (RefOntoUML.DataType)cloned;
+			RefOntoUML.DataType classifierClass = (RefOntoUML.DataType)classifier;
+			
+			for(Property p: classifierClass.getOwnedAttribute())
+			{
+				RefOntoUML.Property clonedAttr = clone(p);
+				clonedClass.getOwnedAttribute().add(clonedAttr);
+			}
+		}
+		
 		return cloned;
 	}
 
@@ -434,65 +459,20 @@ public class ModelHelper {
 				meronymicCloned.setIsImmutablePart(meronymic.isIsImmutablePart());				
 			}
 			
-			RefOntoUML.Property p1Cloned = (RefOntoUML.Property)factory.create(association.getMemberEnd().get(0).eClass());
-			RefOntoUML.Property p2Cloned = (RefOntoUML.Property)factory.create(association.getMemberEnd().get(1).eClass());
-			RefOntoUML.Property p1 = association.getMemberEnd().get(0);
-			RefOntoUML.Property p2 = association.getMemberEnd().get(1);
+			RefOntoUML.Property p1Cloned = clone(association.getMemberEnd().get(0));
+			RefOntoUML.Property p2Cloned = clone(association.getMemberEnd().get(1));
 			
-			p1Cloned.setAggregation(p1.getAggregation());
-			p2Cloned.setAggregation(p2.getAggregation());
-			
-			p1Cloned.setType(p1.getType());
-			p2Cloned.setType(p2.getType());
-			
-			LiteralInteger lower1Cloned = factory.createLiteralInteger();
-			lower1Cloned.setValue(p1.getLower());
-			LiteralUnlimitedNatural upper1Cloned = factory.createLiteralUnlimitedNatural();
-			upper1Cloned.setValue(p1.getUpper());
-			
-			p1Cloned.setLowerValue(lower1Cloned);			
-			p1Cloned.setUpperValue(upper1Cloned);
-			
-			LiteralInteger lower2Cloned = factory.createLiteralInteger();
-			lower2Cloned.setValue(p2.getLower());
-			LiteralUnlimitedNatural upper2Cloned = factory.createLiteralUnlimitedNatural();
-			upper2Cloned.setValue(p2.getUpper());
-			
-			p2Cloned.setLowerValue(lower2Cloned);			
-			p2Cloned.setUpperValue(upper2Cloned);
-			
-			String node1Name  = new String();		
-			if(p1.getType()!=null)
-			{ 
-				node1Name = p1.getType().getName();	    		
-				if(node1Name==null || node1Name.trim().isEmpty()) node1Name = "source";
-				else node1Name = node1Name.trim().toLowerCase();
-			}
-			String node2Name  = new String();
-			if(p2.getType()!=null)
-			{ 
-				node2Name = p2.getType().getName();	    		
-				if(node2Name==null || node2Name.trim().isEmpty()) node2Name = "target";
-				else node2Name = node2Name.trim().toLowerCase();
-			}
-			
-			p1Cloned.setName(node1Name);
-			p2Cloned.setName(node2Name);	
-						
 			associationCloned.getMemberEnd().add(p1Cloned);
 			associationCloned.getMemberEnd().add(p2Cloned);
 			associationCloned.getOwnedEnd().add(p1Cloned);
-			associationCloned.getOwnedEnd().add(p2Cloned);
-			
+			associationCloned.getOwnedEnd().add(p2Cloned);			
 			if(association instanceof DirectedBinaryAssociationImpl || association instanceof FormalAssociationImpl || association instanceof MaterialAssociationImpl)
 			{
 				associationCloned.getNavigableOwnedEnd().add(p1Cloned);
 				associationCloned.getNavigableOwnedEnd().add(p2Cloned);	    			
 				//If the association is Mediation or Characterization, set target readonly to help in validation
 				if(association instanceof MediationImpl || association instanceof CharacterizationImpl || association instanceof DerivationImpl) p2Cloned.setIsReadOnly(true);
-			}
-			else
-			{
+			} else {
 				if(p1Cloned.getType() instanceof DataTypeImpl) associationCloned.getNavigableOwnedEnd().add(p1Cloned);	    		
 				if(p2Cloned.getType() instanceof DataTypeImpl) associationCloned.getNavigableOwnedEnd().add(p2Cloned);
 			}	
@@ -500,6 +480,28 @@ public class ModelHelper {
 						
 		return cloned;
 	}	  
+	
+	public static Property clone(RefOntoUML.Property property)
+	{
+		RefOntoUML.Property cloned = (RefOntoUML.Property)factory.create(property.eClass());
+		cloned.setAggregation(property.getAggregation());				
+		cloned.setType(property.getType());
+		LiteralInteger lower1Cloned = factory.createLiteralInteger();
+		lower1Cloned.setValue(property.getLower());
+		LiteralUnlimitedNatural upper1Cloned = factory.createLiteralUnlimitedNatural();
+		upper1Cloned.setValue(property.getUpper());		
+		cloned.setLowerValue(lower1Cloned);			
+		cloned.setUpperValue(upper1Cloned);		
+		String node1Name  = new String();		
+		if(property.getType()!=null)
+		{ 
+			node1Name = property.getType().getName();	    		
+			if(node1Name==null || node1Name.trim().isEmpty()) node1Name = "";
+			else node1Name = node1Name.trim().toLowerCase();
+		}
+		cloned.setName(node1Name);
+		return cloned;
+	}
 	  
 //	public static boolean validate(RefOntoUML.Package model, DiagnosticChain diagnostics,
 //			Map<Object, Object> context) {
