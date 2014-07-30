@@ -93,7 +93,7 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 			if (prop.getAssociation() != null && prop.getAssociation() instanceof DirectedBinaryAssociation)
 			{
 				DirectedBinaryAssociation dbassoc = (DirectedBinaryAssociation) prop.getAssociation();
-				if (dbassoc.getMemberEnd().size() == 2 && dbassoc.sourceEnd().getType() != null && dbassoc.targetEnd().getType() != null)
+				if (dbassoc.getMemberEnd().size() == 2 && dbassoc.getMemberEnd().get(0).getType() != null && dbassoc.getMemberEnd().get(1).getType() != null)
 				{
 					if ((dbassoc instanceof Mediation && !(((Mediation)dbassoc).relator() instanceof Relator)) ||
 			    			(dbassoc instanceof Characterization && !(((Characterization)dbassoc).characterizing() instanceof Mode)) ||
@@ -101,7 +101,7 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 			    			dbassoc.targetEnd().getAggregation() == AggregationKind.COMPOSITE ||
 			    			dbassoc.targetEnd().getAggregation() == AggregationKind.SHARED)
 					{
-						if (dbassoc.sourceEnd() == prop)
+						if (dbassoc.getMemberEnd().get(0) == prop)
 						{
 							dbassoc.getMemberEnd().remove(prop);
 							dbassoc.getMemberEnd().add(1, prop);
@@ -110,13 +110,15 @@ public class XMI2RefProperty extends XMI2RefNamedElement
 							dbassoc.getMemberEnd().remove(prop);
 							dbassoc.getMemberEnd().add(0, prop);
 						}
+						
+						//And also sets the readOnly property true for the following associations,
+						//accordingly to the OntoUML specification
+						if (dbassoc instanceof Mediation || dbassoc instanceof Characterization || dbassoc instanceof Derivation)
+							dbassoc.getMemberEnd().get(1).setIsReadOnly(true);
 			    	}
 				}
 				
-				//And also sets the readOnly property true for the following associations,
-				//accordingly to the OntoUML specification
-				if (dbassoc instanceof Mediation || dbassoc instanceof Characterization || dbassoc instanceof Derivation)
-					dbassoc.targetEnd().setIsReadOnly(true);
+				
 			}
 			
 			if (autoGenerateNames && (((Property)RefOntoUMLElement).getName() == null || ((Property)RefOntoUMLElement).getName().equals("")))
