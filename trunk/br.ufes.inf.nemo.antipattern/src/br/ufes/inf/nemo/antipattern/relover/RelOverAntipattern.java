@@ -102,8 +102,12 @@ public class RelOverAntipattern extends OverlappingAntipattern<RelOverOccurrence
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
-	
-	//@Override
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
+	@Deprecated
 	public ArrayList<RelOverOccurrence> identifyOCL() {
 		Map<Classifier, ArrayList<Property>> query_result;
 		

@@ -39,6 +39,10 @@ public class MixIdenAntipattern extends Antipattern<MixIdenOccurrence> {
 		return info;
 	}
 
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	@Override
 	public ArrayList<MixIdenOccurrence> identify() {
 		

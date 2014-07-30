@@ -69,7 +69,6 @@ public class AssCycRefactoringPage extends RefactoringPage {
 	public void createControl(Composite parent) 
 	{
 		Composite container = new Composite(parent, SWT.NONE);
-
 		setControl(container);
 
 		lblCreateOclDerivation = new Label(container, SWT.NONE);

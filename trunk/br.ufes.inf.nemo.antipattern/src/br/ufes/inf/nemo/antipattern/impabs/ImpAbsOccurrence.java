@@ -252,17 +252,19 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		if(association.getMemberEnd().size()!=2)
 			throw new Exception("The provided association must relate exactly two elements. MemberEnd may be null or undefined");
 		
-		this.sourceType = (Classifier) SourceTargetAssociation.getSourceAlloy(association);
+		//WARNING: Getting all children from both ends may generate a really big combination in the wizard.
 		
+		this.sourceType = (Classifier) SourceTargetAssociation.getSourceAlloy(association);
 		this.sourceChildren = new ArrayList<Classifier>();
-		this.sourceChildren.addAll(sourceType.allChildren());
+		if(parser.allChildrenHash.containsKey(sourceType))
+			this.sourceChildren.addAll(parser.allChildrenHash.get(sourceType));
 		//this.sourceChildren.addAll(source.children());
 		
-		this.targetType = (Classifier) SourceTargetAssociation.getTargetAlloy(association);
-		
+		this.targetType = (Classifier) SourceTargetAssociation.getTargetAlloy(association);		
 		this.targetChildren = new ArrayList<Classifier>();
-		/*If the method get all the children, the number of combinations will be too big*/
-		this.targetChildren.addAll(targetType.allChildren());
+		if(parser.allChildrenHash.containsKey(targetType))
+			this.targetChildren.addAll(parser.allChildrenHash.get(targetType));
+
 		//this.targetChildren.addAll(target.children());
 		
 	}

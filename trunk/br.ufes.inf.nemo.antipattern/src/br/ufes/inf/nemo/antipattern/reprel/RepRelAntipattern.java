@@ -70,6 +70,10 @@ public class RepRelAntipattern extends Antipattern<RepRelOccurrence> {
 			"such that the upper bound cardinalities at the relator end are greater than one.",
 			oclQuery);
 
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	private HashMap<Classifier,HashSet<Property>> problematicMediatedHash;
 
 	private HashMap<Classifier, HashSet<Property>> allMediatedHash; 
@@ -98,7 +102,9 @@ public class RepRelAntipattern extends Antipattern<RepRelOccurrence> {
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
+
 	
+
 	@Deprecated
 	public ArrayList<RepRelOccurrence> identifyOLD() {
 		buildProblematicMediatedEndsHash();

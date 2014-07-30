@@ -52,7 +52,11 @@ public class RelRigAntipattern extends Antipattern<RelRigOccurrence> {
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
-	
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	@Deprecated
 	public ArrayList<RelRigOccurrence> identifyOCL() {
 		ArrayList<Relator> query_result;

@@ -27,7 +27,9 @@ public abstract class Antipattern<T extends AntipatternOccurrence> {
 	public static AntipatternInfo getAntipatternInfo(){
 		throw new IllegalStateException("Antipattern info hasn't been set up in the subclass");
 	}
-		
+	
+	public abstract AntipatternInfo info();
+	
 	public abstract ArrayList<T> identify();
 	
 	public ArrayList<T> getOccurrences(){

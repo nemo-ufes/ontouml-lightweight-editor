@@ -40,6 +40,10 @@ public class MixRigAntipattern extends Antipattern<MixRigOccurrence> {
 		return info;
 	}
 
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	@Override
 	public ArrayList<MixRigOccurrence> identify() {
 		ArrayList<Mixin> query_result;

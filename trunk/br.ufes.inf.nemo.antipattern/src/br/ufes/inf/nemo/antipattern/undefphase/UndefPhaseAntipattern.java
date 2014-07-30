@@ -44,7 +44,11 @@ private static final String oclQuery =
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
-	
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	@Override
 	public ArrayList<UndefPhaseOccurrence> identify() {
 		ArrayList<GeneralizationSet> query_result;

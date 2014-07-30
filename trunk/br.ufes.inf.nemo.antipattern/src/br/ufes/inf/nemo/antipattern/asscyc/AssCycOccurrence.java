@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.antipattern.asscyc;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -54,7 +55,7 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		for (int i = 1; i<associationList.size(); i++) {
 			
 			source = associationList.get(i).getMemberEnd().get(0).getType();
-			target = associationList.get(i).getMemberEnd().get(0).getType();
+			target = associationList.get(i).getMemberEnd().get(1).getType();
 			
 			if(lastTarget.equals(source)){
 				getAssociationClassList().add((Class) target);
@@ -482,11 +483,18 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		alignedList.add(new Edge(a, source.getOpposite()));
 		
 		ArrayList<Relationship> visited = new ArrayList<Relationship>();
+		ArrayList<Relationship> remainder = new ArrayList<Relationship>(relationshipCycle);
+		
 		visited.add(a);
+		remainder.remove(a);
+		
 		Type currentNode = source.getOpposite().getType();
 		
-		while(!visited.containsAll(relationshipCycle)){
-			for (Relationship r : relationshipCycle) {
+		while(remainder.size()>0){
+			Iterator<Relationship> iterator = remainder.iterator();
+			while (iterator.hasNext()) {
+				Relationship r = iterator.next();
+
 				if(r instanceof Association){
 					Association assoc = (Association) r;
 					Property sourceEnd = assoc.getMemberEnd().get(0);
@@ -496,31 +504,35 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 						alignedList.add(new Edge(assoc, targetEnd));
 						currentNode = targetEnd.getType();
 						visited.add(assoc);
+						iterator.remove();
 						break;
 					}
 					if(targetEnd.getType().equals(currentNode)){
 						alignedList.add(new Edge(assoc, sourceEnd));
 						currentNode = sourceEnd.getType();
 						visited.add(assoc);
+						iterator.remove();
 						break;
 					}
 				}
 				
 				if(r instanceof Generalization){
 					Generalization gen = (Generalization) r;
-					Classifier sourceEnd = gen.getSpecific();
-					Classifier targetEnd = gen.getGeneral();
+					Classifier child = gen.getSpecific();
+					Classifier parent = gen.getGeneral();
 					
-					if(sourceEnd.equals(currentNode)){
-						alignedList.add(new Edge(gen, targetEnd));
-						currentNode = targetEnd;
+					if(child.equals(currentNode)){
+						alignedList.add(new Edge(gen, parent));
+						currentNode = parent;
 						visited.add(gen);
+						iterator.remove();
 						break;
 					}
-					if(targetEnd.equals(currentNode)){
-						alignedList.add(new Edge(gen, sourceEnd));
-						currentNode = sourceEnd;
+					if(parent.equals(currentNode)){
+						alignedList.add(new Edge(gen, child));
+						currentNode = child;
 						visited.add(gen);
+						iterator.remove();
 						break;
 					}
 				}
@@ -528,6 +540,7 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		}
 		return alignedList;
 	}
+	
 
 }
 

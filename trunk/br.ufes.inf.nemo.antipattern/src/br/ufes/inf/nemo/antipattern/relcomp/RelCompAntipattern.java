@@ -71,7 +71,11 @@ public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
 	}
-	
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	@Deprecated
 	public ArrayList<RelCompOccurrence> identifyOCL() {
 		ArrayList<SimpleTuple<Association, Association>> query_result;

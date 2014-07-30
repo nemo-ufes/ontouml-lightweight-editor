@@ -62,6 +62,10 @@ public class RelSpecAntipattern extends Antipattern<RelSpecOccurrence> {
 		return info;
 	}
 
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	@Deprecated
 	public ArrayList<RelSpecOccurrence> identifyOCL() {
 		ArrayList<SimpleTuple<Association, Association>> query_result;

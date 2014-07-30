@@ -70,6 +70,12 @@ public class PartOverAntipattern extends OverlappingAntipattern<PartOverOccurren
 		return info;
 	}
 	
+
+	public AntipatternInfo info(){
+		return info;
+	}
+
+	
 	//@Override
 	public ArrayList<PartOverOccurrence> identifyOCL() {
 		Map<Classifier, ArrayList<Property>> query_result;

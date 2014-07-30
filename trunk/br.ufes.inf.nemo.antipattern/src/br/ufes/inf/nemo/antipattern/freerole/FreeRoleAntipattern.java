@@ -72,6 +72,10 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 		return info;
 	}
 	
+	public AntipatternInfo info(){
+		return info;
+	}
+
 	public ArrayList<FreeRoleOccurrence> identifyOCL() {
 		Map<Classifier, ArrayList<Property>> query_result;
 		
