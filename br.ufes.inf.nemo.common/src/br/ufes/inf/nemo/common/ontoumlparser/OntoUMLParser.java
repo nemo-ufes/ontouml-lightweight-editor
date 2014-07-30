@@ -110,6 +110,7 @@ public class OntoUMLParser {
 	 */
 	public OntoUMLParser(String refontoumlPath) throws IOException
 	{
+		
 		Resource resource = ResourceUtil.loadReferenceOntoUML(refontoumlPath);
 		Package refmodel = (Package)resource.getContents().get(0);	
 		
