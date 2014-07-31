@@ -97,7 +97,7 @@ public final class Main {
 	
 	/** Returns true iff running on Mac OS X. **/
 	public static boolean onMac() {
-      return System.getProperty("mrj.version")!=null || System.getProperty("os.name").toLowerCase(Locale.US).startsWith("mac ");
+      return System.getProperty("mrj.version")!=null || System.getProperty("os.name").toLowerCase(Locale.US).startsWith("mac ");                                     
 	}	
 	
 	/** Returns true if a font with that name exists on the system (comparison is case-insensitive). */
