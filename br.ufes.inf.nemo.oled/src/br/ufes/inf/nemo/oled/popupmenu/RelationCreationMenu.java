@@ -2,6 +2,11 @@ package br.ufes.inf.nemo.oled.popupmenu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
@@ -16,6 +21,7 @@ public class RelationCreationMenu  extends JMenu{
 	
 	public DiagramManager diagramManager;
 	public RefOntoUML.Element eContainer;
+	public HashMap<String,JMenuItem> elementsMap = new HashMap<String,JMenuItem>();
 	
 	public RelationCreationMenu(final DiagramManager diagramManager, RefOntoUML.Element eContainer)
 	{		
@@ -38,77 +44,88 @@ public class RelationCreationMenu  extends JMenu{
 		JMenuItem subquantityOfItem = new JMenuItem("SubQuantityOf");
 		JMenuItem subcollectionOfItem = new JMenuItem("SubCollectionOf");	
 		JMenuItem derivationItem = new JMenuItem("Derivation");
-		add(materialItem);
+		//add(materialItem);
+		elementsMap.put("material",materialItem);
 		materialItem.addActionListener(new ActionListener() {				
 	    	@Override
 	    	public void actionPerformed(ActionEvent e) {
 	    		diagramManager.addRelation(RelationType.MATERIAL,eContainer);
 	    	}
 	    });
-		add(formalItem);
+		//add(formalItem);
+		elementsMap.put("formal",formalItem);
 		formalItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		diagramManager.addRelation(RelationType.FORMAL,eContainer);
         	}
         });    			
-		add(characterizationItem);
+		//add(characterizationItem);
+		elementsMap.put("characterization",characterizationItem);
 		characterizationItem.addActionListener(new ActionListener() {				
 	        	@Override
 	        	public void actionPerformed(ActionEvent e) {
 	        		diagramManager.addRelation(RelationType.CHARACTERIZATION,eContainer);
 	        	}
 	        });    			
-		add(mediationItem);
+		//add(mediationItem);
+		elementsMap.put("mediation",mediationItem);
 		mediationItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		diagramManager.addRelation(RelationType.MEDIATION,eContainer);
         	}
         });
-		add(componentOfItem);
+		//add(componentOfItem);
+		elementsMap.put("componentOf",componentOfItem);
 		componentOfItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		diagramManager.addRelation(RelationType.COMPONENTOF,eContainer);
         	}
         });
-		add(memberOfItem);        
+		//add(memberOfItem);
+		elementsMap.put("memberOf",memberOfItem);       
 		memberOfItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		diagramManager.addRelation(RelationType.MEMBEROF,eContainer);
         	}
         });
-		add(subcollectionOfItem);
+		//add(subcollectionOfItem);
+		elementsMap.put("subcollectionOf",subcollectionOfItem);
 		subcollectionOfItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		diagramManager.addRelation(RelationType.SUBCOLLECTIONOF,eContainer);
         	}
         });    			
-		add(subquantityOfItem);
+		//add(subquantityOfItem);
+        elementsMap.put("subquantityOf",subquantityOfItem);
 		subquantityOfItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		diagramManager.addRelation(RelationType.SUBQUANTITYOF,eContainer);
         	}
         });    	
-		add(structurationItem);
+		//add(structurationItem);
+        elementsMap.put("structuration",structurationItem);
 		structurationItem.addActionListener(new ActionListener() {				
 	    	@Override
 	    	public void actionPerformed(ActionEvent e) {
 	    		diagramManager.addRelation(RelationType.STRUCTURATION,eContainer);
 	    	}
 	    });
-		add(associationItem);
+		//add(associationItem);
+		elementsMap.put("association",associationItem);
 		associationItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		diagramManager.addRelation(RelationType.ASSOCIATION,eContainer);
         	}
         });  
-		add(derivationItem);
+		//add(derivationItem);
+        elementsMap.put("derivation",derivationItem);
 		derivationItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -125,6 +142,32 @@ public class RelationCreationMenu  extends JMenu{
         structurationItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/structuration.png")));
         subcollectionOfItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/subcollectionof.png")));
         subquantityOfItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/subquantityof.png")));
-        derivationItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/derivation.png")));	
+        derivationItem.setIcon(new ImageIcon(RelationCreationMenu.class.getResource("/resources/icons/x16/tree/derivation.png")));
+        
+        sort();
+	}
+	
+	public void sort()
+	{
+		ArrayList<JMenuItem> result = sort(elementsMap.values());		
+		for(JMenuItem pe: result){
+			add(pe);			
+		}
+	}
+	
+	class JMenuItemComparator implements Comparator<JMenuItem> 
+    {
+        @Override
+        public int compare(JMenuItem o1, JMenuItem o2) {        	
+        	return o1.getText().compareToIgnoreCase(o2.getText());
+        }
+    }
+	
+	public ArrayList<JMenuItem> sort(Collection<JMenuItem> list)
+	{
+		ArrayList<JMenuItem> result = new ArrayList<JMenuItem>();
+		result.addAll(list);
+		Collections.sort(result,new JMenuItemComparator());
+		return result;
 	}
 }

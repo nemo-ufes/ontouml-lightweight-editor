@@ -23,6 +23,11 @@ package br.ufes.inf.nemo.oled.popupmenu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
@@ -49,6 +54,7 @@ public class RelationStereotypeChangeMenu extends JMenu{
 	
 	public DiagramManager diagramManager;
 	public RefOntoUML.Relationship type;
+	public HashMap<String,JMenuItem> elementsMap = new HashMap<String,JMenuItem>();
 	
 	public void setElement(RefOntoUML.Element element)
 	{
@@ -81,77 +87,88 @@ public class RelationStereotypeChangeMenu extends JMenu{
 		JMenuItem subquantityOfItem = new JMenuItem("SubQuantityOf");
 		JMenuItem subcollectionOfItem = new JMenuItem("SubCollectionOf");		
 		JMenuItem derivationItem = new JMenuItem("Derivation");    			
-		add(materialItem);
+		//add(materialItem);
+		elementsMap.put("material",materialItem);
 		materialItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof MaterialAssociation))diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Material");
         	}
         });
-		add(formalItem);
+		//add(formalItem);
+		elementsMap.put("formal",formalItem);
 		formalItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof FormalAssociation)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Formal");
         	}
 		});
-        add(characterizationItem);
+        //add(characterizationItem);
+		elementsMap.put("characterization",characterizationItem);
         characterizationItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Characterization))diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Characterization");
         	}
         });
-		add(mediationItem);
+		//add(mediationItem);
+        elementsMap.put("mediation",mediationItem);
 		mediationItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Mediation)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Mediation");
         	}
         });		
-		add(componentOfItem);
+		//add(componentOfItem);
+		elementsMap.put("componentOf",componentOfItem);
 		componentOfItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof componentOf)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"ComponentOf");
         	}
         });
-		add(memberOfItem);
+		//add(memberOfItem);
+		elementsMap.put("memberOf",memberOfItem);
 		memberOfItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof memberOf)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"MemberOf");
         	}
         });
-        add(subcollectionOfItem);
+        //add(subcollectionOfItem);
+		elementsMap.put("subcollectionOf",subcollectionOfItem);
         subcollectionOfItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof subCollectionOf))diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"SubCollectionOf");
         	}
         });
-        add(subquantityOfItem);
+        //add(subquantityOfItem);
+        elementsMap.put("subquantityOf",subquantityOfItem);
         subquantityOfItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof subQuantityOf)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"SubQuantityOf");
         	}
         });
-        add(structurationItem);
+        //add(structurationItem);
+        elementsMap.put("structuration",structurationItem);
 		structurationItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Mediation)) diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Structuration");
         	}
         });
-        add(associationItem);
+        //add(associationItem);
+		elementsMap.put("association",associationItem);
         associationItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Association))diagramManager.changeRelationStereotype((RefOntoUML.Relationship)type,"Association");
         	}
         });
-        add(derivationItem);
+        //add(derivationItem);
+        elementsMap.put("derivation",derivationItem);
         derivationItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -168,7 +185,32 @@ public class RelationStereotypeChangeMenu extends JMenu{
         subcollectionOfItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/subcollectionof.png")));
         structurationItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/structuration.png")));
         subquantityOfItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/subquantityof.png")));
-        derivationItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/derivation.png")));	
+        derivationItem.setIcon(new ImageIcon(RelationStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/derivation.png")));
         
+        sort();        
+	}
+	
+	public void sort()
+	{
+		ArrayList<JMenuItem> result = sort(elementsMap.values());		
+		for(JMenuItem pe: result){
+			add(pe);			
+		}
+	}
+	
+	class JMenuItemComparator implements Comparator<JMenuItem> 
+    {
+        @Override
+        public int compare(JMenuItem o1, JMenuItem o2) {        	
+        	return o1.getText().compareToIgnoreCase(o2.getText());
+        }
+    }
+	
+	public ArrayList<JMenuItem> sort(Collection<JMenuItem> list)
+	{
+		ArrayList<JMenuItem> result = new ArrayList<JMenuItem>();
+		result.addAll(list);
+		Collections.sort(result,new JMenuItemComparator());
+		return result;
 	}
 }
