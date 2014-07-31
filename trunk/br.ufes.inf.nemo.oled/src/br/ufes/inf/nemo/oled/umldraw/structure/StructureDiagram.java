@@ -68,7 +68,6 @@ import RefOntoUML.impl.ClassImpl;
 import RefOntoUML.impl.NonRigidMixinClassImpl;
 import RefOntoUML.impl.PackageImpl;
 import RefOntoUML.impl.SubstanceSortalImpl;
-import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
@@ -200,7 +199,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	public StructureDiagram(UmlProject project, DiagramElementFactoryImpl elementFactory) {
 		initializeNameLabel();		
 		this.project = project;
-		setSize(AppFrame.GetScreenWorkingWidth()*2, AppFrame.GetScreenWorkingHeight()*2);
+		//setSize(AppFrame.GetScreenWorkingWidth(), AppFrame.GetScreenWorkingHeight());
 		simulationElements.add(getStateSimulationElement());
 		this.elementFactory = elementFactory;
 	}

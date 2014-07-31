@@ -583,10 +583,19 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		updateUI();
 	}
 
+	public void setDefaultDiagramSize(StructureDiagram diagram)
+	{
+		double waste = 0;
+		if(frame.isShowBrowser()) waste+=240;
+		if(frame.isShowToolBox()) waste+=240;
+		diagram.setSize(AppFrame.GetScreenWorkingWidth()-waste+100, AppFrame.GetScreenWorkingHeight()-100);
+	}
+	
 	/** Creates a new Diagram with in existing Project */
 	public void newDiagram(UmlProject project)
 	{
-		StructureDiagram diagram = new StructureDiagram(project,elementFactory);		
+		StructureDiagram diagram = new StructureDiagram(project,elementFactory);	
+		setDefaultDiagramSize(diagram);
 		diagram.setLabelText("Diagram"+getCurrentProject().getDiagrams().size());
 		getCurrentProject().addDiagram(diagram);
 		saveDiagramNeeded(diagram,false);
@@ -615,6 +624,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if (currentProject!=null)
 		{
 			StructureDiagram diagram = new StructureDiagram(getCurrentProject(), elementFactory);
+			setDefaultDiagramSize(diagram);
 			diagram.setLabelText("Diagram"+getCurrentProject().getDiagrams().size());
 			getCurrentProject().addDiagram(diagram);						
 			saveDiagramNeeded(diagram,true);
