@@ -57,7 +57,7 @@ public class Counters{
 			}
 		}
 
-		System.out.println();
+		//System.out.println();
 	}
 
 	public String getReturnMessage(){
