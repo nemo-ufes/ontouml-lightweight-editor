@@ -263,7 +263,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 				wrapper.getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			}
 			wrapper.getScrollPane().updateUI();								
-		}
+		}		
 	}
 
 	/** Adds the event handlers. */
@@ -276,7 +276,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		// BaseEditor listeners
 		captionEditor.addActionListener(this);
 		
-		//Diagram PopupMenu
 		addMouseListener(new MouseAdapter()
 	    {
 			@Override
@@ -294,7 +293,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	            }			    
 			}	       
 	    });					
-		
+				
 		// install Scape KeyBinding
 		getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(' '),"openToolBoxMenu");
 		getActionMap().put("openToolBoxMenu", new AbstractAction() {
@@ -352,6 +351,28 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		});
 	}
 
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) 
+	{
+		if (e.isControlDown())
+		{
+            if (e.getWheelRotation() < 0)
+            {
+            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) {
+            		zoomIn();            		            		
+            	}
+            }
+            if (e.getWheelRotation() > 0)
+            {
+            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) {
+            		zoomOut();            		
+            	}
+            }
+		}else{			
+					    
+		}
+	}
+	
 	/** Cancels the current edit action. */
 	public void cancelEditing() 
 	{				
@@ -615,30 +636,6 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	{
 		if (!stopEditing()) editorMode.mouseClicked(convertMouseEvent(e));		
 	}
-
-	// ************************************************************************
-	// ***** MouseWheelListener
-	// ************************************************************************
-
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) 
-	{
-		if (e.isControlDown())
-		{
-            if (e.getWheelRotation() < 0)
-            {
-            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) {
-            		zoomIn();            		
-            	}
-            }
-            if (e.getWheelRotation() > 0)
-            {
-            	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) {
-            		zoomOut();            		
-            	}
-            }
-		}
-	}
 	
 	// ************************************************************************
 	// ***** MouseMotionListener
@@ -792,9 +789,61 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		recalculateSize();				
 	}
 		
+	public void fitToWindow()
+	{		
+		double waste = 20;
+		if(frame.isShowBrowser()) waste+=240;
+		if(frame.isShowToolBox()) waste+=240;
+		double offx = (AppFrame.GetScreenWorkingWidth()-waste)/getUsedCanvasSize().get(1).getX();
+		double offy = (AppFrame.GetScreenWorkingHeight()-200)/getUsedCanvasSize().get(1).getY();
+		double diffx = (getUsedCanvasSize().get(1).getX()-(AppFrame.GetScreenWorkingWidth()-waste));
+		double diffy = (getUsedCanvasSize().get(1).getY()-(AppFrame.GetScreenWorkingHeight()-200));
+		if(diffx < 0)diffx=0;
+		if(diffy < 0)diffy=0;
+		if(diffx > diffy){	
+			setScaling(getScaling(offx));			
+			wrapper.getToolBar().update();
+		}else if (diffx < diffy){
+			setScaling(getScaling(offy));			
+			wrapper.getToolBar().update();
+		}
+	}
+	
 	public String getZoomPercentualValue()
 	{
 		return scaling.toString().replace(".0","");
+	}
+	
+	public void zoom100()
+	{
+		setScaling(Scaling.SCALING_100);	
+		wrapper.getToolBar().update();
+	}
+	
+	public Scaling getScaling(double value)
+	{
+		if (value >= 1.50) return Scaling.SCALING_150; 
+		else if (value < 1.50 && value >= 1.45) return Scaling.SCALING_145;
+		else if (value < 1.45 && value >= 1.40) return Scaling.SCALING_140;
+		else if (value < 1.40 && value >= 1.35) return Scaling.SCALING_135;
+		else if (value < 1.35 && value > 1.30) return Scaling.SCALING_130;
+		else if (value < 1.30 && value >= 1.25) return Scaling.SCALING_125;
+		else if (value < 1.25 && value >= 1.20) return Scaling.SCALING_120;
+		else if (value < 1.20 && value >= 1.15) return Scaling.SCALING_115;
+		else if (value < 1.15 && value >= 1.10) return Scaling.SCALING_110;
+		else if (value < 1.10 && value >= 1.05) return Scaling.SCALING_105;
+		else if (value < 1.05 && value >= 1.00) return Scaling.SCALING_100;
+		else if (value < 1.00 && value >= 0.95) return Scaling.SCALING_95;
+		else if (value < 0.95 && value >= 0.90) return Scaling.SCALING_90;
+		else if (value < 0.90 && value >= 0.85) return Scaling.SCALING_85;
+		else if (value < 0.85 && value >= 0.80) return Scaling.SCALING_80;
+		else if (value < 0.80 && value >= 0.75) return Scaling.SCALING_75;
+		else if (value < 0.75 && value >= 0.70) return Scaling.SCALING_70;
+		else if (value < 0.70 && value >= 0.65) return Scaling.SCALING_65;
+		else if (value < 0.65 && value >= 0.60) return Scaling.SCALING_60;
+		else if (value < 0.60 && value >= 0.55) return Scaling.SCALING_55;
+		else if (value < 0.55) return Scaling.SCALING_50;
+		return Scaling.SCALING_100;
 	}
 	
 	public void zoomOut()
@@ -819,6 +868,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		else if (scaling.equals(Scaling.SCALING_65)) setScaling(Scaling.SCALING_60);
 		else if (scaling.equals(Scaling.SCALING_60)) setScaling(Scaling.SCALING_55);
 		else if (scaling.equals(Scaling.SCALING_55)) setScaling(Scaling.SCALING_50);
+		wrapper.getToolBar().update();
 	}
 	
 	public void zoomIn()
@@ -842,7 +892,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		else if (scaling.equals(Scaling.SCALING_130)) setScaling(Scaling.SCALING_135);
 		else if (scaling.equals(Scaling.SCALING_135)) setScaling(Scaling.SCALING_140);
 		else if (scaling.equals(Scaling.SCALING_140)) setScaling(Scaling.SCALING_145);
-		else if (scaling.equals(Scaling.SCALING_145)) setScaling(Scaling.SCALING_150);		
+		else if (scaling.equals(Scaling.SCALING_145)) setScaling(Scaling.SCALING_150);	
+		wrapper.getToolBar().update();
 	}
 	
 	/** Sets the editor into selection mode. */

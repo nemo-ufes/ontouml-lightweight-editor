@@ -68,6 +68,8 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnColor;
 	private JToggleButton btnInfo;
 	private JButton btnMeronymic;
+	private JButton btnFitToWindow;
+	private JButton btnZoom100;
 	
 	public void update(){
 		btnGrid.setSelected(editor.showGrid());
@@ -244,13 +246,24 @@ public class DiagramToolbar extends JToolBar {
 		btnExportPng.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/photo.png")));
 		add(btnExportPng);
 		
+		btnZoom100 = new JButton("");
+		btnZoom100.setToolTipText("Zoom at 100%");
+		btnZoom100.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		editor.zoom100();
+        	}
+        });
+		btnZoom100.setFocusable(false);
+		btnZoom100.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/zoom-100.png")));
+		add(btnZoom100);
+		
 		btnZoomOut = new JButton("");
 		btnZoomOut.setToolTipText("Zoom out");
 		btnZoomOut.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
-        		editor.zoomOut();
-        		btnZoomStatus.setText(editor.getZoomPercentualValue()+"%");
+        		editor.zoomOut();        		
         	}
         });	
 		btnZoomOut.setFocusable(false);
@@ -262,14 +275,25 @@ public class DiagramToolbar extends JToolBar {
 		btnZoomIn.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
-        		editor.zoomIn();
-        		btnZoomStatus.setText(editor.getZoomPercentualValue()+"%");
+        		editor.zoomIn();        		
         	}
         });
 		btnZoomIn.setFocusable(false);
 		btnZoomIn.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/zoom-in.png")));
 		add(btnZoomIn);
 				
+		btnFitToWindow = new JButton("");
+		btnFitToWindow.setToolTipText("Fit to Window");
+		btnFitToWindow.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		editor.fitToWindow();
+        	}
+        });
+		btnFitToWindow.setFocusable(false);
+		btnFitToWindow.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/arrow_in.png")));
+		add(btnFitToWindow);
+		
 		btnZoomStatus = new JButton("100%");
 		btnZoomStatus.setContentAreaFilled(false);		
 		btnZoomStatus.setFocusable(false);

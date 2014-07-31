@@ -69,8 +69,8 @@ public class DiagramEditorWrapper extends JPanel implements Editor{
 		
 		scrollpane = new JScrollPane();
 		scrollpane.setBackground(Color.WHITE);
-		scrollpane.getVerticalScrollBar().setUnitIncrement(10);
-		scrollpane.getHorizontalScrollBar().setUnitIncrement(10);
+		scrollpane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollpane.getHorizontalScrollBar().setUnitIncrement(16);
 		scrollpane.setWheelScrollingEnabled(true);
 		scrollpane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
