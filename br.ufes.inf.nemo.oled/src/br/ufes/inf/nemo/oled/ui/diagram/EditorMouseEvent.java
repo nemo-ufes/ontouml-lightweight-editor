@@ -57,7 +57,7 @@ public class EditorMouseEvent {
    * @return the x coordinate
    */
   public double getX() {
-    return scaling == Scaling.SCALING_100 ? event.getX() :
+    return scaling ==  Scaling.SCALING_100 ? event.getX() :
       event.getX()/scaling.getScaleFactor();
   }
 
@@ -71,7 +71,7 @@ public class EditorMouseEvent {
    * @return the y coordinate
    */
   public double getY() {
-    return scaling == Scaling.SCALING_100 ? event.getY() :
+    return scaling ==  Scaling.SCALING_100 ? event.getY() :
     	event.getY()/scaling.getScaleFactor();
   }
 

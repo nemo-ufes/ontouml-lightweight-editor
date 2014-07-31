@@ -359,17 +359,26 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
             if (e.getWheelRotation() < 0)
             {
             	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) {
-            		zoomIn();            		            		
+            		zoomIn();
+//            		centeredZoomIn(e.getPoint());
             	}
             }
             if (e.getWheelRotation() > 0)
             {
             	for (int i = 0; i< Math.abs(e.getWheelRotation());i++) {
-            		zoomOut();            		
+            		zoomOut();
+//            		centeredZoomOut(e.getPoint());
             	}
             }
-		}else{			
-					    
+		}else{	
+			if (e.getWheelRotation() < 0)
+            {
+				wrapper.getScrollPane().getVerticalScrollBar().setValue(wrapper.getScrollPane().getVerticalScrollBar().getValue()-60);
+            }
+			if (e.getWheelRotation() > 0)
+            {
+				wrapper.getScrollPane().getVerticalScrollBar().setValue(wrapper.getScrollPane().getVerticalScrollBar().getValue()+60);
+            }
 		}
 	}
 	
@@ -826,7 +835,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		else if (value < 1.50 && value >= 1.45) return Scaling.SCALING_145;
 		else if (value < 1.45 && value >= 1.40) return Scaling.SCALING_140;
 		else if (value < 1.40 && value >= 1.35) return Scaling.SCALING_135;
-		else if (value < 1.35 && value > 1.30) return Scaling.SCALING_130;
+		else if (value < 1.35 && value >= 1.30) return Scaling.SCALING_130;
 		else if (value < 1.30 && value >= 1.25) return Scaling.SCALING_125;
 		else if (value < 1.25 && value >= 1.20) return Scaling.SCALING_120;
 		else if (value < 1.20 && value >= 1.15) return Scaling.SCALING_115;
@@ -870,6 +879,29 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		else if (scaling.equals(Scaling.SCALING_55)) setScaling(Scaling.SCALING_50);
 		wrapper.getToolBar().update();
 	}
+
+//	public void centeredZoomOut(Point point) {
+//	    zoomOut();
+//	    Point pos = wrapper.getScrollPane().getViewport().getViewPosition();
+//	    double diff = (scaling.getScaleFactor()-1f);	    
+//	    double rest = 1f - diff;
+//	    int newX = (int)((point.x*diff)+(rest*pos.x));
+//	    int newY = (int)((point.y*diff)+(rest*pos.y));
+//	    wrapper.getScrollPane().getViewport().setViewPosition(new Point(newX, newY));
+//	    revalidate();
+//	    repaint();
+//	}
+//
+//	public void centeredZoomIn(Point point) {
+//	    zoomIn();
+//	    Point pos = wrapper.getScrollPane().getViewport().getViewPosition();
+//	    double diff = (scaling.getScaleFactor()-1f);	    	    
+//	    int newX = (int)((point.x*diff)+(scaling.getScaleFactor()*pos.x));
+//	    int newY = (int)((point.y*diff)+(scaling.getScaleFactor()*pos.y));
+//	    wrapper.getScrollPane().getViewport().setViewPosition(new Point(newX, newY));
+//	    revalidate();
+//	    repaint();
+//	}
 	
 	public void zoomIn()
 	{	
