@@ -23,6 +23,11 @@ package br.ufes.inf.nemo.oled.popupmenu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
@@ -51,6 +56,7 @@ public class ClassStereotypeChangeMenu extends JMenu{
 	
 	public DiagramManager diagramManager;
 	public RefOntoUML.Element type;
+	public HashMap<String,JMenuItem> elementsMap = new HashMap<String,JMenuItem>();
 	
 	public void setElement(RefOntoUML.Element element)
 	{
@@ -87,105 +93,120 @@ public class ClassStereotypeChangeMenu extends JMenu{
 		JMenuItem perceivableItem = new JMenuItem("Perceivable Quality");    			
 		JMenuItem nonperceivableItem = new JMenuItem("NonPerceivable Quality");
 		JMenuItem nominalItem = new JMenuItem("Nominal Quality");
-		add(kindItem);
+		//add(kindItem);
+		elementsMap.put("kind", kindItem);
 		kindItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Kind)) diagramManager.changeClassStereotype((RefOntoUML.Type)type,"Kind");
         	}
         });
-		add(collectiveItem);
+		//add(collectiveItem);
+		elementsMap.put("collective", collectiveItem);
 		collectiveItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Collective))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"Collective");
         	}
         });
-		add(quantityItem);
+		//add(quantityItem);
+		elementsMap.put("quantity", quantityItem);
 		quantityItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Quantity)) diagramManager.changeClassStereotype((RefOntoUML.Type)type,"Quantity");
         	}
         });
-		add(subkindItem);
+		//add(subkindItem);
+		elementsMap.put("subkind", subkindItem);
 		subkindItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof SubKind)) diagramManager.changeClassStereotype((RefOntoUML.Type)type,"SubKind");
         	}
         });
-		add(phaseItem);
+		//add(phaseItem);
+		elementsMap.put("phase", phaseItem);
 		phaseItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Phase)) diagramManager.changeClassStereotype((RefOntoUML.Type)type,"Phase");
         	}
         });
-        add(roleItem);
+        //add(roleItem);
+		elementsMap.put("role", roleItem);
         roleItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Role))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"Role");
         	}
         });
-        add(categoryItem);
+        //add(categoryItem);
+        elementsMap.put("category", categoryItem);
         categoryItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Category))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"Category");
         	}
         });
-        add(rolemixinItem);
+        //add(rolemixinItem);
+        elementsMap.put("rolemixin", rolemixinItem);
         rolemixinItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof RoleMixin)) diagramManager.changeClassStereotype((RefOntoUML.Type)type,"RoleMixin");
         	}
         });
-        add(mixinItem);
+        //add(mixinItem);
+        elementsMap.put("mixin", mixinItem);
         mixinItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Mixin))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"Mixin");
         	}
         });
-        add(relatorItem);
+        //add(relatorItem);
+        elementsMap.put("relator", relatorItem);
         relatorItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Relator))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"Relator");
         	}
         });
-        add(modeItem);
+        //add(modeItem);
+        elementsMap.put("mode", modeItem);
         modeItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof Mode))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"Mode");
         	}
         });
-        add(datatypeItem);
+        //add(datatypeItem);
+        elementsMap.put("datatype", datatypeItem);
         datatypeItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof DataType))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"DataType");
         	}
         }); 
-        add(perceivableItem);
+        //add(perceivableItem);
+        elementsMap.put("perceivable quality", perceivableItem);
         perceivableItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof DataType))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"PerceivableQuality");
         	}
         }); 
-        add(nonperceivableItem);
+        //add(nonperceivableItem);
+        elementsMap.put("nonperceivable quality", nonperceivableItem);
         nonperceivableItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		if (!(type instanceof DataType))diagramManager.changeClassStereotype((RefOntoUML.Type)type,"NonPerceivableQuality");
         	}
         }); 
-        add(nominalItem);
+        //add(nominalItem);
+        elementsMap.put("nominal quality", nominalItem);
         nominalItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -207,5 +228,32 @@ public class ClassStereotypeChangeMenu extends JMenu{
         perceivableItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
         nonperceivableItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
         nominalItem.setIcon(new ImageIcon(ClassStereotypeChangeMenu.class.getResource("/resources/icons/x16/tree/datatype.png")));
+        
+        sort();
 	}
+	
+	public void sort()
+	{
+		ArrayList<JMenuItem> result = sort(elementsMap.values());		
+		for(JMenuItem pe: result){
+			add(pe);			
+		}
+	}
+	
+	class JMenuItemComparator implements Comparator<JMenuItem> 
+    {
+        @Override
+        public int compare(JMenuItem o1, JMenuItem o2) {        	
+        	return o1.getText().compareToIgnoreCase(o2.getText());
+        }
+    }
+	
+	public ArrayList<JMenuItem> sort(Collection<JMenuItem> list)
+	{
+		ArrayList<JMenuItem> result = new ArrayList<JMenuItem>();
+		result.addAll(list);
+		Collections.sort(result,new JMenuItemComparator());
+		return result;
+	}
+	
 }
