@@ -899,8 +899,8 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		Operation operation = operationCallExpImpl.getReferredOperation();
 		String oprName = operation.getName();
 		if(oprName != null){
-			if(		oprName.equals("oclIsKindOf") ||
-					oprName.equals("oclIsTypeOf") //||
+			if(		oprName.equals("oclIsKindOf") //||
+					//oprName.equals("oclIsTypeOf") //||
 					//oprName.equals("oclAsType")
 				){
 				return true;
@@ -1005,10 +1005,10 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		Operation operation = operationCallExpImpl.getReferredOperation();
 		String oprName = operation.getName();
 		if(oprName != null){
-			if(		oprName.equals("includes")	||
-					oprName.equals("includesAll")	||
-					oprName.equals("intersection")	||
-					oprName.equals("including")
+			if(		oprName.equals("includes")//	||
+					//oprName.equals("includesAll")	||
+					//oprName.equals("intersection")	||
+					//oprName.equals("including")
 				){
 				return true;
 			}
@@ -1023,9 +1023,9 @@ public class OperationCallExpImplFactory extends FeatureCallExpImplFactory {
 		Operation operation = operationCallExpImpl.getReferredOperation();
 		String oprName = operation.getName();
 		if(oprName != null){
-			if(		oprName.equals("excludes")	||
-					oprName.equals("excludesAll")	||
-					oprName.equals("excluding")
+			if(		oprName.equals("excludes")//	||
+					//oprName.equals("excludesAll")	||
+					//oprName.equals("excluding")
 				){
 				return true;
 			}
