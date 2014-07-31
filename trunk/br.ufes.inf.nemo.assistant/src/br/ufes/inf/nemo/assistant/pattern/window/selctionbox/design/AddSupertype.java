@@ -66,11 +66,7 @@ public class AddSupertype extends ClassSelectionPanel {
 
 		this.selectedClassifier = selectedClassifier;
 
-		if(selectedClassifier instanceof RigidSortalClass){
-			thirdClasses.add("Mixin");
-		}else if(selectedClassifier instanceof SubKind){
-			thirdClasses.add("Mixin");
-		}
+		thirdClasses.add("Mixin");
 
 		/* RIGID SORTAL */
 		generalPanel = new JPanel();

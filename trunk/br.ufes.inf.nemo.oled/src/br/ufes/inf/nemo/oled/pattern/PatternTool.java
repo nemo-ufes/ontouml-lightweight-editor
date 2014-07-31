@@ -183,6 +183,8 @@ public class PatternTool {
 				imagePanel = new ImagePanel(PatternType.AddSupertype_SubstanceSortal);
 			}else if(selectedClassifier instanceof SubKind){
 				imagePanel = new ImagePanel(PatternType.AddSupertype_Subkind);
+			}else if(selectedClassifier instanceof Role){
+				imagePanel = new ImagePanel(PatternType.AddSupertype_Role);
 			}else{
 				JOptionPane.showMessageDialog(null, "Pattern do not applied to "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" stereotype");
 				return null;		
