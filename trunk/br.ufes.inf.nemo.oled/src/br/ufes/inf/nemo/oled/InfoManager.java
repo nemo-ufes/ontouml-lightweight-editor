@@ -21,6 +21,8 @@
  */
 package br.ufes.inf.nemo.oled;
 
+import java.awt.Dimension;
+
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
@@ -77,7 +79,8 @@ public class InfoManager extends JTabbedPane {
 		
 		setBorder(null);
 		setBackground(UIManager.getColor("Panel.background"));
-					
+		setMinimumSize(new Dimension(0,0));
+		
 		addTab(" Warnings ",warnings);		
 		setIconAt(indexOfComponent(warnings),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/exclamation_octagon_fram.png")));
 		
