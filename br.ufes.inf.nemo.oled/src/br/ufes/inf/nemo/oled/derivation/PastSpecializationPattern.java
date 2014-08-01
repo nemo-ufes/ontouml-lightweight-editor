@@ -54,7 +54,6 @@ public class PastSpecializationPattern extends JDialog {
 	private static final long serialVersionUID = 4236441153290954092L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txt_supertype;
-	private JTextPane txtrADerivedType;
 	private JTextField txt_special;
 	private JTextField txt_past;
 	@SuppressWarnings("rawtypes")
@@ -78,16 +77,11 @@ public class PastSpecializationPattern extends JDialog {
 		setTitle("Derivation By Past Specialization");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(PastSpecializationPattern.class.getResource("/resources/icons/x16/sitemap.png")));
 		setResizable(false);
-		setBounds(100, 100, 408, 495);
+		setBounds(100, 100, 449, 495);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		{
-			txtrADerivedType = new JTextPane();
-			txtrADerivedType.setEditable(false);
-			txtrADerivedType.setText("All individuals of the type derived by past specialization instantiated a specific type in the past but not currently.");			
-		}
 		{
 			txt_supertype = new JTextField();
 			txt_supertype.setText("Supertype");
@@ -133,53 +127,56 @@ public class PastSpecializationPattern extends JDialog {
 		chckbxNewCheckBox.setBackground(Color.WHITE);
 		
 		JLabel lblTempexWorkerallinstancesselfforallwk = new JLabel("");
+		
+		JLabel lblNewLabel_4 = new JLabel("\r\n");
+		lblNewLabel_4.setIcon(new ImageIcon(PastSpecializationPattern.class.getResource("/resources/figures/text-past-specialization.png")));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(24)
-							.addComponent(lblTempexWorkerallinstancesselfforallwk))
-						.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(txtrADerivedType, GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE))
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(lblTempexWorkerallinstancesselfforallwk)
+								.addGroup(gl_contentPanel.createSequentialGroup()
+									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addGroup(gl_contentPanel.createSequentialGroup()
+											.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+												.addComponent(txt_special, Alignment.LEADING)
+												.addComponent(txt_supertype, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(cmb_special, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(cmb_super, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))
+										.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addGap(9))))
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addContainerGap()
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(lblNewLabel_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
-									.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(txt_special, Alignment.LEADING)
-										.addComponent(txt_supertype, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE))
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(chckbxNewCheckBox, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addGroup(gl_contentPanel.createSequentialGroup()
+									.addComponent(txt_past, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(cmb_special, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(cmb_super, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))
-								.addComponent(lblNewLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGap(9)))
-					.addGap(24))
+									.addComponent(cmb_past, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))))
+					.addContainerGap(49, Short.MAX_VALUE))
+				.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(lblNewLabel_4)
+					.addContainerGap())
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(chckbxNewCheckBox, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(lblNewLabel_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
-							.addComponent(txt_past, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(cmb_past, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))
-					.addGap(33))
-				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(91)
+					.addGap(107)
 					.addComponent(lblNewLabel_3)
-					.addContainerGap(99, Short.MAX_VALUE))
+					.addContainerGap(124, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(10)
-					.addComponent(txtrADerivedType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(3)
+					.addGap(8)
+					.addComponent(lblNewLabel_4)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblNewLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
@@ -201,7 +198,7 @@ public class PastSpecializationPattern extends JDialog {
 					.addComponent(chckbxNewCheckBox)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblNewLabel_3)
-					.addPreferredGap(ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(lblTempexWorkerallinstancesselfforallwk))
 		);
 		contentPanel.setLayout(gl_contentPanel);

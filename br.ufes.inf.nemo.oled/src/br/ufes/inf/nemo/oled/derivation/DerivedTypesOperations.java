@@ -76,13 +76,15 @@ import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
  */
 public class DerivedTypesOperations {
 
-	
+	static OutcomeFixer of;
+	static Fix mainfix;
+	static DiagramManager dman;
+	static boolean gs_with_nonsortal_or_kind=false;
 	static Point2D.Double pointClicked;
 	
 	public static void setPointClicked(Point2D.Double pointClicked) {
 		DerivedTypesOperations.pointClicked = pointClicked;
 	}
-
 
 	@SuppressWarnings("unused")
 	private class FeatureElement {
@@ -115,11 +117,6 @@ public class DerivedTypesOperations {
 			return result;
 		}
 	}
-
-	static OutcomeFixer of;
-	static Fix mainfix;
-	static DiagramManager dman;
-	static boolean gs_with_nonsortal_or_kind=false;
 
 	@SuppressWarnings("unused")
 	public static Fix createUnionDerivation(DiagramEditor activeEditor, UmlProject project, DiagramManager dm){
@@ -235,9 +232,6 @@ public class DerivedTypesOperations {
 		return mainfix;
 	}
 
-
-
-
 	private static String tryunionassociationderivation(
 			List<DiagramElement> selected, DiagramManager diagramManager) {
 		// TODO Auto-generated method stub
@@ -304,9 +298,6 @@ public class DerivedTypesOperations {
 
 	}
 
-
-
-
 	private static String multipleElementsUnionDerivation(
 			List<DiagramElement> selected) {
 		//String anterior="";
@@ -360,7 +351,6 @@ public class DerivedTypesOperations {
 		}
 		return specialCase;
 	}
-
 
 	@SuppressWarnings("unused")
 	public static Fix createDerivedTypeUnion(String stereotype, Fix fix, List<DiagramElement> selected, String name, ArrayList<RefOntoUML.Element> refontoList, UmlProject project, DiagramManager dm){
@@ -498,7 +488,6 @@ public class DerivedTypesOperations {
 		return null;
 	}
 
-
 	@SuppressWarnings("unused")
 	public static String DefineNameDerivedType(){
 
@@ -535,9 +524,15 @@ public class DerivedTypesOperations {
 		combo_stereotype.getModel().setSelectedItem(model2.getElementAt(0));
         controls.add(combo_stereotype);
         p.add(controls, BorderLayout.CENTER);
-        JOptionPane.showMessageDialog(
-            null, p, "Choose the name and the Stereotype", JOptionPane.QUESTION_MESSAGE);
-
+        ArrayList<String> values = new ArrayList<String>();
+        values.add("OK");
+        values.add("Cancel");
+        
+        int value=JOptionPane.showOptionDialog(
+            null, p, "Choose the name and the Stereotype", JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE, null, values.toArray(), values.toArray()[0]);
+        if(value==-1 || value==1){
+        	return null;
+        }
         return controls;
 	}
 
@@ -554,7 +549,6 @@ public class DerivedTypesOperations {
 		return stereotype;
 
 	}
-
 
 	public static void wrongSelection(String message){
 		JFrame frame = new JFrame("InputDialog Example #1");
@@ -626,7 +620,6 @@ public class DerivedTypesOperations {
 		}
 	}
 
-
 	public static void exclusionPattern(DiagramManager dman2,
 			ArrayList<String> values, Double location) {
 		dman=dman2;
@@ -663,7 +656,6 @@ public class DerivedTypesOperations {
 //		
 	}
 
-
 	public static void intersectionPattern(DiagramManager dm, String base_1_name,
 			String base_2_name, String derived_name, Double location, String base_1_stereo, String stereo_base_2_stereo, String derived_stereo) {
 		// TODO Auto-generated method stub
@@ -678,9 +670,6 @@ public class DerivedTypesOperations {
           createGeneralizationSingle(newElement2,newElement3);
           dm.updateOLED(mainfix);
 	}
-
-
-
 
 	@SuppressWarnings("unused")
 	public static Fix createIntersectionDerivation(DiagramEditor activeEditor,
@@ -770,9 +759,6 @@ public class DerivedTypesOperations {
 		return createIntersectionDerivedType(specialCase, diagramManager, activeEditor, project);
 	}
 
-
-
-
 	@SuppressWarnings("unused")
 	private static Fix createIntersectionDerivedType(String stereotype,
 			DiagramManager diagramManager, DiagramEditor activeEditor, UmlProject project) {
@@ -841,8 +827,6 @@ public class DerivedTypesOperations {
 	}
 
 
-
-
 	public static Fix createSpecializationDerivation(
 			DiagramEditor activeEditor, UmlProject project,
 			DiagramManager diagramManager) {
@@ -853,27 +837,72 @@ public class DerivedTypesOperations {
 		Object[] stereo = null ;
 		List<DiagramElement> selected = activeEditor.getSelectedElements();
 		if(selected.size()==1 ){
-			ClassElement element = (ClassElement) selected.get(0);
-			if(element.getClassifier() instanceof Kind || element.getClassifier() instanceof SubKind  ){
-				values.add("Subkind");
-				values.add("Phase");
-			}else if(element.getClassifier() instanceof Role || element.getClassifier() instanceof Phase  ){
-				values.add("Phase");
-			}else {
-				return null;
-			}
 			
-			stereo = values.toArray();
-			panel= selectStereotype(stereo);
-			dman=diagramManager;
-			of = new OutcomeFixer(dman.getCurrentProject().getModel());
-			mainfix = new Fix();
-			Point2D.Double location = new Point2D.Double();
-			location.x= element.getAbsoluteX1();
-			location.y= element.getAbsoluteY1()+100;
-			Classifier newElement= includeElement(location, ((JTextField)panel.getComponents()[0]).getText(), ((JComboBox)panel.getComponents()[1]).getSelectedItem().toString());
-			createGeneralizationSingle(element.getClassifier(), newElement);
-			dman.updateOLED(mainfix);
+			if(selected.get(0) instanceof ClassElement){
+				ClassElement element = (ClassElement) selected.get(0);
+				if(element.getClassifier() instanceof Kind || element.getClassifier() instanceof SubKind  ){
+					values.add("Subkind");
+					values.add("Phase");
+				}else if(element.getClassifier() instanceof Role || element.getClassifier() instanceof Phase  ){
+					values.add("Phase");
+				}else {
+					return null;
+				}
+				
+				stereo = values.toArray();
+				panel= selectStereotype(stereo);
+				dman=diagramManager;
+				of = new OutcomeFixer(dman.getCurrentProject().getModel());
+				mainfix = new Fix();
+				Point2D.Double location = new Point2D.Double();
+				location.x= element.getAbsoluteX1();
+				location.y= element.getAbsoluteY1()+100;
+				Classifier newElement= includeElement(location, ((JTextField)panel.getComponents()[0]).getText(), ((JComboBox)panel.getComponents()[1]).getSelectedItem().toString());
+				createGeneralizationSingle(element.getClassifier(), newElement);
+				dman.updateOLED(mainfix);
+			}else if
+			(selected.get(0) instanceof AssociationElement){
+				ArrayList<Property> featureList = new ArrayList<Property>();
+				ArrayList<Property> properties = new ArrayList<Property>();
+				ArrayList<Property> propertiesTarget = new ArrayList<Property>();
+				ArrayList<String> options = new ArrayList<String>();
+
+				Association association =((Association) ((AssociationElement)selected.get(0)).getRelationship());
+
+				properties.add((Property) association.getMemberEnd().get(0));
+				propertiesTarget.add((Property) association.getMemberEnd().get(1));
+
+
+				Property element = (Property) association.getMemberEnd().get(0);		
+				OntoUMLParser refparser= diagramManager.getFrame().getBrowserManager().getProjectBrowser().getParser();
+
+				for(RefOntoUML.Property p : refparser.getAllInstances(RefOntoUML.Property.class)) 
+				{
+					if(!properties.contains(p) && !propertiesTarget.contains(p) && ((Classifier)element.getType()).allChildren().contains(p.getType())){
+						featureList.add(p);
+						options.add(((NamedElement)p.eContainer()).getName());
+					}
+				}
+				if(options!=null){
+					String option =selectRelation(options.toArray());
+					for (Property feature : featureList) {
+						if(((NamedElement)feature.eContainer()).getName().equals(option)){
+							for (Property prop : properties) {
+								feature.getSubsettedProperty().add(prop);
+								if(prop.isIsReadOnly()){
+									feature.setIsReadOnly(true);
+								}
+							}
+							for (Property prop : propertiesTarget) {
+								feature.getSubsettedProperty().add(prop);
+								if(prop.isIsReadOnly()){
+									feature.getOpposite().setIsReadOnly(true);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 
 		
