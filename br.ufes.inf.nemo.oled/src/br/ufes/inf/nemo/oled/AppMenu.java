@@ -54,6 +54,7 @@ public class AppMenu implements ActionListener {
 	private AppFrame frame;
 	private JMenuItem toolboxItem;
 	private JMenuItem browserItem;
+	private JMenuItem bottomviewItem;
 	
 	/**
 	 * Creates a new instance of MainMenu.
@@ -282,6 +283,9 @@ public class AppMenu implements ActionListener {
 		
 		browserItem = createCheckBoxMenuItem(viewMenu,"browser");
 		browserItem.setSelected(true);
+
+		bottomviewItem = createCheckBoxMenuItem(viewMenu,"bottomview");
+		bottomviewItem.setSelected(false);
 		
 		//viewMenu.addSeparator();
 		//createMenuItem(viewMenu, "redraw");
@@ -295,6 +299,11 @@ public class AppMenu implements ActionListener {
 	public JMenuItem getProjectBrowserItem()
 	{
 		return browserItem;
+	}
+	
+	public JMenuItem getBottomViewItem()
+	{
+		return bottomviewItem;
 	}
 	
 	public void createProjectMenu()

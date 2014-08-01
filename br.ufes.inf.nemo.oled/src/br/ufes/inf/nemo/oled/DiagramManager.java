@@ -195,6 +195,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		ModelHelper.initializeHelper();		
 		setBorder(new EmptyBorder(0,0,0,0));		
 		setBackground(Color.white);
+		setMinimumSize(new Dimension(0,0));
 	}
 
 	/** Adds a start panel to the manager */

@@ -23,6 +23,11 @@ package br.ufes.inf.nemo.oled.popupmenu;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
@@ -39,6 +44,9 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 public class ToolboxPopupMenu extends JPopupMenu {	
 
 	private static final long serialVersionUID = 1L;
+	public HashMap<String,JMenuItem> classMap = new HashMap<String,JMenuItem>();
+	public HashMap<String,JMenuItem> relationMap = new HashMap<String,JMenuItem>();
+	public HashMap<String,JMenuItem> derivedMap = new HashMap<String,JMenuItem>();
 	
 	JMenuItem pointerItem = new JMenuItem("Pointer");
 	JMenuItem kindItem = new JMenuItem("Kind");
@@ -80,6 +88,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
 	public AppFrame frame;
 	public double x;
 	public double y;
+	private JMenu derivationMenu;
 	
     public ToolboxPopupMenu(final AppFrame frame, final double x, final double y)
     {        
@@ -88,46 +97,85 @@ public class ToolboxPopupMenu extends JPopupMenu {
     	this.y=y;
     	//add(pointerItem);
     	
-        JMenu derivationMenu = new JMenu("Derived Patterns");
-        derivationMenu.add(unionItem);        
-        derivationMenu.add(exclusionItem);
-        derivationMenu.add(intersectionItem);
-        derivationMenu.add(specializationItem);
-        derivationMenu.add(pastspecializationItem);
-        derivationMenu.add(participationItem);
+        derivationMenu = new JMenu("Derived Patterns");
+//        derivationMenu.add(unionItem);        
+//        derivationMenu.add(exclusionItem);
+//        derivationMenu.add(intersectionItem);
+//        derivationMenu.add(specializationItem);
+//        derivationMenu.add(pastspecializationItem);
+//        derivationMenu.add(participationItem);
         add(derivationMenu);
         addSeparator();
         
-    	add(kindItem);
-    	add(quantityItem);
-    	add(collectiveItem);        
-        add(subkindItem);        
-        add(phaseItem);     
-        add(roleItem);              
-        add(categoryItem);        
-        add(rolemixinItem);
-        add(mixinItem);    
-        add(modeItem); 
-        add(relatorItem);
-        add(datatypeItem);        
-        add(enumerationItem);
-        add(primitiveItem);
-        add(perceivableItem);
-        add(nonperceivableItem);
-        add(nominalItem);
-        add(genItem);
-        add(materialItem);
-        add(formalItem);
-        add(characterizationItem);
-        add(mediationItem);        
-        add(componentOfItem);        
-        add(memberOfItem);        
-        add(subcollectionOfItem);
-        add(subquantityOfItem);
-        add(structurationItem);
-        add(associationItem);
-        add(derivationItem);
+        derivedMap.put("union", unionItem);
+        derivedMap.put("exclusion", exclusionItem);
+        derivedMap.put("intersection", intersectionItem);
+        derivedMap.put("specialization", specializationItem);
+        derivedMap.put("past specialization", pastspecializationItem);
+        derivedMap.put("participation", participationItem);
+        
+//    	add(kindItem);
+//    	add(quantityItem);
+//    	add(collectiveItem);        
+//        add(subkindItem);        
+//        add(phaseItem);     
+//        add(roleItem);              
+//        add(categoryItem);        
+//        add(rolemixinItem);
+//        add(mixinItem);    
+//        add(modeItem); 
+//        add(relatorItem);
+//        add(datatypeItem);        
+//        add(enumerationItem);
+//        add(primitiveItem);
+//        add(perceivableItem);
+//        add(nonperceivableItem);
+//        add(nominalItem);
+//        
+//        add(genItem);
+//        add(materialItem);
+//        add(formalItem);
+//        add(characterizationItem);
+//        add(mediationItem);        
+//        add(componentOfItem);        
+//        add(memberOfItem);        
+//        add(subcollectionOfItem);
+//        add(subquantityOfItem);
+//        add(structurationItem);
+//        add(associationItem);
+//        add(derivationItem);
                 
+        classMap.put("kind", kindItem);
+        classMap.put("quantity", quantityItem);
+        classMap.put("collective", collectiveItem);
+        classMap.put("subkind", subkindItem);
+        classMap.put("phase", phaseItem);
+        classMap.put("role", roleItem);
+        classMap.put("category", categoryItem);
+        classMap.put("rolemixin", rolemixinItem);
+        classMap.put("mixin", mixinItem);
+        classMap.put("mode", modeItem);
+        classMap.put("relator", relatorItem);
+        classMap.put("datatype", datatypeItem);
+        classMap.put("enumeration", enumerationItem);
+        classMap.put("primitive type", primitiveItem);
+        classMap.put("perceivable quality", perceivableItem);
+        classMap.put("nonperceivable quality", nonperceivableItem);
+        classMap.put("nominal quality", nominalItem);
+        
+        relationMap.put("generalization", genItem);
+        relationMap.put("material", materialItem);
+        relationMap.put("formal", formalItem);
+        relationMap.put("characterization", characterizationItem);
+        relationMap.put("mediation", mediationItem);
+        relationMap.put("componentOf", componentOfItem);
+        relationMap.put("memberOf", memberOfItem);
+        relationMap.put("subcollectionOf", subcollectionOfItem);
+        relationMap.put("subquantityOf", subquantityOfItem);
+        relationMap.put("structuration", structurationItem);
+        relationMap.put("association", associationItem);
+        relationMap.put("derivation", derivationItem);
+        
         kindItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/kind.png")));
         quantityItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/quantity.png")));
         collectiveItem.setIcon(new ImageIcon(ToolboxPopupMenu.class.getResource("/resources/icons/x16/tree/collective.png")));
@@ -556,8 +604,42 @@ public class ToolboxPopupMenu extends JPopupMenu {
  			    	frame.getToolManager().getElementsPalette().getPalleteElement("select").setSelected(true);
  	            }
  			}
- 		});
-    }	
-    
+ 		});   
+       
+       sort();
+	}
+	
+	public void sort()
+	{
+		ArrayList<JMenuItem> classResult = sort(classMap.values());		
+		ArrayList<JMenuItem> relationResult = sort(relationMap.values());
+		add(pointerItem);
+		for(JMenuItem pe: classResult){
+			add(pe);			
+		}
+		for(JMenuItem pe: relationResult){
+			add(pe);			
+		}
+		ArrayList<JMenuItem> derivedResult = sort(derivedMap.values());
+		for(JMenuItem pe: derivedResult){
+			derivationMenu.add(pe);			
+		}
+	}
+	
+	class JMenuItemComparator implements Comparator<JMenuItem> 
+    {
+        @Override
+        public int compare(JMenuItem o1, JMenuItem o2) {        	
+        	return o1.getText().compareToIgnoreCase(o2.getText());
+        }
+    }
+	
+	public ArrayList<JMenuItem> sort(Collection<JMenuItem> list)
+	{
+		ArrayList<JMenuItem> result = new ArrayList<JMenuItem>();
+		result.addAll(list);
+		Collections.sort(result,new JMenuItemComparator());
+		return result;
+	}
     
 }

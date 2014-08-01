@@ -55,9 +55,11 @@ public class AppToolbar implements ActionListener {
 	private JButton save;	
 	private JToggleButton btnToolBox;
 	private JToggleButton btnBrowser;
+	private JToggleButton btnBottomView;
 	
 	public JToggleButton getToolBoxButton() { return btnToolBox; }
 	public JToggleButton getProjectBrowserButton() { return btnBrowser; }
+	public JToggleButton getBottomViewButton() { return btnBottomView; }
 	
 	/**
 	 * Constructor.
@@ -102,6 +104,20 @@ public class AppToolbar implements ActionListener {
 		btnBrowser.setFocusable(false);
 		btnBrowser.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/drawer.png")));
 		toolbar.add(btnBrowser);
+		
+		btnBottomView = new JToggleButton("");
+		btnBottomView.setSelected(frame.getMainMenu().isSelected("BOTTOMVIEW"));
+		btnBottomView.setToolTipText("Show/hide Bottom Tab View");
+		btnBottomView.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		frame.getMainMenu().getBottomViewItem().setSelected(btnBottomView.isSelected());
+        		frame.showBottomView();
+        	}
+        });
+		btnBottomView.setFocusable(false);
+		btnBottomView.setIcon(new ImageIcon(AppToolbar.class.getResource("/resources/icons/x16/ui_tab_bottom.png")));
+		toolbar.add(btnBottomView);
 		
 		//toolbar.addSeparator();
 		createButton("warning");

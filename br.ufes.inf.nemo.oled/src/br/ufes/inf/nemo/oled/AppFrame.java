@@ -67,6 +67,12 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	private transient SimpleGUICustom analyzer;
 
 	private transient MultiSplitPane multiSplitPane;
+
+	private int browserWidth=230;
+
+	private int toolboxWidth=230;
+
+	private int infoHeight=200;
 	
 	/**
 	 * Default constructor.
@@ -206,57 +212,88 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		return !(browserManager.getPreferredSize().width==0);
 	}
 	
-	public boolean showInfoManager()
+	public boolean isShowBottomView()
 	{
 		return !(infoManager.getPreferredSize().height == 0);
 	}
 	
-	public void showInfoManager(boolean value)
+	public void showBottomView()
 	{
-		multiSplitPane.getMultiSplitLayout().setFloatingDividers(true);
-		if(value){
-			infoManager.setPreferredSize(new Dimension((int)infoManager.getPreferredSize().getWidth(),230));
-			diagramManager.setPreferredSize(new Dimension((int)diagramManager.getPreferredSize().getWidth(),GetScreenWorkingHeight()-200));	
+		int dividerSize = multiSplitPane.getMultiSplitLayout().getDividerSize();
+		recordSplitSizes();
+		multiSplitPane.getMultiSplitLayout().setFloatingDividers(true);	
+		if(getMainMenu().isSelected("BOTTOMVIEW")){
+			infoManager.setPreferredSize(new Dimension(infoManager.getSize().width,infoHeight));
+			browserManager.getProjectBrowser().setPreferredSize(new Dimension(browserManager.getSize().width,250));
+			browserManager.setPreferredSize(new Dimension(browserManager.getSize().width,250));
+			toolManager.setPreferredSize(new Dimension(toolManager.getSize().width,250));
+			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolManager.getSize().width,250));			
+			diagramManager.setPreferredSize(new Dimension(diagramManager.getSize().width,GetScreenWorkingHeight()-infoHeight-dividerSize-70));
+			getMainToolBar().getBottomViewButton().setSelected(true);
 		}else{
-			infoManager.setPreferredSize(new Dimension((int)infoManager.getPreferredSize().getWidth(),0));
-			diagramManager.setPreferredSize(new Dimension((int)diagramManager.getPreferredSize().getWidth(),GetScreenWorkingHeight()));			
+			infoManager.setPreferredSize(new Dimension(infoManager.getSize().width,0));
+			browserManager.getProjectBrowser().setPreferredSize(new Dimension(browserManager.getSize().width,250));
+			browserManager.setPreferredSize(new Dimension(browserManager.getSize().width,250));
+			toolManager.setPreferredSize(new Dimension(toolManager.getSize().width,250));
+			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolManager.getSize().width,250));			
+			diagramManager.setPreferredSize(new Dimension(diagramManager.getSize().width,GetScreenWorkingHeight()-dividerSize-70));	
+			getMainToolBar().getBottomViewButton().setSelected(false);
 		}		
 		multiSplitPane.revalidate();	
 	}
 	
+	public void recordSplitSizes()
+	{
+		if(toolManager.getSize().width!=0) toolboxWidth = toolManager.getSize().width;
+		if(browserManager.getSize().width!=0) browserWidth = browserManager.getSize().width;
+		if(infoManager.getSize().height!=0) infoHeight = infoManager.getSize().height;
+	}
+	
 	public void showProjectBrowser()
 	{
-		multiSplitPane.getMultiSplitLayout().setFloatingDividers(true);
+		int dividerSize = multiSplitPane.getMultiSplitLayout().getDividerSize();
+		recordSplitSizes();
+		multiSplitPane.getMultiSplitLayout().setFloatingDividers(true);		
 		if(getMainMenu().isSelected("BROWSER")){
-			browserManager.getProjectBrowser().setPreferredSize(new Dimension(230,250));
-			browserManager.setPreferredSize(new Dimension(230,250));	
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-toolManager.getPreferredSize().width-10,(int)infoManager.getPreferredSize().getHeight()));
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-toolManager.getPreferredSize().width-10,(int)diagramManager.getPreferredSize().getHeight()));	
+			browserManager.getProjectBrowser().setPreferredSize(new Dimension(browserWidth,250));
+			browserManager.setPreferredSize(new Dimension(browserWidth,250));
+			toolManager.setPreferredSize(new Dimension(toolManager.getSize().width,250));
+			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolManager.getSize().width,250));
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserWidth-toolManager.getSize().width-(2*dividerSize),infoManager.getSize().height));
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserWidth-toolManager.getSize().width-(2*dividerSize),diagramManager.getSize().height));	
 			getMainToolBar().getProjectBrowserButton().setSelected(true);
 		}else{
 			browserManager.getProjectBrowser().setPreferredSize(new Dimension(0,250));
 			browserManager.setPreferredSize(new Dimension(0,250));			
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolManager.getPreferredSize().width-10,(int)infoManager.getPreferredSize().getHeight()));						
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolManager.getPreferredSize().width-10,(int)diagramManager.getPreferredSize().getHeight()));
+			toolManager.setPreferredSize(new Dimension(toolManager.getSize().width,250));
+			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolManager.getSize().width,250));
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolManager.getSize().width-(2*dividerSize),infoManager.getSize().height));						
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolManager.getSize().width-(2*dividerSize),diagramManager.getSize().height));
 			getMainToolBar().getProjectBrowserButton().setSelected(false);
 		}		
 		multiSplitPane.revalidate();
 	}
 	
 	public void showToolBox()
-	{
+	{		
+		int dividerSize = multiSplitPane.getMultiSplitLayout().getDividerSize();
+		recordSplitSizes();
 		multiSplitPane.getMultiSplitLayout().setFloatingDividers(true);
 		if(getMainMenu().isSelected("TOOLBOX")){
-			toolManager.setPreferredSize(new Dimension(230,250));
-			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(230,250));
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-browserManager.getPreferredSize().width-10,(int)infoManager.getPreferredSize().getHeight()));
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-browserManager.getPreferredSize().width-10,(int)diagramManager.getPreferredSize().getHeight()));	
+			toolManager.setPreferredSize(new Dimension(toolboxWidth,250));
+			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolboxWidth,250));
+			browserManager.getProjectBrowser().setPreferredSize(new Dimension(browserManager.getSize().width,250));
+			browserManager.setPreferredSize(new Dimension(browserManager.getSize().width,250));
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolboxWidth-browserManager.getSize().width-(2*dividerSize),infoManager.getSize().height));
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolboxWidth-browserManager.getSize().width-(2*dividerSize),diagramManager.getSize().height));	
 			getMainToolBar().getToolBoxButton().setSelected(true);			
 		}else{
 			toolManager.setPreferredSize(new Dimension(0,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(0,250));
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserManager.getPreferredSize().width-10,(int)infoManager.getPreferredSize().getHeight()));						
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserManager.getPreferredSize().width-10,(int)diagramManager.getPreferredSize().getHeight()));
+			browserManager.getProjectBrowser().setPreferredSize(new Dimension(browserManager.getSize().width,250));
+			browserManager.setPreferredSize(new Dimension(browserManager.getSize().width,250));
+			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserManager.getSize().width-(2*dividerSize),infoManager.getSize().height));						
+			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserManager.getSize().width-(2*dividerSize),diagramManager.getSize().height));
 			getMainToolBar().getToolBoxButton().setSelected(false);
 		}		
 		multiSplitPane.revalidate();

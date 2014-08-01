@@ -24,6 +24,7 @@ package br.ufes.inf.nemo.oled;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.ImageIcon;
@@ -50,6 +51,7 @@ public class ToolManager extends JPanel {
 	{
 		super();
 		setBackground(Color.WHITE);
+		setMinimumSize(new Dimension(0,0));
 		
 		this.frame = frame;
 		this.editorDispatcher = editorDispatcher;

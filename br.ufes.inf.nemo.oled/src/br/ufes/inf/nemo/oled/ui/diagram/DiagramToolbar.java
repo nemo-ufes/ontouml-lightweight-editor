@@ -66,7 +66,6 @@ public class DiagramToolbar extends JToolBar {
 	private JButton btnOWL;
 	private JButton btnAntiPattern;
 	private JButton btnColor;
-	private JToggleButton btnInfo;
 	private JButton btnMeronymic;
 	private JButton btnFitToWindow;
 	private JButton btnZoom100;
@@ -114,19 +113,7 @@ public class DiagramToolbar extends JToolBar {
         		editor.execute(new AlignElementsCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),Alignment.BOTTOM));
         	}
         });
-		
-		btnInfo = new JToggleButton("");
-		btnInfo.setSelected(false);
-		btnInfo.setToolTipText("Show/hide console");
-		btnInfo.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/monitor.png")));
-		btnInfo.setFocusable(false);
-		btnInfo.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		editor.getDiagramManager().getFrame().showInfoManager(btnInfo.isSelected());
-        	}
-        });
-		add(btnInfo);
+				
 		btnAlignBottom.setToolTipText("Align Bottom");
 		btnAlignBottom.setFocusable(false);
 		btnAlignBottom.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_bottom.png")));

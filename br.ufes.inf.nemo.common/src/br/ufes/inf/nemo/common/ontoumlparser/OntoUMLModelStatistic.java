@@ -647,9 +647,9 @@ public class OntoUMLModelStatistic {
 	public String getMixinPercentageClasses(){ return String.format("%.1f", mixinDetail.percentageSupertype).replace(",", ".")+"%"; }
 	public String getMixinPercentageElements(){ return String.format("%.1f", mixinDetail.percentageAllElements).replace(",", ".")+"%"; }
 	
-	public int getRoleMixinCount(){ return roleDetail.count; }
-	public String getRoleMixinPercentageClasses(){ return String.format("%.1f", roleDetail.percentageSupertype).replace(",", ".")+"%"; }
-	public String getRoleMixinPercentageElements(){ return String.format("%.1f", roleDetail.percentageAllElements).replace(",", ".")+"%"; }
+	public int getRoleMixinCount(){ return roleMixinDetail.count; }
+	public String getRoleMixinPercentageClasses(){ return String.format("%.1f", roleMixinDetail.percentageSupertype).replace(",", ".")+"%"; }
+	public String getRoleMixinPercentageElements(){ return String.format("%.1f", roleMixinDetail.percentageAllElements).replace(",", ".")+"%"; }
 	
 	public int getModeCount(){ return modeDetail.count; }
 	public String getModePercentageClasses(){ return String.format("%.1f", modeDetail.percentageSupertype).replace(",", ".")+"%"; }
