@@ -115,6 +115,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private JMenuItem invertEndMultiplicitiesItem;
 	private JMenuItem invertEndNamesItem;
 	private JMenuItem invertEndTypesItem;
+	private JMenuItem specializationItem;
 	
 	public SingleConnectionPopupMenu()
 	{		
@@ -130,6 +131,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		createEndPointMenu();
 		createSubsettingMenu();
 		createRedefiningMenu();
+		
+		JMenu deriveMenu = new JMenu("Derive by");
+		specializationItem = createMenuItem(deriveMenu, "derivedspecialization");		
+		add(deriveMenu);
 		
 		createMenuItem(this, "resetpoints");
 		lineStyleItem = new JMenu("Line Style");

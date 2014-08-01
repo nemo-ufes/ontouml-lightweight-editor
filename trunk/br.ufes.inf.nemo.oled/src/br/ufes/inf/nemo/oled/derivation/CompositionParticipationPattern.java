@@ -56,7 +56,7 @@ public class CompositionParticipationPattern extends JDialog {
 		setResizable(false);
 		setTitle("Derivation by Participation: Part-Whole\r\n");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(CompositionParticipationPattern.class.getResource("/resources/icons/x16/sitemap.png")));
-		setBounds(100, 100, 407, 475);
+		setBounds(100, 100, 407, 489);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
