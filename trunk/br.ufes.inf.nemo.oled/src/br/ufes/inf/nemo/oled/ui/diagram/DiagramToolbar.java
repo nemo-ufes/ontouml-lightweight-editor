@@ -115,12 +115,6 @@ public class DiagramToolbar extends JToolBar {
         		editor.execute(new AlignElementsCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),Alignment.BOTTOM));
         	}
         });
-				
-		btnAlignBottom.setToolTipText("Align Bottom");
-		btnAlignBottom.setFocusable(false);
-		btnAlignBottom.setBorderPainted(false);
-		btnAlignBottom.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_bottom.png")));
-		add(btnAlignBottom);
 		
 		btnAlignTop = new JButton("");
 		btnAlignTop.addActionListener(new ActionListener() {				
@@ -134,6 +128,25 @@ public class DiagramToolbar extends JToolBar {
 		btnAlignTop.setBorderPainted(false);
 		btnAlignTop.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_top.png")));
 		add(btnAlignTop);
+		
+		btnAlignCenterHorizontally = new JButton("");
+		btnAlignCenterHorizontally.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		editor.execute(new AlignElementsCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),Alignment.CENTER_HORIZONTAL));
+        	}
+        });	
+		btnAlignCenterHorizontally.setToolTipText("Align Center Horizontally");
+		btnAlignCenterHorizontally.setFocusable(false);
+		btnAlignCenterHorizontally.setBorderPainted(false);
+		btnAlignCenterHorizontally.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_middle.png")));
+		add(btnAlignCenterHorizontally);
+				
+		btnAlignBottom.setToolTipText("Align Bottom");
+		btnAlignBottom.setFocusable(false);
+		btnAlignBottom.setBorderPainted(false);
+		btnAlignBottom.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_bottom.png")));
+		add(btnAlignBottom);
 		
 		btnAlignLeft = new JButton("");
 		btnAlignLeft.addActionListener(new ActionListener() {				
@@ -155,11 +168,6 @@ public class DiagramToolbar extends JToolBar {
         		editor.execute(new AlignElementsCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),Alignment.RIGHT));
         	}
         });
-		btnAlignRight.setToolTipText("Align Right");
-		btnAlignRight.setFocusable(false);
-		btnAlignRight.setBorderPainted(false);
-		btnAlignRight.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_right.png")));
-		add(btnAlignRight);
 		
 		btnAlignCenterVertically = new JButton("");
 		btnAlignCenterVertically.addActionListener(new ActionListener() {				
@@ -173,19 +181,11 @@ public class DiagramToolbar extends JToolBar {
 		btnAlignCenterVertically.setBorderPainted(false);
 		btnAlignCenterVertically.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_center.png")));
 		add(btnAlignCenterVertically);
-		
-		btnAlignCenterHorizontally = new JButton("");
-		btnAlignCenterHorizontally.addActionListener(new ActionListener() {				
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		editor.execute(new AlignElementsCommand((DiagramNotification)editor,(ArrayList<DiagramElement>) editor.getSelectedElements(),editor.getProject(),Alignment.CENTER_HORIZONTAL));
-        	}
-        });	
-		btnAlignCenterHorizontally.setToolTipText("Align Center Horizontally");
-		btnAlignCenterHorizontally.setFocusable(false);
-		btnAlignCenterHorizontally.setBorderPainted(false);
-		btnAlignCenterHorizontally.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_middle.png")));
-		add(btnAlignCenterHorizontally);
+		btnAlignRight.setToolTipText("Align Right");
+		btnAlignRight.setFocusable(false);
+		btnAlignRight.setBorderPainted(false);
+		btnAlignRight.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_right.png")));
+		add(btnAlignRight);
 		
 		btnBringToFront = new JButton("");
 		btnBringToFront.setToolTipText("Bring to Front");

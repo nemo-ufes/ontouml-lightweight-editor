@@ -93,7 +93,7 @@ public class ToolManager extends JPanel {
 		return editorDispatcher;
 	}
 	
-	public Palette getElementPalette() {
+	public Palette getOpenPalette() {
 		return palettes.getOpenPalette();
 	}
 

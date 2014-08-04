@@ -78,7 +78,7 @@ public class AboutDialog extends JDialog {
 //		Image icon = new BufferedImage(1, 1,BufferedImage.TYPE_INT_ARGB_PRE);
 //		setIconImage(icon);
 		setTitle("About OLED");
-		setBounds(100, 100, 473, 288);
+		setBounds(100, 100, 491, 288);
 		
 		getContentPane().setLayout(new BorderLayout());
 		

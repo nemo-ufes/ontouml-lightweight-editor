@@ -25,6 +25,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -34,11 +35,11 @@ import javax.swing.JPanel;
 /**
  * @author Antognoni Albuquerque
  */
-public class PaletteElement extends JPanel implements MouseListener
+public class PaletteElement extends JPanel implements MouseListener, MouseMotionListener
 {
 
 	private static final long serialVersionUID = 5550202293825101613L;
-	private boolean selected = false;
+	
 	private Palette parent = null;
 	private String command = ""; 
 	private String caption = new String();
@@ -46,6 +47,8 @@ public class PaletteElement extends JPanel implements MouseListener
 	
 	public String getCaption() { return caption; }
 	public String getType() { return type; }
+	
+	private boolean isSelected = false;
 	
 	public PaletteElement(Icon icon, String caption, String command, Palette palette, String type)
 	{
@@ -76,7 +79,7 @@ public class PaletteElement extends JPanel implements MouseListener
 	}
 
 	public void setSelected(boolean selected) {
-		this.selected = selected;
+		this.isSelected = selected;
 		if(selected)
 		{
 			setSelectedStyle();
@@ -89,7 +92,7 @@ public class PaletteElement extends JPanel implements MouseListener
 	}
 
 	public boolean isSelected() {
-		return selected;
+		return isSelected;
 	}
 
 	private void setSelectedStyle()
@@ -116,29 +119,45 @@ public class PaletteElement extends JPanel implements MouseListener
 	public String getCommand() {
 		return command;
 	}
-
+	
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		setSelected(true);		
+	public void mouseEntered(MouseEvent e) {		
+		if(!isSelected)
+		setHoverStyle();
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		if(!selected)
-			setHoverStyle();
+	public void mouseExited(MouseEvent e) {		
+		if(!isSelected)
+		resetStyle();
 	}
 
-	@Override
-	public void mouseExited(MouseEvent e) {
-		if(!selected)
-			resetStyle();
-	}
-
+	//==========================================
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
+		setSelected(true);				
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {		
+		
+	}
+	
+	//============================================
+	
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		
 	}
 }
