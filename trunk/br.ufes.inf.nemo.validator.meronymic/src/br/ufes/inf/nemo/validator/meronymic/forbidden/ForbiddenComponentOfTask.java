@@ -48,14 +48,14 @@ public class ForbiddenComponentOfTask extends ForbiddenTask<componentOf>{
 			Type part = OntoUMLParser.getPartEnd(cp).getType();
 			
 			for (EdgePath path : indirectPaths) {
-				Object firstNode = path.getNodeIds().get(0);
-				Object lastNode = path.getNodeIds().get(path.nodes()-1);
+				Object firstNode = path.getNodeIds(true).get(0);
+				Object lastNode = path.getNodeIds(true).get(path.nodes()-1);
 				
 				
 				if(firstNode.equals(whole) && lastNode.equals(part)){
 					ForbiddenComponentOf fcp = new ForbiddenComponentOf(cp, parser);
 					fcp.setPath(path.getEdgeIdsOfType(Property.class));
-					fcp.setNodes(path.getNodeIdsOfType(Classifier.class));
+					fcp.setNodes(path.getNodeIdsOfType(Classifier.class, true));
 					fcp.classifyPath();
 					forbidden.add(fcp);
 					publish(fcp);

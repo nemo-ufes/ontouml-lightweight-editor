@@ -24,14 +24,14 @@ public class HierarchyCycleChecker extends Checker<HierarchyCycleError> {
 		genGraph.createGeneralizationGraph();
 		
 		//get all paths in the graph
-		ArrayList<EdgePath> allPaths = genGraph.getAllEdgePathsFromAllNodes();
+		ArrayList<EdgePath> allPaths = genGraph.getAllEdgePathsFromAllNodes(1);
 		//only keep paths that are cycles
 		Graph.retainCycles(allPaths);
 		//remove cycles which contain the very same edges (ignoring the order of the edges)
-		Graph.removeDuplicateEdgeCycles(allPaths);
+		Graph.removeDuplicateEdgeCycles(allPaths, false);
 	
 		for (EdgePath cycle : allPaths) {
-			errors.add(new HierarchyCycleError(parser, cycle.getNodeIdsOfType(Classifier.class), cycle.getEdgeIdsOfType(Generalization.class)));
+			errors.add(new HierarchyCycleError(parser, cycle.getNodeIdsOfType(Classifier.class, true), cycle.getEdgeIdsOfType(Generalization.class)));
 		}	
 		
 		if(errors.size()==0)

@@ -69,7 +69,7 @@ public abstract class DerivationTask <T extends Meronymic> extends SwingWorker<B
 		genGraph.createMeronymicGraph(existing, false, false);
 		
 		//get all paths in the graph
-		paths = genGraph.getAllEdgePathsFromAllNodes();
+		paths = genGraph.getAllEdgePathsFromAllNodes(1);
 		
 		arePathsSet = true;
 	}
