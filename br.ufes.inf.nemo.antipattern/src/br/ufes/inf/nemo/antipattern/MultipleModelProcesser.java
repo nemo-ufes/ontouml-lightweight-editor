@@ -54,17 +54,17 @@ public class MultipleModelProcesser {
 
 //		breakModelByPackage(DIR, "allModels.refontouml");
 		
-		WorksheetGenerator gen = new WorksheetGenerator(DIR);
-		gen.run();
-		gen.createFile();
+//		WorksheetGenerator gen = new WorksheetGenerator(DIR);
+//		gen.run();
+//		gen.createFile();
 		
-	
+		generateAntipatternCSVFile();
 		
 		System.out.println(TimeHelper.getTime()+" - Finished!");
 		
 	}
 
-	public static void generateAntipatternCSVFiles() {
+	public static void generateAntipatternCSVFile() {
 		ArrayList<String> fileList = getFileList(DIR);
 		PrintWriter fileWriter;
 		
@@ -275,6 +275,7 @@ public class MultipleModelProcesser {
 			return;
 		}
 		
+		@SuppressWarnings("unused")
 		RefOntoUMLFactory factory = RefOntoUMLFactory.eINSTANCE;
 		Model m = (Model) resource.getContents().get(0);
 		
