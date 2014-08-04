@@ -23,11 +23,11 @@ public class MeronymicCycleChecker extends Checker<MeronymicCycleError>{
 		genGraph.createMeronymicGraph(true, true);
 		
 		//get all paths in the graph
-		ArrayList<EdgePath> allPaths = genGraph.getAllEdgePathsFromAllNodes();
+		ArrayList<EdgePath> allPaths = genGraph.getAllEdgePathsFromAllNodes(1);
 		//only keep paths that are cycles
 		Graph.retainCycles(allPaths);
 		//remove cycles which contain the very same edges (ignoring the order of the edges)
-		Graph.removeDuplicateEdgeCycles(allPaths);
+		Graph.removeDuplicateEdgeCycles(allPaths, false);
 	
 		for (EdgePath cycle : allPaths) {
 			errors.add( new MeronymicCycleError(parser, cycle.getEdgeIdsOfType(Property.class)));

@@ -74,7 +74,7 @@ public abstract class ForbiddenTask <T extends Meronymic> extends SwingWorker<Bo
 			}
 		}
 		//get all paths in the graph
-		paths = genGraph.getAllEdgePathsFromAllNodes();
+		paths = genGraph.getAllEdgePathsFromAllNodes(1);
 		
 		arePathsSet = true;
 	}
