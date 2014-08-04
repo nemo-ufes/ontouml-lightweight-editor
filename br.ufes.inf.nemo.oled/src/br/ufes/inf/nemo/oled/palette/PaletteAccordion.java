@@ -158,6 +158,7 @@ public class PaletteAccordion extends JPanel{
 		{
 			openPalette = name;
 			render();
+			openContentScroll.getVerticalScrollBar().setValue(0);
 		}
 	}
 	

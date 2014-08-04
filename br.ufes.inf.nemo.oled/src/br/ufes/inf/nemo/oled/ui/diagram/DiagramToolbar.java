@@ -90,6 +90,7 @@ public class DiagramToolbar extends JToolBar {
         	}
         });
 		btnNewDiagram.setFocusable(false);
+		btnNewDiagram.setBorderPainted(false);
 		btnNewDiagram.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/application_add.png")));
 		add(btnNewDiagram);
 		
@@ -103,6 +104,7 @@ public class DiagramToolbar extends JToolBar {
         	}
         });
 		btnGrid.setFocusable(false);
+		btnGrid.setBorderPainted(false);
 		btnGrid.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/grid.png")));
 		add(btnGrid);
 		
@@ -116,6 +118,7 @@ public class DiagramToolbar extends JToolBar {
 				
 		btnAlignBottom.setToolTipText("Align Bottom");
 		btnAlignBottom.setFocusable(false);
+		btnAlignBottom.setBorderPainted(false);
 		btnAlignBottom.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_bottom.png")));
 		add(btnAlignBottom);
 		
@@ -128,6 +131,7 @@ public class DiagramToolbar extends JToolBar {
         });
 		btnAlignTop.setToolTipText("Align Top");
 		btnAlignTop.setFocusable(false);
+		btnAlignTop.setBorderPainted(false);
 		btnAlignTop.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_top.png")));
 		add(btnAlignTop);
 		
@@ -140,6 +144,7 @@ public class DiagramToolbar extends JToolBar {
         });
 		btnAlignLeft.setToolTipText("Align Left");
 		btnAlignLeft.setFocusable(false);
+		btnAlignLeft.setBorderPainted(false);
 		btnAlignLeft.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_left.png")));
 		add(btnAlignLeft);
 		
@@ -152,6 +157,7 @@ public class DiagramToolbar extends JToolBar {
         });
 		btnAlignRight.setToolTipText("Align Right");
 		btnAlignRight.setFocusable(false);
+		btnAlignRight.setBorderPainted(false);
 		btnAlignRight.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_right.png")));
 		add(btnAlignRight);
 		
@@ -164,6 +170,7 @@ public class DiagramToolbar extends JToolBar {
         });
 		btnAlignCenterVertically.setToolTipText("Align Center Vertically");
 		btnAlignCenterVertically.setFocusable(false);
+		btnAlignCenterVertically.setBorderPainted(false);
 		btnAlignCenterVertically.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_center.png")));
 		add(btnAlignCenterVertically);
 		
@@ -176,6 +183,7 @@ public class DiagramToolbar extends JToolBar {
         });	
 		btnAlignCenterHorizontally.setToolTipText("Align Center Horizontally");
 		btnAlignCenterHorizontally.setFocusable(false);
+		btnAlignCenterHorizontally.setBorderPainted(false);
 		btnAlignCenterHorizontally.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_aling_middle.png")));
 		add(btnAlignCenterHorizontally);
 		
@@ -188,6 +196,7 @@ public class DiagramToolbar extends JToolBar {
         	}
         });		
 		btnBringToFront.setFocusable(false);
+		btnBringToFront.setBorderPainted(false);
 		btnBringToFront.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_move_front.png")));
 		add(btnBringToFront);
 			
@@ -200,6 +209,7 @@ public class DiagramToolbar extends JToolBar {
         	}
         });	
 		btnPutToBack.setFocusable(false);
+		btnPutToBack.setBorderPainted(false);
 		btnPutToBack.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/shape_move_back.png")));
 		add(btnPutToBack);
 		
@@ -228,8 +238,10 @@ public class DiagramToolbar extends JToolBar {
         });	
 		add(btnColor);
 		btnColor.setFocusable(false);
+		btnColor.setBorderPainted(false);
 								
 		btnExportPng.setFocusable(false);
+		btnExportPng.setBorderPainted(false);
 		btnExportPng.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/photo.png")));
 		add(btnExportPng);
 		
@@ -242,6 +254,7 @@ public class DiagramToolbar extends JToolBar {
         	}
         });
 		btnZoom100.setFocusable(false);
+		btnZoom100.setBorderPainted(false);
 		btnZoom100.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/zoom-100.png")));
 		add(btnZoom100);
 		
@@ -254,6 +267,7 @@ public class DiagramToolbar extends JToolBar {
         	}
         });	
 		btnZoomOut.setFocusable(false);
+		btnZoomOut.setBorderPainted(false);
 		btnZoomOut.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/zoom-out.png")));
 		add(btnZoomOut);
 		
@@ -266,6 +280,7 @@ public class DiagramToolbar extends JToolBar {
         	}
         });
 		btnZoomIn.setFocusable(false);
+		btnZoomIn.setBorderPainted(false);
 		btnZoomIn.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/zoom-in.png")));
 		add(btnZoomIn);
 				
@@ -278,12 +293,14 @@ public class DiagramToolbar extends JToolBar {
         	}
         });
 		btnFitToWindow.setFocusable(false);
+		btnFitToWindow.setBorderPainted(false);
 		btnFitToWindow.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/arrow_in.png")));
 		add(btnFitToWindow);
 		
 		btnZoomStatus = new JButton("100%");
 		btnZoomStatus.setContentAreaFilled(false);		
 		btnZoomStatus.setFocusable(false);
+		btnZoomStatus.setBorderPainted(false);
 		add(btnZoomStatus);
 		
 		btnAlloy = new JButton("");
@@ -298,6 +315,7 @@ public class DiagramToolbar extends JToolBar {
 	    	}
         });	
 		btnAlloy.setFocusable(false);
+		btnAlloy.setBorderPainted(false);
 		btnAlloy.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/alloy/alloy.png")));
 		add(btnAlloy);
 		
@@ -313,6 +331,7 @@ public class DiagramToolbar extends JToolBar {
         	}
         });
 		btnOWL.setFocusable(false);
+		btnOWL.setBorderPainted(false);
 		btnOWL.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/owl.png")));
 		add(btnOWL);
 		
@@ -328,6 +347,7 @@ public class DiagramToolbar extends JToolBar {
         	}
         });
 		btnAntiPattern.setFocusable(false);
+		btnAntiPattern.setBorderPainted(false);
 		btnAntiPattern.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/antipattern16.png")));
 		add(btnAntiPattern);
 		
@@ -343,6 +363,7 @@ public class DiagramToolbar extends JToolBar {
         	}
         });
 		btnMeronymic.setFocusable(false);
+		btnMeronymic.setBorderPainted(false);
 		btnMeronymic.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/diamond.png")));
 		add(btnMeronymic);
 	}

@@ -34,6 +34,7 @@ import javax.swing.tree.TreePath;
 
 import RefOntoUML.Association;
 import RefOntoUML.Element;
+import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Generalization;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
@@ -367,7 +368,7 @@ public class TreePopupMenu extends JPopupMenu {
     			createAddElementItem();
     			createAddRelationItem();
     		}
-    		if (!(ontoElement.getElement() instanceof Property))
+    		if (!(ontoElement.getElement() instanceof Property) && !(ontoElement.getElement() instanceof EnumerationLiteral))
     		{
     			createDeleteItem();
     		} 

@@ -259,6 +259,9 @@ public class EnumLiteralEditionPanel extends JPanel{
 		
 		deleteLiterals(enumLiterals);
 		transferAddedLiterals(enumLiterals);
+		
+		classElement.reinitAttributesCompartment();
+		classElement.invalidate();
 	}
 	
 	private void deleteLiterals(List<EnumerationLiteral> enumLiterals )

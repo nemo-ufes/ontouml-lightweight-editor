@@ -22,7 +22,6 @@
 package br.ufes.inf.nemo.oled.ui.diagram;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -194,6 +193,9 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	{
 		this.wrapper = wrapper;
 	}
+	
+	public DiagramEditorWrapper getWrapper() { return wrapper; }
+	
 	/** Empty constructor for testing. Do not use !  */
 	public DiagramEditor() { }
 
@@ -465,7 +467,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		if (elem instanceof NullElement)
 		{
 			ToolboxPopupMenu menu = new ToolboxPopupMenu(frame,currentPointerPosition.getX(),currentPointerPosition.getY());
-			menu.show((Component)diagramManager.getCurrentDiagramEditor(), (int)currentPointerPosition.getX(), (int) currentPointerPosition.getY());				
+			menu.show(this, (int)currentPointerPosition.getX(), (int) currentPointerPosition.getY());				
 		}
 	}
 
@@ -1041,7 +1043,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	public void showGrid(boolean flag) 
 	{
 		diagram.setGridVisible(flag);
-		wrapper.getScrollPane().updateUI();
+		if(wrapper!=null)wrapper.getScrollPane().updateUI();
 	}
 
 	public boolean showGrid()
