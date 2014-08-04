@@ -1,20 +1,24 @@
 package br.ufes.inf.nemo.common.ontouml2graph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Class;
+import RefOntoUML.Classifier;
 import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
-import RefOntoUML.MaterialAssociation;
+import RefOntoUML.Property;
 import RefOntoUML.Relationship;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class OntoUML2Graph {
 	
-	public static int[][] buildGraph (OntoUMLParser parser, ArrayList<Class> classes, ArrayList<Relationship> relationships, boolean incGen, boolean incMat){
+	public static int[][] buildGraph (OntoUMLParser parser, ArrayList<Class> classes, ArrayList<Relationship> relationships){
+		HashMap<Type,ArrayList<Type>> relatedHash = new HashMap<Type,ArrayList<Type>>();
 		
 		classes.add(null);
 		relationships.add(null);
@@ -24,17 +28,44 @@ public class OntoUML2Graph {
 			if(element instanceof Class)
 				classes.add((Class) element);
 
-			if(element instanceof Association && !(element instanceof Derivation) && ( !(element instanceof MaterialAssociation) || incMat ) )
+			if(element instanceof Association && !(element instanceof Derivation) )
 			{
 				Association a = (Association) element;
-				if (a.getMemberEnd().size()==2 && a.getMemberEnd().get(0).getType() instanceof Class && a.getMemberEnd().get(1).getType() instanceof Class)
-					relationships.add((Relationship) element);
+				if (a.getMemberEnd().size()!=2 || a.isIsDerived())
+					continue;
+				
+				Property sourceEnd = a.getMemberEnd().get(0);
+				Property targetEnd = a.getMemberEnd().get(1);	
+				Type source = sourceEnd.getType();
+				Type target = targetEnd.getType();
+				
+				if(sourceEnd.isIsDerived() || !(source instanceof Class) || 
+						targetEnd.isIsDerived() || !(target instanceof Class) ||
+						source.equals(target))
+					continue;
+				
+				if(relatedHash.containsKey(source) && relatedHash.get(source).contains(target) )
+					continue;
+				
+				addToHash(relatedHash,source,target);
+				addToHash(relatedHash,target,source);
+				relationships.add((Relationship) element);
 			}
 			
 			if(element instanceof Generalization ){
 				Generalization g = (Generalization)element;
-				if(g.getGeneral() instanceof Class && g.getSpecific() instanceof Class)
-					relationships.add((Relationship) element);
+				Classifier parent = g.getGeneral();
+				Classifier child = g.getSpecific();
+				
+				if(!(parent instanceof Class) || !(child instanceof Class) || child.equals(parent))
+					continue;
+				
+				if(relatedHash.containsKey(child) && relatedHash.get(child).contains(parent) )
+					continue;
+				
+				addToHash(relatedHash,child,parent);
+				addToHash(relatedHash,parent,child);
+				relationships.add((Relationship) element);
 			}
 		}
 		
@@ -67,6 +98,18 @@ public class OntoUML2Graph {
 		result[1]=nodej;
 		
 		return result;
+		
+	}
+	
+	public static <T,S> void  addToHash(HashMap<T,ArrayList<S>> hash, T key, S value){
+		if(hash.containsKey(key)){
+			hash.get(key).add(value);
+			return;
+		}
+		
+		ArrayList<S> list = new ArrayList<S>();
+		list.add(value);
+		hash.put(key, list);
 		
 	}
 	
