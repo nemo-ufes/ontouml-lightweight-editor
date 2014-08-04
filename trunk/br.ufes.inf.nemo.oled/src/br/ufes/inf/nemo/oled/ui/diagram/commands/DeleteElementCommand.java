@@ -401,7 +401,7 @@ public class DeleteElementCommand extends BaseDiagramCommand{
 	
 	private void delete (RefOntoUML.Element elem)
 	{			
-//		System.out.println("Deleting = "+elem);
+		System.out.println("Deleting = "+elem);
 		DeleteCommand cmd = (DeleteCommand) DeleteCommand.create(project.getEditingDomain(), elem);
 		project.getEditingDomain().getCommandStack().execute(cmd);
 		ProjectBrowser.frame.getDiagramManager().updateOLEDFromDeletion(elem);

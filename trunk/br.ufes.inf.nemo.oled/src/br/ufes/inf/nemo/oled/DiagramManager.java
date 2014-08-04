@@ -65,6 +65,7 @@ import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Comment;
 import RefOntoUML.Constraintx;
+import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.LiteralInteger;
@@ -600,7 +601,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		diagram.setLabelText("Diagram"+getCurrentProject().getDiagrams().size());
 		getCurrentProject().addDiagram(diagram);
 		saveDiagramNeeded(diagram,false);
-		createDiagramEditor(diagram);		
+		createDiagramEditor(diagram);			
 		//add the diagram from the browser
 		ProjectBrowser browser = frame.getProjectBrowser();
 		browser.getTree().addObject(browser.getTree().getDiagramRootNode(),diagram);
@@ -978,6 +979,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public DiagramEditor createDiagramEditor(StructureDiagram diagram)
 	{		
 		DiagramEditor editor = new DiagramEditor(frame, this, diagram);
+		editor.showGrid(false);	
 		editor.addEditorStateListener(this);
 		editor.addSelectionListener(this);
 		editor.addAppCommandListener(editorDispatcher);
@@ -2052,6 +2054,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				boolean found = tree.checkModelElement(addedElement);
 				if(!found) {
 					if(addedElement.eContainer()!=null) tree.checkModelElement(addedElement.eContainer());
+					else if(addedElement instanceof EnumerationLiteral) tree.checkModelElement(((EnumerationLiteral)addedElement).getEnumeration());
 					else tree.checkModelElement(project.getModel());					
 					tree.addObject(addedElement);					
 				} else {
@@ -2568,6 +2571,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				ArrayList<DiagramElement> elemList=new ArrayList<DiagramElement>();
 				if(element instanceof Property){
 					elemList = ModelHelper.getDiagramElements((RefOntoUML.Element)element.eContainer());
+				}else if(element instanceof EnumerationLiteral){
+					elemList = ModelHelper.getDiagramElements(((RefOntoUML.EnumerationLiteral)element).getEnumeration());
 				}else if (element instanceof GeneralizationSet){
 					for(Generalization gen: ((RefOntoUML.GeneralizationSet)element).getGeneralization()){
 						elemList = ModelHelper.getDiagramElements(gen);

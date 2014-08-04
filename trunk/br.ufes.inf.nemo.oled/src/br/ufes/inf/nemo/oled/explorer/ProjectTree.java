@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
 import RefOntoUML.Comment;
+import RefOntoUML.EnumerationLiteral;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Package;
@@ -336,6 +337,14 @@ public class ProjectTree extends CheckboxTree {
 					DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)o),""));
 					node.add(child);
 				}
+				if(object instanceof RefOntoUML.Enumeration){
+					
+					for(EnumerationLiteral lit: ((RefOntoUML.Enumeration)object).getOwnedLiteral())
+					{
+						DefaultMutableTreeNode child = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)lit),""));
+						node.add(child);
+					}
+				}
 			}		
 			
 			if (object instanceof RefOntoUML.Association){
@@ -423,7 +432,17 @@ public class ProjectTree extends CheckboxTree {
 		{
 			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),""));			
 			parent.add(newNode);	
+		
+		}else if (object instanceof RefOntoUML.EnumerationLiteral)
+		{				
+			String alias = new String();			
+			if (refparser!=null) alias = refparser.getAlias((RefOntoUML.EnumerationLiteral)object);
+			else alias = "";		
 			
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(new OntoUMLElement(((EObject)object),alias));
+			parent.add(newNode);
+			checkingModel.setPathEnabled(new TreePath(newNode.getPath()),false);			
+		
 		/* Property */
 		}else if (object instanceof RefOntoUML.Property)
 		{
@@ -479,6 +498,13 @@ public class ProjectTree extends CheckboxTree {
 				{
 					drawModel(newNode,o,checkingModel,refparser);
 				}
+				if(object instanceof RefOntoUML.Enumeration){
+					
+					for(EnumerationLiteral lit: ((RefOntoUML.Enumeration)object).getOwnedLiteral())
+					{
+						drawModel(newNode,lit,checkingModel,refparser);
+					}
+				}
 			}		
 			
 			if (object instanceof RefOntoUML.Association){
@@ -491,8 +517,7 @@ public class ProjectTree extends CheckboxTree {
 					drawModel(newNode,o,checkingModel,refparser);
 				}
 			}
-		}
-		
+		}		
 	}
 		
 	/**

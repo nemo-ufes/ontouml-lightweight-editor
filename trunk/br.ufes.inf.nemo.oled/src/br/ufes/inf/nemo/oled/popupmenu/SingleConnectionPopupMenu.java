@@ -115,6 +115,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private JMenuItem invertEndMultiplicitiesItem;
 	private JMenuItem invertEndNamesItem;
 	private JMenuItem invertEndTypesItem;
+	@SuppressWarnings("unused")
 	private JMenuItem specializationItem;
 	
 	public SingleConnectionPopupMenu()
