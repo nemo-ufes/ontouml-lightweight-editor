@@ -111,15 +111,16 @@ public class AssociationEditionPanel extends JPanel {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(meronymicPanel, 0, 0, Short.MAX_VALUE)
+							.addGap(12))
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 							.addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(directionPanel, GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
-						.addComponent(assocPanel, GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))
+						.addComponent(assocPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE))
 					.addGap(0))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(meronymicPanel, 0, 0, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -127,18 +128,18 @@ public class AssociationEditionPanel extends JPanel {
 					.addComponent(assocPanel, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(directionPanel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(meronymicPanel, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)
-					.addGap(0, 0, Short.MAX_VALUE))
+						.addComponent(directionPanel, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(meronymicPanel, GroupLayout.PREFERRED_SIZE, 102, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		
 		btnName = new JCheckBox("Name");
 		btnName.setPreferredSize(new Dimension(90, 25));
 		
 		btnStereotype = new JCheckBox("Stereotype");
-		btnStereotype.setPreferredSize(new Dimension(100, 25));
+		btnStereotype.setPreferredSize(new Dimension(110, 25));
 		
 		btnEndNames = new JCheckBox("End names");
 		btnEndNames.setPreferredSize(new Dimension(80, 25));
@@ -182,7 +183,7 @@ public class AssociationEditionPanel extends JPanel {
 		
 		btnToSource = new JRadioButton("To source");
 		group.add(btnToSource);
-		btnToSource.setPreferredSize(new Dimension(83, 25));
+		btnToSource.setPreferredSize(new Dimension(95, 25));
 		
 		btnUndefined = new JRadioButton("Undefined");
 		group.add(btnUndefined);
@@ -312,17 +313,17 @@ public class AssociationEditionPanel extends JPanel {
 				.addGroup(gl_assocPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(lblStereo, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblName, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(lblStereo, GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_assocPanel.createSequentialGroup()
-							.addComponent(stereoCombo, 0, 199, Short.MAX_VALUE)
-							.addGap(18)
+						.addGroup(Alignment.TRAILING, gl_assocPanel.createSequentialGroup()
+							.addComponent(stereoCombo, 0, 219, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(cbxAbstract)
 							.addGap(11)
 							.addComponent(cbxDerived))
-						.addComponent(nameField, GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE))
+						.addComponent(nameField, GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_assocPanel.setVerticalGroup(
@@ -333,13 +334,13 @@ public class AssociationEditionPanel extends JPanel {
 						.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 						.addComponent(nameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING, false)
+					.addGroup(gl_assocPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblStereo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(gl_assocPanel.createParallelGroup(Alignment.BASELINE)
-							.addComponent(stereoCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(cbxDerived, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(cbxAbstract, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addComponent(lblStereo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(cbxAbstract, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(stereoCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(19, Short.MAX_VALUE))
 		);
 		assocPanel.setLayout(gl_assocPanel);
 		setLayout(groupLayout);

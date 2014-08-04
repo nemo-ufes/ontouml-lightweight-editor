@@ -394,9 +394,10 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		}
 		editorMode.cancel();
 		selectionHandler.deselectAll();
-		redraw();		
 		frame.getToolManager().getElementsPalette().getPalleteElement("select").setSelected(true);
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));		
+		redraw();
+		requestFocusInEditor();
 	}
 
 	public void select(DiagramElement element)
@@ -1154,141 +1155,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 			}
 		}		
 	}
-	/** Align Top */
-	public void alignTop()
-	{
-		if (selectionHandler.getSelectedElements().size() > 0) 
-		{
-			ArrayList<Double> coordList = new ArrayList<Double>();
-			List<DiagramElement> elements = new ArrayList<DiagramElement>();
-			for(DiagramElement de: selectionHandler.getSelectedElements())
-			{
-				if(de instanceof ClassElement){
-					ClassElement ce = (ClassElement)de;
-					elements.add(ce);
-					coordList.add(ce.getAbsoluteY1());					
-				}
-			}
-			Collections.sort(coordList);
-			double finalpos = Collections.min(coordList);
-			if(finalpos>0){
-				for(DiagramElement de: elements)
-				{
-					if(de instanceof ClassElement){
-						ClassElement ce = (ClassElement)de;
-						ce.setAbsolutePos(ce.getAbsoluteX1(), finalpos);						
-					}
-				}
-			}			
-		}
-	}
 	
-	/** Align Bottom */
-	public void alignBottom()
-	{
-		ArrayList<Double> coordList = new ArrayList<Double>();
-		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		for(DiagramElement de: selectionHandler.getSelectedElements())
-		{
-			if(de instanceof ClassElement){
-				ClassElement ce = (ClassElement)de;
-				elements.add(ce);
-				coordList.add(ce.getAbsoluteY1());					
-			}
-		}
-		Collections.sort(coordList);
-		double finalpos = Collections.max(coordList);
-		if(finalpos>0){
-			for(DiagramElement de: elements)
-			{
-				if(de instanceof ClassElement){
-					ClassElement ce = (ClassElement)de;
-					ce.setAbsolutePos(ce.getAbsoluteX1(), finalpos);						
-				}
-			}
-		}		
-	}
-	
-	/** Align Left */
-	public void alignLeft()
-	{
-		ArrayList<Double> coordList = new ArrayList<Double>();
-		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		for(DiagramElement de: selectionHandler.getSelectedElements())
-		{
-			if(de instanceof ClassElement){
-				ClassElement ce = (ClassElement)de;
-				elements.add(ce);
-				coordList.add(ce.getAbsoluteX1());					
-			}
-		}
-		Collections.sort(coordList);
-		double finalpos = Collections.min(coordList);
-		if(finalpos>0){
-			for(DiagramElement de: elements)
-			{
-				if(de instanceof ClassElement){
-					ClassElement ce = (ClassElement)de;
-					ce.setAbsolutePos(finalpos,ce.getAbsoluteY1());						
-				}
-			}
-		}	
-	}
-	
-	/** Align Right */
-	public void alignRight()
-	{
-		ArrayList<Double> coordList = new ArrayList<Double>();
-		List<DiagramElement> elements = new ArrayList<DiagramElement>();
-		for(DiagramElement de: selectionHandler.getSelectedElements())
-		{
-			if(de instanceof ClassElement){
-				ClassElement ce = (ClassElement)de;
-				elements.add(ce);
-				coordList.add(ce.getAbsoluteX1());					
-			}
-		}
-		Collections.sort(coordList);
-		double finalpos = Collections.max(coordList);
-		if(finalpos>0){
-			for(DiagramElement de: elements)
-			{
-				if(de instanceof ClassElement){
-					ClassElement ce = (ClassElement)de;
-					ce.setAbsolutePos(finalpos,ce.getAbsoluteY1());						
-				}
-			}
-		}		
-	}
-	
-	/** Align Center Horizontally */
-	public void alignCenterHorizontally ()
-	{
-		if (selectionHandler.getSelectedElements().size() > 0) 
-		{
-			ArrayList<Double> coordList = new ArrayList<Double>();
-			List<DiagramElement> elements = new ArrayList<DiagramElement>();
-			for(DiagramElement de: selectionHandler.getSelectedElements())
-			{
-				if(de instanceof ClassElement){
-					ClassElement ce = (ClassElement)de;
-					elements.add(ce);
-					coordList.add(ce.getAbsoluteY1());					
-				}
-			}
-			double finalpos = calculateCenterAlignPosition(coordList);
-			if(finalpos!=-1){
-				for(DiagramElement de: elements)
-				{
-					if(de instanceof ClassElement){
-						ClassElement ce = (ClassElement)de;
-						ce.setAbsolutePos(ce.getAbsoluteX1(), finalpos);						
-					}
-				}
-			}			
-		}
-	}
-	
+	/** Set the background color of the selected elements */
 	public void setBackgroundInSelected(Color color)
 	{
 		for(DiagramElement de: getSelectedElements()){
@@ -1300,32 +1168,233 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		wrapper.getScrollPane().updateUI();
 	}
 	
+	/** Align Bottom */
+	public void alignBottom()
+	{
+		ArrayList<DiagramElement> classElements = new ArrayList<DiagramElement>();
+		classElements.addAll(getSelectedClassElements());
+		ClassElement atbottom = getClassElementAtBottom(classElements);				
+		if(atbottom!=null){
+			double atbottomY2 = atbottom.getAbsoluteY2();
+			for(DiagramElement de: classElements)
+			{					
+				ClassElement ce = (ClassElement)de;	
+				double ceHeight = ce.getAbsoluteBounds().getHeight();
+				if(!ce.equals(atbottom)){
+					ce.setAbsolutePos(ce.getAbsoluteX1(),atbottomY2-ceHeight);
+				}
+			}			
+		}		
+	}
+	
+	/** Align Top */
+	public void alignTop()
+	{
+		ArrayList<DiagramElement> classElements = new ArrayList<DiagramElement>();
+		classElements.addAll(getSelectedClassElements());
+		ClassElement attop = getClassElementAtTop(classElements);				
+		if(attop!=null){
+			double attopY1 = attop.getAbsoluteY1();
+			for(DiagramElement de: classElements)
+			{					
+				ClassElement ce = (ClassElement)de;				
+				if(!ce.equals(attop)){
+					ce.setAbsolutePos(ce.getAbsoluteX1(),attopY1);
+				}
+			}			
+		}
+	}	
+	
+	/** Align Left */
+	public void alignLeft()
+	{
+		ArrayList<DiagramElement> classElements = new ArrayList<DiagramElement>();
+		classElements.addAll(getSelectedClassElements());
+		ClassElement atleft = getClassElementAtLeft(classElements);				
+		if(atleft!=null){
+			double atrightX1 = atleft.getAbsoluteX1();
+			for(DiagramElement de: classElements)
+			{					
+				ClassElement ce = (ClassElement)de;				
+				if(!ce.equals(atleft)){
+					ce.setAbsolutePos(atrightX1,ce.getAbsoluteY1());
+				}
+			}			
+		}		
+	}
+	
+	/** Align Right */
+	public void alignRight()
+	{		
+		ArrayList<DiagramElement> classElements = new ArrayList<DiagramElement>();
+		classElements.addAll(getSelectedClassElements());
+		ClassElement atright = getClassElementAtRight(classElements);				
+		if(atright!=null){
+			double atrightX2 = atright.getAbsoluteX2();
+			for(DiagramElement de: classElements)
+			{					
+				ClassElement ce = (ClassElement)de;	
+				double ceWidth = ce.getAbsoluteBounds().getWidth();
+				if(!ce.equals(atright)){
+					ce.setAbsolutePos(atrightX2-ceWidth,ce.getAbsoluteY1());
+				}
+			}			
+		}		
+	}
+	
+	/** Align Center Horizontally */
+	public void alignCenterHorizontally ()
+	{
+		if (selectionHandler.getSelectedElements().size() > 0) 
+		{
+			ArrayList<Double> coordList = new ArrayList<Double>();
+			ArrayList<DiagramElement> classElements = new ArrayList<DiagramElement>();
+			classElements.addAll(getSelectedClassElements());
+			for(DiagramElement de: classElements)
+			{				
+				ClassElement ce = (ClassElement)de;				
+				coordList.add(ce.getAbsCenterY());	
+			}
+			double finalpos = calculateCenterAlignPosition(coordList);
+			ClassElement larger = getClassElementLargestHeight(classElements);			
+			if(finalpos!=-1 && larger !=null)
+			{		
+				double largerHeight= larger.getAbsoluteBounds().getHeight();
+				((ClassElement)larger).setAbsolutePos(larger.getAbsoluteX1(),finalpos-(largerHeight/2));
+				for(DiagramElement de: classElements)
+				{					
+					ClassElement ce = (ClassElement)de;	
+					double ceHeight = ce.getAbsoluteBounds().getHeight();
+					if(!ce.equals(larger)){
+						ce.setAbsolutePos(ce.getAbsoluteX1(),finalpos-(ceHeight/2));
+					}
+				}
+			}			
+		}			
+	}
+	
 	/** Align Center Vertically */
 	public void alignCenterVertically()
 	{
 		if (selectionHandler.getSelectedElements().size() > 0) 
 		{
 			ArrayList<Double> coordList = new ArrayList<Double>();
-			List<DiagramElement> elements = new ArrayList<DiagramElement>();
-			for(DiagramElement de: selectionHandler.getSelectedElements())
-			{
-				if(de instanceof ClassElement){
-					ClassElement ce = (ClassElement)de;
-					elements.add(ce);
-					coordList.add(ce.getAbsoluteX1());					
-				}
-			}			
+			ArrayList<DiagramElement> classElements = new ArrayList<DiagramElement>();
+			classElements.addAll(getSelectedClassElements());
+			for(DiagramElement de: classElements)
+			{				
+				ClassElement ce = (ClassElement)de;				
+				coordList.add(ce.getAbsCenterX());	
+			}
 			double finalpos = calculateCenterAlignPosition(coordList);
-			if(finalpos!=-1){
-				for(DiagramElement de: selectionHandler.getSelectedElements())
-				{
-					if(de instanceof ClassElement){
-						ClassElement ce = (ClassElement)de;
-						ce.setAbsolutePos(finalpos,ce.getAbsoluteY1());
+			ClassElement larger = getClassElementLargestWidth(classElements);			
+			if(finalpos!=-1 && larger !=null)
+			{		
+				double largerWidth = larger.getAbsoluteBounds().getWidth();
+				((ClassElement)larger).setAbsolutePos(finalpos-(largerWidth/2),larger.getAbsoluteY1());
+				for(DiagramElement de: classElements)
+				{					
+					ClassElement ce = (ClassElement)de;	
+					double ceWidth = ce.getAbsoluteBounds().getWidth();
+					if(!ce.equals(larger)){
+						ce.setAbsolutePos(finalpos-(ceWidth/2),ce.getAbsoluteY1());
 					}
 				}
 			}			
 		}
+	}
+	
+	/** Returns all selected class elements */
+	private ArrayList<DiagramElement>getSelectedClassElements()
+	{
+		ArrayList<DiagramElement> result = new ArrayList<DiagramElement>();
+		for(DiagramElement de: selectionHandler.getSelectedElements())
+		{
+			if(de instanceof ClassElement){
+				result.add(de);
+			}
+		}	
+		return result;
+	}
+	
+	/** Return the class element most located at the bottom of the diagram */
+	private ClassElement getClassElementAtBottom(ArrayList<DiagramElement> list){
+		double maxY2 = 0;
+		ClassElement atBottomElement = null;
+		for(DiagramElement de: list){
+			if(((ClassElement)de).getAbsoluteY2()>maxY2) {
+				maxY2 = ((ClassElement)de).getAbsoluteY2();
+				atBottomElement = (ClassElement)de;				
+			}
+		}
+		return atBottomElement;
+	}
+	
+	/** Return the class element most located at the top of the diagram */
+	private ClassElement getClassElementAtTop(ArrayList<DiagramElement> list){
+		double maxY1 = getSize().getWidth();
+		ClassElement atTopElement = null;
+		for(DiagramElement de: list){
+			if(((ClassElement)de).getAbsoluteY1()<maxY1) {
+				maxY1 = ((ClassElement)de).getAbsoluteY1();
+				atTopElement = (ClassElement)de;				
+			}
+		}
+		return atTopElement;
+	}
+	
+	/** Return the class element most located at the left of the diagram */
+	private ClassElement getClassElementAtLeft(ArrayList<DiagramElement> list){
+		double maxX1 = getSize().getWidth();
+		ClassElement atLeftElement = null;
+		for(DiagramElement de: list){
+			if(((ClassElement)de).getAbsoluteX1()<maxX1) {
+				maxX1 = ((ClassElement)de).getAbsoluteX1();
+				atLeftElement = (ClassElement)de;				
+			}
+		}
+		return atLeftElement;
+	}
+	
+	/** Return the class element most located at the right of the diagram */
+	private ClassElement getClassElementAtRight(ArrayList<DiagramElement> list){
+		double maxX2 = 0;
+		ClassElement atRightElement = null;
+		for(DiagramElement de: list){
+			if(((ClassElement)de).getAbsoluteX2()>maxX2) {
+				maxX2 = ((ClassElement)de).getAbsoluteX2();
+				atRightElement = (ClassElement)de;				
+			}
+		}
+		return atRightElement;
+	}
+	
+	/** Returns the class element with the largest height */
+	private ClassElement getClassElementLargestHeight(ArrayList<DiagramElement> list)
+	{
+		double maxheight = 0;
+		ClassElement largerHeightElement = null;
+		for(DiagramElement de: list){
+			if(de.getAbsoluteBounds().getHeight()>maxheight) {
+				maxheight = de.getAbsoluteBounds().getHeight();
+				largerHeightElement = (ClassElement)de;				
+			}
+		}		
+		return largerHeightElement;		
+	}
+	
+	/** Returns the class element with the largest width */
+	private ClassElement getClassElementLargestWidth(ArrayList<DiagramElement> list)
+	{
+		double maxwidth = 0;
+		ClassElement largerWidthElement = null;
+		for(DiagramElement de: list){
+			if(de.getAbsoluteBounds().getWidth()>maxwidth) {
+				maxwidth = de.getAbsoluteBounds().getWidth();
+				largerWidthElement = (ClassElement)de;				
+			}
+		}
+		return largerWidthElement;		
 	}
 	
 	/** Algorithm to calculate the center alignment position */

@@ -113,7 +113,7 @@ public class SelectionHandler implements EditorMode {
 	 * Handles the selection on a mouseClicked event.
 	 * @param e the EditorMouseEvent
 	 */
-	private void handleSelectionOnMouseClicked(EditorMouseEvent e) {
+	public void handleSelectionOnMouseClicked(EditorMouseEvent e) {
 		
 		boolean focusEditor = true;
 		double mx = e.getX(), my = e.getY();
@@ -195,7 +195,7 @@ public class SelectionHandler implements EditorMode {
 	 * Handle the selection on a mousePressed event.
 	 * @param e the EditorMouseEvent
 	 */
-	private void handleSelectionOnMousePress(EditorMouseEvent e) {
+	public void handleSelectionOnMousePress(EditorMouseEvent e) {
 		double mx = e.getX(), my = e.getY();
 		
 		Selection newSelection = getSelection(mx, my);
@@ -271,7 +271,7 @@ public class SelectionHandler implements EditorMode {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void mouseReleased(EditorMouseEvent e) {
+	public void mouseReleased(EditorMouseEvent e) {						
 		handleSelectionOnMouseReleased(e);		
 		if (e.isPopupTrigger()) {
 			displayContextMenu(e);
@@ -282,7 +282,7 @@ public class SelectionHandler implements EditorMode {
 	 * Handles the current selection on a mouse released.
 	 * @param e the EditorMouseEvent
 	 */
-	private void handleSelectionOnMouseReleased(EditorMouseEvent e) {
+	public void handleSelectionOnMouseReleased(EditorMouseEvent e) {
 		
 		double mx = e.getX(), my = e.getY();
 				
