@@ -10,6 +10,8 @@ import org.eclipse.swt.widgets.List;
 
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class IdentityProviderPage  extends DecIntPage {
@@ -27,15 +29,15 @@ public class IdentityProviderPage  extends DecIntPage {
 	 * @param parent
 	 */
 	public void createControl(Composite parent) {
-		String subtypeName = decint.getSubtype().getName();
+		String subtypeName = OntoUMLNameHelper.getTypeAndName(decint.getSubtype(), true, true);
 		
 		Composite container = new Composite(parent, SWT.NULL);
 		setControl(container);			
 		
 		StyledText questionText = new StyledText(container, SWT.READ_ONLY | SWT.WRAP);
 		questionText.setBackground(questionText.getParent().getBackground());
-		questionText.setText(	"<"+subtypeName+"> specialize types which follow different identity principles. " +
-							"That generates a logical contradiction, so <"+subtypeName+"> cannot have any instances. " +
+		questionText.setText(subtypeName+" specialize types that follow different identity principles. " +
+							"That generates a logical contradiction, which implies that it cannot have any instances. " +
 							"The list below shows the current identity providers, please choose only one:");
 		questionText.setJustify(true);
 		
@@ -64,15 +66,17 @@ public class IdentityProviderPage  extends DecIntPage {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				if(identityProviderList.getSelectionIndex()!=-1){
+					
+					selectedIP=decint.getIdentityProviders().get(identityProviderList.getSelectionIndex());
+					
 					if(!isPageComplete())
 						setPageComplete(true);
-					selectedIP=decint.getIdentityProviders().get(identityProviderList.getSelectionIndex());
 				}
 				else{
+					selectedIP=null;
+					
 					if(isPageComplete())
 						setPageComplete(false);
-					
-					selectedIP=null;
 				}
 			}
 			

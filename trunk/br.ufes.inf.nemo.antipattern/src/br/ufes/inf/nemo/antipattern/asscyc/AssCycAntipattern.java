@@ -1,15 +1,22 @@
 package br.ufes.inf.nemo.antipattern.asscyc;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
+import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
+import RefOntoUML.MaterialAssociation;
+import RefOntoUML.Mediation;
 import RefOntoUML.Package;
 import RefOntoUML.Relationship;
+import RefOntoUML.Relator;
 import RefOntoUML.Type;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.EdgePath;
+import br.ufes.inf.nemo.common.ontouml2directedgraph.Graph;
 import br.ufes.inf.nemo.common.ontouml2graph.GraphAlgo;
 import br.ufes.inf.nemo.common.ontouml2graph.OntoUML2Graph;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -26,8 +33,12 @@ public class AssCycAntipattern extends Antipattern<AssCycOccurrence> {
 	
 	private static final AntipatternInfo info = new AntipatternInfo("Association Cycle", 
 			"AssCyc", 
-			"This anti-pattern occurs when...",
-			null); 
+			"This anti-pattern occurs when an arbitrary number of types are connected through the same number of " +
+			"relations in a way that composes a cycle (in the same meaning defined in Graph Theory). " +
+			"In other words, one can start navigating relations from any type in the cycle and arrive back to the " +
+			"starting point without going through the same relation and visiting the same type more than once (except the first/last).",
+			null);
+	private HashMap<MaterialAssociation, ArrayList<Relator>> mat2RelHash; 
 	
 	public static AntipatternInfo getAntipatternInfo(){
 		return info;
@@ -37,6 +48,103 @@ public class AssCycAntipattern extends Antipattern<AssCycOccurrence> {
 		return info;
 	}
 
+	public ArrayList<AssCycOccurrence> identifyAlternative() {
+		
+		Graph genGraph = new Graph(parser);
+		//creates directed graph with classes and meronymics
+		genGraph.createBidirectionalRelationshipGraph(true,true);
+		//get all paths in the graph
+		ArrayList<EdgePath> allPaths = genGraph.getAllEdgePathsFromAllNodes(3);
+		//only keep paths that are cycles
+		Graph.retainCycles(allPaths);
+		//remove cycles which contain the very same edges (ignoring the order of the edges)
+		Graph.removeDuplicateEdgeCycles(allPaths, true);
+	
+		//required for method isRelatorPattern to work
+		createDerivationHash();
+		
+		for (EdgePath cycle : allPaths) {
+			try {
+				ArrayList<Relationship> relCycle = cycle.getEdgeIdsOfType(Relationship.class);
+				
+				if(relCycle.size()<=2)
+					continue;
+				
+				if(isRelatorPattern(relCycle))
+					continue;
+				
+				occurrence.add(new AssCycOccurrence(cycle.getNodeIdsOfType(RefOntoUML.Class.class, false),relCycle,this));
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return occurrence;
+	}
+	
+	private boolean isRelatorPattern(ArrayList<Relationship> relCycle) throws Exception{
+		
+		if(relCycle.size()!=3)
+			return false;
+		
+		if(mat2RelHash==null)
+			createDerivationHash();
+		
+		MaterialAssociation mat = null;
+		Mediation m1 = null, m2 = null;
+		
+		for (Relationship r : relCycle) {
+			if(r instanceof MaterialAssociation){
+				if(mat==null)
+					mat = (MaterialAssociation) r;
+				else
+					return false;
+			}
+			
+			if(r instanceof Mediation){
+				if(m1==null)
+					m1 = (Mediation) r;
+				else if (m2==null)
+					m2 = (Mediation) r;
+			}
+		}
+		if(mat==null || m1==null || m2==null) 
+			return false;
+		
+		Type 	mediatedM1 = OntoUMLParser.getMediated(m1), 
+				mediatedM2 =  OntoUMLParser.getMediated(m2), 
+				relatorM1 = OntoUMLParser.getRelator(m1), 
+				relatorM2 = OntoUMLParser.getRelator(m2);
+		
+		Type 	matSource = mat.getMemberEnd().get(0).getType(),
+				matTarget = mat.getMemberEnd().get(1).getType();
+		
+		if(relatorM1.equals(relatorM2) && !mediatedM1.equals(mediatedM2) && 
+				mat2RelHash.containsKey(mat) && mat2RelHash.get(mat).contains(relatorM1) &&
+				((matSource.equals(mediatedM1) && matTarget.equals(mediatedM2)) || (matSource.equals(mediatedM2) && matTarget.equals(mediatedM1)) ) )
+			return true;
+		
+		return false;
+
+	}
+
+	private void createDerivationHash(){
+		mat2RelHash = new HashMap<MaterialAssociation,ArrayList<Relator>>();
+		
+		for (Derivation d : parser.getAllInstances(Derivation.class)) {
+			MaterialAssociation material = OntoUMLParser.getMaterial(d);			
+			Relator relator = OntoUMLParser.getRelator(d);
+			
+			if(mat2RelHash.containsKey(material)) {	
+				mat2RelHash.get(material).add(relator);
+			} else{
+				ArrayList<Relator> list = new ArrayList<Relator>();
+				list.add(relator);
+				mat2RelHash.put(material,list);
+			}	
+		}
+	}
+	
 	@Override
 	public ArrayList<AssCycOccurrence> identify() {
 			
@@ -47,7 +155,7 @@ public class AssCycAntipattern extends Antipattern<AssCycOccurrence> {
 		ArrayList<Relationship> relationships = new ArrayList<Relationship>();
 		ArrayList<Relationship> cycle_ass = new ArrayList<Relationship>();
 		
-		aux = OntoUML2Graph.buildGraph(parser, classes, relationships, false, false);
+		aux = OntoUML2Graph.buildGraph(parser, classes, relationships);
 		nodei = aux[0];
 		nodej = aux[1];
 		

@@ -41,7 +41,7 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		}
 		
 		if(associationList.size()<=2)
-			throw new Exception("AssCyc: Cycle must be composed by 2 or more associations");
+			throw new Exception("AssCyc: Cycle must be composed by 3 or more associations");
 		
 		associationClassList = new ArrayList<Class>();
 		
@@ -77,23 +77,15 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 						"Classes: ";
 		
 		ArrayList<Edge> aligned = getAlignedPropertiesFrom(associationList.get(0),associationList.get(0).getMemberEnd().get(0));
-		result += OntoUMLNameHelper.getTypeAndName(associationList.get(0).getMemberEnd().get(1).getType(),true,false);
 		
-		for (int i = 1; i < aligned.size(); i++) {	
-			Edge e = aligned.get(i);
-			
-			if(e.isAssociation())
-				result += OntoUMLNameHelper.getTypeAndName(e.p.getType(), true, false);
-			else
-				result += OntoUMLNameHelper.getTypeAndName(e.c, true, false);
+		for (int i = 0; i < aligned.size(); i++) {	
+			result += OntoUMLNameHelper.getTypeAndName(aligned.get(i).getSource(), true, false);
 			
 			if(i<classCycle.size()-2)
 				result+=", ";
-
-			if(i==classCycle.size()-2)
+			else if(i==classCycle.size()-2)
 				result+=" and ";
-			
-			i++;
+
 		}
 		result+="\r\nRelationships:";
 		
@@ -104,8 +96,9 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 			else
 				separator = "->";
 			
-			result+="\r\n\t"+OntoUMLNameHelper.getTypeAndName(e.getSource(), true, false)+" "+separator+" "+OntoUMLNameHelper.getTypeAndName(e.getTarget(), true, false)+
-					"("+OntoUMLNameHelper.getTypeAndName(e.getRelationship(), false, false)+")";
+			result+="\r\n\t"+OntoUMLNameHelper.getTypeAndName(e.getRelationship(), false, false)+
+					" ["+OntoUMLNameHelper.getTypeAndName(e.getSource(), true, false)+" "+separator+" "+OntoUMLNameHelper.getTypeAndName(e.getTarget(), true, false)+"]";
+				
 		}
 		
 		return result;
@@ -236,7 +229,7 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		}
 		else{
 			invName = "cyclic";
-			finalExpression = "->asSet() = self->asSet()";
+			finalExpression = "->includes(self)";
 		}
 
 		for (int i = 0; i < aligned.size(); i++) {
