@@ -5,11 +5,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.EObject;
+
+import RefOntoUML.Association;
+import RefOntoUML.Class;
 import RefOntoUML.Classifier;
+import RefOntoUML.Derivation;
 import RefOntoUML.Generalization;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
+import RefOntoUML.Relationship;
 import RefOntoUML.Type;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class Graph {
@@ -105,6 +112,53 @@ public class Graph {
 		}
 	}
 	
+	public void createBidirectionalRelationshipGraph(boolean excludeDerivation, boolean excludeDerived) {
+		if(parser==null)
+			return;
+		
+		this.allNodes.clear();
+		
+		//add all classes as nodes of the graph
+		for (Class c : parser.getAllInstances(Class.class)) {
+			addNode(new Node(c));
+		}
+		
+		//creates all edges in both directions
+		for (Relationship r : parser.getAllInstances(Relationship.class)) {
+			try{
+				if(excludeDerivation && r instanceof Derivation)
+					continue;
+			
+				if(r instanceof Association){
+					Association a = (Association) r;
+					
+					Property sourceEnd = a.getMemberEnd().get(0);
+					Type source = sourceEnd.getType();
+					
+					Property targetEnd = a.getMemberEnd().get(1);
+					Type target =  targetEnd.getType();
+					
+					if(excludeDerived && (a.isIsDerived() || sourceEnd.isIsDerived() || targetEnd.isIsDerived()))
+						continue;
+					
+					getNode(source).connect(a, getNode(target));
+					getNode(target).connect(a, getNode(source));
+				}
+				
+				if(r instanceof Generalization){
+					Generalization g = (Generalization) r;
+					Classifier child = g.getSpecific();
+					Classifier parent = g.getGeneral();
+					
+					getNode(child).connect(g, getNode(parent));
+					getNode(parent).connect(g, getNode(child));
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}	
+	}
+	
 	public Node getNode(Object id){
 		return allNodes.get(id);
 	}
@@ -183,27 +237,27 @@ public class Graph {
 	
 	
 	
-	public void getAllEdgePathsFrom(Node node, EdgePath path, ArrayList<EdgePath> selectedPaths){
+	public void getAllEdgePathsFrom(Node node, EdgePath path, ArrayList<EdgePath> selectedPaths, int minPathSize){
 		
 		if(!path.containsSourceNode(node)){
 			for (DirectedEdge edge : node.edges) {
 				EdgePath newPath = new EdgePath(path);
 				newPath.addEdge(edge);
-				getAllEdgePathsFrom(edge.target, newPath, selectedPaths);
+				getAllEdgePathsFrom(edge.target, newPath, selectedPaths, minPathSize);
 			}
 		}
 		
-		if(path.getEdges().size()>=1)
+		if(path.getEdges().size()>=minPathSize)
 			selectedPaths.add(path);
 	}
 	
-	public ArrayList<EdgePath> getAllEdgePathsFromAllNodes(){
+	public ArrayList<EdgePath> getAllEdgePathsFromAllNodes(int minPathSize){
 		
 		ArrayList<EdgePath> allPaths = new ArrayList<EdgePath>();
 
 		for (Node node : allNodes.values()) {
 			EdgePath currentPath = new EdgePath();
-			getAllEdgePathsFrom(node, currentPath, allPaths);
+			getAllEdgePathsFrom(node, currentPath, allPaths, minPathSize);
 		}
 		
 		return allPaths;
@@ -219,13 +273,16 @@ public class Graph {
 		}
 	}
 	
-	public static void removeDuplicateEdgeCycles(ArrayList<EdgePath> allPaths){
+	public static void removeDuplicateEdgeCycles(ArrayList<EdgePath> allPaths, boolean removeBasedOnEdgeId){
 		
 		int i = 0;
 		while(i<allPaths.size()){
 			
 			EdgePath basePath = allPaths.get(i);
-			
+			System.out.println("==================================");
+			System.out.print("BASE PATH:");
+			printPath(basePath);
+
 			if(!basePath.isCycle()){
 				i++;
 				continue;
@@ -241,7 +298,9 @@ public class Graph {
 				}
 				
 				//contains the same edges
-				if(basePath.containSameEdges(path)){
+				if(basePath.containSameEdges(path, removeBasedOnEdgeId)){
+					System.out.print("REMOVED: ");
+					printPath(path);
 					allPaths.remove(path);
 				}
 				else
@@ -249,6 +308,17 @@ public class Graph {
 			}
 			i++;
 		}
+	}
+
+	private static void printPath(EdgePath path) {
+		System.out.print("[");
+		
+		for (DirectedEdge e : path.edges) {
+			if(e.id instanceof EObject)
+				System.out.print(OntoUMLNameHelper.getTypeAndName((EObject) e.id, true, true)+", ");
+		}
+		
+		System.out.println("]");
 	}
 	
 	
@@ -285,7 +355,7 @@ public class Graph {
 		
 		System.out.println("#Nodes: "+graph.allNodes.values().size());
 		
-		ArrayList<EdgePath> allEdgePaths = graph.getAllEdgePathsFromAllNodes();
+		ArrayList<EdgePath> allEdgePaths = graph.getAllEdgePathsFromAllNodes(1);
 		System.out.println("#Paths: "+allEdgePaths.size());
 		
 		for (EdgePath path : allEdgePaths) {
@@ -299,11 +369,16 @@ public class Graph {
 			System.out.println(cycle.edges);
 		}
 		
-		removeDuplicateEdgeCycles(allEdgePaths);
+		removeDuplicateEdgeCycles(allEdgePaths, false);
 		System.out.println("#No Duplicate Cycles: "+allEdgePaths.size());
 		
 		for (EdgePath cycle : allEdgePaths) {
 			System.out.println(cycle.edges);
 		}
 	}
+
+	
+	
+	
+	
 }

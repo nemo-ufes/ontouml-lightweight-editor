@@ -48,17 +48,23 @@ public class EdgePath {
 		return false;
 	}
 	
-	public boolean containSameEdges(EdgePath path){
+	public boolean containSameEdges(EdgePath path, boolean compareEdgeId){
+		
+		if(compareEdgeId)
+			return getEdgeIds().containsAll(path.getEdgeIds()) && path.getEdgeIds().containsAll(getEdgeIds());
+		
 		return this.edges.containsAll(path.edges) && path.edges.containsAll(this.edges);
 	}
 	
-	public ArrayList<Object> getNodeIds(){
+	public ArrayList<Object> getNodeIds(boolean repeatFirstLast){
 		ArrayList<Object> ids = new ArrayList<Object>();
 		
 		if(edges.size()==0)
 			return ids;
 		
-		ids.add(edges.get(0).source.id);
+		if(repeatFirstLast)
+			ids.add(edges.get(0).source.id);
+		
 		ids.add(edges.get(0).target.id);
 		
 		if(edges.size()==1)
@@ -71,10 +77,10 @@ public class EdgePath {
 		return ids;
 	}
 	
-	public <T> ArrayList<T> getNodeIdsOfType(Class<T> type){
+	public <T> ArrayList<T> getNodeIdsOfType(Class<T> type, boolean repeatFirstLast){
 		ArrayList<T> ids = new ArrayList<T>();
 		
-		for (Object object : getNodeIds()) {
+		for (Object object : getNodeIds(repeatFirstLast)) {
 			if(type.isInstance(object))
 				ids.add(type.cast(object));
 		}
