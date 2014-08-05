@@ -29,9 +29,12 @@ import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
+import br.ufes.inf.nemo.oled.draw.DiagramOperations;
 import br.ufes.inf.nemo.oled.draw.GeometryUtil;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
+import br.ufes.inf.nemo.oled.draw.NullSelection;
+import br.ufes.inf.nemo.oled.draw.Selection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
 
@@ -75,6 +78,11 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	public Label getMetaPropertyLabel()
 	{
 		return metapropertyLabel;
+	}
+	
+	/** This is only needed if we choose to not move the labels in selection */
+	public Selection getSelection(DiagramOperations operations) {
+		return NullSelection.getInstance();
 	}
 	
 	/**

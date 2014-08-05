@@ -97,7 +97,7 @@ import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
-import br.ufes.inf.nemo.oled.finder.FinderPane;
+import br.ufes.inf.nemo.oled.finder.FoundPane;
 import br.ufes.inf.nemo.oled.finder.FoundElement;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.ElementType;
@@ -210,9 +210,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void addFinderPanel()
 	{
 		for(Component c: getComponents()) {
-			if(c instanceof FinderPane) { setSelectedComponent(c); return; }
+			if(c instanceof FoundPane) { setSelectedComponent(c); return; }
 		}		
-		FinderPane finder = new FinderPane(frame.getDiagramManager().getCurrentProject());
+		FoundPane finder = new FoundPane(frame.getDiagramManager().getCurrentProject(),true);
 		this.addClosable("Find", finder);
 	}
 	
@@ -458,7 +458,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			tab.getLabel().setIconTextGap(5);
 			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
 		}
-		if(component instanceof FinderPane){
+		if(component instanceof FoundPane){
 			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/find.png"));
 			tab.getLabel().setIcon(icon);
 			tab.getLabel().setIconTextGap(5);

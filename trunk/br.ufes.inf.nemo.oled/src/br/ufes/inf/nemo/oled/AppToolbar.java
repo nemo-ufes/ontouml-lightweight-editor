@@ -77,6 +77,8 @@ public class AppToolbar implements ActionListener {
 		createButton("undo");
 		createButton("redo");
 		
+		toolbar.addSeparator();
+		
 		btnToolBox = new JToggleButton("");
 		btnToolBox.setSelected(frame.getMainMenu().isSelected("TOOLBOX"));
 		btnToolBox.setToolTipText("Show/hide Toolbox");
@@ -119,10 +121,19 @@ public class AppToolbar implements ActionListener {
 		btnBottomView.setIcon(new ImageIcon(AppToolbar.class.getResource("/resources/icons/x16/ui_tab_bottom.png")));
 		toolbar.add(btnBottomView);
 		
-		//toolbar.addSeparator();
+		toolbar.addSeparator();
+		
+		createButton("statistics");
+		createButton("find");		
+		
+		toolbar.addSeparator();
+		
 		createButton("warning");
 		createButton("error");		
 		createButton("verify");
+		
+		toolbar.addSeparator();
+		
 		//toolbar.addSeparator();
 		JButton btnText = createButton("generatetext");
 		btnText.setToolTipText("" +

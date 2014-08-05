@@ -36,34 +36,33 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 /**
  * @author John Guerson
  */
-public class FinderHeadPane extends JPanel {
+public class FoundHeadPane extends JPanel {
 
 	private static final long serialVersionUID = -4542364815581324052L;
 	private JTextField textField;
 	private JButton btnRun;
 	
-	public String getText(){
+	protected String getText(){
 		return textField.getText();
 	}
 	
-	public JTextField getTextField()
+	protected JTextField getTextField()
 	{
 		return textField;
 	}
 	
-	public JButton getRunButton() {
+	protected JButton getRunButton() {
 		return btnRun;
 	}
 	
-	public FinderHeadPane() 
+	protected FoundHeadPane() 
 	{
-		//setBorder(BorderFactory.createTitledBorder(""));
 		setBackground(Color.LIGHT_GRAY);		
 		textField = new JTextField();
 		textField.setColumns(10);
 		
 		btnRun = new JButton("");
-		btnRun.setIcon(new ImageIcon(FinderHeadPane.class.getResource("/resources/icons/x16/find.png")));
+		btnRun.setIcon(new ImageIcon(FoundHeadPane.class.getResource("/resources/icons/x16/find.png")));
 		btnRun.setBackground(Color.LIGHT_GRAY);
 		btnRun.setFocusable(false);
 		

@@ -26,19 +26,18 @@ import javax.swing.table.AbstractTableModel;
 /**
  * @author John Guerson
  */
-public class FinderTableModel extends AbstractTableModel 
+public class FoundTableModel extends AbstractTableModel 
 {
 	private static final long serialVersionUID = 1L;
-	
-	public FinderTableModel(String[] columnNames, Object[][] data)
+	private String[] columnNames={};
+    private Object[][] data = {};
+    
+	public FoundTableModel(String[] columnNames, Object[][] data)
 	{
 		this.columnNames=columnNames;
 		this.data=data;
 	}
 	
-	private String[] columnNames = {"Name","Stereotype","Location"};
-    private Object[][] data = {};
-
     public int getColumnCount() {
         return columnNames.length;
     }
@@ -72,12 +71,8 @@ public class FinderTableModel extends AbstractTableModel
      */
     public boolean isCellEditable(int row, int col) {
         //Note that the data/cell address is constant,
-        //no matter where the cell appears onscreen.
-        if (col < 2) {
-            return false;
-        } else {
-            return true;
-        }
+        //no matter where the cell appears onscreen.            
+    	return false;        
     }
 
     /*
