@@ -41,19 +41,20 @@ import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 /**
  * @author John Guerson
  */
-public class FinderScrollTable extends JScrollPane{
+public class FoundScrollTable extends JScrollPane{
 
 	private static final long serialVersionUID = 1732036629191359696L;
 	private JTable table;
-	private FinderTableModel tablemodel;
+	private FoundTableModel tablemodel;
 	private ArrayList<FoundElement> foundList = new ArrayList<FoundElement>();
+	private String[] columnNames;
 	
-	public JTable getTable() { return table; }
-	public ArrayList<FoundElement> getResult() { return foundList; }
+	protected JTable getTable() { return table; }
+	protected ArrayList<FoundElement> getResult() { return foundList; }
 	
-	public FinderScrollTable()
+	protected FoundScrollTable(String[] columns)
 	{				
-		String[] columnNames = {"Name","Stereotype","Location"};
+		columnNames = columns;
         Object[][] data = {};
         
 	    setMinimumSize(new Dimension(0, 0));
@@ -94,28 +95,28 @@ public class FinderScrollTable extends JScrollPane{
 	    			// variable for the beginning and end selects only that one row.
 	    			model.setSelectionInterval( rowNumber, rowNumber );
 	    			
-	    			FinderPopupMenu menu = new FinderPopupMenu(foundList.get(rowNumber).getElement());
+	    			FoundPopupMenu menu = new FoundPopupMenu(foundList.get(rowNumber));
 	    			menu.show(e.getComponent(),e.getX(),e.getY());
 	    		}
 	    	}
 	    });
 	}
 	
-	public void reset()
+	protected void reset()
 	{
-		Object[][] data = {};String[] columnNames = {};
-		tablemodel = new FinderTableModel(columnNames,data);
+		Object[][] data = {}; String[] columnNames = {};
+		tablemodel = new FoundTableModel(columnNames,data);
 		table.setModel(tablemodel);	
 		table.repaint();
 		table.validate();		
 	}
 	
-	public void selectRow (int row)
+	protected void selectRow (int row)
 	{
 		table.setRowSelectionInterval(row, row);
 	}
 	
-	public void setData(ArrayList<FoundElement> foundList)
+	protected void setData(ArrayList<FoundElement> foundList)
 	{
 		this.foundList = foundList;
 		int rows=foundList.size();
@@ -130,8 +131,7 @@ public class FinderScrollTable extends JScrollPane{
 			i++;
 		}
 		
-		String[] columnNames = {"Name","Stereotype","Location"};
-		tablemodel = new FinderTableModel(columnNames,data);
+		tablemodel = new FoundTableModel(columnNames,data);
 		
 		table.setModel(tablemodel);
 		

@@ -39,47 +39,49 @@ import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 /**
  * @author John Guerson
  */
-public class FinderPopupMenu extends JPopupMenu {
+public class FoundPopupMenu extends JPopupMenu {
 
 	private static final long serialVersionUID = 2665584279780047982L;
-	@SuppressWarnings("unused")
 	private EObject context;
+	private JMenuItem findInProjectMenuItem;
+	private JMenuItem findInDiagramMenuItem;
+	private JMenuItem propertiesMenuItem;
 	
-	public FinderPopupMenu(final EObject context)
+	public FoundPopupMenu(final FoundElement context)
 	{
-		this.context = context;
+		this.context = context.getElement();
 				
-		if((context instanceof RefOntoUML.Class)||(context instanceof RefOntoUML.DataType)||(context instanceof RefOntoUML.Association) || (context instanceof RefOntoUML.Property)
-		|| (context instanceof RefOntoUML.Generalization) || (context instanceof RefOntoUML.GeneralizationSet) || (context instanceof RefOntoUML.Constraintx) || (context instanceof RefOntoUML.Comment))
-		{
-			JMenuItem propertiesMenuItem = new JMenuItem("Properties");
+		if( (this.context instanceof RefOntoUML.Class) || (this.context instanceof RefOntoUML.DataType) || (this.context instanceof RefOntoUML.Association) || (this.context instanceof RefOntoUML.Property)
+		 || (this.context instanceof RefOntoUML.Generalization) || (this.context instanceof RefOntoUML.GeneralizationSet) || (this.context instanceof RefOntoUML.Constraintx) || (this.context instanceof RefOntoUML.Comment))
+		{			
+			propertiesMenuItem = new JMenuItem("Properties");
 			add(propertiesMenuItem);
 			propertiesMenuItem.addActionListener(new ActionListener() {			
 				@Override
 				public void actionPerformed(ActionEvent arg0) {				
-					ElementDialogCaller.openDialog((RefOntoUML.Element)context, ProjectBrowser.frame);		
+					ElementDialogCaller.openDialog((RefOntoUML.Element)context.getElement(), ProjectBrowser.frame);		
 				}
 			});
 		}
 		
-		JMenuItem findInProjectMenuItem = new JMenuItem("Find in Project Browser");
+		findInProjectMenuItem = new JMenuItem("Find in Project Browser");
 		add(findInProjectMenuItem);
 		
-		JMenuItem findInDiagramMenuItem = new JMenuItem("Find in Diagrams");
+		findInDiagramMenuItem = new JMenuItem("Find in Diagrams");
 		add(findInDiagramMenuItem);
 		
 		findInProjectMenuItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {	
 				
-				ProjectBrowser.frame.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().checkModelElement(context);		
+				ProjectBrowser.frame.getDiagramManager().getFrame().getBrowserManager().getProjectBrowser().getTree().checkModelElement(context.getElement());		
 			}
 		});
 		
 		findInDiagramMenuItem.addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {	
-				ArrayList<DiagramEditor> diagrams = ProjectBrowser.frame.getDiagramManager().getDiagramEditors((Element)context);
+				ArrayList<DiagramEditor> diagrams = ProjectBrowser.frame.getDiagramManager().getDiagramEditors((Element)context.getElement());
 				DiagramListDialog.open(ProjectBrowser.frame, diagrams,(Element) context);
 			}
 		});

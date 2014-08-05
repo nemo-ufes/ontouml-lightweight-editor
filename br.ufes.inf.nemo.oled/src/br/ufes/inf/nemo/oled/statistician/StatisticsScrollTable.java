@@ -93,9 +93,6 @@ public class StatisticsScrollTable extends JScrollPane{
 	    			// set the selected interval of rows. Using the "rowNumber"
 	    			// variable for the beginning and end selects only that one row.
 	    			model.setSelectionInterval( rowNumber, rowNumber );
-	    			
-	    			//FinderPopupMenu menu = new FinderPopupMenu(resultList.get(rowNumber).getElement());
-	    			//menu.show(e.getComponent(),e.getX(),e.getY());
 	    		}
 	    	}
 	    });

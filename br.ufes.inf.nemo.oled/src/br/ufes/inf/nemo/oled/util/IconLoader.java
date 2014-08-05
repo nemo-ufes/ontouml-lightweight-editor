@@ -114,6 +114,8 @@ public final class IconLoader {
 		NEMO,		
 		DIRECT,
 		PATTERN,
+		FIND,
+		STATISTICS
 	}
 
 	private Map<IconType, String> urlMap = new HashMap<IconType, String>();
@@ -144,6 +146,9 @@ public final class IconLoader {
 		urlMap.put(IconType.RULE, "resources/icons/x16/tree/rule.png");
 		urlMap.put(IconType.NOTE, "resources/icons/x16/tree/note.png");
 		urlMap.put(IconType.NOTE_CONNECTOR, "resources/icons/x16/tree/note-connector.png");
+		
+		urlMap.put(IconType.FIND, "resources/icons/x16/find.png");
+		urlMap.put(IconType.STATISTICS, "resources/icons/x16/diagnostic.png");
 		
 		urlMap.put(IconType.OUTPUT, "resources/icons/x16/monitor.png");
 		urlMap.put(IconType.ERROR, "resources/icons/x16/cross_octagon.png");

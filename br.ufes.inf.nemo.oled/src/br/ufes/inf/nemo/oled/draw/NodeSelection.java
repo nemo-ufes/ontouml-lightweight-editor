@@ -180,6 +180,7 @@ public class NodeSelection implements Selection, NodeChangeListener {
 	 * {@inheritDoc}
 	 */
 	public void startDragging(double x, double y) {
+		
 		startPos.setLocation(x, y);
 		resizeDirection = getResizeHandle(x, y);
 		isResizing = (resizeDirection >= 0);

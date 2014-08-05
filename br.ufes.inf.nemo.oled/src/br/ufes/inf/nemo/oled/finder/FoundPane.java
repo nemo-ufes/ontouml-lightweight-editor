@@ -45,65 +45,83 @@ import br.ufes.inf.nemo.oled.ui.diagram.Editor;
 /**
  * @author John Guerson
  */
-public class FinderPane extends JPanel implements Editor {
+public class FoundPane extends JPanel implements Editor {
 
 	private static final long serialVersionUID = -3183962658000841153L;
-	@SuppressWarnings("unused")
 	private UmlProject project;
-	private FinderScrollTable finderScrollTable;
-	private FinderHeadPane finderHeadPane;
+	private FoundScrollTable foundScrollTable;	
 	private JLabel status;
-	
-	public FinderPane(UmlProject project)
-	{
-		this();
-		this.project = project;
-	}
-		
-	public void setProject(UmlProject project)
+	private FoundHeadPane foundHeadPane;
+			
+	protected void setProject(UmlProject project)
 	{
 		this.project = project;
 	}
 	
-	public void requestFindFocus()
+	protected void requestHeaderFocus()
 	{
-		finderHeadPane.getTextField().requestFocus();		
+		foundHeadPane.getTextField().requestFocus();		
 	}
 	
-	/**
-	 * Constructor.
-	 */
-	public FinderPane() 
+	protected void addHeader()
 	{
-		setBackground(Color.LIGHT_GRAY);
-		setLayout(new BorderLayout(0, 0));
-		
-		finderHeadPane = new FinderHeadPane();
-		add(finderHeadPane, BorderLayout.NORTH);
-		
-		finderScrollTable = new FinderScrollTable();
-		add(finderScrollTable, BorderLayout.CENTER);
-		
-		status = new JLabel("");
-		status.setBackground(Color.LIGHT_GRAY);
-		add(status, BorderLayout.SOUTH);
-		status.setPreferredSize(new Dimension(450, 20));
-		
-		finderHeadPane.getRunButton().addActionListener(new ActionListener() 
+		foundHeadPane = new FoundHeadPane();
+		add(foundHeadPane, BorderLayout.NORTH);		
+
+		foundHeadPane.getRunButton().addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
 				find();	
 			}
 		});
-		finderHeadPane.getTextField().addActionListener(new ActionListener() {			
+		foundHeadPane.getTextField().addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				find();
 			}
 		});
+	}
+	
+	protected void find() 
+	{
+		resetResult();		
+		// find
+		ArrayList<FoundElement> result = ProjectBrowser.frame.getDiagramManager().strictlyFindByName(foundHeadPane.getText());
+		Collections.sort(result,new StereotypeComparator());
+		foundScrollTable.setData(result);
+		status.setText("  "+result.size()+" items found.");
+	}
+	
+	public FoundPane(UmlProject project, boolean header)
+	{
+		this();
+		this.project = project;
 		
-		JTableHeader header = finderScrollTable.getTable().getTableHeader() ;		 
+		if(header) addHeader();		
+		
+		repaint(); 
+		validate();
+	}
+		
+	/**
+	 * Constructor.
+	 */
+	protected FoundPane() 
+	{
+		setBackground(Color.LIGHT_GRAY);
+		setLayout(new BorderLayout(0, 0));
+				
+		String[] columns = {"Name", "Stereotype","Location" };		
+		foundScrollTable = new FoundScrollTable(columns);
+		add(foundScrollTable, BorderLayout.CENTER);
+		
+		status = new JLabel("");
+		status.setBackground(Color.LIGHT_GRAY);
+		add(status, BorderLayout.SOUTH);
+		status.setPreferredSize(new Dimension(450, 20));
+				
+		JTableHeader header = foundScrollTable.getTable().getTableHeader() ;		 
 		header.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent e) 
 		    {
@@ -115,19 +133,19 @@ public class FinderPane extends JPanel implements Editor {
 		    {		      
 		    	if(nColumn==0){
 		    		resetResult();
-		    		Collections.sort(finderScrollTable.getResult(),new NameComparator());
-		    		finderScrollTable.setData(finderScrollTable.getResult());
+		    		Collections.sort(foundScrollTable.getResult(),new NameComparator());
+		    		foundScrollTable.setData(foundScrollTable.getResult());
 		    		
 		    	}
 		    	if(nColumn==1){
 		    		resetResult();
-		    		Collections.sort(finderScrollTable.getResult(),new StereotypeComparator());
-		    		finderScrollTable.setData(finderScrollTable.getResult());
+		    		Collections.sort(foundScrollTable.getResult(),new StereotypeComparator());
+		    		foundScrollTable.setData(foundScrollTable.getResult());
 		    	}
 		    	if(nColumn==2){
 		    		resetResult();
-		    		Collections.sort(finderScrollTable.getResult(),new PathComparator());
-		    		finderScrollTable.setData(finderScrollTable.getResult());
+		    		Collections.sort(foundScrollTable.getResult(),new PathComparator());
+		    		foundScrollTable.setData(foundScrollTable.getResult());
 		    	}
 		    }
 		  }
@@ -137,38 +155,34 @@ public class FinderPane extends JPanel implements Editor {
 		validate();
 	}
 	
-	public class NameComparator implements Comparator<FoundElement> 
+	protected void resetResult() 
+	{ 
+		foundScrollTable.reset(); 
+		repaint(); 
+		validate(); 
+	}	
+	
+	protected class NameComparator implements Comparator<FoundElement> 
     {
         @Override
         public int compare(FoundElement o1, FoundElement o2) {
             return o1.getName().compareToIgnoreCase(o2.getName());
         }
     }
-	public class StereotypeComparator implements Comparator<FoundElement> 
+	protected class StereotypeComparator implements Comparator<FoundElement> 
     {
         @Override
         public int compare(FoundElement o1, FoundElement o2) {
             return o1.getType().compareToIgnoreCase(o2.getType());
         }
     }
-	public class PathComparator implements Comparator<FoundElement> 
+	protected class PathComparator implements Comparator<FoundElement> 
     {
         @Override
         public int compare(FoundElement o1, FoundElement o2) {
             return o1.getPath().compareToIgnoreCase(o2.getPath());
         }
     }
-	public void find() 
-	{
-		resetResult();		
-		// find
-		ArrayList<FoundElement> result = ProjectBrowser.frame.getDiagramManager().strictlyFindByName(finderHeadPane.getText());
-		Collections.sort(result,new StereotypeComparator());
-		finderScrollTable.setData(result);
-		status.setText("  "+result.size()+" items found.");
-	}
-	
-	public void resetResult() { finderScrollTable.reset(); repaint(); validate(); }
 	
 	@Override
 	public boolean isSaveNeeded() {
@@ -192,6 +206,6 @@ public class FinderPane extends JPanel implements Editor {
 
 	@Override
 	public UmlProject getProject() {
-		return null;
+		return project;
 	}
 }
