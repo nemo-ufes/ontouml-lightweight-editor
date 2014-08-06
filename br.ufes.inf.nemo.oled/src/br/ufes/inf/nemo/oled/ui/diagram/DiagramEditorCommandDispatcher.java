@@ -337,12 +337,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("GENERATE_TEXT", new MethodCall(
 					getClass().getMethod("callGlossary")));
 
-			selectorMap.put("ERROR", new MethodCall(
-					getClass().getMethod("searchErrors")));
-
-			selectorMap.put("WARNING", new MethodCall(
-					getClass().getMethod("searchWarnings")));
-			
 			selectorMap.put("OUTPUT", new MethodCall(
 					getClass().getMethod("showOutputPane")));
 
@@ -579,22 +573,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		
 		Main.printOutLine("Opening anti-pattern dialog...");
 		AntiPatternSearchDialog.open(manager.getFrame());		
-	}
-	
-	public void searchWarnings()
-	{
-		if (manager.isProjectLoaded()==false) return;
-		manager.workingOnlyWithChecked();
-		manager.searchWarnings();
-		manager.getFrame().focusOnWarnings();
-	}
-
-	public void searchErrors()
-	{
-		if (manager.isProjectLoaded()==false) return;
-		manager.workingOnlyWithChecked();
-		manager.searchErrors();
-		manager.getFrame().focusOnErrors();
 	}
 	
 	public void showOutputPane()

@@ -76,7 +76,8 @@ public class AppToolbar implements ActionListener {
 		//createButton("paste");
 		createButton("undo");
 		createButton("redo");
-		
+		createButton("find");		
+		createButton("verify");
 		toolbar.addSeparator();
 		
 		btnToolBox = new JToggleButton("");
@@ -120,17 +121,10 @@ public class AppToolbar implements ActionListener {
 		btnBottomView.setFocusable(false);
 		btnBottomView.setIcon(new ImageIcon(AppToolbar.class.getResource("/resources/icons/x16/ui_tab_bottom.png")));
 		toolbar.add(btnBottomView);
-		
+				
 		toolbar.addSeparator();
 		
 		createButton("statistics");
-		createButton("find");		
-		
-		toolbar.addSeparator();
-		
-		createButton("warning");
-		createButton("error");		
-		createButton("verify");
 		
 		toolbar.addSeparator();
 		

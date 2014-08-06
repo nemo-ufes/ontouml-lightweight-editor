@@ -35,6 +35,8 @@ import br.ufes.inf.nemo.oled.palette.Palette;
 import br.ufes.inf.nemo.oled.palette.PaletteAccordion;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorCommandDispatcher;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
+import javax.swing.border.LineBorder;
+import javax.swing.UIManager;
 
 /**
  * @author John Guerson
@@ -64,12 +66,13 @@ public class ToolManager extends JPanel {
 		palettes.createStaticStructurePalettes(editorDispatcher);
 		
 		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(UIManager.getColor("Panel.background")));
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		flowLayout.setVgap(3);
 		flowLayout.setHgap(3);
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		//panel.setBorder(new LineBorder(UIManager.getColor("TabbedPane.darkShadow")));
-		panel.setBackground(Color.WHITE);
+		panel.setBackground(new Color(0xC6D1B1));
 		JLabel title = new JLabel();
 		title.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.add(title);

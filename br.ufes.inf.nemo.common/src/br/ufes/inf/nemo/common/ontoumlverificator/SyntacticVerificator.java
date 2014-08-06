@@ -57,7 +57,7 @@ public class SyntacticVerificator {
 		result += MessageFormat.format("Model verified in {0} ms, {1} error(s) found", (verificationEndMilis - validationStartMilis),  diag.getChildren().size());		
 	}
 		
-	public String getTimeMessage()
+	public String getTimingMessage()
 	{
 		return MessageFormat.format("Model verified in {0} ms, {1} error(s) found", (verificationEndMilis - validationStartMilis),  diag.getChildren().size());			
 	}

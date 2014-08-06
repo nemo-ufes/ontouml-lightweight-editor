@@ -32,6 +32,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
+import javax.swing.border.LineBorder;
+import javax.swing.UIManager;
 
 /**
  * @author John Guerson
@@ -57,12 +59,13 @@ public class BrowserManager extends JPanel {
 		browser.setBorder(new EmptyBorder(0, 0, 0, 0));
 			
 		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(UIManager.getColor("Panel.background")));
+		panel.setBackground(new Color(0xC6D1B1));
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		flowLayout.setVgap(3);
 		flowLayout.setHgap(3);
 		flowLayout.setAlignment(FlowLayout.LEFT);
-		//panel.setBorder(new LineBorder(UIManager.getColor("TabbedPane.darkShadow")));
-		panel.setBackground(Color.WHITE);
+		//panel.setBorder(new LineBorder(UIManager.getColor("TabbedPane.darkShadow")));		
 		JLabel title = new JLabel();
 		title.setAlignmentY(Component.TOP_ALIGNMENT);
 		panel.add(title);

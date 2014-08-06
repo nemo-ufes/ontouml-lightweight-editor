@@ -32,12 +32,12 @@ public class ProblemScrollTable extends FoundScrollTable {
 		String[][] data = new String[rows][columnNames.length];
 		
 		int i=0;		
-		for(ProblemElement elem: this.problemList){			
-			data[i][0]="    "+elem.getIdentifierString()+"."+elem.getDescription();
-			data[i][1]=" "+elem.getType();
-			data[i][2]=" "+elem.getName();							
-			data[i][3]=" "+elem.getPath();			
-			data[i][4]=" "+elem.getTypeProblemString();
+		for(ProblemElement elem: this.problemList){
+			data[i][0]=" "+elem.getTypeProblemString();
+			data[i][1]="    "+elem.getIdentifierString()+". "+elem.getDescription();
+			data[i][2]=" "+elem.getType();
+			data[i][3]=" "+elem.getName();							
+			data[i][4]=" "+elem.getPath();			
 			i++;
 		}
 		
@@ -52,7 +52,7 @@ public class ProblemScrollTable extends FoundScrollTable {
 		TableColumn column = null;
 		for (int j = 0; j < columnNames.length; j++) {
 	        column = table.getColumnModel().getColumn(j);	        
-	        if (j == 0) column.setPreferredWidth(370);
+	        if (j == 1) column.setPreferredWidth(370);
 		}   
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		
