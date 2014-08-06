@@ -71,7 +71,8 @@ public class ProblemPane extends JPanel implements Editor {
 	
 	public void resetData() 
 	{ 
-		problemScrollTable.reset();		
+		problemScrollTable.reset();	
+		status.setText("");
 		repaint(); 
 		validate(); 
 	}	
@@ -89,7 +90,7 @@ public class ProblemPane extends JPanel implements Editor {
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(new BorderLayout(0, 0));
 				
-		String[] columns = {"Description", "Stereotype", "Element","Location","Type"};		
+		String[] columns = {"Type","Description", "Stereotype", "Element","Location"};		
 				
 		status = new JLabel("");
 		status.setBackground(Color.LIGHT_GRAY);
@@ -108,33 +109,33 @@ public class ProblemPane extends JPanel implements Editor {
 		      if (nColumn != -1) sortColumn(nColumn, h.getTable().getModel());
 		    }		 
 		    public void sortColumn(int nColumn, TableModel model)
-		    {			    	
+		    {	
 		    	if(nColumn==0){
+		    		resetData();
+		    		Collections.sort(problemScrollTable.getProblems(),new TypeProblemComparator());
+		    		problemScrollTable.setProblems(problemScrollTable.getProblems());
+		    	}
+		    	if(nColumn==1){
 		    		resetData();
 		    		Collections.sort(problemScrollTable.getProblems(),new DescriptionComparator());
 		    		problemScrollTable.setProblems(problemScrollTable.getProblems());		    		
 		    	}
-		    	if(nColumn==1){
+		    	if(nColumn==2){
 		    		resetData();
 		    		Collections.sort(problemScrollTable.getProblems(),new StereotypeComparator());
 		    		problemScrollTable.setProblems(problemScrollTable.getProblems());
 		    		
 		    	}
-		    	if(nColumn==2){
+		    	if(nColumn==3){
 		    		resetData();
 		    		Collections.sort(problemScrollTable.getProblems(),new NameComparator());
 		    		problemScrollTable.setProblems(problemScrollTable.getProblems());		    		
 		    	}
-		    	if(nColumn==3){
+		    	if(nColumn==4){
 		    		resetData();
 		    		Collections.sort(problemScrollTable.getProblems(),new PathComparator());
 		    		problemScrollTable.setProblems(problemScrollTable.getProblems());
-		    	}
-		    	if(nColumn==4){
-		    		resetData();
-		    		Collections.sort(problemScrollTable.getProblems(),new TypeProblemComparator());
-		    		problemScrollTable.setProblems(problemScrollTable.getProblems());
-		    	}
+		    	}		    	
 		    }
 		  }
 		);

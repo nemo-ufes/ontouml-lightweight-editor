@@ -577,11 +577,6 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	{
 		return analyzer;
 	}
-
-	public void focusOnErrors()
-	{	
-		infoManager.setSelectedIndex(1);
-	}
 	
 	public void focusOnWarnings()
 	{	

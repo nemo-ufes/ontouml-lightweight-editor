@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -80,7 +81,6 @@ import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
 import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
@@ -110,10 +110,12 @@ import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.pattern.PatternTool;
 import br.ufes.inf.nemo.oled.problems.ErrorElement;
 import br.ufes.inf.nemo.oled.problems.ErrorPane;
+import br.ufes.inf.nemo.oled.problems.ErrorVerificator;
 import br.ufes.inf.nemo.oled.problems.ProblemElement;
 import br.ufes.inf.nemo.oled.problems.ProblemElement.TypeProblem;
 import br.ufes.inf.nemo.oled.problems.ProblemPane;
 import br.ufes.inf.nemo.oled.problems.WarningPane;
+import br.ufes.inf.nemo.oled.problems.WarningVerificator;
 import br.ufes.inf.nemo.oled.statistician.StatisticalElement;
 import br.ufes.inf.nemo.oled.statistician.StatisticsPane;
 import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
@@ -227,6 +229,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return finder;
 	}
 	
+	/** Adds a Warning panel to the manager */
+	public WarningPane addWarningsPanel(JTabbedPane pane, boolean closable)
+	{		
+		for(Component c: pane.getComponents()) {
+			if(c instanceof WarningPane) { pane.setSelectedComponent(c); return (WarningPane)c; }
+		}		
+		WarningPane warningPane = new WarningPane(frame.getDiagramManager().getCurrentProject());
+		if(closable) addClosable(pane,"Warnings", warningPane);
+		else addNonClosable(pane,"Warnings", warningPane);
+		return warningPane;
+	}
+	
 	/** Adds a Problem panel to the manager */
 	public ProblemPane addProblemsPanel(JTabbedPane pane, boolean closable)
 	{		
@@ -234,8 +248,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if(c instanceof ProblemPane) { pane.setSelectedComponent(c); return (ProblemPane)c; }
 		}		
 		ProblemPane problemsPane = new ProblemPane(frame.getDiagramManager().getCurrentProject());
-		if(closable) addClosable(pane,"Syntactical Problems", problemsPane);
-		else addNonClosable(pane,"Syntactical Problems", problemsPane);
+		if(closable) addClosable(pane,"Problems", problemsPane);
+		else addNonClosable(pane,"Problems", problemsPane);
 		return problemsPane;
 	}
 	
@@ -498,7 +512,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}		
 		if(component instanceof ProblemPane){
 			ClosableTabPanel tab = new ClosableTabPanel(pane,false);
-			Icon icon = new ImageIcon(pane.getClass().getClassLoader().getResource("resources/icons/x16/spellcheck.png"));
+			Icon icon = new ImageIcon(pane.getClass().getClassLoader().getResource("resources/icons/x16/cross_shield.png"));
 			tab.getLabel().setIcon(icon);
 			tab.getLabel().setIconTextGap(5);
 			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -639,14 +653,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				Main.printOutLine("Closing current project");
 				removeAll();
 				frame.getBrowserManager().getProjectBrowser().clear();
-				frame.getInfoManager().eraseProject();						
+				frame.getInfoManager().eraseProject();										
 				currentProject=null;				
 				addStartPanel(this,false);
 				Main.printOutLine("Current project closed");
 			}
 			
 		}
-		updateUI();
+		repaint();
+		revalidate();
 	}
 
 	public void setDefaultDiagramSize(StructureDiagram diagram)
@@ -1010,13 +1025,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		{
 			int option = saveProjectAs();
 			if (option!=JFileChooser.APPROVE_OPTION){
-				updateUI();
+				repaint();
+				revalidate();				
 				return;
 			}
 		}else{
 			saveCurrentProjectToFile(getProjectFile());
 		}
-		updateUI();
+		repaint();
+		revalidate();
 	}
 
 	/** Saves the project with a file chooser. */
@@ -1609,31 +1626,49 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
         }
     }
 	
-	/** Verify model syntactically. It runs the syntactical verification of the metamodel */
+	/** It runs the syntactical verification of the metamodel, plus the error and warnings verificator of the application */
 	public void verifyModelSyntactically() 
 	{
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		if(currentProject!=null)
 		{
-			SyntacticVerificator verificator = new SyntacticVerificator();
-			verificator.run(currentProject.getModel());						
-
-			int count=0;
-			//loading syntactical problems...			
 			ProblemPane problemsPane = addProblemsPanel(frame.getInfoManager(),true);
+			int count=0;
 			ArrayList<ProblemElement> problems = new ArrayList<ProblemElement>();			
+			double start = System.currentTimeMillis();			
+			//loading syntactical problems...			
+			SyntacticVerificator verificator = new SyntacticVerificator();
+			verificator.run(currentProject.getModel());			
 			for(RefOntoUML.Element elem: verificator.getMap().keySet()){
 				for(String message: verificator.getMap().get(elem)){					
 					problems.add(new ErrorElement(elem,0,message,TypeProblem.SYNTACTIC));
 				}
-			}
+			}						
+			//loading application errors...
+			ErrorVerificator errorVerificator = new ErrorVerificator(frame.getProjectBrowser().getParser());
+			errorVerificator.run();
+			problems.addAll(errorVerificator.getErrors());			
+			double end = System.currentTimeMillis();			
 			Collections.sort(problems,new DescriptionComparator());
 			for(ProblemElement pe: problems) { count++; pe.setIdentifier(count); }
 			problemsPane.setData(problems);
-			problemsPane.setStatus(verificator.getTimeMessage());			
-			
-			//loading application errors...
-			
+			problemsPane.setStatus(
+				MessageFormat.format("Model verified in {0} ms, {1} error(s) found", (end - start),  problems.size())
+			);
+			//============================================
+			WarningPane warningsPane = addWarningsPanel(frame.getInfoManager(),true);
+			count=0;
+			ArrayList<ProblemElement> warnings = new ArrayList<ProblemElement>();
+			start = System.currentTimeMillis();		
+			//loading application warnings...
+			WarningVerificator warningVerificator= new WarningVerificator(frame.getProjectBrowser().getParser());
+			warningVerificator.run();
+			warnings.addAll(warningVerificator.getWarnings());			
+			end = System.currentTimeMillis();
+			Collections.sort(warnings,new DescriptionComparator());
+			for(ProblemElement pe: warnings) { count++; pe.setIdentifier(count); }
+			warningsPane.setData(warnings);
+			warningsPane.setStatus(warningVerificator.getTimingMessage());			
 		}
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
@@ -2704,57 +2739,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void showOutputPane() 
 	{
 		frame.focusOnOutput();
-	}
-		
-	
-	/**
-	 * Search for warnings in the model
-	 */
-	public void searchWarnings() 
-	{	
-		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
-
-		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
-
-		ModelDiagnostician verificator = new ModelDiagnostician();    	
-		frame.getInfoManager().getWarnings().setData(
-				verificator.getWarningsMatrixFormat(frame.getBrowserManager().getProjectBrowser().getParser()),
-				verificator.getWarnings()
-				);
-		if (verificator.getWarnings()>0)
-		{			
-			frame.getInfoManager().getWarnings().selectRow(0);
-			frame.getInfoManager().setTitleWarning(" Warnings ("+verificator.getWarnings()+")");
-			frame.focusOnWarnings();			
-		}else frame.getInfoManager().setTitleWarning(" Warnings ");    	
-
-		/*if (verificator.getWarnings()>0) 
-			frame.showWarningMessageDialog("Warning", "Your model has warnings. Please, be aware before continue.\n");*/			
-	}
-
-	/**
-	 * Search for errors 
-	 */
-	public void searchErrors() 
-	{	
-		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
-
-		if (refparser==null) { frame.showErrorMessageDialog("Error","It seems that your model is null."); return; }
-
-		ModelDiagnostician verificator = new ModelDiagnostician();    	
-		frame.getInfoManager().getErrors().setData(
-				verificator.getErrorsMatrixFormat(refparser),
-				verificator.getErrors()
-				);
-		if (verificator.getErrors()>0) 
-		{  
-			frame.getInfoManager().getErrors().selectRow(0); 
-			frame.getInfoManager().setTitleErrors(" Errors ("+verificator.getErrors()+")");
-			frame.focusOnErrors(); 
-		} else frame.getInfoManager().setTitleErrors(" Errors ");
-
-		/*if (verificator.getErrors()>0) 
-		frame.showErrorMessageDialog("Error", "Your model has errors. Please, Fix it before continue.\n");*/			
 	}
 
 	/** 
