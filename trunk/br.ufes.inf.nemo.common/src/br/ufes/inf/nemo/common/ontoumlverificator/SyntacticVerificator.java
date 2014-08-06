@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.common.ontoumlverificator;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,63 +18,62 @@ import RefOntoUML.util.ValidationMessage;
 
 public class SyntacticVerificator {
 	
-//	public static List<Element> elems = new ArrayList<Element>();
-//	
-	/**
-     * Validates a model according to the RefOntoUML OCL synctatic rules.
-     * @param refmodel the model that will be validated.
-     */  
-	public static VerificationResult verify(RefOntoUML.Package refmodel)
+	private Map<Element, ArrayList<String>> errorsMap = new HashMap<Element,  ArrayList<String>>();
+	private String result = new String();
+	private long verificationEndMilis = 0;
+	private long validationStartMilis = 0;
+	private BasicDiagnostic diag;
+	
+	/** Verify a model according to the RefOntoUML OCL synctatic rules. */  
+	public void run(RefOntoUML.Package refmodel)
 	{		
-		String result = new String();
-						
-		Diagnostician validator = Diagnostician.INSTANCE;
-
+		result = "";
+		errorsMap.clear();
+		Diagnostician verificator = Diagnostician.INSTANCE;
 		Map<Object, Object> context = new HashMap<Object, Object>();
-		BasicDiagnostic diag = new BasicDiagnostic();
-
-		Map<Element, String> errorsMap = new HashMap<Element, String>();
-		
-		long validationStartMilis = System.currentTimeMillis();
-		boolean validation = validator.validate(refmodel, diag, context);
-		long validationEndMilis = System.currentTimeMillis();
-		
-		// Returns true if the model is valid.
-		if(!validation)
+		diag = new BasicDiagnostic();				
+		validationStartMilis = System.currentTimeMillis();
+		boolean verification = verificator.validate(refmodel, diag, context);
+		verificationEndMilis = System.currentTimeMillis();		
+		if(!verification)
 		{
-			result += "The model is not valid syntactically. The following error(s) where found:\n\n";
-			
-			for (Diagnostic item : diag.getChildren()) {
-				
-				Element element = (Element) item.getData().get(0);
-				String errors = "";
-//				if (elems.contains(element))
-//				{
-					if(errorsMap.containsKey(element))
-					{
-						errors = errorsMap.get(element);
-					}
-					
-					String message = ValidationMessage.getFinalMessage(item.getMessage());
-					String currentError = message.substring(message.indexOf("- ")+2, message.length()) + "\n\n";
-					errors += currentError;
-					errorsMap.put(element, errors);
-			
-					result+=handleName(element) + " - " + currentError;
-//				}
-				
+			result += "The model is not valid syntactically. The following error(s) where found:\n\n";			
+			for (Diagnostic item : diag.getChildren()) 
+			{				
+				Element element = (Element) item.getData().get(0);				
+				String message = ValidationMessage.getFinalMessage(item.getMessage());
+				String currentError = message.substring(message.indexOf("- ")+2, message.length()) + "\n\n";
+				if(errorsMap.containsKey(element))
+				{
+					errorsMap.get(element).add(currentError);
+				}else{
+					ArrayList<String> errorList = new ArrayList<String>();
+					errorList.add(currentError);
+					errorsMap.put(element, errorList);		
+				}						
+				result+=handleName(element) + " - " + currentError;
 			}
-		}
+		}		
+		result += MessageFormat.format("Model verified in {0} ms, {1} error(s) found", (verificationEndMilis - validationStartMilis),  diag.getChildren().size());		
+	}
 		
-		result += MessageFormat.format("Model verified in {0} ms, {1} error(s) found", (validationEndMilis - validationStartMilis),  diag.getChildren().size());
-		
-		return new VerificationResult(validation, result, errorsMap);
+	public String getTimeMessage()
+	{
+		return MessageFormat.format("Model verified in {0} ms, {1} error(s) found", (verificationEndMilis - validationStartMilis),  diag.getChildren().size());			
 	}
 	
-	/**
-	 * Handles the objects name when showing the error message
-	 */
-    private static String handleName(Object element)
+	public Map<Element, ArrayList<String>> getMap()
+	{
+		return errorsMap;
+	}
+	
+	public String getResult()
+	{
+		return result;
+	}
+	
+	/** Handles the objects name when showing the error message  */
+    private String handleName(Object element)
 	{
 		String name = "[unnamed]";
 		if(element instanceof NamedElement)
@@ -96,7 +96,7 @@ public class SyntacticVerificator {
 		return MessageFormat.format("{0} ({1})", name, getClassAsStereotype((EObject) element));
 	}
 	
-	private static String getClassAsStereotype(EObject eObject) 
+	private String getClassAsStereotype(EObject eObject) 
 	{
 		String ret = eObject.eClass().getName().toLowerCase().replace("association", "");
 		

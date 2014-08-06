@@ -172,7 +172,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	{		
 		diagramManager = new DiagramManager(this);
 		diagramManager.setTabPlacement(JTabbedPane.TOP);		
-		diagramManager.addStartPanel();
+		diagramManager.addStartPanel(diagramManager,true);
 		diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()));
 		
 		infoManager= new InfoManager(this, null);

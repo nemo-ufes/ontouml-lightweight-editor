@@ -43,22 +43,20 @@ import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
  */
 public class FoundScrollTable extends JScrollPane{
 
-	private static final long serialVersionUID = 1732036629191359696L;
-	private JTable table;
-	private FoundTableModel tablemodel;
-	private ArrayList<FoundElement> foundList = new ArrayList<FoundElement>();
-	private String[] columnNames;
+	protected static final long serialVersionUID = 1732036629191359696L;
+	protected JTable table;
+	protected FoundTableModel tablemodel;
+	protected ArrayList<FoundElement> foundList = new ArrayList<FoundElement>();
+	protected String[] columnNames;
 	
-	protected JTable getTable() { return table; }
-	protected ArrayList<FoundElement> getResult() { return foundList; }
+	public JTable getTable() { return table; }
 	
-	protected FoundScrollTable(String[] columns)
+	public FoundScrollTable(String[] columns)
 	{				
 		columnNames = columns;
         Object[][] data = {};
         
-	    setMinimumSize(new Dimension(0, 0));
-	    setMinimumSize(new Dimension(0, 0));
+	    setMinimumSize(new Dimension(0, 0));	    
 		setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		setBorder(new EmptyBorder(0,0,0,0));
@@ -102,7 +100,7 @@ public class FoundScrollTable extends JScrollPane{
 	    });
 	}
 	
-	protected void reset()
+	public void reset()
 	{
 		Object[][] data = {}; String[] columnNames = {};
 		tablemodel = new FoundTableModel(columnNames,data);
@@ -111,17 +109,22 @@ public class FoundScrollTable extends JScrollPane{
 		table.validate();		
 	}
 	
-	protected void selectRow (int row)
+	public void selectRow (int row)
 	{
 		table.setRowSelectionInterval(row, row);
 	}
 	
-	protected void setData(ArrayList<FoundElement> foundList)
+	public ArrayList<FoundElement> getFound() 
 	{
-		this.foundList = foundList;
+		return foundList;
+	};
+	
+	public void setFound(ArrayList<FoundElement> foundList)
+	{
+		this.foundList = foundList;		
 		int rows=foundList.size();
 				
-		String[][] data = new String[rows][3];
+		String[][] data = new String[rows][columnNames.length];
 		
 		int i=0;		
 		for(FoundElement elem: this.foundList){						

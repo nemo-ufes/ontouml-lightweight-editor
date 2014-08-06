@@ -74,6 +74,7 @@ public class ClosableTabPanel extends JPanel {
 	public final JTabbedPane pane;
 	public JLabel label;
 	public TabButton button;
+	public boolean isTitleEditable = true;
 	
 	public JLabel getLabel() { return label; }
 	
@@ -105,6 +106,11 @@ public class ClosableTabPanel extends JPanel {
 				label.setHorizontalTextPosition(SwingConstants.RIGHT);
 			}
 		}
+	}
+	
+	public ClosableTabPanel(final JTabbedPane pane, boolean isTitleEditable) {
+		this(pane);
+		this.isTitleEditable = isTitleEditable;
 	}
 	
 	/**
@@ -139,13 +145,15 @@ public class ClosableTabPanel extends JPanel {
             public void mouseClicked(MouseEvent e) 
             { 
                 if (e.getClickCount() == 2) 
-                {                	
-                	int index = pane.indexOfTabComponent(ClosableTabPanel.this);
-                    JTextField editor = getTextFieldComponent(index);  
-                    pane.setTabComponentAt(index, editor);                                        
-                    editor.requestFocus(); 
-                    editor.selectAll();                     
-                    if (editor.getPreferredSize().width < 100) editor.setPreferredSize(new Dimension(100, editor.getPreferredSize().height)); 
+                {          
+                	if(isTitleEditable){
+                		int index = pane.indexOfTabComponent(ClosableTabPanel.this);
+                		JTextField editor = getTextFieldComponent(index);  
+                		pane.setTabComponentAt(index, editor);                                        
+                		editor.requestFocus(); 
+                		editor.selectAll();                     
+                		if (editor.getPreferredSize().width < 100) editor.setPreferredSize(new Dimension(100, editor.getPreferredSize().height));
+                	}
                 } else if (SwingUtilities.isRightMouseButton(e)){
                 	if(pane instanceof DiagramManager){                		
                 		int index = pane.indexOfTabComponent(ClosableTabPanel.this);
@@ -213,16 +221,16 @@ public class ClosableTabPanel extends JPanel {
 	private class TabButton extends JButton implements ActionListener {
 
 		private static final long serialVersionUID = -3362039507300806289L;
-		private JTabbedPane manager;
+		private JTabbedPane tabbedpane;
 		
 		/**
 		 * Constructor for the TabButton class.
 		 * */
-		public TabButton(JTabbedPane manager) {
+		public TabButton(JTabbedPane pane) {
 			int size = 17;
 			setPreferredSize(new Dimension(size, size));
 			setToolTipText("Close this tab"); //TODO Localize this
-			this.manager = manager;
+			this.tabbedpane = pane;
 			//Make the button looks the same for all Laf's
 			setUI(new BasicButtonUI());
 			//Make it transparent
@@ -244,25 +252,27 @@ public class ClosableTabPanel extends JPanel {
 		 * @param e the triggered {@link ActionEvent}
 		 * */
 		public void actionPerformed(ActionEvent e) {
-			Editor editor = ((DiagramManager)manager).getCurrentEditor();
-			if(editor!=null){
-				if(editor instanceof DiagramEditorWrapper){
-					if(((DiagramEditorWrapper) editor).getDiagramEditor().isSaveNeeded()) 
-					{				
-						int option = JOptionPane.showConfirmDialog(((DiagramManager)manager).getFrame(), "Your diagram has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
-						if (option== JOptionPane.YES_OPTION) {((DiagramManager)manager).saveProject(); }
-						else if (option==JOptionPane.CANCEL_OPTION) { return; }
+			if(tabbedpane instanceof DiagramManager){
+				Editor editor = ((DiagramManager)tabbedpane).getCurrentEditor();
+				if(editor!=null){
+					if(editor instanceof DiagramEditorWrapper){
+						if(((DiagramEditorWrapper) editor).getDiagramEditor().isSaveNeeded()) 
+						{				
+							int option = JOptionPane.showConfirmDialog(((DiagramManager)tabbedpane).getFrame(), "Your diagram has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
+							if (option== JOptionPane.YES_OPTION) {((DiagramManager)tabbedpane).saveProject(); }
+							else if (option==JOptionPane.CANCEL_OPTION) { return; }
+						}
+					}
+					if(editor instanceof ConstraintEditor){
+						if(((ConstraintEditor) editor).isSaveNeeded()) 
+						{
+							int option = JOptionPane.showConfirmDialog(((DiagramManager)tabbedpane).getFrame(), "Your constraints has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
+							if (option== JOptionPane.YES_OPTION) {((DiagramManager)tabbedpane).saveProject(); }
+							else if (option==JOptionPane.CANCEL_OPTION) { return; }
+						}
 					}
 				}
-				if(editor instanceof ConstraintEditor){
-					if(((ConstraintEditor) editor).isSaveNeeded()) 
-					{
-						int option = JOptionPane.showConfirmDialog(((DiagramManager)manager).getFrame(), "Your constraints has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
-						if (option== JOptionPane.YES_OPTION) {((DiagramManager)manager).saveProject(); }
-						else if (option==JOptionPane.CANCEL_OPTION) { return; }
-					}
-				}
-			}		
+			}
 			removeTab();
 		}
 

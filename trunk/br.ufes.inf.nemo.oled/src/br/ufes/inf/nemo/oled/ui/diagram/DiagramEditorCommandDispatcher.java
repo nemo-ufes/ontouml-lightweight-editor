@@ -24,6 +24,8 @@ package br.ufes.inf.nemo.oled.ui.diagram;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.SwingUtilities;
+
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
@@ -446,13 +448,13 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void find()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		manager.getFrame().getDiagramManager().addFinderPanel();		
+		manager.getFrame().getDiagramManager().addFinderPanel(manager,true);		
 	}
 
 	public void collectStatistics()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		manager.getFrame().getDiagramManager().addStatisticsPanel();
+		manager.getFrame().getDiagramManager().addStatisticsPanel(manager,true);
 	}
 	
 	public void showGrid() {
@@ -519,8 +521,14 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	
 	public void verifyModel() 
 	{
-		if (manager.isProjectLoaded()==false) return;
-		manager.verifyCurrentProject();
+		SwingUtilities.invokeLater(new Runnable() {			
+			@Override
+			public void run() {
+				if (manager.isProjectLoaded()==false) return;
+				manager.verifyModelSyntactically();
+				
+			}
+		});
 	}
 	
 	public void parseOCL()

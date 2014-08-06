@@ -21,10 +21,8 @@
  */
 package br.ufes.inf.nemo.oled.verifier;
 
-import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
-import br.ufes.inf.nemo.common.ontoumlverificator.VerificationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult;
-import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
+
 
 /**
  * Helper class for dealing with model validation
@@ -74,11 +72,13 @@ public class VerificationHelper {
 //		}
 //		
 //		sb.append(MessageFormat.format("Model verified in {0} ms, {1} error(s) found", (validationEndMilis - validationStartMilis),  diag.getChildren().size()));
-		
-		VerificationResult verifyResult = SyntacticVerificator.verify(model);
-		
-		return new OperationResult(verifyResult.isValid() ? ResultType.SUCESS : ResultType.ERROR, 
-				verifyResult.getResultString(), new Object[] { verifyResult.getErrorsMap() });		
+//		
+//		SyntacticVerificator verificator = new SyntacticVerificator();
+//		verificator.run(model);
+//		verificator.getResult()
+//		return new OperationResult(verifyResult.isValid() ? ResultType.SUCESS : ResultType.ERROR, 
+//				verifyResult.getResultString(), new Object[] { verifyResult.getErrorsMap() });
+		return new OperationResult();
 	}
 	
 //	/**
