@@ -108,6 +108,7 @@ import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.pattern.PatternTool;
+import br.ufes.inf.nemo.oled.problems.ErrorElement;
 import br.ufes.inf.nemo.oled.problems.ErrorPane;
 import br.ufes.inf.nemo.oled.problems.ProblemElement;
 import br.ufes.inf.nemo.oled.problems.ProblemElement.TypeProblem;
@@ -1623,13 +1624,16 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			ArrayList<ProblemElement> problems = new ArrayList<ProblemElement>();			
 			for(RefOntoUML.Element elem: verificator.getMap().keySet()){
 				for(String message: verificator.getMap().get(elem)){					
-					problems.add(new ProblemElement(elem,0,message,TypeProblem.SYNTACTIC));
+					problems.add(new ErrorElement(elem,0,message,TypeProblem.SYNTACTIC));
 				}
 			}
 			Collections.sort(problems,new DescriptionComparator());
 			for(ProblemElement pe: problems) { count++; pe.setIdentifier(count); }
 			problemsPane.setData(problems);
 			problemsPane.setStatus(verificator.getTimeMessage());			
+			
+			//loading application errors...
+			
 		}
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}

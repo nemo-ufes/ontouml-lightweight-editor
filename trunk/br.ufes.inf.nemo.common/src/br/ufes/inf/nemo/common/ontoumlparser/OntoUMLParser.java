@@ -28,18 +28,24 @@ import RefOntoUML.Derivation;
 import RefOntoUML.Element;
 import RefOntoUML.Enumeration;
 import RefOntoUML.EnumerationLiteral;
+import RefOntoUML.FormalAssociation;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Kind;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Meronymic;
+import RefOntoUML.Mixin;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Mode;
+import RefOntoUML.Model;
 import RefOntoUML.MomentClass;
 import RefOntoUML.NamedElement;
+import RefOntoUML.NominalQuality;
+import RefOntoUML.NonPerceivableQuality;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
+import RefOntoUML.PerceivableQuality;
 import RefOntoUML.Phase;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
@@ -49,9 +55,14 @@ import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
+import RefOntoUML.Structuration;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import RefOntoUML.Type;
+import RefOntoUML.componentOf;
+import RefOntoUML.memberOf;
+import RefOntoUML.subCollectionOf;
+import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 /** 
@@ -737,6 +748,38 @@ public class OntoUMLParser {
 		}
 		return result;
 	}
+	
+	public boolean isValidStereotype(EObject e)
+	{
+		if (e instanceof Kind || e instanceof Collective || e instanceof Quantity || e instanceof Category || e instanceof SubKind ||
+			e instanceof Mixin || e instanceof RoleMixin || e instanceof Role || e instanceof Phase || e instanceof Relator ||
+			e instanceof Mode || e instanceof DataType || e instanceof MaterialAssociation || e instanceof FormalAssociation || 
+			e instanceof Mediation || e instanceof Characterization || e instanceof Derivation || e instanceof RefOntoUML.Package || e instanceof Model ||
+			e instanceof componentOf || e instanceof memberOf || e instanceof subCollectionOf || e instanceof subQuantityOf || e instanceof Association ||
+			e instanceof Enumeration || e instanceof EnumerationLiteral || e instanceof PrimitiveType || e instanceof NominalQuality || 
+			e instanceof PerceivableQuality || e instanceof NonPerceivableQuality || e instanceof Structuration || e instanceof Generalization || e instanceof GeneralizationSet
+		) return true;	
+		
+		return false;
+	}
+	
+	public boolean isOCLkeyword (String name)
+	{
+		if (name == null )
+			return false;
+		
+		if ( name =="and" || name =="body" ||name =="context" ||name =="def" ||name =="derive" ||name =="else" ||
+		     name =="init" ||name.equals("inv") ||name =="invalid" ||name =="let" ||name =="not" ||name =="null" ||
+		     name =="endif" ||name =="endpackage" ||name =="false" ||name =="if" ||name =="implies" ||name =="in" ||
+		     name =="or" ||name =="package" ||name =="post" ||name =="static" ||name =="true" ||name =="then" ||		 
+		     name =="xor" ||name =="Bag" ||name =="Boolean" ||name =="Collection" ||name =="Integer" ||name =="OclAny" ||
+		     name =="OclInvalid" ||name =="OclMessage" ||name =="OclVoid" ||name =="OrderedSet" ||name =="Real" ||name =="Sequence" ||
+		     name =="Set" ||name =="String" ||name =="Tuple" ||name =="UnlimitedNatural" 
+		) return true;
+		
+		return false;
+	}
+		
 	
 	/**
 	 * Get Top Level Instances of the Model.
