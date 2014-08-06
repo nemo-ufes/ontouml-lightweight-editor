@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.NamedElement;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 /**
  * @author John Guerson
@@ -44,7 +45,7 @@ public class FoundElement {
 		this.eobject = eobject;
 		name = getName(eobject);
 		path = getPath(eobject);
-		stereotype = getStereotype(eobject);
+		stereotype = OntoUMLNameHelper.getTypeName(eobject);
 	}
 	
 	public String getName() { return name; } 
@@ -64,6 +65,7 @@ public class FoundElement {
 		return path;
 	}	
 	
+	@SuppressWarnings("unused")
 	private String getStereotype(EObject e)
 	{
 		String stereotype = new String();
@@ -85,4 +87,6 @@ public class FoundElement {
 			return "<unnamed>";
 		}
 	}
+	
+	
 }

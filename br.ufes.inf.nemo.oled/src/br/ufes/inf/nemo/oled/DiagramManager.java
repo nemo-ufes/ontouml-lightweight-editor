@@ -35,6 +35,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -80,6 +81,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.ModelDiagnostician;
+import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
@@ -97,8 +99,8 @@ import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.explorer.ProjectTree;
-import br.ufes.inf.nemo.oled.finder.FoundPane;
 import br.ufes.inf.nemo.oled.finder.FoundElement;
+import br.ufes.inf.nemo.oled.finder.FoundPane;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
@@ -106,6 +108,11 @@ import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.pattern.PatternTool;
+import br.ufes.inf.nemo.oled.problems.ErrorPane;
+import br.ufes.inf.nemo.oled.problems.ProblemElement;
+import br.ufes.inf.nemo.oled.problems.ProblemElement.TypeProblem;
+import br.ufes.inf.nemo.oled.problems.ProblemPane;
+import br.ufes.inf.nemo.oled.problems.WarningPane;
 import br.ufes.inf.nemo.oled.statistician.StatisticalElement;
 import br.ufes.inf.nemo.oled.statistician.StatisticsPane;
 import br.ufes.inf.nemo.oled.ui.ClosableTabPanel;
@@ -150,7 +157,6 @@ import br.ufes.inf.nemo.oled.util.OperationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
 import br.ufes.inf.nemo.oled.validator.meronymic.ValidationDialog;
-import br.ufes.inf.nemo.oled.verifier.VerificationHelper;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
 import br.ufes.inf.nemo.ontouml2sbvr.core.OntoUML2SBVR;
@@ -200,30 +206,48 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/** Adds a start panel to the manager */
-	public void addStartPanel()
+	public StartPanel addStartPanel(JTabbedPane pane, boolean closable)
 	{
 		StartPanel start = new StartPanel(frame);
-		this.addNonClosable("Start", start);
+		if(closable)addClosable(pane,"Start", start);
+		else addNonClosable(pane,"Start", start);
+		return start;
 	}
 
 	/** Adds a Finder panel to the manager */
-	public void addFinderPanel()
+	public FoundPane addFinderPanel(JTabbedPane pane, boolean closable)
 	{
-		for(Component c: getComponents()) {
-			if(c instanceof FoundPane) { setSelectedComponent(c); return; }
+		for(Component c: pane.getComponents()) {
+			if(c instanceof FoundPane) { pane.setSelectedComponent(c); return (FoundPane)c; }
 		}		
 		FoundPane finder = new FoundPane(frame.getDiagramManager().getCurrentProject(),true);
-		this.addClosable("Find", finder);
+		if(closable)addClosable(pane,"Find", finder);
+		else addNonClosable(pane,"Find", finder);
+		return finder;
+	}
+	
+	/** Adds a Problem panel to the manager */
+	public ProblemPane addProblemsPanel(JTabbedPane pane, boolean closable)
+	{		
+		for(Component c: pane.getComponents()) {
+			if(c instanceof ProblemPane) { pane.setSelectedComponent(c); return (ProblemPane)c; }
+		}		
+		ProblemPane problemsPane = new ProblemPane(frame.getDiagramManager().getCurrentProject());
+		if(closable) addClosable(pane,"Syntactical Problems", problemsPane);
+		else addNonClosable(pane,"Syntactical Problems", problemsPane);
+		return problemsPane;
 	}
 	
 	/** Adds a Statistics panel to the manager */
-	public void addStatisticsPanel()
+	public StatisticsPane addStatisticsPanel(JTabbedPane pane, boolean closable)
 	{
-		for(Component c: getComponents()) {
-			if(c instanceof StatisticsPane) { setSelectedComponent(c); return; }
+		for(Component c: pane.getComponents()) {
+			if(c instanceof StatisticsPane) { pane.setSelectedComponent(c); return (StatisticsPane)c; }
 		}		
 		StatisticsPane statPanel = new StatisticsPane(frame.getDiagramManager().getCurrentProject());
-		this.addClosable("Statistics", statPanel);
+		if(closable) addClosable(pane,"Statistics", statPanel);
+		else addNonClosable(pane,"Statistics", statPanel);
+		return statPanel;
 	}
 	
 	/** Sets the dispatcher responsible for routing events of the editor */
@@ -435,53 +459,92 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/** Adds a new tab. */
-	public Component addClosable(String text, Component component)
+	public static Component addClosable(JTabbedPane pane, String text, Component component)
 	{
 		if (component==null) component = new JPanel();
-		addTab(text, component);		
-		ClosableTabPanel tab = new ClosableTabPanel(this);
+		pane.addTab(text, component);		
 		if(component instanceof DiagramEditorWrapper){
-			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/tree/diagram.png"));
+			ClosableTabPanel tab = new ClosableTabPanel(pane);
+			Icon icon = new ImageIcon(pane.getClass().getClassLoader().getResource("resources/icons/x16/tree/diagram.png"));
 			tab.getLabel().setIcon(icon);
 			tab.getLabel().setIconTextGap(5);
 			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+			pane.setTabComponentAt(pane.indexOfComponent(component),tab);
 		}
 		if(component instanceof ConstraintEditor){
-			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/text-editor.png"));
+			ClosableTabPanel tab = new ClosableTabPanel(pane);
+			Icon icon = new ImageIcon(pane.getClass().getClassLoader().getResource("resources/icons/x16/text-editor.png"));
 			tab.getLabel().setIcon(icon);
 			tab.getLabel().setIconTextGap(5);
 			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+			pane.setTabComponentAt(pane.indexOfComponent(component),tab);
 		}
 		if(component instanceof TextEditor){
-			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/editor.png"));
+			ClosableTabPanel tab = new ClosableTabPanel(pane,false);
+			Icon icon = new ImageIcon(pane.getClass().getClassLoader().getResource("resources/icons/x16/editor.png"));
 			tab.getLabel().setIcon(icon);
 			tab.getLabel().setIconTextGap(5);
 			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+			pane.setTabComponentAt(pane.indexOfComponent(component),tab);
 		}
 		if(component instanceof FoundPane){
-			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/find.png"));
+			ClosableTabPanel tab = new ClosableTabPanel(pane,false);
+			Icon icon = new ImageIcon(pane.getClass().getClassLoader().getResource("resources/icons/x16/find.png"));
 			tab.getLabel().setIcon(icon);
 			tab.getLabel().setIconTextGap(5);
 			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+			pane.setTabComponentAt(pane.indexOfComponent(component),tab);
+		}		
+		if(component instanceof ProblemPane){
+			ClosableTabPanel tab = new ClosableTabPanel(pane,false);
+			Icon icon = new ImageIcon(pane.getClass().getClassLoader().getResource("resources/icons/x16/spellcheck.png"));
+			tab.getLabel().setIcon(icon);
+			tab.getLabel().setIconTextGap(5);
+			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+			pane.setTabComponentAt(pane.indexOfComponent(component),tab);
 		}
 		if(component instanceof StatisticsPane){
-			Icon icon = new ImageIcon(getClass().getClassLoader().getResource("resources/icons/x16/diagnostic.png"));
+			ClosableTabPanel tab = new ClosableTabPanel(pane,false);
+			Icon icon = new ImageIcon(pane.getClass().getClassLoader().getResource("resources/icons/x16/diagnostic.png"));
 			tab.getLabel().setIcon(icon);
 			tab.getLabel().setIconTextGap(5);
 			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+			pane.setTabComponentAt(pane.indexOfComponent(component),tab);
+		}		
+		if(component instanceof WarningPane) {
+			ClosableTabPanel tab = new ClosableTabPanel(pane,false);
+			Icon icon = new ImageIcon(pane.getClass().getClassLoader().getResource("resources/icons/x16/exclamation_octagon_fram.png"));
+			tab.getLabel().setIcon(icon);
+			tab.getLabel().setIconTextGap(5);
+			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+			pane.setTabComponentAt(pane.indexOfComponent(component),tab);			
 		}
-		setTabComponentAt(indexOfComponent(component),tab);
-		setSelectedComponent(component);
+		if(component instanceof ErrorPane) {
+			ClosableTabPanel tab = new ClosableTabPanel(pane,false);
+			Icon icon = new ImageIcon(pane.getClass().getClassLoader().getResource("resources/icons/x16/cross_octagon.png"));
+			tab.getLabel().setIcon(icon);
+			tab.getLabel().setIconTextGap(5);
+			tab.getLabel().setHorizontalTextPosition(SwingConstants.RIGHT);
+			pane.setTabComponentAt(pane.indexOfComponent(component),tab);			
+		}
+		pane.setSelectedComponent(component);
 		return component;
 	}
 
 	/** Add Non Closable Tab */
-	public Component addNonClosable(String text, Component component)
+	public static Component addNonClosable(JTabbedPane pane, String text, Component component)
 	{
 		if (component==null) component = new JPanel();
-		addTab(text, component);
+		pane.addTab(text, component);
+		if(component instanceof ProblemPane) pane.setIconAt(pane.indexOfComponent(component),new ImageIcon(pane.getClass().getResource("/resources/icons/x16/spellcheck.png")));		
+		if(component instanceof StatisticsPane) pane.setIconAt(pane.indexOfComponent(component),new ImageIcon(pane.getClass().getResource("/resources/icons/x16/diagnostic.png")));
+		if(component instanceof FoundPane) pane.setIconAt(pane.indexOfComponent(component),new ImageIcon(pane.getClass().getResource("/resources/icons/x16/find.png")));
+		if(component instanceof ConstraintEditor) pane.setIconAt(pane.indexOfComponent(component),new ImageIcon(pane.getClass().getResource("/resources/icons/x16/text-editor.png")));
+		if(component instanceof DiagramEditorWrapper) pane.setIconAt(pane.indexOfComponent(component),new ImageIcon(pane.getClass().getResource("/resources/icons/x16/diagram.png")));
+		if(component instanceof WarningPane) pane.setIconAt(pane.indexOfComponent(component),new ImageIcon(pane.getClass().getResource("/resources/icons/x16/exclamation_octagon_fram.png")));
+		if(component instanceof ErrorPane) pane.setIconAt(pane.indexOfComponent(component),new ImageIcon(pane.getClass().getResource("/resources/icons/x16/cross_octagon.png")));
 		//setTabComponentAt(indexOfComponent(component),null);
-		setSelectedComponent(component);
+		pane.setSelectedComponent(component);
 		return component;
 	}
 
@@ -577,7 +640,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.getBrowserManager().getProjectBrowser().clear();
 				frame.getInfoManager().eraseProject();						
 				currentProject=null;				
-				addStartPanel();
+				addStartPanel(this,false);
 				Main.printOutLine("Current project closed");
 			}
 			
@@ -989,7 +1052,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		//Add the diagram to the tabbed pane (this), through the wrapper
 		DiagramEditorWrapper wrapper = new DiagramEditorWrapper(editor, editorDispatcher);
 		editor.setWrapper(wrapper);
-		addClosable(diagram.getLabelText(), wrapper);		
+		addClosable(this,diagram.getLabelText(), wrapper);		
 		return editor;
 	}
 	
@@ -997,7 +1060,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public ConstraintEditor createConstraintEditor(OCLDocument oclDoc)
 	{		
 		ConstraintEditor editor = new ConstraintEditor(frame, oclDoc);
-		addClosable(oclDoc.getName(), editor);		
+		addClosable(this,oclDoc.getName(), editor);		
 		return editor;
 	}
 	
@@ -1535,6 +1598,40 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}
 		}		
 		return result;
+	}
+	
+	private class DescriptionComparator implements Comparator<ProblemElement> 
+    {
+        @Override
+        public int compare(ProblemElement o1, ProblemElement o2) {
+            return o1.getDescription().compareToIgnoreCase(o2.getDescription());
+        }
+    }
+	
+	/** Verify model syntactically. It runs the syntactical verification of the metamodel */
+	public void verifyModelSyntactically() 
+	{
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		if(currentProject!=null)
+		{
+			SyntacticVerificator verificator = new SyntacticVerificator();
+			verificator.run(currentProject.getModel());						
+
+			int count=0;
+			//loading syntactical problems...			
+			ProblemPane problemsPane = addProblemsPanel(frame.getInfoManager(),true);
+			ArrayList<ProblemElement> problems = new ArrayList<ProblemElement>();			
+			for(RefOntoUML.Element elem: verificator.getMap().keySet()){
+				for(String message: verificator.getMap().get(elem)){					
+					problems.add(new ProblemElement(elem,0,message,TypeProblem.SYNTACTIC));
+				}
+			}
+			Collections.sort(problems,new DescriptionComparator());
+			for(ProblemElement pe: problems) { count++; pe.setIdentifier(count); }
+			problemsPane.setData(problems);
+			problemsPane.setStatus(verificator.getTimeMessage());			
+		}
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 	
 	/** Collect Statistics */
@@ -2598,19 +2695,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	/**
-	 * Verify syntactically the current project i.e., reference ontouml model instance
-	 */
-	public void verifyCurrentProject() {
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-		if(currentProject!=null){
-			OperationResult result = VerificationHelper.verifyModel(currentProject.getModel());
-			frame.getInfoManager().showOutputText(result.toString(), true, true);
-		}
-		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-	}
-
-	/**
 	 * Shows or hides the output pane, in case the current editor is a DiagramEditor. 
 	 */
 	public void showOutputPane() 
@@ -2750,7 +2834,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				if(textViz == null)
 				{
 					textViz = new TextEditor(project);
-					addClosable("Text Editor", textViz);
+					addClosable(this,"Text Editor", textViz);
 				}else{
 					setSelectedComponent(textViz);
 				}

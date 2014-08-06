@@ -41,6 +41,8 @@ public class OperationResult {
 		this.description = description;
 	}
 
+	public OperationResult() {}
+	
 	public Object[] getData() {
 		return data;
 	}

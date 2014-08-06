@@ -38,8 +38,7 @@ public interface Editor extends IDisposable {
 		FINDER,
 		OCL,
 		STATISTICS,
-		WARNINGS,
-		ERRORS
+		PROBLEMS
 	}
 	
 	public boolean isSaveNeeded();

@@ -19,13 +19,11 @@
  * along with OLED; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package br.ufes.inf.nemo.oled.finder;
+package br.ufes.inf.nemo.oled.problems;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -38,90 +36,70 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 
 import br.ufes.inf.nemo.oled.draw.Diagram;
-import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
+import br.ufes.inf.nemo.oled.finder.FoundElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.Editor;
 
 /**
  * @author John Guerson
  */
-public class FoundPane extends JPanel implements Editor {
+public class ProblemPane extends JPanel implements Editor {
 
 	private static final long serialVersionUID = -3183962658000841153L;
 	private UmlProject project;
-	private FoundScrollTable foundScrollTable;	
+	private ProblemScrollTable problemScrollTable;	
 	private JLabel status;
-	private FoundHeadPane foundHeadPane;
-			
+
 	protected void setProject(UmlProject project)
 	{
 		this.project = project;
 	}
-	
-	protected void requestHeaderFocus()
-	{
-		foundHeadPane.getTextField().requestFocus();		
-	}
-	
-	protected void addHeader()
-	{
-		foundHeadPane = new FoundHeadPane();
-		add(foundHeadPane, BorderLayout.NORTH);		
 
-		foundHeadPane.getRunButton().addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent arg0) 
-			{
-				find();	
-			}
-		});
-		foundHeadPane.getTextField().addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				find();
-			}
-		});
-	}
-	
-	protected void find() 
-	{
-		resetResult();		
-		// find
-		ArrayList<FoundElement> result = ProjectBrowser.frame.getDiagramManager().strictlyFindByName(foundHeadPane.getText());
-		Collections.sort(result,new StereotypeComparator());
-		foundScrollTable.setFound(result);
-		status.setText("  "+result.size()+" items found.");
-	}
-	
-	public FoundPane(UmlProject project, boolean header)
+	public ProblemPane(UmlProject project)
 	{
 		this();
 		this.project = project;
-		
-		if(header) addHeader();		
 		
 		repaint(); 
 		validate();
 	}
 		
+	public void setData(ArrayList<ProblemElement> list)
+	{
+		if(problemScrollTable!=null) problemScrollTable.setProblems(list);		
+	}
+	
+	public void resetData() 
+	{ 
+		problemScrollTable.reset();		
+		repaint(); 
+		validate(); 
+	}	
+	
+	public void setStatus(String text)
+	{
+		status.setText("  "+text);
+	}
+	
 	/**
 	 * Constructor.
 	 */
-	protected FoundPane() 
+	protected ProblemPane() 
 	{
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(new BorderLayout(0, 0));
 				
-		String[] columns = {"Name", "Stereotype","Location" };		
-		foundScrollTable = new FoundScrollTable(columns);
-		add(foundScrollTable, BorderLayout.CENTER);
-		
+		String[] columns = {"Description", "Stereotype", "Element","Location","Type"};		
+				
 		status = new JLabel("");
 		status.setBackground(Color.LIGHT_GRAY);
 		add(status, BorderLayout.SOUTH);
 		status.setPreferredSize(new Dimension(450, 20));
-				
-		JTableHeader header = foundScrollTable.getTable().getTableHeader() ;		 
+		
+		problemScrollTable = new ProblemScrollTable(columns);
+		add(problemScrollTable, BorderLayout.CENTER);
+	    
+		JTableHeader header = problemScrollTable.getTable().getTableHeader() ;		 
 		header.addMouseListener(new MouseAdapter() {
 		    public void mouseClicked(MouseEvent e) 
 		    {
@@ -130,22 +108,32 @@ public class FoundPane extends JPanel implements Editor {
 		      if (nColumn != -1) sortColumn(nColumn, h.getTable().getModel());
 		    }		 
 		    public void sortColumn(int nColumn, TableModel model)
-		    {		      
+		    {			    	
 		    	if(nColumn==0){
-		    		resetResult();
-		    		Collections.sort(foundScrollTable.getFound(),new NameComparator());
-		    		foundScrollTable.setFound(foundScrollTable.getFound());
-		    		
+		    		resetData();
+		    		Collections.sort(problemScrollTable.getProblems(),new DescriptionComparator());
+		    		problemScrollTable.setProblems(problemScrollTable.getProblems());		    		
 		    	}
 		    	if(nColumn==1){
-		    		resetResult();
-		    		Collections.sort(foundScrollTable.getFound(),new StereotypeComparator());
-		    		foundScrollTable.setFound(foundScrollTable.getFound());
+		    		resetData();
+		    		Collections.sort(problemScrollTable.getProblems(),new StereotypeComparator());
+		    		problemScrollTable.setProblems(problemScrollTable.getProblems());
+		    		
 		    	}
 		    	if(nColumn==2){
-		    		resetResult();
-		    		Collections.sort(foundScrollTable.getFound(),new PathComparator());
-		    		foundScrollTable.setFound(foundScrollTable.getFound());
+		    		resetData();
+		    		Collections.sort(problemScrollTable.getProblems(),new NameComparator());
+		    		problemScrollTable.setProblems(problemScrollTable.getProblems());		    		
+		    	}
+		    	if(nColumn==3){
+		    		resetData();
+		    		Collections.sort(problemScrollTable.getProblems(),new PathComparator());
+		    		problemScrollTable.setProblems(problemScrollTable.getProblems());
+		    	}
+		    	if(nColumn==4){
+		    		resetData();
+		    		Collections.sort(problemScrollTable.getProblems(),new TypeProblemComparator());
+		    		problemScrollTable.setProblems(problemScrollTable.getProblems());
 		    	}
 		    }
 		  }
@@ -154,33 +142,42 @@ public class FoundPane extends JPanel implements Editor {
 		repaint(); 
 		validate();
 	}
-	
-	protected void resetResult() 
-	{ 
-		foundScrollTable.reset(); 
-		repaint(); 
-		validate(); 
-	}	
-	
-	protected class NameComparator implements Comparator<FoundElement> 
+		
+	public class NameComparator implements Comparator<FoundElement> 
     {
         @Override
         public int compare(FoundElement o1, FoundElement o2) {
             return o1.getName().compareToIgnoreCase(o2.getName());
         }
     }
-	protected class StereotypeComparator implements Comparator<FoundElement> 
+	public class StereotypeComparator implements Comparator<FoundElement> 
     {
         @Override
         public int compare(FoundElement o1, FoundElement o2) {
             return o1.getType().compareToIgnoreCase(o2.getType());
         }
     }
-	protected class PathComparator implements Comparator<FoundElement> 
+	public class PathComparator implements Comparator<FoundElement> 
     {
         @Override
         public int compare(FoundElement o1, FoundElement o2) {
             return o1.getPath().compareToIgnoreCase(o2.getPath());
+        }
+    }
+	
+	public class DescriptionComparator implements Comparator<ProblemElement> 
+    {
+        @Override
+        public int compare(ProblemElement o1, ProblemElement o2) {
+            return o1.getDescription().compareToIgnoreCase(o2.getDescription());
+        }
+    }
+	
+	public class TypeProblemComparator implements Comparator<ProblemElement> 
+    {
+        @Override
+        public int compare(ProblemElement o1, ProblemElement o2) {
+            return o1.getTypeProblemString().compareToIgnoreCase(o2.getTypeProblemString());
         }
     }
 	
@@ -191,7 +188,7 @@ public class FoundPane extends JPanel implements Editor {
 
 	@Override
 	public EditorNature getEditorNature() {
-		return EditorNature.FINDER;
+		return EditorNature.PROBLEMS;
 	}
 
 	@Override

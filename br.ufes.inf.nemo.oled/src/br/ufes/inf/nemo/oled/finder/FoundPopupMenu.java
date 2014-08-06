@@ -82,7 +82,7 @@ public class FoundPopupMenu extends JPopupMenu {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {	
 				ArrayList<DiagramEditor> diagrams = ProjectBrowser.frame.getDiagramManager().getDiagramEditors((Element)context.getElement());
-				DiagramListDialog.open(ProjectBrowser.frame, diagrams,(Element) context);
+				DiagramListDialog.open(ProjectBrowser.frame, diagrams,(Element) context.getElement());
 			}
 		});
 	}
