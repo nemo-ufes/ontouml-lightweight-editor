@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 public class ImagePanel extends JPanel {
 
 	public enum PatternType {
-		RelatorCreation,SubkindCreation,RoleMixinPattern,PrincipleIdentity, GeneralizationAndSpecialization_Sukind, GeneralizationAndSpecialization_Role, GeneralizationAndSpecialization_Category, GeneralizationAndSpecialization_Mixin, GeneralizationAndSpecialization_RoleMixin, PartitionPattern_Sortal, PartitionPattern_Rigid, AddSupertype_SubstanceSortal, AddSupertype_Subkind, AddSupertype_Role
+		RelatorCreation,SubkindCreation,RoleMixinPattern,PrincipleIdentity, GeneralizationAndSpecialization_Sukind, GeneralizationAndSpecialization_Role, GeneralizationAndSpecialization_Category, GeneralizationAndSpecialization_Mixin, GeneralizationAndSpecialization_RoleMixin, PartitionPattern_Sortal, PartitionPattern_Rigid, AddSupertype_SubstanceSortal, AddSupertype_Subkind, AddSupertype_Role, AddSupertype_Category, AddSupertype_Mixin, AddSupertype_RoleMixin
 	}
 
 	public ImagePanel(PatternType type){
@@ -59,6 +59,15 @@ public class ImagePanel extends JPanel {
 			break;
 		case AddSupertype_Role:
 			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/AddSupertype_Role.png"));
+			break;
+		case AddSupertype_Category:
+			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/AddSupertype_Category.png"));
+			break;	
+		case AddSupertype_Mixin:
+			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/AddSupertype_Mixin.png"));
+			break;	
+		case AddSupertype_RoleMixin:
+			iconLogo = new ImageIcon(getClass().getClassLoader().getResource("resource/AddSupertype_RoleMixin.png"));
 			break;
 		}
 

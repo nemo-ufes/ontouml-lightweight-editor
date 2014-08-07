@@ -12,6 +12,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import RefOntoUML.AntiRigidSortalClass;
@@ -20,9 +21,9 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.Mixin;
 import RefOntoUML.Package;
-import RefOntoUML.Phase;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
@@ -30,8 +31,6 @@ import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-
-import javax.swing.UIManager;
 
 public class AddSupertype extends ClassSelectionPanel {
 	private static final long serialVersionUID = 1L;
@@ -60,13 +59,14 @@ public class AddSupertype extends ClassSelectionPanel {
 	private JCheckBox spc1Chk;
 	private ArrayList<String> thirdClasses = new ArrayList<String>();
 
-	public AddSupertype(OntoUMLParser parser, Classifier selectedClassifier) {
+	public AddSupertype(final OntoUMLParser parser, Classifier classifier) {
 		setLayout(null);
 		setSize(new Dimension(450, 317));
 
-		this.selectedClassifier = selectedClassifier;
-
-		thirdClasses.add("Mixin");
+		this.selectedClassifier = classifier;
+		
+		if(!(selectedClassifier instanceof Mixin))
+			thirdClasses.add("Mixin");
 
 		/* RIGID SORTAL */
 		generalPanel = new JPanel();
@@ -174,6 +174,32 @@ public class AddSupertype extends ClassSelectionPanel {
 		specific1Panel.add(specificTypesCB);
 		specificTypesCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(selectedClassifier instanceof Role){
+					DefaultComboBoxModel<String> model = null;  
+					String[] types = null;
+
+					if(((String)specificTypesCB.getSelectedItem()).equalsIgnoreCase("Mixin")){
+						Set<RigidSortalClass> rigidSortal = parser.getAllInstances(RefOntoUML.RigidSortalClass.class);
+						model = getCBModelFromSets(rigidSortal);
+						types = new String[]{"Kind","Collective","Quantity","Subkind"};
+					}else if(((String)specificTypesCB.getSelectedItem()).equalsIgnoreCase("RoleMixin")){
+						Set<AntiRigidSortalClass> antiRigidSortals = parser.getAllInstances(RefOntoUML.AntiRigidSortalClass.class);
+						model = getCBModelFromSets(antiRigidSortals);
+						types = new String[]{"Role","Phase"};
+					}
+					if(model != null){
+						spc1CB.setModel(model);
+						spc1Chk.setVisible(model.getSize() != 0);	
+
+						model = new DefaultComboBoxModel<String>(types);  
+						specific1TypesCB.setModel(model);
+						specific2Panel.setVisible(true);
+					}else{
+						specific2Panel.setVisible(false);
+					}
+					return;
+				}
+
 				for(String thirdClass : thirdClasses){
 					if(((String)specificTypesCB.getSelectedItem()).equalsIgnoreCase(thirdClass)){
 						specific2Panel.setVisible(true);
@@ -189,6 +215,7 @@ public class AddSupertype extends ClassSelectionPanel {
 		specific2Panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Selected class", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		specific2Panel.setBounds(0, 213, 450, 86);
 		add(specific2Panel);
+		
 
 		lblSpecific1 = new JLabel("Specific:");
 		lblSpecific1.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -203,6 +230,7 @@ public class AddSupertype extends ClassSelectionPanel {
 		spc1CB = new JComboBox<String>();
 		spc1CB.setEnabled(false);
 		spc1CB.setBounds(109, 19, 149, 20);
+		spc1CB.setVisible(false);
 		specific2Panel.add(spc1CB);
 
 		lblSpc1CB = new JLabel("OntoUML type:");
@@ -245,7 +273,7 @@ public class AddSupertype extends ClassSelectionPanel {
 		outcomeFixer = new OutcomeFixer(root);
 		fix = new Fix();
 
-		if(selectedClassifier instanceof RigidSortalClass){
+		if(selectedClassifier instanceof RigidSortalClass || selectedClassifier instanceof Role){
 			if(specific2Panel.isVisible()){
 				ArrayList<Generalization> generalizationList = new ArrayList<>();
 				//mixin	
@@ -268,6 +296,9 @@ public class AddSupertype extends ClassSelectionPanel {
 				Classifier specific = createClassifier(spcChk, x, y-85);
 				fix.addAll(outcomeFixer.createGeneralization(selectedClassifier, specific));			
 			}
+		}else{
+			Classifier specific = createClassifier(spcChk, x, y-85);
+			fix.addAll(outcomeFixer.createGeneralization(selectedClassifier, specific));			
 		}
 	}
 
@@ -307,7 +338,7 @@ public class AddSupertype extends ClassSelectionPanel {
 			((TitledBorder)generalPanel.getBorder()).setTitle("Selected "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" class");
 			((TitledBorder)specific1Panel.getBorder()).setTitle("Category or Mixin");
 			((TitledBorder)specific2Panel.getBorder()).setTitle("Anti Rigid Sortals");
-			
+
 		}else if(selectedClassifier instanceof RigidSortalClass){
 			Set<Category> categories = parser.getAllInstances(RefOntoUML.Category.class);
 			Set<Mixin> mixins = parser.getAllInstances(RefOntoUML.Mixin.class);
@@ -336,32 +367,71 @@ public class AddSupertype extends ClassSelectionPanel {
 			((TitledBorder)specific1Panel.getBorder()).setTitle("Category or Mixin");
 			((TitledBorder)specific2Panel.getBorder()).setTitle("Anti Rigid Sortals");
 		}else if(selectedClassifier instanceof Role){
-//			Set<Mixin> mixins = parser.getAllInstances(RefOntoUML.Mixin.class);
-//			Set<Role> roles = parser.getAllInstances(RefOntoUML.Role.class);
-//			Set<RigidSortalClass> rigids = parser.getAllInstances(RefOntoUML.RigidSortalClass.class);
-//
-//			model = this.getCBModelFromSets(selectedClassifier,rigids, mixins, roles);
-//			spcCB.setModel(model);
-//			spcChk.setVisible(model.getSize() != 0);			
-//
-//			types = new String[]{"Kind", "Collective", "Quantity", "Subkind", "Mixin", "Role"};
-//			model = new DefaultComboBoxModel<String>(types);  
-//			specificTypesCB.setModel(model);
-//
-//			model = this.getCBModelFromSets(selectedClassifier,antirigids);
-//
-//			spc1CB.setModel(model);
-//			spc1Chk.setVisible(model.getSize() != 0);	
-//
-//			types = new String[]{"Role","Phase"};
-//			model = new DefaultComboBoxModel<String>(types);  
-//			specific1TypesCB.setModel(model);
-//
-//			specific2Panel.setVisible(false);
-//
-//			((TitledBorder)generalPanel.getBorder()).setTitle("Selected "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" class");
-//			((TitledBorder)specific1Panel.getBorder()).setTitle("Category or Mixin");
-//			((TitledBorder)specific2Panel.getBorder()).setTitle("Anti Rigid Sortals");
+			Set<Mixin> mixins = parser.getAllInstances(RefOntoUML.Mixin.class);
+			Set<RoleMixin> roleMixins = parser.getAllInstances(RefOntoUML.RoleMixin.class);
+			Set<SubstanceSortal> substances = parser.getAllInstances(RefOntoUML.SubstanceSortal.class);
+
+			model = this.getCBModelFromSets(selectedClassifier,substances, mixins, roleMixins);
+			spcCB.setModel(model);
+			spcChk.setVisible(model.getSize() != 0);			
+
+			types = new String[]{"Kind", "Collective", "Quantity", "Subkind", "Role", "Phase", "Mixin", "RoleMixin"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specificTypesCB.setModel(model);
+
+			specific2Panel.setVisible(false);
+
+			((TitledBorder)generalPanel.getBorder()).setTitle("Selected "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" class");
+			((TitledBorder)specific1Panel.getBorder()).setTitle("Role Supertype");
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Counter part");
+		}else if(selectedClassifier instanceof Category){
+			Set<Category> categories = parser.getAllInstances(RefOntoUML.Category.class);
+
+			model = this.getCBModelFromSets(selectedClassifier,categories);
+			spcCB.setModel(model);
+			spcChk.setVisible(model.getSize() != 0);			
+
+			types = new String[]{"Category"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specificTypesCB.setModel(model);
+
+			specific2Panel.setVisible(false);
+
+			((TitledBorder)generalPanel.getBorder()).setTitle("Selected "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" class");
+			((TitledBorder)specific1Panel.getBorder()).setTitle("Category Supertype");
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Counter part");
+		}else if(selectedClassifier instanceof Mixin){
+			Set<Mixin> mixins = parser.getAllInstances(RefOntoUML.Mixin.class);
+
+			model = this.getCBModelFromSets(selectedClassifier,mixins);
+			spcCB.setModel(model);
+			spcChk.setVisible(model.getSize() != 0);			
+
+			types = new String[]{"Mixin"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specificTypesCB.setModel(model);
+
+			specific2Panel.setVisible(false);
+
+			((TitledBorder)generalPanel.getBorder()).setTitle("Selected "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" class");
+			((TitledBorder)specific1Panel.getBorder()).setTitle("Mixin Supertype");
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Counter part");
+		}else if(selectedClassifier instanceof RoleMixin){
+			Set<RoleMixin> roleMixins = parser.getAllInstances(RefOntoUML.RoleMixin.class);
+
+			model = this.getCBModelFromSets(selectedClassifier,roleMixins);
+			spcCB.setModel(model);
+			spcChk.setVisible(model.getSize() != 0);			
+
+			types = new String[]{"RoleMixin"};
+			model = new DefaultComboBoxModel<String>(types);  
+			specificTypesCB.setModel(model);
+
+			specific2Panel.setVisible(false);
+
+			((TitledBorder)generalPanel.getBorder()).setTitle("Selected "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" class");
+			((TitledBorder)specific1Panel.getBorder()).setTitle("RoleMixin Supertype");
+			((TitledBorder)specific2Panel.getBorder()).setTitle("Counter part");
 		}
 	}
 }

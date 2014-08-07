@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 
 import RefOntoUML.Category;
 import RefOntoUML.Classifier;
+import RefOntoUML.Mixin;
 import RefOntoUML.MixinClass;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
@@ -62,7 +63,7 @@ public class PatternTool {
 	 */
 
 	public static Fix createRelatorPattern(JFrame frame, UmlProject project, double x, double y) {
-		RelatorCreation relatorCreation = new RelatorCreation(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser());
+		RelatorCreation relatorCreation = new RelatorCreation(ProjectBrowser.frame.getProjectBrowser().getParser());
 		ImagePanel imagePanel = new ImagePanel(PatternType.RelatorCreation);
 
 		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, relatorCreation, imagePanel);
@@ -72,7 +73,7 @@ public class PatternTool {
 	}
 	
 	public static Fix createRoleMixinPattern(JFrame frame, UmlProject project, double x, double y) {
-		RoleMixinPattern roleMixinPattern = new RoleMixinPattern(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser());
+		RoleMixinPattern roleMixinPattern = new RoleMixinPattern(ProjectBrowser.frame.getProjectBrowser().getParser());
 		ImagePanel imagePanel = new ImagePanel(PatternType.RoleMixinPattern);
 
 		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, roleMixinPattern, imagePanel);
@@ -82,7 +83,7 @@ public class PatternTool {
 	}	
 	
 	public static Fix principleIdentity(JFrame frame, UmlProject currentProject, double x, double y) {
-		PrincipleIdentiy pattern = new PrincipleIdentiy(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser());
+		PrincipleIdentiy pattern = new PrincipleIdentiy(ProjectBrowser.frame.getProjectBrowser().getParser());
 		ImagePanel imagePanel = new ImagePanel(PatternType.PrincipleIdentity);
 
 		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, pattern, imagePanel);
@@ -123,7 +124,7 @@ public class PatternTool {
 				return null;		
 			}
 			
-			pattern = new GeneralizationAndSpecializationPattern(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser(), selectedClassifier);
+			pattern = new GeneralizationAndSpecializationPattern(ProjectBrowser.frame.getProjectBrowser().getParser(), selectedClassifier);
 			
 			PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, pattern, imagePanel);
 			window.setVisible(true);
@@ -156,7 +157,7 @@ public class PatternTool {
 				return null;		
 			}
 			
-			pattern = new PartitionPattern(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser(), selectedClassifier);
+			pattern = new PartitionPattern(ProjectBrowser.frame.getProjectBrowser().getParser(), selectedClassifier);
 			
 			PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, pattern, imagePanel);
 			window.setVisible(true);
@@ -185,12 +186,18 @@ public class PatternTool {
 				imagePanel = new ImagePanel(PatternType.AddSupertype_Subkind);
 			}else if(selectedClassifier instanceof Role){
 				imagePanel = new ImagePanel(PatternType.AddSupertype_Role);
+			}else if(selectedClassifier instanceof Category){
+				imagePanel = new ImagePanel(PatternType.AddSupertype_Category);
+			}else if(selectedClassifier instanceof Mixin){
+				imagePanel = new ImagePanel(PatternType.AddSupertype_Mixin);
+			}else if(selectedClassifier instanceof RoleMixin){
+				imagePanel = new ImagePanel(PatternType.AddSupertype_RoleMixin);
 			}else{
 				JOptionPane.showMessageDialog(null, "Pattern do not applied to "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" stereotype");
 				return null;		
 			}
 			
-			pattern = new AddSupertype(ProjectBrowser.frame.getBrowserManager().getProjectBrowser().getParser(), selectedClassifier);
+			pattern = new AddSupertype(ProjectBrowser.frame.getProjectBrowser().getParser(), selectedClassifier);
 			
 			PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, pattern, imagePanel);
 			window.setVisible(true);
