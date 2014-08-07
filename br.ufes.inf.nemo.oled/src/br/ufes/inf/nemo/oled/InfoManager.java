@@ -75,8 +75,7 @@ public class InfoManager extends JTabbedPane {
 				
 		addTab(" Console ",outputPane);	
 		setIconAt(indexOfComponent(outputPane),new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/monitor.png")));
-		
-		setTabPlacement(JTabbedPane.TOP);				
+						
 	}
 	
 	public OutputPane getOutput(){

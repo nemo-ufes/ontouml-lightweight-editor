@@ -78,11 +78,10 @@ public class AppToolbar implements ActionListener {
 		createButton("redo");
 		createButton("find");		
 		createButton("verify");
-		toolbar.addSeparator();
 		
 		btnToolBox = new JToggleButton("");
 		btnToolBox.setSelected(frame.getMainMenu().isSelected("TOOLBOX"));
-		btnToolBox.setToolTipText("Show/hide Toolbox");
+		btnToolBox.setToolTipText("Show/hide Toolbox Sidebar");
 		btnToolBox.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -110,7 +109,7 @@ public class AppToolbar implements ActionListener {
 		
 		btnBottomView = new JToggleButton("");
 		btnBottomView.setSelected(frame.getMainMenu().isSelected("BOTTOMVIEW"));
-		btnBottomView.setToolTipText("Show/hide Bottom Tab View");
+		btnBottomView.setToolTipText("Show/hide Information Footer");
 		btnBottomView.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -119,14 +118,10 @@ public class AppToolbar implements ActionListener {
         	}
         });
 		btnBottomView.setFocusable(false);
-		btnBottomView.setIcon(new ImageIcon(AppToolbar.class.getResource("/resources/icons/x16/split-arrow.png")));
+		btnBottomView.setIcon(new ImageIcon(AppToolbar.class.getResource("/resources/icons/x16/layout_select_footer.png")));
 		toolbar.add(btnBottomView);
-				
-		toolbar.addSeparator();
 		
 		createButton("statistics");
-		
-		toolbar.addSeparator();
 		
 		//toolbar.addSeparator();
 		JButton btnText = createButton("generatetext");

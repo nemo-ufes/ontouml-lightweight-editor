@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import javax.swing.ImageIcon;
 
 public class BottomViewPane  extends JPanel {
 
@@ -45,11 +46,12 @@ public class BottomViewPane  extends JPanel {
 		this.project = project;
 		
 		infoManager = new InfoManager(frame,project);
-		infoManager.setTabPlacement(JTabbedPane.TOP);		
+		infoManager.setTabPlacement(JTabbedPane.BOTTOM);		
 				
 		add(infoManager,BorderLayout.CENTER);
 		
-		TitlePane panel = new TitlePane("Console",null);		
+		TitlePane panel = new TitlePane("Information Footer",null);		
+		panel.title.setIcon(new ImageIcon(BottomViewPane.class.getResource("/resources/icons/x16/layout_select_footer.png")));
 		add(panel, BorderLayout.NORTH);
 	}
 }
