@@ -977,7 +977,7 @@ public class AntiPatternSearchDialog extends JDialog {
   			stopButton.setEnabled(true);
   			cleanResultlabels();
 			setPlainFontOnCheckboxes();		
-			frame.focusOnOutput();							
+			frame.selectConsole();							
 			progressBar.setValue(0);
 			progressBar.setIndeterminate(true);
   			updateStatus("Antipatterns: Retrieving checked elements...");

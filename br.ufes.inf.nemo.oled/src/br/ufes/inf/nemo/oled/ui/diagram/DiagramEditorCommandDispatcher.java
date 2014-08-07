@@ -337,9 +337,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("GENERATE_TEXT", new MethodCall(
 					getClass().getMethod("callGlossary")));
 
-			selectorMap.put("OUTPUT", new MethodCall(
-					getClass().getMethod("showOutputPane")));
-
 			selectorMap.put("DERIVERELATIONS", new MethodCall(
 					getClass().getMethod("deriveRelations")));
 
@@ -448,7 +445,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 	public void collectStatistics()
 	{
 		if (manager.isProjectLoaded()==false) return;
-		manager.getFrame().getDiagramManager().addStatisticsPanel(manager,true);
+		manager.getFrame().getDiagramManager().addStatisticsPanel(frame.getInfoManager(),true);
 	}
 	
 	public void showGrid() {
@@ -575,11 +572,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		AntiPatternSearchDialog.open(manager.getFrame());		
 	}
 	
-	public void showOutputPane()
-	{	
-		manager.showOutputPane();
-	}
-
 	public void autoComplete()
 	{
 		if (manager.isProjectLoaded()==false) return;

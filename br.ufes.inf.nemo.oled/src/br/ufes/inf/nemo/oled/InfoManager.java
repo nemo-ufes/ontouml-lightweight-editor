@@ -29,7 +29,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.problems.ErrorPane;
 import br.ufes.inf.nemo.oled.problems.ProblemPane;
+import br.ufes.inf.nemo.oled.problems.WarningPane;
+import br.ufes.inf.nemo.oled.statistician.StatisticsPane;
 import br.ufes.inf.nemo.oled.ui.OutputPane;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -60,6 +63,49 @@ public class InfoManager extends JTabbedPane {
 		}
 		repaint();
 		revalidate();
+	}
+	
+	public void selectWarnings()
+	{
+		for(Component c: getComponents())
+		{
+			if(c instanceof WarningPane) setSelectedIndex(indexOfComponent(c));	
+		}
+	}
+	
+	public void selectProblems()
+	{
+		for(Component c: getComponents())
+		{
+			if(c instanceof ProblemPane && !(c instanceof ErrorPane) && !(c instanceof WarningPane)) 
+			{
+				setSelectedIndex(indexOfComponent(c));				
+			}
+		}
+	}
+	
+	public void selectStatistic()
+	{
+		for(Component c: getComponents())
+		{
+			if(c instanceof StatisticsPane){ setSelectedIndex(indexOfComponent(c)); }
+		}
+	}
+	
+	public void selectErrors()
+	{
+		for(Component c: getComponents())
+		{
+			if(c instanceof ErrorPane) setSelectedIndex(indexOfComponent(c));	
+		}
+	}
+		
+	public void selectConsole()
+	{
+		for(Component c: getComponents())
+		{
+			if(c instanceof OutputPane) setSelectedIndex(indexOfComponent(c));	
+		}
 	}
 	
 	public InfoManager (final AppFrame frame, final UmlProject project)
@@ -96,7 +142,7 @@ public class InfoManager extends JTabbedPane {
 				
 		if(showOutput){
 			outputPane.setVisible(true);
-			frame.focusOnOutput();
+			frame.selectConsole();
 		}		
 	}
 	
