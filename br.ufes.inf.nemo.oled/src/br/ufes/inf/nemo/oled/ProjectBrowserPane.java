@@ -23,29 +23,23 @@ package br.ufes.inf.nemo.oled;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
-import javax.swing.border.LineBorder;
-import javax.swing.UIManager;
 
 /**
  * @author John Guerson
  */
-public class BrowserManager extends JPanel {
+public class ProjectBrowserPane extends JPanel {
 
 	private static final long serialVersionUID = 1752050268631906319L;
 	@SuppressWarnings("unused")
 	private AppFrame frame;
 	private ProjectBrowser browser;
 	
-	public BrowserManager(AppFrame frame)
+	public ProjectBrowserPane(AppFrame frame)
 	{
 		super();
 		setBackground(Color.WHITE);
@@ -58,20 +52,7 @@ public class BrowserManager extends JPanel {
 		browser = new ProjectBrowser(frame,null,null);
 		browser.setBorder(new EmptyBorder(0, 0, 0, 0));
 			
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(UIManager.getColor("Panel.background")));
-		panel.setBackground(new Color(0xC6D1B1));
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
-		flowLayout.setVgap(3);
-		flowLayout.setHgap(3);
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		//panel.setBorder(new LineBorder(UIManager.getColor("TabbedPane.darkShadow")));		
-		JLabel title = new JLabel();
-		title.setAlignmentY(Component.TOP_ALIGNMENT);
-		panel.add(title);
-		title.setBackground(Color.WHITE);
-		title.setIcon(new ImageIcon(BrowserManager.class.getResource("/resources/icons/x16/drawer.png")));
-		title.setText("Project Browser");
+		TitlePane panel = new TitlePane("Project Browser","/resources/icons/x16/drawer.png");
 		
 		add(browser,BorderLayout.CENTER);
 		add(panel,BorderLayout.NORTH);

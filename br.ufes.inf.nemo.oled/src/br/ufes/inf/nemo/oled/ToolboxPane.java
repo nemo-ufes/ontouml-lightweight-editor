@@ -23,25 +23,18 @@ package br.ufes.inf.nemo.oled;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import br.ufes.inf.nemo.oled.palette.Palette;
 import br.ufes.inf.nemo.oled.palette.PaletteAccordion;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorCommandDispatcher;
-import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorWrapper;
-import javax.swing.border.LineBorder;
-import javax.swing.UIManager;
 
 /**
  * @author John Guerson
  */
-public class ToolManager extends JPanel {
+public class ToolboxPane extends JPanel {
 
 	private static final long serialVersionUID = 1752050268631906319L;
 	@SuppressWarnings("unused")
@@ -49,7 +42,7 @@ public class ToolManager extends JPanel {
 	private DiagramEditorCommandDispatcher editorDispatcher;
 	private PaletteAccordion palettes;	
 
-	public ToolManager(AppFrame frame, DiagramEditorCommandDispatcher editorDispatcher)
+	public ToolboxPane(AppFrame frame, DiagramEditorCommandDispatcher editorDispatcher)
 	{
 		super();
 		setBackground(Color.WHITE);
@@ -65,21 +58,8 @@ public class ToolManager extends JPanel {
 		palettes.setBackground(Color.WHITE);
 		palettes.createStaticStructurePalettes(editorDispatcher);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(UIManager.getColor("Panel.background")));
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
-		flowLayout.setVgap(3);
-		flowLayout.setHgap(3);
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		//panel.setBorder(new LineBorder(UIManager.getColor("TabbedPane.darkShadow")));
-		panel.setBackground(new Color(0xC6D1B1));
-		JLabel title = new JLabel();
-		title.setAlignmentY(Component.TOP_ALIGNMENT);
-		panel.add(title);
-		title.setBackground(Color.WHITE);
-		title.setIcon(new ImageIcon(DiagramEditorWrapper.class.getResource("/resources/icons/x16/hammer_screwdriver.png")));
-		title.setText("Toolbox");
-		
+		TitlePane panel = new TitlePane("Toolbox","/resources/icons/x16/hammer_screwdriver.png");	
+				
 		add(palettes,BorderLayout.CENTER);
 		add(panel,BorderLayout.NORTH);
 		

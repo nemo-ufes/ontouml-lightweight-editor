@@ -119,7 +119,7 @@ public class AppToolbar implements ActionListener {
         	}
         });
 		btnBottomView.setFocusable(false);
-		btnBottomView.setIcon(new ImageIcon(AppToolbar.class.getResource("/resources/icons/x16/ui_tab_bottom.png")));
+		btnBottomView.setIcon(new ImageIcon(AppToolbar.class.getResource("/resources/icons/x16/split-arrow.png")));
 		toolbar.add(btnBottomView);
 				
 		toolbar.addSeparator();

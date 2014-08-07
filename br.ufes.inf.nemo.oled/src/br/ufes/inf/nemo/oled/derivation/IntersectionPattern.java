@@ -41,14 +41,12 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.derivedtypes.DerivedByIntersection;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import java.awt.Dimension;
 
 /**
  * @author Cássio Reginato
