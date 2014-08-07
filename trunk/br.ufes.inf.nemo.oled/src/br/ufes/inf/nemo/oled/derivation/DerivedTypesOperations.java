@@ -118,7 +118,7 @@ public class DerivedTypesOperations {
 		}
 	}
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "rawtypes" })
 	public static Fix createUnionDerivation(DiagramEditor activeEditor, UmlProject project, DiagramManager dm){
 
 		String name="";
@@ -419,6 +419,7 @@ public class DerivedTypesOperations {
 
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static Fix createExclusionDerivation(DiagramEditor activeEditor,
 			UmlProject project, DiagramManager dm) {
 		// TODO Auto-generated method stub
@@ -501,6 +502,7 @@ public class DerivedTypesOperations {
 		return name;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public  static  JPanel selectStereotype(Object[] stereo) {
 
 		
@@ -759,7 +761,7 @@ public class DerivedTypesOperations {
 		return createIntersectionDerivedType(specialCase, diagramManager, activeEditor, project);
 	}
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "rawtypes" })
 	private static Fix createIntersectionDerivedType(String stereotype,
 			DiagramManager diagramManager, DiagramEditor activeEditor, UmlProject project) {
 		dman= diagramManager;
@@ -827,6 +829,7 @@ public class DerivedTypesOperations {
 	}
 
 
+	@SuppressWarnings({ "rawtypes", "unused" })
 	public static Fix createSpecializationDerivation(
 			DiagramEditor activeEditor, UmlProject project,
 			DiagramManager diagramManager) {

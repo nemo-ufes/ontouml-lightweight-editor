@@ -35,7 +35,6 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.border.EtchedBorder;
 
 import org.jdesktop.swingx.MultiSplitLayout;
@@ -57,10 +56,12 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	private transient AppMenu mainMenu;
 	private transient AppToolbar mainToolBar;
 	
-	private transient ToolManager toolManager;
-	private transient DiagramManager diagramManager;
-	private transient InfoManager infoManager;
-	private transient BrowserManager browserManager;
+	private transient ToolboxPane toolManager;
+	private transient TopViewPane topPane;
+	private transient BottomViewPane bottomPane;
+//	private transient DiagramManager diagramManager;
+//	private transient InfoManager infoManager;
+	private transient ProjectBrowserPane browserManager;
 	
 	private transient Map<String, MethodCall> selectorMap = new HashMap<String, MethodCall>();
 	
@@ -69,9 +70,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	private transient MultiSplitPane multiSplitPane;
 
 	private int browserWidth=230;
-
 	private int toolboxWidth=230;
-
 	private int infoHeight=200;
 	
 	/**
@@ -114,13 +113,14 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		this.analyzer = analyzer;
 	}
 	
+
 	/**
 	 * Adds the main menu.
 	 */
 	private void installMainMenu() {
 		mainMenu = new AppMenu(this);
 		mainMenu.addCommandListener(this);
-		mainMenu.addCommandListener(diagramManager.getEditorDispatcher());
+		mainMenu.addCommandListener(getDiagramManager().getEditorDispatcher());
 		setJMenuBar(mainMenu.getMenuBar());
 	}
 	
@@ -131,7 +131,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	{		
 		mainToolBar = new AppToolbar(this);
 		mainToolBar.addCommandListener(this);
-		mainToolBar.addCommandListener(diagramManager.getEditorDispatcher());
+		mainToolBar.addCommandListener(getDiagramManager().getEditorDispatcher());
 		JPanel panel = new JPanel();		
 		panel.setLayout(new BorderLayout(5,5));
 		panel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -144,12 +144,12 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		return browserManager.getProjectBrowser();
 	}
 	
-	public BrowserManager getBrowserManager() {
+	public ProjectBrowserPane getBrowserManager() {
 		return browserManager;
 	}
 	
 	public DiagramManager getDiagramManager() {
-		return diagramManager;
+		return topPane.getDiagramManager();
 	}
 			
 	public AppToolbar getMainToolBar()
@@ -170,19 +170,17 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 */
 	private void installManagers() 
 	{		
-		diagramManager = new DiagramManager(this);
-		diagramManager.setTabPlacement(JTabbedPane.TOP);		
-		diagramManager.addStartPanel(diagramManager,true);
-		diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()));
+		topPane = new TopViewPane(this);		
+		topPane.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,GetScreenWorkingHeight()));
 		
-		infoManager= new InfoManager(this, null);
-		infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,0));
+		bottomPane= new BottomViewPane(this, null);
+		bottomPane.setPreferredSize(new Dimension(GetScreenWorkingWidth()-240-240,0));
 				
-		browserManager = new BrowserManager(this);
+		browserManager = new ProjectBrowserPane(this);
 		browserManager.setPreferredSize(new Dimension(230,250));
 		browserManager.getProjectBrowser().setPreferredSize(new Dimension(230,250));
 		
-		toolManager = new ToolManager(this, diagramManager.getEditorDispatcher());
+		toolManager = new ToolboxPane(this, getDiagramManager().getEditorDispatcher());
 		toolManager.setPreferredSize(new Dimension(230,250));
 		toolManager.getPalleteAccordion().setPreferredSize(new Dimension(230,250));
 		
@@ -195,8 +193,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		multiSplitPane.getMultiSplitLayout().setModel(modelRoot);
 		multiSplitPane.add(toolManager, "left");
 		multiSplitPane.add(browserManager, "right");
-		multiSplitPane.add(diagramManager, "middle.top");		
-		multiSplitPane.add(infoManager, "middle.bottom");
+		multiSplitPane.add(topPane, "middle.top");		
+		multiSplitPane.add(bottomPane, "middle.bottom");
 		multiSplitPane.setBorder(null);
 		multiSplitPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		getContentPane().add(multiSplitPane, BorderLayout.CENTER);
@@ -214,7 +212,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	
 	public boolean isShowBottomView()
 	{
-		return !(infoManager.getPreferredSize().height == 0);
+		return !(bottomPane.getPreferredSize().height == 0);
 	}
 	
 	public void showBottomView()
@@ -223,20 +221,20 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		recordSplitSizes();
 		multiSplitPane.getMultiSplitLayout().setFloatingDividers(true);	
 		if(getMainMenu().isSelected("BOTTOMVIEW")){
-			infoManager.setPreferredSize(new Dimension(infoManager.getSize().width,infoHeight));
+			bottomPane.setPreferredSize(new Dimension(bottomPane.getSize().width,infoHeight));
 			browserManager.getProjectBrowser().setPreferredSize(new Dimension(browserManager.getSize().width,250));
 			browserManager.setPreferredSize(new Dimension(browserManager.getSize().width,250));
 			toolManager.setPreferredSize(new Dimension(toolManager.getSize().width,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolManager.getSize().width,250));			
-			diagramManager.setPreferredSize(new Dimension(diagramManager.getSize().width,GetScreenWorkingHeight()-infoHeight-dividerSize-70));
+			topPane.setPreferredSize(new Dimension(topPane.getSize().width,GetScreenWorkingHeight()-infoHeight-dividerSize-70));
 			getMainToolBar().getBottomViewButton().setSelected(true);
 		}else{
-			infoManager.setPreferredSize(new Dimension(infoManager.getSize().width,0));
+			bottomPane.setPreferredSize(new Dimension(bottomPane.getSize().width,0));
 			browserManager.getProjectBrowser().setPreferredSize(new Dimension(browserManager.getSize().width,250));
 			browserManager.setPreferredSize(new Dimension(browserManager.getSize().width,250));
 			toolManager.setPreferredSize(new Dimension(toolManager.getSize().width,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolManager.getSize().width,250));			
-			diagramManager.setPreferredSize(new Dimension(diagramManager.getSize().width,GetScreenWorkingHeight()-dividerSize-70));	
+			topPane.setPreferredSize(new Dimension(topPane.getSize().width,GetScreenWorkingHeight()-dividerSize-70));	
 			getMainToolBar().getBottomViewButton().setSelected(false);
 		}		
 		multiSplitPane.revalidate();	
@@ -246,7 +244,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	{
 		if(toolManager.getSize().width!=0) toolboxWidth = toolManager.getSize().width;
 		if(browserManager.getSize().width!=0) browserWidth = browserManager.getSize().width;
-		if(infoManager.getSize().height!=0) infoHeight = infoManager.getSize().height;
+		if(bottomPane.getSize().height!=0) infoHeight = bottomPane.getSize().height;
 	}
 	
 	public void showProjectBrowser()
@@ -259,16 +257,16 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			browserManager.setPreferredSize(new Dimension(browserWidth,250));
 			toolManager.setPreferredSize(new Dimension(toolManager.getSize().width,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolManager.getSize().width,250));
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserWidth-toolManager.getSize().width-(2*dividerSize),infoManager.getSize().height));
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserWidth-toolManager.getSize().width-(2*dividerSize),diagramManager.getSize().height));	
+			bottomPane.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserWidth-toolManager.getSize().width-(2*dividerSize),bottomPane.getSize().height));
+			topPane.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserWidth-toolManager.getSize().width-(2*dividerSize),topPane.getSize().height));	
 			getMainToolBar().getProjectBrowserButton().setSelected(true);
 		}else{
 			browserManager.getProjectBrowser().setPreferredSize(new Dimension(0,250));
 			browserManager.setPreferredSize(new Dimension(0,250));			
 			toolManager.setPreferredSize(new Dimension(toolManager.getSize().width,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolManager.getSize().width,250));
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolManager.getSize().width-(2*dividerSize),infoManager.getSize().height));						
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolManager.getSize().width-(2*dividerSize),diagramManager.getSize().height));
+			bottomPane.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolManager.getSize().width-(2*dividerSize),bottomPane.getSize().height));						
+			topPane.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolManager.getSize().width-(2*dividerSize),topPane.getSize().height));
 			getMainToolBar().getProjectBrowserButton().setSelected(false);
 		}		
 		multiSplitPane.revalidate();
@@ -284,16 +282,16 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolboxWidth,250));
 			browserManager.getProjectBrowser().setPreferredSize(new Dimension(browserManager.getSize().width,250));
 			browserManager.setPreferredSize(new Dimension(browserManager.getSize().width,250));
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolboxWidth-browserManager.getSize().width-(2*dividerSize),infoManager.getSize().height));
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolboxWidth-browserManager.getSize().width-(2*dividerSize),diagramManager.getSize().height));	
+			bottomPane.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolboxWidth-browserManager.getSize().width-(2*dividerSize),bottomPane.getSize().height));
+			topPane.setPreferredSize(new Dimension(GetScreenWorkingWidth()-toolboxWidth-browserManager.getSize().width-(2*dividerSize),topPane.getSize().height));	
 			getMainToolBar().getToolBoxButton().setSelected(true);			
 		}else{
 			toolManager.setPreferredSize(new Dimension(0,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(0,250));
 			browserManager.getProjectBrowser().setPreferredSize(new Dimension(browserManager.getSize().width,250));
 			browserManager.setPreferredSize(new Dimension(browserManager.getSize().width,250));
-			infoManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserManager.getSize().width-(2*dividerSize),infoManager.getSize().height));						
-			diagramManager.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserManager.getSize().width-(2*dividerSize),diagramManager.getSize().height));
+			bottomPane.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserManager.getSize().width-(2*dividerSize),bottomPane.getSize().height));						
+			topPane.setPreferredSize(new Dimension(GetScreenWorkingWidth()-browserManager.getSize().width-(2*dividerSize),topPane.getSize().height));
 			getMainToolBar().getToolBoxButton().setSelected(false);
 		}		
 		multiSplitPane.revalidate();
@@ -351,7 +349,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		MethodCall methodcall = selectorMap.get(command);
 		if (methodcall != null) {
 			if(methodcall.getMethod().getDeclaringClass() != getClass())
-				methodcall.call(diagramManager);
+				methodcall.call(getDiagramManager());
 			else
 				methodcall.call(this);
 		} else { 
@@ -388,7 +386,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		
 		if (canQuit()) {		
 			
-			diagramManager.dispose();
+			getDiagramManager().dispose();
 
 			dispose();
 			Thread.currentThread().interrupt();
@@ -405,7 +403,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 */
 	private boolean canQuit() {
 		
-		if(diagramManager.getCurrentProject()==null)
+		if(getDiagramManager().getCurrentProject()==null)
 			return true;
 		
 		int response = JOptionPane.showOptionDialog(
@@ -420,7 +418,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		
 		if(response==JOptionPane.YES_OPTION){
 			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-			diagramManager.saveProject();
+			getDiagramManager().saveProject();
 			setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));			
 			return true;
 		}
@@ -435,7 +433,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 
 	public InfoManager getInfoManager()
 	{
-		return infoManager;
+		return bottomPane.getInfoManager();
 	}
 	
 	/**
@@ -451,9 +449,9 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	 * Gets the tool manager (the tabbed pane responsible for managing the
 	 * tools).
 	 * 
-	 * @return {@link ToolManager} the tool manager
+	 * @return {@link ToolboxPane} the tool manager
 	 * */
-	public ToolManager getToolManager() {
+	public ToolboxPane getToolManager() {
 		return toolManager;
 	}
 		
@@ -486,8 +484,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		mainMenu = null;
 		mainToolBar = null;
 		toolManager = null;
-		diagramManager = null;		
-		infoManager = null;
+		topPane = null;		
+		bottomPane = null;
 				
 		initSelectorMap();
 	}
@@ -578,13 +576,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		return analyzer;
 	}
 	
-	public void focusOnWarnings()
-	{	
-		infoManager.setSelectedIndex(0);
-	}
-	
 	public void focusOnOutput()
 	{	
-		infoManager.setSelectedIndex(2);
+		bottomPane.getInfoManager().setSelectedIndex(0);
 	}	
 }
