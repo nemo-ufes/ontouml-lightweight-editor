@@ -104,7 +104,7 @@ public class AppToolbar implements ActionListener {
         	}
         });
 		btnBrowser.setFocusable(false);
-		btnBrowser.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/drawer.png")));
+		btnBrowser.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/door_in.png")));
 		toolbar.add(btnBrowser);
 		
 		btnBottomView = new JToggleButton("");

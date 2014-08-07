@@ -227,7 +227,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			toolManager.setPreferredSize(new Dimension(toolManager.getSize().width,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolManager.getSize().width,250));			
 			topPane.setPreferredSize(new Dimension(topPane.getSize().width,GetScreenWorkingHeight()-infoHeight-dividerSize-70));
-			getMainToolBar().getBottomViewButton().setSelected(true);
+			getMainToolBar().getBottomViewButton().setSelected(true);			
 		}else{
 			bottomPane.setPreferredSize(new Dimension(bottomPane.getSize().width,0));
 			browserManager.getProjectBrowser().setPreferredSize(new Dimension(browserManager.getSize().width,250));
@@ -235,7 +235,7 @@ public class AppFrame extends JFrame implements AppCommandListener {
 			toolManager.setPreferredSize(new Dimension(toolManager.getSize().width,250));
 			toolManager.getPalleteAccordion().setPreferredSize(new Dimension(toolManager.getSize().width,250));			
 			topPane.setPreferredSize(new Dimension(topPane.getSize().width,GetScreenWorkingHeight()-dividerSize-70));	
-			getMainToolBar().getBottomViewButton().setSelected(false);
+			getMainToolBar().getBottomViewButton().setSelected(false);			
 		}		
 		multiSplitPane.revalidate();	
 	}
@@ -576,8 +576,23 @@ public class AppFrame extends JFrame implements AppCommandListener {
 		return analyzer;
 	}
 	
-	public void focusOnOutput()
+	public void selectConsole()
 	{	
-		bottomPane.getInfoManager().setSelectedIndex(0);
+		bottomPane.getInfoManager().selectConsole();
 	}	
+	
+	public void selectWarnings()
+	{
+		bottomPane.getInfoManager().selectWarnings();
+	}
+	
+	public void selectProblems()
+	{
+		bottomPane.getInfoManager().selectProblems();
+	}
+	
+	public void selectStatistic()
+	{
+		bottomPane.getInfoManager().selectStatistic();
+	}
 }

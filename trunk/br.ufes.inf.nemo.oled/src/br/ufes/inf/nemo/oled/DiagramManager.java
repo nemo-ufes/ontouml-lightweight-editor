@@ -1668,7 +1668,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			Collections.sort(warnings,new DescriptionComparator());
 			for(ProblemElement pe: warnings) { count++; pe.setIdentifier(count); }
 			warningsPane.setData(warnings);
-			warningsPane.setStatus(warningVerificator.getTimingMessage());			
+			warningsPane.setStatus(warningVerificator.getTimingMessage());	
+			if(!frame.isShowBottomView()) { getMainMenu().getBottomViewItem().setSelected(true); frame.showBottomView(); }
+			if(problems.size()>0) frame.selectProblems();
+			else frame.selectWarnings();
 		}
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
@@ -1748,8 +1751,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			se = new StatisticalElement("ComponentOfs",diagnostic.getComponentOfCount(),diagnostic.getComponentOfPercentageType(),diagnostic.getComponentOfPercentageElements());
 			result.add(se);
 		}
+		frame.selectStatistic();
 		return result;
 	}
+	
 	//======================================================================
 	//
 	//             THE CODE ABOVE WAS REVIWED BY JOHN
@@ -2732,15 +2737,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		return list;
 	}
-
-	/**
-	 * Shows or hides the output pane, in case the current editor is a DiagramEditor. 
-	 */
-	public void showOutputPane() 
-	{
-		frame.focusOnOutput();
-	}
-
+	
 	/** 
 	 * Generate derived relations of the model 
 	 */
