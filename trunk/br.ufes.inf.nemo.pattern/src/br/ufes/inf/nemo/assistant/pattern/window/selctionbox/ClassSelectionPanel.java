@@ -157,7 +157,7 @@ public abstract class ClassSelectionPanel extends JPanel {
 		}
 	}
 	
-	protected DefaultComboBoxModel<String> getCBModelFromSets(Classifier current, Set<? extends Classifier>... sets){
+	protected static DefaultComboBoxModel<String> getCBModelFromSets(Classifier current, Set<? extends Classifier>... sets){
 	    DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel<String>();
 	    String currentStringRepresentation = UtilAssistant.getStringRepresentationStereotype(current) +" - "+ UtilAssistant.getStringRepresentationClass(current);
 	    
