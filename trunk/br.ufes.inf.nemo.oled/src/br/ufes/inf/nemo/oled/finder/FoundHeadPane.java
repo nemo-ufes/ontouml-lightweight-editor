@@ -66,7 +66,7 @@ public class FoundHeadPane extends JPanel {
 		btnRun.setBackground(Color.LIGHT_GRAY);
 		btnRun.setFocusable(false);
 		
-		JLabel lblTerm = new JLabel("Term:");
+		JLabel lblTerm = new JLabel("Find Term:");
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
