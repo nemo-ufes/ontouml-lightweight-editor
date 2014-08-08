@@ -273,6 +273,8 @@ public class AppMenu implements ActionListener {
 		viewMenu.add(zoomInItem);
 		viewMenu.add(zoomOutItem);
 		
+		viewMenu.addSeparator();
+		
 		JMenuItem showGrid = createCheckBoxMenuItem(viewMenu, "showgrid");
 		showGrid.setSelected(true);
 		//JMenuItem snapToGrid = createCheckBoxMenuItem(viewMenu, "snaptogrid");
