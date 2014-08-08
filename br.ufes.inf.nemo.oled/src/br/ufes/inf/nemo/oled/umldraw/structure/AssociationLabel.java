@@ -26,7 +26,10 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
+import RefOntoUML.Association;
 import RefOntoUML.Meronymic;
+import RefOntoUML.Relationship;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
@@ -408,6 +411,14 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 		}
 	}
 
+	private void impliesDirection(Type srcType, Type class1, Type class2, Type rel1, Type rel2, ReadingDirection direction, ReadingDirection inverseDirection)
+	{
+		if(class1!=null && srcType.equals(class1)) ((AssociationElement) association).setNameReadingDirection(direction);
+		if(rel1!=null && srcType.equals(rel1)) ((AssociationElement) association).setNameReadingDirection(direction);
+		if(class2!=null && srcType.equals(class2)) ((AssociationElement) association).setNameReadingDirection(inverseDirection);
+		if(rel2!=null && srcType.equals(rel2)) ((AssociationElement) association).setNameReadingDirection(inverseDirection);
+	}
+	
 	/**
 	 * Draws the direction triangle.
 	 * 
@@ -416,24 +427,105 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	 */
 	private void drawDirection(DrawingContext drawingContext) 
 	{
-		Node node1 = ((AssociationElement) association).getNode1();
+		Node node1 = ((AssociationElement) association).getNode1();		
 		Node node2 = ((AssociationElement) association).getNode2();
 		Connection connection1 = ((AssociationElement) association).getConnection1();
 		Connection connection2 = ((AssociationElement) association).getConnection2();
-		double y1 = 0; double y2 = 0;
-		double x1 = 0; double x2 = 0;
-		if(node1 !=null) { y1 = node1.getAbsCenterY(); x1 = node1.getAbsCenterX(); }
-		if(node2 !=null) { y2 = node2.getAbsCenterY(); x2 = node2.getAbsCenterX(); }
-		if(connection1 !=null) { y1 = connection1.getAbsCenterY(); x1 = connection1.getAbsCenterX(); }
-		if(connection2 !=null) { y2 = connection2.getAbsCenterY(); x2 = node1.getAbsCenterX(); }		
-		if(segment.getX1() == segment.getX2()) {
-			if(y1 > y2) ((AssociationElement) association).setNameReadingDirection(ReadingDirection.UP_BOTTOM);
-			else ((AssociationElement) association).setNameReadingDirection(ReadingDirection.BOTTOM_UP);
+		double srcy1 = 0; double srcy2 = 0; double srcx1 = 0; double srcx2 = 0;
+		double tgtx1 = 0; double tgtx2 = 0; double tgty1 = 0; double tgty2 = 0;  
+		if(node1 !=null) { srcy1 = node1.getAbsoluteY1(); srcx1 = node1.getAbsoluteX1(); srcx2 = node1.getAbsoluteX2(); srcy2 = node1.getAbsoluteY2();}
+		if(node2 !=null) { tgty1 = node2.getAbsoluteY1(); tgtx1 = node2.getAbsoluteX1(); tgtx2 = node2.getAbsoluteX2(); tgty2 = node2.getAbsoluteY2(); }
+		if(connection1 !=null) { srcy1 = connection1.getAbsoluteY1(); srcx1 = connection1.getAbsoluteX1(); srcx2 = connection1.getAbsoluteX2(); srcy2 = connection1.getAbsoluteY2(); }
+		if(connection2 !=null) { tgty1 = connection2.getAbsoluteY1(); tgtx1 = connection2.getAbsoluteX1(); tgtx2 = connection2.getAbsoluteX2(); tgty2 = connection2.getAbsoluteY2(); }
+		Relationship rel = ((AssociationElement) association).getRelationship();
+		Type srcType = ((Association)rel).getMemberEnd().get(0).getType();		
+		Type class1=null; Type class2=null; Type rel1=null; Type rel2=null;
+		if(node1!=null) class1 = ((ClassElement)node1).getClassifier();
+		if(node2!=null) class2 = ((ClassElement)node2).getClassifier();
+		if(connection1!=null) rel1 = (Type)((AssociationElement)connection1).getRelationship();
+		if(connection2!=null) rel2 = (Type)((AssociationElement)connection2).getRelationship();
+		//===================
+		// vertical aligned		
+		if((srcx2>=tgtx1 && srcx2 <= tgtx2)|| (srcx1>=tgtx1 && srcx1<= tgtx2))
+		{
+			if(segment.getY1()> segment.getY2()) impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.BOTTOM_UP,ReadingDirection.UP_BOTTOM);				 
+			else impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.UP_BOTTOM,ReadingDirection.BOTTOM_UP);
 		}
-		if(segment.getY1() == segment.getY2()) {
-			if(x1 > x2) ((AssociationElement) association).setNameReadingDirection(ReadingDirection.RIGHT_LEFT);
-			else ((AssociationElement) association).setNameReadingDirection(ReadingDirection.LEFT_RIGHT);
-		}		
+		// horizontal aligned		
+		else if((srcy2>=tgty1 && srcy2 <= tgty2)|| (srcy1>=tgty1 && srcy1<= tgty2))
+		{
+			if(segment.getX1()> segment.getX2()) impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.RIGHT_LEFT,ReadingDirection.LEFT_RIGHT);				 
+			else impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.LEFT_RIGHT,ReadingDirection.RIGHT_LEFT);
+		}
+		// first at east and second at west
+		else if(segment.getX1() > segment.getX2()) 
+		{			
+			if(segment.getY1() > segment.getY2()) {
+				if((srcx1 - tgtx2)>(srcy1-tgty2)){
+					impliesDirection(srcType, class1, class2, rel1, rel2, ReadingDirection.RIGHT_LEFT, ReadingDirection.LEFT_RIGHT);
+				}else{
+					impliesDirection(srcType, class1, class2, rel1, rel2, ReadingDirection.BOTTOM_UP, ReadingDirection.UP_BOTTOM);
+				}						
+			} else {
+				if((srcx1 - tgtx2)>(srcy2-tgty1)){
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.RIGHT_LEFT,ReadingDirection.LEFT_RIGHT);	
+				}else{
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.UP_BOTTOM,ReadingDirection.BOTTOM_UP);
+				}
+			}
+		} 
+		// first at west and second at east
+		else if(segment.getX1() < segment.getX2())
+		{
+			if(segment.getY1() < segment.getY2()) {
+				if((srcx1 - tgtx2)>(srcy1-tgty2)){
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.LEFT_RIGHT,ReadingDirection.RIGHT_LEFT);
+				}else{
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.UP_BOTTOM,ReadingDirection.BOTTOM_UP);
+				}
+			} else {
+				if((tgtx1 - srcx2)>(srcy1-tgty2)){
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.LEFT_RIGHT,ReadingDirection.RIGHT_LEFT);
+				}else{
+					impliesDirection(srcType, class1, class2, rel1, rel2, ReadingDirection.BOTTOM_UP, ReadingDirection.UP_BOTTOM);
+				}
+			}
+		}
+		// first at south and second at north
+		else if(segment.getY1() > segment.getY2()) 
+		{
+			if(segment.getX1() > segment.getX2()) {
+				if((srcx1 - tgtx2)>(srcy1-tgty2)){
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.RIGHT_LEFT,ReadingDirection.LEFT_RIGHT);
+				}else{
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.BOTTOM_UP,ReadingDirection.UP_BOTTOM);
+				}
+			} else {
+				if((tgtx1 - srcx2)>(srcy1-tgty2)){
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.LEFT_RIGHT,ReadingDirection.RIGHT_LEFT);
+				}else{
+					impliesDirection(srcType, class1, class2, rel1, rel2, ReadingDirection.BOTTOM_UP, ReadingDirection.UP_BOTTOM);
+				}
+			}
+		}
+		// first at north and second at south
+		else if (segment.getY1() < segment.getY2()) 
+		{
+			if(segment.getX1() < segment.getX2()) {
+				if((tgtx1 - srcx2)>(tgty1-srcy2)){
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.LEFT_RIGHT,ReadingDirection.RIGHT_LEFT);
+				}else{
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.UP_BOTTOM,ReadingDirection.BOTTOM_UP);
+				}
+			} else {
+				if((srcx1 - tgtx2)>(tgty1-srcy2)){
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.RIGHT_LEFT,ReadingDirection.LEFT_RIGHT);					
+				}else{
+					impliesDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.UP_BOTTOM,ReadingDirection.BOTTOM_UP);
+				}
+			}
+		} 
+		//===================
 		ReadingDirection readingDirection = ((AssociationElement) association).getNameReadingDirection();		
 		if (readingDirection == ReadingDirection.LEFT_RIGHT) {
 			drawTriangleLeftRight(drawingContext);
