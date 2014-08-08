@@ -57,7 +57,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.SetVisibilityCommand;
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetVisibilityCommand.Visibility;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDesign;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.util.ApplicationResources;
@@ -175,7 +175,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			public void actionPerformed(ActionEvent arg0) {
 				if (con instanceof AssociationElement) {	
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-					((AssociationElement)con).setNameReadingDirection(ReadingDirection.RIGHT_LEFT);
+					((AssociationElement)con).setReadingDesign(ReadingDesign.SOURCE);
 					list.add(con);
 					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}
@@ -189,7 +189,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			public void actionPerformed(ActionEvent arg0) {
 				if (con instanceof AssociationElement) {	
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();
-					((AssociationElement)con).setNameReadingDirection(ReadingDirection.LEFT_RIGHT);
+					((AssociationElement)con).setReadingDesign(ReadingDesign.DESTINATION);
 					list.add(con);
 					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}							
@@ -204,7 +204,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 			public void actionPerformed(ActionEvent arg0) {				
 				if (con instanceof AssociationElement) {	
 					ArrayList<DiagramElement> list = new ArrayList<DiagramElement>();					
-					((AssociationElement)con).setNameReadingDirection(ReadingDirection.UNDEFINED);
+					((AssociationElement)con).setReadingDesign(ReadingDesign.UNDEFINED);
 					list.add(con);
 					editor.notifyChange(list, ChangeType.ELEMENTS_MODIFIED, NotificationType.DO);
 				}														
