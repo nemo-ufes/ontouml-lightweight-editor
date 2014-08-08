@@ -145,7 +145,7 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.DiagramNotification.Notificatio
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDesign;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.DiagramElementFactoryImpl;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
@@ -1817,7 +1817,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		boolean showOntoUMLStereotype = false;
 		boolean showMultiplicities = false;
 		boolean showRoles = false;
-		ReadingDirection direction = ReadingDirection.UNDEFINED;		
+		ReadingDesign direction = ReadingDesign.UNDEFINED;		
 		if(element instanceof Association)
 		{
 			AssociationElement ae = (AssociationElement) ModelHelper.getDiagramElementByEditor(element, d);
@@ -1828,7 +1828,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				showOntoUMLStereotype = ae.showOntoUmlStereotype();
 				showRoles = ae.showRoles();
 				showMultiplicities = ae.showMultiplicities();				
-				direction = ae.getNameReadingDirection();
+				direction = ae.getReadingDesign();
 			}
 			deleteFromDiagram(element, d);
 			moveAssociationToDiagram((Association) element, d, isRectilinear, showName, showOntoUMLStereotype, showMultiplicities, showRoles, direction);
@@ -1910,7 +1910,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	
 	/** Move association to a diagram. It creates a diagram element for that refonto instance adding it to the application map. */
-	public void moveAssociationToDiagram(Association association, DiagramEditor d, boolean isRectilinear, boolean showName, boolean showOntoUMLStereotype, boolean showMultiplicities, boolean showRoles, ReadingDirection direction)
+	public void moveAssociationToDiagram(Association association, DiagramEditor d, boolean isRectilinear, boolean showName, boolean showOntoUMLStereotype, boolean showMultiplicities, boolean showRoles, ReadingDesign direction)
 	{		
 		Type src = ((Association)association).getMemberEnd().get(0).getType();
 		Type tgt = ((Association)association).getMemberEnd().get(1).getType();				
@@ -1923,7 +1923,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			conn.setShowName(showName);
 			conn.setShowOntoUmlStereotype(showOntoUMLStereotype);
 			conn.setShowRoles(showRoles);
-			conn.setNameReadingDirection(direction);
+			conn.setReadingDesign(direction);
 		}
 	}
 	
@@ -2073,7 +2073,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			}			
 			if(element instanceof Association)
 			{
-				moveAssociationToDiagram((Association) element, d, false, true, true, true, false, ReadingDirection.UNDEFINED);
+				moveAssociationToDiagram((Association) element, d, false, true, true, true, false, ReadingDesign.UNDEFINED);
 			}
 			if(element instanceof Generalization)
 			{

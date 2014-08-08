@@ -42,7 +42,7 @@ import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.draw.NullSelection;
 import br.ufes.inf.nemo.oled.draw.Selection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
-import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDesign;
 
 /**
  * This class implements a name nameLabel for an association. Associations have
@@ -64,7 +64,8 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	private Line2D segment; // association segment in which this label is at
 	private boolean editable;
 	private transient DrawingContext context;
-	
+	public enum ReadingDirection { UNDEFINED, LEFT_RIGHT, RIGHT_LEFT, BOTTOM_UP, UP_BOTTOM };
+	private ReadingDirection readingDirection = ReadingDirection.UNDEFINED;
 	
 	public void setSegment(Line2D segment)
 	{
@@ -369,7 +370,10 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 				nameLabel.setOrigin(xpos+((labelWidth-nameWidth)/2), ypos);
 				
 				nameLabel.draw(drawingContext);
-				drawDirection(drawingContext);
+				
+				if(((AssociationElement) association).getReadingDesign() != ReadingDesign.UNDEFINED) {
+					drawDirection(drawingContext);
+				}
 			}
 			
 			if(assocElement.getRelationship() instanceof Meronymic && assocElement.showMetaProperties()){
@@ -413,10 +417,22 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 
 	private void impliesDirection(Type srcType, Type class1, Type class2, Type rel1, Type rel2, ReadingDirection direction, ReadingDirection inverseDirection)
 	{
-		if(class1!=null && srcType.equals(class1)) ((AssociationElement) association).setNameReadingDirection(direction);
-		if(rel1!=null && srcType.equals(rel1)) ((AssociationElement) association).setNameReadingDirection(direction);
-		if(class2!=null && srcType.equals(class2)) ((AssociationElement) association).setNameReadingDirection(inverseDirection);
-		if(rel2!=null && srcType.equals(rel2)) ((AssociationElement) association).setNameReadingDirection(inverseDirection);
+		if(class1!=null && srcType.equals(class1)) { 
+			readingDirection = direction;
+			((AssociationElement) association).setReadingDesign(ReadingDesign.DESTINATION);
+		}
+		if(rel1!=null && srcType.equals(rel1)) {
+			readingDirection = direction;
+			((AssociationElement) association).setReadingDesign(ReadingDesign.DESTINATION);
+		}
+		if(class2!=null && srcType.equals(class2)) {
+			readingDirection = direction;
+			((AssociationElement) association).setReadingDesign(ReadingDesign.SOURCE);
+		}
+		if(rel2!=null && srcType.equals(rel2)) {			
+			readingDirection = direction;
+			((AssociationElement) association).setReadingDesign(ReadingDesign.SOURCE);
+		}
 	}
 	
 	/**
@@ -525,8 +541,7 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 				}
 			}
 		} 
-		//===================
-		ReadingDirection readingDirection = ((AssociationElement) association).getNameReadingDirection();		
+		//===================				
 		if (readingDirection == ReadingDirection.LEFT_RIGHT) {
 			drawTriangleLeftRight(drawingContext);
 		} else if (readingDirection == ReadingDirection.RIGHT_LEFT) {
@@ -629,5 +644,4 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	public FontType getFontType() {
 		return getFontType();
 	}
-
 }

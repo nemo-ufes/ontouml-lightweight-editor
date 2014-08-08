@@ -64,10 +64,10 @@ public final class AssociationElement extends BaseConnection {
 	/**
 	 * The direction to read the name.
 	 */
-	public enum ReadingDirection { UNDEFINED, LEFT_RIGHT, RIGHT_LEFT, BOTTOM_UP, UP_BOTTOM };
+	public enum ReadingDesign { SOURCE, DESTINATION, UNDEFINED }
+	private ReadingDesign readingDesign = ReadingDesign.UNDEFINED;
 	
-	private RelationType associationType = RelationType.ASSOCIATION;
-	private ReadingDirection readingDirection = ReadingDirection.UNDEFINED;
+	private RelationType associationType = RelationType.ASSOCIATION;	
 	private Label multiplicity1Label;
 	private Label multiplicity2Label;
 	private Label role1Label;
@@ -1024,17 +1024,11 @@ public final class AssociationElement extends BaseConnection {
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public ReadingDirection getNameReadingDirection() {		
-		return readingDirection; 
+	public void setReadingDesign(ReadingDesign direction) {
+		this.readingDesign = direction;		
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void setNameReadingDirection(ReadingDirection dir) {
-		readingDirection = dir;
+	public ReadingDesign getReadingDesign() {
+		return readingDesign;
 	}	
 }

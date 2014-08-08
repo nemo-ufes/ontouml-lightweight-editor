@@ -49,7 +49,7 @@ import RefOntoUML.Meronymic;
 import RefOntoUML.subQuantityOf;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDirection;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement.ReadingDesign;
 
 /**
  * @author John Guerson
@@ -397,9 +397,9 @@ public class AssociationEditionPanel extends JPanel {
 			cbxShareable.setEnabled(false);
 		}
 		if (assocElement!=null) {
-			ReadingDirection direction = assocElement.getNameReadingDirection();
-			if (direction.equals(ReadingDirection.LEFT_RIGHT)) btnToDestination.setSelected(true);
-			else if (direction.equals(ReadingDirection.RIGHT_LEFT)) btnToSource.setSelected(true);
+			ReadingDesign direction = assocElement.getReadingDesign();
+			if (direction.equals(ReadingDesign.DESTINATION)) btnToDestination.setSelected(true);
+			else if (direction.equals(ReadingDesign.SOURCE)) btnToSource.setSelected(true);
 			else btnUndefined.setSelected(true);
 			
 			btnName.setSelected(assocElement.showName());
@@ -428,9 +428,9 @@ public class AssociationEditionPanel extends JPanel {
 			assocElement.setShowOntoUmlStereotype(btnStereotype.isSelected());
 			assocElement.setShowName(btnName.isSelected());
 			
-			if (btnToDestination.isSelected()) assocElement.setNameReadingDirection(ReadingDirection.LEFT_RIGHT);
-			else if (btnToSource.isSelected()) assocElement.setNameReadingDirection(ReadingDirection.RIGHT_LEFT);
-			else assocElement.setNameReadingDirection(ReadingDirection.UNDEFINED);
+			if (btnToDestination.isSelected()) assocElement.setReadingDesign(ReadingDesign.DESTINATION);
+			else if (btnToSource.isSelected()) assocElement.setReadingDesign(ReadingDesign.SOURCE);
+			else assocElement.setReadingDesign(ReadingDesign.UNDEFINED);
 		}
 		
 		diagramManager.updateOLEDFromModification(element,false);
