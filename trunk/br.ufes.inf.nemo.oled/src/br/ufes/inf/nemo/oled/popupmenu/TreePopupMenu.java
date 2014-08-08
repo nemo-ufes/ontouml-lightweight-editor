@@ -221,16 +221,45 @@ public class TreePopupMenu extends JPopupMenu {
 	{
 		OntoUMLElement ontoElement = ((OntoUMLElement)selectedNode.getUserObject());
 		final Association association = (Association)ontoElement.getElement();
-		JMenu invertMenu = new JMenu("Invert");    			
+		
+		JMenu invertMenu = new JMenu("Invert");
+		add(invertMenu);
+			
 		JMenuItem invertEndPointsItem = new JMenuItem("End Points");
-		invertMenu.add(invertEndPointsItem);
-		add(invertMenu);    			
+		invertMenu.add(invertEndPointsItem);    			
 		invertEndPointsItem.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		frame.getDiagramManager().invertEndPoints(association);
         	}
-        }); 
+        });
+		
+		JMenuItem invertEndNamesItem = new JMenuItem("End Names");
+		invertMenu.add(invertEndNamesItem);    			
+		invertEndNamesItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		frame.getDiagramManager().invertEndNames(association);
+        	}
+        });
+		
+		JMenuItem invertEndMultiplicitiesItem = new JMenuItem("End Multiplicities");
+		invertMenu.add(invertEndMultiplicitiesItem);    			
+		invertEndMultiplicitiesItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		frame.getDiagramManager().invertEndMultiplicities(association);
+        	}
+        });
+		
+		JMenuItem invertEndTypesItem = new JMenuItem("End Types");
+		invertMenu.add(invertEndTypesItem);    			
+		invertEndTypesItem.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		frame.getDiagramManager().invertEndTypes(association);
+        	}
+        });		
 	}
 	
 	public void createDeleteItem()
