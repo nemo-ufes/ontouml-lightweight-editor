@@ -1751,6 +1751,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			se = new StatisticalElement("ComponentOfs",diagnostic.getComponentOfCount(),diagnostic.getComponentOfPercentageType(),diagnostic.getComponentOfPercentageElements());
 			result.add(se);
 		}
+		if(!frame.isShowBottomView()) { getMainMenu().getBottomViewItem().setSelected(true); frame.showBottomView(); }
 		frame.selectStatistic();
 		return result;
 	}
@@ -2120,13 +2121,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		Property source = association.getMemberEnd().get(0);
    		Property target = association.getMemberEnd().get(1);
    		association.getMemberEnd().clear();	
+   		association.getOwnedEnd().clear();
+   		association.getNavigableOwnedEnd().clear();
    		association.getMemberEnd().add(target);
-   		association.getMemberEnd().add(source);   		
+   		association.getMemberEnd().add(source);   	
+   		association.getOwnedEnd().add(target);
+   		association.getOwnedEnd().add(source);
+   		association.getNavigableOwnedEnd().add(target);
+   		association.getNavigableOwnedEnd().add(source);
    		ProjectTree tree = frame.getProjectBrowser().getTree();
    		tree.checkModelElement(source);
-   		tree.removeCurrentNode();
+   		tree.removeCurrentNode();   		
    		tree.checkModelElement(association);
-   		tree.addObject(source);   		
+   		tree.addObject(source);  
+   		tree.updateUI();
    		frame.getDiagramManager().updateOLEDFromModification(association, true);
 	}
 	

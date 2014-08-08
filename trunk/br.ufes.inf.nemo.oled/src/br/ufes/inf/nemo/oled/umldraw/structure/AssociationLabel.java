@@ -23,16 +23,19 @@ package br.ufes.inf.nemo.oled.umldraw.structure;
 
 import java.awt.Color;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 import RefOntoUML.Meronymic;
 import br.ufes.inf.nemo.oled.draw.AbstractCompositeNode;
+import br.ufes.inf.nemo.oled.draw.Connection;
+import br.ufes.inf.nemo.oled.draw.DiagramOperations;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
-import br.ufes.inf.nemo.oled.draw.DiagramOperations;
 import br.ufes.inf.nemo.oled.draw.GeometryUtil;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
+import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.draw.NullSelection;
 import br.ufes.inf.nemo.oled.draw.Selection;
 import br.ufes.inf.nemo.oled.draw.SimpleLabel;
@@ -51,12 +54,20 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	private Label typeLabel;
 	private Label nameLabel;
 	private Label metapropertyLabel;
+	private int assocLabelWidth; //the sum of the width of type/name/meta-property labels
 	private double xpos;
 	private double ypos;
 	private BaseConnection association;
+	private Line2D segment; // association segment in which this label is at
 	private boolean editable;
 	private transient DrawingContext context;
 	
+	
+	public void setSegment(Line2D segment)
+	{
+		this.segment = segment;
+	}
+		
 	/**
 	 * Constructor.
 	 */
@@ -236,20 +247,61 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	
 	public int getLabelWidth()
 	{
-		int labelWidth=0;
+		assocLabelWidth = 0;
 		if(typeLabel != null){
 			int typeWidth = context.getFontMetrics(FontType.DEFAULT).stringWidth(getTypeLabelText());
-			if(typeWidth> labelWidth) labelWidth = typeWidth;
+			if(typeWidth> assocLabelWidth) assocLabelWidth = typeWidth;
 		}	
 		if(nameLabel != null){
 			int nameWidth = context.getFontMetrics(FontType.DEFAULT).stringWidth(getNameLabelText());
-			if(nameWidth> labelWidth) labelWidth = nameWidth;
+			if(nameWidth> assocLabelWidth) assocLabelWidth = nameWidth;
 		}
 		if(metapropertyLabel != null){
 			int metaWidth = context.getFontMetrics(FontType.DEFAULT).stringWidth(getMetaPropertyLabelText());
-			if(metaWidth> labelWidth) labelWidth = metaWidth;
+			if(metaWidth> assocLabelWidth) assocLabelWidth = metaWidth;
 		}
-		return labelWidth;
+		return assocLabelWidth;
+	}
+	
+	public double getMaximumY2()
+	{
+		double labelY2=0;
+		if(typeLabel != null){	
+			if (association.showOntoUmlStereotype()) {			
+				if(typeLabel.getAbsoluteY2()> labelY2) labelY2 = typeLabel.getAbsoluteY2();
+			}
+		}	
+		if(nameLabel != null){
+			if (((AssociationElement)association).showName() && getLabelText() != null) {			
+				if(nameLabel.getAbsoluteY2()> labelY2) labelY2 = nameLabel.getAbsoluteY2();
+			}
+		}
+		if(metapropertyLabel != null){
+			if (association.getRelationship() instanceof Meronymic && ((AssociationElement)association).showMetaProperties()){
+				if(metapropertyLabel.getAbsoluteY2()> labelY2) labelY2 = metapropertyLabel.getAbsoluteY2();
+			}
+		}
+		return labelY2;
+	}
+	public double getMinimumY1()
+	{
+		double labelY1=1000;
+		if(typeLabel != null){	
+			if (association.showOntoUmlStereotype()) {
+				if(typeLabel.getAbsoluteY1()< labelY1) labelY1 = typeLabel.getAbsoluteY1();
+			}
+		}	
+		if(nameLabel != null){
+			if (((AssociationElement)association).showName() && getLabelText() != null) {
+				if(nameLabel.getAbsoluteY1()<labelY1) labelY1 = nameLabel.getAbsoluteY1();
+			}
+		}
+		if(metapropertyLabel != null){
+			if (association.getRelationship() instanceof Meronymic && ((AssociationElement)association).showMetaProperties()){
+				if(metapropertyLabel.getAbsoluteY1()< labelY1) labelY1 = metapropertyLabel.getAbsoluteY1();
+			}
+		}
+		return labelY1;
 	}
 	
 	@Override
@@ -362,10 +414,27 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 	 * @param drawingContext
 	 *            the drawing context
 	 */
-	private void drawDirection(DrawingContext drawingContext) {
-		ReadingDirection readingDirection = ((AssociationElement) association)
-				.getNameReadingDirection();
-
+	private void drawDirection(DrawingContext drawingContext) 
+	{
+		Node node1 = ((AssociationElement) association).getNode1();
+		Node node2 = ((AssociationElement) association).getNode2();
+		Connection connection1 = ((AssociationElement) association).getConnection1();
+		Connection connection2 = ((AssociationElement) association).getConnection2();
+		double y1 = 0; double y2 = 0;
+		double x1 = 0; double x2 = 0;
+		if(node1 !=null) { y1 = node1.getAbsCenterY(); x1 = node1.getAbsCenterX(); }
+		if(node2 !=null) { y2 = node2.getAbsCenterY(); x2 = node2.getAbsCenterX(); }
+		if(connection1 !=null) { y1 = connection1.getAbsCenterY(); x1 = connection1.getAbsCenterX(); }
+		if(connection2 !=null) { y2 = connection2.getAbsCenterY(); x2 = node1.getAbsCenterX(); }		
+		if(segment.getX1() == segment.getX2()) {
+			if(y1 > y2) ((AssociationElement) association).setNameReadingDirection(ReadingDirection.UP_BOTTOM);
+			else ((AssociationElement) association).setNameReadingDirection(ReadingDirection.BOTTOM_UP);
+		}
+		if(segment.getY1() == segment.getY2()) {
+			if(x1 > x2) ((AssociationElement) association).setNameReadingDirection(ReadingDirection.RIGHT_LEFT);
+			else ((AssociationElement) association).setNameReadingDirection(ReadingDirection.LEFT_RIGHT);
+		}		
+		ReadingDirection readingDirection = ((AssociationElement) association).getNameReadingDirection();		
 		if (readingDirection == ReadingDirection.LEFT_RIGHT) {
 			drawTriangleLeftRight(drawingContext);
 		} else if (readingDirection == ReadingDirection.RIGHT_LEFT) {
@@ -393,29 +462,28 @@ public class AssociationLabel extends AbstractCompositeNode implements Label,
 		trianglePath.closePath();
 		drawingContext.draw(trianglePath, Color.BLACK);
 	}
-
-	private void drawTriangleBottomUp(DrawingContext drawingContext) {
-		GeneralPath trianglePath = new GeneralPath();
-		double height = nameLabel.getSize().getHeight() - 6;
-		double x = nameLabel.getAbsoluteX1() - 3, y = nameLabel.getAbsoluteY1() + 3;
-		trianglePath.moveTo(x, y);
-		trianglePath.lineTo(x - 5, y + height / 2);
-		trianglePath.lineTo(x, y + height);
-		trianglePath.closePath();
-		drawingContext.draw(trianglePath, Color.BLACK);
-	}
 	
 	private void drawTriangleUpBottom(DrawingContext drawingContext) {
 		GeneralPath trianglePath = new GeneralPath();
 		double height = nameLabel.getSize().getHeight() - 6;
-		double x = nameLabel.getAbsoluteX1() - 3, y = nameLabel.getAbsoluteY1() + 3;
+		double x = nameLabel.getAbsCenterX(), y = getMaximumY2()+3;
 		trianglePath.moveTo(x, y);
-		trianglePath.lineTo(x - 5, y + height / 2);
-		trianglePath.lineTo(x, y + height);
+		trianglePath.lineTo(x + height / 2, y + 5);
+		trianglePath.lineTo(x + height, y);
 		trianglePath.closePath();
 		drawingContext.draw(trianglePath, Color.BLACK);
 	}
 	
+	private void drawTriangleBottomUp(DrawingContext drawingContext) {
+		GeneralPath trianglePath = new GeneralPath();
+		double height = nameLabel.getSize().getHeight() - 6;
+		double x = nameLabel.getAbsCenterX() , y = getMinimumY1() - 3;
+		trianglePath.moveTo(x, y);
+		trianglePath.lineTo(x - height / 2, y-5);
+		trianglePath.lineTo(x - height, y);
+		trianglePath.closePath();
+		drawingContext.draw(trianglePath, Color.BLACK);
+	}
 	/**
 	 * Draws the triangle facing to the left.
 	 * 

@@ -743,7 +743,7 @@ public final class AssociationElement extends BaseConnection {
 		if(redefine1Label!=null && showRedefining)redefine1Label.draw(drawingContext);
 		if(redefine2Label!=null && showRedefining)redefine2Label.draw(drawingContext);
 		
-		positionNameLabel(drawingContext);
+		positionNameLabel(drawingContext);		
 		nameLabel.draw(drawingContext);
 	}
 
@@ -1019,14 +1019,17 @@ public final class AssociationElement extends BaseConnection {
 			Line2D middleSegment = getMiddleSegment();
 			double x = (double) (middleSegment.getX2() + middleSegment.getX1() - labelWidth) / 2;
 			double y = (double) (middleSegment.getY2() + middleSegment.getY1())/2;
-			nameLabel.setAbsolutePos(x, y);
+			nameLabel.setAbsolutePos(x, y);			
+			nameLabel.setSegment(middleSegment);
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public ReadingDirection getNameReadingDirection() { return readingDirection; }
+	public ReadingDirection getNameReadingDirection() {		
+		return readingDirection; 
+	}
 
 	/**
 	 * {@inheritDoc}

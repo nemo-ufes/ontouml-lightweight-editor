@@ -37,7 +37,7 @@ public class SimpleLabel extends AbstractNode implements Label {
 	private FontType fontType = FontType.DEFAULT;
 	private boolean valid;
 	private boolean editable;
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
