@@ -124,6 +124,7 @@ import br.ufes.inf.nemo.oled.ui.commands.EcoreExporter;
 import br.ufes.inf.nemo.oled.ui.commands.PngExporter;
 import br.ufes.inf.nemo.oled.ui.commands.ProjectReader;
 import br.ufes.inf.nemo.oled.ui.commands.ProjectWriter;
+import br.ufes.inf.nemo.oled.ui.commands.UMLExporter;
 import br.ufes.inf.nemo.oled.ui.diagram.ConstraintEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorCommandDispatcher;
@@ -186,6 +187,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public String lastImportEAPath = new String();
 	public String lastImportEcorePath = new String();
 	public String lastExportEcorePath = new String();
+	public String lastExportUMLPath = new String();
 
 	/** Get Frame */
 	public AppFrame getFrame() { return frame; }
@@ -1219,6 +1221,31 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}	
 
+	/** Export the current model as an UML2 instance file (EMF-implementation of UML)
+	 *  This exporting loses all the UML stereotypes that distinguishes OntoUML from UML*/
+	public void exportUML() 
+	{
+		if(getCurrentEditor() != null) {
+			JFileChooser fileChooser = new JFileChooser(lastExportUMLPath);
+			fileChooser.setDialogTitle("Export as UML");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("UML2 (*.uml)", "uml");
+			fileChooser.addChoosableFileFilter(filter);
+			fileChooser.setFileFilter(filter);
+			fileChooser.setAcceptAllFileFilterUsed(false);
+			if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+				if (fileChooser.getFileFilter() == filter) {
+					try {
+						UMLExporter exporter = new UMLExporter();
+						exporter.writeUML(this, fileChooser.getSelectedFile());
+						lastExportUMLPath = fileChooser.getSelectedFile().getAbsolutePath();
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(this, ex.getMessage(),"Export as UML", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		}
+	}	
+	
 	/** Exports graphics as PNG. */
 	public void exportGfx() 
 	{

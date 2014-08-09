@@ -90,6 +90,7 @@ public final class IconLoader {
 		EA,
 		IMPORT, 
 		EXPORT, 
+		UML,
 		PICTURE,
 		BACKGROUND_WELCOME,
 		HEAD_WELCOME,
@@ -165,6 +166,7 @@ public final class IconLoader {
 		urlMap.put(IconType.PALETTE_CLOSED, "resources/icons/x16/palette_closed.png");
 		
 		urlMap.put(IconType.EA, "resources/icons/x16/ea.jpg");		
+		urlMap.put(IconType.UML, "resources/icons/x16/uml.jpg");
 		urlMap.put(IconType.RECTILINEAR, "resources/icons/x16/rectilinear.png");
 		urlMap.put(IconType.STRAIGHT, "resources/icons/x16/straight.png");
 				
