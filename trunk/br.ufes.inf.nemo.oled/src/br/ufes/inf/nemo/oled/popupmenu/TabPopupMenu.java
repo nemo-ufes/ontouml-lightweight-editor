@@ -29,7 +29,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 
-import org.eclipse.emf.edit.provider.IDisposable;
+import br.ufes.inf.nemo.oled.DiagramManager;
 
 /**
  * @author John Guerson
@@ -37,7 +37,9 @@ import org.eclipse.emf.edit.provider.IDisposable;
 public class TabPopupMenu extends JPopupMenu {
 
 	private static final long serialVersionUID = -7280793052746143720L;
+	@SuppressWarnings("unused")
 	private JTabbedPane pane;
+	@SuppressWarnings("unused")
 	private Component comp;
 	
 	public TabPopupMenu(final JTabbedPane pane, final Component comp)
@@ -56,58 +58,20 @@ public class TabPopupMenu extends JPopupMenu {
 		close.addActionListener(new ActionListener() {				
 			@Override
 			public void actionPerformed(ActionEvent e) {				
-				closeTab(pane.indexOfComponent(comp));
+				DiagramManager.closeTab(pane.indexOfComponent(comp),pane);
 			}
 		});
 		closeOthers.addActionListener(new ActionListener() {				
 			@Override
 			public void actionPerformed(ActionEvent e) {				
-				closeOthers();
+				DiagramManager.closeOthers(pane,comp);
 			}
 		});
 		closeAll.addActionListener(new ActionListener() {				
 			@Override
 			public void actionPerformed(ActionEvent e) {				
-				closeAll();
+				DiagramManager.closeAll(pane);
 			}
 		});
-	}
-	
-	public void closeAll()
-	{
-		 int tabCount = pane.getTabCount();
-         
-         for (int i = 1; i < tabCount; i++) {
-             closeTab(1);
-         }
-	}
-	
-	public void closeOthers()
-	{	
-		int selectedTabIndex = pane.indexOfComponent(comp);
-		
-		 // First remove higher indexes 
-        int tabCount = pane.getTabCount();
-         
-        if (selectedTabIndex < tabCount - 1) {
-            for (int i = selectedTabIndex + 1; i < tabCount; i++) {
-                closeTab(selectedTabIndex + 1);
-            }
-        }
-         
-        if (selectedTabIndex > 0) {
-            for (int i = 1; i < selectedTabIndex; i++) {
-                closeTab(1);
-            }
-        }
-	}
-	
-	public void closeTab(int i)
-	{		
-		if (i != -1) {
-			IDisposable disposable = (IDisposable) pane.getComponentAt(i);
-			if(disposable != null) disposable.dispose();			
-			pane.remove(i);
-		}
 	}
 }

@@ -599,6 +599,9 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 		if (con instanceof AssociationElement){
 			visibilityMenu.setEnabled(true);
 			readingDirectionMenu.setEnabled(true);
+			if(((AssociationElement) con).getReadingDesign()==ReadingDesign.DESTINATION) readToDestinationItem.setSelected(true);
+			else if(((AssociationElement) con).getReadingDesign()==ReadingDesign.SOURCE) readToSourceItem.setSelected(true);
+			else readNoIndicatorItem.setSelected(true);
 			showMultiplicitiesItem.setEnabled(true);
 			showMultiplicitiesItem.setSelected(((AssociationElement)con).showMultiplicities());
 			showRolesItem.setEnabled(true);

@@ -398,9 +398,13 @@ public class AssociationEditionPanel extends JPanel {
 		}
 		if (assocElement!=null) {
 			ReadingDesign direction = assocElement.getReadingDesign();
-			if (direction.equals(ReadingDesign.DESTINATION)) btnToDestination.setSelected(true);
-			else if (direction.equals(ReadingDesign.SOURCE)) btnToSource.setSelected(true);
-			else btnUndefined.setSelected(true);
+			if(direction!=null){
+				if (direction.equals(ReadingDesign.DESTINATION)) btnToDestination.setSelected(true);
+				else if (direction.equals(ReadingDesign.SOURCE)) btnToSource.setSelected(true);
+				else btnUndefined.setSelected(true);
+			}else{
+				btnUndefined.setSelected(true);			
+			}
 			
 			btnName.setSelected(assocElement.showName());
 			btnMultiplicity.setSelected(assocElement.showMultiplicities());
