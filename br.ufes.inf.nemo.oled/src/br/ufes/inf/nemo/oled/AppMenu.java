@@ -175,10 +175,11 @@ public class AppMenu implements ActionListener {
 		createMenuItem(importMenu, "importecore");
 		
 		JMenu exportMenu = createMenu("Export");
-		exportMenu.setText("Export to");
+		exportMenu.setText("Export as");
 		fileMenu.add(exportMenu);
 		
 		createMenuItem(exportMenu, "exportecore");
+		createMenuItem(exportMenu, "exportuml");
 		
 		createMenuItem(fileMenu,"close");
 		

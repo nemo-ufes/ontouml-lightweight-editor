@@ -119,49 +119,69 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private JMenuItem specializationItem;
 	
 	public SingleConnectionPopupMenu()
-	{		
-		JMenuItem propertyItem = createMenuItem(this, "editproperties");
-		propertyItem.setAccelerator(KeyStroke.getKeyStroke("F9"));		
-		
-		addSeparator();
-		
-		createFindInProjectMenu();
-		
-		addSeparator();
-				
+	{   
+		createPropertyMenu();		
+		addSeparator();		
+		createFindInProjectMenu();		
+		addSeparator();		
+		createDeriveByMenu();		
+		addSeparator();		
 		createEndPointMenu();
 		createSubsettingMenu();
 		createRedefiningMenu();
-		
+		addSeparator();
+		createResetPointsMenu();
+		createLineStyleMenu();	
+		createChangeMenu();
+		createInvertMenu();		
+		createMultiplicityMenu();
+		createMetaPropertyMenu();
+		createVisibilityMenu();		
+		createReadingDirectionMenu();		
+		addSeparator();		
+		createMenuItem(this, "exclude");		
+		createMenuItem(this, "delete");
+	}
+	
+	public JMenu createDeriveByMenu()
+	{
 		JMenu deriveMenu = new JMenu("Derive by");
 		specializationItem = createMenuItem(deriveMenu, "derivedspecialization");		
 		add(deriveMenu);
-		
-		createMenuItem(this, "resetpoints");
+		return deriveMenu;
+	}
+	
+	public JMenuItem createPropertyMenu()
+	{
+		JMenuItem propertyItem = createMenuItem(this, "editproperties");
+		propertyItem.setAccelerator(KeyStroke.getKeyStroke("F9"));
+		return propertyItem;
+	}
+	
+	public JMenuItem createResetPointsMenu()
+	{
+		return createMenuItem(this, "resetpoints");		
+	}
+	
+	public JMenu createLineStyleMenu()
+	{		
 		lineStyleItem = new JMenu("Line Style");
 		add(lineStyleItem);
 		createMenuItem(lineStyleItem, "recttodirect");
 		rectMenuItem = createMenuItem(lineStyleItem, "directtorect");
 		treeStyleVerticalMenuItem = createMenuItem(lineStyleItem, "treestyle.vertical");
 		treeStyleHorizontalMenuItem = createMenuItem(lineStyleItem, "treestyle.horizontal");
-		
-		changeMenu = new RelationStereotypeChangeMenu();
-		add(changeMenu);
-		
-		createInvertMenu();		
-		createMultiplicityMenu();
-		createMetaPropertyMenu();
-		createVisibilityMenu();		
-		createReadingDirectionMenu();
-		
-		addSeparator();
-		
-		createMenuItem(this, "exclude");
-		
-		createMenuItem(this, "delete");
+		return lineStyleItem;
 	}
 	
-	public void createReadingDirectionMenu()
+	public JMenu createChangeMenu()
+	{
+		changeMenu = new RelationStereotypeChangeMenu();
+		add(changeMenu);
+		return changeMenu;
+	}
+	
+	public JMenu createReadingDirectionMenu()
 	{
 		readingDirectionMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.readingdirection.name"));
 		add(readingDirectionMenu);
@@ -210,9 +230,11 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 				}														
 			}
 		});		
+		
+		return readingDirectionMenu;
 	}
 	
-	public void createVisibilityMenu()
+	public JMenu createVisibilityMenu()
 	{
 		visibilityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.visibility.name"));
 		add(visibilityMenu);
@@ -298,9 +320,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 				}				
 			}
 		});
+		return visibilityMenu;
 	}
 	
-	public void createFindInProjectMenu()
+	public JMenuItem createFindInProjectMenu()
 	{
 		findInProjectItem = new JMenuItem("Find in Project Browser");
 		add(findInProjectItem);
@@ -317,9 +340,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 				}
 			}
 		});
+		return findInProjectItem;
 	}
 	
-	public void createSubsettingMenu()
+	public JMenuItem createSubsettingMenu()
 	{
 		subsettingItem = new JMenuItem("Subsets");
 		add(subsettingItem);
@@ -340,9 +364,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
         		}
         	}
         });
+		return subsettingItem;
 	}
 	
-	public void createRedefiningMenu()
+	public JMenuItem createRedefiningMenu()
 	{
 		redefinesItem = new JMenuItem("Redefines");
 		add(redefinesItem);
@@ -363,9 +388,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
         		}
         	}
         });
+		return redefinesItem;
 	}
 	
-	public void createInvertMenu()
+	public JMenu createInvertMenu()
 	{
 		invertMenu = new JMenu("Invert");
 		add(invertMenu);
@@ -405,10 +431,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
         		editor.getDiagramManager().invertEndTypes((Association)((AssociationElement)con).getRelationship());
         	}
         });
-		
+		return invertMenu;
 	}
 	
-	public void createMetaPropertyMenu()
+	public JMenu createMetaPropertyMenu()
 	{
 		metaPropertiesMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.metaproperties.name"));
 		add(metaPropertiesMenu);
@@ -479,9 +505,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 				}
 			}
 		});
+		return metaPropertiesMenu;
 	}
 	
-	public void createEndPointMenu()
+	public JMenuItem createEndPointMenu()
 	{	
 		endNameItem = new JMenuItem("End-Point Name");
 		add(endNameItem);
@@ -503,9 +530,10 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 				 }
 			}
 		});
+		return endNameItem;
 	}
 	
-	public void createMultiplicityMenu()
+	public JMenu createMultiplicityMenu()
 	{		
 		multiplicityMenu = new JMenu(ApplicationResources.getInstance().getString("submenu.multiplicity.name"));
 		add(multiplicityMenu);
@@ -590,6 +618,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 				 }
 			}
 		});
+		return multiplicityMenu;
 	}
 	
 	public void setConnection(Connection con, DiagramEditor editor)
