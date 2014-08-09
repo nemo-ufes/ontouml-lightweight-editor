@@ -200,6 +200,9 @@ public class AppMenu implements ActionListener {
 //		selectAllItem.setEnabled(false);
 		
 		createMenuItem(diagramMenu,"exportgfx");
+		
+		JMenuItem closediagramItem = createMenuItem(diagramMenu,"closediagram");
+		closediagramItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
 	}
 	
 	@SuppressWarnings("unused")

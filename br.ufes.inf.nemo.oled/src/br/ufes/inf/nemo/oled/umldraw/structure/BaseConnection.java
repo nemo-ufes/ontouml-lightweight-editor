@@ -400,6 +400,7 @@ public class BaseConnection implements UmlConnection, Adapter {
 	 */
 	public void setPoints(List<Point2D> thePoints) {
 		connection.setPoints(thePoints);
+		
 	}
 
 	/**

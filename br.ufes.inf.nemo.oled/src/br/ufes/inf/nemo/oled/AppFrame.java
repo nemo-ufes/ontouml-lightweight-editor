@@ -306,6 +306,8 @@ public class AppFrame extends JFrame implements AppCommandListener {
 					new MethodCall(DiagramManager.class.getMethod("newProject")));
 			selectorMap.put("NEW_DIAGRAM",
 					new MethodCall(DiagramManager.class.getMethod("newDiagram")));
+			selectorMap.put("CLOSE_DIAGRAM",
+					new MethodCall(DiagramManager.class.getMethod("closeDiagram")));
 			selectorMap.put("OPEN_PROJECT",
 					new MethodCall(DiagramManager.class.getMethod("openProject")));
 			selectorMap.put("CLOSE_PROJECT",
@@ -594,5 +596,5 @@ public class AppFrame extends JFrame implements AppCommandListener {
 	public void selectStatistic()
 	{
 		bottomPane.getInfoManager().selectStatistic();
-	}
+	}	
 }

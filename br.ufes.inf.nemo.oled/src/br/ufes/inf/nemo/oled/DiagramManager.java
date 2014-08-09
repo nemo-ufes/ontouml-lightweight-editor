@@ -732,6 +732,58 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 	}
 	
+	/** Close current diagram editor */
+	public void closeDiagram()
+	{
+		Editor editor = getCurrentDiagramEditor();
+		if(editor!=null){
+			if(editor.isSaveNeeded()){
+				int option = JOptionPane.showConfirmDialog(getFrame(), "Your diagram has been modified. Save changes?","Save Project", JOptionPane.YES_NO_CANCEL_OPTION);
+				if (option== JOptionPane.YES_OPTION) {saveProject(); }
+				else if (option==JOptionPane.CANCEL_OPTION) { return; }
+			}			
+			DiagramManager.closeTab(getTabIndex(getCurrentDiagramEditor().getDiagram()),this);
+		}
+	}
+
+	public static void closeAll(JTabbedPane pane)
+	{
+		 int tabCount = pane.getTabCount();
+         
+         for (int i = 1; i < tabCount; i++) {
+             closeTab(1, pane);
+         }
+	}
+	
+	public static void closeOthers(JTabbedPane pane,Component component)
+	{	
+		int selectedTabIndex = pane.indexOfComponent(component);
+		
+		 // First remove higher indexes 
+        int tabCount = pane.getTabCount();
+         
+        if (selectedTabIndex < tabCount - 1) {
+            for (int i = selectedTabIndex + 1; i < tabCount; i++) {
+                closeTab(selectedTabIndex + 1,pane);
+            }
+        }
+         
+        if (selectedTabIndex > 0) {
+            for (int i = 1; i < selectedTabIndex; i++) {
+                closeTab(1,pane);
+            }
+        }
+	}
+	
+	public static void closeTab(int i, JTabbedPane pane)
+	{		
+		if (i != -1) {
+			IDisposable disposable = (IDisposable) pane.getComponentAt(i);
+			if(disposable != null) disposable.dispose();			
+			pane.remove(i);
+		}
+	}
+
 	/** Delete Diagram */
 	public void deleteDiagram(StructureDiagram diagram)
 	{
