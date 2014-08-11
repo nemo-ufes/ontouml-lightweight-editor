@@ -28,11 +28,14 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 
 import RefOntoUML.Association;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
+import RefOntoUML.Relationship;
+import RefOntoUML.Type;
 import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.draw.CompositeNode;
 import br.ufes.inf.nemo.oled.draw.Connection;
@@ -69,6 +72,10 @@ public final class AssociationElement extends BaseConnection {
 	public enum ReadingDesign { SOURCE, DESTINATION, UNDEFINED }
 	private ReadingDesign readingDesign = ReadingDesign.UNDEFINED;
 		
+	/** The reading direction of the triangle */
+	public enum ReadingDirection { UNDEFINED, LEFT_RIGHT, RIGHT_LEFT, BOTTOM_UP, UP_BOTTOM };
+	private ReadingDirection readingDirection = ReadingDirection.UNDEFINED;
+	
 	private Label multiplicity1Label;
 	private Label multiplicity2Label;
 	private Label role1Label;
@@ -77,7 +84,9 @@ public final class AssociationElement extends BaseConnection {
 	private Label subset2Label;
 	private Label redefine1Label;
 	private Label redefine2Label;
-	private AssociationLabel nameLabel;
+	private Label localNameLabel;
+	private Label typeLabel;
+	private Label metapropertyLabel;
 	
 	private boolean showMultiplicities, showName, showRoles, showSubsetting, showRedefining, showMetaProperties;
 	
@@ -92,7 +101,9 @@ public final class AssociationElement extends BaseConnection {
 		setupRoleLabels();
 		setupSubsettingLabels();
 		setupRedefiningLabels();
-		setupNameLabel();		
+		setupLocalNameLabel();	
+		setupTypeLabel();		
+		setupMetaPropertyLabel();
 		showMultiplicities = true;
 		showMetaProperties=true;
 	}
@@ -108,7 +119,9 @@ public final class AssociationElement extends BaseConnection {
 		cloned.setupRoleLabels();
 		cloned.setupSubsettingLabels();
 		cloned.setupRedefiningLabels();
-		cloned.setupNameLabel();
+		cloned.setupLocalNameLabel();
+		cloned.setupTypeLabel();
+		cloned.setupMetaPropertyLabel();
 		cloned.showMultiplicities = showMultiplicities;
 		cloned.showName = showName;
 		cloned.showRoles = showRoles;
@@ -122,7 +135,9 @@ public final class AssociationElement extends BaseConnection {
 		cloned.subset2Label.setParent(subset2Label.getParent());
 		cloned.redefine1Label.setParent(redefine1Label.getParent());
 		cloned.redefine2Label.setParent(redefine2Label.getParent());				
-		cloned.nameLabel.setParent(nameLabel.getParent());		
+		cloned.localNameLabel.setParent(localNameLabel.getParent());
+		cloned.typeLabel.setParent(typeLabel.getParent());
+		cloned.metapropertyLabel.setParent(metapropertyLabel.getParent());
 		return cloned;
 	}
 	
@@ -139,16 +154,11 @@ public final class AssociationElement extends BaseConnection {
 		if(subset2Label!=null)subset2Label.setParent(parent);
 		if(redefine1Label!=null)redefine1Label.setParent(parent);
 		if(redefine2Label!=null)redefine2Label.setParent(parent);
-		nameLabel.setParent(parent);
+		if(localNameLabel!=null) localNameLabel.setParent(parent);
+		if(typeLabel!=null)typeLabel.setParent(parent);
+		if(metapropertyLabel!=null)metapropertyLabel.setParent(parent);
 	}
-
-	/** Sets the name label. */
-	public void setupNameLabel() 
-	{
-		nameLabel = new AssociationLabel();
-		nameLabel.setAssociation(this);
-	}
-
+	
 	/** Sets the multiplicity label sources. */
 	private void setupMultiplicityLabels() 
 	{
@@ -338,6 +348,82 @@ public final class AssociationElement extends BaseConnection {
 		
 	}
 	
+	/** Sets the name label. */
+	public void setupLocalNameLabel() 
+	{		
+		localNameLabel = new SimpleLabel();		
+		localNameLabel.setSource(new LabelSource() {
+			
+			private static final long serialVersionUID = -4124277770032234968L;
+
+			@Override
+			public String getLabelText() { return ((Association)getRelationship()).getName(); }
+			
+			@Override
+			public void setLabelText(String aText) {}
+		});
+	}
+	
+	/** Sets the stereotype label. */
+	public void setupTypeLabel() 
+	{		
+		typeLabel = new SimpleLabel();		
+		typeLabel.setSource(new LabelSource() {
+			
+			private static final long serialVersionUID = -6122649758554356164L;
+
+			@Override
+			public String getLabelText() { return getOntoUmlStereotype(); }
+			
+			@Override
+			public void setLabelText(String aText) { }
+		});			
+	}
+	
+	private String getMetaPropertyString(Meronymic m)
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		if (m.isIsEssential()) result.add("essential");
+		if (m.isIsInseparable()) result.add("inseparable");
+		if (m.isIsImmutablePart()) result.add("immutablePart");
+		if (m.isIsImmutableWhole()) result.add("immutableWhole");
+		String str =  new String();
+		if (result.size()>0){						
+			str +="{"; 
+			int i=0;
+			for(String s: result){
+				if(i==result.size()-1) str += s;
+				else str += s+",";
+				i++;
+			}
+			str += "}";
+		}						
+		return str;
+	}
+	
+	/** Sets up the meta properties label */
+	public void setupMetaPropertyLabel()
+	{
+		metapropertyLabel = new SimpleLabel();
+		metapropertyLabel.setSource(new LabelSource() {
+								
+			private static final long serialVersionUID = -2578940157526321262L;
+
+			@Override
+			public String getLabelText() {
+				if(getRelationship() instanceof Meronymic){
+					Meronymic m = (Meronymic)getRelationship();
+					return getMetaPropertyString(m);
+				}else{
+					return "";
+				}
+			}
+			
+			@Override
+			public void setLabelText(String aText) {}
+		});		
+	}
+		
 	/** Returns the value of the showName property.  */
 	public boolean showName() { return showName; }
 
@@ -375,8 +461,14 @@ public final class AssociationElement extends BaseConnection {
 	public void setShowRedefining(boolean flag){ showRedefining = flag; }
 	
 	/** Returns the name label. */
-	public Label getNameLabel() { return nameLabel; }
+	public Label getLocalNameLabel() { return localNameLabel; }
+	
+	/** Returns the type label. */
+	public Label getTypeLabel() { return typeLabel; }
 
+	/** Returns the meta-property label. */
+	public Label getMetaPropertyLabel() { return metapropertyLabel; }
+	
 	/** Returns the multiplicity label for element 1. */
 	public Label getMultiplicity1Label() { return multiplicity1Label; }
 
@@ -432,6 +524,24 @@ public final class AssociationElement extends BaseConnection {
 	public int getRedefining2Width(DrawingContext drawingContext)
 	{
 		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(redefine2Label.getNameLabelText());
+	}
+	
+	/** Gets the name label width */
+	public int getNameWidth(DrawingContext drawingContext)
+	{
+		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(localNameLabel.getNameLabelText());
+	}
+	
+	/** Gets the stereotype label width */
+	public int getTypeWidth(DrawingContext drawingContext)
+	{
+		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(typeLabel.getNameLabelText());
+	}
+	
+	/** Gets the meta property label width */
+	public int getMetaPropertyWidth(DrawingContext drawingContext)
+	{
+		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(metapropertyLabel.getNameLabelText());
 	}
 	
 	/** Determines the direction the point is relative to the node. */
@@ -499,11 +609,9 @@ public final class AssociationElement extends BaseConnection {
 		drawNavigabilityArrows(drawingContext);
 		
 		drawLabels(drawingContext);
+				
+		drawDirection(drawingContext);		
 	}
-
-	/** {@inheritDoc} */
-	@Override
-	public Label getLabelAt(double xcoord, double ycoord) { return null; }
 
 	/** {@inheritDoc} */
 	@SuppressWarnings("unused")
@@ -613,10 +721,322 @@ public final class AssociationElement extends BaseConnection {
 		if(redefine1Label!=null && showRedefining)redefine1Label.draw(drawingContext);
 		if(redefine2Label!=null && showRedefining)redefine2Label.draw(drawingContext);
 		
-		positionNameLabel(drawingContext);		
-		nameLabel.draw(drawingContext);
+		if(localNameLabel!=null && showName) positionLocalNameLabel(drawingContext);				
+		if(typeLabel!=null && showOntoUmlStereotype()) positionTypeLabel(drawingContext);
+		if(metapropertyLabel!=null && showMetaProperties) positionMetaPropertyLabel(drawingContext);
+		
+		if(localNameLabel!=null && showName) localNameLabel.draw(drawingContext);
+		if(typeLabel!=null && showOntoUmlStereotype()) typeLabel.draw(drawingContext);
+		if(metapropertyLabel!=null && showMetaProperties) metapropertyLabel.draw(drawingContext);
 	}
 
+	/** Draws the direction triangle. */
+	private void drawDirection(DrawingContext drawingContext) 
+	{		
+		if(localNameLabel!=null)
+		{
+			setReadingDirection(getReadingDesign());
+			if(getReadingDesign() != ReadingDesign.UNDEFINED) {
+				drawReadingDirection(drawingContext);
+			}
+		}
+	}
+	
+	/** Draw the reading direction */
+	private void drawReadingDirection(DrawingContext drawingContext)
+	{
+		if (readingDirection == ReadingDirection.LEFT_RIGHT) {
+			drawTriangleLeftRight(drawingContext);
+		} else if (readingDirection == ReadingDirection.RIGHT_LEFT) {
+			drawTriangleRightLeft(drawingContext);
+		}else if (readingDirection == ReadingDirection.UP_BOTTOM) {
+			drawTriangleUpBottom(drawingContext);
+		}else if (readingDirection == ReadingDirection.BOTTOM_UP) {
+			drawTriangleBottomUp(drawingContext);
+		}
+	}
+
+	/** Private method reusable in the setting of the reading direction */
+	private void setReadingDirection(Type srcType, Type class1, Type class2, Type rel1, Type rel2, ReadingDirection direction, ReadingDirection inverseDirection)
+	{
+		if(class1!=null && srcType.equals(class1)) {
+			if(getReadingDesign() == ReadingDesign.DESTINATION) readingDirection = direction;
+			else readingDirection = inverseDirection;			
+		}
+		if(rel1!=null && srcType.equals(rel1)) {
+			if(getReadingDesign() == ReadingDesign.DESTINATION) readingDirection = direction;
+			else readingDirection = inverseDirection;
+		}
+		if(class2!=null && srcType.equals(class2)) {
+			if(getReadingDesign() == ReadingDesign.SOURCE) readingDirection = direction;
+			else readingDirection = inverseDirection;
+		}
+		if(rel2!=null && srcType.equals(rel2)) {			
+			if(getReadingDesign() == ReadingDesign.SOURCE) readingDirection = direction;
+			else readingDirection = inverseDirection;
+		}
+	}
+	
+	/** Draws the triangle facing to the right. */
+	private void drawTriangleLeftRight(DrawingContext drawingContext) 
+	{
+		GeneralPath trianglePath = new GeneralPath();
+		double height = localNameLabel.getSize().getHeight() - 6;
+		double x = localNameLabel.getAbsoluteX2() + 3, y = localNameLabel.getAbsoluteY1() + 3;
+		trianglePath.moveTo(x, y);
+		trianglePath.lineTo(x + 5, y + height / 2);
+		trianglePath.lineTo(x, y + height);
+		trianglePath.closePath();
+		drawingContext.draw(trianglePath, Color.BLACK);
+	}
+
+	/** Draws the triangle facing to the bottom. */
+	private void drawTriangleUpBottom(DrawingContext drawingContext) 
+	{
+		GeneralPath trianglePath = new GeneralPath();
+		double height = localNameLabel.getSize().getHeight() - 6;
+		double x = localNameLabel.getAbsCenterX(), y = getMaximumY2()+3;
+		trianglePath.moveTo(x, y);
+		trianglePath.lineTo(x + height / 2, y + 5);
+		trianglePath.lineTo(x + height, y);
+		trianglePath.closePath();
+		drawingContext.draw(trianglePath, Color.BLACK);
+	}
+	
+	/** Draws the triangle facing to the top. */
+	private void drawTriangleBottomUp(DrawingContext drawingContext) 
+	{
+		GeneralPath trianglePath = new GeneralPath();
+		double height = localNameLabel.getSize().getHeight() - 6;
+		double x = localNameLabel.getAbsCenterX() , y = getMinimumY1() - 3;
+		trianglePath.moveTo(x, y);
+		trianglePath.lineTo(x - height / 2, y-5);
+		trianglePath.lineTo(x - height, y);
+		trianglePath.closePath();
+		drawingContext.draw(trianglePath, Color.BLACK);
+	}
+	
+	/** Draws the triangle facing to the left. */
+	private void drawTriangleRightLeft(DrawingContext drawingContext) 
+	{
+		GeneralPath trianglePath = new GeneralPath();
+		double height = localNameLabel.getSize().getHeight() - 6;
+		double x = localNameLabel.getAbsoluteX1() - 3, y = localNameLabel.getAbsoluteY1() + 3;
+		trianglePath.moveTo(x, y);
+		trianglePath.lineTo(x - 5, y + height / 2);
+		trianglePath.lineTo(x, y + height);
+		trianglePath.closePath();
+		drawingContext.draw(trianglePath, Color.BLACK);
+	}
+
+	private double getMinimumY1()
+	{
+		double labelY1=1000;
+		if(typeLabel != null){	
+			if (showOntoUmlStereotype()) {
+				if(typeLabel.getAbsoluteY1()< labelY1) labelY1 = typeLabel.getAbsoluteY1();
+			}
+		}	
+		if(localNameLabel != null){
+			if (showName()) {
+				if(localNameLabel.getAbsoluteY1()<labelY1) labelY1 = localNameLabel.getAbsoluteY1();
+			}
+		}
+		if(metapropertyLabel != null){
+			if (getRelationship() instanceof Meronymic && showMetaProperties()){
+				if(metapropertyLabel.getAbsoluteY1()< labelY1) labelY1 = metapropertyLabel.getAbsoluteY1();
+			}
+		}
+		return labelY1;
+	}
+	
+	private double getMaximumY2()
+	{
+		double labelY2=0;
+		if(typeLabel != null){	
+			if (showOntoUmlStereotype()) {			
+				if(typeLabel.getAbsoluteY2()> labelY2) labelY2 = typeLabel.getAbsoluteY2();
+			}
+		}	
+		if(localNameLabel != null){
+			if (showName()) {			
+				if(localNameLabel.getAbsoluteY2()> labelY2) labelY2 = localNameLabel.getAbsoluteY2();
+			}
+		}
+		if(metapropertyLabel != null){
+			if (getRelationship() instanceof Meronymic && showMetaProperties()){
+				if(metapropertyLabel.getAbsoluteY2()> labelY2) labelY2 = metapropertyLabel.getAbsoluteY2();
+			}
+		}
+		return labelY2;
+	}
+	
+	/** 
+	 * Set the reading direction i.e. left-right, right-left, bottom-up or up-bottom, according to the reading design
+	 *  of the association i.e. according to the values to-source or to-destination
+	 *  
+	 *  @param readingDesign
+	 */
+	private void setReadingDirection(ReadingDesign readingDesign)
+	{
+		Node node1 = getNode1();		
+		Node node2 = getNode2();
+		Connection connection1 = getConnection1();
+		Connection connection2 = getConnection2();
+		
+		double srcy1 = 0; double srcy2 = 0; double srcx1 = 0; double srcx2 = 0;
+		double tgtx1 = 0; double tgtx2 = 0; double tgty1 = 0; double tgty2 = 0;  
+		if(node1 !=null) { srcy1 = node1.getAbsoluteY1(); srcx1 = node1.getAbsoluteX1(); srcx2 = node1.getAbsoluteX2(); srcy2 = node1.getAbsoluteY2();}
+		if(node2 !=null) { tgty1 = node2.getAbsoluteY1(); tgtx1 = node2.getAbsoluteX1(); tgtx2 = node2.getAbsoluteX2(); tgty2 = node2.getAbsoluteY2(); }
+		if(connection1 !=null) { srcy1 = connection1.getAbsoluteY1(); srcx1 = connection1.getAbsoluteX1(); srcx2 = connection1.getAbsoluteX2(); srcy2 = connection1.getAbsoluteY2(); }
+		if(connection2 !=null) { tgty1 = connection2.getAbsoluteY1(); tgtx1 = connection2.getAbsoluteX1(); tgtx2 = connection2.getAbsoluteX2(); tgty2 = connection2.getAbsoluteY2(); }
+		
+		Relationship rel = getRelationship();
+		Type srcType = ((Association)rel).getMemberEnd().get(0).getType();
+		
+		Type class1=null; Type class2=null; Type rel1=null; Type rel2=null;
+		if(node1!=null) class1 = ((ClassElement)node1).getClassifier();
+		if(node2!=null) class2 = ((ClassElement)node2).getClassifier();
+		if(connection1!=null) rel1 = (Type)((AssociationElement)connection1).getRelationship();
+		if(connection2!=null) rel2 = (Type)((AssociationElement)connection2).getRelationship();
+		
+		Line2D segment = getMiddleSegment();
+		
+		// vertical aligned		
+		if((srcx2>=tgtx1 && srcx2 <= tgtx2)|| (srcx1>=tgtx1 && srcx1<= tgtx2))
+		{
+			if(segment.getY1()> segment.getY2()) setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.BOTTOM_UP,ReadingDirection.UP_BOTTOM);				 
+			else setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.UP_BOTTOM,ReadingDirection.BOTTOM_UP);
+		}
+		// horizontal aligned		
+		else if((srcy2>=tgty1 && srcy2 <= tgty2)|| (srcy1>=tgty1 && srcy1<= tgty2))
+		{
+			if(segment.getX1()> segment.getX2()) setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.RIGHT_LEFT,ReadingDirection.LEFT_RIGHT);				 
+			else setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.LEFT_RIGHT,ReadingDirection.RIGHT_LEFT);
+		}
+		// first at east and second at west
+		else if(segment.getX1() >= segment.getX2()) 
+		{			
+			if(segment.getY1() > segment.getY2()) {
+				if((srcx1 - tgtx2)>(srcy1-tgty2)){
+					setReadingDirection(srcType, class1, class2, rel1, rel2, ReadingDirection.RIGHT_LEFT, ReadingDirection.LEFT_RIGHT);
+				}else{
+					setReadingDirection(srcType, class1, class2, rel1, rel2, ReadingDirection.BOTTOM_UP, ReadingDirection.UP_BOTTOM);
+				}						
+			} else {
+				if((srcx1 - tgtx2)>(tgty1-srcy2)){
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.RIGHT_LEFT,ReadingDirection.LEFT_RIGHT);	
+				}else{
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.UP_BOTTOM,ReadingDirection.BOTTOM_UP);
+				}
+			}
+		} 
+		// first at west and second at east
+		else if(segment.getX1() < segment.getX2())
+		{
+			if(segment.getY1() < segment.getY2()) {
+				if((srcx1 - tgtx2)>(srcy1-tgty2)){
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.LEFT_RIGHT,ReadingDirection.RIGHT_LEFT);
+				}else{
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.UP_BOTTOM,ReadingDirection.BOTTOM_UP);
+				}
+			} else {
+				if((tgtx1 - srcx2)>(srcy1-tgty2)){
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.LEFT_RIGHT,ReadingDirection.RIGHT_LEFT);
+				}else{
+					setReadingDirection(srcType, class1, class2, rel1, rel2, ReadingDirection.BOTTOM_UP, ReadingDirection.UP_BOTTOM);
+				}
+			}
+		}
+		// first at south and second at north
+		else if(segment.getY1() >= segment.getY2()) 
+		{
+			if(segment.getX1() > segment.getX2()) {
+				if((srcx1 - tgtx2)>(srcy1-tgty2)){
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.RIGHT_LEFT,ReadingDirection.LEFT_RIGHT);
+				}else{
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.BOTTOM_UP,ReadingDirection.UP_BOTTOM);
+				}
+			} else {
+				if((tgtx1 - srcx2)>(srcy1-tgty2)){
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.LEFT_RIGHT,ReadingDirection.RIGHT_LEFT);
+				}else{
+					setReadingDirection(srcType, class1, class2, rel1, rel2, ReadingDirection.BOTTOM_UP, ReadingDirection.UP_BOTTOM);
+				}
+			}
+		}
+		// first at north and second at south
+		else if (segment.getY1() < segment.getY2()) 
+		{
+			if(segment.getX1() < segment.getX2()) {
+				if((tgtx1 - srcx2)>(tgty1-srcy2)){
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.LEFT_RIGHT,ReadingDirection.RIGHT_LEFT);
+				}else{
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.UP_BOTTOM,ReadingDirection.BOTTOM_UP);
+				}
+			} else {
+				if((srcx1 - tgtx2)>(tgty1-srcy2)){
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.RIGHT_LEFT,ReadingDirection.LEFT_RIGHT);					
+				}else{
+					setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.UP_BOTTOM,ReadingDirection.BOTTOM_UP);
+				}
+			}
+		} 
+	}
+	
+	/** Sets the position for the name label. */
+	private void positionLocalNameLabel(DrawingContext drawingContext) 
+	{
+		int labelWidth= getNameWidth(drawingContext);		
+		// medium segment
+		List<Line2D> segments = getSegments();
+		if(segments.size()>0)
+		{
+			Line2D middleSegment = getMiddleSegment();
+			double x = (double) (middleSegment.getX2() + middleSegment.getX1() - labelWidth) / 2;
+			double y = (double) (middleSegment.getY2() + middleSegment.getY1())/2;			
+			localNameLabel.setAbsolutePos(x, y);			
+		}
+	}
+	
+	/** Sets the position for the stereotype label. */
+	private void positionTypeLabel(DrawingContext drawingContext) 
+	{
+		int labelWidth= getTypeWidth(drawingContext);		
+		// medium segment
+		List<Line2D> segments = getSegments();
+		if(segments.size()>0)
+		{
+			Line2D middleSegment = getMiddleSegment();
+			double x = (double) (middleSegment.getX2() + middleSegment.getX1() - labelWidth) / 2;
+			double y = (double) (middleSegment.getY2() + middleSegment.getY1())/2;			
+			if(showName()){										
+				typeLabel.setAbsolutePos(x, y- drawingContext.getFontMetrics(FontType.DEFAULT).getHeight());					
+			}else{
+				typeLabel.setAbsolutePos(x, y);
+			}					
+		}
+	}
+	
+	/** Sets the position for the meta-properties label. */
+	private void positionMetaPropertyLabel(DrawingContext drawingContext) 
+	{
+		int labelWidth= getMetaPropertyWidth(drawingContext);		
+		// medium segment
+		List<Line2D> segments = getSegments();
+		if(segments.size()>0)
+		{
+			Line2D middleSegment = getMiddleSegment();
+			double x = (double) (middleSegment.getX2() + middleSegment.getX1() - labelWidth) / 2;
+			double y = (double) (middleSegment.getY2() + middleSegment.getY1())/2;			
+			if(showName() || showOntoUmlStereotype()){										
+				metapropertyLabel.setAbsolutePos(x, y+ drawingContext.getFontMetrics(FontType.DEFAULT).getHeight());					
+			}else{
+				metapropertyLabel.setAbsolutePos(x, y);
+			}								
+		}
+	}
+	
 	/** Position redefining label */
 	private void positionRedefiningLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext) 
 	{
@@ -808,32 +1228,9 @@ public final class AssociationElement extends BaseConnection {
 		label.setAbsolutePos(x, y);
 	}
 	
-	/** Sets the position for the name, stereotype and meta-properties label. */
-	private void positionNameLabel(DrawingContext drawingContext) 
-	{
-		int labelWidth=0;
-		if(showOntoUmlStereotype() && nameLabel.getTypeLabelText() != null){
-			int typeWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getTypeLabelText());
-			if(typeWidth> labelWidth) labelWidth = typeWidth;
-		}	
-		if(showName() && nameLabel.getNameLabelText() != null){
-			int nameWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getNameLabelText());
-			if(nameWidth> labelWidth) labelWidth = nameWidth;
-		}
-		if(showMetaProperties() && nameLabel.getMetaPropertyLabelText() != null){
-			int metaWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getMetaPropertyLabelText());
-			if(metaWidth> labelWidth) labelWidth = metaWidth;
-		}
-		// medium segment
-		List<Line2D> segments = getSegments();
-		if(segments.size()>0){
-			Line2D middleSegment = getMiddleSegment();
-			double x = (double) (middleSegment.getX2() + middleSegment.getX1() - labelWidth) / 2;
-			double y = (double) (middleSegment.getY2() + middleSegment.getY1())/2;
-			nameLabel.setAbsolutePos(x, y);			
-			nameLabel.setSegment(middleSegment);
-		}
-	}
+	/** {@inheritDoc} */
+	@Override
+	public Label getLabelAt(double xcoord, double ycoord) { return null; }
 	
 //  /** If is allowable to move the labels, than we need to reposition the labels at every move in the association*/
 //	public void repositionLabels(List<Point2D> oldpoints, List<Point2D> newpoints)

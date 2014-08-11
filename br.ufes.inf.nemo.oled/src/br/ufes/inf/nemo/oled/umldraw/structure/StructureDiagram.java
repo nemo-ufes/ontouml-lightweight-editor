@@ -26,6 +26,7 @@ import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -145,7 +146,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	 *             if class was not found
 	 */
 	@SuppressWarnings({ "unchecked" })
-	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException, InvalidClassException {
 		gridSize = stream.readInt();
 		name = stream.readUTF();
 		connections = (List<Connection>) stream.readObject();		
@@ -630,21 +631,27 @@ public class StructureDiagram extends AbstractCompositeNode implements
 			
 			if (conn.contains(x, y)) return conn;
 			
-			if (conn instanceof AssociationElement){
-				if (((AssociationElement)conn).getNameLabel().contains(x, y)) {
-					return ((AssociationElement)conn).getNameLabel().getLabelAt(x, y);
-				}
-				if (((AssociationElement)conn).getMultiplicity1Label().contains(x, y)) {					
+			if (conn instanceof AssociationElement){			
+				if (((AssociationElement)conn).getMultiplicity1Label()!=null && ((AssociationElement)conn).getMultiplicity1Label().contains(x, y)) {					
 					return ((AssociationElement)conn).getMultiplicity1Label().getLabelAt(x, y);
 				}
-				if (((AssociationElement)conn).getMultiplicity2Label().contains(x, y)){					
+				if (((AssociationElement)conn).getMultiplicity2Label()!=null && ((AssociationElement)conn).getMultiplicity2Label().contains(x, y)){					
 					return ((AssociationElement)conn).getMultiplicity2Label().getLabelAt(x, y);
 				}
-				if (((AssociationElement)conn).getRole1Label().contains(x, y)) {
+				if (((AssociationElement)conn).getRole1Label()!=null && ((AssociationElement)conn).getRole1Label().contains(x, y)) {
 					return ((AssociationElement)conn).getRole1Label().getLabelAt(x, y);
 				}
-				if (((AssociationElement)conn).getRole2Label().contains(x, y)) {
+				if (((AssociationElement)conn).getRole2Label()!=null && ((AssociationElement)conn).getRole2Label().contains(x, y)) {
 					return ((AssociationElement)conn).getRole2Label().getLabelAt(x, y);				
+				}
+				if (((AssociationElement)conn).getMetaPropertyLabel()!=null && ((AssociationElement)conn).getMetaPropertyLabel().contains(x, y)) {					
+					return ((AssociationElement)conn).getMetaPropertyLabel().getLabelAt(x, y);
+				}
+				if (((AssociationElement)conn).getTypeLabel()!=null && ((AssociationElement)conn).getTypeLabel().contains(x, y)) {					
+					return ((AssociationElement)conn).getTypeLabel().getLabelAt(x, y);
+				}
+				if (((AssociationElement)conn).getLocalNameLabel()!=null && ((AssociationElement)conn).getLocalNameLabel().contains(x, y)) {					
+					return ((AssociationElement)conn).getLocalNameLabel().getLabelAt(x, y);
 				}
 			}
 		}

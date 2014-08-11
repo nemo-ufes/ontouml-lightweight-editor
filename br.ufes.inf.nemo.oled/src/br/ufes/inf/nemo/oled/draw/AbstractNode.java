@@ -26,6 +26,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public abstract class AbstractNode implements Node {
 	 */
 	@SuppressWarnings("unchecked")
 	private void readObject(ObjectInputStream stream)
-	throws IOException, ClassNotFoundException {
+	throws IOException, ClassNotFoundException, InvalidClassException {
 		origin = (Point2D) stream.readObject();
 		size = (Dimension2D) stream.readObject();
 		minimumSize = (Dimension2D) stream.readObject();
