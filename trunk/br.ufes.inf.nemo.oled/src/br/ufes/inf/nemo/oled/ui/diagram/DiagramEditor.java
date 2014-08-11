@@ -103,7 +103,6 @@ import br.ufes.inf.nemo.oled.ui.diagram.commands.SetConnectionNavigabilityComman
 import br.ufes.inf.nemo.oled.ui.diagram.commands.SetLabelTextCommand;
 import br.ufes.inf.nemo.oled.umldraw.shared.UmlConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
-import br.ufes.inf.nemo.oled.umldraw.structure.AssociationLabel;
 import br.ufes.inf.nemo.oled.umldraw.structure.BaseConnection;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
@@ -1681,7 +1680,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 //			if(element instanceof RectilinearConnection) sb.append(ModelHelper.handleName(((RectilinearConnection)element).getOwnerConnection()) + (i < elements.size()-1 ? ", " : ""));
 //			if(element instanceof SimpleConnection) sb.append(ModelHelper.handleName(((SimpleConnection)element).getOwnerConnection()) + (i < elements.size()-1 ? ", " : ""));
 //			if(element instanceof TreeConnection) sb.append(ModelHelper.handleName(((TreeConnection)element).getOwnerConnection()) + (i < elements.size()-1 ? ", " : ""));
-			if (element instanceof SimpleLabel || element instanceof AssociationLabel) sb.append(((Label) element).getSource().getLabelText());			
+			if (element instanceof SimpleLabel) sb.append(((Label) element).getSource().getLabelText());			
 		}
 		frame.getDiagramManager().showStatus(this,capitalize(sb.toString()));
 	}
