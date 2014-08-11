@@ -60,110 +60,47 @@ public final class AssociationElement extends BaseConnection {
 
 	private static final long serialVersionUID = 1866495594812659939L;
 	private static AssociationElement prototype = new AssociationElement();
+	private RelationType associationType = RelationType.ASSOCIATION;
 	
-	/**
-	 * The direction to read the name.
-	 */
+	/** A direction of an end point relative to its connected node. */
+	private enum Direction  { NORTH, SOUTH, EAST, WEST }
+	
+	/** The direction to read the name.*/
 	public enum ReadingDesign { SOURCE, DESTINATION, UNDEFINED }
 	private ReadingDesign readingDesign = ReadingDesign.UNDEFINED;
-	
-	private RelationType associationType = RelationType.ASSOCIATION;	
+		
 	private Label multiplicity1Label;
 	private Label multiplicity2Label;
 	private Label role1Label;
+	private Label role2Label;
 	private Label subset1Label;
 	private Label subset2Label;
 	private Label redefine1Label;
 	private Label redefine2Label;
-	private Label role2Label;
 	private AssociationLabel nameLabel;
+	
 	private boolean showMultiplicities, showName, showRoles, showSubsetting, showRedefining, showMetaProperties;
 	
-	/**
-	 * Returns the prototype instance.
-	 * @return the prototype instance
-	 */
+	/** Returns the prototype instance.  */
 	public static AssociationElement getPrototype() { return prototype; }
 
-	/**
-	 * Constructor.
-	 */
-	private AssociationElement() {
+	/** Constructor. */
+	private AssociationElement() 
+	{
 		setConnection(new RectilinearConnection(this));
 		setupMultiplicityLabels();
 		setupRoleLabels();
 		setupSubsettingLabels();
 		setupRedefiningLabels();
-		setupNameLabel();
-		
+		setupNameLabel();		
 		showMultiplicities = true;
 		showMetaProperties=true;
 	}
-
-	/**
-	 * Returns the value of the showName property.
-	 * @return the value of the showName property
-	 */
-	public boolean showName() { return showName; }
-
-	/**
-	 * Sets the showName property.
-	 * @param flag the value of the showName property
-	 */
-	public void setShowName(boolean flag) { showName = flag; }
-
-	public void setShowMetaProperties(boolean flag) { showMetaProperties = flag; }
-		
-	/**
-	 * Returns the value of the showMultiplicities property.
-	 * @return the value of the showMultiplicities property
-	 */
-	public boolean showMultiplicities() { return showMultiplicities; }
-
-	/**
-	 * Sets the showMultiplicities property.
-	 * @param flag the value of the showMultiplicities property
-	 */
-	public void setShowMultiplicities(boolean flag) { showMultiplicities = flag; }
-
-
-	/**
-	 * Returns the value of the showRoles property.
-	 * @return the value of the showRoles property
-	 */
-	public boolean showRoles() {
-		return showRoles;
-	}
-	public boolean showSubsetting() {
-		return showSubsetting;
-	}
-	public boolean showRedefining() {
-		return showRedefining;
-	}
 	
-	public boolean showMetaProperties() { return showMetaProperties; }
-	
-	/**
-	 * Sets the showRoles property.
-	 * @param flag the value of the showMultiplicities property
-	 */
-	public void setShowRoles(boolean flag) {
-		showRoles = flag;		
-	}
-	
-	public void setShowSubsetting(boolean flag){
-		showSubsetting = flag;
-	}
-	
-	public void setShowRedefining(boolean flag){
-		showRedefining = flag;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	@Override
-	public Object clone() {
+	public Object clone() 
+	{
 		AssociationElement cloned = (AssociationElement) super.clone();
 		// readjust the multiplicity labels, they do not point to the correct
 		// label sources after a clone()
@@ -188,93 +125,102 @@ public final class AssociationElement extends BaseConnection {
 		cloned.nameLabel.setParent(nameLabel.getParent());		
 		return cloned;
 	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public void setParent(CompositeNode parent) {
+		//TODO Verificar se a connection usa esse composite node
+		super.setParent(parent);
+		multiplicity1Label.setParent(parent);
+		multiplicity2Label.setParent(parent);
+		role1Label.setParent(parent);
+		role2Label.setParent(parent);
+		if(subset1Label!=null)subset1Label.setParent(parent);
+		if(subset2Label!=null)subset2Label.setParent(parent);
+		if(redefine1Label!=null)redefine1Label.setParent(parent);
+		if(redefine2Label!=null)redefine2Label.setParent(parent);
+		nameLabel.setParent(parent);
+	}
 
-	/**
-	 * Sets the name label.
-	 */
-	public void setupNameLabel() {
+	/** Sets the name label. */
+	public void setupNameLabel() 
+	{
 		nameLabel = new AssociationLabel();
 		nameLabel.setAssociation(this);
 	}
 
-	/**
-	 * Sets the multiplicity label sources.
-	 */
-	private void setupMultiplicityLabels() {
+	/** Sets the multiplicity label sources. */
+	private void setupMultiplicityLabels() 
+	{
 		multiplicity1Label = new SimpleLabel();
 		multiplicity1Label.setSource(new LabelSource() {
-			/**
-			 * 
-			 */
+			
 			private static final long serialVersionUID = 124766466850619305L;
-
-			/**
-			 * {@inheritDoc}
-			 */
-			public String getLabelText() {
+			
+			/** {@inheritDoc} */
+			public String getLabelText() 
+			{
 				Association association = (Association) getRelationship();
 				return ModelHelper.getMultiplicityString(association.getMemberEnd().get(0));
 			}
-
-			/**
-			 * {@inheritDoc}
-			 */
+			
+			/** {@inheritDoc} */
 			public void setLabelText(String aText) { }
 		});
 
 		multiplicity2Label = new SimpleLabel();
 		multiplicity2Label.setSource(new LabelSource() {
-			/**
-			 * 
-			 */
+			
 			private static final long serialVersionUID = 6012955370882528767L;
-
-			/**
-			 * {@inheritDoc}
-			 */
-			public String getLabelText() {
+			
+			/** {@inheritDoc} */
+			public String getLabelText() 
+			{
 				Association association = (Association) getRelationship();
 				return ModelHelper.getMultiplicityString(association.getMemberEnd().get(1));
 			}
-
-			/**
-			 * {@inheritDoc}
-			 */
+			
+			/** {@inheritDoc} */
 			public void setLabelText(String aText) { }
 		});
 	}
 	
-	private void setupRedefiningLabels() {
+	/** Get the redefining string */
+	private String getRedefiningString(Property p)
+	{
+		String str = new String();
+		if(p!=null){									
+			if (p.getRedefinedProperty().size()>0){
+				str = "{ redefines ";
+				int i=0;
+				for(Property property: p.getRedefinedProperty()){
+					if(i<p.getRedefinedProperty().size()-1) str += property.getName()+",";
+					else str += property.getName();
+					i++;
+				}
+				str += " }";
+			}
+		}
+		return str;	
+	}
+	
+	/** Sets the Redefining label sources. */
+	private void setupRedefiningLabels() 
+	{
 		redefine1Label = new SimpleLabel();
 		redefine1Label.setSource(new LabelSource() {
 						
 			private static final long serialVersionUID = 8971899878055731312L;
 
-			/**
-			 * {@inheritDoc}
-			 */
-			public String getLabelText() {
+			/** {@inheritDoc} */
+			public String getLabelText() 
+			{
 				Association association = (Association) getRelationship();
-				Property p = association.getMemberEnd().get(0);
-				String str = new String();
-				if(p!=null){									
-					if (p.getRedefinedProperty().size()>0){
-						str = "{ redefines ";
-						int i=0;
-						for(Property property: p.getRedefinedProperty()){
-							if(i<p.getRedefinedProperty().size()-1) str += property.getName()+",";
-							else str += property.getName();
-							i++;
-						}
-						str += " }";
-					}
-				}
-				return str;				
+				Property p = association.getMemberEnd().get(0);				
+				return getRedefiningString(p);				
 			}
 
-			/**
-			 * {@inheritDoc}
-			 */
+			/** {@inheritDoc} */
 			public void setLabelText(String aText) { }
 		});
 
@@ -283,67 +229,55 @@ public final class AssociationElement extends BaseConnection {
 			
 			private static final long serialVersionUID = 6014955370882528767L;
 
-			/**
-			 * {@inheritDoc}
-			 */
-			public String getLabelText() {
+			/** {@inheritDoc} */
+			public String getLabelText() 
+			{
 				Association association = (Association) getRelationship();				
-				Property p = association.getMemberEnd().get(1);
-				String str = new String();
-				if(p!=null){									
-					if (p.getRedefinedProperty().size()>0){
-						str = "{ redefines ";
-						int i=0;
-						for(Property property: p.getRedefinedProperty()){
-							if(i<p.getRedefinedProperty().size()-1) str += property.getName()+",";
-							else str += property.getName();
-							i++;
-						}
-						str += " }";
-					}
-				}
-				return str;				
+				Property p = association.getMemberEnd().get(1);				
+				return getRedefiningString(p);				
 			}
 
-			/**
-			 * {@inheritDoc}
-			 */
+			/** {@inheritDoc} */
 			public void setLabelText(String aText) { }
-		});
-		
+		});		
 	}
 
-	private void setupSubsettingLabels() {
+	/** Get the subsetting string */
+	private String getSubsettingString(Property p)
+	{
+		String str = new String();
+		if(p!=null){									
+			if (p.getSubsettedProperty().size()>0){
+				str = "{ subsets ";
+				int i=0;
+				for(Property property: p.getSubsettedProperty()){
+					if(i<p.getSubsettedProperty().size()-1) str += property.getName()+",";
+					else str += property.getName();
+					i++;
+				}
+				str += " }";
+			}
+		}
+		return str;	
+	}
+			
+	/** Sets the Subsetting label sources. */
+	private void setupSubsettingLabels() 
+	{
 		subset1Label = new SimpleLabel();
 		subset1Label.setSource(new LabelSource() {
 						
 			private static final long serialVersionUID = 8971899878055731312L;
 
-			/**
-			 * {@inheritDoc}
-			 */
-			public String getLabelText() {
+			/** {@inheritDoc} */
+			public String getLabelText() 
+			{
 				Association association = (Association) getRelationship();
 				Property p = association.getMemberEnd().get(0);
-				String str = new String();
-				if(p!=null){									
-					if (p.getSubsettedProperty().size()>0){
-						str = "{ subsets ";
-						int i=0;
-						for(Property property: p.getSubsettedProperty()){
-							if(i<p.getSubsettedProperty().size()-1) str += property.getName()+",";
-							else str += property.getName();
-							i++;
-						}
-						str += " }";
-					}
-				}
-				return str;				
+				return getSubsettingString(p);			
 			}
 
-			/**
-			 * {@inheritDoc}
-			 */
+			/** {@inheritDoc} */
 			public void setLabelText(String aText) { }
 		});
 
@@ -352,33 +286,553 @@ public final class AssociationElement extends BaseConnection {
 			
 			private static final long serialVersionUID = 6014955370882528767L;
 
-			/**
-			 * {@inheritDoc}
-			 */
-			public String getLabelText() {
+			/** {@inheritDoc} */
+			public String getLabelText() 
+			{
 				Association association = (Association) getRelationship();				
 				Property p = association.getMemberEnd().get(1);
-				String str = new String();
-				if(p!=null){									
-					if (p.getSubsettedProperty().size()>0){
-						str = "{ subsets ";
-						int i=0;
-						for(Property property: p.getSubsettedProperty()){
-							if(i<p.getSubsettedProperty().size()-1) str += property.getName()+",";
-							else str += property.getName();
-							i++;
-						}
-						str += " }";
-					}
-				}
-				return str;				
+				return getSubsettingString(p);				
 			}
 
-			/**
-			 * {@inheritDoc}
-			 */
+			/** {@inheritDoc} */
 			public void setLabelText(String aText) { }
 		});		
+	}
+
+	/** Sets the role label sources. */
+	private void setupRoleLabels() 
+	{
+		role1Label = new SimpleLabel();
+		role1Label.setSource(new LabelSource() {
+			
+			private static final long serialVersionUID = 8971899878055731312L;
+
+			/** {@inheritDoc} */
+			public String getLabelText() 
+			{
+				Association association = (Association) getRelationship();
+				String role = association.getMemberEnd().get(0).getName(); 
+				return role != null ? role : "";
+			}
+
+			/** {@inheritDoc} */
+			public void setLabelText(String aText) { }
+		});
+
+		role2Label = new SimpleLabel();
+		role2Label.setSource(new LabelSource() {
+
+			private static final long serialVersionUID = 6014955370882528767L;
+
+			/** {@inheritDoc} */
+			public String getLabelText() 
+			{
+				Association association = (Association) getRelationship();
+				String role = association.getMemberEnd().get(1).getName();
+				return role != null ? role : "";
+			}
+
+			/** {@inheritDoc} */
+			public void setLabelText(String aText) { }
+		});
+		
+	}
+	
+	/** Returns the value of the showName property.  */
+	public boolean showName() { return showName; }
+
+	/** Sets the showName property. */
+	public void setShowName(boolean flag) { showName = flag; }
+	
+	/** Sets the showMetaProperties property. */
+	public void setShowMetaProperties(boolean flag) { showMetaProperties = flag; }
+		
+	/** Returns the value of the showMultiplicities property. */
+	public boolean showMultiplicities() { return showMultiplicities; }
+
+	/** Sets the showMultiplicities property. */
+	public void setShowMultiplicities(boolean flag) { showMultiplicities = flag; }
+
+	/** Returns the value of the showRoles property. */
+	public boolean showRoles() { return showRoles; }
+	
+	/** Returns the value of the showSubsetting property. */
+	public boolean showSubsetting() { return showSubsetting; }
+	
+	/** Returns the value of the showRedefining property. */
+	public boolean showRedefining() { return showRedefining; }
+	
+	/** Returns the value of the showMetaProperties property. */
+	public boolean showMetaProperties() { return showMetaProperties; }
+	
+	/** Sets the showRoles property. */
+	public void setShowRoles(boolean flag) { showRoles = flag; }
+
+	/** Sets the showSubsetting property. */
+	public void setShowSubsetting(boolean flag){ showSubsetting = flag; }
+	
+	/** Sets the showRedefining property. */
+	public void setShowRedefining(boolean flag){ showRedefining = flag; }
+	
+	/** Returns the name label. */
+	public Label getNameLabel() { return nameLabel; }
+
+	/** Returns the multiplicity label for element 1. */
+	public Label getMultiplicity1Label() { return multiplicity1Label; }
+
+	/** Returns the multiplicity label for element 2. */
+	public Label getMultiplicity2Label() { return multiplicity2Label; }
+
+	/** Returns the role label for element 1. */
+	public Label getRole1Label() { return role1Label; }
+
+	/** Returns the role label for element 2. */
+	public Label getRole2Label() { return role2Label; }
+
+	/** Returns the subsetting label for element 1. */
+	public Label getSubsetting1Label() { return subset1Label; }
+	
+	/** Returns the subsetting label for element 2. */
+	public Label getSubsetting2Label() { return subset2Label; }
+	
+	/** Returns the AssociationType. */
+	public RelationType getAssociationType() { return associationType; }
+
+	/** Sets the AssociationType. */
+	public void setAssociationType(RelationType anAssociationType) { associationType = anAssociationType; }
+
+	/** Gets the association relationship*/
+	public Association getAssociation() { return (Association) getRelationship(); }
+
+	/** Sets the reading design */
+	public void setReadingDesign(ReadingDesign direction) { this.readingDesign = direction; }
+
+	/** Gets the reading design */	
+	public ReadingDesign getReadingDesign() { return readingDesign; }	
+	
+	/** Gets the subsetting label width of element 1 */	
+	public int getSubset1Width(DrawingContext drawingContext)
+	{
+		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(subset1Label.getNameLabelText());
+	}
+
+	/** Gets the subsetting label width of element 2 */
+	public int getSubset2Width(DrawingContext drawingContext)
+	{
+		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(subset2Label.getNameLabelText());
+	}
+	
+	/** Gets the redefining label width of element 1 */
+	public int getRedefining1Width(DrawingContext drawingContext)
+	{
+		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(redefine1Label.getNameLabelText());
+	}
+
+	/** Gets the redefining label width of element 2 */
+	public int getRedefining2Width(DrawingContext drawingContext)
+	{
+		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(redefine2Label.getNameLabelText());
+	}
+	
+	/** Determines the direction the point is relative to the node. */
+	private Direction getPointDirection(Node node, Point2D point) 
+	{
+		if (point.getX() >= node.getAbsoluteX2()) return Direction.EAST;		
+		if (point.getX() <= node.getAbsoluteX1()) return Direction.WEST;		
+		if (point.getY() <= node.getAbsoluteY1()) return Direction.NORTH;		
+		return Direction.SOUTH;
+	}
+
+	/** Determines the direction the point is relative to the node. */
+	private Direction getPointDirection(Connection c, Point2D point) 
+	{
+		if (point.getX() >= c.getAbsCenterX()) return Direction.EAST;		
+		if (point.getX() <= c.getAbsCenterX()) return Direction.WEST;		
+		if (point.getY() <= c.getAbsCenterY()) return Direction.NORTH;		
+		return Direction.SOUTH;
+	}
+	
+	/** {@inheritDoc} */
+	@Override
+	public void draw(DrawingContext drawingContext) 
+	{
+		super.draw(drawingContext);
+		
+		//First, draw the line
+		if (associationType == RelationType.DERIVATION) drawingContext.setStrokeType(StrokeType.DASHED_BOLD);
+		
+		//Then, draw decorations
+		if (associationType == RelationType.DERIVATION) drawCircle(drawingContext, calculateRotationInEndPoint2(), true);		
+		else if (associationType == RelationType.COMPONENTOF) {
+			
+			if((Meronymic)getRelationship()!=null){
+				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), null);
+			}else{
+				Main.printErrLine("Trying to draw a memberOf decoration... null relationship!");
+			}
+		}		
+		else if (associationType == RelationType.MEMBEROF) {
+			
+			if((Meronymic)getRelationship()!=null){
+				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "M");
+			}else{
+				Main.printErrLine("Trying to draw a memberOf decoration... null relationship!");
+			}
+		}
+		else if (associationType == RelationType.SUBQUANTITYOF) {
+			
+			if((Meronymic)getRelationship()!=null){
+				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "Q");
+			}else{
+				System.err.println("Trying to draw a subQuantityOf decoration... null relationship!");
+			}
+		}
+		else if (associationType == RelationType.SUBCOLLECTIONOF) {
+			
+			if((Meronymic)getRelationship()!=null){
+				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "C");
+			}else{
+				System.err.println("Trying to draw a subCollectionOf decoration... null relationship!");
+			}
+		}
+
+		drawNavigabilityArrows(drawingContext);
+		
+		drawLabels(drawingContext);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Label getLabelAt(double xcoord, double ycoord) { return null; }
+
+	/** {@inheritDoc} */
+	@SuppressWarnings("unused")
+	private void drawRombus(DrawingContext drawingContext, AffineTransform rotationTransform, boolean filled) 
+	{
+		Point2D endpoint = getEndPoint1();
+		double x = endpoint.getX(), y = endpoint.getY();
+		GeneralPath rombus = new GeneralPath();
+		rombus.moveTo(x - 18, y);
+		rombus.lineTo(x - 9, y - 7);
+		rombus.lineTo(x, y);
+		rombus.lineTo(x - 9, y + 7);
+		rombus.closePath();
+		rombus.transform(rotationTransform);
+		Color fillColor = filled ? Color.BLACK : Color.WHITE;
+		drawingContext.draw(rombus, fillColor);
+	}
+	
+	/** {@inheritDoc} */
+	private void drawCircle(DrawingContext drawingContext, AffineTransform rotationTransform, boolean filled) 
+	{
+		//The circle goes on the target
+		Point2D endpoint = getEndPoint2();
+		float x = (float) endpoint.getX(), y = (float) endpoint.getY();
+		Shape shape = new Ellipse2D.Float(x - 3.0f, y - 3.0f, 6.0f, 6.0f);
+		GeneralPath circle = new GeneralPath(shape);
+		circle.transform(rotationTransform);
+		Color fillColor = filled ? Color.BLACK : Color.WHITE;	
+		drawingContext.draw(circle, fillColor);
+	}
+
+	/** {@inheritDoc} */
+	private void drawParthood(DrawingContext drawingContext, AffineTransform rotationTransform, boolean shareable, String content) 
+	{
+		Point2D endpoint = getEndPoint1();
+		double x = endpoint.getX(), y = endpoint.getY();
+		GeneralPath rombus = new GeneralPath();
+		rombus.moveTo(x - 18, y);
+		rombus.lineTo(x - 9, y - 7);
+		rombus.lineTo(x, y);
+		rombus.lineTo(x - 9, y + 7);
+		rombus.closePath();
+		rombus.transform(rotationTransform);
+		Color fillColor = shareable ? Color.WHITE : Color.BLACK;
+		Color fontColor = shareable ? Color.BLACK : Color.WHITE; //The opposite
+		if(content != null) drawingContext.draw(rombus, fillColor, content.charAt(0), fontColor, FontType.SMALL);
+		else drawingContext.draw(rombus, fillColor);
+	}
+
+	/** {@inheritDoc} */
+	private void drawNavigabilityArrows(DrawingContext drawingContext) 
+	{		
+		boolean navigableSource = getAssociation().getNavigableOwnedEnd().contains(getAssociation().getOwnedEnd().get(0));
+		boolean navigableTarget = getAssociation().getNavigableOwnedEnd().contains(getAssociation().getOwnedEnd().get(1));		
+		if(navigableSource ^ navigableTarget){
+			if (navigableSource) drawArrow(drawingContext, getEndPoint1(), calculateRotationInEndPoint1());			
+			if (navigableTarget) drawArrow(drawingContext, getEndPoint2(), calculateRotationInEndPoint2());			
+		}
+	}
+
+	/** Draws the arrow. */
+	private void drawArrow(DrawingContext drawingContext, Point2D endpoint, AffineTransform rotationTransform) 
+	{
+		new SimpleArrowTip().draw(drawingContext, endpoint, rotationTransform);
+	}
+	
+	/** Draws the connection labels. */
+	private void drawLabels(DrawingContext drawingContext) 
+	{
+		if (showMultiplicities) 
+		{			
+			if (getNode1()!=null && multiplicity1Label.getParent()!=null) positionLabel(multiplicity1Label, getNode1(), getEndPoint1(), drawingContext, false);
+			else if (getNode1()==null && multiplicity1Label.getParent()!=null) positionLabel(multiplicity1Label, getConnection1(), getEndPoint1(), drawingContext, false);
+			
+			if (getNode2()!=null && multiplicity2Label.getParent()!=null) positionLabel(multiplicity2Label, getNode2(), getEndPoint2(), drawingContext, false);
+			else if(getNode2()==null && multiplicity2Label.getParent()!=null) positionLabel(multiplicity2Label, getConnection2(), getEndPoint2(), drawingContext, false);
+			
+			multiplicity1Label.draw(drawingContext);
+			multiplicity2Label.draw(drawingContext);
+		}		
+		
+		if (getNode1()!=null)
+		{
+			if(role1Label!=null && showRoles) positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
+			if(subset1Label!=null && showSubsetting) positionSubsettingLabel(subset1Label, getNode1(), getEndPoint1(), drawingContext);			
+			if(redefine1Label!=null && showRedefining) positionRedefiningLabel(redefine1Label, getNode1(), getEndPoint1(), drawingContext);
+		}else{
+			if(role1Label!=null && showRoles) positionLabel(role1Label, getConnection1(), getEndPoint1(), drawingContext, true);
+			if(subset1Label!=null && showSubsetting) positionSubsettingLabel(subset1Label, getConnection1(), getEndPoint1(), drawingContext);
+			if(redefine1Label!=null && showRedefining) positionRedefiningLabel(redefine1Label, getNode1(), getEndPoint1(), drawingContext);
+		}
+		
+		if (getNode2()!=null){
+			if(role2Label!=null && showRoles) positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
+			if(subset2Label!=null && showSubsetting)positionSubsettingLabel(subset2Label, getNode2(), getEndPoint2(), drawingContext);
+			if(redefine2Label!=null && showRedefining) positionRedefiningLabel(redefine2Label, getNode1(), getEndPoint1(), drawingContext);
+		}else{
+			if(role2Label!=null && showRoles) positionLabel(role2Label, getConnection2(), getEndPoint2(), drawingContext, true);
+			if(subset2Label!=null && showSubsetting) positionSubsettingLabel(subset2Label, getConnection2(), getEndPoint2(), drawingContext);
+			if(redefine2Label!=null && showRedefining) positionRedefiningLabel(redefine2Label, getNode1(), getEndPoint1(), drawingContext);
+		}
+		
+		if(role2Label!=null && showRoles) role1Label.draw(drawingContext);
+		if(role2Label!=null && showRoles) role2Label.draw(drawingContext);		
+		if(subset1Label!=null && showSubsetting)subset1Label.draw(drawingContext);
+		if(subset2Label!=null && showSubsetting)subset2Label.draw(drawingContext);		
+		if(redefine1Label!=null && showRedefining)redefine1Label.draw(drawingContext);
+		if(redefine2Label!=null && showRedefining)redefine2Label.draw(drawingContext);
+		
+		positionNameLabel(drawingContext);		
+		nameLabel.draw(drawingContext);
+	}
+
+	/** Position redefining label */
+	private void positionRedefiningLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext) 
+	{
+		Direction direction=null;		
+		if (endPointDiagramElement instanceof Node) direction = getPointDirection((Node)endPointDiagramElement, endpoint);
+		else if (endPointDiagramElement instanceof Connection) direction = getPointDirection((Connection)endPointDiagramElement, endpoint);
+		double labelHeight = label.getSize().getHeight(); 
+		double labelWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(label.getSource().getLabelText());
+		double x = 0, y = 0, marging = 10;		
+		switch (direction){
+			case NORTH:
+			{
+				if(showRoles() & showSubsetting()){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() - (3*labelHeight + marging);
+				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}
+			case SOUTH:
+			{				
+				if(showRoles() & showSubsetting()){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() + (2*labelHeight + marging);
+				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() + (labelHeight + marging);
+				}else{
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() + marging;
+				}
+				break;
+			}
+			case EAST:
+			{
+				if(showRoles() & showSubsetting()){
+					x = endpoint.getX() + marging;
+					y = endpoint.getY() - (3*labelHeight + marging);
+				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
+					x = endpoint.getX() + marging;								
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x = endpoint.getX() + marging;								
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}
+			case WEST:			
+			default:
+			{
+				//west
+				if(showRoles() & showSubsetting()){
+					x = endpoint.getX() - (labelWidth + marging);
+					y = endpoint.getY() - (3*labelHeight + marging);
+				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
+					x = endpoint.getX() - (labelWidth + marging);								
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x = endpoint.getX() - (labelWidth + marging);								
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}				
+		}
+		label.setAbsolutePos(x, y);
+	}
+	
+	/** Position subsetting label */
+	private void positionSubsettingLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext) 
+	{
+		Direction direction=null;		
+		if (endPointDiagramElement instanceof Node) direction = getPointDirection((Node)endPointDiagramElement, endpoint);
+		else if (endPointDiagramElement instanceof Connection) direction = getPointDirection((Connection)endPointDiagramElement, endpoint);
+		double labelHeight = label.getSize().getHeight(); 
+		double labelWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(label.getSource().getLabelText());
+		double x = 0, y = 0, marging = 10;		
+		switch (direction){
+			case NORTH:
+			{
+				if(showRoles()){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}
+			case SOUTH:
+			{
+				if(showRoles()){
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() + (labelHeight + marging);
+				}else{
+					x =	endpoint.getX() + marging;
+					y = endpoint.getY() + marging;
+				}
+				break;
+			}
+			case EAST:
+			{
+				if(showRoles()){
+					x = endpoint.getX() + marging;								
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x = endpoint.getX() + marging;								
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}
+			case WEST:			
+			default:
+			{
+				//west
+				if(showRoles()){
+					x = endpoint.getX() - (labelWidth + marging);								
+					y = endpoint.getY() - (2*labelHeight + marging);
+				}else{
+					x = endpoint.getX() - (labelWidth + marging);								
+					y = endpoint.getY() - (labelHeight + marging);
+				}
+				break;
+			}				
+		}
+		label.setAbsolutePos(x, y);
+	}
+	
+	/** Positions a label relative to an endpoint. */
+	private void positionLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext, boolean roleLabel) 
+	{
+		Direction direction=null;
+		if (endPointDiagramElement instanceof Node) direction = getPointDirection((Node)endPointDiagramElement, endpoint);
+		else if (endPointDiagramElement instanceof Connection) direction = getPointDirection((Connection)endPointDiagramElement, endpoint);
+		double labelHeight = label.getSize().getHeight(); 
+		double labelWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(label.getSource().getLabelText());
+		double x = 0, y = 0, marging = 10;				
+		switch (direction) {
+		case NORTH:
+		{
+			if(roleLabel) {
+				x =	endpoint.getX() + marging;
+				y = endpoint.getY() - labelHeight - marging;
+			}else{
+				x =	endpoint.getX() - labelWidth - marging;
+				y = endpoint.getY() - labelHeight - marging;
+			}
+			break;
+		}
+		case SOUTH:
+		{
+			if(roleLabel) {
+				x =	endpoint.getX() + marging;
+				y = endpoint.getY() + marging;
+			}else{
+				x =	endpoint.getX() - labelWidth - marging;
+				y = endpoint.getY() + marging;
+			}
+			break;
+		}
+		case EAST:
+		{
+			if(roleLabel){
+				x = endpoint.getX() + marging;
+				y = endpoint.getY() - labelHeight - marging;
+			}else{
+				x = endpoint.getX() + marging;
+				y = endpoint.getY() + marging;
+			}
+			break;
+		}
+		case WEST:
+		default:
+		{
+			if(roleLabel){
+				x = endpoint.getX() - labelWidth - marging;
+				y = endpoint.getY() - labelHeight - marging;
+			}else{
+				x = endpoint.getX() - labelWidth - marging;
+				y = endpoint.getY() + marging;
+			}
+			break;
+		}
+		}
+		label.setAbsolutePos(x, y);
+	}
+	
+	/** Sets the position for the name, stereotype and meta-properties label. */
+	private void positionNameLabel(DrawingContext drawingContext) 
+	{
+		int labelWidth=0;
+		if(showOntoUmlStereotype() && nameLabel.getTypeLabelText() != null){
+			int typeWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getTypeLabelText());
+			if(typeWidth> labelWidth) labelWidth = typeWidth;
+		}	
+		if(showName() && nameLabel.getNameLabelText() != null){
+			int nameWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getNameLabelText());
+			if(nameWidth> labelWidth) labelWidth = nameWidth;
+		}
+		if(showMetaProperties() && nameLabel.getMetaPropertyLabelText() != null){
+			int metaWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getMetaPropertyLabelText());
+			if(metaWidth> labelWidth) labelWidth = metaWidth;
+		}
+		// medium segment
+		List<Line2D> segments = getSegments();
+		if(segments.size()>0){
+			Line2D middleSegment = getMiddleSegment();
+			double x = (double) (middleSegment.getX2() + middleSegment.getX1() - labelWidth) / 2;
+			double y = (double) (middleSegment.getY2() + middleSegment.getY1())/2;
+			nameLabel.setAbsolutePos(x, y);			
+			nameLabel.setSegment(middleSegment);
+		}
 	}
 	
 //  /** If is allowable to move the labels, than we need to reposition the labels at every move in the association*/
@@ -423,522 +877,6 @@ public final class AssociationElement extends BaseConnection {
 //		multiplicity1Label.invalidate();
 //		multiplicity2Label.invalidate();		
 //	}
-	
-	/**
-	 * Sets the role label sources.
-	 */
-	private void setupRoleLabels() {
-		role1Label = new SimpleLabel();
-		role1Label.setSource(new LabelSource() {
-			
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 8971899878055731312L;
-
-			/**
-			 * {@inheritDoc}
-			 */
-			public String getLabelText() {
-				Association association = (Association) getRelationship();
-				String role = association.getMemberEnd().get(0).getName(); 
-				return role != null ? role : "";
-			}
-
-			/**
-			 * {@inheritDoc}
-			 */
-			public void setLabelText(String aText) { }
-		});
-
-		role2Label = new SimpleLabel();
-		role2Label.setSource(new LabelSource() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 6014955370882528767L;
-
-			/**
-			 * {@inheritDoc}
-			 */
-			public String getLabelText() {
-				Association association = (Association) getRelationship();
-				String role = association.getMemberEnd().get(1).getName();
-				return role != null ? role : "";
-			}
-
-			/**
-			 * {@inheritDoc}
-			 */
-			public void setLabelText(String aText) { }
-		});
-		
-	}
-	
-	/**
-	 * Returns the name label.
-	 * @return the name label
-	 */
-	public Label getNameLabel() { return nameLabel; }
-
-	/**
-	 * Returns the multiplicity label for element 1.
-	 * @return the multiplicity label for element 1
-	 */
-	public Label getMultiplicity1Label() { return multiplicity1Label; }
-
-	/**
-	 * Returns the multiplicity label for element 2.
-	 * @return the multiplicity label for element 2
-	 */
-	public Label getMultiplicity2Label() { return multiplicity2Label; }
-
-	/**
-	 * Returns the role label for element 1.
-	 * @return the role label for element 1
-	 */
-	public Label getRole1Label() { return role1Label; }
-
-	/**
-	 * Returns the role label for element 2.
-	 * @return the role label for element 2
-	 */
-	public Label getRole2Label() { return role2Label; }
-
-	public Label getSubsetting1Label() {return subset1Label; }
-	public Label getSubsetting2Label() {return subset2Label; }
-	
-	/**
-	 * Returns the AssociationType.
-	 * @return the AssociationType
-	 */
-	public RelationType getAssociationType() { return associationType; }
-
-	/**
-	 * Sets the AssociationType.
-	 * @param anAssociationType the AssociationType
-	 */
-	public void setAssociationType(RelationType anAssociationType) {
-		associationType = anAssociationType;
-	}
-
-	public Association getAssociation()
-	{
-		return (Association) getRelationship();
-	}
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setParent(CompositeNode parent) {//TODO Verificar se a connection usa esse composite node
-		super.setParent(parent);
-		multiplicity1Label.setParent(parent);
-		multiplicity2Label.setParent(parent);
-		role1Label.setParent(parent);
-		role2Label.setParent(parent);
-		if(subset1Label!=null)subset1Label.setParent(parent);
-		if(subset2Label!=null)subset2Label.setParent(parent);
-		if(redefine1Label!=null)redefine1Label.setParent(parent);
-		if(redefine2Label!=null)redefine2Label.setParent(parent);
-		nameLabel.setParent(parent);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void draw(DrawingContext drawingContext) {
-		super.draw(drawingContext);
-		
-		//Frist, draw the line
-		if (associationType == RelationType.DERIVATION) {
-			drawingContext.setStrokeType(StrokeType.DASHED_BOLD);
-		}
-		
-		//Then, draw decorations
-		if (associationType == RelationType.DERIVATION) {
-			
-			drawCircle(drawingContext, calculateRotationInEndPoint2(), true);
-		}
-
-		else if (associationType == RelationType.COMPONENTOF) {
-
-			if((Meronymic)getRelationship()!=null){
-				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), null);
-			}else{
-				Main.printErrLine("Trying to draw a memberOf decoration... null relationship!");
-			}
-		}
-		
-		else if (associationType == RelationType.MEMBEROF) {
-			if((Meronymic)getRelationship()!=null){
-				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "M");
-			}else{
-				Main.printErrLine("Trying to draw a memberOf decoration... null relationship!");
-			}
-		}
-
-		else if (associationType == RelationType.SUBQUANTITYOF) {
-			if((Meronymic)getRelationship()!=null){
-				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "Q");
-			}else{
-				System.err.println("Trying to draw a subQuantityOf decoration... null relationship!");
-			}
-		}
-
-		else if (associationType == RelationType.SUBCOLLECTIONOF) {
-			
-			if((Meronymic)getRelationship()!=null){
-				drawParthood(drawingContext, calculateRotationInEndPoint1(), ((Meronymic)getRelationship()).isIsShareable(), "C");
-			}else{
-				System.err.println("Trying to draw a subCollectionOf decoration... null relationship!");
-			}
-		}
-
-		//Then, draw navegability arrows and labels
-		drawNavigabilityArrows(drawingContext);
-		drawLabels(drawingContext);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Label getLabelAt(double xcoord, double ycoord) {
-		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@SuppressWarnings("unused")
-	private void drawRombus(DrawingContext drawingContext, AffineTransform rotationTransform, boolean filled) {
-		Point2D endpoint = getEndPoint1();
-		double x = endpoint.getX(), y = endpoint.getY();
-		GeneralPath rombus = new GeneralPath();
-		rombus.moveTo(x - 18, y);
-		rombus.lineTo(x - 9, y - 7);
-		rombus.lineTo(x, y);
-		rombus.lineTo(x - 9, y + 7);
-		rombus.closePath();
-		rombus.transform(rotationTransform);
-		Color fillColor = filled ? Color.BLACK : Color.WHITE;
-		drawingContext.draw(rombus, fillColor);
-	}
-
-	private void drawCircle(DrawingContext drawingContext,
-			AffineTransform rotationTransform, boolean filled) {
-
-		//The circle goes on the target
-		Point2D endpoint = getEndPoint2();
-		float x = (float) endpoint.getX(), y = (float) endpoint.getY();
-		Shape shape = new Ellipse2D.Float(x - 3.0f, y - 3.0f, 6.0f, 6.0f);
-		GeneralPath circle = new GeneralPath(shape);
-		circle.transform(rotationTransform);
-		Color fillColor = filled ? Color.BLACK : Color.WHITE;	
-		drawingContext.draw(circle, fillColor);
-	}
-
-	private void drawParthood(DrawingContext drawingContext, AffineTransform rotationTransform, boolean shareable, String content) {
-		Point2D endpoint = getEndPoint1();
-		double x = endpoint.getX(), y = endpoint.getY();
-		GeneralPath rombus = new GeneralPath();
-		rombus.moveTo(x - 18, y);
-		rombus.lineTo(x - 9, y - 7);
-		rombus.lineTo(x, y);
-		rombus.lineTo(x - 9, y + 7);
-		rombus.closePath();
-		rombus.transform(rotationTransform);
-		Color fillColor = shareable ? Color.WHITE : Color.BLACK;
-		Color fontColor = shareable ? Color.BLACK : Color.WHITE; //The opposite
-		if(content != null)
-			drawingContext.draw(rombus, fillColor, content.charAt(0), fontColor, FontType.SMALL);
-		else
-			drawingContext.draw(rombus, fillColor);
-	}
-
-	/**
-	 * Draws the navigability arrows.
-	 * @param drawingContext the DrawingContext
-	 */
-	private void drawNavigabilityArrows(DrawingContext drawingContext) {
-		
-		boolean navigableSource = getAssociation().getNavigableOwnedEnd().contains(getAssociation().getOwnedEnd().get(0));
-		boolean navigableTarget = getAssociation().getNavigableOwnedEnd().contains(getAssociation().getOwnedEnd().get(1));
-		
-		if(navigableSource ^ navigableTarget)
-		{
-			if (navigableSource) {
-				drawArrow(drawingContext, getEndPoint1(), calculateRotationInEndPoint1());
-			}
-			if (navigableTarget) {
-				drawArrow(drawingContext, getEndPoint2(), calculateRotationInEndPoint2());
-			}
-		}
-	}
-
-	/**
-	 * Draws the arrow.
-	 * @param drawingContext the drawing context
-	 * @param endpoint the end point to draw the arrow at
-	 * @param rotationTransform the rotation
-	 */
-	private void drawArrow(DrawingContext drawingContext, Point2D endpoint,
-			AffineTransform rotationTransform) {
-		new SimpleArrowTip().draw(drawingContext, endpoint, rotationTransform);
-	}
-
-	public int getSubset1Width(DrawingContext drawingContext)
-	{
-		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(subset1Label.getNameLabelText());
-	}
-
-	public int getSubset2Width(DrawingContext drawingContext)
-	{
-		return drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(subset2Label.getNameLabelText());
-	}
-	
-	/**
-	 * Draws the connection labels.
-	 * @param drawingContext the DrawingContext
-	 */
-	private void drawLabels(DrawingContext drawingContext) {
-		if (showMultiplicities) {			
-			if (getNode1()!=null && multiplicity1Label.getParent()!=null)
-				positionLabel(multiplicity1Label, getNode1(), getEndPoint1(), drawingContext, false);
-			else if (getNode1()==null && multiplicity1Label.getParent()!=null)
-				positionLabel(multiplicity1Label, getConnection1(), getEndPoint1(), drawingContext, false);
-			if (getNode2()!=null && multiplicity2Label.getParent()!=null)
-				positionLabel(multiplicity2Label, getNode2(), getEndPoint2(), drawingContext, false);
-			else if(getNode2()==null && multiplicity2Label.getParent()!=null)
-				positionLabel(multiplicity2Label, getConnection2(), getEndPoint2(), drawingContext, false);
-			multiplicity1Label.draw(drawingContext);
-			multiplicity2Label.draw(drawingContext);
-		}		
-		
-		if (getNode1()!=null){
-			if(role1Label!=null && showRoles) positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
-			if(subset1Label!=null && showSubsetting) positionSubsettingLabel(subset1Label, getNode1(), getEndPoint1(), drawingContext);			
-			if(redefine1Label!=null && showRedefining) positionRedefiningLabel(redefine1Label, getNode1(), getEndPoint1(), drawingContext);
-		}else{
-			if(role1Label!=null && showRoles) positionLabel(role1Label, getConnection1(), getEndPoint1(), drawingContext, true);
-			if(subset1Label!=null && showSubsetting) positionSubsettingLabel(subset1Label, getConnection1(), getEndPoint1(), drawingContext);
-			if(redefine1Label!=null && showRedefining) positionRedefiningLabel(redefine1Label, getNode1(), getEndPoint1(), drawingContext);
-		}
-		
-		if (getNode2()!=null){
-			if(role2Label!=null && showRoles) positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
-			if(subset2Label!=null && showSubsetting)positionSubsettingLabel(subset2Label, getNode2(), getEndPoint2(), drawingContext);
-			if(redefine2Label!=null && showRedefining) positionRedefiningLabel(redefine2Label, getNode1(), getEndPoint1(), drawingContext);
-		}else{
-			if(role2Label!=null && showRoles) positionLabel(role2Label, getConnection2(), getEndPoint2(), drawingContext, true);
-			if(subset2Label!=null && showSubsetting) positionSubsettingLabel(subset2Label, getConnection2(), getEndPoint2(), drawingContext);
-			if(redefine2Label!=null && showRedefining) positionRedefiningLabel(redefine2Label, getNode1(), getEndPoint1(), drawingContext);
-		}
-		
-		if(role2Label!=null && showRoles) role1Label.draw(drawingContext);
-		if(role2Label!=null && showRoles) role2Label.draw(drawingContext);		
-		if(subset1Label!=null && showSubsetting)subset1Label.draw(drawingContext);
-		if(subset2Label!=null && showSubsetting)subset2Label.draw(drawingContext);		
-		if(redefine1Label!=null && showRedefining)redefine1Label.draw(drawingContext);
-		if(redefine2Label!=null && showRedefining)redefine2Label.draw(drawingContext);
-		
-		positionNameLabel(drawingContext);		
-		nameLabel.draw(drawingContext);
-	}
-
-	private void positionRedefiningLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext) 
-	{
-		Direction direction=null;		
-		if (endPointDiagramElement instanceof Node) direction = getPointDirection((Node)endPointDiagramElement, endpoint);
-		else if (endPointDiagramElement instanceof Connection) direction = getPointDirection((Connection)endPointDiagramElement, endpoint);
-		double x = 0, y = 0, marging = 10;
-		double labelHeight = label.getSize().getHeight(); 
-		double labelWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(label.getSource().getLabelText());
-		switch (direction) {
-			case NORTH:{
-				if(showRoles() & showSubsetting()){
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() - (3*labelHeight + marging);
-				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() - (2*labelHeight + marging);
-				}else{
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() - (labelHeight + marging);
-				}
-				break;
-			}
-			case SOUTH:{
-				if(showRoles() & showSubsetting()){
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() + (2*labelHeight + marging);
-				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() + (labelHeight + marging);
-				}else{
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() + marging;
-				}
-				break;
-			}
-			case EAST:{
-				if(showRoles() & showSubsetting()){
-					x = endpoint.getX() + marging;
-					y = endpoint.getY() - (3*labelHeight + marging);
-				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
-					x = endpoint.getX() + marging;								
-					y = endpoint.getY() - (2*labelHeight + marging);
-				}else{
-					x = endpoint.getX() + marging;								
-					y = endpoint.getY() - (labelHeight + marging);
-				}
-				break;
-			}
-			case WEST:			
-			default:{
-				//west
-				if(showRoles() & showSubsetting()){
-					x = endpoint.getX() - (labelWidth + marging);
-					y = endpoint.getY() - (3*labelHeight + marging);
-				}else if((showRoles() && !showSubsetting())||(!showRoles() && showSubsetting())){
-					x = endpoint.getX() - (labelWidth + marging);								
-					y = endpoint.getY() - (2*labelHeight + marging);
-				}else{
-					x = endpoint.getX() - (labelWidth + marging);								
-					y = endpoint.getY() - (labelHeight + marging);
-				}
-				break;
-			}				
-		}
-		label.setAbsolutePos(x, y);
-	}
-	
-	private void positionSubsettingLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext) 
-	{
-		Direction direction=null;		
-		if (endPointDiagramElement instanceof Node) direction = getPointDirection((Node)endPointDiagramElement, endpoint);
-		else if (endPointDiagramElement instanceof Connection) direction = getPointDirection((Connection)endPointDiagramElement, endpoint);
-		double x = 0, y = 0, marging = 10;
-		double labelHeight = label.getSize().getHeight(); 
-		double labelWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(label.getSource().getLabelText());
-		switch (direction) {
-			case NORTH:{
-				if(showRoles()){
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() - (2*labelHeight + marging);
-				}else{
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() - (labelHeight + marging);
-				}
-				break;
-			}
-			case SOUTH:{
-				if(showRoles()){
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() + (labelHeight + marging);
-				}else{
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() + marging;
-				}
-				break;
-			}
-			case EAST:{
-				if(showRoles()){
-					x = endpoint.getX() + marging;								
-					y = endpoint.getY() - (2*labelHeight + marging);
-				}else{
-					x = endpoint.getX() + marging;								
-					y = endpoint.getY() - (labelHeight + marging);
-				}
-				break;
-			}
-			case WEST:			
-			default:{
-				//west
-				if(showRoles()){
-					x = endpoint.getX() - (labelWidth + marging);								
-					y = endpoint.getY() - (2*labelHeight + marging);
-				}else{
-					x = endpoint.getX() - (labelWidth + marging);								
-					y = endpoint.getY() - (labelHeight + marging);
-				}
-				break;
-			}				
-		}
-		label.setAbsolutePos(x, y);
-	}
-	
-	/**
-	 * Positions a label relative to an endpoint.
-	 * @param label the label
-	 * @param node the node
-	 * @param endpoint the end point
-	 */
-	private void positionLabel(Label label, Object endPointDiagramElement, Point2D endpoint, DrawingContext drawingContext, boolean roleLabel) {
-		Direction direction=null;
-		if (endPointDiagramElement instanceof Node)
-			direction = getPointDirection((Node)endPointDiagramElement, endpoint);
-		else if (endPointDiagramElement instanceof Connection)
-			direction = getPointDirection((Connection)endPointDiagramElement, endpoint);
-				
-		double x = 0, y = 0, marging = 10, labelHeight = label.getSize().getHeight(), 
-			labelWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(label.getSource().getLabelText());
-				
-		switch (direction) {
-			case NORTH:
-				if(roleLabel)
-				{
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() - labelHeight - marging;
-				}
-				else
-				{
-					x =	endpoint.getX() - labelWidth - marging;
-					y = endpoint.getY() - labelHeight - marging;
-				}
-				break;
-			case SOUTH:
-				if(roleLabel)
-				{
-					x =	endpoint.getX() + marging;
-					y = endpoint.getY() + marging;
-				}
-				else
-				{
-					x =	endpoint.getX() - labelWidth - marging;
-					y = endpoint.getY() + marging;
-				}
-				break;
-			case EAST:
-				if(roleLabel)
-				{
-					x = endpoint.getX() + marging;
-					y = endpoint.getY() - labelHeight - marging;
-				}
-				else
-				{
-					x = endpoint.getX() + marging;
-					y = endpoint.getY() + marging;
-				}
-				break;
-			case WEST:
-			default:
-				if(roleLabel)
-				{
-					x = endpoint.getX() - labelWidth - marging;
-					y = endpoint.getY() - labelHeight - marging;
-				}
-				else
-				{
-					x = endpoint.getX() - labelWidth - marging;
-					y = endpoint.getY() + marging;
-				}
-				break;
-		}
-		
-		label.setAbsolutePos(x, y);
-	}
 
 	@Override
 	public String toString()
@@ -953,82 +891,4 @@ public final class AssociationElement extends BaseConnection {
 		return "!UNKNOWN";
 	}
 	
-	/**
-	 * A direction of an end point relative to its connected node.
-	 */
-	private enum Direction  { NORTH, SOUTH, EAST, WEST }
-
-	/**
-	 * Determines the direction the point is relative to the node.
-	 * @param node the node
-	 * @param point the point
-	 * @return the direction
-	 */
-	private Direction getPointDirection(Node node, Point2D point) {
-		if (point.getX() >= node.getAbsoluteX2()) {
-			return Direction.EAST;
-		}
-		if (point.getX() <= node.getAbsoluteX1()) {
-			return Direction.WEST;
-		}
-		if (point.getY() <= node.getAbsoluteY1()) {
-			return Direction.NORTH;
-		}
-		return Direction.SOUTH;
-	}
-
-	/**
-	 * Determines the direction the point is relative to the node.
-	 * @param c the node
-	 * @param point the point
-	 * @return the direction
-	 */
-	private Direction getPointDirection(Connection c, Point2D point) {
-		if (point.getX() >= c.getAbsCenterX()) {
-			return Direction.EAST;
-		}
-		if (point.getX() <= c.getAbsCenterX()) {
-			return Direction.WEST;
-		}
-		if (point.getY() <= c.getAbsCenterY()) {
-			return Direction.NORTH;
-		}
-		return Direction.SOUTH;
-	}
-	
-	/**
-	 * Sets the position for the name label.
-	 */
-	private void positionNameLabel(DrawingContext drawingContext) {
-		int labelWidth=0;
-		if(showOntoUmlStereotype() && nameLabel.getTypeLabelText() != null){
-			int typeWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getTypeLabelText());
-			if(typeWidth> labelWidth) labelWidth = typeWidth;
-		}	
-		if(showName() && nameLabel.getNameLabelText() != null){
-			int nameWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getNameLabelText());
-			if(nameWidth> labelWidth) labelWidth = nameWidth;
-		}
-		if(showMetaProperties() && nameLabel.getMetaPropertyLabelText() != null){
-			int metaWidth = drawingContext.getFontMetrics(FontType.DEFAULT).stringWidth(nameLabel.getMetaPropertyLabelText());
-			if(metaWidth> labelWidth) labelWidth = metaWidth;
-		}
-		// medium segment
-		List<Line2D> segments = getSegments();
-		if(segments.size()>0){
-			Line2D middleSegment = getMiddleSegment();
-			double x = (double) (middleSegment.getX2() + middleSegment.getX1() - labelWidth) / 2;
-			double y = (double) (middleSegment.getY2() + middleSegment.getY1())/2;
-			nameLabel.setAbsolutePos(x, y);			
-			nameLabel.setSegment(middleSegment);
-		}
-	}
-
-	public void setReadingDesign(ReadingDesign direction) {
-		this.readingDesign = direction;		
-	}
-
-	public ReadingDesign getReadingDesign() {
-		return readingDesign;
-	}	
 }
