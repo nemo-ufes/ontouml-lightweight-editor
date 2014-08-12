@@ -50,6 +50,7 @@ import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
@@ -89,6 +90,7 @@ public class Transformer {
 	private OWLOntologyManager manager; 
 	private Map<Element, Object> owlMappings; 	//Keep track of the mapped items
 	private Map<Element, Set<String>> owlAnnotations; 	//Keep track of the elements' annotations 
+	private OntoUMLParser ontoParser;
 	
 	/**
 	 * Constructor for the transformer.
@@ -97,8 +99,9 @@ public class Transformer {
 	 * @throws OWLOntologyCreationException
 	 */
  	public Transformer(String ontologyIRI, Package model) throws OWLOntologyCreationException {
-		
+ 		
 		this.model = model;
+		ontoParser = new OntoUMLParser(model);
 		owlMappings = new HashMap<Element, Object>();
 		owlAnnotations = new HashMap<Element, Set<String>>();
 		
@@ -326,7 +329,11 @@ public class Transformer {
 		
 	private Object processClass(RefOntoUML.Class cls)
 	{
-		IRI clsIRI = IRI.create(ontologyIRI + "#" + cls.getName());
+		String clsName = cls.getName();
+		if(clsName != null){
+			clsName = clsName.replace(" ", "");
+		}
+		IRI clsIRI = IRI.create(ontologyIRI + "#" + clsName);
 		OWLClass ocls = manager.getOWLDataFactory().getOWLClass(clsIRI);
 		
 		owlMappings.put(cls, ocls);
@@ -356,10 +363,14 @@ public class Transformer {
 	{
  		//If the DataType has the same name as a a built-in DataType, such as string or int we assume it is a built-in DataType
  		//Otherwise, we treat it as a regular class or a multi-dimensional DataType
- 		OWLDatatype odty = getBuiltinType(dty.getName());
+ 		String dtyName = dty.getName();
+ 		if(dtyName != null){
+ 			dtyName = dtyName.replace(" ", "");
+ 		}
+ 		OWLDatatype odty = getBuiltinType(dtyName);
  		if(odty == null)
  		{
-			IRI dtyIRI = IRI.create(ontologyIRI + "#" + dty.getName());
+			IRI dtyIRI = IRI.create(ontologyIRI + "#" + dtyName);
 			OWLClass ocls = manager.getOWLDataFactory().getOWLClass(dtyIRI);
 			
 			owlMappings.put(dty, ocls);
@@ -474,7 +485,11 @@ public class Transformer {
 		//If the property is contained in a class, then it is a class attribute
 		if(clf instanceof ClassImpl)
 		{
-			propIRI = IRI.create(ontologyIRI + "#" + getOWLName(prp.getName()));
+			String propName = prp.getName();
+			if(propName != null){
+				propName = propName.replace(" ", "");
+			}
+			propIRI = IRI.create(ontologyIRI + "#" + getOWLName(propName));
 			
 			//The domain class is the class containing the property
 			dcls = (OWLClass) process(clf);
@@ -489,13 +504,19 @@ public class Transformer {
 			String name = prp.getName();
 			if(name == null)
 			{
+				String clfName = clf.getName();
+				if(clfName == null || clfName.trim().equals("")){
+					clfName = this.ontoParser.getAlias(clf);
+				}
 				//Check if it is a source or target inverse prop, naming accordingly
 				if(prp == ((Association) clf).getMemberEnd().get(0))
-					name = clf.getName();
+					name = clfName;
 				else
-					name = "inv" + capitalize(clf.getName());
+					name = "inv" + capitalize(clfName);
 			}
-			
+			if(name != null){
+				name = name.replace(" ", "");
+			}
 			propIRI = IRI.create(ontologyIRI + "#" + getOWLName(name));
 			
 			//Find the domain and range OWLClasses
@@ -632,18 +653,18 @@ public class Transformer {
 		OWLProperty trgOP = null;
 		
 		//Target navigable 
-		if(asc.getNavigableOwnedEnd().contains(trg))
-		{
+//		if(asc.getNavigableOwnedEnd().contains(trg))
+//		{
 			srcOP = (OWLProperty) process(src); 
 			ret.add(srcOP);
-		}
+//		}
 		
 		//Source navigable
-		if(asc.getNavigableOwnedEnd().contains(src))
-		{
+//		if(asc.getNavigableOwnedEnd().contains(src))
+//		{
 			trgOP = (OWLProperty) process(trg); 
 			ret.add(trgOP);
-		}
+//		}
 		
 		//Inverse axiom: no need for inverse axiom in DataType relations
 		if((srcOP != null && trgOP != null) 
@@ -917,7 +938,7 @@ public class Transformer {
 
 	private String getDefaultIRI(String name)
 	{
-		String ontologyName = name.replace(" ", "_");
+		String ontologyName = name.replace(" ", "");
 		
 		if(!ontologyName.endsWith(".owl"))
 			ontologyName += ".owl";
