@@ -78,6 +78,7 @@ import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
+import br.ufes.inf.nemo.oled.draw.DrawingContextImpl;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LabelChangeListener;
 import br.ufes.inf.nemo.oled.draw.LabelSource;
@@ -114,6 +115,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	private Label nameLabel = new SimpleLabel();
 	private UmlProject project;
 	private DiagramElementFactory elementFactory;
+	private DrawingContext drawingContext;
 	private List<SimulationElement> simulationElements = new ArrayList<SimulationElement>();
 
 	private transient boolean generateTheme = true;
@@ -197,12 +199,13 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	/**
 	 * Constructor.
 	 */
-	public StructureDiagram(UmlProject project, DiagramElementFactoryImpl elementFactory) {
+	public StructureDiagram(UmlProject project, DiagramElementFactoryImpl elementFactory, DrawingContext drawingContext) {
 		initializeNameLabel();		
 		this.project = project;
 		//setSize(AppFrame.GetScreenWorkingWidth(), AppFrame.GetScreenWorkingHeight());
 		simulationElements.add(getStateSimulationElement());
 		this.elementFactory = elementFactory;
+		this.drawingContext = drawingContext;
 	}
 
 	/**
@@ -237,6 +240,11 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		if(elementFactory==null) elementFactory = new DiagramElementFactoryImpl(this);
 		elementFactory.setDiagram(this);
 		return elementFactory;
+	}
+	
+	public DrawingContext getDrawingContext() {
+		if(drawingContext==null) drawingContext = new DrawingContextImpl();		
+		return drawingContext;
 	}
 	
 	@Override
@@ -410,7 +418,9 @@ public class StructureDiagram extends AbstractCompositeNode implements
 		
 		// Draw associations
 		for (Connection assoc : connections) 
-			assoc.draw(drawingContext);		
+		{			
+			assoc.draw(drawingContext);
+		}					
 	}
 
 	/**

@@ -71,7 +71,6 @@ import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.draw.DiagramOperations;
 import br.ufes.inf.nemo.oled.draw.DrawingContext;
 import br.ufes.inf.nemo.oled.draw.DrawingContext.FontType;
-import br.ufes.inf.nemo.oled.draw.DrawingContextImpl;
 import br.ufes.inf.nemo.oled.draw.Label;
 import br.ufes.inf.nemo.oled.draw.LineStyle;
 import br.ufes.inf.nemo.oled.draw.MoveOperation;
@@ -126,8 +125,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	private AppFrame frame;
 	private DiagramManager diagramManager;
 	private DiagramEditorWrapper wrapper;
-	
-	private transient DrawingContext drawingContext = new DrawingContextImpl();
+		
 	private transient EditorMode editorMode;
 	private transient SelectionHandler selectionHandler;
 	private transient CreationHandler creationHandler;
@@ -160,7 +158,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	// The command processor to hold this diagram's operations.
 	private UndoManager undoManager = new UndoManager();
 	
-	public DrawingContext getDrawingContext() { return drawingContext; }
+	public DrawingContext getDrawingContext() { return diagramManager.getDrawingContext(); }
 	
 	/**
 	 * Reset the transient values for serialization.
@@ -178,8 +176,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 * Initializes the transient editor members.
 	 */
 	private void initEditorMembers() 
-	{
-		drawingContext = new DrawingContextImpl();
+	{		
 		selectionHandler = new SelectionHandler(this);
 		creationHandler = new CreationHandler(this);
 		lineHandler = new LineHandler(this);
@@ -523,11 +520,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		int height = (int)(diagram.getSize().getHeight() + MARGIN_BOTTOM + MARGIN_TOP + ADDSCROLL_VERTICAL);		
 		bounds = new Rectangle((int)width,(int)height);
 		clearScreen(g, bounds, background);
-		drawingContext.setGraphics2D(g2d, bounds);				
-		diagram.draw(drawingContext);
+		getDrawingContext().setGraphics2D(g2d, bounds);				
+		diagram.draw(getDrawingContext());
 		// Draw user interface specific allElements (e.g. selections)
 		if (toScreen) {
-			editorMode.draw(drawingContext);
+			editorMode.draw(getDrawingContext());
 		}
 		restoreRenderingHints(g2d);
 		diagram.setGridVisible(gridVisible);
@@ -1754,7 +1751,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		{
 			if (label instanceof MultiLineLabel) 
 			{
-				multilineEditor.setFont(drawingContext.getFont(FontType.DEFAULT));
+				multilineEditor.setFont(getDrawingContext().getFont(FontType.DEFAULT));
 				multilineEditor.showEditor(label, getGraphics());
 			} else {
 				captionEditor.showEditor(label, getGraphics());				
