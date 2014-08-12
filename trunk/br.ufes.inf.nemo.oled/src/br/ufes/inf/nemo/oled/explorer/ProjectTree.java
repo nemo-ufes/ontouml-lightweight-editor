@@ -94,7 +94,7 @@ public class ProjectTree extends CheckboxTree {
 		setModel(treeModel);
 		
 		modelRootNode = new DefaultMutableTreeNode(new OntoUMLElement(project.getModel(),""));
-		StructureDiagram diagram = new StructureDiagram(project, frame.getDiagramManager().getElementFactory());
+		StructureDiagram diagram = new StructureDiagram(project, frame.getDiagramManager().getElementFactory(), frame.getDiagramManager().getDrawingContext());
 		diagram.setName("Diagrams");
 		diagramRootNode = new DefaultMutableTreeNode(diagram);		
 		OCLDocument rootOclDoc = new OCLDocument();

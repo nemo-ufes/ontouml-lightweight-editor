@@ -105,7 +105,7 @@ public final class AssociationElement extends BaseConnection {
 		setupTypeLabel();		
 		setupMetaPropertyLabel();
 		showMultiplicities = true;
-		showMetaProperties=true;
+		showMetaProperties=true;		
 	}
 	
 	/** {@inheritDoc} */
@@ -157,6 +157,61 @@ public final class AssociationElement extends BaseConnection {
 		if(localNameLabel!=null) localNameLabel.setParent(parent);
 		if(typeLabel!=null)typeLabel.setParent(parent);
 		if(metapropertyLabel!=null)metapropertyLabel.setParent(parent);
+	}
+	
+	/** Position properly all labels */
+	public void positionAllLabels(DrawingContext drawingContext )
+	{		
+		if (showMultiplicities) 
+		{			
+			if (getNode1()!=null && multiplicity1Label.getParent()!=null) positionLabel(multiplicity1Label, getNode1(), getEndPoint1(), drawingContext, false);
+			else if (getNode1()==null && multiplicity1Label.getParent()!=null) positionLabel(multiplicity1Label, getConnection1(), getEndPoint1(), drawingContext, false);
+			
+			if (getNode2()!=null && multiplicity2Label.getParent()!=null) positionLabel(multiplicity2Label, getNode2(), getEndPoint2(), drawingContext, false);
+			else if(getNode2()==null && multiplicity2Label.getParent()!=null) positionLabel(multiplicity2Label, getConnection2(), getEndPoint2(), drawingContext, false);			
+		}
+		if (getNode1()!=null)
+		{
+			if(role1Label!=null && showRoles) positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
+			if(subset1Label!=null && showSubsetting) positionSubsettingLabel(subset1Label, getNode1(), getEndPoint1(), drawingContext);			
+			if(redefine1Label!=null && showRedefining) positionRedefiningLabel(redefine1Label, getNode1(), getEndPoint1(), drawingContext);
+		}else{
+			if(role1Label!=null && showRoles) positionLabel(role1Label, getConnection1(), getEndPoint1(), drawingContext, true);
+			if(subset1Label!=null && showSubsetting) positionSubsettingLabel(subset1Label, getConnection1(), getEndPoint1(), drawingContext);
+			if(redefine1Label!=null && showRedefining) positionRedefiningLabel(redefine1Label, getNode1(), getEndPoint1(), drawingContext);
+		}
+		
+		if (getNode2()!=null){
+			if(role2Label!=null && showRoles) positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
+			if(subset2Label!=null && showSubsetting)positionSubsettingLabel(subset2Label, getNode2(), getEndPoint2(), drawingContext);
+			if(redefine2Label!=null && showRedefining) positionRedefiningLabel(redefine2Label, getNode1(), getEndPoint1(), drawingContext);
+		}else{
+			if(role2Label!=null && showRoles) positionLabel(role2Label, getConnection2(), getEndPoint2(), drawingContext, true);
+			if(subset2Label!=null && showSubsetting) positionSubsettingLabel(subset2Label, getConnection2(), getEndPoint2(), drawingContext);
+			if(redefine2Label!=null && showRedefining) positionRedefiningLabel(redefine2Label, getNode1(), getEndPoint1(), drawingContext);
+		}
+		
+		if(localNameLabel!=null && showName) positionLocalNameLabel(drawingContext);				
+		if(typeLabel!=null && showOntoUmlStereotype()) positionTypeLabel(drawingContext);
+		if(metapropertyLabel!=null && showMetaProperties) positionMetaPropertyLabel(drawingContext);	
+	}
+	
+	/** Draws the connection labels. */
+	private void drawLabels(DrawingContext drawingContext) 
+	{
+		positionAllLabels(drawingContext);
+		
+		if(multiplicity1Label != null && showMultiplicities) multiplicity1Label.draw(drawingContext);
+		if(multiplicity2Label != null && showMultiplicities) multiplicity2Label.draw(drawingContext);
+		if(role2Label!=null && showRoles) role1Label.draw(drawingContext);
+		if(role2Label!=null && showRoles) role2Label.draw(drawingContext);		
+		if(subset1Label!=null && showSubsetting)subset1Label.draw(drawingContext);
+		if(subset2Label!=null && showSubsetting)subset2Label.draw(drawingContext);		
+		if(redefine1Label!=null && showRedefining)redefine1Label.draw(drawingContext);
+		if(redefine2Label!=null && showRedefining)redefine2Label.draw(drawingContext);				
+		if(localNameLabel!=null && showName) localNameLabel.draw(drawingContext);
+		if(typeLabel!=null && showOntoUmlStereotype()) typeLabel.draw(drawingContext);
+		if(metapropertyLabel!=null && showMetaProperties) metapropertyLabel.draw(drawingContext);
 	}
 	
 	/** Sets the multiplicity label sources. */
@@ -678,58 +733,6 @@ public final class AssociationElement extends BaseConnection {
 		new SimpleArrowTip().draw(drawingContext, endpoint, rotationTransform);
 	}
 	
-	/** Draws the connection labels. */
-	private void drawLabels(DrawingContext drawingContext) 
-	{
-		if (showMultiplicities) 
-		{			
-			if (getNode1()!=null && multiplicity1Label.getParent()!=null) positionLabel(multiplicity1Label, getNode1(), getEndPoint1(), drawingContext, false);
-			else if (getNode1()==null && multiplicity1Label.getParent()!=null) positionLabel(multiplicity1Label, getConnection1(), getEndPoint1(), drawingContext, false);
-			
-			if (getNode2()!=null && multiplicity2Label.getParent()!=null) positionLabel(multiplicity2Label, getNode2(), getEndPoint2(), drawingContext, false);
-			else if(getNode2()==null && multiplicity2Label.getParent()!=null) positionLabel(multiplicity2Label, getConnection2(), getEndPoint2(), drawingContext, false);
-			
-			multiplicity1Label.draw(drawingContext);
-			multiplicity2Label.draw(drawingContext);
-		}		
-		
-		if (getNode1()!=null)
-		{
-			if(role1Label!=null && showRoles) positionLabel(role1Label, getNode1(), getEndPoint1(), drawingContext, true);
-			if(subset1Label!=null && showSubsetting) positionSubsettingLabel(subset1Label, getNode1(), getEndPoint1(), drawingContext);			
-			if(redefine1Label!=null && showRedefining) positionRedefiningLabel(redefine1Label, getNode1(), getEndPoint1(), drawingContext);
-		}else{
-			if(role1Label!=null && showRoles) positionLabel(role1Label, getConnection1(), getEndPoint1(), drawingContext, true);
-			if(subset1Label!=null && showSubsetting) positionSubsettingLabel(subset1Label, getConnection1(), getEndPoint1(), drawingContext);
-			if(redefine1Label!=null && showRedefining) positionRedefiningLabel(redefine1Label, getNode1(), getEndPoint1(), drawingContext);
-		}
-		
-		if (getNode2()!=null){
-			if(role2Label!=null && showRoles) positionLabel(role2Label, getNode2(), getEndPoint2(), drawingContext, true);
-			if(subset2Label!=null && showSubsetting)positionSubsettingLabel(subset2Label, getNode2(), getEndPoint2(), drawingContext);
-			if(redefine2Label!=null && showRedefining) positionRedefiningLabel(redefine2Label, getNode1(), getEndPoint1(), drawingContext);
-		}else{
-			if(role2Label!=null && showRoles) positionLabel(role2Label, getConnection2(), getEndPoint2(), drawingContext, true);
-			if(subset2Label!=null && showSubsetting) positionSubsettingLabel(subset2Label, getConnection2(), getEndPoint2(), drawingContext);
-			if(redefine2Label!=null && showRedefining) positionRedefiningLabel(redefine2Label, getNode1(), getEndPoint1(), drawingContext);
-		}
-		
-		if(role2Label!=null && showRoles) role1Label.draw(drawingContext);
-		if(role2Label!=null && showRoles) role2Label.draw(drawingContext);		
-		if(subset1Label!=null && showSubsetting)subset1Label.draw(drawingContext);
-		if(subset2Label!=null && showSubsetting)subset2Label.draw(drawingContext);		
-		if(redefine1Label!=null && showRedefining)redefine1Label.draw(drawingContext);
-		if(redefine2Label!=null && showRedefining)redefine2Label.draw(drawingContext);
-		
-		if(localNameLabel!=null && showName) positionLocalNameLabel(drawingContext);				
-		if(typeLabel!=null && showOntoUmlStereotype()) positionTypeLabel(drawingContext);
-		if(metapropertyLabel!=null && showMetaProperties) positionMetaPropertyLabel(drawingContext);
-		
-		if(localNameLabel!=null && showName) localNameLabel.draw(drawingContext);
-		if(typeLabel!=null && showOntoUmlStereotype()) typeLabel.draw(drawingContext);
-		if(metapropertyLabel!=null && showMetaProperties) metapropertyLabel.draw(drawingContext);
-	}
-
 	/** Draws the direction triangle. */
 	private void drawDirection(DrawingContext drawingContext) 
 	{		

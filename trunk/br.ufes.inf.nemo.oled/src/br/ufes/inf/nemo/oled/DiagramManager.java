@@ -94,6 +94,8 @@ import br.ufes.inf.nemo.oled.dialog.AlloySettingsDialog;
 import br.ufes.inf.nemo.oled.dialog.ImportXMIDialog;
 import br.ufes.inf.nemo.oled.dialog.OWLSettingsDialog;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.draw.DrawingContext;
+import br.ufes.inf.nemo.oled.draw.DrawingContextImpl;
 import br.ufes.inf.nemo.oled.draw.LineStyle;
 import br.ufes.inf.nemo.oled.draw.Node;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
@@ -178,8 +180,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 	private static final long serialVersionUID = 5019191384767258996L;
 	public final AppFrame frame;
+	
 	private DiagramEditorCommandDispatcher editorDispatcher;
 	private DiagramElementFactoryImpl elementFactory;
+	private DrawingContext drawingContext;
+	
 	private UmlProject currentProject;
 	private File projectFile;
 	public String lastOpenPath = new String();
@@ -193,7 +198,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public AppFrame getFrame() { return frame; }
 	/** Get Factory */
 	public DiagramElementFactoryImpl getElementFactory() { return elementFactory; }
-
+	/** Get drawing context */
+	public DrawingContext getDrawingContext() { return drawingContext; }
+	
 	/**
 	 * Constructor for the DiagramManager class.
 	 * @param frame the parent window {@link AppFrame}
@@ -204,6 +211,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		this.frame = frame;		
 		editorDispatcher = new DiagramEditorCommandDispatcher(this,frame);
 		elementFactory = new DiagramElementFactoryImpl(null); //doesn't have yet any diagram
+		drawingContext =  new DrawingContextImpl();
 		ModelHelper.initializeHelper();		
 		setBorder(new EmptyBorder(0,0,0,0));		
 		setBackground(Color.white);
@@ -677,7 +685,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** Creates a new Diagram with in existing Project */
 	public void newDiagram(UmlProject project)
 	{
-		StructureDiagram diagram = new StructureDiagram(project,elementFactory);	
+		StructureDiagram diagram = new StructureDiagram(project,elementFactory,drawingContext);	
 		setDefaultDiagramSize(diagram);
 		diagram.setLabelText("Diagram"+getCurrentProject().getDiagrams().size());
 		getCurrentProject().addDiagram(diagram);
@@ -706,7 +714,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		if (currentProject!=null)
 		{
-			StructureDiagram diagram = new StructureDiagram(getCurrentProject(), elementFactory);
+			StructureDiagram diagram = new StructureDiagram(getCurrentProject(), elementFactory,drawingContext);
 			setDefaultDiagramSize(diagram);
 			diagram.setLabelText("Diagram"+getCurrentProject().getDiagrams().size());
 			getCurrentProject().addDiagram(diagram);						
@@ -3108,5 +3116,5 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void deriveByParticipation() {
 		// TODO Auto-generated method stub
 		
-	}
+	}	
 }
