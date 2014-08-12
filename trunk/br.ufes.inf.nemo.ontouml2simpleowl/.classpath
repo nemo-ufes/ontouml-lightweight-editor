@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-helios/org.eclipse.emf.ecore.xmi_2.5.0.v20100521-1846.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2temporalowl"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.common"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
