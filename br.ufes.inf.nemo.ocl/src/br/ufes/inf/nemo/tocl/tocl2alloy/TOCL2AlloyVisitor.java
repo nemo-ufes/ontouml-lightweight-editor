@@ -17,6 +17,7 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 	protected int temp_counter = 0;	
 	protected int oclIsKindOf_counter=0;
 	protected int oclIsTypeOf_counter=0;
+	protected int oclIsNew_counter=0;
 	
 	public TOCL2AlloyVisitor(TOCLParser oclparser, OntoUMLParser refparser, TOCL2AlloyOption opt) 
 	{
@@ -61,10 +62,14 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 			if(operName.equals("next")) { return "("+sourceResult+".next)"; }
 			if(operName.equals("previous")) { return "(next."+sourceResult+")"; }			
 			if(operName.equals("isOrigin")) { return "(no next."+sourceResult+")"; }
-			if(operName.equals("isTerminal")) { return "(no "+sourceResult+".next)"; }
-			if(operName.equals("oclIsNew")) { return "(some w: World | "+sourceResult+" in w.exists and "+sourceResult+" !in (next.w).exists)"; }
+			if(operName.equals("isTerminal")) { return "(no "+sourceResult+".next)"; }			
 			if(operName.equals("paths")) { return "Path["+sourceResult+"]"; }
 			if(operName.equals("worlds")) { return "((^next."+sourceResult+")+"+sourceResult+")"; }
+			if(operName.equals("oclIsNew")) { 
+				String worldParam = ((TOCLParser)oclparser).getOclIsNewWorldParam(oclIsNew_counter);
+				oclIsNew_counter++;					
+				return sourceResult+" in "+worldParam+".exists and "+sourceResult+" !in (next."+worldParam+").exists)"; 
+			}
 	        for (java.util.Iterator<String> iter = argumentsResult.iterator(); iter.hasNext();) 
 	        {
 				String argument = iter.next();
@@ -89,7 +94,7 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 					String worldParam = ((TOCLParser)oclparser).getOclIsTypeOfWorldParam(oclIsTypeOf_counter);
 					oclIsTypeOf_counter++;
 					return super.visitOclIsTypeOf(sourceResult, argument, worldParam);		
-				}
+				}				
 	        }	        
 			if(operName.equals("allPrevious")) { return "(^next."+sourceResult+")"; }
 			if(operName.equals("allNext")) { return "("+sourceResult+".^next)"; }			

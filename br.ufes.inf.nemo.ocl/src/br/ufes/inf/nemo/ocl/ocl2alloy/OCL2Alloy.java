@@ -31,15 +31,15 @@ public class OCL2Alloy {
 				result += myVisitor.visitConstraint(ct);		
 				succeeds = true;				
 			}catch(IteratorException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(LiteralException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(OperationException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(StereotypeException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(TypeException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
+				log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
 			}			
 		}		
 		if (myVisitor.getLibrary()!=null && !myVisitor.getLibrary().isEmpty()) result += myVisitor.getLibrary();		
@@ -58,15 +58,15 @@ public class OCL2Alloy {
 				result += myVisitor.visitConstraint(ct);				
 				succeeds = true;				
 			}catch(IteratorException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(LiteralException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(OperationException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(StereotypeException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(TypeException e){
-				log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
+				log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
 			}			
 		}				
 		if (myVisitor.getLibrary()!=null && !myVisitor.getLibrary().isEmpty()) result += myVisitor.getLibrary();		
@@ -92,15 +92,15 @@ public class OCL2Alloy {
 		try{						
 			result += myVisitor.visitConstraint(ct); succeeds = true;						
 		}catch(IteratorException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(LiteralException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(OperationException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(StereotypeException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(TypeException e){
-			log += "Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
+			log += "Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
 		}				
 		if (myVisitor.getLibrary()!=null && !myVisitor.getLibrary().isEmpty()) result += myVisitor.getLibrary();		
 		return result;

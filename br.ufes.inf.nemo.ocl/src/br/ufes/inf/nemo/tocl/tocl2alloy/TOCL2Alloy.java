@@ -27,15 +27,15 @@ public class TOCL2Alloy {
 				result += myVisitor.visitConstraint(ct);		
 				succeeds = true;				
 			}catch(IteratorException e){
-				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(LiteralException e){
-				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(OperationException e){
-				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(StereotypeException e){
-				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(TypeException e){
-				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
+				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
 			}			
 		}		
 		if (myVisitor.getLibrary()!=null && !myVisitor.getLibrary().isEmpty()) result += myVisitor.getLibrary();		
@@ -54,15 +54,15 @@ public class TOCL2Alloy {
 				result += myVisitor.visitConstraint(ct);				
 				succeeds = true;				
 			}catch(IteratorException e){
-				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(LiteralException e){
-				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(OperationException e){
-				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(StereotypeException e){
-				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
+				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
 			}catch(TypeException e){
-				log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
+				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
 			}			
 		}				
 		if (myVisitor.getLibrary()!=null && !myVisitor.getLibrary().isEmpty()) result += myVisitor.getLibrary();		
@@ -88,15 +88,15 @@ public class TOCL2Alloy {
 		try{						
 			result += myVisitor.visitConstraint(ct); succeeds = true;						
 		}catch(IteratorException e){
-			log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(LiteralException e){
-			log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(OperationException e){
-			log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(StereotypeException e){
-			log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
+			log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(TypeException e){
-			log += "Temporal Constraint: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
+			log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 
 		}				
 		if (myVisitor.getLibrary()!=null && !myVisitor.getLibrary().isEmpty()) result += myVisitor.getLibrary();		
 		return result;
