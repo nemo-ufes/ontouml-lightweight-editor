@@ -14,13 +14,12 @@ import org.eclipse.uml2.uml.EnumerationLiteral;
  *
  */
 
-public class UMLElementConverter {
+public class ElementConverter {
 		
 	public org.eclipse.uml2.uml.UMLFactory ufactory;	
     public HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap;
- 
-    
-	public UMLElementConverter()
+     
+	public ElementConverter()
     {
 		ufactory = org.eclipse.uml2.uml.UMLFactory.eINSTANCE;
         umap = new HashMap<RefOntoUML.Element, org.eclipse.uml2.uml.Element>();
