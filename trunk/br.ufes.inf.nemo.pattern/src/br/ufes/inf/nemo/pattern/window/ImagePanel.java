@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window;
+package br.ufes.inf.nemo.pattern.window;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ImagePanel extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6317159488424565296L;
 
 	public enum PatternType {
 		RelatorCreation,SubkindCreation,RoleMixinPattern,PrincipleIdentity, GeneralizationAndSpecialization_Sukind, GeneralizationAndSpecialization_Role, GeneralizationAndSpecialization_Category, GeneralizationAndSpecialization_Mixin, GeneralizationAndSpecialization_RoleMixin, PartitionPattern_Sortal, PartitionPattern_Rigid, AddSupertype_SubstanceSortal, AddSupertype_Subkind, AddSupertype_Role, AddSupertype_Category, AddSupertype_Mixin, AddSupertype_RoleMixin

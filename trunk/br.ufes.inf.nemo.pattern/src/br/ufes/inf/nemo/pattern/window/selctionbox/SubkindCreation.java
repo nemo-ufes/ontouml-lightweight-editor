@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window.selctionbox;
+package br.ufes.inf.nemo.pattern.window.selctionbox;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Set;

@@ -1,14 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window.selctionbox;
-import javax.swing.JPanel;
-
-import RefOntoUML.Association;
-import RefOntoUML.Classifier;
-import RefOntoUML.Package;
-import RefOntoUML.Property;
-import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+package br.ufes.inf.nemo.pattern.window.selctionbox;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RoleCreation extends ClassSelectionPanel {
@@ -80,6 +70,11 @@ public class RoleCreation extends ClassSelectionPanel {
 //		return fix;
 //
 //	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5449821183928706077L;
 
 	@Override
 	public void getRunPattern(double x, double y) {

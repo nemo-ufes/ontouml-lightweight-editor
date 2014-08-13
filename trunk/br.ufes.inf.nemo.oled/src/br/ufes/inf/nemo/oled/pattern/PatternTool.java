@@ -36,16 +36,6 @@ import RefOntoUML.RoleMixin;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
-import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel;
-import br.ufes.inf.nemo.assistant.pattern.window.ImagePanel.PatternType;
-import br.ufes.inf.nemo.assistant.pattern.window.PatternAbstractWindowAssistant;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.design.AddSupertype;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.design.RelatorCreation;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.design.RoleMixinPattern;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language.GeneralizationAndSpecializationPattern;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language.PartitionPattern;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language.PrincipleIdentiy;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.oled.AppFrame;
@@ -53,6 +43,16 @@ import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.pattern.window.ImagePanel;
+import br.ufes.inf.nemo.pattern.window.ImagePanel.PatternType;
+import br.ufes.inf.nemo.pattern.window.PatternAbstractWindowAssistant;
+import br.ufes.inf.nemo.pattern.window.selctionbox.ClassSelectionPanel;
+import br.ufes.inf.nemo.pattern.window.selctionbox.design.AddSupertype;
+import br.ufes.inf.nemo.pattern.window.selctionbox.design.RelatorCreation;
+import br.ufes.inf.nemo.pattern.window.selctionbox.design.RoleMixinPattern;
+import br.ufes.inf.nemo.pattern.window.selctionbox.language.GeneralizationAndSpecializationPattern;
+import br.ufes.inf.nemo.pattern.window.selctionbox.language.PartitionPattern;
+import br.ufes.inf.nemo.pattern.window.selctionbox.language.PrincipleIdentiy;
 
 /**
  * @author Victor Amorim

@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window.selctionbox;
+package br.ufes.inf.nemo.pattern.window.selctionbox;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +8,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class PatternHelpPage extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7662308372204588521L;
 
 	public PatternHelpPage() {
 		getContentPane().setLayout(null);

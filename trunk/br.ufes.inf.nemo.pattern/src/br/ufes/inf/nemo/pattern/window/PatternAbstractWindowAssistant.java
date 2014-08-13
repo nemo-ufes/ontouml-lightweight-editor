@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window;
+package br.ufes.inf.nemo.pattern.window;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
+import br.ufes.inf.nemo.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 
 public class PatternAbstractWindowAssistant extends JDialog {
