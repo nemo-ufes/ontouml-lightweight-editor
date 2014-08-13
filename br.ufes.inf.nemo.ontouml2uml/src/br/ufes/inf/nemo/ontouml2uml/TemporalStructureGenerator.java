@@ -77,14 +77,16 @@ public class TemporalStructureGenerator {
 		createWorldAccessibilityRelation(umlWorld);
 		
 		org.eclipse.uml2.uml.Class umlTimePath = createPathStructure(umlWorld, umlRoot);				
+		
 		createWorldOperations(umlWorld,umlTimePath,umlIndividual);		
+		
 		createPathOperations(umlWorld,umlTimePath);
 		
-		createTopLevelExistenceOperations(umlWorld, classes);	
-		
-		createTopLevelAllInstancesOperation(umlWorld, classes);
-		
-		createOclIsNewOperation(umlWorld,classes);
+		ArrayList<Classifier> list = new ArrayList<Classifier>();
+		list.add(umlIndividual);
+		createTopLevelExistenceOperations(umlWorld, list);		
+		createTopLevelAllInstancesOperation(umlWorld, list);		
+		createOclIsNewOperation(umlWorld,list);
 		
 		createTemporalAttributeAccessOperations(umlWorld, attributes);
 
@@ -118,8 +120,12 @@ public class TemporalStructureGenerator {
 			gen.setGeneral(umlIndividual);
 			gen.setSpecific(c);
 			gens.add(gen);
-			gen.getGeneralizationSets().add(genSet);
+			gen.getGeneralizationSets().add(genSet);	
+			
+			outln(gen);
 		}
+		
+		outln(genSet);
 		
 		genSet.getGeneralizations().addAll(gens);
 		return umlIndividual;
@@ -143,13 +149,7 @@ public class TemporalStructureGenerator {
 				org.eclipse.uml2.uml.Class class_ = ((org.eclipse.uml2.uml.Class)c);				
 				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("existsIn", parameters, typeParameters, pt);
 				outln(op);								
-			}
-			if (c instanceof org.eclipse.uml2.uml.DataType && !(c instanceof org.eclipse.uml2.uml.PrimitiveType) && !(c instanceof org.eclipse.uml2.uml.Enumeration))
-			{
-				org.eclipse.uml2.uml.DataType class_ = ((org.eclipse.uml2.uml.DataType)c);				
-				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("existsIn", parameters, typeParameters, pt);
-				outln(op);				
-			}
+			}			
 		}
 	}
 	
@@ -170,13 +170,7 @@ public class TemporalStructureGenerator {
 				org.eclipse.uml2.uml.Class class_ = ((org.eclipse.uml2.uml.Class)c);				
 				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("oclIsNew", parameters, typeParameters, pt);
 				outln(op);
-			}
-			if (c instanceof org.eclipse.uml2.uml.DataType && !(c instanceof org.eclipse.uml2.uml.PrimitiveType) && !(c instanceof org.eclipse.uml2.uml.Enumeration))
-			{
-				org.eclipse.uml2.uml.DataType class_ = ((org.eclipse.uml2.uml.DataType)c);				
-				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("oclIsNew", parameters, typeParameters, pt);
-				outln(op);
-			}
+			}			
 		}
 	}
 	
@@ -198,15 +192,6 @@ public class TemporalStructureGenerator {
 				op.setUpper(-1);
 				op.setIsStatic(true);
 				outln(op);				
-			}
-			if (c instanceof org.eclipse.uml2.uml.DataType && !(c instanceof org.eclipse.uml2.uml.PrimitiveType) && !(c instanceof org.eclipse.uml2.uml.Enumeration))
-			{
-				org.eclipse.uml2.uml.DataType class_ = ((org.eclipse.uml2.uml.DataType)c);				
-				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("allInstances", parameters, typeParameters, class_);
-				op.setLower(0);
-				op.setUpper(-1);
-				op.setIsStatic(true);
-				outln(op);
 			}
 		}
 	}
@@ -449,6 +434,11 @@ public class TemporalStructureGenerator {
         out("isCovering="+genSet.isCovering()+", isDisjoint="+genSet.isDisjoint()+"\n");
 	}
 	
+	public void outln(org.eclipse.uml2.uml.Generalization genCurrent)
+	{
+		outln("UML:Generalization :: "+genCurrent.getSpecific().getName()+"->"+genCurrent.getGeneral().getName());
+	}
+	
 	public void outln(org.eclipse.uml2.uml.Association association)
 	{		
 		org.eclipse.uml2.uml.Property p1 = association.getMemberEnds().get(0);
@@ -472,7 +462,9 @@ public class TemporalStructureGenerator {
 		{
 			if (pe instanceof org.eclipse.uml2.uml.Type){
 				org.eclipse.uml2.uml.Classifier type = (org.eclipse.uml2.uml.Classifier)pe;
-				if (type.getGeneralizations().size()==0) result.add(type);
+				if (type.getGeneralizations().size()==0) {
+					if(type instanceof org.eclipse.uml2.uml.Class) result.add(type);				
+				}
 			}
 			if (pe instanceof org.eclipse.uml2.uml.Package){
 				getTopLevelTypes((org.eclipse.uml2.uml.Package)pe,result);
