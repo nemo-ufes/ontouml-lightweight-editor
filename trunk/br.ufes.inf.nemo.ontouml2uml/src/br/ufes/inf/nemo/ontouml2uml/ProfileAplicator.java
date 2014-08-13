@@ -85,7 +85,7 @@ public class ProfileAplicator {
 		URL umlProfileUrl = ClassLoader.getSystemResource("profiles/UML2.profile.uml");
 		if(umlProfileUrl == null){
 			try {
-				umlProfileUrl = new URL("rsrc:"+"org.eclipse.uml2.uml.resources_4.0.2.v20130114-0902.jar");
+				umlProfileUrl = new URL("rsrc:"+"org.eclipse.uml2.uml.resources_3.1.1.v201008191505.jar");
 			} catch (MalformedURLException e) {			
 				e.printStackTrace();
 			}
