@@ -13,37 +13,37 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
  *
  */
 
-public class UMLTransformator {
+public class Transformator {
 	
 	private OntoUMLParser refparser;
-	private UMLElementConverter uconverter;		
+	private ElementConverter uconverter;		
 	private org.eclipse.uml2.uml.Package umlRootModel;
-	
+		
 	private HashMap <RefOntoUML.Package,org.eclipse.uml2.uml.Package> packagesMap;
 	private OntoUML2UMLOption options;
-	
-	public UMLTransformator(OntoUMLParser refparser, OntoUML2UMLOption opt)  
+		
+	public Transformator(OntoUMLParser refparser, OntoUML2UMLOption opt)  
     { 
 		this.refparser = refparser;
 		this.options=opt;
-    	uconverter = new UMLElementConverter();  
+    	uconverter = new ElementConverter();  
     	packagesMap = new HashMap<RefOntoUML.Package,org.eclipse.uml2.uml.Package>(); 
     }
 
-	public UMLElementConverter getConverter()
+	public ElementConverter getConverter()
 	{
 		return uconverter;
 	}
 	
 	public org.eclipse.uml2.uml.Package run ()
     {
-		UMLElementConverter.outln("Translating OntoUML into pure UML...");
+		ElementConverter.outln("Translating OntoUML into pure UML...");
 		
         umlRootModel = org.eclipse.uml2.uml.UMLFactory.eINSTANCE.createPackage();                
         uconverter.DealNamedElement((RefOntoUML.NamedElement) refparser.getModel(), (org.eclipse.uml2.uml.NamedElement) umlRootModel);
         uconverter.RelateElements((RefOntoUML.Element) refparser.getModel(), (org.eclipse.uml2.uml.Element) umlRootModel);        
         packagesMap.put(refparser.getModel(), umlRootModel);
-                
+        
         TransformingPackages(refparser.getModel(),umlRootModel);   
 
         TransformingPrimitiveTypes();        
@@ -62,11 +62,11 @@ public class UMLTransformator {
 
         TransformingGeneralizationSets();
             
-        UMLElementConverter.outln("Pure UML translation finished.");
+        ElementConverter.outln("Pure UML translation finished.");
         
         return umlRootModel;
     }
-		
+	
 	/** Packages */
     private void TransformingPackages (RefOntoUML.Package refmodel, org.eclipse.uml2.uml.Package umlmodel)
     {               

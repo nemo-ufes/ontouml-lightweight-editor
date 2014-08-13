@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ontouml2uml;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,14 +25,16 @@ public class OntoUML2UML {
 		 	  		
 	public static String log = new String();
 	private static OntoUML2UMLOption options = new OntoUML2UMLOption();	
-	private static UMLTransformator utransformer;		
+	private static Transformator utransformer;		
 	private static org.eclipse.uml2.uml.Package umlRoot;
 	private static String umlPath = new String();
 	
-	private static UMLTemporalGenerator tgenerator; 
+	private static TemporalStructureGenerator tgenerator; 
+	private static ProfileAplicator profileApplicator;
 	
-	public static org.eclipse.uml2.uml.Package getRoot() { return umlRoot; }
-	public static String getUmlPath() { return umlPath; }
+	//*****************************
+	//Pure UML
+	//*****************************
 	
 	public static Resource convertToUML (RefOntoUML.Package refmodel, String umlPath)
 	{
@@ -42,6 +45,123 @@ public class OntoUML2UML {
 	{
 		return convertToUML(refparser, umlPath, options);
 	}
+		
+	public static Resource convertToUML (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt)
+	{
+		log="";
+		options=opt;
+		Resource umlResource = null;
+		
+		OntoUMLParser refparser = new OntoUMLParser(refmodel);
+		
+		utransformer = new Transformator(refparser,opt);			  
+		org.eclipse.uml2.uml.Package umlmodel = utransformer.run();	
+   		   
+		OntoUML2UML.umlPath=umlPath;
+		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlmodel);		   
+		return umlResource;
+	}
+	
+	public static org.eclipse.uml2.uml.Package convertToUMLNoSaving (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt)
+	{
+		log="";
+		options=opt;
+		
+		OntoUMLParser refparser = new OntoUMLParser(refmodel);
+		
+		utransformer = new Transformator(refparser,opt);			  
+		org.eclipse.uml2.uml.Package umlmodel = utransformer.run();	
+   		   
+		OntoUML2UML.umlPath=umlPath;				   
+		return umlmodel;
+	}
+	
+	public static Resource convertToUML (OntoUMLParser refparser, String umlPath, OntoUML2UMLOption opt)
+	{
+		log="";
+		options=opt;
+		Resource umlResource = null;
+		
+		utransformer = new Transformator(refparser,opt);			  
+		org.eclipse.uml2.uml.Package umlmodel = utransformer.run();	
+   		   
+		OntoUML2UML.umlPath=umlPath;
+		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlmodel);		   
+		return umlResource;
+	}	
+	
+	public static org.eclipse.uml2.uml.Package convertToUMLNoSaving (OntoUMLParser refparser, String umlPath, OntoUML2UMLOption opt)
+	{
+		log="";
+		options=opt;
+		
+		utransformer = new Transformator(refparser,opt);			  
+		org.eclipse.uml2.uml.Package umlmodel = utransformer.run();	
+   		   
+		OntoUML2UML.umlPath=umlPath;				   
+		return umlmodel;
+	}	
+		
+	//*****************************
+	//UML Profile
+	//*****************************
+
+	public static Resource convertToUMLProfile (OntoUMLParser refparser, String umlPath)
+	{
+		return convertToUMLProfile(refparser, umlPath, options);
+	}
+	
+	public static Resource convertToUMLProfile (RefOntoUML.Package refmodel, String umlPath)
+	{
+		return convertToUMLProfile(refmodel, umlPath, options);
+	}
+	
+	public static void turnIntoUMLProfile(org.eclipse.uml2.uml.Package umlRoot, String umlPath)
+	{	
+		profileApplicator = new ProfileAplicator(umlRoot, umlPath, utransformer.getConverter().umap);
+		profileApplicator.apply();
+		try {
+			profileApplicator.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static Resource convertToUMLProfile (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt)
+	{		
+		umlRoot = convertToUMLNoSaving(refmodel, umlPath, opt);
+		
+		profileApplicator = new ProfileAplicator(umlRoot, umlPath, utransformer.getConverter().umap);
+		profileApplicator.apply();
+		log += profileApplicator.getLog();
+		
+		try {
+			return profileApplicator.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Resource convertToUMLProfile(OntoUMLParser refparser, String umlPath, OntoUML2UMLOption opt)
+	{
+		umlRoot = convertToUMLNoSaving(refparser, umlPath, opt); 
+		
+		profileApplicator = new ProfileAplicator(umlRoot, umlPath, utransformer.getConverter().umap);
+		profileApplicator.apply();		
+		log += profileApplicator.getLog();
+				
+		try {
+			return profileApplicator.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;		
+	}
+	
+	//*****************************
+	//Temporal pure UML
+	//*****************************
 	
 	public static Resource convertToTemporalUML (OntoUMLParser refparser, String umlPath)
 	{
@@ -55,7 +175,7 @@ public class OntoUML2UML {
 	
 	public static Resource includeTemporalStructure(org.eclipse.uml2.uml.Package umlRoot, String umlPath)
 	{	
-		tgenerator = new UMLTemporalGenerator(
+		tgenerator = new TemporalStructureGenerator(
 			umlRoot, 
 			utransformer.getConverter().ufactory, 
 			utransformer.getConverter().umap);
@@ -66,43 +186,12 @@ public class OntoUML2UML {
 		return OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
 	}
 	
-	public static Resource convertToUML (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt)
-	{
-		log="";
-		options=opt;
-		Resource umlResource = null;
-		
-		OntoUMLParser refparser = new OntoUMLParser(refmodel);
-		
-		utransformer = new UMLTransformator(refparser,opt);			  
-		org.eclipse.uml2.uml.Package umlmodel = utransformer.run();	
-   		   
-		OntoUML2UML.umlPath=umlPath;
-		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlmodel);		   
-		return umlResource;
-	}
-	
-	
-	public static Resource convertToUML (OntoUMLParser refparser, String umlPath, OntoUML2UMLOption opt)
-	{
-		log="";
-		options=opt;
-		Resource umlResource = null;
-		
-		utransformer = new UMLTransformator(refparser,opt);			  
-		org.eclipse.uml2.uml.Package umlmodel = utransformer.run();	
-   		   
-		OntoUML2UML.umlPath=umlPath;
-		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlmodel);		   
-		return umlResource;
-	}		
-	
 	public static Resource convertToTemporalUML (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt)
 	{
 		Resource umlResource = convertToUML(refmodel, umlPath, opt);
 		umlRoot = (org.eclipse.uml2.uml.Package)umlResource.getContents().get(0);
 		
-		tgenerator = new UMLTemporalGenerator(
+		tgenerator = new TemporalStructureGenerator(
 			umlRoot, 
 			utransformer.getConverter().ufactory, 
 			utransformer.getConverter().umap);
@@ -120,7 +209,7 @@ public class OntoUML2UML {
 		Resource umlResource = convertToUML(refparser, umlPath, opt);
 		umlRoot = (org.eclipse.uml2.uml.Package)umlResource.getContents().get(0);
 		
-		tgenerator = new UMLTemporalGenerator(
+		tgenerator = new TemporalStructureGenerator(
 			umlRoot, 
 			utransformer.getConverter().ufactory, 
 			utransformer.getConverter().umap);
@@ -132,6 +221,10 @@ public class OntoUML2UML {
 		
 		return umlResource;   		
 	}
+	
+	//******************************
+	// Getter
+	//******************************
 	
 	public static HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> getStandardMap ()
 	{
@@ -148,4 +241,13 @@ public class OntoUML2UML {
 	{
 		return log;
 	}	
+	
+	public static org.eclipse.uml2.uml.Package getRoot() 
+	{ 
+		return umlRoot; 
+	}
+	
+	public static String getUmlPath() { 
+		return umlPath; 
+	}
 }

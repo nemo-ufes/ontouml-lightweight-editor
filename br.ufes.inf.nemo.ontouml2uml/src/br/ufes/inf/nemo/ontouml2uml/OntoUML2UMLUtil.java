@@ -21,9 +21,11 @@ public class OntoUML2UMLUtil {
 
 	public static Resource saveUML (String umlpath, org.eclipse.uml2.uml.Package umlmodel) 
 	{
-		ResourceSet rset = new ResourceSetImpl();		
+		ResourceSet rset = new ResourceSetImpl();	
+		
 		rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);	
-		rset.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);    	
+		rset.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);    
+		
 		URI fileURI = URI.createFileURI(umlpath);    	
 	    Resource resource = rset.createResource(fileURI);    	
 	    resource.getContents().add(umlmodel);    	
@@ -42,11 +44,13 @@ public class OntoUML2UMLUtil {
 		ResourceSet umlResourceSet = new ResourceSetImpl();
 
 		umlResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);	
-		umlResourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);			
+		umlResourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);	
+		
 	    Resource umlResource = umlResourceSet.getResource(umlURI,true);
 	    org.eclipse.uml2.uml.Package umlmodel = (org.eclipse.uml2.uml.Package) umlResource.getContents().get(0);
 	    umlResource.getResourceSet().getPackageRegistry().put(null,umlmodel);
 	    
 	    return umlmodel;
 	}
+	
 }
