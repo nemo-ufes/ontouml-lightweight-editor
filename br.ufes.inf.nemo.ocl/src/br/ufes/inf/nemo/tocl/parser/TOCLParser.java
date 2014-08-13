@@ -447,7 +447,7 @@ public class TOCLParser extends OCLParser{
 				   !pe.getLocalizedMessage().contains("isTerminal") && !pe.getLocalizedMessage().contains("isOrigin") &&
 				   !pe.getLocalizedMessage().contains("hasNext") && !pe.getLocalizedMessage().contains("hasPrevious") &&
 				   !pe.getLocalizedMessage().contains("worlds") && !pe.getLocalizedMessage().contains("paths") &&
-				   !pe.getLocalizedMessage().contains("oclIsNew"))
+				   !pe.getLocalizedMessage().contains("oclIsNew") && !pe.getLocalizedMessage().contains("allIndividuals"))
 				{
 					String message = pe.getLocalizedMessage().replace("(World)","[World]");
 					message = message.replace("operation", "association end-point ");

@@ -70,6 +70,7 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 				oclIsNew_counter++;					
 				return sourceResult+" in "+worldParam+".exists and "+sourceResult+" !in (next."+worldParam+").exists)"; 
 			}
+			if(operName.equals("allIndividuals")) { return ""+sourceResult+".exists"; }
 	        for (java.util.Iterator<String> iter = argumentsResult.iterator(); iter.hasNext();) 
 	        {
 				String argument = iter.next();
