@@ -1247,6 +1247,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 						exporter.writeUML(this, fileChooser.getSelectedFile());
 						lastExportUMLPath = fileChooser.getSelectedFile().getAbsolutePath();
 					} catch (Exception ex) {
+						ex.printStackTrace();
 						JOptionPane.showMessageDialog(this, ex.getMessage(),"Export as UML", JOptionPane.ERROR_MESSAGE);
 					}
 				}

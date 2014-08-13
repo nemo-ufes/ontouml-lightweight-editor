@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ContentHandler;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -49,12 +50,12 @@ import RefOntoUML.subQuantityOf;
 public class ProfileAplicator {
 		
 	//pure UML	
-	private ResourceSet modelRSet;
+	private ResourceSet modelRSet = new ResourceSetImpl();
 	private Resource modelResource;
 	private org.eclipse.uml2.uml.Package umlRoot;
 	
 	//profile UML
-	private ResourceSet profileRSet;
+	private ResourceSet profileRSet = new ResourceSetImpl();;
 	private Resource profileResource;
 	private Profile uprofile;	
 	private ArrayList<Stereotype> stereotypes = new ArrayList<Stereotype>();
@@ -67,25 +68,24 @@ public class ProfileAplicator {
     {
 		this.umap = umap;
 		this.umlRoot = root;
-		
+
 		//prepare the resource set of the UML model to be generated
-		modelRSet = new ResourceSetImpl();
-		URI uri = URI.createURI(umlPath);
-		modelRSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+		URI uri = URI.createURI(umlPath);		
+		//Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap( ).put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE); 
 		modelRSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
-		modelResource = modelRSet.createResource(uri);
+		modelRSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);		
+		modelResource = modelRSet.createResource(uri);		
+		if(modelResource==null) modelRSet.createResource(uri, ContentHandler.UNSPECIFIED_CONTENT_TYPE);
 		modelResource.getContents().add(umlRoot);
-				
-		//prepare the resource set of the OntoUML profile to be loaded
-		profileRSet = null;
-		profileRSet = new ResourceSetImpl();
-		profileRSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);     
-		profileRSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
-		profileRSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.PROFILE_FILE_EXTENSION, UMLResource.Factory.INSTANCE);
+		
+		//prepare the resource set of the OntoUML profile to be loaded		
+		//Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap( ).put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE); 
+		profileRSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);		
+		profileRSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		URL umlProfileUrl = ClassLoader.getSystemResource("profiles/UML2.profile.uml");
 		if(umlProfileUrl == null){
 			try {
-				umlProfileUrl = new URL("rsrc:"+"org.eclipse.uml2.uml.resources_3.1.1.v201008191505.jar");
+				umlProfileUrl = new URL("rsrc:"+"org.eclipse.uml2.uml.resources_4.0.2.v20130114-0902.jar");
 			} catch (MalformedURLException e) {			
 				e.printStackTrace();
 			}
@@ -161,7 +161,7 @@ public class ProfileAplicator {
 	}
 	
 	public Resource save() throws IOException
-	{
+	{	
 		//save model to its resource
 		modelResource.save(null);
 		return modelResource;
