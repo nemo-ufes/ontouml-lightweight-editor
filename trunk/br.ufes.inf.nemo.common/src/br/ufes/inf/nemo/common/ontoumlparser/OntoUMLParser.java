@@ -410,12 +410,20 @@ public class OntoUMLParser {
 	 * 
 	 * @param elem
 	 * @return
+	 * @throws Exception 
 	 */
 	public String getAlias(EObject elem) 
 	{
 		ParsingElement pe = elementsHash.get(elem);
-		if(pe!=null) return pe.getAlias();
-		else return "#NULL-PARSING-ELEMENT";
+		if(pe!=null) return pe.getAlias();		
+		else{ 
+			try{
+				throw new Exception("Element not found in the OntoUML parser: "+elem);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		return "";
 	}
 	
 	/**
