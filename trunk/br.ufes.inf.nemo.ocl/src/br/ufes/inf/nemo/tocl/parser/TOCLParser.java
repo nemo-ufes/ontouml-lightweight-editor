@@ -30,6 +30,7 @@ public class TOCLParser extends OCLParser{
     //TOCL
     public ArrayList<String> oclIsKindOfList = new ArrayList<String>();
     public ArrayList<String> oclIsTypeOfList = new ArrayList<String>();
+    public ArrayList<String> oclIsNewList = new ArrayList<String>();
     public ArrayList<String> constraintStereotypeList = new ArrayList<String>();
 
     /**
@@ -103,6 +104,48 @@ public class TOCLParser extends OCLParser{
 		umlreflection = umlenv.getUMLReflection();
 	}
     
+    public String processOclIsNewOperation(String result, Pattern p)
+    {
+    	Matcher m = p.matcher(result);
+		int jump = 0;
+    	while (m.find()) 
+    	{ 
+    		int indexBegin = m.start();
+    		int indexEnd = m.end();
+    		
+    		if(indexBegin+(jump) < 0) indexBegin = 0;
+    		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
+    		
+    		String parameters = result.substring(indexBegin+9+(jump), indexEnd-1+(jump));
+    		String typeVar = new String();
+    		String worldVar = new String();
+    		if(parameters.contains(",")){
+    			String[] paramArray = parameters.split(",");
+    			typeVar = paramArray[0];
+    			worldVar = paramArray[1];
+    		}else{
+    			worldVar = parameters;
+    			typeVar = "";
+    		}
+    		    		
+    		String left = result.substring(0,indexBegin+9+typeVar.length()+(jump))+")";
+    		String right = result.substring(indexEnd+(jump), result.length());
+    		result = left+right;
+    		
+    		if(parameters.contains(",")) {
+    			jump  = jump -1-worldVar.length();
+    			if(result.substring(indexBegin+jump, indexEnd+jump).contains("oclIsNew")){
+        			oclIsNewList.add(worldVar.trim());
+    			}
+    		} else {
+    			if(result.substring(indexBegin+jump, indexEnd+jump).contains("oclIsNew")){
+    				oclIsNewList.add(worldVar.trim());
+    			}
+    		}    		
+    	}
+    	return result;
+    }
+    
     public String processObjectOperation (String result, Pattern p)
     {
 		Matcher m = p.matcher(result);
@@ -135,13 +178,13 @@ public class TOCLParser extends OCLParser{
     			jump  = jump -1-worldVar.length();
     			if(result.substring(indexBegin+jump, indexEnd+jump).contains("oclIsKindOf")){
         			oclIsKindOfList.add(typeVar.trim()+","+worldVar.trim());    			
-        		}else{
+        		}else if(result.substring(indexBegin+jump, indexEnd+jump).contains("oclIsTypeOf")){
         			oclIsTypeOfList.add(typeVar.trim()+","+worldVar.trim());
-        		} 
+        		}
     		} else {
     			if(result.substring(indexBegin+jump, indexEnd+jump).contains("oclIsKindOf")){
     				oclIsKindOfList.add(typeVar.trim());
-    			}else{
+    			}else if(result.substring(indexBegin+jump, indexEnd+jump).contains("oclIsTypeOf")){
     				oclIsTypeOfList.add(typeVar.trim());
     			}
     		}    		
@@ -160,6 +203,24 @@ public class TOCLParser extends OCLParser{
 	    			return array[1];	    				
     			}else{
     				return "World";
+    			}
+    		}
+    		i++;
+    	}
+    	return "<Unknown>";
+    }
+    
+    public String getOclIsNewWorldParam(int index)
+    {
+    	int i = 0;
+    	for(String str: oclIsNewList)
+    	{
+    		if(i == index) {
+    			if(str.contains(",")){
+	    			String array[] = str.split(",");
+	    			return array[1];	    				
+    			}else{
+    				return str;
     			}
     		}
     		i++;
@@ -295,13 +356,31 @@ public class TOCLParser extends OCLParser{
     		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("inv")){
     			
     			constraintStereotypeList.add("inv");
+    			String rightExpression = result.substring(indexEnd+(jump), result.length());
+    			String expression = new String();
+    			if(rightExpression.indexOf(":")!=-1) expression = rightExpression.substring(0,rightExpression.indexOf(":"));
+    			else expression = rightExpression.substring(0,rightExpression.length());
+    			
+    			if(expression.contains("World") || expression.contains("next()") || expression.contains("previous()") || expression.contains("hasNext()")|| expression.contains("allNext()") ||
+				expression.contains("allPrevious()") || expression.contains("isOrigin()") || expression.contains("isTerminal()") || expression.contains("existsIn")){
+    				throw new ParserException("Unrecognizable keyword \"inv\": A temporal constraint is defined by the keyword \"temp\"");
+    			}
     			
     		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("derive")){
     			
     			constraintStereotypeList.add("derive");
-    		}    		
-    	
+    			String rightExpression = result.substring(indexEnd+(jump), result.length());
+    			String expression = new String();
+    			if(rightExpression.indexOf(":")!=-1) expression = rightExpression.substring(0,rightExpression.indexOf(":"));
+    			else expression = rightExpression.substring(0,rightExpression.length());
+
+    			if(expression.contains("World") || expression.contains("next()") || expression.contains("previous()") || expression.contains("hasNext()")|| expression.contains("allNext()") ||
+				expression.contains("allPrevious()") || expression.contains("isOrigin()") || expression.contains("isTerminal()") || expression.contains("existsIn")){
+    				throw new ParserException("Unrecognizable keyword \"derive\": A temporal constraint is defined by the keyword \"temp\"");
+    			}
+    		}    	
     	}
+    	
     	return result;    	
     }
 
@@ -342,6 +421,10 @@ public class TOCLParser extends OCLParser{
 		p = Pattern.compile("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
 		result = processObjectOperation(result, p);
 		
+		//remove world parameter and record it
+		p = Pattern.compile("oclIsNew\\(\\s*\\w+\\s*\\)");		
+		result = processOclIsNewOperation(result, p);
+		
 	    return result;
     }
 
@@ -369,13 +452,19 @@ public class TOCLParser extends OCLParser{
 					String message = pe.getLocalizedMessage().replace("(World)","[World]");
 					message = message.replace("operation", "association end-point ");
 					throw new ParserException(message);
-				}					
-			}if (pe.getLocalizedMessage().contains("operation") && !pe.getLocalizedMessage().contains("World")){
+				}
+			}
+			if (pe.getLocalizedMessage().contains("operation") && pe.getLocalizedMessage().contains("oclIsNew")){
+				//****** 
+				//we do not want this parsing error to be displayed since we do support oclIsNew() in invariants
+				//******
+			}
+			if (pe.getLocalizedMessage().contains("operation") && !pe.getLocalizedMessage().contains("World")){
 				String message = pe.getLocalizedMessage().replace("()","");
 				message = message.replace("operation", "association end-point ");
 				message+=".\nMissing world argument using the syntax \"[ ]\"";
-				throw new ParserException(message);
-				
+				throw new ParserException(message);				
+			
 			} else{				
 				throw new ParserException(pe.getLocalizedMessage());
 			}
@@ -394,7 +483,7 @@ public class TOCLParser extends OCLParser{
     /** Get the OntoUML element related to the UML one. */
     @Override
     public RefOntoUML.Element getOntoUMLElement(org.eclipse.uml2.uml.Element value) 
-    {    	
+    {   
         for (RefOntoUML.Element key : tmap.keySet()) 
         {
         	for(org.eclipse.uml2.uml.Element elem: tmap.get(key)){

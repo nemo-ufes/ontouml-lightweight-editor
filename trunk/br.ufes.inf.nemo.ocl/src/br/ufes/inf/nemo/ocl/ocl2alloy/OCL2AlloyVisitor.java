@@ -165,7 +165,7 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
         if(operName.equals("asSequence")) throw new OperationException("asSequence()","The collection type Sequence is not supported.");        
         if(operName.equals("asBag")) throw new OperationException("asBag()","The collection type Bag is not supported.");        
         if(operName.equals("oclIsInState")) throw new OperationException("oclIsInState()","There is not a state machine.");        
-        if(operName.equals("oclIsNew")) throw new OperationException("oclIsNew()","Post conditions are not supported.");        
+        //if(operName.equals("oclIsNew")) throw new OperationException("oclIsNew()","Post conditions are not supported.");        
         if(operName.equals("oclIsInvalid"))	throw new OperationException("oclIsInvalid()","The OclInvalid is not supported.");        
 		return "";
 	}
