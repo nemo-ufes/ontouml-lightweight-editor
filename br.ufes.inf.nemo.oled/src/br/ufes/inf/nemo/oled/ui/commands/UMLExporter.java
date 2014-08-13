@@ -14,11 +14,13 @@ public class UMLExporter extends FileWriter {
 	{
 		OntoUMLParser refparser = manager.getFrame().getProjectBrowser().getParser();
 		String umlPath = file.getAbsolutePath();
-		if(!umlPath.contains(".uml")) umlPath += ".uml";
+		if(!umlPath.contains(".uml")) umlPath += ".uml";		
 		OntoUML2UML.convertToUML(refparser,umlPath,new OntoUML2UMLOption(false,false));
+		//Main.printOut(OntoUML2UML.getLog());
 	}
 
-	protected String getSuffix() {
+	protected String getSuffix() 
+	{
 		return ".uml";
 	}
 }
