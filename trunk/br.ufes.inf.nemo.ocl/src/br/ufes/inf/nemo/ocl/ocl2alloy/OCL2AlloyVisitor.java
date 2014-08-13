@@ -468,10 +468,10 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
 		if (argument.contains(worldVar+".")) argument = argument.replace(worldVar+".", "");				
 		ArrayList<String> subtypes = getSubTypes(argument);
 		if (subtypes.size()>0) {
-			secondPart = " and # "+ sourceResult + " & (";				
+			secondPart = " and (# "+ sourceResult + " & (";				
 			int i = 1;
 			for(String subtype: subtypes) { if (i<subtypes.size()) secondPart += worldVar+"."+subtype+" + "; else if (i==subtypes.size()) secondPart += worldVar+"."+subtype; i++;}
-			secondPart += ") = 0";
+			secondPart += ") = 0)";
 		}
 		String code = "("+firstPart + secondPart+")";
 		return code;

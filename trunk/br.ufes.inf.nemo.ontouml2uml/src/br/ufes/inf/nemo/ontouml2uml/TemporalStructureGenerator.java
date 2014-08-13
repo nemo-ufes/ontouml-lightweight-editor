@@ -8,6 +8,7 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
@@ -61,44 +62,68 @@ public class TemporalStructureGenerator {
 
 		ArrayList<Classifier> topLevels = new ArrayList<Classifier>();
 		getTopLevelTypes(umlRoot,topLevels);
-
+		org.eclipse.uml2.uml.Class umlIndividual = createIndividualSuperType(topLevels);
+		
 		ArrayList<Classifier> classes = new ArrayList<Classifier>();
 		getAllClasses(umlRoot,classes);
 
 		ArrayList<org.eclipse.uml2.uml.Property> attributes = new ArrayList<org.eclipse.uml2.uml.Property>();
 		getAttributes(umlRoot,attributes);
 		
-//		not necessary...
-//		org.eclipse.uml2.uml.Class umlWorld = createWorldHierarchy(umlRoot);
+		// Judged conceptually unnecessary
+		// org.eclipse.uml2.uml.Class umlWorld = createWorldHierarchy(umlRoot);
 		
 		org.eclipse.uml2.uml.Class umlWorld = umlRoot.createOwnedClass("World", false);
 		createWorldAccessibilityRelation(umlWorld);
+		
 		org.eclipse.uml2.uml.Class umlTimePath = createPathStructure(umlWorld, umlRoot);				
-		createWorldOperations(umlWorld,umlTimePath);		
+		createWorldOperations(umlWorld,umlTimePath,umlIndividual);		
 		createPathOperations(umlWorld,umlTimePath);
-		createTopLevelExistenceOperations(umlWorld, classes);		
+		
+		createTopLevelExistenceOperations(umlWorld, classes);	
+		
 		createTopLevelAllInstancesOperation(umlWorld, classes);
+		
 		createOclIsNewOperation(umlWorld,classes);
+		
 		createTemporalAttributeAccessOperations(umlWorld, attributes);
 
-		// unnecessary since end-points in UML are owned attributes
-		//ArrayList<Association> assocList = new ArrayList<Association>();
-		//getAssociations(umlRoot,assocList);
+		// Unnecessary since end-points in UML are owned attributes
+		// ArrayList<Association> assocList = new ArrayList<Association>();
+		// getAssociations(umlRoot,assocList);
+		// createTemporalNavigationOperations(umlWorld, assocList);
 		
-		// ===== Temporal navigation operations ======		
-		//unnecessary since end-points in UML are owned attributes
-		//createTemporalNavigationOperations(umlWorld, assocList);
-		
-		// ===== Types existence ==========		
+		// Unnecessary to create the existence association between World and the types (classes,associations and attributes) existent in that World
+		// We found a workaround for this i.e. we used UML/OCL pre-defined operations
 		//createExistenceRelations(umlWorld,topLevels);
-				
-		// ===== Associations existence ===		
-		//reifyAssociations(umlWorld, topLevels);
-				
-		// ===== Attributes existence =====
-		//reifyAttributes(umlWorld,attributes);
+		// reifyAssociations(umlWorld, topLevels);
+		// reifyAttributes(umlWorld,attributes);
 					
 		outln("Temporal generation finished.");
+	}
+	
+	public org.eclipse.uml2.uml.Class createIndividualSuperType(ArrayList<Classifier> toplevels)
+	{
+		org.eclipse.uml2.uml.Class umlIndividual = umlRoot.createOwnedClass("Individual", false);
+		
+		org.eclipse.uml2.uml.GeneralizationSet genSet = ufactory.createGeneralizationSet();
+		genSet.setIsDisjoint(true);
+		genSet.setIsCovering(true);
+		umlRoot.getPackagedElements().add(genSet);
+		
+		ArrayList<Generalization> gens = new ArrayList<Generalization>();
+		for(Classifier c: toplevels)
+		{
+			org.eclipse.uml2.uml.Generalization gen = ufactory.createGeneralization();
+			gen.setGeneral(umlIndividual);
+			gen.setSpecific(c);
+			gens.add(gen);
+			gen.getGeneralizationSets().add(genSet);
+		}
+		
+		genSet.getGeneralizations().addAll(gens);
+		return umlIndividual;
+		
 	}
 	
 	public void createTopLevelExistenceOperations(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)
@@ -117,10 +142,7 @@ public class TemporalStructureGenerator {
 			{
 				org.eclipse.uml2.uml.Class class_ = ((org.eclipse.uml2.uml.Class)c);				
 				org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation("existsIn", parameters, typeParameters, pt);
-				outln(op);
-				
-				org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation("oclIsNew", parameters, typeParameters, pt);
-				outln(op2);				
+				outln(op);								
 			}
 			if (c instanceof org.eclipse.uml2.uml.DataType && !(c instanceof org.eclipse.uml2.uml.PrimitiveType) && !(c instanceof org.eclipse.uml2.uml.Enumeration))
 			{
@@ -200,28 +222,28 @@ public class TemporalStructureGenerator {
 		worldsOp.setLower(1);
 		worldsOp.setUpper(-1);
 		
-		outln(worldsOp);		
-	}
-	
-	public void createWorldOperations(org.eclipse.uml2.uml.Class umlWorld, org.eclipse.uml2.uml.Class umlTimePath)
-	{	
+		outln(worldsOp);
+		
 		org.eclipse.uml2.uml.Operation pathsOp = umlWorld.createOwnedOperation("paths", null, null, umlTimePath);
 		pathsOp.setLower(1);
 		pathsOp.setUpper(-1);
 		
 		outln(pathsOp);
-		
+	}
+	
+	public void createWorldOperations(org.eclipse.uml2.uml.Class umlWorld, org.eclipse.uml2.uml.Class umlTimePath, org.eclipse.uml2.uml.Class umlIndividual)
+	{	
 		org.eclipse.uml2.uml.Operation previousOp = umlWorld.createOwnedOperation("previous", null, null, umlWorld);
 		previousOp.setLower(0);
 		previousOp.setUpper(1);
 		
 		outln(previousOp);
 
-		org.eclipse.uml2.uml.Operation directPreviousOp = umlWorld.createOwnedOperation("allPrevious", null, null, umlWorld);
-		directPreviousOp.setLower(0);
-		directPreviousOp.setUpper(-1);
+		org.eclipse.uml2.uml.Operation allPreviousOp = umlWorld.createOwnedOperation("allPrevious", null, null, umlWorld);
+		allPreviousOp.setLower(0);
+		allPreviousOp.setUpper(-1);
 		
-		outln(directPreviousOp);
+		outln(allPreviousOp);
 		
 		EList<String> parameters = new BasicEList<String>();
 		parameters.add("w");		
@@ -249,6 +271,17 @@ public class TemporalStructureGenerator {
 		untilnextOp.setLower(0);
 		untilnextOp.setUpper(-1);		
 		outln(untilnextOp);
+						
+		EList<String> paramList = new BasicEList<String>();
+		paramList.add("p");		
+		EList<org.eclipse.uml2.uml.Type> typeParamList = new BasicEList<org.eclipse.uml2.uml.Type>();
+		typeParamList.add(umlTimePath);
+		
+		org.eclipse.uml2.uml.Operation untilnextOpPath = umlWorld.createOwnedOperation("allNext", paramList, typeParamList, umlTimePath);
+		untilnextOpPath.setLower(0);
+		untilnextOpPath.setUpper(-1);
+		
+		outln(untilnextOpPath);
 		
 		org.eclipse.uml2.uml.PrimitiveType pt = getPrimitiveBooleanType();
 		
@@ -274,16 +307,11 @@ public class TemporalStructureGenerator {
 		
 		outln(isOriginOp);
 		
-		EList<String> paramList = new BasicEList<String>();
-		paramList.add("p");		
-		EList<org.eclipse.uml2.uml.Type> typeParamList = new BasicEList<org.eclipse.uml2.uml.Type>();
-		typeParamList.add(umlTimePath);
+		org.eclipse.uml2.uml.Operation allIndividualsOp = umlWorld.createOwnedOperation("allIndividuals", null, null, umlIndividual);
+		allIndividualsOp.setLower(0);
+		allIndividualsOp.setUpper(-1);
 		
-		org.eclipse.uml2.uml.Operation untilnextOpPath = umlWorld.createOwnedOperation("allNext", paramList, typeParamList, umlTimePath);
-		untilnextOpPath.setLower(0);
-		untilnextOpPath.setUpper(-1);
-		
-		outln(untilnextOpPath);
+		outln(allIndividualsOp);
 	}
 	
 	public org.eclipse.uml2.uml.PrimitiveType getPrimitiveBooleanType()
@@ -516,8 +544,9 @@ public class TemporalStructureGenerator {
 		outln(worldAccessibility);
 	}
 	
-	// ===================================================
-	// ===================================================
+	// ***************************************************
+	// Deprecated methods 
+	// ***************************************************
 
 	@Deprecated
 	public org.eclipse.uml2.uml.Class createWorldHierarchy(org.eclipse.uml2.uml.Package umlRoot)

@@ -211,7 +211,37 @@ public class TOCLCompletionProvider {
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
+
+		description = "Operation <b>World::allIndividuals() : Set(Individual)</b><br><br>"+
+		"Returns all individuals contained in the world self.";
 		
+		c = new TOCLTemplateCompletion(provider, 
+			"allIndividuals","allIndividuals",
+			"allIndividuals()${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+		
+		description = "Operation <b>World::isOrigin() : Boolean</b><br><br>"+
+		"Verifies if the world self is the first world of the structure.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"isOrigin","isOrigin",
+			"isOrigin()${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+				
+		description = "Operation <b>World::isTerminal() : Boolean</b><br><br>"+
+		"Verifies if the world self is the last world of the structure.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"isTerminal","isTerminal",
+			"isTerminal()${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+				
 		return oclCompletionList;
 	}	
 }
