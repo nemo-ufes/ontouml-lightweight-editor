@@ -463,7 +463,7 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
 	/** Visits oclIsTypeOf */
 	protected String visitOclIsTypeOf(String sourceResult, String argument, String worldVar)
 	{
-		String firstPart = "("+sourceResult + " in " + argument+")";
+		String firstPart = "("+sourceResult + " in " + worldVar+"."+argument+")";
 		String secondPart = new String();
 		if (argument.contains(worldVar+".")) argument = argument.replace(worldVar+".", "");				
 		ArrayList<String> subtypes = getSubTypes(argument);
