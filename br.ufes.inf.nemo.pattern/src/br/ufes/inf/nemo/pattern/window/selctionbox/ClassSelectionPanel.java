@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window.selctionbox;
+package br.ufes.inf.nemo.pattern.window.selctionbox;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +22,10 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public abstract class ClassSelectionPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7724193929125673758L;
 	protected HashMap<JCheckBox, JTextField> hashChkEdit = new HashMap<>();
 	protected HashMap<JTextField, JComboBox<String>> hashEditCombo = new HashMap<>();
 	protected HashMap<JCheckBox, JComboBox<String>> hashChkCombo = new HashMap<>();
@@ -157,6 +161,7 @@ public abstract class ClassSelectionPanel extends JPanel {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected static DefaultComboBoxModel<String> getCBModelFromSets(Classifier current, Set<? extends Classifier>... sets){
 	    DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel<String>();
 	    String currentStringRepresentation = UtilAssistant.getStringRepresentationStereotype(current) +" - "+ UtilAssistant.getStringRepresentationClass(current);
@@ -175,6 +180,7 @@ public abstract class ClassSelectionPanel extends JPanel {
 		return cbModel;
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected DefaultComboBoxModel<String> getCBModelFromSets(Set<? extends Classifier>... sets){
 	    DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel<String>();
 	    

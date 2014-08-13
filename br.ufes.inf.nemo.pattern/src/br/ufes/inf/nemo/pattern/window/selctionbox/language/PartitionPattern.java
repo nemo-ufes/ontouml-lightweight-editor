@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language;
+package br.ufes.inf.nemo.pattern.window.selctionbox.language;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -21,7 +21,7 @@ import RefOntoUML.Phase;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.SubKind;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
+import br.ufes.inf.nemo.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
@@ -291,6 +291,7 @@ public class PartitionPattern extends ClassSelectionPanel {
 	}
 
 	private String[] types;
+	@SuppressWarnings({ "unchecked", "static-access" })
 	@Override
 	protected void getModelValues(OntoUMLParser parser) {
 		types = new String[]{UtilAssistant.getStringRepresentationStereotype(selectedClassifier)};

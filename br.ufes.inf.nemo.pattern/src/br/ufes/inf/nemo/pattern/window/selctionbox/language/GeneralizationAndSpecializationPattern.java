@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language;
+package br.ufes.inf.nemo.pattern.window.selctionbox.language;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -28,11 +28,11 @@ import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.pattern.window.selctionbox.ClassSelectionPanel;
 
 public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel {
 	private static final long serialVersionUID = 1L;
@@ -292,6 +292,7 @@ public class GeneralizationAndSpecializationPattern extends ClassSelectionPanel 
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "static-access" })
 	@Override
 	protected void getModelValues(OntoUMLParser parser) {
 		String[] types = new String[]{UtilAssistant.getStringRepresentationStereotype(selectedClassifier)};

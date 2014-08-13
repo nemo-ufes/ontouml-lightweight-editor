@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window.selctionbox.language;
+package br.ufes.inf.nemo.pattern.window.selctionbox.language;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -21,7 +21,7 @@ import RefOntoUML.Package;
 import RefOntoUML.Phase;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
+import br.ufes.inf.nemo.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
@@ -238,6 +238,7 @@ public class PrincipleIdentiy extends ClassSelectionPanel {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void getModelValues(OntoUMLParser parser) {
 		//General

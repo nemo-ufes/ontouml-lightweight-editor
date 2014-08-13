@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window.selctionbox.design;
+package br.ufes.inf.nemo.pattern.window.selctionbox.design;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -26,7 +26,7 @@ import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
+import br.ufes.inf.nemo.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
@@ -173,6 +173,7 @@ public class AddSupertype extends ClassSelectionPanel {
 		specificTypesCB.setBounds(110, 50, 149, 20);
 		specific1Panel.add(specificTypesCB);
 		specificTypesCB.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent arg0) {
 				if(selectedClassifier instanceof Role){
 					DefaultComboBoxModel<String> model = null;  
@@ -302,6 +303,7 @@ public class AddSupertype extends ClassSelectionPanel {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "static-access" })
 	@Override
 	protected void getModelValues(OntoUMLParser parser) {
 		String[] types = new String[]{UtilAssistant.getStringRepresentationStereotype(selectedClassifier)};

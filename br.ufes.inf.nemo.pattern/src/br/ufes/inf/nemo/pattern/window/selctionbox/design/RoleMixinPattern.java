@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.assistant.pattern.window.selctionbox.design;
+package br.ufes.inf.nemo.pattern.window.selctionbox.design;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -21,13 +21,13 @@ import RefOntoUML.Relator;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SortalClass;
-import br.ufes.inf.nemo.assistant.pattern.window.selctionbox.ClassSelectionPanel;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.pattern.window.selctionbox.ClassSelectionPanel;
 
 public class RoleMixinPattern extends ClassSelectionPanel {
 
@@ -398,6 +398,7 @@ public class RoleMixinPattern extends ClassSelectionPanel {
 		fix.includeAdded(derivation);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void getModelValues(OntoUMLParser parser) {
 		String[] types = new String[]{"Kind", "Collective", "Quantity", "Subkind", "Phase", "Role"};
