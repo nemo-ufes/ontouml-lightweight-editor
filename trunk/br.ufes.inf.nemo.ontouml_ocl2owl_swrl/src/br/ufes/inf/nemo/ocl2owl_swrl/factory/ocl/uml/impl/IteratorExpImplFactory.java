@@ -58,7 +58,7 @@ public class IteratorExpImplFactory extends LoopExpImplFactory {
 				name.equals("exist") |
 				name.equals("select") |
 				name.equals("reject") |
-				name.equals("collect") |
+				//name.equals("collect") |
 				name.equals("one")){
 			return true;
 		}
