@@ -358,8 +358,13 @@ public class TOCLParser extends OCLParser{
     			constraintStereotypeList.add("inv");
     			String rightExpression = result.substring(indexEnd+(jump), result.length());
     			String expression = new String();
-    			if(rightExpression.indexOf(":")!=-1) expression = rightExpression.substring(0,rightExpression.indexOf(":"));
-    			else expression = rightExpression.substring(0,rightExpression.length());
+    			if(rightExpression.indexOf(":")!=-1) {
+    				if(rightExpression.indexOf("context")!=-1){    					
+    					expression = rightExpression.substring(0,rightExpression.indexOf("context"));	
+    				}else{
+    					expression = rightExpression.substring(0,rightExpression.indexOf(":"));
+    				}
+    			} else expression = rightExpression.substring(0,rightExpression.length());
     			
     			if(expression.contains("World") || expression.contains("next()") || expression.contains("previous()") || expression.contains("hasNext()")|| expression.contains("allNext()") ||
 				expression.contains("allPrevious()") || expression.contains("isOrigin()") || expression.contains("isTerminal()") || expression.contains("existsIn")){
@@ -371,9 +376,14 @@ public class TOCLParser extends OCLParser{
     			constraintStereotypeList.add("derive");
     			String rightExpression = result.substring(indexEnd+(jump), result.length());
     			String expression = new String();
-    			if(rightExpression.indexOf(":")!=-1) expression = rightExpression.substring(0,rightExpression.indexOf(":"));
-    			else expression = rightExpression.substring(0,rightExpression.length());
-
+    			if(rightExpression.indexOf(":")!=-1) {
+    				if(rightExpression.indexOf("context")!=-1){    					
+    					expression = rightExpression.substring(0,rightExpression.indexOf("context"));	
+    				}else{
+    					expression = rightExpression.substring(0,rightExpression.indexOf(":"));
+    				}
+    			} else expression = rightExpression.substring(0,rightExpression.length());
+    			
     			if(expression.contains("World") || expression.contains("next()") || expression.contains("previous()") || expression.contains("hasNext()")|| expression.contains("allNext()") ||
 				expression.contains("allPrevious()") || expression.contains("isOrigin()") || expression.contains("isTerminal()") || expression.contains("existsIn")){
     				throw new ParserException("Unrecognizable keyword \"derive\": A temporal constraint is defined by the keyword \"temp\"");

@@ -562,8 +562,9 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 		}
 		
 		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(oppositeDeriveOCL);
-	
-		return (Property) query.evaluate(this);
+		Object result = query.evaluate(this);
+		if(result instanceof Property) return (Property) result;
+		else return null;
 	
 	}
 
