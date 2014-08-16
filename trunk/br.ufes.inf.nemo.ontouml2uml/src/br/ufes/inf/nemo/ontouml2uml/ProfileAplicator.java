@@ -24,6 +24,7 @@ import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
+import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 import RefOntoUML.Category;
 import RefOntoUML.Characterization;
@@ -72,25 +73,33 @@ public class ProfileAplicator {
 		//prepare the resource set of the UML model to be generated
 		URI uri = URI.createURI(umlPath);		
 		//Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap( ).put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE); 
-		modelRSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
-		modelRSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);		
+		//modelRSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
+		//modelRSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+		UMLResourcesUtil.init(modelRSet);
 		modelResource = modelRSet.createResource(uri);		
 		if(modelResource==null) modelRSet.createResource(uri, ContentHandler.UNSPECIFIED_CONTENT_TYPE);
+		//if(modelResource!=null)  JOptionPane.showMessageDialog(null, modelResource);
+		if(modelResource!=null)  System.out.println("Model Resource: "+modelResource);
 		modelResource.getContents().add(umlRoot);
 		
 		//prepare the resource set of the OntoUML profile to be loaded		
 		//Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap( ).put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE); 
-		profileRSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);		
-		profileRSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+		//profileRSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);		
+		//profileRSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+		UMLResourcesUtil.init(profileRSet);
 		URL umlProfileUrl = ClassLoader.getSystemResource("profiles/UML2.profile.uml");
 		if(umlProfileUrl == null){
 			try {
-				umlProfileUrl = new URL("rsrc:"+"org.eclipse.uml2.uml.resources_3.1.1.v201008191505.jar");
+				//umlProfileUrl = new URL("rsrc:"+"org.eclipse.uml2.uml.resources_3.1.1.v201008191505.jar");
+				umlProfileUrl = new URL("rsrc:"+"org.eclipse.uml2.uml.resources_4.1.0.v20130902-0826.jar");
 			} catch (MalformedURLException e) {			
 				e.printStackTrace();
-			}
-			if(umlProfileUrl == null) throw new RuntimeException("Could not load 'profiles/UML2.profile.uml' from class path");
+			}			
 		}
+		if(umlProfileUrl == null) throw new RuntimeException("Could not load 'profiles/UML2.profile.uml' from class path");
+		//else JOptionPane.showMessageDialog(null, umlProfileUrl);
+		else System.out.println("UML profile"+umlProfileUrl);
+		
 		final String path = umlProfileUrl.toExternalForm().split("!")[0] + "!/";		  
 		final URI baseURI = URI.createURI(path);
 		final Map<URI,URI> uriMap = profileRSet.getURIConverter().getURIMap();
@@ -114,13 +123,19 @@ public class ProfileAplicator {
         	ontoProfileUri = URI.createFileURI(file.getAbsolutePath());	        	
         	profileResource = profileRSet.createResource(ontoProfileUri);
     	}	
-		if(ontoProfileUrl == null && ontoProfileUri==null) throw new RuntimeException("Could not load 'profiles/OntoUML.uml' from class path");
+		if(ontoProfileUrl == null && ontoProfileUri==null) throw new RuntimeException("Could not load 'profile/OntoUML.uml' from class path");
+		//else if(ontoProfileUrl!=null) JOptionPane.showMessageDialog(null, ontoProfileUrl);
+		//else if(ontoProfileUri!=null) JOptionPane.showMessageDialog(null, ontoProfileUri);
+		else if(ontoProfileUrl!=null) System.out.println("OntoUML profile: "+ontoProfileUrl);
+		else if(ontoProfileUri!=null) System.out.println("OntoUML profile: "+ontoProfileUri);
+		
 		try {
 			profileResource.load(null);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Could not load profile - resource.load()");
 		}
+		System.out.println(profileResource.getContents());
 		uprofile = (Profile)EcoreUtil.getObjectByType(profileResource.getContents(), UMLPackage.Literals.PROFILE);
 		if(uprofile == null) {
 				throw new RuntimeException("Could not load the profile container from resource");
