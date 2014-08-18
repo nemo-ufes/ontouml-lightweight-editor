@@ -2,10 +2,12 @@ package br.ufes.inf.nemo.ontouml2uml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -13,9 +15,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -48,6 +52,7 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
+import br.ufes.inf.nemo.common.file.FileUtil;
 
 public class ProfileAplicator {
 
@@ -55,6 +60,7 @@ public class ProfileAplicator {
 	private URI uml2baseURI;
 	
 	//ontouml profile
+	private String profilePath = new String();
 	private ResourceSet profileRSet;
 	private Resource profileResource;
 	private Profile uprofile;	
@@ -64,7 +70,8 @@ public class ProfileAplicator {
 	private ResourceSet modelRSet;
 	private Resource modelResource;
 	private org.eclipse.uml2.uml.Package umlRoot;
-
+	private String umlPath = new String();
+	
 	//mapping		
 	private HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap;
 	public String log = new String();	
@@ -72,15 +79,15 @@ public class ProfileAplicator {
 	public ProfileAplicator(org.eclipse.uml2.uml.Package root, String umlPath, HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap)  
     {
 		this.umap = umap;
-		this.umlRoot = root;		
-		uml2baseURI = getUML2ProfileURI();
-		
-		loadOntoUMLProfile();
-		
-		createModelResource(umlPath);
+		this.umlRoot = root;
+		this.umlPath = umlPath;		
+		this.uml2baseURI = loadUML2();
+		extractProfile();						
+		loadProfile();		
+		createModel();
     }
 	
-	public URI getUML2ProfileURI()
+	public URI loadUML2()
 	{		
 		URL umlProfileUrl = ClassLoader.getSystemResource("profiles/UML2.profile.uml");
 		if(umlProfileUrl == null){
@@ -92,11 +99,13 @@ public class ProfileAplicator {
 		}				
 		if(umlProfileUrl == null) throw new RuntimeException("Could not load 'profiles/UML2.profile.uml' from class path");		
 		final String path = umlProfileUrl.toExternalForm().split("!")[0] + "!/";
-		System.out.println("Uml2 profile: "+path);
+		
+		if(path!=null) log += "UML2 profile loaded at: "+path+"\n";
+		
 		return URI.createURI(path);						
 	}
-
-	public void createModelResource(String umlPath)
+	
+	public void createModel()
 	{
 		URI uri = URI.createFileURI(umlPath);				
 		modelRSet = new ResourceSetImpl();				
@@ -105,29 +114,54 @@ public class ProfileAplicator {
 		modelRSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		modelRSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
 		//create resource
-		modelResource = modelRSet.createResource(uri);
-		if(modelResource!=null)  System.out.println("model resource created in "+modelResource);
+		modelResource = modelRSet.createResource(uri);		
 		//add and load root
-		modelResource.getContents().add(umlRoot);		
-		try {
-			modelResource.load(null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		modelResource.getContents().add(umlRoot);
+	
 		//uml2 registry
 		final Map<URI,URI> uriModelMap = modelRSet.getURIConverter().getURIMap();
 		uriModelMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uml2baseURI.appendSegment("libraries").appendSegment(""));
 		uriModelMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uml2baseURI.appendSegment("metamodels").appendSegment(""));
 		uriModelMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uml2baseURI.appendSegment("profiles").appendSegment(""));
-		URI normalized = modelRSet.getURIConverter().normalize(URI.createURI("pathmap://ONTOUML_PROFILES/"));
-		URI localURI = CommonPlugin.asLocalURI(normalized);
-		System.out.println("normalized: "+normalized);
-		System.out.println("localURI: "+localURI);
-		System.out.println("to map: "+profileResource.getURI().toString().replace("OntoUML.uml", ""));
-		uriModelMap.put(localURI, URI.createURI(profileResource.getURI().toString().replace("OntoUML.uml", "")));
+		
+		if(modelResource!=null)  log += "UML Model created in: "+modelResource+"\n";
 	}
 
-	public void loadOntoUMLProfile()
+	public void resolveURIs()
+	{		
+		try{
+			URI profileURI = EcoreUtil.getURI(uprofile);
+			URI epackageURI = EcoreUtil.getURI((((EAnnotation)uprofile.eContents().get(0)).getContents().get(0)));
+			String umlTextContent = FileUtil.readFile(umlPath);
+			String newUmlTextContent = new String();
+			newUmlTextContent = umlTextContent;
+			Pattern p = Pattern.compile("appliedProfile href=\"(.)*\"");
+			Matcher m = p.matcher(umlTextContent);
+	    	while (m.find()) 
+	    	{ 
+	    		int indexBegin = m.start();
+	    		int indexEnd = m.end();
+	    		String piece = umlTextContent.substring(indexBegin,indexEnd);
+	    		newUmlTextContent = newUmlTextContent.replace(piece,"appliedProfile hef=\""+profileURI.toString()+"\"");
+	    	}
+	    	p = Pattern.compile("<references xmi:type=\"ecore:EPackage\" href=\"(.)*\"");
+	    	m = p.matcher(newUmlTextContent);
+	    	while (m.find()) 
+	    	{ 
+	    		int indexBegin = m.start()+44;
+	    		int indexEnd = m.end()-1;
+	    		String piece = umlTextContent.substring(indexBegin,indexEnd);
+	    		newUmlTextContent = newUmlTextContent.replaceAll(piece,epackageURI.toString());
+	    	}
+	    	
+	    	FileUtil.writeToFile(newUmlTextContent, umlPath);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void loadProfile()
 	{
 		profileRSet = new ResourceSetImpl();
 
@@ -138,23 +172,11 @@ public class ProfileAplicator {
 		
 		//create resource
 		uprofile = null;		
-		URL ontoProfileUrl = null;
-		URI ontoProfileUri  = null;
-		try{
-        	ontoProfileUrl = new URL("rsrc:"+"OntoUML.uml");        	        	
-        	URI ontobaseURI = URI.createFileURI(ontoProfileUrl.toExternalForm());
-        	System.out.println("profile rsrc: "+ontobaseURI);
-        	profileResource = profileRSet.createResource(ontobaseURI);        	
-		}catch(MalformedURLException e){			
-			String dir = System.getProperty("user.dir");
-			if (dir.contains("br.ufes.inf.nemo.oled")) dir = dir.replace("br.ufes.inf.nemo.oled","br.ufes.inf.nemo.ontouml2uml").concat(File.separator).concat("profile"+File.separator);
-			else dir = ProfileAplicator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        	ontoProfileUri = URI.createFileURI(dir.concat("OntoUML.uml"));        	        	
-        	System.out.println("profile uri: "+ontoProfileUri);
-        	profileResource = profileRSet.createResource(ontoProfileUri);
-    	}	
-		if(ontoProfileUrl == null && ontoProfileUri==null) throw new RuntimeException("Could not load 'profile/OntoUML.uml' from class path");
-		
+		File file = new File(profilePath);
+		URI ontoProfileUri = URI.createFileURI(file.getAbsolutePath());        
+        if(ontoProfileUri==null) throw new RuntimeException("Could not load 'profile/OntoUML.uml' from class path");
+        profileResource = profileRSet.createResource(ontoProfileUri);    				
+                
 		// load
 		try {
 			profileResource.load(null);
@@ -170,17 +192,17 @@ public class ProfileAplicator {
 		uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uml2baseURI.appendSegment("profiles").appendSegment(""));
 				
 		uprofile = (Profile)EcoreUtil.getObjectByType(profileResource.getContents(), UMLPackage.Literals.PROFILE);
-		if(uprofile == null) {
-				throw new RuntimeException("Could not load the profile container from resource");
-		}			
-		stereotypes.addAll(uprofile.getOwnedStereotypes());		
+		if(uprofile == null) throw new RuntimeException("Could not load the profile container from resource");					
+		stereotypes.addAll(uprofile.getOwnedStereotypes());
+		
+		if(ontoProfileUri!=null) log += "OntoUML profile loaded at: "+ontoProfileUri+"\n";
 	}
 	
 	public void apply()
 	{	
 		umlRoot.applyProfile(uprofile);	
 		
-		log += "Transforming the pure UML model into a UML Profile...";
+		log += "Transforming the pure UML model into a UML Profile..."+"\n";
 		for(RefOntoUML.Element pe: umap.keySet())
 		{
 			if(pe instanceof Kind) applyStereotype(((NamedElement)umap.get(pe)),getStereotype("Kind"));						
@@ -216,26 +238,39 @@ public class ProfileAplicator {
 	}
 
 	/** Extract the OntoUML profile to the specified path */
-	public String extractOntoUMLProfile(String profilePath) throws IOException
+	public String extractProfile() 
 	{
-		//Made these changes to correct an error while copying the alloy file to folders with space " " in the path.
-		profilePath = URLDecoder.decode(profilePath, "UTF-8");		
-		File profileFile = new File(profilePath);
-		if (profileFile.exists()) return profileFile.getAbsolutePath();				
-		// Copy "OntoUML.uml" 
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream("OntoUML.uml");		
-		if(is == null) is = new FileInputStream("profile/"+"OntoUML.uml");		
-		OutputStream out = new FileOutputStream(profileFile);				
-		// copy data flow -> MB x MB
-		byte[] src = new byte[1024];
-		int read = 0;
-		while ((read = is.read(src)) != -1){
-			out.write(src, 0, read);
-		}
-		is.close();
-		out.flush();
-		out.close();				
-		return profileFile.getAbsolutePath();			
+		try {
+			profilePath = umlPath.substring(0,umlPath.lastIndexOf(File.separator))+File.separator+"OntoUML.uml";
+			//Made these changes to correct an error while copying the alloy file to folders with space " " in the path.
+			profilePath = URLDecoder.decode(profilePath, "UTF-8");			
+			File profileFile = new File(profilePath);
+			if (profileFile.exists()) return profileFile.getAbsolutePath();				
+			// Copy "OntoUML.uml" 
+			InputStream is = this.getClass().getClassLoader().getResourceAsStream("OntoUML.uml");		
+			if(is == null) is = new FileInputStream("profile/"+"OntoUML.uml");		
+			OutputStream out = new FileOutputStream(profileFile);				
+			// copy data flow -> MB x MB
+			byte[] src = new byte[1024];
+			int read = 0;
+			while ((read = is.read(src)) != -1){
+				out.write(src, 0, read);
+			}
+			is.close();
+			out.flush();
+			out.close();
+			
+			if(profilePath!=null) log += "OntoUML profile extracted to: "+profileFile.getAbsolutePath()+"\n";
+			return profileFile.getAbsolutePath();
+			
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {			
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+		return null;			
 	}
 	
 	public void applyStereotype(NamedElement namedElement, Stereotype stereo)

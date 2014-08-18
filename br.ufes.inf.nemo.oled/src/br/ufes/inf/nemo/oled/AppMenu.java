@@ -168,18 +168,24 @@ public class AppMenu implements ActionListener {
 		createMenuItem(fileMenu, "saveas");		
 		
 		JMenu importMenu = createMenu("Import");
-		importMenu.setText("Import from");
+		importMenu.setText("Import from...");
 		fileMenu.add(importMenu);
 		
-		createMenuItem(importMenu, "importxmi");		
-		createMenuItem(importMenu, "importecore");
+		JMenuItem eaImportItem = createMenuItem(importMenu, "importxmi");
+		eaImportItem.setToolTipText("Import from a XMI model exported by Sparx Systems EA version 10");
+		
+		JMenuItem emfImportItem = createMenuItem(importMenu, "importecore");
+		emfImportItem.setToolTipText("Import from a XMI model of Eclipse EMF");
 		
 		JMenu exportMenu = createMenu("Export");
-		exportMenu.setText("Export as");
+		exportMenu.setText("Export as...");
 		fileMenu.add(exportMenu);
 		
-		createMenuItem(exportMenu, "exportecore");
-		createMenuItem(exportMenu, "exportuml");
+		JMenuItem emfExportItem = createMenuItem(exportMenu, "exportecore");
+		emfExportItem.setToolTipText("Export to a XMI model of Eclipse EMF");
+		
+		JMenuItem umlItem = createMenuItem(exportMenu, "exportuml");
+		umlItem.setToolTipText("Export to an UML model of Eclipse MDT UML2 version 4.0.0");
 		
 		createMenuItem(fileMenu,"close");
 		

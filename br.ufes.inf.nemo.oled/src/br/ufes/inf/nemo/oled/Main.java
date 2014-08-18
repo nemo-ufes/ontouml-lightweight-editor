@@ -350,38 +350,50 @@ public final class Main {
 	
 	public static void printOut(String msg)
 	{
-		if(!USE_LOG_FILE){
-			System.out.print(TimeHelper.getTime()+" - "+msg);
-		}else{
-			System.out.print(msg);
+		Object[] array = msg.split("\n");
+		for(Object obj: array){
+			if(!USE_LOG_FILE){
+				System.out.print(TimeHelper.getTime()+" - "+obj);
+			}else{
+				System.out.print(obj);
+			}
 		}
 	}
 
 	public static void printErr(String msg)
 	{
-		if(!USE_LOG_FILE){
-			System.err.print(TimeHelper.getTime()+" - "+msg);
-		}else{
-			System.err.print(msg);
+		Object[] array = msg.split("\n");
+		for(Object obj: array){
+			if(!USE_LOG_FILE){
+				System.err.print(TimeHelper.getTime()+" - "+obj);
+			}else{
+				System.err.print(obj);
+			}
 		}
 	}
 	
 	public static void printErrLine(String msg)
 	{
-		if(!USE_LOG_FILE){
-			System.err.println(TimeHelper.getTime()+" - "+msg);
-		}else{
-			System.err.println(msg);
+		Object[] array = msg.split("\n");
+		for(Object obj: array){
+			if(!USE_LOG_FILE){
+				System.err.println(TimeHelper.getTime()+" - "+obj);
+			}else{
+				System.err.println(obj);
+			}
 		}
 	}
 	
 	public static void printOutLine(String msg)
 	{
-		if(!USE_LOG_FILE){
-			System.out.println(TimeHelper.getTime()+" - "+msg);
-		}else{
-			System.out.println(msg);
-		}
+		Object[] array = msg.split("\n");
+		for(Object obj: array){
+			if(!USE_LOG_FILE){
+				System.out.println(TimeHelper.getTime()+" - "+obj);
+			}else{
+				System.out.println(obj);
+			}	
+		}		
 	}
 	
 	/**  
