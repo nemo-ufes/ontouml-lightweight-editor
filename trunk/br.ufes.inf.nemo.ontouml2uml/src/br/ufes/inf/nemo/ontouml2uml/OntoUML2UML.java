@@ -122,6 +122,7 @@ public class OntoUML2UML {
 		profileApplicator.apply();
 		try {
 			profileApplicator.save();
+			profileApplicator.resolveURIs();			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -136,10 +137,13 @@ public class OntoUML2UML {
 		log += profileApplicator.getLog();
 		
 		try {
-			return profileApplicator.save();
+			Resource result = profileApplicator.save();
+			profileApplicator.resolveURIs();
+			return result;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
 	
@@ -152,10 +156,13 @@ public class OntoUML2UML {
 		log += profileApplicator.getLog();
 				
 		try {
-			return profileApplicator.save();
+			Resource result = profileApplicator.save();
+			profileApplicator.resolveURIs();
+			return result;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+				
 		return null;		
 	}
 	

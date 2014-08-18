@@ -41,7 +41,7 @@ public class FileUtil {
 				file.createNewFile();
 			}catch(IOException e){
 				e.printStackTrace();
-			}
+			}			
 		}
 		return file;
 	}
@@ -65,7 +65,7 @@ public class FileUtil {
     public static void writeToFile (String content, String filePath) throws IOException
 	{
 		File file = createFile(filePath);
-		FileWriter fw = new FileWriter(file,true);
+		FileWriter fw = new FileWriter(file,false);
 		PrintWriter pWriter = new PrintWriter(new BufferedWriter(fw));		
 		pWriter.println(content);		
 		pWriter.close();
