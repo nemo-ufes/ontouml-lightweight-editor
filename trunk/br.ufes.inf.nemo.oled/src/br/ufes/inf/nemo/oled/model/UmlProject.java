@@ -38,6 +38,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.impl.GeneralizationSetImpl;
+import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
@@ -60,17 +61,29 @@ public class UmlProject implements Serializable {
 	private List<UmlDiagram> diagrams = new ArrayList<UmlDiagram>();
 	private ArrayList<Integer> openedDiagrams = new ArrayList<Integer>();
 	private Properties properties;
+	
 	private String name = new String();	
+	private String version = new String();
 	
 	public UmlProject() {
 		super();
 		properties = new Properties();
 		resource = ModelHelper.createResource();
+		version = Main.OLED_VERSION;
 		RefOntoUML.Package model = ModelHelper.getFactory().createModel();
 		if(model.getName()==null || model.getName()=="") model.setName("Model");
 		resource.getContents().add(model);		
 		getEditingDomain();
 		name = "New Project";		
+	}
+
+	public String getVersion() {
+		return version;
+	}
+	
+	public int getVersionAsInt()
+	{
+		return Integer.parseInt(version.replaceAll(".", ""));
 	}
 	
 	public void clearOpenedDiagrams()
