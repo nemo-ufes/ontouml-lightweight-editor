@@ -80,6 +80,7 @@ import RefOntoUML.Type;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic;
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic.TypeDetail;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
 import br.ufes.inf.nemo.common.resource.ResourceUtil;
@@ -611,8 +612,15 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		saveProjectNeeded(false);
 		frame.getBrowserManager().getProjectBrowser().setProject(currentProject);
 		frame.getInfoManager().setProject(currentProject);
-		for(UmlDiagram diagram: currentProject.getDiagrams()) createDiagramEditor((StructureDiagram)diagram);
-		if(currentProject.getDiagrams().size()==0) newDiagram();
+		
+		for(UmlDiagram diagram: currentProject.getDiagrams()) 
+			createDiagramEditor((StructureDiagram)diagram);
+		
+		if(currentProject.getDiagrams().size()==0) 
+			newDiagram(currentProject);
+		
+		newOCLDocument(currentProject, false);
+		
 		newOCLDocument(currentProject,false);
 		return currentProject;
 	}
@@ -982,7 +990,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			try {
 				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				closeCurrentProject();				
-				Main.printOutLine("Opening project");				
+				Main.printOutLine("Opening OLED project...");				
 				File file = fileChooser.getSelectedFile();
 				setProjectFile(file);
 				lastOpenPath = file.getAbsolutePath();
@@ -1792,72 +1800,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if(refparser!=null){
 			OntoUMLModelStatistic diagnostic = new OntoUMLModelStatistic(refparser);
 			diagnostic.run();
-			StatisticalElement se = new StatisticalElement("Kinds",diagnostic.getKindCount(),diagnostic.getKindPercentageClasses(),diagnostic.getKindPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Quantities",diagnostic.getQuantityCount(),diagnostic.getQuantityPercentageClasses(),diagnostic.getQuantityPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Collectives",diagnostic.getCollectiveCount(),diagnostic.getCollectivePercentageClasses(),diagnostic.getCollectivePercentageElements());
-			result.add(se);
-			se = new StatisticalElement("SubKinds",diagnostic.getSubKindCount(),diagnostic.getSubKindPercentageClasses(),diagnostic.getSubKindPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Phases",diagnostic.getPhaseCount(),diagnostic.getPhasePercentageClasses(),diagnostic.getPhasePercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Roles",diagnostic.getRoleCount(),diagnostic.getRolePercentageClasses(),diagnostic.getRolePercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Categories",diagnostic.getCategoryCount(),diagnostic.getCategoryPercentageClasses(),diagnostic.getCategoryPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Role Mixins",diagnostic.getRoleMixinCount(),diagnostic.getRoleMixinPercentageClasses(),diagnostic.getRoleMixinPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Mixins",diagnostic.getMixinCount(),diagnostic.getMixinPercentageClasses(),diagnostic.getMixinPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Modes",diagnostic.getModeCount(),diagnostic.getModePercentageClasses(),diagnostic.getModePercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Relators",diagnostic.getRelatorCount(),diagnostic.getRelatorPercentageClasses(),diagnostic.getRelatorPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Perceivable Qualities",diagnostic.getPerceivableQualityCount(),diagnostic.getPerceivableQualityPercentageClasses(),diagnostic.getPerceivableQualityPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("NonPerceivable Qualities",diagnostic.getNonPerceivableQualityCount(),diagnostic.getNonPerceivableQualityPercentageClasses(),diagnostic.getNonPerceivableQualityPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Nominal Qualities",diagnostic.getNominalQualityCount(),diagnostic.getNominalQualityPercentageClasses(),diagnostic.getNominalQualityPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Enumerations",diagnostic.getEnumerationCount(),diagnostic.getEnumerationPercentageDataType(),diagnostic.getEnumerationPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Primitives Types",diagnostic.getPrimitiveTypeCount(),diagnostic.getPrimitiveTypePercentageDataType(),diagnostic.getPrimitiveTypePercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Data Types",diagnostic.getDataTypeCount(),diagnostic.getDataTypePercentageDataType(),diagnostic.getDataTypePercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Moment Classes",diagnostic.getMomentCount(),diagnostic.getMomentPercentageClasses(),diagnostic.getMomentPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Sortal Classes",diagnostic.getSortalCount(),diagnostic.getSortalPercentageClasses(),diagnostic.getSortalPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("NonSortal Class",diagnostic.getNonSortalCount(),diagnostic.getNonSortalPercentageClasses(),diagnostic.getNonSortalPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Rigid Classes",diagnostic.getRigidCount(),diagnostic.getRigidPercentageClasses(),diagnostic.getRigidPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("AntiRigid Classes",diagnostic.getAntiRigidCount(),diagnostic.getAntiRigidPercentageClasses(),diagnostic.getAntiRigidPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("NonRigid Classes",diagnostic.getNonRigidCount(),diagnostic.getNonRigidPercentageClasses(),diagnostic.getNonRigidPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Classes",diagnostic.getClassCount(),diagnostic.getClassPercentageType(),diagnostic.getClassPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Associations",diagnostic.getAssociationCount(),diagnostic.getAssociationPercentageType(),diagnostic.getAssociationPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Materials",diagnostic.getMaterialCount(),diagnostic.getMaterialPercentageType(),diagnostic.getMaterialPercentageElements());
-			result.add(se);	
-			se = new StatisticalElement("Formals",diagnostic.getFormalCount(),diagnostic.getFormalPercentageType(),diagnostic.getFormalPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Characterizations",diagnostic.getCharacterizationCount(),diagnostic.getCharacterizationPercentageType(),diagnostic.getCharacterizationPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("Mediations",diagnostic.getMediationCount(),diagnostic.getMediationPercentageType(),diagnostic.getMediationPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("MemberOfs",diagnostic.getMemberOfCount(),diagnostic.getMemberOfPercentageType(),diagnostic.getMemberOfPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("SubCollectionOfs",diagnostic.getSubCollectionOfCount(),diagnostic.getSubCollectionOfPercentageType(),diagnostic.getSubCollectionOfPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("SubQuantityOfs",diagnostic.getSubQuantityOfCount(),diagnostic.getSubQuantityOfPercentageType(),diagnostic.getSubQuantityOfPercentageElements());
-			result.add(se);
-			se = new StatisticalElement("ComponentOfs",diagnostic.getComponentOfCount(),diagnostic.getComponentOfPercentageType(),diagnostic.getComponentOfPercentageElements());
-			result.add(se);
+			
+			for (TypeDetail detail : diagnostic.getDetails()) {
+				result.add(new StatisticalElement(detail));
+			}
+
 		}
 		if(!frame.isShowBottomView()) { getMainMenu().getBottomViewItem().setSelected(true); frame.showBottomView(); }
 		frame.selectStatistic();
