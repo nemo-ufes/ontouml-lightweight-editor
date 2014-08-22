@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.oled.statistician;
 
+import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic.TypeDetail;
+
 
 /**
  * @author John Guerson
@@ -17,6 +19,14 @@ public class StatisticalElement {
 		this.count = count;
 		this.typePercentage = typePercentage;
 		this.allPercentage = allPercentage;
+	}
+	
+	public StatisticalElement(TypeDetail detail)
+	{
+		this.measure = detail.getMeasure();
+		this.count = detail.getCount();
+		this.typePercentage = detail.getTypePercentage();
+		this.allPercentage = detail.getAllPercentage();
 	}
 	
 	protected String getMeasure() { return measure; }

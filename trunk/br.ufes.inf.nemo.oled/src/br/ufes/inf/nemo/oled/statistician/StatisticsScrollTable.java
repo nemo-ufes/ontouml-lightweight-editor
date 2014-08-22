@@ -141,6 +141,20 @@ public class StatisticsScrollTable extends JScrollPane{
 		table.validate();		
 		repaint();
 		validate();
-	}	
+	}
+	
+	public String getTableText(){
+		String s = new String();
+		int rows = table.getModel().getRowCount();
+		
+		for (int i = 0; i < rows; i++) {
+			s +=table.getValueAt(i, 0).toString().replaceAll("    ", "")+"\t"+table.getValueAt(i, 1)+"\t"+
+				table.getValueAt(i, 2)+"\t"+table.getValueAt(i, 3);
+			if(i<rows-1)
+				s+="\n";
+		}
+		
+		return s;
+	}
 
 }
