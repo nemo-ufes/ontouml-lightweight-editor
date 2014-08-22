@@ -3,6 +3,9 @@ package br.ufes.inf.nemo.oled.statistician;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -67,7 +70,18 @@ public class StatisticsPane extends JPanel implements Editor {
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				collect();	
+				collect();
+				statHeadPane.getCopyButton().setEnabled(true);
+			}
+		});
+		
+		statHeadPane.getCopyButton().addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();  
+				StringSelection selection = new StringSelection(statScrollTable.getTableText());  
+				clipboard.setContents(selection, null);  
 			}
 		});
 				

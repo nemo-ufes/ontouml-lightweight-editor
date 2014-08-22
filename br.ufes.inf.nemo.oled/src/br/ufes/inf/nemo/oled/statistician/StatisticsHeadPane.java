@@ -28,6 +28,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 /**
  * @author John Guerson
@@ -36,9 +37,14 @@ public class StatisticsHeadPane extends JPanel {
 
 	private static final long serialVersionUID = -4542364815581324052L;
 	private JButton btnRun;
+	private JButton btnCopy;
 	
 	public JButton getRunButton() {
 		return btnRun;
+	}
+	
+	public JButton getCopyButton() {
+		return btnCopy;
 	}
 	
 	public StatisticsHeadPane() 
@@ -50,23 +56,33 @@ public class StatisticsHeadPane extends JPanel {
 		btnRun.setBackground(Color.LIGHT_GRAY);
 		btnRun.setFocusable(false);
 		
+		btnCopy = new JButton("Copy to Clipboard");
+		btnCopy.setBackground(Color.LIGHT_GRAY);
+		btnCopy.setEnabled(false);
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(btnRun)
-					.addContainerGap(571, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED, 492, Short.MAX_VALUE)
+					.addComponent(btnCopy)
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(btnRun, GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnRun, GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+						.addComponent(btnCopy))
 					.addGap(8))
 		);
 		
 		setLayout(groupLayout);
 		setPreferredSize(new Dimension(710, 44));
 	}
+
+	
 }
