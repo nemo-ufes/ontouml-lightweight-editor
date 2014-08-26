@@ -1002,11 +1002,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					int response = JOptionPane.showOptionDialog(this, msg, "Version Compatibility", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null, null, "default");		
 					if(response == JOptionPane.OK_OPTION){														
 						ProjectBrowser pb = frame.getBrowserManager().getProjectBrowser();
-						pb.setProject(currentProject);
+						
 						for(int i=1; i<listFiles.size();i++){
 							OCLDocument oclDoc = (OCLDocument)listFiles.get(i);										
 							pb.getOCLDocuments().add(oclDoc);					
-						}				
+						}
+						pb.setProject(currentProject);
 						frame.getInfoManager().setProject(currentProject);
 						openDiagrams();				
 						ConfigurationHelper.addRecentProject(file.getCanonicalPath());
