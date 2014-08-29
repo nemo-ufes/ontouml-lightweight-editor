@@ -24,12 +24,15 @@ public class FileUtil {
 	 * 
 	 * @throws IOException
 	 */
+	@Deprecated
 	public static void copyStringToFile(String content, String FilePath) throws IOException
 	{
-		FileWriter fstream = new FileWriter(FilePath);
-		BufferedWriter out = new BufferedWriter(fstream);
-		out.write(content);
-		out.close();
+		File file = createFile(FilePath);
+		FileWriter fw = new FileWriter(file,false);
+		PrintWriter pWriter = new PrintWriter(new BufferedWriter(fw));		
+		pWriter.append(content);		
+		pWriter.close();
+		fw.close();		
 	}
 	
     /** Procedure for creating a File */	
