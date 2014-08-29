@@ -199,7 +199,7 @@ public class ErrorTablePanel extends JPanel {
     	if(path!=null)
 		try {
 			
-			FileUtil.copyStringToFile(
+			FileUtil.writeToFile(
 				errorMessage.getText().trim()+"\n"+
 				"------------------------------------------------------------"+"\n"+
 				content, 

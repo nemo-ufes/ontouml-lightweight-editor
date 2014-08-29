@@ -198,7 +198,7 @@ public class WarningTablePanel extends JPanel {
     	if(path!=null)
 		try {
 			
-			FileUtil.copyStringToFile(
+			FileUtil.writeToFile(
 				warningMessage.getText().trim()+"\n"+
 				"------------------------------------------------------------"+"\n"+
 				content, 

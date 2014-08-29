@@ -126,7 +126,7 @@ public class AlloySpecification {
 	
 	public void setContent(String content) throws IOException
 	{ 
-		this.content = content; FileUtil.copyStringToFile(content, alsPath); 
+		this.content = content; FileUtil.writeToFile(content, alsPath); 
 	}	
 	
 	/**
@@ -153,12 +153,10 @@ public class AlloySpecification {
 	 */
 	public String addConstraints(OntoUMLParser refparser, TOCLParser toclparser, TOCL2AlloyOption oclOptions) throws IOException
 	{
-		String result = new String();
-		result = "\n";
 		
-		result += TOCL2Alloy.convertToAlloy(toclparser, oclOptions);
+		content += "\n"+TOCL2Alloy.convertToAlloy(toclparser, oclOptions);
 		
-		FileUtil.writeToFile(result, alsPath);
+		FileUtil.writeToFile(content, alsPath);
 		
 		return TOCL2Alloy.log;		
 	}

@@ -52,7 +52,7 @@ public class OntoUML2Alloy {
 	 * 
 	 */
 	public String transform () throws Exception 
-	{		
+	{
 		File f = new File(alsPath);
 		if (!f.exists()) f.createNewFile();
 		if (f.exists()) f.delete(); f.createNewFile();
