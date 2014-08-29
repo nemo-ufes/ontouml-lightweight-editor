@@ -83,10 +83,10 @@ public class TemporalStructureGenerator {
 		createPathOperations(umlWorld,umlTimePath);
 		
 		ArrayList<Classifier> newTopLevels = new ArrayList<Classifier>();
-		newTopLevels.addAll(topLevels);
+		//newTopLevels.addAll(topLevels);
 		newTopLevels.add(umlIndividual);
-		createTopLevelExistenceOperations(umlWorld, newTopLevels);		
-		createTopLevelAllInstancesOperation(umlWorld, newTopLevels);		
+		createTopLevelAllInstancesOperation(umlWorld, classes);	
+		createTopLevelExistenceOperations(umlWorld, newTopLevels);			
 		createOclIsNewOperation(umlWorld,newTopLevels);
 		
 		createTemporalAttributeAccessOperations(umlWorld, attributes);
