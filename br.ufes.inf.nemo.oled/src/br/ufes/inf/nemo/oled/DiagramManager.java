@@ -1001,29 +1001,20 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					String msg = "This project has been edited with an older version of OLED and some changes are required.\nPress \"OK\" to update the file automatically to this new version.";
 					int response = JOptionPane.showOptionDialog(this, msg, "Version Compatibility", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null, null, "default");		
 					if(response == JOptionPane.OK_OPTION){														
-						ProjectBrowser pb = frame.getBrowserManager().getProjectBrowser();
-						
-						for(int i=1; i<listFiles.size();i++){
-							OCLDocument oclDoc = (OCLDocument)listFiles.get(i);										
-							pb.getOCLDocuments().add(oclDoc);					
-						}
-						pb.setProject(currentProject);
-						frame.getInfoManager().setProject(currentProject);
-						openDiagrams();				
-						ConfigurationHelper.addRecentProject(file.getCanonicalPath());
-						frame.setTitle("OLED - "+file.getName()+"");
-						saveProjectNeeded(false);		
+						openListFiles(listFiles);		
 					}else{
+						//TODO
 						getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 						return;
 					}				
-				}							
+				}else{
+					openListFiles(listFiles);
+				}
 			} catch (Exception ex) {
 				Main.printOutLine("Failed to open OLED project!");	
 				JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
 				ex.printStackTrace();
 			}
-			Main.printOutLine("Updating UI...");	
 			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			Main.printOutLine("OLED project successfully opened!");	
 		}		
@@ -1038,7 +1029,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			if(startPanel != null)
 			{
 				closeCurrentProject();
-				Main.printOutLine("Opening recent project");
+				Main.printOutLine("Opening recent project");				
 				File file = new File(startPanel.getSelectedRecentFile());
 				setProjectFile(file);
 				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
@@ -1047,33 +1038,43 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				{
 					String msg = "This project has been edited with an older version of OLED and some changes are required.\nPress \"OK\" to update the file automatically to this new version.";
 					int response = JOptionPane.showOptionDialog(this, msg, "Version Compatibility", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null, null, "default");		
-					if(response == JOptionPane.OK_OPTION){
-						ProjectBrowser pb = frame.getBrowserManager().getProjectBrowser();
-						for(int i=1; i<listFiles.size();i++){																
-							OCLDocument oclDoc = (OCLDocument)listFiles.get(i);										
-							pb.getOCLDocuments().add(oclDoc);					
-						}
-						pb.setProject(currentProject);
-						frame.getInfoManager().setProject(currentProject);								
-						openDiagrams();
-						saveProjectNeeded(false);				
-						ConfigurationHelper.addRecentProject(file.getCanonicalPath());
-						frame.setTitle("OLED - "+file.getName()+"");
+					if(response == JOptionPane.OK_OPTION) {
+						openListFiles(listFiles);
 					}else{
+						//TODO
 						getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 						return;
 					}
-				}				
+				}else{
+					openListFiles(listFiles);
+				}
 			}
 		} catch (Exception ex) {
 			Main.printOutLine("Failed to open OLED project!");	
 			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
 		}
-		Main.printOutLine("Updating UI...");	
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		Main.printOutLine("OLED project successfully opened!");	
 	}
 
+	/** Open OLED project from the list of object read from stream as a result of the oled file serialization */
+	private void openListFiles(ArrayList<Object> listFiles) throws IOException
+	{
+		currentProject = (UmlProject) listFiles.get(0);
+		ProjectBrowser pb = frame.getBrowserManager().getProjectBrowser();
+		for(int i=1; i<listFiles.size();i++)
+		{																
+			OCLDocument oclDoc = (OCLDocument)listFiles.get(i);										
+			pb.getOCLDocuments().add(oclDoc);					
+		}
+		pb.setProject(currentProject);
+		frame.getInfoManager().setProject(currentProject);								
+		openDiagrams();
+		saveProjectNeeded(false);				
+		ConfigurationHelper.addRecentProject(projectFile.getCanonicalPath());
+		frame.setTitle("OLED - "+projectFile.getName()+"");
+	}
+	
 	/** Save current Project to a file *.oled */
 	private File saveCurrentProjectToFile(File file) 
 	{

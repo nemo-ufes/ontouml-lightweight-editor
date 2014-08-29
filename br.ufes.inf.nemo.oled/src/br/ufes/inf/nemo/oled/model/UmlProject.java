@@ -82,8 +82,8 @@ public class UmlProject implements Serializable {
 	}
 	
 	public int getVersionAsInt()
-	{
-		return Integer.parseInt(version.replaceAll(".", ""));
+	{		
+		return Integer.parseInt(version.replaceAll("[.]", ""));
 	}
 	
 	public void clearOpenedDiagrams()
