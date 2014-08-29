@@ -6,7 +6,7 @@ import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UMLOption;
 
-public class OntoUML2TempotalUMLTets {
+public class OntoUML2TempotalUMLTests {
 	
 	public static void main(String[] args)
 	{
