@@ -299,7 +299,7 @@ public class AssociationEditionPanel extends JPanel {
 			}
 		}
 		
-		JLabel lblStereo = new JLabel("Stereo:");
+		JLabel lblStereo = new JLabel("Classifier:");
 		
 		stereoCombo = new JComboBox();
 		stereoCombo.setModel(new DefaultComboBoxModel(new String[] {"Mediation", "componentOf", "memberOf", "subCollectionOf", "subQuantityOf", "Material", "Characterization", "Formal", "Structuration","Association", "Derivation"}));

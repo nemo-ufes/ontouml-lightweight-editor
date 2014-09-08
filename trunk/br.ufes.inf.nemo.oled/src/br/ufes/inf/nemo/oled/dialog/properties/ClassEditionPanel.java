@@ -91,7 +91,7 @@ public class ClassEditionPanel extends JPanel {
 		btnAbstract = new JCheckBox("Abstract");
 		btnExtensional = new JCheckBox("Extensional");
 		
-		lblStereo = new JLabel("Stereo:");
+		lblStereo = new JLabel("Classifier:");
 		
 		stereoCombo = new JComboBox();
 		stereoCombo.setModel(new DefaultComboBoxModel(new String[] {"Kind", "SubKind", "Collective", "Quantity", "Role", "Phase", "Category", "Mixin", "RoleMixin", "Relator", "Mode", "DataType", "Enumeration", "PrimitiveType", "PerceivableQuality", "NonPerceivableQuality", "NominalQuality"}));
