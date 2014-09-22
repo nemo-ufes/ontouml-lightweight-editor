@@ -1,8 +1,8 @@
 #summary Table of Contents
 
   * [Welcome Welcome!]
-  * [FAQ Frequently Asked Questions (FAQ)]
-  * Compatibility with Production-Grade Tools
+  * Compatibility
     * [EnterpriseArchitect Sparx System's EA 10]
   * Developing
     * [OntoUMLInfrastructure OntoUML Infrastructure]
+  * [FAQ Frequently Asked Questions (FAQ)]
