@@ -17,7 +17,7 @@ To use the infrastruture you will need of the following libraries:
 *CREATING AN ONTOUML MODEL*
 ----
 
-
+_Coming soon..._
 
 ----
 *LOADING & SAVING AN ONTOUML MODEL*
