@@ -5,6 +5,7 @@
    <li> Compatibility
       <ul>
          <li>[EnterpriseArchitect Compatibility: Sparx System's EA 10]</li>    
+         <li>[EnterpriseArchitect Compatibility: Sparx System's EA 10]</li>    
       </ul>
    </li>
    <li>[OntoUMLInfrastructure Developing: OntoUML Infrastructure]</li>
