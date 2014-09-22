@@ -1,7 +1,10 @@
 #summary Table of Contents
 
 <ul>
-<li>[EnterpriseArchitect Compatibility: Sparx System's EA 10]</li>
+<li> 
+Compatibility with other production grade tools: 
+* [EnterpriseArchitect Compatibility: Sparx System's EA 10]
+</li>
 <li>[OntoUMLInfrastructure Development: OntoUML Infrastructure]</li>
 <li>[FAQ Frequently Asked Questions]</li>
 </ul>
