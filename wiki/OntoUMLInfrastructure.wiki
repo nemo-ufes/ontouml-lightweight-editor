@@ -4,13 +4,15 @@
 <g:plusone size="medium"></g:plusone>
 
 ----
-*ONTOUML INFRASTRUCTURE*
+*INFRASTRUCTURE*
 ----
 
-OLED uses an OntoUML infrastructure former developed by Roberto Carrareto and latter enhanced by Antognoni Albuquerque. This means that you can sort of "integrate" your project with OLED. The tool allows you to import and export
+OLED uses an infrastructure former developed by Roberto Carrareto, latter enhanced by Antognoni Albuquerque and now constantly improved by us. This means that you can sort of "integrate" your project with OLED using this infrastructure. 
 
-i) the content of the models through XMI files based on this infrastructure, and
-ii) the rules as text through files with extension *.ocl.
+The tool allows you to import and export the content of your model and rules through files:
+
+i) the content of your model through XMI files (renamed to *.refontouml), and
+ii) the rules (axioms) through OCL files with extension *.ocl.
 
 Our infrastructure is nowadays comprised only by an Ecore-based OntoUML metamodel. You can then create, load and use OntoUML models dynamically (via code) through this metamodel. 
 
