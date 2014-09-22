@@ -27,10 +27,10 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
+import RefOntoUML.parser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
 import br.ufes.inf.nemo.common.list.OntoUMLComparator;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlverificator.MultiplicityValidator;
 
 public class changeToMaterialPage extends UndefFormalPage{

@@ -54,7 +54,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.PackageableElement;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.explorer.OntoUMLElement;
 import br.ufes.inf.nemo.oled.model.ElementType;

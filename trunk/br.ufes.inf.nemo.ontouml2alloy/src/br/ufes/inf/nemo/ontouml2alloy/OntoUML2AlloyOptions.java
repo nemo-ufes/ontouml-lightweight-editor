@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import RefOntoUML.Classifier;
 import RefOntoUML.Relator;
 import RefOntoUML.RigidSortalClass;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 public class OntoUML2AlloyOptions {
 	

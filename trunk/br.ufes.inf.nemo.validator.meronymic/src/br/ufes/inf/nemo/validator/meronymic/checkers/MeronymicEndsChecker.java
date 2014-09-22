@@ -13,7 +13,7 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 public class MeronymicEndsChecker extends Checker<MeronymicEndsError>{
 	

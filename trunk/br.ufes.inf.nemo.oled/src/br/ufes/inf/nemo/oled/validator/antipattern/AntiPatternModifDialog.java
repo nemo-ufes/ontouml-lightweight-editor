@@ -37,8 +37,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.oled.AppFrame;
 
 /**

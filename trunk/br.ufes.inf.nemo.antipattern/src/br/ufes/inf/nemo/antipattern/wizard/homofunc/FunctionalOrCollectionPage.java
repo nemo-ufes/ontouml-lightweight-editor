@@ -5,20 +5,19 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import RefOntoUML.SubstanceSortal;
 import RefOntoUML.Type;
+import RefOntoUML.parser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
-import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.widgets.List;
 
 
 //First Page

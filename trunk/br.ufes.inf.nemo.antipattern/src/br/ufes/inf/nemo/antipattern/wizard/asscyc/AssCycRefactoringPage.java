@@ -12,10 +12,10 @@ import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import RefOntoUML.Association;
 import RefOntoUML.Type;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class AssCycRefactoringPage extends RefactoringPage {
 	

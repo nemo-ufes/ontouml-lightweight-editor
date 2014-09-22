@@ -14,9 +14,9 @@ import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 import RefOntoUML.Mediation;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
+import RefOntoUML.parser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class TimeOptionComposite extends Composite {
 	public Button btnAtTheSame;

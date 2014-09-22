@@ -7,10 +7,10 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.list.Combination;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 

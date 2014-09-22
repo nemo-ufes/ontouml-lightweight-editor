@@ -1,8 +1,8 @@
 package br.ufes.inf.nemo.antipattern;
 
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public abstract class AntipatternOccurrence {
 	

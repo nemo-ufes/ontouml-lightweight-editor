@@ -6,10 +6,10 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class ExclusiveDefinitionPage extends AntipatternWizardPage<OverlappingOccurrence, OverlappingWizard>{
 	

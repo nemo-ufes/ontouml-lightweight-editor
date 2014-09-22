@@ -7,6 +7,8 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
+import RefOntoUML.parser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.overlapping.CommonMixinSubtype;
@@ -18,8 +20,6 @@ import br.ufes.inf.nemo.antipattern.overlapping.SameType;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class BinOverOccurrence extends AntipatternOccurrence {
 

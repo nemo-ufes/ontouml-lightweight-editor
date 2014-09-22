@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.common.ontoumlparser;
+package RefOntoUML.parser;
 
 import java.util.HashMap;
 

@@ -4,7 +4,6 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Set;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import RefOntoUML.Category;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
@@ -17,6 +16,7 @@ import RefOntoUML.Relator;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
+import RefOntoUML.parser.OntoUMLParser;
 
 public class UtilAssistant {
 

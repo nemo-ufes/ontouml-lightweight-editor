@@ -226,7 +226,9 @@ public class ValidationMessage
 			description = "A MaterialAssociation must be derived";
 		}
 		
+		//===============================================
 		//UML Constraints
+		//===============================================
 		else if (constraintid.compareTo("LowerAndUpperBound") == 0)
 		{
 			description = "The upper value of an Attribute and/or Association End must not be smaller than the lower value";
@@ -244,7 +246,9 @@ public class ValidationMessage
 			description = "An attribute must have a minimum value of 1";
 		}
 		
-		// Reference Structures Extension /////////////////////////////
+		//===============================================
+		//Reference Structures Extension
+		//===============================================
 		else if (constraintid.compareTo("StructurationConstraint1") == 0)
 		{
 			description = "A The source must be a ReferenceStructure";

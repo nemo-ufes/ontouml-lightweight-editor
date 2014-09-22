@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.parser.ParsingElement;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
-import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
 
 public class GSRigAction  extends AntiPatternAction<GSRigOccurrence>{
 		

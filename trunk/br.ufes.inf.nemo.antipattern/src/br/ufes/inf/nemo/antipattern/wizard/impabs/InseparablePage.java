@@ -12,8 +12,8 @@ import org.eclipse.swt.widgets.Composite;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class InseparablePage extends ImpAbsPage<MetaPropertiesTableBuilder> {
 

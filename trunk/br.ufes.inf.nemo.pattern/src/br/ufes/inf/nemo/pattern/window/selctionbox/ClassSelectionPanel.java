@@ -14,11 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public abstract class ClassSelectionPanel extends JPanel {
 

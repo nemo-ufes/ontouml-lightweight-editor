@@ -4,7 +4,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
+import RefOntoUML.parser.ParsingElement;
 
 public class Fix{
 

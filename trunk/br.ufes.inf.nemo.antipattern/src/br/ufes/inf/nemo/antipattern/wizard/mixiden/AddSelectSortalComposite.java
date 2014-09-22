@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.NamedElement;
@@ -31,10 +32,9 @@ import RefOntoUML.SubstanceSortal;
 import RefOntoUML.impl.CollectiveImpl;
 import RefOntoUML.impl.KindImpl;
 import RefOntoUML.impl.QuantityImpl;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.mixiden.SortalToAdd;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class AddSelectSortalComposite extends Composite {
 	private Table table;

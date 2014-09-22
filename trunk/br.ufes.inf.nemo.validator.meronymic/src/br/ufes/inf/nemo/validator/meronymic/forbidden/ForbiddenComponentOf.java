@@ -9,9 +9,9 @@ import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
 import RefOntoUML.componentOf;
+import RefOntoUML.parser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.validator.meronymic.forbidden.ui.ForbiddenComponentOfDialog;
 import br.ufes.inf.nemo.validator.meronymic.ui.FixDialog;
 

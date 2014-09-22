@@ -7,11 +7,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.common.util.EList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -19,8 +17,8 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Phase;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
-import br.ufes.inf.nemo.common.ontoumlparser.*;
-import br.ufes.inf.nemo.common.resource.*;
+import RefOntoUML.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.resource.TypeName;
 
 public class XMLFile {
     private ArrayList<Atom> atomList;

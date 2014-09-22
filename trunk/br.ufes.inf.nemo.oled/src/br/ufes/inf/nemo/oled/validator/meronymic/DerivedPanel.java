@@ -51,8 +51,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.validator.meronymic.derivation.DerivedMeronymic;
 import br.ufes.inf.nemo.validator.meronymic.derivation.FunctionalParthoodDerivationTask;
 import br.ufes.inf.nemo.validator.meronymic.derivation.MembershipDerivationTask;

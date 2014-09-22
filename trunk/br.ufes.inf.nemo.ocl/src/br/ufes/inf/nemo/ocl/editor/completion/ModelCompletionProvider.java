@@ -13,7 +13,7 @@ import RefOntoUML.DataType;
 import RefOntoUML.Enumeration;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 /**
  * @author John Guerson

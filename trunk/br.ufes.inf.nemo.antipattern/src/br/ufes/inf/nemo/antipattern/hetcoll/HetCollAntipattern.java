@@ -10,10 +10,10 @@ import RefOntoUML.Package;
 import RefOntoUML.Property;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 
 public class HetCollAntipattern extends Antipattern<HetCollOccurrence> {

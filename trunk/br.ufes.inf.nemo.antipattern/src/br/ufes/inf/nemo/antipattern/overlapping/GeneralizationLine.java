@@ -7,12 +7,12 @@ import org.eclipse.swt.widgets.Composite;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.overlapping.GeneralizationLineComposite;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 
 public class GeneralizationLine extends OverlappingGroup {

@@ -70,7 +70,7 @@ import RefOntoUML.impl.MediationImpl;
 import RefOntoUML.impl.MeronymicImpl;
 import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.impl.RefOntoUMLPackageImpl;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.explorer.OntoUMLElement;

@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Package;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.antipattern.SimpleTuple;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelCompAntipattern extends Antipattern<RelCompOccurrence> {
 

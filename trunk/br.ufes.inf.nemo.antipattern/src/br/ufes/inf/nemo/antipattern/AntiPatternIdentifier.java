@@ -13,8 +13,8 @@ import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.util.Tuple;
 
 import RefOntoUML.Package;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ocl.OCLQueryExecuter;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class AntiPatternIdentifier {
 	

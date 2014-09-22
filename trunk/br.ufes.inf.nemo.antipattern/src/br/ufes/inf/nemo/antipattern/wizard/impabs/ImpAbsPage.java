@@ -5,9 +5,9 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Table;
 
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsAntipattern;
 import br.ufes.inf.nemo.antipattern.impabs.ImpAbsOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public abstract class ImpAbsPage<T extends ImpAbsTableBuilder<?>> extends WizardPage {
 

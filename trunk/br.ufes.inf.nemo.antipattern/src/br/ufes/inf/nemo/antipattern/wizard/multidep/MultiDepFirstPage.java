@@ -16,8 +16,8 @@ import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import RefOntoUML.Property;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class MultiDepFirstPage extends MultiDepPage {
 

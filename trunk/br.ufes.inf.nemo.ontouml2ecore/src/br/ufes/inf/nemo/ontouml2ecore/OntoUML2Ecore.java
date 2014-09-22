@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 /**
  * This class transforms OntoUML models into Ecore models. It simply ignores the stereotypes of classes and relations.

@@ -37,8 +37,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.ModellingAssistant;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;

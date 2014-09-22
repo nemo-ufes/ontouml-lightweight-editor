@@ -25,7 +25,7 @@ import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.ConsequentVariableNonDeclaredOnAntecedent;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
 import br.ufes.inf.nemo.ocl2owl_swrl.exceptions.UnexpectedResultingRule;

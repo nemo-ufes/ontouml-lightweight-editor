@@ -12,11 +12,11 @@ import RefOntoUML.Generalization;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
+import RefOntoUML.parser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.antipattern.util.SourceTargetAssociation;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 /*Association Cycle Anti-Pattern*/
 public class AssCycOccurrence extends AntipatternOccurrence{

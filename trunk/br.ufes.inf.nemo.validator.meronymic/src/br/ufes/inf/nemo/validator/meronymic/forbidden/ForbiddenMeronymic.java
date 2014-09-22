@@ -8,7 +8,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Package;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.validator.meronymic.MeronymicItem;
 
 public abstract class ForbiddenMeronymic<M extends Meronymic> extends MeronymicItem{

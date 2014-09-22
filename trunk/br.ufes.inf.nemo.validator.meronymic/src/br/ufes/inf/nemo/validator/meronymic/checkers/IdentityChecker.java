@@ -8,7 +8,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 public class IdentityChecker extends Checker<IdentityError>{
 

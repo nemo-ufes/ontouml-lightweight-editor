@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import RefOntoUML.Meronymic;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.validator.meronymic.forbidden.ForbiddenMeronymic;
 
 public class ForbiddenTableModel extends AbstractTableModel {

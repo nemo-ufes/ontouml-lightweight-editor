@@ -7,8 +7,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.overlapping.GeneralizationLine;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class GeneralizationLineComposite extends Composite {
 	private Text text;

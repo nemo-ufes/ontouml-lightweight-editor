@@ -4,11 +4,10 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
-
-import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+
+import RefOntoUML.parser.OntoUMLNameHelper;
+import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
 
 public class GeneralizationSetPage  extends DecIntPage {
 	

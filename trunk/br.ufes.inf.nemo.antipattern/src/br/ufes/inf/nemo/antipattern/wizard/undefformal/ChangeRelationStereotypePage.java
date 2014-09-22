@@ -12,15 +12,14 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GlyphMetrics;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Mediation;
 import RefOntoUML.Relator;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.undefformal.UndefFormalOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-
-import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
-import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 public class ChangeRelationStereotypePage extends UndefFormalPage{
 	

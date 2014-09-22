@@ -39,6 +39,7 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
+import RefOntoUML.parser.OntoUMLParser;
 
 public class OntoUMLModelStatistic {
 	

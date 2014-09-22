@@ -10,7 +10,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.CategoryAttribute;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionCategory;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.DescriptionFunction;

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.NamedElement;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.problems.ProblemElement.TypeProblem;
 
 public class WarningVerificator {

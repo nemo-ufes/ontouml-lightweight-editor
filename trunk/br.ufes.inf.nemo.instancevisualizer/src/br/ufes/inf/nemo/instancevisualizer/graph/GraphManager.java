@@ -5,18 +5,12 @@ import java.awt.MouseInfo;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -31,21 +25,20 @@ import org.graphstream.ui.geom.Point3;
 import org.graphstream.ui.graphicGraph.GraphicElement;
 import org.graphstream.ui.graphicGraph.GraphicSprite;
 import org.graphstream.ui.layout.springbox.implementations.SpringBox;
-
 import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.Viewer;
 import org.graphstream.ui.swingViewer.util.Camera;
-import org.graphstream.ui.swingViewer.util.DefaultMouseManager; 
+import org.graphstream.ui.swingViewer.util.DefaultMouseManager;
 import org.graphstream.ui.swingViewer.util.DefaultShortcutManager;
 
-import br.ufes.inf.nemo.instancevisualizer.*;
-import br.ufes.inf.nemo.instancevisualizer.apl.*;
-import br.ufes.inf.nemo.instancevisualizer.graph.*;
-import br.ufes.inf.nemo.instancevisualizer.gui.*;
-import br.ufes.inf.nemo.instancevisualizer.xml.*;
-
-import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
+import br.ufes.inf.nemo.instancevisualizer.apl.AplMainWindow;
+import br.ufes.inf.nemo.instancevisualizer.gui.MainWindow;
+import br.ufes.inf.nemo.instancevisualizer.gui.PropertiesPanel;
+import br.ufes.inf.nemo.instancevisualizer.xml.Atom;
+import br.ufes.inf.nemo.instancevisualizer.xml.Field;
+import br.ufes.inf.nemo.instancevisualizer.xml.Tuple;
+import br.ufes.inf.nemo.instancevisualizer.xml.XMLFile;
 
 public class GraphManager {
 	

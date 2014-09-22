@@ -33,7 +33,7 @@ import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefAssociation;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefClassifier;
 import br.ufes.inf.nemo.xmi2ontouml.framework.XMI2RefDiagram;

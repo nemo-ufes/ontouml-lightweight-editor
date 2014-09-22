@@ -9,11 +9,10 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
-
-import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+
+import RefOntoUML.parser.OntoUMLNameHelper;
+import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 
 public class FreeRoleSecondPage extends FreeRolePage {
 	

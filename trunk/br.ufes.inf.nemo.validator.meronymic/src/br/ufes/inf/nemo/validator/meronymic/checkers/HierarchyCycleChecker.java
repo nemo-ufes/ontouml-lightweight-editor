@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontouml2directedgraph.EdgePath;
 import br.ufes.inf.nemo.common.ontouml2directedgraph.Graph;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class HierarchyCycleChecker extends Checker<HierarchyCycleError> {
 	

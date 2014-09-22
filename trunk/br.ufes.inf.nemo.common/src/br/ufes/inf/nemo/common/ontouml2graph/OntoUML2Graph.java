@@ -13,7 +13,7 @@ import RefOntoUML.Generalization;
 import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.Type;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 public class OntoUML2Graph {
 	

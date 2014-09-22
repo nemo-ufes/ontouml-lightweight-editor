@@ -10,8 +10,8 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.SubstanceSortal;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class DecIntOccurrence extends AntipatternOccurrence {
 

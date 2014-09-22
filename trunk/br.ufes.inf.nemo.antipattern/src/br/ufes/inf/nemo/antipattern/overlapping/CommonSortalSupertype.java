@@ -15,11 +15,11 @@ import RefOntoUML.Property;
 import RefOntoUML.Role;
 import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
+import RefOntoUML.parser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.overlapping.CommonSortalSupertypeComposite;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class CommonSortalSupertype extends OverlappingGroup {
 	

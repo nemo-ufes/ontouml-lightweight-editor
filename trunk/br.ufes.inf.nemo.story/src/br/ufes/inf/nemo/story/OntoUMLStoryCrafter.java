@@ -5,36 +5,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.ECrossReferenceEList;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.EcoreUtil.ExternalCrossReferencer;
-import org.eclipse.emf.ecore.util.EcoreUtil.ProxyCrossReferencer;
 
-import stories.AntiRigidClass;
 import stories.Link;
 import stories.Node;
 import stories.Node_state;
 import stories.StoriesFactory;
 import stories.Story;
-import stories.Story_element;
 import stories.World;
 import stories.util.StoriesResourceFactoryImpl;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.resource.RefOntoUMLResourceFactoryImpl;
-import br.ufes.inf.nemo.common.resource.ResourceUtil;
+import RefOntoUML.parser.OntoUMLParser;
+import RefOntoUML.util.RefOntoUMLResourceUtil;
 
 public class OntoUMLStoryCrafter {
 		
@@ -50,7 +36,7 @@ public class OntoUMLStoryCrafter {
 		//filePath = fPath;
 		//dirPath = filePath.substring(0,filePath.lastIndexOf(File.separator)+1);
 		//ontoparser = refparser;	
-		Resource resource = ResourceUtil.loadReferenceOntoUML("test_data/input/model_completo.refontouml");
+		Resource resource = RefOntoUMLResourceUtil.loadModel("test_data/input/model_completo.refontouml");
 		RefOntoUML.Package root = (RefOntoUML.Package)resource.getContents().get(0);
 		OntoUMLParser gambiparser = new OntoUMLParser(root);
 		ontoparser = gambiparser;

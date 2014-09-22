@@ -29,7 +29,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.validator.meronymic.checkers.AggregationKindError;
 
 public class AggregationDialog extends JDialog {

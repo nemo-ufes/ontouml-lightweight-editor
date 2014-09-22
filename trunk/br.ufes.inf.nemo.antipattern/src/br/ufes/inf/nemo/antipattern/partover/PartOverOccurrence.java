@@ -5,9 +5,9 @@ import java.util.HashSet;
 import RefOntoUML.Classifier;
 import RefOntoUML.Meronymic;
 import RefOntoUML.Property;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class PartOverOccurrence extends OverlappingOccurrence{
 

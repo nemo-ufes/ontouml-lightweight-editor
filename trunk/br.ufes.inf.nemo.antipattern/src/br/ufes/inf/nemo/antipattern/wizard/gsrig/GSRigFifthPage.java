@@ -7,11 +7,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-
-import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
+
+import RefOntoUML.parser.OntoUMLNameHelper;
+import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
 
 public class GSRigFifthPage extends GSRigPage {
 	

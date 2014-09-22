@@ -77,13 +77,13 @@ import RefOntoUML.Property;
 import RefOntoUML.Relationship;
 import RefOntoUML.StringExpression;
 import RefOntoUML.Type;
+import RefOntoUML.parser.OntoUMLParser;
+import RefOntoUML.parser.SyntacticVerificator;
+import RefOntoUML.util.RefOntoUMLResourceUtil;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic.TypeDetail;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.ontoumlverificator.SyntacticVerificator;
-import br.ufes.inf.nemo.common.resource.ResourceUtil;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
 import br.ufes.inf.nemo.oled.derivation.IntersectionPattern;
@@ -2634,7 +2634,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		File modelFile = new File(modelFileName);  	
     	modelFile.deleteOnExit();    	
 		try {			
-			ResourceUtil.saveReferenceOntoUML(modelFileName, refpackage);
+			RefOntoUMLResourceUtil.saveModel(modelFileName, refpackage);
 			OntoUML2SBVR.Transformation(modelFileName);			
 			String docPage = modelFile.getPath().replace(".refontouml", ".html");			
 			frame.getInfoManager().showOutputText("SBVR generated successfully", true, true); 

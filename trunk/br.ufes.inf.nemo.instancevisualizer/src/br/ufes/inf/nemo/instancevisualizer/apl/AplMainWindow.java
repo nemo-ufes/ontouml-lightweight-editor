@@ -16,7 +16,7 @@ import org.graphstream.ui.swingViewer.View;
 import org.graphstream.ui.swingViewer.util.Camera;
 import org.xml.sax.SAXException;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.instancevisualizer.graph.GraphManager;
 import br.ufes.inf.nemo.instancevisualizer.gui.LegendPanel;
 import br.ufes.inf.nemo.instancevisualizer.gui.MainWindow;

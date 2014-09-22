@@ -7,12 +7,11 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-
-import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class IdentityProviderPage  extends DecIntPage {
 	

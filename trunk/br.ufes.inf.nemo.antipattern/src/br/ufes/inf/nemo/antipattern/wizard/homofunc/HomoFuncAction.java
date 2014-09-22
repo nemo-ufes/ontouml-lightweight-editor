@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class HomoFuncAction extends AntiPatternAction<HomoFuncOccurrence>{
 

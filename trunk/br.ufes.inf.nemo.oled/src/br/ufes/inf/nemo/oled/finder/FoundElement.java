@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.NamedElement;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLNameHelper;
 
 /**
  * @author John Guerson

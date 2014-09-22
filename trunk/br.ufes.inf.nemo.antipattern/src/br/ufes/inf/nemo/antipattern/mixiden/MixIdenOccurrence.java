@@ -21,11 +21,11 @@ import RefOntoUML.impl.PhaseImpl;
 import RefOntoUML.impl.QuantityImpl;
 import RefOntoUML.impl.RoleImpl;
 import RefOntoUML.impl.SubKindImpl;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class MixIdenOccurrence extends AntipatternOccurrence {
 	

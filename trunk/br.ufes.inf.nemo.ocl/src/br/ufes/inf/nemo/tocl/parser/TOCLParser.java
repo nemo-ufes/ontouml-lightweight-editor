@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 import org.eclipse.ocl.OCLInput;
 import org.eclipse.ocl.ParserException;
 
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 

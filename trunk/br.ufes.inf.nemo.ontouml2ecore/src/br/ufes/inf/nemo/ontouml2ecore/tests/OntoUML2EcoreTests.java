@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.ontouml2ecore.tests;
 import java.io.File;
 import java.io.IOException;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2ecore.OntoUML2Ecore;
 import br.ufes.inf.nemo.ontouml2ecore.OntoUML2EcoreOption;
 

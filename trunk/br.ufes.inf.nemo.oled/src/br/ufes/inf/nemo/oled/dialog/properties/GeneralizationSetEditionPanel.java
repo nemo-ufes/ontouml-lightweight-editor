@@ -46,7 +46,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.explorer.CustomOntoUMLElement;
 

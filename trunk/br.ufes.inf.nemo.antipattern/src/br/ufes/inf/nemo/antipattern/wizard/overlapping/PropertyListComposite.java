@@ -7,9 +7,9 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import RefOntoUML.Property;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class PropertyListComposite extends Composite {
 

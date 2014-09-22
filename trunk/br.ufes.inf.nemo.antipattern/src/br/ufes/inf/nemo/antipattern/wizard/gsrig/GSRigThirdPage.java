@@ -12,8 +12,8 @@ import RefOntoUML.Collective;
 import RefOntoUML.Kind;
 import RefOntoUML.Quantity;
 import RefOntoUML.SubKind;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class GSRigThirdPage extends GSRigPage {
 	private StyledText lblNowThatWe;

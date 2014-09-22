@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLNameHelper;
 
 public class AttrTable  {
 

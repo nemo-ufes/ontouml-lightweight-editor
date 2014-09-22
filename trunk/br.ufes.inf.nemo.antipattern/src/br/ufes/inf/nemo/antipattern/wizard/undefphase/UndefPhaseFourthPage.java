@@ -12,8 +12,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.parser.ParsingElement;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
 
 public class UndefPhaseFourthPage  extends UndefPhasePage{
 	

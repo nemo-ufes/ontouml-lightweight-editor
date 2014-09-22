@@ -10,12 +10,12 @@ import RefOntoUML.Mediation;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
-import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
+import RefOntoUML.parser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingGroup;
+import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
 import br.ufes.inf.nemo.antipattern.util.AlloyConstructor;
 import br.ufes.inf.nemo.common.list.Combination;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class RelOverOccurrence extends OverlappingOccurrence{
 	
