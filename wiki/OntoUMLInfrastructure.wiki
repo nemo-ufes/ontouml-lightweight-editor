@@ -4,21 +4,40 @@
 <g:plusone size="medium"></g:plusone>
 
 ----
-*INFRASTRUCTURE*
+*ONTOUML INFRASTRUCTURE*
 ----
 
-OLED uses an infrastructure former developed by Roberto Carrareto, latter enhanced by Antognoni Albuquerque and now constantly improved by us. This means that you can sort of "integrate" your project with OLED using this infrastructure. 
+OLED uses an infrastructure former developed by Roberto Carrareto, latter enhanced by Antognoni Albuquerque and now constantly improved by us. This means that you can sort of "integrate" your project with OLED using this infrastructure to create your models.
 
-The tool allows you to import and export the content of your model and rules through files:
+To use the infrastruture you will need of the following libraries:
+* br.ufes.inf.nemo.ontouml.refontouml_1.1.0.201301111500.jar
+  Location: _trunk/br.ufes.inf.nemo.common/lib/refontouml_
 
-i) the content of your model through XMI files (renamed to *.refontouml), and
-ii) the rules (axioms) through OCL files with extension *.ocl.
-
-Our infrastructure is nowadays comprised only by an Ecore-based OntoUML metamodel. You can then create, load and use OntoUML models dynamically (via code) through this metamodel. 
-
-Our infrastructure is available as Java API libraries. 
+----
+*CREATING AN ONTOUML MODEL VIA CODE*
+----
 
 
- that Reference Ecore-based OntoUML metamodel (we renamed these XMI files to extensions *.refontouml).
+----
+*LOADING A REFONTOUML FILE*
+----
 
-Therefore, developing a transformation to our OntoUML infrastructure.
+{{{
+public Resource loadModel (String refontoumlpath) throws IOException 
+{
+  ResourceSet rset = new ResourceSetImpl();  
+  rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("refontouml", 
+    new RefOntoUMLResourceFactoryImpl());
+  rset.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI,      
+    RefOntoUML.RefOntoUMLPackage.eINSTANCE);                
+  File file = new File(refontoumlpath);
+  URI fileURI = URI.createFileURI(file.getAbsolutePath());                
+  Resource resource = rset.createResource(fileURI);                               
+  Map<Object,Object> loadOptions =  
+    ((XMLResourceImpl)resource).getDefaultLoadOptions();
+  loadOptions.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
+  loadOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
+  resource.load(loadOptions);                
+  return resource;                
+}
+}}}
