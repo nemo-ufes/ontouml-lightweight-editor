@@ -4,12 +4,13 @@
 <g:plusone size="medium"></g:plusone>
 
 ----
-*ONTOUML INFRASTRUCTURE*
+*OUR ONTOUML INFRASTRUCTURE*
 ----
 
 OLED uses an infrastructure former developed by Roberto Carrareto, latter enhanced by Antognoni Albuquerque and now constantly improved by us. This means that you can sort of "integrate" your project with OLED using this infrastructure to create your models.
 
 To use the infrastruture you will need of the following libraries:
+
 * br.ufes.inf.nemo.ontouml.refontouml_1.1.0.201301111500.jar
   Location: _trunk/br.ufes.inf.nemo.common/lib/refontouml_
 
@@ -18,11 +19,13 @@ To use the infrastruture you will need of the following libraries:
 ----
 
 
+
 ----
-*LOADING A REFONTOUML FILE*
+*LOADING & SAVING ONTOUML MODEL*
 ----
 
 {{{
+/** Loading a reference ontouml model from a resource */
 public Resource loadModel (String refontoumlpath) throws IOException 
 {
   ResourceSet rset = new ResourceSetImpl();  
@@ -39,5 +42,26 @@ public Resource loadModel (String refontoumlpath) throws IOException
   loadOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
   resource.load(loadOptions);                
   return resource;                
+}
+}}}
+
+{{{
+/** Saving a reference ontouml model to a resource */
+public Resource saveModel (String refontoumlpath, RefOntoUML.Package refmodel) 
+{
+  ResourceSet rset = new ResourceSetImpl();                                       
+  rset.getResourceFactoryRegistry().getExtensionToFactoryMap().put("refontouml",
+    new RefOntoUMLResourceFactoryImpl());                   
+  rset.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI,     
+    RefOntoUML.RefOntoUMLPackage.eINSTANCE);
+  URI fileURI = URI.createFileURI(refontoumlpath);    
+  final Resource resource = rset.createResource(fileURI);     
+  resource.getContents().add(refmodel);       
+  try{
+    resource.save(Collections.emptyMap());
+  }catch(IOException e){
+    e.printStackTrace();
+  }
+  return resource;                    
 }
 }}}
