@@ -1,7 +1,11 @@
 #summary Table of Contents
 
 <ul>
-<li>[EnterpriseArchitect Compatibility: Sparx System's EA 10]</li>
+<li>Compatibility
+ <ul>
+ <li>[EnterpriseArchitect Compatibility: Sparx System's EA 10]</li>
+ </ul>
+</li>
 </ul>
 
 <ul>
