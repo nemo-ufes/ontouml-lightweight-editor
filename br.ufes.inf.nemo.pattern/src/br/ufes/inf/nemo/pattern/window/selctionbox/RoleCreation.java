@@ -1,5 +1,5 @@
 package br.ufes.inf.nemo.pattern.window.selctionbox;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 public class RoleCreation extends ClassSelectionPanel {
 //

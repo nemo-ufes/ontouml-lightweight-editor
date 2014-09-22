@@ -4,14 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.JFileChooser;
-
+import RefOntoUML.Classifier;
+import RefOntoUML.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.resource.TypeName;
 import br.ufes.inf.nemo.instancevisualizer.xml.Atom;
 import br.ufes.inf.nemo.instancevisualizer.xml.XMLFile;
-
-import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.resource.TypeName;
 
 public class NodeLegendManager {
 	

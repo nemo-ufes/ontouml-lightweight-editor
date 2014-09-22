@@ -11,11 +11,11 @@ import RefOntoUML.Package;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
 import RefOntoUML.componentOf;
+import RefOntoUML.parser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.AntiPatternIdentifier;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class HomoFuncAntipattern extends Antipattern<HomoFuncOccurrence> {
 	

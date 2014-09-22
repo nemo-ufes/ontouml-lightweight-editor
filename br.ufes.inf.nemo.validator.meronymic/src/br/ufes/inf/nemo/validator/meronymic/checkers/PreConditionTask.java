@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.validator.meronymic.checkers.ui.CheckerTableModel;
 
 public class PreConditionTask extends SwingWorker<Boolean, MeronymicError<?>>{

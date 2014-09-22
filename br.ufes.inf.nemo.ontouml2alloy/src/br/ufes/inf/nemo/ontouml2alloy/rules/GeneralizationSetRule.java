@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.ontouml2alloy.rules;
 
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.BinaryOperation;
 import br.ufes.inf.nemo.alloy.BinaryOperator;
@@ -9,7 +10,6 @@ import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.DisjointExpression;
 import br.ufes.inf.nemo.alloy.VariableReference;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class GeneralizationSetRule {
 

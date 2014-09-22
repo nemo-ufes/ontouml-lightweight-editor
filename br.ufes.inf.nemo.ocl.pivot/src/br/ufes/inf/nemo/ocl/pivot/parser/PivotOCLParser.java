@@ -19,7 +19,7 @@ import org.eclipse.ocl.examples.pivot.manager.MetaModelManager;
 import org.eclipse.ocl.examples.pivot.model.OCLstdlib;
 import org.eclipse.ocl.examples.pivot.utilities.PivotEnvironmentFactory;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.pivot.ocl2alloy.PivotOCLUtil;
 import br.ufes.inf.nemo.ontouml2ecore.OntoUML2Ecore;
 import br.ufes.inf.nemo.ontouml2ecore.OntoUML2EcoreOption;

@@ -28,7 +28,7 @@ import javax.swing.SwingUtilities;
 
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.AppMenu;

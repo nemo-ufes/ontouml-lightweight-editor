@@ -4,9 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractListModel;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-
 import RefOntoUML.Generalization;
+import RefOntoUML.parser.OntoUMLNameHelper;
 
 public class GeneralizationListModel extends AbstractListModel<String>{
 	

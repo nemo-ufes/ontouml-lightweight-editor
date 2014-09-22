@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.common.ontoumlparser;
+package RefOntoUML.parser;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -135,7 +135,7 @@ public class OntoUMLNameHelper {
 	
 	public static String getTypeName(EObject elem, boolean addGuillemets){
 		if(addGuillemets)
-			return "Â«"+getTypeName(elem)+"Â»";
+			return "«"+getTypeName(elem)+"»";
 		
 		return getTypeName(elem);
 	}

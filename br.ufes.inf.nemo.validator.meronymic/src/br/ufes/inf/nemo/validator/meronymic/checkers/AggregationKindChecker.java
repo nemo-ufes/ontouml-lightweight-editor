@@ -1,7 +1,7 @@
 package br.ufes.inf.nemo.validator.meronymic.checkers;
 
 import RefOntoUML.Meronymic;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 public class AggregationKindChecker extends Checker<AggregationKindError>{
 	

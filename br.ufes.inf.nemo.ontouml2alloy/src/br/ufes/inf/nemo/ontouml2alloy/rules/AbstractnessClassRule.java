@@ -3,13 +3,13 @@ package br.ufes.inf.nemo.ontouml2alloy.rules;
 import java.util.Set;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.BinaryOperation;
 import br.ufes.inf.nemo.alloy.BinaryOperator;
 import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.VariableReference;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class AbstractnessClassRule {
 

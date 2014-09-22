@@ -51,7 +51,7 @@ import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 /**

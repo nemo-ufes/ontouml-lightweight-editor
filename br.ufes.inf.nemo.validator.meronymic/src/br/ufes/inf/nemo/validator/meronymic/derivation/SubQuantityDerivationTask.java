@@ -2,9 +2,9 @@ package br.ufes.inf.nemo.validator.meronymic.derivation;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.subQuantityOf;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontouml2directedgraph.EdgePath;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.validator.meronymic.derivation.DerivedMeronymic.PatternType;
 import br.ufes.inf.nemo.validator.meronymic.derivation.ui.DerivedTableModel;
 

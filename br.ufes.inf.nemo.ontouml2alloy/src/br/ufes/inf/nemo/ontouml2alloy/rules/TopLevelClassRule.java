@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Set;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.BinaryOperation;
 import br.ufes.inf.nemo.alloy.DisjointExpression;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyAPI;
 
 public class TopLevelClassRule {

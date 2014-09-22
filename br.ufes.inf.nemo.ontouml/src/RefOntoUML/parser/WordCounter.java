@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.common.ontoumlparser;
+package RefOntoUML.parser;
 
 /**
  *	This class is used as a Word Counter. 

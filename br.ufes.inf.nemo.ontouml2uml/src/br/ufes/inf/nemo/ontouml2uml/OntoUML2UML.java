@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 /**
  * This class transforms OntoUML models into UML. It simply ignores the stereotypes of classes and relations.

@@ -8,15 +8,14 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.decint.DecIntOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-
-import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
-import org.eclipse.swt.widgets.List;
 
 public class IntentionalDerivedPage  extends DecIntPage {
 

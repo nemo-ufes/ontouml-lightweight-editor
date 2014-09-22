@@ -3,16 +3,12 @@ package br.ufes.inf.nemo.instancevisualizer.graph;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.graphstream.graph.Node;
-import org.graphstream.graph.Edge;
-
+import br.ufes.inf.nemo.common.resource.TypeName;
 import br.ufes.inf.nemo.instancevisualizer.xml.Atom;
 import br.ufes.inf.nemo.instancevisualizer.xml.Field;
 import br.ufes.inf.nemo.instancevisualizer.xml.Sig;
 import br.ufes.inf.nemo.instancevisualizer.xml.Tuple;
 import br.ufes.inf.nemo.instancevisualizer.xml.XMLFile;
-
-import br.ufes.inf.nemo.common.resource.TypeName;
 
 public class EdgeManager {
 	private ArrayList<EdgeM> edgeList;

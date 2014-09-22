@@ -15,8 +15,8 @@ import org.eclipse.ocl.parser.OCLAnalyzer;
 import org.eclipse.ocl.uml.UMLEnvironmentFactory;
 import org.eclipse.uml2.uml.Constraint;
 
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UMLOption;
 

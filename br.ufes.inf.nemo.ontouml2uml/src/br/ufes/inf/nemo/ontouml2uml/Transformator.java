@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 /**
  * This class reads every OntoUML element to be transformed and run the UML converter to generate its UML counterpart.

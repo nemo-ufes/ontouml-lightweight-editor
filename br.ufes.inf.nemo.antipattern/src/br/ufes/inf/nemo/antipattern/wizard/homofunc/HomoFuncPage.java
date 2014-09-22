@@ -1,9 +1,9 @@
 package br.ufes.inf.nemo.antipattern.wizard.homofunc;
 
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncAntipattern;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public abstract class HomoFuncPage extends AntipatternWizardPage<HomoFuncOccurrence, HomoFuncWizard> {
 	

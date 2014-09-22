@@ -1,9 +1,9 @@
 package br.ufes.inf.nemo.antipattern.wizard.reprel;
 
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelAntipattern;
 import br.ufes.inf.nemo.antipattern.reprel.RepRelOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public abstract class RepRelPage extends AntipatternWizardPage<RepRelOccurrence, RepRelWizard> {
 

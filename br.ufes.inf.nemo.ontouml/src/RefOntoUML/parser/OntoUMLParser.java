@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.common.ontoumlparser;
+package RefOntoUML.parser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
-import br.ufes.inf.nemo.common.resource.ResourceUtil;
+import RefOntoUML.util.RefOntoUMLResourceUtil;
 
 /** 
  * This class represents a parser for analyzing and keeping useful informations about the ontoUML model. 
@@ -71,7 +71,7 @@ import br.ufes.inf.nemo.common.resource.ResourceUtil;
  * this Element is selected or not (useful for transformation purposes).
  * 
  * @author John Guerson
- * @author Thiago Sales
+ * @author Tiago Sales
  * @author Vinicius Sobral
  *
  */
@@ -82,6 +82,8 @@ public class OntoUMLParser {
 	
 	/** Unique Name of Root Package. */
 	private String refmodelname;	
+	
+	private SyntacticVerificator verificator;
 	
 	/** 
 	 *  HashMap containing Every Element of the model associating with the custom parsing element. The parsing Element contains all 
@@ -104,6 +106,7 @@ public class OntoUMLParser {
 	public OntoUMLParser(RefOntoUML.Package refmodel)
 	{
 		this.model = refmodel;	
+		this.verificator = new SyntacticVerificator();
 		
 		elementsHash = new HashMap<EObject,ParsingElement>();	
 		
@@ -122,10 +125,11 @@ public class OntoUMLParser {
 	public OntoUMLParser(String refontoumlPath) throws IOException
 	{
 		
-		Resource resource = ResourceUtil.loadReferenceOntoUML(refontoumlPath);
+		Resource resource = RefOntoUMLResourceUtil.loadModel(refontoumlPath);
 		Package refmodel = (Package)resource.getContents().get(0);	
 		
 		this.model = refmodel;		
+		this.verificator = new SyntacticVerificator();
 		
 		elementsHash = new HashMap<EObject,ParsingElement>();	
 		
@@ -389,6 +393,21 @@ public class OntoUMLParser {
 		
 	}
 	
+	public void parse()
+	{
+		verificator.run(this.model);
+	}
+	
+	public String getTimingMessage()
+	{
+		return verificator.getTimingMessage();
+	}
+	
+	public String getResult()
+	{
+		return verificator.getResult();
+	}
+		
 	/**
 	 * Get OntoUML Element from a alias name.
 	 * 
@@ -1366,7 +1385,7 @@ public class OntoUMLParser {
 	}
 	
 	public ArrayList<GeneralizationSet> getGeneralizationSet(Generalization g){
-		ArrayList<GeneralizationSet> genSets = new ArrayList<>();
+		ArrayList<GeneralizationSet> genSets = new ArrayList<GeneralizationSet>();
 		
 		for (GeneralizationSet gs : getAllInstances(GeneralizationSet.class)) {
 			if(gs.getGeneralization().contains(g))
@@ -1405,7 +1424,7 @@ public class OntoUMLParser {
 	 */
 	public ArrayList<Relationship> getDirectRelationships(EObject eObject)
 	{
-		ArrayList<Relationship> relations = new ArrayList<>();		
+		ArrayList<Relationship> relations = new ArrayList<Relationship>();		
 		for (EObject a : getAllInstances(Relationship.class)) {
 			if (a instanceof Generalization){
 				Generalization g = (Generalization)a;
@@ -1424,7 +1443,7 @@ public class OntoUMLParser {
 		
 	public ArrayList<Association> getDirectAssociations(EObject eObject)
 	{
-		ArrayList<Association> relations = new ArrayList<>();		
+		ArrayList<Association> relations = new ArrayList<Association>();		
 		for (EObject a : getAllInstances(Association.class)) 
 		{			
 			Association assoc = (Association)a;
@@ -1437,7 +1456,7 @@ public class OntoUMLParser {
 	
 	public ArrayList<Association> getAssociationsBetween(HashSet<Type> typeList)
 	{
-		ArrayList<Association> relations = new ArrayList<>();		
+		ArrayList<Association> relations = new ArrayList<Association>();		
 		for (Association assoc : getAllInstances(Association.class)) 
 		{
 			try{
@@ -1454,7 +1473,7 @@ public class OntoUMLParser {
 	
 	public ArrayList<Generalization> getGeneralizationsBetween(HashSet<Type> typeList)
 	{
-		ArrayList<Generalization> generalizations = new ArrayList<>();		
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();		
 		for (Generalization gen : getAllInstances(Generalization.class)) 
 		{
 			try{
@@ -1471,7 +1490,7 @@ public class OntoUMLParser {
 	
 	public ArrayList<Generalization> getDirectGeneralizations(EObject eObject)
 	{
-		ArrayList<Generalization> generalizations = new ArrayList<>();		
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();		
 		for (EObject a : getAllInstances(Generalization.class)) 
 		{			
 			Generalization gen = (Generalization)a;
@@ -1484,7 +1503,7 @@ public class OntoUMLParser {
 	
 	public ArrayList<Association> getIndirectAssociations(EObject eObject)
 	{
-		ArrayList<Association> relations = new ArrayList<>();		
+		ArrayList<Association> relations = new ArrayList<Association>();		
 		for (EObject a : getAllInstances(Association.class)) 
 		{			
 			Association assoc = (Association)a;
@@ -1499,7 +1518,7 @@ public class OntoUMLParser {
 
 	public ArrayList<Generalization> getIndirectGeneralizations(EObject eObject)
 	{
-		ArrayList<Generalization> generalizations = new ArrayList<>();		
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();		
 		for (EObject a : getAllInstances(Generalization.class)) 
 		{			
 			Generalization gen = (Generalization)a;			

@@ -10,8 +10,8 @@ import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Relator;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class FreeRoleFifthPage extends FreeRolePage {
 	

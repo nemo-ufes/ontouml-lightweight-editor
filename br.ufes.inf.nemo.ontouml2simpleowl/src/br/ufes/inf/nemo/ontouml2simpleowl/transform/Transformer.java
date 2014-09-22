@@ -50,7 +50,6 @@ import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.RemoveAxiom;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
@@ -76,6 +75,7 @@ import RefOntoUML.impl.NamedElementImpl;
 import RefOntoUML.impl.PackageImpl;
 import RefOntoUML.impl.PropertyImpl;
 import RefOntoUML.impl.SubstanceSortalImpl;
+import RefOntoUML.parser.OntoUMLParser;
 
 /**
  * Provides transformation of RefOntoUML models into OWL2DL ontologies using the OWLAPI.

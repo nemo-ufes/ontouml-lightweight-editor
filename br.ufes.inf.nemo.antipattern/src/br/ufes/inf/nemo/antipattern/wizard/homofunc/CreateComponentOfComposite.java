@@ -20,8 +20,8 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Kind;
 import RefOntoUML.MixinClass;
 import RefOntoUML.SubKind;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.homofunc.HomoFuncOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class CreateComponentOfComposite extends Composite {
 

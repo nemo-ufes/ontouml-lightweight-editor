@@ -12,11 +12,11 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.file.TimeHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic.InfoType;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic.LineType;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class WorksheetGenerator {
 

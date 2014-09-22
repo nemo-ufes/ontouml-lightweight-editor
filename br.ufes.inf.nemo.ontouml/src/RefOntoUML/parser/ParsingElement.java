@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.common.ontoumlparser;
+package RefOntoUML.parser;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -9,9 +9,9 @@ import RefOntoUML.NamedElement;
 
 /**
  * This class represents a Parsing Element. 
- * OntoUMLParser uses this to keep useful information about an OntoUML Element. 
+ * OntoUMLParser uses this to keep useful information about an OntoUML Element that are not provided by the OntoUML metamodel. 
  * 
- * @author John
+ * @author John Guerson
  *
  */
 public class ParsingElement {
@@ -25,6 +25,7 @@ public class ParsingElement {
 	/** Alias Name. */
 	private String alias = new String();
 	
+	/** Type Name */
 	private String type = new String();
 	
 	/**

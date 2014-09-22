@@ -6,10 +6,6 @@ import java.util.Iterator;
 
 import br.ufes.inf.nemo.instancevisualizer.xml.XMLFile;
 
-import RefOntoUML.Classifier;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.resource.TypeName;
-
 public class EdgeLegendManager {
 	
 	private ArrayList<EdgeLegend> legendList;

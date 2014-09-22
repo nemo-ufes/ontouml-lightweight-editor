@@ -12,7 +12,7 @@ import RefOntoUML.MixinClass;
 import RefOntoUML.NamedElement;
 import RefOntoUML.PrimitiveType;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.oled.problems.ProblemElement.TypeProblem;
 
 public class ErrorVerificator {

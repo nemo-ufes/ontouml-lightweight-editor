@@ -3,9 +3,9 @@ package br.ufes.inf.nemo.antipattern.wizard.hetcoll;
 import java.util.ArrayList;
 
 import RefOntoUML.Property;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.hetcoll.HetCollOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntiPatternAction;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public class HetCollAction extends AntiPatternAction<HetCollOccurrence>{
 

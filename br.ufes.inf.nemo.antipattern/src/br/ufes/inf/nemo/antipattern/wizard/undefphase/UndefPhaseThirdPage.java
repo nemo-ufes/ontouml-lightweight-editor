@@ -2,13 +2,13 @@ package br.ufes.inf.nemo.antipattern.wizard.undefphase;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-
-import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+
+import RefOntoUML.parser.ParsingElement;
+import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 
 public class UndefPhaseThirdPage extends UndefPhasePage{
 	

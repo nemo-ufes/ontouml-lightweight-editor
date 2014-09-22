@@ -2,10 +2,10 @@ package br.ufes.inf.nemo.antipattern.wizard.relrig;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Property;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigAntipattern;
 import br.ufes.inf.nemo.antipattern.relrig.RelRigOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.AntipatternWizardPage;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 public abstract class RelRigPage extends AntipatternWizardPage<RelRigOccurrence, RelRigWizard> {
 

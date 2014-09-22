@@ -21,11 +21,11 @@ import RefOntoUML.Package;
 import RefOntoUML.Phase;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
-import br.ufes.inf.nemo.pattern.window.selctionbox.ClassSelectionPanel;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import br.ufes.inf.nemo.pattern.window.selctionbox.ClassSelectionPanel;
 
 public class PrincipleIdentiy extends ClassSelectionPanel {
 	private static final long serialVersionUID = 1L;

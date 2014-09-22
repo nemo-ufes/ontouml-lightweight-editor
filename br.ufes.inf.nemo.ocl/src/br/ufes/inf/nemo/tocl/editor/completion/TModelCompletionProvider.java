@@ -11,7 +11,7 @@ import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.DataType;
 import RefOntoUML.Property;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.editor.completion.ModelTemplateCompletion;
 
 public class TModelCompletionProvider {

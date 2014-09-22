@@ -6,10 +6,10 @@ import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Mediation;
 import RefOntoUML.Relator;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyAPI;
 
 public class RelatorAxiomRule {

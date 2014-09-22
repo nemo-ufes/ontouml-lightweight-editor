@@ -5,7 +5,7 @@ import java.awt.Component;
 import org.eclipse.emf.ecore.EObject;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.editor.OCLEditorPanel;
 import br.ufes.inf.nemo.tocl.editor.completion.TModelCompletionProvider;
 import br.ufes.inf.nemo.tocl.editor.completion.TOCLCompletionProvider;

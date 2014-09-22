@@ -15,11 +15,11 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Package;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.SubKind;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class SubkindCreation extends ClassSelectionPanel {
 	private static final long serialVersionUID = 1L;

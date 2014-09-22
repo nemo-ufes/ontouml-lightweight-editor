@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.validator.meronymic.derivation.DerivedMeronymic;
 
 public class DerivedTableModel extends AbstractTableModel {

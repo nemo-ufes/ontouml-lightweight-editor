@@ -15,11 +15,10 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.Kind;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.Property;
-import RefOntoUML.Relationship;
 import RefOntoUML.Relator;
 import RefOntoUML.SortalClass;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.resource.ResourceUtil;
+import RefOntoUML.parser.OntoUMLParser;
+import RefOntoUML.util.RefOntoUMLResourceUtil;
 import br.ufes.inf.nemo.z3py.BooleanFunctionDefinition;
 import br.ufes.inf.nemo.z3py.Conjunction;
 import br.ufes.inf.nemo.z3py.Equality;
@@ -57,7 +56,7 @@ public class Transformer {
 		populateWithExistenceAxioms();		
 		Resource resource;
 		try {
-			resource = ResourceUtil.loadReferenceOntoUML(sourceModelPath);
+			resource = RefOntoUMLResourceUtil.loadModel(sourceModelPath);
 			RefOntoUML.Package root  = (RefOntoUML.Package)resource.getContents().get(0);
 			ontoparser = new OntoUMLParser(root);	
 			populateWithObjectClasses();

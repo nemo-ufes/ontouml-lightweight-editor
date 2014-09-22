@@ -3,14 +3,13 @@ package br.ufes.inf.nemo.antipattern.wizard.overlapping;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.AntipatternInfo;
 import br.ufes.inf.nemo.antipattern.overlapping.OverlappingOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-
-import org.eclipse.swt.custom.StyledText;
-import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class DisjointOverlappingDefinitionPage extends WizardPage{
 	OverlappingOccurrence occurrence;

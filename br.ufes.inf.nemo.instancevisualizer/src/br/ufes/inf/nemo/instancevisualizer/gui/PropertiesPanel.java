@@ -1,57 +1,32 @@
 package br.ufes.inf.nemo.instancevisualizer.gui;
 
-import br.ufes.inf.nemo.instancevisualizer.graph.DataType;
-import br.ufes.inf.nemo.instancevisualizer.graph.EdgeManager;
-import br.ufes.inf.nemo.instancevisualizer.graph.GraphManager;
-import br.ufes.inf.nemo.instancevisualizer.graph.NodeManager;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Rectangle;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRootPane;
-import javax.swing.JScrollPane;
-import javax.swing.RowFilter;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-
-import java.awt.Window.Type;
-
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.resource.TypeName;
-
+import br.ufes.inf.nemo.instancevisualizer.graph.DataType;
+import br.ufes.inf.nemo.instancevisualizer.graph.EdgeManager;
+import br.ufes.inf.nemo.instancevisualizer.graph.NodeManager;
 import br.ufes.inf.nemo.instancevisualizer.xml.XMLFile;
-
-import javax.swing.JTabbedPane;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JTable;
-import javax.swing.JButton;
 
 public class PropertiesPanel extends JScrollPane {
 

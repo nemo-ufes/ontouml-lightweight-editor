@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.antipattern;
 import java.util.ArrayList;
 
 import RefOntoUML.Package;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 
 public abstract class Antipattern<T extends AntipatternOccurrence> {

@@ -14,7 +14,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.validator.meronymic.MeronymicItem;
 import br.ufes.inf.nemo.validator.meronymic.derivation.DerivedMeronymic;
 

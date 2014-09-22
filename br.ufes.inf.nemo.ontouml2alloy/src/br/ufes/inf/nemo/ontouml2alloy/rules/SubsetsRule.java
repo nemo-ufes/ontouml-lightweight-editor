@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.ontouml2alloy.rules;
 import RefOntoUML.Association;
 import RefOntoUML.Property;
 import RefOntoUML.Type;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.BinaryOperation;
 import br.ufes.inf.nemo.alloy.BinaryOperator;
@@ -10,7 +11,6 @@ import br.ufes.inf.nemo.alloy.CompareOperation;
 import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
 import br.ufes.inf.nemo.alloy.Quantificator;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.util.AlloyAPI;
 
 public class SubsetsRule {

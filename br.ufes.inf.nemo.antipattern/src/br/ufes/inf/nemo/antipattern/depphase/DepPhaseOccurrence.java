@@ -12,10 +12,10 @@ import RefOntoUML.Phase;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 //Relationally Dependent Phase
 public class DepPhaseOccurrence extends AntipatternOccurrence{

@@ -12,6 +12,8 @@ import RefOntoUML.Model;
 import RefOntoUML.Package;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.RefOntoUMLFactory;
+import RefOntoUML.parser.OntoUMLParser;
+import RefOntoUML.util.RefOntoUMLResourceUtil;
 import br.ufes.inf.nemo.antipattern.GSRig.GSRigAntipattern;
 import br.ufes.inf.nemo.antipattern.asscyc.AssCycAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
@@ -37,8 +39,6 @@ import br.ufes.inf.nemo.common.file.TimeHelper;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic.InfoType;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic.LineType;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.resource.ResourceUtil;
 
 
 public class MultipleModelProcesser {
@@ -267,7 +267,7 @@ public class MultipleModelProcesser {
 		try {
 			String path = folderPath+fileName;
 			System.out.println(TimeHelper.getTime()+" - Loading: '"+path+"'");
-			resource = ResourceUtil.loadReferenceOntoUML(path);
+			resource = RefOntoUMLResourceUtil.loadModel(path);
 			System.out.println(TimeHelper.getTime()+" - Loading: successful!");
 			
 		} catch (IOException e) {
@@ -295,7 +295,7 @@ public class MultipleModelProcesser {
 				String fileName = folderPath+pe.getName()+REFONTO; 
 				
 				System.out.println(TimeHelper.getTime()+" - Saving: "+fileName);
-				ResourceUtil.saveReferenceOntoUML(fileName, (Package) pe);
+				RefOntoUMLResourceUtil.saveModel(fileName, (Package) pe);
 				breakIntoFiles((Package) pe, folderPath, modelPath, depth+1);
 			}	
 		}

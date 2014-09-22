@@ -31,7 +31,7 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.editor.completion.ModelCompletionProvider;
 import br.ufes.inf.nemo.ocl.editor.completion.OCLCompletionProvider;
 

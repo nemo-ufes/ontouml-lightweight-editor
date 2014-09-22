@@ -40,7 +40,7 @@ import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.SendSignalAction;
 import org.eclipse.uml2.uml.State;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ocl.ocl2alloy.exception.IteratorException;
 import br.ufes.inf.nemo.ocl.ocl2alloy.exception.LiteralException;
 import br.ufes.inf.nemo.ocl.ocl2alloy.exception.OperationException;

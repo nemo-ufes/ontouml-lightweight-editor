@@ -11,11 +11,11 @@ import RefOntoUML.Mode;
 import RefOntoUML.Property;
 import RefOntoUML.Relator;
 import RefOntoUML.SortalClass;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.overlapping.SameTypeComposite;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 //partEnds with the same type
 public class SameType extends OverlappingGroup {

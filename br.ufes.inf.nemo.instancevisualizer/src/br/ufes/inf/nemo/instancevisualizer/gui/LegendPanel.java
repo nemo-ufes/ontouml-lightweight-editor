@@ -1,20 +1,9 @@
 package br.ufes.inf.nemo.instancevisualizer.gui;
 
-import br.ufes.inf.nemo.instancevisualizer.apl.AplMainWindow;
-import br.ufes.inf.nemo.instancevisualizer.graph.EdgeLegendManager;
-import br.ufes.inf.nemo.instancevisualizer.graph.EdgeLegend;
-import br.ufes.inf.nemo.instancevisualizer.graph.GraphManager;
-import br.ufes.inf.nemo.instancevisualizer.graph.NodeLegend;
-import br.ufes.inf.nemo.instancevisualizer.graph.NodeLegendManager;
-import br.ufes.inf.nemo.instancevisualizer.graph.NodeManager;
-
-import java.awt.BorderLayout;
-import java.awt.MouseInfo;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
@@ -22,21 +11,17 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
-import br.ufes.inf.nemo.common.resource.TypeName;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import br.ufes.inf.nemo.instancevisualizer.graph.EdgeLegend;
+import br.ufes.inf.nemo.instancevisualizer.graph.EdgeLegendManager;
+import br.ufes.inf.nemo.instancevisualizer.graph.GraphManager;
+import br.ufes.inf.nemo.instancevisualizer.graph.NodeLegend;
+import br.ufes.inf.nemo.instancevisualizer.graph.NodeLegendManager;
 
 public class LegendPanel extends JPanel {
 

@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EObject;
 import RefOntoUML.Generalization;
 import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLNameHelper;
 
 /**
  * @author John Guerson

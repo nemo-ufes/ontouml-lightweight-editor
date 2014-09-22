@@ -4,10 +4,10 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-
-import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+
+import RefOntoUML.parser.OntoUMLNameHelper;
+import br.ufes.inf.nemo.antipattern.freerole.FreeRoleOccurrence;
 
 public class FreeRoleFourthPage extends FreeRolePage {
 	

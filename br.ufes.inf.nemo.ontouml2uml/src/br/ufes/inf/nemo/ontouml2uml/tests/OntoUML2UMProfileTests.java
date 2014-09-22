@@ -2,7 +2,7 @@ package br.ufes.inf.nemo.ontouml2uml.tests;
 
 import java.io.IOException;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UMLOption;
 

@@ -2,7 +2,7 @@ package br.ufes.inf.nemo.validator.meronymic.checkers;
 
 import java.util.ArrayList;
 
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
+import RefOntoUML.parser.OntoUMLParser;
 
 public abstract class Checker<T extends MeronymicError<?>>{
 

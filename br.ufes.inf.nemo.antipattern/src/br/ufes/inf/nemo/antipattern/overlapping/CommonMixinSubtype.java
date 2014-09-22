@@ -12,6 +12,7 @@ import RefOntoUML.Mixin;
 import RefOntoUML.MixinClass;
 import RefOntoUML.Property;
 import RefOntoUML.RoleMixin;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.Antipattern;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
 import br.ufes.inf.nemo.antipattern.partover.PartOverOccurrence;
@@ -20,7 +21,6 @@ import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.overlapping.CommonMixinSubtypeComposite;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 
 
 public class CommonMixinSubtype extends OverlappingGroup {

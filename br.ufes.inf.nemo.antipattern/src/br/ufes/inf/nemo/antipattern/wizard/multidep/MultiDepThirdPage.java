@@ -6,17 +6,16 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-
-import RefOntoUML.Property;
-import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
-import org.eclipse.wb.swt.SWTResourceManager;
+
+import RefOntoUML.Property;
+import RefOntoUML.parser.OntoUMLNameHelper;
+import br.ufes.inf.nemo.antipattern.multidep.MultiDepOccurrence;
 
 public class MultiDepThirdPage  extends MultiDepPage {
 

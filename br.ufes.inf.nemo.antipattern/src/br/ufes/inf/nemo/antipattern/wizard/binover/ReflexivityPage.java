@@ -7,12 +7,12 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.antipattern.binover.BinOverAntipattern;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence;
 import br.ufes.inf.nemo.antipattern.binover.BinOverOccurrence.BinaryPropertyValue;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
-import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 public class ReflexivityPage extends BinOverPage {
 

@@ -9,8 +9,8 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
 
 import RefOntoUML.Phase;
+import RefOntoUML.parser.ParsingElement;
 import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
 
 public class UndefPhaseFirstPage extends UndefPhasePage{
 		

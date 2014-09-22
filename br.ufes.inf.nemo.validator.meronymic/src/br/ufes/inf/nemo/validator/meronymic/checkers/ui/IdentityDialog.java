@@ -39,9 +39,9 @@ import RefOntoUML.Phase;
 import RefOntoUML.Role;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLNameHelper;
 import br.ufes.inf.nemo.validator.meronymic.checkers.IdentityError;
 
 public class IdentityDialog extends JDialog {

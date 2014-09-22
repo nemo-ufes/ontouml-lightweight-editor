@@ -4,13 +4,13 @@ import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Composite;
-
-import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.ParsingElement;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+
+import RefOntoUML.parser.ParsingElement;
+import br.ufes.inf.nemo.antipattern.undefphase.UndefPhaseOccurrence;
 
 public class UndefPhaseFifthPage extends UndefPhasePage{
 	

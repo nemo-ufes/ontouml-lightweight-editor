@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 
 public class MRBSAntiPattern extends AntipatternOccurrence {
 		

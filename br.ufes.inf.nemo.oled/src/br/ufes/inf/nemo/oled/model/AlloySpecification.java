@@ -24,8 +24,8 @@ package br.ufes.inf.nemo.oled.model;
 import java.io.File;
 import java.io.IOException;
 
+import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.file.FileUtil;
-import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.tocl.parser.TOCLParser;
