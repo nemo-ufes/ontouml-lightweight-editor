@@ -2,6 +2,6 @@
 
 <ul>
 <li>[EnterpriseArchitect Compatibility: Sparx System's EA 10]</li>
-<li>[OntoUMLInfrastructure OntoUML Infrastructure]</li>
+<li>[OntoUMLInfrastructure Developing: OntoUML Infrastructure]</li>
 <li>[FAQ Frequently Asked Questions]</li>
 </ul>
