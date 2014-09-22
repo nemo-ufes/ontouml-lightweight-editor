@@ -27,7 +27,7 @@ public class AntiPatternIdentifier {
 		Copier copier = new Copier();
 		
 		//create a new package, copying the selected elements
-		Package model = parser.createPackageFromSelections(copier);
+		Package model = parser.createModelFromSelections(copier);
 		
 		try {
 			Object o = OCLQueryExecuter.executeQuery(oclQuery, (EClassifier)model.eClass(), model);
@@ -69,7 +69,7 @@ public class AntiPatternIdentifier {
 		
 		Copier copier = new Copier();
 		
-		Package model = parser.createPackageFromSelections(copier);
+		Package model = parser.createModelFromSelections(copier);
 		
 		try {
 			Object o = OCLQueryExecuter.executeQuery(oclQuery, (EClassifier)model.eClass(), model);
@@ -102,7 +102,7 @@ public class AntiPatternIdentifier {
 		
 		Copier copier = new Copier();
 		
-		Package model = parser.createPackageFromSelections(copier);
+		Package model = parser.createModelFromSelections(copier);
 		
 		try {
 			Object o = OCLQueryExecuter.executeQuery(oclQuery, (EClassifier)model.eClass(), model);

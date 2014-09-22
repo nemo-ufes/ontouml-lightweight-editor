@@ -762,22 +762,15 @@ public class OntoUMLParser {
 	}
 	
 	/**
-	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete
-	 * Which means that this Classifier is an Abstract Classifier.
-	 * 
-	 * @param c
-	 * @return
+	 * Verify if the given element is a general classifier in a partition, which means that this 
+	 * element is an abstract classifier.
 	 */
-	public boolean isAbstractFromGeneralizationSet(Classifier c) 
+	public boolean isAbstractFromGSet(Classifier c) 
 	{
-		for(GeneralizationSet gs : getAllInstances(GeneralizationSet.class))
-		{			
-			if(gs.isIsCovering())
-			{
-				for(Generalization gen : gs.getGeneralization())
-				{
-					if (isSelected(gen)) 
-					{
+		for(GeneralizationSet gs : getAllInstances(GeneralizationSet.class)) {			
+			if(gs.isIsCovering()) {
+				for(Generalization gen : gs.getGeneralization()) {
+					if (isSelected(gen)) {
 						if (isSelected(gen.getGeneral()) && gen.getGeneral().equals(c)) return true;
 					}
 				}
@@ -787,32 +780,20 @@ public class OntoUMLParser {
 	}
 		 
 	/**
-	 * Auto Select Elements : Mandatory Dependencies.
-	 * 
+	 * Auto select elements according to pre-defined mandatory dependencies. 
 	 * In Generalizations, the general and specific classifiers must be selected. 
 	 * In Associations, the source and target types must be selected.
-	 * 
-	 * @return
 	 */
 	private ArrayList<EObject> autoSelectMandatoryDependencies()
 	{
-		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
-		
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();		
 		for (EObject obj : getElements()) 
 		{
 			if(obj instanceof Generalization)
 			{
 				Generalization g = (Generalization) obj;
-				// general
-				if (!isSelected(g.getGeneral()) && !objectsToAdd.contains(g.getGeneral()) ) 
-				{
-					objectsToAdd.add(g.getGeneral());										
-				}
-				//specific
-				if (!isSelected(g.getSpecific()) && !objectsToAdd.contains(g.getSpecific()) ) 
-				{
-					objectsToAdd.add(g.getSpecific());					
-				}
+				if (!isSelected(g.getGeneral()) && !objectsToAdd.contains(g.getGeneral())) objectsToAdd.add(g.getGeneral());										
+				if (!isSelected(g.getSpecific()) && !objectsToAdd.contains(g.getSpecific())) objectsToAdd.add(g.getSpecific());					
 			}
 			if(obj instanceof Association) 
 			{
@@ -820,133 +801,65 @@ public class OntoUMLParser {
 				if (a.getMemberEnd().size()>=1)
 				{
 					Type source = a.getMemberEnd().get(0).getType();
-					//source
-					if(!isSelected(source) && !objectsToAdd.contains(source))
-					{
-						objectsToAdd.add(source);					
-					}
-				}
-				
+					if(!isSelected(source) && !objectsToAdd.contains(source)) objectsToAdd.add(source);					
+				}				
 				if (a.getMemberEnd().size()>=2)
 				{				
-					//	target
 					Type target = a.getMemberEnd().get(1).getType();
-					if(!isSelected(target) && !objectsToAdd.contains(target))
-					{
-						objectsToAdd.add(target);					
-					}
+					if(!isSelected(target) && !objectsToAdd.contains(target)) objectsToAdd.add(target);					
 				}
 			}			
-		}
-		
-		// add this elements to selection...
-		select(objectsToAdd,false);
-		
+		}		
+		select(objectsToAdd,false);		
 		return objectsToAdd;
 	}
 	
 	/**
-	 * Auto Select Elements : Packages Dependencies.
-	 *
+	 * Auto select elements according to pre-defined package dependencies.	 
 	 * In PackageableElements or Packages their container must be selected. 
-	 * 
-	 * @return
 	 */
 	private ArrayList<EObject> autoSelectPackagesDependencies()
 	{
-		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
-		
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();		
 		for (ParsingElement obj : elementsHash.values()) 
 		{	
 			if(obj.getElement() instanceof PackageableElement || obj.getElement() instanceof Package) 
 			{
-				// packages
 				if((obj.getElement().eContainer()!=null) && !isSelected(obj.getElement().eContainer()) && !objectsToAdd.contains(obj.getElement().eContainer())) 
 				{
 					objectsToAdd.add(obj.getElement().eContainer());
 				}
 			}
-		}
-		
-		// add this elements to selection...
-		select(objectsToAdd,false);
-		
+		}		
+		select(objectsToAdd,false);		
 		return objectsToAdd;
 	}
 	
 	/**
-	 * Auto Select Elements : Generalization.
-	 * 
+	 * Auto select elements according to pre-defined generalization and generalization sets dependencies.
 	 * In Generalizations, their Generalizations Set must be selected.
-	 * 
-	 * @return
 	 */
-	private ArrayList<EObject> autoSelectGeneralizationSetFromGeneralization()
+	private ArrayList<EObject> autoSelectGenDependenties()
 	{
-		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
-		
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();		
 		for (Generalization g : getAllInstances(Generalization.class))
 		{
 			for (GeneralizationSet gs : g.getGeneralizationSet()) 
 	        {
-	            if(!isSelected(gs) && !objectsToAdd.contains(gs))
-	            {
-	                objectsToAdd.add(gs);                                        
-	            }
+	            if(!isSelected(gs) && !objectsToAdd.contains(gs)) objectsToAdd.add(gs);
 	        }
-		}
-		
-		// add this elements to selection...
-		select(objectsToAdd,false);
-		
+		}		
+		select(objectsToAdd,false);		
 		return objectsToAdd;
 	}
-	
-	//Select all associations connected to the inputed classifiers
-	public ArrayList<EObject> autoSelectRelatedElements(ArrayList<Classifier> classifiers)
-	{
-		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
-		
-		for (Association a : getAllInstances(Association.class))
-		{
-			if (!isSelected(a))
-			{
-				//try clause added because the model may be inconsistent and generate exceptios.
-				try {
-					Type source = a.getMemberEnd().get(0).getType();
-					Type target = a.getMemberEnd().get(1).getType();
-					
-					if (!isSelected(source) && !objectsToAdd.contains(source) && !classifiers.contains(source))
-						objectsToAdd.add(source);
-					if (!isSelected(target) && !objectsToAdd.contains(target) && !classifiers.contains(target))
-						objectsToAdd.add(target);
-				}
-				//ignores association and unselect it.
-				catch (Exception e) {
-				
-					this.elementsHash.get(a).setSelected(false);
-				}
-			}
-		}
-		
-		// add this elements to selection...
-		select(objectsToAdd,false);
-		
-		return objectsToAdd;
-	}
-	
-	
+
 	/**
-	 * Auto Select Elements: Generalization Set.
-	 * 
+	 * Auto select elements according to pre-defined generalization sets and generalizations dependencies.
 	 * In Generalization Set, the Generalizations and the general and specific classifiers, must be selected.
-	 * 
-	 * @return
 	 */
-	private ArrayList<EObject> autoSelectGeneralizationSet() 
+	private ArrayList<EObject> autoSelectGenSetDependencies() 
 	{		
-		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
-		
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();		
 		for(EObject obj : getElements()){
 			if(obj instanceof GeneralizationSet) 
 			{
@@ -954,138 +867,100 @@ public class OntoUMLParser {
 				//generalizations
 				for(Generalization g: gs.getGeneralization())
 				{
-					if(!isSelected(g))
-					{
-						objectsToAdd.add(g);						
-					}
-					//specific
-					if (!isSelected(g.getSpecific()) && !objectsToAdd.contains(g.getSpecific())) 
-					{
-						objectsToAdd.add(g.getSpecific());						
-					}
-					//general
-					if (!isSelected(g.getGeneral()) && !objectsToAdd.contains(g.getGeneral())) 
-					{
-						objectsToAdd.add(g.getGeneral());						
-					}
+					if(!isSelected(g)) objectsToAdd.add(g);						
+					if (!isSelected(g.getSpecific()) && !objectsToAdd.contains(g.getSpecific())) objectsToAdd.add(g.getSpecific());						
+					if (!isSelected(g.getGeneral()) && !objectsToAdd.contains(g.getGeneral())) objectsToAdd.add(g.getGeneral());						
 				}								
 			}
-		}
-		
-		// add this elements to selection...
-		select(objectsToAdd,false);
-		
+		}		
+		select(objectsToAdd,false);		
 		return objectsToAdd;
 	}
 	
-	/**
-	 * Auto Select Elements : Hierarchies.
-	 * 
-	 * @param option
-	 * @return
-	 */
-	private ArrayList<EObject> autoSelectHierarchy(int option) 
+	/** Auto select associations connected to the given elements. */
+	public ArrayList<EObject> autoSelectRelatedElements(ArrayList<Classifier> classifiers)
 	{
-		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();
-		
-		if (option==NO_HIERARCHY) return objectsToAdd;
-
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();		
+		for (Association a : getAllInstances(Association.class))
+		{
+			if (!isSelected(a))
+			{
+				//try clause added because the model may be inconsistent and generate exceptions.
+				try {
+					Type source = a.getMemberEnd().get(0).getType();
+					Type target = a.getMemberEnd().get(1).getType();					
+					if (!isSelected(source) && !objectsToAdd.contains(source) && !classifiers.contains(source)) objectsToAdd.add(source);
+					if (!isSelected(target) && !objectsToAdd.contains(target) && !classifiers.contains(target))	objectsToAdd.add(target);
+				}
+				//ignores association and unselect it.
+				catch (Exception e) {				
+					this.elementsHash.get(a).setSelected(false);
+				}
+			}
+		}		
+		select(objectsToAdd,false);		
+		return objectsToAdd;
+	}	
+	
+	/** Auto select an entire hierarchy according to a option of selection. */
+	private ArrayList<EObject> autoSelectHierarchies(int hierarchySelectionOption) 
+	{
+		ArrayList<EObject> objectsToAdd = new ArrayList<EObject>();		
+		if (hierarchySelectionOption==NO_HIERARCHY) return objectsToAdd;
 		for (EObject o : getElements()) 
 		{
 			if (o instanceof Class) 
 			{
-				if (option==SORTAL_ANCESTORS || option==ALL_ANCESTORS || option==COMPLETE_HIERARCHY)
-					
-					getAncestorsHierarchy((Classifier) o, objectsToAdd, option);
-				
-				if (option==ALL_DESCENDANTS || option==COMPLETE_HIERARCHY)
-					
-					getDescendantsHierarchy((Classifier) o, objectsToAdd);
+				if (hierarchySelectionOption==SORTAL_ANCESTORS || hierarchySelectionOption==ALL_ANCESTORS || hierarchySelectionOption==COMPLETE_HIERARCHY)					
+					getUnselectedAncestorsHierarchy((Classifier) o, objectsToAdd, hierarchySelectionOption);				
+				if (hierarchySelectionOption==ALL_DESCENDANTS || hierarchySelectionOption==COMPLETE_HIERARCHY)					
+					getUnselectedDescendantsHierarchy((Classifier) o, objectsToAdd);
 			}
-		}
-		
-		// add this elements to selection...
-		select(objectsToAdd,false);
-	
+		}		
+		select(objectsToAdd,false);	
 		return objectsToAdd;
 	}
 
-	/**
-	 * Get all the descendants hierarchy of a Classifier. i.e. Children and Generalizations.
-	 * 
-	 * @param o
-	 * @param objectsToAdd
-	 * @param option
-	 */
-	private void getDescendantsHierarchy (Classifier o, ArrayList<EObject> objectsToAdd){
-		
+	/** Return all the unselected descendants hierarchy of a classifier i.e. its children and specializations which are not selected. */
+	private void getUnselectedDescendantsHierarchy (Classifier o, ArrayList<EObject> hierarchy)
+	{		
 		for (Classifier c : o.children()) 
 		{
-			if(!isSelected(c) && !objectsToAdd.contains(c))
-				objectsToAdd.add(c);				
-			
+			if(!isSelected(c) && !hierarchy.contains(c)) hierarchy.add(c);			
 			for (Generalization g : c.getGeneralization()) 
 			{
-				if(g.getGeneral().equals(o) && !isSelected(g) && !objectsToAdd.contains(g)) 
-					objectsToAdd.add(g);
+				if(g.getGeneral().equals(o) && !isSelected(g) && !hierarchy.contains(g)) hierarchy.add(g);
 			}
-			getDescendantsHierarchy(c, objectsToAdd);
-			
+			getUnselectedDescendantsHierarchy(c, hierarchy);			
 		}
 	}
 	
-	/**
-	 *Get all the ancestors hierarchy of a Classifier. i.e. Parents and Generalizations.
-	 * 
-	 * @param o
-	 * @param objectsToAdd
-	 * @param option
-	 */
-	private void getAncestorsHierarchy (Classifier o, ArrayList<EObject> objectsToAdd, int option){
-		
-		if(o instanceof SubstanceSortal && option==SORTAL_ANCESTORS) return;
-		
+	/** Return all the unselected ancestors hierarchy of a Classifier i.e. its parents and generalizations which are not selected. */
+	private void getUnselectedAncestorsHierarchy (Classifier o, ArrayList<EObject> hierarchy, int option)
+	{		
+		if(o instanceof SubstanceSortal && option==SORTAL_ANCESTORS) return;		
 		for (Generalization g : ((Class) o).getGeneralization()) 
 		{
-			if(!isSelected(g) && !objectsToAdd.contains(g))
-				objectsToAdd.add(g);
-			if(!isSelected(g.getGeneral()) && !objectsToAdd.contains(g.getGeneral()))
-				objectsToAdd.add(g.getGeneral());
-			
-			getAncestorsHierarchy(g.getGeneral(), objectsToAdd,option);
+			if(!isSelected(g) && !hierarchy.contains(g)) hierarchy.add(g);
+			if(!isSelected(g.getGeneral()) && !hierarchy.contains(g.getGeneral())) hierarchy.add(g.getGeneral());			
+			getUnselectedAncestorsHierarchy(g.getGeneral(), hierarchy,option);
 		}
 	}	
 	
-	/**
-	 * Auto Select Elements :  Explicit dependencies through parameters.
-	 * 
-	 * @param hierarchyOption
-	 * @param includeGeneralizationSet
-	 * @return
-	 */
-	public ArrayList<EObject> autoSelectDependencies(int hierarchyOption, boolean includeGeneralizationSet)
+	/** Auto select elements from explicit selection options */
+	public ArrayList<EObject> autoSelectDependencies(int hierarchySelectionOption, boolean includeGenSet)
 	{		
-		ArrayList<EObject> objectsAdded = new ArrayList<EObject>();
-		
+		ArrayList<EObject> objectsAdded = new ArrayList<EObject>();		
 		objectsAdded.addAll(autoSelectMandatoryDependencies());		
 		objectsAdded.addAll(autoSelectPackagesDependencies());						
-		objectsAdded.addAll(autoSelectHierarchy(hierarchyOption));		
-		objectsAdded.addAll(autoSelectGeneralizationSetFromGeneralization());
-		
-		if (includeGeneralizationSet) objectsAdded.addAll(autoSelectGeneralizationSet());
-		
+		objectsAdded.addAll(autoSelectHierarchies(hierarchySelectionOption));		
+		objectsAdded.addAll(autoSelectGenDependenties());		
+		if (includeGenSet) objectsAdded.addAll(autoSelectGenSetDependencies());		
 		return objectsAdded;
 	}
 
-	/**
-	 * Create a new Package Model from the Selections.
-	 * 
-	 * @param log
-	 * @param includeHierarchy
-	 * @param copier
-	 * @return
-	 */
-	public Package createPackageFromSelections (Copier copier)
+	/** Create a new model from the selections. */
+	public Package createModelFromSelections (Copier copier)
 	{		
 		Package pack_copy;
 		ArrayList<EObject> selected_copy = new ArrayList<EObject>();				
