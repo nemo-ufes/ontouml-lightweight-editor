@@ -1,6 +1,6 @@
 #summary Table of Contents
 
 <ul>
-<li>[EnterpriseArchitect Compatibility with Sparx System's EA]</li>
+<li>[EnterpriseArchitect Compatibility: Sparx System's EA v.10]</li>
 <li>[FAQ Frequently Asked Questions]</li>
 </ul>
