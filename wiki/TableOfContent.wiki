@@ -2,6 +2,7 @@
 
   * [Welcome Welcome to OLED]
   * Compatibility
-    * [EnterpriseArchitect Sparx System's EA 10]</li>
-    * [OntoUMLInfrastructure Developing: OntoUML Infrastructure]</li>
-  * [FAQ Frequently Asked Questions]</li>
+    * [EnterpriseArchitect Sparx System's EA 10]
+  * Developing
+    * [OntoUMLInfrastructure Developing: OntoUML Infrastructure]
+  * [FAQ Frequently Asked Questions]
