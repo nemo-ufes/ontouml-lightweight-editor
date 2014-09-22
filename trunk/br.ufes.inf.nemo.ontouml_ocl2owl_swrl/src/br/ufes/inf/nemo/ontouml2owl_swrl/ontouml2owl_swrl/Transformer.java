@@ -540,7 +540,7 @@ public class Transformer {
 		for (Relator relator : lstRelator) {
 			try{
 				materials = getRelatorMaterials(relator);
-				mediations = ontoParser.getRelatorsMediations(relator);
+				mediations = ontoParser.getMediations(relator);
 
 				//Get the triple <Mediation,Material,Mediation>
 				for (MaterialAssociation material : materials) {

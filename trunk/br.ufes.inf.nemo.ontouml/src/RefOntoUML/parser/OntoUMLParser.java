@@ -77,74 +77,164 @@ import RefOntoUML.util.RefOntoUMLResourceUtil;
  */
 public class OntoUMLParser {
 
-	/** Root Package of OntoUML Model. */
-	private Package model;	
-	
-	/** Unique Name of Root Package. */
+	/** Root package of OntoUML model. */
+	private Package model;		
+	/** Unique name of root package. */
 	private String refmodelname;	
-	
+	/** Syntactic verificator */
 	private SyntacticVerificator verificator;
 	
 	/** 
-	 *  HashMap containing Every Element of the model associating with the custom parsing element. The parsing Element contains all 
-	 *  the useful information about the OntoUML Element. 
+	 * HashMap containing every element of the model associating with the custom parsing element. 
+	 * The parsing Element contains all the useful information about the OntoUML element. 
 	 */
 	private HashMap<EObject,ParsingElement> elementsHash;
-	private NameHandler nameHandler = new NameHandler();
 
+	/** HashMap containing every direct child of a particular OntoUML element.*/
 	public HashMap<Classifier, HashSet<Classifier>> childHash;
+	/** HashMap containing all children of a particular OntoUML element.*/
 	public HashMap<Classifier, HashSet<Classifier>> allChildrenHash;
 	
-	/** Options for complete element selections in the model (transformation purposes). */
-	public static int NO_HIERARCHY = 0, SORTAL_ANCESTORS = 1, ALL_ANCESTORS = 2, ALL_DESCENDANTS = 3, COMPLETE_HIERARCHY = 4;		
+	/** Responsible for treating the name of each OntoUML element. */
+	private NameHandler nameHandler = new NameHandler();
 	
 	/**
-	 * This constructor creates a parser from a root ontoUML Package.
-	 * 
-	 * @param refmodel
+	 * Options for complete the selection of the elements in the model.
+	 * Very useful for transformation purposes. 
 	 */
+	public static int NO_HIERARCHY = 0, SORTAL_ANCESTORS = 1, 
+	ALL_ANCESTORS = 2, ALL_DESCENDANTS = 3, COMPLETE_HIERARCHY = 4;		
+	
+	/** Constructor */
 	public OntoUMLParser(RefOntoUML.Package refmodel)
 	{
 		this.model = refmodel;	
-		this.verificator = new SyntacticVerificator();
-		
-		elementsHash = new HashMap<EObject,ParsingElement>();	
-		
+		this.verificator = new SyntacticVerificator();		
+		elementsHash = new HashMap<EObject,ParsingElement>();		
 		NameHandler h1 = new NameHandler();
-		this.refmodelname = h1.treatName(model);	
-				
+		this.refmodelname = h1.treatName(model);				
 		initMap(model, nameHandler);
 	}
 		
-	/**
-	 * This constructor creates a parser from a absolute ontoUML file in file system.
-	 * 
-	 * @param refontoumlPath
-	 * @throws IOException
-	 */
+	/** Constructor */
 	public OntoUMLParser(String refontoumlPath) throws IOException
-	{
-		
+	{		
 		Resource resource = RefOntoUMLResourceUtil.loadModel(refontoumlPath);
-		Package refmodel = (Package)resource.getContents().get(0);	
-		
+		Package refmodel = (Package)resource.getContents().get(0);		
 		this.model = refmodel;		
-		this.verificator = new SyntacticVerificator();
-		
-		elementsHash = new HashMap<EObject,ParsingElement>();	
-		
+		this.verificator = new SyntacticVerificator();		
+		elementsHash = new HashMap<EObject,ParsingElement>();		
 		NameHandler h1 = new NameHandler();
-		this.refmodelname = h1.treatName(model);
-				
+		this.refmodelname = h1.treatName(model);				
 		initMap(model, nameHandler);
 	}	
+
+	/** This private method initializes the Map */
+	private void initMap (PackageableElement rootpack, NameHandler h2) 
+	{
+		ParsingElement e = new ParsingElement(rootpack, true, h2.treatName(rootpack));
+		this.elementsHash.put(rootpack,e);		
+		for(PackageableElement p : ((Package) rootpack).getPackagedElement())
+		{
+			addToMap(p, h2);			
+			if(p instanceof Package) initMap(p, h2);
+		}
+	}
 	
 	/**
-	 * Add a new Element to this Parser. 
+	 * This private method add an element to the Map. It associates an ontoUML element
+	 * with an unique alias and, by default, with a boolean value selected=true.
+	 */
+	private void addToMap(PackageableElement pe, NameHandler h2)
+	{
+		ParsingElement e;		
+		//Comments
+		for (Comment c: pe.getOwnedComment()) 
+		{
+			e = new ParsingElement(c, true, "");
+			this.elementsHash.put(c,e);
+		}		
+		//Constraintx
+		if(pe instanceof Constraintx)
+		{
+			e = new ParsingElement(pe, true, h2.treatName(pe));
+			this.elementsHash.put(pe,e);
+		}		
+		//Class and DataType
+		if(pe instanceof Class || ((pe instanceof DataType)&&!(pe instanceof PrimitiveType)&&!(pe instanceof Enumeration)) )
+		{
+			e = new ParsingElement(pe, true, h2.treatName(pe));
+			this.elementsHash.put(pe,e);			
+			//Generalization
+			for (Generalization g : ((Classifier)pe).getGeneralization()) 
+			{
+				e = new ParsingElement(g, true, "");
+				this.elementsHash.put(g,e);
+			}			
+			if (pe instanceof Class){			
+				//Attributes
+				for(Property p: ((Class)pe).getOwnedAttribute())
+				{				
+					e = new ParsingElement(p, true, h2.treatName(p));
+					this.elementsHash.put(p,e);				
+				}
+			}
+			if (pe instanceof DataType){			
+				//Attributes
+				for(Property p: ((DataType)pe).getOwnedAttribute())
+				{				
+					e = new ParsingElement(p, true, h2.treatName(p));
+					this.elementsHash.put(p,e);				
+				}
+			}
+		}		
+		//Association
+		else if(pe instanceof Association)
+		{
+			e = new ParsingElement(pe, true, h2.treatName(pe));
+			this.elementsHash.put(pe,e);			
+			//Properties			
+			for(RefOntoUML.Property property: ((Association)pe).getMemberEnd())
+			{											
+				e = new ParsingElement(property, true, h2.treatName(property));
+				this.elementsHash.put(property,e);
+			}									
+			//Generalization
+			for (Generalization g : ((Classifier)pe).getGeneralization()) 
+			{
+				e = new ParsingElement(g, true, "");
+				this.elementsHash.put(g,e);
+			}							
+		}
+		
+		//Enumeration
+		else if (pe instanceof Enumeration)
+		{
+			e = new ParsingElement(pe, true, h2.treatName(pe));
+			this.elementsHash.put(pe,e);			
+			//Enumeration Literals
+			for(EnumerationLiteral p: ((Enumeration)pe).getOwnedLiteral())
+			{			   	
+				e = new ParsingElement(p, true, h2.treatName(p));
+				this.elementsHash.put(p,e);
+			}		
+			//Enumeration can also have attributes
+			for(Property p: ((Enumeration)pe).getOwnedAttribute())
+			{
+				e = new ParsingElement(p, true, h2.treatName(p));
+				this.elementsHash.put(p,e);
+			}			
+		}else {
+			e = new ParsingElement(pe, true, h2.treatName(pe));
+			this.elementsHash.put(pe,e);			
+		}		
+	}
+	
+	/**
+	 * Add a new Element to this parser. 
 	 * But note that this new element must already have been added in the Model (i.e., in the root Package or file in which this parser was created). 
-	 * Also, this method do not verify dependences in addition. If the argument is a class, than it will add
-	 * all its attributes, generalization and comments, and so on for associations,  etc.
-	 * 
+	 * Also, this method do not verify dependences in the addition. If the argument is a class, than it will add
+	 * all its attributes, generalization and comments, and so on for associations and other elements.
 	 */
 	public void addElement(EObject obj)
 	{
@@ -153,18 +243,17 @@ public class OntoUMLParser {
 		{			
 			if (obj instanceof RefOntoUML.Comment){
 				ParsingElement e = new ParsingElement(obj,true,"");
-				this.elementsHash.put(obj,e);
-			
-			}else if (obj instanceof RefOntoUML.Generalization){
-				
+				this.elementsHash.put(obj,e);			
+			}else if (obj instanceof RefOntoUML.Generalization)
+			{				
 				ParsingElement e = new ParsingElement(obj,true,"");
-				this.elementsHash.put(obj,e);
-				
-			}else if (obj instanceof RefOntoUML.Property){
+				this.elementsHash.put(obj,e);				
+			}else if (obj instanceof RefOntoUML.Property)
+			{
 				ParsingElement e = new ParsingElement(obj,true,nameHandler.treatName((NamedElement)obj));
-				this.elementsHash.put(obj,e);
-				
-			}else if (obj instanceof PackageableElement){
+				this.elementsHash.put(obj,e);				
+			}else if (obj instanceof PackageableElement)
+			{
 				addToMap((PackageableElement)obj, nameHandler);
 			}
 		}else{
@@ -172,8 +261,9 @@ public class OntoUMLParser {
 		}
 	}
 
+	
 	/**
-	 * Remove an Element from this Parser. 
+	 * Remove an Element from this parser. 
 	 * But note that this element must already have been removed from the Model (i.e., in the root Package or file in which this parser was created).
 	 * Also, this method do not verify dependences in deletion. If the argument is a class, than it will delete
 	 * all its attributes, generalization and comments, and so on for associations,  etc.
@@ -184,14 +274,12 @@ public class OntoUMLParser {
 		if (obj instanceof PackageableElement) 
 		{ 
 			for (Comment c: ((PackageableElement)obj).getOwnedComment()) removeFromMap(c); 
-		} 
-			
+		}			
 		// Constraintx
 		if (obj instanceof Constraintx) 
 		{ 
 			removeFromMap((Constraintx)obj); 
-		} 
-		
+		}		
 		// Class and DataType
 		if (obj instanceof RefOntoUML.Class || ((obj instanceof DataType)&&!(obj instanceof PrimitiveType)&&!(obj instanceof Enumeration)))
 		{			
@@ -241,196 +329,71 @@ public class OntoUMLParser {
 		}
 	}
 	
+	/** Private method that performs the deletion of an element from the Map */
 	private void removeFromMap(EObject obj)
 	{
 		ParsingElement e = elementsHash.get(obj);
-		if (e!=null) {
+		if (e!=null) 
+		{
 			nameHandler.remove(e.getAlias());
 			this.elementsHash.remove(obj);			
 		}	
 	}
 	
+	/** Private method that performs the update of an element in the Map */
 	public void updateElement(EObject obj)
 	{
 		ParsingElement e = elementsHash.get(obj);
-		if (e!=null && (e.getElement() instanceof NamedElement)) {
+		if (e!=null && (e.getElement() instanceof NamedElement)) 
+		{
 			nameHandler.remove(e.getAlias());		
 			String alias = nameHandler.treatName((NamedElement)obj);
 			e.setAlias(alias);
 		}
 	}
 	
-	/**
-	 * Get Root Model Package.
-	 */
+	/** Get root package */
 	public RefOntoUML.Package getModel()
 	{
 		return model;
 	}
 	
-	/**
-	 * This private method initialize the HashMap used for keeping the mappings between
-	 * ontoUML model elements.
-	 * 
-	 * @param rootpack
-	 * @param h2
-	 */
-	private void initMap (PackageableElement rootpack, NameHandler h2) 
+	/** Get the name of the root package. */
+	public String getModelName()
 	{
-		ParsingElement e = new ParsingElement(rootpack, true, h2.treatName(rootpack));
-		this.elementsHash.put(rootpack,e);
-		
-		for(PackageableElement p : ((Package) rootpack).getPackagedElement())
-		{
-			addToMap(p, h2);
-			
-			if(p instanceof Package) 
-				initMap(p, h2);
-		}
-	}		
-
-	/**
-	 * This private method add a Element to the HashMap. It associate an ontoUML Element
-	 * with an unique alias and by default with boolean value selected=true.
-	 *
-	 * @param pe
-	 * @param h2
-	 */
-	private void addToMap(PackageableElement pe, NameHandler h2)
-	{
-		ParsingElement e;
-		
-		//Comments
-		for (Comment c: pe.getOwnedComment()) 
-		{
-			e = new ParsingElement(c, true, "");
-			this.elementsHash.put(c,e);
-		}
-		
-		//Constraintx
-		if(pe instanceof Constraintx)
-		{
-			e = new ParsingElement(pe, true, h2.treatName(pe));
-			this.elementsHash.put(pe,e);
-		}
-		
-		//Class and DataType
-		if(pe instanceof Class || ((pe instanceof DataType)&&!(pe instanceof PrimitiveType)&&!(pe instanceof Enumeration)) )
-		{
-			e = new ParsingElement(pe, true, h2.treatName(pe));
-			this.elementsHash.put(pe,e);
-			
-			//Generalization
-			for (Generalization g : ((Classifier)pe).getGeneralization()) 
-			{
-				e = new ParsingElement(g, true, "");
-				this.elementsHash.put(g,e);
-			}
-			
-			if (pe instanceof Class){			
-				//Attributes
-				for(Property p: ((Class)pe).getOwnedAttribute())
-				{				
-					e = new ParsingElement(p, true, h2.treatName(p));
-					this.elementsHash.put(p,e);				
-				}
-			}
-			if (pe instanceof DataType){			
-				//Attributes
-				for(Property p: ((DataType)pe).getOwnedAttribute())
-				{				
-					e = new ParsingElement(p, true, h2.treatName(p));
-					this.elementsHash.put(p,e);				
-				}
-			}
-		}
-		
-		//Association
-		else if(pe instanceof Association)
-		{
-			e = new ParsingElement(pe, true, h2.treatName(pe));
-			this.elementsHash.put(pe,e);
-			
-			//Properties			
-			for(RefOntoUML.Property property: ((Association)pe).getMemberEnd())
-			{											
-				e = new ParsingElement(property, true, h2.treatName(property));
-				this.elementsHash.put(property,e);
-			}			
-						
-			//Generalization
-			for (Generalization g : ((Classifier)pe).getGeneralization()) 
-			{
-				e = new ParsingElement(g, true, "");
-				this.elementsHash.put(g,e);
-			}							
-		}
-		
-		//Enumeration
-		else if (pe instanceof Enumeration)
-		{
-			e = new ParsingElement(pe, true, h2.treatName(pe));
-			this.elementsHash.put(pe,e);
-			
-			//Enumeration Literals
-			for(EnumerationLiteral p: ((Enumeration)pe).getOwnedLiteral())
-			{			   	
-				e = new ParsingElement(p, true, h2.treatName(p));
-				this.elementsHash.put(p,e);
-			}
-		
-			//Enumeration can also have attributes
-			for(Property p: ((Enumeration)pe).getOwnedAttribute())
-			{
-				e = new ParsingElement(p, true, h2.treatName(p));
-				this.elementsHash.put(p,e);
-			}
-			
-		}else {
-			e = new ParsingElement(pe, true, h2.treatName(pe));
-			this.elementsHash.put(pe,e);			
-		}
-		
+		return refmodelname;
 	}
 	
+	/** Run syntactical verification */
 	public void parse()
 	{
 		verificator.run(this.model);
 	}
 	
+	/** Get message with the time spent in the syntactical verification*/
 	public String getTimingMessage()
 	{
 		return verificator.getTimingMessage();
 	}
 	
+	/** Get result of the syntactical verification */
 	public String getResult()
 	{
 		return verificator.getResult();
 	}
 		
-	/**
-	 * Get OntoUML Element from a alias name.
-	 * 
-	 * @param alias
-	 * @return
-	 */
+	/** Get element from its alias name. */
 	public EObject getElement(String alias)
 	{	 
 		for (Entry<EObject,ParsingElement> entry : elementsHash.entrySet()) 
         {
             String name = ((ParsingElement)entry.getValue()).getAlias(); 
-            if (alias.equals(name)) return entry.getKey();            
+            if (alias.trim().toLowerCase().equals(name.trim().toLowerCase())) return entry.getKey();            
         }
         return null;	    
 	}
 	
-	/**
-	 * This method gets the alias of a given ontoUML Element.
-	 * 
-	 * @param elem
-	 * @return
-	 * @throws Exception 
-	 */
+	/** Get the alias of a given element. */
 	public String getAlias(EObject elem) 
 	{
 		ParsingElement pe = elementsHash.get(elem);
@@ -444,63 +407,8 @@ public class OntoUMLParser {
 		}
 		return "";
 	}
-	
-	/**
-	 * This method gets the String representation of a given ontoUML Element.
-	 * 
-	 * @param elem
-	 * @return
-	 */
-	public String getStringRepresentation(EObject elem)
-	{
-		ParsingElement parsingElem = elementsHash.get(elem);
-		
-		if (parsingElem == null)
-			return "Unknown Element";
-		else return parsingElem.toString();
-	}
 
-	public String getStereotype(EObject elem)
-	{
-		ParsingElement parsingElem = elementsHash.get(elem);
-		
-		if (parsingElem == null)
-			return "Unknown Element";
-		else return parsingElem.getType();
-	}
-	
-	@Override
-	public String toString()
-	{
-		String result = new String();
-		
-		for(EObject obj: getElements())
-		{
-			result += elementsHash.get(obj)+"\n";
-		}
-		return result;
-	}
-	
-	/**
-	 * Get String Representation of All Elements in the model.
-	 * 
-	 * @return
-	 */
-	public String getStringRepresentations()
-	{
-		String result = new String();
-	
-		for (EObject obj: getElements()) { result+= getStringRepresentation(obj)+"\n"; }
-		
-		return result;		
-	}
-	
-	/**
-	 * Get Aliases of a List of OntoUML Elements.
-	 * 
-	 * @param list
-	 * @return
-	 */
+	/** Get respective aliases from a list of elements. */
 	public ArrayList<String> getAlias (ArrayList<EObject> list)
 	{
 		ArrayList<String> result = new ArrayList<String>();
@@ -511,42 +419,67 @@ public class OntoUMLParser {
 		return result;
 	}
 	
-	/**
-	 * Get String Representation of a List of OntoUML Elements.
-	 * 
-	 * @return
-	 */
-	public String getStringRepresentations(ArrayList<EObject> list)
+	/** Get a string representation of a given element. */
+	public String getStringRepresentation(EObject elem)
 	{
-		String result = new String();
+		ParsingElement parsingElem = elementsHash.get(elem);		
+		if (parsingElem == null) return "Unknown Element";
+		else return parsingElem.toString();
+	}
 	
-		for (EObject obj: getElements()) { if (list.contains(obj)) result+= getStringRepresentation(obj)+"\n"; }
-		
+	/** Get a string representation of all elements in the model. */
+	public String getStringRepresentations()
+	{
+		String result = new String();	
+		for (EObject obj: getElements()) { result+= getStringRepresentation(obj)+"\n"; }		
 		return result;		
 	}
 	
-	public ArrayList<ParsingElement> getParsingElements(ArrayList<Element> list)
+	/** Get the respective string representations from a List of elements. */
+	public String getStringRepresentations(ArrayList<EObject> list)
 	{
-		ArrayList<ParsingElement> result = new ArrayList<ParsingElement>();
-		for(EObject eobj: list){
-			if (elementsHash.get(eobj)!=null){
-				result.add(elementsHash.get(eobj));
-			}
+		String result = new String();	
+		for (EObject obj: getElements()) { if (list.contains(obj)) result+= getStringRepresentation(obj)+"\n"; }		
+		return result;		
+	}
+	
+	/** Get the stereotype of a given element. */
+	public String getStereotype(EObject elem)
+	{
+		ParsingElement parsingElem = elementsHash.get(elem);		
+		if (parsingElem == null) return "Unknown Element";
+		else return parsingElem.getType();
+	}
+	
+	/** String representation of the entire parser. */
+	@Override
+	public String toString()
+	{
+		String result = new String();		
+		for(EObject obj: getElements())
+		{
+			result += elementsHash.get(obj)+"\n";
 		}
 		return result;
 	}
 	
-	/**
-	 * Verifies if a given OntoUML Element is selected or not.
-	 * 
-	 * @param elem
-	 * @return
-	 */
+	/** Get respective parsing elements of a list of elements */
+	public ArrayList<ParsingElement> getParsingElements(ArrayList<Element> list)
+	{
+		ArrayList<ParsingElement> result = new ArrayList<ParsingElement>();
+		for(EObject eobj: list)
+		{
+			if (elementsHash.get(eobj)!=null) result.add(elementsHash.get(eobj));			
+		}
+		return result;
+	}
+	
+	/** Verifies if a given element is selected. */
 	public Boolean isSelected (EObject elem) 
 	{		
-		if (elem!=null){
-			if (elementsHash.get(elem)!=null)
-				return elementsHash.get(elem).getSelected();
+		if (elem!=null)
+		{
+			if (elementsHash.get(elem)!=null) return elementsHash.get(elem).getSelected();
 			else{
 				try {
 					throw new Exception("Element not contained in OntoUML parser.");
@@ -558,61 +491,46 @@ public class OntoUMLParser {
 		}else{
 			return false;
 		}
-	}
-	
-	/**
-	 * Get Unique Name of OntoUML Root Package.
-	 *  
-	 * @return
-	 */
-	public String getModelName()
-	{
-		return refmodelname;
-	}	
+	}		
 		
-	/**
-	 * Get OntoUML Elements of the Model.
-	 * @return
-	 */
+	/** Get all selected elements of the model. */
 	public Set<EObject> getElements()
 	{
-		Set<EObject> list = new HashSet<EObject>(); 
-		
+		Set<EObject> list = new HashSet<EObject>();		
 		for (ParsingElement pe : elementsHash.values()) 
 		{
 			if(pe.getSelected()) { list.add(pe.getElement()); }
-		}
-		
+		}		
 		return list;
 	}
 	
 	/**
-	 * Select this elements in the model. If 'unselectOthers' is true, the other elements are unselected (i.e. selected=false). 
+	 * Select this elements in the model. If 'unselectOthers' is true, the other elements will be unselected (i.e. selected=false). 
 	 * Otherwise, if 'unselectOther' is false, nothing is made with the others elements, they maybe selected or not. i.e. selected = true or false.
-	 * 
-	 * @param list
 	 */
-	public void selectThisElements(ArrayList<EObject> selected, boolean unselectOthers)
+	public void select(ArrayList<EObject> elements, boolean unselectOthers)
 	{
 		for (ParsingElement pe : elementsHash.values()) 
 		{
-			if(selected.contains(pe.getElement())) pe.setSelected(true);
+			if(elements.contains(pe.getElement())) pe.setSelected(true);
 			else if (unselectOthers) pe.setSelected(false);
 		}
 	}
 	
-	public void unselectThisElements(ArrayList<EObject> unselected)
+	/**
+	 * Unselect this elements in the model. Nothing is made with the others elements, 
+	 * They maybe selected or not. i.e. selected = true or false.
+	 */
+	public void unselect(ArrayList<EObject> elements)
 	{
 		for (ParsingElement pe : elementsHash.values()) 
 		{
-			if(unselected.contains(pe.getElement())) pe.setSelected(false);
+			if(elements.contains(pe.getElement())) pe.setSelected(false);
 		}		
 	}
 	
-	/**
-	 * This method selects all Elements of the model.
-	 */
-	public void selectAllElements()
+	/** Select all elements of the model. */
+	public void selectAll()
 	{
 		for (ParsingElement pe : elementsHash.values()) 
 		{
@@ -620,11 +538,7 @@ public class OntoUMLParser {
 		}
 	}
 	
-	/**
-	 * This method returns all elements from the input list that are selected in the parser.
-	 * 
-	 * @param elements: list of elements of any type.
-	 */
+	/** Return all elements from the input list that are selected in the parser. */
 	public <T> Set<T> retainSelected(List<T> elements)
 	{
 		Set<T> result = new HashSet<T>();		
@@ -635,30 +549,19 @@ public class OntoUMLParser {
 		return result;
 	}
 			
-	/**
-	 * This method gets rigid Classes of the model.
-	 * 
-	 * @return
-	 */
+	/**Return all rigid, selected classes of the model. */
 	public Set<Classifier> getRigidClasses()
 	{
 		Set<Classifier> list = new HashSet<Classifier>();		
-		for (EObject obj : getElements())
-		{			
-			if (
-				(obj instanceof RigidSortalClass) || (obj instanceof Category) || 
-				(obj instanceof MomentClass) || ((obj instanceof DataType)&&!(obj instanceof PrimitiveType))
-			)				
+		for (EObject obj : getElements()){			
+			if ((obj instanceof RigidSortalClass) || (obj instanceof Category) || 
+			(obj instanceof MomentClass) || ((obj instanceof DataType)&&!(obj instanceof PrimitiveType)))				
 			list.add((Classifier) obj);			
-		}		
+		}
 		return list;
 	}
 			
-	/**
-	 * This method gets anti rigid Classes of the model.
-	 * 
-	 * @return
-	 */
+	/** Return all anti-rigid, selected classes of the model. */
 	public Set<Classifier> getAntiRigidClasses()
 	{
 		Set<Classifier> list = new HashSet<Classifier>();		
@@ -670,22 +573,19 @@ public class OntoUMLParser {
 		return list;
 	}
 	
+	/** Return all selected attributes of the model. */
 	public Set<Property> getAttributes()
 	{
 		Set<Property> list = new HashSet<Property>();		
 		for (EObject obj : getElements())
 		{			
 			if( (obj instanceof Property) && ((Property)obj).getAssociation()==null )				
-				list.add((Property)obj);			
+			list.add((Property)obj);			
 		}		
 		return list;
 	}
 		
-	/**
-	 * Get all descendants (direct or indirect) of Classifier c.
-	 * 
-	 * @param c
-	 */
+	/** Return all selected descendants (direct or indirect) of an element. */
 	public Set<Classifier> getAllChildren(Classifier c)
 	{
 		Set<Classifier> result = new HashSet<Classifier>();		
@@ -696,11 +596,7 @@ public class OntoUMLParser {
 		return result;
 	}
 	
-	/**
-	 * Get all direct descendants of Classifier c.
-	 * 
-	 * @param c
-	 */
+	/** Return all selected direct descendants of an element. */
 	public Set<Classifier> getChildren(Classifier c)
 	{
 		Set<Classifier> result = new HashSet<Classifier>();		
@@ -711,28 +607,22 @@ public class OntoUMLParser {
 		return result;
 	} 
 	
-	/**
-	 * Get all ancestors (direct or indirect) of Classifier c.
-	 * 
-	 * @param c
+	/** 
+	 * Return all selected ancestors (direct or indirect) of an element. 
+	 * This method might return null when it falls into a loop
 	 */
 	public Set<Classifier> getAllParents(Classifier c)
 	{
 		Set<Classifier> result = new HashSet<Classifier>();		
-		//this method might return null when it falls into a loop
 		for (Object classifier : c.allParents()) 
 		{
 			if(classifier instanceof Classifier && isSelected((EObject) classifier)) 
-				result.add((Classifier) classifier);
+			result.add((Classifier) classifier);
 		}		
 		return result;
 	}
 	
-	/**
-	 * Get all direct ancestors of Classifier c.
-	 * 
-	 * @param c
-	 */
+	/** Return all direct, selected ancestors of an element. */
 	public Set<Classifier> getParents(Classifier c)
 	{
 		Set<Classifier> result = new HashSet<Classifier>();		
@@ -743,12 +633,7 @@ public class OntoUMLParser {
 		return result;
 	} 
 	
-	/**
-	 * Get all non-abstract descendants of Classifier c.
-	 * 
-	 * @param c
-	 */
-		
+	/** Return all selected, non-abstract (i.e. concrete) descendants of an element. */		
 	public Set<Classifier> getAllConcreteChildren(Classifier c)
 	{
 		Set<Classifier> result = new HashSet<Classifier>();		
@@ -759,12 +644,40 @@ public class OntoUMLParser {
 		return result;
 	}
 	
-	/**
-	 * Get all instances of a given class in the OntoUMLParser 
-	 * 
-	 * @param type: class from the OntoUML metamodel. use �class_name�.class
-	 * @return all instances of the type in the parameter 
-	 */
+	/** Check if this element is valid according to the set of stereotypes allowed in this version of OntoUML. */
+	public boolean isValidStereotype(EObject e)
+	{
+		if (e instanceof Kind || e instanceof Collective || e instanceof Quantity || e instanceof Category || e instanceof SubKind ||
+			e instanceof Mixin || e instanceof RoleMixin || e instanceof Role || e instanceof Phase || e instanceof Relator ||
+			e instanceof Mode || e instanceof DataType || e instanceof MaterialAssociation || e instanceof FormalAssociation || 
+			e instanceof Mediation || e instanceof Characterization || e instanceof Derivation || e instanceof RefOntoUML.Package || e instanceof Model ||
+			e instanceof componentOf || e instanceof memberOf || e instanceof subCollectionOf || e instanceof subQuantityOf || e instanceof Association ||
+			e instanceof Enumeration || e instanceof EnumerationLiteral || e instanceof PrimitiveType || e instanceof NominalQuality || 
+			e instanceof PerceivableQuality || e instanceof NonPerceivableQuality || e instanceof Structuration || e instanceof Generalization || e instanceof GeneralizationSet
+		) return true;			
+		return false;
+	}
+	
+	/** Check if this name contains a OCL keyword. */
+	public boolean isOCLkeyword (String name)
+	{
+		if (name == null ) return false;		
+		if ( name =="and" || name =="body" ||name =="context" ||name =="def" ||name =="derive" ||name =="else" ||
+		     name =="init" ||name.equals("inv") ||name =="invalid" ||name =="let" ||name =="not" ||name =="null" ||
+		     name =="endif" ||name =="endpackage" ||name =="false" ||name =="if" ||name =="implies" ||name =="in" ||
+		     name =="or" ||name =="package" ||name =="post" ||name =="static" ||name =="true" ||name =="then" ||		 
+		     name =="xor" ||name =="Bag" ||name =="Boolean" ||name =="Collection" ||name =="Integer" ||name =="OclAny" ||
+		     name =="OclInvalid" ||name =="OclMessage" ||name =="OclVoid" ||name =="OrderedSet" ||name =="Real" ||name =="Sequence" ||
+		     name =="Set" ||name =="String" ||name =="Tuple" ||name =="UnlimitedNatural" 
+		) return true;		
+		return false;
+	}		
+	
+	/** 
+	 * Return all selected instances of a given meta-class contained in the parser. 
+	 * For instance, to get all the elements of the type Kind universal of the parser, write: getAllInstances(Kind.class).
+	 * And so on and so forth. 
+	 */	
 	@SuppressWarnings("unchecked")
 	public <T> Set<T> getAllInstances(java.lang.Class<T> type)
 	{
@@ -776,43 +689,9 @@ public class OntoUMLParser {
 		return result;
 	}
 	
-	public boolean isValidStereotype(EObject e)
-	{
-		if (e instanceof Kind || e instanceof Collective || e instanceof Quantity || e instanceof Category || e instanceof SubKind ||
-			e instanceof Mixin || e instanceof RoleMixin || e instanceof Role || e instanceof Phase || e instanceof Relator ||
-			e instanceof Mode || e instanceof DataType || e instanceof MaterialAssociation || e instanceof FormalAssociation || 
-			e instanceof Mediation || e instanceof Characterization || e instanceof Derivation || e instanceof RefOntoUML.Package || e instanceof Model ||
-			e instanceof componentOf || e instanceof memberOf || e instanceof subCollectionOf || e instanceof subQuantityOf || e instanceof Association ||
-			e instanceof Enumeration || e instanceof EnumerationLiteral || e instanceof PrimitiveType || e instanceof NominalQuality || 
-			e instanceof PerceivableQuality || e instanceof NonPerceivableQuality || e instanceof Structuration || e instanceof Generalization || e instanceof GeneralizationSet
-		) return true;	
-		
-		return false;
-	}
-	
-	public boolean isOCLkeyword (String name)
-	{
-		if (name == null )
-			return false;
-		
-		if ( name =="and" || name =="body" ||name =="context" ||name =="def" ||name =="derive" ||name =="else" ||
-		     name =="init" ||name.equals("inv") ||name =="invalid" ||name =="let" ||name =="not" ||name =="null" ||
-		     name =="endif" ||name =="endpackage" ||name =="false" ||name =="if" ||name =="implies" ||name =="in" ||
-		     name =="or" ||name =="package" ||name =="post" ||name =="static" ||name =="true" ||name =="then" ||		 
-		     name =="xor" ||name =="Bag" ||name =="Boolean" ||name =="Collection" ||name =="Integer" ||name =="OclAny" ||
-		     name =="OclInvalid" ||name =="OclMessage" ||name =="OclVoid" ||name =="OrderedSet" ||name =="Real" ||name =="Sequence" ||
-		     name =="Set" ||name =="String" ||name =="Tuple" ||name =="UnlimitedNatural" 
-		) return true;
-		
-		return false;
-	}
-		
-	
 	/**
-	 * Get Top Level Instances of the Model.
-	 * 
-	 * @param type
-	 * @return
+	 * Return all selected, top level instances of a given meta-class contained in the parser.
+	 * For instance, to get all the top levels classes of the type Kind in the parser, write: getTopLevelInstances(Kind.class)
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> Set<T> getTopLevelInstances(java.lang.Class<T> type)
@@ -832,26 +711,16 @@ public class OntoUMLParser {
 		return result;
 	}	
 	
-	/**
-	 * Get all Meronymic relations that have as a Whole the Classifier 'c' or one of its Super Types.
-	 * 
-	 * @param c
-	 * @param result
-	 */
+	/** Return all selected parthood relations that have as a whole the specified element or one of its super types. */
 	public void getAllMeronymics(Classifier c, ArrayList<Meronymic> result)
 	{
 		for(EObject obj : getElements())
 		{
-			if(obj instanceof Meronymic)
-			{
+			if(obj instanceof Meronymic) {
 				for( Property p : ((Meronymic)obj).getMemberEnd())
 				{
-					if (!p.getAggregation().equals(AggregationKind.NONE))
-					{					
-						if (isSelected(p.getType()) && p.getType().equals(c))
-						{
-							result.add((Meronymic)obj);
-						}						
+					if (!p.getAggregation().equals(AggregationKind.NONE)) {					
+						if (isSelected(p.getType()) && p.getType().equals(c)) result.add((Meronymic)obj);
 					}
 				}
 			}
@@ -862,45 +731,35 @@ public class OntoUMLParser {
 		}
 	}
 			
-	/**
-	 * Get all Mediations that have as a source the Relator 'r' or one of its Super Types.
-	 * 
-	 * @param relator
-	 * @param result
-	 * @throws Exception 
-	 */
+	/** Return all selected mediations that have as a source the specified relator or one of its super types. */
 	public void getAllMediations(Classifier relator, ArrayList<Mediation> result)
 	{
-		result.addAll(getRelatorsMediations(relator));
-		
+		result.addAll(getMediations(relator));		
 		for(Generalization gen : relator.getGeneralization())
 		{						
-			if(isSelected(gen))	{
+			if(isSelected(gen))	
+			{
 				if (gen.getGeneral() instanceof Relator) getAllMediations((Relator)gen.getGeneral(),result);
 			}
 		}
 	}
 	
-	/**
-	 * Get all Mediations that have as a source the Relator 'r' or one of its Super Types.
-	 * 
-	 * @param relator
-	 * @param result
-	 * @throws Exception 
-	 */
-	public ArrayList<Mediation> getRelatorsMediations(Classifier relator) 
+	/** Return all selected, direct mediations that have as a source the specified relator. */
+	public ArrayList<Mediation> getMediations(Classifier relator) 
 	{
-		ArrayList<Mediation> result = new ArrayList<Mediation>();
-		
-		for (Mediation m : getAllInstances(Mediation.class)) {
-			if(getRelator(m)!=null && getRelator(m).equals(relator))
-				result.add(m);
-		}
-		
+		ArrayList<Mediation> result = new ArrayList<Mediation>();		
+		for (Mediation m : getAllInstances(Mediation.class)) 
+		{
+			if(getRelator(m)!=null && getRelator(m).equals(relator)) result.add(m);
+		}		
 		return result;
 	}
 	
-	
+	/** Return the relator of a mediation */
+	public static Classifier getRelator(Mediation m) 
+	{
+		return (Classifier) getRelatorEnd(m).getType();
+	}
 	
 	/**
 	 * Verify if a Classifier 'c' is a General Classifier in a GeneralizationSet that is Disjoint and Complete
@@ -981,7 +840,7 @@ public class OntoUMLParser {
 		}
 		
 		// add this elements to selection...
-		selectThisElements(objectsToAdd,false);
+		select(objectsToAdd,false);
 		
 		return objectsToAdd;
 	}
@@ -1010,7 +869,7 @@ public class OntoUMLParser {
 		}
 		
 		// add this elements to selection...
-		selectThisElements(objectsToAdd,false);
+		select(objectsToAdd,false);
 		
 		return objectsToAdd;
 	}
@@ -1038,7 +897,7 @@ public class OntoUMLParser {
 		}
 		
 		// add this elements to selection...
-		selectThisElements(objectsToAdd,false);
+		select(objectsToAdd,false);
 		
 		return objectsToAdd;
 	}
@@ -1071,7 +930,7 @@ public class OntoUMLParser {
 		}
 		
 		// add this elements to selection...
-		selectThisElements(objectsToAdd,false);
+		select(objectsToAdd,false);
 		
 		return objectsToAdd;
 	}
@@ -1114,7 +973,7 @@ public class OntoUMLParser {
 		}
 		
 		// add this elements to selection...
-		selectThisElements(objectsToAdd,false);
+		select(objectsToAdd,false);
 		
 		return objectsToAdd;
 	}
@@ -1146,7 +1005,7 @@ public class OntoUMLParser {
 		}
 		
 		// add this elements to selection...
-		selectThisElements(objectsToAdd,false);
+		select(objectsToAdd,false);
 	
 		return objectsToAdd;
 	}
@@ -1290,11 +1149,6 @@ public class OntoUMLParser {
 	public static Property getMediatedEnd (Mediation m)
 	{		
 		return getRelatorEnd(m).getOpposite();
-	}
-	
-	public static Classifier getRelator(Mediation m) 
-	{
-		return (Classifier) getRelatorEnd(m).getType();
 	}
 	
 	public Derivation getDerivation (MaterialAssociation material)

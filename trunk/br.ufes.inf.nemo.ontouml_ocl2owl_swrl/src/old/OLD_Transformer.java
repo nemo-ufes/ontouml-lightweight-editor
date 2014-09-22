@@ -734,7 +734,7 @@ public class OLD_Transformer {
 	private void processRelator(Relator src) {
 		try {
 			List<MaterialAssociation> lstMaterialAssociation = this.getRelatorMaterials(src);
-			List<Mediation> lstMediation = ontoParser.getRelatorsMediations(src);
+			List<Mediation> lstMediation = ontoParser.getMediations(src);
 			List<Mediation> auxLstMediation = new ArrayList<Mediation>();
 			String mediation0 = null, mediation1 = null;
 

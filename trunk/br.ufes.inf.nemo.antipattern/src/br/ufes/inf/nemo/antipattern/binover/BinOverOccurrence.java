@@ -102,7 +102,7 @@ public class BinOverOccurrence extends AntipatternOccurrence {
 		selection.add(target);
 		selection.add(association);
 		
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
 		return parser;
 	}

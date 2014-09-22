@@ -118,7 +118,7 @@ public class RepRelOccurrence extends AntipatternOccurrence {
 			selection.add(m);
 		}
 		
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 		return parser;
 	}

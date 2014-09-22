@@ -85,7 +85,7 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 		
 		this.relator = relator;  
 		
-		for (Mediation med : parser.getRelatorsMediations(relator)) {
+		for (Mediation med : parser.getMediations(relator)) {
 			if(!OntoUMLParser.getRelator(med).equals(relator))
 				throw new Exception("RelRigid: Mediation '"+med.getName()+"' does not belong to Relator '"+relator.getName()+"'");
 			
@@ -117,7 +117,7 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 		selection.add(relator);
 		selection.addAll(this.rigidMediations);
 				
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 		return parser;
 	}

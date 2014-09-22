@@ -74,7 +74,7 @@ public class MultiDepOccurrence extends AntipatternOccurrence{
 		selection.add(type);
 		selection.addAll(relatorEnds);
 		
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 
 		return parser;

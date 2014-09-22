@@ -113,7 +113,7 @@ public class AssCycOccurrence extends AntipatternOccurrence{
 		for (Relationship r : this.relationshipCycle)
 			selection.add(r);
 		
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
 		return parser;
 	}

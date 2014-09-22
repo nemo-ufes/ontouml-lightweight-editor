@@ -27,7 +27,7 @@ public class MRBSAntiPattern extends AntipatternOccurrence {
 	public OntoUMLParser setSelected() {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 		return parser;
 	}

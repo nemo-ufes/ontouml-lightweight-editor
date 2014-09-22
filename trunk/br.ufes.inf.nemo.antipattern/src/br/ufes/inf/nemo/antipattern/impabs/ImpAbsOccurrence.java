@@ -313,7 +313,7 @@ public class ImpAbsOccurrence extends AntipatternOccurrence{
 		selection.add(sourceType);
 		selection.add(targetType);
 				
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
 		return parser;
 	}

@@ -1351,7 +1351,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}		
 		//complete missing/mandatory dependencies on the parser
 		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();				
-		refparser.selectThisElements((ArrayList<EObject>)elements,true);
+		refparser.select((ArrayList<EObject>)elements,true);
 		List<EObject> added = refparser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY,false);
 		elements.removeAll(added);
 		elements.addAll(added);
@@ -1399,7 +1399,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}			
 		//complete missing/mandatory dependencies on the parser
 		OntoUMLParser refparser = frame.getProjectBrowser().getParser();				
-		refparser.selectThisElements((ArrayList<EObject>)elements,true);
+		refparser.select((ArrayList<EObject>)elements,true);
 		List<EObject> added = refparser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY,false);
 		elements.removeAll(added);
 		elements.addAll(added);
@@ -1427,7 +1427,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		OntoUMLParser refparser = frame.getProjectBrowser().getParser();
 		ProjectBrowser modeltree = frame.getProjectBrowser();			
 		List<EObject> selected = modeltree.getTree().getModelCheckedElements();
-		refparser.selectThisElements((ArrayList<EObject>)selected,true);		
+		refparser.select((ArrayList<EObject>)selected,true);		
 		List<EObject> added = refparser.autoSelectDependencies(OntoUMLParser.NO_HIERARCHY,false);		
 		selected.removeAll(added);
 		selected.addAll(added);	
@@ -1452,7 +1452,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		OntoUMLParser refparser = frame.getProjectBrowser().getParser();
 		ProjectBrowser pb = frame.getProjectBrowser();			
 		pb.getTree().checkModelElement(currentProject.getModel());
-		refparser.selectAllElements();		
+		refparser.selectAll();		
 		pb.getTree().updateUI();		
 		pb.setParser(refparser);
 	}
@@ -2668,7 +2668,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		List<EObject> selected = modeltree.getTree().getModelCheckedElements();
 
 		// Get added elements from the auto selection completion
-		refparser.selectThisElements((ArrayList<EObject>)selected,true);		
+		refparser.select((ArrayList<EObject>)selected,true);		
 		List<EObject> added = refparser.autoSelectDependencies(option,false);
 
 		// Show which elements were added to selection

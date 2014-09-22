@@ -96,7 +96,7 @@ public class DecIntOccurrence extends AntipatternOccurrence {
 		selection.add(subtype);
 		selection.addAll(subtype.allParents());
 								
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 
 		return parser;

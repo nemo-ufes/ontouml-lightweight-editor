@@ -77,7 +77,7 @@ public class UndefPhaseOccurrence extends AntipatternOccurrence {
 			selection.add(g.getGeneral());
 		}
 		
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 		return parser;
 	}
