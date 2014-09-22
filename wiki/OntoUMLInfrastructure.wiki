@@ -69,5 +69,5 @@ public Resource saveModel (String refontoumlpath, RefOntoUML.Package refmodel)
 *IMPORTING AN ONTOUML MODEL TO OLED*
 ----
 
-1. Go to: File -> Import -> Ecore Instance (based on Reference Metamodel)
-2. Choose the refontouml file and press Ok.
+  # Go to: File -> Import -> Ecore Instance (based on Reference Metamodel)
+  # Choose the refontouml file and press Ok.
