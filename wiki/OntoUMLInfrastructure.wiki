@@ -4,24 +4,23 @@
 <g:plusone size="medium"></g:plusone>
 
 ----
-*OUR ONTOUML INFRASTRUCTURE*
+*ONTOUML API*
 ----
 
 OLED uses an infrastructure former developed by Roberto Carrareto, latter enhanced by Antognoni Albuquerque and now constantly improved by us. This means that you can sort of "integrate" your project with OLED using this infrastructure to create your models.
 
-To use the infrastruture you will need of the following libraries:
+To use the infrastruture you will need of the following libraries: 
 
-- *br.ufes.inf.nemo.ontouml.refontouml_1.1.0.201301111500.jar*
-  Location: trunk/br.ufes.inf.nemo.common/lib/refontouml
-
-----
-*CREATING AN ONTOUML MODEL VIA CODE*
-----
-
-
+# br.ufes.inf.nemo.ontouml.refontouml_1.1.0.201301111500.jar, which is located at "trunk/br.ufes.inf.nemo.common/lib/refontouml"
 
 ----
-*LOADING & SAVING ONTOUML MODEL*
+*CREATING AN ONTOUML MODEL*
+----
+
+
+
+----
+*LOADING & SAVING AN ONTOUML MODEL*
 ----
 
 {{{
@@ -65,3 +64,11 @@ public Resource saveModel (String refontoumlpath, RefOntoUML.Package refmodel)
   return resource;                    
 }
 }}}
+
+----
+*IMPORT THE MODEL CONTENT TO OLED*
+----
+
+1. Go to: File -> Import -> Ecore Instance (based on Reference Metamodel)
+2. Choose the refontouml file and press Ok.
+
