@@ -1,17 +1,7 @@
 #summary Table of Contents
 
 <ul>
-<li>Compatibility
- <ul>
- <li>[EnterpriseArchitect Compatibility: Sparx System's EA 10]</li>
- </ul>
-</li>
-</ul>
-
-<ul>
+<li>[EnterpriseArchitect Compatibility: Sparx System's EA 10]</li>
 <li>[OntoUMLInfrastructure Development: OntoUML Infrastructure]</li>
-</ul>
-
-<ul>
 <li>[FAQ Frequently Asked Questions]</li>
 </ul>
