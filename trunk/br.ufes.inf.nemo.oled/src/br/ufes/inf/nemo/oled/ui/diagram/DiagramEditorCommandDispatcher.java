@@ -493,7 +493,7 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		if (manager.isProjectLoaded()==false) return;
 		manager.workingOnlyWithChecked();
 		OntoUMLParser refparser = frame.getBrowserManager().getProjectBrowser().getParser();
-		manager.generateSbvr((RefOntoUML.Model)refparser.createPackageFromSelections(new Copier()));
+		manager.generateSbvr((RefOntoUML.Model)refparser.createModelFromSelections(new Copier()));
 	}
 		
 	public void generateAlloy()

@@ -2868,7 +2868,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if(!owlType.equals("SIMPLE")) mappingType = MappingType.valueOf(owlType);
 		String oclRules = new String();
 		oclRules = getWorkingConstraints();				
-		RefOntoUML.Package model = frame.getBrowserManager().getProjectBrowser().getParser().createPackageFromSelections(new Copier());
+		RefOntoUML.Package model = frame.getBrowserManager().getProjectBrowser().getParser().createModelFromSelections(new Copier());
 		OperationResult result = OWLHelper.generateOwl(model, 
 			ProjectSettings.OWL_ONTOLOGY_IRI.getValue(project),
 			mappingType,

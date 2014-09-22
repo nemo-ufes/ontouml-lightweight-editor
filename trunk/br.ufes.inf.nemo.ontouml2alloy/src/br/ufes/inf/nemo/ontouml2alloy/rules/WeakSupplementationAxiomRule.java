@@ -24,7 +24,7 @@ public class WeakSupplementationAxiomRule {
 		if (c.isIsAbstract()) { return null; }
 		
 		// isAbstract from generalization Sets (Disjoint and Complete)
-		if (ontoparser.isAbstractFromGeneralizationSet(c)) { return null; }	
+		if (ontoparser.isAbstractFromGSet(c)) { return null; }	
 		
 		//if (! OntoUMLAPI.hasMeronymicRelation(ontoparser,c)) { return null; } 
 				
