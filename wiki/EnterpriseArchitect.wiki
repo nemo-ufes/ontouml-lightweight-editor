@@ -4,7 +4,7 @@
 <g:plusone size="medium"></g:plusone>
 
 ----
-*ONTOUML IN THE ENTERPRISE ARCHITECT*
+*OntoUML in the Enterprise Architect*
 ----
 
 OLED supports OntoUML models designed with the Enterprise Architect v.10. In the following, we explain step-by-step how to install, access and use OntoUML in the Enterprise Architect and how you can export your EA model to use it in OLED. 
@@ -12,7 +12,7 @@ OLED supports OntoUML models designed with the Enterprise Architect v.10. In the
 https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png 
 
 ----
-*INSTALLATION*
+*Installation*
 ----
 
 Step-by-step:
@@ -34,7 +34,7 @@ Step-by-step:
   * Start the Enterprise Architect EA
 
 ----
-*ACCESS THE ONTOUML LANGUAGE IN EA*
+*Access the OntoUML Language in EA*
 ----
 
 Step-by-step:
@@ -48,7 +48,7 @@ Step-by-step:
   * If the option _OntoUML_ does not appear in the Model Wizard windows, go to: _Settings -> MDG Technologies_, locate _OntoUML_, select the checkbox, and later click _OK_.
 
 ----
-*CREATE AN ONTOUML DIAGRAM*
+*Create an OntoUML Diagram*
 ----
 
 Step-by-step:
@@ -56,7 +56,7 @@ Step-by-step:
   * To create OntoUML diagrams, just click into a folder in the Project Browser and do: _Right Click on the Package/Folder -> Add -> Add Diagram… -> OntoUML_.
 
 ----
-*ACTIVATE THE ONTOUML TOOLBOX*
+*Activate the OntoUML ToolBox*
 ----
 
 Step-by-step:
@@ -64,7 +64,7 @@ Step-by-step:
   * To activate the OntoUML Toolbox, if is not already activated, go to _Diagram-> Diagram Toolbox.
 
 ----
-*EXPORT ONTOUML MODEL AS XMI*
+*Export an OntoUML model as XMI*
 ----
 
 Step-by-step:
@@ -72,7 +72,7 @@ Step-by-step:
   * To export the model in an EA format: _Right Click on the Package/View -> Import/Export -> Export Package to XMI file_.
 
 ----
-*IMPORT XMI INTO OLED*
+*Import EA's XMI file into OLED*
 ----
 
 Step-by-step:
