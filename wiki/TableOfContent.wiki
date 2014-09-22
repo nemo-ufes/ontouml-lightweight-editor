@@ -2,7 +2,7 @@
 
   * [Welcome Welcome]
   * Compatibility
-    * [EnterpriseArchitect Sparx System's EA 10]
+    * [EnterpriseArchitect Sparx System's EA version 10]
   * Developing
     * [OntoUMLInfrastructure OntoUML Infrastructure]
   * [FAQ Frequently Asked Questions (FAQ)]
