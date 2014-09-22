@@ -54,7 +54,7 @@ Step-by-step:
   * To create OntoUML diagrams, just click into a folder in the Project Browser and do: _Right Click on the Package/Folder -> Add -> Add Diagram… -> OntoUML_.
 
 ----
-*Activate the OntoUML ToolBox*
+*Activate the OntoUML Toolbox*
 ----
 
 Step-by-step:
