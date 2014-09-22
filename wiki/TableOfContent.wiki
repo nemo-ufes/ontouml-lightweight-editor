@@ -1,8 +1,8 @@
 #summary Table of Contents
 
-  * [Welcome Welcome to OLED]
-  * Compatibility with production grade tools
+  * [Welcome Welcome!]
+  * [FAQ Frequently Asked Questions (FAQ)]
+  * Compatibility with Production-Grade Tools
     * [EnterpriseArchitect Sparx System's EA 10]
-  * Development
+  * Developing
     * [OntoUMLInfrastructure OntoUML Infrastructure]
-  * [FAQ Frequently Asked Questions]
