@@ -1,6 +1,6 @@
 #summary Table of Contents
 
-  * [Welcome Welcome!]
+  * [Welcome Welcome]
   * Compatibility
     * [EnterpriseArchitect Sparx System's EA 10]
   * Developing
