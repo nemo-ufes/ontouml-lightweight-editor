@@ -113,7 +113,7 @@ public class MixIdenOccurrence extends AntipatternOccurrence {
 		selection.add(this.mixin);
 		selection.addAll(subtypes);
 				
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 
 		return parser;

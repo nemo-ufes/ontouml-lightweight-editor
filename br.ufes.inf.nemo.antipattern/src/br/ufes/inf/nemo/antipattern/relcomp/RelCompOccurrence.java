@@ -86,7 +86,7 @@ public class RelCompOccurrence extends AntipatternOccurrence {
 		ArrayList<EObject> selection = new ArrayList<EObject>();
 		selection.add(a1);
 		selection.add(a2);
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.ALL_ANCESTORS, false);
 		
 		return parser;		

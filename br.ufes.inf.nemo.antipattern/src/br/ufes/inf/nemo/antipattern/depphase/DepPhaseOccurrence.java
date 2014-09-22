@@ -78,7 +78,7 @@ public class DepPhaseOccurrence extends AntipatternOccurrence{
 			selection.add(p.getType());
 		}
 		
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 
 		return parser;

@@ -173,7 +173,7 @@ public abstract class OverlappingOccurrence extends AntipatternOccurrence{
 		
 		selection.add(getMainType());
 		
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.COMPLETE_HIERARCHY, false);
 		return parser;
 	}

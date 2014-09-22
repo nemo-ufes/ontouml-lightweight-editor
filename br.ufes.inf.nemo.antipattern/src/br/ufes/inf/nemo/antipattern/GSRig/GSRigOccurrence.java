@@ -132,7 +132,7 @@ public class GSRigOccurrence extends AntipatternOccurrence{
 			selection.add(g.getSpecific());
 		}
 		
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 
 		return parser;

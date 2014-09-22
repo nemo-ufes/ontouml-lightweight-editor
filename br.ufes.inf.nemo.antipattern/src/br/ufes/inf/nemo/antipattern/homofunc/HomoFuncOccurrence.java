@@ -104,7 +104,7 @@ public class HomoFuncOccurrence extends AntipatternOccurrence {
 		selection.add(this.partEnd.getAssociation());
 		selection.add(this.partEnd.getType());
 				
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.SORTAL_ANCESTORS, false);
 
 		return parser;

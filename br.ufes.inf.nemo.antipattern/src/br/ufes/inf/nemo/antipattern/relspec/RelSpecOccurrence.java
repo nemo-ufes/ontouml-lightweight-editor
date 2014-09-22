@@ -386,7 +386,7 @@ public class RelSpecOccurrence extends AntipatternOccurrence{
 		selection.add(specificTarget);
 		selection.addAll(specificTarget.allParents());
 		
-		parser.selectThisElements(selection,true);
+		parser.select(selection,true);
 		parser.autoSelectDependencies(OntoUMLParser.ALL_ANCESTORS, false);
 		return parser;
 	}

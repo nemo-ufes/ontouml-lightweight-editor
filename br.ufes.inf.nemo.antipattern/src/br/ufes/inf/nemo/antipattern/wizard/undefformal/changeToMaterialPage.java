@@ -449,7 +449,7 @@ public class changeToMaterialPage extends UndefFormalPage{
 			targetMediationCombo.removeAll();
 		}
 		else {
-			allMediationsList.addAll(occurrence.getParser().getRelatorsMediations(relatorList.get(relatorCombo.getSelectionIndex())));
+			allMediationsList.addAll(occurrence.getParser().getMediations(relatorList.get(relatorCombo.getSelectionIndex())));
 			setMediationCombo(sourceMediationList, sourceMediationCombo, occurrence.getSource());
 			setMediationCombo(targetMediationList, targetMediationCombo, occurrence.getTarget());
 			setMediatedList();
