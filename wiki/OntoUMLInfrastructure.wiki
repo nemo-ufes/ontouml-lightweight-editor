@@ -1,2 +1,22 @@
-#summary Learn how to create OntoUML models dynamically (via code)
+#summary Learn how to use the OntoUML infrastructure dynamically (via code)
 #labels OntoUML,Infrastructure
+
+<g:plusone size="medium"></g:plusone>
+
+----
+*ONTOUML INFRASTRUCTURE*
+----
+
+OLED uses an OntoUML infrastructure former developed by Roberto Carrareto and latter enhanced by Antognoni Albuquerque. This means that you can sort of "integrate" your project with OLED. The tool allows you to import and export
+
+i) the content of the models through XMI files based on this infrastructure, and
+ii) the rules as text through files with extension *.ocl.
+
+Our infrastructure is nowadays comprised only by an Ecore-based OntoUML metamodel. You can then create, load and use OntoUML models dynamically (via code) through this metamodel. 
+
+Our infrastructure is available as Java API libraries. 
+
+
+ that Reference Ecore-based OntoUML metamodel (we renamed these XMI files to extensions *.refontouml).
+
+Therefore, developing a transformation to our OntoUML infrastructure.
