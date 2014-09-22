@@ -12,7 +12,7 @@ OLED uses an infrastructure former developed by Roberto Carrareto, latter enhanc
 To use the infrastruture you will need of the following libraries:
 
 - *br.ufes.inf.nemo.ontouml.refontouml_1.1.0.201301111500.jar*
-  Location: _trunk/br.ufes.inf.nemo.common/lib/refontouml_
+  Location: trunk/br.ufes.inf.nemo.common/lib/refontouml
 
 ----
 *CREATING AN ONTOUML MODEL VIA CODE*
