@@ -29,6 +29,8 @@ If you are not familiar with UML2 project of Eclipse, since OntoUML is an ontolo
   * [http://www.eclipse.org/modeling/mdt/uml2/docs/articles/Getting_Started_with_UML2/article.html Getting Started with UML2 (Ganymede 2008)]
 
 ----
+*Creating, Saving and Loading a Model*
+----
 
 To *create* an OntoUML model, just create a root OntoUML package and give it a name as it follows:
 
@@ -69,14 +71,42 @@ root = (RefOntoUML.Package)resource.getContents().get(0);}}}
 }}}
 
 ----
-*Importing an OntoUML model into OLED*
+*Importing a model into OLED*
 ----
+
+To *import* the *.refontouml file generated into OLED v0.9.34, just do as it follows:
 
   # Go to: File -> Import -> Ecore Instance (based on Reference Metamodel)
   # Choose the refontouml file and press Ok.
 
+In recent version of OLED this menu option might be displayed with some other description, but the idea is the same.
+
 ----
-*Creating an OntoUML model Dinamycally*
+*Creating Classes*
+----
+
+_Coming soon..._
+
+----
+*Creating Relationships*
+----
+
+_Coming soon..._
+
+----
+*Creating Generalization Sets*
+----
+
+_Coming soon..._
+
+----
+*Creating Attributes*
+----
+
+_Coming soon..._
+
+----
+*Creating Generalizations*
 ----
 
 _Coming soon..._
