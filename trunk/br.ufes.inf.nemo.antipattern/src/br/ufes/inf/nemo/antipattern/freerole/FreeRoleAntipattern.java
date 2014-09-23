@@ -150,7 +150,7 @@ public class FreeRoleAntipattern extends Antipattern<FreeRoleOccurrence> {
 			
 			try{
 				Property relatorEnd = OntoUMLParser.getRelatorEnd(m);
-				Classifier mediated = OntoUMLParser.getMediated(m);
+				Classifier mediated = OntoUMLParser.getMediatedType(m);
 				
 				if (relatorHash.containsKey(mediated))
 					relatorHash.get(mediated).add(relatorEnd);

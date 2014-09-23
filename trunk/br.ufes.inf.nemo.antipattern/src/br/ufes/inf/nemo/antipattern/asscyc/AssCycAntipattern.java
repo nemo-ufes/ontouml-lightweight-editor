@@ -111,8 +111,8 @@ public class AssCycAntipattern extends Antipattern<AssCycOccurrence> {
 		if(mat==null || m1==null || m2==null) 
 			return false;
 		
-		Type 	mediatedM1 = OntoUMLParser.getMediated(m1), 
-				mediatedM2 =  OntoUMLParser.getMediated(m2), 
+		Type 	mediatedM1 = OntoUMLParser.getMediatedType(m1), 
+				mediatedM2 =  OntoUMLParser.getMediatedType(m2), 
 				relatorM1 = OntoUMLParser.getRelator(m1), 
 				relatorM2 = OntoUMLParser.getRelator(m2);
 		

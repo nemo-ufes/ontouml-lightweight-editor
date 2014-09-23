@@ -297,7 +297,7 @@ public class ModelDiagnostician {
 				
 		// # Warning : Elements Without Identity
 		
-		for (RefOntoUML.Classifier c: ontoparser.getElementsWithIdentityMissing())
+		for (RefOntoUML.Classifier c: ontoparser.getClassesWithIdentityMissing())
 		{
 			ArrayList<String> line = new ArrayList<String>();
 			warnings++;

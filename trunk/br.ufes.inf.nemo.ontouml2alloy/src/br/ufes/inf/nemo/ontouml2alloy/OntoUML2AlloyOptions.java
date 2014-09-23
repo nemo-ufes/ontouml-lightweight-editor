@@ -27,7 +27,7 @@ public class OntoUML2AlloyOptions {
 	public void check(OntoUMLParser refparser)
 	{
 		openAnalyzer=true;    	
-		ArrayList<Classifier> identityMissing = refparser.getElementsWithIdentityMissing();
+		ArrayList<Classifier> identityMissing = refparser.getClassesWithIdentityMissing();
 		if (!identityMissing.isEmpty()) {
 			identityPrinciple = false;
 			identityPrincipleInvalid = true;   

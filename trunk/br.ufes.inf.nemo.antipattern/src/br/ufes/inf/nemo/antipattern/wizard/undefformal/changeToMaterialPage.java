@@ -465,7 +465,7 @@ public class changeToMaterialPage extends UndefFormalPage{
 		
 		for (Mediation mediation : allMediationsList) {
 			try { 
-				mediatedList.add(OntoUMLParser.getMediated(mediation).getName()); } 
+				mediatedList.add(OntoUMLParser.getMediatedType(mediation).getName()); } 
 			catch (Exception e) {}
 		}
 	}
@@ -481,7 +481,7 @@ public class changeToMaterialPage extends UndefFormalPage{
 		
 		for (Mediation mediation : allMediationsList) {
 			try {
-				if(OntoUMLParser.getMediated(mediation).equals(mediated)){
+				if(OntoUMLParser.getMediatedType(mediation).equals(mediated)){
 					mediationList.add(mediation);
 					if(mediation.getName()!=null)
 						mediationCombo.add(mediation.getName());
