@@ -9,8 +9,7 @@ OLED uses an infrastructure which was former developed by Roberto Carrareto, lat
 
 To use the infrastruture you will need of the following library: 
 
-  * br.ufes.inf.nemo.ontouml_1.0.0.201409231448.jar 
-    (_located at trunk/br.ufes.inf.nemo.common/lib/refontouml/_)
+  * br.ufes.inf.nemo.ontouml_1.0.0.201409231448.jar (_located at trunk/br.ufes.inf.nemo.common/lib/refontouml/_)
   * lpg.runtime.java
   * org.eclipse.emf.common
   * org.eclipse.emf.ecore.xmi
