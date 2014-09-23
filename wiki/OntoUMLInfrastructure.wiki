@@ -74,39 +74,9 @@ root = (RefOntoUML.Package)resource.getContents().get(0);}}}
 *Importing a model into OLED*
 ----
 
-To *import* the *.refontouml file generated into OLED v0.9.34, just do as it follows:
+To *import* the .refontouml file generated into OLED v0.9.34, just do as it follows:
 
   # Go to: File -> Import -> Ecore Instance (based on Reference Metamodel)
   # Choose the refontouml file and press Ok.
 
 In recent version of OLED this menu option might be displayed with some other description, but the idea is the same.
-
-----
-*Creating Classes*
-----
-
-_Coming soon..._
-
-----
-*Creating Relationships*
-----
-
-_Coming soon..._
-
-----
-*Creating Generalization Sets*
-----
-
-_Coming soon..._
-
-----
-*Creating Attributes*
-----
-
-_Coming soon..._
-
-----
-*Creating Generalizations*
-----
-
-_Coming soon..._
