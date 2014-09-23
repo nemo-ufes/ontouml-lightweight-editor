@@ -7,7 +7,7 @@
 
 OLED uses an infrastructure which was former developed by Roberto Carrareto, latter enhanced by Antognoni Albuquerque and now constantly improved by us. This means that you can sort of "integrate" your project with OLED using this infrastructure to create your models.
 
-To use the infrastruture you will need of the following Eclipse libraries in your project: 
+To use the infrastruture you will need of the following Eclipse (Modeling Tools) libraries in your project: 
 
   * lpg.runtime.java
   * org.eclipse.emf.common
@@ -15,30 +15,57 @@ To use the infrastruture you will need of the following Eclipse libraries in you
   * org.eclipse.emf.ecore
   * org.eclipse.ocl
   * org.eclipse.ocl.ecore
+  * org.eclipse.ocl.common
 
-We recommend using *Juno* or *Kepler* versions of these libraries because we actually develop OLED in these versions. Besides these Eclipse libraries, you will of course need of our OntoUML infrastructure, which can be found at: trunk/br.ufes.inf.nemo.common/lib/refontouml/
+We recommend using versions 4.X of Eclipse for these libraries because we actually develop OLED in these versions. Besides these Eclipse libraries, you will of course need of our OntoUML infrastructure, which can be found at: trunk/br.ufes.inf.nemo.common/lib/refontouml/
 
   * br.ufes.inf.nemo.ontouml_1.0.0.201409231448.jar
 
 ----
 
-If you are not familiar with UML2 project of Eclipse, since OntoUML is a version of the Unified Modeling Language, it should be a great help to know how to create dynamically UML models via code using the Eclipse-based implementation of UML. There is a tutorial for that according to some eclipse versions. The process is quite similar to that of UML2 project of Eclipse.
+If you are not familiar with UML2 project of Eclipse, since OntoUML is an ontologically version of the Unified Modeling Language, it should be a great help to know how to create dynamically UML models via code using the Eclipse-based implementation of UML. There is a tutorial for that according to some eclipse versions. The process of creating OntoUML models is, in some extent, similar to that of UML2 project of Eclipse. Altough not necessary, you may want to take a look in these tutorials:
 
   * [http://wiki.eclipse.org/MDT/UML2/Getting_Started_with_UML2 Getting Started with UML2 (Luna 2014)]
   * [http://www.eclipse.org/modeling/mdt/uml2/docs/articles/Getting_Started_with_UML2/article.html Getting Started with UML2 (Ganymede 2008)]
 
 ----
 
-{{{
-//Loading...
-String refontoumlpath = "C:\\Users\\Guerson\\example.refontouml";
-Resource resource = RefOntoUMLResourceUtil.loadModel(refontoumlpath);
-RefOntoUML.Package root = resource.getContents().get(0);
-}}}
+To *create* an OntoUML model, just create a root OntoUML package and give it a name as it follows:
 
 {{{
-//Saving...
-RefOntoUMLResourceUtil.saveModel(refontoumlpath, root);
+protected static RefOntoUML.Package createModel(String name) 
+{
+   RefOntoUML.Package model = RefOntoUMLFactory.eINSTANCE.createModel();
+   model.setName(name);
+   System.out.println("Model "+model.getQualifiedName()+" created.");
+   return model;
+}
+}}}
+
+To *save* (serialize) this model into an OntoUML artifact, you can do the following:
+
+{{{
+//create a model
+RefOntoUML.Package root = createModel("Example");
+		
+// absolute path of the target artifact
+String refontoumlpath = "C:\\Users\\Guerson\\Documents\\Example.refontouml";
+
+// save the model
+RefOntoUMLResourceUtil.saveModel(refontoumlpath,root);
+}}}
+
+Now, to *load* a OntoUML model, you need just to do the following:
+
+{{{
+//absolute path of the input artifact
+refontoumlpath = "C:\\Users\\Guerson\\Documents\\Example.refontouml";	
+
+// load the model
+Resource resource = RefOntoUMLResourceUtil.loadModel(refontoumlpath);
+
+// get the model (root)
+root = (RefOntoUML.Package)resource.getContents().get(0);}}}
 }}}
 
 ----
