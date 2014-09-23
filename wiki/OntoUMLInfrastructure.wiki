@@ -16,7 +16,7 @@ To use the infrastruture you will need of the following Eclipse libraries:
   * org.eclipse.ocl
   * org.eclipse.ocl.ecore
 
-We recommend using the Kepler version since we used it to develop OLED. Besides these libraries, of course you will need our OntoUML infrastructure which can be found at: _trunk/br.ufes.inf.nemo.common/lib/refontouml/_
+We recommend using Juno or Kepler version since we are used to develop OLED in these version I had no problem with that. Besides these libraries, of course you will need our OntoUML infrastructure which can be found at: _trunk/br.ufes.inf.nemo.common/lib/refontouml/_
 
   * br.ufes.inf.nemo.ontouml_1.0.0.201409231448.jar 
 
