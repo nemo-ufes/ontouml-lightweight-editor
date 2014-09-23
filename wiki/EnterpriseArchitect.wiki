@@ -7,7 +7,7 @@
 
 OLED supports OntoUML models designed with the Enterprise Architect v.10. In the following, we explain step-by-step how to install, access and use OntoUML in the Enterprise Architect and how you can export your EA model to use it in OLED. 
 
-http://code.google.com/p/ontouml-lightweight-editor/source/browse/trunk/wiki/ea.png
+ea-screenshot
 
 ----
 *Installation*
