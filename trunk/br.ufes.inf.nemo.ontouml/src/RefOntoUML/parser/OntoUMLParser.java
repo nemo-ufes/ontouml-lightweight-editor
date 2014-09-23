@@ -68,8 +68,8 @@ import RefOntoUML.util.RefOntoUMLResourceUtil;
 
 /** 
  * This class represents a parser for analyzing and keeping useful informations about the ontoUML model. 
- * It associates an alias for every Element, as well as if
- * this Element is selected or not (useful for transformation purposes).
+ * It associates an alias for every Element, as well as if this Element is selected or not (useful for transformation purposes). 
+ * It can also perform the syntactical verification
  * 
  * @author John Guerson
  * @author Tiago Sales
@@ -365,12 +365,12 @@ public class OntoUMLParser {
 		return refmodelname;
 	}
 	
-	/** Run syntactical verification */
+	/** Run syntactical verification in the entire model */
 	public void parse()
 	{
 		verificator.run(this.model);
 	}
-	
+			
 	/** Get message with the time spent in the syntactical verification */
 	public String getTimingMessage()
 	{
