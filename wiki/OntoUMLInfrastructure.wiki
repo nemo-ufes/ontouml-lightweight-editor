@@ -7,7 +7,7 @@
 
 OLED uses an infrastructure which was former developed by Roberto Carrareto, latter enhanced by Antognoni Albuquerque and now constantly improved by us. This means that you can sort of "integrate" your project with OLED using this infrastructure to create your models.
 
-To use the infrastruture you will need of the following Eclipse libraries: 
+To use the infrastruture you will need of the following Eclipse libraries in your project: 
 
   * lpg.runtime.java
   * org.eclipse.emf.common
@@ -16,9 +16,9 @@ To use the infrastruture you will need of the following Eclipse libraries:
   * org.eclipse.ocl
   * org.eclipse.ocl.ecore
 
-We recommend using *Juno* or *Kepler* versions because actually develop OLED in these versions and because we have no problems with them. Besides these Eclipse libraries, you will of course need of our OntoUML infrastructure, which can be found at: _trunk/br.ufes.inf.nemo.common/lib/refontouml/_
+We recommend using *Juno* or *Kepler* versions of these libraries because we actually develop OLED in these versions. Besides these Eclipse libraries, you will of course need of our OntoUML infrastructure, which can be found at: _trunk/br.ufes.inf.nemo.common/lib/refontouml/_
 
-  * br.ufes.inf.nemo.ontouml_1.0.0.201409231448.jar 
+  * *br.ufes.inf.nemo.ontouml_1.0.0.201409231448.jar*
 
 ----
 *Loading and Saving an OntoUML model*
