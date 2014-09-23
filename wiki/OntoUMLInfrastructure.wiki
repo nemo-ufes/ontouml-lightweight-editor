@@ -9,15 +9,21 @@ OLED uses an infrastructure which was former developed by Roberto Carrareto, lat
 
 To use the infrastruture you will need of the following library: 
 
-  * br.ufes.inf.nemo.ontouml_1.0.0.201409231111.jar (_located at trunk/br.ufes.inf.nemo.common/lib/refontouml/_)
-
+  * br.ufes.inf.nemo.ontouml_1.0.0.201409231448.jar 
+    (_located at trunk/br.ufes.inf.nemo.common/lib/refontouml/_)
+  * lpg.runtime.java
+  * org.eclipse.emf.common
+  * org.eclipse.emf.ecore.xmi
+  * org.eclipse.emf.ecore
+  * org.eclipse.ocl
+  * org.eclipse.ocl.ecore
 ----
 *Loading and Saving an OntoUML model*
 ----
 
 {{{
 //Loading...
-String refontoumlpath = "C:\Users\Guerson\test.refontouml";
+String refontoumlpath = "C:\\Users\\Guerson\\example.refontouml";
 Resource resource = RefOntoUMLResourceUtil.loadModel(refontoumlpath);
 RefOntoUML.Package root = resource.getContents().get(0);
 }}}
