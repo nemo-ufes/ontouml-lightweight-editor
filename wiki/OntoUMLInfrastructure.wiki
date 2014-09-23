@@ -16,13 +16,15 @@ To use the infrastruture you will need of the following library:
 ----
 
 {{{
-RefOntoUMLResourceUtil.loadModel(refontoumlpath);
-// where refontoumlpath is a absolute file path for the model artifact with extension *.refontouml
+//Loading...
+String refontoumlpath = "C:\Users\Guerson\test.refontouml";
+Resource resource = RefOntoUMLResourceUtil.loadModel(refontoumlpath);
+RefOntoUML.Package root = resource.getContents().get(0);
 }}}
 
 {{{
+//Saving...
 RefOntoUMLResourceUtil.saveModel(refontoumlpath, root);
-//where root is the root RefOntoUML.Package of the model
 }}}
 
 ----
