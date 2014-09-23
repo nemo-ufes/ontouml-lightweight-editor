@@ -16,13 +16,14 @@ To use the infrastruture you will need of the following Eclipse libraries in you
   * org.eclipse.ocl
   * org.eclipse.ocl.ecore
 
-We recommend using *Juno* or *Kepler* versions of these libraries because we actually develop OLED in these versions. Besides these Eclipse libraries, you will of course need of our OntoUML infrastructure, which can be found at: _trunk/br.ufes.inf.nemo.common/lib/refontouml/_
+We recommend using *Juno* or *Kepler* versions of these libraries because we actually develop OLED in these versions. Besides these Eclipse libraries, you will of course need of our OntoUML infrastructure, which can be found at: trunk/br.ufes.inf.nemo.common/lib/refontouml/
 
-  * *br.ufes.inf.nemo.ontouml_1.0.0.201409231448.jar*
+  * br.ufes.inf.nemo.ontouml_1.0.0.201409231448.jar
 
-----
-*Loading and Saving an OntoUML model*
-----
+If you are not familiar with UML2 project of Eclipse, since OntoUML is a version of the Unified Modeling Language, it should be a great help to know how to create dynamically UML models via code using the Eclipse-based implementation of UML. There is a tutorial for that according to each eclipse version:
+
+  * [http://wiki.eclipse.org/MDT/UML2/Getting_Started_with_UML2 Getting Started with UML2 (Luna 2014)]
+  * [http://www.eclipse.org/modeling/mdt/uml2/docs/articles/Getting_Started_with_UML2/article.html Getting Started with UML2 (Ganymede 2008)]
 
 {{{
 //Loading...
