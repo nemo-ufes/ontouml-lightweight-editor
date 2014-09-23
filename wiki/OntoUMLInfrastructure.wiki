@@ -44,7 +44,7 @@ protected static RefOntoUML.Package createModel(String name)
 }
 }}}
 
-To *save* (serialize) this model into an OntoUML artifact, you can do the following:
+To *save* (serialize) this model into an OntoUML artifact (we named these with the extension "refontouml"), you can do the following:
 
 {{{
 //create a model
@@ -79,4 +79,4 @@ To *import* the .refontouml file generated into OLED v0.9.34, just do as it foll
   # Go to: File -> Import -> Ecore Instance (based on Reference Metamodel)
   # Choose the refontouml file and press Ok.
 
-In recent version of OLED this menu option might be displayed with some other description, but the idea is the same.
+In recent versions of OLED this menu option might be displayed with some other description, but the idea should be the very similar to this one.
