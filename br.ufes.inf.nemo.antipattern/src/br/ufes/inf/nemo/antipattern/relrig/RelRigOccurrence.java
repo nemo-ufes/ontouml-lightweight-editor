@@ -92,7 +92,7 @@ public class RelRigOccurrence extends AntipatternOccurrence {
 			allMediations.add(med);
 			allMediatedProperties.add(OntoUMLParser.getMediatedEnd(med));
 			
-			if (OntoUMLParser.getMediated(med) instanceof RigidSortalClass || OntoUMLParser.getMediated(med) instanceof RigidMixinClass){
+			if (OntoUMLParser.getMediatedType(med) instanceof RigidSortalClass || OntoUMLParser.getMediatedType(med) instanceof RigidMixinClass){
 				rigidMediations.add(med);
 				rigidMediatedProperties.add(OntoUMLParser.getMediatedEnd(med));
 			}

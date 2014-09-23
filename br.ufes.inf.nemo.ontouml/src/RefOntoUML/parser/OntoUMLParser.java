@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -96,7 +97,7 @@ public class OntoUMLParser {
 	public HashMap<Classifier, HashSet<Classifier>> allChildrenHash;
 	
 	/** Responsible for treating the name of each OntoUML element. */
-	private NameHandler nameHandler = new NameHandler();
+	private OntoUMLNameHandler nameHandler = new OntoUMLNameHandler();
 	
 	/**
 	 * Options for complete the selection of the elements in the model.
@@ -111,7 +112,7 @@ public class OntoUMLParser {
 		this.model = refmodel;	
 		this.verificator = new SyntacticVerificator();		
 		elementsHash = new HashMap<EObject,ParsingElement>();		
-		NameHandler h1 = new NameHandler();
+		OntoUMLNameHandler h1 = new OntoUMLNameHandler();
 		this.refmodelname = h1.treatName(model);				
 		initMap(model, nameHandler);
 	}
@@ -124,13 +125,13 @@ public class OntoUMLParser {
 		this.model = refmodel;		
 		this.verificator = new SyntacticVerificator();		
 		elementsHash = new HashMap<EObject,ParsingElement>();		
-		NameHandler h1 = new NameHandler();
+		OntoUMLNameHandler h1 = new OntoUMLNameHandler();
 		this.refmodelname = h1.treatName(model);				
 		initMap(model, nameHandler);
 	}	
 
 	/** This private method initializes the Map */
-	private void initMap (PackageableElement rootpack, NameHandler h2) 
+	private void initMap (PackageableElement rootpack, OntoUMLNameHandler h2) 
 	{
 		ParsingElement e = new ParsingElement(rootpack, true, h2.treatName(rootpack));
 		this.elementsHash.put(rootpack,e);		
@@ -145,7 +146,7 @@ public class OntoUMLParser {
 	 * This private method add an element to the Map. It associates an ontoUML element
 	 * with an unique alias and, by default, with a boolean value selected=true.
 	 */
-	private void addToMap(PackageableElement pe, NameHandler h2)
+	private void addToMap(PackageableElement pe, OntoUMLNameHandler h2)
 	{
 		ParsingElement e;		
 		//Comments
@@ -370,18 +371,24 @@ public class OntoUMLParser {
 		verificator.run(this.model);
 	}
 	
-	/** Get message with the time spent in the syntactical verification*/
+	/** Get message with the time spent in the syntactical verification */
 	public String getTimingMessage()
 	{
 		return verificator.getTimingMessage();
 	}
 	
-	/** Get result of the syntactical verification */
+	/** Get result of the syntactical verification in the form of a string */
 	public String getResult()
 	{
 		return verificator.getResult();
 	}
 		
+	/** Return the result of the verification in the form of a Map */
+	public Map<Element, ArrayList<String>> getMap()
+	{
+		return verificator.getMap();
+	}
+	
 	/** Get element from its alias name. */
 	public EObject getElement(String alias)
 	{	 
@@ -761,6 +768,103 @@ public class OntoUMLParser {
 		return (Classifier) getRelatorEnd(m).getType();
 	}
 	
+	/** Return the mediated end i.e. property or association end-point in the role's side, of a mediation */
+	public static Property getMediatedEnd (Mediation m)
+	{		
+		return getRelatorEnd(m).getOpposite();
+	}
+	
+	/** Return the relator end i.e. property or association end-point in the relator side, connected to this mediation */
+	public static Property getRelatorEnd (Mediation m)
+	{		
+		if (m.sourceEnd().getType() instanceof Relator) return m.sourceEnd();
+		else if (m.targetEnd().getType() instanceof Relator) return m.targetEnd();
+		else {
+			if(m.sourceEnd().getType()!=null)
+			{
+				for (Classifier c : ((Classifier)m.sourceEnd().getType()).allParents()) 
+				{
+					if (c instanceof Relator) return m.sourceEnd();
+				}
+				for (Classifier c : ((Classifier)m.targetEnd().getType()).allParents()) 
+				{
+					if (c instanceof Relator) return m.targetEnd();
+				}
+			}
+		}		
+		return m.sourceEnd();		
+	}
+	
+	/** Return the mediated type i.e. usually roles, of a mediation */
+	public static Classifier getMediatedType(Mediation m) throws Exception
+	{		
+		return (Classifier) getMediatedEnd(m).getType();
+	}
+	
+	/** Return the whole end i.e. property or association end-point in the whole side, of a meronymic */
+	public static Property getWholeEnd(Meronymic m)
+	{
+		Property sourceEnd = m.getMemberEnd().get(0);
+		Property targetEnd = m.getMemberEnd().get(1);		
+		if (targetEnd.getAggregation()!=AggregationKind.NONE && sourceEnd.getAggregation()==AggregationKind.NONE) return targetEnd;
+		else return sourceEnd;
+	}
+	
+	/** Return the part end i.e. property or association end-point in the part side, of a meronymic */
+	public static Property getPartEnd(Meronymic m)
+	{
+		Property sourceEnd = m.getMemberEnd().get(0);
+		Property targetEnd = m.getMemberEnd().get(1);		
+		if(getWholeEnd(m).equals(sourceEnd)) return targetEnd;
+		else return sourceEnd;
+	}
+	
+	/** Return the characterizing end i.e. property or association end-point in the mode's side */
+	public static Property getCharacterizingEnd(Characterization c)
+	{
+		if (c.getMemberEnd().get(1).getType() instanceof Mode && !(c.getMemberEnd().get(0).getType() instanceof Mode)) return c.getMemberEnd().get(1);
+		return c.getMemberEnd().get(0);
+	}
+	
+	/** Return the characterized end i.e. property or association end-point in the mode's opposite direction */
+	public static Property getCharacterizedEnd(Characterization c)
+	{
+		return getCharacterizingEnd(c).getOpposite();
+	}
+	
+	/** Return the material association related to this derivation */
+	public static MaterialAssociation getMaterial(Derivation d)
+	{
+		Type source = d.getMemberEnd().get(0).getType();
+		Type target = d.getMemberEnd().get(1).getType();		
+		if(source instanceof MaterialAssociation) return (MaterialAssociation) source;
+		if(target instanceof MaterialAssociation) return (MaterialAssociation) target;		
+		return null;
+	}
+	
+	/** Return the relator related to this derivation */
+	public static Relator getRelator(Derivation d)
+	{
+		Type source = d.getMemberEnd().get(0).getType();
+		Type target = d.getMemberEnd().get(1).getType();		
+		if(source instanceof Relator) return (Relator) source;
+		if(target instanceof Relator) return (Relator) target;		
+		return null;
+	}
+	
+	/** Return the derivation relationship attached to this material association */
+	public Derivation getDerivation (MaterialAssociation material)
+	{
+		for (Derivation d: getAllInstances(Derivation.class))
+		{
+			for(Property prop : d.getMemberEnd())
+			{
+				if(prop.getType().equals(material)) return d;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Verify if the given element is a general classifier in a partition, which means that this 
 	 * element is an abstract classifier.
@@ -970,24 +1074,19 @@ public class OntoUMLParser {
 		{
 			selected_copy.add(copier.get(element));
 		}		
-		deleteElement(pack_copy, selected_copy);		
+		deleteUnselectedElements(pack_copy, selected_copy);		
 		return pack_copy;
 	}
 	
-	/**
-	 * Delete Elements of the Package that aren't selected.
-	 * 
-	 * @param pack
-	 * @param selected
-	 */
-	private void deleteElement (Package pack, ArrayList<EObject> selected)
+	/** Delete elements of the package that aren't selected. */
+	private void deleteUnselectedElements (Package pack, ArrayList<EObject> selected)
 	{
 		ArrayList<EObject> delete_list = new ArrayList<EObject>();		
 		for (PackageableElement eo : pack.getPackagedElement()) 
 		{
 			if(!selected.contains(eo)) delete_list.add(eo);			
-			else {				
-				if (eo instanceof Package) deleteElement((Package) eo, selected);				
+			else{				
+				if (eo instanceof Package) deleteUnselectedElements((Package) eo, selected);				
 				else {
 					for (EObject c : eo.eContents()) 
 					{
@@ -998,58 +1097,12 @@ public class OntoUMLParser {
 		}		
 		for(int i = 0; i<delete_list.size(); i++) EcoreUtil.remove(delete_list.get(i));
 	}
-	
-	/*TODO: Temos algum método que pega o lado do relator corretamente?? Caso tenhamos, remover o método criado abaixo. Criado pois mediations podem vir erradas ou invertidas*/
-	//TIAGO: Esse é o método que pega corretamente.
-	public static Property getRelatorEnd (Mediation m)
-	{		
-		if (m.sourceEnd().getType() instanceof Relator)
-			return m.sourceEnd();
-		else if (m.targetEnd().getType() instanceof Relator)
-			return m.targetEnd();
-		else {
-			if(m.sourceEnd().getType()!=null){
-				for (Classifier c : ((Classifier)m.sourceEnd().getType()).allParents()) {
-					if (c instanceof Relator) return m.sourceEnd();
-				}
-				for (Classifier c : ((Classifier)m.targetEnd().getType()).allParents()) {
-					if (c instanceof Relator) return m.targetEnd();
-				}
-			}
-		}		
-		return m.sourceEnd();
 		
-	}
-	
-	public static Property getMediatedEnd (Mediation m)
-	{		
-		return getRelatorEnd(m).getOpposite();
-	}
-	
-	public Derivation getDerivation (MaterialAssociation material)
-	{
-		for (Derivation d: getAllInstances(Derivation.class))
-		{
-			for(Property prop : d.getMemberEnd())
-			{
-				if(prop.getType().equals(material)) return d;
-			}
-		}
-		return null;
-	}
-	
-	public static Classifier getMediated(Mediation m) throws Exception
-	{		
-		return (Classifier) getMediatedEnd(m).getType();
-	}
-	
 	/**
-	 * All the model types that does not have an identity. This method will return all the sortals
-	 * that does not have a Substance Sortal as its ancestors.
-	 * 
-	 * @return
+	 * Return all classes that do not have an identity. 
+	 * i.e. all the sortals that do not have a substance sortal as its ancestor.
 	 */
-	public ArrayList<RefOntoUML.Classifier> getElementsWithIdentityMissing ()
+	public ArrayList<RefOntoUML.Classifier> getClassesWithIdentityMissing ()
 	{
 		ArrayList<RefOntoUML.Classifier> list = new ArrayList<RefOntoUML.Classifier>();
 		boolean hasIdentity;
@@ -1064,67 +1117,57 @@ public class OntoUMLParser {
 		}
 		return list;
 	}
-	
-	/**
-	 * Get the relators that have the sum of their mediations lower cardinality
-	 * less than 2. 
-	 */
+		
+	/** Return the relators that have the sum of all the lower cardinalities of each attached mediation less than 2. */
 	public ArrayList<Relator> getRelatorsWithInvalidAxiom ()
 	{
 		ArrayList<Relator> relators = new ArrayList<Relator>();
 		for (Relator r: getAllInstances(Relator.class))
 		{
 			ArrayList<Mediation> mediations = new ArrayList<Mediation>();
-			try {  getAllMediations(r, mediations); } catch (Exception e) {e.printStackTrace();}					
-			
+			try { getAllMediations(r, mediations); } catch (Exception e) {e.printStackTrace();}			
 			int sum=0;
 			for(Mediation m: mediations)
 			{
 				if (m.getMemberEnd().get(1).getUpper()==-1) sum += 2;
 				else sum += m.getMemberEnd().get(1).getUpper();
-			}
-			
+			}			
 			if (sum <2) relators.add(r);
 		}
 		return relators;
 	}
 	
-	/**
-	 * Get wholes that have the sum of their parts lower cardinality
-	 * less than 2. 
-	 */
+	/**  Return the wholes that have the sum of all the lower cardinalities of each attached meronymic less than 2. */
 	public ArrayList<RigidSortalClass> getWholesWithInvalidWeakSupplementation ()
 	{
 		ArrayList<RigidSortalClass> classifiers = new ArrayList<RigidSortalClass>();
 		for (RigidSortalClass r: getAllInstances(RigidSortalClass.class))
 		{
 			ArrayList<Meronymic> meronymics = new ArrayList<Meronymic>();
-			try {  getAllMeronymics(r, meronymics); } catch (Exception e) {e.printStackTrace();}					
-			
+			try { getAllMeronymics(r, meronymics); } catch (Exception e) {e.printStackTrace();}			
 			int sum=0;
 			for(Meronymic m: meronymics)
 			{
 				if (m.getMemberEnd().get(1).getUpper()==-1) sum += 2;
 				else sum += m.getMemberEnd().get(1).getUpper();
-			}
-			
+			}			
 			if (sum <2 && meronymics.size()>=1) classifiers.add(r);
 		}
 		return classifiers;
 	}
 	
-	public ArrayList<GeneralizationSet> getGeneralizationSet(Generalization g){
-		ArrayList<GeneralizationSet> genSets = new ArrayList<GeneralizationSet>();
-		
-		for (GeneralizationSet gs : getAllInstances(GeneralizationSet.class)) {
-			if(gs.getGeneralization().contains(g))
-				genSets.add(gs);
-		}
-		
+	/** Return all the selected generalization sets that this generalization is attached */
+	public ArrayList<GeneralizationSet> getGeneralizationSet(Generalization g)
+	{
+		ArrayList<GeneralizationSet> genSets = new ArrayList<GeneralizationSet>();		
+		for (GeneralizationSet gs : getAllInstances(GeneralizationSet.class)) 
+		{
+			if(gs.getGeneralization().contains(g)) genSets.add(gs);
+		}		
 		return genSets;
 	}
 	
-	/** Get Generalizations which the type participates */
+	/** Return all the selected generalizations that this type is attached */
 	public ArrayList<Generalization> getGeneralizations(RefOntoUML.Classifier type)
 	{
 		ArrayList<RefOntoUML.Generalization> genList = new ArrayList<RefOntoUML.Generalization>();
@@ -1136,8 +1179,7 @@ public class OntoUMLParser {
 		return genList;
 	}
 	
-
-	/** Get all the generalizations in which this type is the General type*/
+	/** Return all the generalizations that this type is attached as the general type*/
 	public ArrayList<Generalization> getSpecializations(RefOntoUML.Classifier type)
 	{
 		ArrayList<RefOntoUML.Generalization> genList = new ArrayList<RefOntoUML.Generalization>();
@@ -1148,19 +1190,21 @@ public class OntoUMLParser {
 		return genList;
 	}
 	
-	/**
-	 *	Return all (selected) direct relationships (generalizations and associations) of the classifier c  
-	 */
+	/** Return all selected, direct relationships (i.e. generalizations and associations) of a given element */
 	public ArrayList<Relationship> getDirectRelationships(EObject eObject)
 	{
 		ArrayList<Relationship> relations = new ArrayList<Relationship>();		
-		for (EObject a : getAllInstances(Relationship.class)) {
-			if (a instanceof Generalization){
+		for (EObject a : getAllInstances(Relationship.class)) 
+		{
+			if (a instanceof Generalization)
+			{
 				Generalization g = (Generalization)a;
-				if(g.getGeneral()!=null && g.getSpecific()!=null){
+				if(g.getGeneral()!=null && g.getSpecific()!=null)
+				{
 					if(g.getGeneral().equals(eObject) || g.getSpecific().equals(eObject)) relations.add(g);
 				}				
-			}else if (a instanceof Association){
+			}else if (a instanceof Association)
+			{
 				Association assoc = (Association)a;				
 				RefOntoUML.Type Src = assoc.getMemberEnd().get(0).getType();
 				RefOntoUML.Type Tgt = assoc.getMemberEnd().get(1).getType();
@@ -1170,6 +1214,7 @@ public class OntoUMLParser {
 		return relations;
 	}
 		
+	/** Return all selected, direct associations of a given element */
 	public ArrayList<Association> getDirectAssociations(EObject eObject)
 	{
 		ArrayList<Association> relations = new ArrayList<Association>();		
@@ -1181,42 +1226,9 @@ public class OntoUMLParser {
 			if (Src !=null && Src.equals(eObject) || Tgt!=null && Tgt.equals(eObject)) relations.add(assoc);			
 		}
 		return relations;
-	}
+	}	
 	
-	public ArrayList<Association> getAssociationsBetween(HashSet<Type> typeList)
-	{
-		ArrayList<Association> relations = new ArrayList<Association>();		
-		for (Association assoc : getAllInstances(Association.class)) 
-		{
-			try{
-				RefOntoUML.Type source = assoc.getMemberEnd().get(0).getType();
-				RefOntoUML.Type target = assoc.getMemberEnd().get(1).getType();
-			
-				if (source !=null && target!=null && typeList.contains(source) && typeList.contains(target)) 
-					relations.add(assoc);	
-			
-			}catch (Exception e){}
-		}
-		return relations;
-	}
-	
-	public ArrayList<Generalization> getGeneralizationsBetween(HashSet<Type> typeList)
-	{
-		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();		
-		for (Generalization gen : getAllInstances(Generalization.class)) 
-		{
-			try{
-				RefOntoUML.Type specific = gen.getSpecific();
-				RefOntoUML.Type general = gen.getGeneral();
-			
-				if (specific !=null && general!=null && typeList.contains(specific) && typeList.contains(general)) 
-					generalizations.add(gen);	
-			
-			}catch (Exception e){}
-		}
-		return generalizations;
-	}
-	
+	/** Return all selected, direct generalizations of a given element i.e. in which it participates */
 	public ArrayList<Generalization> getDirectGeneralizations(EObject eObject)
 	{
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();		
@@ -1230,6 +1242,7 @@ public class OntoUMLParser {
 		return generalizations;
 	}
 	
+	/** Return all selected, indirect associations of a given element i.e. associations in which the parents of a given elements participate */
 	public ArrayList<Association> getIndirectAssociations(EObject eObject)
 	{
 		ArrayList<Association> relations = new ArrayList<Association>();		
@@ -1244,7 +1257,7 @@ public class OntoUMLParser {
 		return relations;
 	}
 	
-
+	/** Return all selected, indirect generalizations of a given element i.e. generalizations in which the parents of a given elements participate */
 	public ArrayList<Generalization> getIndirectGeneralizations(EObject eObject)
 	{
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();		
@@ -1257,392 +1270,357 @@ public class OntoUMLParser {
 		return generalizations;
 	}
 	
-	public static Property getWholeEnd(Meronymic m){
-		Property sourceEnd = m.getMemberEnd().get(0);
-		Property targetEnd = m.getMemberEnd().get(1);
+	/** 
+	 * Check if this element is a functional complex i.e.
+	 * i) If it is a kind, or ii) if it is a subkind or anti-rigid sortal with exactly one identity provider of the type kind, or,
+	 * iii) if it is a mixin class in which all their children are functional complexes.  
+	 */
+	public boolean isFunctionalComplex(Classifier c)
+	{		
+		if(c instanceof Kind) return true;		
+		if(c instanceof SubKind || c instanceof AntiRigidSortalClass)
+		{
+			HashSet<Classifier> identityProviders = getIdentityProvider(c);
+			if(identityProviders.size()==1 && identityProviders.toArray()[0] instanceof Kind) return true;
+		}		
+		if(c instanceof MixinClass)
+		{
+			if(getChildren(c).size()==0) return false;
+			for (Classifier child : getChildren(c)) 
+			{
+				if(!isFunctionalComplex(child)) return false;
+			}
+			return true;
+		}		
+		return false;
+	}
+	
+	/** 
+	 * Check if a particular element is a quantity i.e.
+	 * i) if it is a quantity element, or, ii) if it is a subkind or anti-rigid sortal with exactly one identity provider of the type Quantity, or,
+	 * iii) if it is a mixin class in which all their children are quantities.
+	 */
+	public boolean isQuantity(Classifier c)
+	{
+		if(c instanceof Quantity) return true;		
+		if(c instanceof SubKind || c instanceof AntiRigidSortalClass)
+		{
+			HashSet<Classifier> identityProviders = getIdentityProvider(c);
+			if(identityProviders.size()==1 && identityProviders.toArray()[0] instanceof Quantity) return true;
+		}		
+		if(c instanceof MixinClass)
+		{
+			if(getChildren(c).size()==0) return false;			
+			for (Classifier child : getChildren(c)) 
+			{
+				if(!isQuantity(child)) return false;
+			}
+			return true;
+		}		
+		return false;
+	}
+	
+	/** 
+	 * Check if a particular element is a collective i.e.
+	 * i) if it is a collective element, or, ii) if it is a subkind or anti-rigid sortal with exactly one identity provider of the type Collective, or,
+	 * iii) if it is a mixin class in which all their children are collectives.
+	 */
+	public boolean isCollective(Classifier c)
+	{
+		if(c instanceof Collective) return true;		
+		if(c instanceof SubKind || c instanceof AntiRigidSortalClass)
+		{
+			HashSet<Classifier> identityProviders = getIdentityProvider(c);
+			if(identityProviders.size()==1 && identityProviders.toArray()[0] instanceof Collective) return true;
+		}		
+		if(c instanceof MixinClass)
+		{
+			if(getChildren(c).size()==0) return false;			
+			for (Classifier child : getChildren(c)) 
+			{
+				if(!isCollective(child)) return false;
+			}
+			return true;
+		}		
+		return false;
+	}
 		
-		if (targetEnd.getAggregation()!=AggregationKind.NONE && sourceEnd.getAggregation()==AggregationKind.NONE)
-			return targetEnd;
-		else
-			return sourceEnd;
-	}
-	
-	public static Property getPartEnd(Meronymic m){
-		Property sourceEnd = m.getMemberEnd().get(0);
-		Property targetEnd = m.getMemberEnd().get(1);
+	/** Check if this mixin class as children at least one functional complex */
+	public boolean hasFunctionalComplexChild(MixinClass mixin)
+	{
+		for (Classifier child : getAllChildren(mixin)) 
+		{
+			if(isFunctionalComplex(child)) return true;
+		}
 		
-		if(getWholeEnd(m).equals(sourceEnd))
-			return targetEnd;
-		else
-			return sourceEnd;
+		return false;
 	}
 	
-	public static Property getCharacterizingEnd(Characterization c){
-		if (c.getMemberEnd().get(1).getType() instanceof Mode && !(c.getMemberEnd().get(0).getType() instanceof Mode))
-			return c.getMemberEnd().get(1);
-		return c.getMemberEnd().get(0);
+	/** Check if this mixin class has as children at least one collective*/
+	public boolean hasCollectiveChild(MixinClass mixin)
+	{
+		for (Classifier child : getAllChildren(mixin)) 
+		{
+			if(isCollective(child)) return true;
+		}
+		
+		return false;
 	}
 	
-	public static Property getCharacterizedEnd(Characterization c){
-		return getCharacterizingEnd(c).getOpposite();
+	/** Check if this mixin class has as children at least one quantity */
+	public boolean hasQuantityChild(MixinClass mixin)
+	{
+		for (Classifier child : getAllChildren(mixin)) 
+		{
+			if(isQuantity(child)) return true;
+		}		
+		return false;
 	}
 	
-	/** Get the identity provider for a given OntoUML class.
-	 *  If c is a Kind, Quantity or Collective, then he is the proper identity provider.
-	 *  If c is Phase or Role then search for the identity provider in all parents
-	 *  If c is a Category, roleMixin or Mixin: (i) search in children for the identity providers and (ii) search in parents for the identity providers.
-	 *  
-	 * @param c: Classifier
-	 * @return
+	/** 
+	 * Return the identity provider for a given class i.e.
+	 * i) If it is a kind, quantity or collective, or, ii)
+	 * If it is anti-rigid sortal, search for the identity provider in all parents, or , iii)
+	 * If it is a mixin class search in children and parents for the identity providers.  
 	 */
 	public HashSet<Classifier> getIdentityProvider(Classifier c)
 	{
 		HashSet<Classifier> result = new HashSet<Classifier>();
-		if (c instanceof SubstanceSortal) result.add(c);
-		
+		if (c instanceof SubstanceSortal) result.add(c);		
 		if (c instanceof AntiRigidSortalClass || c instanceof SubKind)
 		{
 			for(Classifier p: getAllParents(c))
 			{
 				if(p instanceof SubstanceSortal) result.add(p);
 			}
-		}
-		
+		}		
 		if (c instanceof MixinClass)
 		{
 			for(Classifier child: getAllChildren(c))
 			{
 				if(child instanceof SubstanceSortal) result.add(child);
-				if(child instanceof AntiRigidSortalClass || child instanceof SubKind){
-					for(Classifier childParent: child.allParents()){
+				if(child instanceof AntiRigidSortalClass || child instanceof SubKind)
+				{
+					for(Classifier childParent: child.allParents())
+					{
 						if (childParent instanceof SubstanceSortal) result.add(childParent);
 					}
 				}
 			}
 			for(Classifier parent: getAllParents(c))
 			{
-				for(Classifier parentChild: getAllChildren(parent)){
+				for(Classifier parentChild: getAllChildren(parent))
+				{
 					if (parentChild instanceof SubstanceSortal) result.add(parentChild);
-					if (parentChild instanceof AntiRigidSortalClass || parentChild instanceof SubKind) {
-						for(Classifier p: parentChild.allParents()){
+					if (parentChild instanceof AntiRigidSortalClass || parentChild instanceof SubKind) 
+					{
+						for(Classifier p: parentChild.allParents())
+						{
 							if (p instanceof SubstanceSortal) result.add(p);
 						}
 					}
 				}
 			}
-		}
-			
+		}			
 		return result;		
 	}
-
-	public static MaterialAssociation getMaterial(Derivation d){
-		Type source = d.getMemberEnd().get(0).getType();
-		Type target = d.getMemberEnd().get(1).getType();
-		
-		if(source instanceof MaterialAssociation)
-			return (MaterialAssociation) source;
-		if(target instanceof MaterialAssociation)
-			return (MaterialAssociation) target;
-		
-		return null;
-	}
 	
-	public static Relator getRelator(Derivation d){
-		Type source = d.getMemberEnd().get(0).getType();
-		Type target = d.getMemberEnd().get(1).getType();
-		
-		if(source instanceof Relator)
-			return (Relator) source;
-		if(target instanceof Relator)
-			return (Relator) target;
-		
-		return null;
-	}
-	
-	public boolean isFunctionalComplex(Classifier c){
-		
-		if(c instanceof Kind)
-			return true;
-		
-		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
-			HashSet<Classifier> identityProviders = getIdentityProvider(c);
-			if(identityProviders.size()==1 && identityProviders.toArray()[0] instanceof Kind)
-				return true;
-		}
-		
-		if(c instanceof MixinClass){
-			if(getChildren(c).size()==0)
-				return false;
-			for (Classifier child : getChildren(c)) {
-				if(!isFunctionalComplex(child))
-					return false;
+	/** Return all the associations between the types in the list */
+	public ArrayList<Association> getAssociationsBetween(HashSet<Type> typeList)
+	{
+		ArrayList<Association> relations = new ArrayList<Association>();		
+		for (Association assoc : getAllInstances(Association.class)) 
+		{
+			try{
+				RefOntoUML.Type source = assoc.getMemberEnd().get(0).getType();
+				RefOntoUML.Type target = assoc.getMemberEnd().get(1).getType();			
+				if (source !=null && target!=null && typeList.contains(source) && typeList.contains(target)) relations.add(assoc);			
+			}catch (Exception e){
+				e.printStackTrace();
 			}
-			return true;
 		}
-		
-		return false;
+		return relations;
 	}
 	
-	public boolean isQuantity(Classifier c){
-
-		if(c instanceof Quantity)
-			return true;
-		
-		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
-			HashSet<Classifier> identityProviders = getIdentityProvider(c);
-			if(identityProviders.size()==1 && identityProviders.toArray()[0] instanceof Quantity)
-				return true;
-		}
-		
-		if(c instanceof MixinClass){
-			if(getChildren(c).size()==0)
-				return false;
-			
-			for (Classifier child : getChildren(c)) {
-				if(!isQuantity(child))
-					return false;
+	/** Return all the generalizations between the types in the list */
+	public ArrayList<Generalization> getGeneralizationsBetween(HashSet<Type> typeList)
+	{
+		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();		
+		for (Generalization gen : getAllInstances(Generalization.class)) 
+		{
+			try{
+				RefOntoUML.Type specific = gen.getSpecific();
+				RefOntoUML.Type general = gen.getGeneral();			
+				if (specific !=null && general!=null && typeList.contains(specific) && typeList.contains(general)) generalizations.add(gen);			
+			}catch (Exception e){
+				e.printStackTrace();
 			}
-			return true;
 		}
-		
-		return false;
+		return generalizations;
 	}
 	
-	public boolean isCollective(Classifier c){
-		
-		if(c instanceof Collective)
-			return true;
-		
-		if(c instanceof SubKind || c instanceof AntiRigidSortalClass){
-			HashSet<Classifier> identityProviders = getIdentityProvider(c);
-			if(identityProviders.size()==1 && identityProviders.toArray()[0] instanceof Collective)
-				return true;
-		}
-		
-		if(c instanceof MixinClass){
-			if(getChildren(c).size()==0)
-				return false;
-			
-			for (Classifier child : getChildren(c)) {
-				if(!isCollective(child))
-					return false;
-			}
-			return true;
-		}
-		
-		return false;
-	}
-	
-	public boolean hasFunctionalComplexChild(MixinClass mixin){
-		for (Classifier child : getAllChildren(mixin)) {
-			if(isFunctionalComplex(child))
-				return true;
-		}
-		
-		return false;
-	}
-	
-	public boolean hasCollectiveChild(MixinClass mixin){
-		for (Classifier child : getAllChildren(mixin)) {
-			if(isCollective(child))
-				return true;
-		}
-		
-		return false;
-	}
-	
-	public boolean hasQuantityChild(MixinClass mixin){
-		for (Classifier child : getAllChildren(mixin)) {
-			if(isQuantity(child))
-				return true;
-		}
-		
-		return false;
-	}
-
-	public ArrayList<Classifier> getCommonSubtypesFromClassifiers(ArrayList<Classifier> types) {
-		ArrayList<Classifier> subtypes = new ArrayList<Classifier>();
-		
-		if(types==null || types.size()==0)
-			return subtypes;
-		
-		subtypes.addAll(allChildrenHash.get(types.get(0)));
-		
-		for (int i = 1; i < types.size(); i++) {
+	/** Return the common subtypes for all the types in the list */
+	public ArrayList<Classifier> getCommonSubtypes(ArrayList<Classifier> types) 
+	{
+		ArrayList<Classifier> subtypes = new ArrayList<Classifier>();		
+		if(types==null || types.size()==0) return subtypes;		
+		subtypes.addAll(allChildrenHash.get(types.get(0)));		
+		for (int i = 1; i < types.size(); i++) 
+		{
 			ArrayList<Classifier> currentSubtypes = new ArrayList<Classifier>();
 			currentSubtypes.addAll(allChildrenHash.get(types.get(i)));
 			subtypes.retainAll(currentSubtypes);
-		}
-		
+		}		
 		return subtypes;
 	}
-
-	public ArrayList<Classifier> getCommonSubtypesFromProperties(ArrayList<Property> partEnds) {
-		
-		ArrayList<Classifier> types = new ArrayList<Classifier>();
-		for (Property property : partEnds) {
-			types.add((Classifier) property.getType());
-		}
 	
-		return getCommonSubtypesFromClassifiers(types);
+	/** Return the common supertypes for all the types in the list */
+	public ArrayList<Classifier> getCommonSupertypes(ArrayList<Classifier> types) 
+	{
+		ArrayList<Classifier> superTypes = new ArrayList<Classifier>();		
+		if(types==null || types.size()==0) return superTypes;		
+		superTypes.addAll(getAllParents(types.get(0)));		
+		for (int i = 1; i < types.size(); i++) 
+		{
+			ArrayList<Classifier> currentSupertypes = new ArrayList<Classifier>(types.get(i).allParents());
+			superTypes.retainAll(currentSupertypes);
+		}		
+		return superTypes;
 	}
-
-	//Get generalization sets from a classifier's generalization
-	public ArrayList<GeneralizationSet> getGeneralizationSets(Classifier c){
-		Set<GeneralizationSet> genSets = new HashSet<GeneralizationSet>();
 		
-		for (Generalization g : c.getGeneralization()) {
+	/** Return the common subtypes for all the types of the properties in the list */
+	public ArrayList<Classifier> getCommonSubtypesFromProperties(ArrayList<Property> properties) 
+	{		
+		ArrayList<Classifier> types = new ArrayList<Classifier>();
+		for (Property property : properties) 
+		{
+			types.add((Classifier) property.getType());
+		}	
+		return getCommonSubtypes(types);
+	}
+	
+	/** Return the common supertypes for all the types of the properties in the list */
+	public ArrayList<Classifier> getCommonSupertypesFromProperties(ArrayList<Property> properties) 
+	{		
+		ArrayList<Classifier> types = new ArrayList<Classifier>();
+		for (Property property : properties) 
+		{
+			types.add((Classifier) property.getType());
+		}	
+		return getCommonSupertypes(types);
+	}
+	
+	/** Return the generalization sets in which this classifier participates */
+	public ArrayList<GeneralizationSet> getGeneralizationSets(Classifier c)
+	{
+		Set<GeneralizationSet> genSets = new HashSet<GeneralizationSet>();		
+		for (Generalization g : c.getGeneralization()) 
+		{
 			genSets.addAll(g.getGeneralizationSet());
-		}
-		
+		}		
 		ArrayList<GeneralizationSet> result = new ArrayList<GeneralizationSet>();
 		result.addAll(genSets);
 		return result;
 	}
 
-	//Get generalization sets from a classifier's generalization
-	public ArrayList<GeneralizationSet> getSubtypesGeneralizationSets(Classifier c){
-		if(c==null)
-			return null;
-		
-		Set<GeneralizationSet> genSets = new HashSet<GeneralizationSet>();
-		
-		if(childHash==null) 
-			buildChildrenHashes();
-		
-		for (Classifier child : childHash.get(c)) {
+	/** Return the generalization sets in which all the direct children of a classifier participate */
+	public ArrayList<GeneralizationSet> getSubtypesGeneralizationSets(Classifier c)
+	{
+		if(c==null) return null;		
+		Set<GeneralizationSet> genSets = new HashSet<GeneralizationSet>();		
+		if(childHash==null) buildChildrenHashes();		
+		for (Classifier child : childHash.get(c)) 
+		{
 			genSets.addAll(getGeneralizationSets(child));
-		}
-		
+		}		
 		ArrayList<GeneralizationSet> result = new ArrayList<GeneralizationSet>();
 		result.addAll(genSets);
 		return result;
 	}
 
-	public boolean madeDisjointByGeneralizationSet(	ArrayList<Classifier> types, ArrayList<GeneralizationSet> genSets, ArrayList<Classifier> commonSupertypes) {
-		//collect generalizationSets
-		HashSet<GeneralizationSet> generalizationSets = new HashSet<GeneralizationSet>();
-		
-		if(childHash==null || allChildrenHash==null) 
-			buildChildrenHashes();
-		
-		for (Classifier parent : commonSupertypes) {
+	/** Build the mappings containing direct children and their classifiers, and, all children and their classifiers. */
+	public void buildChildrenHashes() 
+	{
+		childHash = new HashMap<Classifier,HashSet<Classifier>>();
+		allChildrenHash = new HashMap<Classifier,HashSet<Classifier>>();		
+		for (Classifier c : getAllInstances(Classifier.class)) 
+		{
+			childHash.put(c, new HashSet<Classifier>());
+			allChildrenHash.put(c, new HashSet<Classifier>());
+		}		
+		for (Classifier c : childHash.keySet()) 
+		{
+			for (Classifier parent : c.parents()) childHash.get(parent).add(c);			
+			for (Classifier parent : c.allParents()) allChildrenHash.get(parent).add(c);			
+		}		
+	}
+
+	/** 
+	 * Return true if all types of the properties share a common supertype and there is no generalizationSet making them disjoint; returns false otherwise.
+	 * if it returns true, the parameters commonSupertypes and genSets are set with the common supertypes and the relevant generalizations sets.
+	 */	  
+	public boolean allTypesOverlap( ArrayList<Classifier> types, ArrayList<Classifier> commonSupertypes, ArrayList<GeneralizationSet> genSets) throws Exception 
+	{		
+		if(commonSupertypes==null || commonSupertypes.size()>0) throw new Exception();		
+		if(genSets==null || genSets.size()>0) throw new Exception();		
+		//Get commmon supertypes; there must be at least one
+		commonSupertypes.addAll(getCommonSupertypes(types));
+		if(commonSupertypes.size()<1) return false;		
+		return madeDisjointByGeneralizationSet(types, genSets,commonSupertypes);
+	}
+
+	/**
+	 * Returns true if there is no generalizationSet making all property types disjoint; returns false otherwise.
+	 * If it returns true, the parameter genSets is set with the relevant generalizations sets.
+	 */
+	public boolean allTypesOverlap(ArrayList<Classifier> types, ArrayList<GeneralizationSet> genSets) throws Exception 
+	{		
+		if(genSets==null || genSets.size()>0) throw new Exception();		
+		//Get commmon supertypes; there must be at least one
+		ArrayList<Classifier> commonSupertypes = getCommonSupertypes(types);
+		if(commonSupertypes.size()==0) return true;		
+		return madeDisjointByGeneralizationSet(types, genSets, commonSupertypes);
+	}		
+	
+	/** TODO: Should have a description here... */
+	public boolean madeDisjointByGeneralizationSet(	ArrayList<Classifier> types, ArrayList<GeneralizationSet> genSets, ArrayList<Classifier> commonSupertypes) 
+	{
+		//Collect generalizationSets
+		HashSet<GeneralizationSet> generalizationSets = new HashSet<GeneralizationSet>();		
+		if(childHash==null || allChildrenHash==null) buildChildrenHashes();		
+		for (Classifier parent : commonSupertypes) 
+		{
 			generalizationSets.addAll(getSubtypesGeneralizationSets(parent));
-		}
-		
-		//verifies if there is a generalization set which makes the subtypes disjoint
+		}		
+		//Verifies if there is a generalization set which makes the subtypes disjoint
 		ArrayList<Classifier> found;
-		for (GeneralizationSet gs : generalizationSets) {
-			found = new ArrayList<Classifier>();
-					
-			for (Generalization g1 : gs.getGeneralization()){
-				
-				if(types.contains(g1.getSpecific())){
+		for (GeneralizationSet gs : generalizationSets) 
+		{
+			found = new ArrayList<Classifier>();					
+			for (Generalization g1 : gs.getGeneralization())
+			{				
+				if(types.contains(g1.getSpecific()))
+				{
 					found.add(g1.getSpecific());
 				}
 				else {
-					for (Classifier type : types) {
-						if(getAllParents(type).contains(g1.getSpecific())){
-							found.add(type);
-							break;
-						}
+					for (Classifier type : types) 
+					{
+						if(getAllParents(type).contains(g1.getSpecific())) { found.add(type); break; }
 					}
-//					for (Classifier child : allChildrenHash.get(g1.getSpecific())) {
-//						if(types.contains(child)){
-//							found.add(child);
-//							break;
-//						}
-//					}
+					//	for (Classifier child : allChildrenHash.get(g1.getSpecific())) {
+					//	if(types.contains(child)){
+					//		found.add(child);
+					//		break;
+					//	}
+					//	}
 				}
-			}
-			
+			}			
 			if(found.size()>1){
-				if(gs.isIsDisjoint())
-					return false;
-				else
-					genSets.add(gs);
+				if(gs.isIsDisjoint()) return false;
+				else genSets.add(gs);
 			}		
 		}
 		return true;
 	}
-
-	public ArrayList<Classifier> getCommonSupertypesFromClassifiers(ArrayList<Classifier> types) {
-		ArrayList<Classifier> superTypes = new ArrayList<Classifier>();
-		
-		if(types==null || types.size()==0)
-			return superTypes;
-		
-		superTypes.addAll(getAllParents(types.get(0)));
-		
-		for (int i = 1; i < types.size(); i++) {
-			ArrayList<Classifier> currentSupertypes = new ArrayList<Classifier>(types.get(i).allParents());
-			superTypes.retainAll(currentSupertypes);
-		}
-		
-		return superTypes;
-	}
-	
-	public void buildChildrenHashes() {
-		childHash = new HashMap<Classifier,HashSet<Classifier>>();
-		allChildrenHash = new HashMap<Classifier,HashSet<Classifier>>();
-		
-		for (Classifier c : getAllInstances(Classifier.class)) {
-			childHash.put(c, new HashSet<Classifier>());
-			allChildrenHash.put(c, new HashSet<Classifier>());
-		}
-		
-		for (Classifier c : childHash.keySet()) {
-			for (Classifier parent : c.parents())	
-				childHash.get(parent).add(c);
-			
-			for (Classifier parent : c.allParents())
-				allChildrenHash.get(parent).add(c);
-			
-		}		
-	}
-
-	//returns true if all types of the properties share a common supertype and there is no generalizationSet making them disjoint; returns false otherwise
-	//if it returns true, the parameters commonSupertypes and genSets are set with the common supertypes and the relevant generalizations sets 
-	public boolean allTypesOverlap( ArrayList<Classifier> types, ArrayList<Classifier> commonSupertypes, ArrayList<GeneralizationSet> genSets) throws Exception {
-		
-		if(commonSupertypes==null || commonSupertypes.size()>0)
-			throw new Exception();
-		
-		if(genSets==null || genSets.size()>0)
-			throw new Exception();
-		
-		//get commmon supertypes; there must be at least one
-		commonSupertypes.addAll(getCommonSupertypesFromClassifiers(types));
-		if(commonSupertypes.size()<1)
-			return false;
-		
-		return madeDisjointByGeneralizationSet(types, genSets,commonSupertypes);
-	}
-
-	//returns true if there is no generalizationSet making all property types disjoint; returns false otherwise
-	//if it returns true, the parameter genSets is set with the relevant generalizations sets 
-	public boolean allTypesOverlap(ArrayList<Classifier> types, ArrayList<GeneralizationSet> genSets) throws Exception {
-		
-		if(genSets==null || genSets.size()>0)
-			throw new Exception();
-		
-		//get commmon supertypes; there must be at least one
-		ArrayList<Classifier> commonSupertypes = getCommonSupertypesFromClassifiers(types);
-		if(commonSupertypes.size()==0)
-			return true;
-		
-		return madeDisjointByGeneralizationSet(types, genSets, commonSupertypes);
-	}
-
-	public ArrayList<Classifier> getCommonSupertypesFromProperties(ArrayList<Property> partEnds) {
-	
-		ArrayList<Classifier> types = new ArrayList<Classifier>();
-		for (Property property : partEnds) {
-			types.add((Classifier) property.getType());
-		}
-	
-		return getCommonSupertypesFromClassifiers(types);
-	}
-	
-	
 }
