@@ -18,7 +18,7 @@ public class OntoUML2UMLTests {
 	{
 		try {
 						
-			String path1 = "src/br/ufes/inf/nemo/ontouml2uml/tests/models/Imóvel.refontouml";
+			String path1 = "src/br/ufes/inf/nemo/ontouml2uml/tests/models/Imóvel.refontouml";			
 			OntoUML2UML.convertToUML(new OntoUMLParser(path1), path1.replace(".refontouml", ".uml" ), new OntoUML2UMLOption(true,true));
 			System.out.println(OntoUML2UML.getLog());
 			
