@@ -19,7 +19,7 @@ To use the infrastruture you will need of the following Eclipse (Modeling Tools)
 
 We recommend using versions 4.X of Eclipse for these libraries because we actually develop OLED in these versions. Besides these Eclipse libraries, you will of course need of our OntoUML infrastructure, which can be found at: trunk/br.ufes.inf.nemo.common/lib/refontouml/
 
-  * br.ufes.inf.nemo.ontouml_1.0.0.201409231448.jar
+  * br.ufes.inf.nemo.ontouml_1.0.0.201409252327.jar
 
 ----
 
@@ -29,45 +29,74 @@ If you are not familiar with UML2 project of Eclipse, since OntoUML is an ontolo
   * [http://www.eclipse.org/modeling/mdt/uml2/docs/articles/Getting_Started_with_UML2/article.html Getting Started with UML2 (Ganymede 2008)]
 
 ----
-*Creating, Saving and Loading a Model*
+Here is a sample of the development (via code) of an ontology about traffic accidents using our OntoUML infrastructure.
 ----
 
-To *create* an OntoUML model, just create a root OntoUML package and give it a name as it follows:
-
 {{{
-protected static RefOntoUML.Package createModel(String name) 
-{
-   RefOntoUML.Package model = RefOntoUMLFactory.eINSTANCE.createModel();
-   model.setName(name);
-   System.out.println("Model "+model.getQualifiedName()+" created.");
-   return model;
-}
-}}}
-
-To *save* (serialize) this model into an OntoUML artifact (we named these with the extension "refontouml"), you can do the following:
-
-{{{
-//create a model
-RefOntoUML.Package root = createModel("Example");
+//create the model
+RefOntoUML.Package model = RefOntoUMLFactoryUtil.createPackage("Accident");
 		
-// absolute path of the target artifact
-String refontoumlpath = "C:\\Users\\Guerson\\Documents\\Example.refontouml";
+//create kinds
+RefOntoUML.Kind person = RefOntoUMLFactoryUtil.createKind("Person", model);
+RefOntoUML.Kind vehicle = RefOntoUMLFactoryUtil.createKind("Vehicle", model);
+RefOntoUML.Kind roadway = RefOntoUMLFactoryUtil.createKind("Roadway", model);
+		
+//create subkinds
+RefOntoUML.SubKind man = RefOntoUMLFactoryUtil.createSubKind("Man", model);
+RefOntoUML.SubKind woman = RefOntoUMLFactoryUtil.createSubKind("Woman", model);
+		
+//create phases
+RefOntoUML.Phase living = RefOntoUMLFactoryUtil.createPhase("Living", model);
+RefOntoUML.Phase deceased = RefOntoUMLFactoryUtil.createPhase("Deceased", model);
 
-// save the model
-RefOntoUMLResourceUtil.saveModel(refontoumlpath,root);
-}}}
+//create roles
+RefOntoUML.Role victim = RefOntoUMLFactoryUtil.createRole("Victim", model);
+RefOntoUML.Role traveler = RefOntoUMLFactoryUtil.createRole("Traveler", model);
+RefOntoUML.Role crashed = RefOntoUMLFactoryUtil.createRole("CrashedVehicle", model);
+				
+//create relators
+RefOntoUML.Relator accident = RefOntoUMLFactoryUtil.createRelator("Traffic Accident", model);
+RefOntoUML.Relator rearEndCollision = RefOntoUMLFactoryUtil.createRelator("Rear End Collision", model);
+RefOntoUML.Relator travel = RefOntoUMLFactoryUtil.createRelator("Travel", model);
+		
+//create a partition between man and woman
+List<Classifier> specifics = new ArrayList<Classifier>();
+specifics.add(man);
+specifics.add(woman);
+RefOntoUMLFactoryUtil.createPartition("gender",specifics, person, model);
+		
+//create a partition between living and deceased
+specifics.clear();
+specifics.add(living);
+specifics.add(deceased);
+RefOntoUMLFactoryUtil.createPartition("life",specifics, person, model);
+				
+// create generalizations/specializations
+RefOntoUMLFactoryUtil.createGeneralization(traveler, person);
+RefOntoUMLFactoryUtil.createGeneralization(victim, traveler);		
+RefOntoUMLFactoryUtil.createGeneralization(crashed, vehicle);
+RefOntoUMLFactoryUtil.createGeneralization(rearEndCollision, accident);
 
-Now, to *load* a OntoUML model, you need just to do the following:
-
-{{{
-//absolute path of the input artifact
-refontoumlpath = "C:\\Users\\Guerson\\Documents\\Example.refontouml";	
-
-// load the model
-Resource resource = RefOntoUMLResourceUtil.loadModel(refontoumlpath);
-
-// get the model (root)
-root = (RefOntoUML.Package)resource.getContents().get(0);}}}
+//create primitive types and attributes
+RefOntoUML.PrimitiveType intPrimitive = RefOntoUMLFactoryUtil.createPrimitiveType("int", model);		
+RefOntoUMLFactoryUtil.createAttribute(accident, intPrimitive, 1, 1, "fatalvictims", true);
+		
+//create mediations
+RefOntoUMLFactoryUtil.createMediation(accident, 1, -1, "occurs", roadway, 1, 1, model);
+RefOntoUMLFactoryUtil.createMediation(accident, 1, 1, "has", victim, 1, -1, model);
+RefOntoUMLFactoryUtil.createMediation(accident, 1, 1, "involves", crashed, 1, -1, model);		
+RefOntoUMLFactoryUtil.createMediation(travel, 1, 1, "has", traveler, 1, -1, model);
+RefOntoUMLFactoryUtil.createMediation(travel, 1, 1, "made by", vehicle, 1, 1, model);
+		
+//create material relationship
+RefOntoUML.MaterialAssociation material = RefOntoUMLFactoryUtil.createMaterialAssociation(victim, 1, -1, "has been victim in", roadway, 1, 1, model);
+		
+//create the derivation
+RefOntoUMLFactoryUtil.createDerivation(material, accident, model);
+			
+//save model into a file
+File file = new File("src/br/ufes/inf/nemo/ontouml/example/accident.refontouml");
+RefOntoUMLResourceUtil.saveModel(file.getAbsolutePath(), model);
 }}}
 
 ----
