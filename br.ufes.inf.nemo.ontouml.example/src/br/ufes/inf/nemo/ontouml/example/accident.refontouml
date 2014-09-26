@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" name="Accident">
+  <packagedElement xsi:type="RefOntoUML:Kind" name="Person"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" name="Vehicle"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" name="Roadway"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" name="Man">
+    <generalization general="//@packagedElement.0" generalizationSet="//@packagedElement.13"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" name="Woman">
+    <generalization general="//@packagedElement.0" generalizationSet="//@packagedElement.13"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" name="Living">
+    <generalization general="//@packagedElement.0" generalizationSet="//@packagedElement.14"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" name="Deceased">
+    <generalization general="//@packagedElement.0" generalizationSet="//@packagedElement.14"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" name="Victim">
+    <generalization general="//@packagedElement.8"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" name="Traveler">
+    <generalization general="//@packagedElement.0"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" name="CrashedVehicle">
+    <generalization general="//@packagedElement.1"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" name="Traffic Accident">
+    <ownedAttribute name="fatalvictims" type="//@packagedElement.15" isDerived="true">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" name="Rear End Collision">
+    <generalization general="//@packagedElement.10"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" name="Travel"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" name="gender" isCovering="true" isDisjoint="true" generalization="//@packagedElement.3/@generalization.0 //@packagedElement.4/@generalization.0"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" name="life" isCovering="true" isDisjoint="true" generalization="//@packagedElement.5/@generalization.0 //@packagedElement.6/@generalization.0"/>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" name="int"/>
+  <packagedElement xsi:type="RefOntoUML:Mediation" name="occurs" memberEnd="//@packagedElement.16/@ownedEnd.0 //@packagedElement.16/@ownedEnd.1" navigableOwnedEnd="//@packagedElement.16/@ownedEnd.0 //@packagedElement.16/@ownedEnd.1">
+    <ownedEnd name="traffic accident" type="//@packagedElement.10" association="//@packagedElement.16">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+    <ownedEnd name="roadway" type="//@packagedElement.2" isReadOnly="true" association="//@packagedElement.16">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" name="has" memberEnd="//@packagedElement.17/@ownedEnd.0 //@packagedElement.17/@ownedEnd.1" navigableOwnedEnd="//@packagedElement.17/@ownedEnd.0 //@packagedElement.17/@ownedEnd.1">
+    <ownedEnd name="traffic accident" type="//@packagedElement.10" association="//@packagedElement.17">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+    <ownedEnd name="victim" type="//@packagedElement.7" isReadOnly="true" association="//@packagedElement.17">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" name="involves" memberEnd="//@packagedElement.18/@ownedEnd.0 //@packagedElement.18/@ownedEnd.1" navigableOwnedEnd="//@packagedElement.18/@ownedEnd.0 //@packagedElement.18/@ownedEnd.1">
+    <ownedEnd name="traffic accident" type="//@packagedElement.10" association="//@packagedElement.18">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+    <ownedEnd name="crashedvehicle" type="//@packagedElement.9" isReadOnly="true" association="//@packagedElement.18">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" name="has" memberEnd="//@packagedElement.19/@ownedEnd.0 //@packagedElement.19/@ownedEnd.1" navigableOwnedEnd="//@packagedElement.19/@ownedEnd.0 //@packagedElement.19/@ownedEnd.1">
+    <ownedEnd name="travel" type="//@packagedElement.12" association="//@packagedElement.19">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+    <ownedEnd name="traveler" type="//@packagedElement.8" isReadOnly="true" association="//@packagedElement.19">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" name="made by" memberEnd="//@packagedElement.20/@ownedEnd.0 //@packagedElement.20/@ownedEnd.1" navigableOwnedEnd="//@packagedElement.20/@ownedEnd.0 //@packagedElement.20/@ownedEnd.1">
+    <ownedEnd name="travel" type="//@packagedElement.12" association="//@packagedElement.20">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+    <ownedEnd name="vehicle" type="//@packagedElement.1" isReadOnly="true" association="//@packagedElement.20">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" name="has been victim in" memberEnd="//@packagedElement.21/@ownedEnd.0 //@packagedElement.21/@ownedEnd.1" isDerived="true" navigableOwnedEnd="//@packagedElement.21/@ownedEnd.0 //@packagedElement.21/@ownedEnd.1">
+    <ownedEnd name="victim" type="//@packagedElement.7" association="//@packagedElement.21">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+    <ownedEnd name="roadway" type="//@packagedElement.2" association="//@packagedElement.21">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Derivation" memberEnd="//@packagedElement.22/@ownedEnd.0 //@packagedElement.22/@ownedEnd.1" navigableOwnedEnd="//@packagedElement.22/@ownedEnd.0 //@packagedElement.22/@ownedEnd.1">
+    <ownedEnd name="has been victim in" type="//@packagedElement.21" association="//@packagedElement.22">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+    <ownedEnd name="traffic accident" type="//@packagedElement.10" isReadOnly="true" association="//@packagedElement.22">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Package>
