@@ -3,6 +3,6 @@
   * [Welcome Welcome]
   * Compatibility
     * [EnterpriseArchitect Sparx System EA version 10]
-  * Developing with OLED
+  * Developing
     * [OntoUMLInfrastructure OntoUML Infrastructure]
   * [FAQ Frequently Asked Questions (FAQ)]
