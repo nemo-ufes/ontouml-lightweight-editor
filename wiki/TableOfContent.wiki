@@ -3,6 +3,7 @@
   * [Welcome Welcome]
   * Compatibility
     * [EnterpriseArchitect Sparx System EA version 10]
+    * [EclipseUML2 Eclipse UML2 version 4]
   * Developing
     * [OntoUMLInfrastructure OntoUML Infrastructure]
   * [FAQ Frequently Asked Questions (FAQ)]
