@@ -7,6 +7,8 @@
 
 OntoUML is an ontologically well-founded version of UML based on the Unified Foundational Ontology (UFO). This means that your can export your ontology written with Onto(UML) to the UML implementation provided by Eclipse MDT UML2 project.
 
+----
+
 In order to do that, just go to: File -> Export as -> UML (Eclipse UML2)
 
 https://ontouml-lightweight-editor.googlecode.com/svn/wiki/oled-exportation-uml2.png
