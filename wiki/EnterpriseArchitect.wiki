@@ -7,7 +7,7 @@
 
 OLED supports OntoUML models designed with the Enterprise Architect v.10. In the following, we explain step-by-step how to install, access and use OntoUML in the Enterprise Architect and how you can export your EA model to use it in OLED. 
 
-https://ontouml-lightweight-editor.googlecode.com/files/ea-screenshot.png
+https://ontouml-lightweight-editor.googlecode.com/svn/wiki/ea-screenshot.png
 
 ----
 *Installation*
@@ -86,5 +86,3 @@ Step-by-step:
   * When OLED asks you to filter your model this means that if you don't want to bring your entire model to OLED you can select which diagrams or packages do you want to bring. In this case, when OLED asks you to filter the model, just click in "Yes". Otherwise, to bring your entire model from EA, just click on the button "No".
 
   * If you previous answer was to filter your model. Just select which packages/diagrams do you want to bring and press "Import to OLED". 
-
-https://code.google.com/p/ontouml-lightweight-editor/source/browse/trunk/wiki/ea.png
