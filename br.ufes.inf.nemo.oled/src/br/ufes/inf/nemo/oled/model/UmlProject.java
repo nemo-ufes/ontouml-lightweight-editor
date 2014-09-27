@@ -81,6 +81,10 @@ public class UmlProject implements Serializable {
 		return version;
 	}
 	
+	public void setVersion(String version)
+	{
+		this.version = version;
+	}
 	public int getVersionAsInt()
 	{		
 		return Integer.parseInt(version.replaceAll("[.]", ""));

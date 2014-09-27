@@ -39,6 +39,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -587,7 +588,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	/** Tell the application that we need to save the project i.e. the project was modified */
 	public void saveProjectNeeded(boolean value)
 	{
-		currentProject.setSaveModelNeeded(value);
+		currentProject.setSaveModelNeeded(value);		
 		frame.getMainToolBar().enableSaveButton(value);
 	}
 	
@@ -996,19 +997,21 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				lastOpenPath = file.getAbsolutePath();
 				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
 				currentProject = (UmlProject) listFiles.get(0);
-				if(currentProject.getVersion()==null || currentProject.getVersionAsInt()<=934)
+				if(currentProject.getVersion()==null || currentProject.getVersion().trim().isEmpty() || (currentProject.getVersionAsInt()<=934))
 				{
-					String msg = "This project has been edited with an older version of OLED and some changes are required.\nPress \"OK\" to update the file automatically to this new version.";
-					int response = JOptionPane.showOptionDialog(this, msg, "Version Compatibility", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null, null, "default");		
-					if(response == JOptionPane.OK_OPTION){														
-						openListFiles(listFiles);		
-					}else{
-						//TODO
+					String msg = "This project was originally edited with an older version of OLED (prior to 1.X), hence some changes are required.\nPress \"OK\" to update this file automatically to this new version.\nNotice that saving this file however will make it no longer works in any version of OLED prior to 1.X.";
+					String oldversion = new String();					
+					if(currentProject.getVersion()==null || currentProject.getVersion().trim().isEmpty()) oldversion = "Unkown";
+					else oldversion = currentProject.getVersion();
+					int response = JOptionPane.showOptionDialog(this, msg, "Version Incompatibility: "+oldversion+" to "+Main.OLED_VERSION, JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null, null, "default");					if(response == JOptionPane.OK_OPTION){														
+						openListFiles(listFiles);						
+						remakeAllAssociationElements();						
+					}else{						
 						getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 						return;
 					}				
 				}else{
-					openListFiles(listFiles);
+					openListFiles(listFiles);				
 				}
 			} catch (Exception ex) {
 				Main.printOutLine("Failed to open OLED project!");	
@@ -1034,19 +1037,22 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				setProjectFile(file);
 				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
 				currentProject = (UmlProject) listFiles.get(0);				
-				if(currentProject.getVersion()==null || currentProject.getVersionAsInt()<=934)
+				if(currentProject.getVersion()==null || currentProject.getVersion().trim().isEmpty() || (currentProject.getVersionAsInt()<=934))
 				{
-					String msg = "This project has been edited with an older version of OLED and some changes are required.\nPress \"OK\" to update the file automatically to this new version.";
-					int response = JOptionPane.showOptionDialog(this, msg, "Version Compatibility", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null, null, "default");		
-					if(response == JOptionPane.OK_OPTION) {
-						openListFiles(listFiles);
+					String msg = "This project was originally edited with an older version of OLED (prior to 1.X), hence some changes are required.\nPress \"OK\" to update this file automatically to this new version.\nNotice that saving this file however will make it no longer works in any version of OLED prior to 1.X.";					
+					String oldversion = new String();
+					if(currentProject.getVersion()==null || currentProject.getVersion().trim().isEmpty()) oldversion = "Unkown";
+					else oldversion = currentProject.getVersion();
+					int response = JOptionPane.showOptionDialog(this, msg, "Version Incompatibility: "+oldversion+" to "+Main.OLED_VERSION, JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null, null, "default");		
+					if(response == JOptionPane.OK_OPTION) {						
+						openListFiles(listFiles);						
+						remakeAllAssociationElements();						
 					}else{
-						//TODO
 						getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 						return;
 					}
 				}else{
-					openListFiles(listFiles);
+					openListFiles(listFiles);					
 				}
 			}
 		} catch (Exception ex) {
@@ -1068,17 +1074,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			pb.getOCLDocuments().add(oclDoc);					
 		}
 		pb.setProject(currentProject);
-		frame.getInfoManager().setProject(currentProject);								
+		frame.getInfoManager().setProject(currentProject);	
 		openDiagrams();
 		saveProjectNeeded(false);				
 		ConfigurationHelper.addRecentProject(projectFile.getCanonicalPath());
-		frame.setTitle("OLED - "+projectFile.getName()+"");
+		frame.setTitle("OLED - "+projectFile.getName()+"");		
 	}
 	
 	/** Save current Project to a file *.oled */
 	private File saveCurrentProjectToFile(File file) 
 	{
 		Main.printOutLine("Saving OLED project...");
+		currentProject.setVersion(Main.OLED_VERSION);
 		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		if (file.exists()) file.delete();
 		File result = null;
@@ -1883,7 +1890,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				isRectilinear = ae.isTreeStyle();			
 				showName = ae.showName();
 				showOntoUMLStereotype = ae.showOntoUmlStereotype();
-				showRoles = ae.showRoles();
+				showRoles = false;//ae.showRoles();
 				showMultiplicities = ae.showMultiplicities();				
 				direction = ae.getReadingDesign();
 			}
@@ -1899,6 +1906,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}		
 	}
 
+	/** Re-make all association in all diagrams they appear.
+	 *  This actually deletes all the diagramElements and creates other diagramElements, including them in their specific diagrams.
+	 */
+	public void remakeAllAssociationElements()
+	{
+		Set<Association> assocList = frame.getProjectBrowser().getParser().getAllInstances(Association.class);
+		for(Association assoc: assocList){
+			remakeDiagramElement(assoc);
+		}
+	}
+	
 	/** Re-make element in all diagrams it appears. 
 	 *  This actually deletes all the diagramElements and creates other diagramElements, including them in their specific diagrams. */
 	public void remakeDiagramElement(RefOntoUML.Element element)
