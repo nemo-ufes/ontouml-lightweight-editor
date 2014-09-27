@@ -86,3 +86,5 @@ Step-by-step:
   * When OLED asks you to filter your model this means that if you don't want to bring your entire model to OLED you can select which diagrams or packages do you want to bring. In this case, when OLED asks you to filter the model, just click in "Yes". Otherwise, to bring your entire model from EA, just click on the button "No".
 
   * If you previous answer was to filter your model. Just select which packages/diagrams do you want to bring and press "Import to OLED". 
+
+https://ontouml-lightweight-editor.googlecode.com/svn/wiki/oled-importation-ea.png
