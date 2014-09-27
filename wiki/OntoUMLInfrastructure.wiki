@@ -105,7 +105,7 @@ RefOntoUMLResourceUtil.saveModel(file.getAbsolutePath(), model);
 
 To *import* the .refontouml file generated into OLED, just do as it follows:
 
-  # Go to: File -> Import -> Ecore Instance (based on Reference Metamodel)
+  # Go to: File -> Import -> OntoUML (Infrastructure)
   # Choose the refontouml file and press Ok.
 
-In recent versions of OLED this menu option might be displayed with some other description, but the idea should be the very similar to this one.
+In other versions of OLED this menu option might be displayed with some other description, but the idea should be very similar to this one.
