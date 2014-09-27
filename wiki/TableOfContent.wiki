@@ -1,8 +1,8 @@
 #summary Table of Contents
 
   * [Welcome Welcome]
-  * Tool Integration
+  * Compatibility with EA
     * [EnterpriseArchitect Sparx System EA version 10]
-  * Developing
+  * Developing with OLED
     * [OntoUMLInfrastructure OntoUML Infrastructure]
   * [FAQ Frequently Asked Questions (FAQ)]
