@@ -3,11 +3,11 @@
 
 <g:plusone size="medium"></g:plusone>
 
-==Exporting OntoUML as an Eclipse UML2 Profile ==
+==OntoUML as an Eclipse UML2 Profile ==
 
-OntoUML is an ontologically well-founded version of UML based on the Unified Foundational Ontology (UFO). This means that your can export your ontology written with OntoUML to the UML implementation provided by Eclipse MDT UML2 project. This can be used to permit a compatibility with other tools such as with Eclipse UML2 based tools: Acceleo, MDT Papyrus, Magic Draw UML, and so on.
+OntoUML is an ontologically well-founded version of UML based on the Unified Foundational Ontology (UFO). This means that your can export your ontology written with OntoUML to the UML implementation provided by Eclipse MDT UML2 project. 
 
-----
+This can be used to permit a compatibility with other tools such as with Eclipse UML2 based tools: Acceleo, MDT Papyrus, Magic Draw UML, and so on.
 
 In order to do that, just go to: File -> Export as -> UML (Eclipse UML2)
 
