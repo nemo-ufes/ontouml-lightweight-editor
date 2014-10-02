@@ -170,9 +170,13 @@ public class DerivedTypesOperations {
 			
 
 			if(specialCase=="Rigid+NonRigid"){
-				stereotype= "Mixin";
-				name=DefineNameDerivedType();
-				mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+				Object[] stereo;
+				ArrayList<String>stereotypes = new ArrayList<String>();
+				stereotypes.add("Mixin");
+				stereotypes.add("Category");
+				stereo=  stereotypes.toArray();
+				panel= selectStereotype(stereo);
+				mainfix= createDerivedTypeUnion(((JComboBox)panel.getComponents()[1]).getSelectedItem().toString(), mainfix, selected,((JTextField)panel.getComponents()[0]).getText(),refontoList,project,dm);
 			}else{
 				if(specialCase=="SemiRigid+Non-Rigid"){
 					Object[] stereo;
@@ -284,16 +288,16 @@ public class DerivedTypesOperations {
 				}
 			}
 		}
-		if(twoProp.size()==2){
-			if(twoProp.get(0).isIsReadOnly() && twoProp.get(1).isIsReadOnly()){
-				f.setIsReadOnly(true);
-			}
-		}
-		if(twoPropTarget.size()==2){
-			if(twoPropTarget.get(0).isIsReadOnly() && twoPropTarget.get(1).isIsReadOnly()){
-				f1.setIsReadOnly(true);
-			}
-		}
+//		if(twoProp.size()==2){
+//			if(twoProp.get(0).isIsReadOnly() && twoProp.get(1).isIsReadOnly()){
+//				f.setIsReadOnly(true);
+//			}
+//		}
+//		if(twoPropTarget.size()==2){
+//			if(twoPropTarget.get(0).isIsReadOnly() && twoPropTarget.get(1).isIsReadOnly()){
+//				f1.setIsReadOnly(true);
+//			}
+//		}
 		return "union_relation_derivation";
 
 	}

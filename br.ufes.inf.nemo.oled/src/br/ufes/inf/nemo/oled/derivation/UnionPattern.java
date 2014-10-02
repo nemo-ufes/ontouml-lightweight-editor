@@ -172,7 +172,7 @@ public class UnionPattern extends JDialog {
 		
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setBackground(Color.WHITE);
-		lblNewLabel_2.setIcon(new ImageIcon(UnionPattern.class.getResource("/resources/figures/derivationbyunion.PNG")));
+		lblNewLabel_2.setIcon(new ImageIcon(UnionPattern.class.getResource("/resources/figures/derivation_by_union.PNG")));
 		
 		
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
