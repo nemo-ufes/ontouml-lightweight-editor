@@ -156,7 +156,7 @@ public class AppToolbar implements ActionListener {
 			"</html>");	
 		JButton btnMeronymic = createButton("partwhole");
 		btnMeronymic.setToolTipText("" +
-			"<html>Parthoods: Evaluate your ontology regarding the transitivity of meronymic relations.<br><br>"+
+			"<html>Part-Whole Relations: Evaluate your ontology regarding the transitivity of meronymic relations.<br><br>"+
 			"TIP: You may customize which packages or elements do you want to consider <br>" +
 			"just deselecting/selecting them on the project browser.<br><br>" +
 			"</html>");	

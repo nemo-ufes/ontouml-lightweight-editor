@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -63,7 +62,7 @@ public class GlossaryGeneratorUI extends JFrame {
 		setSize(new Dimension(390, 387));
 		
 		//setType(Type.UTILITY);
-		setTitle("Glossary");
+		setTitle("Glossary of Terms");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		contentPane = new JPanel();
@@ -176,7 +175,7 @@ public class GlossaryGeneratorUI extends JFrame {
 		);
 		
 		btnGenerateGlossary = new JButton("Generate");
-		btnGenerateGlossary.setIcon(new ImageIcon(GlossaryGeneratorUI.class.getResource("/resources/icon/1392761208_rich_text_align_left.png")));
+		//btnGenerateGlossary.setIcon(new ImageIcon(GlossaryGeneratorUI.class.getResource("/resources/icon/1392761208_rich_text_align_left.png")));
 		btnGenerateGlossary.setActionCommand("generateGlossary");
 		
 		btnCancel = new JButton("Cancel");

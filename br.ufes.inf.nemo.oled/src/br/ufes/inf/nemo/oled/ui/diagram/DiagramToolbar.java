@@ -354,7 +354,7 @@ public class DiagramToolbar extends JToolBar {
 		add(btnAntiPattern);
 		
 		btnMeronymic = new JButton("");
-		btnMeronymic.setToolTipText("Parthoods: Evaluate your ontology regarding the transitivity of meronymic relations.");
+		btnMeronymic.setToolTipText("Part-Whole Relations: Evaluate your ontology regarding the transitivity of part-whole relations.");
 		btnMeronymic.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
@@ -366,7 +366,7 @@ public class DiagramToolbar extends JToolBar {
         });
 		btnMeronymic.setFocusable(false);
 		btnMeronymic.setBorderPainted(false);
-		btnMeronymic.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/diamond.png")));
+		btnMeronymic.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/wall_break.png")));
 		add(btnMeronymic);
 	}
 }
