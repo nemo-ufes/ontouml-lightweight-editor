@@ -175,8 +175,8 @@ public final class IconLoader {
 		
 		urlMap.put(IconType.GENERATE_ALLOY, "resources/icons/x16/alloy/alloy.png");
 				
-		urlMap.put(IconType.GENERATE_OWL, "resources/icons/x16/owl.png");
-		urlMap.put(IconType.GENERATE_OWL_SETTINGS, "resources/icons/x16/owl.png");
+		urlMap.put(IconType.GENERATE_OWL, "resources/icons/x16/sw-cube.png");
+		urlMap.put(IconType.GENERATE_OWL_SETTINGS, "resources/icons/x16/sw-cube.png");
 		
 		urlMap.put(IconType.GENERATE_SBVR, "resources/icons/x16/blog.png");
 		

@@ -89,7 +89,7 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 
 	public OWLSettingsDialog(AppFrame frame, DiagramManager diagramManager, boolean modal) {
 		super(frame, modal);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(OWLSettingsDialog.class.getResource("/resources/icons/x16/owl.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(OWLSettingsDialog.class.getResource("/resources/icons/x16/sw-cube.png")));
 		this.setManager(diagramManager);
 		initGUI();
 		myPostInit();

@@ -123,41 +123,40 @@ public class AppToolbar implements ActionListener {
 		
 		createButton("statistics");
 		
-		//toolbar.addSeparator();
-		JButton btnText = createButton("generatetext");
-		btnText.setToolTipText("" +
-			"<html>Transform the model into a glossary of terms<br><br>"+
-			"TIP: You may customize which packages or elements do you want to transform <br>" +
-			"just deselecting/selecting them on the project browser.<br><br>" +
-			"</html>");	
+		toolbar.addSeparator();
 		JButton btnSBVR = createButton("generatesbvr");
 		btnSBVR.setToolTipText("" +
-			"<html>Transform the model into SBVR<br><br>"+
+			"<html>Business Vocabulary: Transform your ontology into a SBVR Document in HTML.<br><br>"+
 			"TIP: You may customize which packages or elements  do you want to transform <br>" +
 			"just deselecting/selecting them on the project browser.<br><br>" +
-			"</html>");	
+			"</html>");
+		JButton btnText = createButton("generatetext");
+		btnText.setToolTipText("" +
+			"<html>Glossary of Terms: Transform your ontology into a Textual Description in Portuguese-BR.<br><br>"+
+			"TIP: You may customize which packages or elements do you want to transform <br>" +
+			"just deselecting/selecting them on the project browser.<br><br>" +
+			"</html>");
 		JButton btnAlloy = createButton("generatealloy");
 		btnAlloy.setToolTipText("" +
-			"<html>Transform the model and all axioms into Alloy<br><br>"+
+			"<html>Simulation & Checking: Validate your ontology using Alloy and its Analyzer. <br><br>"+
 			"TIP: You may customize which packages or elements do you want to transform <br>" +
 			"just deselecting/selecting them on the project browser.<br><br>" +
 			"</html>");		
 		JButton btnOWL = createButton("generateowlsettings");
 		btnOWL.setToolTipText("" +
-			"<html>Transform the model and all axioms into OWL<br><br>"+
+			"<html>Semantic Web: Publish and Reason over your ontology using OWL/SWRL.<br><br>"+
 			"TIP: You may customize which packages or elements  do you want to transform <br>" +
 			"just deselecting/selecting them on the project browser.<br><br>" +
 			"</html>");		
-		//toolbar.addSeparator();
 		JButton btnAntiPattern = createButton("antipattern");
 		btnAntiPattern.setToolTipText("" +
-			"<html>Identify anti-pattern occurrences in the model<br><br>"+
+			"<html>Anti-Patterns: Check and Fix your ontology detecting Anti-Patterns occurrences, if any. <br><br>"+
 			"TIP: You may customize which packages or elements do you want to consider <br>" +
 			"just deselecting/selecting them on the project browser.<br><br>" +
 			"</html>");	
 		JButton btnMeronymic = createButton("partwhole");
 		btnMeronymic.setToolTipText("" +
-			"<html>Validate the transitivity of parthood relations<br><br>"+
+			"<html>Parthoods: Evaluate your ontology regarding the transitivity of meronymic relations.<br><br>"+
 			"TIP: You may customize which packages or elements do you want to consider <br>" +
 			"just deselecting/selecting them on the project browser.<br><br>" +
 			"</html>");	
