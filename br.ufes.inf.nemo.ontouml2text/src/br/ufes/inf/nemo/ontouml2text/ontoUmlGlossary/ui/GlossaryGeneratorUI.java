@@ -58,7 +58,7 @@ public class GlossaryGeneratorUI extends JFrame {
 	 * Create the frame.
 	 */
 	public GlossaryGeneratorUI() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(GlossaryGeneratorUI.class.getResource("/resources/icon/bookmark_book.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(GlossaryGeneratorUI.class.getResource("/resources/icon/glossary.png")));
 		setPreferredSize(new Dimension(390, 387));
 		setSize(new Dimension(390, 387));
 		
