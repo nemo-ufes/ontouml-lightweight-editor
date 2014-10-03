@@ -73,8 +73,8 @@ public class ValidationDialog extends JDialog {
 	 * @wbp.parser.constructor
 	 */
 	public ValidationDialog(OntoUMLParser parser) {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ValidationDialog.class.getResource("/resources/icons/x16/diamond.png")));
-		setTitle("Validation of Part-Whole Relations");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ValidationDialog.class.getResource("/resources/icons/x16/wall_break.png")));
+		setTitle("Transitivity in Part-Whole Relations");
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

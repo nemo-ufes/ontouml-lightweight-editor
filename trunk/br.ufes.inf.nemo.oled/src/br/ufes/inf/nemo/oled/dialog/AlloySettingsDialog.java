@@ -118,8 +118,8 @@ public class AlloySettingsDialog extends JDialog {
 		super(frame);
 		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(AlloySettingsDialog.class.getResource("/resources/icons/x16/cog.png")));
-		setTitle("Alloy Settings");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AlloySettingsDialog.class.getResource("/resources/icons/x16/alloy/alloy.png")));
+		setTitle("Simulation & Checking: Alloy");
 		setSize(new Dimension(536, 258));
 		
 		btnOk = new JButton("OK");	

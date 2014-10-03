@@ -153,7 +153,7 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 				//ApplicationResources.getInstance().getString("dialog.owlsettings.reification")
 				setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 				this.setResizable(false);
-				setTitle("OWL Settings");
+				setTitle("Semantic Web: OWL/SWRL");
 				
 				generateOWLPanel = new JPanel();
 				GroupLayout GenerateOWLPanelLayout = new GroupLayout((JComponent)generateOWLPanel);
