@@ -303,8 +303,10 @@ public class DiagramToolbar extends JToolBar {
 		btnZoomStatus.setBorderPainted(false);
 		add(btnZoomStatus);
 		
+		addSeparator();
+		
 		btnAlloy = new JButton("");
-		btnAlloy.setToolTipText("Transform all OPENED diagrams and all axioms into Alloy");
+		btnAlloy.setToolTipText("Simulation & Checking: Validate your ontology using Alloy and its Analyzer.");
 		btnAlloy.addActionListener(new ActionListener() {				
 	    	@Override
 	    	public void actionPerformed(ActionEvent e) {       
@@ -320,7 +322,7 @@ public class DiagramToolbar extends JToolBar {
 		add(btnAlloy);
 		
 		btnOWL = new JButton("");
-		btnOWL.setToolTipText("Transform all OPENED diagrams and all axioms into OWL");
+		btnOWL.setToolTipText("Semantic Web: Publish and Reason over your ontology using OWL/SWRL.");
 		btnOWL.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
@@ -332,11 +334,11 @@ public class DiagramToolbar extends JToolBar {
         });
 		btnOWL.setFocusable(false);
 		btnOWL.setBorderPainted(false);
-		btnOWL.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/owl.png")));
+		btnOWL.setIcon(new ImageIcon(DiagramToolbar.class.getResource("/resources/icons/x16/sw-cube.png")));
 		add(btnOWL);
 		
 		btnAntiPattern = new JButton("");
-		btnAntiPattern.setToolTipText("Identify antipattern occurrences in all OPENED diagrams");
+		btnAntiPattern.setToolTipText("Anti-Patterns: Check and Fix your ontology detecting Anti-Patterns occurrences, if any.");
 		btnAntiPattern.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
@@ -352,7 +354,7 @@ public class DiagramToolbar extends JToolBar {
 		add(btnAntiPattern);
 		
 		btnMeronymic = new JButton("");
-		btnMeronymic.setToolTipText("Validate the transitivity of parthood relations in all OPENED diagrams");
+		btnMeronymic.setToolTipText("Parthoods: Evaluate your ontology regarding the transitivity of meronymic relations.");
 		btnMeronymic.addActionListener(new ActionListener() {				
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
