@@ -178,9 +178,9 @@ public final class IconLoader {
 		urlMap.put(IconType.GENERATE_OWL, "resources/icons/x16/sw-cube.png");
 		urlMap.put(IconType.GENERATE_OWL_SETTINGS, "resources/icons/x16/sw-cube.png");
 		
-		urlMap.put(IconType.GENERATE_SBVR, "resources/icons/x16/blog.png");
+		urlMap.put(IconType.GENERATE_SBVR, "resources/icons/x16/world.png");
 		
-		urlMap.put(IconType.GENERATE_TEXT, "resources/icons/x16/bookmark_book.png");
+		urlMap.put(IconType.GENERATE_TEXT, "resources/icons/x16/glossary.png");
 	
 		urlMap.put(IconType.NEW, "resources/icons/x16/page_2.png");
 		urlMap.put(IconType.OPEN, "resources/icons/x16/folder.png");

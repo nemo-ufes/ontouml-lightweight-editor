@@ -124,12 +124,6 @@ public class AppToolbar implements ActionListener {
 		createButton("statistics");
 		
 		toolbar.addSeparator();
-		JButton btnSBVR = createButton("generatesbvr");
-		btnSBVR.setToolTipText("" +
-			"<html>Business Vocabulary: Transform your ontology into a SBVR Document in HTML.<br><br>"+
-			"TIP: You may customize which packages or elements  do you want to transform <br>" +
-			"just deselecting/selecting them on the project browser.<br><br>" +
-			"</html>");
 		JButton btnText = createButton("generatetext");
 		btnText.setToolTipText("" +
 			"<html>Glossary of Terms: Transform your ontology into a Textual Description in Portuguese-BR.<br><br>"+
@@ -147,7 +141,13 @@ public class AppToolbar implements ActionListener {
 			"<html>Semantic Web: Publish and Reason over your ontology using OWL/SWRL.<br><br>"+
 			"TIP: You may customize which packages or elements  do you want to transform <br>" +
 			"just deselecting/selecting them on the project browser.<br><br>" +
-			"</html>");		
+			"</html>");
+		JButton btnSBVR = createButton("generatesbvr");
+		btnSBVR.setToolTipText("" +
+			"<html>Business Vocabulary: Transform your ontology into a SBVR Document in HTML.<br><br>"+
+			"TIP: You may customize which packages or elements  do you want to transform <br>" +
+			"just deselecting/selecting them on the project browser.<br><br>" +
+			"</html>");
 		JButton btnAntiPattern = createButton("antipattern");
 		btnAntiPattern.setToolTipText("" +
 			"<html>Anti-Patterns: Check and Fix your ontology detecting Anti-Patterns occurrences, if any. <br><br>"+
