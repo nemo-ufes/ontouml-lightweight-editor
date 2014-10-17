@@ -21,7 +21,7 @@ public class TOCL2Alloy {
 		succeeds = false;		
 		TOCL2AlloyOption opt = new TOCL2AlloyOption(oclparser);
 		TOCL2AlloyVisitor myVisitor = new TOCL2AlloyVisitor(oclparser,oclparser.getOntoUMLParser(), opt);				
-		for(Constraint ct: opt.getConstraintList())
+		for(Constraint ct: oclparser.getConstraints())
 		{	
 			try{				
 				result += myVisitor.visitConstraint(ct);		
@@ -48,7 +48,7 @@ public class TOCL2Alloy {
 		log = new String();		
 		succeeds = false;		
 		TOCL2AlloyVisitor myVisitor = new TOCL2AlloyVisitor(oclparser,oclparser.getOntoUMLParser(),opt);				
-		for(Constraint ct: opt.getConstraintList())
+		for(Constraint ct: oclparser.getConstraints())
 		{	
 			try{
 				result += myVisitor.visitConstraint(ct);				

@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Package xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_gkR1kFYpEeSteog1GhlMhA" name="project">
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_gkR1kVYpEeSteog1GhlMhA" name="Boolean"/>
-  <packagedElement xmi:type="uml:DataType" xmi:id="_gkR1klYpEeSteog1GhlMhA" name="Integer">
-    <ownedAttribute xmi:id="_gkR1k1YpEeSteog1GhlMhA" name="enrollments" visibility="public" type="_gkR1rlYpEeSteog1GhlMhA" association="_gkScqVYpEeSteog1GhlMhA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gkR1lFYpEeSteog1GhlMhA"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gkR1lVYpEeSteog1GhlMhA" value="*"/>
+<uml:Package xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_rwWTIFYuEeSks4WQ4pvkVA" name="project">
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_rwWTIVYuEeSks4WQ4pvkVA" name="Boolean"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_rwWTIlYuEeSks4WQ4pvkVA" name="Integer">
+    <ownedAttribute xmi:id="_rwWTI1YuEeSks4WQ4pvkVA" name="enrollments" visibility="public" type="_rwW6QFYuEeSks4WQ4pvkVA" association="_rwW6VFYuEeSks4WQ4pvkVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rwWTJFYuEeSks4WQ4pvkVA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rwWTJVYuEeSks4WQ4pvkVA" value="*"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_gkR1llYpEeSteog1GhlMhA" name="Person"/>
-  <packagedElement xmi:type="uml:Class" xmi:id="_gkR1l1YpEeSteog1GhlMhA" name="Organization"/>
-  <packagedElement xmi:type="uml:Class" xmi:id="_gkR1mFYpEeSteog1GhlMhA" name="Child">
-    <generalization xmi:id="_gkR1mVYpEeSteog1GhlMhA" general="_gkR1llYpEeSteog1GhlMhA" generalizationSet="_gkScqlYpEeSteog1GhlMhA"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_rwWTJlYuEeSks4WQ4pvkVA" name="Person"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_rwWTJ1YuEeSks4WQ4pvkVA" name="Organization"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_rwWTKFYuEeSks4WQ4pvkVA" name="Child">
+    <generalization xmi:id="_rwWTKVYuEeSks4WQ4pvkVA" general="_rwWTJlYuEeSks4WQ4pvkVA" generalizationSet="_rwW6VVYuEeSks4WQ4pvkVA"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_gkR1mlYpEeSteog1GhlMhA" name="Teenager">
-    <generalization xmi:id="_gkR1m1YpEeSteog1GhlMhA" general="_gkR1llYpEeSteog1GhlMhA" generalizationSet="_gkScqlYpEeSteog1GhlMhA"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_rwWTKlYuEeSks4WQ4pvkVA" name="Teenager">
+    <generalization xmi:id="_rwWTK1YuEeSks4WQ4pvkVA" general="_rwWTJlYuEeSks4WQ4pvkVA" generalizationSet="_rwW6VVYuEeSks4WQ4pvkVA"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_gkR1nFYpEeSteog1GhlMhA" name="Adult">
-    <generalization xmi:id="_gkR1nVYpEeSteog1GhlMhA" general="_gkR1llYpEeSteog1GhlMhA" generalizationSet="_gkScqlYpEeSteog1GhlMhA"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_rwWTLFYuEeSks4WQ4pvkVA" name="Adult">
+    <generalization xmi:id="_rwWTLVYuEeSks4WQ4pvkVA" general="_rwWTJlYuEeSks4WQ4pvkVA" generalizationSet="_rwW6VVYuEeSks4WQ4pvkVA"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_gkR1nlYpEeSteog1GhlMhA" name="Student">
-    <generalization xmi:id="_gkR1n1YpEeSteog1GhlMhA" general="_gkR1llYpEeSteog1GhlMhA"/>
-    <ownedAttribute xmi:id="_gkR1oFYpEeSteog1GhlMhA" name="universities" visibility="public" type="_gkR1plYpEeSteog1GhlMhA" association="_gkScolYpEeSteog1GhlMhA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gkR1oVYpEeSteog1GhlMhA" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gkR1olYpEeSteog1GhlMhA" value="*"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_rwW6MFYuEeSks4WQ4pvkVA" name="Student">
+    <generalization xmi:id="_rwW6MVYuEeSks4WQ4pvkVA" general="_rwWTJlYuEeSks4WQ4pvkVA"/>
+    <ownedAttribute xmi:id="_rwW6MlYuEeSks4WQ4pvkVA" name="universities" visibility="public" type="_rwW6OFYuEeSks4WQ4pvkVA" association="_rwW6TVYuEeSks4WQ4pvkVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rwW6M1YuEeSks4WQ4pvkVA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rwW6NFYuEeSks4WQ4pvkVA" value="*"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_gkR1o1YpEeSteog1GhlMhA" name="enrollments" visibility="public" type="_gkR1rlYpEeSteog1GhlMhA" association="_gkScqFYpEeSteog1GhlMhA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gkR1pFYpEeSteog1GhlMhA" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gkR1pVYpEeSteog1GhlMhA" value="*"/>
-    </ownedAttribute>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_gkR1plYpEeSteog1GhlMhA" name="University">
-    <generalization xmi:id="_gkR1p1YpEeSteog1GhlMhA" general="_gkR1l1YpEeSteog1GhlMhA"/>
-    <ownedAttribute xmi:id="_gkR1qFYpEeSteog1GhlMhA" name="students" visibility="public" type="_gkR1nlYpEeSteog1GhlMhA" association="_gkScolYpEeSteog1GhlMhA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gkR1qVYpEeSteog1GhlMhA" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gkR1qlYpEeSteog1GhlMhA" value="*"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_gkR1q1YpEeSteog1GhlMhA" name="enrollments" visibility="public" type="_gkR1rlYpEeSteog1GhlMhA" association="_gkScp1YpEeSteog1GhlMhA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gkR1rFYpEeSteog1GhlMhA" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gkR1rVYpEeSteog1GhlMhA" value="*"/>
+    <ownedAttribute xmi:id="_rwW6NVYuEeSks4WQ4pvkVA" name="enrollments" visibility="public" type="_rwW6QFYuEeSks4WQ4pvkVA" association="_rwW6U1YuEeSks4WQ4pvkVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rwW6NlYuEeSks4WQ4pvkVA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rwW6N1YuEeSks4WQ4pvkVA" value="*"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_gkR1rlYpEeSteog1GhlMhA" name="Enrollment">
-    <ownedAttribute xmi:id="_gkR1r1YpEeSteog1GhlMhA" name="" visibility="public" type="_gkScolYpEeSteog1GhlMhA" association="_gkSco1YpEeSteog1GhlMhA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gkR1sFYpEeSteog1GhlMhA" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gkR1sVYpEeSteog1GhlMhA" value="1"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_rwW6OFYuEeSks4WQ4pvkVA" name="University">
+    <generalization xmi:id="_rwW6OVYuEeSks4WQ4pvkVA" general="_rwWTJ1YuEeSks4WQ4pvkVA"/>
+    <ownedAttribute xmi:id="_rwW6OlYuEeSks4WQ4pvkVA" name="students" visibility="public" type="_rwW6MFYuEeSks4WQ4pvkVA" association="_rwW6TVYuEeSks4WQ4pvkVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rwW6O1YuEeSks4WQ4pvkVA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rwW6PFYuEeSks4WQ4pvkVA" value="*"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_gkR1slYpEeSteog1GhlMhA" name="university" visibility="public" type="_gkR1plYpEeSteog1GhlMhA" isReadOnly="true" association="_gkScp1YpEeSteog1GhlMhA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gkR1s1YpEeSteog1GhlMhA" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gkR1tFYpEeSteog1GhlMhA" value="1"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_gkR1tVYpEeSteog1GhlMhA" name="student" visibility="public" type="_gkR1nlYpEeSteog1GhlMhA" isReadOnly="true" association="_gkScqFYpEeSteog1GhlMhA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gkR1tlYpEeSteog1GhlMhA" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gkR1t1YpEeSteog1GhlMhA" value="1"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_gkR1uFYpEeSteog1GhlMhA" name="id" visibility="public" type="_gkR1klYpEeSteog1GhlMhA" isReadOnly="true" association="_gkScqVYpEeSteog1GhlMhA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gkScoFYpEeSteog1GhlMhA" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gkScoVYpEeSteog1GhlMhA" value="1"/>
+    <ownedAttribute xmi:id="_rwW6PVYuEeSks4WQ4pvkVA" name="enrollments" visibility="public" type="_rwW6QFYuEeSks4WQ4pvkVA" association="_rwW6UlYuEeSks4WQ4pvkVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rwW6PlYuEeSks4WQ4pvkVA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rwW6P1YuEeSks4WQ4pvkVA" value="*"/>
     </ownedAttribute>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_gkScolYpEeSteog1GhlMhA" name="study" isDerived="true" memberEnd="_gkR1qFYpEeSteog1GhlMhA _gkR1oFYpEeSteog1GhlMhA"/>
-  <packagedElement xmi:type="uml:Association" xmi:id="_gkSco1YpEeSteog1GhlMhA" name="drv" memberEnd="_gkR1r1YpEeSteog1GhlMhA _gkScpFYpEeSteog1GhlMhA" navigableOwnedEnd="_gkScpFYpEeSteog1GhlMhA">
-    <ownedEnd xmi:id="_gkScpFYpEeSteog1GhlMhA" name="" visibility="public" type="_gkR1rlYpEeSteog1GhlMhA" isReadOnly="true" association="_gkSco1YpEeSteog1GhlMhA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gkScpVYpEeSteog1GhlMhA" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gkScplYpEeSteog1GhlMhA" value="1"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_rwW6QFYuEeSks4WQ4pvkVA" name="Enrollment">
+    <ownedAttribute xmi:id="_rwW6QVYuEeSks4WQ4pvkVA" name="" visibility="public" type="_rwW6TVYuEeSks4WQ4pvkVA" association="_rwW6TlYuEeSks4WQ4pvkVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rwW6QlYuEeSks4WQ4pvkVA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rwW6Q1YuEeSks4WQ4pvkVA" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_rwW6RFYuEeSks4WQ4pvkVA" name="university" visibility="public" type="_rwW6OFYuEeSks4WQ4pvkVA" isReadOnly="true" association="_rwW6UlYuEeSks4WQ4pvkVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rwW6RVYuEeSks4WQ4pvkVA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rwW6RlYuEeSks4WQ4pvkVA" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_rwW6R1YuEeSks4WQ4pvkVA" name="student" visibility="public" type="_rwW6MFYuEeSks4WQ4pvkVA" isReadOnly="true" association="_rwW6U1YuEeSks4WQ4pvkVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rwW6SFYuEeSks4WQ4pvkVA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rwW6SVYuEeSks4WQ4pvkVA" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_rwW6SlYuEeSks4WQ4pvkVA" name="id" visibility="public" type="_rwWTIlYuEeSks4WQ4pvkVA" isReadOnly="true" association="_rwW6VFYuEeSks4WQ4pvkVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rwW6S1YuEeSks4WQ4pvkVA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rwW6TFYuEeSks4WQ4pvkVA" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_rwW6TVYuEeSks4WQ4pvkVA" name="study" isDerived="true" memberEnd="_rwW6OlYuEeSks4WQ4pvkVA _rwW6MlYuEeSks4WQ4pvkVA"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_rwW6TlYuEeSks4WQ4pvkVA" name="drv" memberEnd="_rwW6QVYuEeSks4WQ4pvkVA _rwW6T1YuEeSks4WQ4pvkVA" navigableOwnedEnd="_rwW6T1YuEeSks4WQ4pvkVA">
+    <ownedEnd xmi:id="_rwW6T1YuEeSks4WQ4pvkVA" name="" visibility="public" type="_rwW6QFYuEeSks4WQ4pvkVA" isReadOnly="true" association="_rwW6TlYuEeSks4WQ4pvkVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rwW6UFYuEeSks4WQ4pvkVA" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rwW6UVYuEeSks4WQ4pvkVA" value="1"/>
     </ownedEnd>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_gkScp1YpEeSteog1GhlMhA" name="unv" memberEnd="_gkR1q1YpEeSteog1GhlMhA _gkR1slYpEeSteog1GhlMhA"/>
-  <packagedElement xmi:type="uml:Association" xmi:id="_gkScqFYpEeSteog1GhlMhA" name="std" memberEnd="_gkR1o1YpEeSteog1GhlMhA _gkR1tVYpEeSteog1GhlMhA"/>
-  <packagedElement xmi:type="uml:Association" xmi:id="_gkScqVYpEeSteog1GhlMhA" name="datatype" memberEnd="_gkR1k1YpEeSteog1GhlMhA _gkR1uFYpEeSteog1GhlMhA"/>
-  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_gkScqlYpEeSteog1GhlMhA" name="" isCovering="true" isDisjoint="true" generalization="_gkR1mVYpEeSteog1GhlMhA _gkR1m1YpEeSteog1GhlMhA _gkR1nVYpEeSteog1GhlMhA"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_rwW6UlYuEeSks4WQ4pvkVA" name="unv" memberEnd="_rwW6PVYuEeSks4WQ4pvkVA _rwW6RFYuEeSks4WQ4pvkVA"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_rwW6U1YuEeSks4WQ4pvkVA" name="std" memberEnd="_rwW6NVYuEeSks4WQ4pvkVA _rwW6R1YuEeSks4WQ4pvkVA"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_rwW6VFYuEeSks4WQ4pvkVA" name="datatype" memberEnd="_rwWTI1YuEeSks4WQ4pvkVA _rwW6SlYuEeSks4WQ4pvkVA"/>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_rwW6VVYuEeSks4WQ4pvkVA" name="" isCovering="true" isDisjoint="true" generalization="_rwWTKVYuEeSks4WQ4pvkVA _rwWTK1YuEeSks4WQ4pvkVA _rwWTLVYuEeSks4WQ4pvkVA"/>
 </uml:Package>

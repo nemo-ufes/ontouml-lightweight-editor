@@ -38,13 +38,17 @@ public class OCL2AlloyOption {
 		this.oclparser = oclparser;
 		
 		for(Constraint ct: oclparser.getConstraints())
-		{
-			constraintsList.add(ct);
-			constraintType.add(oclparser.getUMLReflection().getStereotype(ct));
-			transformationType.add("FACT");
-			commandScope.add(10);
-			bitScope.add(7);
-			worldScope.add(3);
+		{			    
+			String stereo = oclparser.getUMLReflection().getStereotype(ct);		
+			if(org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereo) || org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(stereo))
+		    {				
+			    constraintsList.add(ct);
+				constraintType.add(oclparser.getUMLReflection().getStereotype(ct));
+				transformationType.add("FACT");
+				commandScope.add(10);
+				bitScope.add(7);
+				worldScope.add(3);		    
+		    }
 		}		
 	}
 		
@@ -55,7 +59,7 @@ public class OCL2AlloyOption {
 	public Integer getWorldScope(Constraint ct) { return worldScope.get(constraintsList.indexOf(ct)); }
 	public String getTransformationType(Constraint ct) { return transformationType.get(constraintsList.indexOf(ct)); }	
 	public ArrayList<String> getTransformationType() { return transformationType; }		
-	public String getConstraintType(Constraint ct) { return constraintType.get(constraintsList.indexOf(ct)); }	
+	public String getConstraintType(Constraint ct) { if(constraintsList.indexOf(ct)==-1) return "definition"; else return constraintType.get(constraintsList.indexOf(ct));}	
 	public ArrayList<String> getConstraintType() { return constraintType; }
 		
 	//Setters	 

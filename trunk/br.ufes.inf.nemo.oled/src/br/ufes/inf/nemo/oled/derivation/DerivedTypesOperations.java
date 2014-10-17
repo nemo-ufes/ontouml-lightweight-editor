@@ -269,7 +269,9 @@ public class DerivedTypesOperations {
 		}
 		ArrayList<Property> twoProp = new ArrayList<Property>();
 		ArrayList<Property> twoPropTarget = new ArrayList<Property>();
+		@SuppressWarnings("unused")
 		Property f = null;
+		@SuppressWarnings("unused")
 		Property f1 = null;
 		String option =selectRelation(options.toArray());
 		for (Property feature : featureList) {
