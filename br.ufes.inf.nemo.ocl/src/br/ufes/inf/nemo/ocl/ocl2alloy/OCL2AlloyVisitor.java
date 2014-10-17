@@ -259,8 +259,13 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
 	public String visitTypeExp (TypeExp<Classifier> t) 
 	{		
 		Classifier classifier = t.getReferredType();		
+		return visitType(classifier,"w");
+	}
+	
+	private String visitType(Classifier classifier, String worldVar)
+	{
 		RefOntoUML.PackageableElement ontoClassifier = (RefOntoUML.PackageableElement)oclparser.getOntoUMLElement(classifier);
-    	String nameClassifier = refparser.getAlias(ontoClassifier);    	
+    	String nameClassifier = refparser.getAlias(ontoClassifier);
 		if (classifier instanceof org.eclipse.ocl.uml.AnyType) return "univ";		
 		if (classifier instanceof org.eclipse.ocl.uml.VoidType) return "none";		
 		if (classifier instanceof org.eclipse.ocl.uml.PrimitiveType) 
@@ -268,7 +273,7 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
 			if (classifier.getName().compareToIgnoreCase("Integer")==0) return "Int";			
 		}    		
     	if (ontoClassifier instanceof RefOntoUML.DataType) return "" + nameClassifier;    	
-    	else return "w." + nameClassifier;
+    	else return worldVar+"." + nameClassifier;
 	}
 	
     /** Visits VariableExp. */	
@@ -427,17 +432,27 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
         this.currentConstraint=constraint;
         java.util.List<? extends EObject> constrained = oclparser.getUMLReflection().getConstrainedElements(constraint);
         String stereo = oclparser.getUMLReflection().getStereotype(constraint);       
-
-        if (org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereo)) 
-        {			
+                
+        if(org.eclipse.ocl.utilities.UMLReflection.DEFINITION.equals(stereo)) 
+        {
+            if (!constrained.isEmpty()) {
+            	EObject elem = constrained.get(0);
+                if (oclparser.getUMLReflection().isClassifier(elem)){
+                	Classifier classifier = (Classifier)elem;
+                	result.append(visitOperationDefinition(classifier, constraint));
+                }
+            }       	       
+        }
+        else if (org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereo)) 
+        {        	
             if (!constrained.isEmpty()) {
     			EObject elem = constrained.get(0);
                 if (oclparser.getUMLReflection().isClassifier(elem)) {
                 	Classifier classifier = (Classifier)elem;                	
                 	result.append(visitInvariant(classifier,constraint));                	
                 } 
-                else if (oclparser.getUMLReflection().isOperation(elem)); 
-                else if (oclparser.getUMLReflection().isProperty(elem));                          
+                else if (oclparser.getUMLReflection().isOperation(elem));
+                else if (oclparser.getUMLReflection().isProperty(elem));
             }
         }
         else if (org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(stereo))
@@ -451,8 +466,7 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
                 else if (oclparser.getUMLReflection().isClassifier(elem));
                 else if (oclparser.getUMLReflection().isOperation(elem));
             }
-        }        
-        else if(org.eclipse.ocl.utilities.UMLReflection.DEFINITION.equals(stereo)) throw new StereotypeException("def");        
+        }       
         else if(org.eclipse.ocl.utilities.UMLReflection.INITIAL.equals(stereo)) throw new StereotypeException("init");        
         else if(org.eclipse.ocl.utilities.UMLReflection.POSTCONDITION.equals(stereo)) throw new StereotypeException("post");
         else if(org.eclipse.ocl.utilities.UMLReflection.PRECONDITION.equals(stereo)) throw new StereotypeException("pre");
@@ -522,6 +536,38 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
     		subtypes.add(refparser.getAlias(child));
     	}   	    	
     	return subtypes;
+    }    
+    
+ 	/** Visits Definition. */
+    protected String visitOperationDefinition(Classifier classifier, Constraint constraint)
+    {
+    	StringBuffer result = new StringBuffer();
+    	org.eclipse.ocl.uml.ExpressionInOCL expr = (org.eclipse.ocl.uml.ExpressionInOCL) constraint.getSpecification();
+    	List<Operation> opList = oclparser.myOCL.getEnvironment().getAdditionalOperations(classifier);
+    	for(Operation op: opList){
+    		if(!op.getReturnResult().getType().getName().equals("Boolean")) result.append("func ").append(op.getName());
+    		else result.append("pred ").append(op.getName());
+    		result.append(" [");
+    		result.append("self: ");    			
+			result.append(visitType(classifier,"World"));
+    		for(Variable<Classifier,Parameter> v: expr.getParameterVariable())
+    		{
+    			result.append(", "+v.getName()+": ");    			
+    			result.append(visitType(v.getType(),"World"));
+    		}
+    		result.append("] ");
+    		if(!op.getReturnResult().getType().getName().equals("Boolean")){
+    			result.append(": ");
+    			if(op.getLower()==1 && op.getUpper()==1) result.append("one");
+        		if(op.getLower()==0 && op.getUpper()==1) result.append("lone");
+        		if(op.getUpper()==-1) result.append("set");
+        		result.append(" "+visitType((Classifier)op.getReturnResult().getType(),"World"));
+    		}
+    		result.append(" {\n\t");
+    	}
+    	result.append(visit(expr));
+    	result.append("\n}\n\n");
+    	return result.toString();
     }
     
 	/** Visits Invariant. */	
