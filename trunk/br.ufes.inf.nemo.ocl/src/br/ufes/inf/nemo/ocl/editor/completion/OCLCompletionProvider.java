@@ -73,6 +73,16 @@ public class OCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
+		description = "<b>context TypeName <br>def: OperationName(p: Param1,..., pn:ParamN) : ResultTypeName = ...</b><br><br>"+
+		"Operation Definition.";
+		
+		c = new OCLTemplateCompletion(provider, 
+			"def","definition",
+			"context ${TypeName}\ndef: ${OperationName}(${p}: ${ParamTypeName}) : ${ResultTypeName} = ${cursor}\n",
+			null,description);		
+		provider.addCompletion(c); 
+		oclCompletionList.add(c);
+		
 		return oclCompletionList;
 	}
 	

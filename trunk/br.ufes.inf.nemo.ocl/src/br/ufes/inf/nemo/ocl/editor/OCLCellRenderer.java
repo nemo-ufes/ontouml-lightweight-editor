@@ -26,6 +26,7 @@ public class OCLCellRenderer extends CompletionCellRenderer {
 		
 		if (tc.getDefinitionString().equals("invariant")||
 			tc.getDefinitionString().equals("derivation")||
+			tc.getDefinitionString().equals("definition")||
 			tc.getDefinitionString().equals("context")
 		   ){
 			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/constraint.gif")));
