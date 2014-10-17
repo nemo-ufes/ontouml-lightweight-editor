@@ -1,7 +1,15 @@
 
 -- # Configuration Line : Do not change this... 
-import 'platform:/resource/br.ufes.inf.nemo.ontouml2uml/src/br/ufes/inf/nemo/ontouml2uml/tests/models/.Project.uml'
+import 'platform:/resource/br.ufes.inf.nemo.ontouml2uml/src/br/ufes/inf/nemo/ontouml2uml/tests/models/Project.uml'
 
 -- # Write your constraints below... Press Ctrl+Space too see the options.
 
+context Person
+def: olderThan(p:Person):Boolean = true 
+--
+--context Person::olderThan(p:Person):Boolean
+--body:  true
+
+context Person
+inv: Person.allInstances()->forAll(p | p<>self implies self.olderThan(p))
 

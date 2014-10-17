@@ -70,4 +70,5 @@
       <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
     </ownedEnd>
   </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" name="Boolean"/>
 </RefOntoUML:Model>

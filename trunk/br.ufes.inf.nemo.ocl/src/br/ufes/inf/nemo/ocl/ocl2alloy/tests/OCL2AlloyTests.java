@@ -18,8 +18,8 @@ public class OCL2AlloyTests {
 
 	public static void main (String[] args)
     {    	
-    	String refpath = new File("src/br/ufes/inf/nemo/ocl/ocl2alloy/tests/models/project.refontouml").getAbsolutePath();
-    	String oclPath = new File("src/br/ufes/inf/nemo/ocl/ocl2alloy/tests/models/project.ocl").getAbsolutePath();
+    	String refpath = new File("src/resources/br/ufes/inf/nemo/ocl/models/Project.refontouml").getAbsolutePath();
+    	String oclPath = new File("src/resources/br/ufes/inf/nemo/ocl/models/Project.ocl").getAbsolutePath();
     	
     	try {
     		
@@ -28,7 +28,7 @@ public class OCL2AlloyTests {
 		
     		//testing OCL pretty printer 
     		//just to know the form which the constraints are printed for debug in Eclipse    		
-    		prettyPrintOCL(parser);
+    		//prettyPrintOCL(parser);
     		
     		System.out.println("");
     		
