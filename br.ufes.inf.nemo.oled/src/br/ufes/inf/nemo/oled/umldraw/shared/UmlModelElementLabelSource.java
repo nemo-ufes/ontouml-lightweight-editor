@@ -59,8 +59,8 @@ public class UmlModelElementLabelSource implements LabelSource, Serializable {
   public Element getNamedElement() {
 	//In case of deserialization, attempts to retrieve the element from model
 	if(namedElement == null && propertyUUID != null)
-	{		
-		namedElement = (Element) ModelHelper.getElementByUUID(diagram.getModel(), propertyUUID);
+	{						
+		if(diagram!=null) namedElement = (Element) ModelHelper.getElementByUUID(diagram.getModel(), propertyUUID);
 	}
 			
 	return namedElement;
