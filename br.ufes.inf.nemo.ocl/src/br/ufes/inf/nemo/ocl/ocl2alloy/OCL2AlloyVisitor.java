@@ -61,8 +61,9 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
 	
 	protected int derive_counter = 0;
 	protected int inv_counter = 0;	
-	protected String library;
-	protected Constraint currentConstraint;
+	protected String library; // additional operations that alloy does not fully support
+	protected Constraint currentConstraint; //save the current constraint being transformed
+	protected List<Operation> definedOperationsList = new ArrayList<Operation>();
 	
     /** Constructor */
     public OCL2AlloyVisitor (OCLParser oclparser,OntoUMLParser refparser, OCL2AlloyOption opt) 
@@ -78,9 +79,13 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
 	@Override
     public String handleOperationCallExp (OperationCallExp<Classifier,Operation> operCallExp, String sourceResult, java.util.List<String> argumentsResult) 
     {    	
+		StringBuffer result = new StringBuffer();
     	Operation oper = operCallExp.getReferredOperation();    	
     	String operTypeResult = oper.getType().getName();
-		String operName = oper.getName();		
+		String operName = oper.getName();	
+		//user defined operations...
+		boolean isUserDefined = false;
+		for(Operation op: definedOperationsList) if(operName.equals(op.getName())) isUserDefined=true;				
 		if(operName.equals("allInstances")) { return sourceResult; }		
 		if(operName.equals("size")) { return "("+"#" + sourceResult+ ")"; }		
 		if(operName.equals("isEmpty")) { return "("+"no " + sourceResult + ")"; }		
@@ -115,6 +120,8 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
 			java.util.Iterator<String> iter = argumentsResult.iterator();			
 			if(!iter.hasNext()) { return "{ i: "+sourceResult+" | all j: "+sourceResult+" | int[i] <= int[j] }"; }
 		}		
+		//user defined operations...
+		if(isUserDefined) result.append("("+sourceResult+")."+operName+"[");		
 		// Operation arguments
         for (java.util.Iterator<String> iter = argumentsResult.iterator(); iter.hasNext();) 
         {
@@ -155,9 +162,14 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
 			}			
 			if(operName.equals("+")) { return "(" + sourceResult +").plus["+argument+"]"; }			
 			if(operName.equals("*")) { return "(" + sourceResult +").mul["+argument+"]"; }			
-			if(operName.equals("symmetricDifference")) { return "("+"("+sourceResult + " - " + argument+") + ("+argument + " - " + sourceResult+")"+")"; }						
+			if(operName.equals("symmetricDifference")) { return "("+"("+sourceResult + " - " + argument+") + ("+argument + " - " + sourceResult+")"+")"; }	
+			
+			//user defined operations...
+			if(isUserDefined) result.append(argument+",");			
+			
 			if (iter.hasNext()) ; // no more arguments 
-        }       			
+        }
+        if(isUserDefined) result.append("w]"); 
         if(operName.equals("/")) throw new OperationException("/","We only support the integer operations: +, -, *, max(), min(), abs(), div().");        
         if(operName.equals("mod")) throw new OperationException("mod","We only support the integer operations: +, -, *, max(), min(), abs(), div().");        
         if(operName.equals("toString")) throw new OperationException("toString()","The type String is not supported.");        
@@ -167,7 +179,7 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
         if(operName.equals("oclIsInState")) throw new OperationException("oclIsInState()","There is not a state machine.");        
         //if(operName.equals("oclIsNew")) throw new OperationException("oclIsNew()","Post conditions are not supported.");        
         if(operName.equals("oclIsInvalid"))	throw new OperationException("oclIsInvalid()","The OclInvalid is not supported.");        
-		return "";
+		return result.toString();
 	}
         
     /** Visits IteratorExp. */        
@@ -429,7 +441,7 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
     public String visitConstraint(Constraint constraint) 
     {
         StringBuffer result = new StringBuffer();
-        this.currentConstraint=constraint;
+//        this.currentConstraint=constraint;
         java.util.List<? extends EObject> constrained = oclparser.getUMLReflection().getConstrainedElements(constraint);
         String stereo = oclparser.getUMLReflection().getStereotype(constraint);       
                 
@@ -545,6 +557,7 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
     	org.eclipse.ocl.uml.ExpressionInOCL expr = (org.eclipse.ocl.uml.ExpressionInOCL) constraint.getSpecification();
     	List<Operation> opList = oclparser.myOCL.getEnvironment().getAdditionalOperations(classifier);
     	for(Operation op: opList){
+    		definedOperationsList.add(op);
     		if(!op.getReturnResult().getType().getName().equals("Boolean")) result.append("func ").append(op.getName());
     		else result.append("pred ").append(op.getName());
     		result.append(" [");
@@ -555,7 +568,7 @@ public class OCL2AlloyVisitor extends org.eclipse.ocl.utilities.AbstractVisitor 
     			result.append(", "+v.getName()+": ");    			
     			result.append(visitType(v.getType(),"World"));
     		}
-    		result.append("] ");
+    		result.append(", w: World] ");
     		if(!op.getReturnResult().getType().getName().equals("Boolean")){
     			result.append(": ");
     			if(op.getLower()==1 && op.getUpper()==1) result.append("one");
