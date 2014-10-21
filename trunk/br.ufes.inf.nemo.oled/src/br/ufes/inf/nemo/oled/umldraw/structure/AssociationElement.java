@@ -738,7 +738,8 @@ public final class AssociationElement extends BaseConnection {
 	{		
 		if(localNameLabel!=null)
 		{
-			setReadingDirection(getReadingDesign());
+			ReadingDesign d = getReadingDesign();
+			setReadingDirection(d);
 			if(getReadingDesign() != ReadingDesign.UNDEFINED) {
 				drawReadingDirection(drawingContext);
 			}
@@ -904,6 +905,7 @@ public final class AssociationElement extends BaseConnection {
 		if(connection2!=null) rel2 = (Type)((AssociationElement)connection2).getRelationship();
 		
 		Line2D segment = getMiddleSegment();
+		if(segment==null) { setReadingDirection(srcType,class1,class2,rel1,rel2,ReadingDirection.UNDEFINED,ReadingDirection.UNDEFINED); return; }
 		
 		// vertical aligned		
 		if((srcx2>=tgtx1 && srcx2 <= tgtx2)|| (srcx1>=tgtx1 && srcx1<= tgtx2))
