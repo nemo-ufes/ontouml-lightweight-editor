@@ -3,10 +3,12 @@ package br.ufes.inf.nemo.ontouml2temporalowl.tree;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import RefOntoUML.*;
 import RefOntoUML.Class;
 import RefOntoUML.Package;
+import RefOntoUML.parser.OntoUMLParser;
 
 public class TreeProcessor
 {
@@ -28,13 +30,22 @@ public class TreeProcessor
 		class2node = new HashMap<Class, NodeClass>();
 		assocNodes = new LinkedList<NodeBinAssociation>();
 
+		/*
+		 	To maintain conformance with the OLED structure changes,
+		 	the 2 following code line were added and the for iteration
+		 	was adjusted for correctly access the packaged elements
+		 */
+		OntoUMLParser ontoParser = new OntoUMLParser(p);
+		Set<Object> packagedElements = ontoParser.getAllInstances(Object.class);
+		
 		// Pre Process
-		for (PackageableElement pe : p.getPackagedElement())
-		{			
+		for (Object pe : packagedElements) {
+		//for (PackageableElement pe : p.getPackagedElement()){
 			if (pe instanceof Class)
 				ProcessClass((Class) pe);
 			if (pe instanceof Association && !(pe instanceof Derivation))
 				ProcessAssociation((Association) pe);
+						
 		}
 
 		// Set up the specialization tree
@@ -84,8 +95,16 @@ public class TreeProcessor
 	{
 		NodeBinAssociation na = new NodeBinAssociation(a);
 		assocNodes.add(na);
-		String 	domain = na.getDomain().getName(),
-				range = na.getRange().getName();
+		
+		/*
+		 	To maintain conformance with the OLED structure changes,
+		 	the following code couldn't find the classes envolvend
+		 	in an association. 
+		*/
+		//String 	domain = na.getDomain().getName(),
+		//		range = na.getRange().getName();
+		String domain = a.getMemberEnd().get(0).getType().getName(),
+				range = a.getMemberEnd().get(1).getType().getName();
 		
 		if (a instanceof MaterialAssociation)
 		{
