@@ -26,7 +26,7 @@ public class DerivedByIntersection extends DerivedType {
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
-		values.put("Role"+"Role Mixin", possibilites);
+		values.put("Role"+"RoleMixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");

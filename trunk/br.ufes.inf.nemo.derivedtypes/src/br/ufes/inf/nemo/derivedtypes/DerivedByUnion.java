@@ -315,12 +315,10 @@ public class DerivedByUnion extends DerivedType{
 		tableValues.put("Phase"+"Phase", value);
 		
 		value= new ArrayList<>();
-		value.add("Category");
 		value.add("RoleMixin");
 		tableValues.put("RoleMixin"+"Role", value);
 		
 		value= new ArrayList<>();
-		value.add("Category");
 		value.add("RoleMixin");
 		tableValues.put("Role"+"RoleMixin", value);
 		
