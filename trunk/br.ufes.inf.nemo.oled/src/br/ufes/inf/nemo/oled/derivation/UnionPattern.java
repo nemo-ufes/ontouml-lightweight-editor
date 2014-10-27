@@ -140,7 +140,7 @@ public class UnionPattern extends JDialog {
 				}
 			});
 
-			comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Category", "Role", "Phase", "Role Mixin", "Mixin"}));
+			comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "Subkind", "Category", "Role", "Phase", "RoleMixin", "Mixin"}));
 		}
 		{
 			comboBox.addActionListener(new ActionListener() {
@@ -149,7 +149,7 @@ public class UnionPattern extends JDialog {
 				}
 			});
 			
-			comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Category", "Role", "Phase", "Role Mixin", "Mixin"}));
+			comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "Subkind", "Category", "Role", "Phase", "RoleMixin", "Mixin"}));
 		}
 		{
 			txtBase_1 = new JTextField();
@@ -158,7 +158,7 @@ public class UnionPattern extends JDialog {
 		}
 		{
 
-			comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Category", "Role", "Phase", "Role Mixin", "Mixin"}));
+			comboBox.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Category", "Role", "Phase", "RoleMixin", "Mixin"}));
 		}
 		{
 			lblNewLabel_1 = new JLabel("Derived Type:");

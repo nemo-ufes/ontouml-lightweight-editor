@@ -204,9 +204,6 @@ public class DerivedTypesOperations {
 				if(specialCase=="AllRigid"){
 					Object[] stereo;
 					ArrayList<String>stereotypes = new ArrayList<String>();
-					stereotypes.add("Kind");
-					stereotypes.add("Collective");
-					stereotypes.add("Quantity");
 					stereotypes.add("Subkind");
 					stereotypes.add("Category");
 					stereo=  stereotypes.toArray();
@@ -458,9 +455,7 @@ public class DerivedTypesOperations {
 			}
 
 			if(gen.size()==1 && classList.size()==2){
-				Object[] stereo;
-				stereo=  stereotypes.toArray();
-				JPanel panel= selectStereotype(stereo);
+				
 				
 				if(pos==1){
 					stereotypes= DerivedByExclusion.getInstance().inferStereotype(refontoList.get(pos).eClass().getName() , refontoList.get(pos2).eClass().getName());
@@ -469,19 +464,20 @@ public class DerivedTypesOperations {
 					stereotypes= DerivedByExclusion.getInstance().inferStereotype(refontoList.get(pos).eClass().getName() , refontoList.get(pos2).eClass().getName());
 					pos2=1;
 				}
+				Object[] stereo;
+				stereo=  stereotypes.toArray();
+				JPanel panel= selectStereotype(stereo);
 				if(stereotypes!=null){
 					//DerivedByExclusion.getInstance().createExclusionRule(((Classifier) refontoList.get(pos)).getName(), ((Classifier) refontoList.get(pos2)).getName(), name);
 					if(!(refontoList.get(pos2).eClass().getName().equals("Role") && (refontoList.get(pos).eClass().getName().equals("Kind")) ))
 					{
-						String rule="\ncontext: _'"+((Classifier) refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+((JTextField)panel.getComponents()[1]).getText()+"')";
-						dm.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);						
+						//String rule="\ncontext: _'"+((Classifier) refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+((JTextField)panel.getComponents()[1]).getText()+"')";
+						//dm.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);						
 					}	
 					//String rule="context: "
-					if(stereotypes.size()==1)
-						return createDerivedTypeExclusion(stereotypes.get(0), mainfix, selected, ((JTextField)panel.getComponents()[1]).getText(), classList.get(pos), classList.get(pos2),gen.get(0), project);
-					else{
-						return createDerivedTypeExclusion(((JComboBox)panel.getComponents()[0]).getSelectedItem().toString(), mainfix, selected, ((JTextField)panel.getComponents()[1]).getText(), classList.get(pos), classList.get(pos2),gen.get(0), project);
-					}
+					
+					return createDerivedTypeExclusion(((JComboBox)panel.getComponents()[1]).getSelectedItem().toString(), mainfix, selected, ((JTextField)panel.getComponents()[0]).getText(), classList.get(pos), classList.get(pos2),gen.get(0), project);
+					
 				}
 			}
 			else{
