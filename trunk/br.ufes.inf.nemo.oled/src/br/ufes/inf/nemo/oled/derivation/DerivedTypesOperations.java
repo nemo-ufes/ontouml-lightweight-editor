@@ -151,6 +151,9 @@ public class DerivedTypesOperations {
 						mainfix= createDerivedTypeUnion(((JComboBox)panel.getComponents()[1]).getSelectedItem().toString(),mainfix, selected,((JTextField)panel.getComponents()[0]).getText(),refontoList,project,dm);
 					}
 			}
+//			if(name!=""){
+//				mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
+//			}
 
 		}
 		else{
@@ -226,9 +229,7 @@ public class DerivedTypesOperations {
 					}
 				}
 			}
-			if(name!=""){
-				mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
-			}
+			
 		}
 		return mainfix;
 	}
@@ -392,7 +393,7 @@ public class DerivedTypesOperations {
 				classifiers.add((Classifier)element);
 			}
 			createMultipleGeneralization(newElement, classifiers);
-			mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
+			//mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
 		}
 		return mainfix;
 	}
@@ -471,8 +472,8 @@ public class DerivedTypesOperations {
 					//DerivedByExclusion.getInstance().createExclusionRule(((Classifier) refontoList.get(pos)).getName(), ((Classifier) refontoList.get(pos2)).getName(), name);
 					if(!(refontoList.get(pos2).eClass().getName().equals("Role") && (refontoList.get(pos).eClass().getName().equals("Kind")) ))
 					{
-						//String rule="\ncontext: _'"+((Classifier) refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+((JTextField)panel.getComponents()[1]).getText()+"')";
-						//dm.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);						
+						String rule="context: _'"+((Classifier) refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+((JTextField)panel.getComponents()[0]).getText()+"')";
+						dm.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);						
 					}	
 					//String rule="context: "
 					
@@ -609,7 +610,7 @@ public class DerivedTypesOperations {
 		for (Classifier classifier : sons) {
 			Fix fix=of.createGeneralization(classifier, father);
 			generalizations.add((Generalization) fix.getAdded().get(0));
-			mainfix.addAll(fix);
+			//mainfix.addAll(fix);
 		}
 
 		Fix gs =  of.createGeneralizationSet(generalizations,true, true);

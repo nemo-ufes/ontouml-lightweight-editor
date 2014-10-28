@@ -23,7 +23,9 @@ abstract class DerivedType {
 		value= new ArrayList<>();
 		value.add("Category");
 		value.add("Kind");
-		tableValuesGen.put("SubKind", value);
+		value.add("Subkind");
+		value.add("Mixin");
+		tableValuesGen.put("Subkind", value);
 		
 		value= new ArrayList<>();
 		value.add("Kind");
@@ -32,7 +34,7 @@ abstract class DerivedType {
 		value.add("Phase");
 		value.add("Quantity");
 		value.add("Collective");
-		value.add("Role Mixin");
+		value.add("RoleMixin");
 		value.add("Mixin");
 		tableValuesGen.put("Role", value);
 		
@@ -44,7 +46,7 @@ abstract class DerivedType {
 		value.add("Phase");
 		value.add("Quantity");
 		value.add("Collective");
-		value.add("Role Mixin");
+		value.add("RoleMixin");
 		value.add("Mixin");
 		tableValuesGen.put("Phase", value);
 		
@@ -59,9 +61,9 @@ abstract class DerivedType {
 		tableValuesGen.put("Category", value);
 		
 		value= new ArrayList<>();
-		value.add("Role Mixin");
+		value.add("RoleMixin");
 		value.add("Mixin");
-		tableValuesGen.put("Role Mixin", value);
+		tableValuesGen.put("RoleMixin", value);
 		
 		value= new ArrayList<>();
 		value.add("Category");

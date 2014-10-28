@@ -45,6 +45,8 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
+import org.eclipse.swt.widgets.Item;
+
 import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
 import br.ufes.inf.nemo.oled.DiagramManager;
 
@@ -59,21 +61,21 @@ public class ExclusionPattern extends JDialog {
 	private JTextField txtBase;
 	private JTextField txtDerived;
 	@SuppressWarnings("rawtypes")
-	JComboBox comboBox_1 = new JComboBox();
-	boolean updated=false;
+	JComboBox cmb_base = new JComboBox();
+	boolean updated=true;
 	@SuppressWarnings("rawtypes")
 	Vector comboBoxItems=new Vector();
 	@SuppressWarnings("rawtypes")
 	Vector comboBoxItems2=new Vector();
 	@SuppressWarnings("rawtypes")
-	JComboBox comboBox_2 = new JComboBox();
+	JComboBox cmb_derived = new JComboBox();
 	private Point2D.Double location= new Point2D.Double();
 	JCheckBox chckbxNewCheckBox = new JCheckBox("generate OCL rule");
 	DiagramManager dman;
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox comboBox = new JComboBox(model);
+	JComboBox cmb_super = new JComboBox(model);
 
 
 	public void setPosition(java.lang.Double x, java.lang.Double y){
@@ -85,15 +87,15 @@ public class ExclusionPattern extends JDialog {
 	public void setCombo(){
 
 		if(updated){
-			ArrayList<String> stereo=DerivedByExclusion.getInstance().inferStereotype(comboBox.getModel().getSelectedItem().toString(), comboBox_1.getModel().getSelectedItem().toString());
+			ArrayList<String> stereo=DerivedByExclusion.getInstance().inferStereotype(cmb_super.getModel().getSelectedItem().toString(), cmb_base.getModel().getSelectedItem().toString());
 			if(stereo!=null){
 				comboBoxItems2.removeAllElements();
 				DefaultComboBoxModel model2 = new DefaultComboBoxModel(comboBoxItems2);	
 				for (String string : stereo) {
 					model2.addElement(string);
 				}
-				comboBox_2.setModel(model2);
-				comboBox_2.getModel().setSelectedItem(model2.getElementAt(0));
+				cmb_derived.setModel(model2);
+				cmb_derived.getModel().setSelectedItem(model2.getElementAt(0));
 			}
 		}
 	}
@@ -138,40 +140,49 @@ public class ExclusionPattern extends JDialog {
 		JLabel lblNewLabel_1 = new JLabel("From Type:");
 
 		JLabel lblNewLabel_2 = new JLabel("Exclusion Derived Type:");
-		comboBox.addActionListener(new ActionListener() {
+		cmb_super.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setCombo();
 			}
 		});
 
 
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Category", "Mixin"}));
+		cmb_super.setModel(new DefaultComboBoxModel(new String[] {"Category", "Mixin"}));
 
 
-		comboBox_1.addActionListener(new ActionListener() {
+		cmb_base.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
-				ArrayList<String> values= DerivedByExclusion.getInstance().getPossibleGeneralization(comboBox_1.getModel().getSelectedItem().toString());
-
+				ArrayList<String> values= DerivedByExclusion.getInstance().getPossibleGeneralization(cmb_base.getModel().getSelectedItem().toString());
+				String valor_padrao="";
+				for (String val : values) {
+					if(val.equals(cmb_super.getModel().getSelectedItem().toString())){
+						valor_padrao=val;
+					}
+				}
+				
 				if(values !=null){
 					updated=false;
-					comboBox.removeAllItems();
+					cmb_super.removeAllItems();
+					comboBoxItems.removeAllElements();
 					for (String string : values) {
 						model.addElement(string);
 					}	
-					comboBox.setModel(model);
-					comboBox.getModel().setSelectedItem(model.getElementAt(0));
+					cmb_super.setModel(model);
+					if(!valor_padrao.equals("")){
+						cmb_super.getModel().setSelectedItem(valor_padrao);
+					}else{
+						cmb_super.getModel().setSelectedItem(values.get(0));
+					}
 					contentPanel.repaint();
 					contentPanel.validate();
 					updated=true;
 				}
-				comboBox.setEnabled(true);
-				comboBox_2.setEnabled(true);
 				setCombo();
 
 			}
 		});
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Kind", "SubKind", "Role", "Phase", "Quantity", "Collection", "Mixin", "RoleMixin", "Category"}));
+		cmb_base.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Subkind", "Role", "Phase", "Quantity", "Collection", "Mixin", "RoleMixin", "Category"}));
 
 		final JCheckBox chckbxNewCheckBox = new JCheckBox("Generate OCL Constraint");
 		chckbxNewCheckBox.setBackground(Color.WHITE);
@@ -179,7 +190,7 @@ public class ExclusionPattern extends JDialog {
 		
 		JLabel lblNewLabel_3 = new JLabel("");
 		lblNewLabel_3.setIcon(new ImageIcon(ExclusionPattern.class.getResource("/resources/figures/derivationbyexclusion.PNG")));
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collection", "Quantity", "SubKind", "Category"}));
+		cmb_derived.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collection", "Quantity", "Subkind", "Category"}));
 		
 		JLabel lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setIcon(new ImageIcon(ExclusionPattern.class.getResource("/resources/figures/text_exclusion.png")));
@@ -210,9 +221,9 @@ public class ExclusionPattern extends JDialog {
 												.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 255, GroupLayout.PREFERRED_SIZE))
 											.addGap(18)
 											.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-												.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-												.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-												.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))))
+												.addComponent(cmb_derived, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
+												.addComponent(cmb_base, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
+												.addComponent(cmb_super, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))))
 								.addComponent(chckbxNewCheckBox, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap())
 		);
@@ -225,19 +236,19 @@ public class ExclusionPattern extends JDialog {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(cmb_derived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblNewLabel_1)
 					.addGap(4)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(cmb_base, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblNewLabel)
 					.addGap(5)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtSupertype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(cmb_super, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
 					.addComponent(chckbxNewCheckBox)
 					.addGap(1)
@@ -255,20 +266,20 @@ public class ExclusionPattern extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						ArrayList<String> values = new ArrayList<String>();
-						if(comboBox.getModel().getSelectedItem()!=null && comboBox_1.getModel().getSelectedItem()!=null && comboBox_2.getModel().getSelectedItem()!=null){
+						if(cmb_super.getModel().getSelectedItem()!=null && cmb_base.getModel().getSelectedItem()!=null && cmb_derived.getModel().getSelectedItem()!=null){
 
 							//pai
-							values.add(comboBox.getModel().getSelectedItem().toString());
+							values.add(cmb_super.getModel().getSelectedItem().toString());
 							//filho
-							values.add(comboBox_1.getModel().getSelectedItem().toString());
+							values.add(cmb_base.getModel().getSelectedItem().toString());
 							//filho
-							values.add(comboBox_2.getModel().getSelectedItem().toString());
+							values.add(cmb_derived.getModel().getSelectedItem().toString());
 
 							values.add(txtSupertype.getText());
 							values.add(txtBase.getText());
 							values.add(txtDerived.getText());
 							if(chckbxNewCheckBox.isSelected()){
-								if(!(comboBox_1.getModel().getSelectedItem().toString().equals("Role") && comboBox.getModel().getSelectedItem().toString().equals("Kind")) )
+								if(!(cmb_base.getModel().getSelectedItem().toString().equals("Role") && cmb_super.getModel().getSelectedItem().toString().equals("Kind")) )
 								{
 									if(!((txtSupertype.getText().equals("") || txtBase.getText().equals("") || txtDerived.getText().equals("")))){
 										String rule="\ncontext: _'"+txtSupertype.getText()+"'\n"+"inv: not oclIsTypeOf(_'"+txtBase.getText()+"') implies oclIsTypeOf(_'"+txtDerived.getText()+"')";
