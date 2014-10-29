@@ -47,6 +47,7 @@ import javax.swing.border.EmptyBorder;
 
 import br.ufes.inf.nemo.derivedtypes.DerivedByIntersection;
 import br.ufes.inf.nemo.oled.DiagramManager;
+import javax.swing.JCheckBox;
 
 /**
  * @author Cássio Reginato
@@ -69,6 +70,7 @@ public class IntersectionPattern extends JDialog {
 	@SuppressWarnings("rawtypes")
 	Vector comboBoxItemsDer=new Vector();
 	private Point2D.Double location= new Point2D.Double();
+	JCheckBox chk_constraint = new JCheckBox("Generate OCL constraint");
 	static DiagramManager dm;
 
 	/**
@@ -94,6 +96,7 @@ public class IntersectionPattern extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.NORTH);
 		
 		JLabel lblNewLabel = new JLabel("Base Types:");
+		lblNewLabel.setBackground(Color.WHITE);
 		
 		JLabel lblNewLabel_2 = new JLabel("Derived Type:");
 		
@@ -116,34 +119,44 @@ public class IntersectionPattern extends JDialog {
 		combo_base_1.addActionListener(new ActionListener() {
 			@SuppressWarnings({ })
 			public void actionPerformed(ActionEvent e) {
-				
+				DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems2);	
+				String elemento = combo_base_2.getModel().getSelectedItem().toString();
+				ArrayList<String> values = new ArrayList<>();
+				comboBoxItems2.removeAllElements();
 				if(combo_base_1.getSelectedItem().toString().equals("Kind") ||  combo_base_1.getSelectedItem().toString().equals("Collective") || combo_base_1.getSelectedItem().toString().equals("Quantity")){
-					
-					comboBoxItems2.removeAllElements();
-					
-					DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems2);	
-					model.addElement("RoleMixin");
-					model.addElement("Mixin");
-					model.addElement("Category");
-					combo_base_2.setModel(model);
-					combo_base_2.getModel().setSelectedItem(model.getElementAt(0));
+
+					values.add("RoleMixin");
+					values.add("Mixin");
+					values.add("Category");
 				}else{
-					comboBoxItems2.removeAllElements();
-					DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems2);	
+					
 					model.addElement("Subkind");
 					if(combo_base_1.getSelectedItem().toString().equals("Role Mixin") || combo_base_1.getSelectedItem().toString().equals("Mixin") || combo_base_1.getSelectedItem().toString().equals("Category")){
-						model.addElement("Kind");
-						model.addElement("Collective");
-						model.addElement("Quantity");
+						values.add("Kind");
+						values.add("Collective");
+						values.add("Quantity");
 					}
-					model.addElement("Role");
-					model.addElement("Phase");
-					model.addElement("RoleMixin");
-					model.addElement("Mixin");
-					model.addElement("Category");
-					combo_base_2.setModel(model);
-					combo_base_2.getModel().setSelectedItem(model.getElementAt(0));
+					values.add("Role");
+					values.add("Phase");
+					values.add("RoleMixin");
+					values.add("Mixin");
+					values.add("Category");
 				}
+				
+				for (String val : values) {
+					model.addElement(val);
+				}
+				
+				if(values.contains(elemento)){
+					model.setSelectedItem(elemento);
+				}else{
+					model.setSelectedItem(values.get(0));
+				}
+				
+				
+				combo_base_2.setModel(model);
+				contentPanel.repaint();
+				contentPanel.validate();
 				setDerivedStereotype();
 			}
 
@@ -175,6 +188,9 @@ public class IntersectionPattern extends JDialog {
 		
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setIcon(new ImageIcon(IntersectionPattern.class.getResource("/resources/figures/text-intersection.png")));
+		
+		
+		chk_constraint.setBackground(Color.WHITE);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -198,13 +214,17 @@ public class IntersectionPattern extends JDialog {
 					.addGap(36)
 					.addComponent(lblNewLabel_1))
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(10)
-					.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 261, GroupLayout.PREFERRED_SIZE)
-					.addGap(11)
-					.addComponent(combo_derived, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGap(83)
 					.addComponent(label))
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addGap(10)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(chk_constraint)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 261, GroupLayout.PREFERRED_SIZE)
+							.addGap(11)
+							.addComponent(combo_derived, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)))
+					.addGap(84))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -227,9 +247,10 @@ public class IntersectionPattern extends JDialog {
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(combo_derived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-					.addComponent(label, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+					.addComponent(chk_constraint)
+					.addGap(18)
+					.addComponent(label, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
@@ -242,8 +263,26 @@ public class IntersectionPattern extends JDialog {
 				okButton.setHorizontalAlignment(SwingConstants.RIGHT);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						
+						if(chk_constraint.isSelected()){
+							
+								if(!((txtBase.getText().equals("") || txtBase_1.getText().equals("") || txtDerived.getText().equals("")))){
+
+									
+									String rule="\ncontext _'"+txtBase.getText()+"'\n"+"inv: _'"+txtDerived.getText()+"'.allInstances()->forAll( x |  x.oclIsTypeOf(_'"+txtBase_1.getText()+"') implies x.oclIsTypeOf(_'"+txtDerived.getText()+"'))";
+									dm.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);
+									dispose();
+								}
+								else{
+									DerivedTypesOperations.wrongSelection("Please set the names for generating the OCL rule");
+									return;
+								}
+							
+						}
 						DerivedTypesOperations.intersectionPattern(dm, txtBase.getText(),txtBase_1.getText(),txtDerived.getText(),location,combo_base_1.getSelectedItem().toString(),combo_base_2.getSelectedItem().toString(), combo_derived.getSelectedItem().toString());
 						dispose();
+						
+						
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -268,15 +307,16 @@ public class IntersectionPattern extends JDialog {
 		// TODO Auto-generated method stub
 		
 		ArrayList<String> result = DerivedByIntersection.getInstance().inferStereotype(combo_base_1.getSelectedItem().toString(), combo_base_2.getSelectedItem().toString());
-		
+			
 			comboBoxItemsDer.removeAllElements();
 			DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItemsDer);	
+			if(result!=null){
 			for (String res : result) {
 				model.addElement(res);
 			}
 			combo_derived.setModel(model);
 			combo_derived.getModel().setSelectedItem(model.getElementAt(0));
-		
+			}
 		
 	}
 	public void setPosition(java.lang.Double x, java.lang.Double y){
