@@ -151,9 +151,6 @@ public class DerivedTypesOperations {
 						mainfix= createDerivedTypeUnion(((JComboBox)panel.getComponents()[1]).getSelectedItem().toString(),mainfix, selected,((JTextField)panel.getComponents()[0]).getText(),refontoList,project,dm);
 					}
 			}
-//			if(name!=""){
-//				mainfix= createDerivedTypeUnion(stereotype, mainfix, selected,name,refontoList,project,dm);
-//			}
 
 		}
 		else{
@@ -435,6 +432,7 @@ public class DerivedTypesOperations {
 		int pos=0;
 		int pos2=1;
 		ArrayList<String> stereotypes = new ArrayList<String>();
+		Element e = null;
 		if(selected.size()==3){
 			for (int i = 0; i < selected.size(); i++) {
 				if (selected.get(i) instanceof ClassElement) {
@@ -443,15 +441,17 @@ public class DerivedTypesOperations {
 				}
 				if (selected.get(i) instanceof GeneralizationElement) {
 					GeneralizationElement ge = (GeneralizationElement) selected.get(i);
-					Element e= ge.getGeneralization().getGeneral();
+					e= ge.getGeneralization().getGeneral();
 					gen.add((GeneralizationElement) ge);
 					//refontoList.add((Element) selected.get(i));
-					if(refontoList.size()>1){
-						if(e.equals(refontoList.get(1))){
-							pos=1;
-							pos2=0;
-						}
-					}
+					
+				}
+			}
+			
+			if(refontoList.size()>1){
+				if(e.equals(refontoList.get(1))){
+					pos=1;
+					pos2=0;
 				}
 			}
 
@@ -500,7 +500,7 @@ public class DerivedTypesOperations {
 		// prompt the user to enter their name
 		String name="";
 		while(name==""){
-			name = JOptionPane.showInputDialog(null, "What's the New Type Name", "Name Type", 1);    
+			name = JOptionPane.showInputDialog(null, "What's the Name of the New Type", "Name Type", 1);    
 		}
 		return name;
 	}
@@ -534,7 +534,7 @@ public class DerivedTypesOperations {
         values.add("Cancel");
         
         int value=JOptionPane.showOptionDialog(
-            null, p, "Choose the name and the Stereotype", JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE, null, values.toArray(), values.toArray()[0]);
+            null, p, "Name and Stereotype", JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE, null, values.toArray(), values.toArray()[0]);
         if(value==-1 || value==1){
         	return null;
         }
@@ -760,6 +760,8 @@ public class DerivedTypesOperations {
 				}
 			}
 		}
+		
+		
 
 		return createIntersectionDerivedType(specialCase, diagramManager, activeEditor, project);
 	}
@@ -769,7 +771,7 @@ public class DerivedTypesOperations {
 			DiagramManager diagramManager, DiagramEditor activeEditor, UmlProject project) {
 		dman= diagramManager;
 		
-		
+		ArrayList<String> names = new ArrayList<String>();
 		
 		int j=0;
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
@@ -778,6 +780,7 @@ public class DerivedTypesOperations {
 				j++;
 				ClassElement ce = (ClassElement) activeEditor.getSelectedElements().get(i);
 				refontoList.add(ce.getClassifier());
+				names.add(ce.getClassifier().getName());
 			}		
 		}
 		String name;
@@ -801,6 +804,7 @@ public class DerivedTypesOperations {
 			ClassElement position = (ClassElement) select;
 			Point2D.Double newElementPosition= new Point2D.Double(position.getAbsoluteX1(), position.getAbsoluteY1());
 			positions.add( newElementPosition);
+			
 		}
 		Point2D.Double newElementPosition= ClassPosition.findPositionGeneralizationMember(positions,1);
 		Classifier newElement = includeElement(newElementPosition, name, stereotype);
@@ -808,6 +812,10 @@ public class DerivedTypesOperations {
 		for (Element element : refontoList) {
 			classifiers.add((Classifier)element);
 		}
+		
+		String rule="\ncontext _'"+names.get(0)+"'\n"+"inv: _'"+names.get(0)+"'.allInstances()->forAll( x |  x.oclIsTypeOf(_'"+names.get(1)+"') implies x.oclIsTypeOf(_'"+name+"'))";
+		diagramManager.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);
+		
 		createMultipleGeneralizationIntersection(newElement,classifiers);
 		mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
 		return mainfix;
