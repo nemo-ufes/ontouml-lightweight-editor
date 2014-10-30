@@ -25,6 +25,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import org.eclipse.emf.common.util.EList;
 
 import RefOntoUML.AntiRigidMixinClass;
 import RefOntoUML.AntiRigidSortalClass;
@@ -204,7 +207,7 @@ public class DerivedTypesOperations {
 				if(specialCase=="AllRigid"){
 					Object[] stereo;
 					ArrayList<String>stereotypes = new ArrayList<String>();
-					stereotypes.add("Subkind");
+					stereotypes.add("SubKind");
 					stereotypes.add("Category");
 					stereo=  stereotypes.toArray();
 					panel= selectStereotype(stereo);
@@ -216,7 +219,7 @@ public class DerivedTypesOperations {
 						stereotypes.add("Kind");
 						stereotypes.add("Collective");
 						stereotypes.add("Quantity");
-						stereotypes.add("Subkind");
+						stereotypes.add("SubKind");
 						stereotypes.add("Role");
 						stereotypes.add("Phase");
 						stereotypes.add("RoleMixin");
@@ -396,28 +399,28 @@ public class DerivedTypesOperations {
 	}
 
 	private static Fix createDerivedTypeExclusion(String stereotype, Fix mainfix, List<DiagramElement> selected, String name, ClassElement pai, ClassElement filho,GeneralizationElement generalizationElement, UmlProject project){		//UmlProject project = getCurrentEditor().getProject();
-		OutcomeFixer of = new OutcomeFixer(project.getModel());
-		Classifier newElement = (Classifier)of.createClass( of.getClassStereotype(stereotype));
-		newElement.setName(name);
-		of.copyContainer(((ClassElement) selected.get(0)).getClassifier(), newElement);
-		Fix fix=of.createGeneralization(newElement,pai.getClassifier());
-		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-		generalizations.add((Generalization) fix.getAdded().get(0));
-		generalizations.add(generalizationElement.getGeneralization());
-		Fix gs =  of.createGeneralizationSet(generalizations,true, true);
-		//mainfix.addAll(fixG2);
-		mainfix.addAll(fix);
-		mainfix.addAll(gs);
-		ClassElement position = pai;
-		ClassElement position2 = filho;
-		Point2D.Double firstpoint = new Point2D.Double();
-		Point2D.Double secondpoint = new Point2D.Double();
-		firstpoint.setLocation(position.getAbsoluteX1(),position.getAbsoluteY1());
-		secondpoint.setLocation(position2.getAbsoluteX1(),position2.getAbsoluteY1());
-		Point2D.Double newElementPosition= ClassPosition.findPositionGeneralizationMember(firstpoint, secondpoint);
-		mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
-		return mainfix;
-
+		
+			OutcomeFixer of = new OutcomeFixer(project.getModel());
+			Classifier newElement = (Classifier)of.createClass( of.getClassStereotype(stereotype));
+			newElement.setName(name);
+			of.copyContainer(((ClassElement) selected.get(0)).getClassifier(), newElement);
+			Fix fix=of.createGeneralization(newElement,pai.getClassifier());
+			ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+			generalizations.add((Generalization) fix.getAdded().get(0));
+			generalizations.add(generalizationElement.getGeneralization());
+			Fix gs =  of.createGeneralizationSet(generalizations,true, true);
+			//mainfix.addAll(fixG2);
+			mainfix.addAll(fix);
+			mainfix.addAll(gs);
+			ClassElement position = pai;
+			ClassElement position2 = filho;
+			Point2D.Double firstpoint = new Point2D.Double();
+			Point2D.Double secondpoint = new Point2D.Double();
+			firstpoint.setLocation(position.getAbsoluteX1(),position.getAbsoluteY1());
+			secondpoint.setLocation(position2.getAbsoluteX1(),position2.getAbsoluteY1());
+			Point2D.Double newElementPosition= ClassPosition.findPositionGeneralizationMember(firstpoint, secondpoint);
+			mainfix.includeAdded(newElement, newElementPosition.getX(),newElementPosition.getY());
+			return mainfix;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -434,27 +437,45 @@ public class DerivedTypesOperations {
 		ArrayList<String> stereotypes = new ArrayList<String>();
 		Element e = null;
 		if(selected.size()==3){
-			for (int i = 0; i < selected.size(); i++) {
+			for (int i = 0; i < 3; i++) {
 				if (selected.get(i) instanceof ClassElement) {
 					classList.add((ClassElement) selected.get(i));
 					refontoList.add((Element) ((ClassElement) selected.get(i)).getClassifier());
 				}
 				if (selected.get(i) instanceof GeneralizationElement) {
 					GeneralizationElement ge = (GeneralizationElement) selected.get(i);
-					e= ge.getGeneralization().getGeneral();
+					
+					OntoUMLParser refparser= dm.getFrame().getBrowserManager().getProjectBrowser().getParser();
+
+					for(RefOntoUML.GeneralizationSet gs : refparser.getAllInstances(RefOntoUML.GeneralizationSet.class)) 
+					{
+						if(gs.getGeneralization().contains(ge.getGeneralization())){
+							if(gs.getGeneralization().size()>1){
+								wrongSelection("It is not possible to derive by exclusion, this type participate in a GS with other members");
+								return null;
+							}
+						}
+						
+					}
+					
 					gen.add((GeneralizationElement) ge);
-					//refontoList.add((Element) selected.get(i));
 					
 				}
 			}
 			
 			if(refontoList.size()>1){
-				if(e.equals(refontoList.get(1))){
-					pos=1;
-					pos2=0;
+					
+				EList<Classifier> list= classList.get(0).getClassifier().getGeneral();
+				
+				for (Classifier classifier : list) {
+					if(classifier==classList.get(1).getClassifier()){
+						pos=1;
+						pos2=0;
+					}
 				}
+				
 			}
-
+			
 			if(gen.size()==1 && classList.size()==2){
 				
 				
@@ -465,21 +486,26 @@ public class DerivedTypesOperations {
 					stereotypes= DerivedByExclusion.getInstance().inferStereotype(refontoList.get(pos).eClass().getName() , refontoList.get(pos2).eClass().getName());
 					pos2=1;
 				}
-				Object[] stereo;
-				stereo=  stereotypes.toArray();
-				JPanel panel= selectStereotype(stereo);
-				if(stereotypes!=null){
-					//DerivedByExclusion.getInstance().createExclusionRule(((Classifier) refontoList.get(pos)).getName(), ((Classifier) refontoList.get(pos2)).getName(), name);
-					if(!(refontoList.get(pos2).eClass().getName().equals("Role") && (refontoList.get(pos).eClass().getName().equals("Kind")) ))
-					{
-						String rule="context: _'"+((Classifier) refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+((JTextField)panel.getComponents()[0]).getText()+"')";
-						dm.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);						
-					}	
-					//String rule="context: "
+				if(classList.get(pos).getClassifier().allChildren().size()>1){
+					wrongSelection("It is not possible to have the exclusion of this type because the Supertype");
+				}else{
+					Object[] stereo;
+					stereo=  stereotypes.toArray();
+					JPanel panel= selectStereotype(stereo);
+					if(stereotypes!=null){
+						//DerivedByExclusion.getInstance().createExclusionRule(((Classifier) refontoList.get(pos)).getName(), ((Classifier) refontoList.get(pos2)).getName(), name);
+						if(!(refontoList.get(pos2).eClass().getName().equals("Role") && (refontoList.get(pos).eClass().getName().equals("Kind")) ))
+						{
+							String rule="context: _'"+((Classifier) refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier) refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+((JTextField)panel.getComponents()[0]).getText()+"')";
+							dm.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);						
+						}	
+						//String rule="context: "
+						
+						
+							return createDerivedTypeExclusion(((JComboBox)panel.getComponents()[1]).getSelectedItem().toString(), mainfix, selected, ((JTextField)panel.getComponents()[0]).getText(), classList.get(pos), classList.get(pos2),gen.get(0), project);
+						}
 					
-					return createDerivedTypeExclusion(((JComboBox)panel.getComponents()[1]).getSelectedItem().toString(), mainfix, selected, ((JTextField)panel.getComponents()[0]).getText(), classList.get(pos), classList.get(pos2),gen.get(0), project);
-					
-				}
+					}
 			}
 			else{
 				wrongSelection("Wrong Selection, check the documentation");
@@ -718,12 +744,12 @@ public class DerivedTypesOperations {
 							}else if(specialCase.equals("Mixin")){
 								specialCase="KindMixin";
 							} else {
-								specialCase="Subkind";
+								specialCase="SubKind";
 							}
 						}
 
 					}else{
-						if(specialCase.equals("Kind")|| specialCase.equals("Subkind")|| specialCase.equals("Role") || specialCase.equals("Phase")){
+						if(specialCase.equals("Kind")|| specialCase.equals("SubKind")|| specialCase.equals("Role") || specialCase.equals("Phase")){
 							wrongSelection("Kinds intersect only with Mixins");
 							return null;
 						}else{
@@ -732,7 +758,7 @@ public class DerivedTypesOperations {
 							}else	if(specialCase=="Mixin"){
 								specialCase="KindMixin";
 							}else	if(specialCase=="Category"){
-								specialCase="Subkind";
+								specialCase="SubKind";
 							}else{
 								specialCase="Kind";
 							}
@@ -742,18 +768,18 @@ public class DerivedTypesOperations {
 					if(element.getClassifier() instanceof RoleMixin){
 						if(specialCase.equals("") || specialCase.equals("RoleMixin") || specialCase.equals("Mixin")|| specialCase.equals("Category")){
 							specialCase="RoleMixin";
-						}else if(specialCase.equals("Kind") || specialCase.equals("Subkind")){
+						}else if(specialCase.equals("Kind") || specialCase.equals("SubKind")){
 							specialCase="Role";
 						}
 					} else if(element.getClassifier() instanceof Mixin){
 						if(specialCase.equals("") ||  specialCase.equals("Mixin")|| specialCase.equals("Category")){
 							specialCase="Mixin";
-						} else if(specialCase.equals("Kind") || specialCase.equals("Subkind") ){
+						} else if(specialCase.equals("Kind") || specialCase.equals("SubKind") ){
 							specialCase="KindMixin";
 						}
 					}
 					else if (specialCase.equals("Kind")){
-						specialCase="Subkind";
+						specialCase="SubKind";
 					}else{
 						specialCase="Category";
 					}
@@ -791,7 +817,7 @@ public class DerivedTypesOperations {
 			ArrayList<String> values = new ArrayList<String>();
 			values.add("Role");
 			values.add("Phase");
-			values.add("Subkind");
+			values.add("SubKind");
 			stereo=values.toArray();
 			JPanel panel = selectStereotype(stereo);
 			name= ((JTextField)panel.getComponents()[0]).getText();
@@ -855,7 +881,7 @@ public class DerivedTypesOperations {
 			if(selected.get(0) instanceof ClassElement){
 				ClassElement element = (ClassElement) selected.get(0);
 				if(element.getClassifier() instanceof Kind || element.getClassifier() instanceof SubKind  ){
-					values.add("Subkind");
+					values.add("SubKind");
 					values.add("Phase");
 				}else if(element.getClassifier() instanceof Role || element.getClassifier() instanceof Phase  ){
 					values.add("Phase");

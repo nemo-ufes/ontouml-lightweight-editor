@@ -87,14 +87,14 @@ public class BidirectionalParticipationPattern extends JDialog {
 		lbl_derived_right.setColumns(10);
 		
 		
-		cmb_base_left.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collective", "Quantity", "Subkind", "Role", "Phase", "Category", "RoleMixin", "Mixin"}));
+		cmb_base_left.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collective", "Quantity", "SubKind", "Role", "Phase", "Category", "RoleMixin", "Mixin"}));
 		
 		JComboBox comboBox_1 = new JComboBox();
 		
 		JLabel lblNewLabel_5 = new JLabel("");
 		lblNewLabel_5.setIcon(new ImageIcon(BidirectionalParticipationPattern.class.getResource("/resources/figures/derivationbyparticipation_bi.PNG")));
 				
-		cmb_base_right.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collective", "Quantity", "Subkind", "Role", "Phase", "Category", "RoleMixin", "Mixin"}));
+		cmb_base_right.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collective", "Quantity", "SubKind", "Role", "Phase", "Category", "RoleMixin", "Mixin"}));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)

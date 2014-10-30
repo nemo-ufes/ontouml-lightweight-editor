@@ -75,7 +75,7 @@ public class CompositionParticipationPattern extends JDialog {
 		lbl_derived.setColumns(10);
 		
 		
-		cmb_base.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collective", "Quantity", "Subkind", "Role", "Phase", "Category", "RoleMixin", "Mixin"}));
+		cmb_base.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collective", "Quantity", "SubKind", "Role", "Phase", "Category", "RoleMixin", "Mixin"}));
 		
 		
 		cmb_whole.setModel(new DefaultComboBoxModel(new String[] {"Collective"}));
@@ -87,7 +87,7 @@ public class CompositionParticipationPattern extends JDialog {
 		rdbtnNewRadioButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(rdbtnNewRadioButton.isSelected()){
-					cmb_whole.setModel(new DefaultComboBoxModel(new String[] {"Kind","Subkind","Role","Phase"}));
+					cmb_whole.setModel(new DefaultComboBoxModel(new String[] {"Kind","SubKind","Role","Phase"}));
 				}
 			}
 		});

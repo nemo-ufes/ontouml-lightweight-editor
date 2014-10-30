@@ -101,7 +101,7 @@ public class PastSpecializationPattern extends JDialog {
 		txt_past.setText("Derived");
 		txt_past.setColumns(10);
 		
-		cmb_super.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "Subkind", "Role", "Phase"}));
+		cmb_super.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Role", "Phase"}));
 		
 		
 		cmb_special.addActionListener(new ActionListener() {

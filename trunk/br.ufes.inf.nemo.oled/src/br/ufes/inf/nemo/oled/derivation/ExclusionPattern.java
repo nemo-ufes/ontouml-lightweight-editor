@@ -182,7 +182,7 @@ public class ExclusionPattern extends JDialog {
 
 			}
 		});
-		cmb_base.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Subkind", "Role", "Phase", "Quantity", "Collection", "Mixin", "RoleMixin", "Category"}));
+		cmb_base.setModel(new DefaultComboBoxModel(new String[] {"Kind", "SubKind", "Role", "Phase", "Quantity", "Collection", "Mixin", "RoleMixin", "Category"}));
 
 		final JCheckBox chckbxNewCheckBox = new JCheckBox("Generate OCL Constraint");
 		chckbxNewCheckBox.setBackground(Color.WHITE);
@@ -190,7 +190,7 @@ public class ExclusionPattern extends JDialog {
 		
 		JLabel lblNewLabel_3 = new JLabel("");
 		lblNewLabel_3.setIcon(new ImageIcon(ExclusionPattern.class.getResource("/resources/figures/derivationbyexclusion.PNG")));
-		cmb_derived.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collection", "Quantity", "Subkind", "Category"}));
+		cmb_derived.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collection", "Quantity", "SubKind", "Category"}));
 		
 		JLabel lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setIcon(new ImageIcon(ExclusionPattern.class.getResource("/resources/figures/text_exclusion.png")));
