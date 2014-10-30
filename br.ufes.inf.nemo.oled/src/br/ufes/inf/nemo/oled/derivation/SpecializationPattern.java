@@ -101,10 +101,10 @@ public class SpecializationPattern extends JDialog {
 		lbl_derived.setColumns(10);
 		
 
-		cmb_stereo_base.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Subkind", "Phase", "Role"}));
+		cmb_stereo_base.setModel(new DefaultComboBoxModel(new String[] {"Kind", "SubKind", "Phase", "Role"}));
 		
 
-		cmb_stereo_der.setModel(new DefaultComboBoxModel(new String[] {"Phase", "Subkind"}));
+		cmb_stereo_der.setModel(new DefaultComboBoxModel(new String[] {"Phase", "SubKind"}));
 		
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setIcon(new ImageIcon(SpecializationPattern.class.getResource("/resources/figures/derivation_by_specialization.jpg")));

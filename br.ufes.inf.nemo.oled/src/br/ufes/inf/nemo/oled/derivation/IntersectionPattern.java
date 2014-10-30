@@ -130,7 +130,7 @@ public class IntersectionPattern extends JDialog {
 					values.add("Category");
 				}else{
 					
-					model.addElement("Subkind");
+					model.addElement("SubKind");
 					if(combo_base_1.getSelectedItem().toString().equals("Role Mixin") || combo_base_1.getSelectedItem().toString().equals("Mixin") || combo_base_1.getSelectedItem().toString().equals("Category")){
 						values.add("Kind");
 						values.add("Collective");
@@ -164,7 +164,7 @@ public class IntersectionPattern extends JDialog {
 		});
 		
 		
-		combo_base_1.setModel(new DefaultComboBoxModel(new String[] {"Subkind", "Kind", "Collective", "Quantity", "Role", "Phase", "Category", "Mixin", "RoleMixin"}));
+		combo_base_1.setModel(new DefaultComboBoxModel(new String[] {"SubKind", "Kind", "Collective", "Quantity", "Role", "Phase", "Category", "Mixin", "RoleMixin"}));
 		
 		
 		combo_base_2.addActionListener(new ActionListener() {
@@ -172,7 +172,7 @@ public class IntersectionPattern extends JDialog {
 				setDerivedStereotype();
 			}
 		});
-		combo_base_2.setModel(new DefaultComboBoxModel(new String[] {"Subkind", "Role", "Phase", "Category", "Mixin", "RoleMixin"}));
+		combo_base_2.setModel(new DefaultComboBoxModel(new String[] {"SubKind", "Role", "Phase", "Category", "Mixin", "RoleMixin"}));
 		
 		
 		combo_derived.addActionListener(new ActionListener() {
@@ -181,7 +181,7 @@ public class IntersectionPattern extends JDialog {
 			}
 		});
 		
-		combo_derived.setModel(new DefaultComboBoxModel(new String[] {"Subkind"}));
+		combo_derived.setModel(new DefaultComboBoxModel(new String[] {"SubKind"}));
 		
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon(IntersectionPattern.class.getResource("/resources/figures/derivationbyintersection.PNG")));

@@ -22,7 +22,7 @@ public class DerivedByIntersection extends DerivedType {
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
-		values.put("Role"+"Subkind", possibilites);
+		values.put("Role"+"SubKind", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
@@ -42,7 +42,7 @@ public class DerivedByIntersection extends DerivedType {
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Phase");
-		values.put("Phase"+"Subkind", possibilites);
+		values.put("Phase"+"SubKind", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Phase");
@@ -57,13 +57,13 @@ public class DerivedByIntersection extends DerivedType {
 		values.put("Kind"+"RoleMixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
-		possibilites.add("Subkind");
+		possibilites.add("SubKind");
 		values.put("Kind"+"Category", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
 		possibilites.add("Phase");
-		possibilites.add("Subkind");
+		possibilites.add("SubKind");
 		values.put("Kind"+"Mixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
@@ -71,13 +71,13 @@ public class DerivedByIntersection extends DerivedType {
 		values.put("Quantity"+"RoleMixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
-		possibilites.add("Subkind");
+		possibilites.add("SubKind");
 		values.put("Quantity"+"Category", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
 		possibilites.add("Phase");
-		possibilites.add("Subkind");
+		possibilites.add("SubKind");
 		values.put("Quantity"+"Mixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
@@ -85,44 +85,44 @@ public class DerivedByIntersection extends DerivedType {
 		values.put("Collective"+"RoleMixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
-		possibilites.add("Subkind");
+		possibilites.add("SubKind");
 		values.put("Collective"+"Category", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
 		possibilites.add("Phase");
-		possibilites.add("Subkind");
+		possibilites.add("SubKind");
 		values.put("Collective"+"Mixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
-		values.put("Subkind"+"Role", possibilites);
+		values.put("SubKind"+"Role", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Phase");
-		values.put("Subkind"+"Phase", possibilites);
+		values.put("SubKind"+"Phase", possibilites);
 		
 		possibilites = new ArrayList<String>();
-		possibilites.add("Subkind");
-		values.put("Subkind"+"Subkind", possibilites);
+		possibilites.add("SubKind");
+		values.put("SubKind"+"SubKind", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
-		values.put("Subkind"+"RoleMixin", possibilites);
+		values.put("SubKind"+"RoleMixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Phase");
-		values.put("Subkind"+"Subkind", possibilites);
+		values.put("SubKind"+"SubKind", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
 		possibilites.add("Phase");
-		possibilites.add("Subkind");
-		values.put("Subkind"+"Mixin", possibilites);
+		possibilites.add("SubKind");
+		values.put("SubKind"+"Mixin", possibilites);
 		
 		possibilites = new ArrayList<String>();
-		possibilites.add("Subkind");
-		values.put("Subkind"+"Category", possibilites);
+		possibilites.add("SubKind");
+		values.put("SubKind"+"Category", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
@@ -134,7 +134,7 @@ public class DerivedByIntersection extends DerivedType {
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role");
-		values.put("RoleMixin"+"Subkind", possibilites);
+		values.put("RoleMixin"+"SubKind", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("RoleMixin");
@@ -157,8 +157,8 @@ public class DerivedByIntersection extends DerivedType {
 		values.put("Mixin"+"Phase", possibilites);
 		
 		possibilites = new ArrayList<String>();
-		possibilites.add("Subkind");
-		values.put("Mixin"+"Subkind", possibilites);
+		possibilites.add("SubKind");
+		values.put("Mixin"+"SubKind", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role Mixin");
@@ -183,8 +183,8 @@ public class DerivedByIntersection extends DerivedType {
 		values.put("Category"+"Phase", possibilites);
 		
 		possibilites = new ArrayList<String>();
-		possibilites.add("Subkind");
-		values.put("Category"+"Subkind", possibilites);
+		possibilites.add("SubKind");
+		values.put("Category"+"SubKind", possibilites);
 		
 		possibilites = new ArrayList<String>();
 		possibilites.add("Role Mixin");

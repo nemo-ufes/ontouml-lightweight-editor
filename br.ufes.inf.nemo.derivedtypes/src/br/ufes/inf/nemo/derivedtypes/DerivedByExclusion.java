@@ -20,28 +20,28 @@ public class DerivedByExclusion extends DerivedType{
 		//linha 1
 		ArrayList<String> value;
 		value= new ArrayList<>();
-		value.add("Subkind");
-		tableValues.put("Kind"+"Subkind", value);
+		value.add("SubKind");
+		tableValues.put("Kind"+"SubKind", value);
 
 		value= new ArrayList<>();
-		value.add("Subkind");
-		tableValues.put("Subkind"+"Subkind", value);
+		value.add("SubKind");
+		tableValues.put("SubKind"+"SubKind", value);
 
 		value= new ArrayList<>();
 		value.add("Kind");
-		value.add("Subkind");
+		value.add("SubKind");
 		value.add("Category");
 		tableValues.put("Category"+"Kind", value);
 
 		value= new ArrayList<>();
 		value.add("Kind");
-		value.add("Subkind");
+		value.add("SubKind");
 		value.add("Category");
-		tableValues.put("Category"+"Subkind", value);
+		tableValues.put("Category"+"SubKind", value);
 
 		value= new ArrayList<>();
 		value.add("Kind");
-		value.add("Subkind");
+		value.add("SubKind");
 		value.add("Category");
 		tableValues.put("Category"+"Category", value);
 
@@ -57,7 +57,7 @@ public class DerivedByExclusion extends DerivedType{
 		value.add("Phase");
 		value.add("Mixin");
 		value.add("RoleMixin");
-		tableValues.put("Mixin"+"Subkind", value);
+		tableValues.put("Mixin"+"SubKind", value);
 
 		value= new ArrayList<>();
 		value.add("Role");
@@ -75,7 +75,7 @@ public class DerivedByExclusion extends DerivedType{
 		value= new ArrayList<>();
 		value.add("Role");
 		value.add("Phase");
-		tableValues.put("Subkind"+"Role", value);
+		tableValues.put("SubKind"+"Role", value);
 
 		value= new ArrayList<>();
 		value.add("Phase");
@@ -83,7 +83,7 @@ public class DerivedByExclusion extends DerivedType{
 
 		value= new ArrayList<>();
 		value.add("Role");
-		tableValues.put("Subkind"+"Phase", value);
+		tableValues.put("SubKind"+"Phase", value);
 
 		value= new ArrayList<>();
 		value.add("Mixin");
@@ -131,20 +131,20 @@ public class DerivedByExclusion extends DerivedType{
 
 		value= new ArrayList<>();
 		value.add("Kind");
-		value.add("Subkind");
+		value.add("SubKind");
 		value.add("Category");
 		value.add("Mixin");
 		tableValues.put("Mixin"+"Role", value);
 
 		value= new ArrayList<>();
 		value.add("Kind");
-		value.add("Subkind");
+		value.add("SubKind");
 		value.add("Mixin");
 		tableValues.put("Mixin"+"Phase", value);
 
 		value= new ArrayList<>();
 		value.add("Kind");
-		value.add("Subkind");
+		value.add("SubKind");
 		value.add("Category");
 		value.add("Mixin");
 		tableValues.put("Mixin"+"RoleMixin", value);
@@ -158,7 +158,7 @@ public class DerivedByExclusion extends DerivedType{
 
 		value= new ArrayList<>();
 		value.add("Kind");
-		value.add("Subkind");
+		value.add("SubKind");
 		value.add("Role");
 		value.add("Phase");
 		value.add("Mixin");
@@ -182,7 +182,7 @@ public class DerivedByExclusion extends DerivedType{
 	public String createExclusionRule(String pai, String filho, String name){
 		String rule = null;
 		
-		if(!((filho.equals("Role") && (pai.equals("Role") || pai.equals("Phase") || pai.equals("Kind") || pai.equals("Subkind")  || pai.equals("Quantity")  || pai.equals("Collective") )))){
+		if(!((filho.equals("Role") && (pai.equals("Role") || pai.equals("Phase") || pai.equals("Kind") || pai.equals("SubKind")  || pai.equals("Quantity")  || pai.equals("Collective") )))){
 			rule="\ncontext "+pai+"\n"+"inv: not oclIsTypeOf(_'"+filho+"') implies oclIsTypeOf(_'"+name+"')";			
 		}
 		else{

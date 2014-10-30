@@ -107,7 +107,7 @@ public class DerivedByUnion extends DerivedType{
 		
 		//linha 4 e 5		
 		value= new ArrayList<>();
-		value.add("Subkind");
+		value.add("SubKind");
 		value.add("Category");
 		tableValues.put("SubKind"+"SubKind", value);
 		
@@ -217,27 +217,27 @@ public class DerivedByUnion extends DerivedType{
 		
 		value= new ArrayList<>();
 		value.add("Mixin");
-		tableValues.put("Subkind"+"Role", value);
+		tableValues.put("SubKind"+"Role", value);
 		
 		value= new ArrayList<>();
 		value.add("Mixin");
-		tableValues.put("Role"+"Subkind", value);
+		tableValues.put("Role"+"SubKind", value);
 		
 		value= new ArrayList<>();
 		value.add("Mixin");
-		tableValues.put("Subkind"+"Phase", value);
+		tableValues.put("SubKind"+"Phase", value);
 		
 		value= new ArrayList<>();
 		value.add("Mixin");
-		tableValues.put("Phase"+"Subkind", value);
+		tableValues.put("Phase"+"SubKind", value);
 		
 		value= new ArrayList<>();
 		value.add("Mixin");
-		tableValues.put("Subkind"+"RoleMixin", value);
+		tableValues.put("SubKind"+"RoleMixin", value);
 		
 		value= new ArrayList<>();
 		value.add("Mixin");
-		tableValues.put("RoleMixin"+"Subkind", value);
+		tableValues.put("RoleMixin"+"SubKind", value);
 		
 		value= new ArrayList<>();
 		value.add("Mixin");
@@ -299,7 +299,7 @@ public class DerivedByUnion extends DerivedType{
 		
 		value= new ArrayList<>();
 		value.add("Role");
-		value.add("Subkind");
+		value.add("SubKind");
 		value.add("RoleMixin");
 		tableValues.put("Role"+"Role", value);
 		
@@ -310,7 +310,7 @@ public class DerivedByUnion extends DerivedType{
 		
 		value= new ArrayList<>();
 		value.add("Phase");
-		value.add("Subkind");
+		value.add("SubKind");
 		value.add("RoleMixin");
 		tableValues.put("Phase"+"Phase", value);
 		
