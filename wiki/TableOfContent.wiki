@@ -7,4 +7,5 @@
   * Developing
     * [OntoUMLInfrastructure OntoUML Infrastructure]
   * Tutorials
+    * [ShortTutorials Video Tutorials ]
   * [FAQ Frequently Asked Questions (FAQ)]
