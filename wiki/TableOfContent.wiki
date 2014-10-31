@@ -6,4 +6,5 @@
     * [EclipseUML2 Eclipse UML2 version 4]
   * Developing
     * [OntoUMLInfrastructure OntoUML Infrastructure]
+  * Tutorials
   * [FAQ Frequently Asked Questions (FAQ)]
