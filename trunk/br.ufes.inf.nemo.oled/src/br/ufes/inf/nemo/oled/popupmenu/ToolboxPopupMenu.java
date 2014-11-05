@@ -570,17 +570,7 @@ public class ToolboxPopupMenu extends JPopupMenu {
 			}
 		});
        
-       pastspecializationItem.addMouseListener(new MouseAdapter()
-	    {    	   
-			@Override
-			public void mousePressed(MouseEvent e) 
-			{			
-			    if (SwingUtilities.isLeftMouseButton(e))
-	            {
-			    	frame.getDiagramManager().openDerivedTypePatternPastSpecialization(x,y);
-	            }
-			}
-		});
+ 
        
        participationItem.addMouseListener(new MouseAdapter()
 	    {    	   

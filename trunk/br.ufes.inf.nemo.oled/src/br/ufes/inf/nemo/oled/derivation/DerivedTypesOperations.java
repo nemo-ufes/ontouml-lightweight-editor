@@ -27,6 +27,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -37,6 +38,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -67,6 +69,7 @@ import br.ufes.inf.nemo.common.positioning.ClassPosition;
 import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
 import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
 import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
@@ -451,7 +454,7 @@ public class DerivedTypesOperations {
 					{
 						if(gs.getGeneralization().contains(ge.getGeneralization())){
 							if(gs.getGeneralization().size()>1){
-								wrongSelection("It is not possible to derive by exclusion, this type participate in a GS with other members");
+								wrongSelection("It is not possible to derive by exclusion because this type participate in a GS with other members");
 								return null;
 							}
 						}
@@ -712,6 +715,8 @@ public class DerivedTypesOperations {
 		List<GeneralizationElement> gen = new ArrayList<GeneralizationElement>();
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
 		String specialCase="";
+		
+		
 		for (DiagramElement element : selected) {
 			if (element instanceof ClassElement) {
 				classList.add((ClassElement) element);
@@ -797,6 +802,9 @@ public class DerivedTypesOperations {
 			DiagramManager diagramManager, DiagramEditor activeEditor, UmlProject project) {
 		dman= diagramManager;
 		
+		
+		ClassElement ce1=null;
+		ClassElement ce2=null;
 		ArrayList<String> names = new ArrayList<String>();
 		
 		int j=0;
@@ -804,11 +812,45 @@ public class DerivedTypesOperations {
 		for (int i = 0; i < activeEditor.getSelectedElements().size(); i++) {
 			if (activeEditor.getSelectedElements().get(i) instanceof ClassElement) {
 				j++;
-				ClassElement ce = (ClassElement) activeEditor.getSelectedElements().get(i);
-				refontoList.add(ce.getClassifier());
-				names.add(ce.getClassifier().getName());
+				ce1 = (ClassElement) activeEditor.getSelectedElements().get(i);
+				refontoList.add(ce1.getClassifier());
+				names.add(ce1.getClassifier().getName());
 			}		
 		}
+		
+		ce1 = (ClassElement) activeEditor.getSelectedElements().get(0);
+		ce2 = (ClassElement) activeEditor.getSelectedElements().get(1);
+		
+		Collection<? extends Connection> c = ce1.getConnections();
+		Collection<? extends Connection> c2 = ce2.getConnections();
+		List<GeneralizationElement> gen_1= new ArrayList<GeneralizationElement>();
+		List<GeneralizationElement> gen_2= new ArrayList<GeneralizationElement>();
+		
+		
+		for (Connection connection : c) {
+			if(connection instanceof GeneralizationElement){
+				gen_1= new ArrayList<GeneralizationElement>();
+				gen_1.add((GeneralizationElement) connection);
+			}
+		}
+		
+		for (Connection connection : c2) {
+			if(connection instanceof GeneralizationElement){
+				gen_2= new ArrayList<GeneralizationElement>();
+				gen_2.add((GeneralizationElement) connection);
+			}
+		}
+		
+		for (GeneralizationElement generalizationElement : gen_1) {
+			for (GeneralizationElement generalizationElement2 : gen_2) {
+				if(generalizationElement.getSpecific()==generalizationElement2.getSpecific()){
+					wrongSelection("Intersection Invalid because these types already have an intersection either parcial");
+					return null;
+				}
+			}
+			
+		}
+		
 		String name;
 		mainfix= new Fix();
 		of = new OutcomeFixer(project.getModel());
@@ -839,7 +881,7 @@ public class DerivedTypesOperations {
 			classifiers.add((Classifier)element);
 		}
 		
-		String rule="\ncontext _'"+names.get(0)+"'\n"+"inv: _'"+names.get(0)+"'.allInstances()->forAll( x |  x.oclIsTypeOf(_'"+names.get(1)+"') implies x.oclIsTypeOf(_'"+name+"'))";
+		String rule="\ncontext _'"+names.get(0)+"'\n"+"inv: self.allInstances()->forAll( x |  x.oclIsTypeOf(_'"+names.get(1)+"') implies x.oclIsTypeOf(_'"+name+"'))";
 		diagramManager.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);
 		
 		createMultipleGeneralizationIntersection(newElement,classifiers);
@@ -979,11 +1021,16 @@ public class DerivedTypesOperations {
 		of = new OutcomeFixer(dman2.getCurrentProject().getModel());
 		mainfix = new Fix();
 		Point2D.Double[] positions= ClassPosition.GSpositioning(2, location);
-		Classifier newElement= includeElement(location, namesuper, stereosuper);
+		
+		
 		Classifier newElement2= includeElement(positions[2], namespecial, stereospecial);
 		Classifier newElement3 = includeElement(positions[1], namederived, stereoderived);
-		createGeneralizationSingle(newElement, newElement2);
-		createGeneralizationSingle(newElement, newElement3);
+		if(stereosuper!=null && !stereosuper.equals("")){
+			Classifier newElement= includeElement(location, namesuper, stereosuper);
+			createGeneralizationSingle(newElement, newElement2);
+			createGeneralizationSingle(newElement, newElement3);
+		}
+		
 		
 		if(rule){
 			String rule_ocl= "\ncontext World \ntemp:_'"+namederived+"'.allInstances(self)->forAll( wk | self.allPrevious()->exists(w | wk.oclIsKindOf(_'"+namespecial+"',w)) and not wk.oclIsKindOf("+namespecial+",self))" ;
@@ -1092,6 +1139,23 @@ public class DerivedTypesOperations {
 		mainfix.addAll(fix2);
 		createGeneralizationSingle(newElement_4, newElement_5);
 		dman.updateOLED(mainfix);
+	}
+
+	public static Fix createPastSpecializationDerivation(
+			DiagramEditor activeEditor, UmlProject project,
+			DiagramManager diagramManager) {
+		
+		/*
+		 * if the element selected it is neither a role or phase it is a wrong selection
+		 */
+		ClassElement ce =  (ClassElement) activeEditor.getSelectedElements().get(0);
+		if(!(ce.getClassifier() instanceof Role || ce.getClassifier() instanceof Phase)){
+			wrongSelection("Only Role, Phase and Role Mixin have past specialization!");
+		}else{
+			//if(ce.getClassifier().getGeneralization().si)
+		}
+		
+		return null;
 	}
 	
 }
