@@ -3072,14 +3072,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		dialog.setVisible(true);
 	}
 	public void deriveBySpecialization() {
-		// TODO Auto-generated method stub
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
 		UmlProject project = getCurrentEditor().getProject();
 		Fix fix = DerivedTypesOperations.createSpecializationDerivation(activeEditor, project,this);
 		if(fix!=null) updateOLED(fix);
 	}
 	public void openDerivedTypePatternPastSpecialization(double x, double y) {
-		// TODO Auto-generated method stub
 		JDialog dialog = new PastSpecializationPattern(this);
 		this.setCenterDialog(dialog);
 		((PastSpecializationPattern) dialog).setPosition(x, y);
@@ -3088,7 +3086,6 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 	}
 	public void openDerivedTypePatternParticipation(double x, double y) {
-		// TODO Auto-generated method stub
 		
 		JDialog dialog = new ParticipationPatternTypeChoice(this);
 		this.setCenterDialog(dialog);
@@ -3098,11 +3095,11 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		
 	}
 	public void deriveByPastSpecialization() {
-		// TODO Auto-generated method stub
-		
+		DiagramEditor activeEditor = getCurrentDiagramEditor();
+		UmlProject project = getCurrentEditor().getProject();
+		Fix fix = DerivedTypesOperations.createPastSpecializationDerivation(activeEditor, project,this);
 	}
 	public void deriveByParticipation() {
-		// TODO Auto-generated method stub
 		
 	}	
 }

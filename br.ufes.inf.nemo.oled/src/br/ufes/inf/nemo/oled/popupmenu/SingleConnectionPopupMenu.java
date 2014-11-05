@@ -117,6 +117,7 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	private JMenuItem invertEndTypesItem;
 	@SuppressWarnings("unused")
 	private JMenuItem specializationItem;
+	private JMenuItem pastSpecializationItem;
 	
 	public SingleConnectionPopupMenu()
 	{   
@@ -146,10 +147,13 @@ public class SingleConnectionPopupMenu extends JPopupMenu implements ActionListe
 	public JMenu createDeriveByMenu()
 	{
 		JMenu deriveMenu = new JMenu("Derive by");
-		specializationItem = createMenuItem(deriveMenu, "derivedspecialization");		
+		specializationItem = createMenuItem(deriveMenu, "derivedspecialization");	
+		pastSpecializationItem = createMenuItem(deriveMenu, "derivedpastspecialization");	
 		add(deriveMenu);
 		return deriveMenu;
 	}
+	
+	
 	
 	public JMenuItem createPropertyMenu()
 	{

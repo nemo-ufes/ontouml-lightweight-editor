@@ -28,6 +28,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -63,7 +64,10 @@ public class PastSpecializationPattern extends JDialog {
 	DiagramManager dman;
 	@SuppressWarnings("rawtypes")
 	JComboBox cmb_super = new JComboBox();
-	
+	Vector comboBoxItems=new Vector();
+	final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
+	Vector comboBoxItems2=new Vector();
+	final DefaultComboBoxModel model2 = new DefaultComboBoxModel(comboBoxItems2);
 	/**
 
 
@@ -100,23 +104,57 @@ public class PastSpecializationPattern extends JDialog {
 		txt_past = new JTextField();
 		txt_past.setText("Derived");
 		txt_past.setColumns(10);
+		cmb_super.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		
 		cmb_super.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Quantity", "Collective", "SubKind", "Role", "Phase"}));
 		
 		
 		cmb_special.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(cmb_special.getSelectedItem().toString().equals("Role")){
-					cmb_past.setSelectedIndex(1);
+				
+				if(cmb_special.getSelectedItem().toString().equals("RoleMixin")){
+					cmb_super.setEnabled(false);
+					txt_supertype.setEnabled(false);
+					model2.addElement("");
+					model2.setSelectedItem("");
+					cmb_super.setModel(model2);
+					cmb_past.removeAllItems();
+					model.addElement("RoleMixin");
+					
 				}else{
-					cmb_past.setSelectedIndex(0);
+					cmb_super.removeAll();
+					model2.removeAllElements();
+					cmb_super.setEnabled(true);
+					txt_supertype.setEnabled(true);
+					model2.addElement("Kind");
+					model2.addElement("SubKind");
+					model2.addElement("Quantity");
+					model2.addElement("Collective");
+					model2.addElement("Role");
+					model2.addElement("Phase");
+					model2.setSelectedItem("Kind");
+					cmb_super.setModel(model2);
+					
+					
+					if(cmb_special.getSelectedItem().toString().equals("Role")){
+						cmb_past.removeAllItems();
+						model.addElement("Role");
+						
+					}else{
+						cmb_past.removeAllItems();
+						model.addElement("Phase");
+					}
 				}
+				cmb_past.setModel(model);
 			}
 		});
-		cmb_special.setModel(new DefaultComboBoxModel(new String[] {"Phase", "Role"}));
+		cmb_special.setModel(new DefaultComboBoxModel(new String[] {"Role", "Phase", "RoleMixin"}));
 		
 		
-		cmb_past.setModel(new DefaultComboBoxModel(new String[] {"Phase", "Role"}));
+		cmb_past.setModel(new DefaultComboBoxModel(new String[] {"Role"}));
 		
 		JLabel lblNewLabel_3 = new JLabel("");
 		lblNewLabel_3.setIcon(new ImageIcon(PastSpecializationPattern.class.getResource("/resources/figures/derivation_by_past.png")));

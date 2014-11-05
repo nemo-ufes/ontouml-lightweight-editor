@@ -269,7 +269,7 @@ public class IntersectionPattern extends JDialog {
 								if(!((txtBase.getText().equals("") || txtBase_1.getText().equals("") || txtDerived.getText().equals("")))){
 
 									
-									String rule="\ncontext _'"+txtBase.getText()+"'\n"+"inv: _'"+txtDerived.getText()+"'.allInstances()->forAll( x |  x.oclIsTypeOf(_'"+txtBase_1.getText()+"') implies x.oclIsTypeOf(_'"+txtDerived.getText()+"'))";
+									String rule="\ncontext _'"+txtBase.getText()+"'\n"+"inv: self.allInstances()->forAll( x |  x.oclIsTypeOf(_'"+txtBase_1.getText()+"') implies x.oclIsTypeOf(_'"+txtDerived.getText()+"'))";
 									dm.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);
 									dispose();
 								}
