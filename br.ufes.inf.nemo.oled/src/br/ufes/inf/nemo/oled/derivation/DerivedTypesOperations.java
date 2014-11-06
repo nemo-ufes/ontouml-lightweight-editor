@@ -32,6 +32,7 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -524,9 +525,6 @@ public class DerivedTypesOperations {
 	@SuppressWarnings("unused")
 	public static String DefineNameDerivedType(){
 
-		JFrame frame = new JFrame("InputDialog Example #1");
-
-		// prompt the user to enter their name
 		String name="";
 		while(name==""){
 			name = JOptionPane.showInputDialog(null, "What's the Name of the New Type", "Name Type", 1);    
@@ -631,7 +629,6 @@ public class DerivedTypesOperations {
 	public  static void createGeneralizationSingle(Classifier father, Classifier son1){
 		Fix fix=of.createGeneralization(son1, father);
 		mainfix.addAll(fix);
-
 	}
 
 	public  static void createMultipleGeneralization(Classifier father, ArrayList<Classifier> sons){
@@ -666,28 +663,6 @@ public class DerivedTypesOperations {
 		createGeneralization(newElement, newElement2, newElement3);
 		dman2.updateOLED(mainfix);	
 
-		
-//		dman=dm;
-//		of = new OutcomeFixer(dm.getCurrentProject().getModel());
-//		mainfix = new Fix();
-//		Point2D.Double[] positions= ClassPosition.GSpositioning(2, location);
-//		Classifier newElement= includeElement(positions[1], values.get(2), values.get(0));
-//		Classifier newElement2= includeElement(positions[2], values.get(3), values.get(1));
-//		ArrayList<String> stereotypes= DerivedByUnion.getInstance().inferStereotype(newElement.eClass().getName() , newElement2.eClass().getName());
-//		Classifier newElement3=null;
-//		if(stereotypes!=null){
-//			if(stereotypes.size()==1){
-//				newElement3 = includeElement(location, values.get(4), stereotypes.get(0));
-//			}
-//			else{
-//				Object[] stereo;
-//				stereo=  stereotypes.toArray();
-//				String stereotype= selectStereotype(stereo);
-//				newElement3 = includeElement(location, values.get(4), stereotype);
-//			}
-//			createGeneralization(newElement3, newElement2, newElement);
-//			dm.updateOLED(mainfix);	
-//		
 	}
 
 	public static void intersectionPattern(DiagramManager dm, String base_1_name,
@@ -715,8 +690,7 @@ public class DerivedTypesOperations {
 		List<GeneralizationElement> gen = new ArrayList<GeneralizationElement>();
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
 		String specialCase="";
-		
-		
+
 		for (DiagramElement element : selected) {
 			if (element instanceof ClassElement) {
 				classList.add((ClassElement) element);
@@ -1144,18 +1118,53 @@ public class DerivedTypesOperations {
 	public static Fix createPastSpecializationDerivation(
 			DiagramEditor activeEditor, UmlProject project,
 			DiagramManager diagramManager) {
-		
+		mainfix = new Fix();
+		dman=diagramManager;
+		of = new OutcomeFixer(diagramManager.getCurrentProject().getModel());
 		/*
 		 * if the element selected it is neither a role or phase it is a wrong selection
 		 */
 		ClassElement ce =  (ClassElement) activeEditor.getSelectedElements().get(0);
-		if(!(ce.getClassifier() instanceof Role || ce.getClassifier() instanceof Phase)){
+		if(!(ce.getClassifier() instanceof Role || ce.getClassifier() instanceof Phase || ce.getClassifier() instanceof RoleMixin)){
 			wrongSelection("Only Role, Phase and Role Mixin have past specialization!");
 		}else{
-			//if(ce.getClassifier().getGeneralization().si)
+			if(ce.getClassifier() instanceof RoleMixin){
+				Point2D.Double location = new Point2D.Double();
+				location.x= ce.getAbsoluteX1()+100;
+				location.y= ce.getAbsoluteY1();
+				String name = DefineNameDerivedType();	
+				includeElement(location, name, "RoleMixin");
+				String rule_ocl= "\ncontext World \ntemp:_'"+name+"'.allInstances(self)->forAll( wk | self.allPrevious()->exists(w | wk.oclIsKindOf(_'"+ce.getClassifier().eClass().getName()+"',w)) and not wk.oclIsKindOf("+ce.getClassifier().eClass().getName()+",self))" ;
+				dman.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule_ocl);
+			}else{
+				JDialog dialog = new PastSpecializationDiagram(ce);
+				dialog.setVisible(true);
+				diagramManager.setCenterDialog(dialog);
+			}
 		}
 		
-		return null;
+		
+		dman.updateOLED(mainfix);
+		return mainfix;
+	}
+	
+
+	public static void  createPastSpecializationDerivation() {
+		Point2D.Double location = new Point2D.Double();
+		ClassElement ce = PastSpecializationDiagram.getCe();
+		location.x= ce.getAbsoluteX1()+150;
+		location.y= ce.getAbsoluteY1();
+		String name = PastSpecializationDiagram.getTxt_past();	
+		Classifier c=includeElement(location, name, ce.getClassifier().eClass().getName());
+		location.x= ce.getAbsoluteX1()+75;
+		location.y= ce.getAbsoluteY1()-75;
+		name = PastSpecializationDiagram.getTxt_super();
+		Classifier c2= includeElement(location, name, PastSpecializationDiagram.getCmb_stereotype());
+		createGeneralizationSingle(c2, c);
+		createGeneralizationSingle(c2, ce.getClassifier());
+		String rule_ocl= "\ncontext World \ntemp:_'"+PastSpecializationDiagram.getTxt_past()+"'.allInstances(self)->forAll( wk | self.allPrevious()->exists(w | wk.oclIsKindOf(_'"+ce.getClassifier().eClass().getName()+"',w)) and not wk.oclIsKindOf("+ce.getClassifier().eClass().getName()+",self))" ;
+		dman.updateOLED(mainfix);
+
 	}
 	
 }
