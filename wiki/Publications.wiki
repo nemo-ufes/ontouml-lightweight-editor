@@ -30,10 +30,8 @@ BRAGA, B.; ALMEIDA, J.; GUIZZARDI, G.; BENEVIDES, A. *Transforming OntoUML into 
 
 CARRARETTO, R. *A Modeling Infrastructure for OntoUML*. Vitória, Brazil: Universidade Federal do Espírito Santo, 2010. [http://rcarraretto.googlecode.com/files/aModelingInfrastructureForOntoUML.pdf (full text)]
 
-ZAMBORLINI, V. Estudo de Alternativas de Mapeamento de Ontologias da Linguagem OntoUML para OWL: Abordagens para representação de Informação Temporal. Vitória, Brazil: Universidade Federal do Espírito Santo, 2011. [http://www.inf.ufes.br/~rguizzardi/OEO/dissertacao-Veruska.pdf (full text)]
+ZAMBORLINI, V. *Estudo de Alternativas de Mapeamento de Ontologias da Linguagem OntoUML para OWL: Abordagens para representação de Informação Temporal*. Vitória, Brazil: Universidade Federal do Espírito Santo, 2011. [http://www.inf.ufes.br/~rguizzardi/OEO/dissertacao-Veruska.pdf (full text)]
 
-ZAMBORLINI, V.; GUIZZARDI, G. On the Representation of Temporally Changing Information in OWL. In: International Workshop on Vocabularies, Ontologies and Rules for The Enterprise (VORTE). In Proceedings... Vitória, Brazil: IEEE Computer Society, 2010. P. 283–292. [http://www.inf.ufes.br/~gguizzardi/VORTE_2010_VZGG.pdf (full text)]
+ZAMBORLINI, V.; GUIZZARDI, G. *On the Representation of Temporally Changing Information in OWL*. In: International Workshop on Vocabularies, Ontologies and Rules for The Enterprise (VORTE). In Proceedings... Vitória, Brazil: IEEE Computer Society, 2010. P. 283–292. [http://www.inf.ufes.br/~gguizzardi/VORTE_2010_VZGG.pdf (full text)]
 
 BENEVIDES, A. B.; GUIZZARDI, G.; BRAGA, B. F. B.; ALMEIDA, P. A. *Assessing Modal Aspects of OntoUML Conceptual Models in Alloy*. In: International Workshop on Evolving Theories of Conceptual Modelling (ETheCoM). In Proceedings... Gramado, Brazil: Springer Berlin Heidelberg, 2009. P. 55–64. [http://www.inf.ufes.br/~gguizzardi/benevides-et-al-2009.pdf (full text)]
-
-
