@@ -58,4 +58,7 @@ Vitória, Brazil: Universidade Federal do Espírito Santo, 2011.
 Veruska Zamborlini, Giancarlo Guizzardi
 International Workshop on Vocabularies, Ontologies and Rules for The Enterprise (VORTE). Vitória, Brazil: IEEE Computer Society, 2010. P. 283–292.
 
-BENEVIDES, A. B.; GUIZZARDI, G.; BRAGA, B. F. B.; ALMEIDA, P. A. *Assessing Modal Aspects of OntoUML Conceptual Models in Alloy*. In: International Workshop on Evolving Theories of Conceptual Modelling (ETheCoM). In Proceedings... Gramado, Brazil: Springer Berlin Heidelberg, 2009. P. 55–64. [http://www.inf.ufes.br/~gguizzardi/benevides-et-al-2009.pdf (full text)]
+[http://www.inf.ufes.br/~gguizzardi/benevides-et-al-2009.pdf Assessing Modal Aspects of OntoUML Conceptual Models in Alloy]
+Alessander Botti Benevides, Giancarlo Guizzardi, Bernardo Braga, João Paulo Andrade Almeida
+International Workshop on Evolving Theories of Conceptual Modelling (ETheCoM).
+Gramado, Brazil: Springer Berlin Heidelberg, 2009. P. 55–64.
