@@ -22,9 +22,9 @@ GUERSON, J. O. Validação de Modelos OntoUML Enriquecidos com Restrições OCL.
 
 SALES, T. P. Identificação de Padrões de Erro em Modelagem Conceitual Por Meio de Validação de Ontologias OntoUML Utilizando Alloy. Vitória, Brazil: Universidade Federal do Espírito Santo, 2012. [https://drive.google.com/file/d/0B5VKZPBDiDmFTFBac01valduSTA/view?usp=sharing (full text)]
 
-SALES, T. P.; BARCELOS, P. P. F.; GUIZZARDI, G. Identification of Semantic Anti-Patterns in Ontology-Driven Conceptual Modeling via Visual Simulation. In: International Workshop on Ontology-Driven Information Systems (ODISE). In Proceedings... Graz, Austria: 2012.
+SALES, T. P.; BARCELOS, P. P. F.; GUIZZARDI, G. Identification of Semantic Anti-Patterns in Ontology-Driven Conceptual Modeling via Visual Simulation. In: International Workshop on Ontology-Driven Information Systems (ODISE). In Proceedings... Graz, Austria: 2012. [http://kr-med.org/icbofois2012/proceedings/ICBOFOIS2012Workshops/FOIS2012ODISE/FOIS-2012-ODISE-Sales-Barcelos-Guizzardi.pdf (full text)]
 
-SALES, T. P.; GUIZZARDI, G. Detection, Simulation and Elimination of Semantic Anti- patterns in Ontology-Driven Conceptual Models. In: International Conference on Conceptual Modeling (ER). In Proceedings... Atlanta, USA: Springer Berlin Heidelberg, 2014.
+SALES, T. P.; GUIZZARDI, G. Detection, Simulation and Elimination of Semantic Anti- patterns in Ontology-Driven Conceptual Models. In: International Conference on Conceptual Modeling (ER). In Proceedings... Atlanta, USA: Springer Berlin Heidelberg, 2014. [http://www.inf.ufes.br/~gguizzardi/ER2014-CR++.pdf (full text)]
 
 SALES, T. P. Ontology Validation for Managers. Vitória, Brazil: Universidade Federal do Espírito Santo, 2014.
 [https://drive.google.com/file/d/0B5VKZPBDiDmFNk55RDF4a1NuNFE/view?usp=sharing (full text)]
