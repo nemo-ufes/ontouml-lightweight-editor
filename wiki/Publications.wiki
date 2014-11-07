@@ -18,7 +18,9 @@ International Conference on Conceptual Modeling (ER). Atlanta, USA: Springer Ber
 <i> John Oliveira Guerson, João Paulo Andrade Almeida, Giancarlo Guizzardi </i> <br>
 International Conference on Exploring Modeling Methods for Systems Analysis and Design (EMMSAD). Thessaloniki, Greece: Springer Verlag, 2014. P. 302–316.
 
-BARCELOS, P. P. F.; SANTOS, V. A. DOS; SILVA, F. B.; MONTEIRO, M.; GARCIA, A. S. *An Automated Transformation from OntoUML to OWL and SWRL* (M. P. Bax, M. B. Almeida, R. Wassermann, Eds.). In: Seminário de Pesquisa em Ontologias no Brasil (ONTOBRAS). In Proceedings... Belo Horizonte, Brazil: CEUR- WS.org, 2013. P. 130–141. [http://ceur-ws.org/Vol-1041/ontobras-2013_paper44.pdf (full text)]
+[http://ceur-ws.org/Vol-1041/ontobras-2013_paper44.pdf (full text) An Automated Transformation from OntoUML to OWL and SWRL] <br>
+<i> Pedro Paulo Favato Barcelos, Victor Amorim dos Santos, Freddy Brasileiro Silva, Maxwell Monteiro, Anilton Salles Garcia </i><br>
+Seminário de Pesquisa em Ontologias no Brasil (ONTOBRAS). Belo Horizonte, Brazil: CEUR- WS.org, 2013. P. 130–141. 
 
 ALBUQUERQUE, A. F. DE; GUIZZARDI, G. *An Ontological Foundation for Conceptual Modeling Datatypes based on Semantic Reference Spaces* (R. Wieringa, S. Nurcan, C. Rolland, J.-L. Cavarero, Eds.). In: International Conference on Research Challenges in Information Science (RCIS). In Proceedings... Paris, France: IEEE Press, 2013. P. 1–12.
 [http://www.inf.ufes.br/~gguizzardi/PID2733627.pdf (full text)]
