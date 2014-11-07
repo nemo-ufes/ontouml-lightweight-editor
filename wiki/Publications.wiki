@@ -11,3 +11,5 @@ BARCELOS, P. P. F.; SANTOS, V. A. DOS; SILVA, F. B.; MONTEIRO, M.; GARCIA, A. S.
 BENEVIDES, A. B.; GUIZZARDI, G.; BRAGA, B. F. B.; ALMEIDA, J. P. A. Validating Modal Aspects of OntoUML Conceptual Models Using Automatically Generated Visual World Structures. Journal of Universal Computer Science, v. 16, n. 20, p. 2904–2933, 2010a. [http://nemo.inf.ufes.br/files/validating_modal_aspects_of_ontouml_conceptual_models_using_automatically_generated_visual_world_structures_2011.pdf (full paper)]
 
 BENEVIDES, A. B.; GUIZZARDI, G.; BRAGA, B. F. B.; ALMEIDA, P. A. Assessing Modal Aspects of OntoUML Conceptual Models in Alloy. In: International Workshop on Evolving Theories of Conceptual Modelling (ETheCoM). In Proceedings... Gramado, Brazil: Springer Berlin Heidelberg, 2009. P. 55–64. [http://www.inf.ufes.br/~gguizzardi/benevides-et-al-2009.pdf (full paper)]
+
+BRAGA, B.; ALMEIDA, J.; GUIZZARDI, G.; BENEVIDES, A. Transforming OntoUML into Alloy: towards conceptual model validation using a lightweight formal method. Innovations in Systems and Software Engineering, v. 6, n. 1, p. 55–63, 2010. [http://www.inf.ufes.br/~gguizzardi/braga-et-al-ISSE10.pdf (full paper)]
