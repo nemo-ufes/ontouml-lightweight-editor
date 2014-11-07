@@ -18,4 +18,4 @@ CARRARETTO, R. A Modeling Infrastructure for OntoUML. Vitória, Brazil: Univers
 
 GUERSON, J. O.; ALMEIDA, J. P. A.; GUIZZARDI, G. Support for Domain Constraints in the Validation of Ontologically Well-Founded Conceptual Models. In: International Conference on Exploring Modeling Methods for Systems Analysis and Design (EMMSAD). In Proceedings... Thessaloniki, Greece: Springer Verlag, 2014. P. 302–316. [http://www.inf.ufes.br/~gguizzardi/emmsad2014.pdf (full text)]
 
-GUERSON, J. O. Validação de Modelos OntoUML Enriquecidos com Restrições OCL. Vitória, Brazil: Universidade Federal do Espírito Santo, 2013.
+GUERSON, J. O. Validação de Modelos OntoUML Enriquecidos com Restrições OCL. Vitória, Brazil: Universidade Federal do Espírito Santo, 2013. [https://drive.google.com/open?id=0B5VKZPBDiDmFOGFSeXY4bHJ2dVE&authuser=0 (full text)]
