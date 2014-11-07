@@ -11,28 +11,26 @@ SALES, T. P. *Ontology Validation for Managers*. Vitória, Brazil: Universidade 
 
 SALES, T. P.; GUIZZARDI, G. *Detection, Simulation and Elimination of Semantic Anti-Patterns in Ontology-Driven Conceptual Models*. In: International Conference on Conceptual Modeling (ER). In Proceedings... Atlanta, USA: Springer Berlin Heidelberg, 2014. [http://www.inf.ufes.br/~gguizzardi/ER2014-CR++.pdf (full text)]
 
-GUERSON, J. O.; ALMEIDA, J. P. A.; GUIZZARDI, G. Support for Domain Constraints in the Validation of Ontologically Well-Founded Conceptual Models. In: International Conference on Exploring Modeling Methods for Systems Analysis and Design (EMMSAD). In Proceedings... Thessaloniki, Greece: Springer Verlag, 2014. P. 302–316. [http://www.inf.ufes.br/~gguizzardi/emmsad2014.pdf (full text)]
+GUERSON, J. O.; ALMEIDA, J. P. A.; GUIZZARDI, G. *Support for Domain Constraints in the Validation of Ontologically Well-Founded Conceptual Models*. In: International Conference on Exploring Modeling Methods for Systems Analysis and Design (EMMSAD). In Proceedings... Thessaloniki, Greece: Springer Verlag, 2014. P. 302–316. [http://www.inf.ufes.br/~gguizzardi/emmsad2014.pdf (full text)]
 
-BARCELOS, P. P. F.; SANTOS, V. A. DOS; SILVA, F. B.; MONTEIRO, M.; GARCIA, A. S. An Automated Transformation from OntoUML to OWL and SWRL (M. P. Bax, M. B. Almeida, R. Wassermann, Eds.). In: Seminário de Pesquisa em Ontologias no Brasil (ONTOBRAS). In Proceedings... Belo Horizonte, Brazil: CEUR- WS.org, 2013. P. 130–141. [http://ceur-ws.org/Vol-1041/ontobras-2013_paper44.pdf (full text)]
+BARCELOS, P. P. F.; SANTOS, V. A. DOS; SILVA, F. B.; MONTEIRO, M.; GARCIA, A. S. *An Automated Transformation from OntoUML to OWL and SWRL* (M. P. Bax, M. B. Almeida, R. Wassermann, Eds.). In: Seminário de Pesquisa em Ontologias no Brasil (ONTOBRAS). In Proceedings... Belo Horizonte, Brazil: CEUR- WS.org, 2013. P. 130–141. [http://ceur-ws.org/Vol-1041/ontobras-2013_paper44.pdf (full text)]
 
-ALBUQUERQUE, A. F. DE; GUIZZARDI, G. An Ontological Foundation for Conceptual Modeling Datatypes based on Semantic Reference Spaces (R. Wieringa, S. Nurcan, C. Rolland, J.-L. Cavarero, Eds.). In: International Conference on Research Challenges in Information Science (RCIS). In Proceedings... Paris, France: IEEE Press, 2013. P. 1–12.
+ALBUQUERQUE, A. F. DE; GUIZZARDI, G. *An Ontological Foundation for Conceptual Modeling Datatypes based on Semantic Reference Spaces* (R. Wieringa, S. Nurcan, C. Rolland, J.-L. Cavarero, Eds.). In: International Conference on Research Challenges in Information Science (RCIS). In Proceedings... Paris, France: IEEE Press, 2013. P. 1–12.
 [http://www.inf.ufes.br/~gguizzardi/PID2733627.pdf (full text)]
 
-GUERSON, J. O. Validação de Modelos OntoUML Enriquecidos com Restrições OCL. Vitória, Brazil: Universidade Federal do Espírito Santo, 2013. [https://drive.google.com/open?id=0B5VKZPBDiDmFOGFSeXY4bHJ2dVE&authuser=0 (full text)]
+GUERSON, J. O. *Validação de Modelos OntoUML Enriquecidos com Restrições OCL*. Vitória, Brazil: Universidade Federal do Espírito Santo, 2013. [https://drive.google.com/open?id=0B5VKZPBDiDmFOGFSeXY4bHJ2dVE&authuser=0 (full text)]
 
-SALES, T. P.; BARCELOS, P. P. F.; GUIZZARDI, G. Identification of Semantic Anti-Patterns in Ontology-Driven Conceptual Modeling via Visual Simulation. In: International Workshop on Ontology-Driven Information Systems (ODISE). In Proceedings... Graz, Austria: 2012. [http://kr-med.org/icbofois2012/proceedings/ICBOFOIS2012Workshops/FOIS2012ODISE/FOIS-2012-ODISE-Sales-Barcelos-Guizzardi.pdf (full text)]
+SALES, T. P.; BARCELOS, P. P. F.; GUIZZARDI, G. *Identification of Semantic Anti-Patterns in Ontology-Driven Conceptual Modeling via Visual Simulation*. In: International Workshop on Ontology-Driven Information Systems (ODISE). In Proceedings... Graz, Austria: 2012. [http://kr-med.org/icbofois2012/proceedings/ICBOFOIS2012Workshops/FOIS2012ODISE/FOIS-2012-ODISE-Sales-Barcelos-Guizzardi.pdf (full text)]
 
-SALES, T. P. Identificação de Padrões de Erro em Modelagem Conceitual Por Meio de Validação de Ontologias OntoUML Utilizando Alloy. Vitória, Brazil: Universidade Federal do Espírito Santo, 2012. [https://drive.google.com/file/d/0B5VKZPBDiDmFTFBac01valduSTA/view?usp=sharing (full text)]
+SALES, T. P. *Identificação de Padrões de Erro em Modelagem Conceitual Por Meio de Validação de Ontologias OntoUML Utilizando Alloy*. Vitória, Brazil: Universidade Federal do Espírito Santo, 2012. [https://drive.google.com/file/d/0B5VKZPBDiDmFTFBac01valduSTA/view?usp=sharing (full text)]
 
-BENEVIDES, A. B.; GUIZZARDI, G.; BRAGA, B. F. B.; ALMEIDA, J. P. A. Validating Modal Aspects of OntoUML Conceptual Models Using Automatically Generated Visual World Structures. Journal of Universal Computer Science, v. 16, n. 20, p. 2904–2933, 2010a. [http://nemo.inf.ufes.br/files/validating_modal_aspects_of_ontouml_conceptual_models_using_automatically_generated_visual_world_structures_2011.pdf (full text)]
+BENEVIDES, A. B.; GUIZZARDI, G.; BRAGA, B. F. B.; ALMEIDA, J. P. A. *Validating Modal Aspects of OntoUML Conceptual Models Using Automatically Generated Visual World Structures*. Journal of Universal Computer Science, v. 16, n. 20, p. 2904–2933, 2010a. [http://nemo.inf.ufes.br/files/validating_modal_aspects_of_ontouml_conceptual_models_using_automatically_generated_visual_world_structures_2011.pdf (full text)]
 
-BRAGA, B.; ALMEIDA, J.; GUIZZARDI, G.; BENEVIDES, A. Transforming OntoUML into Alloy: towards conceptual model validation using a lightweight formal method. Innovations in Systems and Software Engineering, v. 6, n. 1, p. 55–63, 2010. [http://www.inf.ufes.br/~gguizzardi/braga-et-al-ISSE10.pdf (full text)]
+BRAGA, B.; ALMEIDA, J.; GUIZZARDI, G.; BENEVIDES, A. *Transforming OntoUML into Alloy: towards conceptual model validation using a lightweight formal method*. Innovations in Systems and Software Engineering, v. 6, n. 1, p. 55–63, 2010. [http://www.inf.ufes.br/~gguizzardi/braga-et-al-ISSE10.pdf (full text)]
 
-CARRARETTO, R. A Modeling Infrastructure for OntoUML. Vitória, Brazil: Universidade Federal do Espírito Santo, 2010. [http://rcarraretto.googlecode.com/files/aModelingInfrastructureForOntoUML.pdf (full text)]
+CARRARETTO, R. *A Modeling Infrastructure for OntoUML*. Vitória, Brazil: Universidade Federal do Espírito Santo, 2010. [http://rcarraretto.googlecode.com/files/aModelingInfrastructureForOntoUML.pdf (full text)]
 
-BENEVIDES, A. B.; GUIZZARDI, G.; BRAGA, B. F. B.; ALMEIDA, P. A. Assessing Modal Aspects of OntoUML Conceptual Models in Alloy. In: International Workshop on Evolving Theories of Conceptual Modelling (ETheCoM). In Proceedings... Gramado, Brazil: Springer Berlin Heidelberg, 2009. P. 55–64. [http://www.inf.ufes.br/~gguizzardi/benevides-et-al-2009.pdf (full text)]
-
-
+BENEVIDES, A. B.; GUIZZARDI, G.; BRAGA, B. F. B.; ALMEIDA, P. A. *Assessing Modal Aspects of OntoUML Conceptual Models in Alloy*. In: International Workshop on Evolving Theories of Conceptual Modelling (ETheCoM). In Proceedings... Gramado, Brazil: Springer Berlin Heidelberg, 2009. P. 55–64. [http://www.inf.ufes.br/~gguizzardi/benevides-et-al-2009.pdf (full text)]
 
 
 
