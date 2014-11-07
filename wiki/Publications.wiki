@@ -10,8 +10,9 @@ Find the links to all the publications below (ordered by date):
 <i>Tiago Prince Sales, Giancarlo Guizzardi (Supervisor)</i> <br>
 Vitória, Brazil: Universidade Federal do Espírito Santo, 2014.
 
-
-SALES, T. P.; GUIZZARDI, G. *Detection, Simulation and Elimination of Semantic Anti-Patterns in Ontology-Driven Conceptual Models*. In: International Conference on Conceptual Modeling (ER). In Proceedings... Atlanta, USA: Springer Berlin Heidelberg, 2014. [http://www.inf.ufes.br/~gguizzardi/ER2014-CR++.pdf (full text)]
+[http://www.inf.ufes.br/~gguizzardi/ER2014-CR++.pdf Detection, Simulation and Elimination of Semantic Anti-Patterns in Ontology-Driven Conceptual Models] <br>
+<i>Tiago Prince Sales, Giancarlo Guizzardi </i> <br>
+International Conference on Conceptual Modeling (ER).  Atlanta, USA: Springer Berlin Heidelberg, 2014. 
 
 GUERSON, J. O.; ALMEIDA, J. P. A.; GUIZZARDI, G. *Support for Domain Constraints in the Validation of Ontologically Well-Founded Conceptual Models*. In: International Conference on Exploring Modeling Methods for Systems Analysis and Design (EMMSAD). In Proceedings... Thessaloniki, Greece: Springer Verlag, 2014. P. 302–316. [http://www.inf.ufes.br/~gguizzardi/emmsad2014.pdf (full text)]
 
