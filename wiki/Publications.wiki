@@ -6,8 +6,10 @@ The OntoUML Lightweight Editor aggregates the technological results of many rese
 
 Find the links to all the publications below (ordered by date):
 
-SALES, T. P. *Ontology Validation for Managers*. Vitória, Brazil: Universidade Federal do Espírito Santo, 2014.
-[https://drive.google.com/file/d/0B5VKZPBDiDmFNk55RDF4a1NuNFE/view?usp=sharing (full text)]
+[https://drive.google.com/file/d/0B5VKZPBDiDmFNk55RDF4a1NuNFE/view?usp=sharing *Ontology Validation for Managers*] 
+Tiago Prince Sales, Giancarlo Guizzardi (Supervisor)
+Vitória, Brazil: Universidade Federal do Espírito Santo, 2014.
+
 
 SALES, T. P.; GUIZZARDI, G. *Detection, Simulation and Elimination of Semantic Anti-Patterns in Ontology-Driven Conceptual Models*. In: International Conference on Conceptual Modeling (ER). In Proceedings... Atlanta, USA: Springer Berlin Heidelberg, 2014. [http://www.inf.ufes.br/~gguizzardi/ER2014-CR++.pdf (full text)]
 
