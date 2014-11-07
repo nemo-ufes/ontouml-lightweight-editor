@@ -6,4 +6,4 @@ The OntoUML Lightweight Editor aggregates the technological results of many rese
 
 Find the link to all this publications below:
 
-BARCELOS, P. P. F.; SANTOS, V. A. DOS; SILVA, F. B.; MONTEIRO, M.; GARCIA, A. S. An Automated Transformation from OntoUML to OWL and SWRL (M. P. Bax, M. B. Almeida, R. Wassermann, Eds.). In: Seminário de Pesquisa em Ontologias no Brasil (ONTOBRAS). In Proceedings... Belo Horizonte, Brazil: CEUR- WS.org, 2013. P. 130–141. [http://ceur-ws.org/Vol-1041/ontobras-2013_paper44.pdf (see paper)]
+BARCELOS, P. P. F.; SANTOS, V. A. DOS; SILVA, F. B.; MONTEIRO, M.; GARCIA, A. S. An Automated Transformation from OntoUML to OWL and SWRL (M. P. Bax, M. B. Almeida, R. Wassermann, Eds.). In: Seminário de Pesquisa em Ontologias no Brasil (ONTOBRAS). In Proceedings... Belo Horizonte, Brazil: CEUR- WS.org, 2013. P. 130–141. [http://ceur-ws.org/Vol-1041/ontobras-2013_paper44.pdf (full paper)]
