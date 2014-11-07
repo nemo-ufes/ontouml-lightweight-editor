@@ -60,3 +60,5 @@ International Workshop on Vocabularies, Ontologies and Rules for The Enterprise 
 <i>Alessander Botti Benevides, Giancarlo Guizzardi, Bernardo Braga, João Paulo Andrade Almeida </i>
 International Workshop on Evolving Theories of Conceptual Modelling (ETheCoM).
 Gramado, Brazil: Springer Berlin Heidelberg, 2009. P. 55–64.
+
+<br><br>
