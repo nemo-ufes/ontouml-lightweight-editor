@@ -1,0 +1,5 @@
+#summary List of publications related to the features available in OLED.
+
+= Publications =
+
+The OntoUML Lightweight Editor aggregates the technological results of many research efforts. Find the link to all this publications below:
