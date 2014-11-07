@@ -7,7 +7,7 @@ The OntoUML Lightweight Editor aggregates the technological results of many rese
 Find the links to all the publications below (ordered by date):
 
 [https://drive.google.com/file/d/0B5VKZPBDiDmFNk55RDF4a1NuNFE/view?usp=sharing Ontology Validation for Managers] <br>
-Tiago Prince Sales, Giancarlo Guizzardi (Supervisor)
+Tiago Prince Sales, Giancarlo Guizzardi (Supervisor) <br>
 Vitória, Brazil: Universidade Federal do Espírito Santo, 2014.
 
 
