@@ -9,3 +9,4 @@
   * Tutorials
     * [ShortTutorials Video Tutorials ]
   * [FAQ Frequently Asked Questions (FAQ)]
+  * [Publications Publications]
