@@ -7,3 +7,8 @@ The OntoUML Lightweight Editor aggregates the technological results of many rese
 Find the link to all this publications below:
 
 BARCELOS, P. P. F.; SANTOS, V. A. DOS; SILVA, F. B.; MONTEIRO, M.; GARCIA, A. S. An Automated Transformation from OntoUML to OWL and SWRL (M. P. Bax, M. B. Almeida, R. Wassermann, Eds.). In: Seminário de Pesquisa em Ontologias no Brasil (ONTOBRAS). In Proceedings... Belo Horizonte, Brazil: CEUR- WS.org, 2013. P. 130–141. [http://ceur-ws.org/Vol-1041/ontobras-2013_paper44.pdf (full paper)]
+
+BENEVIDES, A. B.; GUIZZARDI, G.; BRAGA, B. F. B.; ALMEIDA, J. P. A. Validating Modal Aspects of OntoUML Conceptual Models Using Automatically Generated Visual World Structures. Journal of Universal Computer Science, v. 16, n. 20, p. 2904–2933, 2010a. [http://nemo.inf.ufes.br/files/validating_modal_aspects_of_ontouml_conceptual_models_using_automatically_generated_visual_world_structures_2011.pdf (full paper)]
+
+[Benevides et al. 2009] Benevides, A. B., Guizzardi, G., Braga, B. F. B., Almeida, J. P. A. "Assessing Modal Aspects of OntoUML Conceptual Models in Alloy". In Heuser, C. A.; Pernul, G. (Ed.). Proceedings of the First International Workshop on Evolving Theories of Conceptual Modelling (ETheCoM 2009), 28th International Conference on Conceptual Modeling (ER 2009). Gramado, Brazil: Springer, 2009. (Lecture Notes in Computer Science (LNCS), vol. 5833), p. 55–64. ISBN 978-3-642-04946-0. [http://www.inf.ufes.br/~gguizzardi/benevides-et-al-2009.pdf (full paper)]
+
