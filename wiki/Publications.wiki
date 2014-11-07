@@ -2,9 +2,11 @@
 
 = Publications =
 
-The OntoUML Lightweight Editor aggregates the technological results of many research efforts. 
+The OntoUML Lightweight Editor aggregates the technological results of many research efforts. If you are interested in the theory and the process that generated this results or you want to quote them in you work, take a look at our list of publications:
 
 Find the links to all the publications below (ordered by date):
+
+
 
 SALES, T. P. *Ontology Validation for Managers*. Vitória, Brazil: Universidade Federal do Espírito Santo, 2014.
 [https://drive.google.com/file/d/0B5VKZPBDiDmFNk55RDF4a1NuNFE/view?usp=sharing (full text)]
@@ -31,8 +33,6 @@ BRAGA, B.; ALMEIDA, J.; GUIZZARDI, G.; BENEVIDES, A. *Transforming OntoUML into 
 CARRARETTO, R. *A Modeling Infrastructure for OntoUML*. Vitória, Brazil: Universidade Federal do Espírito Santo, 2010. [http://rcarraretto.googlecode.com/files/aModelingInfrastructureForOntoUML.pdf (full text)]
 
 BENEVIDES, A. B.; GUIZZARDI, G.; BRAGA, B. F. B.; ALMEIDA, P. A. *Assessing Modal Aspects of OntoUML Conceptual Models in Alloy*. In: International Workshop on Evolving Theories of Conceptual Modelling (ETheCoM). In Proceedings... Gramado, Brazil: Springer Berlin Heidelberg, 2009. P. 55–64. [http://www.inf.ufes.br/~gguizzardi/benevides-et-al-2009.pdf (full text)]
-
-
 
 
 
