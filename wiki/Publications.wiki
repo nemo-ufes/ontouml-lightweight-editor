@@ -15,3 +15,7 @@ BENEVIDES, A. B.; GUIZZARDI, G.; BRAGA, B. F. B.; ALMEIDA, P. A. Assessing Modal
 BRAGA, B.; ALMEIDA, J.; GUIZZARDI, G.; BENEVIDES, A. Transforming OntoUML into Alloy: towards conceptual model validation using a lightweight formal method. Innovations in Systems and Software Engineering, v. 6, n. 1, p. 55–63, 2010. [http://www.inf.ufes.br/~gguizzardi/braga-et-al-ISSE10.pdf (full text)]
 
 CARRARETTO, R. A Modeling Infrastructure for OntoUML. Vitória, Brazil: Universidade Federal do Espírito Santo, 2010. [http://rcarraretto.googlecode.com/files/aModelingInfrastructureForOntoUML.pdf (full text)]
+
+GUERSON, J. O.; ALMEIDA, J. P. A.; GUIZZARDI, G. Support for Domain Constraints in the Validation of Ontologically Well-Founded Conceptual Models. In: International Conference on Exploring Modeling Methods for Systems Analysis and Design (EMMSAD). In Proceedings... Thessaloniki, Greece: Springer Verlag, 2014. P. 302–316. [http://www.inf.ufes.br/~gguizzardi/emmsad2014.pdf (full text)]
+
+GUERSON, J. O. Validação de Modelos OntoUML Enriquecidos com Restrições OCL. Vitória, Brazil: Universidade Federal do Espírito Santo, 2013.
