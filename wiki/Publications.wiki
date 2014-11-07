@@ -4,7 +4,7 @@
 
 The OntoUML Lightweight Editor aggregates the technological results of many research efforts. If you are interested in the theory and the process that generated this results or you want to quote them in you work, take a look at our list of publications:
 
-Find the links to all the publications below (ordered by date):
+Find the links to all the publications below (ordered by date):<br><br>
 
 [https://drive.google.com/file/d/0B5VKZPBDiDmFNk55RDF4a1NuNFE/view?usp=sharing Ontology Validation for Managers (MSc Thesis)] <br>
 <i>Tiago Prince Sales, Giancarlo Guizzardi (Supervisor)</i> <br>
