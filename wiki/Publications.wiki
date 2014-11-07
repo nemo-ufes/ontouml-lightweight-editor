@@ -22,43 +22,43 @@ International Conference on Exploring Modeling Methods for Systems Analysis and 
 <i> Pedro Paulo Favato Barcelos, Victor Amorim dos Santos, Freddy Brasileiro Silva, Maxwell Monteiro, Anilton Salles Garcia </i><br>
 Seminário de Pesquisa em Ontologias no Brasil (ONTOBRAS). Belo Horizonte, Brazil: CEUR- WS.org, 2013. P. 130–141. 
 
-[http://www.inf.ufes.br/~gguizzardi/PID2733627.pdf An Ontological Foundation for Conceptual Modeling Datatypes based on Semantic Reference Spaces]
+[http://www.inf.ufes.br/~gguizzardi/PID2733627.pdf An Ontological Foundation for Conceptual Modeling Datatypes based on Semantic Reference Spaces] <br>
 Antognoni Albuquerque, Giancarlo Guizzardi
 International Conference on Research Challenges in Information Science (RCIS). Paris, France: IEEE Press, 2013. P. 1–12.
 
-[https://drive.google.com/open?id=0B5VKZPBDiDmFOGFSeXY4bHJ2dVE&authuser=0 Validação de Modelos OntoUML Enriquecidos com Restrições OCL (BSc Thesis)]
+[https://drive.google.com/open?id=0B5VKZPBDiDmFOGFSeXY4bHJ2dVE&authuser=0 Validação de Modelos OntoUML Enriquecidos com Restrições OCL (BSc Thesis)] <br>
 John Oliveira Guerson, João Paulo Andrade Almeida (Supervisor)
 Vitória, Brazil: Universidade Federal do Espírito Santo, 2013. 
 
-[http://kr-med.org/icbofois2012/proceedings/ICBOFOIS2012Workshops/FOIS2012ODISE/FOIS-2012-ODISE-Sales-Barcelos-Guizzardi.pdf Identification of Semantic Anti-Patterns in Ontology-Driven Conceptual Modeling via Visual Simulation]
+[http://kr-med.org/icbofois2012/proceedings/ICBOFOIS2012Workshops/FOIS2012ODISE/FOIS-2012-ODISE-Sales-Barcelos-Guizzardi.pdf Identification of Semantic Anti-Patterns in Ontology-Driven Conceptual Modeling via Visual Simulation] <br>
 Tiago Prince Sales, Pedro Paulo Favato Barcelos, Giancarlo Guizzardi
 International Workshop on Ontology-Driven Information Systems (ODISE). Graz, Austria: 2012. 
 
-[https://drive.google.com/file/d/0B5VKZPBDiDmFTFBac01valduSTA/view?usp=sharing Identificação de Padrões de Erro em Modelagem Conceitual Por Meio de Validação de Ontologias OntoUML Utilizando Alloy]
+[https://drive.google.com/file/d/0B5VKZPBDiDmFTFBac01valduSTA/view?usp=sharing Identificação de Padrões de Erro em Modelagem Conceitual Por Meio de Validação de Ontologias OntoUML Utilizando Alloy] <br>
 Tiago Prince Sales, Giancarlo Guizzardi (Supervisor)
 Vitória, Brazil: Universidade Federal do Espírito Santo, 2012. 
 
-[http://nemo.inf.ufes.br/files/validating_modal_aspects_of_ontouml_conceptual_models_using_automatically_generated_visual_world_structures_2011.pdf Validating Modal Aspects of OntoUML Conceptual Models Using Automatically Generated Visual World Structures]
+[http://nemo.inf.ufes.br/files/validating_modal_aspects_of_ontouml_conceptual_models_using_automatically_generated_visual_world_structures_2011.pdf Validating Modal Aspects of OntoUML Conceptual Models Using Automatically Generated Visual World Structures] <br>
 Alessander Botti Benevides, Giancarlo Guizzardi, Bernardo Braga, João Paulo Andrade Almeida
 Journal of Universal Computer Science, v. 16, n. 20, p. 2904–2933, 2010.
 
-[http://www.inf.ufes.br/~gguizzardi/braga-et-al-ISSE10.pdf Transforming OntoUML into Alloy: towards conceptual model validation using a lightweight formal method]
+[http://www.inf.ufes.br/~gguizzardi/braga-et-al-ISSE10.pdf Transforming OntoUML into Alloy: towards conceptual model validation using a lightweight formal method] <br>
 Bernardo Braga, João Paulo Andrade Almeida, Giancarlo Guizzardi, Alessander Botti Benevides
 Innovations in Systems and Software Engineering, v. 6, n. 1, p. 55–63, 2010. 
 
-[http://rcarraretto.googlecode.com/files/aModelingInfrastructureForOntoUML.pdf A Modeling Infrastructure for OntoUML (BSc Thesis)]
+[http://rcarraretto.googlecode.com/files/aModelingInfrastructureForOntoUML.pdf A Modeling Infrastructure for OntoUML (BSc Thesis)] <br>
 Roberto Carraretto, João Paulo Andrade Almeida (Supervisor)
 Vitória, Brazil: Universidade Federal do Espírito Santo, 2010. 
 
-[http://www.inf.ufes.br/~rguizzardi/OEO/dissertacao-Veruska.pdf Estudo de Alternativas de Mapeamento de Ontologias da Linguagem OntoUML para OWL: Abordagens para representação de Informação Temporal (MSc Thesis)] 
+[http://www.inf.ufes.br/~rguizzardi/OEO/dissertacao-Veruska.pdf Estudo de Alternativas de Mapeamento de Ontologias da Linguagem OntoUML para OWL: Abordagens para representação de Informação Temporal (MSc Thesis)]  <br>
 Veruska Zamborlini, Giancarlo Guizzardi (Supervisor)
 Vitória, Brazil: Universidade Federal do Espírito Santo, 2011.
 
-[http://www.inf.ufes.br/~gguizzardi/VORTE_2010_VZGG.pdf On the Representation of Temporally Changing Information in OWL]
+[http://www.inf.ufes.br/~gguizzardi/VORTE_2010_VZGG.pdf On the Representation of Temporally Changing Information in OWL] <br>
 Veruska Zamborlini, Giancarlo Guizzardi
 International Workshop on Vocabularies, Ontologies and Rules for The Enterprise (VORTE). Vitória, Brazil: IEEE Computer Society, 2010. P. 283–292.
 
-[http://www.inf.ufes.br/~gguizzardi/benevides-et-al-2009.pdf Assessing Modal Aspects of OntoUML Conceptual Models in Alloy]
+[http://www.inf.ufes.br/~gguizzardi/benevides-et-al-2009.pdf Assessing Modal Aspects of OntoUML Conceptual Models in Alloy] <br>
 Alessander Botti Benevides, Giancarlo Guizzardi, Bernardo Braga, João Paulo Andrade Almeida
 International Workshop on Evolving Theories of Conceptual Modelling (ETheCoM).
 Gramado, Brazil: Springer Berlin Heidelberg, 2009. P. 55–64.
