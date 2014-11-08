@@ -32,15 +32,15 @@ Vitória, Brazil: Universidade Federal do Espírito Santo, 2013.
 <i>Antognoni Albuquerque, Giancarlo Guizzardi (Supervisor) </i> <br>
 
 [http://kr-med.org/icbofois2012/proceedings/ICBOFOIS2012Workshops/FOIS2012ODISE/FOIS-2012-ODISE-Sales-Barcelos-Guizzardi.pdf Identification of Semantic Anti-Patterns in Ontology-Driven Conceptual Modeling via Visual Simulation] <br>
-<i>Tiago Prince Sales, Pedro Paulo Favato Barcelos, Giancarlo Guizzardi</i>
+<i>Tiago Prince Sales, Pedro Paulo Favato Barcelos, Giancarlo Guizzardi</i><br>
 International Workshop on Ontology-Driven Information Systems (ODISE). Graz, Austria: 2012. 
 
 [https://drive.google.com/file/d/0B5VKZPBDiDmFTFBac01valduSTA/view?usp=sharing Identificação de Padrões de Erro em Modelagem Conceitual Por Meio de Validação de Ontologias OntoUML Utilizando Alloy] <br>
-<i>Tiago Prince Sales, Giancarlo Guizzardi (Supervisor)</i>
+<i>Tiago Prince Sales, Giancarlo Guizzardi (Supervisor)</i><br>
 Vitória, Brazil: Universidade Federal do Espírito Santo, 2012. 
 
 [http://nemo.inf.ufes.br/files/validating_modal_aspects_of_ontouml_conceptual_models_using_automatically_generated_visual_world_structures_2011.pdf Validating Modal Aspects of OntoUML Conceptual Models Using Automatically Generated Visual World Structures] <br>
-<i>Alessander Botti Benevides, Giancarlo Guizzardi, Bernardo Braga, João Paulo Andrade Almeida</i>
+<i>Alessander Botti Benevides, Giancarlo Guizzardi, Bernardo Braga, João Paulo Andrade Almeida</i><br>
 Journal of Universal Computer Science, v. 16, n. 20, p. 2904–2933, 2010.
 
 [http://www.inf.ufes.br/~gguizzardi/braga-et-al-ISSE10.pdf Transforming OntoUML into Alloy: towards conceptual model validation using a lightweight formal method] <br>
