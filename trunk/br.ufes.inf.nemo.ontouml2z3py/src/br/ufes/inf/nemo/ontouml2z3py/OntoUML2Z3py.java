@@ -21,6 +21,7 @@ public class OntoUML2Z3py {
 		// System.out.println(system);
 		PrintWriter writer = new PrintWriter("models/" + modelName + "2.py","UTF-8");
 		writer.println(system);
+		//
 		writer.close();
 
 	}
