@@ -2,10 +2,15 @@
 
 = Downloads =
 
+--- 
+*Running OLED:*
+
+To run it simply *double-click* on the jar file, or type *java -jar oled-1.0.02.jar* in a console (*Java 7 or superior*).
+
+
 ----
 *Download:*
 
-To run it simply *double-click* on the jar file, or type *java -jar oled-1.0.02.jar* in a console (*Java 7 or superior*).
 
 [https://docs.google.com/file/d/0B7WqSwi56QipR3VfdHVDVDVlbWM/edit oled-1.0.02.jar] ~49MB - Updated: Oct 21 2014
 
