@@ -88,3 +88,11 @@ Step-by-step:
   * If you previous answer was to filter your model. Just select which packages/diagrams do you want to bring and press "Import to OLED". 
 
 https://ontouml-lightweight-editor.googlecode.com/svn/wiki/oled-importation-ea.png
+
+----
+
+*User Guide* 
+
+Here is a user guide to the OntoUML MDG technology version 1.2 for EA version 10:
+
+[https://docs.google.com/file/d/0B7WqSwi56QipenA1N3lwVl9OQWM/edit OntoUML MDG Technology Guide v1.2.docx]
