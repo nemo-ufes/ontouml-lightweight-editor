@@ -4,7 +4,9 @@
 
 *Running OLED:*
 
-To run it simply *double-click* on the jar file, or type *java -jar oled-1.0.02.jar* in a console (*Java 7 or superior*).
+OLED is multi-plataform, so the available .jar will run on Windows, Mac OS and Linux .
+
+To run it, simply *double-click* on the jar file, or type *java -jar oled-1.0.02.jar* in a console (*Java 7 or superior* -- download Java [https://java.com/download here]).
 
 ----
 
