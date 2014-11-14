@@ -1,6 +1,7 @@
 #summary Table of Contents
 
   * [Welcome Welcome]
+  * [Downloads]
   * Compatibility
     * [EnterpriseArchitect Sparx System EA version 10]
     * [EclipseUML2 Eclipse UML2 version 4]
