@@ -30,6 +30,16 @@ public class Helper {
 			addStereotype(stereotype);
 		}
 		list.setSelection(0);
+		
+		Button btnOpenSubstanceTree = new Button(composite, SWT.NONE);
+		btnOpenSubstanceTree.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				ImagePreview.open(SWTResourceManager.getImage(Helper.class, "/resource/SubstanceSortalTree.png"));
+			}
+		});
+		btnOpenSubstanceTree.setBounds(181, 225, 141, 25);
+		btnOpenSubstanceTree.setText("Open Substance Tree");
 	}
 	
 	public void open() {
@@ -86,7 +96,7 @@ public class Helper {
 				shell.dispose();
 			}
 		});
-		btnNewButton.setBounds(260, 225, 75, 25);
+		btnNewButton.setBounds(328, 225, 75, 25);
 		btnNewButton.setText("Close");
 		
 		currentComposite = new Composite(composite, SWT.BORDER);
