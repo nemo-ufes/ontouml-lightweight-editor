@@ -3015,32 +3015,24 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		dialog.setLocation(x_1, y_2);
 	}
 
+	private Fix _fix;
 	public void runPattern(ElementType elementType, double x, double y) {
-		Fix fix = null;
-		
-    	if(elementType == ElementType.RELATORPATTERN){
-    		fix = PatternTool.createRelatorPattern(frame, getCurrentProject(),x,y);		
-    	}else if(elementType == ElementType.ROLEMIXIN){
-			fix = PatternTool.createRoleMixinPattern(frame, getCurrentProject(),x,y);
-    	}else if(elementType == ElementType.PRINCIPLEIDENTITY){
-			fix = PatternTool.principleIdentity(frame, getCurrentProject(),x,y);
-    	}else if(elementType == ElementType.GENERALIZATIONSPECIALIZATION){
-    		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
-    		fix = PatternTool.generalizationAndSpecialization(frame, getCurrentProject(),selectedElements);
-    	}else if(elementType == ElementType.PARTITIONPATTERN){
-    		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
-    		fix = PatternTool.partitionPattern(frame, getCurrentProject(),selectedElements);
-    	}else if(elementType == ElementType.ADDSUPERTYPE){
-    		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
-    		fix = PatternTool.addSupertype(frame, getCurrentProject(),selectedElements);
-    	}else if(elementType == ElementType.ADDSUBTYPE){
-    		List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
-    		fix = PatternTool.addSubtype(frame, getCurrentProject(),selectedElements);
-    	}
-		
-		if(fix != null){
-			updateOLED(fix);
+		_fix = PatternTool.tryToRun(elementType, x, y);
+		if(_fix == null){
+			List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
+			_fix = PatternTool.tryToRun(elementType, selectedElements);
 		}
+		
+//		if(_fix != null){
+//			updateOLED(_fix);
+//			//Search for incompleteness
+//			_fix = PatternTool.solveIncompleteness();
+//			if(_fix != null)
+//				updateOLED(_fix);
+//		}
+		
+		if(_fix != null)
+			updateOLED(_fix);
 	}
 
 	public void openDerivedTypePatternIntersection(Double x, Double y) {

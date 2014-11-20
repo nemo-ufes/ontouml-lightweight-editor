@@ -1,0 +1,5 @@
+package br.ufes.inf.nemo.assistant.util;
+
+public enum PatternType {
+	RelatorCreation,SubkindCreation,RoleMixinPattern,PrincipleIdentity, GeneralizationAndSpecialization_Sukind, GeneralizationAndSpecialization_Role, GeneralizationAndSpecialization_Category, GeneralizationAndSpecialization_Mixin, GeneralizationAndSpecialization_RoleMixin, PartitionPattern_Sortal, PartitionPattern_Rigid, AddSupertype_SubstanceSortal, AddSupertype_Subkind, AddSupertype_Role, AddSupertype_Category, AddSupertype_Mixin, AddSupertype_RoleMixin
+}

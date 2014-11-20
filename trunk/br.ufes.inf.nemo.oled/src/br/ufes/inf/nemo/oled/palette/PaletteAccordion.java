@@ -187,9 +187,16 @@ public class PaletteAccordion extends JPanel{
 		String pelleteName = "Patterns";
 		ontopatternPalette = new Palette(this, pelleteName);
 		
-		ontopatternPalette.createElement("staticpalette.patterncreation", "principleidentity");
-		ontopatternPalette.createElement("staticpalette.patterncreation", "relatorcreation");
-		ontopatternPalette.createElement("staticpalette.patterncreation", "rolemixinpattern");
+		ontopatternPalette.createElement("staticpalette.pattern", "completer");
+		ontopatternPalette.createElement("staticpalette.pattern", "mixinpattern");
+		ontopatternPalette.createElement("staticpalette.pattern", "mixinpatternwithsubkind");
+		ontopatternPalette.createElement("staticpalette.pattern", "phasepartition");
+		ontopatternPalette.createElement("staticpalette.pattern", "subkindpartition");
+		ontopatternPalette.createElement("staticpalette.pattern", "phasepartition");
+		ontopatternPalette.createElement("staticpalette.pattern", "rolepartition");
+		ontopatternPalette.createElement("staticpalette.pattern", "substancesortalpartition");
+		ontopatternPalette.createElement("staticpalette.pattern", "rolemixinpattern");
+		ontopatternPalette.createElement("staticpalette.pattern", "relatorpattern");
 		
 		ontopatternPalette.addCommandListener(editorDispatcher);
 		
@@ -197,7 +204,7 @@ public class PaletteAccordion extends JPanel{
 		
 		if(openPalette == null)
 			openPalette = pelleteName;	
-		
+
 		ontopatternPalette.sort();
 	}
 	
