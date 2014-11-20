@@ -9,5 +9,5 @@
     * [OntoUMLInfrastructure OntoUML Infrastructure]
   * Tutorials
     * [ShortTutorials Video Tutorials ]
-  * [FAQ Frequently Asked Questions (FAQ)]
   * [Publications Publications]
+  * [FAQ Frequently Asked Questions (FAQ)]
