@@ -8,16 +8,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import br.ufes.inf.nemo.assistant.util.PatternType;
+
 public class ImagePanel extends JPanel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6317159488424565296L;
-
-	public enum PatternType {
-		RelatorCreation,SubkindCreation,RoleMixinPattern,PrincipleIdentity, GeneralizationAndSpecialization_Sukind, GeneralizationAndSpecialization_Role, GeneralizationAndSpecialization_Category, GeneralizationAndSpecialization_Mixin, GeneralizationAndSpecialization_RoleMixin, PartitionPattern_Sortal, PartitionPattern_Rigid, AddSupertype_SubstanceSortal, AddSupertype_Subkind, AddSupertype_Role, AddSupertype_Category, AddSupertype_Mixin, AddSupertype_RoleMixin
-	}
 
 	public ImagePanel(PatternType type){
 		ImageIcon iconLogo = null; 

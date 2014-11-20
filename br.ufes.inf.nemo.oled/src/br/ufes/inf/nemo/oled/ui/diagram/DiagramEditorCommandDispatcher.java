@@ -358,15 +358,6 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("DERIVED_BY_PARTICIPATION", new MethodCall(
 					getClass().getMethod("derivedByParticipation")));
 
-			selectorMap.put("LANGUAGE_PATTERN_PRINCIPLE_IDENTITY", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PRINCIPLEIDENTITY));
-			
-			selectorMap.put("PATTERN_CREATION_ROLEMIXIN_PATTERN", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.ROLEMIXIN));
-			
-			selectorMap.put("PATTERN_CREATION_RELATOR", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.RELATORPATTERN));
-
 			selectorMap.put("LANGUAGE_GENERALIZATION_SPECIALIZATION", new MethodCall(
 					getClass().getMethod("runPatternByMenu",ElementType.class),ElementType.GENERALIZATIONSPECIALIZATION));
 			
@@ -383,8 +374,33 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 					DiagramEditor.class.getMethod("addGeneralizationSet")));
 			selectorMap.put("DELETE_GEN_SET", new MethodCall(
 					DiagramEditor.class.getMethod("deleteGeneralizationSet")));
+
+			selectorMap.put("PATTERN_MIXIN_PATTERN", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_MIXIN_PATTERN));
 			
+			selectorMap.put("PATTERN_MIXIN_PATTERN_WITH_SUBKIND", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_MIXIN_PATTERN_WITH_SUBKIND));
 			
+			selectorMap.put("PATTERN_PHASE_PARTITION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_PHASE_PARTITION));
+
+			selectorMap.put("PATTERN_SUBKIND_PARTITION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_SUBKIND_PARTITION));
+			
+			selectorMap.put("PATTERN_ROLE_PARTITION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_ROLE_PARTITION));
+			
+			selectorMap.put("PATTERN_SUBSTANCE_SORTAL_PARTITION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_SUBSTANCE_SORTAL_PARTITION));
+			
+			selectorMap.put("PATTERN_COMPLETER", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_COMPLETER));
+			
+			selectorMap.put("PATTERN_ROLEMIXIN_PATTERN", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_ROLEMIXIN_PATTERN));
+			
+			selectorMap.put("PATTERN_RELATOR", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_RELATOR));
 
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();

@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.assistant.util;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 import RefOntoUML.Category;
@@ -73,11 +74,12 @@ public class UtilAssistant {
 	 * ArrayList
 	 * e.g.: From {"Kind Person", "Collective Students"} returns {"Person", "Students"}
 	 * */
-	public static String[] getStringRepresentationClass(ArrayList<? extends Classifier> set){
+	public static String[] getStringRepresentationClass(Collection<? extends Classifier> set){
 		String[] s = new String[set.size()];
 		int i = 0;
 		for (Classifier cls : set) {
 			s[i] = getStringRepresentationClass(cls);
+			i++;
 		}
 		return s;
 	}
@@ -131,4 +133,6 @@ public class UtilAssistant {
 		}
 		return s;
 	}
+	
+
 }

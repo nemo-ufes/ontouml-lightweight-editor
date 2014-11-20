@@ -208,7 +208,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
         	}
         });
 		colorMenu.add(copyColorItem);
-		
+				
 		pasteColorItem = new JMenuItem("Paste");
 		pasteColorItem.addActionListener(new ActionListener() {				
 			@Override
@@ -225,15 +225,15 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	
 	public void createPatternMenu()
 	{
-		JMenu applyPatternMenu = new JMenu("Apply Pattern");
-		
-		createMenuItem(applyPatternMenu,"pattern.generalizationspecialization");
-		createMenuItem(applyPatternMenu,"pattern.partitionpattern");
-
-		createMenuItem(applyPatternMenu,"pattern.addsupertype");
-		createMenuItem(applyPatternMenu,"pattern.addsubtype");
-		
-		add(applyPatternMenu);
+//		JMenu applyPatternMenu = new JMenu("Apply Pattern");
+//		
+//		createMenuItem(applyPatternMenu,"pattern.generalizationspecialization");
+//		createMenuItem(applyPatternMenu,"pattern.partitionpattern");
+//
+//		createMenuItem(applyPatternMenu,"pattern.addsupertype");
+//		createMenuItem(applyPatternMenu,"pattern.addsubtype");
+//		
+//		add(applyPatternMenu);
 	}
 	
 	public void setNode (UmlNode node, DiagramEditor editor)
