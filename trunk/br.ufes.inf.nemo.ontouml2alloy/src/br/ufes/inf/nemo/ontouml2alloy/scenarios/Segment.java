@@ -1,0 +1,65 @@
+package br.ufes.inf.nemo.ontouml2alloy.scenarios;
+
+import java.util.Iterator;
+
+import RefOntoUML.Classifier;
+import RefOntoUML.parser.OntoUMLParser;
+
+enum SegmentType {POPULATION, OBJECT, PROPERTY, STEREOTYPE_CLASS, STEREOTYPE_ASS, CLASS, ASSOCIATION}
+
+public class Segment {
+	
+	private OntoUMLParser parser;	
+	public SegmentType seg;
+
+	//class or association that characterize the segment (only for SegmentType=CLASS or ASSCOCIATION)
+	Classifier classifier;
+	//Metatype that characterizes the segment (only for SegmentType=STEREOTYPE_CLASS or STEREOTYPE_ASS)
+	Class<? extends Classifier> metaType;
+	
+	public Segment(OntoUMLParser parser, SegmentType seg) {
+		this.seg = seg;
+		this.parser = parser;
+	}
+	
+	private String getUnionExpression(Class<? extends Classifier> metaType){
+		
+		Iterator<? extends Classifier> i = parser.getAllInstances(metaType).iterator();
+		String s = "(";
+		
+		while(i.hasNext()){
+			Classifier c = i.next();
+			s+=getAlias(c);
+			if(i.hasNext())
+				s+="+";
+		}
+		
+		s+=")";
+		return s;	
+	}
+	
+	private String getAlias(Classifier c) {
+		//TODO: check when relation is ordered or material derived by a relator
+		return parser.getAlias(c);
+	}
+	
+	public String getName() {
+		switch(seg){
+			case POPULATION:
+				return "exists";
+			case OBJECT:
+				return "exists:>Object";
+			case PROPERTY:
+				return "exists:>Property";
+			case CLASS:
+			case ASSOCIATION:
+				return getAlias(classifier);
+			case STEREOTYPE_CLASS:
+			case STEREOTYPE_ASS:
+				return getUnionExpression(metaType);
+			default:
+				return "UNNAMED_SEGMENT";
+		}
+	}
+}
+
