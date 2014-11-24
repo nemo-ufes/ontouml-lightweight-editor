@@ -40,7 +40,7 @@ public class InstantiationScenario extends QuantifiedScenario {
 		}
 		
 		if(type==Type.EXCL){
-			expr = "all x:"+q.getWorldVariable()+"."+parser.getAlias(common)+" | ("+buildListExpression(true)+") and " +
+			return "all x:"+q.getWorldVariable()+"."+parser.getAlias(common)+" | ("+buildListExpression(true)+") and " +
 					"\n\t not ("+buildListExpression(false)+")";
 		}
 		
