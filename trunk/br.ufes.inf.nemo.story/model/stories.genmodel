@@ -3,7 +3,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/br.ufes.inf.nemo.story/src" modelPluginID="br.ufes.inf.nemo.story"
     modelName="Stories" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0" copyrightFields="false"
-    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../br.ufes.inf.nemo.ontouml.refontouml/model/RefOntoUML.genmodel#//RefOntoUML"
+    usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.genmodel#//RefOntoUML"
     operationReflection="true" importOrganizing="true">
   <foreignModel>stories.ecore</foreignModel>
   <genPackages prefix="Stories" resource="XML" disposableProviderFactory="true" ecorePackage="stories.ecore#/">
@@ -20,7 +20,7 @@
     <genClasses ecoreClass="stories.ecore#//Node">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference stories.ecore#//Node/performed"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node/instance_of"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node/states"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference stories.ecore#//Node/states"/>
     </genClasses>
     <genClasses ecoreClass="stories.ecore#//Link">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Link/source"/>
@@ -30,6 +30,8 @@
     <genClasses ecoreClass="stories.ecore#//World">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//World/enabled"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//World/brought_about_by"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//World/next"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//World/prev"/>
     </genClasses>
     <genClasses image="false" ecoreClass="stories.ecore#//Event">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Event/directly_causes"/>
@@ -52,7 +54,7 @@
     <genClasses ecoreClass="stories.ecore#//Node_state">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node_state/classified_in"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node_state/not_classified_in"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node_state/anti_rigid_clases"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference stories.ecore#//Node_state/antiRigidClasses"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
