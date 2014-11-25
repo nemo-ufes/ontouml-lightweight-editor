@@ -45,10 +45,10 @@ public abstract class Scenario {
 		return getModeString()+" "+getString()+".";
 	}
 		
-	public String getExpression(){
+	public String getParagraph(){
 		return 	getModeKeyword()+" "+getScenarioName()+" {"+
 				"\n\t"+getAlloy()+
-				"}";
+				"\n}";
 	}
 		
 }

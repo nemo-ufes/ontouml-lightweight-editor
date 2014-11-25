@@ -29,6 +29,7 @@ public class StoryScenario extends Scenario{
 		this.limit=limit;
 		depth=checkStoryDepth(depth);
 		quant = new CustomQuantification(getQuantificationMode());
+		quant.addQuantificationData("w", "World", getAdjustedDepth());
 		
 	}
 	
@@ -52,7 +53,7 @@ public class StoryScenario extends Scenario{
 		if(limit==Limit.UPPER)
 			return Mode.NO;
 		if(limit==Limit.LOWER)
-			return Mode.ALL;
+			return Mode.SOME;
 		return null;
 	}
 	
@@ -70,43 +71,61 @@ public class StoryScenario extends Scenario{
 	public void setStoryDepth(int storyDepth) {
 		this.depth = checkStoryDepth(storyDepth);
 	}
-	
-	//TODO: fix according to operator
+
 	public int checkNumberOfWorlds(int value){
-		switch (type) {
-		case COUNTER:
-			if (value>4)
-				return value;
-			return 4;
-		case FUTURES:
-			if (value>3)
-				return value;
-			return 3;
-		case LINEAR:
-		case UNDEF:
-		default:
-			if (value>1)
-				return value;
-			return 1;
-		}
+		return value;
+//		switch (type) {
+//		case COUNTER:
+//			
+//			if (comparator.op==Operator.EQUAL || comparator.op==Operator.GREATER_EQ){
+//				if(value<4)
+//					return 4;
+//				return value;
+//			}
+//			
+//			if (comparator.op==Operator.GREATER){
+//				if(value<3)
+//					return value;
+//				return 4;
+//			}
+//			
+//			if (comparator.op==Operator.L || comparator.op==Operator.GREATER_EQ){
+//				if(value>4)
+//					return value;
+//				return 4;
+//			}
+//			
+//		case FUTURES:
+//			if (value>3)
+//				return value;
+//			return 3;
+//		case LINEAR:
+//		case UNDEF:
+//		default:
+//			if (value>1)
+//				return value;
+//			return 1;
+//		}
 				
 	}
 	
+	//TODO: fix according to operator
 	public int checkStoryDepth(int value) {
-		switch (type) {
-		case COUNTER:
-			if (value>2)
-				return value;
-			return 2;
-		case FUTURES:
-			return 1;
-		case LINEAR:
-		case UNDEF:
-		default:
-			if (value>1)
-				return value;
-			return 1;
-		}
+		return value;
+//		switch (type) {
+//		case COUNTER:
+//			if (value>2)
+//				return value;
+//			return 2;
+//		case FUTURES:
+//			return 1;
+//		case LINEAR:
+//		case UNDEF:
+//		default:
+//			if (value>1)
+//				return value;
+//			return 1;
+//		}
 	}
 
 	@Override
@@ -118,6 +137,8 @@ public class StoryScenario extends Scenario{
 				return "different outcomes for a given situation";
 			case LINEAR:
 				return "linear story";
+			default:
+				break;
 		}
 		
 		return "";
@@ -147,7 +168,7 @@ public class StoryScenario extends Scenario{
 				
 		for (int i = 1; i < getAdjustedDepth(); i++) {
 			String var1 = quant.getVariable(0,i);
-			String var2 = quant.getVariable(i,i+1);
+			String var2 = quant.getVariable(0,i+1);
 			
 			expr += var2+" in "+var1+".next";
 			
@@ -175,7 +196,7 @@ public class StoryScenario extends Scenario{
 		case FUTURES:
 			return "one w:World | no next.w && all w2:World | w!=w2 implies w2 in w.next";
 		case LINEAR:
-			return "some w1,w2:World | no w1.next and no next.w2";
+			return "one w1,w2:World | no w1.next and no next.w2";
 		case UNDEF:
 		default:
 			return "";

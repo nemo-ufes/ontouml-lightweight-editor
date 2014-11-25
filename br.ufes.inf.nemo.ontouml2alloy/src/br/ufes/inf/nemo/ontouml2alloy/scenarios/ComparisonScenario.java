@@ -5,16 +5,18 @@ import RefOntoUML.parser.OntoUMLParser;
 public class ComparisonScenario extends QuantifiedScenario {
 	
 	Segment leftSeg, rightSeg;
-	Comparator comp;
+	Comparator comparator;
 	
-	enum VAR {SIZE, EXT}
-	VAR comparisonType;
+	enum ComparisonType {SIZE, EXT}
+	ComparisonType comparisonType;
 	
-	enum MODE_EXT {INC, NOT_INC, DISJ, INTER, EQUAL, DIF, }
-	MODE_EXT modeExt;
+	enum ExtensionOperator {INC, NOT_INC, DISJ, INTER, EQUAL, DIF}
+	ExtensionOperator extensionOperator;
 	
-	public ComparisonScenario (OntoUMLParser parser){
-		super(parser);
+	public ComparisonScenario (OntoUMLParser parser, Segment leftSeg, Segment rightSeg, SimpleQuantification q){
+		super(parser,q);
+		this.leftSeg = leftSeg;
+		this.rightSeg = rightSeg;
 	}
 	
 	//TODO: DRAW VENN DIAGRAMS TO INCLUDE IN THE HELP SECTION
@@ -23,7 +25,7 @@ public class ComparisonScenario extends QuantifiedScenario {
 		String rightExpr = q.getWorldVariable()+"."+rightSeg.getName();
 		String expr = "";
 		
-		switch (modeExt) {
+		switch (extensionOperator) {
 			case EQUAL:
 				expr = leftExpr+" = "+rightExpr;
 				break;
@@ -37,7 +39,7 @@ public class ComparisonScenario extends QuantifiedScenario {
 				expr = leftExpr+" not in "+rightExpr;
 				break;
 			case DISJ:
-				expr = "["+leftExpr+", "+rightExpr+"]";
+				expr = "disj ["+leftExpr+", "+rightExpr+"]";
 				break;
 			case INTER:
 				expr = "some ("+leftExpr+" & "+rightExpr+")";
@@ -49,10 +51,20 @@ public class ComparisonScenario extends QuantifiedScenario {
 	private String getSizeExpression(){
 		String leftExpr = "#("+q.getWorldVariable()+"."+leftSeg.getName()+")";
 		String rightExpr =  "#("+q.getWorldVariable()+"."+rightSeg.getName()+")";
-		String expr = comp.getExpression(leftExpr, rightExpr);
+		String expr = comparator.getExpression(leftExpr, rightExpr);
 		return q.addQuantification(expr);
 	}
 
+	
+	public void setCompareSize(Comparator comparator){
+		comparisonType = ComparisonType.SIZE;
+		this.comparator = comparator;
+	}
+	
+	public void setCompareExtension(ExtensionOperator operator){
+		comparisonType = ComparisonType.EXT;
+		extensionOperator = operator;
+	}
 	
 	@Override
 	public String getString() {
@@ -62,9 +74,9 @@ public class ComparisonScenario extends QuantifiedScenario {
 	
 	@Override
 	public String getAlloy() {
-		if(comparisonType==VAR.EXT)
+		if(comparisonType==ComparisonType.EXT)
 			return getExtensionExpression();
-		if(comparisonType==VAR.SIZE)
+		if(comparisonType==ComparisonType.SIZE)
 			return getSizeExpression();
 		
 		return "UNSETTED VALUES";
