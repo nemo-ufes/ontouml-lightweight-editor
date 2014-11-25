@@ -4,7 +4,7 @@ import br.ufes.inf.nemo.ontouml2alloy.scenarios.CustomQuantification.Mode;
 import RefOntoUML.Association;
 import RefOntoUML.parser.OntoUMLParser;
 
-public class AssociationDepth extends QuantifiedScenario {
+public class AssociationDepth extends ContentScenario {
 
 	enum Limit {UPPER, LOWER}
 	private Limit limit;

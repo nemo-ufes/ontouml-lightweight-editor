@@ -5,7 +5,7 @@ import java.util.Iterator;
 import RefOntoUML.Classifier;
 import RefOntoUML.parser.OntoUMLParser;
 
-enum SegmentType {POPULATION, OBJECT, PROPERTY, STEREOTYPE_CLASS, STEREOTYPE_ASS, CLASS, ASSOCIATION}
+enum SegmentType {POPULATION, OBJECT, PROPERTY, STEREOTYPE, CLASSIFIER}
 
 public class Segment {
 	
@@ -17,8 +17,7 @@ public class Segment {
 	//Metatype that characterizes the segment (only for SegmentType=STEREOTYPE_CLASS or STEREOTYPE_ASS)
 	Class<? extends Classifier> metaType;
 	
-	public Segment(OntoUMLParser parser, SegmentType seg) {
-		this.seg = seg;
+	public Segment(OntoUMLParser parser) {
 		this.parser = parser;
 	}
 	
@@ -51,15 +50,35 @@ public class Segment {
 				return "exists:>Object";
 			case PROPERTY:
 				return "exists:>Property";
-			case CLASS:
-			case ASSOCIATION:
+			case CLASSIFIER:
 				return getAlias(classifier);
-			case STEREOTYPE_CLASS:
-			case STEREOTYPE_ASS:
+			case STEREOTYPE:
 				return getUnionExpression(metaType);
 			default:
 				return "UNNAMED_SEGMENT";
 		}
+	}
+	
+	public void setAsPopulation(){
+		seg = SegmentType.POPULATION;
+	}
+	
+	public void setAsObject(){
+		seg = SegmentType.OBJECT;
+	}
+	
+	public void setAsProperty(){
+		seg = SegmentType.PROPERTY;
+	}
+	
+	public void setAsClassifier(Classifier classifier){
+		seg = SegmentType.CLASSIFIER;
+		this.classifier = classifier;
+	}
+	
+	public void setAsStereotype(Class<? extends Classifier> metaType){
+		seg = SegmentType.STEREOTYPE;
+		this.metaType = metaType;
 	}
 }
 

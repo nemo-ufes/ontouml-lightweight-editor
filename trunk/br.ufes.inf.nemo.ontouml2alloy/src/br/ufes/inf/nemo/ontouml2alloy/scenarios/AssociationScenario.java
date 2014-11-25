@@ -4,7 +4,7 @@ import br.ufes.inf.nemo.ontouml2alloy.scenarios.CustomQuantification.Mode;
 import RefOntoUML.Association;
 import RefOntoUML.parser.OntoUMLParser;
 
-public class AssociationScenario extends QuantifiedScenario {
+public class AssociationScenario extends ContentScenario {
 
 	enum Change {DIF, EQUAL, DISJ, UNDEF}
 	private Change change;

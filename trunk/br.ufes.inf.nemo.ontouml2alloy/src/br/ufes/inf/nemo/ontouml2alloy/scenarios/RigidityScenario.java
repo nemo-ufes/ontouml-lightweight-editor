@@ -3,7 +3,7 @@ package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 import RefOntoUML.Class;
 import RefOntoUML.parser.OntoUMLParser;
 
-public class RigidityScenario extends QuantifiedScenario {
+public class RigidityScenario extends ContentScenario {
 		
 	enum Type {MANDATORY, PSEUDO}
 	Type type;

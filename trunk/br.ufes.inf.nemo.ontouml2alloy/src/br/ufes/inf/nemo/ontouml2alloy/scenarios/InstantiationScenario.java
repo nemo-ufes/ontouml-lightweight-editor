@@ -10,16 +10,15 @@ public class InstantiationScenario extends QuantifiedScenario {
 		
 	enum Type {MULT, EXCL} 	//MULT = multiple instantiation, EXCL = exclusive instantiation
 	Type type;
-		
-	Quantification quant;
+	
 	Comparator comp;
 	
 	ArrayList<Classifier> classifiers;
 	Classifier common;
 	int m;
 	
-	public InstantiationScenario (OntoUMLParser parser){
-		super(parser);
+	public InstantiationScenario (OntoUMLParser parser, SimpleQuantification q){
+		super(parser,q);
 	}
 		
 	@Override
@@ -36,7 +35,7 @@ public class InstantiationScenario extends QuantifiedScenario {
 			String leftExpr = "#("+buildIntersection()+")";
 			String rightExpr = ""+m;
 			expr = comp.getExpression(leftExpr, rightExpr);
-			return quant.addQuantification(expr);
+			return q.addQuantification(expr);
 		}
 		
 		if(type==Type.EXCL){
@@ -52,7 +51,7 @@ public class InstantiationScenario extends QuantifiedScenario {
 		
 		Iterator<Classifier> i = classifiers.iterator();
 		while(i.hasNext()){
-			s += quant.getWorldVariable()+"."+parser.getAlias(i.next());
+			s += q.getWorldVariable()+"."+parser.getAlias(i.next());
 			if(i.hasNext())
 				s += " & ";
 		}
@@ -65,7 +64,7 @@ public class InstantiationScenario extends QuantifiedScenario {
 		
 		Iterator<Classifier> i = classifiers.iterator();
 		while(i.hasNext()){
-			s += "x in "+quant.getWorldVariable()+"."+parser.getAlias(i.next());
+			s += "x in "+q.getWorldVariable()+"."+parser.getAlias(i.next());
 			if(i.hasNext()){
 				if(isDisjunction)
 					s += " or ";
