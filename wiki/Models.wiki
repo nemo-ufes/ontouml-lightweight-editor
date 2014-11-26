@@ -61,7 +61,7 @@ Representing Organizational Structures in an Enterprise Architecture Language<br
 <i>Hedwio Carvalho e Silva, Rita de Cassia Cordeiro de Castro, Marcos Jose Negreiros Gomes, and Anilton Salles Garcia</i><br>
 
 *Software Requirements Ontology*<br>
-<i><Requirements engineering processes/i><br>
+<i><Requirements engineering processes</i><br>
 [http://julionardi.scalfoni.com.br/publicacoes/Artigo_CLEI08_vf.pdf Evolving a Software Requirements Ontology]<br>
 <i>Ricardo de Almeida Falbo and Julio Cesar Nardi</i><br>
 
