@@ -2,4 +2,39 @@
 
 = OntoUML Study Guide =
 
-Coming soon...
+To learn about some fundamental concepts related to the "Ontology World" e about ontology-driven conceptual modeling, we suggest the papers below: 
+
+http://www.inf.ufes.br/~gguizzardi/FAIA.pdf
+http://www.inf.ufes.br/~gguizzardi/BalticDB&IS.pdf
+http://www.inf.ufes.br/~gguizzardi/EMMSAD@CAISE09.pdf
+http://www.researchgate.net/publication/220259945_Do_Ontological_Deficiencies_in_Modeling_Grammars_Matter
+http://www.nemo.inf.ufes.br/files/separating_ontological_and_information_modeling_concerns_towards_a_two_level_model_driven_approach_2012.pdf
+
+For a complete description of UFO-A and OntoUML, read the "OntoUML Bible":
+[http://www.inf.ufes.br/~gguizzardi/OFSCM.pdf Ontological Foundations for Structural Conceptual Models]
+
+For a "softer" introduction, we recommend the theoretical background chapters of a the thesis:
+
+[http://www.inf.ufes.br/~rguizzardi/OEO/dissertacao-Veruska.pdf]
+[https://www.researchgate.net/publication/268220197_Ontology_Validation_for_Managers]
+[https://rcarraretto.googlecode.com/files/Carraretto2012MSc.pdf]
+
+Para ler sobre partes específicas de UFO, sugiro os seguintes artigos:
+
+http://doc.utwente.nl/49866/1/WPI.pdf
+
+Roles, Relators and Qua Individuals
+http://www.inf.ufes.br/~gguizzardi/quaEntities.pdf
+http://www.irit.fr/publis/LILAC/MGVBF-rolesAAAI05.pdf
+
+Relações Todo-Parte:
+http://www.inf.ufes.br/~gguizzardi/CAISE2009CR.pdf (Functional Parthood)
+http://www.inf.ufes.br/~gguizzardi/CAISE2011-CR.pdf (Collectives)
+http://www.inf.ufes.br/~gguizzardi/FOIS2010.pdf (Quantities)
+http://www.inf.ufes.br/~gguizzardi/CAISE-CR-2007.pdf (De Re / De Dicto)
+
+Qualities
+http://www.inf.ufes.br/~gguizzardi/PID2733627.pdf
+
+Eventos:
+http://www.inf.ufes.br/~gguizzardi/Towards%20Ontological%20Foundations%20for%20the%20Conceptual%20modeling%20of%20events.pdf
