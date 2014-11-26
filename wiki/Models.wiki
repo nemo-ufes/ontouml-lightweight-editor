@@ -25,10 +25,10 @@ If your are modelling your own ontology, you can go through them and see what yo
 [http://link.springer.com/chapter/10.1007%2F978-3-642-41924-9_40 Applying the Principles of an Ontology-Based Approach to a Conceptual Schema of Human Genome]<br>
 <i>Ana Maria Martínez Ferrandis, Oscar Pastor López, Giancarlo Guizzardi</i><br>
 
-**<br>
-<i></i><br>
-[]<br>
-<i></i><br>
+*Open proVenance Ontology (OVO)*<br>
+<i>Provenance of scientific experiments</i><br>
+[http://ceur-ws.org/Vol-938/ontobras-most2012_paper12.pdf A Foundational Ontology to Support Scientific Experiments]<br>
+<i>Sergio Manuel Serra da Cruz, Maria Luiza Machado Campos, Marta Mattoso</i><br>
 
 **<br>
 <i></i><br>
