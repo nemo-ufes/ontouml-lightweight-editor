@@ -4,7 +4,7 @@
 
 OntoUML has been successfully applied to a variety of domains, contexts and applications. In this page, we present a partial publication list that present several models specified in OntoUML.
 
-If you are starting to learn OntoUML, you can use these models to discover more about the stereotypes and meta-properties of the OntoUML language. 
+If you are learn OntoUML, you can use these models to discover more about the stereotypes and meta-properties of the OntoUML language. 
 
 If you curious about OntoUML applications, you can check out these links to learn how they were developed, by whom and for what purpose.
 
@@ -49,6 +49,16 @@ Representing Organizational Structures in an Enterprise Architecture Language<br
 <i>IaaS perspective on public MSc cloud vulnerability</i><br>
 [http://ieeexplore.ieee.org/xpl/abstractAuthors.jsp?reload=true&arnumber=6360129 Mapping of vulnerabilities in the public cloud with the use of foundational ontology: A perspective for service IaaS]<br>
 <i>Rita de Cássia C. Castro, Hedwio Carvalho e Silva, Anilton Sales Gracia and Marcos José Negreiros Gomesd</i><br>
+
+*ECG Ontology*<br>
+<i>Eletrocardiogram</i><br>
+[http://www.inf.ufes.br/~gguizzardi/ECG.pdf An Electrocardiogram (ECG) Domain Ontology]<br>
+<i>Bernardo Gonçalves, Giancarlo Guizzardi José Gonçalves Pereira Filho</i><br>
+
+**<br>
+<i></i><br>
+[]<br>
+<i></i><br>
 
 **<br>
 <i></i><br>
