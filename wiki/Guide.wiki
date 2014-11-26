@@ -10,16 +10,15 @@ http://www.inf.ufes.br/~gguizzardi/EMMSAD@CAISE09.pdf
 http://www.researchgate.net/publication/220259945_Do_Ontological_Deficiencies_in_Modeling_Grammars_Matter
 http://www.nemo.inf.ufes.br/files/separating_ontological_and_information_modeling_concerns_towards_a_two_level_model_driven_approach_2012.pdf
 
-For a complete description of UFO-A and OntoUML, read the "OntoUML Bible":
+For a complete description of UFO-A and OntoUML, read the "OntoUML Bible":<br>
 [http://www.inf.ufes.br/~gguizzardi/OFSCM.pdf Ontological Foundations for Structural Conceptual Models]
 
-For a "softer" introduction, we recommend the theoretical background chapters of a the thesis:
+For a "softer" introduction, we recommend the theoretical background chapters of a the thesis:<br>
+[https://www.researchgate.net/publication/268220197_Ontology_Validation_for_Managers Ontology Validation for Managers]<br>
+[http://www.inf.ufes.br/~rguizzardi/OEO/dissertacao-Veruska.pdf Estudo de Alternativas de Mapeamento de Ontologias da Linguagem OntoUML para OWL: Abordagens para representação de Informação Temporal -- in Portuguese]<br>
+[https://rcarraretto.googlecode.com/files/Carraretto2012MSc.pdf Separating Ontological and Informational Concerns: A Model-driven Approach for Conceptual Modeling] <br>
 
-[http://www.inf.ufes.br/~rguizzardi/OEO/dissertacao-Veruska.pdf]
-[https://www.researchgate.net/publication/268220197_Ontology_Validation_for_Managers]
-[https://rcarraretto.googlecode.com/files/Carraretto2012MSc.pdf]
-
-Para ler sobre partes específicas de UFO, sugiro os seguintes artigos:
+Para ler sobre partes específicas de OntoUML/UFO, sugiro os seguintes artigos:
 
 http://doc.utwente.nl/49866/1/WPI.pdf
 
