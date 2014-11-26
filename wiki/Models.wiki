@@ -1,0 +1,8 @@
+#summary Published OntoUML models
+
+OntoUML has been successfully applied to a variety of domains, contexts and applications. If you want learn how these models were developed, by whom or for what, check out the publications below:
+
+
+= Details =
+
+<b><font color="red">Warning! The models presented in this section were not developed by members of the OLED development team.</font></b>
