@@ -18,8 +18,13 @@ public class AssociationDepth extends AssociationScenario {
 		
 		classQ = new CustomQuantification();
 		classQ.setDisj(true);
-		classQ.addQuantificationData("x", "w."+getDomain(), getLimit());
+		classQ.addQuantificationData("x", getDomain(), getLimit());
 	
+	}
+	
+	@Override 
+	public String getDomain(){
+		return "w."+super.getDomain();
 	}
 	
 	public int getDepth(){
