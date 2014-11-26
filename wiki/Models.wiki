@@ -2,7 +2,7 @@
 
 = OntoUML Models =
 
-In this page, we present a partial list that presents several models specified using OntoUML and/or UFO.
+In this page, we present a partial list that presents several published models specified using OntoUML and/or UFO.
 
 If you are learning OntoUML/UFO, you can use these models to discover more about the meta-categories and meta-properties of the OntoUML language. 
 
