@@ -6,17 +6,18 @@
 
 To learn about some fundamental concepts related to the "Ontology World" e about ontology-driven conceptual modeling, we suggest the papers below: 
 
-http://www.inf.ufes.br/~gguizzardi/FAIA.pdf
-http://www.inf.ufes.br/~gguizzardi/BalticDB&IS.pdf
-http://www.inf.ufes.br/~gguizzardi/EMMSAD@CAISE09.pdf
-http://www.researchgate.net/publication/220259945_Do_Ontological_Deficiencies_in_Modeling_Grammars_Matter
-http://www.nemo.inf.ufes.br/files/separating_ontological_and_information_modeling_concerns_towards_a_two_level_model_driven_approach_2012.pdf
+  * [http://www.inf.ufes.br/~gguizzardi/FAIA.pdf On Ontology, ontologies, Conceptualizations,
+Modeling Languages, and (Meta)Models]
+  * [http://www.inf.ufes.br/~gguizzardi/BalticDB&IS.pdf The Role of Foundational Ontologies for Conceptual
+Modeling and Domain Ontology Representation 
+  * [http://www.inf.ufes.br/~gguizzardi/EMMSAD@CAISE09.pdf On the importance of Truly Ontological Distinctions for Ontology Representation Languages: An Industrial Case Study in the Domain of Oil and Gas 
+  * [http://www.researchgate.net/publication/220259945_Do_Ontological_Deficiencies_in_Modeling_Grammars_Matter Do Ontological Deficiencies in Modeling Grammars Matter?]
 
 ==General Readings==
 
 For a complete description of UFO-A and OntoUML, read the "OntoUML Bible":<br>
 
-[http://www.inf.ufes.br/~gguizzardi/OFSCM.pdf Ontological Foundations for Structural Conceptual Models]<br>
+  * [http://www.inf.ufes.br/~gguizzardi/OFSCM.pdf Ontological Foundations for Structural Conceptual Models]<br>
 
 For a "softer" introduction, we recommend the theoretical background chapters of a the thesis:<br>
   * [https://www.researchgate.net/publication/268220197_Ontology_Validation_for_Managers Ontology Validation for Managers]<br>
