@@ -13,7 +13,7 @@ If your are modelling your own ontology, you can go through them and see what yo
 *Ontology:* Normative Acts<br>
 *Domain:* Brazilian normative acts composition<br>
 *Publication:* [http://ceur-ws.org/Vol-1041/ontobras-2013_paper14.pdf Ontology Reference Model for Normative Acts]<br>
-*Authors:* Pedro Paulo Favato Barcelos, Renata S. S. Guizzardi, Anilton S. Garcia<br><br>
+*Authors:* Pedro Paulo Favato Barcelos, Renata S. S. Guizzardi, Anilton S. Garcia<br>
 
 *Ontology:* MPOG Ontology Draft<br>
 *Domain:* Brazilian federal organizational structures<br>
