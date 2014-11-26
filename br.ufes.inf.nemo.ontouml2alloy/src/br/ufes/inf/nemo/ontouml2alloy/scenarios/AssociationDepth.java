@@ -1,30 +1,54 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
-import br.ufes.inf.nemo.ontouml2alloy.scenarios.CustomQuantification.Mode;
 import RefOntoUML.Association;
 import RefOntoUML.parser.OntoUMLParser;
 
-public class AssociationDepth extends ContentScenario {
+public class AssociationDepth extends AssociationScenario {
 
 	enum Limit {UPPER, LOWER}
 	private Limit limit;
-	private Association a;
 	
 	private int depth;
 	private CustomQuantification worldQ, classQ;
 	
-	public AssociationDepth (OntoUMLParser parser, Association a, int depth, Limit limit){
-		super(parser);
+	public AssociationDepth (OntoUMLParser parser, Association a){
+		super(parser,a,false);
 		
-		this.a=a;
+		worldQ = CustomQuantification.createWorldQuantification(1);
+		
+		classQ = new CustomQuantification();
+		classQ.setDisj(true);
+		classQ.addQuantificationData("x", "w."+getDomain(), getLimit());
+	
+	}
+	
+	public int getDepth(){
+		return depth;
+	}
+	
+	public void setDepth(int depth){
 		this.depth = depth;
-		this.limit = limit;
-		
-		worldQ = new CustomQuantification(Mode.ALL);
-		worldQ.addQuantificationData("w", "World", 1);
-		
-		classQ = new CustomQuantification(Mode.ALL, true);
-		worldQ.addQuantificationData("x", getDomain(), getLimit());
+		updateQuantificationData();
+	}
+	
+	public boolean isLowerBound(){
+		return limit==Limit.LOWER;
+	}
+	
+	public boolean isUpperBound(){
+		return limit==Limit.UPPER;
+	}
+	
+	public void setAsLowerBound(int depth){
+		limit = Limit.LOWER;
+		this.depth = depth;
+		updateQuantificationData();
+	}
+	
+	public void setAsUpperBound(int depth){
+		limit = Limit.UPPER;
+		this.depth = depth;
+		updateQuantificationData();
 	}
 	
 	public int getLimit(){
@@ -32,36 +56,25 @@ public class AssociationDepth extends ContentScenario {
 			return depth+1;
 		return depth;
 	}
-	
-
-	public Association getA() {
-		return a;
-	}
 
 	public void setA(Association a) {
-		this.a = a;
+		super.setA(a);
 		updateQuantificationData();
 	}
 
 	private void updateQuantificationData() {
 		classQ.getQuantificationData(0).setDomain(getDomain());
+		classQ.getQuantificationData(0).setNumberOfVariables(getLimit());
 	}
 
-	public void setWorldQuantification(Mode mode){
-		worldQ.mode = mode;
+	public CustomQuantification getWorldQuantification(){
+		return worldQ;
 	}
 	
-	public void setClassQuantification(Mode mode){
-		classQ.mode = mode;
+	public CustomQuantification getClassQuantification(){
+		return classQ;
 	}
 	
-	private String getEnd() {
-		return parser.getAlias(a.getMemberEnd().get(1));
-	}
-
-	private String getDomain() {
-		return parser.getAlias(a.getMemberEnd().get(0).getType());
-	}
 	
 	@Override
 	public String getAlloy() {
@@ -78,7 +91,7 @@ public class AssociationDepth extends ContentScenario {
 		
 		for (int i = 1; i < getLimit(); i++) {
 			String var1 = classQ.getVariable(0,i);
-			String var2 = classQ.getVariable(i,i+1);
+			String var2 = classQ.getVariable(0,i+1);
 			
 			expr += var2+" in "+getEnd()+"["+var1+","+worldVariable+"]";
 			
@@ -97,7 +110,7 @@ public class AssociationDepth extends ContentScenario {
 	
 	@Override
 	public String getScenarioName() {
-		return "AssociationScenario";
+		return "AssociationDepth";
 	}
 
 

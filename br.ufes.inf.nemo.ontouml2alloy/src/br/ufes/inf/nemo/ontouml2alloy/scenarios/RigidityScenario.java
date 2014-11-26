@@ -5,10 +5,10 @@ import RefOntoUML.parser.OntoUMLParser;
 
 public class RigidityScenario extends ContentScenario {
 		
-	enum Type {MANDATORY, PSEUDO}
-	Type type;
+	private enum Type {MANDATORY, PSEUDO}
+	private Type type;
 	
-	Class antiRigid;
+	private Class antiRigid;
 	
 	public RigidityScenario (OntoUMLParser parser){
 		super(parser);
@@ -28,6 +28,18 @@ public class RigidityScenario extends ContentScenario {
 		
 		return expr;
 	}
+	
+	public void setMandatoryAntiRigidity(Class antiRigid){
+		this.antiRigid = antiRigid;
+		type = Type.MANDATORY;
+	}
+	
+	public void setPseudoRigidity(Class antiRigid){
+		this.antiRigid = antiRigid;
+		type = Type.PSEUDO;
+	}
+	
+	
 
 	@Override
 	public String getString() {
@@ -37,7 +49,7 @@ public class RigidityScenario extends ContentScenario {
 	
 	@Override
 	public String getScenarioName() {
-		return "Rigidity";
+		return "AntiRigidity";
 	}
 
 

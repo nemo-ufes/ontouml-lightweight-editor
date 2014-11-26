@@ -2,51 +2,71 @@ package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
 public abstract class Scenario {
 	
-	enum MODE {PRED, ASSERT, FACT}
-	private MODE mode;
+	enum ParagraphType {PRED, ASSERT, FACT}
+	private ParagraphType paragraphType;
 	
 	public abstract String getString();
 	public abstract String getAlloy();
 	public abstract String getScenarioName();
 	
-	public MODE getMode(){
-		return mode;
+	public ParagraphType getParagraphType(){
+		return paragraphType;
 	}
 	
-	public void setMode(MODE mode){
-		this.mode = mode;
+	public boolean isPredicate(){
+		return paragraphType == ParagraphType.PRED;
 	}
 	
-	public String getModeString(){
+	public boolean isFact(){
+		return paragraphType == ParagraphType.FACT;
+	}
+	
+	public boolean isAssertion(){
+		return paragraphType == ParagraphType.ASSERT;
+	}
+	
+	public void setAsPredicate(){
+		this.paragraphType = ParagraphType.PRED;
+	}
+	
+	public void setAsFact(){
+		this.paragraphType = ParagraphType.FACT;
+	}
+	
+	public void setAsAssertion(){
+		this.paragraphType = ParagraphType.ASSERT;
+	}
+	
+	public String getParagraphString(){
 		
-		if (mode==MODE.PRED)
+		if (paragraphType==ParagraphType.PRED)
 			return "Is want to see";
-		if (mode==MODE.ASSERT)
+		if (paragraphType==ParagraphType.ASSERT)
 			return "The model only allows";
-		if (mode==MODE.FACT)
+		if (paragraphType==ParagraphType.FACT)
 			return "I want to enforce";
 		
 		return "";
 	}
 	
-	private String getModeKeyword() {
+	private String getParagraphKeyword() {
 		
-		if (mode==MODE.PRED)
+		if (paragraphType==ParagraphType.PRED)
 			return "pred";
-		if (mode==MODE.ASSERT)
+		if (paragraphType==ParagraphType.ASSERT)
 			return "assert";
-		if (mode==MODE.FACT)
+		if (paragraphType==ParagraphType.FACT)
 			return "fact";
 		
 		return "";
 	}
 	
 	public String getNaturalLanguageTranslation(){
-		return getModeString()+" "+getString()+".";
+		return getParagraphString()+" "+getString()+".";
 	}
 		
 	public String getParagraph(){
-		return 	getModeKeyword()+" "+getScenarioName()+" {"+
+		return 	getParagraphKeyword()+" "+getScenarioName()+" {"+
 				"\n\t"+getAlloy()+
 				"\n}";
 	}

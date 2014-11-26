@@ -1,9 +1,9 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
 class QuantificationData{
-	String variablePrefix;
-	String domain;
-	int numberOfVariables;
+	private String variablePrefix;
+	private String domain;
+	private int numberOfVariables;
 	
 	public QuantificationData(String variablePrefix, String domain, int numberOfVariables) {
 		this.variablePrefix = variablePrefix;
