@@ -55,10 +55,10 @@ Representing Organizational Structures in an Enterprise Architecture Language<br
 [http://www.inf.ufes.br/~gguizzardi/ECG.pdf An Electrocardiogram (ECG) Domain Ontology]<br>
 <i>Bernardo Gonçalves, Giancarlo Guizzardi José Gonçalves Pereira Filho</i><br>
 
-**<br>
-<i></i><br>
-[]<br>
-<i></i><br>
+*The PAS 77 Ontology*<br>
+<i>IT architecture from the service continuity perspective, following the PAS 77:2006 standard</i><br>
+[Well-Founded IT Architecture Ontology: an Approach from a Service Continuity Perspective]<br>
+<i>Hedwio Carvalho e Silva, Rita de Cassia Cordeiro de Castro, Marcos Jose Negreiros Gomes, and Anilton Salles Garcia</i><br>
 
 **<br>
 <i></i><br>
