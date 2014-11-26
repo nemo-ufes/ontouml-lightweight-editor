@@ -12,4 +12,6 @@
   * [Publications Publications]
   * [FAQ Frequently Asked Questions (FAQ)]
   * OntoUML
-    * [Models OntoUML Models]
+    * [Guide Study Guide]
+    * [Models Published OntoUML Models]
+    * [Unpublished Unpublished OntoUML Models]
