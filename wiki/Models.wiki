@@ -61,12 +61,12 @@ Representing Organizational Structures in an Enterprise Architecture Language<br
 <i>Hedwio Carvalho e Silva, Rita de Cassia Cordeiro de Castro, Marcos Jose Negreiros Gomes, and Anilton Salles Garcia</i><br>
 
 *Software Requirements Ontology*<br>
-<i><Requirements engineering processes</i><br>
+<i>Requirements engineering processes</i><br>
 [http://julionardi.scalfoni.com.br/publicacoes/Artigo_CLEI08_vf.pdf Evolving a Software Requirements Ontology]<br>
 <i>Ricardo de Almeida Falbo and Julio Cesar Nardi</i><br>
 
-*Softare process*<br>
-<i>Softare process</i><br>
+*Software process*<br>
+<i>Software process</i><br>
 [http://www.inf.ufes.br/~gguizzardi/Using%20a%20Foundational%20Ontology%20for%20Reengineering%20a%20Software%20Process%20Ontology_cameraready%20(1).pdf Using a Foundational Ontology for Reengineering a Software Process Ontology]<br>
 <i>Ana C. O. Bringuente, Ricardo A. Falbo, Giancarlo Guizzardi</i><br>
 
