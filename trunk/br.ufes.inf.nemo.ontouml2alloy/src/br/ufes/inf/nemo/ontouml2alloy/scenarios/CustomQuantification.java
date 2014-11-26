@@ -7,31 +7,72 @@ public class CustomQuantification {
 	
 	enum Mode {ALL, NO, SOME, ONE, COMPARISON};
 	
-	Mode mode;
-	ArrayList<QuantificationData> qd;
+	private Mode mode;
+	private ArrayList<QuantificationData> qd;
 	
-	Comparator comp;
-	int n;
-	boolean isDisj;
+	private Comparator comp;
+	private int n;
+	private boolean isDisj;
 	
-	public CustomQuantification(Mode mode) {
-		super();
-		
+	public CustomQuantification() {
 		qd = new ArrayList<QuantificationData>();
-		this.mode = mode;
 		isDisj = false;
+		n = 1;
 	}
 	
-	public CustomQuantification(Mode mode, boolean isDisj) {
-		super();
-		
-		this.qd = new ArrayList<QuantificationData>();
-		this.mode = mode;
+	public boolean isDisj() {
+		return isDisj;
+	}
+	
+	public void setDisj(boolean isDisj) {
 		this.isDisj = isDisj;
+	}
+
+	public void setAsAll() {
+		mode=Mode.ALL;
+	}
+	
+	public void setAsNo() {
+		mode=Mode.NO;
+	}
+	
+	public void setAsSome() {
+		mode=Mode.SOME;
+	}
+	
+	public void setAsComparison(Comparator comp, int n){
+		mode=Mode.COMPARISON;
+		this.n = n;
+		this.comp = comp;
+	}
+	
+	public void setAsOne(){
+		mode=Mode.ONE;
+	}
+	
+	public boolean isAll() {
+		return mode==Mode.ALL;
+	}
+	
+	public boolean isNo() {
+		return mode==Mode.NO;
+	}
+	
+	public boolean isSome() {
+		return mode==Mode.SOME;
+	}
+	
+	public boolean isComparison(){
+		return mode==Mode.COMPARISON;
+	}
+	
+	public boolean isOne(){
+		return mode==Mode.ONE;
 	}
 
 	public String addQuantification(String expression){
 		String pre = "";
+		
 		if(isDisj)
 			pre="disj ";
 		
@@ -79,5 +120,10 @@ public class CustomQuantification {
 		return qd.get(i);
 	}
 	
+	public static CustomQuantification createWorldQuantification(int numberOfVariables){
+		CustomQuantification cq = new CustomQuantification();
+		cq.addQuantificationData("w", "World", numberOfVariables);
+		return cq;
+	}
 	
 }

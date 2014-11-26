@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
-import br.ufes.inf.nemo.ontouml2alloy.scenarios.CustomQuantification.Mode;
 
 
 public class StoryScenario extends Scenario{
@@ -24,19 +23,18 @@ public class StoryScenario extends Scenario{
 		setComparator(op);
 		setNumberOfWorlds(numberOfWorlds);
 		
-		
 		setStoryDepth(depth);
 		this.limit=limit;
 		depth=checkStoryDepth(depth);
-		quant = new CustomQuantification(getQuantificationMode());
-		quant.addQuantificationData("w", "World", getAdjustedDepth());
+		quant = CustomQuantification.createWorldQuantification(getAdjustedDepth());
+		setQuantificationMode();
 		
 	}
 	
 	public void setLimit(Limit limit) {
 		this.limit=limit;
 		depth=checkStoryDepth(depth);
-		quant.mode = getQuantificationMode();
+		setQuantificationMode();
 		
 	}
 
@@ -49,12 +47,12 @@ public class StoryScenario extends Scenario{
 		this.type = type;
 	}
 
-	public Mode getQuantificationMode(){
+	public void setQuantificationMode(){
 		if(limit==Limit.UPPER)
-			return Mode.NO;
+			quant.setAsNo();
 		if(limit==Limit.LOWER)
-			return Mode.SOME;
-		return null;
+			quant.setAsSome();
+		return;
 	}
 	
 	public int getNumberOfWorlds() {
