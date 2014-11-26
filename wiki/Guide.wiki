@@ -31,12 +31,9 @@ The Counting Problem]
 
 Part-Whole Relations:
   * [http://www.inf.ufes.br/~gguizzardi/CAISE2009CR.pdf The Problem of Transitivity of Part-Whole Relations in Conceptual Modeling Revisited -- (Functional Parthood)]
-  * [http://www.inf.ufes.br/~gguizzardi/CAISE2011-CR.pdf Ontological Foundations for Conceptual Part-Whole
-Relations: The Case of Collectives and their Parts -- (Collectives)]
-  * [http://www.inf.ufes.br/~gguizzardi/FOIS2010.pdf On the Representation of Quantities and
-their Parts in Conceptual Modeling -- (Quantities)]
-  * [http://www.inf.ufes.br/~gguizzardi/CAISE-CR-2007.pdf Modal Aspects of Object Types and Part-Whole
-Relations and the de re/de dicto Distinction  -- (De Re / De Dicto)]
+  * [http://www.inf.ufes.br/~gguizzardi/CAISE2011-CR.pdf Ontological Foundations for Conceptual Part-Whole Relations: The Case of Collectives and their Parts -- (Collectives)]
+  * [http://www.inf.ufes.br/~gguizzardi/FOIS2010.pdf On the Representation of Quantities and their Parts in Conceptual Modeling -- (Quantities)]
+  * [http://www.inf.ufes.br/~gguizzardi/CAISE-CR-2007.pdf Modal Aspects of Object Types and Part-Whole Relations and the de re/de dicto Distinction  -- (De Re / De Dicto)]
 
 Qualities
 http://www.inf.ufes.br/~gguizzardi/PID2733627.pdf
