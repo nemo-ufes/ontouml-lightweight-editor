@@ -75,9 +75,4 @@ Representing Organizational Structures in an Enterprise Architecture Language<br
 [http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.189.832&rep=rep1&type=pdf Ontology-based Model for the ITU-T Recommendation G.805: Towards the Self-Management of Transport Networks]<br>
 <i>Maxwell E. Monteiro , Anilton Salles Garcia , Pedro Paulo , F. Barcelos and Giancarlo Guizzardi</i><br>
 
-**<br>
-<i></i><br>
-[]<br>
-<i></i><br>
-
 <b><font color="red">Warning! The models presented in this section were not developed by members of the OLED team.</font></b>
