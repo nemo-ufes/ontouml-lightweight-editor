@@ -6,10 +6,8 @@
 
 To learn about some fundamental concepts related to the "Ontology World" e about ontology-driven conceptual modeling, we suggest the papers below: 
 
-  * [http://www.inf.ufes.br/~gguizzardi/FAIA.pdf On Ontology, ontologies, Conceptualizations,
-Modeling Languages, and (Meta)Models]
-  * [http://www.inf.ufes.br/~gguizzardi/BalticDB&IS.pdf The Role of Foundational Ontologies for Conceptual
-Modeling and Domain Ontology Representation 
+  * [http://www.inf.ufes.br/~gguizzardi/FAIA.pdf On Ontology, ontologies, Conceptualizations, Modeling Languages, and (Meta)Models]
+  * [http://www.inf.ufes.br/~gguizzardi/BalticDB&IS.pdf The Role of Foundational Ontologies for Conceptual Modeling and Domain Ontology Representation 
   * [http://www.inf.ufes.br/~gguizzardi/EMMSAD@CAISE09.pdf On the importance of Truly Ontological Distinctions for Ontology Representation Languages: An Industrial Case Study in the Domain of Oil and Gas 
   * [http://www.researchgate.net/publication/220259945_Do_Ontological_Deficiencies_in_Modeling_Grammars_Matter Do Ontological Deficiencies in Modeling Grammars Matter?]
 
