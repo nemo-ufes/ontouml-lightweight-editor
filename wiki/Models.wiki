@@ -40,7 +40,7 @@ Representing Organizational Structures in an Enterprise Architecture Language<br
 [http://www.nemo.inf.ufes.br/files/a_configuration_management_task_ontology_for_semantic_integration_2012.pdf A Configuration Management Task Ontology for Semantic Integration]<br>
 <i>Rodrigo Calhau and Ricardo de Almeida Falbo</i><br>
 
-*OntoBio *<br>
+*CSGH Refactored*<br>
 <i>Biodiversity</i><br>
 [https://code.google.com/p/ontobio/ Website]<br>
 <i>Andréa Corrêa Flôres Albuquerque</i><br>
