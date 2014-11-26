@@ -1,6 +1,6 @@
 #summary Published OntoUML models
 
-= Introduction =
+= OntoUML Models =
 
 OntoUML has been successfully applied to a variety of domains, contexts and applications. In this page, we present a partial publication list that present several models specified in OntoUML.
 
