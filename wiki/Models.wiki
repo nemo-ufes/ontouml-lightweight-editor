@@ -5,4 +5,4 @@ OntoUML has been successfully applied to a variety of domains, contexts and appl
 
 = Details =
 
-<b><font color="red">Warning! The models presented in this section were not developed by members of the OLED development team.</font></b>
+<b><font color="red">Warning! The models presented in this section were not developed by members of the OLED team.</font></b>
