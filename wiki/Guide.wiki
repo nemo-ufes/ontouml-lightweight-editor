@@ -30,19 +30,19 @@ The following readings are separated by topic of interest.
 
   * [http://doc.utwente.nl/49866/1/WPI.pdf A Formal Theory of Conceptual Modeling Universals]
 
-===Roles, Relators and Qua Individuals:===
+====Roles, Relators and Qua Individuals:====
 
   * [http://www.inf.ufes.br/~gguizzardi/quaEntities.pdf Agent Roles, Qua Individuals and The Counting Problem]
   * [http://www.irit.fr/publis/LILAC/MGVBF-rolesAAAI05.pdf Relational Roles and Qua-individuals]
 
-===Part-Whole Relations:===
+====Part-Whole Relations:====
   * *Functional Parthood:* [http://www.inf.ufes.br/~gguizzardi/CAISE2009CR.pdf The Problem of Transitivity of Part-Whole Relations in Conceptual Modeling Revisited]
   * *Collectives:* [http://www.inf.ufes.br/~gguizzardi/CAISE2011-CR.pdf Ontological Foundations for Conceptual Part-Whole Relations: The Case of Collectives and their Parts]
   * *Quantities:* [http://www.inf.ufes.br/~gguizzardi/FOIS2010.pdf On the Representation of Quantities and their Parts in Conceptual Modeling]
   * *De Re / De Dicto:* [http://www.inf.ufes.br/~gguizzardi/CAISE-CR-2007.pdf Modal Aspects of Object Types and Part-Whole Relations and the de re/de dicto Distinction]
 
-===Qualities:===
+====Qualities:====
   * [http://www.inf.ufes.br/~gguizzardi/PID2733627.pdf An Ontological Foundation for Conceptual Modeling Datatypes based on Semantic Reference Spaces]
 
-===Events*:===
+====Events*:====
   * [http://www.inf.ufes.br/~gguizzardi/Towards%20Ontological%20Foundations%20for%20the%20Conceptual%20modeling%20of%20events.pdf Towards Ontological Foundations for the Conceptual Modeling of Events]
