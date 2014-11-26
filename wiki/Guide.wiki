@@ -19,19 +19,25 @@ For a "softer" introduction, we recommend the theoretical background chapters of
   * [http://www.inf.ufes.br/~rguizzardi/OEO/dissertacao-Veruska.pdf Estudo de Alternativas de Mapeamento de Ontologias da Linguagem OntoUML para OWL: Abordagens para representação de Informação Temporal -- in Portuguese]<br>
   * [https://rcarraretto.googlecode.com/files/Carraretto2012MSc.pdf Separating Ontological and Informational Concerns: A Model-driven Approach for Conceptual Modeling] <br>
 
-To read about particular partes of OntoUML/UFO, we suggest:
+The following readings are separated by are of interest.
 
-http://doc.utwente.nl/49866/1/WPI.pdf
+General Foundations:
+[A Formal Theory of Conceptual Modeling Universals http://doc.utwente.nl/49866/1/WPI.pdf]
 
-Roles, Relators and Qua Individuals
-http://www.inf.ufes.br/~gguizzardi/quaEntities.pdf
-http://www.irit.fr/publis/LILAC/MGVBF-rolesAAAI05.pdf
+Roles, Relators and Qua Individuals:
+[http://www.inf.ufes.br/~gguizzardi/quaEntities.pdf Agent Roles, Qua Individuals and
+The Counting Problem]
+[http://www.irit.fr/publis/LILAC/MGVBF-rolesAAAI05.pdf Relational Roles and Qua-individuals]
 
-Relações Todo-Parte:
-http://www.inf.ufes.br/~gguizzardi/CAISE2009CR.pdf (Functional Parthood)
-http://www.inf.ufes.br/~gguizzardi/CAISE2011-CR.pdf (Collectives)
-http://www.inf.ufes.br/~gguizzardi/FOIS2010.pdf (Quantities)
-http://www.inf.ufes.br/~gguizzardi/CAISE-CR-2007.pdf (De Re / De Dicto)
+Part-Whole Relations:
+  * [http://www.inf.ufes.br/~gguizzardi/CAISE2009CR.pdf The Problem of Transitivity of Part-Whole Relations in
+Conceptual Modeling Revisited -- (Functional Parthood)]
+  * [http://www.inf.ufes.br/~gguizzardi/CAISE2011-CR.pdf Ontological Foundations for Conceptual Part-Whole
+Relations: The Case of Collectives and their Parts -- (Collectives)]
+  * [http://www.inf.ufes.br/~gguizzardi/FOIS2010.pdf On the Representation of Quantities and
+their Parts in Conceptual Modeling -- (Quantities)]
+  * [http://www.inf.ufes.br/~gguizzardi/CAISE-CR-2007.pdf Modal Aspects of Object Types and Part-Whole
+Relations and the de re/de dicto Distinction  -- (De Re / De Dicto)]
 
 Qualities
 http://www.inf.ufes.br/~gguizzardi/PID2733627.pdf
