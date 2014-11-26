@@ -1,6 +1,6 @@
 #summary Published OntoUML models
 
-= OntoUML Models =
+= Published OntoUML Models =
 
 In this page, we present a partial list that presents several published models specified using OntoUML and/or UFO.
 
