@@ -42,6 +42,7 @@ public abstract class AssociationScenario extends ContentScenario {
 	}
 
 	public String getDomain() {
+		
 		if(reverse)
 			return parser.getAlias(a.getMemberEnd().get(1).getType()); 
 		return parser.getAlias(a.getMemberEnd().get(0).getType());
