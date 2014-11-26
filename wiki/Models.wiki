@@ -15,54 +15,49 @@ If your are modelling your own ontology, you can go through them and see what yo
 [http://ceur-ws.org/Vol-1041/ontobras-2013_paper14.pdf Ontology Reference Model for Normative Acts]<br>
 <i>Pedro Paulo Favato Barcelos, Renata S. S. Guizzardi, Anilton S. Garcia</i><br>
 
-*Ontology:* MPOG Ontology Draft<br>
-*Domain:* Brazilian federal organizational structures<br>
-*Publication:* [http://vocab.e.gov.br/2011/09/org.pdf Esboço de Modelagem Conceitual para Estruturas Organizacionais Governamentais Brasileiras e o SIORG] -- in Portuguese<br>
-*Authors:* Ministry of Planning, Budget and Management<br><br>
+*MPOG Ontology Draft*<br>
+<i>Brazilian federal organizational structures</i><br>
+[http://vocab.e.gov.br/2011/09/org.pdf Esboço de Modelagem Conceitual para Estruturas Organizacionais Governamentais Brasileiras e o SIORG]<br>
+<i>Ministry of Planning, Budget and Management</i><br>
 
-*Ontology:*<br>
-*Domain:* <br>
-*Publication:* [ ]<br>
-*Authors:* <br><br>
+**<br>
+<i></i><br>
+[]<br>
+<i></i><br>
 
-*Ontology:*<br>
-*Domain:* <br>
-*Publication:* [ ]<br>
-*Authors:* <br><br>
+**<br>
+<i></i><br>
+[]<br>
+<i></i><br>
 
-*Ontology:*<br>
-*Domain:* <br>
-*Publication:* [ ]<br>
-*Authors:* <br><br>
+**<br>
+<i></i><br>
+[]<br>
+<i></i><br>
 
-*Ontology:*<br>
-*Domain:* <br>
-*Publication:* [ ]<br>
-*Authors:* <br><br>
+**<br>
+<i></i><br>
+[]<br>
+<i></i><br>
 
-*Ontology:*<br>
-*Domain:* <br>
-*Publication:* [ ]<br>
-*Authors:* <br><br>
+**<br>
+<i></i><br>
+[]<br>
+<i></i><br>
 
-*Ontology:*<br>
-*Domain:* <br>
-*Publication:* [ ]<br>
-*Authors:* <br><br>
+**<br>
+<i></i><br>
+[]<br>
+<i></i><br>
 
-*Ontology:*<br>
-*Domain:* <br>
-*Publication:* [ ]<br>
-*Authors:* <br><br>
+**<br>
+<i></i><br>
+[]<br>
+<i></i><br>
 
-*Ontology:*<br>
-*Domain:* <br>
-*Publication:* [ ]<br>
-*Authors:* <br><br>
-
-*Ontology:*<br>
-*Domain:* <br>
-*Publication:* [ ]<br>
-*Authors:* <br><br>
+**<br>
+<i></i><br>
+[]<br>
+<i></i><br>
 
 <b><font color="red">Warning! The models presented in this section were not developed by members of the OLED team.</font></b>
