@@ -45,10 +45,10 @@ Representing Organizational Structures in an Enterprise Architecture Language<br
 [https://code.google.com/p/ontobio/ Website]<br>
 <i>Andréa Corrêa Flôres Albuquerque</i><br>
 
-**<br>
-<i></i><br>
-[]<br>
-<i></i><br>
+*Public Cloud Vunerability Ontology*<br>
+<i>IaaS perspective on public MSc cloud vulnerability</i><br>
+[http://ieeexplore.ieee.org/xpl/abstractAuthors.jsp?reload=true&arnumber=6360129 Mapping of vulnerabilities in the public cloud with the use of foundational ontology: A perspective for service IaaS]<br>
+<i>Rita de Cássia C. Castro, Hedwio Carvalho e Silva, Anilton Sales Gracia and Marcos José Negreiros Gomesd</i><br>
 
 **<br>
 <i></i><br>
