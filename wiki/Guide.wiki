@@ -11,6 +11,7 @@ http://www.researchgate.net/publication/220259945_Do_Ontological_Deficiencies_in
 http://www.nemo.inf.ufes.br/files/separating_ontological_and_information_modeling_concerns_towards_a_two_level_model_driven_approach_2012.pdf
 
 For a complete description of UFO-A and OntoUML, read the "OntoUML Bible":<br>
+
 [http://www.inf.ufes.br/~gguizzardi/OFSCM.pdf Ontological Foundations for Structural Conceptual Models]
 
 For a "softer" introduction, we recommend the theoretical background chapters of a the thesis:<br>
