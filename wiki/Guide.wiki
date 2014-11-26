@@ -1,4 +1,4 @@
-#summary Find reading directions to learn OntoUML and start modeling
+#summary Reading directions to learn OntoUML and start modeling
 
 = OntoUML Study Guide =
 
