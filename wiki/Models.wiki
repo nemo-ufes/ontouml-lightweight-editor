@@ -15,5 +15,54 @@ If your are modelling your own ontology, you can go through them and see what yo
 *Publication:* [http://ceur-ws.org/Vol-1041/ontobras-2013_paper14.pdf Ontology Reference Model for Normative Acts]<br>
 *Authors:* Pedro Paulo Favato Barcelos, Renata S. S. Guizzardi, Anilton S. Garcia<br><br>
 
+*Ontology:* MPOG Ontology Draft<br>
+*Domain:* Brazilian federal organizational structures<br>
+*Publication:* [http://vocab.e.gov.br/2011/09/org.pdf Esboço de Modelagem Conceitual para Estruturas Organizacionais Governamentais Brasileiras e o SIORG] -- in Portuguese<br>
+*Authors:* Ministry of Planning, Budget and Management<br><br>
+
+*Ontology:*<br>
+*Domain:* <br>
+*Publication:* [ ]<br>
+*Authors:* <br><br>
+
+*Ontology:*<br>
+*Domain:* <br>
+*Publication:* [ ]<br>
+*Authors:* <br><br>
+
+*Ontology:*<br>
+*Domain:* <br>
+*Publication:* [ ]<br>
+*Authors:* <br><br>
+
+*Ontology:*<br>
+*Domain:* <br>
+*Publication:* [ ]<br>
+*Authors:* <br><br>
+
+*Ontology:*<br>
+*Domain:* <br>
+*Publication:* [ ]<br>
+*Authors:* <br><br>
+
+*Ontology:*<br>
+*Domain:* <br>
+*Publication:* [ ]<br>
+*Authors:* <br><br>
+
+*Ontology:*<br>
+*Domain:* <br>
+*Publication:* [ ]<br>
+*Authors:* <br><br>
+
+*Ontology:*<br>
+*Domain:* <br>
+*Publication:* [ ]<br>
+*Authors:* <br><br>
+
+*Ontology:*<br>
+*Domain:* <br>
+*Publication:* [ ]<br>
+*Authors:* <br><br>
 
 <b><font color="red">Warning! The models presented in this section were not developed by members of the OLED team.</font></b>
