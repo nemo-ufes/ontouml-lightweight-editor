@@ -13,5 +13,6 @@
   * [FAQ Frequently Asked Questions (FAQ)]
   * OntoUML
     * [Guide Study Guide]
-    * [Models Published OntoUML Models]
-    * [Unpublished Unpublished OntoUML Models]
+    * OntoUML Models
+      * [Models Published]
+      * [Unpublished Unpublished]
