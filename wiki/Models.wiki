@@ -1,8 +1,19 @@
 #summary Published OntoUML models
 
-OntoUML has been successfully applied to a variety of domains, contexts and applications. If you want learn how these models were developed, by whom or for what, check out the publications below:
+= Introduction =
 
+OntoUML has been successfully applied to a variety of domains, contexts and applications. In this page, we present a partial publication list that present several models specified in OntoUML.
 
-= Details =
+If you are starting to learn OntoUML, you can use these models to discover more about the stereotypes and meta-properties of the OntoUML language. 
+
+If you curious about OntoUML applications, you can check out these links to learn how they were developed, by whom and for what purpose.
+
+If your are modelling your own ontology, you can go through them and see what you can reuse.
+
+*Ontology:* Normative Acts<br>
+*Domain:* Brazilian normative acts composition
+*Publication:* [Ontology Reference Model for Normative Acts http://ceur-ws.org/Vol-1041/ontobras-2013_paper14.pdf] <br>
+*Authors:* Pedro Paulo Favato Barcelos, Renata S. S. Guizzardi, Anilton S. Garcia<br><br>
+
 
 <b><font color="red">Warning! The models presented in this section were not developed by members of the OLED team.</font></b>
