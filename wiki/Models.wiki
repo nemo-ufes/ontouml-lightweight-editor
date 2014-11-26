@@ -2,11 +2,11 @@
 
 = OntoUML Models =
 
-OntoUML has been successfully applied to a variety of domains, contexts and applications. In this page, we present a partial publication list that present several models specified in OntoUML.
+In this page, we present a partial list that presents several models specified using OntoUML and/or UFO.
 
-If you are learn OntoUML, you can use these models to discover more about the stereotypes and meta-properties of the OntoUML language. 
+If you are learning OntoUML/UFO, you can use these models to discover more about the meta-categories and meta-properties of the OntoUML language. 
 
-If you curious about OntoUML applications, you can check out these links to learn how they were developed, by whom and for what purpose.
+If you curious about OntoUML/UFO applications, you can check out these links to learn how they were developed, by whom and for what purpose.
 
 If your are modelling your own ontology, you can go through them and see what you can reuse.
 
@@ -59,6 +59,16 @@ Representing Organizational Structures in an Enterprise Architecture Language<br
 <i>IT architecture from the service continuity perspective, following the PAS 77:2006 standard</i><br>
 [Well-Founded IT Architecture Ontology: an Approach from a Service Continuity Perspective]<br>
 <i>Hedwio Carvalho e Silva, Rita de Cassia Cordeiro de Castro, Marcos Jose Negreiros Gomes, and Anilton Salles Garcia</i><br>
+
+*Software Requirements Ontology*<br>
+<i><Requirements engineering processes/i><br>
+[http://julionardi.scalfoni.com.br/publicacoes/Artigo_CLEI08_vf.pdf Evolving a Software Requirements Ontology]<br>
+<i>Ricardo de Almeida Falbo and Julio Cesar Nardi</i><br>
+
+*Softare process*<br>
+<i>Softare process</i><br>
+[http://www.inf.ufes.br/~gguizzardi/Using%20a%20Foundational%20Ontology%20for%20Reengineering%20a%20Software%20Process%20Ontology_cameraready%20(1).pdf Using a Foundational Ontology for Reengineering a Software Process Ontology]<br>
+<i>Ana C. O. Bringuente, Ricardo A. Falbo, Giancarlo Guizzardi</i><br>
 
 **<br>
 <i></i><br>
