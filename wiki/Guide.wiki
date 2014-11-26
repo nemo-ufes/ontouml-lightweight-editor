@@ -23,8 +23,6 @@ For a "softer" introduction, we recommend the theoretical background chapters of
   * [http://www.inf.ufes.br/~rguizzardi/OEO/dissertacao-Veruska.pdf Estudo de Alternativas de Mapeamento de Ontologias da Linguagem OntoUML para OWL: Abordagens para representação de Informação Temporal -- in Portuguese]<br>
   * [https://rcarraretto.googlecode.com/files/Carraretto2012MSc.pdf Separating Ontological and Informational Concerns: A Model-driven Approach for Conceptual Modeling] <br>
 
-
-<br><br>
 ==Specific Readings==
 The following readings are separated by topic of interest.
 
