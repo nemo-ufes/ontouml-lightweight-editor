@@ -11,8 +11,8 @@ If you curious about OntoUML applications, you can check out these links to lear
 If your are modelling your own ontology, you can go through them and see what you can reuse.
 
 *Ontology:* Normative Acts<br>
-*Domain:* Brazilian normative acts composition
-*Publication:* [Ontology Reference Model for Normative Acts http://ceur-ws.org/Vol-1041/ontobras-2013_paper14.pdf] <br>
+*Domain:* Brazilian normative acts composition<br>
+*Publication:* [http://ceur-ws.org/Vol-1041/ontobras-2013_paper14.pdf Ontology Reference Model for Normative Acts]<br>
 *Authors:* Pedro Paulo Favato Barcelos, Renata S. S. Guizzardi, Anilton S. Garcia<br><br>
 
 
