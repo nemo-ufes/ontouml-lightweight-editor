@@ -26,7 +26,7 @@ For a "softer" introduction, we recommend the theoretical background chapters of
 ==Specific Readings==
 The following readings are separated by topic of interest.
 
-===General Foundations:===
+===+General Foundations:====
 
   * [http://doc.utwente.nl/49866/1/WPI.pdf A Formal Theory of Conceptual Modeling Universals]
 
