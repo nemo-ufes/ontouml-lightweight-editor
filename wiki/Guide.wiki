@@ -2,6 +2,8 @@
 
 = OntoUML Study Guide =
 
+==Introductory Readings==
+
 To learn about some fundamental concepts related to the "Ontology World" e about ontology-driven conceptual modeling, we suggest the papers below: 
 
 http://www.inf.ufes.br/~gguizzardi/FAIA.pdf
@@ -9,6 +11,8 @@ http://www.inf.ufes.br/~gguizzardi/BalticDB&IS.pdf
 http://www.inf.ufes.br/~gguizzardi/EMMSAD@CAISE09.pdf
 http://www.researchgate.net/publication/220259945_Do_Ontological_Deficiencies_in_Modeling_Grammars_Matter
 http://www.nemo.inf.ufes.br/files/separating_ontological_and_information_modeling_concerns_towards_a_two_level_model_driven_approach_2012.pdf
+
+==General Readings==
 
 For a complete description of UFO-A and OntoUML, read the "OntoUML Bible":<br>
 
