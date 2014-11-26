@@ -70,10 +70,10 @@ Representing Organizational Structures in an Enterprise Architecture Language<br
 [http://www.inf.ufes.br/~gguizzardi/Using%20a%20Foundational%20Ontology%20for%20Reengineering%20a%20Software%20Process%20Ontology_cameraready%20(1).pdf Using a Foundational Ontology for Reengineering a Software Process Ontology]<br>
 <i>Ana C. O. Bringuente, Ricardo A. Falbo, Giancarlo Guizzardi</i><br>
 
-**<br>
-<i></i><br>
-[]<br>
-<i></i><br>
+*The G. 805 Ontology*<br>
+<i>Network infrastructure as defined in the ITU-T G.805 recommendation</i><br>
+[Ontology-based Model for the ITU-T Recommendation G.805: Towards the Self-Management of Transport Networks]<br>
+<i>Maxwell E. Monteiro , Anilton Salles Garcia , Pedro Paulo , F. Barcelos and Giancarlo Guizzardi</i><br>
 
 **<br>
 <i></i><br>
