@@ -13,7 +13,7 @@ If your are modelling your own ontology, you can go through them and see what yo
 *Normative Acts*<br>
 <i>Brazilian normative acts composition</i><br>
 [http://ceur-ws.org/Vol-1041/ontobras-2013_paper14.pdf Ontology Reference Model for Normative Acts]<br>
-<i>Pedro Paulo Favato Barcelos, Renata S. S. Guizzardi, Anilton S. Garcia</i><br>
+<i>Pedro Paulo Favato Barcelos, Renata S. S. Guizzardi and Anilton S. Garcia</i><br>
 
 *MPOG Ontology Draft*<br>
 <i>Brazilian federal organizational structures</i><br>
@@ -23,22 +23,22 @@ If your are modelling your own ontology, you can go through them and see what yo
 *CSGH Refactored*<br>
 <i>Ontological analysis of a conceptual model about the human genome using OntoUML</i><br>
 [http://link.springer.com/chapter/10.1007%2F978-3-642-41924-9_40 Applying the Principles of an Ontology-Based Approach to a Conceptual Schema of Human Genome]<br>
-<i>Ana Maria Martínez Ferrandis, Oscar Pastor López, Giancarlo Guizzardi</i><br>
+<i>Ana Maria Martínez Ferrandis, Oscar Pastor López and Giancarlo Guizzardi</i><br>
 
 *Open proVenance Ontology (OVO)*<br>
 <i>Provenance of scientific experiments</i><br>
 [http://ceur-ws.org/Vol-938/ontobras-most2012_paper12.pdf A Foundational Ontology to Support Scientific Experiments]<br>
-<i>Sergio Manuel Serra da Cruz, Maria Luiza Machado Campos, Marta Mattoso</i><br>
+<i>Sergio Manuel Serra da Cruz, Maria Luiza Machado Campos and Marta Mattoso</i><br>
 
-**<br>
-<i></i><br>
-[]<br>
-<i></i><br>
+*O3: OntoUML Org Ontology)*<br>
+<i>Active structure of Organization </i><br>
+Representing Organizational Structures in an Enterprise Architecture Language<br>
+<i>Diorbert Pereira and João Paulo Andrade Almeida</i><br>
 
-**<br>
-<i></i><br>
-[]<br>
-<i></i><br>
+*CMTO: Configuration Management Task Ontology*<br>
+<i>Configuration management</i><br>
+[http://www.nemo.inf.ufes.br/files/a_configuration_management_task_ontology_for_semantic_integration_2012.pdf A Configuration Management Task Ontology for Semantic Integration]<br>
+<i>Rodrigo Calhau and Ricardo de Almeida Falbo</i><br>
 
 **<br>
 <i></i><br>
