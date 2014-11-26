@@ -20,10 +20,10 @@ If your are modelling your own ontology, you can go through them and see what yo
 [http://vocab.e.gov.br/2011/09/org.pdf Esboço de Modelagem Conceitual para Estruturas Organizacionais Governamentais Brasileiras e o SIORG]<br>
 <i>Ministry of Planning, Budget and Management</i><br>
 
-**<br>
-<i></i><br>
-[]<br>
-<i></i><br>
+*CSGH Refactored*<br>
+<i>Ontological analysis of a conceptual model about the human genome using OntoUML</i><br>
+[http://link.springer.com/chapter/10.1007%2F978-3-642-41924-9_40 Applying the Principles of an Ontology-Based Approach to a Conceptual Schema of Human Genome]<br>
+<i>Ana Maria Martínez Ferrandis, Oscar Pastor López, Giancarlo Guizzardi</i><br>
 
 **<br>
 <i></i><br>
