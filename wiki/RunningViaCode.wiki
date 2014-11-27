@@ -7,7 +7,7 @@
 
 First, you'll have to upload all of our Java code to your computer through some Subversion client application such as TortoiseSVN ([http://tortoisesvn.net/ download it here]). If you are not sure how to do this, for now, you can search it on google. We will have a tutorial for that in the future. I am pretty sure that Eclipse also has one of these client applications, so you may want to check that out too.
 
-Assuming that you already have our sources codes in your machine and that you already have installed the Eclipse Modeling Tools (Juno or superior) in it ([https://eclipse.org/downloads/ download it here). All you have to do to run OLED in a Java-based Eclipse is as it follows:
+Assuming that you already have our source code in your machine and that you already have installed the Eclipse Modeling Tools (Juno or superior) in it ([https://eclipse.org/downloads/ download it here). All you have to do to run OLED in a Java-based Eclipse is as it follows:
 
 Requirements:
 
@@ -17,17 +17,17 @@ Requirements:
 
 === Importing the Code into Eclipse ===
 
-1. Open the Eclipse Modeling Tools application and choose the appropriate workspace, that is, the root folder where you uploaded the sources codes of our tool.
+1. Open the Eclipse Modeling Tools application and choose the appropriate workspace, that is, the root folder where you uploaded the source code of our tool.
 
 2. Go to File -> Import-> General ->Existing Project into Workspace 
 
-3. Choose the root directory clicking in the Browse button. This directory is the same of your workspace where you can find all the sources code.
+3. Choose the root directory clicking in the Browse button. This directory is the same of your workspace where you can find all the source code.
 
 4. Once all the projects are loaded in the dialog area, check them all and click in Finish.
 
 === Configuring the SWT to your OS===
 
-Before running it, *you need to change the SWT JAR library attached to some of our projects*. By default, all of our projects point to the Winx64 SWT library. We use SWT in some of our projects and this is the best we could do at the moment to attach the correct library at development time. 
+Before running it, *you need to change the SWT JAR library attached to some of our projects*. By default, all of our projects point to the Winx64 SWT library. We use SWT in some of our projects and this is the best we could do at the moment to attach the correct library in development time. 
 
 If you use Winx64 system, you can skip this step and go to the next (How to Run the Application). If not, do as it follows:
 
