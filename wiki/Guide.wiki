@@ -45,3 +45,11 @@ The following readings are separated by topic of interest.
 
 ====Events*:====
   * [http://www.inf.ufes.br/~gguizzardi/Towards%20Ontological%20Foundations%20for%20the%20Conceptual%20modeling%20of%20events.pdf Towards Ontological Foundations for the Conceptual Modeling of Events]
+
+===Complementary Readings:====
+
+====Derived Types:====
+  *[http://nemo.inf.ufes.br/files/ontological_meta_properties_of_derived_object_types_2012.pdf Ontological Meta-Properties of Derived Object Types]
+
+====Relation Specialization:====
+  *[http://www.inf.ufes.br/~gguizzardi/paper184.pdf Formal Semantics and Ontological Analysis for Understanding Subsetting, Specialization and Redefinition of Associations in UML]
