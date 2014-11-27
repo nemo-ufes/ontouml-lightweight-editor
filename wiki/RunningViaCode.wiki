@@ -41,7 +41,7 @@ Right click on the project you want to configure and go to _Build Path -> Config
 
 We will try to find a better solution for this but for now, you will need to change the SWT libraries for development, according to your OS by hand.
 
-=== Step 3: Running the Application! ===
+=== Step 3: Running the Application ===
 
 Now that you already configured the SWT libraries according to your OS. Just one more detail:
 
