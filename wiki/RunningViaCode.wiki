@@ -1,0 +1,45 @@
+#summary Learn how to run OLED through the application code
+
+<g:plusone size="medium"></g:plusone>
+
+==Running OLED via code==
+
+First, you'll have to upload all of our Java code to your computer through some Subversion client application such as TortoiseSVN ([http://tortoisesvn.net/ download it here]). If you are not sure how to do this, for now, you can search it on google. We will have a tutorial for that in the future. I am pretty sure that Eclipse also has one of these client applications, so you may want to check that out too.
+
+Assuming that you already have our sources codes in your machine and that you already have installed the Eclipse Modeling Tools (Juno or superior) in it ([https://eclipse.org/downloads/ download it here). All you have to do to run OLED in a Java-based Eclipse is as it follows:
+
+Requirements:
+
+  * Java 7 or superior installed in your machine
+  * Eclipse Modeling Tools (Juno or superior)
+  * SVN client application (TortoiseSVN)
+
+=== Importing the Code into Eclipse ===
+
+1. Open the Eclipse Modeling Tools application and choose the appropriate workspace, that is, the root folder where you uploaded the sources codes of our tool.
+2. Go to File -> Import-> General ->Existing Project into Workspace 
+3. Choose the root directory clicking in the Browse button. This directory is the same of your workspace where you can find all the sources code.
+4. Once all the projects are loaded in the dialog area, check them all and click in Finish.
+
+=== Configuring the SWT to your OS===
+
+Before running it, *you need to change the SWT JAR library attached to some of our projects*. By default, all of our projects point to the Winx64 SWT library. We use SWT in some of our projects and this is the best we could do at the moment to attach the correct library at development time. 
+
+If you use Winx64 system, you can skip this step and go to the next (How to Run the Application). If not, do as it follows:
+
+Right click on the project you want to configure and go to Build Path -> Configure Build Path. In the Libraries tab, search for the swt.jar file. Notice that it is a win x64 library attached. Remove this entry clicking on Remove and click on 'Add Jars'. All the SWT libraries are at br.ufes.inf.nemo.common/lib/ folder. Choose your appropriate entry according to your OS (linux, windows or macosx). This process must be repeated to each of the following projects:
+
+  * br.ufes.inf.nemo.antipattern
+  * br.ufes.inf.nemo.assistant
+  * br.ufes.inf.nemo.assistant.parser
+  * br.ufes.inf.nemo..pattern
+  * br.ufes.inf.nemo.oled
+
+We will try to find a better solution for this but for now, you will need to change the SWT libraries for development, according to your OS by hand.
+
+=== How to Run the Application ===
+
+Now that you already configured the SWT libraries according to your OS. Just one more detail: Go to br.ufes.inf.nemo.oled/Main.java file, Right click -> Run As -> Run Configurations -> Arguments Tab, and *disable the checkbox to not use the -XstartOnFirstThread argument*.
+
+Once you do that, you can now run the Application. Go to
+Main.java -> Right Click -> Run As -> Java Application
