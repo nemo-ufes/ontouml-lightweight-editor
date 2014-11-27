@@ -7,7 +7,7 @@
 
 First, you'll have to upload all of our Java code to your computer through some Subversion client application such as TortoiseSVN ([http://tortoisesvn.net/ download it here]). If you are not sure how to do this, for now, you can search it on google. We will have a tutorial for that in the future. I am pretty sure that Eclipse also has one of these client applications, so you may want to check that out too.
 
-Assuming that you already have our source code in your machine and that you already have installed the Eclipse Modeling Tools (Juno or superior) in it ([https://eclipse.org/downloads/ download it here). All you have to do to run OLED in a Java-based Eclipse is as it follows:
+Assuming that you already have our source code in your machine and that you already have installed the Eclipse Modeling Tools (Juno or superior) in it ([https://eclipse.org/downloads/ download it here]). All you have to do to run OLED in a Java-based Eclipse is as it follows:
 
 Requirements:
 
