@@ -6,7 +6,6 @@ import RefOntoUML.Association;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.file.TimeHelper;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.StoryScenario.Limit;
-import br.ufes.inf.nemo.ontouml2alloy.scenarios.StoryScenario.Type;
 
 public class Tester {
 
@@ -32,17 +31,20 @@ public class Tester {
 		
 		System.out.println(TimeHelper.getTime()+" - "+fileName+": Parser loaded!");
 		
-		StoryScenario s1 = new StoryScenario(Type.LINEAR, 4, Operator.EQUAL, 0, Limit.UNDEF);
+		StoryScenario s1 = new StoryScenario();
+		s1.setType(StoryType.LINEAR);
 		s1.setAsFact();
 		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+s1.getParagraph());
-//		
-//		StoryScenario s2 = new StoryScenario(Type.COUNTER, 5, Operator.GREATER, 4, Limit.LOWER);
-//		s2.setMode(MODE.FACT);
-//		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+s2.getParagraph());
-//		
-//		StoryScenario s3 = new StoryScenario(Type.FUTURES, 3, Operator.LESSER_EQ, 2, Limit.UPPER);
-//		s3.setMode(MODE.ASSERT);
-//		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+s3.getParagraph());
+		
+		StoryScenario s2 = new StoryScenario();
+		s2.setType(StoryType.COUNTER);
+		s2.setAsPredicate();
+		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+s2.getParagraph());
+		
+		StoryScenario s3 = new StoryScenario();
+		s3.setType(StoryType.FUTURES);
+		s3.setAsAssertion();
+		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+s3.getParagraph());
 		
 //		SimpleQuantification sq4 = new SimpleQuantification();
 //		sq4.setAsStory();
@@ -146,40 +148,40 @@ public class Tester {
 //		rs.setPseudoRigidity((Class) roles.get(1));
 //		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+rs.getParagraph());
 		
-		ArrayList<Association> associations = new ArrayList<Association>(parser.getAllInstances(Association.class));
-		
-		AssociationMultiplicityScenario am = new AssociationMultiplicityScenario(parser, associations.get(0), false);
-		am.getWorldQuantification().setAsAll();
-		am.getClassQuantification().setAsAll();
-		am.setData(new Comparator(Operator.GREATER_EQ),5);
-		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+am.getParagraph());
-		
-		am.getWorldQuantification().setAsSome();
-		am.reverse(true);
-		am.getClassQuantification().setAsComparison(new Comparator(Operator.GREATER), 3);
-		am.setData(new Comparator(Operator.EQUAL),2);
-		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+am.getParagraph());
-	
-		AssociationVariabilityScenario av = new AssociationVariabilityScenario(parser, associations.get(1), true);
-		av.setIsChangeable();
-		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+av.getParagraph());
-		
-		av.setIsConstant();
-		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+av.getParagraph());
-		
-		av.reverse(false);
-		av.setIsDisjoint();
-		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+av.getParagraph());
-		
-		AssociationDepth ad = new AssociationDepth(parser, associations.get(2));
-		ad.setAsLowerBound(3);
-		ad.getWorldQuantification().setAsAll();
-		ad.getClassQuantification().setAsSome();
-		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+ad.getParagraph());
-		
-		ad.setAsUpperBound(3);
-		ad.getWorldQuantification().setAsOne();
-		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+ad.getParagraph());
+//		ArrayList<Association> associations = new ArrayList<Association>(parser.getAllInstances(Association.class));
+//		
+//		AssociationMultiplicityScenario am = new AssociationMultiplicityScenario(parser, associations.get(0), false);
+//		am.getWorldQuantification().setAsAll();
+//		am.getClassQuantification().setAsAll();
+//		am.setData(new Comparator(BinaryOperator.GREATER_EQ),5);
+//		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+am.getParagraph());
+//		
+//		am.getWorldQuantification().setAsSome();
+//		am.reverse(true);
+//		am.getClassQuantification().setAsComparison(new Comparator(BinaryOperator.GREATER), 3);
+//		am.setData(new Comparator(BinaryOperator.EQUAL),2);
+//		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+am.getParagraph());
+//	
+//		AssociationVariabilityScenario av = new AssociationVariabilityScenario(parser, associations.get(1), true);
+//		av.setIsChangeable();
+//		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+av.getParagraph());
+//		
+//		av.setIsConstant();
+//		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+av.getParagraph());
+//		
+//		av.reverse(false);
+//		av.setIsDisjoint();
+//		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+av.getParagraph());
+//		
+//		AssociationDepth ad = new AssociationDepth(parser, associations.get(2));
+//		ad.setAsLowerBound(3);
+//		ad.getWorldQuantification().setAsAll();
+//		ad.getClassQuantification().setAsSome();
+//		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+ad.getParagraph());
+//		
+//		ad.setAsUpperBound(3);
+//		ad.getWorldQuantification().setAsOne();
+//		System.out.println(TimeHelper.getTime()+" - "+fileName+": \n"+ad.getParagraph());
 		
 	}
 

@@ -9,7 +9,7 @@ public class SegmentSizeScenario extends QuantifiedScenario {
 	//minimum or maximal number of individuals in the selected segment
 	int minimum, maximum;
 	
-	public SegmentSizeScenario(OntoUMLParser parser, Segment seg, SimpleQuantification q, int minimum, int maximum) {
+	public SegmentSizeScenario(OntoUMLParser parser, Segment seg, WorldQuantification q, int minimum, int maximum) {
 		super(parser, q);
 		this.seg = seg;
 		

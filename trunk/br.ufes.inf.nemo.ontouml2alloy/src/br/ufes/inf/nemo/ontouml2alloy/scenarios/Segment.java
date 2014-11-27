@@ -2,32 +2,34 @@ package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
 import java.util.Iterator;
 
-import RefOntoUML.Classifier;
-import RefOntoUML.parser.OntoUMLParser;
+import org.eclipse.emf.ecore.EObject;
 
-enum SegmentType {POPULATION, OBJECT, PROPERTY, STEREOTYPE, CLASSIFIER}
+import RefOntoUML.Association;
+import RefOntoUML.Classifier;
+import RefOntoUML.parser.OntoUMLNameHelper;
+import RefOntoUML.parser.OntoUMLParser;
 
 public class Segment {
 	
 	private OntoUMLParser parser;	
-	public SegmentType seg;
+	public SegmentType segmentType;
 
 	//class or association that characterize the segment (only for SegmentType=CLASS or ASSCOCIATION)
 	Classifier classifier;
 	//Metatype that characterizes the segment (only for SegmentType=STEREOTYPE_CLASS or STEREOTYPE_ASS)
-	Class<? extends Classifier> metaType;
+	Class<? extends EObject> metaType;
 	
 	public Segment(OntoUMLParser parser) {
 		this.parser = parser;
 	}
 	
-	private String getUnionExpression(Class<? extends Classifier> metaType){
+	private String getUnionExpression(Class<? extends EObject> metaType){
 		
-		Iterator<? extends Classifier> i = parser.getAllInstances(metaType).iterator();
+		Iterator<? extends EObject> i = parser.getAllInstances(metaType).iterator();
 		String s = "(";
 		
 		while(i.hasNext()){
-			Classifier c = i.next();
+			EObject c = i.next();
 			s+=getAlias(c);
 			if(i.hasNext())
 				s+="+";
@@ -37,20 +39,21 @@ public class Segment {
 		return s;	
 	}
 	
-	private String getAlias(Classifier c) {
+	private String getAlias(EObject c) {
 		//TODO: check when relation is ordered or material derived by a relator
 		return parser.getAlias(c);
 	}
 	
 	public String getName() {
-		switch(seg){
+		switch(segmentType){
 			case POPULATION:
 				return "exists";
 			case OBJECT:
 				return "exists:>Object";
 			case PROPERTY:
 				return "exists:>Property";
-			case CLASSIFIER:
+			case CLASS:
+			case ASSOCIATION:
 				return getAlias(classifier);
 			case STEREOTYPE:
 				return getUnionExpression(metaType);
@@ -60,25 +63,47 @@ public class Segment {
 	}
 	
 	public void setAsPopulation(){
-		seg = SegmentType.POPULATION;
+		segmentType = SegmentType.POPULATION;
 	}
 	
 	public void setAsObject(){
-		seg = SegmentType.OBJECT;
+		segmentType = SegmentType.OBJECT;
 	}
 	
 	public void setAsProperty(){
-		seg = SegmentType.PROPERTY;
+		segmentType = SegmentType.PROPERTY;
 	}
 	
-	public void setAsClassifier(Classifier classifier){
-		seg = SegmentType.CLASSIFIER;
-		this.classifier = classifier;
+	public void setAsClass(RefOntoUML.Class c){
+		segmentType = SegmentType.CLASS;
+		this.classifier = c;
 	}
 	
-	public void setAsStereotype(Class<? extends Classifier> metaType){
-		seg = SegmentType.STEREOTYPE;
+	public void setAsAssociation(Association a){
+		segmentType = SegmentType.ASSOCIATION;
+		this.classifier = a;
+	}
+	
+	public void setAsStereotype(Class<? extends EObject> metaType){
+		segmentType = SegmentType.STEREOTYPE;
 		this.metaType = metaType;
+	}
+	
+	@Override
+	public String toString(){
+		String s = segmentType.toString();
+		
+		if(segmentType==SegmentType.STEREOTYPE)
+			s+=" "+metaType.toString();
+		
+		if(segmentType==SegmentType.CLASS || segmentType==SegmentType.ASSOCIATION)
+			s+=" "+OntoUMLNameHelper.getCommonName(classifier);
+		
+		return s;
+	}
+
+	public SegmentType getType() {
+		return segmentType;
 	}
 }
 

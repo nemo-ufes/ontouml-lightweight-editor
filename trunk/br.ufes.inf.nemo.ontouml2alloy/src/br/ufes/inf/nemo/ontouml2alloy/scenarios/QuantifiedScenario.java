@@ -4,11 +4,15 @@ import RefOntoUML.parser.OntoUMLParser;
 
 public abstract class QuantifiedScenario extends ContentScenario{
 	
-	SimpleQuantification q;
+	WorldQuantification q;
 	
-	public QuantifiedScenario (OntoUMLParser parser, SimpleQuantification q){
+	public QuantifiedScenario (OntoUMLParser parser, WorldQuantification q){
 		super(parser);
 		this.q = q;
+	}
+	
+	public WorldQuantification getWorldQuantification() {
+		return q;
 	}
 	
 	

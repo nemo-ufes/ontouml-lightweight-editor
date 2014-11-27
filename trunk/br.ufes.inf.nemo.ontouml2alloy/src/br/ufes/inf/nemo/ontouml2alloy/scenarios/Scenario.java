@@ -61,7 +61,8 @@ public abstract class Scenario {
 		return "";
 	}
 	
-	public String getNaturalLanguageTranslation(){
+	@Override
+	public String toString(){
 		return getParagraphString()+" "+getString()+".";
 	}
 		
