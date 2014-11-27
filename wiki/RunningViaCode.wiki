@@ -15,7 +15,7 @@ Requirements:
   * Eclipse Modeling Tools (Juno or superior)
   * SVN client application (TortoiseSVN)
 
-=== Importing the Code into Eclipse ===
+=== Step 1: Importing the Source Code into Eclipse ===
 
 1. Open the Eclipse Modeling Tools application and choose the appropriate workspace, that is, the root folder where you uploaded the source code of our tool.
 
@@ -25,7 +25,7 @@ Requirements:
 
 4. Once all the projects are loaded in the dialog area, check them all and click in Finish.
 
-=== Configuring the SWT to your OS===
+=== Step 2: Configuring the SWT to your System ===
 
 Before running it, *you need to change the SWT JAR library attached to some of our projects*. By default, all of our projects point to the Winx64 SWT library. We use SWT in some of our projects and this is the best we could do at the moment to attach the correct library in development time. 
 
@@ -41,7 +41,7 @@ Right click on the project you want to configure and go to _Build Path -> Config
 
 We will try to find a better solution for this but for now, you will need to change the SWT libraries for development, according to your OS by hand.
 
-=== How to Run the Application ===
+=== Step 3: Running the Application! ===
 
 Now that you already configured the SWT libraries according to your OS. Just one more detail if you're a Mac user: 
 
