@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.pattern.dynamic.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.TableEditor;
@@ -15,10 +16,9 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -35,43 +35,50 @@ import org.eclipse.wb.swt.SWTResourceManager;
 /**
  * @author Victor Amorim
  */
-public class DynamicWindow {
-	private Shell shell;
-
+public class DynamicWindow extends Dialog {
+	private static Shell shell;
+	private static Display display;
+	private Composite container;
+	
+	private String title = new String();
 	private HashMap<String,ArrayList<Object[]>> hashTable;
 	public HashMap<String, ArrayList<Object[]>> getHashTable(){
 		return hashTable;
 	}
 
-	public DynamicWindow(String imagePath, String title) {
+	public DynamicWindow(Shell parentShell, String title, String imagePath) 
+	{
+		super(parentShell);		
+		this.title=title;
 		currentImage = SWTResourceManager.getImage(DynamicWindow.class, imagePath);
-		display = Display.getCurrent();
-		createContents(title);
+		setDefaultImage(new Image(Display.getDefault(),DynamicWindow.class.getResourceAsStream("/resources/icons/x16/sitemap.png")));		
+	}
+	
+	public static DynamicWindow createDialog(String title, String imagePath)
+	{			
+		display = Display.getDefault();	    	
+		shell = display.getActiveShell();			
+		DynamicWindow resultDIalog = new DynamicWindow(shell,title,imagePath);
+		resultDIalog.create();
+		return resultDIalog;
+	}
+	
+	@Override
+	public void create() {
+	    super.create();
+	    setShellStyle(SWT.TITLE);
+	    bringToFront(getShell());
+	    getShell().setText(title);	    
 	}
 
 	public void bringToFront(final Shell shell) {
-		shell.getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				shell.forceActive();
-			}
-		});
+	    shell.getDisplay().asyncExec(new Runnable() {
+	        public void run() {
+	            shell.forceActive();
+	        }
+	    });
 	}
-
-	/**
-	 * Open the window.
-	 */
-	Display display;
-	public void open() {
-		bringToFront(shell);
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-	}
-
+	
 	private Table table;
 	public Table getTable() {
 		return table;
@@ -84,30 +91,24 @@ public class DynamicWindow {
 	}
 
 	private Image currentImage;
+	
+	protected Button createButton(Composite arg0, int arg1, String arg2, boolean arg3) 
+	{
+		//Retrun null so that no default buttons like 'OK' and 'Cancel' will be created
+		return null;
+	}
+
 	/**
-	 * Create contents of the window.
-	 * @wbp.parser.entryPoint
+	 * Create contents of the dialog.
+	 * @param parent
 	 */
-	private void createContents(String title) {
-		shell = new Shell(SWT.CLOSE & (~SWT.RESIZE) );
-		shell.setSize(912, 304);
-		shell.setText(title);
-		shell.setImage(SWTResourceManager.getImage(DynamicWindow.class,"/resources/icons/x16/sitemap.png"));
-		shell.setLayout(new FormLayout());
-		shell.addListener(SWT.Traverse, new Listener(){
-			@Override
-			public void handleEvent(Event event) {
-				switch (event.detail) {
-				case SWT.TRAVERSE_ESCAPE:
-					shell.close();
-					event.detail = SWT.TRAVERSE_NONE;
-					event.doit = false;
-					break;
-				}
-			}
-		});
-		
-		Composite composite = new Composite(shell, SWT.BORDER);
+	@Override
+	protected Control createDialogArea(Composite parent) 
+	{
+		container = (Composite) super.createDialogArea(parent);	
+		container.setLayout(new FormLayout());
+				
+		Composite composite = new Composite(container, SWT.BORDER);
 		FormData fd_composite = new FormData();
 		fd_composite.top = new FormAttachment(0, 10);
 		fd_composite.right = new FormAttachment(0, 895);
@@ -133,7 +134,7 @@ public class DynamicWindow {
 		imgLabel.pack();
 		composite.pack();
 
-		this.table = new Table(shell, SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		this.table = new Table(container, SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		FormData fd_table = new FormData();
 		fd_table.bottom = new FormAttachment(0, 230);
 		fd_table.right = new FormAttachment(0, 477);
@@ -143,7 +144,7 @@ public class DynamicWindow {
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 
-		Button btnPressMe = new Button (shell, SWT.NONE);
+		Button btnPressMe = new Button (container, SWT.NONE);
 		FormData fd_btnPressMe = new FormData();
 		fd_btnPressMe.top = new FormAttachment(table, 6);
 		fd_btnPressMe.right = new FormAttachment(table, 0, SWT.RIGHT);
@@ -169,13 +170,13 @@ public class DynamicWindow {
 						}						
 					}
 				}
-				shell.dispose();
+				close();
 			}
 		});
 		btnPressMe.setText("Create classes");
 		btnPressMe.pack ();
 
-		btnAddNewLine = new Button(shell, SWT.NONE);
+		btnAddNewLine = new Button(container, SWT.NONE);
 		btnAddNewLine.setVisible(false);
 		FormData fd_btnAddNewLine = new FormData();
 		fd_btnAddNewLine.top = new FormAttachment(table, 6);
@@ -183,7 +184,7 @@ public class DynamicWindow {
 		btnAddNewLine.setLayoutData(fd_btnAddNewLine);
 		btnAddNewLine.setText("Add new line");
 
-		btnRemoveLine = new Button(shell, SWT.NONE);
+		btnRemoveLine = new Button(container, SWT.NONE);
 		btnRemoveLine.setVisible(false);
 		fd_btnAddNewLine.right = new FormAttachment(btnRemoveLine, -6);
 		FormData fd_btnRemoveLine = new FormData();
@@ -213,7 +214,7 @@ public class DynamicWindow {
 		});
 		btnRemoveLine.setText("Remove Line");
 
-		Button btnNewButton = new Button(shell, SWT.NONE);
+		Button btnNewButton = new Button(container, SWT.NONE);
 		btnNewButton.setTouchEnabled(true);
 		fd_composite.bottom = new FormAttachment(btnNewButton, -6);
 		FormData fd_btnNewButton = new FormData();
@@ -229,7 +230,7 @@ public class DynamicWindow {
 		});
 		btnNewButton.setText("Show Image");
 		
-		Button btnHelp = new Button(shell, SWT.CENTER);
+		Button btnHelp = new Button(container, SWT.CENTER);
 		FormData fd_btnHelp = new FormData();
 		fd_btnHelp.top = new FormAttachment(0, 236);
 		fd_btnHelp.left = new FormAttachment(0, 10);
@@ -243,6 +244,8 @@ public class DynamicWindow {
 				h.open();
 			}
 		});
+		
+		return container;
 	}
 
 	

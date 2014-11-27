@@ -49,18 +49,13 @@ public class PhasePartition extends AbstractPattern{
 		if(!set.isEmpty())
 			hashTree.put("Role", UtilAssistant.getStringRepresentationClass(set));
 
-
 		dym.addHashTree(hashTree);
-
 		dym.addTableLine("general", "Sortal", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
-
 		dym.addTableLine("specific", "Specific 1", new String[] {"Phase"});
 		dym.addTableLine("specific", "Specific 2", new String[] {"Phase"});
-
 		dym.setInitialItemCount(3);
-
 		dym.setAddLineButtonAction("specific", "Specific N", new String[] {"Phase"});
-
+		
 		dm.open();
 		
 	}

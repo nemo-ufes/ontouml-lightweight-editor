@@ -64,8 +64,8 @@ public final class Main {
 	
 	public static AppFrame frame; 
 
-	public static String OLED_VERSION = "1.0.02"; 
-	public static String OLED_COMPILATION_DATE = "Oct 21 2014";	
+	public static String OLED_VERSION = "1.0.03"; 
+	public static String OLED_COMPILATION_DATE = "Nov 26 2014";	
 	
 	public static boolean USE_LOG_FILE = false;
 	public static PrintStream psOut;

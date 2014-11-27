@@ -110,13 +110,14 @@ public abstract class AbstractPattern {
 	protected DynamicWindow dm;
 	protected DynamicManagerWindow dym;
 	
-	protected AbstractPattern(OntoUMLParser parser, double x, double y, String imagePath, String title) {
+	protected AbstractPattern(OntoUMLParser parser, double x, double y, String imagePath, final String title) {
 		this.parser = parser;
 		this.x = x;
 		this.y = y;
 		this.imagePath = imagePath;
 		
-		dm = new DynamicWindow(imagePath, title);
+    	dm = DynamicWindow.createDialog(title, imagePath);
+//		dm = new DynamicWindow(imagePath, title);
 		dym = new DynamicManagerWindow(dm);
 	}
 	
