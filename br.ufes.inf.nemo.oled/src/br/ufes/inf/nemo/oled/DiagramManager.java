@@ -1859,7 +1859,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	   			double x = ((ClassElement)diagramElem).getAbsoluteX1();
 	   			double y = ((ClassElement)diagramElem).getAbsoluteY1();   	   		
 	   	   		fix.setAddedPosition(fix.getAdded().get(0),x,y);
-	   		}   		
+	   		}
    		}
    		updateOLED(fix);
 	}
@@ -3016,23 +3016,29 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	private Fix _fix;
-	public void runPattern(ElementType elementType, double x, double y) {
-		_fix = PatternTool.tryToRun(elementType, x, y);
-		if(_fix == null){
-			List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
-			_fix = PatternTool.tryToRun(elementType, selectedElements);
+	public void runPattern(final ElementType elementType, final double x, final double y) {
+		if(Main.onMac()){
+			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
+				@Override
+				public void run() {
+					_fix = PatternTool.tryToRun(elementType, x, y);
+					if(_fix == null){
+						List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
+						_fix = PatternTool.tryToRun(elementType, selectedElements);
+					}
+					if(_fix != null)
+						updateOLED(_fix);
+				}
+			});
+		}else{
+			_fix = PatternTool.tryToRun(elementType, x, y);
+			if(_fix == null){
+				List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
+				_fix = PatternTool.tryToRun(elementType, selectedElements);
+			}
+			if(_fix != null)
+				updateOLED(_fix);
 		}
-		
-//		if(_fix != null){
-//			updateOLED(_fix);
-//			//Search for incompleteness
-//			_fix = PatternTool.solveIncompleteness();
-//			if(_fix != null)
-//				updateOLED(_fix);
-//		}
-		
-		if(_fix != null)
-			updateOLED(_fix);
 	}
 
 	public void openDerivedTypePatternIntersection(Double x, Double y) {
@@ -3089,7 +3095,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public void deriveByPastSpecialization() {
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
 		UmlProject project = getCurrentEditor().getProject();
-		Fix fix = DerivedTypesOperations.createPastSpecializationDerivation(activeEditor, project,this);
+		DerivedTypesOperations.createPastSpecializationDerivation(activeEditor, project,this);
 	}
 	public void deriveByParticipation() {
 		

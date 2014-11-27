@@ -481,5 +481,6 @@ public class PropertyEditionPanel extends JPanel {
 		}
 					
 		diagramManager.updateOLEDFromModification(ownerElement, redesign);
+		diagramManager.updateOLEDFromModification(property, redesign);
 	}
 }

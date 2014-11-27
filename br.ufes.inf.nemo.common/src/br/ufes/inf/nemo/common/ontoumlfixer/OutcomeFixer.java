@@ -480,15 +480,18 @@ public class OutcomeFixer{
 			RefOntoUML.Classifier classifier = (RefOntoUML.Classifier) source;
 			RefOntoUML.Classifier rcvClassifier = (RefOntoUML.Classifier) receiver;
 			rcvClassifier.setName(classifier.getName());
-			(rcvClassifier).setVisibility(classifier.getVisibility());
-			rcvClassifier.setIsAbstract(classifier.isIsAbstract());
+			(rcvClassifier).setVisibility(classifier.getVisibility());			
 			rcvClassifier.setIsLeaf(classifier.isIsLeaf());
+			if(rcvClassifier instanceof MixinClass) rcvClassifier.setIsAbstract(true);
+			else rcvClassifier.setIsAbstract(false);
 		}
 		if (source instanceof RefOntoUML.Association && receiver instanceof RefOntoUML.Association) 
 		{
 			RefOntoUML.Association assoc = (RefOntoUML.Association) source;
 			RefOntoUML.Association rcvAssoc = (RefOntoUML.Association) receiver;
-			rcvAssoc.setIsDerived(assoc.isIsDerived());
+			if(rcvAssoc instanceof MaterialAssociation) rcvAssoc.setIsDerived(true);
+			else if(rcvAssoc instanceof Derivation) rcvAssoc.setIsDerived(true);
+			else rcvAssoc.setIsDerived(assoc.isIsDerived());
 		}
 		if (source instanceof RefOntoUML.Meronymic && receiver instanceof RefOntoUML.Meronymic) 
 		{
@@ -498,7 +501,8 @@ public class OutcomeFixer{
 			rcvMer.setIsImmutablePart(mer.isIsImmutablePart());
 			rcvMer.setIsImmutableWhole(mer.isIsImmutableWhole());
 			rcvMer.setIsInseparable(mer.isIsInseparable());
-			rcvMer.setIsShareable(mer.isIsShareable());
+			if(rcvMer instanceof subQuantityOf) rcvMer.setIsShareable(false);
+			else rcvMer.setIsShareable(true);
 		}
 		if (source instanceof RefOntoUML.GeneralizationSet && receiver instanceof RefOntoUML.GeneralizationSet) 
 		{

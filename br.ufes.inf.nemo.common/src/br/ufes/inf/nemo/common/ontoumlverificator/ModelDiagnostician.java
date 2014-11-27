@@ -16,7 +16,6 @@ import RefOntoUML.Kind;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.Mediation;
 import RefOntoUML.Mixin;
-import RefOntoUML.MixinClass;
 import RefOntoUML.Mode;
 import RefOntoUML.Model;
 import RefOntoUML.NamedElement;
@@ -137,20 +136,6 @@ public class ModelDiagnostician {
 				items.add(line);
 			}
 		}
-		
-		// # Error : Mixin not abstract
-		for(RefOntoUML.Type c: ontoparser.getAllInstances(RefOntoUML.Type.class))
-		{			
-			if((c instanceof MixinClass) && (((MixinClass)c).isIsAbstract()== false)) 
-			{ 				 
-				ArrayList<String> line = new ArrayList<String>();
-				errors++;
-				line.add(String.format("%02d", errors)+". Mixin not abstract");				
-				line.add(getElement(c));
-				line.add(getPath(c));
-				items.add(line);
-			}				
-		}		
 		
 		// # Error : Association end type is null
 		for(RefOntoUML.Property p: ontoparser.getAllInstances(RefOntoUML.Property.class))		
