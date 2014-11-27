@@ -43,10 +43,10 @@ We will try to find a better solution for this but for now, you will need to cha
 
 === Step 3: Running the Application! ===
 
-Now that you already configured the SWT libraries according to your OS. Just one more detail if you're a Mac user: 
+Now that you already configured the SWT libraries according to your OS. Just one more detail:
 
-Go to _br.ufes.inf.nemo.oled/Main.java_ file, _Right click -> Run As -> Run Configurations -> Arguments Tab_, and *disable the checkbox to not use the XstartOnFirstThread argument*.
+*Mac Users: If you do not do this in Eclipse/MacOS, the application won't start, in fact, nothing is going to happen*. 
 
-Once you do that, you can now run the Application. Go to:
+Go to _br.ufes.inf.nemo.oled/Main.java_ file, _Right click -> Run As -> Run Configurations -> Arguments Tab_, and *DISABLE* the checkbox to not use the XstartOnFirstThread argument.
 
-_Main.java -> Right Click -> Run As -> Java Application_
+To run the Application. Go to: _Main.java -> Right Click -> Run As -> Java Application_
