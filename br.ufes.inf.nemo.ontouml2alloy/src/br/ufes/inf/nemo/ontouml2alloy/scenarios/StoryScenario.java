@@ -4,72 +4,91 @@ package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
 public class StoryScenario extends Scenario{
 	
-	enum Type {LINEAR, FUTURES, COUNTER, UNDEF}
-	private Type type;
+	private StoryType storyType;
 	
-	Comparator comparator;
-	int numberOfWorlds;
+	private BinaryOperator op;
+	private int numberOfWorlds;
 	
-	enum Limit {UPPER, LOWER, UNDEF}
+	
+	public enum Limit {
+		UPPER {
+			@Override 
+			public String toString() { 
+				return "At Most";
+			}
+		}, 
+		LOWER{
+			@Override 
+			public String toString() { 
+				return "At Least";
+			}
+		},  
+	};
 	private Limit limit;
-	int depth;
-	CustomQuantification quant;
+	private int depth;
+	private CustomQuantification quant;
 	
-	public StoryScenario (Type type, int numberOfWorlds, Operator op, int depth, Limit limit){
-		
-		setType(type);
-		
-		comparator = new Comparator(op);
-		setComparator(op);
-		setNumberOfWorlds(numberOfWorlds);
-		
-		setStoryDepth(depth);
-		this.limit=limit;
-		depth=checkStoryDepth(depth);
-		quant = CustomQuantification.createWorldQuantification(getAdjustedDepth());
-		setQuantificationMode();
-		
+	
+	public StoryScenario (){
+		quant = CustomQuantification.createWorldQuantification(1);
+		setNumberOfWorlds(BinaryOperator.EQUAL, 2);
+	}
+
+	public void setType(StoryType type) {
+		this.storyType = type;
 	}
 	
-	public void setLimit(Limit limit) {
+	public void setNumberOfWorlds(BinaryOperator op, int numberOfWorlds) {
+		this.op = op;
+		this.numberOfWorlds = checkNumberOfWorlds(numberOfWorlds);
+	}
+	
+	public void setDepth(Limit limit, int storyDepth) {
 		this.limit=limit;
-		depth=checkStoryDepth(depth);
-		setQuantificationMode();
+		this.depth = checkStoryDepth(storyDepth);
 		
-	}
-
-	public void setComparator(Operator op) {
-		comparator.op = op;
-		numberOfWorlds = checkNumberOfWorlds(numberOfWorlds);
-	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-
-	public void setQuantificationMode(){
 		if(limit==Limit.UPPER)
 			quant.setAsNo();
-		if(limit==Limit.LOWER)
+		else if(limit==Limit.LOWER)
 			quant.setAsSome();
-		return;
+	}
+
+	public StoryType getStoryType(){
+		return storyType;
 	}
 	
 	public int getNumberOfWorlds() {
 		return numberOfWorlds;
 	}
 	
-	public void setNumberOfWorlds(int numberOfWorlds) {
-		this.numberOfWorlds = checkNumberOfWorlds(numberOfWorlds);
+	public BinaryOperator getOperator() {
+		return op;
 	}
 	
-	public int getStoryDepth() {
+	public int getDepth() {
 		return depth;
 	}
-	public void setStoryDepth(int storyDepth) {
-		this.depth = checkStoryDepth(storyDepth);
+	
+	public boolean isDepthSet() {
+		return depth>=0 && limit!=null;
+	}
+	
+	public void removeDepth(){
+		depth=-1;
+		limit = null;
+	}
+	
+	public Limit getLimit() {
+		return limit;
+	}
+	
+	public int getAdjustedDepth(){
+		if(limit==Limit.UPPER)
+			return depth+1;
+		return depth;
 	}
 
+	
 	public int checkNumberOfWorlds(int value){
 		return value;
 //		switch (type) {
@@ -128,7 +147,7 @@ public class StoryScenario extends Scenario{
 
 	@Override
 	public String getString() {
-		switch (type) {
+		switch (storyType) {
 			case COUNTER:
 				return "things may have taken a different outcome in the past";
 			case FUTURES:
@@ -146,12 +165,12 @@ public class StoryScenario extends Scenario{
 	public String getAlloy() {
 		String alloy = "";
 		
-		if(type==Type.COUNTER || type==Type.FUTURES || type==Type.LINEAR)
+		if(storyType==StoryType.COUNTER || storyType==StoryType.FUTURES || storyType==StoryType.LINEAR)
 			alloy+=getStructureExpression()+"\n\t";
 		
 		alloy+=getSizeExpression();
 		
-		if(limit!=Limit.UNDEF)
+		if(isDepthSet())
 			alloy+="\n\t"+getDepthExpression();
 		
 		return alloy;
@@ -177,18 +196,13 @@ public class StoryScenario extends Scenario{
 		return expr;
 	}
 	
-	public int getAdjustedDepth(){
-		if(limit==Limit.UPPER)
-			return depth+1;
-		return depth;
-	}
-
+	
 	private String getSizeExpression() {
-		return comparator.getExpression("#World", Integer.toString(numberOfWorlds));
+		return op.getExpression("#World", Integer.toString(numberOfWorlds));
 	}
 
 	private String getStructureExpression() {
-		switch (type) {
+		switch (storyType) {
 		case COUNTER:
 			return "some w1,w2:World | w1!=w2 && next.w1=next.w2 && (some w1.next or some w2.next)";
 		case FUTURES:
@@ -205,4 +219,8 @@ public class StoryScenario extends Scenario{
 	public String getScenarioName() {
 		return "Story";
 	}
+
+	
+
+	
 }

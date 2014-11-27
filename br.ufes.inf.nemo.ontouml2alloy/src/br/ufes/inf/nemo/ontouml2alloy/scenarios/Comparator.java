@@ -1,11 +1,9 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
-enum Operator {EQUAL, LESSER, LESSER_EQ, GREATER, GREATER_EQ, DIF}
-
 public class Comparator {
-	Operator op;
+	BinaryOperator op;
 	
-	public Comparator(Operator op) {
+	public Comparator(BinaryOperator op) {
 		this.op = op;
 	}
 
