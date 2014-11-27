@@ -43,10 +43,10 @@ The following readings are separated by topic of interest.
 ====Qualities:====
   * [http://www.inf.ufes.br/~gguizzardi/PID2733627.pdf An Ontological Foundation for Conceptual Modeling Datatypes based on Semantic Reference Spaces]
 
-====Events*:====
+====Events:====
   * [http://www.inf.ufes.br/~gguizzardi/Towards%20Ontological%20Foundations%20for%20the%20Conceptual%20modeling%20of%20events.pdf Towards Ontological Foundations for the Conceptual Modeling of Events]
 
-===Complementary Readings:====
+==Complementary Readings:==
 
 ====Derived Types:====
   * [http://nemo.inf.ufes.br/files/ontological_meta_properties_of_derived_object_types_2012.pdf Ontological Meta-Properties of Derived Object Types]
