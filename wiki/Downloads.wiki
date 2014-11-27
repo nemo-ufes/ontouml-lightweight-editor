@@ -12,7 +12,7 @@ To run it, simply *double-click* on the jar file, or type *java -jar oled-1.0.03
 
 *Lastest Version:*
 
-[https://drive.google.com/uc?id=0B7WqSwi56QipRHFaMmpiSWhOaHc&export=download oled-1.0.03.jar] ~49MB - Updated: Nov 26 2014
+[https://drive.google.com/uc?id=0B7WqSwi56QipRHFaMmpiSWhOaHc&export=download oled-1.0.03.jar] ~49MB - Updated: Nov 27 2014
 
 ----
 
