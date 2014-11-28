@@ -110,4 +110,9 @@ public enum RelationStereotype implements Stereotype{
 	public Class<? extends EObject> getMetaclass(){
 		return metaClass;
 	}
+	
+	public static RelationStereotype[] getAssociationStereotypes(){
+		 RelationStereotype[] array = {ASSOCIATION, CHARACTERIZATION, COMPONENTOF, FORMAL, MATERIAL, MEDIATION, MEMBEROF, STRUCTURATION, SUBCOLLECTIONOF, SUBQUANTITYOF};
+		 return array;
+	}
 }
