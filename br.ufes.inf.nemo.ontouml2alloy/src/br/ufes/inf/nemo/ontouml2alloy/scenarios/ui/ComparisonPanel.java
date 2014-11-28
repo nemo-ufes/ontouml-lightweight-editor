@@ -19,7 +19,6 @@ import javax.swing.SwingConstants;
 import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.parser.OntoUMLParser;
-import br.ufes.inf.nemo.common.ontoumlfixer.Stereotype;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.BinaryOperator;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.ComparisonScenario;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.ComparisonType;
@@ -39,7 +38,7 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 	private JComboBox<SegmentType> segmentCombo1;
 	private JComboBox<ComparisonType> comparisonTypeCombo;
 	private JComboBox<WorldQuantificationType> quantificationCombo;
-	private JComboBox operatorCombo;
+	private JComboBox<Object> operatorCombo;
 	private JComboBox<SegmentType> segmentCombo2;
 	private JComboBox<Object> classCombo1;
 	private JLabel classLabel1;
@@ -67,6 +66,7 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 	private JLabel stereotypeLabel2;
 	private JPanel cards2;
 	private JPanel emptyPanel1;
+	private JSpinner nSpinner;
 	
 	/**
 	 * @wbp.parser.constructor
@@ -91,6 +91,7 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		
 		quantificationCombo = new JComboBox<WorldQuantificationType>();
 		quantificationCombo.setModel(new DefaultComboBoxModel<WorldQuantificationType>(WorldQuantificationType.values()));
+		quantificationCombo.addActionListener(quantificationAction);
 		
 		segmentCombo1 = new JComboBox<SegmentType>();
 		segmentCombo1.setModel(new DefaultComboBoxModel<SegmentType>(SegmentType.values()));
@@ -248,9 +249,6 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		combos.add(classCombo2);
 		combos.add(stereotypeCombo2);
 		
-		
-		
-		
 	}
 
 	private void addComponentsAndApplyLayout(JPanel panel, JLabel label, JComboBox<?> combo) {
@@ -300,7 +298,24 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 				setSizeOperators();
 		}		
 	};
-	private JSpinner nSpinner;
+	
+	private ActionListener quantificationAction = new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			enableSpinner();
+		}
+	};
+	
+	private void enableSpinner() {
+			boolean requiresNumber = false;
+			
+			WorldQuantificationType wqt = ((WorldQuantificationType)quantificationCombo.getSelectedItem());
+			
+			if(wqt instanceof WorldQuantificationType)
+				requiresNumber = wqt.isNumeric();
+			
+			nSpinner.setEnabled(requiresNumber);
+		}		
 	
 	private void updateCards(JPanel cards, SegmentType st) {
 		
@@ -322,11 +337,11 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 	}
 	
 	public void setSizeOperators(){
-		operatorCombo.setModel(new DefaultComboBoxModel<>(BinaryOperator.values()));
+		operatorCombo.setModel(new DefaultComboBoxModel<Object>(BinaryOperator.values()));
 	}
 	
 	public void setExtensionOperators(){
-		operatorCombo.setModel(new DefaultComboBoxModel<>(ExtensionOperator.values()));
+		operatorCombo.setModel(new DefaultComboBoxModel<Object>(ExtensionOperator.values()));
 	}
 	
 	@Override
@@ -361,7 +376,8 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		WorldQuantification wq = scenario.getWorldQuantification();
 		quantificationCombo.setSelectedItem(wq.getType());
 		if(wq.isNumeric())
-			nSpinner.setValue(wq.getValue());	
+			nSpinner.setValue(wq.getValue());
+		enableSpinner();	
 	}
 
 	@Override
