@@ -18,10 +18,10 @@ public class StereotypeCombo extends JComboBox<Stereotype>{
 	public StereotypeCombo(){
 		ArrayList<Stereotype> list = new ArrayList<Stereotype>();
 	
-		for (Stereotype s : ClassStereotype.values()) {
+		for (Stereotype s : ClassStereotype.getClassStereotypes()) {
 			list.add(s);
 		}
-		for (Stereotype s : RelationStereotype.values()) {
+		for (Stereotype s : RelationStereotype.getAssociationStereotypes()) {
 			list.add(s);
 		}
 		
