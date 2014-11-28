@@ -145,4 +145,9 @@ public enum ClassStereotype implements Stereotype {
 	public Class<? extends EObject> getMetaclass(){
 		return metaClass;
 	}
+	
+	public static ClassStereotype[] getAssociationStereotypes(){
+		 ClassStereotype[] array = {CATEGORY, COLLECTIVE, KIND, MIXIN, MODE, NOMINALQUALITY, NONPERCEIVABLEQUALITY, PERCEIVABLEQUALITY, PHASE, QUANTITY, RELATOR, ROLE, ROLEMIXIN, SUBKIND};
+		 return array;
+	}
 }
