@@ -3,8 +3,6 @@ package br.ufes.inf.nemo.ontouml2alloy.scenarios.ui;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -12,7 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeListener;
 
-import RefOntoUML.Classifier;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.Scenario;
 
@@ -47,32 +44,7 @@ public abstract class ScenarioPanel<T extends Scenario> extends JPanel {
 	public void resetUI(){
 		scenario = null;
 		loadDefaultUIData();
-	}
-	
-	public ArrayList<OntoUMLElement> getElements(Class<? extends Classifier> metaType){
-		return convertAll(parser.getAllInstances(metaType));
-	}
-	
-	public OntoUMLElement getByClassifier(ArrayList<OntoUMLElement> list, Classifier c){
-	
-		for (OntoUMLElement e : list) {
-			if(e.getClassifier().equals(c))
-				return e;
-		}
-		
-		return null;
-	}
-	
-	public ArrayList<OntoUMLElement> convertAll(Set<? extends Classifier> set){
-		ArrayList<OntoUMLElement> list = new ArrayList<OntoUMLElement>();
-		Iterator<? extends Classifier> iterator = set.iterator();
-		
-		while (iterator.hasNext()) {
-			list.add(new OntoUMLElement(iterator.next()));
-		}
-		
-		return list;
-	}
+	}	
 	
 	public boolean canDelete() {
 		return scenario!=null;

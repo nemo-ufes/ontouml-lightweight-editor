@@ -1,7 +1,8 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios.ui;
 
+import org.eclipse.emf.ecore.EObject;
+
 import RefOntoUML.Association;
-import RefOntoUML.Classifier;
 import RefOntoUML.parser.OntoUMLNameHelper;
 
 /**
@@ -10,11 +11,11 @@ import RefOntoUML.parser.OntoUMLNameHelper;
 
 public class OntoUMLElement {
 	
-	protected Classifier classifier;
+	protected EObject element;
 	
-	public OntoUMLElement (Classifier classifier) 
+	public OntoUMLElement (EObject element) 
 	{
-		this.classifier = classifier;
+		this.element = element;
 	}
 	
 	/**
@@ -23,10 +24,10 @@ public class OntoUMLElement {
 	@Override
 	public String toString() 
 	{
-		String s = OntoUMLNameHelper.getNameAndType(classifier, true, false);
+		String s = OntoUMLNameHelper.getNameAndType(element, true, false);
 		
-		if(classifier instanceof Association){
-			Association a = (Association) classifier;
+		if(element instanceof Association){
+			Association a = (Association) element;
 			s+="("+OntoUMLNameHelper.getNameAndType(a.getMemberEnd().get(0))+" -> "+OntoUMLNameHelper.getNameAndType(a.getMemberEnd().get(0))+")";
 		}
 		
@@ -35,10 +36,10 @@ public class OntoUMLElement {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return classifier.equals(obj);
+		return element.equals(obj);
 	}
 
-	public Classifier getClassifier() {
-		return classifier;
+	public EObject getElement() {
+		return element;
 	}
 }

@@ -1,7 +1,6 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios.ui;
 
 import java.awt.Component;
-import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -20,9 +19,8 @@ public class AntiRigidityPanel extends ScenarioPanel<AntiRigidityScenario> {
 
 	private static final long serialVersionUID = 1L;
 
-	private JComboBox<Object> classCombo;
+	private OntoUMLElementCombo classCombo;
 	private JComboBox<AntirigidityMode> antiRigidityModeCombo;
-	private ArrayList<OntoUMLElement> antiRigids;
 	
 	/**
 	 * @wbp.parser.constructor
@@ -37,13 +35,10 @@ public class AntiRigidityPanel extends ScenarioPanel<AntiRigidityScenario> {
 	public AntiRigidityPanel(OntoUMLParser parser, AntiRigidityScenario scenario) {
 		super(parser, scenario);
 		
-		antiRigids = getAntiRigidClasses();
-		
 		JLabel lblClass = new JLabel("Behavior:");
 		JLabel lblNewLabel_1 = new JLabel("Choose an anti-rigid class:");
 		
-		classCombo = new JComboBox<Object>();
-		classCombo.setModel(new DefaultComboBoxModel<Object>(antiRigids.toArray()));
+		classCombo = OntoUMLElementCombo.createAntiRigidCombo(parser);
 		
 		antiRigidityModeCombo = new JComboBox<AntirigidityMode>();
 		antiRigidityModeCombo.setModel(new DefaultComboBoxModel<AntirigidityMode>(AntirigidityMode.values()));
@@ -85,9 +80,7 @@ public class AntiRigidityPanel extends ScenarioPanel<AntiRigidityScenario> {
 
 	}
 
-	public ArrayList<OntoUMLElement> getAntiRigidClasses(){
-		return convertAll(parser.getAntiRigidClasses());
-	} 
+	
 	
 	@Override
 	public void loadDefaultUIData() {
@@ -97,7 +90,7 @@ public class AntiRigidityPanel extends ScenarioPanel<AntiRigidityScenario> {
 
 	@Override
 	public void loadScenarioUIData() {
-		classCombo.setSelectedItem(getByClassifier(antiRigids,scenario.getAntiRigid()));
+		classCombo.setSelectedElement(scenario.getAntiRigid());
 		antiRigidityModeCombo.setSelectedItem(scenario.getAntirigidityMode());
 	}
 
@@ -114,7 +107,7 @@ public class AntiRigidityPanel extends ScenarioPanel<AntiRigidityScenario> {
 	
 	public Class getSelectedAntirigid(){
 		OntoUMLElement e = (OntoUMLElement) classCombo.getSelectedItem();
-		return (Class) e.getClassifier();
+		return (Class) e.getElement();
 	}
 
 	@Override
