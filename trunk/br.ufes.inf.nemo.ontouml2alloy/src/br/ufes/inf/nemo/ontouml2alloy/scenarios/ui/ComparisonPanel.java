@@ -181,10 +181,8 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		cards1.add(emptyPanel1, EMPTY);
 		
 		classPanel1 = new JPanel();
-		
 		classLabel1 = new JLabel("Class:");
 		classCombo1 = new OntoUMLElementCombo(Class.class, parser);
-		
 		
 		cards1.add(classPanel1, SegmentType.CLASS.toString());
 		
@@ -249,20 +247,20 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		
 		setLayout(groupLayout);
 		
-		combos.add(comparisonTypeCombo);
-		combos.add(operatorCombo);
-		combos.add(quantificationCombo);
-		spinners.add(nSpinner);
-		
-		combos.add(segmentCombo1);
-		combos.add(associationCombo1);
-		combos.add(classCombo1);
-		combos.add(stereotypeCombo1);
-		
-		combos.add(segmentCombo2);
-		combos.add(associationCombo2);
-		combos.add(classCombo2);
-		combos.add(stereotypeCombo2);
+//		combos.add(comparisonTypeCombo);
+//		combos.add(operatorCombo);
+//		combos.add(quantificationCombo);
+//		spinners.add(nSpinner);
+//		
+//		combos.add(segmentCombo1);
+//		combos.add(associationCombo1);
+//		combos.add(classCombo1);
+//		combos.add(stereotypeCombo1);
+//		
+//		combos.add(segmentCombo2);
+//		combos.add(associationCombo2);
+//		combos.add(classCombo2);
+//		combos.add(stereotypeCombo2);
 		
 		
 		GroupLayout gl_associationPanel1 = new GroupLayout(associationPanel1);
@@ -529,10 +527,10 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 			seg.setAsStereotype(stereotypeCombo.getSelectedMetaClass()); 
 			break;
 		case ASSOCIATION:
-			seg.setAsAssociation((Association) associationCombo.getSelectedElement());
+			seg.setAsAssociation((Association) associationCombo.getElement());
 			break;
 		case CLASS:
-			seg.setAsClass((Class) classCombo.getSelectedElement());
+			seg.setAsClass((Class) classCombo.getElement());
 			break;
 		default:
 			break;

@@ -30,6 +30,8 @@ public class OntoUMLElementCombo extends JComboBox<OntoUMLElement>{
 		
 		setMetaClass(metaClass);
 		setModel(new DefaultComboBoxModel<OntoUMLElement>(getArrayFromMetaClass()));
+		setEnabled(true);
+//		setEditable(true);
 	}
 
 	private void setMetaClass(Class<? extends EObject> metaClass) {
@@ -44,16 +46,11 @@ public class OntoUMLElementCombo extends JComboBox<OntoUMLElement>{
 		return combo;
 	} 
 	
-	@Override
-	public OntoUMLElement getSelectedItem(){
-		return ((OntoUMLElement)super.getSelectedItem());
+	public EObject getElement(){
+		return ((OntoUMLElement)this.getSelectedItem()).element;
 	}
 	
-	public EObject getSelectedElement(){
-		return this.getSelectedItem().element;
-	}
-	
-	public void setSelectedElement(EObject element){
+	public void assignElement(EObject element){
 		
 		for (int i = 0; i < getItemCount(); i++) {
 			OntoUMLElement item = getItemAt(i);
@@ -82,6 +79,8 @@ public class OntoUMLElementCombo extends JComboBox<OntoUMLElement>{
 		
 		return list.toArray(new OntoUMLElement[1]);
 	}
+	
+	
 	
 	
 
