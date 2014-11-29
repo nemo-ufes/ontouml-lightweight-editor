@@ -90,7 +90,7 @@ public class AntiRigidityPanel extends ScenarioPanel<AntiRigidityScenario> {
 
 	@Override
 	public void loadScenarioUIData() {
-		classCombo.setSelectedElement(scenario.getAntiRigid());
+		classCombo.assignElement(scenario.getAntiRigid());
 		antiRigidityModeCombo.setSelectedItem(scenario.getAntirigidityMode());
 	}
 

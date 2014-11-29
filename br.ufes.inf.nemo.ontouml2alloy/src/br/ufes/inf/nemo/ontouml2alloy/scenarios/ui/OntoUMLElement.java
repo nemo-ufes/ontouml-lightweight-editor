@@ -33,11 +33,6 @@ public class OntoUMLElement {
 		
 		return s;
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return element.equals(obj);
-	}
 
 	public EObject getElement() {
 		return element;
