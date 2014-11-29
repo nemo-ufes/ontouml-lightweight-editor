@@ -18,7 +18,7 @@ import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 
 public class RelatorPattern extends AbstractPattern {
 
