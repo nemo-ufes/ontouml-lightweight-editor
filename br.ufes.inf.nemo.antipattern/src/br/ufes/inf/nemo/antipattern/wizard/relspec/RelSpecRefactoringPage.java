@@ -11,13 +11,13 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
+import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
 
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecAntipattern;
 import br.ufes.inf.nemo.antipattern.relspec.RelSpecOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.RefactoringPage;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import org.eclipse.wb.swt.layout.grouplayout.GroupLayout;
-import org.eclipse.wb.swt.layout.grouplayout.LayoutStyle;
+import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 
 /**
  * @author Tiago Sales

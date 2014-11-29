@@ -13,7 +13,7 @@ import RefOntoUML.Relator;
 import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 
 public class RepRelOccurrence extends AntipatternOccurrence {
 	

@@ -15,8 +15,8 @@ import RefOntoUML.memberOf;
 import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 
 public class HetCollOccurrence extends AntipatternOccurrence {
 

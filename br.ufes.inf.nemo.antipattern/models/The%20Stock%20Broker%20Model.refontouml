@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_kcILCRX1EeSMsbiDJEuU3Q" name="The Stock Broker Model" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kcILChX1EeSMsbiDJEuU3Q" name="Brokerage" visibility="public">
+    <generalization xmi:id="_kcILCxX1EeSMsbiDJEuU3Q" general="_kcILERX1EeSMsbiDJEuU3Q" generalizationSet="_kcILTxX1EeSMsbiDJEuU3Q _kcILTRX1EeSMsbiDJEuU3Q _kcILThX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kcILDBX1EeSMsbiDJEuU3Q" name="Buyer" visibility="public">
+    <generalization xmi:id="_kcILDRX1EeSMsbiDJEuU3Q" general="_kcILChX1EeSMsbiDJEuU3Q" generalizationSet="_kcILUBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_kcILDhX1EeSMsbiDJEuU3Q" name="Contract" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kcILDxX1EeSMsbiDJEuU3Q" name="Hired Brokerage" visibility="public">
+    <generalization xmi:id="_kcILEBX1EeSMsbiDJEuU3Q" general="_kcILChX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_kcILERX1EeSMsbiDJEuU3Q" name="Organization" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_kcILEhX1EeSMsbiDJEuU3Q" name="Person" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kcILExX1EeSMsbiDJEuU3Q" name="Public Traded Company" visibility="public">
+    <generalization xmi:id="_kcILFBX1EeSMsbiDJEuU3Q" general="_kcILERX1EeSMsbiDJEuU3Q" generalizationSet="_kcILURX1EeSMsbiDJEuU3Q _kcILTxX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kcILFRX1EeSMsbiDJEuU3Q" name="Seller" visibility="public">
+    <generalization xmi:id="_kcILFhX1EeSMsbiDJEuU3Q" general="_kcILChX1EeSMsbiDJEuU3Q" generalizationSet="_kcILUBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_kcILFxX1EeSMsbiDJEuU3Q" name="Stock" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kcILGBX1EeSMsbiDJEuU3Q" name="Stock Exchange" visibility="public">
+    <generalization xmi:id="_kcILGRX1EeSMsbiDJEuU3Q" general="_kcILERX1EeSMsbiDJEuU3Q" generalizationSet="_kcILURX1EeSMsbiDJEuU3Q _kcILTRX1EeSMsbiDJEuU3Q _kcILUhX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kcILGhX1EeSMsbiDJEuU3Q" name="Stock Keeper" visibility="public">
+    <generalization xmi:id="_kcILGxX1EeSMsbiDJEuU3Q" general="_kcILGBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:RoleMixin" xmi:id="_kcILHBX1EeSMsbiDJEuU3Q" name="Stockholder" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kcILHRX1EeSMsbiDJEuU3Q" name="Stockholder Organization" visibility="public">
+    <generalization xmi:id="_kcILHhX1EeSMsbiDJEuU3Q" general="_kcILHBX1EeSMsbiDJEuU3Q" generalizationSet="_kcILUxX1EeSMsbiDJEuU3Q"/>
+    <generalization xmi:id="_kcILHxX1EeSMsbiDJEuU3Q" general="_kcILERX1EeSMsbiDJEuU3Q" generalizationSet="_kcILUhX1EeSMsbiDJEuU3Q _kcILThX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kcILIBX1EeSMsbiDJEuU3Q" name="Stockholder Person" visibility="public">
+    <generalization xmi:id="_kcILIRX1EeSMsbiDJEuU3Q" general="_kcILHBX1EeSMsbiDJEuU3Q" generalizationSet="_kcILUxX1EeSMsbiDJEuU3Q"/>
+    <generalization xmi:id="_kcILIhX1EeSMsbiDJEuU3Q" general="_kcILEhX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kcILIxX1EeSMsbiDJEuU3Q" visibility="public" memberEnd="_kcILJBX1EeSMsbiDJEuU3Q _kcILJxX1EeSMsbiDJEuU3Q">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_kcILJBX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILFxX1EeSMsbiDJEuU3Q" association="_kcILIxX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILJRX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILJhX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kcILJxX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILDBX1EeSMsbiDJEuU3Q" association="_kcILIxX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILKBX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILKRX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kcILKhX1EeSMsbiDJEuU3Q" visibility="public" memberEnd="_kcILKxX1EeSMsbiDJEuU3Q _kcILLhX1EeSMsbiDJEuU3Q">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_kcILKxX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILDhX1EeSMsbiDJEuU3Q" association="_kcILKhX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILLBX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILLRX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kcILLhX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILDxX1EeSMsbiDJEuU3Q" association="_kcILKhX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILLxX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILMBX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kcILMRX1EeSMsbiDJEuU3Q" visibility="public" memberEnd="_kcILMhX1EeSMsbiDJEuU3Q _kcILNRX1EeSMsbiDJEuU3Q">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_kcILMhX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILDhX1EeSMsbiDJEuU3Q" association="_kcILMRX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILMxX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILNBX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kcILNRX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILHBX1EeSMsbiDJEuU3Q" association="_kcILMRX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILNhX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILNxX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kcILOBX1EeSMsbiDJEuU3Q" visibility="public" memberEnd="_kcILORX1EeSMsbiDJEuU3Q _kcILPBX1EeSMsbiDJEuU3Q">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_kcILORX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILFxX1EeSMsbiDJEuU3Q" association="_kcILOBX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILOhX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILOxX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kcILPBX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILExX1EeSMsbiDJEuU3Q" association="_kcILOBX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILPRX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILPhX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kcILPxX1EeSMsbiDJEuU3Q" visibility="public" memberEnd="_kcILQBX1EeSMsbiDJEuU3Q _kcILQxX1EeSMsbiDJEuU3Q">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_kcILQBX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILFxX1EeSMsbiDJEuU3Q" association="_kcILPxX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILQRX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILQhX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kcILQxX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILFRX1EeSMsbiDJEuU3Q" association="_kcILPxX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILRBX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILRRX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kcILRhX1EeSMsbiDJEuU3Q" visibility="public" memberEnd="_kcILRxX1EeSMsbiDJEuU3Q _kcILShX1EeSMsbiDJEuU3Q">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_kcILRxX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILFxX1EeSMsbiDJEuU3Q" association="_kcILRhX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILSBX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILSRX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kcILShX1EeSMsbiDJEuU3Q" visibility="public" type="_kcILGhX1EeSMsbiDJEuU3Q" association="_kcILRhX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kcILSxX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kcILTBX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kcILTRX1EeSMsbiDJEuU3Q" name="Brokerage_StockExchange_Disjoint" visibility="public" isDisjoint="true" generalization="_kcILCxX1EeSMsbiDJEuU3Q _kcILGRX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kcILThX1EeSMsbiDJEuU3Q" name="Brokerage_StockholderOrganization_Disjoint" visibility="public" isDisjoint="true" generalization="_kcILCxX1EeSMsbiDJEuU3Q _kcILHxX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kcILTxX1EeSMsbiDJEuU3Q" name="PublicTradedCompany_Brokerage" visibility="public" isDisjoint="true" generalization="_kcILCxX1EeSMsbiDJEuU3Q _kcILFBX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kcILUBX1EeSMsbiDJEuU3Q" name="Buyer_Seller_Disjoint" visibility="public" isDisjoint="true" generalization="_kcILDRX1EeSMsbiDJEuU3Q _kcILFhX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kcILURX1EeSMsbiDJEuU3Q" name="StockExchange_PublicTradedCompany" visibility="public" isDisjoint="true" generalization="_kcILFBX1EeSMsbiDJEuU3Q _kcILGRX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kcILUhX1EeSMsbiDJEuU3Q" name="StockholderOrganization_StockExchange_Disjoint" visibility="public" isDisjoint="true" generalization="_kcILGRX1EeSMsbiDJEuU3Q _kcILHxX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kcILUxX1EeSMsbiDJEuU3Q" name="Stockholder_Disjoint" visibility="public" isDisjoint="true" generalization="_kcILHhX1EeSMsbiDJEuU3Q _kcILIRX1EeSMsbiDJEuU3Q"/>
+</RefOntoUML:Package>

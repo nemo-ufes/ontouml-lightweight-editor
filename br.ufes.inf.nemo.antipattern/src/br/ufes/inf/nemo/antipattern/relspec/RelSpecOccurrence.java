@@ -10,7 +10,7 @@ import RefOntoUML.Property;
 import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.antipattern.AntipatternOccurrence;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.SpecializationType;
 
 /*Relation Specialization*/

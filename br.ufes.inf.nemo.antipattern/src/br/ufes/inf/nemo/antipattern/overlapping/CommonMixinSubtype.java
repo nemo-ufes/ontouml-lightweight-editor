@@ -19,8 +19,8 @@ import br.ufes.inf.nemo.antipattern.partover.PartOverOccurrence;
 import br.ufes.inf.nemo.antipattern.relover.RelOverOccurrence;
 import br.ufes.inf.nemo.antipattern.wholeover.WholeOverOccurrence;
 import br.ufes.inf.nemo.antipattern.wizard.overlapping.CommonMixinSubtypeComposite;
+import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 
 
 public class CommonMixinSubtype extends OverlappingGroup {
