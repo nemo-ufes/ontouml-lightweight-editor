@@ -247,20 +247,20 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		
 		setLayout(groupLayout);
 		
-//		combos.add(comparisonTypeCombo);
-//		combos.add(operatorCombo);
-//		combos.add(quantificationCombo);
-//		spinners.add(nSpinner);
-//		
-//		combos.add(segmentCombo1);
-//		combos.add(associationCombo1);
-//		combos.add(classCombo1);
-//		combos.add(stereotypeCombo1);
-//		
-//		combos.add(segmentCombo2);
-//		combos.add(associationCombo2);
-//		combos.add(classCombo2);
-//		combos.add(stereotypeCombo2);
+		combos.add(comparisonTypeCombo);
+		combos.add(operatorCombo);
+		combos.add(quantificationCombo);
+		spinners.add(nSpinner);
+		
+		combos.add(segmentCombo1);
+		combos.add(associationCombo1);
+		combos.add(classCombo1);
+		combos.add(stereotypeCombo1);
+		
+		combos.add(segmentCombo2);
+		combos.add(associationCombo2);
+		combos.add(classCombo2);
+		combos.add(stereotypeCombo2);
 		
 		
 		GroupLayout gl_associationPanel1 = new GroupLayout(associationPanel1);
@@ -468,10 +468,12 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		SegmentType st = scenario.getLeftSegment().getType();
 		segmentCombo1.setSelectedItem(st);
 		updateCards(cards1, st);
+		loadSegmentData(scenario.getLeftSegment(), stereotypeCombo1, associationCombo1, classCombo1);
 		
 		st = scenario.getRightSegment().getType();
 		segmentCombo2.setSelectedItem(st);
 		updateCards(cards2, st);
+		loadSegmentData(scenario.getRightSegment(), stereotypeCombo2, associationCombo2, classCombo2);
 		
 		comparisonTypeCombo.setSelectedItem(scenario.getComparisonType());
 		if(scenario.isSizeComparison())
@@ -486,14 +488,34 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		enableSpinner();	
 	}
 
+	private void loadSegmentData(Segment segment, StereotypeCombo stereotypeCombo, 
+			OntoUMLElementCombo associationCombo, OntoUMLElementCombo classCombo) {
+		
+		SegmentType st = segment.getType();
+		
+		switch (st) {
+		case ASSOCIATION:
+			associationCombo.assignElement(segment.getClassifier());
+			break;
+		case CLASS:
+			classCombo.assignElement(segment.getClassifier());
+			break;
+		case STEREOTYPE:
+			stereotypeCombo.setSelectedItem(segment.getStereotype());
+			break;
+		default:
+			break;
+		}
+	}
+
 	@Override
 	public ComparisonScenario saveScenario() {
 		
 		if(scenario==null)
 			scenario = new ComparisonScenario(parser);
 		
-		loadSegmentUIData(scenario.getLeftSegment(), segmentCombo1, stereotypeCombo1, associationCombo1, classCombo1);
-		loadSegmentUIData(scenario.getRightSegment(), segmentCombo2, stereotypeCombo2, associationCombo2, classCombo2);
+		saveSegmentData(scenario.getLeftSegment(), segmentCombo1, stereotypeCombo1, associationCombo1, classCombo1);
+		saveSegmentData(scenario.getRightSegment(), segmentCombo2, stereotypeCombo2, associationCombo2, classCombo2);
 		
 		ComparisonType ct = (ComparisonType) comparisonTypeCombo.getSelectedItem();
 		if(ct==ComparisonType.EXT)
@@ -510,7 +532,7 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		return scenario;
 	}
 
-	private void loadSegmentUIData(Segment seg, JComboBox<SegmentType> segmentCombo, StereotypeCombo stereotypeCombo, OntoUMLElementCombo associationCombo, OntoUMLElementCombo classCombo) {
+	private void saveSegmentData(Segment seg, JComboBox<SegmentType> segmentCombo, StereotypeCombo stereotypeCombo, OntoUMLElementCombo associationCombo, OntoUMLElementCombo classCombo) {
 		SegmentType st = (SegmentType) segmentCombo.getSelectedItem();
 				
 		switch (st) {
@@ -540,7 +562,33 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 	
 	@Override
 	public boolean canSave() {
-		//TODO: finish method
-		return true;		
+		if(segmentCombo1.getSelectedIndex()==-1 || segmentCombo2.getSelectedIndex()==-1 || comparisonTypeCombo.getSelectedIndex()==-1
+				|| operatorCombo.getSelectedIndex()==-1 || quantificationCombo.getSelectedIndex()==-1)
+			return false;
+		
+		SegmentType st = (SegmentType) segmentCombo1.getSelectedItem();
+		
+		if(st==SegmentType.CLASS && classCombo1.getSelectedIndex()==-1)
+			return false;
+	
+		if(st==SegmentType.ASSOCIATION && associationCombo1.getSelectedIndex()==-1)
+			return false;
+			
+		if(st==SegmentType.STEREOTYPE && stereotypeCombo1.getSelectedIndex()==-1)
+			return false;
+		
+		st = (SegmentType) segmentCombo2.getSelectedItem();
+		
+		if(st==SegmentType.CLASS && classCombo2.getSelectedIndex()==-1)
+			return false;
+	
+		if(st==SegmentType.ASSOCIATION && associationCombo2.getSelectedIndex()==-1)
+			return false;
+			
+		if(st==SegmentType.STEREOTYPE && stereotypeCombo2.getSelectedIndex()==-1)
+			return false;
+
+		return true;
+		
 	}
 }
