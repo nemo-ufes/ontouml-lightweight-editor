@@ -21,11 +21,12 @@ public class OntoUMLElementCombo extends JComboBox<OntoUMLElement>{
 	public OntoUMLElementCombo(OntoUMLParser parser){
 		super();
 		this.parser = parser;
+		setEditable(false);
+		setEnabled(true);
 	}
 	
 	public OntoUMLElementCombo(Class<? extends EObject> metaClass, OntoUMLParser parser){
-		super();
-		this.parser = parser;
+		this(parser);
 		
 		setMetaClass(metaClass);
 		setModel(new DefaultComboBoxModel<OntoUMLElement>(getArrayFromMetaClass()));
