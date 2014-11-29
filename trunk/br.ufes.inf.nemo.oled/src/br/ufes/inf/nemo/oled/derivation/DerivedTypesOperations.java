@@ -25,7 +25,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -39,7 +38,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -62,10 +60,10 @@ import RefOntoUML.RoleMixin;
 import RefOntoUML.SemiRigidMixinClass;
 import RefOntoUML.SubKind;
 import RefOntoUML.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 import br.ufes.inf.nemo.common.positioning.ClassPosition;
 import br.ufes.inf.nemo.derivedtypes.DerivedByExclusion;
 import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
