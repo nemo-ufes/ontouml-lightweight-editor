@@ -14,8 +14,7 @@ import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 import br.ufes.inf.nemo.validator.meronymic.MeronymicItem;
 import br.ufes.inf.nemo.validator.meronymic.derivation.ui.DirectPatternActionDialog;
 import br.ufes.inf.nemo.validator.meronymic.derivation.ui.DirectPatternPropertyDialog;
@@ -80,7 +79,7 @@ public class DerivedMeronymic extends MeronymicItem{
 		return existingMeronymic!=null;
 	}
 	
-	public OutcomeFixer.RelationStereotype getStereotype() {
+	public RelationStereotype getStereotype() {
 		return stereotype;
 	}
 	
@@ -97,7 +96,7 @@ public class DerivedMeronymic extends MeronymicItem{
 		return null;
 	}
 
-	public void setStereotype(OutcomeFixer.RelationStereotype stereotype) {
+	public void setStereotype(RelationStereotype stereotype) {
 		this.stereotype = stereotype;
 	}
 

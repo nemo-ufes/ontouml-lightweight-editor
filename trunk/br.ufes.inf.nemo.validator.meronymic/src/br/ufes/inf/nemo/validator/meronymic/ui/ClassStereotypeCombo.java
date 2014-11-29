@@ -4,8 +4,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
 import RefOntoUML.Classifier;
+import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
 
 public class ClassStereotypeCombo extends JComboBox<ClassStereotype> {
 	
