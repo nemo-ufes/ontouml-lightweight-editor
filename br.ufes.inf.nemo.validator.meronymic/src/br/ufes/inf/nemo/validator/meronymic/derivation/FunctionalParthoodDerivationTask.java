@@ -6,7 +6,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.componentOf;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontouml2directedgraph.EdgePath;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 import br.ufes.inf.nemo.validator.meronymic.derivation.DerivedMeronymic.PatternType;
 import br.ufes.inf.nemo.validator.meronymic.derivation.ui.DerivedTableModel;
 

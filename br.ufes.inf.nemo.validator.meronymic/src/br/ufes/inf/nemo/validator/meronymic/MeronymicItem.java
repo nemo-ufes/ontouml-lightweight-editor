@@ -14,8 +14,8 @@ import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.ClassStereotype;
-import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 import br.ufes.inf.nemo.validator.meronymic.ui.FixDialog;
 
 public abstract class MeronymicItem {
