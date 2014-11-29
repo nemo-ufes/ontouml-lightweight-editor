@@ -4,7 +4,6 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -40,29 +39,27 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 	private JComboBox<WorldQuantificationType> quantificationCombo;
 	private JComboBox<Object> operatorCombo;
 	private JComboBox<SegmentType> segmentCombo2;
-	private JComboBox<Object> classCombo1;
-	private JLabel classLabel1;
 	
+	private OntoUMLElementCombo classCombo1;
+	private OntoUMLElementCombo associationCombo1;
+	private OntoUMLElementCombo classCombo2;
+	private OntoUMLElementCombo associationCombo2;
+	private StereotypeCombo stereotypeCombo2;
+	private StereotypeCombo stereotypeCombo1;
+	
+	private JLabel classLabel1;
 	private JPanel cards1;
 	private JPanel associationPanel1;
 	private JPanel stereotypePanel1;
 	private JPanel classPanel1;
 	private JLabel associationLabel1;
-	private JComboBox<Object> associationCombo1;
 	private JLabel stereotypeLabel1;
-	private StereotypeCombo stereotypeCombo1;
-	
-	private ArrayList<OntoUMLElement> classes;
-	private ArrayList<OntoUMLElement> associations;
 	private JPanel emptyPanel2;
 	private JPanel classPanel2;
 	private JLabel classLabel2;
-	private JComboBox<Object> classCombo2;
 	private JPanel associationPanel2;
 	private JLabel associationLabel2;
-	private JComboBox<Object> associationCombo2;
 	private JPanel stereotypePanel2;
-	private StereotypeCombo stereotypeCombo2;
 	private JLabel stereotypeLabel2;
 	private JPanel cards2;
 	private JPanel emptyPanel1;
@@ -76,10 +73,7 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 	}
 	
 	public ComparisonPanel(OntoUMLParser parser, ComparisonScenario scenario) {
-		super(parser, scenario);
-		
-		classes = getClasses();
-		associations = getAssociations();
+		super(parser, scenario);	
 		
 		lblClass = new JLabel("Segment 1:");
 		
@@ -189,18 +183,14 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		
 		classPanel1 = new JPanel();
 		classLabel1 = new JLabel("Class:");
-		classCombo1 = new JComboBox<Object>();
-		//TODO: can't change option in the combo.
-		
-		classCombo1.setModel(new DefaultComboBoxModel<Object>(classes.toArray()));
+		classCombo1 = new OntoUMLElementCombo(Class.class, parser); 	//TODO: can't change option in the combo.
 		addComponentsAndApplyLayout(classPanel1, classLabel1, classCombo1);
 		cards1.add(classPanel1, SegmentType.CLASS.toString());
 		
 		associationPanel1 = new JPanel();
 		associationLabel1 = new JLabel("Assoc.:");
-		associationCombo1 = new JComboBox<Object>();
+		associationCombo1 = new OntoUMLElementCombo(Association.class, parser); 
 		addComponentsAndApplyLayout(associationPanel1, associationLabel1, associationCombo1);
-		associationCombo1.setModel(new DefaultComboBoxModel<Object>(associations.toArray()));
 		cards1.add(associationPanel1, SegmentType.ASSOCIATION.toString());
 		
 		stereotypePanel1 = new JPanel();	
@@ -214,15 +204,13 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		
 		classPanel2 = new JPanel();
 		classLabel2 = new JLabel("Class:");
-		classCombo2 = new JComboBox<Object>();
-		classCombo2.setModel(new DefaultComboBoxModel<Object>(classes.toArray()));
+		classCombo2 = new OntoUMLElementCombo(Class.class, parser); 
 		addComponentsAndApplyLayout(classPanel2, classLabel2, classCombo2);
 		cards2.add(classPanel2, SegmentType.CLASS.toString());
 		
 		associationPanel2 = new JPanel();
 		associationLabel2 = new JLabel("Assoc.:");
-		associationCombo2 = new JComboBox<Object>();
-		associationCombo2.setModel(new DefaultComboBoxModel<Object>(associations.toArray()));
+		associationCombo2 = new OntoUMLElementCombo(Association.class, parser); 
 		addComponentsAndApplyLayout(associationPanel2, associationLabel2, associationCombo2);
 		cards2.add(associationPanel2, SegmentType.ASSOCIATION.toString());
 		
@@ -327,15 +315,7 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 			cl.show(cards, st.toString());
 		
 	}
-	
-	public ArrayList<OntoUMLElement> getClasses(){
-		return convertAll(parser.getAllInstances(Class.class));
-	}
-	
-	private ArrayList<OntoUMLElement> getAssociations() {
-		return convertAll(parser.getAllInstances(Association.class));
-	}
-	
+		
 	public void setSizeOperators(){
 		operatorCombo.setModel(new DefaultComboBoxModel<Object>(BinaryOperator.values()));
 	}
@@ -404,7 +384,7 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		return scenario;
 	}
 
-	private void loadSegmentUIData(Segment seg, JComboBox<SegmentType> segmentCombo, StereotypeCombo stereotypeCombo, JComboBox<Object> associationCombo, JComboBox<Object> classCombo) {
+	private void loadSegmentUIData(Segment seg, JComboBox<SegmentType> segmentCombo, StereotypeCombo stereotypeCombo, OntoUMLElementCombo associationCombo, OntoUMLElementCombo classCombo) {
 		SegmentType st = (SegmentType) segmentCombo.getSelectedItem();
 				
 		switch (st) {
@@ -421,25 +401,16 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 			seg.setAsStereotype(stereotypeCombo.getSelectedMetaClass()); 
 			break;
 		case ASSOCIATION:
-			seg.setAsAssociation(getSelectedAssociation(associationCombo));
+			seg.setAsAssociation((Association) associationCombo.getSelectedElement());
 			break;
 		case CLASS:
-			seg.setAsClass(getSelectedClass(classCombo));
+			seg.setAsClass((Class) classCombo.getSelectedElement());
 			break;
 		default:
 			break;
 		}
 	}
 
-	public Association getSelectedAssociation(JComboBox<Object> combo){
-		OntoUMLElement e = (OntoUMLElement) combo.getSelectedItem();
-		return (Association) e.getClassifier();
-	}
-	
-	public Class getSelectedClass(JComboBox<Object> combo){
-		OntoUMLElement e = (OntoUMLElement) combo.getSelectedItem();
-		return (Class) e.getClassifier();
-	}
 	
 	@Override
 	public boolean canSave() {

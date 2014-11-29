@@ -5,7 +5,6 @@ import java.util.Iterator;
 import org.eclipse.emf.ecore.EObject;
 
 import RefOntoUML.Association;
-import RefOntoUML.Classifier;
 import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 
@@ -15,7 +14,7 @@ public class Segment {
 	public SegmentType segmentType;
 
 	//class or association that characterize the segment (only for SegmentType=CLASS or ASSCOCIATION)
-	Classifier classifier;
+	EObject classifier;
 	//Metatype that characterizes the segment (only for SegmentType=STEREOTYPE_CLASS or STEREOTYPE_ASS)
 	Class<? extends EObject> metaType;
 	

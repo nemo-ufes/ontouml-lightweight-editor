@@ -265,8 +265,6 @@ public class ScenarioDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		JTextPane lblSelectTheType = new JTextPane();
-		
 		JTextPane intro = new JTextPane();
 		intro.setBackground(SystemColor.control);
 		intro.setEditable(false);
@@ -328,23 +326,21 @@ public class ScenarioDialog extends JDialog {
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(intro, GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
-						.addComponent(cards, GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+						.addComponent(intro, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+						.addComponent(cards, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addComponent(lblNewLabel_1)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(lblAddAs, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblSelectTheType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGap(21)
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(modeCombo, 0, 411, Short.MAX_VALUE)
-								.addComponent(scenarioCombo, 0, 411, Short.MAX_VALUE))))
+								.addComponent(modeCombo, 0, 353, Short.MAX_VALUE)
+								.addComponent(scenarioCombo, 0, 353, Short.MAX_VALUE))))
 					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -353,26 +349,21 @@ public class ScenarioDialog extends JDialog {
 					.addContainerGap()
 					.addComponent(intro, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGap(18)
-							.addComponent(lblSelectTheType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblNewLabel)
-								.addComponent(scenarioCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblAddAs)
-								.addComponent(modeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel)
+						.addComponent(scenarioCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblAddAs)
+						.addComponent(modeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
-					.addComponent(cards, GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+					.addComponent(cards, GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 						.addComponent(lblNewLabel_1)
 						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		
