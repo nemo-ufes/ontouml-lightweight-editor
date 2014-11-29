@@ -4,6 +4,10 @@ import java.util.Iterator;
 
 import org.eclipse.emf.ecore.EObject;
 
+import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
+import br.ufes.inf.nemo.common.ontoumlfixer.Stereotype;
+
 import RefOntoUML.Association;
 import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
@@ -21,6 +25,25 @@ public class Segment {
 	public Segment(OntoUMLParser parser) {
 		this.parser = parser;
 	}
+	
+	public EObject getClassifier(){
+		return classifier;
+	}
+	
+	public Stereotype getStereotype(){
+		for (ClassStereotype cs : ClassStereotype.values()) {
+			if(cs.getMetaclass().equals(metaType))
+				return cs;
+		}
+		
+		for (RelationStereotype rs : RelationStereotype.values()) {
+			if(rs.getMetaclass().equals(metaType))
+				return rs;
+		}
+		
+		return null;
+	}
+	
 	
 	private String getUnionExpression(Class<? extends EObject> metaType){
 		
