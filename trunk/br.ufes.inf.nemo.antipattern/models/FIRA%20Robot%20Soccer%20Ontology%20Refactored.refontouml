@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Package xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" xmi:id="_kck6lRX1EeSMsbiDJEuU3Q" name="FIRA Robot Soccer Ontology Refactored" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_kck6lhX1EeSMsbiDJEuU3Q" name="Ball" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6lxX1EeSMsbiDJEuU3Q" name="Ball at Play" visibility="public">
+    <generalization xmi:id="_kck6mBX1EeSMsbiDJEuU3Q" general="_kck6lhX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6mRX1EeSMsbiDJEuU3Q" name="Center Circle" visibility="public">
+    <generalization xmi:id="_kck6mhX1EeSMsbiDJEuU3Q" general="_kck64BX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6mxX1EeSMsbiDJEuU3Q" name="Centerline" visibility="public">
+    <generalization xmi:id="_kck6nBX1EeSMsbiDJEuU3Q" general="_kck64BX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6nRX1EeSMsbiDJEuU3Q" name="Defensive Player" visibility="public">
+    <generalization xmi:id="_kck6nhX1EeSMsbiDJEuU3Q" general="_kck6yRX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oRX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6nxX1EeSMsbiDJEuU3Q" name="Defensive Strategy" visibility="public">
+    <generalization xmi:id="_kck6oBX1EeSMsbiDJEuU3Q" general="_kck61RX1EeSMsbiDJEuU3Q" generalizationSet="_kct7ohX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Category" xmi:id="_kck6oRX1EeSMsbiDJEuU3Q" name="Exception Time" visibility="public" isAbstract="true"/>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6ohX1EeSMsbiDJEuU3Q" name="Extra Tme" visibility="public">
+    <generalization xmi:id="_kck6oxX1EeSMsbiDJEuU3Q" general="_kck63RX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oxX1EeSMsbiDJEuU3Q"/>
+    <generalization xmi:id="_kck6pBX1EeSMsbiDJEuU3Q" general="_kck6oRX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6pRX1EeSMsbiDJEuU3Q" name="Far Defender" visibility="public">
+    <generalization xmi:id="_kck6phX1EeSMsbiDJEuU3Q" general="_kck6nRX1EeSMsbiDJEuU3Q" generalizationSet="_kct7pBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6pxX1EeSMsbiDJEuU3Q" name="First Half" visibility="public">
+    <generalization xmi:id="_kck6qBX1EeSMsbiDJEuU3Q" general="_kck63RX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oxX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6qRX1EeSMsbiDJEuU3Q" name="Free Ball Position" visibility="public">
+    <generalization xmi:id="_kck6qhX1EeSMsbiDJEuU3Q" general="_kck64BX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6qxX1EeSMsbiDJEuU3Q" name="Free Kick Position" visibility="public">
+    <generalization xmi:id="_kck6rBX1EeSMsbiDJEuU3Q" general="_kck64BX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6rRX1EeSMsbiDJEuU3Q" name="Goal Area" visibility="public">
+    <generalization xmi:id="_kck6rhX1EeSMsbiDJEuU3Q" general="_kck64BX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6rxX1EeSMsbiDJEuU3Q" name="Goalkeeper" visibility="public">
+    <generalization xmi:id="_kck6sBX1EeSMsbiDJEuU3Q" general="_kck6yRX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oRX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_kck6sRX1EeSMsbiDJEuU3Q" name="Ground" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6shX1EeSMsbiDJEuU3Q" name="Ground with Zone" visibility="public">
+    <generalization xmi:id="_kck6sxX1EeSMsbiDJEuU3Q" general="_kck6sRX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6tBX1EeSMsbiDJEuU3Q" name="Half Time" visibility="public">
+    <generalization xmi:id="_kck6tRX1EeSMsbiDJEuU3Q" general="_kck63RX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oxX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6thX1EeSMsbiDJEuU3Q" name="Left Attacker" visibility="public">
+    <generalization xmi:id="_kck6txX1EeSMsbiDJEuU3Q" general="_kck6wBX1EeSMsbiDJEuU3Q" generalizationSet="_kct7pRX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6uBX1EeSMsbiDJEuU3Q" name="Local Team" visibility="public">
+    <generalization xmi:id="_kck6uRX1EeSMsbiDJEuU3Q" general="_kck62BX1EeSMsbiDJEuU3Q" generalizationSet="_kct7phX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_kck6uhX1EeSMsbiDJEuU3Q" name="Match" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6uxX1EeSMsbiDJEuU3Q" name="Midfielder" visibility="public">
+    <generalization xmi:id="_kck6vBX1EeSMsbiDJEuU3Q" general="_kck6wBX1EeSMsbiDJEuU3Q" generalizationSet="_kct7pRX1EeSMsbiDJEuU3Q"/>
+    <generalization xmi:id="_kck6vRX1EeSMsbiDJEuU3Q" general="_kck6nRX1EeSMsbiDJEuU3Q" generalizationSet="_kct7pBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6vhX1EeSMsbiDJEuU3Q" name="Near Defender" visibility="public">
+    <generalization xmi:id="_kck6vxX1EeSMsbiDJEuU3Q" general="_kck6nRX1EeSMsbiDJEuU3Q" generalizationSet="_kct7pBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6wBX1EeSMsbiDJEuU3Q" name="Offensive Player" visibility="public">
+    <generalization xmi:id="_kck6wRX1EeSMsbiDJEuU3Q" general="_kck6yRX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oRX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6whX1EeSMsbiDJEuU3Q" name="Offensive Strategy" visibility="public">
+    <generalization xmi:id="_kck6wxX1EeSMsbiDJEuU3Q" general="_kck61RX1EeSMsbiDJEuU3Q" generalizationSet="_kct7ohX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6xBX1EeSMsbiDJEuU3Q" name="Penalty Kick Position" visibility="public">
+    <generalization xmi:id="_kck6xRX1EeSMsbiDJEuU3Q" general="_kck64BX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oBX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6xhX1EeSMsbiDJEuU3Q" name="Penalty Period" visibility="public">
+    <generalization xmi:id="_kck6xxX1EeSMsbiDJEuU3Q" general="_kck63RX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oxX1EeSMsbiDJEuU3Q"/>
+    <generalization xmi:id="_kck6yBX1EeSMsbiDJEuU3Q" general="_kck6oRX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_kck6yRX1EeSMsbiDJEuU3Q" name="Player" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6yhX1EeSMsbiDJEuU3Q" name="Player at Play" visibility="public">
+    <generalization xmi:id="_kck6yxX1EeSMsbiDJEuU3Q" general="_kck6yRX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck6zBX1EeSMsbiDJEuU3Q" name="Pretime-game" visibility="public">
+    <generalization xmi:id="_kck6zRX1EeSMsbiDJEuU3Q" general="_kck6oRX1EeSMsbiDJEuU3Q"/>
+    <generalization xmi:id="_kck6zhX1EeSMsbiDJEuU3Q" general="_kck63RX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oxX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck6zxX1EeSMsbiDJEuU3Q" name="Right Attacker" visibility="public">
+    <generalization xmi:id="_kck60BX1EeSMsbiDJEuU3Q" general="_kck6wBX1EeSMsbiDJEuU3Q" generalizationSet="_kct7pRX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck60RX1EeSMsbiDJEuU3Q" name="Second Half" visibility="public">
+    <generalization xmi:id="_kck60hX1EeSMsbiDJEuU3Q" general="_kck63RX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oxX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck60xX1EeSMsbiDJEuU3Q" name="Shooter" visibility="public">
+    <generalization xmi:id="_kck61BX1EeSMsbiDJEuU3Q" general="_kck6wBX1EeSMsbiDJEuU3Q" generalizationSet="_kct7pRX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_kck61RX1EeSMsbiDJEuU3Q" name="Strategy" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_kck61hX1EeSMsbiDJEuU3Q" name="Team" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Relator" xmi:id="_kck61xX1EeSMsbiDJEuU3Q" name="Team Strategy" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck62BX1EeSMsbiDJEuU3Q" name="Team at Play" visibility="public">
+    <generalization xmi:id="_kck62RX1EeSMsbiDJEuU3Q" general="_kck61hX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:SubKind" xmi:id="_kck62hX1EeSMsbiDJEuU3Q" name="Time Lost" visibility="public">
+    <generalization xmi:id="_kck62xX1EeSMsbiDJEuU3Q" general="_kck6oRX1EeSMsbiDJEuU3Q"/>
+    <generalization xmi:id="_kck63BX1EeSMsbiDJEuU3Q" general="_kck63RX1EeSMsbiDJEuU3Q" generalizationSet="_kct7oxX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_kck63RX1EeSMsbiDJEuU3Q" name="Time Period" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck63hX1EeSMsbiDJEuU3Q" name="Visitor Team" visibility="public">
+    <generalization xmi:id="_kck63xX1EeSMsbiDJEuU3Q" general="_kck62BX1EeSMsbiDJEuU3Q" generalizationSet="_kct7phX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Kind" xmi:id="_kck64BX1EeSMsbiDJEuU3Q" name="Zone" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Role" xmi:id="_kck64RX1EeSMsbiDJEuU3Q" name="Zone at Ground" visibility="public">
+    <generalization xmi:id="_kck64hX1EeSMsbiDJEuU3Q" general="_kck64BX1EeSMsbiDJEuU3Q"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kck64xX1EeSMsbiDJEuU3Q" name="has" visibility="public" memberEnd="_kck65BX1EeSMsbiDJEuU3Q _kct7QhX1EeSMsbiDJEuU3Q">
+    <ownedEnd xmi:id="_kck65BX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6uhX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kck64xX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7QBX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7QRX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7QhX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6lxX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kck64xX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7QxX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7RBX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kct7RRX1EeSMsbiDJEuU3Q" name="maybe has" visibility="public" memberEnd="_kct7RhX1EeSMsbiDJEuU3Q _kct7SRX1EeSMsbiDJEuU3Q">
+    <ownedEnd xmi:id="_kct7RhX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6uhX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7RRX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7RxX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7SBX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7SRX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6oRX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7RRX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7ShX1EeSMsbiDJEuU3Q" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7SxX1EeSMsbiDJEuU3Q"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kct7TBX1EeSMsbiDJEuU3Q" name="has" visibility="public" memberEnd="_kct7TRX1EeSMsbiDJEuU3Q _kct7UBX1EeSMsbiDJEuU3Q">
+    <ownedEnd xmi:id="_kct7TRX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6uhX1EeSMsbiDJEuU3Q" association="_kct7TBX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7ThX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7TxX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7UBX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6pxX1EeSMsbiDJEuU3Q" association="_kct7TBX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7URX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7UhX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_kct7UxX1EeSMsbiDJEuU3Q" visibility="public" memberEnd="_kct7VBX1EeSMsbiDJEuU3Q _kct7VxX1EeSMsbiDJEuU3Q">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_kct7VBX1EeSMsbiDJEuU3Q" visibility="public" type="_kck6shX1EeSMsbiDJEuU3Q" aggregation="composite" association="_kct7UxX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7VRX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7VhX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7VxX1EeSMsbiDJEuU3Q" visibility="public" type="_kck64RX1EeSMsbiDJEuU3Q" association="_kct7UxX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7WBX1EeSMsbiDJEuU3Q" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7WRX1EeSMsbiDJEuU3Q" value="2"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kct7WhX1EeSMsbiDJEuU3Q" name="has" visibility="public" memberEnd="_kct7WxX1EeSMsbiDJEuU3Q _kct7XhX1EeSMsbiDJEuU3Q">
+    <ownedEnd xmi:id="_kct7WxX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6uhX1EeSMsbiDJEuU3Q" association="_kct7WhX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7XBX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7XRX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7XhX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6shX1EeSMsbiDJEuU3Q" association="_kct7WhX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7XxX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7YBX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kct7YRX1EeSMsbiDJEuU3Q" name="has" visibility="public" memberEnd="_kct7YhX1EeSMsbiDJEuU3Q _kct7ZRX1EeSMsbiDJEuU3Q">
+    <ownedEnd xmi:id="_kct7YhX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6uhX1EeSMsbiDJEuU3Q" association="_kct7YRX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7YxX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7ZBX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7ZRX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6tBX1EeSMsbiDJEuU3Q" association="_kct7YRX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7ZhX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7ZxX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kct7aBX1EeSMsbiDJEuU3Q" name="plays" visibility="public" memberEnd="_kct7aRX1EeSMsbiDJEuU3Q _kct7bBX1EeSMsbiDJEuU3Q">
+    <ownedEnd xmi:id="_kct7aRX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6uhX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7aBX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7ahX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7axX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7bBX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6uBX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7aBX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7bRX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7bhX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kct7bxX1EeSMsbiDJEuU3Q" name="plays" visibility="public" memberEnd="_kct7cBX1EeSMsbiDJEuU3Q _kct7cxX1EeSMsbiDJEuU3Q">
+    <ownedEnd xmi:id="_kct7cBX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6uhX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7bxX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7cRX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7chX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7cxX1EeSMsbiDJEuU3Q" visibility="private" type="_kck63hX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7bxX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7dBX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7dRX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kct7dhX1EeSMsbiDJEuU3Q" name="has" visibility="public" memberEnd="_kct7dxX1EeSMsbiDJEuU3Q _kct7ehX1EeSMsbiDJEuU3Q">
+    <ownedEnd xmi:id="_kct7dxX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6uhX1EeSMsbiDJEuU3Q" association="_kct7dhX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7eBX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7eRX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7ehX1EeSMsbiDJEuU3Q" visibility="private" type="_kck60RX1EeSMsbiDJEuU3Q" association="_kct7dhX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7exX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7fBX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_kct7fRX1EeSMsbiDJEuU3Q" visibility="public" memberEnd="_kct7fhX1EeSMsbiDJEuU3Q _kct7gRX1EeSMsbiDJEuU3Q">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_kct7fhX1EeSMsbiDJEuU3Q" visibility="public" type="_kck61hX1EeSMsbiDJEuU3Q" aggregation="composite" association="_kct7fRX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7fxX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7gBX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7gRX1EeSMsbiDJEuU3Q" name="player" visibility="public" type="_kck6yRX1EeSMsbiDJEuU3Q" association="_kct7fRX1EeSMsbiDJEuU3Q">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7ghX1EeSMsbiDJEuU3Q" value="5"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7gxX1EeSMsbiDJEuU3Q" value="5"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kct7hBX1EeSMsbiDJEuU3Q" name="initial position" visibility="public" memberEnd="_kct7hRX1EeSMsbiDJEuU3Q _kct7iBX1EeSMsbiDJEuU3Q">
+    <ownedEnd xmi:id="_kct7hRX1EeSMsbiDJEuU3Q" visibility="private" type="_kck61xX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7hBX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7hhX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7hxX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7iBX1EeSMsbiDJEuU3Q" visibility="private" type="_kck6yhX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7hBX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7iRX1EeSMsbiDJEuU3Q" value="5"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7ihX1EeSMsbiDJEuU3Q" value="5"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:componentOf" xmi:id="_kct7ixX1EeSMsbiDJEuU3Q" visibility="public" memberEnd="_kct7jBX1EeSMsbiDJEuU3Q _kct7jxX1EeSMsbiDJEuU3Q">
+    <name xsi:nil="true"/>
+    <ownedEnd xmi:id="_kct7jBX1EeSMsbiDJEuU3Q" visibility="public" type="_kck62BX1EeSMsbiDJEuU3Q" aggregation="composite" association="_kct7ixX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7jRX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7jhX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7jxX1EeSMsbiDJEuU3Q" visibility="public" type="_kck6yhX1EeSMsbiDJEuU3Q" association="_kct7ixX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7kBX1EeSMsbiDJEuU3Q" value="5"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7kRX1EeSMsbiDJEuU3Q" value="5"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kct7khX1EeSMsbiDJEuU3Q" name="follows" visibility="public" memberEnd="_kct7kxX1EeSMsbiDJEuU3Q _kct7lhX1EeSMsbiDJEuU3Q">
+    <ownedEnd xmi:id="_kct7kxX1EeSMsbiDJEuU3Q" visibility="private" type="_kck61xX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7khX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7lBX1EeSMsbiDJEuU3Q" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7lRX1EeSMsbiDJEuU3Q"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7lhX1EeSMsbiDJEuU3Q" visibility="private" type="_kck61RX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7khX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7lxX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7mBX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="_kct7mRX1EeSMsbiDJEuU3Q" name="adopt" visibility="public" memberEnd="_kct7mhX1EeSMsbiDJEuU3Q _kct7nRX1EeSMsbiDJEuU3Q">
+    <ownedEnd xmi:id="_kct7mhX1EeSMsbiDJEuU3Q" visibility="private" type="_kck61xX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7mRX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7mxX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7nBX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_kct7nRX1EeSMsbiDJEuU3Q" visibility="private" type="_kck62BX1EeSMsbiDJEuU3Q" isReadOnly="true" association="_kct7mRX1EeSMsbiDJEuU3Q">
+      <name xsi:nil="true"/>
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="_kct7nhX1EeSMsbiDJEuU3Q" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="_kct7nxX1EeSMsbiDJEuU3Q" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kct7oBX1EeSMsbiDJEuU3Q" name="gs-zonetype" visibility="public" isCovering="true" isDisjoint="true" generalization="_kck6mhX1EeSMsbiDJEuU3Q _kck6nBX1EeSMsbiDJEuU3Q _kck6qhX1EeSMsbiDJEuU3Q _kck6rBX1EeSMsbiDJEuU3Q _kck6rhX1EeSMsbiDJEuU3Q _kck6xRX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kct7oRX1EeSMsbiDJEuU3Q" name="gs-playerPosition" visibility="public" isCovering="true" isDisjoint="true" generalization="_kck6nhX1EeSMsbiDJEuU3Q _kck6sBX1EeSMsbiDJEuU3Q _kck6wRX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kct7ohX1EeSMsbiDJEuU3Q" name="gs-strategy" visibility="public" isCovering="true" isDisjoint="true" generalization="_kck6oBX1EeSMsbiDJEuU3Q _kck6wxX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kct7oxX1EeSMsbiDJEuU3Q" name="gs-TimePeriod" visibility="public" isCovering="true" isDisjoint="true" generalization="_kck6oxX1EeSMsbiDJEuU3Q _kck6qBX1EeSMsbiDJEuU3Q _kck6tRX1EeSMsbiDJEuU3Q _kck6xxX1EeSMsbiDJEuU3Q _kck6zhX1EeSMsbiDJEuU3Q _kck60hX1EeSMsbiDJEuU3Q _kck63BX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kct7pBX1EeSMsbiDJEuU3Q" name="gs-defensive" visibility="public" isCovering="true" isDisjoint="true" generalization="_kck6phX1EeSMsbiDJEuU3Q _kck6vRX1EeSMsbiDJEuU3Q _kck6vxX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kct7pRX1EeSMsbiDJEuU3Q" name="gs-offensive" visibility="public" isCovering="true" isDisjoint="true" generalization="_kck6txX1EeSMsbiDJEuU3Q _kck6vBX1EeSMsbiDJEuU3Q _kck60BX1EeSMsbiDJEuU3Q _kck61BX1EeSMsbiDJEuU3Q"/>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" xmi:id="_kct7phX1EeSMsbiDJEuU3Q" name="gs-teamAtPlay" visibility="public" isCovering="true" isDisjoint="true" generalization="_kck6uRX1EeSMsbiDJEuU3Q _kck63xX1EeSMsbiDJEuU3Q"/>
+</RefOntoUML:Package>
