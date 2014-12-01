@@ -16,7 +16,7 @@ import br.ufes.inf.nemo.ontouml2alloy.scenarios.QuantifiedScenario;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.WorldQuantification;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.WorldQuantificationType;
 
-public class QuantificationPanel extends JPanel {
+public class WorldQuantificationPanel extends JPanel {
 
 	private static final long serialVersionUID = 7601319868493305715L;
 
@@ -25,7 +25,7 @@ public class QuantificationPanel extends JPanel {
 	private JSpinner spinner;
 	private JLabel nLabel;
 
-	public QuantificationPanel() {
+	public WorldQuantificationPanel() {
 		contextLabel = new JLabel("Context:");
 		
 		combo = new JComboBox<WorldQuantificationType>();
@@ -116,7 +116,24 @@ public class QuantificationPanel extends JPanel {
 	}
 	
 	public boolean canSave(){
-		return (combo.getSelectedIndex()==-1 && spinner.getValue()!=null);
+		WorldQuantificationType wqt = (WorldQuantificationType) combo.getSelectedItem();
+		
+		if(wqt==null)
+			return false;
+				
+		switch (wqt) {
+		case EVERY:
+		case NO:
+		case SOME:
+		case STORY:
+			return true;
+		case EXACTLY:
+		case ATLEAST:
+		case ATMOST:
+			return spinner.getValue()!=null;
+		}
+		
+		return false;
 	}
 
 }

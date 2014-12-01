@@ -5,19 +5,21 @@ import java.util.Iterator;
 
 public class CustomQuantification {
 	
-	enum Mode {ALL, NO, SOME, ONE, COMPARISON};
-	
-	private Mode mode;
+	private CustomQuantificationType type;
 	private ArrayList<QuantificationData> qd;
 	
-	private Comparator comp;
-	private int n;
+	private BinaryOperator op;
+	private int value;
 	private boolean isDisj;
 	
 	public CustomQuantification() {
 		qd = new ArrayList<QuantificationData>();
 		isDisj = false;
-		n = 1;
+		value = 1;
+	}
+	
+	public CustomQuantificationType getType() {
+		return type;
 	}
 	
 	public boolean isDisj() {
@@ -29,45 +31,49 @@ public class CustomQuantification {
 	}
 
 	public void setAsAll() {
-		mode=Mode.ALL;
+		type=CustomQuantificationType.ALL;
 	}
 	
 	public void setAsNo() {
-		mode=Mode.NO;
+		type=CustomQuantificationType.NO;
 	}
 	
 	public void setAsSome() {
-		mode=Mode.SOME;
+		type=CustomQuantificationType.SOME;
 	}
 	
-	public void setAsComparison(Comparator comp, int n){
-		mode=Mode.COMPARISON;
-		this.n = n;
-		this.comp = comp;
+	public void setAsComparison(BinaryOperator op, int n){
+		type=CustomQuantificationType.COMPARISON;
+		this.value = n;
+		this.op = op;
+	}
+	
+	public BinaryOperator getOperator(){
+		return op;
 	}
 	
 	public void setAsOne(){
-		mode=Mode.ONE;
+		type=CustomQuantificationType.ONE;
 	}
 	
 	public boolean isAll() {
-		return mode==Mode.ALL;
+		return type==CustomQuantificationType.ALL;
 	}
 	
 	public boolean isNo() {
-		return mode==Mode.NO;
+		return type==CustomQuantificationType.NO;
 	}
 	
 	public boolean isSome() {
-		return mode==Mode.SOME;
+		return type==CustomQuantificationType.SOME;
 	}
 	
 	public boolean isComparison(){
-		return mode==Mode.COMPARISON;
+		return type==CustomQuantificationType.COMPARISON;
 	}
 	
 	public boolean isOne(){
-		return mode==Mode.ONE;
+		return type==CustomQuantificationType.ONE;
 	}
 
 	public String addQuantification(String expression){
@@ -76,19 +82,19 @@ public class CustomQuantification {
 		if(isDisj)
 			pre="disj ";
 		
-		if (mode==Mode.ALL)
+		if (type==CustomQuantificationType.ALL)
 			return "all "+pre+getAllDeclarations()+" | "+expression;
-		if (mode==Mode.NO)
+		if (type==CustomQuantificationType.NO)
 			return "no "+pre+getAllDeclarations()+" | "+expression;
-		if (mode==Mode.ONE)
+		if (type==CustomQuantificationType.ONE)
 			return "one "+pre+getAllDeclarations()+" | "+expression;
-		if (mode==Mode.SOME)
+		if (type==CustomQuantificationType.SOME)
 			return "some "+pre+getAllDeclarations()+" | "+expression;
 		
-		if (mode==Mode.COMPARISON){
+		if (type==CustomQuantificationType.COMPARISON){
 			String s = "#{ "+pre+getAllDeclarations()+" | "+expression+"}";
 			
-			return comp.getExpression(s, Integer.toString(n));
+			return op.getExpression(s, Integer.toString(value));
 		}
 
 		return "";
@@ -125,5 +131,11 @@ public class CustomQuantification {
 		cq.addQuantificationData("w", "World", numberOfVariables);
 		return cq;
 	}
+	
+	public int getValue(){
+		return value;
+	}
+
+	
 	
 }

@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import java.awt.SystemColor;
 import javax.swing.JTabbedPane;
 
+import br.ufes.inf.nemo.ontouml2alloy.scenarios.ui.InstantiationPanel;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.ui.StoryPanel;
 
 public class SimulationFrame extends JFrame {

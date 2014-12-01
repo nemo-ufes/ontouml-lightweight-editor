@@ -27,7 +27,7 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 	
 	private SegmentPanel segmentPanel1;
 	private SegmentPanel segmentPanel2;
-	private QuantificationPanel quantificationPanel;
+	private WorldQuantificationPanel quantificationPanel;
 
 	
 	/**
@@ -49,7 +49,7 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 		operatorCombo = new JComboBox<Object>();
 		segmentPanel1 = new SegmentPanel(parser);
 		segmentPanel2 = new SegmentPanel(parser);
-		quantificationPanel = new QuantificationPanel();
+		quantificationPanel = new WorldQuantificationPanel();
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -62,12 +62,12 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(comparisonLabel)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(comparisonTypeCombo, 0, 179, Short.MAX_VALUE)
+							.addComponent(comparisonTypeCombo, 0, 181, Short.MAX_VALUE)
 							.addGap(18)
 							.addComponent(operatorLabel)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(operatorCombo, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
-						.addComponent(segmentPanel2, GroupLayout.PREFERRED_SIZE, 476, GroupLayout.PREFERRED_SIZE))
+						.addComponent(segmentPanel2, GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -85,7 +85,7 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 						.addComponent(operatorLabel))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(quantificationPanel, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap(20, Short.MAX_VALUE))
 		);
 		
 				

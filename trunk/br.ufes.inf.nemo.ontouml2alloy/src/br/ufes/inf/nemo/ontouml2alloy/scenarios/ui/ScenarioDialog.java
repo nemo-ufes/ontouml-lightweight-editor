@@ -33,11 +33,12 @@ import javax.swing.event.ListSelectionListener;
 
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.AntiRigidityScenario;
-import br.ufes.inf.nemo.ontouml2alloy.scenarios.AssociationDepth;
+import br.ufes.inf.nemo.ontouml2alloy.scenarios.AssociationDepthScenario;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.AssociationMultiplicityScenario;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.AssociationVariabilityScenario;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.ComparisonScenario;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.InstantiationScenario;
+import br.ufes.inf.nemo.ontouml2alloy.scenarios.ParagraphType;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.Scenario;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.SegmentSizeScenario;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.SegmentVariabilityScenario;
@@ -55,10 +56,10 @@ public class ScenarioDialog extends JDialog {
 	
 	private final JPanel contentPanel = new JPanel();
 	private StoryPanel storyCard;
-	private AntiRigidityPanel antiCard;
+	private AntiRigidityPanel antiRigidCard;
 	
 	private JComboBox<String> scenarioCombo;
-	private JComboBox<String> modeCombo;
+	private JComboBox<ParagraphType> modeCombo;
 	private JButton newButton;
 	private JButton delButton;
 	private JButton saveButton;
@@ -94,18 +95,21 @@ public class ScenarioDialog extends JDialog {
 			}
 			
 			setDefaultUI();
+			scenarioList.clearSelection();
 		}
 	};
 	
 	private ActionListener newAction = new ActionListener() { 
 		public void actionPerformed(ActionEvent e) {
 			setDefaultUI();
+			scenarioList.clearSelection();
 	    }
 	};
 	
 	private ActionListener cancelAction = new ActionListener() { 
 		public void actionPerformed(ActionEvent e) {
 			setDefaultUI();
+			scenarioList.clearSelection();
 	    }
 	};
 	
@@ -113,10 +117,19 @@ public class ScenarioDialog extends JDialog {
 		
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
+			int selectedIndex = scenarioList.getSelectedIndex();
+			
+			if(selectedIndex==-1){
+				setDefaultUI();
+				return;
+			}
+				
 			cancelEditionButton.setEnabled(true);
 			delButton.setEnabled(true);
 			saveButton.setEnabled(true);
-			Scenario sc = scenarioList.getModel().getElementAt(scenarioList.getSelectedIndex());
+			
+			Scenario sc = scenarioList.getModel().getElementAt(selectedIndex);
+			modeCombo.setSelectedItem(sc.getParagraphType());
 			CardLayout cl = (CardLayout)(cards.getLayout());
 			
 			if(sc instanceof StoryScenario){
@@ -151,7 +164,7 @@ public class ScenarioDialog extends JDialog {
 				cl.show(cards, ASSVAR);
 				scenarioCombo.setSelectedItem(ASSVAR);
 			}
-			else if(sc instanceof AssociationDepth){
+			else if(sc instanceof AssociationDepthScenario){
 				cl.show(cards, DEPTH);
 				scenarioCombo.setSelectedItem(DEPTH);
 			}
@@ -180,12 +193,15 @@ public class ScenarioDialog extends JDialog {
 	    		DefaultListModel<Scenario> model = (DefaultListModel<Scenario>) scenarioList.getModel();
 		    	
 	    		Scenario sc = sp.saveScenario();
-	    		    		
+	    		sc.setParagraphType((ParagraphType) modeCombo.getSelectedItem());
+	    		
 	    		if(!model.contains(sc))
 		    		model.addElement(sc);
 	  		}
 	  		
 	  		setDefaultUI();
+	  		
+	  		scenarioList.clearSelection();
 	      }
 	};
 	
@@ -216,6 +232,14 @@ public class ScenarioDialog extends JDialog {
 	private SegmentSizePanel segmentSizeCard;
 
 	private SegmentVariabilityPanel segmentVariabilityCard;
+
+	private InstantiationPanel instantiationCard;
+
+	private AssociationMultiplicityPanel associationMultiplicityCard;
+
+	private AssociationVariabilityPanel associationVariabilityCard;
+
+	private AssociationDepthPanel depthCard;
 
 	private JPanel getCurrentPanel() {
 		
@@ -283,8 +307,8 @@ public class ScenarioDialog extends JDialog {
 		
 		JLabel lblAddAs = new JLabel("Add as:");
 		
-		modeCombo = new JComboBox<String>();
-		modeCombo.setModel(new DefaultComboBoxModel<String>(new String[] {"a necessary truth (Fact)", "a constraint you want to check/explore"}));
+		modeCombo = new JComboBox<ParagraphType>();
+		modeCombo.setModel(new DefaultComboBoxModel<ParagraphType>(ParagraphType.values()));
 		modeCombo.addActionListener(modeComboListener);
 		
 		 //Create the "cards".
@@ -292,11 +316,11 @@ public class ScenarioDialog extends JDialog {
         segmentSizeCard = new SegmentSizePanel(parser);
         segmentVariabilityCard = new SegmentVariabilityPanel(parser);
         comparisonCard = new ComparisonPanel(parser);
-        JPanel empty4 = new JPanel();
-        antiCard = new AntiRigidityPanel(parser);
-        JPanel empty6 = new JPanel();
-        JPanel empty7 = new JPanel();
-        JPanel empty8 = new JPanel();
+        instantiationCard = new InstantiationPanel(parser);
+        antiRigidCard = new AntiRigidityPanel(parser);
+        associationMultiplicityCard = new AssociationMultiplicityPanel(parser);
+        associationVariabilityCard = new AssociationVariabilityPanel(parser);
+        depthCard = new AssociationDepthPanel(parser);
         JPanel empty = new JPanel();
 		
         //Create the panel that contains the "cards".
@@ -307,11 +331,11 @@ public class ScenarioDialog extends JDialog {
 		cards.add(segmentSizeCard, SIZE);
 		cards.add(segmentVariabilityCard,SEGVAR);
 		cards.add(comparisonCard, COMP);
-		cards.add(empty4, INST);
-		cards.add(antiCard, ANTI);
-		cards.add(empty6, MULT);
-		cards.add(empty7, ASSVAR);
-		cards.add(empty8, DEPTH);
+		cards.add(instantiationCard, INST);
+		cards.add(antiRigidCard, ANTI);
+		cards.add(associationMultiplicityCard, MULT);
+		cards.add(associationVariabilityCard, ASSVAR);
+		cards.add(depthCard, DEPTH);
 		
 		
 		

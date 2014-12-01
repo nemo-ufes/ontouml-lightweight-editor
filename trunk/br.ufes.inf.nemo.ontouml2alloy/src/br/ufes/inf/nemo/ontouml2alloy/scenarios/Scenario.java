@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
 public abstract class Scenario {
 	
-	enum ParagraphType {PRED, ASSERT, FACT}
 	private ParagraphType paragraphType;
 	
 	public abstract String getString();
@@ -11,6 +10,10 @@ public abstract class Scenario {
 	
 	public ParagraphType getParagraphType(){
 		return paragraphType;
+	}
+	
+	public void setParagraphType(ParagraphType paragraphType) {
+		this.paragraphType = paragraphType;
 	}
 	
 	public boolean isPredicate(){
@@ -71,5 +74,6 @@ public abstract class Scenario {
 				"\n\t"+getAlloy()+
 				"\n}";
 	}
+	
 		
 }

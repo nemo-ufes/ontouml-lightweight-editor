@@ -17,11 +17,11 @@ public abstract class AssociationScenario extends ContentScenario {
 		
 	}
 
-	public Association getA() {
+	public Association getAssociation() {
 		return a;
 	}
 
-	public void setA(Association a) {
+	public void setAssociation(Association a) {
 		this.a = a;
 	}
 
@@ -33,15 +33,19 @@ public abstract class AssociationScenario extends ContentScenario {
 		return reverse;
 	}
 
-	
-	
 	public String getEnd() {
+		
+		if(a==null)
+			return "";
+		
 		if(reverse)
 			return parser.getAlias(a.getMemberEnd().get(0));
 		return parser.getAlias(a.getMemberEnd().get(1));
 	}
 
 	public String getDomain() {
+		if(a==null)
+			return "";
 		
 		if(reverse)
 			return parser.getAlias(a.getMemberEnd().get(1).getType()); 

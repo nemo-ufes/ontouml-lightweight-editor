@@ -38,12 +38,9 @@ public class OntoUMLElementCombo extends JComboBox<OntoUMLElement>{
 		this.metaClass = metaClass;
 	}
 	
-	public static OntoUMLElementCombo createAntiRigidCombo(OntoUMLParser parser){
-		OntoUMLElementCombo combo = new OntoUMLElementCombo(parser);
+	public void setAsAntiRigidCombo(){
 		OntoUMLElement[] array = convertSetToArray(parser.getAntiRigidClasses());
-		combo.setModel(new DefaultComboBoxModel<OntoUMLElement>(array));
-		
-		return combo;
+		setModel(new DefaultComboBoxModel<OntoUMLElement>(array));
 	} 
 	
 	public EObject getElement(){
@@ -83,6 +80,10 @@ public class OntoUMLElementCombo extends JComboBox<OntoUMLElement>{
 		}
 		
 		return list.toArray(new OntoUMLElement[1]);
+	}
+
+	public void setObjects(Set<EObject> items) {
+		setModel(new DefaultComboBoxModel<OntoUMLElement>(convertSetToArray(items)));	
 	}
 	
 	

@@ -20,7 +20,7 @@ public class SegmentSizePanel extends ScenarioPanel<SegmentSizeScenario> {
 	private JSpinner maximumSpinner;
 	
 	private SegmentPanel segmentPanel;
-	private QuantificationPanel quantificationpanel;
+	private WorldQuantificationPanel quantificationpanel;
 
 	/**
 	 * @wbp.parser.constructor
@@ -41,7 +41,7 @@ public class SegmentSizePanel extends ScenarioPanel<SegmentSizeScenario> {
 		
 		segmentPanel = new SegmentPanel(parser);
 		
-		quantificationpanel = new QuantificationPanel();
+		quantificationpanel = new WorldQuantificationPanel();
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
