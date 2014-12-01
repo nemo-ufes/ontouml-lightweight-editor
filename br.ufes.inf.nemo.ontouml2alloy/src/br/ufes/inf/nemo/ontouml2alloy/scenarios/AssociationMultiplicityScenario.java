@@ -8,7 +8,7 @@ public class AssociationMultiplicityScenario extends AssociationScenario {
 	private CustomQuantification worldQ, classQ;
 	
 	private int value;
-	private Comparator comp;
+	private BinaryOperator op;
 	
 	public AssociationMultiplicityScenario (OntoUMLParser parser, Association a, boolean isReversed){
 		super(parser, a, isReversed);
@@ -19,26 +19,34 @@ public class AssociationMultiplicityScenario extends AssociationScenario {
 		classQ.addQuantificationData("x", "w."+getDomain(), 1);
 	}
 	
+	public AssociationMultiplicityScenario(OntoUMLParser parser) {
+		this(parser, null, false);
+	}
+
 	public int getValue() {
 		return value;
 	}
 
 	public void setValue(int value) {
-		
+		this.value = value;
 	}
 
-	public Comparator getComp() {
-		return comp;
+	public BinaryOperator getOperator() {
+		return op;
+	}
+	
+	public void setOperator(BinaryOperator op) {
+		this.op = op;
 	}
 
-	public void setData(Comparator comp, int value) {
-		this.comp = comp;
+	public void setData(BinaryOperator op, int value) {
+		this.op = op;
 		this.value = value;
 	}
 	
 	@Override
-	public void setA(Association a) {
-		super.setA(a);
+	public void setAssociation(Association a) {
+		super.setAssociation(a);
 		updateQuantificationData();
 	}
 
@@ -68,7 +76,7 @@ public class AssociationMultiplicityScenario extends AssociationScenario {
 		String leftExpr = "#"+classVariable+"."+getEnd()+"["+worldVariable+"]";
 		String rightExpr = Integer.toString(value);
 		
-		expr = comp.getExpression(leftExpr, rightExpr);
+		expr = op.getExpression(leftExpr, rightExpr);
 		expr = classQ.addQuantification(expr);
 		expr = worldQ.addQuantification(expr);
 		

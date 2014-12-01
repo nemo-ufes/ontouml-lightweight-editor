@@ -3,15 +3,15 @@ package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 import RefOntoUML.Association;
 import RefOntoUML.parser.OntoUMLParser;
 
-public class AssociationDepth extends AssociationScenario {
+public class AssociationDepthScenario extends AssociationScenario {
 
-	enum Limit {UPPER, LOWER}
-	private Limit limit;
+	public enum BoundType {Upper, Lower}
+	private BoundType bound;
 	
 	private int depth;
 	private CustomQuantification worldQ, classQ;
 	
-	public AssociationDepth (OntoUMLParser parser, Association a){
+	public AssociationDepthScenario (OntoUMLParser parser, Association a){
 		super(parser,a,false);
 		
 		worldQ = CustomQuantification.createWorldQuantification(1);
@@ -22,6 +22,10 @@ public class AssociationDepth extends AssociationScenario {
 	
 	}
 	
+	public AssociationDepthScenario(OntoUMLParser parser) {
+		this(parser, null);
+	}
+
 	@Override 
 	public String getDomain(){
 		return "w."+super.getDomain();
@@ -31,39 +35,47 @@ public class AssociationDepth extends AssociationScenario {
 		return depth;
 	}
 	
+	public BoundType getBound(){
+		return bound;
+	}
+	
+	public void setBound(BoundType bound){
+		this.bound = bound;
+	}
+	
 	public void setDepth(int depth){
 		this.depth = depth;
 		updateQuantificationData();
 	}
 	
 	public boolean isLowerBound(){
-		return limit==Limit.LOWER;
+		return bound==BoundType.Lower;
 	}
 	
 	public boolean isUpperBound(){
-		return limit==Limit.UPPER;
+		return bound==BoundType.Upper;
 	}
 	
 	public void setAsLowerBound(int depth){
-		limit = Limit.LOWER;
+		bound = BoundType.Lower;
 		this.depth = depth;
 		updateQuantificationData();
 	}
 	
 	public void setAsUpperBound(int depth){
-		limit = Limit.UPPER;
+		bound = BoundType.Upper;
 		this.depth = depth;
 		updateQuantificationData();
 	}
 	
 	public int getLimit(){
-		if(limit==Limit.UPPER)
+		if(bound==BoundType.Upper)
 			return depth+1;
 		return depth;
 	}
 
-	public void setA(Association a) {
-		super.setA(a);
+	public void setAssociation(Association a) {
+		super.setAssociation(a);
 		updateQuantificationData();
 	}
 

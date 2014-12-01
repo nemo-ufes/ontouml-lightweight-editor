@@ -5,27 +5,30 @@ import RefOntoUML.parser.OntoUMLParser;
 
 public class AssociationVariabilityScenario extends AssociationScenario {
 
-	enum Change {DIF, EQUAL, DISJ}
-	private Change change;
+	private AssociationVariability variability;
+	
+	public AssociationVariabilityScenario (OntoUMLParser parser){
+		super(parser, null, false);
+	}
 	
 	public AssociationVariabilityScenario (OntoUMLParser parser, Association a, boolean isReversed){
 		super(parser, a, isReversed);
 	}
 	
 	private String getSuffix() {
-		if(change==Change.DISJ)
+		if(variability==AssociationVariability.DISJ)
 			return "]";
 		return "";
 	}
 
 	private String getPrefix() {
-		if(change==Change.DISJ)
+		if(variability==AssociationVariability.DISJ)
 			return "disj[";
 		return "";
 	}
 
 	private String getOperator() {
-		switch (change) {
+		switch (variability) {
 		case DIF:
 			return "!=";
 		case DISJ:
@@ -38,27 +41,27 @@ public class AssociationVariabilityScenario extends AssociationScenario {
 	}
 
 	public void setIsChangeable(){
-		change=Change.DIF;
+		variability=AssociationVariability.DIF;
 	}
 	
 	public void setIsConstant(){
-		change=Change.EQUAL;
+		variability=AssociationVariability.EQUAL;
 	}
 	
 	public void setIsDisjoint(){
-		change=Change.DISJ;
+		variability=AssociationVariability.DISJ;
 	}
 	
 	public boolean isChangeable(){
-		return change==Change.DIF;
+		return variability==AssociationVariability.DIF;
 	}
 	
 	public boolean isConstant(){
-		return change==Change.EQUAL;
+		return variability==AssociationVariability.EQUAL;
 	}
 	
 	public boolean isDisjoint(){
-		return change==Change.DISJ;
+		return variability==AssociationVariability.DISJ;
 	}
 	
 	@Override
@@ -81,6 +84,14 @@ public class AssociationVariabilityScenario extends AssociationScenario {
 	@Override
 	public String getScenarioName() {
 		return "AssociationVariability";
+	}
+
+	public AssociationVariability getVariability() {
+		return variability;
+	}
+	
+	public void setVariability(AssociationVariability variability){
+		this.variability = variability;
 	}
 	
 	
