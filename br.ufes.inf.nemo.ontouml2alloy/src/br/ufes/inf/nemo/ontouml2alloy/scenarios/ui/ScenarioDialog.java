@@ -213,6 +213,10 @@ public class ScenarioDialog extends JDialog {
 
 	private JButton cancelEditionButton;
 
+	private SegmentSizePanel segmentSizeCard;
+
+	private SegmentVariabilityPanel segmentVariabilityCard;
+
 	private JPanel getCurrentPanel() {
 		
 		for (Component comp : cards.getComponents()) {
@@ -285,23 +289,23 @@ public class ScenarioDialog extends JDialog {
 		
 		 //Create the "cards".
         storyCard = new StoryPanel(null);
-        JPanel empty = new JPanel();
+        segmentSizeCard = new SegmentSizePanel(parser);
+        segmentVariabilityCard = new SegmentVariabilityPanel(parser);
         comparisonCard = new ComparisonPanel(parser);
-        JPanel empty3 = new JPanel();
         JPanel empty4 = new JPanel();
         antiCard = new AntiRigidityPanel(parser);
         JPanel empty6 = new JPanel();
         JPanel empty7 = new JPanel();
         JPanel empty8 = new JPanel();
-        JPanel empty9 = new JPanel();
+        JPanel empty = new JPanel();
 		
         //Create the panel that contains the "cards".
 		cards = new JPanel(new CardLayout());
 		cards.setBorder(new TitledBorder(null, "Constraint Data", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		cards.add(empty9, EMPTY);
+		cards.add(empty, EMPTY);
 		cards.add(storyCard, STORY);
-		cards.add(empty, SIZE);
-		cards.add(empty3,SEGVAR);
+		cards.add(segmentSizeCard, SIZE);
+		cards.add(segmentVariabilityCard,SEGVAR);
 		cards.add(comparisonCard, COMP);
 		cards.add(empty4, INST);
 		cards.add(antiCard, ANTI);

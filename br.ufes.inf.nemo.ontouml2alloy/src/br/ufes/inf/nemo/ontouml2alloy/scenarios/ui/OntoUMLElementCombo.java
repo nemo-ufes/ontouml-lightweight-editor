@@ -47,7 +47,12 @@ public class OntoUMLElementCombo extends JComboBox<OntoUMLElement>{
 	} 
 	
 	public EObject getElement(){
-		return ((OntoUMLElement)this.getSelectedItem()).element;
+		Object o = this.getSelectedItem();
+		
+		if(o instanceof OntoUMLElement)
+			return ((OntoUMLElement)o).element;
+		
+		return null;
 	}
 	
 	public void assignElement(EObject element){

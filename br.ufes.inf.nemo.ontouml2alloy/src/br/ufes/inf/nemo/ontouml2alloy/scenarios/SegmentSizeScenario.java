@@ -4,19 +4,49 @@ import RefOntoUML.parser.OntoUMLParser;
 
 public class SegmentSizeScenario extends QuantifiedScenario {
 	
-	Segment seg;
+	private Segment segment;
 	
 	//minimum or maximal number of individuals in the selected segment
-	int minimum, maximum;
+	private int minimum, maximum;
+	
+	public SegmentSizeScenario(OntoUMLParser parser){
+		this(parser, new Segment(parser), new WorldQuantification(), 0, 1);
+	}
 	
 	public SegmentSizeScenario(OntoUMLParser parser, Segment seg, WorldQuantification q, int minimum, int maximum) {
 		super(parser, q);
-		this.seg = seg;
+		this.segment = seg;
 		
 		this.minimum = minimum;
 		this.maximum = maximum;
 	}
 	
+	
+	
+	public Segment getSegment() {
+		return segment;
+	}
+
+	public void setSegment(Segment seg) {
+		this.segment = seg;
+	}
+
+	public int getMinimum() {
+		return minimum;
+	}
+
+	public void setMinimum(int minimum) {
+		this.minimum = minimum;
+	}
+
+	public int getMaximum() {
+		return maximum;
+	}
+
+	public void setMaximum(int maximum) {
+		this.maximum = maximum;
+	}
+
 	@Override
 	public String getString() {
 		// TODO Auto-generated method stub
@@ -28,7 +58,7 @@ public class SegmentSizeScenario extends QuantifiedScenario {
 		if(minimum<=0 && maximum<0)
 			return "";
 		
-		String cardinality = "#"+q.getWorldVariable()+"."+seg.getName();
+		String cardinality = "#"+q.getWorldVariable()+"."+segment.getName();
 		String expr = "";
 		
 		if(minimum>0){
