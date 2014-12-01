@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -17,17 +16,14 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.util.EcoreUtil.ExternalCrossReferencer;
-
 import stories.Link;
 import stories.Node;
 import stories.StoriesFactory;
 import stories.StoriesPackage;
 import stories.Story;
 import stories.Story_element;
-import stories.World;
 
 /**
  * <!-- begin-user-doc -->
@@ -301,7 +297,7 @@ public class StoryImpl extends MinimalEObjectImpl.Container implements Story {
 		for(Story_element se:merged.getElements()){
 			System.out.println(se.getLabel());
 		}
-		System.out.println("return");
+		
 		return merged;
 	}
 } //StoryImpl

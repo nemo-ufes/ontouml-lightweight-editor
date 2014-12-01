@@ -2,8 +2,8 @@
  */
 package stories.impl;
 
+import RefOntoUML.Class;
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -12,8 +12,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
-import RefOntoUML.Class;
 import stories.Action;
 import stories.Node;
 import stories.Node_state;
@@ -73,7 +71,7 @@ public class NodeImpl extends IndividualImpl implements Node {
 	 * @generated
 	 */
 	protected NodeImpl() {
-		super();		
+		super();
 	}
 	
 	@Override

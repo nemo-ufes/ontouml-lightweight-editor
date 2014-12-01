@@ -450,13 +450,31 @@ public interface StoriesPackage extends EPackage {
 	int WORLD__BROUGHT_ABOUT_BY = STORY_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Next</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORLD__NEXT = STORY_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Prev</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int WORLD__PREV = STORY_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>World</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int WORLD_FEATURE_COUNT = STORY_ELEMENT_FEATURE_COUNT + 2;
+	int WORLD_FEATURE_COUNT = STORY_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>World</em>' class.
@@ -1048,6 +1066,28 @@ public interface StoriesPackage extends EPackage {
 	EReference getWorld_Brought_about_by();
 
 	/**
+	 * Returns the meta object for the reference '{@link stories.World#getNext <em>Next</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Next</em>'.
+	 * @see stories.World#getNext()
+	 * @see #getWorld()
+	 * @generated
+	 */
+	EReference getWorld_Next();
+
+	/**
+	 * Returns the meta object for the reference '{@link stories.World#getPrev <em>Prev</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Prev</em>'.
+	 * @see stories.World#getPrev()
+	 * @see #getWorld()
+	 * @generated
+	 */
+	EReference getWorld_Prev();
+
+	/**
 	 * Returns the meta object for class '{@link stories.Event <em>Event</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1423,6 +1463,22 @@ public interface StoriesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference WORLD__BROUGHT_ABOUT_BY = eINSTANCE.getWorld_Brought_about_by();
+
+		/**
+		 * The meta object literal for the '<em><b>Next</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference WORLD__NEXT = eINSTANCE.getWorld_Next();
+
+		/**
+		 * The meta object literal for the '<em><b>Prev</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference WORLD__PREV = eINSTANCE.getWorld_Prev();
 
 		/**
 		 * The meta object literal for the '{@link stories.impl.EventImpl <em>Event</em>}' class.
