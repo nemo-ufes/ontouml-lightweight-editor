@@ -59,7 +59,6 @@ public abstract class Story_elementImpl extends MinimalEObjectImpl.Container imp
 	}
 
 	protected String getDefaultLabel() {
-		System.out.println("A");
 		return Story_elementImpl.LABEL_EDEFAULT;
 	}
 

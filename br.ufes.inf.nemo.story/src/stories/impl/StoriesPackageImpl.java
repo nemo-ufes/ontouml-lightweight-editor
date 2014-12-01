@@ -346,6 +346,24 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getWorld_Next() {
+		return (EReference)worldEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getWorld_Prev() {
+		return (EReference)worldEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getEvent() {
 		return eventEClass;
 	}
@@ -554,6 +572,8 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 		worldEClass = createEClass(WORLD);
 		createEReference(worldEClass, WORLD__ENABLED);
 		createEReference(worldEClass, WORLD__BROUGHT_ABOUT_BY);
+		createEReference(worldEClass, WORLD__NEXT);
+		createEReference(worldEClass, WORLD__PREV);
 
 		eventEClass = createEClass(EVENT);
 		createEReference(eventEClass, EVENT__DIRECTLY_CAUSES);
@@ -645,6 +665,8 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 		initEClass(worldEClass, World.class, "World", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getWorld_Enabled(), this.getEvent(), this.getEvent_Happened_in(), "enabled", null, 0, -1, World.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorld_Brought_about_by(), this.getEvent(), this.getEvent_Brings_about(), "brought_about_by", null, 0, -1, World.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getWorld_Next(), this.getWorld(), this.getWorld_Prev(), "next", null, 0, 1, World.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getWorld_Prev(), this.getWorld(), this.getWorld_Next(), "prev", null, 0, 1, World.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(eventEClass, Event.class, "Event", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getEvent_Directly_causes(), this.getEvent(), null, "directly_causes", null, 0, -1, Event.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
