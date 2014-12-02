@@ -47,8 +47,8 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 
 		operatorLabel = new JLabel("Op.:");
 		operatorCombo = new JComboBox<Object>();
-		segmentPanel1 = new SegmentPanel(parser);
-		segmentPanel2 = new SegmentPanel(parser);
+		segmentPanel1 = new SegmentPanel(parser,"Segment (L):", "Class (L):", "Assoc. (L):", "Meta. (L):");
+		segmentPanel2 = new SegmentPanel(parser,"Segment (R):", "Class: (R)", "Assoc. (R):", "Meta. (R):");
 		quantificationPanel = new WorldQuantificationPanel();
 		
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -74,9 +74,9 @@ public class ComparisonPanel extends ScenarioPanel<ComparisonScenario> {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(segmentPanel1, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+					.addComponent(segmentPanel1, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(segmentPanel2, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+					.addComponent(segmentPanel2, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(comparisonLabel)

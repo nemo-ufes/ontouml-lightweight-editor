@@ -15,4 +15,28 @@ public enum ParagraphType {
 	public String toString(){
 		return name;
 	}
+	
+	public String getPhrase(){
+		
+		if (this==PRED)
+			return "I want to see";
+		if (this==ASSERT)
+			return "I believe my model requires";
+		if (this==FACT)
+			return "It is always true that";//TODO: fix this phrase
+		
+		return "";
+	}
+	
+	public String getKeyword() {
+		
+		if (this==PRED)
+			return "pred";
+		if (this==ASSERT)
+			return "assert";
+		if (this==FACT)
+			return "fact";
+		
+		return "";
+	}
 }

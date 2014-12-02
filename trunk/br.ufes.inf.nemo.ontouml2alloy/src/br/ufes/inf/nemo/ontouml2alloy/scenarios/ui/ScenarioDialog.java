@@ -63,8 +63,8 @@ public class ScenarioDialog extends JDialog {
 	private JButton newButton;
 	private JButton delButton;
 	private JButton saveButton;
-	private JButton btnNewButton_4;
-	private JButton btnNewButton_3;
+	private JButton checkButton;
+	private JButton exploreButton;
 	private JButton okButton;
 	private JButton cancelButton;
 	private JList<Scenario> scenarioList;
@@ -202,6 +202,7 @@ public class ScenarioDialog extends JDialog {
 	  		setDefaultUI();
 	  		
 	  		scenarioList.clearSelection();
+	  		scenarioList.repaint();
 	      }
 	};
 	
@@ -288,7 +289,7 @@ public class ScenarioDialog extends JDialog {
 	 */
 	public ScenarioDialog(OntoUMLParser parser) {
 		setAlwaysOnTop(true);
-		setBounds(100, 100, 554, 625);
+		setBounds(100, 100, 554, 692);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -353,15 +354,15 @@ public class ScenarioDialog extends JDialog {
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(intro, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
-						.addComponent(cards, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
-						.addGroup(gl_contentPanel.createSequentialGroup()
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(cards, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+						.addComponent(intro, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+						.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
 							.addComponent(lblNewLabel_1)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE))
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
-						.addGroup(gl_contentPanel.createSequentialGroup()
+						.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+						.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(lblAddAs, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -385,13 +386,13 @@ public class ScenarioDialog extends JDialog {
 						.addComponent(lblAddAs)
 						.addComponent(modeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
-					.addComponent(cards, GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(cards, GroupLayout.PREFERRED_SIZE, 164, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 						.addComponent(lblNewLabel_1)
 						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		
@@ -424,11 +425,11 @@ public class ScenarioDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			
-			btnNewButton_4 = new JButton("Check");
-			buttonPane.add(btnNewButton_4);
+			checkButton = new JButton("Check");
+			buttonPane.add(checkButton);
 			
-			btnNewButton_3 = new JButton("Explore");
-			buttonPane.add(btnNewButton_3);
+			exploreButton = new JButton("Explore");
+			buttonPane.add(exploreButton);
 			{
 				okButton = new JButton("Open Analyzer");
 				okButton.setActionCommand("OK");

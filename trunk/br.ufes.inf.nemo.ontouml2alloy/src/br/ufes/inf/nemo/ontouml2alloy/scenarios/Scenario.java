@@ -4,7 +4,7 @@ public abstract class Scenario {
 	
 	private ParagraphType paragraphType;
 	
-	public abstract String getString();
+	public abstract String getPhrase();
 	public abstract String getAlloy();
 	public abstract String getScenarioName();
 	
@@ -40,37 +40,13 @@ public abstract class Scenario {
 		this.paragraphType = ParagraphType.ASSERT;
 	}
 	
-	public String getParagraphString(){
-		
-		if (paragraphType==ParagraphType.PRED)
-			return "Is want to see";
-		if (paragraphType==ParagraphType.ASSERT)
-			return "The model only allows";
-		if (paragraphType==ParagraphType.FACT)
-			return "I want to enforce";
-		
-		return "";
-	}
-	
-	private String getParagraphKeyword() {
-		
-		if (paragraphType==ParagraphType.PRED)
-			return "pred";
-		if (paragraphType==ParagraphType.ASSERT)
-			return "assert";
-		if (paragraphType==ParagraphType.FACT)
-			return "fact";
-		
-		return "";
-	}
-	
 	@Override
 	public String toString(){
-		return getParagraphString()+" "+getString()+".";
+		return paragraphType.getPhrase()+" "+getPhrase()+".";
 	}
 		
 	public String getParagraph(){
-		return 	getParagraphKeyword()+" "+getScenarioName()+" {"+
+		return 	paragraphType.getKeyword()+" "+getScenarioName()+" {"+
 				"\n\t"+getAlloy()+
 				"\n}";
 	}

@@ -35,4 +35,6 @@ public enum BinaryOperator {
 	public String getExpression(String leftExpression, String rightExpression){
 		return leftExpression+toString()+rightExpression;
 	}
+	
+	
 }

@@ -1,6 +1,8 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
+import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 
 public class SegmentSizeScenario extends QuantifiedScenario {
 	
@@ -20,8 +22,6 @@ public class SegmentSizeScenario extends QuantifiedScenario {
 		this.minimum = minimum;
 		this.maximum = maximum;
 	}
-	
-	
 	
 	public Segment getSegment() {
 		return segment;
@@ -48,9 +48,55 @@ public class SegmentSizeScenario extends QuantifiedScenario {
 	}
 
 	@Override
-	public String getString() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getPhrase() {
+		return "at least "+minimum+" and at most "+maximum+" "+getSegmentPhrase()+" "+getQuantificationPhrase();
+	}
+	
+	private String getSegmentPhrase(){
+		switch(segment.getType()){
+		case POPULATION:
+			return "individuals";
+		case OBJECT:
+			return "objects";
+		case PROPERTY:
+			return "tropes";
+		case CLASS:
+			return "instances of "+OntoUMLNameHelper.getTypeAndName(segment.getClassifier(), true, true);
+		case ASSOCIATION:
+			return "instances of the relation "+OntoUMLNameHelper.getTypeAndName(segment.getClassifier(), true, true);
+		case STEREOTYPE:
+			String x = "";
+			if(segment.getStereotype() instanceof ClassStereotype)
+				x = "classes";
+			else
+				x = "associations";
+			return "individuals in the union of the extensions of all "+x+" stereotyped as "+segment.getStereotype();
+		default:
+			return "UNNAMED_SEGMENT";
+		}
+	}
+	
+	private String getQuantificationPhrase(){
+		switch (q.getType()) {
+		case ATLEAST:
+			return "in at least "+q.getValue()+" world(s) of the story";
+		case ATMOST:
+			return "in at most "+q.getValue()+" world(s) of the story";
+		case EVERY:
+			return "in every world of the story";
+		case EXACTLY:
+			return "in exactly "+q.getValue()+" world(s) of the story";
+		case NO:
+			return "in no world of the story";
+		case SOME:
+			return "in some world of the story";
+		case STORY:
+			return "throughout the worlds of the story";
+		default:
+			break;
+		}
+		
+		return "";
 	}
 
 	@Override

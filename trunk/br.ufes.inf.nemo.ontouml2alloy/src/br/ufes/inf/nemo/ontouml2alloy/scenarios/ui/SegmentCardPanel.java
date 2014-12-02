@@ -42,8 +42,11 @@ public class SegmentCardPanel extends JPanel {
 	private StereotypeCombo stereotypeCombo;
 	
 	
-	
 	public SegmentCardPanel(OntoUMLParser parser) {
+		this(parser,"Class:","Assoc.:","Meta.:");
+	}
+	
+	public SegmentCardPanel(OntoUMLParser parser, String classText, String associationText, String stereotypeText) {
 
 		setLayout(new CardLayout(0, 0));
 		
@@ -51,19 +54,19 @@ public class SegmentCardPanel extends JPanel {
 		add(emptyPanel, EMPTY);
 		
 		classPanel = new JPanel();
-		classLabel = new JLabel("Class:");
+		classLabel = new JLabel(classText);
 		classCombo = new OntoUMLElementCombo(Class.class, parser);
 		
 		add(classPanel, SegmentType.CLASS.toString());
 		
 		associationPanel = new JPanel();
-		associationLabel = new JLabel("Assoc.:");
+		associationLabel = new JLabel(associationText);
 		associationCombo = new OntoUMLElementCombo(Association.class, parser);
 		
 		add(associationPanel, SegmentType.ASSOCIATION.toString());
 		
 		stereotypePanel = new JPanel();	
-		stereotypeLabel = new JLabel("Meta.:");
+		stereotypeLabel = new JLabel(stereotypeText);
 		stereotypeCombo = new StereotypeCombo();
 		
 		add(stereotypePanel, SegmentType.STEREOTYPE.toString());
