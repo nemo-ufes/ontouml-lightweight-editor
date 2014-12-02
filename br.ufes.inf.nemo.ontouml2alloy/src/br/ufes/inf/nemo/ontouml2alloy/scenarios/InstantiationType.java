@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
 public enum InstantiationType {
 	MULT, //MULT = multiple instantiation
-	FORB_MULT,
 	EXCL; //EXCL = exclusive instantiation
 
 	@Override
@@ -10,11 +9,9 @@ public enum InstantiationType {
 		
 		switch (this) {
 		case MULT:
-			return "Enforce Multiple Instantiation";
-		case FORB_MULT:
-			return "Forbid Multiple Instantiation";
+			return "Multiple Instantiation";
 		case EXCL:
-			return "Enforce Exclusive Instantiation";
+			return "Exclusive Instantiation";
 		}
 		
 		return "";

@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
 import RefOntoUML.Association;
+import RefOntoUML.Type;
 import RefOntoUML.parser.OntoUMLParser;
 
 public abstract class AssociationScenario extends ContentScenario {
@@ -50,5 +51,23 @@ public abstract class AssociationScenario extends ContentScenario {
 		if(reverse)
 			return parser.getAlias(a.getMemberEnd().get(1).getType()); 
 		return parser.getAlias(a.getMemberEnd().get(0).getType());
+	}
+	
+	public Type getSource() {
+		if(a==null)
+			return null;
+		
+		if(reverse)
+			return a.getMemberEnd().get(1).getType(); 
+		return a.getMemberEnd().get(0).getType();
+	}
+	
+	public Type getTarget() {
+		if(a==null)
+			return null;
+		
+		if(reverse)
+			return a.getMemberEnd().get(0).getType(); 
+		return a.getMemberEnd().get(1).getType();
 	}
 }

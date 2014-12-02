@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
 import RefOntoUML.Class;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 
 public class AntiRigidityScenario extends ContentScenario {
@@ -52,12 +53,14 @@ public class AntiRigidityScenario extends ContentScenario {
 		arMode = AntirigidityMode.PSEUDO;
 	}
 	
-	
-
 	@Override
 	public String getPhrase() {
-		// TODO Auto-generated method stub
-		return null;
+		if(arMode==AntirigidityMode.MANDATORY)
+			return "a story in which all objects that instantiate "+OntoUMLNameHelper.getTypeAndName(antiRigid, true, true)+" cease to do so and still exist";
+		if(arMode==AntirigidityMode.PSEUDO)
+			return "a story in which objects never cease to be an instance of "+OntoUMLNameHelper.getTypeAndName(antiRigid, true, true);
+		
+		return "";
 	}
 	
 	@Override

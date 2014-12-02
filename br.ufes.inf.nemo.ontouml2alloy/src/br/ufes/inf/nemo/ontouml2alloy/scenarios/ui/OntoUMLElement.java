@@ -24,14 +24,15 @@ public class OntoUMLElement {
 	@Override
 	public String toString() 
 	{
-		String s = OntoUMLNameHelper.getNameAndType(element, true, false);
+		if(element instanceof RefOntoUML.Class)
+			return OntoUMLNameHelper.getNameAndType(element, true, false);
 		
 		if(element instanceof Association){
 			Association a = (Association) element;
-			s+="("+OntoUMLNameHelper.getNameAndType(a.getMemberEnd().get(0))+" -> "+OntoUMLNameHelper.getNameAndType(a.getMemberEnd().get(0))+")";
+			return OntoUMLNameHelper.getName(a, true, false)+" "+OntoUMLNameHelper.getTypeName(a, true)+" ("+OntoUMLNameHelper.getName(a.getMemberEnd().get(0).getType())+" - "+OntoUMLNameHelper.getName(a.getMemberEnd().get(1).getType())+")";
 		}
 		
-		return s;
+		return OntoUMLNameHelper.getCommonName(element);
 	}
 
 	public EObject getElement() {

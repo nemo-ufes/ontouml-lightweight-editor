@@ -9,6 +9,8 @@ import javax.swing.JComboBox;
 
 import org.eclipse.emf.ecore.EObject;
 
+import RefOntoUML.Association;
+import RefOntoUML.Derivation;
 import RefOntoUML.parser.OntoUMLParser;
 
 public class OntoUMLElementCombo extends JComboBox<OntoUMLElement>{
@@ -86,7 +88,19 @@ public class OntoUMLElementCombo extends JComboBox<OntoUMLElement>{
 		setModel(new DefaultComboBoxModel<OntoUMLElement>(convertSetToArray(items)));	
 	}
 	
-	
+	public void setAsAssociationCombo(){
+		Set<? extends EObject> associations = parser.getAllInstances(Association.class);
+		Iterator<? extends EObject> iterator = associations.iterator();
+		
+		while(iterator.hasNext()){
+			EObject a = iterator.next();
+			if(a instanceof Derivation)
+				iterator.remove();
+		}
+		
+		OntoUMLElement[] array = convertSetToArray(associations);
+		setModel(new DefaultComboBoxModel<OntoUMLElement>(array));
+	}
 	
 	
 

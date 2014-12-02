@@ -1,6 +1,9 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
+import org.eclipse.emf.ecore.EObject;
+
 import RefOntoUML.Association;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 
 public class AssociationDepthScenario extends AssociationScenario {
@@ -121,10 +124,24 @@ public class AssociationDepthScenario extends AssociationScenario {
 	
 	@Override
 	public String getPhrase() {
-		// TODO Auto-generated method stub
-		return null;
+		return "a story with "+getBoundPhrase()+" instances of "+OntoUMLNameHelper.getTypeAndName(getBaseClass(), true, true)+
+				"consecutively connected through association "+OntoUMLNameHelper.getTypeAndName(getAssociation(), true, true);
 	}
 	
+	private EObject getBaseClass() {
+		return getSource();//TODO: fix if accept associations different from Self-Type Relationship
+	}
+
+	private String getBoundPhrase() {
+		
+		if(isLowerBound())
+			return "at least "+depth;
+		if(isUpperBound())
+			return "at mmost"+depth;
+		
+		return "";	
+	}
+
 	@Override
 	public String getScenarioName() {
 		return "AssociationDepth";

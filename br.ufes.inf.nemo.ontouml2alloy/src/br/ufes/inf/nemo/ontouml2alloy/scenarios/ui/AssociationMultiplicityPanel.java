@@ -20,6 +20,7 @@ import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.AssociationMultiplicityScenario;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.BinaryOperator;
 import javax.swing.JCheckBox;
+import java.awt.Component;
 
 public class AssociationMultiplicityPanel extends ScenarioPanel<AssociationMultiplicityScenario> {
 	
@@ -52,7 +53,8 @@ public class AssociationMultiplicityPanel extends ScenarioPanel<AssociationMulti
 		
 		JLabel lblStereotype = new JLabel("Association:");
 		
-		associationCombo = new OntoUMLElementCombo(Association.class, parser);
+		associationCombo = new OntoUMLElementCombo(parser);
+		associationCombo.setAsAssociationCombo();
 		associationCombo.addActionListener(associationListener);
 		
 		targetField = new JTextField();
@@ -83,26 +85,25 @@ public class AssociationMultiplicityPanel extends ScenarioPanel<AssociationMulti
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(worldQuantificationPanel, GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
-						.addComponent(classQuantificationPanel, GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+						.addComponent(worldQuantificationPanel, GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
+						.addComponent(classQuantificationPanel, GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(lblTarget, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(lblStereotype, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))
-								.addComponent(lblMultiplicity, GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(lblMultiplicity, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(lblTarget, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(lblStereotype, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(targetField, GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
-								.addComponent(sourceField, GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
-								.addComponent(associationCombo, 0, 378, Short.MAX_VALUE)
+								.addComponent(targetField, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+								.addComponent(sourceField, GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+								.addComponent(associationCombo, 0, 418, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(operatorCombo, 0, 102, Short.MAX_VALUE)
+									.addComponent(operatorCombo, 0, 144, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(lblX, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(multiplicitySpinner, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+									.addComponent(multiplicitySpinner, GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
 									.addGap(18)
 									.addComponent(reverseCheckbox)))))
 					.addContainerGap())
@@ -133,8 +134,9 @@ public class AssociationMultiplicityPanel extends ScenarioPanel<AssociationMulti
 					.addComponent(classQuantificationPanel, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(worldQuantificationPanel, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap(50, Short.MAX_VALUE))
 		);
+		groupLayout.linkSize(SwingConstants.VERTICAL, new Component[] {sourceField, associationCombo, targetField, operatorCombo, multiplicitySpinner});
 		setLayout(groupLayout);
 		
 		combos.add(associationCombo);
