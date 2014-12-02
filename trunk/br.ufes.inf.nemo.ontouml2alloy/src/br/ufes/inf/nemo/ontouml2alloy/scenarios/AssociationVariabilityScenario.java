@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
 import RefOntoUML.Association;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 
 public class AssociationVariabilityScenario extends AssociationScenario {
@@ -77,10 +78,22 @@ public class AssociationVariabilityScenario extends AssociationScenario {
 	
 	@Override
 	public String getPhrase() {
-		// TODO Auto-generated method stub
-		return null;
+		return "a story in which the instances of "+OntoUMLNameHelper.getTypeAndName(getSource(), true, true)+
+				" "+variabilityPhrase()+" instances of "+OntoUMLNameHelper.getTypeAndName(getTarget(), true, true)+
+				", through association "+OntoUMLNameHelper.getTypeAndName(getAssociation(), true, true)+", in every world";
 	}
 	
+	private String variabilityPhrase() {
+		if(variability==AssociationVariability.EQUAL)
+			return "are always connected to the same";
+		if(variability==AssociationVariability.DIF)
+			return "are never connected to the same";
+		if(variability==AssociationVariability.DISJ)
+			return "are always connected to completely different";
+		
+		return "";
+	}
+
 	@Override
 	public String getScenarioName() {
 		return "AssociationVariability";

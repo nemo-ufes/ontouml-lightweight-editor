@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ontouml2alloy.scenarios;
 
 import RefOntoUML.Association;
+import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 
 public class AssociationMultiplicityScenario extends AssociationScenario {
@@ -85,8 +86,67 @@ public class AssociationMultiplicityScenario extends AssociationScenario {
 	
 	@Override
 	public String getPhrase() {
-		// TODO Auto-generated method stub
-		return null;
+		return "a story in which "+classQuantificationPhrase()+" of "+OntoUMLNameHelper.getTypeAndName(getSource(), true, true)+
+				" is/are connected to "+getOperatorPhrase(op)+" "+value+" instances of "+OntoUMLNameHelper.getTypeAndName(getTarget(), true, true)+
+				", through association "+OntoUMLNameHelper.getTypeAndName(getAssociation(), true, true)+", in "+worldQuantificationPhrase();
+	}
+	
+	private String worldQuantificationPhrase(){
+		switch (worldQ.getType()) {
+		case COMPARISON:
+			return getOperatorPhrase(worldQ.getOperator())+" "+worldQ.getValue()+" world(s) of the story";
+		case ALL:
+			return "every world of the story";
+		case NO:
+			return "no world of the story";
+		case SOME:
+			return "some world of the story";
+		case ONE:
+			return "a single world of the story";
+		default:
+			break;
+		}
+		
+		return "";
+	}
+	
+	private String classQuantificationPhrase() {
+		switch (classQ.getType()) {
+		case COMPARISON:
+			return getOperatorPhrase(classQ.getOperator())+" "+classQ.getValue()+" instances";
+		case ALL:
+			return "all instances";
+		case NO:
+			return "no instance";
+		case SOME:
+			return "at least one instance";
+		case ONE:
+			return "exactly one instance";
+		default:
+			break;
+		}
+		
+		return "";
+	}
+
+	private String getOperatorPhrase(BinaryOperator op) {
+		switch (op) {
+		case EQUAL:
+			return "exactly";
+		case DIF:
+			return "a number different from";
+		case GREATER:
+			return "more than";
+		case GREATER_EQ:
+			return "at least";
+		case LESSER:
+			return "less than";
+		case LESSER_EQ:
+			return "at most";
+		default:
+			return "";
+		}
+			
 	}
 	
 	@Override

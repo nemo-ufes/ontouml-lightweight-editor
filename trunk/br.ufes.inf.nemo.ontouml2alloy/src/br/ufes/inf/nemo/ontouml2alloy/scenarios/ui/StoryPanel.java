@@ -27,13 +27,15 @@ public class StoryPanel extends ScenarioPanel<StoryScenario> {
 	private JComboBox<BinaryOperator> operatorCombo;
 	private JComboBox<StoryType> storyTypeCombo;
 	private JCheckBox depthCheckbox;
+	private JLabel worldLabel;
+	private JLabel structureLabel;
 	
 	/**
 	 * Create the panel.
 	 */
 	public StoryPanel(StoryScenario scenario) {
 		super(null, scenario);
-		JLabel lblNewLabel = new JLabel("Choose a story structure:");
+		structureLabel = new JLabel("Story Structure:");
 		
 		numberOfWorldsSpinner = new JSpinner(new SpinnerNumberModel(2, 1, 100, 1));
 		
@@ -48,20 +50,20 @@ public class StoryPanel extends ScenarioPanel<StoryScenario> {
 		limitCombo = new JComboBox<Limit>();
 		limitCombo.setModel(new DefaultComboBoxModel<Limit>(Limit.values()));
 		
-		JLabel chckbxNewCheckBox = new JLabel("Worlds in the story:");
+		worldLabel = new JLabel("# Worlds:");
 		
-		depthCheckbox = new JCheckBox("Depth of the story:");
-		
+		depthCheckbox = new JCheckBox("Set Depth?");
+		//TODO: Continue here standardizing the groupLayouts;
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(chckbxNewCheckBox, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(depthCheckbox, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addGap(13)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(structureLabel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+						.addComponent(worldLabel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+						.addComponent(depthCheckbox, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addComponent(storyTypeCombo, 0, 343, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -79,13 +81,13 @@ public class StoryPanel extends ScenarioPanel<StoryScenario> {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel)
+						.addComponent(structureLabel)
 						.addComponent(storyTypeCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(operatorCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(numberOfWorldsSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(chckbxNewCheckBox))
+						.addComponent(worldLabel))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(depthSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -93,7 +95,7 @@ public class StoryPanel extends ScenarioPanel<StoryScenario> {
 						.addComponent(depthCheckbox))
 					.addContainerGap(30, Short.MAX_VALUE))
 		);
-		groupLayout.linkSize(SwingConstants.VERTICAL, new Component[] {numberOfWorldsSpinner, depthSpinner, storyTypeCombo, operatorCombo});
+		groupLayout.linkSize(SwingConstants.VERTICAL, new Component[] {numberOfWorldsSpinner, depthSpinner, storyTypeCombo, operatorCombo, limitCombo});
 		setLayout(groupLayout);
 		
 		loadUIData();

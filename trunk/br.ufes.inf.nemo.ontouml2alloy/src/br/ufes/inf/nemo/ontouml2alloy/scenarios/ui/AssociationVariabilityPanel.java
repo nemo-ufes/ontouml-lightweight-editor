@@ -17,6 +17,8 @@ import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.AssociationVariability;
 import br.ufes.inf.nemo.ontouml2alloy.scenarios.AssociationVariabilityScenario;
+import javax.swing.SwingConstants;
+import java.awt.Component;
 
 public class AssociationVariabilityPanel extends ScenarioPanel<AssociationVariabilityScenario> {
 	
@@ -44,7 +46,8 @@ public class AssociationVariabilityPanel extends ScenarioPanel<AssociationVariab
 		
 		JLabel lblStereotype = new JLabel("Association:");
 		
-		associationCombo = new OntoUMLElementCombo(Association.class, parser);
+		associationCombo = new OntoUMLElementCombo(parser);
+		associationCombo.setAsAssociationCombo();
 		associationCombo.addActionListener(associationListener);
 		
 		targetField = new JTextField();
@@ -64,22 +67,18 @@ public class AssociationVariabilityPanel extends ScenarioPanel<AssociationVariab
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(lblTarget, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(lblStereotype, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(targetField, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
-								.addComponent(sourceField, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
-								.addComponent(associationCombo, Alignment.TRAILING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(reverseCheckbox, GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblMultiplicity, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(variabilityCombo, 0, 313, Short.MAX_VALUE)))
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(lblStereotype, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_1, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblTarget, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblMultiplicity, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(targetField, GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+						.addComponent(sourceField, GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+						.addComponent(associationCombo, 0, 331, Short.MAX_VALUE)
+						.addComponent(reverseCheckbox, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+						.addComponent(variabilityCombo, 0, 331, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -101,10 +100,11 @@ public class AssociationVariabilityPanel extends ScenarioPanel<AssociationVariab
 					.addComponent(reverseCheckbox)
 					.addGap(12)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(variabilityCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblMultiplicity))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(lblMultiplicity)
+						.addComponent(variabilityCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(42, Short.MAX_VALUE))
 		);
+		groupLayout.linkSize(SwingConstants.VERTICAL, new Component[] {sourceField, associationCombo, targetField, variabilityCombo});
 		setLayout(groupLayout);
 		
 		combos.add(associationCombo);

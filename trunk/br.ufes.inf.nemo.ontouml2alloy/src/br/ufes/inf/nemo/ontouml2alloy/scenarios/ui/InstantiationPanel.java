@@ -137,9 +137,6 @@ public class InstantiationPanel extends ScenarioPanel<InstantiationScenario> {
 		case EXCL:
 			scenario.setAsExclusive(classifiers);
 			break;
-		case FORB_MULT:
-			scenario.setAsForbidMultiple(classifiers);
-			break;
 		case MULT:
 			scenario.setAsMultiple(classifiers);
 			break;
