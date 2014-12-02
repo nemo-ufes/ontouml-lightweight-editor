@@ -88,4 +88,6 @@ public class WorldQuantification {
 	public void setType(WorldQuantificationType type) {
 		this.type = type;
 	}
+
+	
 }

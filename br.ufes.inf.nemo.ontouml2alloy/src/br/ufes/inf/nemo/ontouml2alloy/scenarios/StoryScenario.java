@@ -8,6 +8,9 @@ public class StoryScenario extends Scenario{
 	
 	private BinaryOperator op;
 	private int numberOfWorlds;
+	private Limit limit;
+	private int depth;
+	private CustomQuantification quant;
 	
 	
 	public enum Limit {
@@ -24,11 +27,7 @@ public class StoryScenario extends Scenario{
 			}
 		},  
 	};
-	private Limit limit;
-	private int depth;
-	private CustomQuantification quant;
-	
-	
+		
 	public StoryScenario (){
 		quant = CustomQuantification.createWorldQuantification(1);
 		setNumberOfWorlds(BinaryOperator.EQUAL, 2);
@@ -71,6 +70,10 @@ public class StoryScenario extends Scenario{
 	
 	public boolean isDepthSet() {
 		return depth>=0 && limit!=null;
+	}
+	
+	public boolean isNumberSet() {
+		return numberOfWorlds>=0 && op!=null;
 	}
 	
 	public void removeDepth(){
@@ -145,21 +148,7 @@ public class StoryScenario extends Scenario{
 //		}
 	}
 
-	@Override
-	public String getString() {
-		switch (storyType) {
-			case COUNTER:
-				return "things may have taken a different outcome in the past";
-			case FUTURES:
-				return "different outcomes for a given situation";
-			case LINEAR:
-				return "linear story";
-			default:
-				break;
-		}
-		
-		return "";
-	}
+	
 
 	@Override
 	public String getAlloy() {
@@ -219,8 +208,82 @@ public class StoryScenario extends Scenario{
 	public String getScenarioName() {
 		return "Story";
 	}
-
 	
+	@Override
+	public String getPhrase() {
+		String s = "";
+		
+		switch (getStoryType()) {
+			case COUNTER:
+				s = "a story with alternative outcomes for past situations";
+				break;
+			case FUTURES:
+				s = "a story with different outcomes for a particular situation";
+				break;
+			case LINEAR:
+				s = "a linear story";
+				break;
+			default:
+				s = "a story";
+				break;
+		}
+		
+		if(isNumberSet()){
+			if(isUndefined())
+				s+=" that is";
+			else
+				s+=",";
+			
+			s+=" composed by "+getOperatorPhrase()+" "+numberOfWorlds+" world(s)";
+		}
+		
+		if(isDepthSet()){
+			if(isNumberSet())
+				s+=" and has";
+			else if (isUndefined())
+				s+=" with";
+			else
+				s+=", with";
+			
+			s+=" a sequence of "+getLimitPhrase()+" "+depth+" worlds";
+		}
+		
+		return s;
+	}
+
+	private boolean isUndefined() {
+		return StoryType.UNDEF==getStoryType();
+	}
+
+	public String getLimitPhrase(){
+		switch (limit) {
+		case LOWER:
+			return "at least";
+		case UPPER:
+			return "at most";
+		}
+		
+		return "";
+	}
+	
+	public String getOperatorPhrase(){
+		switch (op) {
+		case EQUAL:
+			return "exactly";
+		case DIF:
+			return "a number different from";
+		case GREATER:
+			return "at least (but not exactly)";
+		case GREATER_EQ:
+			return "at least (or exactly)";
+		case LESSER:
+			return "at most (but no exactly)";
+		case LESSER_EQ:
+			return "at most (or exactly)";
+		}
+		
+		return "";
+	}
 
 	
 }

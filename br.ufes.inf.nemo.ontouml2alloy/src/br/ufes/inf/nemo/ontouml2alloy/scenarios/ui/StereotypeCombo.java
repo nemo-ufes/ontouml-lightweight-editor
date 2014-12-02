@@ -32,6 +32,9 @@ public class StereotypeCombo extends JComboBox<Stereotype>{
 	}
 	
 	public Class<? extends EObject> getSelectedMetaClass(){
+		if(getSelectedItem()==null)
+			return null;
+		
 		return ((Stereotype)getSelectedItem()).getMetaclass();
 	}
 	

@@ -84,7 +84,7 @@ public class AssociationMultiplicityScenario extends AssociationScenario {
 	}
 	
 	@Override
-	public String getString() {
+	public String getPhrase() {
 		// TODO Auto-generated method stub
 		return null;
 	}

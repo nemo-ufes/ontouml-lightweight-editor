@@ -27,18 +27,20 @@ public class SegmentPanel extends JPanel {
 	private JLabel segmentLabel;
 	private SegmentCardPanel cards;
 
-	/**
-	 * Create the panel.
-	 */
-	public SegmentPanel(OntoUMLParser parser) {
+
+	public SegmentPanel(OntoUMLParser parser){
+		this(parser, "Segment:", "Class:", "Association:", "Stereotype:");
+	}
+	
+	public SegmentPanel(OntoUMLParser parser, String segmentText, String classText, String associationText, String stereotypeText) {
 		
-		segmentLabel = new JLabel("Segment:");
+		segmentLabel = new JLabel(segmentText);
 		
 		combo = new JComboBox<SegmentType>();
 		combo.setModel(new DefaultComboBoxModel<SegmentType>(SegmentType.values()));
 		combo.addActionListener(comboListener);
 		
-		cards = new SegmentCardPanel(parser);
+		cards = new SegmentCardPanel(parser,classText,associationText, stereotypeText);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)

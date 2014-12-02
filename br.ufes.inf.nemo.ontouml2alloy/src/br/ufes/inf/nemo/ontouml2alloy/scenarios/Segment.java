@@ -127,5 +127,11 @@ public class Segment {
 	public SegmentType getType() {
 		return segmentType;
 	}
+
+	public java.lang.Class<?> getMetaClass() {
+		return metaType;
+	}
+	
+
 }
 

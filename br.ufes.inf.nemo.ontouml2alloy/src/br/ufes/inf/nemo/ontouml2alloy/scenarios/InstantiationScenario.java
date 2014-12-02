@@ -53,7 +53,7 @@ public class InstantiationScenario extends ContentScenario {
 	}
 	
 	@Override
-	public String getString() {
+	public String getPhrase() {
 		// TODO Auto-generated method stub
 		return null;
 	}

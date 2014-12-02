@@ -65,7 +65,7 @@ public class SegmentSizePanel extends ScenarioPanel<SegmentSizeScenario> {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(segmentPanel, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+					.addComponent(segmentPanel, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblMinimum)
@@ -75,7 +75,7 @@ public class SegmentSizePanel extends ScenarioPanel<SegmentSizeScenario> {
 						.addComponent(lblMaximum)
 						.addComponent(maximumSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(quantificationpanel, GroupLayout.PREFERRED_SIZE, 26, Short.MAX_VALUE)
+					.addComponent(quantificationpanel, GroupLayout.PREFERRED_SIZE, 35, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		groupLayout.linkSize(SwingConstants.VERTICAL, new Component[] {minimumSpinner, maximumSpinner});
