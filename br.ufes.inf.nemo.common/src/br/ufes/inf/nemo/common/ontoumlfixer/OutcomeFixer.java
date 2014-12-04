@@ -121,7 +121,7 @@ public class OutcomeFixer{
 		type.setVisibility(VisibilityKind.PUBLIC);
 		return type;
 	}
-
+	
 	/** Create relationship from stereotype */
 	public RefOntoUML.Relationship createRelationship(RelationStereotype stereo) 
 	{

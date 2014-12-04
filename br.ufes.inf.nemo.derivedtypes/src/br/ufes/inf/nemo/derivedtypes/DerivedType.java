@@ -23,9 +23,9 @@ abstract class DerivedType {
 		value= new ArrayList<>();
 		value.add("Category");
 		value.add("Kind");
-		value.add("Subkind");
+		value.add("SubKind");
 		value.add("Mixin");
-		tableValuesGen.put("Subkind", value);
+		tableValuesGen.put("SubKind", value);
 		
 		value= new ArrayList<>();
 		value.add("Kind");

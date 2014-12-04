@@ -25,22 +25,53 @@ public class DerivedByExclusion extends DerivedType{
 
 		value= new ArrayList<>();
 		value.add("SubKind");
+		tableValues.put("Collective"+"SubKind", value);
+		
+		value= new ArrayList<>();
+		value.add("SubKind");
+		tableValues.put("Quantity"+"SubKind", value);
+		
+		
+		value= new ArrayList<>();
+		value.add("SubKind");
 		tableValues.put("SubKind"+"SubKind", value);
 
 		value= new ArrayList<>();
 		value.add("Kind");
+		value.add("Quantity");
+		value.add("Collective");
 		value.add("SubKind");
 		value.add("Category");
 		tableValues.put("Category"+"Kind", value);
+		
+		value= new ArrayList<>();
+		value.add("Kind");
+		value.add("Quantity");
+		value.add("Collective");
+		value.add("SubKind");
+		value.add("Category");
+		tableValues.put("Category"+"Collective", value);
+		
+		value= new ArrayList<>();
+		value.add("Kind");
+		value.add("Quantity");
+		value.add("Collective");
+		value.add("SubKind");
+		value.add("Category");
+		tableValues.put("Category"+"Quantity", value);
 
 		value= new ArrayList<>();
 		value.add("Kind");
+		value.add("Quantity");
+		value.add("Collective");
 		value.add("SubKind");
 		value.add("Category");
 		tableValues.put("Category"+"SubKind", value);
 
 		value= new ArrayList<>();
 		value.add("Kind");
+		value.add("Quantity");
+		value.add("Collective");
 		value.add("SubKind");
 		value.add("Category");
 		tableValues.put("Category"+"Category", value);
@@ -51,6 +82,20 @@ public class DerivedByExclusion extends DerivedType{
 		value.add("Mixin");
 		value.add("RoleMixin");
 		tableValues.put("Mixin"+"Kind", value);
+		
+		value= new ArrayList<>();
+		value.add("Role");
+		value.add("Phase");
+		value.add("Mixin");
+		value.add("RoleMixin");
+		tableValues.put("Mixin"+"Collective", value);
+		
+		value= new ArrayList<>();
+		value.add("Role");
+		value.add("Phase");
+		value.add("Mixin");
+		value.add("RoleMixin");
+		tableValues.put("Mixin"+"Quantity", value);
 
 		value= new ArrayList<>();
 		value.add("Role");
@@ -71,6 +116,16 @@ public class DerivedByExclusion extends DerivedType{
 		value.add("Role");
 		value.add("Phase");
 		tableValues.put("Kind"+"Role", value);
+		
+		value= new ArrayList<>();
+		value.add("Role");
+		value.add("Phase");
+		tableValues.put("Collective"+"Role", value);
+		
+		value= new ArrayList<>();
+		value.add("Role");
+		value.add("Phase");
+		tableValues.put("Quantity"+"Role", value);
 
 		value= new ArrayList<>();
 		value.add("Role");
@@ -80,6 +135,14 @@ public class DerivedByExclusion extends DerivedType{
 		value= new ArrayList<>();
 		value.add("Phase");
 		tableValues.put("Kind"+"Phase", value);
+		
+		value= new ArrayList<>();
+		value.add("Phase");
+		tableValues.put("Collective"+"Phase", value);
+		
+		value= new ArrayList<>();
+		value.add("Phase");
+		tableValues.put("Quantity"+"Phase", value);
 
 		value= new ArrayList<>();
 		value.add("Role");
@@ -131,6 +194,8 @@ public class DerivedByExclusion extends DerivedType{
 
 		value= new ArrayList<>();
 		value.add("Kind");
+		value.add("Quantity");
+		value.add("Collective");
 		value.add("SubKind");
 		value.add("Category");
 		value.add("Mixin");
@@ -138,12 +203,16 @@ public class DerivedByExclusion extends DerivedType{
 
 		value= new ArrayList<>();
 		value.add("Kind");
+		value.add("Quantity");
+		value.add("Collective");
 		value.add("SubKind");
 		value.add("Mixin");
 		tableValues.put("Mixin"+"Phase", value);
 
 		value= new ArrayList<>();
 		value.add("Kind");
+		value.add("Quantity");
+		value.add("Collective");
 		value.add("SubKind");
 		value.add("Category");
 		value.add("Mixin");
@@ -158,6 +227,8 @@ public class DerivedByExclusion extends DerivedType{
 
 		value= new ArrayList<>();
 		value.add("Kind");
+		value.add("Quantity");
+		value.add("Collective");
 		value.add("SubKind");
 		value.add("Role");
 		value.add("Phase");
