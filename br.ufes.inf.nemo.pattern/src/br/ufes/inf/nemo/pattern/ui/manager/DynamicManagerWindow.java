@@ -198,6 +198,11 @@ public class DynamicManagerWindow {
 		btn.setVisible(true);
 	}
 
+	public boolean wasPerformed(){
+		//If table isn't null something was created
+		return !(window.getHashTable() == null);
+	}
+	
 	public ArrayList<Object[]> getRowsOf(String field){
 		return  window.getHashTable().get(field);
 	}

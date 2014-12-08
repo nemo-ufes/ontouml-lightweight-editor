@@ -107,15 +107,17 @@ public class ModelHelper {
 		
 		return resource;
 	}
-
+	
 	public static void initializeHelper() {
+		try{
 		resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,new OLEDResourceFactory());
-		
-		resourceSet.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI, RefOntoUML.RefOntoUMLPackage.eINSTANCE);		
-				
-		RefOntoUMLPackageImpl.init();
 
+		resourceSet.getPackageRegistry().put(RefOntoUML.RefOntoUMLPackage.eNS_URI, RefOntoUML.RefOntoUMLPackage.eINSTANCE);
+		
+		RefOntoUMLPackageImpl.init();
+		
+		
 //		validator = Diagnostician.INSTANCE;
 		
 		factory = RefOntoUMLFactory.eINSTANCE;
@@ -139,6 +141,9 @@ public class ModelHelper {
 		mappings = new HashMap<Element, ArrayList<DiagramElement>>();
 		
 		initialized = true;
+		} catch(Exception e ){
+			e.printStackTrace();
+		}
 	}
 	
 	//Adds mapping from RefOntoUMLElement to DiagramElement (metamodel->concretemodel)

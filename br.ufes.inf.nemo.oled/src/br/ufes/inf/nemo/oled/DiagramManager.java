@@ -111,6 +111,7 @@ import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.RelationType;
 import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
+import br.ufes.inf.nemo.oled.pattern.DomainPatternTool;
 import br.ufes.inf.nemo.oled.pattern.PatternTool;
 import br.ufes.inf.nemo.oled.problems.ErrorElement;
 import br.ufes.inf.nemo.oled.problems.ErrorPane;
@@ -1149,6 +1150,25 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			setProjectFile(saveCurrentProjectToFile(fileChooser.getSelectedFile()));
 			File file = fileChooser.getSelectedFile();
 			frame.setTitle("OLED - "+file.getName()+"");
+			lastSavePath = file.getAbsolutePath();			
+		}
+		return option;
+	}
+	
+	/** Export Model as a OLED Pattern **/
+	public int exportAsOLEDPattern() 
+	{
+		JFileChooser fileChooser = new JFileChooser(lastSavePath);
+		fileChooser.setDialogTitle("Export as OLED Pattern");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oledpattern)", "oledpattern");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		int option = fileChooser.showSaveDialog(this);
+		if (option == JFileChooser.APPROVE_OPTION) {
+			setProjectFile(saveCurrentProjectToFile(fileChooser.getSelectedFile()));
+			File file = fileChooser.getSelectedFile();
+			frame.setTitle("OLED Pattern - "+file.getName()+"");
 			lastSavePath = file.getAbsolutePath();			
 		}
 		return option;
@@ -2757,7 +2777,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 * Get Resource as String
 	 * @return
 	 */
-	private String getResourceString(String property) 
+	public static String getResourceString(String property) 
 	{
 		return ApplicationResources.getInstance().getString(property);
 	}
@@ -3099,5 +3119,106 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 	public void deriveByParticipation() {
 		
-	}	
+	}
+	
+	/** Save current Pattern Project to a file *.oledpattern */
+	@SuppressWarnings("unused")
+	private File exportCurrentProjectToFile(File file) 
+	{
+		Main.printOutLine("Saving OLED Pattern project...");
+		currentProject.setVersion(Main.OLED_VERSION);
+		getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		if (file.exists()) file.delete();
+		File result = null;
+		try {
+			if(!file.getName().endsWith(".oledpattern")) {
+				if(file.getName().contains(".oled"))
+					file = new File(file.getCanonicalFile().toString().replaceAll(".oled", ".oledpattern"));
+				else
+					file = new File(file.getCanonicalFile() + ".oledpattern");
+			}						
+			for(ConstraintEditor ce: getConstraintEditors()){				
+				if(ce!=null) ce.getOCLDocument().setContent(ce.getText());
+			}
+			currentProject.clearOpenedDiagrams();
+			for(DiagramEditor editor: getDiagramEditors()){
+				currentProject.saveAsOpened(editor.getDiagram());
+			}			
+			result = ProjectWriter.getInstance().writeProject(this, file, currentProject, frame.getBrowserManager().getProjectBrowser().getOCLDocuments());		
+			ConfigurationHelper.addRecentProject(file.getCanonicalPath());
+			getCurrentProject().setName(file.getName().replace(".oledpattern",""));
+			getFrame().getBrowserManager().getProjectBrowser().refreshTree();
+			saveAllDiagramNeeded(false);
+			frame.setTitle("OLED Pattern - "+file.getName()+"");
+			invalidate();
+			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		} catch (Exception ex) {
+			Main.printOutLine("Failed to save OLED Pattern project!");
+			ex.printStackTrace();
+			JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.savefile.title"), JOptionPane.ERROR_MESSAGE);
+		}
+		Main.printOutLine("OLED Pattern project successfully saved!");
+		return result;
+	}
+
+	//Export as .oledpattern	
+	public void exportPattern(){
+		DomainPatternTool.exportModelAsPattern(currentProject);
+		//call exportCurrentProject
+		//call exportAsOLEDPattern
+	}
+	
+	private UmlProject importPatternProjectFile(){
+		UmlProject patternProject = null;
+		
+		JFileChooser fileChooser = new JFileChooser(lastOpenPath);
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("OLED Project (*.oled)", "oled");
+		fileChooser.setDialogTitle("Open OLED Pattern Project");
+		fileChooser.addChoosableFileFilter(filter);
+		fileChooser.setFileFilter(filter);		
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			try {
+				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				Main.printOutLine("Opening OLED project...");				
+				File file = fileChooser.getSelectedFile();
+				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
+				patternProject = (UmlProject) listFiles.get(0);
+			} catch (Exception ex) {
+				Main.printOutLine("Failed to open OLED project!");	
+				JOptionPane.showMessageDialog(this, ex.getMessage(), getResourceString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
+				ex.printStackTrace();
+			}
+			getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			Main.printOutLine("OLED project successfully opened!");	
+		}
+		
+		return patternProject;
+	}
+	
+	public void importPattern(){
+		//opening .oledpattern
+		UmlProject patternProject = importPatternProjectFile();
+		if(patternProject != null){		
+			DomainPatternTool.initializeDomainPatternPalette(frame.getToolManager().getPalleteAccordion(), patternProject, editorDispatcher, frame);
+		}
+	}
+	
+	public void runDomainPattern(final double x, final double y) {
+		if(Main.onMac()){
+			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
+				@Override
+				public void run() {
+					_fix = DomainPatternTool.run(x, y);
+					if(_fix != null)
+						updateOLED(_fix);
+				}
+			});
+		}else{
+			_fix = DomainPatternTool.run(x, y);
+			if(_fix != null)
+				updateOLED(_fix);
+		}
+	}
+	
 }

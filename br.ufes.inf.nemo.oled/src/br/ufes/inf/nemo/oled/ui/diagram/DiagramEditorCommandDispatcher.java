@@ -402,6 +402,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("PATTERN_RELATOR", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_RELATOR));
 
+			selectorMap.put("DOMAIN_PATTERN", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.DOMAIN_PATTERN));
+
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
 		}

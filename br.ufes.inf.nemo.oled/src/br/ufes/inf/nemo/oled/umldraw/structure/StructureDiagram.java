@@ -22,6 +22,7 @@
 package br.ufes.inf.nemo.oled.umldraw.structure;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
@@ -400,13 +401,14 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	 * {@inheritDoc}
 	 */
 
-	public void draw(DrawingContext drawingContext) {
+	public void draw(DrawingContext drawingContext, boolean toScreen) {
 		Rectangle bounds = drawingContext.getClipBounds();
 		drawBackground(drawingContext, bounds);
 		if (gridVisible)
 			drawGrid(drawingContext);
 
-		drawBorder(drawingContext);
+		if(toScreen)
+			drawBorder(drawingContext);
 
 		//drawNameLabel(drawingContext);
 
@@ -1264,6 +1266,35 @@ public class StructureDiagram extends AbstractCompositeNode implements
 
 	@Override
 	public void eSetDeliver(boolean arg0) {
+	}
+	
+	public ArrayList<Point> getUsedCanvasSize()
+	{
+		ArrayList<Point> result = new ArrayList<Point>();		
+		double x1=10000,x2=0,y1=10000,y2=0;
+		for(DiagramElement elem: this.getChildren())
+		{
+			if(elem instanceof ClassElement){
+				ClassElement ce = (ClassElement)elem;
+				if(ce.getAbsoluteX1()<x1) 
+					x1 = ce.getAbsoluteX1();
+				if(ce.getAbsoluteX2()>x2) 
+					x2 = ce.getAbsoluteX2();
+				if(ce.getAbsoluteY2()>y2) 
+					y2 = ce.getAbsoluteY2();
+				if(ce.getAbsoluteY1()<y1) 
+					y1 = ce.getAbsoluteY1();				
+			}
+		}
+		Point origin = new Point();
+		Point end = new Point();
+		origin.x=(int)x1;
+		origin.y=(int)y1;		
+		end.x = (int)(x2);
+		end.y = (int)(y2);
+		result.add(origin);
+		result.add(end);
+		return result;
 	}
 
 }
