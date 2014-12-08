@@ -16,7 +16,6 @@ import br.ufes.inf.nemo.pattern.impl.RoleMixinPattern;
 import br.ufes.inf.nemo.pattern.impl.RolePartition;
 import br.ufes.inf.nemo.pattern.impl.SubkindPartition;
 import br.ufes.inf.nemo.pattern.impl.SubstanceSortalPartition;
-import br.ufes.inf.nemo.pattern.ui.manager.ModelCompleterManager;
 
 /**
  * @author Victor Amorim
@@ -57,20 +56,21 @@ public class PatternTool {
 			pm = new SubstanceSortalPartition(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
 			break;
 		case PATTERN_COMPLETER:
-			mci = new ModelCompleterIdentity(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
+			mci = ModelCompleterIdentity.createDialog(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
 			break;
 		}
 		Fix fix = null;
 		if(pm != null){
 			pm.runPattern();
-			fix = pm.getFix();
+			if(pm.canGetFix())
+				fix = pm.getFix();
 		}
-		
+
 		if(mci != null){
 			mci.open();
 			fix = mci.getFix();
 		}
-
+		
 		return fix;
 	}
 
@@ -92,159 +92,4 @@ public class PatternTool {
 
 		return fix;
 	}
-
-	public static Fix solveIncompleteness() {
-		Fix fix = null;
-		ModelCompleterIdentity win = ModelCompleterManager.getCompleterIdentityWindow(ProjectBrowser.frame.getProjectBrowser().getParser());
-		while(win != null){
-			win.open();
-			fix = win.getFix();
-
-			if(fix == null)
-				break;
-
-			ProjectBrowser.frame.getDiagramManager().updateOLED(fix);
-			win = ModelCompleterManager.getCompleterIdentityWindow(ProjectBrowser.frame.getProjectBrowser().getParser());
-		}
-		return fix;
-	}
-
-	//	public static Fix createRelatorPattern(JFrame frame, UmlProject project, double x, double y) {
-	//		AbstractPattern pm = new RelatorPattern(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
-	//		pm.runPattern();
-	//		return pm.getFix();
-	//	}
-	//
-	//	public static Fix createRoleMixinPattern(JFrame frame, UmlProject project, double x, double y) {
-	//		RoleMixinPattern roleMixinPattern = new RoleMixinPattern(ProjectBrowser.frame.getProjectBrowser().getParser());
-	//		ImagePanel imagePanel = new ImagePanel(PatternType.RoleMixinPattern);
-	//
-	//		PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, roleMixinPattern, imagePanel);
-	//		window.setVisible(true);
-	//		window.setLocationRelativeTo(frame);
-	//		return window.getFix();
-	//	}	
-	//
-	//	public static Fix principleIdentity(JFrame frame, UmlProject currentProject, double x, double y) {
-	//		AbstractPattern pm = new SubkindPartition(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
-	//		pm.runPattern();
-	//		return pm.getFix();
-	//	}
-	//
-	//	public static Fix addSubtype(JFrame frame, UmlProject currentProject, List<DiagramElement> selectedElements) {
-	//		return PatternTool.generalizationAndSpecialization(frame, currentProject, selectedElements);
-	//	}
-	//
-	//	public static Fix generalizationAndSpecialization(JFrame frame, UmlProject currentProject, List<DiagramElement> selectedElements) {
-	//		ImagePanel imagePanel = null;
-	//		GeneralizationAndSpecializationPattern pattern = null;
-	//		double x, y;
-	//
-	//		if (selectedElements.size() == 1){
-	//			ClassElement selectedElement = (ClassElement) selectedElements.get(0);
-	//			x = selectedElement.getAbsoluteX1();
-	//			y = selectedElement.getAbsoluteY1();
-	//
-	//			Classifier selectedClassifier = selectedElement.getClassifier();
-	//			if(selectedClassifier instanceof SubKind){
-	//				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_Sukind);
-	//			}else if(selectedClassifier instanceof Role){
-	//				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_Role);
-	//			}else if(selectedClassifier instanceof SubstanceSortal){
-	//				imagePanel = new ImagePanel(PatternType.PrincipleIdentity);
-	//			}else if(selectedClassifier instanceof Category){
-	//				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_Category);
-	//			}else if(selectedClassifier instanceof RoleMixin){
-	//				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_RoleMixin);
-	//			}else if(selectedClassifier instanceof MixinClass){
-	//				imagePanel = new ImagePanel(PatternType.GeneralizationAndSpecialization_Mixin);
-	//			}else{
-	//				JOptionPane.showMessageDialog(null, "Pattern do not applied to "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" stereotype");
-	//				return null;		
-	//			}
-	//
-	//			pattern = new GeneralizationAndSpecializationPattern(ProjectBrowser.frame.getProjectBrowser().getParser(), selectedClassifier);
-	//
-	//			PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, pattern, imagePanel);
-	//			window.setVisible(true);
-	//			window.setLocationRelativeTo(frame);
-	//			return window.getFix();
-	//		}
-	//
-	//		JOptionPane.showMessageDialog(null, "Pattern do not applied to multiple selections");
-	//		return null;
-	//	}
-	//
-	//
-	//	public static Fix partitionPattern(JFrame frame, UmlProject currentProject, List<DiagramElement> selectedElements) {
-	//		ImagePanel imagePanel = null;
-	//		PartitionPattern pattern = null;
-	//		double x, y;
-	//
-	//		if (selectedElements.size() == 1){
-	//			ClassElement selectedElement = (ClassElement) selectedElements.get(0);
-	//			x = selectedElement.getAbsoluteX1();
-	//			y = selectedElement.getAbsoluteY1();
-	//
-	//			Classifier selectedClassifier = selectedElement.getClassifier();
-	//			if(selectedClassifier instanceof RigidSortalClass){
-	//				imagePanel = new ImagePanel(PatternType.PartitionPattern_Rigid);
-	//			}else if(selectedClassifier instanceof SortalClass){
-	//				imagePanel = new ImagePanel(PatternType.PartitionPattern_Sortal);
-	//			}else{
-	//				JOptionPane.showMessageDialog(null, "Pattern do not applied to "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" stereotype");
-	//				return null;		
-	//			}
-	//
-	//			pattern = new PartitionPattern(ProjectBrowser.frame.getProjectBrowser().getParser(), selectedClassifier);
-	//
-	//			PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, pattern, imagePanel);
-	//			window.setVisible(true);
-	//			window.setLocationRelativeTo(frame);
-	//			return window.getFix();
-	//		}
-	//
-	//		JOptionPane.showMessageDialog(null, "Pattern do not applied to multiple selections");
-	//		return null;
-	//	}
-	//
-	//	public static Fix addSupertype(AppFrame frame, UmlProject currentProject,List<DiagramElement> selectedElements) {
-	//		ImagePanel imagePanel = null;
-	//		ClassSelectionPanel pattern = null;
-	//		double x, y;
-	//
-	//		if (selectedElements.size() == 1){
-	//			ClassElement selectedElement = (ClassElement) selectedElements.get(0);
-	//			x = selectedElement.getAbsoluteX1();
-	//			y = selectedElement.getAbsoluteY1();
-	//
-	//			Classifier selectedClassifier = selectedElement.getClassifier();
-	//			if(selectedClassifier instanceof SubstanceSortal){
-	//				imagePanel = new ImagePanel(PatternType.AddSupertype_SubstanceSortal);
-	//			}else if(selectedClassifier instanceof SubKind){
-	//				imagePanel = new ImagePanel(PatternType.AddSupertype_Subkind);
-	//			}else if(selectedClassifier instanceof Role){
-	//				imagePanel = new ImagePanel(PatternType.AddSupertype_Role);
-	//			}else if(selectedClassifier instanceof Category){
-	//				imagePanel = new ImagePanel(PatternType.AddSupertype_Category);
-	//			}else if(selectedClassifier instanceof Mixin){
-	//				imagePanel = new ImagePanel(PatternType.AddSupertype_Mixin);
-	//			}else if(selectedClassifier instanceof RoleMixin){
-	//				imagePanel = new ImagePanel(PatternType.AddSupertype_RoleMixin);
-	//			}else{
-	//				JOptionPane.showMessageDialog(null, "Pattern do not applied to "+UtilAssistant.getStringRepresentationStereotype(selectedClassifier)+" stereotype");
-	//				return null;		
-	//			}
-	//
-	//			pattern = new AddSupertype(ProjectBrowser.frame.getProjectBrowser().getParser(), selectedClassifier);
-	//
-	//			PatternAbstractWindowAssistant window = new PatternAbstractWindowAssistant(frame, x, y, pattern, imagePanel);
-	//			window.setVisible(true);
-	//			window.setLocationRelativeTo(frame);
-	//			return window.getFix();
-	//		}
-	//
-	//		JOptionPane.showMessageDialog(null, "Pattern do not applied to multiple selections");
-	//		return null;
-	//	}
 }

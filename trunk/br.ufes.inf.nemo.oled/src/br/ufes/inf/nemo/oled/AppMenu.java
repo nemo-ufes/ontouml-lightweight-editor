@@ -165,7 +165,7 @@ public class AppMenu implements ActionListener {
 		JMenuItem saveItem = createMenuItem(fileMenu, "save");
 		saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 		
-		createMenuItem(fileMenu, "saveas");		
+		createMenuItem(fileMenu, "saveas");
 		
 		JMenu importMenu = createMenu("Import");
 		importMenu.setText("Import from...");
@@ -177,6 +177,8 @@ public class AppMenu implements ActionListener {
 		JMenuItem emfImportItem = createMenuItem(importMenu, "importecore");
 		emfImportItem.setToolTipText("Import from the OntoUML infrastructure");
 		
+		createMenuItem(importMenu, "importpatterns");
+		
 		JMenu exportMenu = createMenu("Export");
 		exportMenu.setText("Export as...");
 		fileMenu.add(exportMenu);
@@ -186,6 +188,8 @@ public class AppMenu implements ActionListener {
 		
 		JMenuItem umlItem = createMenuItem(exportMenu, "exportuml");
 		umlItem.setToolTipText("Export to Eclipse MDT UML2 version 4");
+
+		createMenuItem(exportMenu, "exportpatterns");
 		
 		createMenuItem(fileMenu,"close");
 		

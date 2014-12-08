@@ -31,7 +31,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2ecore"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.derivedtypes"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/multi-splitpane/MultiSplit.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/text-editor/rsyntaxtextarea_2.5.0/rsyntaxtextarea.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.validator.meronymic"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2temporalowl"/>
@@ -69,5 +68,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-kepler-sr1/org.eclipse.wb.swt_1.6.0.r36x201305212024.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-kepler-sr1/org.eclipse.wb.swt.layout.grouplayout_1.6.0.r36x201305212046.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-kepler-sr1/org.eclipse.wb.swt.widgets.baseline_1.6.0.r36x201305212028.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

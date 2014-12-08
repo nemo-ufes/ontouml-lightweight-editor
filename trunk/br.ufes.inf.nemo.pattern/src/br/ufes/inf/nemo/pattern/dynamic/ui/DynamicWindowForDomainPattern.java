@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.pattern.dynamic.ui;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,7 +20,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
@@ -28,35 +28,29 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import br.ufes.inf.nemo.pattern.util.UtilPattern;
 
-/*
- * TODO LIST
- * 	- Implement reuse of classes used in the current table
- * */
-
-
 /**
  * @author Victor Amorim
  */
-public class DynamicWindow extends Dialog {
+public class DynamicWindowForDomainPattern extends Dialog {
 	private static Shell shell;
 	private static Display display;
 	private Composite container;
+	private String title;
 	
-	private String title = new String();
 	private HashMap<String,ArrayList<Object[]>> hashTable = null;
 	public HashMap<String, ArrayList<Object[]>> getHashTable(){
 		return hashTable;
 	}
-
-	public DynamicWindow(Shell parentShell, String title, String imagePath) 
+	
+	public DynamicWindowForDomainPattern(BufferedImage image, Shell parentShell, String title) 
 	{
 		super(parentShell);		
 		this.title=title;
-		currentImage = SWTResourceManager.getImage(DynamicWindow.class, imagePath);
+		currentImage = new Image(display,UtilPattern.convertToSWT(image));
 		setDefaultImage(new Image(Display.getDefault(),DynamicWindow.class.getResourceAsStream("/resources/icons/x16/sitemap.png")));		
 	}
 	
-	public static DynamicWindow createDialog(String title, String imagePath)
+	public static DynamicWindowForDomainPattern createDialog(BufferedImage image, String title)
 	{			
 		display = Display.getDefault();	    	
 		shell = display.getActiveShell();	
@@ -64,9 +58,15 @@ public class DynamicWindow extends Dialog {
 			shell = new Shell(display);
 		}
 		UtilPattern.centralizeShell(display, shell);
-		DynamicWindow resultDIalog = new DynamicWindow(shell,title,imagePath);
+		DynamicWindowForDomainPattern resultDIalog = new DynamicWindowForDomainPattern(image,shell,title);
 		resultDIalog.create();
 		return resultDIalog;
+	}
+	
+	protected Button createButton(Composite arg0, int arg1, String arg2, boolean arg3) 
+	{
+		//Retrun null so that no default buttons like 'OK' and 'Cancel' will be created
+		return null;
 	}
 	
 	@Override
@@ -76,37 +76,24 @@ public class DynamicWindow extends Dialog {
 	    UtilPattern.bringToFront(shell);
 	    getShell().setText(title);	    
 	}
-	
+
 	private Table table;
 	public Table getTable() {
 		return table;
 	}
 
-	private Button btnAddNewLine;
-	private Button btnRemoveLine;
-	public Button getBtnAddNewLine() {
-		return btnAddNewLine;
-	}
-
 	private Image currentImage;
-	
-	protected Button createButton(Composite arg0, int arg1, String arg2, boolean arg3) 
-	{
-		//Retrun null so that no default buttons like 'OK' and 'Cancel' will be created
-		return null;
-	}
-
 	/**
-	 * Create contents of the dialog.
-	 * @param parent
+	 * Create contents of the window.
+	 * @wbp.parser.entryPoint
 	 */
 	@Override
-	protected Control createDialogArea(Composite parent) 
-	{
+	protected Control createDialogArea(Composite parent) {
 		container = (Composite) super.createDialogArea(parent);	
 		container.setLayout(new FormLayout());
 				
 		Composite composite = new Composite(container, SWT.BORDER);
+		
 		FormData fd_composite = new FormData();
 		fd_composite.top = new FormAttachment(0, 10);
 		fd_composite.right = new FormAttachment(0, 895);
@@ -161,10 +148,9 @@ public class DynamicWindow extends Dialog {
 							boolean reuse = ((Button)ti.getData("reuse_"+field)).getSelection(); 
 							String text = ((Text)ti.getData("text_"+field)).getText();
 							String stereotype = ((CCombo)ti.getData("stereotype_"+field)).getItem(((CCombo)ti.getData("stereotype_"+field)).getSelectionIndex());
-							boolean active = ((Button)ti.getData("active_"+field)).getSelection(); 
 							if(!hashTable.containsKey(field))
 								hashTable.put(field,new ArrayList<Object[]>());
-							hashTable.get(field).add(new Object[]{reuse,text,stereotype,active});
+							hashTable.get(field).add(new Object[]{reuse,text,stereotype});
 						}						
 					}
 				}
@@ -174,47 +160,11 @@ public class DynamicWindow extends Dialog {
 		btnPressMe.setText("Create classes");
 		btnPressMe.pack ();
 
-		btnAddNewLine = new Button(container, SWT.NONE);
-		btnAddNewLine.setVisible(false);
-		FormData fd_btnAddNewLine = new FormData();
-		fd_btnAddNewLine.top = new FormAttachment(table, 6);
-		btnAddNewLine.setLayoutData(fd_btnAddNewLine);
-		btnAddNewLine.setText("Add new line");
-
-		btnRemoveLine = new Button(container, SWT.NONE);
-		fd_btnAddNewLine.right = new FormAttachment(btnRemoveLine, -6);
-		FormData fd_btnRemoveLine = new FormData();
-		fd_btnRemoveLine.right = new FormAttachment(btnPressMe, -24);
-		fd_btnRemoveLine.left = new FormAttachment(0, 233);
-		fd_btnRemoveLine.top = new FormAttachment(table, 6);
-		btnRemoveLine.setLayoutData(fd_btnRemoveLine);
-		btnRemoveLine.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent evt) {
-				if(table.getItemCount() > initialItemCount){
-					int i = table.getItemCount()-1;
-					TableItem ti = table.getItem(i);
-					for(TableEditor te : tableEditorHash.get(ti)){
-						te.getEditor().dispose();
-					}
-					table.remove(i);
-					if(currentImage != null)
-						currentImage.dispose();
-				}else{
-					MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK );
-					dialog.setText("Invalid action");
-					dialog.setMessage("Insert some line before delete.");
-					dialog.open(); 					
-				}
-			}
-		});
-		btnRemoveLine.setText("Remove Line");
-		btnRemoveLine.setVisible(false);
 		Button btnNewButton = new Button(container, SWT.NONE);
-		fd_composite.bottom = new FormAttachment(btnNewButton, -6);
 		btnNewButton.setTouchEnabled(true);
+		fd_composite.bottom = new FormAttachment(btnNewButton, -6);
 		FormData fd_btnNewButton = new FormData();
-		fd_btnNewButton.left = new FormAttachment(btnPressMe, 324);
+		fd_btnNewButton.left = new FormAttachment(btnPressMe, 341);
 		fd_btnNewButton.right = new FormAttachment(100, -11);
 		fd_btnNewButton.top = new FormAttachment(0, 236);
 		btnNewButton.setLayoutData(fd_btnNewButton);
@@ -227,13 +177,12 @@ public class DynamicWindow extends Dialog {
 		});
 		btnNewButton.setText("Show Image");
 		
-		Button btnHelp = new Button(container, SWT.FLAT | SWT.CENTER);
-		fd_btnAddNewLine.left = new FormAttachment(btnHelp, 48);
+		Button btnHelp = new Button(container, SWT.CENTER);
 		FormData fd_btnHelp = new FormData();
-		fd_btnHelp.left = new FormAttachment(0, 20);
 		fd_btnHelp.top = new FormAttachment(0, 236);
+		fd_btnHelp.left = new FormAttachment(0, 10);
 		btnHelp.setLayoutData(fd_btnHelp);
-		btnHelp.setImage(SWTResourceManager.getImage(DynamicWindow.class,"/resources/icons/x16/help.png"));
+		btnHelp.setImage(SWTResourceManager.getImage(DynamicWindowForDomainPattern.class,"/resources/icons/x16/help.png"));
 
 		btnHelp.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -244,16 +193,6 @@ public class DynamicWindow extends Dialog {
 		});
 		
 		return container;
-	}
-
-	
-	private int initialItemCount = 0;
-	public void setInitialItemCount(int initialValue) {
-		initialItemCount = initialValue;
-	}
-
-	public Button getBtnDeleteLine() {
-		return btnRemoveLine;
 	}
 
 	private HashMap<TableItem, ArrayList<TableEditor>> tableEditorHash = new HashMap<>();
@@ -274,4 +213,6 @@ public class DynamicWindow extends Dialog {
 				usedStereotypes.add(stereotype);
 		}
 	}
+	
+	
 }

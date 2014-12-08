@@ -3,11 +3,13 @@ package br.ufes.inf.nemo.pattern.dynamic.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
@@ -17,68 +19,75 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-public class Helper {
-	private Shell shell;
+import br.ufes.inf.nemo.pattern.util.UtilPattern;
 
-	/**
-	 * @wbp.parser.entryPoint
-	 * */
-	public Helper(ArrayList<String> stereotypes) {
-		init();
-		createContents(stereotypes.get(0));
-		for (String stereotype : stereotypes) {
-			addStereotype(stereotype);
-		}
-		list.setSelection(0);
-		
-		Button btnOpenSubstanceTree = new Button(composite, SWT.NONE);
-		btnOpenSubstanceTree.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				ImagePreview.open(SWTResourceManager.getImage(Helper.class, "/resource/SubstanceSortalTree.png"));
-			}
-		});
-		btnOpenSubstanceTree.setBounds(181, 225, 141, 25);
-		btnOpenSubstanceTree.setText("Open Substance Tree");
+public class Helper extends Dialog{
+	private static Shell shell;
+
+	protected Helper(Shell parentShell){
+		super(parentShell);
+		setDefaultImage(SWTResourceManager.getImage(DynamicWindow.class,"/resources/icons/x16/sitemap.png"));
 	}
 	
-	public void open() {
-		Display display = Display.getDefault();
-		bringToFront(shell);
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
+	private String firstStereotype;
+	private ArrayList<String> stereotypes;
+	public static Helper createDialog(ArrayList<String> stereotypes) {
+		Display display = Display.getDefault();	    	
+		shell = display.getActiveShell();	
+		if(shell == null){
+			shell = new Shell(display);
 		}
-	}
+		UtilPattern.centralizeShell(display, shell);
+		Helper resultDIalog = new Helper(shell);
+		
+		resultDIalog.stereotypes =  stereotypes;
 
-	public void bringToFront(final Shell shell) {
-		shell.getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				shell.forceActive();
-			}
-		});
+		resultDIalog.create();
+		
+		return resultDIalog;
+	}
+	
+	@Override
+	public void create() {
+	    super.create();
+	    setShellStyle(SWT.TITLE);
+	    UtilPattern.bringToFront(shell);
+	    getShell().setText("Help");	    
+	}
+	
+	@Override
+	protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
+	    return null;
 	}
 
 	private List list;
 	private Composite composite;
-	/**
-	 * Create contents of the window.
-	 * @param firstStereotype 
-	 */
-	private void createContents(String firstStereotype) {
-		shell = new Shell(SWT.CLOSE & (~SWT.RESIZE) );
-		shell.setSize(599, 285);
-		shell.setText("Helper");
-		shell.setImage(SWTResourceManager.getImage(DynamicWindow.class,"/resources/icons/x16/sitemap.png"));
-		
-		composite = new Composite(shell, SWT.NONE);
+	
+	@Override
+	protected Control createDialogArea(Composite parent){
+		composite = (Composite) super.createDialogArea(parent);
 		composite.setBounds(0, 0, 596, 260);
+		composite.setLayout(null);
 		
 		list = new List(composite, SWT.BORDER);
-		list.setBounds(4, 4, 171, 215);
+		list.setBounds(11, 11, 3, 66);
+		//I don't know if it is the correct location to do this
+		//must be after the list instantiation
+		init();
+		
+		Button btnOpenSubstanceTree = new Button(composite, SWT.NONE);
+		btnOpenSubstanceTree.setBounds(11, 84, 169, 28);
+		btnOpenSubstanceTree.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				ImagePreview imgPre = ImagePreview.createDialog(SWTResourceManager.getImage(Helper.class, "/resource/SubstanceSortalTree.png"));
+				imgPre.open();
+			}
+		});
+		btnOpenSubstanceTree.setBounds(7, 225, 166, 25);
+		btnOpenSubstanceTree.setText("Open OntoUML Hierarchy");
+		
+		list.setBounds(5, 4, 171, 215);
 		list.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event ev) {
@@ -90,16 +99,18 @@ public class Helper {
 		});
 		
 		Button btnNewButton = new Button(composite, SWT.NONE);
+		btnNewButton.setBounds(11, 119, 63, 28);
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				shell.dispose();
+				close();
 			}
 		});
-		btnNewButton.setBounds(328, 225, 75, 25);
+		btnNewButton.setBounds(348, 225, 75, 25);
 		btnNewButton.setText("Close");
 		
 		currentComposite = new Composite(composite, SWT.BORDER);
+		currentComposite.setBounds(11, 154, 406, 203);
 		currentComposite.setFont(SWTResourceManager.getFont("Segoe UI", 8, SWT.NORMAL));
 		currentComposite.setBounds(181	, 4, 408, 215);
 		
@@ -112,19 +123,7 @@ public class Helper {
 		txDescription.setBounds(10, 37, 384, 164);
 		txDescription.setText(hash.get(firstStereotype)[1]);
 		txDescription.setEditable(false);
-		
-		shell.addListener(SWT.Traverse, new Listener(){
-			public void handleEvent(Event event) {
-				switch (event.detail) {
-				case SWT.TRAVERSE_ESCAPE:
-					shell.close();
-					event.detail = SWT.TRAVERSE_NONE;
-					event.doit = false;
-					break;
-				}
-			}
-		});
-		
+		return composite;
 	}
 	
 	private Composite currentComposite;
@@ -133,6 +132,13 @@ public class Helper {
 
 	private HashMap<String,String[]> hash;
 	private void init(){
+		
+		firstStereotype = stereotypes.get(0);
+		for (String stereotype : this.stereotypes) {
+			list.add(stereotype);
+		}
+		list.setSelection(0);
+		
 		String moreInformation = "\n\nSee more in G. Guizzardi, Ontological foundations for structural conceptual models. Enschede: Telematica Instituut Fundamental Research Series, 2005.";
 		
 		hash = new HashMap<>();
@@ -147,9 +153,5 @@ public class Helper {
 		hash.put("Mixin", new String[]{"Mixin > SemiRigidMixin > NonRigidMixin > Mixin > Substantial","A <<Mixin>> epresents properties which are essential to some of its instances and accidental to others (semi-rigidity). An example is the mixin Seatable, which represents a property that can be considered essential to the kinds Chair and Stool, but accidental to Crate, Paper Box or Rock."+moreInformation});
 		hash.put("Mode", new String[]{"Mode > Moment", "A <<Mode>> universal is an intrinsic moment universal. Every instance of mode universal is existentially dependent of exactly one entity. Examples include skills, thoughts, beliefs, intentions, symptoms, private goals."+moreInformation});
 		hash.put("Relator", new String[]{"Relator > Moment", "A <<Relator>> universal is an intrinsic moment universal. Every instance of mode universal is existentially dependent of exactly one entity. Examples include skills, thoughts, beliefs, intentions, symptoms, private goals."+moreInformation});
-	}
-	
-	private void addStereotype(String stereotype){
-		list.add(stereotype);
 	}
 }

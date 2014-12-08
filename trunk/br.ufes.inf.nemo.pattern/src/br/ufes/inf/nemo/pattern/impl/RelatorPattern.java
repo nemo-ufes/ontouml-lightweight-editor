@@ -124,7 +124,9 @@ public class RelatorPattern extends AbstractPattern {
 					fix.includeAdded(derivation);
 				}
 			}
-		}catch(Exception e){}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 
 		return fix;
 	}

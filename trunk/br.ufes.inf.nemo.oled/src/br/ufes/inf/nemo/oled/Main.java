@@ -162,7 +162,11 @@ public final class Main {
             System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode","false");
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
         }        
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());		
+			
+        if(onMac()){
+        	System.setProperty("org.eclipse.emf.ecore.EPackage.Registry.INSTANCE", "org.eclipse.emf.ecore.impl.EPackageRegistryImpl");
+        }
+        
 		//if (!onMac()&&!onWindows()) UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");		
 		UIManager.put("TabbedPane.focus", new Color(0, 0, 0, 0));
 	
@@ -401,7 +405,7 @@ public final class Main {
 	 * @param args the command line parameters
 	 */
 	public static void main(final String[] args) 
-	{				
+	{		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {

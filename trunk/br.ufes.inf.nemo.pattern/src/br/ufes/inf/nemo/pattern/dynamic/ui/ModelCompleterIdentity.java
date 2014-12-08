@@ -1,17 +1,15 @@
 package br.ufes.inf.nemo.pattern.dynamic.ui;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -24,65 +22,49 @@ import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.pattern.impl.PrincipleOfIdentity;
 import br.ufes.inf.nemo.pattern.ui.manager.ModelCompleterManager;
-
-/*
- * TODO LIST
- * 	- Implement reuse of classes used in the current table
- * */
+import br.ufes.inf.nemo.pattern.util.UtilPattern;
 
 
 /**
  * @author Victor Amorim
  */
-public class ModelCompleterIdentity {
-	private Shell shell;
-	public Shell getShell() {
-		return shell;
-	}
-	
-	/**
-	 *  @wbp.parser.entryPoint
-	 * */
-	public ModelCompleterIdentity() {
-		init();
-	}
-	
-	private double x;
-	private double y;
-	public ModelCompleterIdentity(OntoUMLParser parser, double x, double y){
-		init();
-		ModelCompleterManager.getCompleterIdentityWindow(parser, this);
+public class ModelCompleterIdentity extends Dialog{
+	protected ModelCompleterIdentity(Shell parentShell, OntoUMLParser parser, double x, double y) {
+		super(parentShell);
+		setDefaultImage(SWTResourceManager.getImage(DynamicWindow.class,"/resources/icons/x16/sitemap.png"));
 		this.x = x;
 		this.y = y;
 	}
-	
-	private void init(){
-		display = Display.getCurrent();
-		createContents();
-		addTableHeaders();
-	}
-	
-	public void bringToFront(final Shell shell) {
-		shell.getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				shell.forceActive();
-			}
-		});
+
+	private double x;
+	private double y;
+
+	private static Shell shell;
+	public static ModelCompleterIdentity createDialog(OntoUMLParser parser, double x, double y)
+	{			
+		Display display = Display.getDefault();	    	
+		shell = display.getActiveShell();	
+		if(shell == null){
+			shell = new Shell(display);
+		}
+		UtilPattern.centralizeShell(display, shell);
+		ModelCompleterIdentity resultDIalog = new ModelCompleterIdentity(shell,parser,x,y);
+		resultDIalog.create();
+		ModelCompleterManager.getCompleterIdentityWindow(parser, resultDIalog);
+		return resultDIalog;
 	}
 
-	/**
-	 * Open the window.
-	 */
-	Display display;
-	public void open() {
-		bringToFront(shell);
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
+	@Override
+	public void create() {
+		super.create();
+		setShellStyle(SWT.TITLE);
+		UtilPattern.bringToFront(shell);
+		getShell().setText("Model Identity Completer");	    
+	}
+
+	@Override
+	protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
+		return null;
 	}
 
 	private Table table;
@@ -95,62 +77,42 @@ public class ModelCompleterIdentity {
 	 * Create contents of the window.
 	 *
 	 */
-	private void createContents() {
-		shell = new Shell(SWT.CLOSE & (~SWT.RESIZE) );
-		shell.setSize(400, 336);
-		shell.setText("Model Identity Completer");
-		shell.setImage(SWTResourceManager.getImage(ModelCompleterIdentity.class,"/resources/icons/x16/sitemap.png"));
-		shell.setLayout(new FormLayout());
-		shell.addListener(SWT.Traverse, new Listener(){
-			@Override
-			public void handleEvent(Event event) {
-				switch (event.detail) {
-				case SWT.TRAVERSE_ESCAPE:
-					shell.close();
-					event.detail = SWT.TRAVERSE_NONE;
-					event.doit = false;
-					break;
-				}
-			}
-		});
-
-		this.table = new Table(shell, SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		FormData fd_table = new FormData();
-		fd_table.left = new FormAttachment(0, 9);
-		table.setLayoutData(fd_table);
+	private Composite container;
+	@Override
+	protected Control createDialogArea(Composite parent){
+		container = (Composite) super.createDialogArea(parent);
+		container.setLayout(null);
+		
+		this.table = new Table(container, SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		table.setBounds(11, 11, 388, 34);
+		table.setBounds(9, 44, 381, 228);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 
-		Label lblSomeClassesOf = new Label(shell, SWT.NONE);
-		fd_table.right = new FormAttachment(lblSomeClassesOf, 35, SWT.RIGHT);
-		FormData fd_lblSomeClassesOf = new FormData();
-		fd_lblSomeClassesOf.left = new FormAttachment(0, 10);
-		fd_lblSomeClassesOf.top = new FormAttachment(0, 10);
-		lblSomeClassesOf.setLayoutData(fd_lblSomeClassesOf);
-		lblSomeClassesOf.setText("Some classes of the model are missing their principle of identity.");
+		addTableHeaders();
+		
+		Label lblSomeClassesOf = new Label(container, SWT.NONE);
+		lblSomeClassesOf.setBounds(10, 10, 380, 14);
+		lblSomeClassesOf.setBounds(10, 10, 345, 14);
+		lblSomeClassesOf.setText("Some classes of the model are missing their principle of identity.    ");
 
-		lblSelectTheSpecific = new Label(shell, SWT.NONE);
-		fd_table.top = new FormAttachment(lblSelectTheSpecific, 5);
-		FormData fd_lblSelectTheSpecific = new FormData();
-		fd_lblSelectTheSpecific.top = new FormAttachment(lblSomeClassesOf, 1);
-		fd_lblSelectTheSpecific.left = new FormAttachment(0, 11);
-		lblSelectTheSpecific.setLayoutData(fd_lblSelectTheSpecific);
-		lblSelectTheSpecific.setText("Select the specific class above and apply some pattern to them.");
+		lblSelectTheSpecific = new Label(container, SWT.NONE);
+		lblSelectTheSpecific.setBounds(11, 25, 366, 14);
+		lblSelectTheSpecific.setBounds(11, 25, 344, 14);
+		lblSelectTheSpecific.setText("Select the specific class above and apply some pattern to them.    ");
 
-		Button btnClose = new Button(shell, SWT.NONE);
+		Button btnClose = new Button(container, SWT.NONE);
+		btnClose.setBounds(11, 94, 63, 28);
+		btnClose.setBounds(139, 279, 123, 28);
 		btnClose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
-				shell.dispose();
+				close();
 			}
 		});
-		fd_table.bottom = new FormAttachment(100, -42);
-		FormData fd_btnClose = new FormData();
-		fd_btnClose.top = new FormAttachment(table, 7);
-		fd_btnClose.right = new FormAttachment(100, -138);
-		fd_btnClose.left = new FormAttachment(0, 139);
-		btnClose.setLayoutData(fd_btnClose);
 		btnClose.setText("Close");
+
+		return container;
 	}
 
 	private void addTableHeaders() {
@@ -166,18 +128,18 @@ public class ModelCompleterIdentity {
 		column.setWidth(99);
 		column.setText("Action");
 	}
-	
+
 	private Fix fix = null;
 	public Fix getFix(){
 		return fix;
 	}
-	
+
 	public void addLine(final OntoUMLParser parser, final Classifier c){
 		TableItem tableItem = new TableItem(table, SWT.NONE);
 
 		//Name
 		tableItem.setText(0, UtilAssistant.getStringRepresentationClass(c));
-		
+
 		//Stereotype
 		tableItem.setText(1, UtilAssistant.getStringRepresentationStereotype(c));
 
@@ -191,7 +153,7 @@ public class ModelCompleterIdentity {
 				PrincipleOfIdentity win = new PrincipleOfIdentity(parser, c,x,y);
 				win.runPattern();
 				fix = win.getFix();
-				shell.dispose();
+				close();
 			}
 		});
 		btn.pack ();

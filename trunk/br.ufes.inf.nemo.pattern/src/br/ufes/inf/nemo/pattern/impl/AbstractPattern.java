@@ -40,7 +40,7 @@ public abstract class AbstractPattern {
 
 	protected Classifier createClassifier(String name, String stereotype, double x, double y){
 		ClassStereotype enumStereotype = ClassStereotype.valueOf(stereotype.toUpperCase());
-
+		
 		RefOntoUML.Classifier classifier = (Classifier) outcomeFixer.createClass(enumStereotype);
 		classifier.setName(name);
 		parser.getModel().getPackagedElement().add(classifier);
@@ -86,20 +86,19 @@ public abstract class AbstractPattern {
 				if(specific != null){
 					if(general != null){
 						_fix = outcomeFixer.createGeneralization(specific, general);
+						fix.addAll(_fix);
 						Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
 						generalizationList.add(generalization);
-						
 					}
 					i++;
 				}
 			}
 
 			if(general != null){//not_activate = false
-				fix.addAll(_fix);
 				fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"+UtilAssistant.getCont()));
 			}
 		}catch(Exception e){
-			//Do nothing, totally safe ;-)
+			e.printStackTrace();
 		}
 		return fix;
 	}
@@ -117,10 +116,13 @@ public abstract class AbstractPattern {
 		this.imagePath = imagePath;
 		
     	dm = DynamicWindow.createDialog(title, imagePath);
-//		dm = new DynamicWindow(imagePath, title);
 		dym = new DynamicManagerWindow(dm);
 	}
 	
 	public abstract void runPattern();
 	public abstract Fix getFix();
+
+	public boolean canGetFix() {
+		return dym.wasPerformed();
+	}
 }

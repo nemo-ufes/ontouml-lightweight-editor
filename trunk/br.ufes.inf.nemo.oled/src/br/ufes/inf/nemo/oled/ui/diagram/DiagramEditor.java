@@ -484,6 +484,8 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	/**
 	 * Paints the component into a non-screen Graphics object.
 	 * @param g the Graphics object
+	 * @param origin 
+	 * @param end 
 	 */
 	public void paintComponentNonScreen(Graphics g) 
 	{
@@ -521,7 +523,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		bounds = new Rectangle((int)width,(int)height);
 		clearScreen(g, bounds, background);
 		getDrawingContext().setGraphics2D(g2d, bounds);				
-		diagram.draw(getDrawingContext());
+		diagram.draw(getDrawingContext(), toScreen);
 		// Draw user interface specific allElements (e.g. selections)
 		if (toScreen) {
 			editorMode.draw(getDrawingContext());
@@ -745,7 +747,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 */
 	public Dimension getTotalCanvasSize() 
 	{		
-		Dimension result = new Dimension();		
+		Dimension result = new Dimension();	
 		result.width = (int) (diagram.getSize().getWidth() + MARGIN_LEFT + MARGIN_RIGHT);
 		result.height = (int) (diagram.getSize().getHeight() + MARGIN_TOP + MARGIN_BOTTOM);
 		return result;
@@ -753,27 +755,7 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 
 	public ArrayList<Point> getUsedCanvasSize()
 	{
-		ArrayList<Point> result = new ArrayList<Point>();		
-		double x1=10000,x2=0,y1=10000,y2=0;
-		for(DiagramElement elem: getDiagram().getChildren())
-		{
-			if(elem instanceof ClassElement){
-				ClassElement ce = (ClassElement)elem;
-				if(ce.getAbsoluteX1()<x1) x1 = ce.getAbsoluteX1();
-				if(ce.getAbsoluteX2()>x2) x2 = ce.getAbsoluteX2();
-				if(ce.getAbsoluteY2()>y2) y2 = ce.getAbsoluteY2();
-				if(ce.getAbsoluteY1()<y1) y1 = ce.getAbsoluteY1();				
-			}
-		}
-		Point origin = new Point();
-		Point end = new Point();
-		origin.x=(int)x1;
-		origin.y=(int)y1;		
-		end.x = (int)(x2);
-		end.y = (int)(y2);
-		result.add(origin);
-		result.add(end);
-		return result;
+		return getDiagram().getUsedCanvasSize();
 	}
 	
 	// ************************************************************************

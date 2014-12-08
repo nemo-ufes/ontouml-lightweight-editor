@@ -25,20 +25,26 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.model.UmlDiagram;
+import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.palette.ColorPalette.ThemeColor;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditorCommandDispatcher;
+import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
+import br.ufes.inf.nemo.oled.util.IconLoader;
 
 /**
  * This class provides an accordion pane for accomodating the many allElements 
@@ -120,7 +126,7 @@ public class PaletteAccordion extends JPanel{
 		render();
 	}
 	
-	private void render()
+	public void render()
 	{
 		boolean found = false;
 
@@ -180,6 +186,10 @@ public class PaletteAccordion extends JPanel{
 	public Palette getPatternsPalette()
 	{
 		return paletteMap.get("Patterns");
+	}
+	
+	public Map<String, Palette> getPaletteMap() {
+		return paletteMap;
 	}
 	
 	private void createOntoUMLPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher) 
@@ -290,6 +300,29 @@ public class PaletteAccordion extends JPanel{
 		elementsPalette.sort();
 	}
 
+	public Palette createDomainPalette(UmlProject patternProject,HashMap<PaletteElement, StructureDiagram> dynamicHash, DiagramEditorCommandDispatcher dispatcher){
+		Icon icon = IconLoader.getInstance().getIcon("PATTERN");
+		
+		String pelleteName = "Domain Patterns";
+		Palette domainPallete = new Palette(this, pelleteName);
+		
+		for(UmlDiagram umlDiagram: patternProject.getDiagrams()){
+			StructureDiagram diagram =  (StructureDiagram)umlDiagram;
+				PaletteElement paletteElement = domainPallete.createStaticElement(icon, diagram.getName(), "");
+				dynamicHash.put(paletteElement, diagram);
+		}
+		
+		domainPallete.addCommandListener(dispatcher);
+		paletteMap.put(pelleteName, domainPallete);
+		
+		openPalette = pelleteName;
+		
+		domainPallete.sort();
+		this.render();
+
+		return domainPallete;
+	}
+	
 	@SuppressWarnings("unused")
 	private void createStaticRelationshipsPalette(DiagramEditorCommandDispatcher editorDispatcher)
 	{

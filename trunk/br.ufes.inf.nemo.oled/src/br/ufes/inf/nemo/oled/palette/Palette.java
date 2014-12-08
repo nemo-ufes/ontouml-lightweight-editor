@@ -71,6 +71,10 @@ public class Palette extends JPanel
 		createContent();
 	}
 	
+	public Map<String, PaletteElement> getElementMap() {
+		return elementMap;
+	}
+	
 	private void createContent()
 	{
 		content = new JPanel();
@@ -118,6 +122,12 @@ public class Palette extends JPanel
 		elementMap.put(name, element);
 		//content.add(element);
 		//content.add(PaletteAccordion.getSpacer(0,1));
+		return element;
+	}
+	
+	public PaletteElement createStaticElement(Icon icon, String caption, String type ){
+		PaletteElement element = new PaletteElement(icon, caption, "DOMAIN_PATTERN", this,type);
+		elementMap.put(caption, element);
 		return element;
 	}
 	
