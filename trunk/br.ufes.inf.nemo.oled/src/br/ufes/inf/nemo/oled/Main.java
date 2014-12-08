@@ -64,8 +64,8 @@ public final class Main {
 	
 	public static AppFrame frame; 
 
-	public static String OLED_VERSION = "1.0.03"; 
-	public static String OLED_COMPILATION_DATE = "Nov 26 2014";	
+	public static String OLED_VERSION = "1.0.04"; 
+	public static String OLED_COMPILATION_DATE = "Dec 08 2014";	
 	
 	public static boolean USE_LOG_FILE = false;
 	public static PrintStream psOut;
@@ -162,9 +162,11 @@ public final class Main {
             System.setProperty("com.apple.eawt.CocoaComponent.CompatibilityMode","false");
             System.setProperty("apple.awt.fileDialogForDirectories", "true");
         }        
-			
+		
         if(onMac()){
         	System.setProperty("org.eclipse.emf.ecore.EPackage.Registry.INSTANCE", "org.eclipse.emf.ecore.impl.EPackageRegistryImpl");
+        }else{
+        	UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());	
         }
         
 		//if (!onMac()&&!onWindows()) UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");		
