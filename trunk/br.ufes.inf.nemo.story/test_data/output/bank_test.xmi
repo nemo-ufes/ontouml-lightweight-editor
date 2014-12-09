@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?>
+<stories:Story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stories="http://stories.bernardofbbraga.com.br">
+  <elements xsi:type="stories:Node" label="John" present_in="bank_test.xmi#w1 bank_test.xmi#w2" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/bank.refontouml#_bkTNalL3EeSwC7I6pUJ5UQ"/>
+  <elements xsi:type="stories:Node" label="Santander" present_in="bank_test.xmi#w1 bank_test.xmi#w2" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/bank.refontouml#_bkTNTlL3EeSwC7I6pUJ5UQ"/>
+  <elements xsi:type="stories:Node" label="Johns_Account" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/bank.refontouml#_bkTNS1L3EeSwC7I6pUJ5UQ"/>
+  <elements xsi:type="stories:Node" label="UFES_Santander_ATM" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/bank.refontouml#_bkTNRFL3EeSwC7I6pUJ5UQ"/>
+  <elements xsi:type="stories:Node" label="withdraw"/>
+  <elements xsi:type="stories:World" label="w1"/>
+  <elements xsi:type="stories:World" label="w2"/>
+  <elements xsi:type="stories:Link" label="Link8" present_in="bank_test.xmi#w1 bank_test.xmi#w2" source="bank_test.xmi#Santander" target="bank_test.xmi#Johns_Account"/>
+  <elements xsi:type="stories:Link" label="Link9" present_in="bank_test.xmi#w1 bank_test.xmi#w2" source="bank_test.xmi#Johns_Account" target="bank_test.xmi#John"/>
+  <elements xsi:type="stories:Link" label="Link10" present_in="bank_test.xmi#w2" absent_from="bank_test.xmi#w1" source="bank_test.xmi#UFES_Santander_ATM" target="bank_test.xmi#withdraw"/>
+  <elements xsi:type="stories:Link" label="Link11" present_in="bank_test.xmi#w2" absent_from="bank_test.xmi#w1" source="bank_test.xmi#withdraw" target="bank_test.xmi#Johns_Account"/>
+</stories:Story>
