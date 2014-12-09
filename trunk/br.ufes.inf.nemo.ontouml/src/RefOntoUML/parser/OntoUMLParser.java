@@ -555,6 +555,20 @@ public class OntoUMLParser {
 		}		
 		return result;
 	}
+	
+	/** Return all relationship classes. */
+	public Set<Classifier> getAssociations()
+	{
+		Set<Classifier> list = new HashSet<Classifier>();		
+		for (EObject obj : getElements())
+		{
+			if((obj instanceof Association))				
+			list.add((Classifier)obj);			
+		}		
+		return list;
+	}
+	
+	
 			
 	/**Return all rigid, selected classes of the model. */
 	public Set<Classifier> getRigidClasses()
