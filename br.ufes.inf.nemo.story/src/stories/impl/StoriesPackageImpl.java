@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import stories.Action;
 import stories.AllDifferent;
@@ -283,6 +284,15 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getNode_Not_instance_of() {
+		return (EReference)nodeEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getLink() {
 		return linkEClass;
 	}
@@ -312,6 +322,15 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 	 */
 	public EReference getLink_Instance_of() {
 		return (EReference)linkEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getLink_Not_instance_of() {
+		return (EReference)linkEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -526,6 +545,15 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getNode_state_Label() {
+		return (EAttribute)node_stateEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public StoriesFactory getStoriesFactory() {
 		return (StoriesFactory)getEFactoryInstance();
 	}
@@ -563,11 +591,13 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 		createEReference(nodeEClass, NODE__PERFORMED);
 		createEReference(nodeEClass, NODE__INSTANCE_OF);
 		createEReference(nodeEClass, NODE__STATES);
+		createEReference(nodeEClass, NODE__NOT_INSTANCE_OF);
 
 		linkEClass = createEClass(LINK);
 		createEReference(linkEClass, LINK__SOURCE);
 		createEReference(linkEClass, LINK__TARGET);
 		createEReference(linkEClass, LINK__INSTANCE_OF);
+		createEReference(linkEClass, LINK__NOT_INSTANCE_OF);
 
 		worldEClass = createEClass(WORLD);
 		createEReference(worldEClass, WORLD__ENABLED);
@@ -598,6 +628,7 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 		createEReference(node_stateEClass, NODE_STATE__CLASSIFIED_IN);
 		createEReference(node_stateEClass, NODE_STATE__NOT_CLASSIFIED_IN);
 		createEReference(node_stateEClass, NODE_STATE__ANTI_RIGID_CLASSES);
+		createEAttribute(node_stateEClass, NODE_STATE__LABEL);
 	}
 
 	/**
@@ -625,6 +656,7 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 
 		// Obtain other dependent packages
 		RefOntoUMLPackage theRefOntoUMLPackage = (RefOntoUMLPackage)EPackage.Registry.INSTANCE.getEPackage(RefOntoUMLPackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
 		// Create type parameters
 
@@ -639,7 +671,6 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 		happeningEClass.getESuperTypes().add(this.getEvent());
 		actionEClass.getESuperTypes().add(this.getEvent());
 		allDifferentEClass.getESuperTypes().add(this.getStory_element());
-		node_stateEClass.getESuperTypes().add(this.getStory_element());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(storyEClass, Story.class, "Story", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -656,11 +687,13 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 		initEReference(getNode_Performed(), this.getAction(), this.getAction_Performed_by(), "performed", null, 0, -1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getNode_Instance_of(), theRefOntoUMLPackage.getClass_(), null, "instance_of", null, 0, -1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getNode_States(), this.getNode_state(), null, "states", null, 0, -1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNode_Not_instance_of(), theRefOntoUMLPackage.getClass_(), null, "not_instance_of", null, 0, -1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(linkEClass, Link.class, "Link", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getLink_Source(), this.getNode(), null, "source", null, 1, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLink_Target(), this.getNode(), null, "target", null, 1, 1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getLink_Instance_of(), theRefOntoUMLPackage.getAssociation(), null, "instance_of", null, 0, -1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLink_Not_instance_of(), theRefOntoUMLPackage.getAssociation(), null, "not_instance_of", null, 0, -1, Link.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(worldEClass, World.class, "World", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getWorld_Enabled(), this.getEvent(), this.getEvent_Happened_in(), "enabled", null, 0, -1, World.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -691,6 +724,7 @@ public class StoriesPackageImpl extends EPackageImpl implements StoriesPackage {
 		initEReference(getNode_state_Classified_in(), this.getWorld(), null, "classified_in", null, 0, -1, Node_state.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getNode_state_Not_classified_in(), this.getWorld(), null, "not_classified_in", null, 0, -1, Node_state.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getNode_state_AntiRigidClasses(), theRefOntoUMLPackage.getClass_(), null, "antiRigidClasses", null, 1, -1, Node_state.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNode_state_Label(), theEcorePackage.getEString(), "label", null, 0, 1, Node_state.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

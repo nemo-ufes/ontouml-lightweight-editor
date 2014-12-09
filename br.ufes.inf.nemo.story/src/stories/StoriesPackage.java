@@ -295,13 +295,22 @@ public interface StoriesPackage extends EPackage {
 	int NODE__STATES = INDIVIDUAL_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Not instance of</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE__NOT_INSTANCE_OF = INDIVIDUAL_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Node</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_FEATURE_COUNT = INDIVIDUAL_FEATURE_COUNT + 3;
+	int NODE_FEATURE_COUNT = INDIVIDUAL_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Node</em>' class.
@@ -395,13 +404,22 @@ public interface StoriesPackage extends EPackage {
 	int LINK__INSTANCE_OF = INDIVIDUAL_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Not instance of</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LINK__NOT_INSTANCE_OF = INDIVIDUAL_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Link</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LINK_FEATURE_COUNT = INDIVIDUAL_FEATURE_COUNT + 3;
+	int LINK_FEATURE_COUNT = INDIVIDUAL_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Link</em>' class.
@@ -808,22 +826,13 @@ public interface StoriesPackage extends EPackage {
 	int NODE_STATE = 10;
 
 	/**
-	 * The feature id for the '<em><b>Label</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int NODE_STATE__LABEL = STORY_ELEMENT__LABEL;
-
-	/**
 	 * The feature id for the '<em><b>Classified in</b></em>' reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_STATE__CLASSIFIED_IN = STORY_ELEMENT_FEATURE_COUNT + 0;
+	int NODE_STATE__CLASSIFIED_IN = 0;
 
 	/**
 	 * The feature id for the '<em><b>Not classified in</b></em>' reference list.
@@ -832,7 +841,7 @@ public interface StoriesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_STATE__NOT_CLASSIFIED_IN = STORY_ELEMENT_FEATURE_COUNT + 1;
+	int NODE_STATE__NOT_CLASSIFIED_IN = 1;
 
 	/**
 	 * The feature id for the '<em><b>Anti Rigid Classes</b></em>' reference list.
@@ -841,7 +850,16 @@ public interface StoriesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_STATE__ANTI_RIGID_CLASSES = STORY_ELEMENT_FEATURE_COUNT + 2;
+	int NODE_STATE__ANTI_RIGID_CLASSES = 2;
+
+	/**
+	 * The feature id for the '<em><b>Label</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NODE_STATE__LABEL = 3;
 
 	/**
 	 * The number of structural features of the '<em>Node state</em>' class.
@@ -850,7 +868,7 @@ public interface StoriesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_STATE_FEATURE_COUNT = STORY_ELEMENT_FEATURE_COUNT + 3;
+	int NODE_STATE_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Node state</em>' class.
@@ -859,7 +877,7 @@ public interface StoriesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int NODE_STATE_OPERATION_COUNT = STORY_ELEMENT_OPERATION_COUNT + 0;
+	int NODE_STATE_OPERATION_COUNT = 0;
 
 	/**
 	 * Returns the meta object for class '{@link stories.Story <em>Story</em>}'.
@@ -991,6 +1009,17 @@ public interface StoriesPackage extends EPackage {
 	EReference getNode_States();
 
 	/**
+	 * Returns the meta object for the reference list '{@link stories.Node#getNot_instance_of <em>Not instance of</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Not instance of</em>'.
+	 * @see stories.Node#getNot_instance_of()
+	 * @see #getNode()
+	 * @generated
+	 */
+	EReference getNode_Not_instance_of();
+
+	/**
 	 * Returns the meta object for class '{@link stories.Link <em>Link</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1032,6 +1061,17 @@ public interface StoriesPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getLink_Instance_of();
+
+	/**
+	 * Returns the meta object for the reference list '{@link stories.Link#getNot_instance_of <em>Not instance of</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Not instance of</em>'.
+	 * @see stories.Link#getNot_instance_of()
+	 * @see #getLink()
+	 * @generated
+	 */
+	EReference getLink_Not_instance_of();
 
 	/**
 	 * Returns the meta object for class '{@link stories.World <em>World</em>}'.
@@ -1280,6 +1320,17 @@ public interface StoriesPackage extends EPackage {
 	EReference getNode_state_AntiRigidClasses();
 
 	/**
+	 * Returns the meta object for the attribute '{@link stories.Node_state#getLabel <em>Label</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Label</em>'.
+	 * @see stories.Node_state#getLabel()
+	 * @see #getNode_state()
+	 * @generated
+	 */
+	EAttribute getNode_state_Label();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1405,6 +1456,14 @@ public interface StoriesPackage extends EPackage {
 		EReference NODE__STATES = eINSTANCE.getNode_States();
 
 		/**
+		 * The meta object literal for the '<em><b>Not instance of</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference NODE__NOT_INSTANCE_OF = eINSTANCE.getNode_Not_instance_of();
+
+		/**
 		 * The meta object literal for the '{@link stories.impl.LinkImpl <em>Link</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1437,6 +1496,14 @@ public interface StoriesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference LINK__INSTANCE_OF = eINSTANCE.getLink_Instance_of();
+
+		/**
+		 * The meta object literal for the '<em><b>Not instance of</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference LINK__NOT_INSTANCE_OF = eINSTANCE.getLink_Not_instance_of();
 
 		/**
 		 * The meta object literal for the '{@link stories.impl.WorldImpl <em>World</em>}' class.
@@ -1635,6 +1702,14 @@ public interface StoriesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference NODE_STATE__ANTI_RIGID_CLASSES = eINSTANCE.getNode_state_AntiRigidClasses();
+
+		/**
+		 * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute NODE_STATE__LABEL = eINSTANCE.getNode_state_Label();
 
 	}
 

@@ -4,8 +4,11 @@ package stories.impl;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 import stories.Node;
@@ -23,12 +26,13 @@ import stories.World;
  *   <li>{@link stories.impl.Node_stateImpl#getClassified_in <em>Classified in</em>}</li>
  *   <li>{@link stories.impl.Node_stateImpl#getNot_classified_in <em>Not classified in</em>}</li>
  *   <li>{@link stories.impl.Node_stateImpl#getAntiRigidClasses <em>Anti Rigid Classes</em>}</li>
+ *   <li>{@link stories.impl.Node_stateImpl#getLabel <em>Label</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class Node_stateImpl extends Story_elementImpl implements Node_state {
+public class Node_stateImpl extends MinimalEObjectImpl.Container implements Node_state {
 	/**
 	 * The cached value of the '{@link #getClassified_in() <em>Classified in</em>}' reference list.
 	 * <!-- begin-user-doc -->
@@ -58,6 +62,26 @@ public class Node_stateImpl extends Story_elementImpl implements Node_state {
 	 * @ordered
 	 */
 	protected EList<RefOntoUML.Class> antiRigidClasses;
+
+	/**
+	 * The default value of the '{@link #getLabel() <em>Label</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLabel()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String LABEL_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getLabel() <em>Label</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLabel()
+	 * @generated
+	 * @ordered
+	 */
+	protected String label = LABEL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -119,6 +143,27 @@ public class Node_stateImpl extends Story_elementImpl implements Node_state {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLabel(String newLabel) {
+		String oldLabel = label;
+		label = newLabel;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, StoriesPackage.NODE_STATE__LABEL, oldLabel, label));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -128,6 +173,8 @@ public class Node_stateImpl extends Story_elementImpl implements Node_state {
 				return getNot_classified_in();
 			case StoriesPackage.NODE_STATE__ANTI_RIGID_CLASSES:
 				return getAntiRigidClasses();
+			case StoriesPackage.NODE_STATE__LABEL:
+				return getLabel();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -153,6 +200,9 @@ public class Node_stateImpl extends Story_elementImpl implements Node_state {
 				getAntiRigidClasses().clear();
 				getAntiRigidClasses().addAll((Collection<? extends RefOntoUML.Class>)newValue);
 				return;
+			case StoriesPackage.NODE_STATE__LABEL:
+				setLabel((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -174,6 +224,9 @@ public class Node_stateImpl extends Story_elementImpl implements Node_state {
 			case StoriesPackage.NODE_STATE__ANTI_RIGID_CLASSES:
 				getAntiRigidClasses().clear();
 				return;
+			case StoriesPackage.NODE_STATE__LABEL:
+				setLabel(LABEL_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -192,8 +245,26 @@ public class Node_stateImpl extends Story_elementImpl implements Node_state {
 				return not_classified_in != null && !not_classified_in.isEmpty();
 			case StoriesPackage.NODE_STATE__ANTI_RIGID_CLASSES:
 				return antiRigidClasses != null && !antiRigidClasses.isEmpty();
+			case StoriesPackage.NODE_STATE__LABEL:
+				return LABEL_EDEFAULT == null ? label != null : !LABEL_EDEFAULT.equals(label);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (label: ");
+		result.append(label);
+		result.append(')');
+		return result.toString();
 	}
 
 	private String isClassifiedIn(Node n, RefOntoUML.Class c, World w){
