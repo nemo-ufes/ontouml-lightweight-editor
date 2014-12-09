@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ASCII"?>
+<stories:Story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stories="http://stories.bernardofbbraga.com.br">
+  <elements xsi:type="stories:Node" label="John" present_in="artefato_test.xmi#w1 artefato_test.xmi#w2">
+    <states label="element13" not_classified_in="artefato_test.xmi#w1"/>
+  </elements>
+  <elements xsi:type="stories:Node" label="Mary" different_from="stories:Node artefato_test.xmi#John" present_in="artefato_test.xmi#w1 artefato_test.xmi#w2" absent_from="artefato_test.xmi#w3">
+    <states label="element12" classified_in="artefato_test.xmi#w1"/>
+  </elements>
+  <elements xsi:type="stories:Node" label="Onto1" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/artefato.refontouml#_mCw8SRv5EeS8wNhcENAcgQ"/>
+  <elements xsi:type="stories:Node" label="Doc1" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/artefato.refontouml#_mCw8SRv5EeS8wNhcENAcgQ"/>
+  <elements xsi:type="stories:Node" label="Diag1" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/artefato.refontouml#_mCw8SRv5EeS8wNhcENAcgQ"/>
+  <elements xsi:type="stories:Node" label="Diag2" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/artefato.refontouml#_mCw8SRv5EeS8wNhcENAcgQ"/>
+  <elements xsi:type="stories:World" label="w1"/>
+  <elements xsi:type="stories:World" label="w2"/>
+  <elements xsi:type="stories:World" label="w3"/>
+  <elements xsi:type="stories:Link" label="Link10" present_in="artefato_test.xmi#w2" absent_from="artefato_test.xmi#w1" source="artefato_test.xmi#John" target="artefato_test.xmi#Doc1"/>
+  <elements xsi:type="stories:Link" label="Link11" source="artefato_test.xmi#Mary" target="artefato_test.xmi#Doc1"/>
+</stories:Story>

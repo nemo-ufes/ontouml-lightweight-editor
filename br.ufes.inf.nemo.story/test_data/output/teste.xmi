@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ASCII"?>
+<stories:Story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stories="http://stories.bernardofbbraga.com.br">
+  <elements xsi:type="stories:Node" label="Node 1"/>
+  <elements xsi:type="stories:Node" label="Node 2">
+    <states label="State 1"/>
+    <states label="State 2"/>
+    <states label="State 3"/>
+  </elements>
+  <elements xsi:type="stories:Node" label="Node 3" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/artefato.refontouml#_mCw8Rhv5EeS8wNhcENAcgQ file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/artefato.refontouml#_mCxjVhv5EeS8wNhcENAcgQ" not_instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/artefato.refontouml#_mCw8RRv5EeS8wNhcENAcgQ file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/artefato.refontouml#_mCw8Rhv5EeS8wNhcENAcgQ">
+    <states label="State 1"/>
+    <states label="State 2"/>
+    <states label="State 3"/>
+  </elements>
+  <elements xsi:type="stories:Node" label="Node 4">
+    <states label="State 1"/>
+    <states label="State 2"/>
+    <states label="State 3"/>
+  </elements>
+  <elements xsi:type="stories:World" label="World 0" next="teste.xmi#World 1"/>
+  <elements xsi:type="stories:World" label="World 1" next="teste.xmi#World 2" prev="teste.xmi#World 0"/>
+  <elements xsi:type="stories:World" label="World 2" prev="teste.xmi#World 1"/>
+</stories:Story>
