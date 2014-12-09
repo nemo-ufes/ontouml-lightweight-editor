@@ -28,6 +28,7 @@ import stories.World;
  *   <li>{@link stories.impl.LinkImpl#getSource <em>Source</em>}</li>
  *   <li>{@link stories.impl.LinkImpl#getTarget <em>Target</em>}</li>
  *   <li>{@link stories.impl.LinkImpl#getInstance_of <em>Instance of</em>}</li>
+ *   <li>{@link stories.impl.LinkImpl#getNot_instance_of <em>Not instance of</em>}</li>
  * </ul>
  * </p>
  *
@@ -64,6 +65,16 @@ public class LinkImpl extends IndividualImpl implements Link {
 	 * @ordered
 	 */
 	protected EList<Association> instance_of;
+
+	/**
+	 * The cached value of the '{@link #getNot_instance_of() <em>Not instance of</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNot_instance_of()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<Association> not_instance_of;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -183,6 +194,18 @@ public class LinkImpl extends IndividualImpl implements Link {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<Association> getNot_instance_of() {
+		if (not_instance_of == null) {
+			not_instance_of = new EObjectResolvingEList<Association>(Association.class, this, StoriesPackage.LINK__NOT_INSTANCE_OF);
+		}
+		return not_instance_of;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -194,6 +217,8 @@ public class LinkImpl extends IndividualImpl implements Link {
 				return basicGetTarget();
 			case StoriesPackage.LINK__INSTANCE_OF:
 				return getInstance_of();
+			case StoriesPackage.LINK__NOT_INSTANCE_OF:
+				return getNot_instance_of();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -217,6 +242,10 @@ public class LinkImpl extends IndividualImpl implements Link {
 				getInstance_of().clear();
 				getInstance_of().addAll((Collection<? extends Association>)newValue);
 				return;
+			case StoriesPackage.LINK__NOT_INSTANCE_OF:
+				getNot_instance_of().clear();
+				getNot_instance_of().addAll((Collection<? extends Association>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -238,6 +267,9 @@ public class LinkImpl extends IndividualImpl implements Link {
 			case StoriesPackage.LINK__INSTANCE_OF:
 				getInstance_of().clear();
 				return;
+			case StoriesPackage.LINK__NOT_INSTANCE_OF:
+				getNot_instance_of().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -256,6 +288,8 @@ public class LinkImpl extends IndividualImpl implements Link {
 				return target != null;
 			case StoriesPackage.LINK__INSTANCE_OF:
 				return instance_of != null && !instance_of.isEmpty();
+			case StoriesPackage.LINK__NOT_INSTANCE_OF:
+				return not_instance_of != null && !not_instance_of.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

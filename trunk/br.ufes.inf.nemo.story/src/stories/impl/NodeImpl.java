@@ -2,7 +2,6 @@
  */
 package stories.impl;
 
-import RefOntoUML.Class;
 import java.util.Collection;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -17,6 +16,7 @@ import stories.Node;
 import stories.Node_state;
 import stories.StoriesPackage;
 import stories.World;
+import RefOntoUML.*;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,6 +28,7 @@ import stories.World;
  *   <li>{@link stories.impl.NodeImpl#getPerformed <em>Performed</em>}</li>
  *   <li>{@link stories.impl.NodeImpl#getInstance_of <em>Instance of</em>}</li>
  *   <li>{@link stories.impl.NodeImpl#getStates <em>States</em>}</li>
+ *   <li>{@link stories.impl.NodeImpl#getNot_instance_of <em>Not instance of</em>}</li>
  * </ul>
  * </p>
  *
@@ -64,6 +65,16 @@ public class NodeImpl extends IndividualImpl implements Node {
 	 * @ordered
 	 */
 	protected EList<Node_state> states;
+
+	/**
+	 * The cached value of the '{@link #getNot_instance_of() <em>Not instance of</em>}' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNot_instance_of()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<RefOntoUML.Class> not_instance_of;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -130,6 +141,18 @@ public class NodeImpl extends IndividualImpl implements Node {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<RefOntoUML.Class> getNot_instance_of() {
+		if (not_instance_of == null) {
+			not_instance_of = new EObjectResolvingEList<RefOntoUML.Class>(RefOntoUML.Class.class, this, StoriesPackage.NODE__NOT_INSTANCE_OF);
+		}
+		return not_instance_of;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -170,6 +193,8 @@ public class NodeImpl extends IndividualImpl implements Node {
 				return getInstance_of();
 			case StoriesPackage.NODE__STATES:
 				return getStates();
+			case StoriesPackage.NODE__NOT_INSTANCE_OF:
+				return getNot_instance_of();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -195,6 +220,10 @@ public class NodeImpl extends IndividualImpl implements Node {
 				getStates().clear();
 				getStates().addAll((Collection<? extends Node_state>)newValue);
 				return;
+			case StoriesPackage.NODE__NOT_INSTANCE_OF:
+				getNot_instance_of().clear();
+				getNot_instance_of().addAll((Collection<? extends RefOntoUML.Class>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -216,6 +245,9 @@ public class NodeImpl extends IndividualImpl implements Node {
 			case StoriesPackage.NODE__STATES:
 				getStates().clear();
 				return;
+			case StoriesPackage.NODE__NOT_INSTANCE_OF:
+				getNot_instance_of().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -234,13 +266,15 @@ public class NodeImpl extends IndividualImpl implements Node {
 				return instance_of != null && !instance_of.isEmpty();
 			case StoriesPackage.NODE__STATES:
 				return states != null && !states.isEmpty();
+			case StoriesPackage.NODE__NOT_INSTANCE_OF:
+				return not_instance_of != null && !not_instance_of.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
 	
 	public String static_classification(){
 		String rule = "";
-		for(Class c : this.getInstance_of()){
+		for(RefOntoUML.Class c : this.getInstance_of()){
 			rule = rule + '\t'+ this.getLabel() + " in World." +c.getName()+'\n';
 		}
 		return  rule;

@@ -24,6 +24,8 @@
         eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Class"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="states" upperBound="-1"
         eType="#//Node_state" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="not_instance_of" upperBound="-1"
+        eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Class"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//Individual">
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
@@ -31,6 +33,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
         eType="#//Node"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="instance_of" upperBound="-1"
+        eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Association"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="not_instance_of" upperBound="-1"
         eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Association"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="World" eSuperTypes="#//Story_element">
@@ -70,12 +74,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="distinct_members" lowerBound="2"
         upperBound="-1" eType="#//Individual"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Node_state" eSuperTypes="#//Story_element">
+  <eClassifiers xsi:type="ecore:EClass" name="Node_state">
     <eStructuralFeatures xsi:type="ecore:EReference" name="classified_in" upperBound="-1"
         eType="#//World"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="not_classified_in" upperBound="-1"
         eType="#//World"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="antiRigidClasses" lowerBound="1"
         upperBound="-1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Class"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

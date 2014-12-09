@@ -17,6 +17,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link stories.Link#getSource <em>Source</em>}</li>
  *   <li>{@link stories.Link#getTarget <em>Target</em>}</li>
  *   <li>{@link stories.Link#getInstance_of <em>Instance of</em>}</li>
+ *   <li>{@link stories.Link#getNot_instance_of <em>Not instance of</em>}</li>
  * </ul>
  * </p>
  *
@@ -92,6 +93,22 @@ public interface Link extends Individual {
 	 * @generated
 	 */
 	EList<Association> getInstance_of();
+
+	/**
+	 * Returns the value of the '<em><b>Not instance of</b></em>' reference list.
+	 * The list contents are of type {@link RefOntoUML.Association}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Not instance of</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Not instance of</em>' reference list.
+	 * @see stories.StoriesPackage#getLink_Not_instance_of()
+	 * @model
+	 * @generated
+	 */
+	EList<Association> getNot_instance_of();
 
 	String existance();
 

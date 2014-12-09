@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link stories.Node#getPerformed <em>Performed</em>}</li>
  *   <li>{@link stories.Node#getInstance_of <em>Instance of</em>}</li>
  *   <li>{@link stories.Node#getStates <em>States</em>}</li>
+ *   <li>{@link stories.Node#getNot_instance_of <em>Not instance of</em>}</li>
  * </ul>
  * </p>
  *
@@ -74,6 +75,22 @@ public interface Node extends Individual {
 	 * @generated
 	 */
 	EList<Node_state> getStates();
+
+	/**
+	 * Returns the value of the '<em><b>Not instance of</b></em>' reference list.
+	 * The list contents are of type {@link RefOntoUML.Class}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Not instance of</em>' reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Not instance of</em>' reference list.
+	 * @see stories.StoriesPackage#getNode_Not_instance_of()
+	 * @model
+	 * @generated
+	 */
+	EList<RefOntoUML.Class> getNot_instance_of();
 
 	public String static_classification();
 

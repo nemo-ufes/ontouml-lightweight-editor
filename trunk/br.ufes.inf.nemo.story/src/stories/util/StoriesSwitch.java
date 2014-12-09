@@ -141,7 +141,6 @@ public class StoriesSwitch<T> extends Switch<T> {
 			case StoriesPackage.NODE_STATE: {
 				Node_state node_state = (Node_state)theEObject;
 				T result = caseNode_state(node_state);
-				if (result == null) result = caseStory_element(node_state);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
