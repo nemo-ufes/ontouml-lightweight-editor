@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.Type;
 import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.story.OntoUMLStoryCrafter;
@@ -70,9 +71,10 @@ public class StoryElementTimeline {
 	static StoriesFactory storyFactory = StoriesFactory.eINSTANCE;
 	private WorldList world_sequence;
 	private final SashForm sashForm;
+	private final OntoUMLParser modelParser;
 	
-	StoryElementTimeline(OntoUMLParser modelParser, final Composite parent, int style) throws IOException{
-		
+	StoryElementTimeline(OntoUMLParser mP, final Composite parent, int style) throws IOException{
+		this.modelParser = mP;
 		Composite btnComp = new Composite(parent, SWT.NONE);
 		btnComp.setLayout(new RowLayout(SWT.HORIZONTAL));
 		Button btnAdd = new Button(btnComp, SWT.NONE);
@@ -99,11 +101,11 @@ public class StoryElementTimeline {
 		});
 		btnSave.setText("Save Story");
 		
-		//this tree holds every story element. The story element is a row and the first column contains the element name. The other columns contain buttons that determine in which worlds the element exists
+		//the sash holds the element tree and the class editor. The sash allows to trade space between the two composites, moving the line that divides them.
 		sashForm = new SashForm(parent,SWT.SMOOTH | SWT.VERTICAL);
 		sashForm.setLayoutData(new GridData(SWT.LEFT,SWT.TOP,true,true,1,1));
 		
-		
+		//this tree holds every story element. The story element is a row and the first column contains the element name. The other columns contain buttons that determine in which worlds the element exists
 		GridData treegrid = new GridData(SWT.FILL,SWT.FILL,true,true);
 		tree = new Tree(sashForm, style);
 		tree.setLayoutData(treegrid);
@@ -140,133 +142,7 @@ public class StoryElementTimeline {
 	    tree.addListener (SWT.MouseDown, new NameEditorListener(sashForm,tree));
 	    
 	    
-	    
-	  
-		
-		
-		
-		//TODO: Fazer funcionar o scroll
-		
-		final ScrolledComposite sc = new ScrolledComposite(sashForm, SWT.H_SCROLL | SWT.V_SCROLL);
-		sc.setExpandHorizontal(true);
-		sc.setExpandVertical(true);
-		
-		
-		final Composite charEditor = new Composite(sc, SWT.BORDER);
-	    final StackLayout stacklayout =new StackLayout( ); 
-	    charEditor.setLayout(stacklayout);
-	    charEditor.setBackground(new Color(parent.getDisplay(), 240, 240, 240));
-	    sc.setContent(charEditor);
-	    sc.setMinSize(charEditor.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-	    
-	    Label lblRigidTypes = new Label(charEditor, SWT.NONE);
-		lblRigidTypes.setText("Rigid Types:");
-		 
-		 
-		final Composite linkClassEditor = new Composite(charEditor,  SWT.NONE);
-		linkClassEditor.setLayout(new GridLayout());
-		
-	    HashMap<Classifier,CLabel> LinkClassCheckboxes = new HashMap<Classifier,CLabel>();
-	    Set<Classifier> slinks = modelParser.getAssociations();
-	    for(Classifier c:slinks){
-	    	//if (c.getName() == null){
-	    		c.setName(OntoUMLNameHelper.getCompleteName(c));
-	    //}
-	    }
-	    List<Classifier> linkclassList = new LinkedList<Classifier>(slinks);
-	    Collections.sort(linkclassList, new Comparator<Classifier>(){
-	    	@Override
-	    	public int compare(Classifier c1, Classifier c2){
-	    		return (c1.getName().compareTo(c2.getName()));
-	    	}
-	    });
-	    for(Classifier c : linkclassList){
-	    	final CLabel l = new CLabel(linkClassEditor,SWT.NONE);
-	    	l.setImage(imgUnchecked);
-	    	l.setText(c.getName());
-	    	l.setData(c);
-	    	LinkClassCheckboxes.put(c, l);
-	    	l.addListener(SWT.MouseDown,new CheckboxClassListener(this));	    	
-	    }
-	    		
-	    
-	    final Composite antiRigidClassEditor = new Composite(charEditor,  SWT.NONE );
-	    antiRigidClassEditor.setLayout(new GridLayout());
-	    HashMap<Classifier,CLabel> antiRigidClassCheckboxes = new HashMap<Classifier,CLabel>();
-	    Set<Classifier> s2 = modelParser.getAntiRigidClasses();
-	    List<Classifier> arclassList = new LinkedList<Classifier>(s2);
-	    Collections.sort(arclassList, new Comparator<Classifier>(){
-	    	@Override
-	    	public int compare(Classifier c1, Classifier c2){
-	    		return (c1.getName()).compareTo(c2.getName());
-	    		
-	    	}
-	    });
-	    for(Classifier c : arclassList){
-	    	final CLabel l = new CLabel(antiRigidClassEditor,SWT.NONE);
-	    	l.setImage(imgUnchecked);
-	    	l.setText(c.getName());
-	    	l.setData(c);
-	    	antiRigidClassCheckboxes.put(c, l);
-	    	l.addListener(SWT.MouseDown,new CheckboxClassListener(this));	    	
-	    }
-	    
-	    final Composite rigidClassEditor = new Composite(charEditor, SWT.NONE );
-	    rigidClassEditor.setLayout(new GridLayout());
-	    HashMap<Classifier,CLabel> ClassCheckboxes = new HashMap<Classifier,CLabel>();
-	    Set<Classifier> s = modelParser.getRigidClasses();
-	    List<Classifier> classList = new LinkedList<Classifier>(s);
-	    Collections.sort(classList, new Comparator<Classifier>(){
-	    	@Override
-	    	public int compare(Classifier c1, Classifier c2){
-	    		return (c1.getName()).compareTo(c2.getName());
-	    	}
-	    });
-	    for(Classifier c : classList){
-	    	final CLabel l = new CLabel(rigidClassEditor,SWT.NONE);
-	    	l.setImage(imgUnchecked);
-	    	l.setText(c.getName());
-	    	l.setData(c);
-	    	ClassCheckboxes.put(c, l);
-	    	l.addListener(SWT.MouseDown,new CheckboxClassListener(this));	    	
-	    }
-	    	    
-	    stacklayout.topControl = linkClassEditor;
-	    //Listener below changes the screen for the class editor
-	    tree.addListener (SWT.Selection, new Listener(){
-
-			@Override
-			public void handleEvent(Event e) {
-				if(tree.getSelection().length == 0){
-					//no items selected. Grey out the charEditor area.
-				}
-				else if (tree.getSelection().length >1){
-					//multiple itens selected.
-					//check for item kind
-					//	if they are of different kinds (node x link x node_state), greyout the char editor area TODO:(maybe give a message in the editor area?)
-					//	else, if they are of the same kind, update the conflicting instantiations to the indeterminate state (square).
-					
-				}
-				Object o = e.item.getData();
-				if(o.getClass() == NodeImpl.class){
-					stacklayout.topControl = rigidClassEditor;
-					
-				}
-				else if (o.getClass() == LinkImpl.class){
-					stacklayout.topControl = linkClassEditor;
-					
-				}
-				else if (o.getClass() == Node_stateImpl.class){
-					stacklayout.topControl = antiRigidClassEditor;
-					
-				}
-				charEditor.layout();
-					
-			}
-			
-	    });   
-	    
-	   // sashForm.setWeights(new int[]{1,5});//TODO: achar uma forma melhor de fazer o layout
+	  	new TripleClassEditor(sashForm, this);
     	
 	}
 
@@ -496,5 +372,9 @@ public class StoryElementTimeline {
 	}
 	public Image getImgUnchecked(){
 		return imgUnchecked;
+	}
+
+	public OntoUMLParser getModelParser() {
+		return modelParser;
 	}
 }
