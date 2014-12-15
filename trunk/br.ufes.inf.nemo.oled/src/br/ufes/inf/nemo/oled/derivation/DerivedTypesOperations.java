@@ -27,6 +27,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -88,6 +89,8 @@ public class DerivedTypesOperations {
 	static DiagramManager dman;
 	static boolean gs_with_nonsortal_or_kind = false;
 	static Point2D.Double pointClicked;
+	static HashMap<Classifier, Integer> exclusionDerivationList= new HashMap<Classifier, Integer>();
+	
 
 	public static void setPointClicked(Point2D.Double pointClicked) {
 		DerivedTypesOperations.pointClicked = pointClicked;
@@ -455,334 +458,53 @@ public class DerivedTypesOperations {
 		}
 		return mainfix;
 	}
-
-	private static Fix createDerivedTypeExclusion(String stereotype_pai,
-			String stereotype_exclusion, Fix mainfix, String name,
-			ClassElement filho, UmlProject project) { // UmlProject project =
-														// getCurrentEditor().getProject();
-
-		OutcomeFixer of = new OutcomeFixer(project.getModel());
-		Classifier pai = (Classifier) of.createClass(of
-				.getClassStereotype(stereotype_pai));
-		Classifier exclusion = (Classifier) of.createClass(of
-				.getClassStereotype(stereotype_exclusion));
-		exclusion.setName(name);
-		of.copyContainer(filho.getClassifier(), exclusion);
-		of.copyContainer(filho.getClassifier(), pai);
-
-		Fix fix = of.createGeneralization(exclusion, pai);
-		Fix fix2 = of.createGeneralization(filho.getClassifier(), pai);
-		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-		generalizations.add((Generalization) fix.getAdded().get(0));
-		generalizations.add((Generalization) fix2.getAdded().get(0));
-		Fix gs = of.createGeneralizationSet(generalizations, true, true);
-		// mainfix.addAll(fixG2);
-		mainfix.addAll(fix);
-		mainfix.addAll(gs);
-		ClassElement position2 = filho;
-		Point2D.Double firstpoint = new Point2D.Double();
-		Point2D.Double secondpoint = new Point2D.Double();
-		firstpoint.setLocation(position2.getAbsoluteX1() + 100,
-				position2.getAbsoluteY1() + 50);
-		secondpoint.setLocation(position2.getAbsoluteX1(),
-				position2.getAbsoluteY1());
-		Point2D.Double newElementPosition = ClassPosition
-				.findPositionGeneralizationMember(firstpoint, secondpoint);
-		mainfix.includeAdded(exclusion, newElementPosition.getX(),
-				newElementPosition.getY());
-
-		return mainfix;
+	
+	private static void createGeneralFromExclusion(DiagramElement diagramElement) {
+//		try {
+//			ArrayList<String> stereotypes2;
+//			ArrayList<String> stereotypes = DerivedByExclusion.getInstance()
+//					.getPossibleGeneralization(c.eClass().getName());
+//			Object[] stereo;
+//			stereo = stereotypes.toArray();
+//			JPanel panel = selectStereotype(stereo, "Define the Supertype");
+//			String name1 = ((JTextField) panel.getComponents()[0])
+//					.getText();
+//			String stereotype1 = ((JComboBox) panel.getComponents()[1])
+//					.getSelectedItem().toString();
+//			stereotypes2 = DerivedByExclusion.getInstance()
+//					.inferStereotype(stereotype1, c.eClass().getName());
+//			Object[] stereo2;
+//			stereo2 = stereotypes2.toArray();
+//			JPanel panel2 = selectStereotype(stereo2,
+//					"Define the Exclusion");
+//			String name2 = ((JTextField) panel2.getComponents()[0])
+//					.getText();
+//			String stereotype2 = ((JComboBox) panel2.getComponents()[1])
+//					.getSelectedItem().toString();
+//			Classifier pai = includeElement(new Point2D.Double(
+//					((ClassElement) diagramElement).getAbsoluteX1() + 100,
+//					((ClassElement) diagramElement).getAbsoluteY1() - 100),
+//					name1, stereotype1);
+//			Classifier exclusion = includeElement(new Point2D.Double(
+//					((ClassElement) diagramElement).getAbsoluteX1() + 200,
+//					((ClassElement) diagramElement).getAbsoluteY1()),
+//					name2, stereotype2);
+//			ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
+//			// generalizations.add();
+//			Fix fix1 = of.createGeneralization(exclusion, pai);
+//			Fix fix2 = of.createGeneralization(c, pai);
+//			generalizations.add((Generalization) fix1.getAdded().get(0));
+//			generalizations.add((Generalization) fix2.getAdded().get(0));
+//			Fix gs = of
+//					.createGeneralizationSet(generalizations, true, true);
+//			mainfix.addAll(gs);
+//		} catch (Exception e) {
+//
+//			wrongSelection("It is impossible to have a type derived by exclusion in this case");
+//		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	public static Fix createExclusionDerivation(DiagramEditor activeEditor,
-			UmlProject project, DiagramManager dm) {
-		// TODO Auto-generated method stub
-		Fix mainfix = new Fix();
-		List<DiagramElement> selected = activeEditor.getSelectedElements();
-		List<ClassElement> classList = new ArrayList<ClassElement>();
-		List<GeneralizationElement> gen = new ArrayList<GeneralizationElement>();
-		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
-		int pos = 0;
-		int pos2 = 1;
-		ArrayList<String> stereotypes = new ArrayList<String>();
-		Element e = null;
-		OutcomeFixer of = new OutcomeFixer(project.getModel());
-		if (selected.size() == 1) {
-			if (selected.get(0) instanceof ClassElement) {
-				createExclusionDerivationSingleSelection(activeEditor, project,
-						dm, selected.get(0), of);
-			}
-		}
-		// else{
-		// if(selected.size()==3){
-		// for (int i = 0; i < 3; i++) {
-		// if (selected.get(i) instanceof ClassElement) {
-		// classList.add((ClassElement) selected.get(i));
-		// refontoList.add((Element) ((ClassElement)
-		// selected.get(i)).getClassifier());
-		// }
-		// if (selected.get(i) instanceof GeneralizationElement) {
-		// GeneralizationElement ge = (GeneralizationElement) selected.get(i);
-		//
-		// OntoUMLParser refparser=
-		// dm.getFrame().getBrowserManager().getProjectBrowser().getParser();
-		//
-		// for(RefOntoUML.GeneralizationSet gs :
-		// refparser.getAllInstances(RefOntoUML.GeneralizationSet.class))
-		// {
-		// if(gs.getGeneralization().contains(ge.getGeneralization())){
-		// if(gs.getGeneralization().size()>1){
-		// wrongSelection("It is not possible to derive by exclusion because this type participate in a GS with other members");
-		// return null;
-		// }
-		// }
-		//
-		// }
-		//
-		// gen.add((GeneralizationElement) ge);
-		//
-		// }
-		// }
-		//
-		// if(refontoList.size()>1){
-		//
-		// EList<Classifier> list=
-		// classList.get(0).getClassifier().getGeneral();
-		//
-		// for (Classifier classifier : list) {
-		// if(classifier==classList.get(1).getClassifier()){
-		// pos=1;
-		// pos2=0;
-		// }
-		// }
-		//
-		// }
-		//
-		// if(gen.size()==1 && classList.size()==2){
-		//
-		//
-		// if(pos==1){
-		// stereotypes=
-		// DerivedByExclusion.getInstance().inferStereotype(refontoList.get(pos).eClass().getName()
-		// , refontoList.get(pos2).eClass().getName());
-		// pos2=0;
-		// }else{
-		// stereotypes=
-		// DerivedByExclusion.getInstance().inferStereotype(refontoList.get(pos).eClass().getName()
-		// , refontoList.get(pos2).eClass().getName());
-		// pos2=1;
-		// }
-		// if(classList.get(pos).getClassifier().allChildren().size()>1){
-		// //wrongSelection("It is not possible to have the exclusion of this type because the Supertype");
-		// }else{
-		// Object[] stereo;
-		// stereo= stereotypes.toArray();
-		// JPanel panel= selectStereotype(stereo);
-		// if(stereotypes!=null){
-		// if(!(refontoList.get(pos2).eClass().getName().equals("Role") &&
-		// (refontoList.get(pos).eClass().getName().equals("Kind")) ))
-		// {
-		// String rule="context: _'"+((Classifier)
-		// refontoList.get(pos)).getName()+"'\n"+"inv: not oclIsTypeOf(_'"+((Classifier)
-		// refontoList.get(pos2)).getName()+"') implies oclIsTypeOf(_'"+((JTextField)panel.getComponents()[0]).getText()+"')";
-		// dm.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);
-		// }
-		// return
-		// createDerivedTypeExclusion(((JComboBox)panel.getComponents()[1]).getSelectedItem().toString(),
-		// mainfix, selected, ((JTextField)panel.getComponents()[0]).getText(),
-		// classList.get(pos), classList.get(pos2),gen.get(0), project);
-		// }
-		//
-		// }
-		// }
-		// else{
-		// wrongSelection("Wrong Selection, check the documentation");
-		// }
-		//
-		// }
-		// else{
-		//
-		// wrongSelection("Wrong Selection, check the documentation");
-		// }
-		// }
-		return null;
-	}
-
-	private static void createExclusionDerivationSingleSelection(
-			DiagramEditor activeEditor, UmlProject project, DiagramManager dm,
-			DiagramElement diagramElement, OutcomeFixer outf) {
-		boolean has_sortal_superclass = false;
-		dman = dm;
-		of = outf;
-		ArrayList<String> stereotypes = new ArrayList<String>();
-		ArrayList<String> stereotypes2 = new ArrayList<String>();
-
-		OntoUMLParser parser = ProjectBrowser.frame.getProjectBrowser()
-				.getParser();
-
-		Classifier c = ((ClassElement) diagramElement).getClassifier();
-
-		Fix fix = new Fix();
-		mainfix = fix;
-		ArrayList<Classifier> parents = new ArrayList<Classifier>(
-				parser.getAllParents(c));
-
-		/*
-		 * it means that it does not have a supertype
-		 */
-		if (parents == null || parents.size() == 0) {
-			try {
-				stereotypes = DerivedByExclusion.getInstance()
-						.getPossibleGeneralization(c.eClass().getName());
-				Object[] stereo;
-				stereo = stereotypes.toArray();
-				JPanel panel = selectStereotype(stereo, "Define the Supertype");
-				String name1 = ((JTextField) panel.getComponents()[0])
-						.getText();
-				String stereotype1 = ((JComboBox) panel.getComponents()[1])
-						.getSelectedItem().toString();
-				stereotypes2 = DerivedByExclusion.getInstance()
-						.inferStereotype(stereotype1, c.eClass().getName());
-				Object[] stereo2;
-				stereo2 = stereotypes2.toArray();
-				JPanel panel2 = selectStereotype(stereo2,
-						"Define the Exclusion");
-				String name2 = ((JTextField) panel2.getComponents()[0])
-						.getText();
-				String stereotype2 = ((JComboBox) panel2.getComponents()[1])
-						.getSelectedItem().toString();
-				Classifier pai = includeElement(new Point2D.Double(
-						((ClassElement) diagramElement).getAbsoluteX1() + 100,
-						((ClassElement) diagramElement).getAbsoluteY1() - 100),
-						name1, stereotype1);
-				Classifier exclusion = includeElement(new Point2D.Double(
-						((ClassElement) diagramElement).getAbsoluteX1() + 200,
-						((ClassElement) diagramElement).getAbsoluteY1()),
-						name2, stereotype2);
-				ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-				// generalizations.add();
-				Fix fix1 = of.createGeneralization(exclusion, pai);
-				Fix fix2 = of.createGeneralization(c, pai);
-				generalizations.add((Generalization) fix1.getAdded().get(0));
-				generalizations.add((Generalization) fix2.getAdded().get(0));
-				Fix gs = of
-						.createGeneralizationSet(generalizations, true, true);
-				mainfix.addAll(gs);
-			} catch (Exception e) {
-
-				wrongSelection("It is impossible to have a type derived by exclusion in this case");
-			}
-		} else {
-			ArrayList<String> exitent_supertypes = new ArrayList<String>();
-			for (Classifier parent : parents) {
-				if (parent instanceof SortalClass) {
-					has_sortal_superclass = true;
-					exitent_supertypes.add(parent.getName());
-				}
-
-				// stereotypes.add(parent.eClass().getName());
-			}
-			if (JOptionPane
-					.showConfirmDialog(
-							null,
-							"The Exclusion Pattern Needs a supertype, Do you want to use a existent supertype of this class?",
-							"WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-			    String input = (String) JOptionPane.showInputDialog(null, "Choose one of the supertypes",
-			        "Supertype of the Exclusion Derivation", JOptionPane.QUESTION_MESSAGE, null, 
-			        exitent_supertypes.toArray(), // Array of choices
-			        exitent_supertypes.get(0)); // Initial choice
-			    System.out.println();
-			    stereotypes2 = DerivedByExclusion.getInstance()
-						.inferStereotype(parents.get(exitent_supertypes.indexOf(input)).eClass().getName(), c.eClass().getName());
-				Object[] stereo2;
-				stereo2 = stereotypes2.toArray();
-				JPanel panel2 = selectStereotype(stereo2,
-						"Define the Exclusion");
-				String name2 = ((JTextField) panel2.getComponents()[0])
-						.getText();
-				String stereotype2 = ((JComboBox) panel2.getComponents()[1])
-						.getSelectedItem().toString();
-				
-				Classifier exclusion = includeElement(
-						new Point2D.Double(
-								((ClassElement) diagramElement)
-										.getAbsoluteX1() + 200,
-								((ClassElement) diagramElement)
-										.getAbsoluteY1()), name2,
-						stereotype2);
-				ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-				// generalizations.add();
-				Fix fix1 = of.createGeneralization(exclusion, parents.get(exitent_supertypes.indexOf(input)));
-				//Fix fix2 = of.createGeneralization(c, parents.get(exitent_supertypes.indexOf(input)));
-				
-				generalizations
-						.add((Generalization) fix1.getAdded().get(0));
-				Fix gs = of.createGeneralizationSet(generalizations, true,
-						true);
-				mainfix.addAll(gs);
-			    
-				
-			} else {
-				try {
-					stereotypes = DerivedByExclusion.getInstance()
-							.getPossibleGeneralization(c.eClass().getName());
-					if (has_sortal_superclass) {
-						stereotypes = removeSortals(stereotypes);
-					}
-					Object[] stereo;
-					stereo = stereotypes.toArray();
-					JPanel panel = selectStereotype(stereo,
-							"Define the Supertype");
-					String name1 = ((JTextField) panel.getComponents()[0])
-							.getText();
-					String stereotype1 = ((JComboBox) panel.getComponents()[1])
-							.getSelectedItem().toString();
-					stereotypes2 = DerivedByExclusion.getInstance()
-							.inferStereotype(stereotype1, c.eClass().getName());
-					Object[] stereo2;
-					stereo2 = stereotypes2.toArray();
-					JPanel panel2 = selectStereotype(stereo2,
-							"Define the Exclusion");
-					String name2 = ((JTextField) panel2.getComponents()[0])
-							.getText();
-					String stereotype2 = ((JComboBox) panel2.getComponents()[1])
-							.getSelectedItem().toString();
-					Classifier pai = includeElement(
-							new Point2D.Double(
-									((ClassElement) diagramElement)
-											.getAbsoluteX1() + 100,
-									((ClassElement) diagramElement)
-											.getAbsoluteY1() - 100), name1,
-							stereotype1);
-					Classifier exclusion = includeElement(
-							new Point2D.Double(
-									((ClassElement) diagramElement)
-											.getAbsoluteX1() + 200,
-									((ClassElement) diagramElement)
-											.getAbsoluteY1()), name2,
-							stereotype2);
-					ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
-					// generalizations.add();
-					Fix fix1 = of.createGeneralization(exclusion, pai);
-					Fix fix2 = of.createGeneralization(c, pai);
-					generalizations
-							.add((Generalization) fix1.getAdded().get(0));
-					generalizations
-							.add((Generalization) fix2.getAdded().get(0));
-					Fix gs = of.createGeneralizationSet(generalizations, true,
-							true);
-					mainfix.addAll(gs);
-				} catch (Exception e) {
-					wrongSelection("It is impossible to have a type derived by exclusion in this case");
-				}
-			}
-
-		}
-		dm.updateOLED(mainfix);
-	}
-
-	private static ArrayList<String> removeSortals(ArrayList<String> stereotypes) {
+	static ArrayList<String> removeSortals(ArrayList<String> stereotypes) {
 		stereotypes.remove("Kind");
 		stereotypes.remove("Collective");
 		stereotypes.remove("Quantity");
@@ -886,7 +608,7 @@ public class DerivedTypesOperations {
 	}
 
 	public static void wrongSelection(String message) {
-		JFrame frame = new JFrame("InputDialog Example #1");
+		JFrame frame = new JFrame("");
 		JOptionPane.showMessageDialog(frame, message);
 
 	}
@@ -918,6 +640,19 @@ public class DerivedTypesOperations {
 	// include an element according its position name and category
 	public static Classifier includeElement(Point2D.Double position,
 			String name, String stereotype) {
+		Classifier newElement = (Classifier) of.createClass(of
+				.getClassStereotype(stereotype));
+		// Classifier newElement= (Classifier)
+		// of.createClassWithoutStereotype();
+		dman.getCurrentProject().getModel().getPackagedElement()
+				.add(newElement);
+		newElement.setName(name);
+		mainfix.includeAdded(newElement, position.getX(), position.getY());
+		return newElement;
+	}
+	
+	public static Classifier includeElement(Point2D.Double position,
+			String name, String stereotype, OutcomeFixer of) {
 		Classifier newElement = (Classifier) of.createClass(of
 				.getClassStereotype(stereotype));
 		// Classifier newElement= (Classifier)
@@ -1561,5 +1296,18 @@ public class DerivedTypesOperations {
 		dman.updateOLED(mainfix);
 
 	}
+	
 
+	public static void setDman(DiagramManager dman) {
+		DerivedTypesOperations.dman = dman;
+	}
+
+	public static void setMainfix(Fix mainfix) {
+		DerivedTypesOperations.mainfix = mainfix;
+	}
+
+	
+	
 }
+
+	

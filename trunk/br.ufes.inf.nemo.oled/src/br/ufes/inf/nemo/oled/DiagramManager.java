@@ -86,6 +86,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic;
 import br.ufes.inf.nemo.common.ontoumlparser.OntoUMLModelStatistic.TypeDetail;
 import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
+import br.ufes.inf.nemo.oled.derivation.ExclusionDerivationOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
 import br.ufes.inf.nemo.oled.derivation.IntersectionPattern;
 import br.ufes.inf.nemo.oled.derivation.ParticipationPatternTypeChoice;
@@ -2996,8 +2997,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
 		UmlProject project = getCurrentEditor().getProject();
-		Fix fix = DerivedTypesOperations.createExclusionDerivation(activeEditor, project, this);
-		if(fix!=null) updateOLED(fix);
+		ExclusionDerivationOperations.createExclusionDerivationSingleSelection(activeEditor, project, this, activeEditor.getSelectedElements().get(0), new OutcomeFixer(this.getCurrentProject().getModel()));
+		
 	}
 	
 	@SuppressWarnings({ })
