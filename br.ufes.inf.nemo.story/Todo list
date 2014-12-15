@@ -1,0 +1,29 @@
+TODO
+Insert, delete, duplicate
+	-Node
+	-State
+	-Link : com seleção das rows, dá pra criar um link selecionando os elementos e criando.
+	-World	: merge worlds
+
+Para fazer um menu contextualizado, é necessário usar JFace. Snippet005TreeCustomMenu demonstra como fazê-lo.
+
+
+Move World Column
+	-remember to change World list order
+	
+Move Node order
+	-copy state from node to node
+
+Edit name
+
+Center buttons in rows and columns
+
+Load Model
+
+Save Model
+	-Save model arrangement. 
+	-PS: If I only save the EMF model, the arrangement is lost
+
+Class instantiation UI
+
+NodeStates devem ter labels também?
