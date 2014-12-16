@@ -2997,7 +2997,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		DiagramEditor activeEditor = getCurrentDiagramEditor();
 		UmlProject project = getCurrentEditor().getProject();
-		ExclusionDerivationOperations.createExclusionDerivationSingleSelection(activeEditor, project, this, activeEditor.getSelectedElements().get(0), new OutcomeFixer(this.getCurrentProject().getModel()));
+		ExclusionDerivationOperations.createExclusionDerivation(activeEditor, project, this, activeEditor.getSelectedElements(), new OutcomeFixer(this.getCurrentProject().getModel()));
 		
 	}
 	

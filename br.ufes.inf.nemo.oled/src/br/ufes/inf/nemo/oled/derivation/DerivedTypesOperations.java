@@ -90,7 +90,7 @@ public class DerivedTypesOperations {
 	static boolean gs_with_nonsortal_or_kind = false;
 	static Point2D.Double pointClicked;
 	static HashMap<Classifier, Integer> exclusionDerivationList= new HashMap<Classifier, Integer>();
-	
+	static Classifier unionDerived;
 
 	public static void setPointClicked(Point2D.Double pointClicked) {
 		DerivedTypesOperations.pointClicked = pointClicked;
@@ -134,7 +134,6 @@ public class DerivedTypesOperations {
 		}
 	}
 
-	@SuppressWarnings({ "unused", "rawtypes" })
 	public static Fix createUnionDerivation(DiagramEditor activeEditor,
 			UmlProject project, DiagramManager dm) {
 
@@ -413,6 +412,7 @@ public class DerivedTypesOperations {
 			DiagramManager dm) {
 		dman = dm;
 		mainfix = fix;
+		Classifier union;
 		// UmlProject project = getCurrentEditor().getProject();
 		if (selected.size() < 3) {
 			of = new OutcomeFixer(project.getModel());
@@ -427,11 +427,11 @@ public class DerivedTypesOperations {
 					position2.getAbsoluteY1());
 			Point2D.Double newElementPosition = ClassPosition
 					.findPositionGeneralization(firstpoint, secondpoint);
-			Classifier newElement = includeElement(newElementPosition, name,
+			union = includeElement(newElementPosition, name,
 					stereotype);
-			createGeneralization(newElement, (Classifier) refontoList.get(0),
+			createGeneralization(union, (Classifier) refontoList.get(0),
 					(Classifier) refontoList.get(1));
-			mainfix.includeAdded(newElement, newElementPosition.getX(),
+			mainfix.includeAdded(union, newElementPosition.getX(),
 					newElementPosition.getY());
 
 		} else {
@@ -448,14 +448,15 @@ public class DerivedTypesOperations {
 			}
 			Point2D.Double newElementPosition = ClassPosition
 					.findPositionGeneralizationMember(positions, 2);
-			Classifier newElement = includeElement(newElementPosition, name,
+			union = includeElement(newElementPosition, name,
 					stereotype);
 			ArrayList<Classifier> classifiers = new ArrayList<Classifier>();
 			for (Element element : refontoList) {
 				classifiers.add((Classifier) element);
 			}
-			createMultipleGeneralization(newElement, classifiers);
+			createMultipleGeneralization(union, classifiers);
 		}
+		unionDerived=union;
 		return mainfix;
 	}
 	
