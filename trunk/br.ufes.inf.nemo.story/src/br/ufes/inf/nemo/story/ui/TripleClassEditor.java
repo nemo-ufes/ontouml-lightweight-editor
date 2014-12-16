@@ -17,7 +17,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.TreeItem;
 
+import stories.Individual;
 import stories.impl.LinkImpl;
 import stories.impl.NodeImpl;
 import stories.impl.Node_stateImpl;
@@ -120,37 +122,46 @@ public class TripleClassEditor {
 				if(storyElTl.getTree().getSelection().length == 0){
 					//no items selected. Grey out the charEditor area.
 				}
-				else if (storyElTl.getTree().getSelection().length >1){
+				else if (storyElTl.getTree().getSelection().length >0){
 					//multiple itens selected.
 					//check for item kind
 					//	if they are of different kinds (node x link x node_state), greyout the char editor area TODO:(maybe give a message in the editor area?)
 					//	else, if they are of the same kind, update the conflicting instantiations to the indeterminate state (square).
-					for(Object o : storyElTl.getTree().getSelection()){
-						System.out.println(o);
+					
+					//the first item is considered the standard.
+					Class<? extends Object> cl = storyElTl.getTree().getSelection()[0].getData().getClass();
+					for(TreeItem o : storyElTl.getTree().getSelection()){
+						if(cl != o.getData().getClass()){
+							cl = null; //mark the selection as inconsistent
+							System.out.println("bad selection");
+							break;
+						}
+					}
+					if(cl!=null){
+						System.out.println("Good selection = "+ cl);
+						//Good selection. The instantiated classes will be checked and the checkboxes updated.
+						//in case of inconsitent checkbox states, a box will be used.
+						//any change, including boxes, affect the whole selection.
+						if(cl == NodeImpl.class){
+							stacklayout.topControl = rigidClassEditor;
+							sc.setMinSize(rigidClassEditor.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+							
+						}
+						else if (cl == LinkImpl.class){
+							stacklayout.topControl = linkClassEditor;
+							sc.setMinSize(linkClassEditor.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+							
+						}
+						else if (cl == Node_stateImpl.class){
+							stacklayout.topControl = antiRigidClassEditor;
+							sc.setMinSize(antiRigidClassEditor.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+							
+						}
+					}else{
+						System.out.println("Grey out!");
 					}
 				}
-				if(storyElTl.getTree().getSelection().length ==1){
-					System.out.println(storyElTl.getTree().getSelection()[0]);
-				}
-				
-				if(e.item!=null){
-					Object o = e.item.getData();
-					if(o.getClass() == NodeImpl.class){
-						stacklayout.topControl = rigidClassEditor;
-						sc.setMinSize(rigidClassEditor.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-						
-					}
-					else if (o.getClass() == LinkImpl.class){
-						stacklayout.topControl = linkClassEditor;
-						sc.setMinSize(linkClassEditor.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-						
-					}
-					else if (o.getClass() == Node_stateImpl.class){
-						stacklayout.topControl = antiRigidClassEditor;
-						sc.setMinSize(antiRigidClassEditor.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-						
-					}
-				} 
+				 
 				charEditor.layout();
 					
 			}
