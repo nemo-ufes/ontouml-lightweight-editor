@@ -1,17 +1,27 @@
 package br.ufes.inf.nemo.oled.derivation;
 
+import java.awt.Component;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.query.statements.UPDATE;
+import org.eclipse.swt.internal.ole.win32.COMObject;
+
+import com.sun.xml.internal.ws.api.server.Container;
+
+import sun.reflect.generics.tree.BaseType;
 import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
+import RefOntoUML.PackageableElement;
 import RefOntoUML.SortalClass;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
@@ -32,19 +42,46 @@ public class ExclusionDerivationOperations {
 	static Point2D.Double pointClicked;
 	static HashSet<Classifier> exclusionDerivationList= new HashSet<Classifier>();
 	
-	public static void createExclusionDerivationSingleSelection(
+	public static void createExclusionDerivation(
 			DiagramEditor activeEditor, UmlProject project, DiagramManager dm,
-			DiagramElement diagramElement, OutcomeFixer outf) {
-		boolean has_sortal_superclass = false;
+			List<DiagramElement> list, OutcomeFixer outf) {
+
 		dman = dm;
 		of = outf;
-		OntoUMLParser parser = ProjectBrowser.frame.getProjectBrowser()
-				.getParser();
-		Classifier c = ((ClassElement) diagramElement).getClassifier();
 		Fix fix = new Fix();
 		mainfix = fix;
+
+		/*
+		 * verify if it is a right selection
+		 * 
+		 */
+		for (DiagramElement diagramElement : list) {
+			if(!(diagramElement instanceof ClassElement)){
+				StereotypeAndNameSelection.wrongSelection("Wrong Selection, You must select only Object Types");
+				return;
+			}
+		}
+		
+		/* 
+		 * verify the amount of elements selected and then call the right method
+		 */
+		
+		if(list.size()>1){
+			deriveByMultipleSelection(list, activeEditor, project, dm);
+		}else{
+			deriveBySingleSelection( ((ClassElement)list.get(0)).getClassifier(), new Point2D.Double(((ClassElement)list.get(0)).getAbsoluteX1(), ((ClassElement)list.get(0)).getAbsoluteY1()));
+		}
+		
+	}
+
+	
+	private static void deriveBySingleSelection(Classifier c, Point2D.Double point){
 		Classifier general;
 		Classifier exclusion;
+		boolean has_sortal_superclass = false;
+		OntoUMLParser parser = ProjectBrowser.frame.getProjectBrowser()
+				.getParser();
+		
 		/*
 		 * verify if it already have a exclusion
 		 */
@@ -60,7 +97,7 @@ public class ExclusionDerivationOperations {
 		 * check if it has a supertype
 		 */
 		if (parents == null || parents.size() == 0) {
-			general=createGeneralElement(has_sortal_superclass, c, diagramElement);
+			general=createGeneralElement(has_sortal_superclass, c, point);
 		} else {
 			ArrayList<String> exitent_supertypes = new ArrayList<String>();
 			for (Classifier parent : parents) {
@@ -82,19 +119,82 @@ public class ExclusionDerivationOperations {
 			    	general= parents.get(exitent_supertypes.indexOf(input));
 			    
 			} else {
-					general=createGeneralElement(has_sortal_superclass, c, diagramElement);
+					general=createGeneralElement(has_sortal_superclass, c, point);
 					// generalizations.add();
 					
 			}
 
 		}
-		exclusion = createDerivedElement(has_sortal_superclass, c, diagramElement, general);
+		exclusion = createDerivedElement(has_sortal_superclass, c,point , general);
 		createGeneralizations(exclusion, general, c);
 		exclusionDerivationList.add(c);
 		exclusionDerivationList.add(exclusion);
-		dm.updateOLED(mainfix);
+		dman.updateOLED(mainfix);
+		
 	}
-
+	
+	private static void deriveByMultipleSelection(List<DiagramElement> elements,DiagramEditor activeEditor, UmlProject project, DiagramManager dm){
+		OntoUMLParser parser = ProjectBrowser.frame.getProjectBrowser()
+				.getParser();
+		boolean common_super=false;
+		Classifier common_father= null;
+		
+		HashMap<Classifier, HashSet<Classifier>> filho_pais = new HashMap<Classifier, HashSet<Classifier>>();
+		ArrayList<Classifier> types= new ArrayList<Classifier>();
+		DiagramElement father = null;
+		
+		/*
+		 * verify if it has a common supertype
+		 */
+		
+		for (DiagramElement diagramElement : elements) {
+			 types.add(((ClassElement) diagramElement).getClassifier());
+		}
+		
+		for (Classifier classifier : types) {
+			HashSet<Classifier> parents = new HashSet<Classifier>(parser.getAllParents(classifier));
+			filho_pais.put(classifier, parents);
+		}
+		
+		HashSet<Classifier> parents = filho_pais.get(types.get(0));
+		for (Classifier parent : parents) {
+			int occurrency=1;
+			for (Classifier type : types) {
+				if(type!= types.get(0)){
+					if(filho_pais.get(type).contains(parent)){
+						occurrency++;
+					}
+				}
+				
+			}
+			if(occurrency==types.size()){
+				common_father = parent;
+				common_super=true;
+			}
+			
+		}
+		
+		for(DiagramElement dElem: activeEditor.getDiagram().getChildren()){
+			if(dElem instanceof ClassElement){
+				Classifier c2= ((ClassElement)dElem).getClassifier();
+				if(c2==common_father){
+					father=dElem;
+				}
+			}
+		}
+		
+		if(common_super){
+			StereotypeAndNameSelection.wrongSelection("The derivation by exclusion of n types is actually the exclusion of the union of the types selected");
+			deriveBySingleSelection(common_father, new Point2D.Double(((ClassElement) father).getAbsoluteX1(), ((ClassElement) father).getAbsoluteY1()));
+		}else{
+			StereotypeAndNameSelection.wrongSelection("The derivation by exclusion of n types is actually the exclusion of the union of the types selected, you need to create the derivation by union");
+			Fix fix=DerivedTypesOperations.createUnionDerivation(activeEditor, project, dm);
+			mainfix.addAll(fix);
+			
+		}
+		
+	}
+	
 	private static boolean isDerivedbyExclusion(Classifier element){
 		if(exclusionDerivationList.contains(element)){
 			return true;
@@ -103,7 +203,7 @@ public class ExclusionDerivationOperations {
 		
 	}
 	
-	private static Classifier createGeneralElement(boolean has_sortal_superclass, Classifier c, DiagramElement diagramElement){
+	private static Classifier createGeneralElement(boolean has_sortal_superclass, Classifier c, Point2D.Double point){
 		ArrayList<String> stereotypes = DerivedByExclusion.getInstance()
 				.getPossibleGeneralization(c.eClass().getName());
 		
@@ -123,16 +223,13 @@ public class ExclusionDerivationOperations {
 		supertype.setStereotype(((JComboBox) panel.getComponents()[1])
 				.getSelectedItem().toString());
 		Classifier pai = DerivedTypesOperations.includeElement(
-				new Point2D.Double(
-						((ClassElement) diagramElement)
-								.getAbsoluteX1() + 100,
-						((ClassElement) diagramElement)
-								.getAbsoluteY1() - 100), supertype.getName(),
+				new Point2D.Double(point.getX() + 100,
+						point.getY() - 100), supertype.getName(),
 				supertype.getStereotype(), of);
 		return pai;
 	}
 	
-	private static Classifier createDerivedElement(boolean has_sortal_superclass, Classifier c, DiagramElement diagramElement, Classifier general){
+	private static Classifier createDerivedElement(boolean has_sortal_superclass, Classifier c, Point2D.Double point, Classifier general){
 		ArrayList<String> stereotypes2 = DerivedByExclusion.getInstance()
 				.inferStereotype(general.eClass().getName(), c.eClass().getName());
 		Object[] stereo2;
@@ -153,11 +250,7 @@ public class ExclusionDerivationOperations {
 		}
 		
 		Classifier exclusion = DerivedTypesOperations.includeElement(
-				new Point2D.Double(
-						((ClassElement) diagramElement)
-								.getAbsoluteX1() + 200,
-						((ClassElement) diagramElement)
-								.getAbsoluteY1()), name2,
+				(new Point2D.Double(point.getX() + 200,point.getY())), name2,
 				stereotype2, of);
 		return exclusion;
 	}
