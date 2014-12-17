@@ -409,6 +409,7 @@ public class Transformer {
 	}
 
 	private void createSWRLforMemberOfWithSubCollectionOf() {
+		//FALTA PADRONIZAR AQUI
 		OWLObjectProperty memberOf = factory.getOWLObjectProperty(IRI.create(nameSpace+"memberOf"));
 		OWLObjectProperty subCollectionOf = factory.getOWLObjectProperty(IRI.create(nameSpace+"subCollectionOf"));
 
@@ -443,6 +444,7 @@ public class Transformer {
 	 * */
 
 	private void createSWRLforTrasitivity(String propName) {
+		//FALTA PADRONIZAR AQUI
 		OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
 
 		//Create the variables
@@ -478,6 +480,7 @@ public class Transformer {
 
 	private void processMeronymic(Set<Association> lstAssociation, String stereotype){
 		//Create the top property
+		//FALTA PADRONIZAR AQUI
 		OWLObjectProperty topProp = factory.getOWLObjectProperty(IRI.create(nameSpace+stereotype));
 		OWLObjectProperty topInvProp = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+stereotype));
 
@@ -784,7 +787,9 @@ public class Transformer {
 		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
 			return null;
 		}else{
-			return factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName().replaceAll(" ", "_")));
+			String assName = mappingProperties.getPropertyName(ass);
+			return factory.getOWLObjectProperty(IRI.create(nameSpace+assName));
+			//return factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName().replaceAll(" ", "_")));
 		}
 	}
 
@@ -793,23 +798,28 @@ public class Transformer {
 	 * or stereotype.source.destiny;
 	 * */
 	private OWLObjectProperty getObjectProperty(RefOntoUML.Association ass, String stereotype){
-		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
-			String propName = stereotype+"."+this.getName(ass.getMemberEnd().get(0).getType())+"."+this.getName(ass.getMemberEnd().get(1).getType());
-			return factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
-		}else{
-			return factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName().replaceAll(" ", "_")));
-		}
+		String propName = mappingProperties.getPropertyName(ass);
+		return factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+		
+//		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
+//			//String propName = stereotype+"."+this.getName(ass.getMemberEnd().get(0).getType())+"."+this.getName(ass.getMemberEnd().get(1).getType());
+//			return factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+//		}else{
+//			return factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName().replaceAll(" ", "_")));
+//		}
 	}
 
 	/**
 	 * Return a String with the name of the Association ass
 	 * */
 	private String getObjectPropertyName(Association ass, String stereotype) {
-		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
-			return stereotype+"."+this.getName(ass.getMemberEnd().get(0).getType())+"."+this.getName(ass.getMemberEnd().get(1).getType());
-		}else{
-			return ass.getName().replaceAll(" ", "_");
-		}
+		return mappingProperties.getPropertyName(ass);
+		
+//		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
+//			return stereotype+"."+this.getName(ass.getMemberEnd().get(0).getType())+"."+this.getName(ass.getMemberEnd().get(1).getType());
+//		}else{
+//			return ass.getName().replaceAll(" ", "_");
+//		}
 	}
 
 	/**
@@ -817,12 +827,14 @@ public class Transformer {
 	 * or stereotype.destiny.source;
 	 * */
 	private OWLObjectProperty getInverseObjectProperty(RefOntoUML.Association ass, String stereotype){
-		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
-			String propName = "INV."+stereotype+"."+this.getName(ass.getMemberEnd().get(0).getType())+"."+this.getName(ass.getMemberEnd().get(1).getType());
-			return factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
-		}else{
-			return factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+ass.getName().replaceAll(" ", "_")));
-		}
+		String propName = mappingProperties.getPropertyName(ass);
+		return factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+propName));
+//		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
+//			//String propName = "INV."+stereotype+"."+this.getName(ass.getMemberEnd().get(0).getType())+"."+this.getName(ass.getMemberEnd().get(1).getType());
+//			return factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
+//		}else{
+//			return factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+ass.getName().replaceAll(" ", "_")));
+//		}
 	}
 
 	/**
@@ -884,12 +896,16 @@ public class Transformer {
 	}
 
 	private OWLObjectProperty getObjectProperty(Association ass, String src, String dst) {
-		OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName().replaceAll(" ","_")+"."+src+"."+dst));
+		String assName = mappingProperties.getPropertyName(ass);
+		OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+assName));
+		//OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName().replaceAll(" ","_")+"."+src+"."+dst));
 		return prop;
 	}
 
 	private OWLObjectProperty getInverseObjectProperty(Association ass, String src, String dst) {
-		OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+ass.getName().replaceAll(" ","_")+"."+src+"."+dst));
+		String assName = mappingProperties.getPropertyName(ass);
+		OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+assName));
+		//OWLObjectProperty prop = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+ass.getName().replaceAll(" ","_")+"."+src+"."+dst));
 		return prop;
 	}
 
@@ -970,13 +986,16 @@ public class Transformer {
 
 		for (Association ass : lstAssociation) {
 			//Verify the name of the property
-
+			String assName = mappingProperties.getPropertyName(ass);
 			prop = getObjectProperty(ass);
 			if(prop == null){
-				errors += "Warning: An unnamed Association from <"+getName(ass.getMemberEnd().get(0).getType())+"> (source class) to <"+getName(ass.getMemberEnd().get(1).getType())+"> (target class) was mapped to OWL <"+getObjectPropertyName(ass,stereotype)+">;\n";
-
-				topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+stereotype));
-				invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+stereotype));
+				//errors += "Warning: An unnamed Association from <"+getName(ass.getMemberEnd().get(0).getType())+"> (source class) to <"+getName(ass.getMemberEnd().get(1).getType())+"> (target class) was mapped to OWL <"+getObjectPropertyName(ass,stereotype)+">;\n";
+				errors += "Warning: An unnamed Association from <"+getName(ass.getMemberEnd().get(0).getType())+"> (source class) to <"+getName(ass.getMemberEnd().get(1).getType())+"> (target class) was mapped to OWL <"+assName+">;\n";
+				
+//				topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+stereotype));
+//				invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+stereotype));
+				topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+assName));
+				invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+assName));
 
 				//Create Association with the name stereotype.Source.Destiny
 				prop = createAssociation(ass,stereotype);
@@ -994,8 +1013,10 @@ public class Transformer {
 
 						//If has some associations with the same name
 						//Create a top property with the name of the associations
-						topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+getObjectPropertyName(ass, stereotype)));
-						invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+getObjectPropertyName(ass, stereotype)));
+//						topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+getObjectPropertyName(ass, stereotype)));
+//						invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+getObjectPropertyName(ass, stereotype)));
+						topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+assName));
+						invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+assName));
 
 						//Create the associations with the name assName.Source.Destiny
 						prop = createAssociation(ass);

@@ -115,6 +115,7 @@ public class Factory {
 	}
 	
 	public Boolean atomExistAtoms(Set<SWRLAtom> atoms, SWRLAtom atom, Boolean removeIt){
+		@SuppressWarnings("rawtypes")
 		Class atomClass = atom.getClass();
 		Collection<SWRLArgument> atomArgs = atom.getAllArguments();
 		int qtAtomArgs = atomArgs.size();
@@ -409,8 +410,8 @@ public class Factory {
 				
 				try {
 					String varName = variable.getIRI().getFragment();
-					String teste = varName.substring(4);
-					int t2 = Integer.parseInt(teste);
+//					String teste = varName.substring(4);
+//					int t2 = Integer.parseInt(teste);
 					
 					if(varName.startsWith("temp")){
 						return true;

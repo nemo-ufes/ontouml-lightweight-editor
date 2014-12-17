@@ -115,7 +115,7 @@ public class OCL2OWL_SWRL {
 		selectedReasoner = SelectReasoner.selectReasoner();
 		
 		
-		String problematicRules = "";
+		//String problematicRules = "";
 		//String unsuccessfullyTransformedRules = "";
 		/*
 		OCLParser oclParser = null;
