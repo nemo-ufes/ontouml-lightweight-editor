@@ -7,8 +7,6 @@ import org.eclipse.emf.common.util.EList;
 
 import RefOntoUML.Association;
 import RefOntoUML.Class;
-import RefOntoUML.DirectedRelationship;
-import RefOntoUML.Element;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Property;
 import RefOntoUML.impl.PropertyImpl;
@@ -92,6 +90,8 @@ public class MappingProperties {
 		propertyByName.put(propertyName, newMappedProperty);
 		propertyByAlias.put(propertyAlias, newMappedProperty);
 		
+		System.out.println("new relation -> " + propertyName);
+		
 		return propertyName;
 	}
 	
@@ -99,12 +99,14 @@ public class MappingProperties {
 		//pega a propriedade que ja possui esse nome e gera outro nome para ela
 		MappedProperty existentMappedProperty = propertyByName.get(propertyName);
 		if(existentMappedProperty != null){
+			System.out.print(propertyName + " -> changed to -> ");
 			propertyByName.put(propertyName, null);
 			generatePropertyName(existentMappedProperty.getProperty());
 		}		
 	}
 	
 	public void generateAllPropertyNames(){
+		System.out.println("Generating all property names");
 		Set<Association> allAssociations = ontoParser.getAllInstances(RefOntoUML.Association.class);
 		
 		for (Association association : allAssociations) {

@@ -12,7 +12,9 @@ public class Counters{
 		public int successCount = 0;
 		public int unsuccessCount = 0;
 		public int warningCount = 0;
+		@SuppressWarnings("rawtypes")
 		public ArrayList<Class> unsucessReasons = new ArrayList<Class>();
+		@SuppressWarnings("rawtypes")
 		public ArrayList<Class> warningReasons = new ArrayList<Class>();
 		public Counter() {
 
@@ -135,7 +137,7 @@ public class Counters{
 			}
 			*/
 			ret += "\t\t";
-			for (Class reason : counter.warningReasons) {
+			for (@SuppressWarnings("rawtypes") Class reason : counter.warningReasons) {
 				//ret += "\n\t\t";
 				ret += reason.getName().replace("br.ufes.inf.nemo.ocl2owl_swrl.exceptions.", "");
 				if(counter.warningReasons.indexOf(reason) < counter.warningReasons.size()-1){
@@ -144,7 +146,7 @@ public class Counters{
 			}
 			
 			ret += "\t\t";
-			for (Class reason : counter.unsucessReasons) {
+			for (@SuppressWarnings("rawtypes") Class reason : counter.unsucessReasons) {
 				//ret += "\n\t\t";
 				ret += reason.getName().replace("br.ufes.inf.nemo.ocl2owl_swrl.exceptions.", "");
 				if(counter.unsucessReasons.indexOf(reason) < counter.unsucessReasons.size()-1){
