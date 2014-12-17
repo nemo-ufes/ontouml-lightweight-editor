@@ -76,7 +76,7 @@ import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
 import RefOntoUML.parser.OntoUMLParser;
-import br.ufes.inf.nemo.ocl2owl_swrl.OCL2OWL_SWRL;
+import br.ufes.inf.nemo.ootos.ocl2owl_swrl.OCL2OWL_SWRL;
 
 public class OLD_Transformer {
 	public String errors = "";

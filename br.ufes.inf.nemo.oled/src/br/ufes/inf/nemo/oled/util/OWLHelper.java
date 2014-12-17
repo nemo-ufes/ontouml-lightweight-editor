@@ -21,13 +21,13 @@
  */
 package br.ufes.inf.nemo.oled.util;
 
+import br.ufes.inf.nemo.ootos.OntoUML2OWL;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
-import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
+import br.ufes.inf.nemo.ootos.util.MappingType;
 import br.ufes.inf.nemo.ontouml2simpleowl.OntoUML2SimpleOWL;
 import br.ufes.inf.nemo.ontouml2temporalowl.auxiliary.OWLStructure;
 import br.ufes.inf.nemo.ontouml2temporalowl.tree.TreeProcessor;
 import br.ufes.inf.nemo.ontouml2temporalowl.verbose.FileManager;
-import br.ufes.inf.nemo.root.OntoUML2OWL;
 
 public class OWLHelper {
 

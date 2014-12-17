@@ -127,11 +127,14 @@ public class OWLSettingsDialog extends javax.swing.JDialog {
 	
 	private String getDefaultIRI()
 	{
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH) + 1;
+//		Calendar cal = Calendar.getInstance();
+//		int year = cal.get(Calendar.YEAR);
+//		int month = cal.get(Calendar.MONTH) + 1;
 		
-		return "http://www.semanticweb.org/ontologies/" + year + "/" + month + "/ontology.owl";
+//		return "http://www.semanticweb.org/ontologies/" + year + "/" + month + "/ontology.owl";
+		UmlProject project = manager.getCurrentProject();
+		String projectName = project.getName().replace(" ","");
+		return "http://nemo.inf.ufes.br/" + projectName + ".owl";
 	}
 	
  	private void saveSettings()

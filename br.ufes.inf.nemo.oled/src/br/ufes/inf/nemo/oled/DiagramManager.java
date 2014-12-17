@@ -168,7 +168,7 @@ import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
 import br.ufes.inf.nemo.oled.validator.meronymic.ValidationDialog;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
-import br.ufes.inf.nemo.ontouml2owl_swrl.util.MappingType;
+import br.ufes.inf.nemo.ootos.util.MappingType;
 import br.ufes.inf.nemo.ontouml2sbvr.core.OntoUML2SBVR;
 import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui.GlossaryGeneratorUI;
 import br.ufes.inf.nemo.tocl.parser.TOCLParser;
