@@ -11,7 +11,7 @@ import org.eclipse.ocl.ParserException;
 import RefOntoUML.Model;
 import RefOntoUML.Package;
 import br.ufes.inf.nemo.common.resource.RefOntoUMLResourceFactoryImpl;
-import br.ufes.inf.nemo.ootos.ontouml2owl_swrl.ontouml2owl_swrl.Transformer;
+import br.ufes.inf.nemo.ootos.ontouml2owl_swrl.Transformer;
 
 public class OntoUML2OWL {
 	public String errors = "";

@@ -105,7 +105,7 @@ public class OntoUMLNameHelper {
 	public static String getTypeName(EObject elem, boolean addGuillemets)
 	{
 		//On mac, this character appear like ?
-		if(addGuillemets) return "Â«"+getTypeName(elem)+"Â»";		
+		if(addGuillemets) return "«"+getTypeName(elem)+"»";		
 		return getTypeName(elem);
 	}
 	

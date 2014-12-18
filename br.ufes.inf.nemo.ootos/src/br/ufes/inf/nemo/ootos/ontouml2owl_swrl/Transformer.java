@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.ootos.ontouml2owl_swrl.ontouml2owl_swrl;
+package br.ufes.inf.nemo.ootos.ontouml2owl_swrl;
 
 
 import java.io.ByteArrayOutputStream;
@@ -124,6 +124,7 @@ public class Transformer {
 	private String errors = "\n";
 
 	public String getErrors(){
+		errors = mappingProperties.getOutputMessages() + errors;
 		return errors;
 	}
 
@@ -990,7 +991,7 @@ public class Transformer {
 			prop = getObjectProperty(ass);
 			if(prop == null){
 				//errors += "Warning: An unnamed Association from <"+getName(ass.getMemberEnd().get(0).getType())+"> (source class) to <"+getName(ass.getMemberEnd().get(1).getType())+"> (target class) was mapped to OWL <"+getObjectPropertyName(ass,stereotype)+">;\n";
-				errors += "Warning: An unnamed Association from <"+getName(ass.getMemberEnd().get(0).getType())+"> (source class) to <"+getName(ass.getMemberEnd().get(1).getType())+"> (target class) was mapped to OWL <"+assName+">;\n";
+				//errors += "Warning: An unnamed Association from <"+getName(ass.getMemberEnd().get(0).getType())+"> (source class) to <"+getName(ass.getMemberEnd().get(1).getType())+"> (target class) was mapped to OWL <"+assName+">;\n";
 				
 //				topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+stereotype));
 //				invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+stereotype));
@@ -1009,7 +1010,7 @@ public class Transformer {
 						match++;
 					}
 					if(match > 1){
-						errors += "Warning: The association <"+getObjectPropertyName(ass,stereotype)+"> with repeted name was mapped as subPropertyOf <"+getObjectPropertyName(ass, stereotype)+"> with the name <"+getObjectPropertyName(ass, stereotype)+"."+getName(ass.getMemberEnd().get(0).getType())+"."+getName(ass.getMemberEnd().get(1).getType())+">;\n";
+						//errors += "Warning: The association <"+getObjectPropertyName(ass,stereotype)+"> with repeted name was mapped as subPropertyOf <"+getObjectPropertyName(ass, stereotype)+"> with the name <"+getObjectPropertyName(ass, stereotype)+"."+getName(ass.getMemberEnd().get(0).getType())+"."+getName(ass.getMemberEnd().get(1).getType())+">;\n";
 
 						//If has some associations with the same name
 						//Create a top property with the name of the associations
