@@ -35,10 +35,10 @@ public class CheckboxClassListener implements Listener {
 			}else if (img == parent.getImgYes()){
 				classCheckbox.setImage(parent.getImgNo());
 				doNo((Classifier)classCheckbox.getData());
-			}else if (img == parent.getImgNo()){
+			}else if (img == parent.getImgNo() || img == parent.getImgIndeterminate()){
 				classCheckbox.setImage(parent.getImgUnchecked());
 				doUncheck((Classifier)classCheckbox.getData());						
-			}		
+			}
 			
 		}
 		private void doYes(Classifier classifier) {
