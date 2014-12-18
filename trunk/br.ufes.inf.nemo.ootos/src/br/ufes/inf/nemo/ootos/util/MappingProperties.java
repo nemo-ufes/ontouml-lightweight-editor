@@ -16,6 +16,11 @@ public class MappingProperties {
 	private OntoUMLParser ontoParser;
 	private HashMap<String, MappedProperty> propertyByAlias = new HashMap<String, MappedProperty>();
 	private HashMap<String, MappedProperty> propertyByName = new HashMap<String, MappedProperty>();
+	private String outputMessages = "";
+	
+	public String getOutputMessages() {
+		return outputMessages;
+	}
 	
 	public MappingProperties(OntoUMLParser _ontoParser) {
 		ontoParser = _ontoParser;
@@ -60,6 +65,7 @@ public class MappingProperties {
 		
 		if(property instanceof Association && (propertyName == null || propertyName.equals(""))){
 			propertyName = stereotype + "." + source + "." + target;
+			outputMessages += "Warning: An unnamed Association from <"+source+"> (source class) to <"+target+"> (target class) was mapped to OWL <"+propertyName+">;\n";
 		}else if(property instanceof PropertyImpl){
 			propertyName = source + "." + propertyName;
 		}
@@ -101,7 +107,8 @@ public class MappingProperties {
 		if(existentMappedProperty != null){
 			System.out.print(propertyName + " -> changed to -> ");
 			propertyByName.put(propertyName, null);
-			generatePropertyName(existentMappedProperty.getProperty());
+			String newName = generatePropertyName(existentMappedProperty.getProperty());
+			outputMessages += "Warning: The association <"+propertyName+"> with repeted name was mapped as subPropertyOf <"+propertyName+"> with the name <"+newName+">;\n";
 		}		
 	}
 	
@@ -120,6 +127,5 @@ public class MappingProperties {
 				generatePropertyName(attribute);
 			}
 		}
-		System.out.println();
 	}
 }
