@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
+import RefOntoUML.Class;
 import RefOntoUML.Classifier;
 import RefOntoUML.Type;
 import RefOntoUML.parser.OntoUMLNameHelper;
@@ -67,6 +68,7 @@ public class StoryElementTimeline {
 	private final Image imgYes;
 	private final Image imgNo;
 	private final Image imgUnchecked;
+	private final Image imgIndeterminate;
 	//EMF handler
 	static StoriesFactory storyFactory = StoriesFactory.eINSTANCE;
 	private WorldList world_sequence;
@@ -75,6 +77,10 @@ public class StoryElementTimeline {
 	
 	StoryElementTimeline(OntoUMLParser mP, final Composite parent, int style) throws IOException{
 		this.modelParser = mP;
+		/*for(Class c: this.modelParser.getAllInstances(RefOntoUML.Class.class)){
+			c.setName(modelParser.getAlias(c));
+		}
+		*/
 		Composite btnComp = new Composite(parent, SWT.NONE);
 		btnComp.setLayout(new RowLayout(SWT.HORIZONTAL));
 		Button btnAdd = new Button(btnComp, SWT.NONE);
@@ -118,6 +124,8 @@ public class StoryElementTimeline {
 	    imgYes = new Image(parent.getDisplay(), "resources/yes.png");
 	    imgNo = new Image(parent.getDisplay(), "resources/no.png");
 	    imgUnchecked = new Image(parent.getDisplay(), "resources/unckeched.png");
+	    imgIndeterminate = new Image(parent.getDisplay(), "resources/indeterminate.png");
+	    
 	    
 	    final Menu menu = new Menu(tree);
 	    tree.setMenu(menu);
@@ -373,7 +381,10 @@ public class StoryElementTimeline {
 	public Image getImgUnchecked(){
 		return imgUnchecked;
 	}
-
+	public Image getImgIndeterminate(){
+		return imgIndeterminate;
+	}
+	 
 	public OntoUMLParser getModelParser() {
 		return modelParser;
 	}
