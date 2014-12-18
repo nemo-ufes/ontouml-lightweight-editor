@@ -100,12 +100,12 @@ public class OntoUMLNameHelper {
 	
 	/** 
 	 * Return the name of the type of this element with guillemets
-	 * For instance, if a kind, then ï¿½Kindï¿½, and so on and so forth.
+	 * For instance, if a kind, then ?Kind?, and so on and so forth.
 	 */
 	public static String getTypeName(EObject elem, boolean addGuillemets)
 	{
-		//On mac, this character appear like ?
-		if(addGuillemets) return "«"+getTypeName(elem)+"»";		
+		//Changed to unicode because on mac this character appear like ?
+		if(addGuillemets) return "\u00AB"+getTypeName(elem)+"\u00BB";		
 		return getTypeName(elem);
 	}
 	
@@ -135,7 +135,7 @@ public class OntoUMLNameHelper {
 	
 	/** 
 	 * Return the name of the type and the name of the element with single quote and guillemets.
-	 * For instance, if a kind named Person, then  ï¿½Kindï¿½ 'Person' 
+	 * For instance, if a kind named Person, then  ?Kind? 'Person' 
 	 */
 	public static String getTypeAndName(EObject elem, boolean addGuillemets, boolean addSingleQuotes)
 	{		
@@ -146,7 +146,7 @@ public class OntoUMLNameHelper {
 	
 	/** 
 	 * Return the name of the element and the name of its type with guillemets and single quotes.
-	 * For instance, if a kind named Person, then  'Person' (ï¿½Kindï¿½)
+	 * For instance, if a kind named Person, then  'Person' (?Kind?)
 	 */
 	public static String getNameAndType(EObject elem, boolean addGuillemets, boolean addSingleQuotes)
 	{		
@@ -158,7 +158,7 @@ public class OntoUMLNameHelper {
 	/** 
 	 * Return a common name used for displaying an OntoUML element which depends on its type.
 	 * For instance, generalization are displayed like "Generalization Person" where person is the general type.
-	 * A package and a classifier like "Package Accidents" and "ï¿½Kindï¿½ Person".
+	 * A package and a classifier like "Package Accidents" and "?Kind? Person".
 	 */
 	public static String getCommonName(EObject elem) 
 	{		
@@ -196,8 +196,8 @@ public class OntoUMLNameHelper {
 	
 	/** 
 	 * Return a more complete name used for displaying an OntoUML element which depends on its type.
-	 * For instance, generalization are displayed like "ï¿½Generalizationï¿½ {Person->Child}" where person is the general type and child the specific type.
-	 * A package and a classifier like "ï¿½Packageï¿½ Accidents" and "ï¿½Kindï¿½ Person".
+	 * For instance, generalization are displayed like "?Generalization? {Person->Child}" where person is the general type and child the specific type.
+	 * A package and a classifier like "?Package? Accidents" and "?Kind? Person".
 	 */
 	public static String getCompleteName(EObject elem)
 	{
@@ -259,7 +259,7 @@ public class OntoUMLNameHelper {
 	}
 	
 	/** Return the name and the type of a property i.e. association end-point or attribute where you might choose to display stereotype and name of the property type.
-	 *  For instance, 'age' (ï¿½PrmitiveTypeï¿½ 'int' ) */
+	 *  For instance, 'age' (?PrmitiveType? 'int' ) */
 	public static String getNameAndType(Property p, boolean addTypeStereotype)
 	{		
 		if(addTypeStereotype) return getName(p, true, false)+" ("+getTypeAndName(p.getType(), true, false)+")";
