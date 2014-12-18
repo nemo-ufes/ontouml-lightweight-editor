@@ -23,6 +23,7 @@ package br.ufes.inf.nemo.oled.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
@@ -34,11 +35,14 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 
 import RefOntoUML.Association;
 import RefOntoUML.Class;
+import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.impl.GeneralizationSetImpl;
 import br.ufes.inf.nemo.oled.Main;
+import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.util.ConfigurationHelper;
 import br.ufes.inf.nemo.oled.util.ModelHelper;
 
@@ -61,7 +65,17 @@ public class UmlProject implements Serializable {
 	private List<UmlDiagram> diagrams = new ArrayList<UmlDiagram>();
 	private ArrayList<Integer> openedDiagrams = new ArrayList<Integer>();
 	private Properties properties;
+	private  Collection<DiagramElement> exclusionDerivationList= new HashSet<DiagramElement>();
 	
+	public Collection<DiagramElement> getExclusionDerivationList() {
+		return exclusionDerivationList;
+	}
+
+	public void setExclusionDerivationList(
+			Collection<DiagramElement> exclusionDerivationList) {
+		this.exclusionDerivationList.addAll(exclusionDerivationList);
+	}
+
 	private String name = new String();	
 	private String version = new String();
 	

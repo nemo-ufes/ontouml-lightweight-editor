@@ -28,6 +28,7 @@ import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -140,6 +141,11 @@ public class DerivedTypesOperations {
 		String name = "";
 		JPanel panel = new JPanel();
 
+		if(!DerivedTypesOperations.verifyHierarquicalProblem(activeEditor)){
+			StereotypeAndNameSelection.wrongSelection("Invalid Selection");
+			return null;
+		}
+		
 		Fix mainfix = new Fix();
 		List<DiagramElement> selected = activeEditor.getSelectedElements();
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
@@ -160,7 +166,7 @@ public class DerivedTypesOperations {
 								refontoList.get(1).eClass().getName());
 				if (stereotypes != null)
 					if (stereotypes.size() < 2) {
-						name = DefineNameDerivedType();
+						name = StereotypeAndNameSelection.defineNameDerivedType("Union Drivation");
 						mainfix = createDerivedTypeUnion(stereotypes.get(0),
 								mainfix, selected, name, refontoList, project,
 								dm);
@@ -756,6 +762,11 @@ public class DerivedTypesOperations {
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
 		String specialCase = "";
 
+		if(!DerivedTypesOperations.verifyHierarquicalProblem(activeEditor)){
+			StereotypeAndNameSelection.wrongSelection("Invalid Selection");
+			return null;
+		}
+		
 		for (DiagramElement element : selected) {
 			if (element instanceof ClassElement) {
 				classList.add((ClassElement) element);
@@ -1307,6 +1318,33 @@ public class DerivedTypesOperations {
 		DerivedTypesOperations.mainfix = mainfix;
 	}
 
+	public static Classifier getUnionDerived() {
+		return unionDerived;
+	}
+
+	public static boolean verifyHierarquicalProblem(DiagramEditor activeDiagram){
+		OntoUMLParser parser = ProjectBrowser.frame.getProjectBrowser()
+				.getParser();
+		ArrayList<DiagramElement> list= (ArrayList<DiagramElement>) activeDiagram.getSelectedElements();
+		ArrayList<Classifier> list_classifier = new ArrayList<Classifier>();
+		
+		for (DiagramElement element : list) {
+			list_classifier.add(((ClassElement)element).getClassifier());
+		}
+		
+		for (DiagramElement diagramElement : list) {
+			Classifier classifier= (((ClassElement)diagramElement).getClassifier());
+			ArrayList<Classifier> parents = new ArrayList<Classifier>(
+					parser.getAllParents(classifier));
+			for (Classifier father : parents) {
+				if(list_classifier.contains(father)){
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
 	
 	
 }

@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.oled.derivation;
 import java.awt.Component;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.sun.xml.internal.ws.api.server.Container;
 
 import sun.reflect.generics.tree.BaseType;
 import RefOntoUML.Classifier;
+import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.SortalClass;
@@ -33,6 +35,7 @@ import br.ufes.inf.nemo.oled.explorer.ProjectBrowser;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 
 public class ExclusionDerivationOperations {
 	static OutcomeFixer of;
@@ -45,7 +48,19 @@ public class ExclusionDerivationOperations {
 	public static void createExclusionDerivation(
 			DiagramEditor activeEditor, UmlProject project, DiagramManager dm,
 			List<DiagramElement> list, OutcomeFixer outf) {
-
+		
+		Collection<DiagramElement> exclusionElements= project.getExclusionDerivationList();
+		if(!DerivedTypesOperations.verifyHierarquicalProblem(activeEditor)){
+			StereotypeAndNameSelection.wrongSelection("Invalid Selection");
+			return;
+		}
+		
+		if(exclusionElements!=null){
+			
+			for (DiagramElement classElement : exclusionElements) {
+				exclusionDerivationList.add(((ClassElement)classElement).getClassifier());
+			}
+		}
 		dman = dm;
 		of = outf;
 		Fix fix = new Fix();
@@ -71,7 +86,12 @@ public class ExclusionDerivationOperations {
 		}else{
 			deriveBySingleSelection( ((ClassElement)list.get(0)).getClassifier(), new Point2D.Double(((ClassElement)list.get(0)).getAbsoluteX1(), ((ClassElement)list.get(0)).getAbsoluteY1()));
 		}
-		
+		ArrayList<Element> elements = new ArrayList<Element>();
+		elements.addAll(exclusionDerivationList);
+		Collection<DiagramElement> col= ModelHelper.getDiagramElements(elements);
+		if(col!=null){
+			project.setExclusionDerivationList(col);
+		}
 	}
 
 	
@@ -125,10 +145,16 @@ public class ExclusionDerivationOperations {
 			}
 
 		}
+		
+		
 		exclusion = createDerivedElement(has_sortal_superclass, c,point , general);
 		createGeneralizations(exclusion, general, c);
+		
+		String rule="\ncontext: _'"+general.getName().toString()+"'\n"+"inv: not oclIsTypeOf(_'"+c.getName().toString()+"') implies oclIsTypeOf(_'"+exclusion.getName().toString()+"')";
+		dman.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);
 		exclusionDerivationList.add(c);
 		exclusionDerivationList.add(exclusion);
+	
 		dman.updateOLED(mainfix);
 		
 	}
@@ -174,14 +200,7 @@ public class ExclusionDerivationOperations {
 			
 		}
 		
-		for(DiagramElement dElem: activeEditor.getDiagram().getChildren()){
-			if(dElem instanceof ClassElement){
-				Classifier c2= ((ClassElement)dElem).getClassifier();
-				if(c2==common_father){
-					father=dElem;
-				}
-			}
-		}
+		father=getClassElementFromClassifier(common_father, activeEditor);
 		
 		if(common_super){
 			StereotypeAndNameSelection.wrongSelection("The derivation by exclusion of n types is actually the exclusion of the union of the types selected");
@@ -189,10 +208,25 @@ public class ExclusionDerivationOperations {
 		}else{
 			StereotypeAndNameSelection.wrongSelection("The derivation by exclusion of n types is actually the exclusion of the union of the types selected, you need to create the derivation by union");
 			Fix fix=DerivedTypesOperations.createUnionDerivation(activeEditor, project, dm);
-			mainfix.addAll(fix);
+			common_father=DerivedTypesOperations.getUnionDerived();
+			dm.updateOLED(fix);
+			father= getClassElementFromClassifier(common_father, activeEditor);
+			deriveBySingleSelection(common_father, new Point2D.Double(((ClassElement) father).getAbsoluteX1(), ((ClassElement) father).getAbsoluteY1()));
 			
 		}
 		
+	}
+	
+	public  static ClassElement getClassElementFromClassifier(Classifier classifier, DiagramEditor activeEditor){
+		for(DiagramElement dElem: activeEditor.getDiagram().getChildren()){
+			if(dElem instanceof ClassElement){
+				Classifier c2= ((ClassElement)dElem).getClassifier();
+				if(c2==classifier){
+					return (ClassElement) dElem;
+				}
+			}
+		}
+		return null;
 	}
 	
 	private static boolean isDerivedbyExclusion(Classifier element){
@@ -246,7 +280,7 @@ public class ExclusionDerivationOperations {
 					.getSelectedItem().toString();
 		}else{
 			stereotype2 = stereotypes2.get(0);
-			name2= StereotypeAndNameSelection.DefineNameDerivedType();
+			name2= StereotypeAndNameSelection.defineNameDerivedType();
 		}
 		
 		Classifier exclusion = DerivedTypesOperations.includeElement(
