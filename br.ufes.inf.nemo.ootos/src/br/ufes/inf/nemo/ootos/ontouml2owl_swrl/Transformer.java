@@ -1004,33 +1004,44 @@ public class Transformer {
 			}else{
 
 				//Verify if exist other prop with the same name
-				for (Association sameAss : lstAssociation) {
-					//If exist some relations with the same names
-					if(getObjectPropertyName(ass,stereotype).equalsIgnoreCase(getObjectPropertyName(sameAss, stereotype))){
-						match++;
-					}
-					if(match > 1){
-						//errors += "Warning: The association <"+getObjectPropertyName(ass,stereotype)+"> with repeted name was mapped as subPropertyOf <"+getObjectPropertyName(ass, stereotype)+"> with the name <"+getObjectPropertyName(ass, stereotype)+"."+getName(ass.getMemberEnd().get(0).getType())+"."+getName(ass.getMemberEnd().get(1).getType())+">;\n";
+//				for (Association sameAss : lstAssociation) {
+//					//If exist some relations with the same names
+//					if(getObjectPropertyName(ass,stereotype).equalsIgnoreCase(getObjectPropertyName(sameAss, stereotype))){
+//						match++;
+//					}
+//					if(match > 1){
+//						//errors += "Warning: The association <"+getObjectPropertyName(ass,stereotype)+"> with repeted name was mapped as subPropertyOf <"+getObjectPropertyName(ass, stereotype)+"> with the name <"+getObjectPropertyName(ass, stereotype)+"."+getName(ass.getMemberEnd().get(0).getType())+"."+getName(ass.getMemberEnd().get(1).getType())+">;\n";
+//
+//						//If has some associations with the same name
+//						//Create a top property with the name of the associations
+////						topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+getObjectPropertyName(ass, stereotype)));
+////						invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+getObjectPropertyName(ass, stereotype)));
+//						topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+assName));
+//						invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+assName));
+//
+//						//Create the associations with the name assName.Source.Destiny
+//						prop = createAssociation(ass);
+//						invProp = createInverseAssociation(ass);
+//
+//						//Improve performance
+//						break;
+//					}
+//				}
+				
+				if(mappingProperties.isMappedAsSubRelationOf(ass)){
+					String superPropertyName = mappingProperties.getSuperPropertyName(ass);
+					topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+superPropertyName));
+					invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+superPropertyName));
 
-						//If has some associations with the same name
-						//Create a top property with the name of the associations
-//						topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+getObjectPropertyName(ass, stereotype)));
-//						invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+getObjectPropertyName(ass, stereotype)));
-						topProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+assName));
-						invTopProperty = factory.getOWLObjectProperty(IRI.create(nameSpace+"INV."+assName));
-
-						//Create the associations with the name assName.Source.Destiny
-						prop = createAssociation(ass);
-						invProp = createInverseAssociation(ass);
-
-						//Improve performance
-						break;
-					}
-				}
+					//Create the associations with the name assName.Source.Destiny
+					prop = createAssociation(ass);
+					invProp = createInverseAssociation(ass);
+				}				
 			}
 
 			//			if(match > 1 || nameNull){
-			if(match > 1){
+			if(mappingProperties.isMappedAsSubRelationOf(ass)){
+			//if(match > 1){
 				//set same properties subPropertyOf the topProperty
 				sopa = factory.getOWLSubObjectPropertyOfAxiom(prop,topProperty);
 				manager.applyChange(new AddAxiom(ontology, sopa));
