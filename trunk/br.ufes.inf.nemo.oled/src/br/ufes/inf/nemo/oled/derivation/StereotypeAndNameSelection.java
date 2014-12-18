@@ -93,12 +93,23 @@ public class StereotypeAndNameSelection {
 	}
 	
 	@SuppressWarnings("unused")
-	public static String DefineNameDerivedType() {
+	public static String defineNameDerivedType() {
 
 		String name = "";
 		while (name == "") {
 			name = JOptionPane.showInputDialog(null,
 					"What's the Name of the New Type", "Name Type", 1);
+		}
+		return name;
+	}
+	
+	@SuppressWarnings("unused")
+	public static String defineNameDerivedType(String message) {
+
+		String name = "";
+		while (name == "") {
+			name = JOptionPane.showInputDialog(null,
+					message, "Name Type", 1);
 		}
 		return name;
 	}
