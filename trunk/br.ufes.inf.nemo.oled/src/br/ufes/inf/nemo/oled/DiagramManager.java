@@ -214,7 +214,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		super();
 		this.frame = frame;		
 		editorDispatcher = new DiagramEditorCommandDispatcher(this,frame);
-		elementFactory = new DiagramElementFactoryImpl(null); //doesn't have yet any diagram
+		elementFactory = new DiagramElementFactoryImpl(); //doesn't have yet any diagram
 		drawingContext =  new DrawingContextImpl();
 		ModelHelper.initializeHelper();		
 		setBorder(new EmptyBorder(0,0,0,0));		

@@ -93,7 +93,7 @@ public class CreationHandler implements EditorMode {
   public Node createNode(ElementType stereotype) {
 	isDragging = false;
     elementType = stereotype;
-    element = editor.getDiagram().getElementFactory().createNode(elementType);
+    element = editor.getDiagramManager().getElementFactory().createNode(elementType,editor.getDiagram());
 
     //Add mapping from the refontouml element to the diagram element
     ModelHelper.addMapping(((ClassElement)element).getClassifier(), element);
@@ -109,7 +109,7 @@ public class CreationHandler implements EditorMode {
 	isDragging = true;
     elementType = ElementType.valueOf(type.eClass().getName().toUpperCase());
     
-    element = editor.getDiagram().getElementFactory().createNode(type,eContainer);
+    element = editor.getDiagramManager().getElementFactory().createNode(type,eContainer,editor.getDiagram());
     
     //Add mapping from the refontouml element to the diagram element
     ModelHelper.addMapping(((ClassElement)element).getClassifier(), element);
@@ -122,7 +122,7 @@ public class CreationHandler implements EditorMode {
   
   public Node createNodeCloning(ElementType stereotype, RefOntoUML.Type type) {
     elementType = stereotype;
-    element = editor.getDiagram().getElementFactory().createNode(elementType);
+    element = editor.getDiagramManager().getElementFactory().createNode(elementType,editor.getDiagram());
 
     //Add mapping from the refontouml element to the diagram element
     ModelHelper.addMapping(((ClassElement)element).getClassifier(), element);

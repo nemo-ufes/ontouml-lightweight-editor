@@ -98,23 +98,18 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   private Map<RelationType, UmlConnection> relationPrototypes = new HashMap<RelationType, UmlConnection>();
   private Map<ElementType, Integer> elementCounters = new HashMap<ElementType, Integer>();
   private Map<RelationType, Integer> relationCounters = new HashMap<RelationType, Integer>();
-  private StructureDiagram diagram;
+  
   private RefOntoUMLFactory factory;
   
   /**
    * Constructor.
    * @param aDiagram the diagram this factory belongs to
    */
-  public DiagramElementFactoryImpl(StructureDiagram aDiagram) {
-    diagram = aDiagram;
+  public DiagramElementFactoryImpl() {  
     setupElementMaps();
     setupConnectionMaps();
   }
-  
- 
-  public void setDiagram(StructureDiagram diagram){
-	  this.diagram = diagram;
-  }
+   
 
   /**
    * Initializes the element map with the element prototypes.
@@ -465,7 +460,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
   /**
    * {@inheritDoc} This method also create the referred RefOntoUML Type of the UmlNode. 
    */
-  public UmlNode createNode(ElementType elementType) 
+  public UmlNode createNode(ElementType elementType, StructureDiagram diagram) 
   {
     UmlNode umlnode = (UmlNode) elementPrototypes.get(elementType).clone();
     
@@ -476,7 +471,7 @@ public class DiagramElementFactoryImpl implements DiagramElementFactory {
     return umlnode;
   }
   
-  public UmlNode createNode(RefOntoUML.Type type, EObject eContainer) 
+  public UmlNode createNode(RefOntoUML.Type type, EObject eContainer, StructureDiagram diagram) 
   {
     UmlNode umlnode = (UmlNode) elementPrototypes.get(ElementType.valueOf(type.eClass().getName().toUpperCase())).clone();
     
