@@ -32,11 +32,8 @@ import br.ufes.inf.nemo.pattern.util.UtilPattern;
  * @author Victor Amorim
  */
 public class DynamicWindowForDomainPattern extends Dialog {
-	private static Shell shell;
-	private static Display display;
 	private Composite container;
-	private String title;
-	
+	private String title;	
 	private HashMap<String,ArrayList<Object[]>> hashTable = null;
 	public HashMap<String, ArrayList<Object[]>> getHashTable(){
 		return hashTable;
@@ -46,18 +43,14 @@ public class DynamicWindowForDomainPattern extends Dialog {
 	{
 		super(parentShell);		
 		this.title=title;
-		currentImage = new Image(display,UtilPattern.convertToSWT(image));
+		currentImage = new Image(Display.getDefault(),UtilPattern.convertToSWT(image));
 		setDefaultImage(new Image(Display.getDefault(),DynamicWindow.class.getResourceAsStream("/resources/icons/x16/sitemap.png")));		
 	}
 	
 	public static DynamicWindowForDomainPattern createDialog(BufferedImage image, String title)
 	{			
-		display = Display.getDefault();	    	
-		shell = display.getActiveShell();	
-		if(shell == null){
-			shell = new Shell(display);
-		}
-		UtilPattern.centralizeShell(display, shell);
+		Display display = Display.getDefault();	    	
+		Shell shell = display.getActiveShell();		
 		DynamicWindowForDomainPattern resultDIalog = new DynamicWindowForDomainPattern(image,shell,title);
 		resultDIalog.create();
 		return resultDIalog;
@@ -68,15 +61,24 @@ public class DynamicWindowForDomainPattern extends Dialog {
 		//Retrun null so that no default buttons like 'OK' and 'Cancel' will be created
 		return null;
 	}
-	
+		  
 	@Override
 	public void create() {
-	    super.create();
+	    super.create();	    	  
 	    setShellStyle(SWT.TITLE);
-	    UtilPattern.bringToFront(shell);
+	    bringToFront(getShell());
 	    getShell().setText(title);	    
 	}
 
+	public void bringToFront(final Shell shell) {
+	    shell.getDisplay().asyncExec(new Runnable() {
+	        public void run() {
+	            shell.forceActive();
+	        }
+	    });
+	}
+	
+	
 	private Table table;
 	public Table getTable() {
 		return table;
@@ -104,7 +106,7 @@ public class DynamicWindowForDomainPattern extends Dialog {
 
 		Label imgLabel = new Label(composite, SWT.HORIZONTAL | SWT.CENTER);
 		imgLabel.setAlignment(SWT.CENTER);
-		imgLabel.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
+		imgLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		
 		//Calculating the new Image size holding the aspect ratio
 		Double w = (401.0/currentImage.getBounds().width);
@@ -115,7 +117,7 @@ public class DynamicWindowForDomainPattern extends Dialog {
 		w = currentImage.getBounds().width * scale;
 		h = currentImage.getBounds().height * scale;
 
-		imgLabel.setImage(new Image(display,currentImage.getImageData().scaledTo(w.intValue(),h.intValue())));
+		imgLabel.setImage(new Image(Display.getDefault(),currentImage.getImageData().scaledTo(w.intValue(),h.intValue())));
 		imgLabel.pack();
 		composite.pack();
 

@@ -189,7 +189,7 @@ public class AppMenu implements ActionListener {
 		JMenuItem umlItem = createMenuItem(exportMenu, "exportuml");
 		umlItem.setToolTipText("Export to Eclipse MDT UML2 version 4");
 
-		createMenuItem(exportMenu, "exportpatterns");
+		//createMenuItem(exportMenu, "exportpatterns");
 		
 		createMenuItem(fileMenu,"close");
 		

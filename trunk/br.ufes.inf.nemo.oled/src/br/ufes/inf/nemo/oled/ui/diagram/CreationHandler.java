@@ -191,9 +191,9 @@ public class CreationHandler implements EditorMode {
 	    editor.getDiagramManager().moveAssociationsToDiagram(elem, elem.eContainer(),editor);
 	    
 	    
-	    if (!isDragging) {
-	    	editor.getDiagramManager().openModellingAssistant(elem);
-	    }
+//	    if (!isDragging) {
+//	    	editor.getDiagramManager().openModellingAssistant(elem);
+//	    }
 	    
     }else{	   
     	// CASSIO : DERIVED TYPES PATTERNS
