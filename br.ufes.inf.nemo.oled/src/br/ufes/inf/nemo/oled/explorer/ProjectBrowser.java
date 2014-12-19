@@ -38,7 +38,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import RefOntoUML.parser.OntoUMLParser;
-import br.ufes.inf.nemo.assistant.ModellingAssistant;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
@@ -73,8 +72,7 @@ public class ProjectBrowser extends JPanel{
 	private InferenceList inferences;
 	private OntoUML2AlloyOptions refOptions;
 	private TOCL2AlloyOption oclOptions;	
-	private ModellingAssistant assistant;
-		
+			
 	public void addTreeSelectionListener(TreeSelectionListener selectionListener) {
 		tree.addTreeSelectionListener(selectionListener);
 	}	
@@ -141,7 +139,6 @@ public class ProjectBrowser extends JPanel{
 		antipatterns = new AntiPatternList();		
 		inferences = new InferenceList();		
 		Main.printOutLine("Creating modeling assistant");
-		assistant = new ModellingAssistant(project.getModel());			
 		ptoolbar = new ProjectToolBar(tree,frame.getDiagramManager());
 		add(ptoolbar, BorderLayout.NORTH);		
 		scroll.setViewportView(tree);		
@@ -175,8 +172,6 @@ public class ProjectBrowser extends JPanel{
 	
 	public AntiPatternList getAntiPatternList() { return antipatterns; }
 	public void setAntiPatternList(AntiPatternList antipatterns) { this.antipatterns = antipatterns; }
-	
-	public ModellingAssistant getAssistant() { return assistant; }	
 	
 	public InferenceList getInferences() { return inferences; }	
 	public void setInferences(InferenceList inferences) {this.inferences = inferences; }

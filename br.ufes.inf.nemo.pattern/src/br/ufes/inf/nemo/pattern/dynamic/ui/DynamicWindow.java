@@ -26,8 +26,6 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import br.ufes.inf.nemo.pattern.util.UtilPattern;
-
 /*
  * TODO LIST
  * 	- Implement reuse of classes used in the current table
@@ -38,10 +36,7 @@ import br.ufes.inf.nemo.pattern.util.UtilPattern;
  * @author Victor Amorim
  */
 public class DynamicWindow extends Dialog {
-	private static Shell shell;
-	private static Display display;
-	private Composite container;
-	
+	private Composite container;	
 	private String title = new String();
 	private HashMap<String,ArrayList<Object[]>> hashTable = null;
 	public HashMap<String, ArrayList<Object[]>> getHashTable(){
@@ -58,12 +53,8 @@ public class DynamicWindow extends Dialog {
 	
 	public static DynamicWindow createDialog(String title, String imagePath)
 	{			
-		display = Display.getDefault();	    	
-		shell = display.getActiveShell();	
-		if(shell == null){
-			shell = new Shell(display);
-		}
-		UtilPattern.centralizeShell(display, shell);
+		Display display = Display.getDefault();	    	
+		Shell shell = display.getActiveShell();		
 		DynamicWindow resultDIalog = new DynamicWindow(shell,title,imagePath);
 		resultDIalog.create();
 		return resultDIalog;
@@ -71,10 +62,18 @@ public class DynamicWindow extends Dialog {
 	
 	@Override
 	public void create() {
-	    super.create();
-	    setShellStyle(SWT.TITLE);
-	    UtilPattern.bringToFront(shell);
-	    getShell().setText(title);	    
+		 super.create();	    	  
+		 setShellStyle(SWT.TITLE);
+		 bringToFront(getShell());
+		 getShell().setText(title);	      
+	}
+	
+	public void bringToFront(final Shell shell) {
+	    shell.getDisplay().asyncExec(new Runnable() {
+	        public void run() {
+	            shell.forceActive();
+	        }
+	    });
 	}
 	
 	private Table table;
@@ -117,7 +116,7 @@ public class DynamicWindow extends Dialog {
 
 		Label imgLabel = new Label(composite, SWT.HORIZONTAL | SWT.CENTER);
 		imgLabel.setAlignment(SWT.CENTER);
-		imgLabel.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
+		imgLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		
 		//Calculating the new Image size holding the aspect ratio
 		Double w = (401.0/currentImage.getBounds().width);
@@ -128,7 +127,7 @@ public class DynamicWindow extends Dialog {
 		w = currentImage.getBounds().width * scale;
 		h = currentImage.getBounds().height * scale;
 
-		imgLabel.setImage(new Image(display,currentImage.getImageData().scaledTo(w.intValue(),h.intValue())));
+		imgLabel.setImage(new Image(Display.getDefault(),currentImage.getImageData().scaledTo(w.intValue(),h.intValue())));
 		imgLabel.pack();
 		composite.pack();
 
@@ -201,7 +200,7 @@ public class DynamicWindow extends Dialog {
 					if(currentImage != null)
 						currentImage.dispose();
 				}else{
-					MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK );
+					MessageBox dialog = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK );
 					dialog.setText("Invalid action");
 					dialog.setMessage("Insert some line before delete.");
 					dialog.open(); 					

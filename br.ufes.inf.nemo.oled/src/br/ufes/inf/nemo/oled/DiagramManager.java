@@ -107,6 +107,7 @@ import br.ufes.inf.nemo.oled.explorer.ProjectTree;
 import br.ufes.inf.nemo.oled.finder.FoundElement;
 import br.ufes.inf.nemo.oled.finder.FoundPane;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
+import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.RelationType;
@@ -166,6 +167,7 @@ import br.ufes.inf.nemo.oled.util.OWLHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
+import br.ufes.inf.nemo.oled.validator.antipattern.AntiPatternResultDialog;
 import br.ufes.inf.nemo.oled.validator.meronymic.ValidationDialog;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ootos.util.MappingType;
@@ -2638,31 +2640,32 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}	
 	
 	/** Open modeling assistant wizard */
-	public void openModellingAssistant(final Classifier elem)
-	{
-		boolean runAssistant = getFrame().getMainMenu().isAssistantChecked();
-		if(runAssistant) {
-			if(Main.onMac()) {
-				com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute(new Runnable(){        	
-					@Override
-					public void run() {
-						Fix fix = frame.getProjectBrowser().getAssistant().runPattern(elem);						
-						if(fix != null) updateOLED(fix);
-					}
-				});
-			}else{
-				final Fix fix = frame.getProjectBrowser().getAssistant().runPattern(elem);
-				if(fix != null){
-					SwingUtilities.invokeLater(new Runnable() {						
-						@Override
-						public void run() {
-							updateOLED(fix);
-						}
-					});
-				}					
-			}    		
-		}	
-	}
+	@Deprecated
+//	public void openModellingAssistant(final Classifier elem)
+//	{
+//		boolean runAssistant = getFrame().getMainMenu().isAssistantChecked();
+//		if(runAssistant) {
+//			if(Main.onMac()) {
+//				com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute(new Runnable(){        	
+//					@Override
+//					public void run() {
+//						Fix fix = frame.getProjectBrowser().getAssistant().runPattern(elem);						
+//						if(fix != null) updateOLED(fix);
+//					}
+//				});
+//			}else{
+//				final Fix fix = frame.getProjectBrowser().getAssistant().runPattern(elem);
+//				if(fix != null){
+//					SwingUtilities.invokeLater(new Runnable() {						
+//						@Override
+//						public void run() {
+//							updateOLED(fix);
+//						}
+//					});
+//				}					
+//			}    		
+//		}	
+//	}
 	
 	/**  Generate SBVR. In order to use the plug-in, we need to store the model into a file before. */
 	public void generateSbvr(RefOntoUML.Model refpackage) 
@@ -3204,7 +3207,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			DomainPatternTool.initializeDomainPatternPalette(frame.getToolManager().getPalleteAccordion(), patternProject, editorDispatcher, frame);
 		}
 	}
-	
+		
 	public void runDomainPattern(final double x, final double y) {
 		if(Main.onMac()){
 			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
