@@ -177,7 +177,7 @@ public class ElementConverter {
 	public void DealAttribute (RefOntoUML.Class c1, org.eclipse.uml2.uml.Class c2)
     {	             
         org.eclipse.uml2.uml.Property p2;
-        for (RefOntoUML.Property p1 : c1.getAttribute())
+        for (RefOntoUML.Property p1 : c1.getOwnedAttribute())
         {
             p2 = ufactory.createProperty();
             DealProperty(p1, p2);       

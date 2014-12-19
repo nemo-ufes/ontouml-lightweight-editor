@@ -39,15 +39,15 @@ import br.ufes.inf.nemo.oled.umldraw.shared.UmlNode;
  */
 public interface DiagramElementFactory {
 
-  void setDiagram(StructureDiagram diagram);
+  //void setDiagram(StructureDiagram diagram);
 	
   /**
    * Creates a node according to the specified UML element type.
    * @param elementType the UML model element type
    * @return the UMLNode for the element type
    */
-  UmlNode createNode(ElementType elementType);
-  UmlNode createNode(RefOntoUML.Type type, EObject eContainer);
+  UmlNode createNode(ElementType elementType, StructureDiagram diagram);
+  UmlNode createNode(RefOntoUML.Type type, EObject eContainer, StructureDiagram diagram);
   
   /**
    * Creates a connection between the two given nodes using the specified

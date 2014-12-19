@@ -978,14 +978,14 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 	 */
 	public void setCreateConnectionMode(RelationType relationType) 
 	{
-		lineHandler.setRelationType(relationType,getDiagram().getElementFactory().getConnectMethod(relationType));
+		lineHandler.setRelationType(relationType,getDiagramManager().getElementFactory().getConnectMethod(relationType));
 		editorMode = lineHandler;
 	}
 
 	public UmlConnection dragRelation(RefOntoUML.Relationship relationship, EObject eContainer)
 	{		
 		RelationType relationType = RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase());
-		lineHandler.setRelationType(relationType, getDiagram().getElementFactory().getConnectMethod(relationType));
+		lineHandler.setRelationType(relationType, getDiagramManager().getElementFactory().getConnectMethod(relationType));
 		editorMode = lineHandler;		
 		RefOntoUML.Type source = null;
 		RefOntoUML.Type target = null;
