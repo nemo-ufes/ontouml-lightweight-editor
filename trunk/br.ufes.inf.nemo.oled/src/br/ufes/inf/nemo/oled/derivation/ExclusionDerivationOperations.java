@@ -96,7 +96,7 @@ public class ExclusionDerivationOperations {
 
 	
 	private static void deriveBySingleSelection(Classifier c, Point2D.Double point){
-		Classifier general;
+		Classifier general=null;
 		Classifier exclusion;
 		boolean has_sortal_superclass = false;
 		OntoUMLParser parser = ProjectBrowser.frame.getProjectBrowser()
@@ -118,6 +118,9 @@ public class ExclusionDerivationOperations {
 		 */
 		if (parents == null || parents.size() == 0) {
 			general=createGeneralElement(has_sortal_superclass, c, point);
+			if(general==null){
+				return;
+			}
 		} else {
 			ArrayList<String> exitent_supertypes = new ArrayList<String>();
 			for (Classifier parent : parents) {
@@ -136,18 +139,24 @@ public class ExclusionDerivationOperations {
 			        "Supertype of the Exclusion Derivation", JOptionPane.QUESTION_MESSAGE, null, 
 			        exitent_supertypes.toArray(), // Array of choices
 			        exitent_supertypes.get(0)); // Initial choice
-			    	general= parents.get(exitent_supertypes.indexOf(input));
+			    	
+			    	if(input!=null){
+			    		general= parents.get(exitent_supertypes.indexOf(input));
+			    	}
 			    
 			} else {
 					general=createGeneralElement(has_sortal_superclass, c, point);
 					// generalizations.add();
-					
 			}
-
 		}
-		
-		
+		// user canceled
+		if(general==null){
+			return;
+		}
 		exclusion = createDerivedElement(has_sortal_superclass, c,point , general);
+		if(exclusion==null){
+			return;
+		}
 		createGeneralizations(exclusion, general, c);
 		
 		String rule="\ncontext: _'"+general.getName().toString()+"'\n"+"inv: not oclIsTypeOf(_'"+c.getName().toString()+"') implies oclIsTypeOf(_'"+exclusion.getName().toString()+"')";
@@ -251,6 +260,10 @@ public class ExclusionDerivationOperations {
 		stereo = stereotypes.toArray();
 		JPanel panel = StereotypeAndNameSelection.selectStereotype(stereo,
 				"Define the Supertype");
+		
+		if(panel==null){
+			return null;
+		}
 		Type supertype = new Type();
 		
 		supertype.setName(((JTextField) panel.getComponents()[0]).getText());
@@ -266,6 +279,7 @@ public class ExclusionDerivationOperations {
 	private static Classifier createDerivedElement(boolean has_sortal_superclass, Classifier c, Point2D.Double point, Classifier general){
 		ArrayList<String> stereotypes2 = DerivedByExclusion.getInstance()
 				.inferStereotype(general.eClass().getName(), c.eClass().getName());
+		
 		Object[] stereo2;
 		stereo2 = stereotypes2.toArray();
 		String name2 = null;
@@ -274,6 +288,9 @@ public class ExclusionDerivationOperations {
 		if(stereotypes2.size()>1){
 			JPanel panel2 = StereotypeAndNameSelection.selectStereotype(stereo2,
 					"Define the Exclusion");
+			if(panel2==null){
+				return null;
+			}
 			name2 = ((JTextField) panel2.getComponents()[0])
 					.getText();
 			stereotype2 = ((JComboBox) panel2.getComponents()[1])
