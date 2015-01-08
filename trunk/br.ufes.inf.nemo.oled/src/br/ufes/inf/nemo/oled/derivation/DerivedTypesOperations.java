@@ -1299,6 +1299,12 @@ public class DerivedTypesOperations {
 
 	}
 	
+	
+	
+
+	public static void setOf(OutcomeFixer of) {
+		DerivedTypesOperations.of = of;
+	}
 
 	public static void setDman(DiagramManager dman) {
 		DerivedTypesOperations.dman = dman;
@@ -1335,6 +1341,8 @@ public class DerivedTypesOperations {
 		
 		return true;
 	}
+
+	
 	
 	
 }

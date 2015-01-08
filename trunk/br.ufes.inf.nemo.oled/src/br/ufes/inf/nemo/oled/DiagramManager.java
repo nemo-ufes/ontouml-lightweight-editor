@@ -89,6 +89,7 @@ import br.ufes.inf.nemo.oled.derivation.DerivedTypesOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionDerivationOperations;
 import br.ufes.inf.nemo.oled.derivation.ExclusionPattern;
 import br.ufes.inf.nemo.oled.derivation.IntersectionPattern;
+import br.ufes.inf.nemo.oled.derivation.ParticipationDerivationOperations;
 import br.ufes.inf.nemo.oled.derivation.ParticipationPatternTypeChoice;
 import br.ufes.inf.nemo.oled.derivation.PastSpecializationPattern;
 import br.ufes.inf.nemo.oled.derivation.SpecializationPattern;
@@ -3122,7 +3123,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		DerivedTypesOperations.createPastSpecializationDerivation(activeEditor, project,this);
 	}
 	public void deriveByParticipation() {
-		
+		DiagramEditor activeEditor = getCurrentDiagramEditor();
+		UmlProject project = getCurrentEditor().getProject();
+		ParticipationDerivationOperations participation_derivation = new ParticipationDerivationOperations();
+		participation_derivation.createDerivedType(activeEditor, project,this);
 	}
 	
 	/** Save current Pattern Project to a file *.oledpattern */
