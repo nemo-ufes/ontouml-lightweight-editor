@@ -20,6 +20,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.Mixin;
+import RefOntoUML.MixinClass;
+import RefOntoUML.ObjectClass;
+import RefOntoUML.SortalClass;
+import RefOntoUML.SubstanceSortal;
 import apple.awt.CList;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
@@ -30,6 +35,8 @@ import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Category;
+import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.RoleMixin;
 
 public class ParticipationDerivationOperations {
 
@@ -52,9 +59,21 @@ public class ParticipationDerivationOperations {
 		ArrayList<Fix> fixs= new ArrayList<Fix>();
 		Fix fix;
 		for (int i = 0; i < activeEditor.getSelectedElements().size(); i++) {
+			
+			Classifier c = ((ClassElement) activeEditor.getSelectedElements().get(i)).getClassifier();
+			
+			if(! (c instanceof  ObjectClass)){
+				return;
+			}
+			
 			if(((JCheckBox) panel.getComponent(i)).isSelected()){
 				Point2D.Double point = new Double(((ClassElement)classes.get(i)).getAbsoluteX1(),((ClassElement)classes.get(i)).getAbsoluteY1()+100);
-				Classifier role= DerivedTypesOperations.includeElement(point, "", "Role");
+				Classifier role = null;
+				if((c instanceof SortalClass)){
+					role= DerivedTypesOperations.includeElement(point, "", "Role");
+				}else{
+					role= DerivedTypesOperations.includeElement(point, "", "RoleMixin");
+				}
 				Fix role_fix =of.createGeneralization(role, ((ClassElement) activeEditor.getSelectedElements().get(i)).getClassifier());
 				fixs.add(role_fix);
 				fix = of.createAssociationBetween(RelationStereotype.MEDIATION, "",
@@ -98,9 +117,7 @@ public class ParticipationDerivationOperations {
 		}
 		point.x= ((right_point-left_point)/2) +left_point;
 		point.y= ((high_point-low_point)/2)+low_point+180;
-		
-		
-		
+
 		return point;
 	}
 

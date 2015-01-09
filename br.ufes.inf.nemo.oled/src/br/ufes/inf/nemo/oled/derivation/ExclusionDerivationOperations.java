@@ -43,6 +43,7 @@ public class ExclusionDerivationOperations {
 	static DiagramManager dman;
 	static boolean gs_with_nonsortal_or_kind = false;
 	static Point2D.Double pointClicked;
+	static boolean general_existent=false;
 	static HashSet<Classifier> exclusionDerivationList= new HashSet<Classifier>();
 	
 	public static void createExclusionDerivation(
@@ -65,7 +66,8 @@ public class ExclusionDerivationOperations {
 		of = outf;
 		Fix fix = new Fix();
 		mainfix = fix;
-
+		DerivedTypesOperations.setDman(dm);
+		DerivedTypesOperations.setMainfix(mainfix);
 		/*
 		 * verify if it is a right selection
 		 * 
@@ -133,7 +135,7 @@ public class ExclusionDerivationOperations {
 			if (JOptionPane
 					.showConfirmDialog(
 							null,
-							"The Exclusion derivation needs a supertype, Do you want to use a existent supertype of this class?",
+							"The Exclusion derivation needs a supertype, do you want to use a existent supertype of this class?",
 							"WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			    String input = (String) JOptionPane.showInputDialog(null, "Choose one of the supertypes",
 			        "Supertype of the Exclusion Derivation", JOptionPane.QUESTION_MESSAGE, null, 
@@ -142,6 +144,7 @@ public class ExclusionDerivationOperations {
 			    	
 			    	if(input!=null){
 			    		general= parents.get(exitent_supertypes.indexOf(input));
+			    		general_existent=true;
 			    	}
 			    
 			} else {
@@ -309,11 +312,13 @@ public class ExclusionDerivationOperations {
 	private static void createGeneralizations(Classifier exclusion, Classifier general, Classifier base){
 		ArrayList<Generalization> generalizations = new ArrayList<Generalization>();
 		Fix fix1 = of.createGeneralization(exclusion, general);
-		Fix fix2 = of.createGeneralization(base, general);
 		generalizations
-				.add((Generalization) fix1.getAdded().get(0));
-		generalizations
-				.add((Generalization) fix2.getAdded().get(0));
+		.add((Generalization) fix1.getAdded().get(0));
+		if(!general_existent){
+			Fix fix2 = of.createGeneralization(base, general);
+			generalizations
+					.add((Generalization) fix2.getAdded().get(0));
+		}
 		Fix gs = of.createGeneralizationSet(generalizations, true,
 				true);
 		mainfix.addAll(gs);

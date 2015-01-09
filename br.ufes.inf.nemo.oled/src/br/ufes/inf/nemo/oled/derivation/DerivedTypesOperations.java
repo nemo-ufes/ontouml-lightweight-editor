@@ -58,6 +58,7 @@ import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SemiRigidMixinClass;
 import RefOntoUML.SubKind;
+import RefOntoUML.SubstanceSortal;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
@@ -972,8 +973,7 @@ public class DerivedTypesOperations {
 
 			if (selected.get(0) instanceof ClassElement) {
 				ClassElement element = (ClassElement) selected.get(0);
-				if (element.getClassifier() instanceof Kind
-						|| element.getClassifier() instanceof SubKind) {
+				if (element.getClassifier() instanceof RigidSortalClass) {
 					values.add("SubKind");
 					values.add("Phase");
 				} else if (element.getClassifier() instanceof Role
