@@ -32,8 +32,9 @@ If your are modelling your own ontology, you can go through them and see what yo
 
 *O3: OntoUML Org Ontology*<br>
 <i>Active structure of Organization </i><br>
-Representing Organizational Structures in an Enterprise Architecture Language<br>
+[https://www.researchgate.net/publication/269033251_Representing_Organizational_Structures_in_an_Enterprise_Architecture_Language Representing Organizational Structures in an Enterprise Architecture Language]<br>
 <i>Diorbert Pereira and João Paulo Andrade Almeida</i><br>
+Download full model [https://drive.google.com/drive/#folders/0B5VKZPBDiDmFUkJROVFsVXR6SkU here]<br>
 
 *CMTO: Configuration Management Task Ontology*<br>
 <i>Configuration management</i><br>
