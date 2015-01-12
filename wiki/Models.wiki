@@ -30,7 +30,7 @@ If your are modelling your own ontology, you can go through them and see what yo
 [http://ceur-ws.org/Vol-938/ontobras-most2012_paper12.pdf A Foundational Ontology to Support Scientific Experiments]<br>
 <i>Sergio Manuel Serra da Cruz, Maria Luiza Machado Campos and Marta Mattoso</i><br>
 
-*O3: OntoUML Org Ontology* ([https://drive.google.com/open?id=0B5VKZPBDiDmFOUR2dGNyYU9nSk0&authuser=0 download -- open using Sparx Systems Enterprise Architect])<br>
+*O3: OntoUML Org Ontology* ([https://drive.google.com/open?id=0B5VKZPBDiDmFOUR2dGNyYU9nSk0&authuser=0 download] -- open using Sparx Systems Enterprise Architect)<br>
 <i>Active structure of Organization </i><br>
 [https://www.researchgate.net/publication/269033251_Representing_Organizational_Structures_in_an_Enterprise_Architecture_Language Representing Organizational Structures in an Enterprise Architecture Language]<br>
 <i>Diorbert Pereira and João Paulo Andrade Almeida</i><br>
