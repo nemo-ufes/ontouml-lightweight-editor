@@ -20,7 +20,6 @@ import RefOntoUML.SubKind;
 import RefOntoUML.parser.OntoUMLParser;
 
 public class UtilAssistant {
-
 	public static int cont = 0;
 	public static int getCont(){
 		return ++cont;
@@ -134,5 +133,5 @@ public class UtilAssistant {
 		return s;
 	}
 	
-
 }
+

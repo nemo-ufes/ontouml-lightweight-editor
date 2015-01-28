@@ -46,9 +46,14 @@ public class MappingProperties {
 	private String generatePropertyName(NamedElement property, MappedProperty superMappedProperty) {
 		String propertyName = property.getName();
 		String initialName = propertyName;
-		propertyName = propertyName.replace(" ", "_");
+
 		String propertyAlias = ontoParser.getAlias(property);
 		propertyAlias = propertyAlias.replace(" ", "_");
+		
+		if(propertyName == null)
+			propertyName = propertyAlias;
+		else
+			propertyName = propertyName.replace(" ", "_");
 		
 		String source = null;
 		String target = null;
