@@ -1,32 +1,19 @@
 package br.ufes.inf.nemo.story.ui;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TreeItem;
 
-import stories.Individual;
-import stories.Story_element;
 import stories.impl.LinkImpl;
 import stories.impl.NodeImpl;
 import stories.impl.Node_stateImpl;
-import RefOntoUML.Classifier;
-import RefOntoUML.parser.OntoUMLNameHelper;
 
 //TODO: create a abstract class for the three classes used below
 public class TripleClassEditor {
@@ -48,16 +35,21 @@ public class TripleClassEditor {
 		final ClassEditor linkClassEditor = new AssociationEditor(charEditor, storyElTl, SWT.NONE);
 	    final ClassEditor antiRigidClassEditor = new DynamicClassEditor(charEditor, storyElTl, SWT.NONE );
 	    final ClassEditor rigidClassEditor = new RigidClassEditor(charEditor, storyElTl, SWT.NONE );
-	    	    
-	    stacklayout.topControl = linkClassEditor;
+	    final CLabel badSelection = new CLabel(charEditor, SWT.NONE);
+	    badSelection.setText("Selection includes elements of different types. Select only Nodes or Links or States");
+	    final CLabel noSelection = new CLabel(charEditor, SWT.NONE);
+	    noSelection.setText("Select items on the tree above and edit their classification here");
+	    stacklayout.topControl = noSelection;
 	    sc.setContent(charEditor);
-	    sc.setMinSize(linkClassEditor.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	    sc.setMinSize(stacklayout.topControl.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	    charEditor.layout();
 	    //Listener below changes the screen for the class editor
 	    storyElTl.getTree().addListener (SWT.Selection, new Listener(){
 			@Override
 			public void handleEvent(Event e) {
 				if(storyElTl.getTree().getSelection().length == 0){
 					//no items selected. Grey out the charEditor area.
+					stacklayout.topControl = noSelection;
 				}
 				else if (storyElTl.getTree().getSelection().length >0){
 					//multiple itens selected.
@@ -70,12 +62,11 @@ public class TripleClassEditor {
 					for(TreeItem o : storyElTl.getTree().getSelection()){
 						if(cl != o.getData().getClass()){
 							cl = null; //mark the selection as inconsistent
-							System.out.println("bad selection");
 							break;
 						}
 					}
 					if(cl!=null){
-						System.out.println("Good selection = "+ cl);
+						
 						//Good selection. The instantiated classes will be checked and the checkboxes updated.
 						//in case of inconsitent checkbox states, a box will be used.
 						//any change, including boxes, affect the whole selection.
@@ -96,7 +87,16 @@ public class TripleClassEditor {
 							antiRigidClassEditor.setCheckBoxes( storyElTl.getTree().getSelection());
 						}
 					}else{
-						System.out.println("Grey out!");
+						
+						stacklayout.topControl = badSelection;
+						/*Solution below not effective since CLabels do not behave as expected when setEnabled(false), they do not grey out.
+						 * Additionally, we would need to grey out the checkboxes too so going with the topControl replacement seems better right now
+						 * stacklayout.topControl.setEnabled(false);
+						for (Control l :((Composite)(stacklayout.topControl)).getChildren()){
+							System.out.println(l);
+							l.setEnabled(false);
+						}
+						*/
 					}
 				}
 				 

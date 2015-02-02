@@ -1,39 +1,22 @@
 package br.ufes.inf.nemo.story.ui;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.custom.StackLayout;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -42,10 +25,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
-import RefOntoUML.Class;
-import RefOntoUML.Classifier;
-import RefOntoUML.Type;
-import RefOntoUML.parser.OntoUMLNameHelper;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.story.OntoUMLStoryCrafter;
 import br.ufes.inf.nemo.story.WorldList;
@@ -57,9 +36,6 @@ import stories.StoriesFactory;
 import stories.Story;
 import stories.Story_element;
 import stories.World;
-import stories.impl.LinkImpl;
-import stories.impl.NodeImpl;
-import stories.impl.Node_stateImpl;
 import stories.impl.StoryImpl;
 
 public class StoryElementTimeline {	
@@ -127,9 +103,8 @@ public class StoryElementTimeline {
 	    imgIndeterminate = new Image(parent.getDisplay(), "resources/indeterminate.png");
 	    
 	    
-	    final Menu menu = new Menu(tree);
+	    final StoryElementTimelineMenu menu = new StoryElementTimelineMenu(this);
 	    tree.setMenu(menu);
-	    addMenuOptions(menu);
 	        
 	    
 	    //EMF world list
@@ -325,39 +300,6 @@ public class StoryElementTimeline {
 		return tree;
 	}
 	
-
-	//only used at the constructor
-	private void addMenuOptions(Menu menu) {
-		final MenuItem insertBeforeMenuItem = new MenuItem(menu, SWT.NONE);
-	    insertBeforeMenuItem.addSelectionListener(new SelectionAdapter() {
-	      public void widgetSelected(final SelectionEvent e)
-	      {
-	        TreeItem [] selected = tree.getSelection();
-
-	        if (selected.length > 0)
-	        {
-	          TreeItem parent = selected[0].getParentItem();
-	          System.out.println("Insert Before - " + selected[0].getText());
-	          TreeItem item ;
-	          if (parent == null)
-	          {	        	  
-		          int index = tree.indexOf(selected[0]);
-		          item = createStoryElement(tree, index);
-		           
-	          }else{	        	  
-		          int index = parent.indexOf(selected[0]);
-		          item = createStoryElement(parent, index);
-		          
-	          }
-	          item.setText("abv");  
-	        }
-	        else
-	          System.out.println("Insert Before - nothing selected.");
-	      }
-	    });
-	    insertBeforeMenuItem.setText("Insert Before");
-		
-	}
 	
 	public static int getColumn( Point pt, TreeItem item )
 	{
