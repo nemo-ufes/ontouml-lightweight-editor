@@ -80,6 +80,7 @@ public class CheckboxClassListener implements Listener {
 				if(data.getClass() == NodeImpl.class){
 					Node n = (Node)data;
 					n.getNot_instance_of().remove((Class)classifier);
+					n.getInstance_of().remove((Class)classifier);
 				}else if(data.getClass() == LinkImpl.class){
 	    			Link l = (Link)data;
 	    			l.getNot_instance_of().remove((Association)classifier);
