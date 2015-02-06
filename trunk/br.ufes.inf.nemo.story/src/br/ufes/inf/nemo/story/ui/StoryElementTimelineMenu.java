@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.story.ui;
 
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -11,11 +12,13 @@ import org.eclipse.swt.widgets.TreeItem;
 public class StoryElementTimelineMenu extends Menu {
 	final private StoryElementTimeline setml;
 	final private Tree tree;
+	final private MenuManager menuManager;
 	public StoryElementTimelineMenu(StoryElementTimeline storyElementTimeline) {
 		super(storyElementTimeline.getTree());
 		tree = storyElementTimeline.getTree();
 		setml = storyElementTimeline;
 		this.addMenuOptions();
+		menuManager = new MenuManager(); //http://help.eclipse.org/indigo/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Fguide%2Fjface_actions.htm
 	}
 	
 	//only used at the constructor
