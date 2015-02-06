@@ -1,9 +1,16 @@
 package br.ufes.inf.nemo.story.ui;
 
 import java.io.IOException;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -25,9 +32,15 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
 
+
+
+
+
+
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.story.OntoUMLStoryCrafter;
 import br.ufes.inf.nemo.story.WorldList;
+import br.ufes.inf.nemo.story.ui.menu.*;
 import stories.Individual;
 import stories.Link;
 import stories.Node;
@@ -103,9 +116,39 @@ public class StoryElementTimeline {
 	    imgIndeterminate = new Image(parent.getDisplay(), "resources/indeterminate.png");
 	    
 	    
-	    final StoryElementTimelineMenu menu = new StoryElementTimelineMenu(this);
-	    tree.setMenu(menu);
-	        
+	    //final StoryElementTimelineMenu menu = new StoryElementTimelineMenu(this);
+	    //tree.setMenu(menu);
+	      final MenuManager mng = new MenuManager(); 
+	      mng.setRemoveAllWhenShown(true);
+	      final StoryElementTimeline stl = this;
+	      Menu menu = mng.createContextMenu(tree);
+	      
+	      //editing the menu
+	      mng.addMenuListener(new IMenuListener() {
+	          public void menuAboutToShow(IMenuManager manager) {
+	              TreeItem[] selection = tree.getSelection();
+	              if (selection.length > 0) {
+	                 if (selection.length == 1) {
+	                	 //only one item selected. Check which it is to determine what might be added
+	                	 if (selection[0].getParentItem() == null){
+	                		 //Node or Link item selected
+	                		 mng.add(new ActionAddNode(stl));
+	                		 mng.add(new ActionAddState(stl));
+	                	 }else{
+	                		 mng.add(new ActionAddState(stl));
+	                	 }
+	                 }
+	                 else{
+	                	 //many things selected. Must check what type of selection it is
+	                      
+	                  } 
+	              }else {
+	            	  //nothing selected. May add Nodes and Links
+	            	  mng.add(new ActionAddNode(stl));
+	              }
+	          }
+	      });
+	      tree.setMenu(menu);
 	    
 	    //EMF world list
 	    world_sequence = new WorldList();	    
