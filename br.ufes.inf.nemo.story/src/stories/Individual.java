@@ -91,4 +91,6 @@ public interface Individual extends Story_element {
 	EList<World> getAbsent_from();
 	
 	public String identity();
+	
+	/*void clear();*/
 } // Individual

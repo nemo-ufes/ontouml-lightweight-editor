@@ -32,7 +32,7 @@ public class TripleClassEditor {
 		lblRigidTypes.setText("Rigid Types:");
 		 
 		 
-		final ClassEditor linkClassEditor = new AssociationEditor(charEditor, storyElTl, SWT.NONE);
+		final AssociationEditor linkClassEditor = new AssociationEditor(charEditor, storyElTl, SWT.NONE);
 	    final ClassEditor antiRigidClassEditor = new DynamicClassEditor(charEditor, storyElTl, SWT.NONE );
 	    final ClassEditor rigidClassEditor = new RigidClassEditor(charEditor, storyElTl, SWT.NONE );
 	    final CLabel badSelection = new CLabel(charEditor, SWT.NONE);
@@ -45,8 +45,7 @@ public class TripleClassEditor {
 	    charEditor.layout();
 	    //Listener below changes the screen for the class editor
 	    storyElTl.getTree().addListener (SWT.Selection, new Listener(){
-			@Override
-			public void handleEvent(Event e) {
+	    	public void handleEvent(Event e) {
 				if(storyElTl.getTree().getSelection().length == 0){
 					//no items selected. Grey out the charEditor area.
 					stacklayout.topControl = noSelection;
@@ -80,6 +79,7 @@ public class TripleClassEditor {
 							stacklayout.topControl = linkClassEditor;
 							sc.setMinSize(linkClassEditor.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 							linkClassEditor.setCheckBoxes(  storyElTl.getTree().getSelection());
+							linkClassEditor.setSourceTarget( storyElTl.getTree().getSelection());
 						}
 						else if (cl == Node_stateImpl.class){
 							stacklayout.topControl = antiRigidClassEditor;

@@ -4,11 +4,8 @@ import java.io.IOException;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
@@ -32,13 +29,14 @@ public class Example {
 		tl.createWorld();
 		tl.createWorld();
 		tl.createWorld();
-		tl.createStoryElement(tree);
+		tl.createNode(tree);
 		
 		for (int i = 0; i < 3; i++) {
-	      TreeItem item = tl.createStoryElement(tree);
+	      tl.createLink(tree, 0);
+			TreeItem item = tl.createNode(tree);
 	      
 	      for (int j = 0; j < 3; j++) {
-	        tl.createStoryElement(item);
+	        tl.createNode_state(item,j);
 	      }
 	    }
 	    

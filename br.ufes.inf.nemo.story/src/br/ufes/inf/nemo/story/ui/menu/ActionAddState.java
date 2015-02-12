@@ -28,7 +28,7 @@ public class ActionAddState extends Action {
           {
         	  //Node or link selected. Add as child
         	  
-        		  setml.createStoryElement(selected[0], 0);
+        		  setml.createNode_state(selected[0], 0);
             	  selected[0].setExpanded(true);            	    
         	  //should check for many selected
         	  
@@ -36,7 +36,7 @@ public class ActionAddState extends Action {
           }else{
         	  //State selected. Add as sibling
 	          int index = parent.indexOf(selected[0]);
-	          setml.createStoryElement(parent, index+1);
+	          setml.createNode_state(parent, index+1);
 	          
           }
           

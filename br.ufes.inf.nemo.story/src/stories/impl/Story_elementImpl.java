@@ -168,4 +168,10 @@ public abstract class Story_elementImpl extends MinimalEObjectImpl.Container imp
 		return this.label;
 	}
 	
+	/*void clear(){
+		if(this.eContainer()!= null){
+			((Story)this.eContainer()).getElements().remove(this);//remove itself from the container
+		}
+	}*/
+	
 } //Story_elementImpl

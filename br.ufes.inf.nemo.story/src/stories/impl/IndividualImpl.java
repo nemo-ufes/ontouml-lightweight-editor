@@ -241,4 +241,11 @@ public abstract class IndividualImpl extends Story_elementImpl implements Indivi
 		}
 		return diffs;
 	}
+	
+	/*public void clear(){
+		super.clear();
+		this.getPresent_in().clear();
+		this.getAbsent_from().clear();
+		this.getDifferent_from().clear();
+	}*/
 } //IndividualImpl

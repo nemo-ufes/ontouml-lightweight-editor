@@ -8,15 +8,19 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import stories.Link;
+import stories.Node;
 import br.ufes.inf.nemo.story.ui.StoryElementTimeline;
 
-public class ActionAddNode extends Action {
+public class ActionAddLinkToSelection extends Action {
 	final private StoryElementTimeline setml;
 	final private Tree tree;
-	public ActionAddNode(StoryElementTimeline storyElementTimeline){
-		super("Add Node");
+	final private TreeItem[] selection;
+	public ActionAddLinkToSelection(StoryElementTimeline storyElementTimeline, TreeItem[] s){
+		super("Add Link");
 		tree = storyElementTimeline.getTree();
 		setml = storyElementTimeline;
+		selection = s;
 	}
 	public void run(){
 		TreeItem [] selected = tree.getSelection();
@@ -27,12 +31,13 @@ public class ActionAddNode extends Action {
           if (parent == null)
           {	        	  
 	          int index = tree.indexOf(tree.getSelection()[0]);
-	          setml.createNode(tree, index+1);
-	           
+	          Link l = (Link) (setml.createLink(tree, index+1)).getData();
+	          l.setSource((Node) selection[0].getData());
+	          l.setTarget((Node) selection[1].getData());
           }          
         }else{
           //nothing selected. Insert at beggining
-          setml.createNode(tree, 0);
+          setml.createLink(tree, 0);
           
       	}
 		

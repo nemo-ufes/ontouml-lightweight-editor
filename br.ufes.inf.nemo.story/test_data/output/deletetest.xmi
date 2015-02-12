@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<stories:Story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stories="http://stories.bernardofbbraga.com.br">
+  <elements xsi:type="stories:Node" label="Node 1"/>
+  <elements xsi:type="stories:World" label="World 0" next="deletetest.xmi#World 1"/>
+  <elements xsi:type="stories:World" label="World 1" next="deletetest.xmi#World 2" prev="deletetest.xmi#World 0"/>
+  <elements xsi:type="stories:World" label="World 2" prev="deletetest.xmi#World 1"/>
+</stories:Story>
