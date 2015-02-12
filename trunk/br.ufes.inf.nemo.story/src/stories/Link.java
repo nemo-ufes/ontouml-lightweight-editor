@@ -112,4 +112,6 @@ public interface Link extends Individual {
 
 	String existance();
 
+	/*void clear();*/
+
 } // Link

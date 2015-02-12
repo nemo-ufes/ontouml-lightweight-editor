@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ASCII"?>
+<stories:Story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stories="http://stories.bernardofbbraga.com.br">
+  <elements xsi:type="stories:Link" label="Link 6"/>
+  <elements xsi:type="stories:Link" label="Link 4"/>
+  <elements xsi:type="stories:Link" label="Link 2"/>
+  <elements xsi:type="stories:Node" label="Node 1"/>
+  <elements xsi:type="stories:Node" label="Node 3">
+    <states label="State 1"/>
+    <states label="State 2"/>
+    <states label="State 3"/>
+  </elements>
+  <elements xsi:type="stories:Link" label="Link 8" source="addlinktest.xmi#Node 3" target="addlinktest.xmi#Node 5"/>
+  <elements xsi:type="stories:Node" label="Node 5">
+    <states label="State 1"/>
+    <states label="State 2"/>
+    <states label="State 3"/>
+  </elements>
+  <elements xsi:type="stories:Node" label="Node 7">
+    <states label="State 1"/>
+    <states label="State 2"/>
+    <states label="State 3"/>
+  </elements>
+  <elements xsi:type="stories:World" label="World 0" next="addlinktest.xmi#World 1"/>
+  <elements xsi:type="stories:World" label="World 1" next="addlinktest.xmi#World 2" prev="addlinktest.xmi#World 0"/>
+  <elements xsi:type="stories:World" label="World 2" prev="addlinktest.xmi#World 1"/>
+</stories:Story>

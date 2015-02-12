@@ -37,18 +37,18 @@ public class StoryElementTimelineMenu extends Menu {
 		          if (parent == null)
 		          {	        	  
 			          int index = tree.indexOf(selected[0]);
-			          item = setml.createStoryElement(tree, index+1);
+			          item = setml.createNode(tree, index+1);
 			           
 		          }else{	        	  
 			          int index = parent.indexOf(selected[0]);
-			          item = setml.createStoryElement(parent, index+1);
+			          item = setml.createNode_state(parent, index+1);
 			          
 		          }
 		          
 		        }
 		        else{
 		          System.out.println("Insert Before - nothing selected. Insert at beggining");
-		          item = setml.createStoryElement(tree, 0);
+		          item = setml.createNode(tree, 0);
 		      	}
 		        item.setText("abv");  
 		      }

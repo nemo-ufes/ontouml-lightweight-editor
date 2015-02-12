@@ -329,6 +329,18 @@ public class LinkImpl extends IndividualImpl implements Link {
 		}
 		return predicate;
 	}
+/*
+	@Override
+	public void clear() {
+		this.setSource(null);
+		this.setTarget(null);
+		this.getDifferent_from().clear();
+		this.getSame_as().clear();
+		this.getInstance_of().clear();
+		this.getNot_instance_of().clear();
+		this.getPresent_in().clear();
+		this.get
+	}*/
 	
 	
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -37,6 +38,15 @@ import org.eclipse.swt.widgets.TreeItem;
 
 
 
+
+
+
+
+
+
+
+
+
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.story.OntoUMLStoryCrafter;
 import br.ufes.inf.nemo.story.WorldList;
@@ -49,7 +59,11 @@ import stories.StoriesFactory;
 import stories.Story;
 import stories.Story_element;
 import stories.World;
+import stories.impl.LinkImpl;
+import stories.impl.NodeImpl;
+import stories.impl.Node_stateImpl;
 import stories.impl.StoryImpl;
+import stories.impl.Story_elementImpl;
 
 public class StoryElementTimeline {	
 	private final Tree tree;
@@ -121,34 +135,69 @@ public class StoryElementTimeline {
 	      final MenuManager mng = new MenuManager(); 
 	      mng.setRemoveAllWhenShown(true);
 	      final StoryElementTimeline stl = this;
-	      Menu menu = mng.createContextMenu(tree);
+	      final Menu treeMenu = mng.createContextMenu(tree);
 	      
-	      //editing the menu
+	      //editing the menu based on the selection
 	      mng.addMenuListener(new IMenuListener() {
 	          public void menuAboutToShow(IMenuManager manager) {
+	        	  
 	              TreeItem[] selection = tree.getSelection();
 	              if (selection.length > 0) {
-	                 if (selection.length == 1) {
+	            	 if (selection.length == 1) {
 	                	 //only one item selected. Check which it is to determine what might be added
 	                	 if (selection[0].getParentItem() == null){
 	                		 //Node or Link item selected
 	                		 mng.add(new ActionAddNode(stl));
-	                		 mng.add(new ActionAddState(stl));
+	                		 mng.add(new ActionAddLink(stl));
+	                		 if(selection[0].getData().getClass() == NodeImpl.class){
+	                			 mng.add(new ActionAddState(stl));
+	                		 }
 	                	 }else{
+	                		 //State selected. Add sibling.
 	                		 mng.add(new ActionAddState(stl));
 	                	 }
 	                 }
 	                 else{
-	                	 //many things selected. Must check what type of selection it is
-	                      
+	                	//many things selected. Must check what type of selection it is
+	                	 if (selection.length == 2) {
+	                		 //this means we could add a link between two nodes, if it is the case
+	                		 mng.add(new ActionAddLinkToSelection(stl, selection));
+	                	 }
 	                  } 
 	              }else {
 	            	  //nothing selected. May add Nodes and Links
 	            	  mng.add(new ActionAddNode(stl));
+	            	  mng.add(new ActionAddLink(stl));
 	              }
+	              mng.add(new ActionDeleteSelection(stl));
 	          }
 	      });
-	      tree.setMenu(menu);
+	      
+	      final Menu headerMenu = new Menu(parent);
+	      final SelectedColumnHolder sch = new SelectedColumnHolder();
+	      
+	      final MenuItem deleteWorld = new MenuItem(headerMenu, SWT.NONE );
+	      deleteWorld.setText("Delete World");
+	      deleteWorld.addListener(SWT.Selection, new Listener() {
+	    	  @Override
+	    	  public void handleEvent(Event event) {
+	    		 System.out.println("deleting "+tree.getColumn(sch.getSelectedColumn()));
+	    	  }
+	      });
+	      
+	      //The listener below detects where the click was. If it was on the header, there is a special menu for deleting Worlds.
+	      tree.addListener(SWT.MenuDetect, new Listener() {
+	  		@Override
+	  		public void handleEvent(Event event) {
+	  			Point pt = parent.getDisplay().map(null, tree, new Point(event.x, event.y));
+	  			Rectangle clientArea = tree.getClientArea();
+	  			boolean header = clientArea.y <= pt.y && pt.y < (clientArea.y + tree.getHeaderHeight());
+	  			tree.setMenu(header ? headerMenu : treeMenu);
+	  			
+	  		}
+	  	  });
+	      
+	      tree.setMenu(treeMenu);
 	    
 	    //EMF world list
 	    world_sequence = new WorldList();	    
@@ -259,11 +308,11 @@ public class StoryElementTimeline {
 	// --- the ones that receive Trees as parameters are Nodes or Links 	---
 	// --- the ones that receive TreeItens are node_states 					---
 	// --- choose either to add at the end of the list or at an index		---	
-	public TreeItem createStoryElement(Tree parent){
+	public TreeItem createNode(Tree parent){
 		
-		return createStoryElement(parent, parent.getItemCount());	
+		return createNode(parent, parent.getItemCount());	
 	}
-	public TreeItem createStoryElement(Tree parent, int index){
+	public TreeItem createNode(Tree parent, int index){
 		TreeItem item = new TreeItem(parent, SWT.CENTER, index);
 		Node n = storyFactory.createNode();
 		n.setLabel("Node "+parent.getItemCount());
@@ -271,9 +320,9 @@ public class StoryElementTimeline {
 		return addNewRowWorldButtons(item,"Node "+parent.getItemCount());
 	}
 	public TreeItem createStoryElement(TreeItem parent){
-		return createStoryElement(parent, parent.getItemCount());
+		return createNode_state(parent, parent.getItemCount());
 	}
-	public TreeItem createStoryElement(TreeItem parent, int index){
+	public TreeItem createNode_state(TreeItem parent, int index){
 		TreeItem item = new TreeItem(parent, SWT.CENTER, index);
 		Node_state n = storyFactory.createNode_state();
 		
@@ -282,6 +331,15 @@ public class StoryElementTimeline {
 		item.setData(n);
 		return addNewRowWorldButtons(item,"State "+ parent.getItemCount());
 	}
+
+	public TreeItem createLink(Tree parent, int index) {
+		TreeItem item = new TreeItem(parent, SWT.CENTER, index);
+		Link n = storyFactory.createLink();
+		n.setLabel("Link "+parent.getItemCount());
+		item.setData(n);
+		return addNewRowWorldButtons(item,"Link "+parent.getItemCount());
+	}
+	
 	public TreeItem addIndividual(Tree parent, Individual n, int index){
 		TreeItem item = new TreeItem(parent, SWT.CENTER, index);
 		item.setData(n);
@@ -289,6 +347,15 @@ public class StoryElementTimeline {
 		yesWorldButtons(item,n.getPresent_in());
 		noWorldButtons(item,n.getAbsent_from());
 		return item;
+	}
+	public void deleteStoryElement(TreeItem i) {
+		//TODO: check if the element is disposed
+		if(!i.isDisposed()){
+			Object ste = i.getData();
+			EcoreUtil.delete((EObject) ste);
+			i.setData(null);
+			i.dispose();
+		}	
 	}
 	// ------------------------------------------------------------------------
 
@@ -343,7 +410,8 @@ public class StoryElementTimeline {
 		return tree;
 	}
 	
-	
+	/*
+	 * I'll try to substitute this method to take only the tree as argument, leaving this implementation behind in case things go wrong
 	public static int getColumn( Point pt, TreeItem item )
 	{
 		if(item!=null){
@@ -355,8 +423,26 @@ public class StoryElementTimeline {
 		    }
 		}
 	    return -1;
+	}*/
+	
+	public static int getColumn( Point pt, Tree tree )
+	{
+		TreeItem item = tree.getItems()[0];//any item will do
+		if(item!=null){
+			System.out.println("not null");
+		    int columns = tree.getColumnCount();
+		    System.out.println(columns);
+		    for (int i=0; i<columns; i++)
+		    {
+		    	Rectangle rect = item.getBounds (i);
+		    	System.out.println(i);
+		    	System.out.println(pt.x+" "+rect.x+" "+rect.width);
+		    	if ( pt.x >= rect.x && pt.x < rect.x + rect.width ) return i;
+		    }
+		}
+	    return -1;
 	}
-
+	
 	public Image getImgYes(){
 		return imgYes;
 	}
@@ -373,4 +459,7 @@ public class StoryElementTimeline {
 	public OntoUMLParser getModelParser() {
 		return modelParser;
 	}
+
+
+	
 }

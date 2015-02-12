@@ -78,7 +78,7 @@ public class CheckboxClickListener implements Listener {
 			Point point = new Point (event.x, event.y);
 			TreeItem item = tree.getItem (point);
 			if (item != null) {
-				int column = StoryElementTimeline.getColumn(point,item);
+				int column = StoryElementTimeline.getColumn(point,tree);
 				Image img = item.getImage(column);
 				//The images are used as state identifiers
 				if(img == imgUnchecked){

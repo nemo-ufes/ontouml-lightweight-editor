@@ -3,7 +3,6 @@ package br.ufes.inf.nemo.story.ui;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +20,6 @@ import org.eclipse.swt.widgets.TreeItem;
 
 
 
-import stories.Node;
 import RefOntoUML.Classifier;
 import RefOntoUML.parser.OntoUMLParser;
 

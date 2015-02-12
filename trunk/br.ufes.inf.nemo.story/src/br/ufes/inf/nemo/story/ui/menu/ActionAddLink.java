@@ -10,11 +10,11 @@ import org.eclipse.swt.widgets.TreeItem;
 
 import br.ufes.inf.nemo.story.ui.StoryElementTimeline;
 
-public class ActionAddNode extends Action {
+public class ActionAddLink extends Action {
 	final private StoryElementTimeline setml;
 	final private Tree tree;
-	public ActionAddNode(StoryElementTimeline storyElementTimeline){
-		super("Add Node");
+	public ActionAddLink(StoryElementTimeline storyElementTimeline){
+		super("Add Link");
 		tree = storyElementTimeline.getTree();
 		setml = storyElementTimeline;
 	}
@@ -27,12 +27,12 @@ public class ActionAddNode extends Action {
           if (parent == null)
           {	        	  
 	          int index = tree.indexOf(tree.getSelection()[0]);
-	          setml.createNode(tree, index+1);
+	          setml.createLink(tree, index+1);
 	           
           }          
         }else{
           //nothing selected. Insert at beggining
-          setml.createNode(tree, 0);
+          setml.createLink(tree, 0);
           
       	}
 		
