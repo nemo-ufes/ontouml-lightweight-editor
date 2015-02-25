@@ -258,9 +258,9 @@ public class TOCLParser extends OCLParser{
     
     public void checkInvalidOperationsAndNavigations(String result) throws ParserException
     {
-    	if (result.contains("oclIsNew()")){
-    		throw new ParserException("Cannot find operation (oclIsNew()). Missing world parameter. ");
-    	}
+//    	if (result.contains("oclIsNew()")){
+//    		throw new ParserException("Cannot find operation (oclIsNew()). Missing world parameter. ");
+//    	}
     	
     	int match = countMatches("oclIsKindOf\\((_')*\\s*\\w+\\s*'*\\)", result);
     	if(match>0) {
@@ -366,8 +366,10 @@ public class TOCLParser extends OCLParser{
     				}
     			} else expression = rightExpression.substring(0,rightExpression.length());
     			
-    			if(expression.contains("World") || expression.contains("next()") || expression.contains("previous()") || expression.contains("hasNext()")|| expression.contains("allNext()") ||
-				expression.contains("allPrevious()") || expression.contains("isOrigin()") || expression.contains("isTerminal()") || expression.contains("existsIn")){
+    			if(expression.contains("World") || expression.contains("Path") || expression.contains("next(") || expression.contains("previous(") || expression.contains("hasNext(")|| expression.contains("hasPrevious(") || expression.contains("allNext(") ||
+				expression.contains("allPrevious(") || expression.contains("isOrigin(") || expression.contains("isTerminal(") || expression.contains("existsIn(") || expression.contains("paths(") || expression.contains("worlds(") || 
+    			expression.contains("oclIsCreated(") || expression.contains("oclCeasesToBe(") || expression.contains("oclIsDeleted(") || expression.contains("oclBecomes("))
+    			{
     				throw new ParserException("Unrecognizable keyword \"inv\": A temporal constraint is defined by the keyword \"temp\"");
     			}
     			
@@ -384,9 +386,11 @@ public class TOCLParser extends OCLParser{
     				}
     			} else expression = rightExpression.substring(0,rightExpression.length());
     			
-    			if(expression.contains("World") || expression.contains("next()") || expression.contains("previous()") || expression.contains("hasNext()")|| expression.contains("allNext()") ||
-				expression.contains("allPrevious()") || expression.contains("isOrigin()") || expression.contains("isTerminal()") || expression.contains("existsIn")){
-    				throw new ParserException("Unrecognizable keyword \"derive\": A temporal constraint is defined by the keyword \"temp\"");
+    			if(expression.contains("World") || expression.contains("Path") || expression.contains("next(") || expression.contains("previous(") || expression.contains("hasNext(")|| expression.contains("hasPrevious(") || expression.contains("allNext(") ||
+				expression.contains("allPrevious(") || expression.contains("isOrigin(") || expression.contains("isTerminal(") || expression.contains("existsIn(") || expression.contains("paths(") || expression.contains("worlds(") || 
+    			expression.contains("oclIsCreated(") || expression.contains("oclCeasesToBe(") || expression.contains("oclIsDeleted(") || expression.contains("oclBecomes("))
+    			{
+    				throw new ParserException("Unrecognizable keyword \"inv\": A temporal constraint is defined by the keyword \"temp\"");
     			}
     		}    	
     	}
@@ -432,9 +436,10 @@ public class TOCLParser extends OCLParser{
 		result = processObjectOperation(result, p);
 		
 		//remove world parameter and record it
-		p = Pattern.compile("oclIsNew\\(\\s*\\w+\\s*\\)");		
-		result = processOclIsNewOperation(result, p);
+		//p = Pattern.compile("oclIsNew\\(\\s*\\w+\\s*\\)");		
+		//result = processOclIsNewOperation(result, p);
 		
+		System.out.println(result);
 	    return result;
     }
 
@@ -449,35 +454,35 @@ public class TOCLParser extends OCLParser{
 		try{
 			umlconstraintsList = myOCL.parse(document);
 		}catch(ParserException pe){
-			if (pe.getLocalizedMessage().contains("World")){
-				if(!pe.getLocalizedMessage().contains("oclIsKindOf") && !pe.getLocalizedMessage().contains("oclIsTypeOf") &&				   
-				   !pe.getLocalizedMessage().contains("allIntances") && !pe.getLocalizedMessage().contains("existsIn") &&
-				   !pe.getLocalizedMessage().contains("next") && !pe.getLocalizedMessage().contains("previous") &&
-				   !pe.getLocalizedMessage().contains("allNext") && !pe.getLocalizedMessage().contains("allPrevious") &&
-				   !pe.getLocalizedMessage().contains("isTerminal") && !pe.getLocalizedMessage().contains("isOrigin") &&
-				   !pe.getLocalizedMessage().contains("hasNext") && !pe.getLocalizedMessage().contains("hasPrevious") &&
-				   !pe.getLocalizedMessage().contains("worlds") && !pe.getLocalizedMessage().contains("paths") &&
-				   !pe.getLocalizedMessage().contains("oclIsNew") && !pe.getLocalizedMessage().contains("allIndividuals"))
-				{
-					String message = pe.getLocalizedMessage().replace("(World)","[World]");
-					message = message.replace("operation", "association end-point ");
-					throw new ParserException(message);
-				}
-			}
-			if (pe.getLocalizedMessage().contains("operation") && pe.getLocalizedMessage().contains("oclIsNew")){
-				//****** 
-				//we do not want this parsing error to be displayed since we do support oclIsNew() in invariants
-				//******
-			}
-			if (pe.getLocalizedMessage().contains("operation") && !pe.getLocalizedMessage().contains("World")){
-				String message = pe.getLocalizedMessage().replace("()","");
-				message = message.replace("operation", "association end-point ");
-				message+=".\nMissing world argument using the syntax \"[ ]\"";
-				throw new ParserException(message);				
-			
-			} else{				
+//			if (pe.getLocalizedMessage().contains("World")){
+//				if(!pe.getLocalizedMessage().contains("oclIsKindOf") && !pe.getLocalizedMessage().contains("oclIsTypeOf") &&				   
+//				   !pe.getLocalizedMessage().contains("allIntances") && !pe.getLocalizedMessage().contains("existsIn") &&
+//				   !pe.getLocalizedMessage().contains("next") && !pe.getLocalizedMessage().contains("previous") &&
+//				   !pe.getLocalizedMessage().contains("allNext") && !pe.getLocalizedMessage().contains("allPrevious") &&
+//				   !pe.getLocalizedMessage().contains("isTerminal") && !pe.getLocalizedMessage().contains("isOrigin") &&
+//				   !pe.getLocalizedMessage().contains("hasNext") && !pe.getLocalizedMessage().contains("hasPrevious") &&
+//				   !pe.getLocalizedMessage().contains("worlds") && !pe.getLocalizedMessage().contains("paths") &&
+//				   !pe.getLocalizedMessage().contains("oclIsNew") && !pe.getLocalizedMessage().contains("allIndividuals"))
+//				{
+//					String message = pe.getLocalizedMessage().replace("(World)","[World]");
+//					message = message.replace("operation", "association end-point ");
+//					throw new ParserException(message);
+//				}
+//			}
+//			if (pe.getLocalizedMessage().contains("operation") && pe.getLocalizedMessage().contains("oclIsNew")){
+//				//****** 
+//				//we do not want this parsing error to be displayed since we do support oclIsNew() in invariants
+//				//******
+//			}
+//			if (pe.getLocalizedMessage().contains("operation") && !pe.getLocalizedMessage().contains("World")){
+//				String message = pe.getLocalizedMessage().replace("()","");
+//				message = message.replace("operation", "association end-point ");
+//				message+=".\nMissing world argument using the syntax \"[ ]\"";
+//				throw new ParserException(message);				
+//			
+//			} else{				
 				throw new ParserException(pe.getLocalizedMessage());
-			}
+//			}
 		}	
 		
 		umlreflection = umlenv.getUMLReflection();

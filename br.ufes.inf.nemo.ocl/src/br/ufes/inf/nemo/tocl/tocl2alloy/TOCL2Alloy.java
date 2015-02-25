@@ -24,7 +24,7 @@ public class TOCL2Alloy {
 		for(Constraint ct: oclparser.getConstraints())
 		{	
 			try{				
-				result += myVisitor.visitConstraint(ct);		
+				result += ((TOCL2AlloyVisitor)myVisitor).visitConstraint(ct);		
 				succeeds = true;				
 			}catch(IteratorException e){
 				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
@@ -51,7 +51,7 @@ public class TOCL2Alloy {
 		for(Constraint ct: oclparser.getConstraints())
 		{	
 			try{
-				result += myVisitor.visitConstraint(ct);				
+				result += ((TOCL2AlloyVisitor)myVisitor).visitConstraint(ct);				
 				succeeds = true;				
 			}catch(IteratorException e){
 				log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false;				
@@ -86,7 +86,7 @@ public class TOCL2Alloy {
 		opt.getTransformationType().set(opt.getTransformationType().indexOf(ct),stereo);
 		TOCL2AlloyVisitor myVisitor = new TOCL2AlloyVisitor(oclparser, oclparser.getOntoUMLParser(), opt);		
 		try{						
-			result += myVisitor.visitConstraint(ct); succeeds = true;						
+			result += ((TOCL2AlloyVisitor)myVisitor).visitConstraint(ct); succeeds = true;						
 		}catch(IteratorException e){
 			log += "Temporal Conversion: "+ct.getName()+"\n"+e.getMessage()+"\n"; succeeds=false; 			
 		}catch(LiteralException e){
