@@ -33,10 +33,10 @@ public class TOCLCompletionProvider {
 		ArrayList<TOCLTemplateCompletion> oclCompletionList = new ArrayList<TOCLTemplateCompletion>();
 						
 		description = "<b>context TypeName <br>temp : true</b><br><br>"+
-		"Temporal constraint.";
+		"Temporal invariant.";
 		
 		TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
-			"temp","temporal",
+			"temp","temp",
 			"context ${TypeName}\ntemp : ${true} ${cursor}\n",
 			null, description);		
 		provider.addCompletion(c);
@@ -61,16 +61,6 @@ public class TOCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>Classifier::allInstances(w: World): Classifier-instances</b<<br><br>" + 
-		"Returns the set of all instances of Classifier T in world w.";
-		
-		c = new TOCLTemplateCompletion(provider, 
-			"allInstances(w)","allInstances(w)",
-			"allInstances(${world})${cursor}",
-			null,description);		
-		provider.addCompletion(c);
-		oclCompletionList.add(c);
-		
 		description = "Operation <b>OclAny::oclIsTypeOf(type : AnyClassifier(T), w: World) : Boolean</b><br><br>"+
 		"Evaluates to true if self is of the type t but not a subtype of t in the World w.";
 		
@@ -81,18 +71,80 @@ public class TOCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 				
-		description = "Operation <b>OclAny::oclIsNew(w: World) : Boolean</b><br><br>"+
+		description = "Operation <b>OclAny::oclAsType(type: AnyClassifier(T), w: World): T</b><br><br>"+
+		
+		"Evaluates to self, where self is of the type identified by T at world w. The type T may be any classifier " +
+		"defined in the OntoUML model; if the actual type of self at evaluation time does not conform to T at w, then " +
+		"the oclAsType operation evaluates to invalid."+"<br><br>"+
+
+		"In the case of feature redefinition, casting an object to a supertype of its actual type does not access " +
+		"the supertype definition of the feature; according to the semantics of redefinition, the redefined feature " +
+		"simply does not exist for the object. However, when casting to a supertype, any features additionally defined " +
+		"by the subtype are suppressed.";
+
+		c = new TOCLTemplateCompletion(provider, 
+			"oclAsType(w)","oclAsType(w)",
+			"oclAsType(${T},${world})${cursor}",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+		
+		description = "Operation <b>Class::allInstances(w: World): Class-instances</b<<br><br>" + 
+		"Returns the set of all instances of Class T in world w.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"allInstances(w)","allInstances(w)",
+			"allInstances(${world})${cursor}",
+			null,description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+				
+		description = "Operation <b>Individual::oclIsCreated(w: World) : Boolean</b><br><br>"+
 		"Evaluates to true if self exists in w but not in the immediate previous world from w.<br>" +
 		"In other words, it checks the object creation in world w.";
 		
 		c = new TOCLTemplateCompletion(provider, 
-				"oclIsNew(w)","oclIsNew(w)",
-				"oclIsNew(${world})${cursor}",
+				"oclIsCreated","oclIsCreated",
+				"oclIsCreated(${world})${cursor}",
 				null, description);		
 			provider.addCompletion(c);
 			oclCompletionList.add(c);
 			
-		description = "Operation <b>OclAny::existsIn(w: World) : Boolean</b><br><br>"+
+			
+		description = "Operation <b>Individual::oclIsDeleted(w: World) : Boolean</b><br><br>"+
+		"Evaluates to true if self does not exist in w but  exist in the immediate previous world from w.<br>" +
+		"In other words, it checks the object deletion in world w.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+				"oclIsDeleted","oclIsDeleted",
+				"oclIsDeleted(${world})${cursor}",
+				null, description);		
+			provider.addCompletion(c);
+			oclCompletionList.add(c);
+			
+		description = "Operation <b>Individual::oclBecomes(t: Classifier, w: World) : Boolean</b><br><br>"+
+		"Evaluates to true if self instantiates t in w but does not instantiate t in the immediate previous world from w.<br>" +
+		"In other words, it checks if the object was classified as t in world w.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+				"oclBecomes","oclBecomes",
+				"oclBecomes(${type}, ${world})${cursor}",
+				null, description);		
+			provider.addCompletion(c);
+			oclCompletionList.add(c);
+						
+		description = "Operation <b>Individual::oclCeasesToBe(t: Classifier, w: World) : Boolean</b><br><br>"+
+		"Evaluates to true if self does not instantiate t in w but instantiate t in the immediate previous world from w.<br>" +
+		"In other words, it checks if the object ceases to be classified as t in world w.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+				"oclCeasesToBe","oclCeasesToBe",
+				"oclCeasesToBe(${type}, ${world})${cursor}",
+				null, description);		
+			provider.addCompletion(c);
+			oclCompletionList.add(c);
+						
+		description = "Operation <b>Individual::existsIn(w: World) : Boolean</b><br><br>"+
 		"Evaluates to true if self exists in the World w.";
 		
 		c = new TOCLTemplateCompletion(provider, 
