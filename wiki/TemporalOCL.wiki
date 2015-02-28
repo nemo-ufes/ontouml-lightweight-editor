@@ -4,6 +4,7 @@
 This is the missing content of the article: 
 
 *Representing Dynamic Invariants in Ontologically Well-Founded Conceptual Models* 
+
 by *John Guerson* and *João Paulo A. Almeida*.
 
 ----
