@@ -14,17 +14,21 @@ Actual Multiplicity Constraints:
 {{{
 context World 
 
-inv marriage_mediates_one_wife_at_a_time: self.individual->select(i | i.oclIsKindOf(Marriage))->forAll(m |
-        m.mediates_marriage_wife->select(r | r.world = self)->size() = 1)
+inv marriage_mediates_one_wife_at_a_time: 
+    self.individual->select(i | i.oclIsKindOf(Marriage))->forAll(m |
+    m.mediates_marriage_wife->select(r | r.world = self)->size() = 1)
 
-inv marriage_mediate_one_husband_at_a_time: self.individual->select(i | i.oclIsKindOf(Marriage))->forAll(m | 
-        m.mediates_marriage_husband->select(r | r.world = self)->size() = 1)
+inv marriage_mediate_one_husband_at_a_time: 
+    self.individual->select(i | i.oclIsKindOf(Marriage))->forAll(m | 
+    m.mediates_marriage_husband->select(r | r.world = self)->size() = 1)
 
-inv wife_mediated_by_one_marriage_at_a_time: self.individual->select(i| i.oclIsKindOf(Wife))->forAll(h | 
-        h.mediates_marriage_wife->select(r | r.world = self)->size() = 1)
+inv wife_mediated_by_one_marriage_at_a_time: 
+    self.individual->select(i| i.oclIsKindOf(Wife))->forAll(h | 
+    h.mediates_marriage_wife->select(r | r.world = self)->size() = 1)
 
-inv husband_mediated_by_one_marriage: self.individual->select(i| i.oclIsKindOf(Husband))->forAll(h | 
-        h.mediates_marriage_husband->select(r | r.world = self)->size() = 1)
+inv husband_mediated_by_one_marriage: 
+    self.individual->select(i| i.oclIsKindOf(Husband))->forAll(h | 
+    h.mediates_marriage_husband->select(r | r.world = self)->size() = 1)
 }}}
 
 Cycle Constraints:
@@ -57,10 +61,12 @@ inv no_duplicability:
 Additional OCL Constraints
 {{{
 context World 
-inv no_cycle: self->asSet()->closure(next)->excludes(self) 
+inv no_cycle: 
+    self->asSet()->closure(next)->excludes(self) 
 
 context Path 
-inv no_parallel_structure:Path.allInstances()->forAll(p|self.world->intersection(p.world)->notEmpty()) 
+inv no_parallel_structure:
+    Path.allInstances()->forAll(p|self.world->intersection(p.world)->notEmpty()) 
 
 context Path 
 inv one_terminal: self.world->one(w | w.next->isEmpty())
