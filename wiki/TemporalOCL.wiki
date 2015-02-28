@@ -3,3 +3,17 @@
 
 This is the missing content of the article: Representing Dynamic Invariants in Ontologically Well-Founded Conceptual Models by John Guerson and João Paulo A. Almeida.
 
+{{{
+context Path 
+inv one_terminal: self.world->one(w | w.next->isEmpty())
+inv one_origin: self.world->one(w | w.previous.oclIsUndefined())
+inv no_two_paths_with_same_terminal_world: 
+    Path.allInstances()->forAll(p | p<>self implies p.world->select( 
+    w | w.next->isEmpty()) <> self.world->select(w | w.next->isEmpty()))
+inv each_terminal_world_has_one_path: 
+    let ts: Set(World) = World.allInstances()->select(w |w.next->isEmpty()) 
+    in ts->forAll(t| Path.allInstances()->one(p | p.world->includes(t)))
+inv worlds_of_a_path_derived_from_terminal_worlds:
+    let t: Set(World) = self.world->select(w| w.next->isEmpty()) 
+    in (self.world-t) = t->closure(previous)
+}}}
