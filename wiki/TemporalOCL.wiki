@@ -36,10 +36,10 @@ Cycle Constraints:
 context mediates_Marriage_Wife 
 
 inv no_cycle_between_wife_world_mediation: 
-self.world.individual->select(i |i.oclIsKindOf(Wife))->includes(self.wife)
+    self.world.individual->select(i |i.oclIsKindOf(Wife))->includes(self.wife)
 
 inv no_cycle_between_marriage_world_mediation: 
-self.world.individual->select(i|i.oclIsKindOf(Marriage))->includes(self.marriage)
+    self.world.individual->select(i|i.oclIsKindOf(Marriage))->includes(self.marriage)
 }}}
 
 Immutability and Duplicability Constraints:
