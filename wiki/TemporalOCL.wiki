@@ -1,7 +1,10 @@
 #summary This is a temporal extension of standard OCL suitable to OntoUML.
 #labels OntoUML,Temporal,OCL
 
-This is the missing content of the article: Representing Dynamic Invariants in Ontologically Well-Founded Conceptual Models by John Guerson and João Paulo A. Almeida.
+This is the missing content of the article: 
+
+*Representing Dynamic Invariants in Ontologically Well-Founded Conceptual Models* 
+by John Guerson and João Paulo A. Almeida.
 
 ----
 *Section 3.2* World-Reified Model
@@ -62,9 +65,44 @@ inv worlds_of_a_path_derived_from_terminal_worlds:
 
 Alloy Code:
 {{{
+module tocl_world_structure
+some sig World {
+	next: set World
+}
 
+//no joining histories
+fact { all w: World | # next.w <=1 }
+//no cycle
+fact { all w: World | w !in w.^next }
+//no parallel structure
+fact { all p1,p2: Path | some p1.world & p2.world }
 
+some sig Path { 
+    world: some World 
+}{
+   // one terminal world
+	# { w: world | no w.next } = 1
+   // one origin world
+	# { w: world | no next.w } = 1
+}
 
+fact { 
+    // no two paths with same terminal worlds
+    all p1:Path | all p2: Path | 
+    p1!=p2 => {w: p1.world | no w.next } != {w: p2.world | no w.next } 
+}
+
+fact { 
+    // worlds of a path are equal to past worlds of terminal world
+    all p: Path | let t = {w: p.world | no w.next } | 
+    (p.world - t) = ^(World<:next).t 
+}
+
+fact { 
+     // every terminal world of the structure must be contained in a path
+     let ts = { w: World | no w.next } | 
+     (all t: ts | one p: Path | t in p.world) 
+}
+
+run {} for 10 but 7 int
 }}}
-
-
