@@ -10,6 +10,23 @@ by *John Guerson* and *João Paulo A. Almeida*.
 ----
 *Section 3.2* World-Reified Model
 
+Actual Multiplicity Constraints:
+{{{
+context World 
+
+inv marriage_mediates_one_wife_at_a_time: self.individual->select(i | i.oclIsKindOf(Marriage))->forAll(m |
+        m.mediates_marriage_wife->select(r | r.world = self)->size() = 1)
+
+inv marriage_mediate_one_husband_at_a_time: self.individual->select(i | i.oclIsKindOf(Marriage))->forAll(m | 
+        m.mediates_marriage_husband->select(r | r.world = self)->size() = 1)
+
+inv wife_mediated_by_one_marriage_at_a_time: self.individual->select(i| i.oclIsKindOf(Wife))->forAll(h | 
+        h.mediates_marriage_wife->select(r | r.world = self)->size() = 1)
+
+inv husband_mediated_by_one_marriage: self.individual->select(i| i.oclIsKindOf(Husband))->forAll(h | 
+        h.mediates_marriage_husband->select(r | r.world = self)->size() = 1)
+}}}
+
 Cycle Constraints:
 {{{
 context mediates_Marriage_Wife 
