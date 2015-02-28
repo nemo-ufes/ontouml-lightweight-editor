@@ -3,8 +3,8 @@
 
 This is the missing content of the article: 
 
-    *Representing Dynamic Invariants in Ontologically Well-Founded Conceptual Models* 
-    by *John Guerson* and *João Paulo A. Almeida*.
+*Representing Dynamic Invariants in Ontologically Well-Founded Conceptual Models* 
+by *John Guerson* and *João Paulo A. Almeida*.
 
 ----
 *Section 3.2* World-Reified Model
