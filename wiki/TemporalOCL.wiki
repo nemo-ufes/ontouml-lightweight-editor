@@ -4,6 +4,7 @@
 This is the missing content of the article: 
 
 *Representing Dynamic Invariants in Ontologically Well-Founded Conceptual Models* 
+
 by John Guerson and João Paulo A. Almeida.
 
 ----
@@ -63,7 +64,7 @@ inv worlds_of_a_path_derived_from_terminal_worlds:
 
 }}}
 
-Alloy Code:
+World structure in Alloy:
 {{{
 module tocl_world_structure
 some sig World {
