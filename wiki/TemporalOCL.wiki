@@ -3,17 +3,51 @@
 
 This is the missing content of the article: Representing Dynamic Invariants in Ontologically Well-Founded Conceptual Models by John Guerson and João Paulo A. Almeida.
 
+*Section 3.2* World-Reified Model
+
+These are the additional OCL constraints:
+
+Path Definition:
 {{{
 context Path 
 inv one_terminal: self.world->one(w | w.next->isEmpty())
+
 inv one_origin: self.world->one(w | w.previous.oclIsUndefined())
+
 inv no_two_paths_with_same_terminal_world: 
     Path.allInstances()->forAll(p | p<>self implies p.world->select( 
     w | w.next->isEmpty()) <> self.world->select(w | w.next->isEmpty()))
+
 inv each_terminal_world_has_one_path: 
     let ts: Set(World) = World.allInstances()->select(w |w.next->isEmpty()) 
     in ts->forAll(t| Path.allInstances()->one(p | p.world->includes(t)))
+
 inv worlds_of_a_path_derived_from_terminal_worlds:
     let t: Set(World) = self.world->select(w| w.next->isEmpty()) 
     in (self.world-t) = t->closure(previous)
+
+}}}
+
+Cycle Constraints:
+{{{
+context mediates_Marriage_Wife 
+
+inv no_cycle_between_wife_world_mediation: 
+self.world.individual->select(i |i.oclIsKindOf(Wife))->includes(self.wife)
+
+inv no_cycle_between_marriage_world_mediation: 
+self.world.individual->select(i|i.oclIsKindOf(Marriage))->includes(self.marriage)
+}}}
+
+Immuability and Duplicability Constraints:
+{{{
+context mediates_Marriage_Wife 
+
+inv wife_immutability: 
+    mediates_Marriage_Wife.allInstances()->forAll(m | m<>self and
+    m.marriage<>self.marriage implies m.wife = self.wife)
+
+inv no_duplicability: 
+    mediates_Marriage_Wife.allInstances()->forAll(m | m<>self implies not
+    (m.marriage=self.marriage and m.wife=self.wife and m.world=self.world))
 }}}
