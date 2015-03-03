@@ -7,13 +7,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -27,26 +27,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.TreeItem;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.story.OntoUMLStoryCrafter;
 import br.ufes.inf.nemo.story.WorldList;
@@ -59,11 +43,10 @@ import stories.StoriesFactory;
 import stories.Story;
 import stories.Story_element;
 import stories.World;
-import stories.impl.LinkImpl;
 import stories.impl.NodeImpl;
-import stories.impl.Node_stateImpl;
 import stories.impl.StoryImpl;
-import stories.impl.Story_elementImpl;
+
+
 
 public class StoryElementTimeline {	
 	private final Tree tree;
@@ -77,6 +60,7 @@ public class StoryElementTimeline {
 	private WorldList world_sequence;
 	private final SashForm sashForm;
 	private final OntoUMLParser modelParser;
+	private final Clipboard clipboard;
 	
 	StoryElementTimeline(OntoUMLParser mP, final Composite parent, int style) throws IOException{
 		this.modelParser = mP;
@@ -110,6 +94,19 @@ public class StoryElementTimeline {
 		});
 		btnSave.setText("Save Story");
 		
+		clipboard = new Clipboard(parent.getDisplay());
+		Button btnExp = new Button(btnComp, SWT.NONE);
+		btnExp.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				TextTransfer textTransfer = TextTransfer.getInstance();
+				//
+				String story = getStory().generatePredicates();
+				clipboard.setContents(new Object[]{story},  new Transfer[]{textTransfer});
+			}
+		});
+		btnExp.setText("Export Story to Clipboard");
+		
 		//the sash holds the element tree and the class editor. The sash allows to trade space between the two composites, moving the line that divides them.
 		sashForm = new SashForm(parent,SWT.SMOOTH | SWT.VERTICAL);
 		sashForm.setLayoutData(new GridData(SWT.LEFT,SWT.TOP,true,true,1,1));
@@ -132,59 +129,73 @@ public class StoryElementTimeline {
 	    
 	    //final StoryElementTimelineMenu menu = new StoryElementTimelineMenu(this);
 	    //tree.setMenu(menu);
-	      final MenuManager mng = new MenuManager(); 
+	      final StoryMenuManager mng = new StoryMenuManager(); 
 	      mng.setRemoveAllWhenShown(true);
 	      final StoryElementTimeline stl = this;
 	      final Menu treeMenu = mng.createContextMenu(tree);
 	      
 	      //editing the menu based on the selection
+	      //TODO: remove the delete selection option in menu when there is no selection
 	      mng.addMenuListener(new IMenuListener() {
+	    	  final Action addNode = new ActionAddNode(stl);
+	    	  final Action addLink = new ActionAddLink(stl);
+	    	  final Action addState = new ActionAddState(stl);
+	    	  final Action addWorld = new ActionAddWorld(stl);
+	    	  final Action deleteSelection = new ActionDeleteSelection(stl);
+	    	  final Action addLinkToSelection = new ActionAddLinkToSelection(stl);
+	    	  final ActionDeleteWorld deleteWorld = new ActionDeleteWorld(stl);	   
 	          public void menuAboutToShow(IMenuManager manager) {
 	        	  
-	              TreeItem[] selection = tree.getSelection();
-	              if (selection.length > 0) {
-	            	 if (selection.length == 1) {
-	                	 //only one item selected. Check which it is to determine what might be added
-	                	 if (selection[0].getParentItem() == null){
-	                		 //Node or Link item selected
-	                		 mng.add(new ActionAddNode(stl));
-	                		 mng.add(new ActionAddLink(stl));
-	                		 if(selection[0].getData().getClass() == NodeImpl.class){
-	                			 mng.add(new ActionAddState(stl));
-	                		 }
-	                	 }else{
-	                		 //State selected. Add sibling.
-	                		 mng.add(new ActionAddState(stl));
-	                	 }
-	                 }
-	                 else{
-	                	//many things selected. Must check what type of selection it is
-	                	 if (selection.length == 2) {
-	                		 //this means we could add a link between two nodes, if it is the case
-	                		 mng.add(new ActionAddLinkToSelection(stl, selection));
-	                	 }
-	                  } 
-	              }else {
-	            	  //nothing selected. May add Nodes and Links
-	            	  mng.add(new ActionAddNode(stl));
-	            	  mng.add(new ActionAddLink(stl));
-	              }
-	              mng.add(new ActionDeleteSelection(stl));
+	        	  if(mng.isHeader()){
+	        		  mng.add(addWorld);
+	        		  if(mng.getSelectedColumn() >0){
+	        			  deleteWorld.setSelectedColumn(mng.getSelectedColumn());	        		  
+	        			  mng.add(deleteWorld);
+	        		  }
+	        	  }
+	        	  else{
+		        	  System.out.println("isHeader = "+mng.isHeader());
+		        	  System.out.println("selectedColumn = "+mng.getSelectedColumn());
+		              TreeItem[] selection = tree.getSelection();
+		              System.out.println("Selection length = " +selection.length);
+		              if (selection.length > 0) {
+		            	 if (selection.length == 1) {
+		                	 //only one item selected. Check which it is to determine what might be added
+		                	 if (selection[0].getParentItem() == null){
+		                		 //Node or Link item selected
+		                		 mng.add(addNode);
+		                		 mng.add(addLink);
+		                		 if(selection[0].getData().getClass() == NodeImpl.class){
+		                			 
+		                			 mng.add(addState);
+		                			// a.setEnabled(false);	                			 
+		                		 }
+		                	 }else{
+		                		 //State selected. Add sibling.
+		                		 mng.add(addState);
+		                	 }
+		                 }
+		                 else{
+		                	//many things selected. Must check what type of selection it is
+		                	 if (selection.length == 2) {
+		                		 if(selection[0].getData().getClass() == NodeImpl.class &&
+		                		    selection[1].getData().getClass() == NodeImpl.class){
+			                		 //this means we could add a link between two nodes, if it is the case
+			                		 mng.add(addLinkToSelection);
+		                		 }
+		                	 }
+		                  } 
+		            	 mng.add(deleteSelection);
+		              }else {
+		            	  //nothing selected. May add Nodes and Links
+		            	  mng.add(addNode);
+		            	  mng.add(addState);
+		              }
+	        	  }
 	          }
 	      });
 	      
-	      final Menu headerMenu = new Menu(parent);
-	      final SelectedColumnHolder sch = new SelectedColumnHolder();
-	      
-	      final MenuItem deleteWorld = new MenuItem(headerMenu, SWT.NONE );
-	      deleteWorld.setText("Delete World");
-	      deleteWorld.addListener(SWT.Selection, new Listener() {
-	    	  @Override
-	    	  public void handleEvent(Event event) {
-	    		 System.out.println("deleting "+tree.getColumn(sch.getSelectedColumn()));
-	    	  }
-	      });
-	      
+
 	      //The listener below detects where the click was. If it was on the header, there is a special menu for deleting Worlds.
 	      tree.addListener(SWT.MenuDetect, new Listener() {
 	  		@Override
@@ -192,12 +203,37 @@ public class StoryElementTimeline {
 	  			Point pt = parent.getDisplay().map(null, tree, new Point(event.x, event.y));
 	  			Rectangle clientArea = tree.getClientArea();
 	  			boolean header = clientArea.y <= pt.y && pt.y < (clientArea.y + tree.getHeaderHeight());
-	  			tree.setMenu(header ? headerMenu : treeMenu);
-	  			
+	  			int selectedColumn = StoryElementTimeline.getColumn(pt, tree);
+	  			mng.setSelectedColumn(selectedColumn);		  					
+	  			mng.setHeader(header);	  			
 	  		}
 	  	  });
+	      /*
+	      final HeaderMenuManager headerMenuMng = new HeaderMenuManager(); 
+	      headerMenuMng.setRemoveAllWhenShown(true);
+	      final Menu headerMenu = mng.createContextMenu(tree);
 	      
-	      tree.setMenu(treeMenu);
+	     
+	      mng.addMenuListener(new IMenuListener() {
+	          public void menuAboutToShow(IMenuManager manager) {
+	        	  
+	          }
+	      });
+	      
+	      
+	      final MenuItem deleteWorld = new MenuItem(headerMenu, SWT.NONE );
+	      deleteWorld.setText("Delete World");
+	      deleteWorld.addListener(SWT.Selection, new Listener() {
+	    	  @Override
+	    	  public void handleEvent(Event event) {
+	    		 System.out.println("deleting "+tree.getColumn(headerMenuMng.getSelectedColumn()));
+	    		 deleteWorldColumn(headerMenuMng.getSelectedColumn());
+	    	  }
+	      });
+	      
+	      */
+	      
+	    tree.setMenu(treeMenu);
 	    
 	    //EMF world list
 	    world_sequence = new WorldList();	    
@@ -240,6 +276,40 @@ public class StoryElementTimeline {
 	    column.setMoveable(true);
 	    this.world_sequence.add(w);
 	    this.addNewColumnWorldButtons();
+	}
+	
+	public void deleteWorldColumn(int c){
+		//TODO: tratar caso de nenhum mundo
+		TreeColumn deleteThis = this.getTree().getColumn(c);
+		
+		World w = this.world_sequence.remove(c-1);
+		System.out.println(w);
+//		Story s = StoriesFactory.eINSTANCE.createStory();
+//		s.getElements().add(w);
+		for(TreeItem t : tree.getItems()){
+			for(TreeItem t2 : t.getItems()){
+				Node_state ns = (Node_state) t2.getData();
+				ns.getClassified_in().remove(w);
+				ns.getNot_classified_in().remove(w);
+			}
+			Object o = t.getData();
+			if(o.getClass() == NodeImpl.class){
+				Node n = (Node) o;
+				n.getPresent_in().remove(w);
+				n.getAbsent_from().remove(w);
+			}else{
+				Link l = (Link) o;
+				l.getAbsent_from().remove(w);
+				l.getPresent_in().remove(w);
+			}
+		}
+//		System.out.println("eResource = "+w.eResource());
+		EcoreUtil.delete(w);
+		
+		//EcoreUtil.delete(s);
+		
+		deleteThis.dispose();
+				
 	}
 	// ------------------------------------------------------------------------
 	
@@ -291,17 +361,28 @@ public class StoryElementTimeline {
 		dialog.setFilterPath("C:\\Users\\Bernardo\\Documents\\OLED-src\\br.ufes.inf.nemo.story\\test_data\\output");
 		String result = dialog.open();
 		if (result==null)return;
+		
+		Story s = getStory();		
+		OntoUMLStoryCrafter.saveStory(result.substring(result.lastIndexOf("\\")+1,result.length()),
+				result.substring(0,result.lastIndexOf("\\")+1), s);
+	}
+	
+	private Story getStory(){
+		//used to save and export stories. 
+		//TODO: Change to return a maintained Story, instead of creating a new one everytime.
 		Story s = StoriesFactory.eINSTANCE.createStory();
+		
 		for(TreeItem ti : tree.getItems()){
 			s.getElements().add((Story_element) ti.getData());
 			
 		}
 		for(World w : world_sequence){
+			
 			s.getElements().add(w);
 		}
-		OntoUMLStoryCrafter.saveStory(result.substring(result.lastIndexOf("\\")+1,result.length()),
-				result.substring(0,result.lastIndexOf("\\")+1), s);
+		return s;
 	}
+	
 	
 	// ------------------------------------------------------------------------
 	// --- Methods to create story elements (Rows in the tree)				---
@@ -349,7 +430,7 @@ public class StoryElementTimeline {
 		return item;
 	}
 	public void deleteStoryElement(TreeItem i) {
-		//TODO: check if the element is disposed
+		
 		if(!i.isDisposed()){
 			Object ste = i.getData();
 			EcoreUtil.delete((EObject) ste);
@@ -429,14 +510,10 @@ public class StoryElementTimeline {
 	{
 		TreeItem item = tree.getItems()[0];//any item will do
 		if(item!=null){
-			System.out.println("not null");
 		    int columns = tree.getColumnCount();
-		    System.out.println(columns);
 		    for (int i=0; i<columns; i++)
 		    {
 		    	Rectangle rect = item.getBounds (i);
-		    	System.out.println(i);
-		    	System.out.println(pt.x+" "+rect.x+" "+rect.width);
 		    	if ( pt.x >= rect.x && pt.x < rect.x + rect.width ) return i;
 		    }
 		}

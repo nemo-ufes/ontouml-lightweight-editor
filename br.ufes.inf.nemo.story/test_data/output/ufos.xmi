@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?>
+<stories:Story xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stories="http://stories.bernardofbbraga.com.br">
+  <elements xsi:type="stories:Node" label="LavaBemLTDA" present_in="ufos.xmi#World 0 ufos.xmi#World 1" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/UFOS.refontouml#_tF26dsHPEeSF-4Mj180QXw">
+    <states classified_in="ufos.xmi#World 1" not_classified_in="ufos.xmi#World 0" antiRigidClasses="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/UFOS.refontouml#_tF26i8HPEeSF-4Mj180QXw" label="State 1"/>
+  </elements>
+  <elements xsi:type="stories:Node" label="Joao" present_in="ufos.xmi#World 0 ufos.xmi#World 1">
+    <states classified_in="ufos.xmi#World 1" not_classified_in="ufos.xmi#World 0" antiRigidClasses="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/UFOS.refontouml#_tF26jcHPEeSF-4Mj180QXw" label="State 1"/>
+  </elements>
+  <elements xsi:type="stories:Link" label="memberof" present_in="ufos.xmi#World 1" absent_from="ufos.xmi#World 0" source="ufos.xmi#Joao" target="ufos.xmi#DonosDeCarroPopular" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/UFOS.refontouml#_tF27r8HPEeSF-4Mj180QXw"/>
+  <elements xsi:type="stories:Node" label="DonosDeCarroPopular" present_in="ufos.xmi#World 1" absent_from="ufos.xmi#World 0" instance_of="file:/C:/Users/Bernardo/Documents/OLED-src/br.ufes.inf.nemo.story/test_data/input/UFOS.refontouml#_tF26j8HPEeSF-4Mj180QXw"/>
+  <elements xsi:type="stories:World" label="World 0" next="ufos.xmi#World 1"/>
+  <elements xsi:type="stories:World" label="World 1" next="ufos.xmi#World 2" prev="ufos.xmi#World 0"/>
+  <elements xsi:type="stories:World" label="World 2" prev="ufos.xmi#World 1"/>
+</stories:Story>
