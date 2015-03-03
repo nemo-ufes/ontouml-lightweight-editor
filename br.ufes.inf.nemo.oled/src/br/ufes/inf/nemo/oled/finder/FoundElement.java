@@ -60,7 +60,7 @@ public class FoundElement {
 		if (e.eContainer()!=null) {
 			path += getPath((e.eContainer()))+"::";				
 		}
-		path += getName(((NamedElement)e))+"";
+		path += getName(e)+"";
 		pathHierarchyList.add(e);
 		return path;
 	}	
