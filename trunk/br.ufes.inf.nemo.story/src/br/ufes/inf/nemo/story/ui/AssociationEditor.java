@@ -33,6 +33,12 @@ public class AssociationEditor extends ClassEditor {
 
 	public void setSourceTarget(TreeItem[] selection) {
 		//called to update the Editor Screen w/ the source and target of the selection.
+		if(selection.length == 1){
+			sourceLabel.setText("Source : " + ((Link)selection[0].getData()).getSource().getLabel());
+			targetLabel.setText("Target : " + ((Link)selection[0].getData()).getTarget().getLabel());
+			sourceLabel.pack();
+			targetLabel.pack();
+		}
 		
 	}
 }

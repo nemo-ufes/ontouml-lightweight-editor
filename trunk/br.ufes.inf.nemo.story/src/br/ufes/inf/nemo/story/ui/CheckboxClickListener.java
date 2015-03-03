@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.story.ui;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -75,6 +76,7 @@ public class CheckboxClickListener implements Listener {
     	
     	@Override
 		public void handleEvent (Event event) {
+    		if(event.button != 1) return; //only left mouse click allowed
 			Point point = new Point (event.x, event.y);
 			TreeItem item = tree.getItem (point);
 			if (item != null) {

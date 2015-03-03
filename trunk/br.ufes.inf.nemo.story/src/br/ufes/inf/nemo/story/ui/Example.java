@@ -21,7 +21,7 @@ public class Example {
 	    shell.setLayout(new GridLayout(1,false));
 	    
 	    //adaptar para se integrar melhor ao OLED
-	    Resource res = RefOntoUMLResourceUtil.loadModel("test_data/input/artefato.refontouml");
+	    Resource res = RefOntoUMLResourceUtil.loadModel("test_data/input/UFOS.refontouml");
 	    RefOntoUML.Package root= (Package) res.getContents().get(0);
 	    OntoUMLParser parser = new OntoUMLParser(root);
 	    StoryElementTimeline tl = new StoryElementTimeline(parser,shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION);
@@ -31,16 +31,13 @@ public class Example {
 		tl.createWorld();
 		tl.createNode(tree);
 		
-		for (int i = 0; i < 3; i++) {
-	      tl.createLink(tree, 0);
-			TreeItem item = tl.createNode(tree);
+		for (int i = 0; i < 1; i++) {
+	      TreeItem item = tl.createNode(tree);
 	      
-	      for (int j = 0; j < 3; j++) {
+	      for (int j = 0; j < 1; j++) {
 	        tl.createNode_state(item,j);
 	      }
 	    }
-	    
-	    
 	    
 	    shell.pack();
 	    shell.open();

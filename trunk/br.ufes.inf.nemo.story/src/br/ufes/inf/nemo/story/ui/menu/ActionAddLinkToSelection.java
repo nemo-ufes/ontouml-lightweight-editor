@@ -15,31 +15,26 @@ import br.ufes.inf.nemo.story.ui.StoryElementTimeline;
 public class ActionAddLinkToSelection extends Action {
 	final private StoryElementTimeline setml;
 	final private Tree tree;
-	final private TreeItem[] selection;
-	public ActionAddLinkToSelection(StoryElementTimeline storyElementTimeline, TreeItem[] s){
-		super("Add Link");
+	public ActionAddLinkToSelection(StoryElementTimeline storyElementTimeline){
+		super("Add Link to Selection");
 		tree = storyElementTimeline.getTree();
 		setml = storyElementTimeline;
-		selection = s;
+		
 	}
 	public void run(){
 		TreeItem [] selected = tree.getSelection();
         
-        if (selected.length > 0)
+        if (selected.length == 2) //this is checked outside, putting the check here again for safety
         {
           TreeItem parent = selected[0].getParentItem();
           if (parent == null)
           {	        	  
 	          int index = tree.indexOf(tree.getSelection()[0]);
 	          Link l = (Link) (setml.createLink(tree, index+1)).getData();
-	          l.setSource((Node) selection[0].getData());
-	          l.setTarget((Node) selection[1].getData());
+	          l.setSource((Node) selected[0].getData());
+	          l.setTarget((Node) selected[1].getData());
           }          
-        }else{
-          //nothing selected. Insert at beggining
-          setml.createLink(tree, 0);
-          
-      	}
+        }
 		
 	}
 }
