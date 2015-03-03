@@ -31,17 +31,3 @@ To run it, simply *double-click* on the jar file, or type *java -jar oled-1.0.05
 [https://docs.google.com/file/d/0B7WqSwi56QipQzNkTEJhNUJSc0E/edit oled1.0.jar] ~49MB - Updated: Sep 27 2014
 
 [https://drive.google.com/uc?id=0B7WqSwi56QipNVdHd3hVNXhncE0&export=download oled0.9.34.jar] ~54MB - Updated: Aug 07 2014
-
-[https://drive.google.com/uc?id=0B7WqSwi56QipNXZ6TFVKUEhFV0E&export=download oled0.9.33.jar] ~44MB - Updated: Aug 01 2014
-
-[https://drive.google.com/uc?id=0B7WqSwi56Qipb19ibW5DR1ZOUlE&export=download oled0.9.32.jar] ~43MB - Updated: Jul 20 2014
-
-[https://drive.google.com/uc?id=0B7WqSwi56QipQWRNZDBHUkRnbU0&export=download oled0.9.31.jar] ~42MB - Updated: Jun 26 2014
-
-[https://drive.google.com/uc?id=0B7WqSwi56QipZnlvYUhIN3YxVFE&export=download oled0.9.30.jar] ~42MB - Updated: Jun 20 2014
-
-[https://drive.google.com/uc?export=download&confirm=4WQu&id=0B7WqSwi56QipOTJwenVvVFNqNGs oled0.9.29.jar] ~42MB - Updated: Jun 14 2014
-
-[https://drive.google.com/uc?id=0B7WqSwi56QipQl9CQnNaQjFqcEU&export=download oled0.9.28.jar] ~42MB - Updated: Jun 11 2014
-
-[https://drive.google.com/uc?id=0B7WqSwi56QipTDFsQ3JpRDdCb3c&export=download oled0.9.27.jar] ~42MB - Updated: May 29 2014
