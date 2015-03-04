@@ -16,6 +16,7 @@ import org.semanticweb.owlapi.model.SWRLDArgument;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.Factory;
+import br.ufes.inf.nemo.ootos.util.MappingProperties;
 
 /**
  * @author Freddy Brasileiro Silva {freddybrasileiro@gmail.com}
@@ -24,8 +25,8 @@ public class LetExpImplFactory extends OCLExpressionImplFactory {
 	OCLExpressionImplFactory inFactory;
 	VariableImplFactory variableFactory;
 	
-	public LetExpImplFactory(NamedElementImpl m_NamedElementImpl){
-		super(m_NamedElementImpl);
+	public LetExpImplFactory(MappingProperties mappingProperties, NamedElementImpl m_NamedElementImpl){
+		super(mappingProperties, m_NamedElementImpl);
 	}
 
 	@SuppressWarnings({ "unused", "rawtypes" })
@@ -39,7 +40,7 @@ public class LetExpImplFactory extends OCLExpressionImplFactory {
 		OCLExpression in = let.getIn();
 		
 		//and a factory is created according to the variable class 
-		this.variableFactory = (VariableImplFactory) Factory.constructor(variable, this.m_NamedElementImpl);
+		this.variableFactory = (VariableImplFactory) Factory.constructor(this.mappingProperties, variable, this.m_NamedElementImpl);
 		
 		//the let is always on the left side of the operator implies
 		Boolean variableLeftSideOfImplies = true;
@@ -52,7 +53,7 @@ public class LetExpImplFactory extends OCLExpressionImplFactory {
 		}		
 		
 		//and a factory is created according to the IN class 
-		this.inFactory = (OCLExpressionImplFactory) Factory.constructor(in, this.m_NamedElementImpl);
+		this.inFactory = (OCLExpressionImplFactory) Factory.constructor(this.mappingProperties, in, this.m_NamedElementImpl);
 		//the IN is solved and the and the returned arguments from the inSolveMethod above are returned 
 		ArrayList<SWRLDArgument> retArgsY = this.inFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, leftSideOfImplies);
 		

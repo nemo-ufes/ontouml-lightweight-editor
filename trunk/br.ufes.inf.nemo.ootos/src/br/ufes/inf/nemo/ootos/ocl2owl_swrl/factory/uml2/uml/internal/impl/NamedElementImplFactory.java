@@ -14,6 +14,7 @@ import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.exceptions.NonSupported;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.Factory;
+import br.ufes.inf.nemo.ootos.util.MappingProperties;
 
 
 
@@ -26,7 +27,8 @@ public class NamedElementImplFactory extends Factory {
 
 	public NamedElementImpl m_NamedElementImpl;
 	
-	public NamedElementImplFactory(NamedElementImpl m_NamedElementImpl){
+	public NamedElementImplFactory(MappingProperties mappingProperties, NamedElementImpl m_NamedElementImpl){
+		super(mappingProperties);
 		this.m_NamedElementImpl = m_NamedElementImpl;
 	}
 	

@@ -19,6 +19,7 @@ import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.Factory;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.uml2.uml.internal.impl.TypedElementImplFactory;
+import br.ufes.inf.nemo.ootos.util.MappingProperties;
 
 /**
  * @author Freddy Brasileiro Silva {freddybrasileiro@gmail.com}
@@ -26,8 +27,8 @@ import br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.uml2.uml.internal.impl.TypedE
 public class VariableImplFactory extends TypedElementImplFactory {
 	OCLExpressionImplFactory initExpressionFactory;
 	
-	public VariableImplFactory(NamedElementImpl m_NamedElementImpl){
-		super(m_NamedElementImpl);
+	public VariableImplFactory(MappingProperties mappingProperties, NamedElementImpl m_NamedElementImpl){
+		super(mappingProperties, m_NamedElementImpl);
 	}
 	
 	@Override
@@ -38,7 +39,7 @@ public class VariableImplFactory extends TypedElementImplFactory {
 		//then, the initExpression of the variable is got
 		OCLExpression initExpression = (OCLExpression) variable.getInitExpression();
 		//and a factory is created according to the initExpression class 
-		this.initExpressionFactory = (OCLExpressionImplFactory) Factory.constructor(initExpression, this.m_NamedElementImpl);
+		this.initExpressionFactory = (OCLExpressionImplFactory) Factory.constructor(this.mappingProperties, initExpression, this.m_NamedElementImpl);
 		//the initExpression is solved and the and the returned arguments from the initExpressionSolveMethod above are returned 
 		ArrayList<SWRLDArgument> retArgsX = this.initExpressionFactory.solve(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, referredArgument, operatorNot, repeatNumber, leftSideOfImplies);
 		SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);//get the last

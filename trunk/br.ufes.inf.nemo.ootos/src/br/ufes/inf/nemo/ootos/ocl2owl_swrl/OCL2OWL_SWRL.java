@@ -24,6 +24,7 @@ import br.ufes.inf.nemo.ootos.ocl2owl_swrl.tags.Tag;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.util.Counters;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.util.SelectReasoner;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.util.SelectedReasoner;
+import br.ufes.inf.nemo.ootos.util.MappingProperties;
 
 public class OCL2OWL_SWRL {
 	private String nameSpace = null;
@@ -34,6 +35,7 @@ public class OCL2OWL_SWRL {
 	private OWLOntology ontology = null;
 	public String errors = "";
 	public static SelectedReasoner selectedReasoner = null;
+	MappingProperties mappingProperties;
 	
 	public Counters logCounting = new Counters();
 		
@@ -46,7 +48,7 @@ public class OCL2OWL_SWRL {
 	 * @param manager - contains the OWLOntologyManager, used to get the OWLDataFactory and the OwlOntology
 	 * @param nameSpace
 	 */
-	public OCL2OWL_SWRL(String oclRules, OntoUMLParser ontoParser, OWLOntologyManager manager, String nameSpace) throws NonInitialized {	
+	public OCL2OWL_SWRL(MappingProperties mappingProperties, String oclRules, OntoUMLParser ontoParser, OWLOntologyManager manager, String nameSpace) throws NonInitialized {	
 		this.nameSpace = nameSpace;
 		//this.oclParser = oclParser;
 		this.oclRules = oclRules;
@@ -55,8 +57,10 @@ public class OCL2OWL_SWRL {
 		this.factory = manager.getOWLDataFactory();
 		this.ontology = manager.getOntology(IRI.create(nameSpace.substring(0, nameSpace.length()-1)));
 		
+		this.mappingProperties = mappingProperties;
+		
 		//verify if all variables were initialized
-		this.verifyVariablesInitialization();
+		this.verifyVariablesInitialization();		
 	}
 	
 	/**
@@ -260,7 +264,7 @@ public class OCL2OWL_SWRL {
 					ExpressionInOCLImpl expr = (ExpressionInOCLImpl) ct.getSpecification();
 					
 					//create a factory based on the element
-					ExpressionInOCLImplFactory exprFactory = new ExpressionInOCLImplFactory(expr);
+					ExpressionInOCLImplFactory exprFactory = new ExpressionInOCLImplFactory(mappingProperties, expr);
 					
 					//set the element
 					if(ct.getConstrainedElements().size() > 0){

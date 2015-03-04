@@ -53,9 +53,16 @@ import br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.ocl.uml.impl.TypeExpImplFacto
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.ocl.uml.impl.VariableExpImplFactory;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.ocl.uml.impl.VariableImplFactory;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.tags.Tag;
+import br.ufes.inf.nemo.ootos.util.MappingProperties;
 
 
 public class Factory {
+	public MappingProperties mappingProperties;
+	
+	public Factory(MappingProperties mappingProperties) {
+		this.mappingProperties = mappingProperties;
+	}
+	
 	Boolean isBodyExpression = false;
 	String errors = "";
 	
@@ -240,32 +247,32 @@ public class Factory {
 	 * @param obj - contains the rule fragment
 	 * @param m_NamedElementImpl - contains the rule
 	 */
-	public static Factory constructor(Object obj, NamedElementImpl m_NamedElementImpl) throws Ocl2Owl_SwrlException{
+	public static Factory constructor(MappingProperties mappingProperties, Object obj, NamedElementImpl m_NamedElementImpl) throws Ocl2Owl_SwrlException{
 		Class<? extends Object> c = obj.getClass();
 		if(c.equals(PropertyCallExpImpl.class)){
-			return new PropertyCallExpImplFactory((PropertyCallExpImpl) obj);
+			return new PropertyCallExpImplFactory(mappingProperties, (PropertyCallExpImpl) obj);
 		}else if(c.equals(OperationCallExpImpl.class)){
-			return new OperationCallExpImplFactory((OperationCallExpImpl) obj);
+			return new OperationCallExpImplFactory(mappingProperties, (OperationCallExpImpl) obj);
 		}else if(c.equals(VariableExpImpl.class)){
-			return new VariableExpImplFactory((VariableExpImpl) obj);
+			return new VariableExpImplFactory(mappingProperties, (VariableExpImpl) obj);
 		}else if(c.equals(IntegerLiteralExpImpl.class)){
-			return new IntegerLiteralExpImplFactory((IntegerLiteralExpImpl) obj);
+			return new IntegerLiteralExpImplFactory(mappingProperties, (IntegerLiteralExpImpl) obj);
 		}else if(c.equals(TypeExpImpl.class)){
-			return new TypeExpImplFactory((TypeExpImpl) obj);
+			return new TypeExpImplFactory(mappingProperties, (TypeExpImpl) obj);
 		}else if(c.equals(IteratorExpImpl.class)){
-			return new IteratorExpImplFactory((IteratorExpImpl) obj);
+			return new IteratorExpImplFactory(mappingProperties, (IteratorExpImpl) obj);
 		}else if(c.equals(CollectionLiteralExpImpl.class)){
-			return new CollectionLiteralExpImplFactory((CollectionLiteralExpImpl) obj);
+			return new CollectionLiteralExpImplFactory(mappingProperties, (CollectionLiteralExpImpl) obj);
 		}else if(c.equals(CollectionItemImpl.class)){
-			return new CollectionItemImplFactory((CollectionItemImpl) obj);
+			return new CollectionItemImplFactory(mappingProperties, (CollectionItemImpl) obj);
 		}else if(c.equals(BooleanLiteralExpImpl.class)){
-			return new BooleanLiteralExpImplFactory((BooleanLiteralExpImpl) obj);
+			return new BooleanLiteralExpImplFactory(mappingProperties, (BooleanLiteralExpImpl) obj);
 		}else if(c.equals(EnumLiteralExpImpl.class)){
-			return new EnumLiteralExpImplFactory((EnumLiteralExpImpl) obj);
+			return new EnumLiteralExpImplFactory(mappingProperties, (EnumLiteralExpImpl) obj);
 		}else if(c.equals(LetExpImpl.class)){
-			return new LetExpImplFactory((LetExpImpl) obj);
+			return new LetExpImplFactory(mappingProperties, (LetExpImpl) obj);
 		}else if(c.equals(VariableImpl.class)){
-			return new VariableImplFactory((VariableImpl) obj);
+			return new VariableImplFactory(mappingProperties, (VariableImpl) obj);
 		}else{
 			String rule = Factory.getStrRule(m_NamedElementImpl);
 			throw new NonSupported(c.getName(), rule);

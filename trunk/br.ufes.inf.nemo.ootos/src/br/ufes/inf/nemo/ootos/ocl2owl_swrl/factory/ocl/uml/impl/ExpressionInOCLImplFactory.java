@@ -32,6 +32,7 @@ import br.ufes.inf.nemo.ootos.ocl2owl_swrl.exceptions.UnexpectedResultingRule;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.Factory;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.uml2.uml.internal.impl.NamedElementImplFactory;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.tags.Tag;
+import br.ufes.inf.nemo.ootos.util.MappingProperties;
 
 
 
@@ -48,8 +49,8 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		this.element = element;
 	}
 	
-	public ExpressionInOCLImplFactory(NamedElementImpl m_NamedElementImpl){
-		super(m_NamedElementImpl);
+	public ExpressionInOCLImplFactory(MappingProperties mappingProperties, NamedElementImpl m_NamedElementImpl){
+		super(mappingProperties, m_NamedElementImpl);
 	}
 	
 	@Override
@@ -60,7 +61,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		OCLExpressionImpl bodyExpression = (OCLExpressionImpl) expressionInOCLImpl.getBodyExpression();
 		
 		//and a factory is created according to the bodyExpression class 
-		bodyExpressionFactory = (OCLExpressionImplFactory) NamedElementImplFactory.constructor(bodyExpression, this.m_NamedElementImpl);
+		bodyExpressionFactory = (OCLExpressionImplFactory) NamedElementImplFactory.constructor(this.mappingProperties, bodyExpression, this.m_NamedElementImpl);
 		//bodyExpressionFactory.setIsBodyExpression(true);
 
 		//then, the context variable of the expression is got
@@ -112,7 +113,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 				
 			}else if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
 				//in the derivations case, the context is always considered the unique atom on the consequent
-				this.elementFactory = new PropertyCallExpImplFactory(m_NamedElementImpl, (Property) element);
+				this.elementFactory = new PropertyCallExpImplFactory(this.mappingProperties, m_NamedElementImpl, (Property) element);
 				ArrayList<SWRLDArgument> retArgsY = this.elementFactory.solvePropertyAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, 1);
 				
 				if(retArgsX.size() > 0 && retArgsY.size() > 0){

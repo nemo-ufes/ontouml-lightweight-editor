@@ -2,6 +2,8 @@ package br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.uml2.uml.internal.impl;
 
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 
+import br.ufes.inf.nemo.ootos.util.MappingProperties;
+
 
 
 /**
@@ -11,8 +13,8 @@ import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
  */
 public class PackageableElementImplFactory extends NamedElementImplFactory {
 
-	public PackageableElementImplFactory(NamedElementImpl m_NamedElementImpl){
-		super(m_NamedElementImpl);
+	public PackageableElementImplFactory(MappingProperties mappingProperties, NamedElementImpl m_NamedElementImpl){
+		super(mappingProperties, m_NamedElementImpl);
 	}
 
 }
