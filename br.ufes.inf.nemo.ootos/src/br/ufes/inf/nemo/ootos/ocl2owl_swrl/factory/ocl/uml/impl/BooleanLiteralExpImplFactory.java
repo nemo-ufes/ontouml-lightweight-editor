@@ -13,6 +13,7 @@ import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLDArgument;
 import org.semanticweb.owlapi.model.SWRLLiteralArgument;
 
+import br.ufes.inf.nemo.ootos.util.MappingProperties;
 import RefOntoUML.parser.OntoUMLParser;
 
 /**
@@ -20,8 +21,8 @@ import RefOntoUML.parser.OntoUMLParser;
  */
 public class BooleanLiteralExpImplFactory extends PrimitiveLiteralExpImplFactory {
 
-	public BooleanLiteralExpImplFactory(NamedElementImpl m_NamedElementImpl){
-		super(m_NamedElementImpl);
+	public BooleanLiteralExpImplFactory(MappingProperties mappingProperties, NamedElementImpl m_NamedElementImpl){
+		super(mappingProperties, m_NamedElementImpl);
 	}
 
 	/**

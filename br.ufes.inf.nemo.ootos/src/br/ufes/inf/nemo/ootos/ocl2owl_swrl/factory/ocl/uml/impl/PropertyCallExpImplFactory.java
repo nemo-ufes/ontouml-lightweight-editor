@@ -34,6 +34,7 @@ import br.ufes.inf.nemo.ootos.ocl2owl_swrl.exceptions.Ocl2Owl_SwrlException;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.Factory;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.tags.Tag;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.util.Util;
+import br.ufes.inf.nemo.ootos.util.MappingProperties;
 
 /**
  * @author Freddy Brasileiro Silva {freddybrasileiro@gmail.com}
@@ -41,12 +42,12 @@ import br.ufes.inf.nemo.ootos.ocl2owl_swrl.util.Util;
 public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 	Property property;
 	
-	public PropertyCallExpImplFactory(NamedElementImpl m_NamedElementImpl){
-		super(m_NamedElementImpl);
+	public PropertyCallExpImplFactory(MappingProperties mappingProperties, NamedElementImpl m_NamedElementImpl){
+		super(mappingProperties, m_NamedElementImpl);
 	}
 	
-	public PropertyCallExpImplFactory(NamedElementImpl m_NamedElementImpl, Property property){
-		super(m_NamedElementImpl);
+	public PropertyCallExpImplFactory(MappingProperties mappingProperties, NamedElementImpl m_NamedElementImpl, Property property){
+		super(mappingProperties, m_NamedElementImpl);
 		this.property =  property;
 	}
 
@@ -58,7 +59,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		OCLExpressionImpl source = (OCLExpressionImpl) propertyCallExpImpl.getSource();
 		
 		//and a factory is created according to the source class 
-		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(source, this.m_NamedElementImpl);
+		this.sourceFactory = (OCLExpressionImplFactory) Factory.constructor(this.mappingProperties, source, this.m_NamedElementImpl);
 		int sourceRepeatNumber = repeatNumber;
 		//the source is solved and the and the returned arguments from the sourceSolveMethod above are returned 
 		//esse trecho foi modificado para que fosse possivel passar o referredArgument para frente e resolver problemas de SameAs com variáveis (regra: 70/71)
@@ -163,7 +164,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		Association association = referredProperty.getAssociation();
 		
 		//generate the association name and the IRI
-		String iriRelationName = nameSpace + generateAssociationName(refParser, association);;
+		String iriRelationName = nameSpace + generateAssociationName(this.mappingProperties, refParser, association);;
 		IRI iriRelation = IRI.create(iriRelationName);
 		//get the OWL object property
 		OWLObjectProperty relation = factory.getOWLObjectProperty(iriRelation);
@@ -241,7 +242,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		
 		Association association = property.getAssociation();
 		
-		String iriRelationName = nameSpace + generateAssociationName(refParser, association);;
+		String iriRelationName = nameSpace + generateAssociationName(this.mappingProperties, refParser, association);;
 		IRI iriRelation = IRI.create(iriRelationName);
 		OWLObjectProperty relation = factory.getOWLObjectProperty(iriRelation);
 		
@@ -250,11 +251,15 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		String assocEnd0Name = assocEnd0.getName();
 		
 		if(assocEndName.equals(assocEnd0Name)){
-			nameVarX = Util.generateVarName(referredArgument, null);
-			nameVarY = Util.generateVarName(property, referredArgument);
-		}else{
 			nameVarX = Util.generateVarName(property, referredArgument);
 			nameVarY = Util.generateVarName(referredArgument, null);
+//			nameVarX = Util.generateVarName(referredArgument, null);
+//			nameVarY = Util.generateVarName(property, referredArgument);
+		}else{
+			nameVarX = Util.generateVarName(referredArgument, null);
+			nameVarY = Util.generateVarName(property, referredArgument);
+//			nameVarX = Util.generateVarName(property, referredArgument);
+//			nameVarY = Util.generateVarName(referredArgument, null);
 		}
 		
 		if(repeatNumber>1){
@@ -385,15 +390,18 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		return null;
 	}
 	
-	public static String generateAssociationName(OntoUMLParser refParser, Association association){
+	public static String generateAssociationName(MappingProperties mappingProperties, OntoUMLParser refParser, Association association){
 		//get the equivalent ontoUML association
 		RefOntoUML.Association ontoUmlAssociation = getEquivalentOntoUmlAssociation(refParser, association);
-		//get the association name
-		String propName = ontoUmlAssociation.getClass().getName();
-		propName = propName.replace("Impl", "");
-		propName = propName.replace("RefOntoUML.impl.", "");
 		
-		String prop = "";
+		//get the association name
+		/*String propName = ontoUmlAssociation.getClass().getName();
+		propName = propName.replace("Impl", "");
+		propName = propName.replace("RefOntoUML.impl.", "");*/
+		
+		String prop = mappingProperties.getPropertyName(ontoUmlAssociation);
+		
+		/*String prop = "";
 		//if the association has no name
 		if(ontoUmlAssociation.getName()==null || ontoUmlAssociation.getName() == "" || ontoUmlAssociation.getName() == " "){
 			prop += propName;
@@ -403,7 +411,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 			prop += ontoUmlAssociation.getMemberEnd().get(1).getType().getName().replaceAll(" ", "_"); 
 		}else{
 			prop = ontoUmlAssociation.getName().replaceAll(" ", "_");
-		}
+		}*/
 		return prop;
 	}
 	
@@ -435,7 +443,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		if(refPropType != memEnd1Type){
 			iriRelationName += "INV.";
 		}
-		iriRelationName += PropertyCallExpImplFactory.generateAssociationName(refParser, association);
+		iriRelationName += PropertyCallExpImplFactory.generateAssociationName(this.mappingProperties, refParser, association);
 		
 		IRI iriRelation = IRI.create(iriRelationName);
 		//get the OWL object property

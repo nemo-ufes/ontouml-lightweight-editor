@@ -306,7 +306,7 @@ public class Transformer {
 				int result = JOptionPane.showConfirmDialog (null, "Do you want to perform the OCL transformation to OWL and SWRL?","Warning",dialogButton);
 
 				if(result == JOptionPane.YES_OPTION){
-					OCL2OWL_SWRL ocl2owl_swrl = new OCL2OWL_SWRL(oclRules, ontoParser, manager, nameSpace);
+					OCL2OWL_SWRL ocl2owl_swrl = new OCL2OWL_SWRL(this.mappingProperties, oclRules, ontoParser, manager, nameSpace);
 					//OCL2SWRL ocl2swrl = new OCL2SWRL(oclParser, ontoParser, manager, nameSpace);
 					ocl2owl_swrl.Transformation();
 

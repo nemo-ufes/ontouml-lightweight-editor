@@ -15,14 +15,15 @@ import org.semanticweb.owlapi.model.SWRLVariable;
 
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ootos.ocl2owl_swrl.util.Util;
+import br.ufes.inf.nemo.ootos.util.MappingProperties;
 
 /**
  * @author Freddy Brasileiro Silva {freddybrasileiro@gmail.com}
  */
 public class TypeExpImplFactory extends OCLExpressionImplFactory {
 
-	public TypeExpImplFactory(NamedElementImpl m_NamedElementImpl){
-		super(m_NamedElementImpl);
+	public TypeExpImplFactory(MappingProperties mappingProperties, NamedElementImpl m_NamedElementImpl){
+		super(mappingProperties, m_NamedElementImpl);
 	}
 
 	@Override
