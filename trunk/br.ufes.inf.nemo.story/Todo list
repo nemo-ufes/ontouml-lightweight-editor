@@ -31,3 +31,9 @@ remove checkboxes from Link source and target descriptors
 
 ajeitar a impressao de nomes de instancias com espaços e ajeitar a impressao de nomes de classes. Há uma implementação disso no OLED chama name helper ou algo assim
 
+
+imprimir junto com a história a helper funcion direct_rel_in_w que não usa mais as meta-capacidades de alloy, mas ao invés, é extenso nas relações (x->y in rel1+rel2+rel3+...)
+
+renomear os indivíduos e classes.
+
+Fazer hash entre EObjects e Strings para mapear os indivíduos com seus "nome-alloy"
