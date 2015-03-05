@@ -508,14 +508,16 @@ public class StoryElementTimeline {
 	
 	public static int getColumn( Point pt, Tree tree )
 	{
-		TreeItem item = tree.getItems()[0];//any item will do
-		if(item!=null){
-		    int columns = tree.getColumnCount();
-		    for (int i=0; i<columns; i++)
-		    {
-		    	Rectangle rect = item.getBounds (i);
-		    	if ( pt.x >= rect.x && pt.x < rect.x + rect.width ) return i;
-		    }
+		if(tree.getItems().length>0){
+			TreeItem item = tree.getItems()[0];//any item will do
+			if(item!=null){
+			    int columns = tree.getColumnCount();
+			    for (int i=0; i<columns; i++)
+			    {
+			    	Rectangle rect = item.getBounds (i);
+			    	if ( pt.x >= rect.x && pt.x < rect.x + rect.width ) return i;
+			    }
+			}
 		}
 	    return -1;
 	}

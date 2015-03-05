@@ -31,13 +31,8 @@ public class OntoUMLNameHandler {
     	namesHashMap.remove(name);
     }
     
-    /** Remove special characters of the name and store the name into a hash map. */
-    public String treatName (NamedElement element) 
-    {
-    	String name = element.getName();    	    	
-        if(name==null || name.equals("")) name = OntoUMLNameHelper.getTypeName(element);
-        
-        for(int i=0;i<alloykeywords.length;i++)
+    public String treatName (String name){
+    	for(int i=0;i<alloykeywords.length;i++)
         {
             if(name.compareTo(alloykeywords[i])==0)
             {
@@ -93,6 +88,16 @@ public class OntoUMLNameHandler {
         	namesHashMap.put(name+Integer.toString(cont), new NameCounter(name+Integer.toString(cont), 0));
             return name+Integer.toString(cont);
         }
+        
+    	return name;
+    }
+    
+    /** Remove special characters of the name and store the name into a hash map. */
+    public String treatName (NamedElement element) 
+    {
+    	String name = element.getName();    	    	
+        if(name==null || name.equals("")) name = OntoUMLNameHelper.getTypeName(element);
+        name = treatName(name);
         
         return name;
     }

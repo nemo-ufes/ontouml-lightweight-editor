@@ -21,7 +21,7 @@ public class Example {
 	    shell.setLayout(new GridLayout(1,false));
 	    
 	    //adaptar para se integrar melhor ao OLED
-	    Resource res = RefOntoUMLResourceUtil.loadModel("test_data/input/UFOS.refontouml");
+	    Resource res = RefOntoUMLResourceUtil.loadModel("test_data/input/cmto.refontouml");
 	    RefOntoUML.Package root= (Package) res.getContents().get(0);
 	    OntoUMLParser parser = new OntoUMLParser(root);
 	    StoryElementTimeline tl = new StoryElementTimeline(parser,shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION);

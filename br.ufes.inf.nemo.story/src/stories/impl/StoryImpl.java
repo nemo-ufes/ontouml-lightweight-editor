@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -18,6 +19,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.emf.ecore.util.EcoreUtil.ExternalCrossReferencer;
+
+import RefOntoUML.parser.OntoUMLNameHandler;
 import stories.Link;
 import stories.Node;
 import stories.StoriesFactory;
@@ -228,6 +231,7 @@ public class StoryImpl extends MinimalEObjectImpl.Container implements Story {
 		String head = "pred "+this.getLabel()+" [";
 		for(Story_element se : this.getElements()){
 			if("Node".equals(se.eClass().getName())){
+				System.out.println();
 				head = head+se.getLabel()+":one Object+Property,";
 			}else if("World".equals(se.eClass().getName())){
 				head = head+se.getLabel()+":one World,";
@@ -247,6 +251,7 @@ public class StoryImpl extends MinimalEObjectImpl.Container implements Story {
 	 * 
 	 */
 	public String generatePredicates(){
+		//OntoUMLNameHandler n = new OntoUMLNameHandler();
 		
 		String predicate = this.predicateHead();
 		for(Story_element se : this.getElements()){
