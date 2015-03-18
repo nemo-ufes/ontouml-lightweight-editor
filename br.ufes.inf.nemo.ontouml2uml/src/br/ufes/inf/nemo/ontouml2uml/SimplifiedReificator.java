@@ -24,6 +24,9 @@ public class SimplifiedReificator extends Reificator {
 	public HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> tmap = new HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>>();
 	public String tlog = new String();	
 	
+	/** Standard OCL Constraints */
+	public String textualConstraints = new String();
+	
 	/** Constructor */
 	public SimplifiedReificator(org.eclipse.uml2.uml.Package umlRoot, org.eclipse.uml2.uml.UMLFactory ufactory, HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap)
 	{			
@@ -34,7 +37,9 @@ public class SimplifiedReificator extends Reificator {
 	
 	public HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> getMap() { return tmap; }
 	
-	public String getTemporalLog() { return tlog; }
+	public String getLog() { return tlog; }
+	
+	public String getConstraints() { return textualConstraints; }
 	
 	public void outln(String text) { tlog += text+"\n"; }
 	
@@ -49,9 +54,10 @@ public class SimplifiedReificator extends Reificator {
         return null;
     }
 	
+	
 	public void run()
 	{
-		outln("Executing temporal reification...");
+		outln("Executing simplified reification...");
 
 		/** Get top level classes of the model */
 		ArrayList<Classifier> topLevelClasses = new ArrayList<Classifier>();
@@ -59,7 +65,7 @@ public class SimplifiedReificator extends Reificator {
 		
 		/** Create "Individual" top level class */
 		org.eclipse.uml2.uml.Class umlIndividual = createIndividualSuperType(topLevelClasses);
-		
+						
 		/** Get all attributes of the model */
 		ArrayList<org.eclipse.uml2.uml.Property> attributes = new ArrayList<org.eclipse.uml2.uml.Property>();
 		getAllAttributes(umlRoot,attributes);
@@ -67,6 +73,9 @@ public class SimplifiedReificator extends Reificator {
 		/** Create the world accessibility relationship */
 		org.eclipse.uml2.uml.Class umlWorld = umlRoot.createOwnedClass("World", false);
 		createWorldAccessibilityRelation(umlWorld);
+		
+		/** Create the "exists" relationship between World and a given class */
+		createExistsRelationship(umlWorld,umlIndividual);
 		
 		/** Create the path structure related to worlds */
 		org.eclipse.uml2.uml.Class umlPath = createPathStructure(umlWorld, umlRoot);				
@@ -96,7 +105,11 @@ public class SimplifiedReificator extends Reificator {
 		/** Create two operations for (i) navigation at all worlds and (ii) at a particular world e.g. navigation(w) and navigation() */
 		createTemporalNavigationsOperations(umlWorld, attributes);
 					
-		outln("Temporal reification executed succesfully.");
+		textualConstraints += generateWorldStructureConstraints();
+		textualConstraints += generateTemporalOperationsImpl();
+		textualConstraints += generateIndividualOperationsImpl();
+				
+		outln("Simplified reification executed successfully.");
 	}
 	
 	/** Get all top level classes of the model */
@@ -114,6 +127,87 @@ public class SimplifiedReificator extends Reificator {
 				getAllTopLevelClasses((org.eclipse.uml2.uml.Package)pe,result);
 			}
 		}	
+	}
+	
+	/** Generates the constraints necessary to ensure the world structure semantics */
+	public String generateWorldStructureConstraints()
+	{
+		return
+		
+		/** From Benevides's Structure */
+		"context World"+"\n"+
+		"inv no_cycle: self->asSet()->closure(next)->excludes(self)"+"\n"+"\n"+ 
+		
+		"context Path"+"\n"+
+		"inv no_parallel_structure: Path.allInstances()->forAll(p | self.world->intersection(p.world)->notEmpty())"+"\n"+"\n"+
+		
+		/** From our Path Reification */
+		"context Path"+"\n"+
+		"inv one_terminal_world: self.world->one(w | w.next->isEmpty())"+"\n"+"\n"+
+		
+		"inv one_initial_world: self.world->one(w | w.previous.oclIsUndefined())"+"\n"+"\n"+
+		
+		"inv no_two_paths_with_same_end: Path.allInstances()->forAll(p | p<>self implies"+"\n"+
+		    "p.world->select(w |w.next->isEmpty()) <> "+"\n"+
+		    "self.world->select(w |w.next->isEmpty()))"+"\n"+"\n"+
+		    
+		"inv worlds_of_a_path_derived: "+"\n"+
+		    "let t: Set(World) = self.world->select(w| w.next->isEmpty())"+"\n"+ 
+		    "in (self.world-t) = t->closure(previous)"+"\n"+"\n"+
+		    
+		"inv every_end_in_one_path: "+"\n"+
+		    "let ts: Set(World) = World.allInstances()->select(w |w.next->isEmpty())"+"\n"+ 
+		    "in ts->forAll(t | Path.allInstances()->one(p | p.world->includes(t)))"+"\n"+"\n";
+	}
+	
+	public String generateTemporalOperationsImpl()
+	{
+		return 
+				
+		"context World::next():Set(World) body: self.next"+"\n"+"\n"+
+		
+		"context World::previous():World body: self.previous"+"\n"+"\n"+
+		
+		"context World::paths():Set(Path) body: self.path"+"\n"+"\n"+
+		
+		"context Path::worlds():Set(World) body: self.world"+"\n"+"\n"+
+		
+		"context World::allIndividuals():Set(Individual) body: self.exists"+"\n"+"\n"+
+		
+		"context World::hasNext():Boolean body: not self.next->isEmpty()"+"\n"+"\n"+
+		
+		"context World::hasPrevious():Boolean body: not self.previous.oclIsUndefined()"+"\n"+"\n"+
+		
+		"context Individual::existsIn(w: World):Boolean body: w.exists->includes(self)"+"\n"+"\n"+
+		
+		"context World::allNext():Set(World) body: self->asSet()->closure(next)->asSet()"+"\n"+"\n"+
+		
+		"context World::allNext(w: World):Set(World)"+ "\n"+
+		"body: if self.allNext()->includes(w) then w.allPrevious() - self.allPrevious() -"+"\n"+ 
+		      "self->asSet() else Set{} endif"+"\n"+"\n"+
+		
+		"context World::allNext(p: Path):Set(World)"+"\n"+ 
+		"body: self->asSet()->closure(next)->asSet()->select(w | w.paths()->includes(p))"+"\n"+"\n"+
+		
+		"context World::allPrevious():Set(World) "+"\n"+
+		"body: self->asSet()->closure(previous)->asSet()"+"\n"+"\n"+
+		
+		"context World::allPrevious(w: World):Set(World) "+"\n"+
+		"body: if self.allPrevious()->includes(w) then self.allPrevious() - w.allPrevious() - w->asSet()"+"\n"+ 
+		      "else Set{} endif"+"\n"+"\n";
+	}
+	
+	public String generateIndividualOperationsImpl()
+	{
+		return 
+		
+		"context Individual::oclIsCreated(w: World) : Boolean"+"\n"+ 
+		"body: if(not w.previous.oclIsUndefined() and not self.existsIn(w.previous) and"+"\n"+
+		      "self.existsIn(w)) then true else false endif"+"\n"+"\n"+
+		      
+		"context Individual::oclIsDeleted(w: World) : Boolean"+"\n"+
+		"body:  if(not w.previous.oclIsUndefined() and self.existsIn(w.previous) and not"+"\n"+
+		      "self.existsIn(w)) then true else false endif"+"\n"+"\n";
 	}
 	
 	/** Create a Class called Individual as the super-type of all top level classes of the model. */
@@ -137,6 +231,27 @@ public class SimplifiedReificator extends Reificator {
 		outln(genSet);		
 		genSet.getGeneralizations().addAll(gens);
 		return umlIndividual;		
+	}
+	
+	/** Create the "exists" relationship between World and a given class */
+	public void createExistsRelationship(org.eclipse.uml2.uml.Class umlWorld, org.eclipse.uml2.uml.Class class_)
+	{
+		boolean end1IsNavigable = true;
+		String end1Name = "world";
+		org.eclipse.uml2.uml.AggregationKind agg1 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		int end1Lower = 1;
+		int end1Upper = -1;				
+		boolean end2IsNavigable = true;
+		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		String end2Name = "exists";
+		int end2Lower = 0;
+		int end2Upper = -1;				
+		org.eclipse.uml2.uml.Association existenceRelation = class_.createAssociation(
+			end1IsNavigable, agg1, end1Name, end1Lower, end1Upper, (org.eclipse.uml2.uml.Type)umlWorld,
+			end2IsNavigable, agg2, end2Name, end2Lower, end2Upper
+		);
+		umlRoot.getPackagedElements().add(existenceRelation);		
+		outln(existenceRelation);
 	}
 	
 	/** Get all classes and data-types of the model */
@@ -215,13 +330,13 @@ public class SimplifiedReificator extends Reificator {
 	{
 		org.eclipse.uml2.uml.Class umlPath = umlRoot.createOwnedClass("Path", false);		
 		boolean end1IsNavigable = true;
-		String end1Name = "worlds";
+		String end1Name = "world";
 		org.eclipse.uml2.uml.AggregationKind agg1 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
 		int end1Lower = 1;
 		int end1Upper = -1;				
 		boolean end2IsNavigable = true;
 		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
-		String end2Name = "paths";
+		String end2Name = "path";
 		int end2Lower = 1;
 		int end2Upper = -1;				
 		org.eclipse.uml2.uml.Association existenceRelation = umlPath.createAssociation(

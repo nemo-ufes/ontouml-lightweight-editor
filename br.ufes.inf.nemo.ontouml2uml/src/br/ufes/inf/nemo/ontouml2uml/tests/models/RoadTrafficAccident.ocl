@@ -1,6 +1,6 @@
-import 'Imóvel.uml'
+import 'RoadTrafficAccident.uml'
 
- package _'Imóvel'
+ package _'EA_Model'
 
 context World
 inv no_cycle: self->asSet()->closure(next)->excludes(self)

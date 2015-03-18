@@ -6,7 +6,7 @@ import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UMLOption;
 
-public class OntoUML2TempotalUMLTests {
+public class OntoUML2ReifiedUMLTests {
 	
 	public static void main(String[] args)
 	{
