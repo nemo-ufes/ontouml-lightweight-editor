@@ -29,7 +29,7 @@ public class OntoUML2UML {
 	private static org.eclipse.uml2.uml.Package umlRoot;
 	private static String umlPath = new String();
 	
-	private static TemporalStructureGenerator tgenerator; 
+	private static Reificator tgenerator; 
 	private static ProfileAplicator profileApplicator;
 	
 	//*****************************
@@ -170,67 +170,60 @@ public class OntoUML2UML {
 	//Temporal pure UML
 	//*****************************
 	
-	public static Resource convertToTemporalUML (OntoUMLParser refparser, String umlPath)
+	public static Resource convertToTemporalUML (OntoUMLParser refparser, String umlPath, boolean simplifiedVersion)
 	{
-		return convertToTemporalUML(refparser, umlPath, options);
+		return convertToTemporalUML(refparser, umlPath, options, simplifiedVersion);
 	}
 	
-	public static Resource convertToTemporalUML (RefOntoUML.Package refmodel, String umlPath)
+	public static Resource convertToTemporalUML (RefOntoUML.Package refmodel, String umlPath, boolean simplifiedVersion)
 	{
-		return convertToTemporalUML(refmodel, umlPath, options);
+		return convertToTemporalUML(refmodel, umlPath, options, simplifiedVersion);
 	}
 	
-	public static Resource includeTemporalStructure(org.eclipse.uml2.uml.Package umlRoot, String umlPath)
+	public static Resource includeTemporalStructure(org.eclipse.uml2.uml.Package umlRoot, String umlPath, boolean simplifiedVersion)
 	{	
-		tgenerator = new TemporalStructureGenerator(
-			umlRoot, 
-			utransformer.getConverter().ufactory, 
-			utransformer.getConverter().umap);
+		if(!simplifiedVersion){
+			tgenerator = new CompleteReificator(umlRoot, utransformer.getConverter().ufactory, utransformer.getConverter().umap);		
+		}else{
+			tgenerator = new SimplifiedReificator(umlRoot, utransformer.getConverter().ufactory, utransformer.getConverter().umap);
+		}
 		tgenerator.run();
-		
-		log += tgenerator.getTemporalLog();
-		
+		log += tgenerator.getTemporalLog();		
 		return OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
 	}
 	
-	public static Resource convertToTemporalUML (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt)
+	public static Resource convertToTemporalUML (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt, boolean simplifiedVersion)
 	{
 		Resource umlResource = convertToUML(refmodel, umlPath, opt);
-		umlRoot = (org.eclipse.uml2.uml.Package)umlResource.getContents().get(0);
-		
-		tgenerator = new TemporalStructureGenerator(
-			umlRoot, 
-			utransformer.getConverter().ufactory, 
-			utransformer.getConverter().umap);
-		tgenerator.run();
-		
-		log += tgenerator.getTemporalLog();
-		
-		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);
-		
+		umlRoot = (org.eclipse.uml2.uml.Package)umlResource.getContents().get(0);		
+		if(!simplifiedVersion){
+			tgenerator = new CompleteReificator(umlRoot, utransformer.getConverter().ufactory, utransformer.getConverter().umap);
+		}else{
+			tgenerator = new SimplifiedReificator(umlRoot, utransformer.getConverter().ufactory, utransformer.getConverter().umap);
+		}
+		tgenerator.run();		
+		log += tgenerator.getTemporalLog();		
+		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
 		return umlResource;
 	}
 	
-	public static Resource convertToTemporalUML(OntoUMLParser refparser, String umlPath, OntoUML2UMLOption opt)
+	public static Resource convertToTemporalUML(OntoUMLParser refparser, String umlPath, OntoUML2UMLOption opt, boolean simplifiedVersion)
 	{
 		Resource umlResource = convertToUML(refparser, umlPath, opt);
 		umlRoot = (org.eclipse.uml2.uml.Package)umlResource.getContents().get(0);
-		
-		tgenerator = new TemporalStructureGenerator(
-			umlRoot, 
-			utransformer.getConverter().ufactory, 
-			utransformer.getConverter().umap);
-		tgenerator.run();
-		
-		log += tgenerator.getTemporalLog();
-		
-		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);
-		
+		if(!simplifiedVersion){
+			tgenerator = new CompleteReificator(umlRoot, utransformer.getConverter().ufactory, utransformer.getConverter().umap);
+		}else{
+			tgenerator = new SimplifiedReificator(umlRoot, utransformer.getConverter().ufactory, utransformer.getConverter().umap);
+		}
+		tgenerator.run();		
+		log += tgenerator.getTemporalLog();		
+		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
 		return umlResource;   		
 	}
 	
 	//******************************
-	// Getter
+	// Getters
 	//******************************
 	
 	public static HashMap <RefOntoUML.Element,org.eclipse.uml2.uml.Element> getStandardMap ()
