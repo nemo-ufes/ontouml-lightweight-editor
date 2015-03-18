@@ -16,7 +16,7 @@ import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 
 	protected int temp_counter = 0;	
-	protected int oclIsKindOf_counter=0;
+	protected int oclIsKindOf_counter=0;	
 	protected int oclIsTypeOf_counter=0;
 	protected int oclBecomes_counter=0;
 	protected int oclCeasesToBe_counter=0;
@@ -91,6 +91,9 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 					String worldParam = ((TOCLParser)oclparser).getOclIsKindOfWorldParam(oclIsKindOf_counter);
 					oclIsKindOf_counter++;
 					return "("+sourceResult+" in "+worldParam+"."+argument+")";					
+				}
+				if(operName.equals("oclAsType")){					
+					return sourceResult;					
 				}
 				if(operName.equals("oclIsTypeOf")){
 					String worldParam = ((TOCLParser)oclparser).getOclIsTypeOfWorldParam(oclIsTypeOf_counter);
