@@ -272,7 +272,7 @@ public class TOCLParser extends OCLParser{
     		if(indexEnd > textDoc.length()) indexEnd = textDoc.length();    		
     		
     		String operation = textDoc.substring(indexBegin, indexBegin+qtdeLetters);
-    		System.out.println("Operation: "+operation);
+    		//System.out.println("Operation: "+operation);
     		
     		String parameters = textDoc.substring(indexBegin+qtdeLetters+1, indexEnd-1);    		
     		String typeVar = new String();
@@ -285,7 +285,7 @@ public class TOCLParser extends OCLParser{
     			typeVar = parameters;
     			worldVar = "";
     		}    		
-    		System.out.println("Parameters: "+parameters +", Type: "+typeVar+", World: "+worldVar);
+    		//System.out.println("Parameters: "+parameters +", Type: "+typeVar+", World: "+worldVar);
     		
     		if(parameters.contains(",")) {    			    			
     			if(operation.contains("oclIsKindOf")) oclIsKindOfList.add(typeVar.trim()+","+worldVar.trim());    			
@@ -323,7 +323,7 @@ public class TOCLParser extends OCLParser{
     		if(indexEnd > textDoc.length()) indexEnd = textDoc.length();    		
     		
     		String operation = textDoc.substring(indexBegin, indexBegin+qtdeLetters);
-    		System.out.println("Operation: "+operation);
+    		//System.out.println("Operation: "+operation);
     		
     		String parameters = textDoc.substring(indexBegin+qtdeLetters+1, indexEnd-1);    		
     		String typeVar = new String();
@@ -338,7 +338,7 @@ public class TOCLParser extends OCLParser{
     		}    		
     		if(isInvalidTypeVariable(typeVar)) throw new ParserException ("Unrecognized Variable: ("+typeVar+")");
     		
-    		System.out.println("Parameters: "+parameters +", Type: "+typeVar+", World: "+worldVar);
+    		//System.out.println("Parameters: "+parameters +", Type: "+typeVar+", World: "+worldVar);
     		
     		if(parameters.contains(",")) {    			    			
     			if(operation.contains("oclBecomes")) oclBecomesList.add(typeVar.trim()+","+worldVar.trim());        		        		
@@ -374,7 +374,7 @@ public class TOCLParser extends OCLParser{
     		if(indexEnd > textDoc.length()) indexEnd = textDoc.length();    		
     		
     		String operation = textDoc.substring(indexBegin, indexBegin+qtdeLetters);
-    		System.out.println("Operation: "+operation);
+    		//System.out.println("Operation: "+operation);
     		
     		String parameters = textDoc.substring(indexBegin+qtdeLetters+1, indexEnd-1);    		
     		String typeVar = new String();
@@ -389,7 +389,7 @@ public class TOCLParser extends OCLParser{
     		}
     		if(isInvalidTypeVariable(typeVar)) throw new ParserException ("Unrecognized Variable: ("+typeVar+")");
     		
-    		System.out.println("Parameters: "+parameters +", Type: "+typeVar+", World: "+worldVar);
+    		//System.out.println("Parameters: "+parameters +", Type: "+typeVar+", World: "+worldVar);
     		
     		if(parameters.contains(",")) {    			    			
     			if(operation.contains("oclCeasesToBe")) oclCeasesToBeList.add(typeVar.trim()+","+worldVar.trim());        		        		
@@ -444,8 +444,8 @@ public class TOCLParser extends OCLParser{
     	if(match>0) throw new ParserException("Cannot find operation (oclCeasesToBe(T)). Missing world parameter. ");
     }
     
-    /** Process Temporal Navigations. We still support the syntax "[]" */
-    public HashMap<String,Integer> processTemporalProperty(String result)
+    /** Process Temporal Navigations with the syntax "[]" */
+    public HashMap<String,Integer> processTemporalNavigations(String result)
     {
     	int char_added=0;
     	Pattern p = Pattern.compile("\\.\\w+");
@@ -456,8 +456,7 @@ public class TOCLParser extends OCLParser{
     		int indexBegin = m.start();
     		int indexEnd = m.end()+1;    		
     		if(indexBegin < 0) indexBegin = 0;
-    		if(indexEnd > result.length()) indexEnd = result.length();
-    		
+    		if(indexEnd > result.length()) indexEnd = result.length();    		
     		String regex = "\\.\\w+[^\\(]";
     		if(Pattern.matches(regex,result.subSequence(indexBegin, indexEnd)))  
     		{  
@@ -473,7 +472,7 @@ public class TOCLParser extends OCLParser{
     	return map;
     }
     
-    /** Process "temp" keyword */
+    /** Process keyword "temp" */
     public String processTempKeyword(String result) throws ParserException
     {
     	Pattern p = Pattern.compile("\\W(temp|inv|derive)\\W*(\\s*\\w*\\s*):");
@@ -498,68 +497,67 @@ public class TOCLParser extends OCLParser{
         		
         		// endName/attrName takes place to endName()/attrName()...
     			// =======================================================
-        		String expression = new String();
+        		String oclExpression = new String();
         		String therest = new String();
         		if(right.indexOf(":")!=-1){
-        			expression = right.substring(0,right.indexOf(":"));
+        			oclExpression = right.substring(0,right.indexOf(":"));
         			therest = right.substring(right.indexOf(":"),right.length());
         		}else{
-        			expression = right.substring(0,right.length());
+        			oclExpression = right.substring(0,right.length());
         		}
         		        		
-        		checkInvalidOperations(expression);        		
+        		checkInvalidOperations(oclExpression);        		
         		
-        		HashMap<String,Integer>map = processTemporalProperty(expression);
+        		HashMap<String,Integer>map = processTemporalNavigations(oclExpression);
 	        	for(String key: map.keySet()){	        		
-	        		expression = key;
+	        		oclExpression = key;
 		            jump = jump + map.get(key);		            	        
 	        	}
 	        	
-        		result = left+middle+(expression+therest);        		        		
+        		result = left+middle+(oclExpression+therest);        		        		
         		
     		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("inv")){
     			
     			constraintStereotypeList.add("inv");
     			String rightExpression = result.substring(indexEnd+(jump), result.length());
-    			String expression = new String();
-    			if(rightExpression.indexOf(":")!=-1) {
-    				if(rightExpression.indexOf("context")!=-1){    					
-    					expression = rightExpression.substring(0,rightExpression.indexOf("context"));	
-    				}else{
-    					expression = rightExpression.substring(0,rightExpression.indexOf(":"));
-    				}
-    			} else expression = rightExpression.substring(0,rightExpression.length());
-    			
-    			if(expression.contains("World") || expression.contains("Path") || expression.contains("next(") || expression.contains("previous(") || expression.contains("hasNext(")|| expression.contains("hasPrevious(") || expression.contains("allNext(") ||
-				expression.contains("allPrevious(") || expression.contains("isOrigin(") || expression.contains("isTerminal(") || expression.contains("existsIn(") || expression.contains("paths(") || expression.contains("worlds(") || 
-    			expression.contains("oclIsCreated(") || expression.contains("oclCeasesToBe(") || expression.contains("oclIsDeleted(") || expression.contains("oclBecomes("))
+    			String oclExpression = new String();
+    			if(rightExpression.indexOf(":")!=-1) 
     			{
-    				throw new ParserException("Unrecognizable keyword \"inv\": A temporal constraint is defined by the keyword \"temp\"");
-    			}
+    				if(rightExpression.indexOf("context")!=-1) oclExpression = rightExpression.substring(0,rightExpression.indexOf("context"));	
+    				else oclExpression = rightExpression.substring(0,rightExpression.indexOf(":"));    				
+    			}else {
+    				oclExpression = rightExpression.substring(0,rightExpression.length());
+    			}    			
+    			checkInvalidOclExpression(oclExpression);
     			
     		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("derive")){
     			
     			constraintStereotypeList.add("derive");
     			String rightExpression = result.substring(indexEnd+(jump), result.length());
-    			String expression = new String();
-    			if(rightExpression.indexOf(":")!=-1) {
-    				if(rightExpression.indexOf("context")!=-1){    					
-    					expression = rightExpression.substring(0,rightExpression.indexOf("context"));	
-    				}else{
-    					expression = rightExpression.substring(0,rightExpression.indexOf(":"));
-    				}
-    			} else expression = rightExpression.substring(0,rightExpression.length());
-    			
-    			if(expression.contains("World") || expression.contains("Path") || expression.contains("next(") || expression.contains("previous(") || expression.contains("hasNext(")|| expression.contains("hasPrevious(") || expression.contains("allNext(") ||
-				expression.contains("allPrevious(") || expression.contains("isOrigin(") || expression.contains("isTerminal(") || expression.contains("existsIn(") || expression.contains("paths(") || expression.contains("worlds(") || 
-    			expression.contains("oclIsCreated(") || expression.contains("oclCeasesToBe(") || expression.contains("oclIsDeleted(") || expression.contains("oclBecomes("))
+    			String oclExpression = new String();
+    			if(rightExpression.indexOf(":")!=-1) 
     			{
-    				throw new ParserException("Unrecognizable keyword \"inv\": A temporal constraint is defined by the keyword \"temp\"");
-    			}
+    				if(rightExpression.indexOf("context")!=-1) oclExpression = rightExpression.substring(0,rightExpression.indexOf("context"));	
+    				else oclExpression = rightExpression.substring(0,rightExpression.indexOf(":"));    				
+    			}else{
+    				oclExpression = rightExpression.substring(0,rightExpression.length());
+    			}    			
+    			checkInvalidOclExpression(oclExpression);
     		}    	
     	}
     	
     	return result;    	
+    }
+    
+    /** Check if the static OCL expression should be declared as dynamic  */
+    private void checkInvalidOclExpression(String oclExpression) throws ParserException
+    {
+    	if(oclExpression.contains("World") || oclExpression.contains("Path") || oclExpression.contains("next(") || oclExpression.contains("previous(") || oclExpression.contains("hasNext(")|| oclExpression.contains("hasPrevious(") || oclExpression.contains("allNext(") ||
+		oclExpression.contains("allPrevious(") || oclExpression.contains("isOrigin(") || oclExpression.contains("isTerminal(") || oclExpression.contains("existsIn(") || oclExpression.contains("paths(") || oclExpression.contains("worlds(") || 
+		oclExpression.contains("oclIsCreated(") || oclExpression.contains("oclCeasesToBe(") || oclExpression.contains("oclIsDeleted(") || oclExpression.contains("oclBecomes("))
+		{
+			throw new ParserException("A temporal constraint should be defined by the keyword \"temp\"");
+		}
     }
     
     /** Process OCL Textual Document */
@@ -596,7 +594,7 @@ public class TOCLParser extends OCLParser{
 		p = Pattern.compile("oclCeasesToBe\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
 		result = processOclCeasesToBeOperation(result, p);
 		
-		System.out.println(result);
+		//System.out.println(result);
 	    return result;
     }
 
