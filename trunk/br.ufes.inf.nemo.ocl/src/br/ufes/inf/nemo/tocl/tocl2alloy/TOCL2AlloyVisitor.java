@@ -18,7 +18,9 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 	protected int temp_counter = 0;	
 	protected int oclIsKindOf_counter=0;
 	protected int oclIsTypeOf_counter=0;
-		
+	protected int oclBecomes_counter=0;
+	protected int oclCeasesToBe_counter=0;
+	
 	public TOCL2AlloyVisitor(TOCLParser oclparser, OntoUMLParser refparser, TOCL2AlloyOption opt) 
 	{
 		super(oclparser, refparser, opt);	
@@ -74,8 +76,8 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 				if(operName.equals("existsIn")) { return sourceResult+" in "+argument+"."+"exists"; }
 				if(operName.equals("allPrevious")) { return "allPrevious["+sourceResult+","+argument+"]"; }
 				if(operName.equals("allNext")) { return "allNext["+sourceResult+","+argument+"]"; }
-				if(operName.equals("oclIsCreated")) { return sourceResult+" in "+argument+".exists and "+sourceResult+" !in (next."+argument+").exists)"; }
-				if(operName.equals("oclIsDeleted")) { return sourceResult+" !in "+argument+".exists and "+sourceResult+" in (next."+argument+").exists)"; }
+				if(operName.equals("oclIsCreated")) { return "("+sourceResult+" in "+argument+".exists and "+sourceResult+" !in (next."+argument+").exists)"; }
+				if(operName.equals("oclIsDeleted")) { return "("+sourceResult+" !in "+argument+".exists and "+sourceResult+" in (next."+argument+").exists)"; }
 				if(ontoElement!=null){
 					String alias = refparser.getAlias(ontoElement);
 					if(ontoElement instanceof RefOntoUML.Property) { 
@@ -94,6 +96,16 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 					String worldParam = ((TOCLParser)oclparser).getOclIsTypeOfWorldParam(oclIsTypeOf_counter);
 					oclIsTypeOf_counter++;
 					return super.visitOclIsTypeOf(sourceResult, argument, worldParam);		
+				}				
+				if(operName.equals("oclBecomes")){
+					String typeParam = ((TOCLParser)oclparser).getOclBecomesTypeParam(oclBecomes_counter);
+					oclBecomes_counter++;
+					return "("+sourceResult+" in "+argument+"."+typeParam+" and "+sourceResult+" !in (next."+argument+")."+typeParam+")";				
+				}
+				if(operName.equals("oclCeasesToBe")){
+					String typeParam = ((TOCLParser)oclparser).getOclBecomesTypeParam(oclCeasesToBe_counter);
+					oclCeasesToBe_counter++;
+					return "("+sourceResult+" !in "+argument+"."+typeParam+" and "+sourceResult+" in (next."+argument+")."+typeParam+")";				
 				}				
 	        }	        
 			if(operName.equals("allPrevious")) { return "(^next."+sourceResult+")"; }
