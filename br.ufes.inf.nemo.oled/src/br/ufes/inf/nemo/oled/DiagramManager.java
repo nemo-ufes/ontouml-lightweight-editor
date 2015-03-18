@@ -108,7 +108,6 @@ import br.ufes.inf.nemo.oled.explorer.ProjectTree;
 import br.ufes.inf.nemo.oled.finder.FoundElement;
 import br.ufes.inf.nemo.oled.finder.FoundPane;
 import br.ufes.inf.nemo.oled.model.AlloySpecification;
-import br.ufes.inf.nemo.oled.model.AntiPatternList;
 import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
 import br.ufes.inf.nemo.oled.model.RelationType;
@@ -168,12 +167,11 @@ import br.ufes.inf.nemo.oled.util.OWLHelper;
 import br.ufes.inf.nemo.oled.util.OperationResult;
 import br.ufes.inf.nemo.oled.util.OperationResult.ResultType;
 import br.ufes.inf.nemo.oled.util.ProjectSettings;
-import br.ufes.inf.nemo.oled.validator.antipattern.AntiPatternResultDialog;
 import br.ufes.inf.nemo.oled.validator.meronymic.ValidationDialog;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
-import br.ufes.inf.nemo.ootos.util.MappingType;
 import br.ufes.inf.nemo.ontouml2sbvr.core.OntoUML2SBVR;
 import br.ufes.inf.nemo.ontouml2text.ontoUmlGlossary.ui.GlossaryGeneratorUI;
+import br.ufes.inf.nemo.ootos.util.MappingType;
 import br.ufes.inf.nemo.tocl.parser.TOCLParser;
 import br.ufes.inf.nemo.tocl.tocl2alloy.TOCL2AlloyOption;
 import edu.mit.csail.sdg.alloy4whole.SimpleGUICustom;
@@ -2291,12 +2289,13 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	 */
 	public void updateOLEDFromInclusion(final RefOntoUML.Element addedElement)
 	{		
+		// add to the parser
+		frame.getBrowserManager().getProjectBrowser().getParser().addElement(addedElement);
+  				
 		SwingUtilities.invokeLater(new Runnable() {			
 			@Override
 			public void run() {
 				UmlProject project = ProjectBrowser.frame.getDiagramManager().getCurrentProject();
-				// add to the parser
-				frame.getBrowserManager().getProjectBrowser().getParser().addElement(addedElement);		
 				// add to the tree
 				ProjectTree tree = frame.getProjectBrowser().getTree();
 				boolean found = tree.checkModelElement(addedElement);
@@ -2314,8 +2313,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					}
 				}
 				tree.updateUI();						
-			}
-		});		
+			}							
+		});	
+		
 	}
 		
 	/**
@@ -2365,7 +2365,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				((GeneralizationSet)obj).getGeneralization(),getCurrentProject(),(RefOntoUML.Element)((EObject)obj).eContainer());
 				cmd.run(); 
 			}
-		}
+		}		
 	}	
 		
 	/**
@@ -2410,7 +2410,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 					for(Generalization gen: ((RefOntoUML.GeneralizationSet) element).getGeneralization()) updateOLEDFromModification(gen,false);
 				}
 			}
-		});
+		});	
 	}
 	
 	/**
@@ -2448,17 +2448,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	@SuppressWarnings("unused")
 	public void updateOLEDFromDeletion(final RefOntoUML.Element deletedElement)
 	{		
+		UmlProject project = frame.getDiagramManager().getCurrentProject();
+		// delete from the parser
+		frame.getBrowserManager().getProjectBrowser().getParser().removeElement(deletedElement);
+		
 		SwingUtilities.invokeLater(new Runnable() {			
 			@Override
-			public void run() {
-				UmlProject project = frame.getDiagramManager().getCurrentProject();
-				// delete from the parser
-				frame.getBrowserManager().getProjectBrowser().getParser().removeElement(deletedElement);							
+			public void run() {											
 				// delete from the tree
 				ProjectBrowser browser = frame.getProjectBrowser();		
 				browser.getTree().remove(deletedElement);
 			}
-		});
+		});	
 	}
 	
 	/** Update OLED according to a Fix.  */
@@ -2475,7 +2476,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		}
 		for(String str: fix.getAddedRules()){
 			frame.getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(str);		
-		}
+		}		
 		return ;
 	}
 	
@@ -3052,17 +3053,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 						_fix = PatternTool.tryToRun(elementType, selectedElements);
 					}
 					if(_fix != null)
-						updateOLED(_fix);
+						updateOLED(_fix);					
 				}
 			});
 		}else{
-			_fix = PatternTool.tryToRun(elementType, x, y);
-			if(_fix == null){
-				List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
-				_fix = PatternTool.tryToRun(elementType, selectedElements);
-			}
-			if(_fix != null)
-				updateOLED(_fix);
+			_fix = PatternTool.tryToRun(elementType, x, y);			
+			System.out.println(frame.getProjectBrowser().getParser().getStringRepresentations());
+			if(_fix != null){		    	   
+				updateOLED(_fix);						
+			}							
+			OntoUMLParser refparser = frame.getProjectBrowser().getParser();
+			System.out.println(refparser.getStringRepresentations());
 		}
 	}
 
