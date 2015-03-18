@@ -87,7 +87,7 @@ public class TemporalStructureGenerator {
 		newTopLevels.add(umlIndividual);
 		createTopLevelAllInstancesOperation(umlWorld, classes);	
 		createTopLevelExistenceOperations(umlWorld, newTopLevels);			
-		createOclIsCreatedOperation(umlWorld,newTopLevels);
+		createIndividualsOperation(umlWorld,newTopLevels);
 		
 		createTemporalAttributeAccessOperations(umlWorld, attributes);
 
@@ -154,7 +154,7 @@ public class TemporalStructureGenerator {
 		}
 	}
 	
-	public void createOclIsCreatedOperation(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)
+	public void createIndividualsOperation(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)
 	{
 		org.eclipse.uml2.uml.PrimitiveType pt = getPrimitiveBooleanType();
 		
@@ -174,6 +174,12 @@ public class TemporalStructureGenerator {
 												
 				org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation("oclIsDeleted", parameters, typeParameters, pt);
 				outln(op2);
+				
+				org.eclipse.uml2.uml.Operation op3 = class_.createOwnedOperation("oclBecomes", parameters, typeParameters, pt);
+				outln(op3);
+				
+				org.eclipse.uml2.uml.Operation op4 = class_.createOwnedOperation("oclCeasesToBe", parameters, typeParameters, pt);
+				outln(op4);
 			}			
 		}
 	}
