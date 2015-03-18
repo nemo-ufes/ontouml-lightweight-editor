@@ -46,7 +46,7 @@ public class TOCLParser extends OCLParser{
     {	
     	super(refparser,tempDirPath,backgroundModelName);
     	
-    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath);
+    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
     	tmap = OntoUML2UML.getTemporalMap();
         
         //re-configuration
@@ -70,7 +70,7 @@ public class TOCLParser extends OCLParser{
     {	
 		super(rootPackage,tempDirPath,backgroundModelName);
 
-		umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath);
+		umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
    		tmap = OntoUML2UML.getTemporalMap();
       	
         //re-configuration
@@ -93,7 +93,7 @@ public class TOCLParser extends OCLParser{
     	
     	this.refparser = new OntoUMLParser(refAbsolutePath);
 
-    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath);
+    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
    		tmap = OntoUML2UML.getTemporalMap();
       	
         //re-configuration

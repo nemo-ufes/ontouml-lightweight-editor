@@ -14,7 +14,7 @@ import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Type;
 
-public class TemporalStructureGenerator {
+public class CompleteReificator extends Reificator {
 
 	// from pure UML
 	public org.eclipse.uml2.uml.Package umlRoot;	
@@ -34,7 +34,7 @@ public class TemporalStructureGenerator {
 		return tmap;
 	}
 	
-	public TemporalStructureGenerator(org.eclipse.uml2.uml.Package umlRoot, org.eclipse.uml2.uml.UMLFactory ufactory, HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap)
+	public CompleteReificator(org.eclipse.uml2.uml.Package umlRoot, org.eclipse.uml2.uml.UMLFactory ufactory, HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap)
 	{			
 		this.umlRoot=umlRoot;
 		this.ufactory = ufactory;
