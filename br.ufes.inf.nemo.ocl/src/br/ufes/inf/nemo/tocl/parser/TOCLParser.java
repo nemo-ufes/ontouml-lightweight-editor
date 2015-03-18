@@ -439,7 +439,7 @@ public class TOCLParser extends OCLParser{
 		//p = Pattern.compile("oclIsNew\\(\\s*\\w+\\s*\\)");		
 		//result = processOclIsNewOperation(result, p);
 		
-		System.out.println(result);
+		//System.out.println(result);
 	    return result;
     }
 
