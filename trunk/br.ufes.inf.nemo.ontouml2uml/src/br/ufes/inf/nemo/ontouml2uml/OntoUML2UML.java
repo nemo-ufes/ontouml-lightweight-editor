@@ -1,5 +1,6 @@
 package br.ufes.inf.nemo.ontouml2uml;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import RefOntoUML.parser.OntoUMLParser;
+import br.ufes.inf.nemo.common.file.FileUtil;
 
 /**
  * This class transforms OntoUML models into UML. It simply ignores the stereotypes of classes and relations.
@@ -188,7 +190,10 @@ public class OntoUML2UML {
 			tgenerator = new SimplifiedReificator(umlRoot, utransformer.getConverter().ufactory, utransformer.getConverter().umap);
 		}
 		tgenerator.run();
-		log += tgenerator.getTemporalLog();		
+		log += tgenerator.getLog();	
+		
+		generateOCLFile(umlPath);
+		
 		return OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
 	}
 	
@@ -202,8 +207,12 @@ public class OntoUML2UML {
 			tgenerator = new SimplifiedReificator(umlRoot, utransformer.getConverter().ufactory, utransformer.getConverter().umap);
 		}
 		tgenerator.run();		
-		log += tgenerator.getTemporalLog();		
-		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
+		log += tgenerator.getLog();	
+		
+		generateOCLFile(umlPath);
+		
+		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);	
+		
 		return umlResource;
 	}
 	
@@ -217,9 +226,27 @@ public class OntoUML2UML {
 			tgenerator = new SimplifiedReificator(umlRoot, utransformer.getConverter().ufactory, utransformer.getConverter().umap);
 		}
 		tgenerator.run();		
-		log += tgenerator.getTemporalLog();		
+		log += tgenerator.getLog();	
+
+		generateOCLFile(umlPath);
+		
 		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
 		return umlResource;   		
+	}
+	
+	private static void generateOCLFile(String umlPath)
+	{
+		File oclFile = FileUtil.createFile(umlPath.replace(".uml", ".ocl"));
+		int lastIndex = umlPath.lastIndexOf(File.separator)+1;
+		if(lastIndex<=0) lastIndex = umlPath.lastIndexOf("/")+1;
+		String fileName = umlPath.substring(lastIndex);
+		String header = new String("import '"+fileName+"'\n\n package _'"+umlRoot.getName()+"'\n\n");
+		String footer = new String("endpackage");
+		try {
+			FileUtil.writeToFile(header+tgenerator.getConstraints()+footer, oclFile.getAbsolutePath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	//******************************
