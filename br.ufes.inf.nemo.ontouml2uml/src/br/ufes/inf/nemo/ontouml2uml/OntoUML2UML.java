@@ -192,7 +192,7 @@ public class OntoUML2UML {
 		tgenerator.run();
 		log += tgenerator.getLog();	
 		
-		generateOCLFile(umlPath);
+		generateOCLFile(umlPath, umlRoot);
 		
 		return OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
 	}
@@ -209,7 +209,7 @@ public class OntoUML2UML {
 		tgenerator.run();		
 		log += tgenerator.getLog();	
 		
-		generateOCLFile(umlPath);
+		generateOCLFile(umlPath,umlRoot);
 		
 		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);	
 		
@@ -228,19 +228,19 @@ public class OntoUML2UML {
 		tgenerator.run();		
 		log += tgenerator.getLog();	
 
-		generateOCLFile(umlPath);
+		generateOCLFile(umlPath,umlRoot);
 		
 		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
 		return umlResource;   		
 	}
 	
-	private static void generateOCLFile(String umlPath)
+	private static void generateOCLFile(String umlPath, org.eclipse.uml2.uml.Package root)
 	{
 		File oclFile = FileUtil.createFile(umlPath.replace(".uml", ".ocl"));
 		int lastIndex = umlPath.lastIndexOf(File.separator)+1;
 		if(lastIndex<=0) lastIndex = umlPath.lastIndexOf("/")+1;
 		String fileName = umlPath.substring(lastIndex);
-		String header = new String("import '"+fileName+"'\n\n package _'"+umlRoot.getName()+"'\n\n");
+		String header = new String("import '"+fileName+"'\n\n package _'"+root.getName()+"'\n\n");
 		String footer = new String("endpackage");
 		try {
 			FileUtil.writeToFile(header+tgenerator.getConstraints()+footer, oclFile.getAbsolutePath());

@@ -30,6 +30,7 @@ public class TOCLParser extends OCLParser{
     //TOCL
     public ArrayList<String> oclIsKindOfList = new ArrayList<String>();
     public ArrayList<String> oclIsTypeOfList = new ArrayList<String>();    
+    public ArrayList<String> oclAsTypeList = new ArrayList<String>();
     public ArrayList<String> oclCeasesToBeList = new ArrayList<String>();
     public ArrayList<String> oclBecomesList = new ArrayList<String>();
     public ArrayList<String> constraintStereotypeList = new ArrayList<String>();
@@ -149,7 +150,26 @@ public class TOCLParser extends OCLParser{
     	}
     	return "<Unknown>";
     }
- 
+
+    /** Return the world variable from the oclAsType operation at the "index" */
+    public String getOclAsTypeWorldParam(int index)
+    {
+    	int i = 0;
+    	for(String str: oclAsTypeList)
+    	{
+    		if(i == index) {
+    			if(str.contains(",")){
+	    			String array[] = str.split(",");
+	    			return array[1];	    				
+    			}else{
+    				return "World";
+    			}
+    		}
+    		i++;
+    	}
+    	return "<Unknown>";
+    }
+
     /** Return the world variable from the oclIsTyopeOf operation at the "index" */
     public String getOclIsTypeOfWorldParam(int index)
     {
@@ -306,6 +326,53 @@ public class TOCLParser extends OCLParser{
     	return textDoc;
     }
     
+    /** Process oclAsType */
+    public String processOclAsTypeOperation (String textDoc, Pattern p)
+    {
+		Matcher m = p.matcher(textDoc);		
+		int qtdeLetters = (new String("oclAsType")).length();	
+		int charRemoved = 0;
+    	while (m.find()) 
+    	{    		
+    		int indexBegin = m.start()-charRemoved;
+    		int indexEnd = m.end()-charRemoved;   
+    		
+    		if(indexBegin < 0) indexBegin = 0;
+    		if(indexEnd > textDoc.length()) indexEnd = textDoc.length();    		
+    		
+    		String operation = textDoc.substring(indexBegin, indexBegin+qtdeLetters);
+    		//System.out.println("Operation: "+operation);
+    		
+    		String parameters = textDoc.substring(indexBegin+qtdeLetters+1, indexEnd-1);    		
+    		String typeVar = new String();
+    		String worldVar = new String();
+    		if(parameters.contains(",")){
+    			String[] paramArray = parameters.split(",");
+    			typeVar = paramArray[0];
+    			worldVar = paramArray[1];
+    		}else{
+    			typeVar = parameters;
+    			worldVar = "";
+    		}    		
+    		//System.out.println("Parameters: "+parameters +", Type: "+typeVar+", World: "+worldVar);
+    		
+    		if(parameters.contains(",")) {    			    			
+    			if(operation.contains("oclAsType")) oclAsTypeList.add(typeVar.trim()+","+worldVar.trim());        		        		
+    		}else{    			    			
+    			if(operation.contains("oclAsType")) oclAsTypeList.add(typeVar.trim());    			    			    			
+    		}
+    		    		 
+    		String left = textDoc.substring(0,indexBegin+qtdeLetters+1+typeVar.length())+")";    		
+    		String right = textDoc.substring(indexEnd, textDoc.length());
+    		//System.out.println("Left :"+left);
+    		//System.out.println("Right :"+right);
+    		textDoc = left+right;    		
+    		
+    		charRemoved = charRemoved + 1 + worldVar.length();
+    	}    	
+    	return textDoc;
+    }
+    
     /** Process oclBecomes 
      * 
      * @throws ParserException */
@@ -433,9 +500,12 @@ public class TOCLParser extends OCLParser{
     {
     	int match = countMatches("oclIsKindOf\\((_')*\\s*\\w+\\s*'*\\)", result);
     	if(match>0) throw new ParserException("Cannot find operation (oclIsKindOf(T)). Missing world parameter. ");
-    	    	
+    	
     	match = countMatches("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*\\)", result);
     	if(match>0) throw new ParserException("Cannot find operation (oclIsTypeOf(T)). Missing world parameter. ");    	
+    	
+    	match = countMatches("oclAsType\\((_')*\\s*\\w+\\s*'*\\)", result);
+    	if(match>0) throw new ParserException("Cannot find operation (oclAsType(T)). Missing world parameter. ");
     	
     	match = countMatches("oclBecomes\\((_')*\\s*\\w+\\s*'*\\)", result);
     	if(match>0) throw new ParserException("Cannot find operation (oclBecomes(T)). Missing world parameter. ");
@@ -586,6 +656,10 @@ public class TOCLParser extends OCLParser{
 		p = Pattern.compile("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
 		result = processTypeConformanceOperations(result, p);
 		
+		// remove world parameter and record it
+		p = Pattern.compile("oclAsType\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
+		result = processOclAsTypeOperation(result, p);
+				
 		// remove world parameter and record it
 		p = Pattern.compile("oclBecomes\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
 		result = processOclBecomesOperation(result, p);
