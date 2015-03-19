@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.uml2.uml.Association;
+import org.eclipse.uml2.uml.Type;
 
 public class CompleteReificator extends SimplifiedReificator {
 		
@@ -29,31 +30,52 @@ public class CompleteReificator extends SimplifiedReificator {
 		/** reify all attributes */
 		reifyAttributes(attributes);
 							
+		textualConstraints += generateMultiplicityOCLConstraints(associations);
+		
 		outln("Complete reification executed successfully");
 	}
 	
-//	public String generateMultiplicityOCLConstraints(List<Association> attributes)
-//	{
-//		String result = new String();
-//		result += "context World"+"\n";
-//		for(Property p: attributes)
-//		{
-//			int lower = p.getLower();
-//			int upper = p.getUpper();
-//						
-//		}		
-//		return String;
-//	}
+	public String generateMultiplicityOCLConstraints(List<Association> associations)
+	{
+		String result = new String();
+		result += "--====================================="+"\n";
+		result += "--Multiplicity"+"\n";
+		result += "--======================================"+"\n\n";	
+		result += "context World"+"\n\n";
+		for(Association assoc: associations)
+		{			
+			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
+			
+			int lowerSrc = assoc.getMemberEnds().get(0).getLower();
+			int upperSrc = assoc.getMemberEnds().get(0).getUpper();
+			int lowerTgt = assoc.getMemberEnds().get(1).getLower();
+			int upperTgt = assoc.getMemberEnds().get(1).getUpper();
+			Type src = assoc.getMemberEnds().get(0).getType();
+			Type tgt = assoc.getMemberEnds().get(1).getType();
+			String lowerSrcName = src.getName().toLowerCase().trim();
+			String lowerTgtName = tgt.getName().toLowerCase().trim();
+			String lowerAssocName = (assoc.getName() ==null) ? "unnamed" : assoc.getName().toLowerCase().trim();			
+			
+			//from src to tgt 
+			result += "inv "+lowerAssocName+"_from_"+lowerSrcName+"_to_"+lowerTgtName+": "+"\n";
+			result += "	   self.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->forAll(m | "+"\n";
+			result += "    let targets : Set(_'"+tgt.getName()+"') = m._'"+lowerAssocName+"'->select(r | r.world = self)"+"\n";
+			result += "    in targets->size() >= "+lowerTgt;			
+			if(upperTgt >0) result += " and targets->size() <= "+upperTgt;
+			result += ")\n\n";	
+						
+			//from tgt to src 
+			result += "inv "+lowerAssocName+"_from_"+lowerTgtName+"_to_"+lowerSrcName+": "+"\n";
+			result += "	   self.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->forAll(m | "+"\n";
+			result += "    let sources : Set(_'"+src.getName()+"') = m._'"+lowerAssocName+"'->select(r | r.world = self)"+"\n";
+			result += "    in sources->size() >= "+lowerSrc;			
+			if(upperTgt >0) result += " and sources->size() <= "+upperSrc;
+			result += ")\n\n";	
+		}
+		
+		return result;
+	}
 	
-//	multiplicities semantics
-//	context World 
-//	inv marriage_mediates_one_wife_at_a_time: 
-//	    self.individual->select(i | i.oclIsKindOf(Marriage))->forAll(m |
-//	    m.mediates_marriage_wife->select(r | r.world = self)->size() = 1)
-//	inv wife_is_mediated_by_one_marriage_at_a_time: 
-//	    self.individual->select(i| i.oclIsKindOf(Wife))->forAll(h | 
-//	    h.mediates_marriage_wife->select(r | r.world = self)->size() = 1)
-
 	public void reifyAttributes(List<org.eclipse.uml2.uml.Property> attributes)
 	{
 		for(org.eclipse.uml2.uml.Property attr: attributes)
@@ -89,7 +111,7 @@ public class CompleteReificator extends SimplifiedReificator {
 	{
 		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)attr.eContainer().eContainer();
 		org.eclipse.uml2.uml.Class reifiedAttr = null;
-		if (attr.getName()==null || attr.getName().isEmpty()) { attr.setName("Attribute"+attritbute_counter); }
+		if (attr.getName()==null || attr.getName().isEmpty()) { attr.setName("attribute"+attritbute_counter); }
 		reifiedAttr = umlRoot.createOwnedClass(attr.getName(), false);				
 		attritbute_counter++; 
 		return reifiedAttr;
