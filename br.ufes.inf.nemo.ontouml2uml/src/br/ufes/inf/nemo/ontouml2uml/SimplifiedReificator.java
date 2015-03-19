@@ -2,10 +2,12 @@ package br.ufes.inf.nemo.ontouml2uml;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.PackageableElement;
@@ -21,8 +23,13 @@ public class SimplifiedReificator extends Reificator {
 	public HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap;
 		
 	/** Temporal Inclusion */	
-	public HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> tmap = new HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>>();
+	public HashMap<RefOntoUML.Element, List<org.eclipse.uml2.uml.Element>> tmap = new HashMap<RefOntoUML.Element, List<org.eclipse.uml2.uml.Element>>();
 	public String tlog = new String();	
+	
+	public org.eclipse.uml2.uml.Class umlWorld;
+	public org.eclipse.uml2.uml.Class umlPath;
+	public List<org.eclipse.uml2.uml.Property> attributes = new ArrayList<org.eclipse.uml2.uml.Property>();
+	public List<org.eclipse.uml2.uml.Association> associations = new ArrayList<org.eclipse.uml2.uml.Association>();
 	
 	/** Standard OCL Constraints */
 	public String textualConstraints = new String();
@@ -35,7 +42,7 @@ public class SimplifiedReificator extends Reificator {
 		this.umap = umap;		
 	}
 	
-	public HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> getMap() { return tmap; }
+	public HashMap<RefOntoUML.Element, List<org.eclipse.uml2.uml.Element>> getMap() { return tmap; }
 	
 	public String getLog() { return tlog; }
 	
@@ -66,19 +73,21 @@ public class SimplifiedReificator extends Reificator {
 		/** Create "Individual" top level class */
 		org.eclipse.uml2.uml.Class umlIndividual = createIndividualSuperType(topLevelClasses);
 						
-		/** Get all attributes of the model */
-		ArrayList<org.eclipse.uml2.uml.Property> attributes = new ArrayList<org.eclipse.uml2.uml.Property>();
+		/** Get all attributes of the model */		
 		getAllAttributes(umlRoot,attributes);
 		
+		/** Get all relationships */		
+		getAllAssociations(umlRoot, associations);
+						
 		/** Create the world accessibility relationship */
-		org.eclipse.uml2.uml.Class umlWorld = umlRoot.createOwnedClass("World", false);
+		umlWorld = umlRoot.createOwnedClass("World", false);
 		createWorldAccessibilityRelation(umlWorld);
 		
 		/** Create the "exists" relationship between World and a given class */
 		createExistsRelationship(umlWorld,umlIndividual);
 		
 		/** Create the path structure related to worlds */
-		org.eclipse.uml2.uml.Class umlPath = createPathStructure(umlWorld, umlRoot);				
+		umlPath = createPathStructure(umlWorld, umlRoot);				
 		
 		/** Create all worlds operations */
 		createWorldOperations(umlWorld,umlPath,umlIndividual);		
@@ -285,7 +294,7 @@ public class SimplifiedReificator extends Reificator {
 	}
 	
 	/** Get all attributes of the model */
-	public void getAllAttributes (org.eclipse.uml2.uml.Package umlRoot, ArrayList<org.eclipse.uml2.uml.Property> properties)
+	public void getAllAttributes (org.eclipse.uml2.uml.Package umlRoot, List<org.eclipse.uml2.uml.Property> properties)
 	{
 		for(PackageableElement pe: umlRoot.getPackagedElements())
 		{
@@ -301,6 +310,20 @@ public class SimplifiedReificator extends Reificator {
 				getAllAttributes((org.eclipse.uml2.uml.Package)pe,properties);
 			}
 		}	
+	}
+
+	public void getAllAssociations(org.eclipse.uml2.uml.Package umlRoot, List<Association> associations)
+	{
+		for(PackageableElement pe: umlRoot.getPackagedElements())
+		{
+			if (pe instanceof org.eclipse.uml2.uml.Association){
+				org.eclipse.uml2.uml.Association assoc = (org.eclipse.uml2.uml.Association)pe;
+				associations.add(assoc);
+			}			
+			if (pe instanceof org.eclipse.uml2.uml.Package){
+				getAllAssociations((org.eclipse.uml2.uml.Package)pe,associations);
+			}
+		}			
 	}
 	
 	/** Create the world accessibility relationship (next/previous) */
@@ -512,7 +535,7 @@ public class SimplifiedReificator extends Reificator {
 	}	
 			
 	/** Create two operations for navigation at all worlds and at a particular world e.g. navigation(w) and navigation() */
-	public void createTemporalNavigationsOperations(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Property> attrList)
+	public void createTemporalNavigationsOperations(org.eclipse.uml2.uml.Class umlWorld, List<Property> attrList)
 	{
 		for(Property attr: attrList)
 		{

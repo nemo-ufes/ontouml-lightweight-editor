@@ -2,8 +2,8 @@ package br.ufes.inf.nemo.ontouml2uml;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -258,7 +258,7 @@ public class OntoUML2UML {
 		return utransformer.getConverter().getMap();
 	}
 	
-	public static HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> getTemporalMap()
+	public static HashMap<RefOntoUML.Element, List<org.eclipse.uml2.uml.Element>> getTemporalMap()
 	{
 		if (tgenerator !=null) return tgenerator.getMap();
 		else return null;
