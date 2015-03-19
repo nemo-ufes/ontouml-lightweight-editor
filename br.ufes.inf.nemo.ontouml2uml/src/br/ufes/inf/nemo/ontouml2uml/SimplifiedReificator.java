@@ -143,6 +143,10 @@ public class SimplifiedReificator extends Reificator {
 	{
 		return
 		
+		"--====================================="+"\n"+
+		"--World Structure"+"\n"+
+		"--======================================"+"\n\n"+
+				
 		/** From Benevides's Structure */
 		"context World"+"\n"+
 		"inv no_cycle: self->asSet()->closure(next)->excludes(self)"+"\n"+"\n"+ 
@@ -173,6 +177,10 @@ public class SimplifiedReificator extends Reificator {
 	{
 		return 
 				
+		"--====================================="+"\n"+
+		"--Temporal Operations"+"\n"+
+		"--======================================"+"\n\n"+
+				
 		"context World::next():Set(World) body: self.next"+"\n"+"\n"+
 		
 		"context World::previous():World body: self.previous"+"\n"+"\n"+
@@ -181,13 +189,13 @@ public class SimplifiedReificator extends Reificator {
 		
 		"context Path::worlds():Set(World) body: self.world"+"\n"+"\n"+
 		
-		"context World::allIndividuals():Set(Individual) body: self.exists"+"\n"+"\n"+
+		"context World::allIndividuals():Set(Individual) body: self.individual"+"\n"+"\n"+
 		
 		"context World::hasNext():Boolean body: not self.next->isEmpty()"+"\n"+"\n"+
 		
 		"context World::hasPrevious():Boolean body: not self.previous.oclIsUndefined()"+"\n"+"\n"+
 		
-		"context Individual::existsIn(w: World):Boolean body: w.exists->includes(self)"+"\n"+"\n"+
+		"context Individual::existsIn(w: World):Boolean body: w.individual->includes(self)"+"\n"+"\n"+
 		
 		"context World::allNext():Set(World) body: self->asSet()->closure(next)->asSet()"+"\n"+"\n"+
 		
@@ -209,7 +217,7 @@ public class SimplifiedReificator extends Reificator {
 	public String generateIndividualOperationsImpl()
 	{
 		return 
-		
+						
 		"context Individual::oclIsCreated(w: World) : Boolean"+"\n"+ 
 		"body: if(not w.previous.oclIsUndefined() and not self.existsIn(w.previous) and"+"\n"+
 		      "self.existsIn(w)) then true else false endif"+"\n"+"\n"+
@@ -252,7 +260,7 @@ public class SimplifiedReificator extends Reificator {
 		int end1Upper = -1;				
 		boolean end2IsNavigable = true;
 		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
-		String end2Name = "exists";
+		String end2Name = class_.getName()==null ? "exists" : class_.getName().toLowerCase().trim();
 		int end2Lower = 0;
 		int end2Upper = -1;				
 		org.eclipse.uml2.uml.Association existenceRelation = class_.createAssociation(
