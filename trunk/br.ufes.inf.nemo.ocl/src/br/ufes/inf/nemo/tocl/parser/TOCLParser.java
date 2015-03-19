@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +26,7 @@ import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
 public class TOCLParser extends OCLParser{
 	
     // Temporal UML
-    public HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element>> tmap = new HashMap<RefOntoUML.Element, ArrayList<org.eclipse.uml2.uml.Element> >();
+    public HashMap<RefOntoUML.Element, List<org.eclipse.uml2.uml.Element>> tmap = new HashMap<RefOntoUML.Element, List<org.eclipse.uml2.uml.Element> >();
 	            
     //TOCL
     public ArrayList<String> oclIsKindOfList = new ArrayList<String>();
@@ -47,7 +48,7 @@ public class TOCLParser extends OCLParser{
     {	
     	super(refparser,tempDirPath,backgroundModelName);
     	
-    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
+    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,false);
     	tmap = OntoUML2UML.getTemporalMap();
         
         //re-configuration
@@ -71,7 +72,7 @@ public class TOCLParser extends OCLParser{
     {	
 		super(rootPackage,tempDirPath,backgroundModelName);
 
-		umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
+		umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,false);
    		tmap = OntoUML2UML.getTemporalMap();
       	
         //re-configuration
@@ -94,7 +95,7 @@ public class TOCLParser extends OCLParser{
     	
     	this.refparser = new OntoUMLParser(refAbsolutePath);
 
-    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
+    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,false);
    		tmap = OntoUML2UML.getTemporalMap();
       	
         //re-configuration

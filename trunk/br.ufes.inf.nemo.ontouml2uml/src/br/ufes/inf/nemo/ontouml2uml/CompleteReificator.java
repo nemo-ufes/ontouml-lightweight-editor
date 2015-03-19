@@ -2,15 +2,14 @@ package br.ufes.inf.nemo.ontouml2uml;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.eclipse.uml2.uml.Association;
-import org.eclipse.uml2.uml.Classifier;
-import org.eclipse.uml2.uml.PackageableElement;
 
 public class CompleteReificator extends SimplifiedReificator {
 		
-	public int assoc_counter=0;
-	public int attr_counter=0;
+	public int relationship_counter=0;
+	public int attritbute_counter=0;
 	
 	public CompleteReificator(org.eclipse.uml2.uml.Package umlRoot, org.eclipse.uml2.uml.UMLFactory ufactory, HashMap<RefOntoUML.Element,org.eclipse.uml2.uml.Element> umap)
 	{			
@@ -24,18 +23,27 @@ public class CompleteReificator extends SimplifiedReificator {
 		
 		outln("Executing complete reification...");
 		
-		// Unnecessary since end-points in UML are owned attributes
-		// ArrayList<Association> assocList = new ArrayList<Association>();
-		// getAssociations(umlRoot,assocList);
-		// createTemporalNavigationOperations(umlWorld, assocList);
+		/** reify all relationships */
+		reifyAssociations(associations);
 		
-		// Unnecessary to create the existence association between World and the types (classes,associations and attributes) existent in that World
-		// We found a workaround for this i.e. we used UML/OCL pre-defined operations
-		// reifyAssociations(umlWorld, topLevels);
-		// reifyAttributes(umlWorld,attributes);
-					
+		/** reify all attributes */
+		reifyAttributes(attributes);
+							
 		outln("Complete reification executed successfully");
 	}
+	
+//	public String generateMultiplicityOCLConstraints(List<Association> attributes)
+//	{
+//		String result = new String();
+//		result += "context World"+"\n";
+//		for(Property p: attributes)
+//		{
+//			int lower = p.getLower();
+//			int upper = p.getUpper();
+//						
+//		}		
+//		return String;
+//	}
 	
 //	multiplicities semantics
 //	context World 
@@ -46,155 +54,156 @@ public class CompleteReificator extends SimplifiedReificator {
 //	    self.individual->select(i| i.oclIsKindOf(Wife))->forAll(h | 
 //	    h.mediates_marriage_wife->select(r | r.world = self)->size() = 1)
 
-	@SuppressWarnings("unused")
-	@Deprecated
-	private void getAssociations(org.eclipse.uml2.uml.Package umlRoot, ArrayList<Association> result)
+	public void reifyAttributes(List<org.eclipse.uml2.uml.Property> attributes)
 	{
-		for(PackageableElement pe: umlRoot.getPackagedElements())
+		for(org.eclipse.uml2.uml.Property attr: attributes)
 		{
-			if (pe instanceof org.eclipse.uml2.uml.Association){
-				org.eclipse.uml2.uml.Association assoc = (org.eclipse.uml2.uml.Association)pe;
-				result.add(assoc);
-			}			
-			if (pe instanceof org.eclipse.uml2.uml.Package){
-				getAssociations((org.eclipse.uml2.uml.Package)pe,result);
-			}
-		}			
-	}
-	
-	@Deprecated
-	public void reifyAttributes(org.eclipse.uml2.uml.Class umlWorld, ArrayList<org.eclipse.uml2.uml.Property> properties)
-	{
-		for(org.eclipse.uml2.uml.Property top: properties)
-		{
-			if(top.getAssociation()==null)
+			if(attr.getAssociation()==null)
 			{
-				ArrayList<org.eclipse.uml2.uml.Element> tempList =  new ArrayList<org.eclipse.uml2.uml.Element>();
+				ArrayList<org.eclipse.uml2.uml.Element> createdElems =  new ArrayList<org.eclipse.uml2.uml.Element>();
 								
-				//reify it into a class
-				org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)top.eContainer().eContainer();
-				org.eclipse.uml2.uml.Class reifiedAttr = null;
-				if (top.getName()==null || top.getName().isEmpty()) { top.setName("Attribute"+attr_counter); }
-				reifiedAttr = umlRoot.createOwnedClass(top.getName(), false);				
-				attr_counter++; 
+				//Reify it into a class				
+				org.eclipse.uml2.uml.Class reifiedAttr = reifyAttribute(attr);				
+				createdElems.add(reifiedAttr);
 				
-				tempList.add(reifiedAttr);
+				//Create "exists" relationship between the reified Attribute and World
+				createExistsRelationship(umlWorld, reifiedAttr);
 				
-				outln("UML:Class :: name="+reifiedAttr.getName()+", visibility="+reifiedAttr.getVisibility().getName()+", isAbstract="+reifiedAttr.isAbstract());
+				//Create binary relationship between the Owner of the attribute and the Reified Attribute (i.e. a class)
+				org.eclipse.uml2.uml.Association binaryRelationship = reifyOwnerAttributeEndPoint(attr, reifiedAttr);			
+				createdElems.add(binaryRelationship);				
+					
+				//Create an attribute in the class which is the reified attribute
+				org.eclipse.uml2.uml.Property attribute = cloneAttributeAtTheReifiedAttribute(attr, reifiedAttr);				
+				createdElems.add(attribute);
 				
-				//imitate first ternary link i.e., existence.
-				createExistsRelationship(umlWorld,reifiedAttr);
+				tmap.put(getKey(attr), createdElems);
 				
-				//imitate second ternary link i.e., property representing the attribute 
-				boolean end1IsNavigable = true;
-				String end1Name = "attr"+attr_counter;
-				org.eclipse.uml2.uml.AggregationKind agg1 = top.getAggregation();
-				int end1Lower = top.getLower();
-				int end1Upper = top.getUpper();				
-				boolean end2IsNavigable = true;
-				org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
-				String end2Name = ((org.eclipse.uml2.uml.NamedElement)top.eContainer()).getName();
-				if (end2Name==null) end2Name = "";
-				int end2Lower = 1;
-				int end2Upper = 1;
-				org.eclipse.uml2.uml.Association sourceRelation = ((org.eclipse.uml2.uml.Type)top.eContainer()).createAssociation(
-					end1IsNavigable, agg1, end1Name, end1Lower, end1Upper, reifiedAttr,
-					end2IsNavigable, agg2, end2Name, end2Lower, end2Upper
-				);
-				umlRoot.getPackagedElements().add(sourceRelation);		
-				
-				tempList.add(sourceRelation);				
-				
-				outln(sourceRelation);
-
-				//imitate third ternary link i.e., an attribute
-				org.eclipse.uml2.uml.Property attribute = ufactory.createProperty();
-				attribute.setName(top.getName());
-				attribute.setType(top.getType());
-				org.eclipse.uml2.uml.LiteralInteger lowerValue = ufactory.createLiteralInteger();
-				org.eclipse.uml2.uml.LiteralUnlimitedNatural upperValue = ufactory.createLiteralUnlimitedNatural();
-				lowerValue.setValue(top.getLower());
-				upperValue.setValue(top.getUpper());         
-				attribute.setUpperValue(upperValue);
-				attribute.setLowerValue(lowerValue);
-				attribute.setAggregation(top.getAggregation());
-				reifiedAttr.getOwnedAttributes().add(attribute);
-				
-				tempList.add(attribute);
-				
-				outln(attribute);
-				
-				tmap.put(getKey(top), tempList);
+				//if (key!=null) umap.remove(key);
+				//EcoreUtil.delete(attr);
 			}
 		}
 	}
 	
-	@Deprecated
-	public void reifyAssociations(org.eclipse.uml2.uml.Class umlWorld, ArrayList<Classifier> topLevels)
+	public org.eclipse.uml2.uml.Class reifyAttribute(org.eclipse.uml2.uml.Property attr)
 	{
-		for(Classifier top: topLevels)
+		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)attr.eContainer().eContainer();
+		org.eclipse.uml2.uml.Class reifiedAttr = null;
+		if (attr.getName()==null || attr.getName().isEmpty()) { attr.setName("Attribute"+attritbute_counter); }
+		reifiedAttr = umlRoot.createOwnedClass(attr.getName(), false);				
+		attritbute_counter++; 
+		return reifiedAttr;
+	}
+	
+	public org.eclipse.uml2.uml.Property cloneAttributeAtTheReifiedAttribute(org.eclipse.uml2.uml.Property attr, org.eclipse.uml2.uml.Class reifiedAttr)
+	{
+		org.eclipse.uml2.uml.Property attribute = ufactory.createProperty();
+		attribute.setName(attr.getName());
+		attribute.setType(attr.getType());
+		org.eclipse.uml2.uml.LiteralInteger lowerValue = ufactory.createLiteralInteger();
+		org.eclipse.uml2.uml.LiteralUnlimitedNatural upperValue = ufactory.createLiteralUnlimitedNatural();
+		lowerValue.setValue(attr.getLower());
+		upperValue.setValue(attr.getUpper());         
+		attribute.setUpperValue(upperValue);
+		attribute.setLowerValue(lowerValue);
+		attribute.setAggregation(attr.getAggregation());
+		reifiedAttr.getOwnedAttributes().add(attribute);				
+		outln(attribute);
+		return attribute;
+	}
+	
+	public org.eclipse.uml2.uml.Association reifyOwnerAttributeEndPoint(org.eclipse.uml2.uml.Property attr, org.eclipse.uml2.uml.Class reifiedAttr)
+	{
+		boolean end1IsNavigable = true;
+		String end1Name = new String();
+		if(reifiedAttr.getName()!=null && reifiedAttr.getName().isEmpty()) end1Name = reifiedAttr.getName().toLowerCase().trim(); 
+		else end1Name = "attribute"+attritbute_counter;		
+		org.eclipse.uml2.uml.AggregationKind agg1 = attr.getAggregation();
+		int end1Lower = 0;
+		int end1Upper = -1;				
+		
+		boolean end2IsNavigable = true;
+		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
+		String end2Name = ((org.eclipse.uml2.uml.NamedElement)attr.eContainer()).getName();
+		if (end2Name==null) end2Name = "";
+		int end2Lower = 1;
+		int end2Upper = 1;
+		
+		org.eclipse.uml2.uml.Association reifiedEndPoint = ((org.eclipse.uml2.uml.Type)attr.eContainer()).createAssociation(
+			end1IsNavigable, agg1, end1Name, end1Lower, end1Upper, reifiedAttr,
+			end2IsNavigable, agg2, end2Name, end2Lower, end2Upper
+		);
+		
+		umlRoot.getPackagedElements().add(reifiedEndPoint);		
+		outln(reifiedEndPoint);		
+		
+		return reifiedEndPoint;
+	}
+	
+	public void reifyAssociations(List<Association> associations)
+	{
+		for(Association assoc: associations)
 		{
-			if(top instanceof org.eclipse.uml2.uml.Association)
-			{
-				ArrayList<org.eclipse.uml2.uml.Element> tempList =  new ArrayList<org.eclipse.uml2.uml.Element>();
-				
-				org.eclipse.uml2.uml.Association assoc = (org.eclipse.uml2.uml.Association)top;
-				
-				//reify it into a class
-				org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)top.eContainer();
-				org.eclipse.uml2.uml.Class reifiedAssoc = null;
-				if (assoc.getName()==null || assoc.getName().isEmpty()) { assoc.setName("Association"+assoc_counter); }
-				reifiedAssoc = umlRoot.createOwnedClass(assoc.getName(), false);				
-				assoc_counter++; 
-				
-				tempList.add(reifiedAssoc);
-				
-				outln("UML:Class :: name="+reifiedAssoc.getName()+", visibility="+reifiedAssoc.getVisibility().getName()+", isAbstract="+reifiedAssoc.isAbstract());
-				
-				//imitate first ternary link i.e., existence.
-				createExistsRelationship(umlWorld, reifiedAssoc);
-				
-				//imitate second ternary link i.e., association's source 
-				org.eclipse.uml2.uml.Association sourceRelation = createSideRelation(assoc.getMemberEnds().get(0), reifiedAssoc);				
-				
-				tempList.add(sourceRelation);				
-								
-				//imitate third ternary linki.e., association's target
-				org.eclipse.uml2.uml.Association targetRelation = createSideRelation(assoc.getMemberEnds().get(1), reifiedAssoc);				
-				
-				tempList.add(targetRelation);
-								
-				tmap.put(getKey(top), tempList);
+			List<org.eclipse.uml2.uml.Element> createdElems =  new ArrayList<org.eclipse.uml2.uml.Element>();
+						
+			//Reify Association
+			org.eclipse.uml2.uml.Class reifiedAssoc = reifyAssociation(assoc);						
+			createdElems.add(reifiedAssoc);
+			
+			//Create "exists" relationship between the reified Association and World
+			createExistsRelationship(umlWorld, reifiedAssoc);
+			
+			//Create binary relationship between the Reified Association (i.e. a class) and its source type 
+			org.eclipse.uml2.uml.Association sourceBinaryRelation = reifyAssociationEndPoint(assoc.getMemberEnds().get(0), reifiedAssoc);			
+			createdElems.add(sourceBinaryRelation);				
+							
+			//Create binary relationship between the Reified Association (i.e. a class) and its target type 
+			org.eclipse.uml2.uml.Association targetBinaryRelation = reifyAssociationEndPoint(assoc.getMemberEnds().get(1), reifiedAssoc);			
+			createdElems.add(targetBinaryRelation);
+							
+			tmap.put(getKey(assoc), createdElems);
 
-				//if (key!=null) umap.remove(key);
-				//EcoreUtil.delete(top);
-			}
+			//if (key!=null) umap.remove(key);
+			//EcoreUtil.delete(assoc);			
 		}		
 	}
 	
-	@Deprecated
-	public org.eclipse.uml2.uml.Association createSideRelation(org.eclipse.uml2.uml.Property property, org.eclipse.uml2.uml.Class reifiedAssoc)
+	public org.eclipse.uml2.uml.Class reifyAssociation(Association assoc)
+	{
+		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)assoc.eContainer();
+		org.eclipse.uml2.uml.Class reifiedAssoc = null;
+		if (assoc.getName()==null || assoc.getName().isEmpty()) { assoc.setName("relationship"+relationship_counter); }
+		reifiedAssoc = umlRoot.createOwnedClass(assoc.getName(), false);
+		relationship_counter++;					
+		outln("UML:Class :: name="+reifiedAssoc.getName()+", visibility="+reifiedAssoc.getVisibility().getName()+", isAbstract="+reifiedAssoc.isAbstract());
+		return reifiedAssoc;
+	}
+	
+	public org.eclipse.uml2.uml.Association reifyAssociationEndPoint(org.eclipse.uml2.uml.Property property, org.eclipse.uml2.uml.Class reifiedAssoc)
 	{
 		boolean end1IsNavigable = true;
-		String end1Name = "assoc"+assoc_counter;				
+		String end1Name = new String();
+		if(reifiedAssoc.getName()!=null && !reifiedAssoc.getName().isEmpty()) end1Name = reifiedAssoc.getName().toLowerCase().trim(); 
+		else end1Name = "relationship"+relationship_counter;
 		org.eclipse.uml2.uml.AggregationKind agg1 = property.getAggregation();
-		int end1Lower = property.getLower();
-		int end1Upper = property.getUpper();				
+		int end1Lower = 0;
+		int end1Upper = -1;
+		
 		boolean end2IsNavigable = true;
 		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
-		String end2Name = property.getName();
+		String end2Name = property.getType().getName().toLowerCase().trim();
 		if (end2Name==null) end2Name = "";
 		int end2Lower = 1;
 		int end2Upper = 1;
 
-		org.eclipse.uml2.uml.Association reifiedSideRelation = property.getType().createAssociation(
+		org.eclipse.uml2.uml.Association reifiedEndPoint = property.getType().createAssociation(
 			end1IsNavigable, agg1, end1Name, end1Lower, end1Upper, reifiedAssoc,
 			end2IsNavigable, agg2, end2Name, end2Lower, end2Upper
 		);
-		umlRoot.getPackagedElements().add(reifiedSideRelation);
 		
-		outln(reifiedSideRelation);
+		umlRoot.getPackagedElements().add(reifiedEndPoint);		
+		outln(reifiedEndPoint);
 		
-		return reifiedSideRelation;
+		return reifiedEndPoint;
 	}
 }
