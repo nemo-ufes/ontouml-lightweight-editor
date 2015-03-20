@@ -116,7 +116,7 @@ public class SimplifiedReificator extends Reificator {
 					
 		textualConstraints += generateWorldStructureConstraints();
 		textualConstraints += generateTemporalOperationsImpl();
-		textualConstraints += generateIndividualOperationsImpl();
+		//textualConstraints += generateIndividualOperationsImpl();
 				
 		outln("Simplified reification executed successfully.");
 	}
@@ -326,7 +326,7 @@ public class SimplifiedReificator extends Reificator {
 		{
 			if (pe instanceof org.eclipse.uml2.uml.Association){
 				org.eclipse.uml2.uml.Association assoc = (org.eclipse.uml2.uml.Association)pe;
-				associations.add(assoc);
+				if(!((getKey(assoc) instanceof RefOntoUML.Derivation))) associations.add(assoc);
 			}			
 			if (pe instanceof org.eclipse.uml2.uml.Package){
 				getAllAssociations((org.eclipse.uml2.uml.Package)pe,associations);

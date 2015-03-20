@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="ASCII"?>
 <RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" name="project" visibility="public">
-  <packagedElement xsi:type="RefOntoUML:Kind" name="Person" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" name="Person" visibility="public">
+    <ownedAttribute name="age" type="//@packagedElement.15"/>
+  </packagedElement>
   <packagedElement xsi:type="RefOntoUML:Kind" name="Organization" visibility="public"/>
   <packagedElement xsi:type="RefOntoUML:Phase" name="Child" visibility="public">
     <generalization general="//@packagedElement.0" generalizationSet="//@packagedElement.13"/>
@@ -70,4 +72,5 @@
       <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
     </ownedEnd>
   </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:PrimitiveType" name="Integer"/>
 </RefOntoUML:Model>

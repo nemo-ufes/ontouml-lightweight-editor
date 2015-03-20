@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Association;
+import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Type;
 
 public class CompleteReificator extends SimplifiedReificator {
@@ -25,21 +27,24 @@ public class CompleteReificator extends SimplifiedReificator {
 		outln("Executing complete reification...");
 		
 		/** reify all relationships */
-		reifyAssociations(associations);
+		reifyAssociations(associations,false);
 		
 		/** reify all attributes */
-		reifyAttributes(attributes);
+		reifyAttributes(attributes,false);
 							
-		textualConstraints += generateMultiplicityOCLConstraints(associations);
+		textualConstraints += generateConstraintsForAssocationsMultiplicity();
+		textualConstraints += generateConstraintsForAttributesMultiplicity();
+		textualConstraints += generateConstraintsForAssociationsExistenceCycles();
+		textualConstraints += generateConstraintsForAttributesExistenceCycles();
 		
 		outln("Complete reification executed successfully");
 	}
 	
-	public String generateMultiplicityOCLConstraints(List<Association> associations)
+	public String generateConstraintsForAssocationsMultiplicity()
 	{
 		String result = new String();
 		result += "--====================================="+"\n";
-		result += "--Multiplicity"+"\n";
+		result += "--Multiplicity: Relationships"+"\n";
 		result += "--======================================"+"\n\n";	
 		result += "context World"+"\n\n";
 		for(Association assoc: associations)
@@ -54,29 +59,117 @@ public class CompleteReificator extends SimplifiedReificator {
 			Type tgt = assoc.getMemberEnds().get(1).getType();
 			String lowerSrcName = src.getName().toLowerCase().trim();
 			String lowerTgtName = tgt.getName().toLowerCase().trim();
-			String lowerAssocName = (assoc.getName() ==null) ? "unnamed" : assoc.getName().toLowerCase().trim();			
+			String lowerAssocName = (assoc.getName() ==null) ? "unnamed" : assoc.getName().toLowerCase().trim().replaceAll(" ", "");			
 			
 			//from src to tgt 
 			result += "inv "+lowerAssocName+"_from_"+lowerSrcName+"_to_"+lowerTgtName+": "+"\n";
 			result += "	   self.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->forAll(m | "+"\n";
-			result += "    let targets : Set(_'"+tgt.getName()+"') = m._'"+lowerAssocName+"'->select(r | r.world = self)"+"\n";
-			result += "    in targets->size() >= "+lowerTgt;			
-			if(upperTgt >0) result += " and targets->size() <= "+upperTgt;
+			result += "    let list : Set(_'"+tgt.getName()+"') = m._'"+lowerAssocName+"'->select(r | r.world = self)"+"\n";
+			result += "    in list->size() >= "+lowerTgt;			
+			if(upperTgt >0) result += " and list->size() <= "+upperTgt;
 			result += ")\n\n";	
 						
 			//from tgt to src 
 			result += "inv "+lowerAssocName+"_from_"+lowerTgtName+"_to_"+lowerSrcName+": "+"\n";
 			result += "	   self.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->forAll(m | "+"\n";
-			result += "    let sources : Set(_'"+src.getName()+"') = m._'"+lowerAssocName+"'->select(r | r.world = self)"+"\n";
-			result += "    in sources->size() >= "+lowerSrc;			
-			if(upperTgt >0) result += " and sources->size() <= "+upperSrc;
+			result += "    let list : Set(_'"+src.getName()+"') = m._'"+lowerAssocName+"'->select(r | r.world = self)"+"\n";
+			result += "    in list->size() >= "+lowerSrc;			
+			if(upperTgt >0) result += " and list->size() <= "+upperSrc;
 			result += ")\n\n";	
 		}
 		
 		return result;
 	}
 	
-	public void reifyAttributes(List<org.eclipse.uml2.uml.Property> attributes)
+	public String generateConstraintsForAttributesMultiplicity()
+	{
+		String result = new String();
+		result += "--====================================="+"\n";
+		result += "--Multiplicity: Attributes"+"\n";
+		result += "--======================================"+"\n\n";	
+		result += "context World"+"\n\n";
+		int i=0;
+		for(Property p: attributes)
+		{			
+			if(p.getAssociation()!=null) continue;
+			
+			int lowerTgt = p.getLower();
+			int upperTgt = p.getUpper();
+			Type src = (Type)p.eContainer();
+			Type tgt = p.getType();
+			String lowerSrcName = src.getName().toLowerCase().trim();
+			String lowerTgtName = tgt.getName().toLowerCase().trim();
+			String lowerAttrName = "attribute"+i;
+			
+			//from src to tgt 
+			result += "inv "+lowerAttrName+"_from_"+lowerSrcName+"_to_"+lowerTgtName+": "+"\n";
+			result += "	   self.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->forAll(m | "+"\n";
+			result += "    let list : Set(_'"+tgt.getName()+"') = m._'"+lowerAttrName+"'->select(r | r.world = self)"+"\n";
+			result += "    in list->size() >= "+lowerTgt;			
+			if(upperTgt >0) result += " and list->size() <= "+upperTgt;
+			result += ")\n\n";
+			
+			i++;
+		}
+		
+		return result;
+	}
+	
+	public String generateConstraintsForAssociationsExistenceCycles()
+	{
+		String result = new String();
+		result += "--====================================="+"\n";
+		result += "--Existence Cycles: Relationships"+"\n";
+		result += "--======================================"+"\n\n";		
+		for(Association assoc: associations)
+		{			
+			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
+			
+			result += "context _'"+assoc.getName().replaceAll(" ", "")+"'\n\n";
+			
+			Type src = assoc.getMemberEnds().get(0).getType();
+			Type tgt = assoc.getMemberEnds().get(1).getType();
+			String lowerSrcName = src.getName().toLowerCase().trim();
+			String lowerTgtName = tgt.getName().toLowerCase().trim();
+			
+			//tgt 
+			result += "inv target_cycle: "+"\n";
+			result += "	   self.world.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->includes(self._'"+lowerTgtName+"')"+"\n\n";
+			
+			//src
+			result += "inv source_cycle: "+"\n";
+			result += "	   self.world.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->includes(self._'"+lowerSrcName+"')"+"\n\n";
+		}
+		
+		return result;
+	}
+	
+	public String generateConstraintsForAttributesExistenceCycles()
+	{
+		String result = new String();
+		result += "--====================================="+"\n";
+		result += "--Existence Cycles: Attributes"+"\n";
+		result += "--======================================"+"\n\n";
+		
+		int i=0;
+		for(Property attr: attributes)
+		{			
+			if(attr.getAssociation()!=null) continue;
+			
+			result += "context attribute"+i+"\n\n";
+						
+			Type src = (Type)attr.eContainer();			
+			String lowerSrcName = src.getName().toLowerCase().trim();
+			
+			//src
+			result += "inv source_cycle: "+"\n";
+			result += "	   self.world.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->includes(self._'"+lowerSrcName+"')"+"\n\n";		
+			i++;
+		}		
+		return result;
+	}
+	
+	public void reifyAttributes(List<org.eclipse.uml2.uml.Property> attributes, boolean eraseFormerAttribute)
 	{
 		for(org.eclipse.uml2.uml.Property attr: attributes)
 		{
@@ -99,10 +192,14 @@ public class CompleteReificator extends SimplifiedReificator {
 				org.eclipse.uml2.uml.Property attribute = cloneAttributeAtTheReifiedAttribute(attr, reifiedAttr);				
 				createdElems.add(attribute);
 				
+				attritbute_counter++;
+				
 				tmap.put(getKey(attr), createdElems);
 				
-				//if (key!=null) umap.remove(key);
-				//EcoreUtil.delete(attr);
+				if(eraseFormerAttribute){
+					if (getKey(attr)!=null) umap.remove(getKey(attr));
+					EcoreUtil.delete(attr);
+				}
 			}
 		}
 	}
@@ -112,8 +209,7 @@ public class CompleteReificator extends SimplifiedReificator {
 		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)attr.eContainer().eContainer();
 		org.eclipse.uml2.uml.Class reifiedAttr = null;
 		if (attr.getName()==null || attr.getName().isEmpty()) { attr.setName("attribute"+attritbute_counter); }
-		reifiedAttr = umlRoot.createOwnedClass(attr.getName(), false);				
-		attritbute_counter++; 
+		reifiedAttr = umlRoot.createOwnedClass("attribute"+attritbute_counter, false);		 
 		return reifiedAttr;
 	}
 	
@@ -138,7 +234,7 @@ public class CompleteReificator extends SimplifiedReificator {
 	{
 		boolean end1IsNavigable = true;
 		String end1Name = new String();
-		if(reifiedAttr.getName()!=null && reifiedAttr.getName().isEmpty()) end1Name = reifiedAttr.getName().toLowerCase().trim(); 
+		if(reifiedAttr.getName()!=null && reifiedAttr.getName().isEmpty()) end1Name = reifiedAttr.getName().toLowerCase().trim().replaceAll(" ", ""); 
 		else end1Name = "attribute"+attritbute_counter;		
 		org.eclipse.uml2.uml.AggregationKind agg1 = attr.getAggregation();
 		int end1Lower = 0;
@@ -146,7 +242,7 @@ public class CompleteReificator extends SimplifiedReificator {
 		
 		boolean end2IsNavigable = true;
 		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
-		String end2Name = ((org.eclipse.uml2.uml.NamedElement)attr.eContainer()).getName();
+		String end2Name = ((org.eclipse.uml2.uml.NamedElement)attr.eContainer()).getName().toLowerCase().trim();
 		if (end2Name==null) end2Name = "";
 		int end2Lower = 1;
 		int end2Upper = 1;
@@ -162,8 +258,8 @@ public class CompleteReificator extends SimplifiedReificator {
 		return reifiedEndPoint;
 	}
 	
-	public void reifyAssociations(List<Association> associations)
-	{
+	public void reifyAssociations(List<Association> associations, boolean eraseFormerAssociation)
+	{		
 		for(Association assoc: associations)
 		{
 			List<org.eclipse.uml2.uml.Element> createdElems =  new ArrayList<org.eclipse.uml2.uml.Element>();
@@ -185,8 +281,10 @@ public class CompleteReificator extends SimplifiedReificator {
 							
 			tmap.put(getKey(assoc), createdElems);
 
-			//if (key!=null) umap.remove(key);
-			//EcoreUtil.delete(assoc);			
+			if(eraseFormerAssociation){
+				if (getKey(assoc)!=null) umap.remove(getKey(assoc));
+				EcoreUtil.delete(assoc);
+			}
 		}		
 	}
 	
@@ -195,7 +293,7 @@ public class CompleteReificator extends SimplifiedReificator {
 		org.eclipse.uml2.uml.Package umlRoot = (org.eclipse.uml2.uml.Package)assoc.eContainer();
 		org.eclipse.uml2.uml.Class reifiedAssoc = null;
 		if (assoc.getName()==null || assoc.getName().isEmpty()) { assoc.setName("relationship"+relationship_counter); }
-		reifiedAssoc = umlRoot.createOwnedClass(assoc.getName(), false);
+		reifiedAssoc = umlRoot.createOwnedClass(assoc.getName().trim().replaceAll(" ", ""), false);
 		relationship_counter++;					
 		outln("UML:Class :: name="+reifiedAssoc.getName()+", visibility="+reifiedAssoc.getVisibility().getName()+", isAbstract="+reifiedAssoc.isAbstract());
 		return reifiedAssoc;
@@ -205,7 +303,7 @@ public class CompleteReificator extends SimplifiedReificator {
 	{
 		boolean end1IsNavigable = true;
 		String end1Name = new String();
-		if(reifiedAssoc.getName()!=null && !reifiedAssoc.getName().isEmpty()) end1Name = reifiedAssoc.getName().toLowerCase().trim(); 
+		if(reifiedAssoc.getName()!=null && !reifiedAssoc.getName().isEmpty()) end1Name = reifiedAssoc.getName().toLowerCase().trim().replaceAll(" ", ""); 
 		else end1Name = "relationship"+relationship_counter;
 		org.eclipse.uml2.uml.AggregationKind agg1 = property.getAggregation();
 		int end1Lower = 0;

@@ -81,42 +81,42 @@ context World
 
 inv study_from_student_to_university: 
 	   self.individual->select(i | i.oclIsKindOf(_'Student'))->forAll(m | 
-      let targets : Set(_'University') = m._'study'->select(r | r.world = self)
-      in targets->size() >= 1)
+    let targets : Set(_'University') = m._'study'->select(r | r.world = self)
+    in targets->size() >= 1)
 
 inv study_from_university_to_student: 
 	   self.individual->select(i | i.oclIsKindOf(_'University'))->forAll(m | 
-      let sources : Set(_'Student') = m._'study'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'Student') = m._'study'->select(r | r.world = self)
+    in sources->size() >= 1)
 
 inv unv_from_enrollment_to_university: 
 	   self.individual->select(i | i.oclIsKindOf(_'Enrollment'))->forAll(m | 
-      let targets : Set(_'University') = m._'unv'->select(r | r.world = self)
-      in targets->size() >= 1 and targets->size() <= 1)
+    let targets : Set(_'University') = m._'unv'->select(r | r.world = self)
+    in targets->size() >= 1 and targets->size() <= 1)
 
 inv unv_from_university_to_enrollment: 
 	   self.individual->select(i | i.oclIsKindOf(_'University'))->forAll(m | 
-      let sources : Set(_'Enrollment') = m._'unv'->select(r | r.world = self)
-      in sources->size() >= 1 and sources->size() <= -1)
+    let sources : Set(_'Enrollment') = m._'unv'->select(r | r.world = self)
+    in sources->size() >= 1 and sources->size() <= -1)
 
 inv std_from_enrollment_to_student: 
 	   self.individual->select(i | i.oclIsKindOf(_'Enrollment'))->forAll(m | 
-      let targets : Set(_'Student') = m._'std'->select(r | r.world = self)
-      in targets->size() >= 1 and targets->size() <= 1)
+    let targets : Set(_'Student') = m._'std'->select(r | r.world = self)
+    in targets->size() >= 1 and targets->size() <= 1)
 
 inv std_from_student_to_enrollment: 
 	   self.individual->select(i | i.oclIsKindOf(_'Student'))->forAll(m | 
-      let sources : Set(_'Enrollment') = m._'std'->select(r | r.world = self)
-      in sources->size() >= 1 and sources->size() <= -1)
+    let sources : Set(_'Enrollment') = m._'std'->select(r | r.world = self)
+    in sources->size() >= 1 and sources->size() <= -1)
 
 inv datatype_from_enrollment_to_integer: 
 	   self.individual->select(i | i.oclIsKindOf(_'Enrollment'))->forAll(m | 
-      let targets : Set(_'Integer') = m._'datatype'->select(r | r.world = self)
-      in targets->size() >= 1 and targets->size() <= 1)
+    let targets : Set(_'Integer') = m._'datatype'->select(r | r.world = self)
+    in targets->size() >= 1 and targets->size() <= 1)
 
 inv datatype_from_integer_to_enrollment: 
 	   self.individual->select(i | i.oclIsKindOf(_'Integer'))->forAll(m | 
-      let sources : Set(_'Enrollment') = m._'datatype'->select(r | r.world = self)
-      in sources->size() >= 0 and sources->size() <= -1)
+    let sources : Set(_'Enrollment') = m._'datatype'->select(r | r.world = self)
+    in sources->size() >= 0 and sources->size() <= -1)
 
 endpackage
