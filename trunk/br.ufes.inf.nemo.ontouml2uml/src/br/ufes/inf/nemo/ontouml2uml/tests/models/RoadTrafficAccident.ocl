@@ -81,62 +81,62 @@ context World
 
 inv involves_from_roadtrafficaccident_to_crashedvehicle: 
 	   self.individual->select(i | i.oclIsKindOf(_'RoadTrafficAccident'))->forAll(m | 
-      let targets : Set(_'CrashedVehicle') = m._'involves'->select(r | r.world = self)
-      in targets->size() >= 1)
+    let targets : Set(_'CrashedVehicle') = m._'involves'->select(r | r.world = self)
+    in targets->size() >= 1)
 
 inv involves_from_crashedvehicle_to_roadtrafficaccident: 
 	   self.individual->select(i | i.oclIsKindOf(_'CrashedVehicle'))->forAll(m | 
-      let sources : Set(_'RoadTrafficAccident') = m._'involves'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'RoadTrafficAccident') = m._'involves'->select(r | r.world = self)
+    in sources->size() >= 1)
 
 inv has_from_roadtrafficaccident_to_victim: 
 	   self.individual->select(i | i.oclIsKindOf(_'RoadTrafficAccident'))->forAll(m | 
-      let targets : Set(_'Victim') = m._'has'->select(r | r.world = self)
-      in targets->size() >= 1)
+    let targets : Set(_'Victim') = m._'has'->select(r | r.world = self)
+    in targets->size() >= 1)
 
 inv has_from_victim_to_roadtrafficaccident: 
 	   self.individual->select(i | i.oclIsKindOf(_'Victim'))->forAll(m | 
-      let sources : Set(_'RoadTrafficAccident') = m._'has'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'RoadTrafficAccident') = m._'has'->select(r | r.world = self)
+    in sources->size() >= 1)
 
 inv occurs on_from_roadtrafficaccident_to_roadwaywithaccident: 
 	   self.individual->select(i | i.oclIsKindOf(_'RoadTrafficAccident'))->forAll(m | 
-      let targets : Set(_'RoadwayWithAccident') = m._'occurs on'->select(r | r.world = self)
-      in targets->size() >= 1 and targets->size() <= 1)
+    let targets : Set(_'RoadwayWithAccident') = m._'occurs on'->select(r | r.world = self)
+    in targets->size() >= 1 and targets->size() <= 1)
 
 inv occurs on_from_roadwaywithaccident_to_roadtrafficaccident: 
 	   self.individual->select(i | i.oclIsKindOf(_'RoadwayWithAccident'))->forAll(m | 
-      let sources : Set(_'RoadTrafficAccident') = m._'occurs on'->select(r | r.world = self)
-      in sources->size() >= 1 and sources->size() <= -1)
+    let sources : Set(_'RoadTrafficAccident') = m._'occurs on'->select(r | r.world = self)
+    in sources->size() >= 1 and sources->size() <= -1)
 
 inv has_from_travel_to_traveler: 
 	   self.individual->select(i | i.oclIsKindOf(_'Travel'))->forAll(m | 
-      let targets : Set(_'Traveler') = m._'has'->select(r | r.world = self)
-      in targets->size() >= 1)
+    let targets : Set(_'Traveler') = m._'has'->select(r | r.world = self)
+    in targets->size() >= 1)
 
 inv has_from_traveler_to_travel: 
 	   self.individual->select(i | i.oclIsKindOf(_'Traveler'))->forAll(m | 
-      let sources : Set(_'Travel') = m._'has'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'Travel') = m._'has'->select(r | r.world = self)
+    in sources->size() >= 1)
 
 inv made by_from_travel_to_travelingvehicle: 
 	   self.individual->select(i | i.oclIsKindOf(_'Travel'))->forAll(m | 
-      let targets : Set(_'TravelingVehicle') = m._'made by'->select(r | r.world = self)
-      in targets->size() >= 1 and targets->size() <= 1)
+    let targets : Set(_'TravelingVehicle') = m._'made by'->select(r | r.world = self)
+    in targets->size() >= 1 and targets->size() <= 1)
 
 inv made by_from_travelingvehicle_to_travel: 
 	   self.individual->select(i | i.oclIsKindOf(_'TravelingVehicle'))->forAll(m | 
-      let sources : Set(_'Travel') = m._'made by'->select(r | r.world = self)
-      in sources->size() >= 1 and sources->size() <= 1)
+    let sources : Set(_'Travel') = m._'made by'->select(r | r.world = self)
+    in sources->size() >= 1 and sources->size() <= 1)
 
 inv crashes on_from_roadwaywithaccident_to_crashedvehicle: 
 	   self.individual->select(i | i.oclIsKindOf(_'RoadwayWithAccident'))->forAll(m | 
-      let targets : Set(_'CrashedVehicle') = m._'crashes on'->select(r | r.world = self)
-      in targets->size() >= 1)
+    let targets : Set(_'CrashedVehicle') = m._'crashes on'->select(r | r.world = self)
+    in targets->size() >= 1)
 
 inv crashes on_from_crashedvehicle_to_roadwaywithaccident: 
 	   self.individual->select(i | i.oclIsKindOf(_'CrashedVehicle'))->forAll(m | 
-      let sources : Set(_'RoadwayWithAccident') = m._'crashes on'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'RoadwayWithAccident') = m._'crashes on'->select(r | r.world = self)
+    in sources->size() >= 1)
 
 endpackage

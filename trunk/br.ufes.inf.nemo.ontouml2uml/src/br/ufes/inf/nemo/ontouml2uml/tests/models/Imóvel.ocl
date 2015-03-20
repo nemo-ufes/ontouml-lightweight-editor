@@ -79,224 +79,224 @@ self.existsIn(w)) then true else false endif
 
 context World
 
-inv descreve_from_imóvel edificado_to_planta do imóvel: 
-	   self.individual->select(i | i.oclIsKindOf(_'Imóvel Edificado'))->forAll(m | 
-      let targets : Set(_'Planta do Imóvel') = m._'descreve'->select(r | r.world = self)
-      in targets->size() >= 1)
-
-inv descreve_from_planta do imóvel_to_imóvel edificado: 
-	   self.individual->select(i | i.oclIsKindOf(_'Planta do Imóvel'))->forAll(m | 
-      let sources : Set(_'Imóvel Edificado') = m._'descreve'->select(r | r.world = self)
-      in sources->size() >= 1)
-
-inv possui_from_certidão de registro de imóvel_to_imóvel: 
-	   self.individual->select(i | i.oclIsKindOf(_'Certidão de Registro de Imóvel'))->forAll(m | 
-      let targets : Set(_'Imóvel') = m._'possui'->select(r | r.world = self)
-      in targets->size() >= 1 and targets->size() <= 1)
-
-inv possui_from_imóvel_to_certidão de registro de imóvel: 
-	   self.individual->select(i | i.oclIsKindOf(_'Imóvel'))->forAll(m | 
-      let sources : Set(_'Certidão de Registro de Imóvel') = m._'possui'->select(r | r.world = self)
-      in sources->size() >= 1 and sources->size() <= 1)
-
-inv faz_from_certidão de registro de imóvel_to_cartório: 
-	   self.individual->select(i | i.oclIsKindOf(_'Certidão de Registro de Imóvel'))->forAll(m | 
-      let targets : Set(_'Cartório') = m._'faz'->select(r | r.world = self)
-      in targets->size() >= 1 and targets->size() <= 1)
-
-inv faz_from_cartório_to_certidão de registro de imóvel: 
-	   self.individual->select(i | i.oclIsKindOf(_'Cartório'))->forAll(m | 
-      let sources : Set(_'Certidão de Registro de Imóvel') = m._'faz'->select(r | r.world = self)
-      in sources->size() >= 1 and sources->size() <= -1)
-
-inv / registrado em_from_imóvel_to_cartório: 
-	   self.individual->select(i | i.oclIsKindOf(_'Imóvel'))->forAll(m | 
-      let targets : Set(_'Cartório') = m._'/ registrado em'->select(r | r.world = self)
-      in targets->size() >= 1 and targets->size() <= 1)
-
-inv / registrado em_from_cartório_to_imóvel: 
-	   self.individual->select(i | i.oclIsKindOf(_'Cartório'))->forAll(m | 
-      let sources : Set(_'Imóvel') = m._'/ registrado em'->select(r | r.world = self)
-      in sources->size() >= 1 and sources->size() <= -1)
-
-inv / está dentro de_from_área_to_imóvel: 
-	   self.individual->select(i | i.oclIsKindOf(_'Área'))->forAll(m | 
-      let targets : Set(_'Imóvel') = m._'/ está dentro de'->select(r | r.world = self)
-      in targets->size() >= 0)
-
-inv / está dentro de_from_imóvel_to_área: 
-	   self.individual->select(i | i.oclIsKindOf(_'Imóvel'))->forAll(m | 
-      let sources : Set(_'Área') = m._'/ está dentro de'->select(r | r.world = self)
-      in sources->size() >= 0)
-
 inv contém_from_município_to_estado: 
 	   self.individual->select(i | i.oclIsKindOf(_'Município'))->forAll(m | 
-      let targets : Set(_'Estado') = m._'contém'->select(r | r.world = self)
-      in targets->size() >= 1 and targets->size() <= 1)
+    let targets : Set(_'Estado') = m._'contém'->select(r | r.world = self)
+    in targets->size() >= 1 and targets->size() <= 1)
 
 inv contém_from_estado_to_município: 
 	   self.individual->select(i | i.oclIsKindOf(_'Estado'))->forAll(m | 
-      let sources : Set(_'Município') = m._'contém'->select(r | r.world = self)
-      in sources->size() >= 1 and sources->size() <= -1)
+    let sources : Set(_'Município') = m._'contém'->select(r | r.world = self)
+    in sources->size() >= 1 and sources->size() <= -1)
 
 inv contém_from_estado_to_país: 
 	   self.individual->select(i | i.oclIsKindOf(_'Estado'))->forAll(m | 
-      let targets : Set(_'País') = m._'contém'->select(r | r.world = self)
-      in targets->size() >= 1 and targets->size() <= 1)
+    let targets : Set(_'País') = m._'contém'->select(r | r.world = self)
+    in targets->size() >= 1 and targets->size() <= 1)
 
 inv contém_from_país_to_estado: 
 	   self.individual->select(i | i.oclIsKindOf(_'País'))->forAll(m | 
-      let sources : Set(_'Estado') = m._'contém'->select(r | r.world = self)
-      in sources->size() >= 1 and sources->size() <= -1)
+    let sources : Set(_'Estado') = m._'contém'->select(r | r.world = self)
+    in sources->size() >= 1 and sources->size() <= -1)
 
 inv contém_from_município_to_distrito: 
 	   self.individual->select(i | i.oclIsKindOf(_'Município'))->forAll(m | 
-      let targets : Set(_'Distrito') = m._'contém'->select(r | r.world = self)
-      in targets->size() >= 0)
+    let targets : Set(_'Distrito') = m._'contém'->select(r | r.world = self)
+    in targets->size() >= 0)
 
 inv contém_from_distrito_to_município: 
 	   self.individual->select(i | i.oclIsKindOf(_'Distrito'))->forAll(m | 
-      let sources : Set(_'Município') = m._'contém'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'Município') = m._'contém'->select(r | r.world = self)
+    in sources->size() >= 1)
 
-inv relationship8_from_elemento linear_to_ponto linear: 
+inv relationship3_from_elemento linear_to_ponto linear: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Linear'))->forAll(m | 
-      let targets : Set(_'Ponto Linear') = m._'relationship8'->select(r | r.world = self)
-      in targets->size() >= 2)
+    let targets : Set(_'Ponto Linear') = m._'relationship3'->select(r | r.world = self)
+    in targets->size() >= 2)
 
-inv relationship8_from_ponto linear_to_elemento linear: 
+inv relationship3_from_ponto linear_to_elemento linear: 
 	   self.individual->select(i | i.oclIsKindOf(_'Ponto Linear'))->forAll(m | 
-      let sources : Set(_'Elemento Linear') = m._'relationship8'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'Elemento Linear') = m._'relationship3'->select(r | r.world = self)
+    in sources->size() >= 1)
 
 inv conectado a_from_ponto linear_to_ponto linear: 
 	   self.individual->select(i | i.oclIsKindOf(_'Ponto Linear'))->forAll(m | 
-      let targets : Set(_'Ponto Linear') = m._'conectado a'->select(r | r.world = self)
-      in targets->size() >= 1)
+    let targets : Set(_'Ponto Linear') = m._'conectado a'->select(r | r.world = self)
+    in targets->size() >= 1)
 
 inv conectado a_from_ponto linear_to_ponto linear: 
 	   self.individual->select(i | i.oclIsKindOf(_'Ponto Linear'))->forAll(m | 
-      let sources : Set(_'Ponto Linear') = m._'conectado a'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'Ponto Linear') = m._'conectado a'->select(r | r.world = self)
+    in sources->size() >= 1)
 
-inv relationship10_from_elemento espacial_to_ponto espacial: 
+inv relationship5_from_elemento espacial_to_ponto espacial: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Espacial'))->forAll(m | 
-      let targets : Set(_'Ponto Espacial') = m._'relationship10'->select(r | r.world = self)
-      in targets->size() >= 3)
+    let targets : Set(_'Ponto Espacial') = m._'relationship5'->select(r | r.world = self)
+    in targets->size() >= 3)
 
-inv relationship10_from_ponto espacial_to_elemento espacial: 
+inv relationship5_from_ponto espacial_to_elemento espacial: 
 	   self.individual->select(i | i.oclIsKindOf(_'Ponto Espacial'))->forAll(m | 
-      let sources : Set(_'Elemento Espacial') = m._'relationship10'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'Elemento Espacial') = m._'relationship5'->select(r | r.world = self)
+    in sources->size() >= 1)
 
 inv conectado a_from_ponto espacial_to_ponto espacial: 
 	   self.individual->select(i | i.oclIsKindOf(_'Ponto Espacial'))->forAll(m | 
-      let targets : Set(_'Ponto Espacial') = m._'conectado a'->select(r | r.world = self)
-      in targets->size() >= 1)
+    let targets : Set(_'Ponto Espacial') = m._'conectado a'->select(r | r.world = self)
+    in targets->size() >= 1)
 
 inv conectado a_from_ponto espacial_to_ponto espacial: 
 	   self.individual->select(i | i.oclIsKindOf(_'Ponto Espacial'))->forAll(m | 
-      let sources : Set(_'Ponto Espacial') = m._'conectado a'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'Ponto Espacial') = m._'conectado a'->select(r | r.world = self)
+    in sources->size() >= 1)
 
 inv possui interseção com_from_elemento espacial_to_elemento espacial: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Espacial'))->forAll(m | 
-      let targets : Set(_'Elemento Espacial') = m._'possui interseção com'->select(r | r.world = self)
-      in targets->size() >= 0)
+    let targets : Set(_'Elemento Espacial') = m._'possui interseção com'->select(r | r.world = self)
+    in targets->size() >= 0)
 
 inv possui interseção com_from_elemento espacial_to_elemento espacial: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Espacial'))->forAll(m | 
-      let sources : Set(_'Elemento Espacial') = m._'possui interseção com'->select(r | r.world = self)
-      in sources->size() >= 0)
+    let sources : Set(_'Elemento Espacial') = m._'possui interseção com'->select(r | r.world = self)
+    in sources->size() >= 0)
 
 inv contém_from_elemento espacial_to_elemento espacial: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Espacial'))->forAll(m | 
-      let targets : Set(_'Elemento Espacial') = m._'contém'->select(r | r.world = self)
-      in targets->size() >= 0)
+    let targets : Set(_'Elemento Espacial') = m._'contém'->select(r | r.world = self)
+    in targets->size() >= 0)
 
 inv contém_from_elemento espacial_to_elemento espacial: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Espacial'))->forAll(m | 
-      let sources : Set(_'Elemento Espacial') = m._'contém'->select(r | r.world = self)
-      in sources->size() >= 0)
+    let sources : Set(_'Elemento Espacial') = m._'contém'->select(r | r.world = self)
+    in sources->size() >= 0)
 
 inv cruza_from_elemento linear_to_elemento linear: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Linear'))->forAll(m | 
-      let targets : Set(_'Elemento Linear') = m._'cruza'->select(r | r.world = self)
-      in targets->size() >= 0)
+    let targets : Set(_'Elemento Linear') = m._'cruza'->select(r | r.world = self)
+    in targets->size() >= 0)
 
 inv cruza_from_elemento linear_to_elemento linear: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Linear'))->forAll(m | 
-      let sources : Set(_'Elemento Linear') = m._'cruza'->select(r | r.world = self)
-      in sources->size() >= 0)
+    let sources : Set(_'Elemento Linear') = m._'cruza'->select(r | r.world = self)
+    in sources->size() >= 0)
 
 inv passa por_from_elemento espacial_to_elemento linear: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Espacial'))->forAll(m | 
-      let targets : Set(_'Elemento Linear') = m._'passa por'->select(r | r.world = self)
-      in targets->size() >= 0)
+    let targets : Set(_'Elemento Linear') = m._'passa por'->select(r | r.world = self)
+    in targets->size() >= 0)
 
 inv passa por_from_elemento linear_to_elemento espacial: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Linear'))->forAll(m | 
-      let sources : Set(_'Elemento Espacial') = m._'passa por'->select(r | r.world = self)
-      in sources->size() >= 0)
+    let sources : Set(_'Elemento Espacial') = m._'passa por'->select(r | r.world = self)
+    in sources->size() >= 0)
 
 inv contém_from_elemento linear_to_elemento pontual: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Linear'))->forAll(m | 
-      let targets : Set(_'Elemento Pontual') = m._'contém'->select(r | r.world = self)
-      in targets->size() >= 0)
+    let targets : Set(_'Elemento Pontual') = m._'contém'->select(r | r.world = self)
+    in targets->size() >= 0)
 
 inv contém_from_elemento pontual_to_elemento linear: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Pontual'))->forAll(m | 
-      let sources : Set(_'Elemento Linear') = m._'contém'->select(r | r.world = self)
-      in sources->size() >= 0)
+    let sources : Set(_'Elemento Linear') = m._'contém'->select(r | r.world = self)
+    in sources->size() >= 0)
 
 inv contém_from_elemento espacial_to_elemento pontual: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Espacial'))->forAll(m | 
-      let targets : Set(_'Elemento Pontual') = m._'contém'->select(r | r.world = self)
-      in targets->size() >= 0)
+    let targets : Set(_'Elemento Pontual') = m._'contém'->select(r | r.world = self)
+    in targets->size() >= 0)
 
 inv contém_from_elemento pontual_to_elemento espacial: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Pontual'))->forAll(m | 
-      let sources : Set(_'Elemento Espacial') = m._'contém'->select(r | r.world = self)
-      in sources->size() >= 0)
+    let sources : Set(_'Elemento Espacial') = m._'contém'->select(r | r.world = self)
+    in sources->size() >= 0)
 
 inv subconjunto de_from_elemento linear_to_elemento linear: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Linear'))->forAll(m | 
-      let targets : Set(_'Elemento Linear') = m._'subconjunto de'->select(r | r.world = self)
-      in targets->size() >= 0)
+    let targets : Set(_'Elemento Linear') = m._'subconjunto de'->select(r | r.world = self)
+    in targets->size() >= 0)
 
 inv subconjunto de_from_elemento linear_to_elemento linear: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Linear'))->forAll(m | 
-      let sources : Set(_'Elemento Linear') = m._'subconjunto de'->select(r | r.world = self)
-      in sources->size() >= 0)
+    let sources : Set(_'Elemento Linear') = m._'subconjunto de'->select(r | r.world = self)
+    in sources->size() >= 0)
 
-inv relationship19_from_coordenada geográfica_to_elemento pontual: 
+inv relationship14_from_coordenada geográfica_to_elemento pontual: 
 	   self.individual->select(i | i.oclIsKindOf(_'Coordenada Geográfica'))->forAll(m | 
-      let targets : Set(_'Elemento Pontual') = m._'relationship19'->select(r | r.world = self)
-      in targets->size() >= 0)
+    let targets : Set(_'Elemento Pontual') = m._'relationship14'->select(r | r.world = self)
+    in targets->size() >= 0)
 
-inv relationship19_from_elemento pontual_to_coordenada geográfica: 
+inv relationship14_from_elemento pontual_to_coordenada geográfica: 
 	   self.individual->select(i | i.oclIsKindOf(_'Elemento Pontual'))->forAll(m | 
-      let sources : Set(_'Coordenada Geográfica') = m._'relationship19'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'Coordenada Geográfica') = m._'relationship14'->select(r | r.world = self)
+    in sources->size() >= 1)
 
-inv relationship20_from_coordenada geográfica_to_ponto linear: 
+inv relationship15_from_coordenada geográfica_to_ponto linear: 
 	   self.individual->select(i | i.oclIsKindOf(_'Coordenada Geográfica'))->forAll(m | 
-      let targets : Set(_'Ponto Linear') = m._'relationship20'->select(r | r.world = self)
-      in targets->size() >= 0)
+    let targets : Set(_'Ponto Linear') = m._'relationship15'->select(r | r.world = self)
+    in targets->size() >= 0)
 
-inv relationship20_from_ponto linear_to_coordenada geográfica: 
+inv relationship15_from_ponto linear_to_coordenada geográfica: 
 	   self.individual->select(i | i.oclIsKindOf(_'Ponto Linear'))->forAll(m | 
-      let sources : Set(_'Coordenada Geográfica') = m._'relationship20'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'Coordenada Geográfica') = m._'relationship15'->select(r | r.world = self)
+    in sources->size() >= 1)
 
-inv relationship21_from_ponto espacial_to_coordenada geográfica: 
+inv relationship16_from_ponto espacial_to_coordenada geográfica: 
 	   self.individual->select(i | i.oclIsKindOf(_'Ponto Espacial'))->forAll(m | 
-      let targets : Set(_'Coordenada Geográfica') = m._'relationship21'->select(r | r.world = self)
-      in targets->size() >= 1 and targets->size() <= 1)
+    let targets : Set(_'Coordenada Geográfica') = m._'relationship16'->select(r | r.world = self)
+    in targets->size() >= 1 and targets->size() <= 1)
 
-inv relationship21_from_coordenada geográfica_to_ponto espacial: 
+inv relationship16_from_coordenada geográfica_to_ponto espacial: 
 	   self.individual->select(i | i.oclIsKindOf(_'Coordenada Geográfica'))->forAll(m | 
-      let sources : Set(_'Ponto Espacial') = m._'relationship21'->select(r | r.world = self)
-      in sources->size() >= 0 and sources->size() <= -1)
+    let sources : Set(_'Ponto Espacial') = m._'relationship16'->select(r | r.world = self)
+    in sources->size() >= 0 and sources->size() <= -1)
+
+inv descreve_from_imóvel edificado_to_planta do imóvel: 
+	   self.individual->select(i | i.oclIsKindOf(_'Imóvel Edificado'))->forAll(m | 
+    let targets : Set(_'Planta do Imóvel') = m._'descreve'->select(r | r.world = self)
+    in targets->size() >= 1)
+
+inv descreve_from_planta do imóvel_to_imóvel edificado: 
+	   self.individual->select(i | i.oclIsKindOf(_'Planta do Imóvel'))->forAll(m | 
+    let sources : Set(_'Imóvel Edificado') = m._'descreve'->select(r | r.world = self)
+    in sources->size() >= 1)
+
+inv possui_from_certidão de registro de imóvel_to_imóvel: 
+	   self.individual->select(i | i.oclIsKindOf(_'Certidão de Registro de Imóvel'))->forAll(m | 
+    let targets : Set(_'Imóvel') = m._'possui'->select(r | r.world = self)
+    in targets->size() >= 1 and targets->size() <= 1)
+
+inv possui_from_imóvel_to_certidão de registro de imóvel: 
+	   self.individual->select(i | i.oclIsKindOf(_'Imóvel'))->forAll(m | 
+    let sources : Set(_'Certidão de Registro de Imóvel') = m._'possui'->select(r | r.world = self)
+    in sources->size() >= 1 and sources->size() <= 1)
+
+inv faz_from_certidão de registro de imóvel_to_cartório: 
+	   self.individual->select(i | i.oclIsKindOf(_'Certidão de Registro de Imóvel'))->forAll(m | 
+    let targets : Set(_'Cartório') = m._'faz'->select(r | r.world = self)
+    in targets->size() >= 1 and targets->size() <= 1)
+
+inv faz_from_cartório_to_certidão de registro de imóvel: 
+	   self.individual->select(i | i.oclIsKindOf(_'Cartório'))->forAll(m | 
+    let sources : Set(_'Certidão de Registro de Imóvel') = m._'faz'->select(r | r.world = self)
+    in sources->size() >= 1 and sources->size() <= -1)
+
+inv / registrado em_from_imóvel_to_cartório: 
+	   self.individual->select(i | i.oclIsKindOf(_'Imóvel'))->forAll(m | 
+    let targets : Set(_'Cartório') = m._'/ registrado em'->select(r | r.world = self)
+    in targets->size() >= 1 and targets->size() <= 1)
+
+inv / registrado em_from_cartório_to_imóvel: 
+	   self.individual->select(i | i.oclIsKindOf(_'Cartório'))->forAll(m | 
+    let sources : Set(_'Imóvel') = m._'/ registrado em'->select(r | r.world = self)
+    in sources->size() >= 1 and sources->size() <= -1)
+
+inv / está dentro de_from_área_to_imóvel: 
+	   self.individual->select(i | i.oclIsKindOf(_'Área'))->forAll(m | 
+    let targets : Set(_'Imóvel') = m._'/ está dentro de'->select(r | r.world = self)
+    in targets->size() >= 0)
+
+inv / está dentro de_from_imóvel_to_área: 
+	   self.individual->select(i | i.oclIsKindOf(_'Imóvel'))->forAll(m | 
+    let sources : Set(_'Área') = m._'/ está dentro de'->select(r | r.world = self)
+    in sources->size() >= 0)
 
 endpackage

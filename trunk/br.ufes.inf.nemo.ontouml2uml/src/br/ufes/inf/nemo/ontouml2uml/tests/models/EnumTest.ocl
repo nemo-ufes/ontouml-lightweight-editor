@@ -81,12 +81,12 @@ context World
 
 inv ownership_from_person_to_vehicle: 
 	   self.individual->select(i | i.oclIsKindOf(_'Person'))->forAll(m | 
-      let targets : Set(_'Vehicle') = m._'ownership'->select(r | r.world = self)
-      in targets->size() >= 0)
+    let targets : Set(_'Vehicle') = m._'ownership'->select(r | r.world = self)
+    in targets->size() >= 0)
 
 inv ownership_from_vehicle_to_person: 
 	   self.individual->select(i | i.oclIsKindOf(_'Vehicle'))->forAll(m | 
-      let sources : Set(_'Person') = m._'ownership'->select(r | r.world = self)
-      in sources->size() >= 1)
+    let sources : Set(_'Person') = m._'ownership'->select(r | r.world = self)
+    in sources->size() >= 1)
 
 endpackage
