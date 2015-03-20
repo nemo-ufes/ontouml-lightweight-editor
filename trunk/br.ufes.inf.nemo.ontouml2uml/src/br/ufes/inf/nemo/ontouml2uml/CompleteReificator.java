@@ -36,10 +36,37 @@ public class CompleteReificator extends SimplifiedReificator {
 		textualConstraints += generateConstraintsForAttributesMultiplicity();
 		textualConstraints += generateConstraintsForAssociationsExistenceCycles();
 		textualConstraints += generateConstraintsForAttributesExistenceCycles();
+		textualConstraints += generateConstraintsForMediationsIimmutabiliity();
 		
 		outln("Complete reification executed successfully");
 	}
 	
+	public String generateConstraintsForMediationsIimmutabiliity()
+	{
+		String result = new String();
+		result += "--====================================="+"\n";
+		result += "--Set Default Type: Except Materials "+"\n";
+		result += "--======================================"+"\n\n";		
+		for(Association assoc: associations)
+		{			
+			if((getKey(assoc) instanceof RefOntoUML.MaterialAssociation)) continue;
+			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
+			
+			result += "context _'"+assoc.getName().replaceAll(" ", "")+"'\n\n";
+					    
+			Type src = assoc.getMemberEnds().get(0).getType();
+			Type tgt = assoc.getMemberEnds().get(1).getType();
+			String lowerSrcName = src.getName().toLowerCase().trim();
+			String lowerTgtName = tgt.getName().toLowerCase().trim();
+			
+			result += "inv immutable_"+lowerTgtName+": "+"\n";
+			result += "     _'"+assoc.getName().replaceAll(" ", "")+"'.allInstances()->forAll(m | m<>self and "+"\n";
+			result += "     m._'"+lowerSrcName+"' <> self._'"+lowerSrcName+"' implies m._'"+lowerTgtName+"' = self._'"+lowerTgtName+"')"+"\n\n";
+		}
+		
+		return result;
+	}
+	    
 	public String generateConstraintsForAssocationsMultiplicity()
 	{
 		String result = new String();
