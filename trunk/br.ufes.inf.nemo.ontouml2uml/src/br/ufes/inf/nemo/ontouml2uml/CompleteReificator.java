@@ -54,15 +54,20 @@ public class CompleteReificator extends SimplifiedReificator {
 		{			
 			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
 								    
-			Type src = assoc.getMemberEnds().get(0).getType();
-			Type tgt = assoc.getMemberEnds().get(1).getType();
-			String lowerSrcName = src.getName().toLowerCase().trim();
-			String lowerTgtName = tgt.getName().toLowerCase().trim();
+			Property srcEnd = assoc.getMemberEnds().get(0);
+			Property tgtEnd = assoc.getMemberEnds().get(1);
+			Type src = srcEnd.getType();
+			Type tgt = tgtEnd.getType();
+			String lowerSrcName = (srcEnd.getName()==null || srcEnd.getName().isEmpty()) ? src.getName().toLowerCase().trim() : srcEnd.getName();
+			String lowerTgtName = (tgtEnd.getName()==null || tgtEnd.getName().isEmpty()) ? tgt.getName().toLowerCase().trim() : tgtEnd.getName();
 			String lowerAssocName = (assoc.getName() ==null) ? "unnamed" : assoc.getName().toLowerCase().trim().replaceAll(" ", "");
+			
+			String lowerSrcNameX = deAccent(lowerSrcName.replaceAll(" ", "_"));
+			String lowerTgtNameX = deAccent(lowerTgtName.replaceAll(" ", "_"));
 			
 			if(assoc.getMemberEnds().get(1).isReadOnly()){
 				result += "context World"+"\n";
-				result += "inv immutable_"+lowerTgtName+": "+"\n";
+				result += "inv immutable_"+lowerTgtNameX+": "+"\n";
 				result += "    self.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->forAll(m |"+"\n"; 
 				result += "      self->asSet()->closure(next)->asSet()->forAll(n |"+ "\n"; 
 				result += "         m.oclAsType(_'"+src.getName()+"')._'"+lowerAssocName+"'->select(r | r.world = n)._'"+lowerTgtName+"' = "+"\n"; 
@@ -73,7 +78,7 @@ public class CompleteReificator extends SimplifiedReificator {
 			
 			if(assoc.getMemberEnds().get(0).isReadOnly()){
 				result += "context World"+"\n";
-				result += "inv immutable_"+lowerSrcName+": "+"\n";
+				result += "inv immutable_"+lowerSrcNameX+": "+"\n";
 				result += "    self.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->forAll(m |"+"\n"; 
 				result += "      self->asSet()->closure(next)->asSet()->forAll(n |"+ "\n"; 
 				result += "         m.oclAsType(_'"+tgt.getName()+"')._'"+lowerAssocName+"'->select(r | r.world = n)._'"+lowerSrcName+"' = "+"\n"; 
@@ -99,13 +104,19 @@ public class CompleteReificator extends SimplifiedReificator {
 			
 			result += "context World"+"\n";
 								    
-			Type src = assoc.getMemberEnds().get(0).getType();
-			Type tgt = assoc.getMemberEnds().get(1).getType();
-			String lowerSrcName = src.getName().toLowerCase().trim();
-			String lowerTgtName = tgt.getName().toLowerCase().trim();
+			Property srcEnd = assoc.getMemberEnds().get(0);
+			Property tgtEnd = assoc.getMemberEnds().get(1);
+			Type src = srcEnd.getType();
+			Type tgt = tgtEnd.getType();
+			String lowerSrcName = (srcEnd.getName()==null || srcEnd.getName().isEmpty()) ? src.getName().toLowerCase().trim() : srcEnd.getName();
+			String lowerTgtName = (tgtEnd.getName()==null || tgtEnd.getName().isEmpty()) ? tgt.getName().toLowerCase().trim() : tgtEnd.getName();
 			String lowerAssocName = (assoc.getName() ==null) ? "unnamed" : assoc.getName().toLowerCase().trim().replaceAll(" ", "");
-						
-			result += "inv no_duplicted_"+lowerAssocName+"between"+lowerSrcName+"_and_"+lowerTgtName+": "+"\n";
+
+			String lowerSrcNameX = deAccent(lowerSrcName.replaceAll(" ", "_"));
+			String lowerTgtNameX = deAccent(lowerTgtName.replaceAll(" ", "_"));
+			String lowerAssocNameX = deAccent(lowerAssocName.replaceAll(" ", "_").replaceAll("/", ""));
+			
+			result += "inv no_duplicted_"+lowerAssocNameX+"_between_"+lowerSrcNameX+"_and_"+lowerTgtNameX+": "+"\n";
 			result += "    not self._'"+lowerAssocName+"'->exists(m1, m2 |"+"\n";     
 			result += "    m1 <> m2 and m1._'"+lowerSrcName+"' = m2._'"+lowerSrcName+"' and m1._'"+lowerTgtName+"' = m2._'"+lowerTgtName+"')"+"\n\n";     			
 		}
@@ -127,16 +138,22 @@ public class CompleteReificator extends SimplifiedReificator {
 			int lowerSrc = assoc.getMemberEnds().get(0).getLower();
 			int upperSrc = assoc.getMemberEnds().get(0).getUpper();
 			int lowerTgt = assoc.getMemberEnds().get(1).getLower();
-			int upperTgt = assoc.getMemberEnds().get(1).getUpper();
-			Type src = assoc.getMemberEnds().get(0).getType();
-			Type tgt = assoc.getMemberEnds().get(1).getType();
-			String lowerSrcName = src.getName().toLowerCase().trim();
-			String lowerTgtName = tgt.getName().toLowerCase().trim();
+			int upperTgt = assoc.getMemberEnds().get(1).getUpper();			
+			Property srcEnd = assoc.getMemberEnds().get(0);
+			Property tgtEnd = assoc.getMemberEnds().get(1);
+			Type src = srcEnd.getType();
+			Type tgt = tgtEnd.getType();
+			String lowerSrcName = (srcEnd.getName()==null || srcEnd.getName().isEmpty()) ? src.getName().toLowerCase().trim() : srcEnd.getName();
+			String lowerTgtName = (tgtEnd.getName()==null || tgtEnd.getName().isEmpty()) ? tgt.getName().toLowerCase().trim() : tgtEnd.getName();			
 			String lowerAssocName = (assoc.getName() ==null) ? "unnamed" : assoc.getName().toLowerCase().trim().replaceAll(" ", "");			
+			
+			String lowerSrcNameX = deAccent(lowerSrcName.replaceAll(" ", "_"));
+			String lowerTgtNameX = deAccent(lowerTgtName.replaceAll(" ", "_"));
+			String lowerAssocNameX = deAccent(lowerAssocName.replaceAll(" ", "_").replaceAll("/", ""));
 			
 			//from src to tgt
 			result += "context World"+"\n";
-			result += "inv "+lowerAssocName+"_from_"+lowerSrcName+"_to_"+lowerTgtName+": "+"\n";
+			result += "inv "+lowerAssocNameX+"_from_"+lowerSrcNameX+"_to_"+lowerTgtNameX+": "+"\n";
 			result += "    self.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->forAll(m | "+"\n";
 			result += "    let list : Set(_'"+tgt.getName()+"') = m._'"+lowerAssocName+"'->select(r | r.world = self)"+"\n";
 			result += "    in list->size() >= "+lowerTgt;			
@@ -145,7 +162,7 @@ public class CompleteReificator extends SimplifiedReificator {
 						
 			//from tgt to src 
 			result += "context World"+"\n";
-			result += "inv "+lowerAssocName+"_from_"+lowerTgtName+"_to_"+lowerSrcName+": "+"\n";
+			result += "inv "+lowerAssocNameX+"_from_"+lowerTgtNameX+"_to_"+lowerSrcNameX+": "+"\n";
 			result += "    self.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->forAll(m | "+"\n";
 			result += "    let list : Set(_'"+src.getName()+"') = m._'"+lowerAssocName+"'->select(r | r.world = self)"+"\n";
 			result += "    in list->size() >= "+lowerSrc;			
@@ -167,32 +184,64 @@ public class CompleteReificator extends SimplifiedReificator {
 		{			
 			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
 			
-			Type src = assoc.getMemberEnds().get(0).getType();
-			Type tgt = assoc.getMemberEnds().get(1).getType();
-			String lowerSrcName = src.getName().toLowerCase().trim();
-			String lowerTgtName = tgt.getName().toLowerCase().trim();
+			Property srcEnd = assoc.getMemberEnds().get(0);
+			Property tgtEnd = assoc.getMemberEnds().get(1);
+			Type src = srcEnd.getType();
+			Type tgt = tgtEnd.getType();
+			String lowerSrcName = (srcEnd.getName()==null || srcEnd.getName().isEmpty()) ? src.getName().toLowerCase().trim() : srcEnd.getName();
+			String lowerTgtName = (tgtEnd.getName()==null || tgtEnd.getName().isEmpty()) ? tgt.getName().toLowerCase().trim() : tgtEnd.getName();
 			String lowerAssocName = (assoc.getName() ==null) ? "unnamed" : assoc.getName().toLowerCase().trim().replaceAll(" ", "");			
 			
 			//from src to tgt 
-			result += "context _'"+src.getName()+"'\n";			
-			result += "def: "+lowerTgtName+"(w: World) : Set(_'"+tgt.getName()+"') = \n";
-			result += "    self._'"+lowerAssocName+"'->select(m | m.world = w)->collect(_'"+lowerTgtName+"')->asSet()\n";		
+			result += "context _'"+src.getName()+"'::_'"+lowerTgtName+"'(w: World) : Set(_'"+tgt.getName()+"')\n";			
+			result += "body: self._'"+lowerAssocName+"'->select(m | m.world = w)->collect(_'"+lowerTgtName+"')->asSet()\n\n";		
 			
-			result += "def: "+lowerTgtName+"() : Set(_'"+tgt.getName()+"') = \n";
-			result += "    self._'"+lowerAssocName+"'->collect(_'"+lowerTgtName+"')->asSet()\n\n";
+			result += "context _'"+src.getName()+"'::_'"+lowerTgtName+"'() : Set(_'"+tgt.getName()+"') \n";
+			result += "body: self._'"+lowerAssocName+"'->collect(_'"+lowerTgtName+"')->asSet()\n\n";
 			
 			//from tgt to src 
-			result += "context _'"+tgt.getName()+"'\n";			
-			result += "def: "+lowerSrcName+"(w: World) : Set(_'"+src.getName()+"') = \n";
-			result += "    self._'"+lowerAssocName+"'->select(m | m.world = w)->collect(_'"+lowerSrcName+"')->asSet()\n";		
+			result += "context _'"+tgt.getName()+"'::_'"+lowerSrcName+"'(w: World) : Set(_'"+src.getName()+"') \n";			
+			result += "body: self._'"+lowerAssocName+"'->select(m | m.world = w)->collect(_'"+lowerSrcName+"')->asSet()\n\n";		
 			
-			result += "def: "+lowerSrcName+"() : Set(_'"+src.getName()+"') = \n";
-			result += "    self._'"+lowerAssocName+"'->collect(_'"+lowerSrcName+"')->asSet()\n\n";	
+			result += "context _'"+tgt.getName()+"'::_'"+lowerSrcName+"'() : Set(_'"+src.getName()+"') \n";
+			result += "body: self._'"+lowerAssocName+"'->collect(_'"+lowerSrcName+"')->asSet()\n\n";	
 		}
 		
 		return result;
 	}
+
+	
+	public String generateConstraintsForAssociationsExistenceCycles()
+	{
+		String result = new String();
+		result += "--====================================="+"\n";
+		result += "--Existence Cycles: Relationships"+"\n";
+		result += "--======================================"+"\n\n";		
+		for(Association assoc: associations)
+		{			
+			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
 			
+			result += "context _'"+assoc.getName().replaceAll(" ", "")+"'\n";
+			
+			Property srcEnd = assoc.getMemberEnds().get(0);
+			Property tgtEnd = assoc.getMemberEnds().get(1);
+			Type src = srcEnd.getType();
+			Type tgt = tgtEnd.getType();
+			String lowerSrcName = (srcEnd.getName()==null || srcEnd.getName().isEmpty()) ? src.getName().toLowerCase().trim() : srcEnd.getName();
+			String lowerTgtName = (tgtEnd.getName()==null || tgtEnd.getName().isEmpty()) ? tgt.getName().toLowerCase().trim() : tgtEnd.getName();
+			
+			//tgt 
+			result += "inv target_cycle: "+"\n";
+			result += "	   self.world.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->includes(self._'"+lowerTgtName+"')"+"\n";
+			
+			//src
+			result += "inv source_cycle: "+"\n";
+			result += "	   self.world.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->includes(self._'"+lowerSrcName+"')"+"\n\n";
+		}
+		
+		return result;
+	}
+	
 	public String generateConstraintsForAttributesMultiplicity()
 	{
 		String result = new String();
@@ -212,10 +261,13 @@ public class CompleteReificator extends SimplifiedReificator {
 			String lowerSrcName = src.getName().toLowerCase().trim();
 			String lowerTgtName = tgt.getName().toLowerCase().trim();
 			String lowerAttrName = "attribute"+i;
-			
+	
+			String lowerSrcNameX = deAccent(lowerSrcName.replaceAll(" ", "_"));
+			String lowerTgtNameX = deAccent(lowerTgtName.replaceAll(" ", "_"));
+						
 			//from src to tgt 
 			result += "context World"+"\n";
-			result += "inv "+lowerAttrName+"_from_"+lowerSrcName+"_to_"+lowerTgtName+": "+"\n";
+			result += "inv "+lowerAttrName+"_from_"+lowerSrcNameX+"_to_"+lowerTgtNameX+": "+"\n";
 			result += "    self.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->forAll(m | "+"\n";
 			result += "    let list : Set(_'"+tgt.getName()+"') = m._'"+lowerAttrName+"'->select(r | r.world = self)"+"\n";
 			result += "    in list->size() >= "+lowerTgt;			
@@ -242,48 +294,18 @@ public class CompleteReificator extends SimplifiedReificator {
 			
 
 			Type src = (Type)p.eContainer();
-			Type tgt = p.getType();			
+			Type tgt = p.getType();
 			String lowerTgtName = p.getName().toLowerCase().trim();
 			String lowerAttrName = "attribute"+i;
 			
 			//from src to tgt 
-			result += "context _'"+src.getName()+"'\n";			
-			result += "def: "+lowerTgtName+"(w: World) : Set(_'"+tgt.getName()+"') = \n";
-			result += "    self._'"+lowerAttrName+"'->select(m | m.world = w)->collect(_'"+lowerTgtName+"')->asSet()\n";		
-			
-			result += "def: "+lowerTgtName+"() : Set(_'"+tgt.getName()+"') = \n";
-			result += "    self._'"+lowerAttrName+"'->collect(_'"+lowerTgtName+"')->asSet()\n\n";
+			result += "context _'"+src.getName()+"'::_'"+lowerTgtName+"'(w: World) : Set(_'"+tgt.getName()+"') \n";			
+			result += "body: self._'"+lowerAttrName+"'->select(m | m.world = w)->collect(_'"+lowerTgtName+"')->asSet()\n\n";		
+						
+			result += "context _'"+src.getName()+"'::_'"+lowerTgtName+"'() : Set(_'"+tgt.getName()+"') \n";
+			result += "body: self._'"+lowerAttrName+"'->collect(_'"+lowerTgtName+"')->asSet()\n\n";
 			
 			i++;
-		}
-		
-		return result;
-	}
-	
-	public String generateConstraintsForAssociationsExistenceCycles()
-	{
-		String result = new String();
-		result += "--====================================="+"\n";
-		result += "--Existence Cycles: Relationships"+"\n";
-		result += "--======================================"+"\n\n";		
-		for(Association assoc: associations)
-		{			
-			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
-			
-			result += "context _'"+assoc.getName().replaceAll(" ", "")+"'\n";
-			
-			Type src = assoc.getMemberEnds().get(0).getType();
-			Type tgt = assoc.getMemberEnds().get(1).getType();
-			String lowerSrcName = src.getName().toLowerCase().trim();
-			String lowerTgtName = tgt.getName().toLowerCase().trim();
-			
-			//tgt 
-			result += "inv target_cycle: "+"\n";
-			result += "	   self.world.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->includes(self._'"+lowerTgtName+"')"+"\n";
-			
-			//src
-			result += "inv source_cycle: "+"\n";
-			result += "	   self.world.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->includes(self._'"+lowerSrcName+"')"+"\n\n";
 		}
 		
 		return result;
@@ -456,7 +478,7 @@ public class CompleteReificator extends SimplifiedReificator {
 		
 		boolean end2IsNavigable = true;
 		org.eclipse.uml2.uml.AggregationKind agg2 = org.eclipse.uml2.uml.AggregationKind.NONE_LITERAL;
-		String end2Name = property.getType().getName().toLowerCase().trim();
+		String end2Name = (property.getName()==null || property.getName().isEmpty()) ? property.getType().getName().toLowerCase().trim() : property.getName();
 		if (end2Name==null) end2Name = "";
 		int end2Lower = 1;
 		int end2Upper = 1;

@@ -1,9 +1,11 @@
 package br.ufes.inf.nemo.ontouml2uml;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -61,6 +63,12 @@ public class SimplifiedReificator extends Reificator {
         return null;
     }
 	
+	public String deAccent(String str) 
+	{
+	    String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD); 
+	    Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+	    return pattern.matcher(nfdNormalizedString).replaceAll("");
+	}
 	
 	public void run()
 	{
@@ -556,20 +564,21 @@ public class SimplifiedReificator extends Reificator {
 			EList<org.eclipse.uml2.uml.Type> typeParameters = new BasicEList<org.eclipse.uml2.uml.Type>();
 			typeParameters.add(umlWorld);			
 			Type owner = (Type)attr.eContainer();
-			Type type = attr.getType();			
-			if(attr.getName()!=null && !attr.getName().isEmpty() && owner != null)
+			Type type = attr.getType();
+			String attrName = (attr.getName()==null || attr.getName().isEmpty()) ? type.getName().toLowerCase().trim() : attr.getName();
+			if(owner != null)
 			{
 				if(owner instanceof org.eclipse.uml2.uml.Class)
-				{
+				{			
 					/** Temporal Navigation at a particular World */
 					org.eclipse.uml2.uml.Class class_ = (org.eclipse.uml2.uml.Class)owner;					
-					org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation(attr.getName(), parameters, typeParameters, type);
+					org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation(attrName, parameters, typeParameters, type);
 					op.setUpper(attr.getUpper());
 					op.setLower(attr.getLower());
 					outln(op);
 					
 					/** Temporal Navigation at all possible Worlds */
-					org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation(attr.getName(), null, null, type);
+					org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation(attrName, null, null, type);
 					if(attr.isReadOnly()){ 
 						op2.setLower(attr.getLower()); 
 						op2.setUpper(attr.getUpper()); 
@@ -589,13 +598,13 @@ public class SimplifiedReificator extends Reificator {
 				{
 					/** Temporal Navigation at a particular World */
 					org.eclipse.uml2.uml.DataType class_ = (org.eclipse.uml2.uml.DataType)owner;					
-					org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation(attr.getName(), parameters, typeParameters, type);
+					org.eclipse.uml2.uml.Operation op = class_.createOwnedOperation(attrName, parameters, typeParameters, type);
 					op.setUpper(attr.getUpper());
 					op.setLower(attr.getLower());
 					outln(op);
 
 					/** Temporal Navigation at all possible Worlds */
-					org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation(attr.getName(), null, null, type);
+					org.eclipse.uml2.uml.Operation op2 = class_.createOwnedOperation(attrName, null, null, type);
 					if(attr.isReadOnly()){ 
 						op2.setLower(attr.getLower()); 
 						op2.setUpper(attr.getUpper()); 
