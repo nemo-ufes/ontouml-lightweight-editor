@@ -36,44 +36,90 @@ public class CompleteReificator extends SimplifiedReificator {
 		textualConstraints += generateConstraintsForAttributesMultiplicity();
 		textualConstraints += generateConstraintsForAssociationsExistenceCycles();
 		textualConstraints += generateConstraintsForAttributesExistenceCycles();
-		textualConstraints += generateConstraintsForMediationsIimmutabiliity();
+		textualConstraints += generateConstraintsForImmutabiliity();
+		textualConstraints += generateConstraintsSetCollectionType();
+		textualConstraints += generateNavigationsImplForAssociations();
+		textualConstraints += generateNavigationsImplForAttributes();
 		
 		outln("Complete reification executed successfully");
 	}
 	
-	public String generateConstraintsForMediationsIimmutabiliity()
+	public String generateConstraintsForImmutabiliity()
 	{
 		String result = new String();
 		result += "--====================================="+"\n";
-		result += "--Set Default Type: Except Materials "+"\n";
+		result += "--Immutability (ReadOnly): Relationships"+"\n";
+		result += "--======================================"+"\n\n";		
+		for(Association assoc: associations)
+		{			
+			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
+								    
+			Type src = assoc.getMemberEnds().get(0).getType();
+			Type tgt = assoc.getMemberEnds().get(1).getType();
+			String lowerSrcName = src.getName().toLowerCase().trim();
+			String lowerTgtName = tgt.getName().toLowerCase().trim();
+			String lowerAssocName = (assoc.getName() ==null) ? "unnamed" : assoc.getName().toLowerCase().trim().replaceAll(" ", "");
+			
+			if(assoc.getMemberEnds().get(1).isReadOnly()){
+				result += "context World"+"\n";
+				result += "inv immutable_"+lowerTgtName+": "+"\n";
+				result += "    self.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->forAll(m |"+"\n"; 
+				result += "      self->asSet()->closure(next)->asSet()->forAll(n |"+ "\n"; 
+				result += "         m.oclAsType(_'"+src.getName()+"')._'"+lowerAssocName+"'->select(r | r.world = n)._'"+lowerTgtName+"' = "+"\n"; 
+				result += "         m.oclAsType(_'"+src.getName()+"')._'"+lowerAssocName+"'->select(r | r.world = self)._'"+lowerTgtName+"'"+"\n";
+			    result += "      )\n";
+			    result += "    )\n\n";
+			}
+			
+			if(assoc.getMemberEnds().get(0).isReadOnly()){
+				result += "context World"+"\n";
+				result += "inv immutable_"+lowerSrcName+": "+"\n";
+				result += "    self.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->forAll(m |"+"\n"; 
+				result += "      self->asSet()->closure(next)->asSet()->forAll(n |"+ "\n"; 
+				result += "         m.oclAsType(_'"+tgt.getName()+"')._'"+lowerAssocName+"'->select(r | r.world = n)._'"+lowerSrcName+"' = "+"\n"; 
+				result += "         m.oclAsType(_'"+tgt.getName()+"')._'"+lowerAssocName+"'->select(r | r.world = self)._'"+lowerSrcName+"'"+"\n";
+			    result += "      )\n";
+			    result += "    )\n\n";
+			}
+		}
+		
+		return result;
+	}
+	    
+	public String generateConstraintsSetCollectionType()
+	{
+		String result = new String();
+		result += "--====================================="+"\n";
+		result += "--Set Collection Type: Relationships "+"\n";
 		result += "--======================================"+"\n\n";		
 		for(Association assoc: associations)
 		{			
 			if((getKey(assoc) instanceof RefOntoUML.MaterialAssociation)) continue;
 			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
 			
-			result += "context _'"+assoc.getName().replaceAll(" ", "")+"'\n\n";
-					    
+			result += "context World"+"\n";
+								    
 			Type src = assoc.getMemberEnds().get(0).getType();
 			Type tgt = assoc.getMemberEnds().get(1).getType();
 			String lowerSrcName = src.getName().toLowerCase().trim();
 			String lowerTgtName = tgt.getName().toLowerCase().trim();
-			
-			result += "inv immutable_"+lowerTgtName+": "+"\n";
-			result += "     _'"+assoc.getName().replaceAll(" ", "")+"'.allInstances()->forAll(m | m<>self and "+"\n";
-			result += "     m._'"+lowerSrcName+"' <> self._'"+lowerSrcName+"' implies m._'"+lowerTgtName+"' = self._'"+lowerTgtName+"')"+"\n\n";
+			String lowerAssocName = (assoc.getName() ==null) ? "unnamed" : assoc.getName().toLowerCase().trim().replaceAll(" ", "");
+						
+			result += "inv no_duplicted_"+lowerAssocName+"between"+lowerSrcName+"_and_"+lowerTgtName+": "+"\n";
+			result += "    not self._'"+lowerAssocName+"'->exists(m1, m2 |"+"\n";     
+			result += "    m1 <> m2 and m1._'"+lowerSrcName+"' = m2._'"+lowerSrcName+"' and m1._'"+lowerTgtName+"' = m2._'"+lowerTgtName+"')"+"\n\n";     			
 		}
 		
 		return result;
-	}
-	    
+	}   
+
 	public String generateConstraintsForAssocationsMultiplicity()
 	{
 		String result = new String();
 		result += "--====================================="+"\n";
 		result += "--Multiplicity: Relationships"+"\n";
 		result += "--======================================"+"\n\n";	
-		result += "context World"+"\n\n";
+		
 		for(Association assoc: associations)
 		{			
 			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
@@ -88,17 +134,19 @@ public class CompleteReificator extends SimplifiedReificator {
 			String lowerTgtName = tgt.getName().toLowerCase().trim();
 			String lowerAssocName = (assoc.getName() ==null) ? "unnamed" : assoc.getName().toLowerCase().trim().replaceAll(" ", "");			
 			
-			//from src to tgt 
+			//from src to tgt
+			result += "context World"+"\n";
 			result += "inv "+lowerAssocName+"_from_"+lowerSrcName+"_to_"+lowerTgtName+": "+"\n";
-			result += "	   self.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->forAll(m | "+"\n";
+			result += "    self.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->forAll(m | "+"\n";
 			result += "    let list : Set(_'"+tgt.getName()+"') = m._'"+lowerAssocName+"'->select(r | r.world = self)"+"\n";
 			result += "    in list->size() >= "+lowerTgt;			
 			if(upperTgt >0) result += " and list->size() <= "+upperTgt;
 			result += ")\n\n";	
 						
 			//from tgt to src 
+			result += "context World"+"\n";
 			result += "inv "+lowerAssocName+"_from_"+lowerTgtName+"_to_"+lowerSrcName+": "+"\n";
-			result += "	   self.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->forAll(m | "+"\n";
+			result += "    self.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->forAll(m | "+"\n";
 			result += "    let list : Set(_'"+src.getName()+"') = m._'"+lowerAssocName+"'->select(r | r.world = self)"+"\n";
 			result += "    in list->size() >= "+lowerSrc;			
 			if(upperTgt >0) result += " and list->size() <= "+upperSrc;
@@ -108,13 +156,50 @@ public class CompleteReificator extends SimplifiedReificator {
 		return result;
 	}
 	
+	public String generateNavigationsImplForAssociations()
+	{
+		String result = new String();
+		result += "--====================================="+"\n";
+		result += "--Navigations: Relationships"+"\n";
+		result += "--======================================"+"\n\n";	
+		
+		for(Association assoc: associations)
+		{			
+			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
+			
+			Type src = assoc.getMemberEnds().get(0).getType();
+			Type tgt = assoc.getMemberEnds().get(1).getType();
+			String lowerSrcName = src.getName().toLowerCase().trim();
+			String lowerTgtName = tgt.getName().toLowerCase().trim();
+			String lowerAssocName = (assoc.getName() ==null) ? "unnamed" : assoc.getName().toLowerCase().trim().replaceAll(" ", "");			
+			
+			//from src to tgt 
+			result += "context _'"+src.getName()+"'\n";			
+			result += "def: "+lowerTgtName+"(w: World) : Set(_'"+tgt.getName()+"') = \n";
+			result += "    self._'"+lowerAssocName+"'->select(m | m.world = w)->collect(_'"+lowerTgtName+"')->asSet()\n";		
+			
+			result += "def: "+lowerTgtName+"() : Set(_'"+tgt.getName()+"') = \n";
+			result += "    self._'"+lowerAssocName+"'->collect(_'"+lowerTgtName+"')->asSet()\n\n";
+			
+			//from tgt to src 
+			result += "context _'"+tgt.getName()+"'\n";			
+			result += "def: "+lowerSrcName+"(w: World) : Set(_'"+src.getName()+"') = \n";
+			result += "    self._'"+lowerAssocName+"'->select(m | m.world = w)->collect(_'"+lowerSrcName+"')->asSet()\n";		
+			
+			result += "def: "+lowerSrcName+"() : Set(_'"+src.getName()+"') = \n";
+			result += "    self._'"+lowerAssocName+"'->collect(_'"+lowerSrcName+"')->asSet()\n\n";	
+		}
+		
+		return result;
+	}
+			
 	public String generateConstraintsForAttributesMultiplicity()
 	{
 		String result = new String();
 		result += "--====================================="+"\n";
 		result += "--Multiplicity: Attributes"+"\n";
 		result += "--======================================"+"\n\n";	
-		result += "context World"+"\n\n";
+		
 		int i=0;
 		for(Property p: attributes)
 		{			
@@ -129,12 +214,45 @@ public class CompleteReificator extends SimplifiedReificator {
 			String lowerAttrName = "attribute"+i;
 			
 			//from src to tgt 
+			result += "context World"+"\n";
 			result += "inv "+lowerAttrName+"_from_"+lowerSrcName+"_to_"+lowerTgtName+": "+"\n";
-			result += "	   self.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->forAll(m | "+"\n";
+			result += "    self.individual->select(i | i.oclIsKindOf(_'"+src.getName()+"'))->forAll(m | "+"\n";
 			result += "    let list : Set(_'"+tgt.getName()+"') = m._'"+lowerAttrName+"'->select(r | r.world = self)"+"\n";
 			result += "    in list->size() >= "+lowerTgt;			
 			if(upperTgt >0) result += " and list->size() <= "+upperTgt;
 			result += ")\n\n";
+			
+			i++;
+		}
+		
+		return result;
+	}
+	
+	public String generateNavigationsImplForAttributes()
+	{
+		String result = new String();
+		result += "--====================================="+"\n";
+		result += "--Navigations: Attributes"+"\n";
+		result += "--======================================"+"\n\n";	
+		
+		int i=0;
+		for(Property p: attributes)
+		{			
+			if(p.getAssociation()!=null) continue;
+			
+
+			Type src = (Type)p.eContainer();
+			Type tgt = p.getType();			
+			String lowerTgtName = p.getName().toLowerCase().trim();
+			String lowerAttrName = "attribute"+i;
+			
+			//from src to tgt 
+			result += "context _'"+src.getName()+"'\n";			
+			result += "def: "+lowerTgtName+"(w: World) : Set(_'"+tgt.getName()+"') = \n";
+			result += "    self._'"+lowerAttrName+"'->select(m | m.world = w)->collect(_'"+lowerTgtName+"')->asSet()\n";		
+			
+			result += "def: "+lowerTgtName+"() : Set(_'"+tgt.getName()+"') = \n";
+			result += "    self._'"+lowerAttrName+"'->collect(_'"+lowerTgtName+"')->asSet()\n\n";
 			
 			i++;
 		}
@@ -152,7 +270,7 @@ public class CompleteReificator extends SimplifiedReificator {
 		{			
 			if((getKey(assoc) instanceof RefOntoUML.Derivation)) continue;
 			
-			result += "context _'"+assoc.getName().replaceAll(" ", "")+"'\n\n";
+			result += "context _'"+assoc.getName().replaceAll(" ", "")+"'\n";
 			
 			Type src = assoc.getMemberEnds().get(0).getType();
 			Type tgt = assoc.getMemberEnds().get(1).getType();
@@ -161,7 +279,7 @@ public class CompleteReificator extends SimplifiedReificator {
 			
 			//tgt 
 			result += "inv target_cycle: "+"\n";
-			result += "	   self.world.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->includes(self._'"+lowerTgtName+"')"+"\n\n";
+			result += "	   self.world.individual->select(i | i.oclIsKindOf(_'"+tgt.getName()+"'))->includes(self._'"+lowerTgtName+"')"+"\n";
 			
 			//src
 			result += "inv source_cycle: "+"\n";
@@ -183,7 +301,7 @@ public class CompleteReificator extends SimplifiedReificator {
 		{			
 			if(attr.getAssociation()!=null) continue;
 			
-			result += "context attribute"+i+"\n\n";
+			result += "context attribute"+i+"\n";
 						
 			Type src = (Type)attr.eContainer();			
 			String lowerSrcName = src.getName().toLowerCase().trim();
