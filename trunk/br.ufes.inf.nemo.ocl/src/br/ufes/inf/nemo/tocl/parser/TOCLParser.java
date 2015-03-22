@@ -48,7 +48,7 @@ public class TOCLParser extends OCLParser{
     {	
     	super(refparser,tempDirPath,backgroundModelName);
     	
-    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,false);
+    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
     	tmap = OntoUML2UML.getTemporalMap();
         
         //re-configuration
@@ -72,7 +72,7 @@ public class TOCLParser extends OCLParser{
     {	
 		super(rootPackage,tempDirPath,backgroundModelName);
 
-		umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,false);
+		umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
    		tmap = OntoUML2UML.getTemporalMap();
       	
         //re-configuration
@@ -95,7 +95,7 @@ public class TOCLParser extends OCLParser{
     	
     	this.refparser = new OntoUMLParser(refAbsolutePath);
 
-    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,false);
+    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
    		tmap = OntoUML2UML.getTemporalMap();
       	
         //re-configuration
@@ -106,7 +106,28 @@ public class TOCLParser extends OCLParser{
 		myOCL.setParseTracingEnabled(true);			                
 		umlreflection = umlenv.getUMLReflection();
 	}
-        
+      
+    /**
+     * Constructor.
+     * It uses a OntoUML2UML transformation behind the scenes to orchestrate the constraints parsing.
+     * 
+      */
+    public TOCLParser (String refAbsolutePath, String tempDirPath, String backgroundModelName) throws IOException,ParserException,Exception
+	{ 	
+    	super(refAbsolutePath,tempDirPath,backgroundModelName);
+    	
+    	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
+   		tmap = OntoUML2UML.getTemporalMap();
+      	
+        //re-configuration
+      	org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());		
+		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
+		umlenv = envFactory.createEnvironment();		
+		myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
+		myOCL.setParseTracingEnabled(true);			                
+		umlreflection = umlenv.getUMLReflection();
+	}
+    
     /** Get the OntoUML element related to the UML one. */
     @Override
     public RefOntoUML.Element getOntoUMLElement(org.eclipse.uml2.uml.Element value) 
@@ -558,12 +579,17 @@ public class TOCLParser extends OCLParser{
     		
     		if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("temp")){
     			
-    			// "temp" takes place to "inv"...
-    			// ==============================
     			String left = result.substring(0,indexBegin+(jump));
-    			String middle = result.substring(indexBegin+(jump),indexEnd+(jump)).replaceFirst("temp","inv");
+    			String middle = result.substring(indexBegin+(jump),indexEnd+(jump));
         		String right = result.substring(indexEnd+(jump), result.length());
-        		jump  = jump -1;
+
+        		System.out.println("Left = \n"+left);
+        		System.out.println("Middle = \n"+middle);
+        		System.out.println("Right = \n"+right);
+        		
+    			// "temp" takes place to "inv"
+        		middle = middle.replaceFirst("temp","inv");        		
+        		jump  = jump -1;        		
         		constraintStereotypeList.add("temp");
         		
         		// endName/attrName takes place to endName()/attrName()...
@@ -590,16 +616,18 @@ public class TOCLParser extends OCLParser{
     		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("inv")){
     			
     			constraintStereotypeList.add("inv");
-    			String rightExpression = result.substring(indexEnd+(jump), result.length());
-    			String oclExpression = new String();
+    			String rightExpression = result.substring(indexEnd+(jump), result.length());    			
     			if(rightExpression.indexOf(":")!=-1) 
     			{
+    				String oclExpression = new String();
     				if(rightExpression.indexOf("context")!=-1) oclExpression = rightExpression.substring(0,rightExpression.indexOf("context"));	
-    				else oclExpression = rightExpression.substring(0,rightExpression.indexOf(":"));    				
+    				else oclExpression = rightExpression.substring(0,rightExpression.indexOf(":"));
+    				checkInvalidOclExpression(oclExpression);
     			}else {
+    				String oclExpression = new String();
     				oclExpression = rightExpression.substring(0,rightExpression.length());
-    			}    			
-    			checkInvalidOclExpression(oclExpression);
+    				checkInvalidOclExpression(oclExpression);
+    			}   			
     			
     		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("derive")){
     			
