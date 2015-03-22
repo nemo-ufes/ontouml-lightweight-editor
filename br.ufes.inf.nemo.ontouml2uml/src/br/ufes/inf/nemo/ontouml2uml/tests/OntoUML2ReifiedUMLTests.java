@@ -28,7 +28,7 @@ public class OntoUML2ReifiedUMLTests {
 //			OntoUML2UML.convertToTemporalUML(new OntoUMLParser(path4),path4.replace(".refontouml", ".uml" ), new OntoUML2UMLOption(true,true), false);
 //			System.out.println(OntoUML2UML.getLog());
 			
-			String path5 = "src/br/ufes/inf/nemo/ontouml2uml/tests/models/Marriage.refontouml";
+			String path5 = "src/br/ufes/inf/nemo/ontouml2uml/tests/models/RunningExample.refontouml";
 			OntoUML2UML.convertToTemporalUML(new OntoUMLParser(path5),path5.replace(".refontouml", ".uml" ), new OntoUML2UMLOption(true,true), false);
 			System.out.println(OntoUML2UML.getLog());
 			

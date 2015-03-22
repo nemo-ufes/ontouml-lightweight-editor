@@ -158,16 +158,20 @@ public class SimplifiedReificator extends Reificator {
 		"context Path"+"\n"+
 		"inv one_terminal_world: self.world->one(w | w.next->isEmpty())"+"\n"+"\n"+
 		
+		"context Path"+"\n"+
 		"inv one_initial_world: self.world->one(w | w.previous.oclIsUndefined())"+"\n"+"\n"+
 		
+		"context Path"+"\n"+
 		"inv no_two_paths_with_same_end: Path.allInstances()->forAll(p | p<>self implies"+"\n"+
 		    "p.world->select(w |w.next->isEmpty()) <> "+"\n"+
 		    "self.world->select(w |w.next->isEmpty()))"+"\n"+"\n"+
 		    
+		"context Path"+"\n"+
 		"inv worlds_of_a_path_derived: "+"\n"+
 		    "let t: Set(World) = self.world->select(w| w.next->isEmpty())"+"\n"+ 
 		    "in (self.world-t) = t->closure(previous)"+"\n"+"\n"+
 		    
+		"context Path"+"\n"+
 		"inv every_end_in_one_path: "+"\n"+
 		    "let ts: Set(World) = World.allInstances()->select(w |w.next->isEmpty())"+"\n"+ 
 		    "in ts->forAll(t | Path.allInstances()->one(p | p.world->includes(t)))"+"\n"+"\n";
