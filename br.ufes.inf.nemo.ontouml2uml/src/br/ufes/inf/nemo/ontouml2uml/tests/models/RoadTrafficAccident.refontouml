@@ -70,8 +70,7 @@
       </ownedEnd>
     </packagedElement>
     <packagedElement xsi:type="RefOntoUML:Mediation" xmi:id="__LBrqYwNEeKPdczpgu0ozg" name="occurs on" visibility="public" memberEnd="__LBrrYwNEeKPdczpgu0ozg __LBrqowNEeKPdczpgu0ozg">
-      <ownedEnd xmi:id="__LBrqowNEeKPdczpgu0ozg" visibility="public" type="__LBEn4wNEeKPdczpgu0ozg" isReadOnly="true" association="__LBrqYwNEeKPdczpgu0ozg">
-        <name xsi:nil="true"/>
+      <ownedEnd xmi:id="__LBrqowNEeKPdczpgu0ozg" name="" visibility="public" type="__LBEn4wNEeKPdczpgu0ozg" isReadOnly="true" association="__LBrqYwNEeKPdczpgu0ozg">
         <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" xmi:id="__LBrq4wNEeKPdczpgu0ozg" value="1"/>
         <lowerValue xsi:type="RefOntoUML:LiteralInteger" xmi:id="__LBrrIwNEeKPdczpgu0ozg" value="1"/>
       </ownedEnd>
