@@ -1,7 +1,3 @@
-import 'RunningExample-b.uml'
-
-package _'Model'
-
 --Child
 context Person
 temp initial_transition: World.allInstances()->forAll(w | 
@@ -30,6 +26,10 @@ context Adult
 temp transition: World.allInstances()->forAll(w | self.oclBecomes(Adult, w)
      implies w.allNext()->forAll(n | self.existsIn(n) implies
      self.oclIsKindOf(Adult, n) or self.oclIsKindOf(Elder, n)))
+
+-- Historical "descendantOf"
+context Person::descendantOf : Person
+temp: { children: Person[0..*], parents: Person[0..2] }
 
 -- Transient Person
 context Person
@@ -63,4 +63,3 @@ temp past_spec: World.allInstances()->forAll(w | self.oclIsKindOf(ExHusband, w)
      implies w.allPrevious()->exists(p | self.oclIsKindOf(Husband, p) and not
      self.oclAsType(Husband, p).marriage(p).existsIn(w)))  
 
-endpackage

@@ -425,7 +425,7 @@ public class TOCLParser extends OCLParser{
     			typeVar = parameters;
     			worldVar = "";
     		}    		
-    		if(isInvalidTypeVariable(typeVar)) throw new ParserException ("Unrecognized Variable: ("+typeVar+")");
+    		
     		
     		//System.out.println("Parameters: "+parameters +", Type: "+typeVar+", World: "+worldVar);
     		
@@ -476,7 +476,7 @@ public class TOCLParser extends OCLParser{
     			typeVar = parameters;
     			worldVar = "";
     		}
-    		if(isInvalidTypeVariable(typeVar)) throw new ParserException ("Unrecognized Variable: ("+typeVar+")");
+    		checkInvalidType(typeVar);
     		
     		//System.out.println("Parameters: "+parameters +", Type: "+typeVar+", World: "+worldVar);
     		
@@ -506,17 +506,17 @@ public class TOCLParser extends OCLParser{
         return count;
     }
     
-    public Boolean isInvalidTypeVariable(String variable)
+    public void checkInvalidType(String typeName) throws ParserException
     {    	
     	for(RefOntoUML.Element elem: umap.keySet()){
     		if(elem instanceof RefOntoUML.NamedElement){
     			RefOntoUML.NamedElement namedElem = (RefOntoUML.NamedElement)elem;
-    			if(namedElem.getName().equals(variable)) return false;
+    			if(namedElem.getName().equals(typeName)) return;
     		}
     	}
-    	return true;
+    	throw new ParserException ("Unrecognized Variable: ("+typeName+")");    	
     }
-       
+    
     /** Check if a world parameter is missing */
     public void checkInvalidOperations(String result) throws ParserException
     {
@@ -564,10 +564,75 @@ public class TOCLParser extends OCLParser{
     	return map;
     }
     
+    public void checkInvalidHistoricalContext(String context)
+    {
+    	Pattern p = Pattern.compile("(\\w*)(\\s*)::(\\s*)(\\w*)(\\s*):(\\s*)(\\w*)");
+		Matcher m = p.matcher(context);		
+		if(!m.matches()) {
+			new ParserException("Wrong historical relationship context: \""+context+"\"\n"+
+			"The declaration should be in the form: \"Src-Class-Name :: Relationship-Name :: Tgt-Class-Name\"");
+		}    	
+    }
+    
+    public void checkInvalidHistoricalDeclaration(String declaration)
+    {
+    	Pattern p = Pattern.compile("(\\s*\\w*\\s*):(\\s*\\w*\\s*)[(\\w*)](\\s*),(\\s*\\w*\\s*):(\\s*\\w*\\s*)[(\\w*)](\\s*)");
+		Matcher m = p.matcher(declaration);		
+		if(!m.matches()) {
+			new ParserException("Wrong historical relationship declaration: \""+declaration+"\"\n"+
+			"The declaration should be in the form: \"Src-End-Name: Src-Class-Name[Src-End-Mult], Tgt-End-Name: Tgt-Class-Name[Tgt-End-Mult]\"");
+		}    	
+    }
+    
+    public void processHistoricalRelationship(String context, String declaration) throws ParserException
+    {
+    	context = context.replace("context", "");
+    	declaration = declaration.replace("{", "");
+    	declaration = declaration.replace("}", "");
+    	
+    	checkInvalidHistoricalContext(context);
+    	checkInvalidHistoricalDeclaration(declaration);
+    	
+    	String[] array = context.trim().split("::");
+    	String[] array2 = array[1].trim().split(":");
+    	    	
+    	String sorceName = array[0].trim();
+    	checkInvalidType(sorceName);
+    	String relName = array2[0].trim();
+    	String targetName = array2[1].trim();
+    	checkInvalidType(targetName);
+    	
+    	System.out.println("<"+sorceName+">");
+    	System.out.println("<"+relName+">");
+    	System.out.println("<"+targetName+">");
+    	
+    	String[] declArray = declaration.trim().split(",");
+    	String[] leftDecl = declArray[0].trim().split(":");
+    	String[] rightDecl = declArray[1].trim().split(":");
+    	
+    	String srcEndName = leftDecl[0].trim();
+    	String tgtEndName = rightDecl[0].trim();
+    	
+    	String[] array3 = leftDecl[1].trim().split("\\[");
+    	String[] array4 = rightDecl[1].trim().split("\\[");
+    	
+    	String srcType = array3[0].trim();
+    	String srcMult = array3[1].trim().split("\\]")[0].trim();
+    	System.out.println("<"+srcEndName+">");
+    	System.out.println("<"+srcType+">");
+    	System.out.println("<"+srcMult+">");
+    	
+    	String tgtType = array4[0].trim();
+    	String tgtMult = array4[1].trim().split("\\]")[0].trim();
+    	System.out.println("<"+tgtEndName+">");
+    	System.out.println("<"+tgtType+">");
+    	System.out.println("<"+tgtMult+">");    	
+    }    
+    
     /** Process keyword "temp" */
     public String processTempKeyword(String result) throws ParserException
     {
-    	Pattern p = Pattern.compile("\\W(temp|inv|derive)\\W*(\\s*\\w*\\s*):");
+    	Pattern p = Pattern.compile("(temp|inv|derive)(\\s*\\w*\\s*):");
 		Matcher m = p.matcher(result);
 		int jump = 0;
     	while (m.find()) 
@@ -577,71 +642,74 @@ public class TOCLParser extends OCLParser{
     		if(indexBegin+(jump) < 0) indexBegin = 0;
     		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
     		
-    		if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("temp")){
+    		String left = result.substring(0,indexBegin+(jump));
+			String keywordDeclaration = result.substring(indexBegin+(jump),indexEnd+(jump));
+    		String right = result.substring(indexEnd+(jump), result.length());
+    		
+    		if (keywordDeclaration.contains("temp")){
     			
-    			String left = result.substring(0,indexBegin+(jump));
-    			String middle = result.substring(indexBegin+(jump),indexEnd+(jump));
-        		String right = result.substring(indexEnd+(jump), result.length());
-
-        		System.out.println("Left = \n"+left);
-        		System.out.println("Middle = \n"+middle);
-        		System.out.println("Right = \n"+right);
+    			/** get the ocl expression as string */
+    			String oclExpr = new String();
+        		String remainingExpr = new String();
+        		if(right.indexOf(":")!=-1) // has next constraint
+    			{    				
+    				if(right.indexOf("context")!=-1) {
+    					oclExpr = right.substring(0,right.indexOf("context"));
+    					remainingExpr = right.substring(right.indexOf("context"),right.length());
+    				}else{
+    					oclExpr = right.substring(0,right.indexOf(":"));
+    					remainingExpr = right.substring(right.indexOf(":"),right.length());
+    				}    				
+    			}else { //this is the last constraint...        				
+    				oclExpr = right.substring(0, right.length());
+    			}            		
         		
-    			// "temp" takes place to "inv"
-        		middle = middle.replaceFirst("temp","inv");        		
-        		jump  = jump -1;        		
-        		constraintStereotypeList.add("temp");
-        		
-        		// endName/attrName takes place to endName()/attrName()...
-    			// =======================================================
-        		String oclExpression = new String();
-        		String therest = new String();
-        		if(right.indexOf(":")!=-1){
-        			oclExpression = right.substring(0,right.indexOf(":"));
-        			therest = right.substring(right.indexOf(":"),right.length());
+        		if(oclExpr.contains("{") || oclExpr.contains("}")) 
+        		{        			
+        			String context = left.substring(left.lastIndexOf("context"), left.length());
+        			
+        			/** historical relationship */
+        			processHistoricalRelationship(context, oclExpr);
+        			
+        			result = left.substring(0,left.lastIndexOf("context"))+right.substring(right.indexOf("}")+1);
+        			
         		}else{
-        			oclExpression = right.substring(0,right.length());
-        		}
-        		        		
-        		checkInvalidOperations(oclExpression);        		
-        		
-        		HashMap<String,Integer>map = processTemporalNavigations(oclExpression);
-	        	for(String key: map.keySet()){	        		
-	        		oclExpression = key;
-		            jump = jump + map.get(key);		            	        
-	        	}
-	        	
-        		result = left+middle+(oclExpression+therest);        		        		
-        		
-    		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("inv")){
+
+        			constraintStereotypeList.add("temp");
+        			
+        			/** process keyword declaration */
+            		keywordDeclaration = keywordDeclaration.replaceFirst("temp","inv");        		
+            		jump  = jump -1;
+
+					/** process temporal navigations */
+            		HashMap<String,Integer>map = processTemporalNavigations(oclExpr);
+    	        	for(String key: map.keySet())
+    	        	{	        		
+    	        		oclExpr = key;
+    		            jump = jump + map.get(key);		            	        
+    	        	}
+    	        	
+            		result = left+keywordDeclaration+(oclExpr+remainingExpr);
+        		}        		
+    		}else if (keywordDeclaration.contains("inv") || keywordDeclaration.contains("derive")){
     			
-    			constraintStereotypeList.add("inv");
-    			String rightExpression = result.substring(indexEnd+(jump), result.length());    			
-    			if(rightExpression.indexOf(":")!=-1) 
-    			{
-    				String oclExpression = new String();
-    				if(rightExpression.indexOf("context")!=-1) oclExpression = rightExpression.substring(0,rightExpression.indexOf("context"));	
-    				else oclExpression = rightExpression.substring(0,rightExpression.indexOf(":"));
-    				checkInvalidOclExpression(oclExpression);
-    			}else {
-    				String oclExpression = new String();
-    				oclExpression = rightExpression.substring(0,rightExpression.length());
-    				checkInvalidOclExpression(oclExpression);
-    			}   			
+    			if(keywordDeclaration.contains("inv")) constraintStereotypeList.add("inv");
+    			if(keywordDeclaration.contains("derive")) constraintStereotypeList.add("derive");
     			
-    		}else if (result.substring(indexBegin+(jump),indexEnd+(jump)).contains("derive")){
-    			
-    			constraintStereotypeList.add("derive");
-    			String rightExpression = result.substring(indexEnd+(jump), result.length());
-    			String oclExpression = new String();
-    			if(rightExpression.indexOf(":")!=-1) 
-    			{
-    				if(rightExpression.indexOf("context")!=-1) oclExpression = rightExpression.substring(0,rightExpression.indexOf("context"));	
-    				else oclExpression = rightExpression.substring(0,rightExpression.indexOf(":"));    				
-    			}else{
-    				oclExpression = rightExpression.substring(0,rightExpression.length());
+    			if(right.indexOf(":")!=-1) // has next constraint
+    			{    				
+    				if(right.indexOf("context")!=-1) {
+    					/** Check Invalid OclExpression */
+    					checkInvalidOclExpression(right.substring(0,right.indexOf("context")));    						
+    				}else{
+    					/** Check Invalid OclExpression */
+    					checkInvalidOclExpression(right.substring(0,right.indexOf(":")));
+    				}    				
+    			}else { //this is the last constraint...
+    				
+    				/** Check Invalid OclExpression */
+    				checkInvalidOclExpression(right);
     			}    			
-    			checkInvalidOclExpression(oclExpression);
     		}    	
     	}
     	
