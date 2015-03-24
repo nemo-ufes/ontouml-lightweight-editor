@@ -22,9 +22,14 @@ import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 
 public class RelatorPattern extends AbstractPattern {
 
-
+	private Classifier c = null;
 	public RelatorPattern(OntoUMLParser parser, double x, double y) {
 		super(parser, x, y, "/resource/RelatorPattern.png", "Relator Pattern");
+	}
+
+	public RelatorPattern(OntoUMLParser parser, Classifier c, double x, double y) {
+		super(parser, x, y, "/resource/RelatorPattern.png", "Relator Pattern");
+		this.c = c;
 	}
 
 	@Override
@@ -65,10 +70,19 @@ public class RelatorPattern extends AbstractPattern {
 		dym.addTableLine("general", "General 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 		dym.addTableLine("general", "General 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 
-		dym.addTableLine("specific", "Specific 1", new String[] {"Role"});
-		dym.addTableLine("specific", "Specific 2", new String[] {"Role"});
+		if(c != null && c instanceof Role){
+			dym.addTableRigidLine("specific", UtilAssistant.getStringRepresentationClass(c), new String[] {"Role"});
+			dym.addTableLine("specific", "Specific 2", new String[] {"Role"});
+		}else{
+			dym.addTableLine("specific", "Specific 1", new String[] {"Role"});
+			dym.addTableLine("specific", "Specific 2", new String[] {"Role"});
+		}
 
-		dym.addTableLine("relator", "Relator", new String[] {"Relator"});
+		if(c != null && c instanceof Relator){
+			dym.addTableRigidLine("relator", UtilAssistant.getStringRepresentationClass(c), new String[] {"Relator"});
+		}else{
+			dym.addTableLine("relator", "Relator", new String[] {"Relator"});
+		}
 
 		dm.open();		
 	}

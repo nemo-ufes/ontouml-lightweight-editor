@@ -14,6 +14,8 @@ import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
+import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.palette.Palette;
@@ -126,6 +128,21 @@ public class DomainPatternTool {
 		}
 		
 		return fix;
+	}
+	
+	public static void runPattern(final DiagramManager diagramManager,final double x, final double y) {
+		if(Main.onMac()){
+			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
+				@Override
+				public void run() {
+					Fix fix = DomainPatternTool.run(x, y);
+					diagramManager.updateOLED(fix);
+				}
+			});
+		}else{
+			Fix fix = DomainPatternTool.run(x, y);
+			diagramManager.updateOLED(fix);
+		}
 	}
 
 }

@@ -108,12 +108,14 @@ public abstract class AbstractPattern {
 	protected double y;
 	protected DynamicWindow dm;
 	protected DynamicManagerWindow dym;
+	protected String title;
 	
 	protected AbstractPattern(OntoUMLParser parser, double x, double y, String imagePath, final String title) {
 		this.parser = parser;
 		this.x = x;
 		this.y = y;
 		this.imagePath = imagePath;
+		this.title = title;
 		
     	dm = DynamicWindow.createDialog(title, imagePath);
 		dym = new DynamicManagerWindow(dm);
@@ -124,5 +126,9 @@ public abstract class AbstractPattern {
 
 	public boolean canGetFix() {
 		return dym.wasPerformed();
+	}
+
+	public String getTitle() {
+		return title;
 	}
 }
