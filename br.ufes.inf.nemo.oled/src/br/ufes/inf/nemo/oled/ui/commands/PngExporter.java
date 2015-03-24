@@ -77,33 +77,33 @@ public class PngExporter extends FileWriter {
 	 * */
 	public static BufferedImage getPNGImage(StructureDiagram diagram){
 		try{
-		ArrayList<Point> points = diagram.getUsedCanvasSize();
-		Point origin = points.get(0);
-		Point end = points.get(1);
-		BufferedImage image = new BufferedImage((int) end.x+20, (int) end.y+20, BufferedImage.TYPE_INT_RGB);
+			ArrayList<Point> points = diagram.getUsedCanvasSize();
+			Point origin = points.get(0);
+			Point end = points.get(1);
+			BufferedImage image = new BufferedImage((int) end.x+20, (int) end.y+20, BufferedImage.TYPE_INT_RGB);
 
-		Graphics g =  image.getGraphics();
-		Rectangle bounds = new Rectangle(origin.x - 21, origin.y - 21, (end.x + 40 - origin.x), (end.y + 40 - origin.y));
-		g.setClip(bounds);
-		
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
-		g.setColor(Color.WHITE);
-		g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+			Graphics g =  image.getGraphics();
+			Rectangle bounds = new Rectangle(origin.x - 21, origin.y - 21, (end.x + 40 - origin.x), (end.y + 40 - origin.y));
+			g.setClip(bounds);
 
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_DEFAULT);
-		diagram.setGridVisible(false);
-		
-		DrawingContext dw = ProjectBrowser.frame.getDiagramManager().getDrawingContext();
-		dw.setGraphics2D(g2d, bounds);
-		diagram.draw(dw, false);
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		BufferedImage croped = image.getSubimage(origin.x - 21, origin.y - 21, (end.x + 40 - origin.x), (end.y + 40 - origin.y));
-		
-		return croped;
+			g.setColor(Color.WHITE);
+			g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_DEFAULT);
+			diagram.setGridVisible(false);
+
+			DrawingContext dw = diagram.getDrawingContext();
+			dw.setGraphics2D(g2d, bounds);
+			diagram.draw(dw, false);
+
+			BufferedImage croped = image.getSubimage(origin.x, origin.y, (end.x - origin.x), (end.y - origin.y));
+
+			return croped;
 		}catch(Exception e){
 			Main.printOutLine("Error to generate an intern image from a diagram: "+e.getMessage());	
 			JOptionPane.showMessageDialog(null, "Error to generate an intern image from a diagram:\n"+e.getMessage(), ApplicationResources.getInstance().getString("error.readfile.title"), JOptionPane.ERROR_MESSAGE);
@@ -111,8 +111,8 @@ public class PngExporter extends FileWriter {
 		}
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */

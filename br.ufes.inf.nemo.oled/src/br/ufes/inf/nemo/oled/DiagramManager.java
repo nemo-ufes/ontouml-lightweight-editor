@@ -3041,32 +3041,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		dialog.setLocation(x_1, y_2);
 	}
 
-	private Fix _fix;
 	public void runPattern(final ElementType elementType, final double x, final double y) {
-		if(Main.onMac()){
-			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
-				@Override
-				public void run() {
-					_fix = PatternTool.tryToRun(elementType, x, y);
-					if(_fix == null){
-						List<DiagramElement> selectedElements = getCurrentDiagramEditor().getSelectedElements();
-						_fix = PatternTool.tryToRun(elementType, selectedElements);
-					}
-					if(_fix != null)
-						updateOLED(_fix);					
-				}
-			});
-		}else{
-			_fix = PatternTool.tryToRun(elementType, x, y);			
-			System.out.println(frame.getProjectBrowser().getParser().getStringRepresentations());
-			if(_fix != null){		    	   
-				updateOLED(_fix);						
-			}							
-			OntoUMLParser refparser = frame.getProjectBrowser().getParser();
-			System.out.println(refparser.getStringRepresentations());
-		}
+		PatternTool.runPattern(this, elementType, x, y);
 	}
 
+	public void runDomainPattern(final double x, final double y) {
+		DomainPatternTool.runPattern(this, x, y);
+	}
+	
 	public void openDerivedTypePatternIntersection(Double x, Double y) {
 		JDialog dialog = new IntersectionPattern(this);
 		this.setCenterDialog(dialog);
@@ -3212,22 +3194,4 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			DomainPatternTool.initializeDomainPatternPalette(frame.getToolManager().getPalleteAccordion(), patternProject, editorDispatcher, frame);
 		}
 	}
-		
-	public void runDomainPattern(final double x, final double y) {
-		if(Main.onMac()){
-			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
-				@Override
-				public void run() {
-					_fix = DomainPatternTool.run(x, y);
-					if(_fix != null)
-						updateOLED(_fix);
-				}
-			});
-		}else{
-			_fix = DomainPatternTool.run(x, y);
-			if(_fix != null)
-				updateOLED(_fix);
-		}
-	}
-	
 }

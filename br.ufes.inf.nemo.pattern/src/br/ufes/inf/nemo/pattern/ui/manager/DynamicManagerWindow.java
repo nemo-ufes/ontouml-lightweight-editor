@@ -162,7 +162,9 @@ public class DynamicManagerWindow {
 
 		return tableItem;
 	}
-
+	/**
+	 * The initial value of the grid
+	 * */
 	public void setInitialItemCount(int initialValue){
 		window.setInitialItemCount(initialValue);
 	}

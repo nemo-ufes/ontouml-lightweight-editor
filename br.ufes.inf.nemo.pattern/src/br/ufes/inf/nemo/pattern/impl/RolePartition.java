@@ -15,11 +15,16 @@ import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 
 public class RolePartition extends AbstractPattern{
+	private Classifier c;
+	public RolePartition(OntoUMLParser parser, Classifier c, double x, double y) {
+		super(parser, x, y, "/resource/RolePartition.png", "Role Partition");
+		this.c = c;
+	}
 
 	public RolePartition(OntoUMLParser parser, double x, double y) {
 		super(parser, x, y, "/resource/RolePartition.png", "Role Partition");
 	}
-
+	
 	@Override
 	public void runPattern() {
 		HashMap<String, String[]> hashTree = new HashMap<>();
@@ -54,7 +59,11 @@ public class RolePartition extends AbstractPattern{
 
 		dym.addTableLine("general", "General", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 
-		dym.addTableLine("specific", "Specific 1", new String[] {"Role"});
+		if(c != null){
+			dym.addTableRigidLine("specific", UtilAssistant.getStringRepresentationClass(c), new String[] {"Role"});
+		}else{
+			dym.addTableLine("specific", "Specific 1", new String[] {"Role"});
+		}
 		dym.addTableLine("specific", "Specific 2", new String[] {"Role"});
 
 		dym.setInitialItemCount(3);
