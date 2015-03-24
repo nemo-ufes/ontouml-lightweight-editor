@@ -117,6 +117,9 @@ public class OutcomeFixer{
 		if (stereo.equals(ClassStereotype.RELATOR)) { type = factory.createRelator(); }
 		if (stereo.equals(ClassStereotype.DATATYPE)) { type = factory.createDataType(); }
 		if (stereo.equals(ClassStereotype.PRIMITIVETYPE)) { type = factory.createPrimitiveType(); }
+		if (stereo.equals(ClassStereotype.NOMINALQUALITY)) { type = factory.createNominalQuality(); }
+		if (stereo.equals(ClassStereotype.NONPERCEIVABLEQUALITY)) { type = factory.createNonPerceivableQuality(); }
+		if (stereo.equals(ClassStereotype.PERCEIVABLEQUALITY)) { type = factory.createPerceivableQuality(); }
 		type.setName("");
 		type.setVisibility(VisibilityKind.PUBLIC);
 		return type;

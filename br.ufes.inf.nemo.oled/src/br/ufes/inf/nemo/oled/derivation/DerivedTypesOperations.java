@@ -45,13 +45,16 @@ import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.Association;
 import RefOntoUML.Class;
 import RefOntoUML.Classifier;
+import RefOntoUML.Collective;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
 import RefOntoUML.Kind;
 import RefOntoUML.Mixin;
+import RefOntoUML.MomentClass;
 import RefOntoUML.NamedElement;
 import RefOntoUML.Phase;
 import RefOntoUML.Property;
+import RefOntoUML.Quantity;
 import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
@@ -60,6 +63,7 @@ import RefOntoUML.SemiRigidMixinClass;
 import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import RefOntoUML.parser.OntoUMLParser;
+import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
@@ -86,7 +90,7 @@ public class DerivedTypesOperations {
 	static DiagramManager dman;
 	static boolean gs_with_nonsortal_or_kind = false;
 	static Point2D.Double pointClicked;
-	static HashMap<Classifier, Integer> exclusionDerivationList= new HashMap<Classifier, Integer>();
+	static HashMap<Classifier, Integer> exclusionDerivationList = new HashMap<Classifier, Integer>();
 	static Classifier unionDerived;
 
 	public static void setPointClicked(Point2D.Double pointClicked) {
@@ -137,11 +141,11 @@ public class DerivedTypesOperations {
 		String name = "";
 		JPanel panel = new JPanel();
 
-		if(!DerivedTypesOperations.verifyHierarquicalProblem(activeEditor)){
+		if (!DerivedTypesOperations.verifyHierarquicalProblem(activeEditor)) {
 			StereotypeAndNameSelection.wrongSelection("Invalid Selection");
 			return null;
 		}
-		
+
 		Fix mainfix = new Fix();
 		List<DiagramElement> selected = activeEditor.getSelectedElements();
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
@@ -152,43 +156,22 @@ public class DerivedTypesOperations {
 				refontoList.add(ce.getClassifier());
 			}
 		}
-		if (selected.size() == 2 && selected.get(0) instanceof ClassElement
-				&& selected.get(1) instanceof ClassElement) {
-			if (refontoList.size() == 2) {
 
-				ArrayList<String> stereotypes = DerivedByUnion.getInstance()
-						.inferStereotype(refontoList.get(0).eClass().getName(),
-								refontoList.get(1).eClass().getName());
-				if (stereotypes != null)
-					if (stereotypes.size() < 2) {
-						name = StereotypeAndNameSelection.defineNameDerivedType("Union Drivation");
-						if(name==null){
-							return null;
-						}
-						mainfix = createDerivedTypeUnion(stereotypes.get(0),
-								mainfix, selected, name, refontoList, project,
-								dm);
-					} else {
-						Object[] stereo;
-						stereo = stereotypes.toArray();
-						panel = selectStereotype(stereo);
-						if(panel==null){
-							return null;
-						}
-						mainfix = createDerivedTypeUnion(
-								((JComboBox) panel.getComponents()[1])
-										.getSelectedItem().toString(), mainfix,
-								selected,
-								((JTextField) panel.getComponents()[0])
-										.getText(), refontoList, project, dm);
-					}
+		String stereotype = null;
+		String specialCase = multipleElementsUnionDerivation(selected);
+		String specialCaseRelation = tryunionassociationderivation(selected, dm);
+		if (specialCase != null) {
+			
+			if (specialCase == "moment") {
+				stereotype = UtilAssistant.getStringRepresentationStereotype(((ClassElement)selected.get(0)).getClassifier());
+				name = DefineNameDerivedType();
+				if (name == null) {
+					return null;
+				}
+				mainfix = createDerivedTypeUnion(stereotype, mainfix,
+						selected, name, refontoList, project, dm);
 			}
-		} else {
-			String stereotype = null;
-			String specialCase = multipleElementsUnionDerivation(selected);
-			String specialCaseRelation = tryunionassociationderivation(
-					selected, dm);
-
+			
 			if (specialCaseRelation.equals("union_relation_derivation")) {
 				return null;
 			}
@@ -204,7 +187,7 @@ public class DerivedTypesOperations {
 				stereotypes.add("Category");
 				stereo = stereotypes.toArray();
 				panel = selectStereotype(stereo);
-				if(panel==null){
+				if (panel == null) {
 					return null;
 				}
 				mainfix = createDerivedTypeUnion(
@@ -221,7 +204,7 @@ public class DerivedTypesOperations {
 					stereotypes.add("RoleMixin");
 					stereo = stereotypes.toArray();
 					panel = selectStereotype(stereo);
-					if(panel==null){
+					if (panel == null) {
 						return null;
 					}
 					mainfix = createDerivedTypeUnion(
@@ -236,7 +219,7 @@ public class DerivedTypesOperations {
 				if (specialCase == "AllRigid") {
 					stereotype = "Category";
 					name = DefineNameDerivedType();
-					if(name==null){
+					if (name == null) {
 						return null;
 					}
 					mainfix = createDerivedTypeUnion(stereotype, mainfix,
@@ -245,7 +228,7 @@ public class DerivedTypesOperations {
 					if (specialCase == "AllAntiRigid") {
 						stereotype = "RoleMixin";
 						name = DefineNameDerivedType();
-						if(name==null){
+						if (name == null) {
 							return null;
 						}
 						mainfix = createDerivedTypeUnion(stereotype, mainfix,
@@ -260,7 +243,7 @@ public class DerivedTypesOperations {
 					stereotypes.add("Category");
 					stereo = stereotypes.toArray();
 					panel = selectStereotype(stereo);
-					if(panel==null){
+					if (panel == null) {
 						return null;
 					}
 					mainfix = createDerivedTypeUnion(
@@ -282,7 +265,7 @@ public class DerivedTypesOperations {
 						stereotypes.add("RoleMixin");
 						stereo = stereotypes.toArray();
 						panel = selectStereotype(stereo);
-						if(panel==null){
+						if (panel == null) {
 							return null;
 						}
 						mainfix = createDerivedTypeUnion(
@@ -294,7 +277,6 @@ public class DerivedTypesOperations {
 					}
 				}
 			}
-
 		}
 		return mainfix;
 	}
@@ -364,6 +346,15 @@ public class DerivedTypesOperations {
 	private static String multipleElementsUnionDerivation(
 			List<DiagramElement> selected) {
 		// String anterior="";
+
+		String result = checkForMoments(selected);
+		if (result.equals("invalid")) {
+			StereotypeAndNameSelection.wrongSelection("Invalid Union!");
+			return null;
+		}
+		if(result.equals("allMoment")){
+			return "moment";
+		}
 		String specialCase = "AllRigid";
 		DiagramElement diagramElement = selected.get(0);
 		List<DiagramElement> selected2 = new ArrayList<DiagramElement>();
@@ -380,7 +371,9 @@ public class DerivedTypesOperations {
 					if ((ce.getClassifier() instanceof RigidMixinClass
 							|| ce.getClassifier() instanceof AntiRigidMixinClass
 							|| ce.getClassifier() instanceof SemiRigidMixinClass || ce
-								.getClassifier() instanceof Kind)) {
+								.getClassifier() instanceof Kind)
+							|| ce.getClassifier() instanceof Quantity
+							|| ce.getClassifier() instanceof Collective) {
 						gs_with_nonsortal_or_kind = true;
 					}
 					if (!(ce.getClassifier() instanceof RigidMixinClass || ce
@@ -413,7 +406,9 @@ public class DerivedTypesOperations {
 						if ((ce.getClassifier() instanceof RigidMixinClass
 								|| ce.getClassifier() instanceof AntiRigidMixinClass
 								|| ce.getClassifier() instanceof SemiRigidMixinClass || ce
-									.getClassifier() instanceof Kind)) {
+									.getClassifier() instanceof Kind)
+								|| ce.getClassifier() instanceof Quantity
+								|| ce.getClassifier() instanceof Collective) {
 							gs_with_nonsortal_or_kind = true;
 						}
 						if (ce.getClassifier() instanceof RigidMixinClass
@@ -428,6 +423,38 @@ public class DerivedTypesOperations {
 			}
 		}
 		return specialCase;
+	}
+
+	private static String checkForMoments(List<DiagramElement> selected) {
+		String stereotype = "";
+		if (((ClassElement) selected.get(0)).getClassifier() instanceof MomentClass) {
+			
+			for (DiagramElement diagramElement : selected) {
+				// if among the selected elements exists moment and not moment
+				// it is impossible to have union
+				String next_stereotype= UtilAssistant
+						.getStringRepresentationStereotype(((ClassElement) diagramElement)
+								.getClassifier());
+				if (!stereotype.equals(next_stereotype) 
+						&& !stereotype.equals("")){
+					return "invalid";
+				}
+				stereotype = UtilAssistant
+						.getStringRepresentationStereotype(((ClassElement) diagramElement)
+								.getClassifier());
+			}
+
+		} else {
+			for (DiagramElement diagramElement : selected) {
+				if (((ClassElement) diagramElement).getClassifier() instanceof MomentClass) {
+					return "invalid";
+				}
+			}
+		}
+		if(stereotype==null){
+			return "noMoment";
+		}
+		return "allMoment";
 	}
 
 	@SuppressWarnings("unused")
@@ -452,8 +479,7 @@ public class DerivedTypesOperations {
 					position2.getAbsoluteY1());
 			Point2D.Double newElementPosition = ClassPosition
 					.findPositionGeneralization(firstpoint, secondpoint);
-			union = includeElement(newElementPosition, name,
-					stereotype);
+			union = includeElement(newElementPosition, name, stereotype);
 			createGeneralization(union, (Classifier) refontoList.get(0),
 					(Classifier) refontoList.get(1));
 			mainfix.includeAdded(union, newElementPosition.getX(),
@@ -473,19 +499,17 @@ public class DerivedTypesOperations {
 			}
 			Point2D.Double newElementPosition = ClassPosition
 					.findPositionGeneralizationMember(positions, 2);
-			union = includeElement(newElementPosition, name,
-					stereotype);
+			union = includeElement(newElementPosition, name, stereotype);
 			ArrayList<Classifier> classifiers = new ArrayList<Classifier>();
 			for (Element element : refontoList) {
 				classifiers.add((Classifier) element);
 			}
 			createMultipleGeneralization(union, classifiers);
 		}
-		unionDerived=union;
+		unionDerived = union;
 		return mainfix;
 	}
-	
-	
+
 	static ArrayList<String> removeSortals(ArrayList<String> stereotypes) {
 		stereotypes.remove("Kind");
 		stereotypes.remove("Collective");
@@ -631,7 +655,7 @@ public class DerivedTypesOperations {
 		mainfix.includeAdded(newElement, position.getX(), position.getY());
 		return newElement;
 	}
-	
+
 	public static Classifier includeElement(Point2D.Double position,
 			String name, String stereotype, OutcomeFixer of) {
 		Classifier newElement = (Classifier) of.createClass(of
@@ -736,11 +760,11 @@ public class DerivedTypesOperations {
 		ArrayList<RefOntoUML.Element> refontoList = new ArrayList<RefOntoUML.Element>();
 		String specialCase = "";
 
-		if(!DerivedTypesOperations.verifyHierarquicalProblem(activeEditor)){
+		if (!DerivedTypesOperations.verifyHierarquicalProblem(activeEditor)) {
 			StereotypeAndNameSelection.wrongSelection("Invalid Selection");
 			return null;
 		}
-		
+
 		for (DiagramElement element : selected) {
 			if (element instanceof ClassElement) {
 				classList.add((ClassElement) element);
@@ -896,7 +920,7 @@ public class DerivedTypesOperations {
 			values.add("SubKind");
 			stereo = values.toArray();
 			JPanel panel = selectStereotype(stereo);
-			if(panel==null){
+			if (panel == null) {
 				return null;
 			}
 			name = ((JTextField) panel.getComponents()[0]).getText();
@@ -904,7 +928,7 @@ public class DerivedTypesOperations {
 					.getSelectedItem().toString();
 		} else {
 			name = DefineNameDerivedType();
-			if(name==null){
+			if (name == null) {
 				return null;
 			}
 		}
@@ -985,11 +1009,11 @@ public class DerivedTypesOperations {
 
 				stereo = values.toArray();
 				panel = selectStereotype(stereo);
-			
+
 				/*
 				 * the user canceled the operation
 				 */
-				if(panel==null){
+				if (panel == null) {
 					return null;
 				}
 				dman = diagramManager;
@@ -1249,7 +1273,7 @@ public class DerivedTypesOperations {
 				location.x = ce.getAbsoluteX1() + 100;
 				location.y = ce.getAbsoluteY1();
 				String name = DefineNameDerivedType();
-				if(name==null){
+				if (name == null) {
 					return null;
 				}
 				includeElement(location, name, "RoleMixin");
@@ -1298,9 +1322,6 @@ public class DerivedTypesOperations {
 		dman.updateOLED(mainfix);
 
 	}
-	
-	
-	
 
 	public static void setOf(OutcomeFixer of) {
 		DerivedTypesOperations.of = of;
@@ -1318,33 +1339,30 @@ public class DerivedTypesOperations {
 		return unionDerived;
 	}
 
-	public static boolean verifyHierarquicalProblem(DiagramEditor activeDiagram){
+	public static boolean verifyHierarquicalProblem(DiagramEditor activeDiagram) {
 		OntoUMLParser parser = ProjectBrowser.frame.getProjectBrowser()
 				.getParser();
-		ArrayList<DiagramElement> list= (ArrayList<DiagramElement>) activeDiagram.getSelectedElements();
+		ArrayList<DiagramElement> list = (ArrayList<DiagramElement>) activeDiagram
+				.getSelectedElements();
 		ArrayList<Classifier> list_classifier = new ArrayList<Classifier>();
-		
+
 		for (DiagramElement element : list) {
-			list_classifier.add(((ClassElement)element).getClassifier());
+			list_classifier.add(((ClassElement) element).getClassifier());
 		}
-		
+
 		for (DiagramElement diagramElement : list) {
-			Classifier classifier= (((ClassElement)diagramElement).getClassifier());
+			Classifier classifier = (((ClassElement) diagramElement)
+					.getClassifier());
 			ArrayList<Classifier> parents = new ArrayList<Classifier>(
 					parser.getAllParents(classifier));
 			for (Classifier father : parents) {
-				if(list_classifier.contains(father)){
+				if (list_classifier.contains(father)) {
 					return false;
 				}
 			}
 		}
-		
+
 		return true;
 	}
 
-	
-	
-	
 }
-
-	
