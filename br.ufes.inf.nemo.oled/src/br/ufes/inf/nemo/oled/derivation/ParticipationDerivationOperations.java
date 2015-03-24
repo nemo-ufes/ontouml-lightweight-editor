@@ -57,9 +57,9 @@ public class ParticipationDerivationOperations {
 		Point2D.Double relator_point= findPointtoRelator(activeEditor.getSelectedElements());
 		Classifier relator=DerivedTypesOperations.includeElement(relator_point, "", "Relator");
 		ArrayList<Fix> fixs= new ArrayList<Fix>();
-		Fix fix;
+		
 		for (int i = 0; i < activeEditor.getSelectedElements().size(); i++) {
-			
+			Fix fix;	
 			Classifier c = ((ClassElement) activeEditor.getSelectedElements().get(i)).getClassifier();
 			
 			if(! (c instanceof  ObjectClass)){
@@ -79,6 +79,11 @@ public class ParticipationDerivationOperations {
 				fix = of.createAssociationBetween(RelationStereotype.MEDIATION, "",
 						role, relator);
 				fixs.add(fix);
+			}else{
+				fix = of.createAssociationBetween(RelationStereotype.MEDIATION, "",
+						c, relator);
+				fixs.add(fix);
+				
 			}
 		}
 		
