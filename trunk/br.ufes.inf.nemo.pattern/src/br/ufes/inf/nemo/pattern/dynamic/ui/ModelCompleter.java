@@ -70,7 +70,7 @@ public class ModelCompleter extends Dialog{
 		if(table.getItemCount() == 0){
 			MessageBox dialog = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK );
 			dialog.setText("Model Completer");
-			dialog.setMessage("There are nothing to do, your model appear to be complete.");
+			dialog.setMessage("There is nothing to do, your model appear to be complete.");
 			return dialog.open(); 
 		}
 		return super.open();
