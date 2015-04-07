@@ -1,7 +1,9 @@
 package br.ufes.inf.nemo.ontouml2uml;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import org.eclipse.uml2.uml.EnumerationLiteral;
 
@@ -69,7 +71,18 @@ public class ElementConverter {
     {
         return umap.get(e1);
     }	
-        
+    
+    public org.eclipse.uml2.uml.Element GetElement (String name)
+    {
+    	for(RefOntoUML.Element elem: umap.keySet()){
+    		if(elem instanceof RefOntoUML.NamedElement){
+    			RefOntoUML.NamedElement nElem = (RefOntoUML.NamedElement)elem;
+    			if(nElem.getName().compareToIgnoreCase(name)==0)return umap.get(nElem);
+    		}
+    	}
+    	return null;
+    }
+    
     /** 
      * Named Element (name & visibility).
      * 
@@ -495,5 +508,52 @@ public class ElementConverter {
              
         return d2;
      }
+     
+     public void setMultiplicityFromString(org.eclipse.uml2.uml.Property property, String str) throws ParseException 
+     {	
+    	org.eclipse.uml2.uml.LiteralInteger lowerBound = ufactory.createLiteralInteger();
+    	org.eclipse.uml2.uml.LiteralUnlimitedNatural upperBound = ufactory.createLiteralUnlimitedNatural();    				
+    	Pattern pattern = Pattern.compile("\\d+|\\*|\\d+\\.\\.(\\d+|\\*)"); // 1..2, 1, N, *, 4..1, 1..1, 1..*, 0..*
+    	if (pattern.matcher(str).matches()) { 
+    		int lowerValue = 0, upperValue = 0;
+    		if (!str.contains("..")) {
+    			if(!str.contains("*")) // Multiplicities: 1, N 
+    			{
+    				lowerValue = Integer.valueOf(str);
+    				upperValue = lowerValue;
+    			// Multiplicities: *
+    			}else{
+    				lowerValue = 0;
+    				upperValue = -1;
+    			}
+   			//1..2, 4..1, 1..1, 1..*, 0..*
+    		}else {
+    			String[] comps = str.split("\\.\\.");
+    			if(!str.contains("*")) // Multiplicities: 1..3, 0..2, 3..1
+    			{
+    				if(comps[0] == comps[1])
+    				{
+    					lowerValue = Integer.valueOf(str);
+    					upperValue = lowerValue;
+    				}else{
+    					lowerValue = Integer.valueOf(comps[0]);
+    					upperValue = Integer.valueOf(comps[1]);    								
+    					if(lowerValue > upperValue) throw new ParseException("Could not parse multiplicity string '" + str + "'", 0);
+    				}
+				// Multiplicities: 1..*, 0..*
+    			}else{
+   					lowerValue = Integer.valueOf(comps[0]);
+   					upperValue = -1;
+   				}
+   			}
+   			lowerBound.setValue(lowerValue);
+   			upperBound.setValue(upperValue);
+   		}else{
+   			throw new ParseException("Could not parse multiplicity string: '" + str + "'", 0);
+   		}
+   		if (property != null) {
+   			property.setLowerValue(lowerBound);
+   			property.setUpperValue(upperBound);
+   		}
+   	}
 }
-

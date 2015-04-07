@@ -63,3 +63,7 @@ temp past_spec: World.allInstances()->forAll(w | self.oclIsKindOf(ExHusband, w)
      implies w.allPrevious()->exists(p | self.oclIsKindOf(Husband, p) and not
      self.oclAsType(Husband, p).marriage(p).existsIn(w)))  
 
+-- Historical Dependence Fact: Acyclic Ancestors
+context Person
+temp: self->asSet()->closure(parents)->excludes(self)
+
