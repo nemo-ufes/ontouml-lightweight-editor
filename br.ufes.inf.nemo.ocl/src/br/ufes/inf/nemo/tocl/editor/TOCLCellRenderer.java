@@ -43,8 +43,6 @@ public class TOCLCellRenderer extends OCLCellRenderer {
 			tc.getDefinitionString().equals("allNext(p)")||
 			tc.getDefinitionString().equals("hasPrevious")||
 			tc.getDefinitionString().equals("hasNext")||
-			tc.getDefinitionString().equals("isTerminal")||
-			tc.getDefinitionString().equals("isOrigin")||
 			tc.getDefinitionString().equals("allIndividuals")||
 			tc.getDefinitionString().equals("paths")||
 			tc.getDefinitionString().equals("worlds")			
@@ -54,7 +52,7 @@ public class TOCLCellRenderer extends OCLCellRenderer {
 		}else if (tc.getDefinitionString().contains("Property"))
 		{
 			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/tocl/editor/icons/property.gif")));
-		}else if(tc.getDefinitionString().equals("temp")){
+		}else if(tc.getDefinitionString().equals("temp") || tc.getDefinitionString().equals("hist")){
 			setIcon(new ImageIcon(OCLCellRenderer.class.getResource("/br/ufes/inf/nemo/ocl/editor/icons/constraint.gif")));
 		}
 	}
