@@ -767,7 +767,7 @@ public class TOCLParser extends OCLParser{
 		
 		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);
 		
-		System.out.println(result);
+		//System.out.println(result);
 	    return result;
     }
 

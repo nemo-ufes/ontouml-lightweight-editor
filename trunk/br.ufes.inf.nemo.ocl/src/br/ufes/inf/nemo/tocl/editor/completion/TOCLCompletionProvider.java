@@ -32,16 +32,27 @@ public class TOCLCompletionProvider {
 		String description = new String();
 		ArrayList<TOCLTemplateCompletion> oclCompletionList = new ArrayList<TOCLTemplateCompletion>();
 						
-		description = "<b>context TypeName <br>temp : true</b><br><br>"+
-		"Temporal invariant.";
+		description = "<b>context Class <br>temp : true</b><br><br>"+
+		"Temporal Invariant.";
 		
 		TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
 			"temp","temp",
-			"context ${TypeName}\ntemp : ${true} ${cursor}\n",
+			"context ${ClassName}\ntemp : ${true} ${cursor}\n",
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
+		description = "<b>context SourceClass::RelationshipName:TargetClass <br>" +
+		"temp : { sourceEndName: [SrcMult], targetEndName: [tgtMult] } </b><br><br>"+"Historical Relationship.";
+		
+		c = new TOCLTemplateCompletion(provider, 
+			"hist","hist",
+			"context ${SourceClassName}::${RelationshipName}:${TargetClassName}\n" +
+			"temp : ${srcEndName}: [${srcMult}], ${tgtEndName}:[${tgtMult}] } ${cursor}\n",
+			null, description);		
+		provider.addCompletion(c);
+		oclCompletionList.add(c);
+				
 		return oclCompletionList;
 	}
 	
@@ -122,7 +133,7 @@ public class TOCLCompletionProvider {
 			provider.addCompletion(c);
 			oclCompletionList.add(c);
 			
-		description = "Operation <b>Individual::oclBecomes(t: Classifier, w: World) : Boolean</b><br><br>"+
+		description = "Operation <b>Individual::oclBecomes(type: AnyClassifier(T), w: World) : Boolean</b><br><br>"+
 		"Evaluates to true if self instantiates t in w but does not instantiate t in the immediate previous world from w.<br>" +
 		"In other words, it checks if the object was classified as t in world w.";
 		
@@ -133,7 +144,7 @@ public class TOCLCompletionProvider {
 			provider.addCompletion(c);
 			oclCompletionList.add(c);
 						
-		description = "Operation <b>Individual::oclCeasesToBe(t: Classifier, w: World) : Boolean</b><br><br>"+
+		description = "Operation <b>Individual::oclCeasesToBe(type: AnyClassifier(T), w: World) : Boolean</b><br><br>"+
 		"Evaluates to true if self does not instantiate t in w but instantiate t in the immediate previous world from w.<br>" +
 		"In other words, it checks if the object ceases to be classified as t in world w.";
 		
@@ -274,25 +285,25 @@ public class TOCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "Operation <b>World::isOrigin() : Boolean</b><br><br>"+
-		"Verifies if the world self is the first world of the structure.";
-		
-		c = new TOCLTemplateCompletion(provider, 
-			"isOrigin","isOrigin",
-			"isOrigin()${cursor}",
-			null, description);		
-		provider.addCompletion(c);
-		oclCompletionList.add(c);
+//		description = "Operation <b>World::isOrigin() : Boolean</b><br><br>"+
+//		"Verifies if the world self is the first world of the structure.";
+//		
+//		c = new TOCLTemplateCompletion(provider, 
+//			"isOrigin","isOrigin",
+//			"isOrigin()${cursor}",
+//			null, description);		
+//		provider.addCompletion(c);
+//		oclCompletionList.add(c);
 				
-		description = "Operation <b>World::isTerminal() : Boolean</b><br><br>"+
-		"Verifies if the world self is the last world of the structure.";
-		
-		c = new TOCLTemplateCompletion(provider, 
-			"isTerminal","isTerminal",
-			"isTerminal()${cursor}",
-			null, description);		
-		provider.addCompletion(c);
-		oclCompletionList.add(c);
+//		description = "Operation <b>World::isTerminal() : Boolean</b><br><br>"+
+//		"Verifies if the world self is the last world of the structure.";
+//		
+//		c = new TOCLTemplateCompletion(provider, 
+//			"isTerminal","isTerminal",
+//			"isTerminal()${cursor}",
+//			null, description);		
+//		provider.addCompletion(c);
+//		oclCompletionList.add(c);
 				
 		return oclCompletionList;
 	}	
