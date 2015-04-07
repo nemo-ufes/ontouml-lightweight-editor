@@ -199,7 +199,7 @@ public class OntoUML2UML {
 		return OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
 	}
 	
-	public static void includeHistoricalRelationship(org.eclipse.uml2.uml.Package umlRoot, 
+	public static org.eclipse.uml2.uml.Association includeHistoricalRelationship(org.eclipse.uml2.uml.Package umlRoot, 
 	String sourceType, String relationshipName, String targetType, 
 	String sourceEndName, String sourceMult, String targetEndName, String targetMult) throws ParseException
 	{
@@ -234,7 +234,9 @@ public class OntoUML2UML {
         ", isLeaf="+p1.isLeaf()+", isStatic="+p1.isStatic()+", isReadOnly="+p1.isReadOnly());        
         
         ElementConverter.outln("UML:Property :: "+"name="+p2.getName()+", isDerived="+p2.isDerived()+", lower="+p2.getLower()+", upper="+p2.getUpper()+        
-        ", isLeaf="+p2.isLeaf()+", isStatic="+p2.isStatic()+", isReadOnly="+p2.isReadOnly());        
+        ", isLeaf="+p2.isLeaf()+", isStatic="+p2.isStatic()+", isReadOnly="+p2.isReadOnly());
+        
+        return a2;
 	}
 	
 	public static Resource convertToTemporalUML (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt, boolean simplifiedVersion)
