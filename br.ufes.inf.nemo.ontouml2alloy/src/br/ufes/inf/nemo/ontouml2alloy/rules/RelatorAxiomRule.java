@@ -10,7 +10,7 @@ import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
-import br.ufes.inf.nemo.ontouml2alloy.util.AlloyAPI;
+import br.ufes.inf.nemo.alloy.api.AlloyAPI;
 
 public class RelatorAxiomRule {
 

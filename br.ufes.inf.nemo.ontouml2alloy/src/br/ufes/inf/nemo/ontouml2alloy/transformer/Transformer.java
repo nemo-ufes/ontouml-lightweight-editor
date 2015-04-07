@@ -53,6 +53,7 @@ import br.ufes.inf.nemo.alloy.Quantificator;
 import br.ufes.inf.nemo.alloy.SignatureDeclaration;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
+import br.ufes.inf.nemo.alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
 import br.ufes.inf.nemo.ontouml2alloy.rules.AbstractnessClassRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.CardinalityRule;
@@ -63,7 +64,6 @@ import br.ufes.inf.nemo.ontouml2alloy.rules.RelatorAxiomRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.SubsetsRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.TopLevelClassRule;
 import br.ufes.inf.nemo.ontouml2alloy.rules.WeakSupplementationAxiomRule;
-import br.ufes.inf.nemo.ontouml2alloy.util.AlloyAPI;
 
 /**
  * Performs the transformation from OntoUML to Alloy
@@ -117,16 +117,15 @@ public class Transformer {
 		this.ontoparser = ontoparser;		
 		this.factory = factory;	
 		this.options = options;
+		module = factory.createAlloyModule();
+		module.setName(ontoparser.getModelName());
 	}
 	
 	/**
 	 * Performs the Transformation!
 	 */
 	public void run ()
-	{
-		module = factory.createAlloyModule();
-		module.setName(ontoparser.getModelName());				
-	
+	{	
 		world = AlloyAPI.createSigWorld(factory);
 				
 		ModuleImportation mi1 = AlloyAPI.createModuleImport(factory,"world_structure","", world);		

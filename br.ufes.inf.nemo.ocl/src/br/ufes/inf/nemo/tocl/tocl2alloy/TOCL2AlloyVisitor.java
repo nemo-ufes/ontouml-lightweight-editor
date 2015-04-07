@@ -25,7 +25,7 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 	{
 		super(oclparser, refparser, opt);	
 	}
-	 
+	
 	/** Visits TypeExp. */ 
 	@Override 
 	public String visitTypeExp (TypeExp<Classifier> t) 
@@ -144,7 +144,7 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
 			StringBuffer result = new StringBuffer();
 	    	Property property = propCallExp.getReferredProperty();    	
 
-	    	if(toclparser.isHistoricalRelationship(property))
+	    	if(!toclparser.isHistoricalRelationship(property))
 	    	{	    	
 	    		RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getOntoUMLElement(property);
 	    		String nameProperty = refparser.getAlias(ontoProperty);    	

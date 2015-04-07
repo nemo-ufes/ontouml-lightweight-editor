@@ -15,7 +15,7 @@ import br.ufes.inf.nemo.alloy.BinaryOperation;
 import br.ufes.inf.nemo.alloy.BinaryOperator;
 import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.QuantificationExpression;
-import br.ufes.inf.nemo.ontouml2alloy.util.AlloyAPI;
+import br.ufes.inf.nemo.alloy.api.AlloyAPI;
 
 public class CardinalityRule {
 		

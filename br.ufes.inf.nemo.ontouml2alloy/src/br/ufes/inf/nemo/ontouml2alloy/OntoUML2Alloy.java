@@ -39,6 +39,7 @@ public class OntoUML2Alloy {
 		ontoparser = refparser;	
 		factory = AlloyFactory.eINSTANCE;
 		options = opt;
+		transformer = new Transformer(ontoparser, factory, options);
 	}
 	
 	/**
@@ -61,15 +62,17 @@ public class OntoUML2Alloy {
 		AlloyThemeFile.generateAlloyThemeFile(dirPath);		
 
 		AlloyLibraryFiles.generateLibraryFiles(dirPath);				
-				
-		transformer = new Transformer(ontoparser, factory, options);
+			
 		transformer.run();
 		
+		return transformer.module.toString();
+	}
+	
+	public void saveToFile()
+	{
 		createAlsResource();		
 		alsresource.getContents().add(transformer.module);		
 		saveAlsResourceToFile(alsPath);
-		
-		return transformer.module.toString();
 	}
 	
 	private void createAlsResource() 
