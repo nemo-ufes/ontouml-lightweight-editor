@@ -74,7 +74,7 @@ public class PatternTool {
 		if(fix == null)
 			return null;
 		diagramManager.updateOLED(fix);
-		return runModelCompleter(diagramManager, x, y);
+		return runModelCompleter(diagramManager, x, y);		
 	}
 
 	public static void runPattern(final DiagramManager diagramManager,final ElementType elementType, final double x, final double y) {
