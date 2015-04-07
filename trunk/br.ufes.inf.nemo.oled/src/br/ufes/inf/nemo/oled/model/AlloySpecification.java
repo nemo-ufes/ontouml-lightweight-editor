@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 
 import RefOntoUML.parser.OntoUMLParser;
+import br.ufes.inf.nemo.alloy.AlloyModule;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2Alloy;
 import br.ufes.inf.nemo.ontouml2alloy.OntoUML2AlloyOptions;
@@ -49,35 +50,26 @@ public class AlloySpecification {
 	/** Absolute path of alloy specification. */
 	private String alsPath;	
 	
-	/** Content of alloy specification. */	
-	private String content = new String();
+	/** Alloy Module */
+	private AlloyModule alsModule;
+	private OntoUML2Alloy ontouml2alloy;
+	
+	/** Additional content of alloy specification. */	
+	private String additionalContent = new String();
 	
 	/** Log details for operations made. */
 	private String logDetails = new String();
 
 	/**
 	 * This constructor basically initialize the path of alloy model, i.e. without any content.
-	 * 
-	 * @param alloyPath
 	 */
 	public AlloySpecification(String alloyPath)
 	{
 		this();
 		
 		setAlloyModel(alloyPath);
-	}	
+	}
 	
-	/**
-	 * This constructor initialize the path of this alloy model and transforms
-	 * the OntoUML model into alloy according to the Options, saving the resultant
-	 * code of the transformation into the alloy specification.
-	 * 
-	 * @param alloyPath
-	 * @param ontoumlmodel
-	 * @param optmodel
-	 * 
-	 * @throws Exception
-	 */
 	public AlloySpecification(String alloyPath,OntoUMLParser refparser, OntoUML2AlloyOptions optmodel) throws Exception
 	{
 		this();
@@ -85,82 +77,58 @@ public class AlloySpecification {
 		setAlloyModel(alloyPath,refparser,optmodel);
 	}
 	
-	/**
-	 * Creates an empty alloy model.
-	 */
 	public AlloySpecification() { }	
-	
+
 	/**
-	 * This method initialize the path of this alloy model and transforms
-	 * the OntoUML model into alloy according to the Options, saving the resultant
-	 * code of the transformation into the alloy specification.
-	 * 
-	 * @param alloyPath
-	 * @param refmodel
-	 * @param opt
-	 * 
-	 * @throws Exception
+	 * Private methods
 	 */
-	public void setAlloyModel(String alloyPath, OntoUMLParser refparser, OntoUML2AlloyOptions optmodel) throws Exception
+	private void setAlloyModel(String alloyPath, OntoUMLParser refparser, OntoUML2AlloyOptions optmodel) throws Exception
 	{
 		setAlloyModel(alloyPath);				
-		setAlloyModel(refparser,optmodel);	
+		setDomainModel(refparser,optmodel);	
 	}
 	
-	/**
-	 * This method transforms the OntoUML model into alloy according to the Options, 
-	 * saving the resulting code of the transformation into the alloy specification.
-	 * 
-	 * @param ontoumlmodel
-	 * @param ontoOptions
-	 * 
-	 * @throws Exception
-	 */
-	public void setAlloyModel(OntoUMLParser refparser, OntoUML2AlloyOptions ontoOptions) throws Exception
-	{
-		OntoUML2Alloy ontouml2alloy = new OntoUML2Alloy(refparser, alsPath, ontoOptions);
-		content = ontouml2alloy.transform();
-		File file = new File(alsPath);
-		file.deleteOnExit();
-	}
-	
-	public void setContent(String content) throws IOException
-	{ 
-		this.content = content; FileUtil.writeToFile(content, alsPath); 
-	}	
-	
-	/**
-	 * This method basically initialize the path of alloy model, i.e. without any content.
-	 * 
-	 * @param alloyPath
-	 */
-	public void setAlloyModel(String alloyPath)
+	private void setAlloyModel(String alloyPath)
 	{			
 		this.alsPath = alloyPath;
+		File file = new File(alsPath);
+		file.deleteOnExit();
 		
 		alsOutDirectory = alsPath.substring(0, alsPath.lastIndexOf(File.separator)+1);		
 		alsmodelName = alsPath.substring(alsPath.lastIndexOf(File.separator)+1,alsPath.length()).replace(".als","");	
 	}
 	
-	/**
-	 * This method transforms the OCL constraints according to the OntoUML model 
-	 * into alloy, adding the resulting code into the alloy specification .
-	 * 
-	 * @param ontoumlmodel
-	 * @param oclmodel
-	 * 
-	 * @return
-	 */
-	public String addConstraints(OntoUMLParser refparser, TOCLParser toclparser, TOCL2AlloyOption oclOptions) throws IOException
+	public void setDomainModel(OntoUMLParser refparser, OntoUML2AlloyOptions ontoOptions)
 	{
+		ontouml2alloy = new OntoUML2Alloy(refparser, alsPath, ontoOptions);
+		alsModule = ontouml2alloy.transformer.module;
+	}
+	
+	public void appendContent(String content) throws IOException
+	{ 
+		additionalContent = additionalContent+content; 
+		FileUtil.writeToFile(alsModule.toString()+"\n"+additionalContent, alsPath); 
+	}	
 		
-		content += "\n"+TOCL2Alloy.convertToAlloy(toclparser, oclOptions);
+	/**
+	 * Transformations
+	 */
+	public void transformDomainModel() throws Exception
+	{
+		ontouml2alloy.transform();
+		FileUtil.writeToFile(alsModule.toString()+"\n"+additionalContent, alsPath);
+	}
+	
+	public String transformConstraints(OntoUMLParser refparser, TOCLParser toclparser, TOCL2AlloyOption oclOptions) throws IOException
+	{	
+		additionalContent += "\n"+TOCL2Alloy.convertHistoricalRelationships(ontouml2alloy.transformer.factory, ontouml2alloy.transformer.sigObject, toclparser);
+		additionalContent += "\n"+TOCL2Alloy.convertTemporalConstraints(toclparser, oclOptions);
 		
-		FileUtil.writeToFile(content, alsPath);
+		FileUtil.writeToFile(alsModule.toString()+"\n"+additionalContent, alsPath);
 		
 		return TOCL2Alloy.log;		
 	}
-	
+		
 	/** Get Log details for made operations. */
 	public String getDetails() { return logDetails; }
 	
@@ -171,8 +139,7 @@ public class AlloySpecification {
 	public String getAlloyModelName() {	return alsmodelName; }
 	
 	/** Get content of alloy specification. */
-	public String getContent() { return content; }
-	
+	public String getContent() { return alsModule.toString()+"\n"+additionalContent; }
 	
 	/** Get the Destination Directory of this model. */
 	public String getDirectory() { return alsOutDirectory; }

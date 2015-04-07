@@ -9,7 +9,7 @@ import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.BinaryOperation;
 import br.ufes.inf.nemo.alloy.DisjointExpression;
-import br.ufes.inf.nemo.ontouml2alloy.util.AlloyAPI;
+import br.ufes.inf.nemo.alloy.api.AlloyAPI;
 
 public class TopLevelClassRule {
         
