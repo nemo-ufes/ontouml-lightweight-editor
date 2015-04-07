@@ -43,34 +43,24 @@ public class OCLCompletionProvider {
 		String description = new String();
 		ArrayList<OCLTemplateCompletion> oclCompletionList = new ArrayList<OCLTemplateCompletion>();
 		
-		description = "<b>context TypeName <br>inv : true </b><br><br>"+
-		"Invariant.";
+		description = "<b>context Class <br>inv : true </b><br><br>"+
+		"Static Invariant";
 		
 		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
-			"inv","invariant",
-			"context ${Type}\ninv : ${true} ${cursor}\n",
+			"static invariant","invariant",
+			"context ${Class}\ninv : ${true} ${cursor}\n",
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "<b>context TypeName :: PropertyName : ResultTypeName <br>derive: ...</b><br><br>"+
-		"Derivation constraint.";
+		description = "<b>context Source :: Property : Set(Target) <br>derive: {OCLExpression} </b><br><br>"+
+		"Static Derivation.";
 		
 		c = new OCLTemplateCompletion(provider, 
-			"derive","derivation",
-			"context ${TypeName}::${PropertyName}:${ResultTypeName}\nderive : ${cursor}\n",
+			"static derivation","derivation",
+			"context ${Source} :: ${Property} : ${Target}\nderive : ${cursor}\n",
 			null,description);		
 		provider.addCompletion(c); 
-		oclCompletionList.add(c);
-		
-		description = "<b>context TypeName </b><br><br>"+
-		"Context declaration.";
-		
-		c = new OCLTemplateCompletion(provider, 
-			"context","context",
-			"context ${Type}\n${cursor}\n",
-			null, description);		
-		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
 //		description = "<b>context TypeName <br>def: OperationName(p: Param1,..., pn:ParamN) : ResultTypeName = ...</b><br><br>"+
@@ -91,21 +81,21 @@ public class OCLCompletionProvider {
 	{
 		ArrayList<OCLTemplateCompletion> oclCompletionList = new ArrayList<OCLTemplateCompletion>();
 		
-		String description = "<b>let var = true <br>in expression</b>";
+		String description = "<b>let var = {OCLExpression} <br>in {OCLExpression}</b>";
 		
 		OCLTemplateCompletion c = new OCLTemplateCompletion(provider, 
-			"let","let-in",
-			"let ${varName} = ${expression}\nin ${expression}${cursor}",
+			"let-in expression","let-in",
+			"let ${var} = ${OCLExpression}\nin ${OCLExpression}${cursor}",
 			null,
 			description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "<b>if cond then expression <br>else expression <br>endif</b>";
+		description = "<b>if {BooleanExpression} then {OCLExpression} <br>else {OCLExpression} <br>endif</b>";
 		
 		c = new OCLTemplateCompletion(provider, 
-			"if","if-then-else",
-			"if ${boolean-expression} then ${expression}\nelse ${expression} endif${cursor}",
+			"if-else expression","if-then-else",
+			"if ${BooleanExpression} then ${OCLExpression}\nelse ${OCLExpression} endif${cursor}",
 			null,
 			description);
 		
