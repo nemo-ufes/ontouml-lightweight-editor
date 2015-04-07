@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.tocl.parser;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.file.FileUtil;
 import br.ufes.inf.nemo.ocl.parser.OCLParser;
 import br.ufes.inf.nemo.ontouml2uml.OntoUML2UML;
+import br.ufes.inf.nemo.ontouml2uml.OntoUML2UMLUtil;
 
 /**
  * This class is the main class for parsing TOCL constraints over OntoUML models.
@@ -50,15 +52,18 @@ public class TOCLParser extends OCLParser{
     	
     	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
     	tmap = OntoUML2UML.getTemporalMap();
-        
-        //re-configuration
+    }
+	
+	public void autoConfigure()
+	{
+		//re-configuration
         org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());		
 		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
 		umlenv = envFactory.createEnvironment();		
 		myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
 		myOCL.setParseTracingEnabled(true);			                
 		umlreflection = umlenv.getUMLReflection();
-    }
+	}
 	
 	 /**
      * Constructor. 
@@ -73,15 +78,7 @@ public class TOCLParser extends OCLParser{
 		super(rootPackage,tempDirPath,backgroundModelName);
 
 		umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
-   		tmap = OntoUML2UML.getTemporalMap();
-      	
-        //re-configuration
-      	org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());		
-		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
-		umlenv = envFactory.createEnvironment();		
-		myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
-		myOCL.setParseTracingEnabled(true);			                
-		umlreflection = umlenv.getUMLReflection();
+   		tmap = OntoUML2UML.getTemporalMap();      	
     }
 	
     /**
@@ -97,14 +94,6 @@ public class TOCLParser extends OCLParser{
 
     	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
    		tmap = OntoUML2UML.getTemporalMap();
-      	
-        //re-configuration
-      	org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());		
-		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
-		umlenv = envFactory.createEnvironment();		
-		myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
-		myOCL.setParseTracingEnabled(true);			                
-		umlreflection = umlenv.getUMLReflection();
 	}
       
     /**
@@ -118,15 +107,7 @@ public class TOCLParser extends OCLParser{
     	
     	umlResource = OntoUML2UML.includeTemporalStructure(umlRoot,umlPath,true);
    		tmap = OntoUML2UML.getTemporalMap();
-      	
-        //re-configuration
-      	org.eclipse.ocl.uml.OCL.initialize(umlResource.getResourceSet());		
-		org.eclipse.ocl.uml.UMLEnvironmentFactory envFactory = new org.eclipse.ocl.uml.UMLEnvironmentFactory(umlResource.getResourceSet());
-		umlenv = envFactory.createEnvironment();		
-		myOCL = org.eclipse.ocl.uml.OCL.newInstance(umlenv);
-		myOCL.setParseTracingEnabled(true);			                
-		umlreflection = umlenv.getUMLReflection();
-	}
+   	}
     
     /** Get the OntoUML element related to the UML one. */
     @Override
@@ -539,6 +520,11 @@ public class TOCLParser extends OCLParser{
     /** Process Temporal Navigations with the syntax "[]" */
     public HashMap<String,Integer> processTemporalNavigations(String result)
     {
+    	// navigations such as endName[w]/attrName[w] will become endName(w)/attrName(w)
+	    result = result.replaceAll("\\[","(");
+	    result = result.replaceAll("\\]",")");
+	    
+	    //navigations such as endName/attrName will become endName()/attrName()
     	int char_added=0;
     	Pattern p = Pattern.compile("\\.\\w+");
     	Matcher m = p.matcher(result);
@@ -584,7 +570,7 @@ public class TOCLParser extends OCLParser{
 		}    	
     }
     
-    public void processHistoricalRelationship(String context, String declaration) throws ParserException
+    public void processHistoricalRelationship(String context, String declaration) throws ParserException, ParseException
     {
     	context = context.replace("context", "");
     	declaration = declaration.replace("{", "");
@@ -602,10 +588,6 @@ public class TOCLParser extends OCLParser{
     	String targetName = array2[1].trim();
     	checkInvalidType(targetName);
     	
-    	System.out.println("<"+sorceName+">");
-    	System.out.println("<"+relName+">");
-    	System.out.println("<"+targetName+">");
-    	
     	String[] declArray = declaration.trim().split(",");
     	String[] leftDecl = declArray[0].trim().split(":");
     	String[] rightDecl = declArray[1].trim().split(":");
@@ -617,20 +599,26 @@ public class TOCLParser extends OCLParser{
     	String[] array4 = rightDecl[1].trim().split("\\[");
     	
     	String srcType = array3[0].trim();
-    	String srcMult = array3[1].trim().split("\\]")[0].trim();
-    	System.out.println("<"+srcEndName+">");
-    	System.out.println("<"+srcType+">");
-    	System.out.println("<"+srcMult+">");
+    	String srcMult = array3[1].trim().split("]")[0].trim();
     	
     	String tgtType = array4[0].trim();
-    	String tgtMult = array4[1].trim().split("\\]")[0].trim();
-    	System.out.println("<"+tgtEndName+">");
-    	System.out.println("<"+tgtType+">");
-    	System.out.println("<"+tgtMult+">");    	
+    	String tgtMult = array4[1].trim().split("]")[0].trim();
+		   	
+		//System.out.println("<"+sorceName+">");
+		//System.out.println("<"+relName+">");
+		//System.out.println("<"+targetName+">");
+		//System.out.println("<"+srcEndName+">");
+		//System.out.println("<"+srcType+">");
+		//System.out.println("<"+srcMult+">");
+		//System.out.println("<"+tgtEndName+">");
+		//System.out.println("<"+tgtType+">");
+		//System.out.println("<"+tgtMult+">");    	
+    	
+    	OntoUML2UML.includeHistoricalRelationship(umlRoot, srcType, relName, tgtType, srcEndName, srcMult, tgtEndName, tgtMult);
     }    
     
     /** Process keyword "temp" */
-    public String processTempKeyword(String result) throws ParserException
+    public String processTempKeyword(String result) throws ParserException, ParseException
     {
     	Pattern p = Pattern.compile("(temp|inv|derive)(\\s*\\w*\\s*):");
 		Matcher m = p.matcher(result);
@@ -663,17 +651,20 @@ public class TOCLParser extends OCLParser{
     			}else { //this is the last constraint...        				
     				oclExpr = right.substring(0, right.length());
     			}            		
-        		
+
+    			/** historical relationship */
         		if(oclExpr.contains("{") || oclExpr.contains("}")) 
         		{        			
         			String context = left.substring(left.lastIndexOf("context"), left.length());
         			
-        			/** historical relationship */
         			processHistoricalRelationship(context, oclExpr);
         			
-        			result = left.substring(0,left.lastIndexOf("context"))+right.substring(right.indexOf("}")+1);
+        			result = left.replace(context,"")+remainingExpr;
         			
-        		}else{
+        			jump = jump - context.length() - keywordDeclaration.length() - oclExpr.length();        			
+        		}
+    			/** temporal OCL invariant */
+        		else{
 
         			constraintStereotypeList.add("temp");
         			
@@ -728,7 +719,7 @@ public class TOCLParser extends OCLParser{
     }
     
     /** Process OCL Textual Document */
-	private String processDocument(String oclTextualDocument) throws ParserException
+	private String processDocument(String oclTextualDocument) throws ParserException, ParseException
     {
 		String result = new String();
 		result = oclTextualDocument;
@@ -736,13 +727,9 @@ public class TOCLParser extends OCLParser{
 		// remove comments...
 		result = processInLineComments(result);
 		result = processMultiLineComments(result);
-
-    	// navigations such as endName[w]/attrName[w] will become endName(w)/attrName(w)
-	    result = result.replaceAll("\\[","(");
-	    result = result.replaceAll("\\]",")");
 	    
 	    // record which constraints are temporal
-	    // process temporal properties
+	    // and process temporal navigations
 	    result = processTempKeyword(result);
 	    
 		// remove world parameter and record it
@@ -765,16 +752,30 @@ public class TOCLParser extends OCLParser{
 		p = Pattern.compile("oclCeasesToBe\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
 		result = processOclCeasesToBeOperation(result, p);
 		
-		//System.out.println(result);
+		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);
+		
+		System.out.println(result);
 	    return result;
     }
 
 	/** Parse temporal OCL constraints from text. */
-	public void parseTemporalOCL(String oclTextualDocument) throws ParserException
+	private OCLInput textualProcessing(String oclTextualDocument) throws ParserException, ParseException
 	{		
 		oclTextualDocument = preProcessOCL(oclTextualDocument);
 		String processedOCLDoc = processDocument(oclTextualDocument);		
 		OCLInput document = new OCLInput(processedOCLDoc);
+		return document;
+	}
+	
+	public void parseTemporalOCL(String oclTextualDocument) throws ParserException, ParseException
+	{
+		OCLInput doc = textualProcessing(oclTextualDocument);
+		autoConfigure();
+		parseOCL(doc);
+	}
+	
+	private void parseOCL(OCLInput document) throws ParserException 
+	{	
 		try{
 			umlconstraintsList = myOCL.parse(document);
 		}catch(ParserException pe){				
@@ -784,7 +785,7 @@ public class TOCLParser extends OCLParser{
 	}
 
     /** Parse temporal OCL Constraints from a File. */
-    public void parseTemporalOCL(File temporalOCLFile) throws IOException, ParserException
+    public void parseTemporalOCL(File temporalOCLFile) throws IOException, ParserException, ParseException
     {    	
    		String oclContent = FileUtil.readFile(temporalOCLFile.getAbsolutePath());   		
    		parseTemporalOCL(oclContent);

@@ -2,10 +2,12 @@ package br.ufes.inf.nemo.ontouml2uml;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.uml2.uml.AggregationKind;
 
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.file.FileUtil;
@@ -195,6 +197,44 @@ public class OntoUML2UML {
 		generateOCLFile(umlPath, umlRoot);
 		
 		return OntoUML2UMLUtil.saveUML(umlPath,umlRoot);		
+	}
+	
+	public static void includeHistoricalRelationship(org.eclipse.uml2.uml.Package umlRoot, 
+	String sourceType, String relationshipName, String targetType, 
+	String sourceEndName, String sourceMult, String targetEndName, String targetMult) throws ParseException
+	{
+		org.eclipse.uml2.uml.Type sourceClass= (org.eclipse.uml2.uml.Type) utransformer.getConverter().GetElement(sourceType);
+		org.eclipse.uml2.uml.Type targetClass = (org.eclipse.uml2.uml.Type)utransformer.getConverter().GetElement(targetType);			
+		String end1Name = sourceEndName;
+		String end2Name = targetEndName;	    	
+		int end1Lower = 1;
+		int end2Lower = 1;
+		int end1Upper = 1;
+		int end2Upper = 1;	    	
+		if((end2Upper==-1) && (end2Lower==-1)) { end2Lower = 0;}
+		if((end1Upper==-1) && (end1Lower==-1)) { end1Lower = 0;}		
+		org.eclipse.uml2.uml.Association a2 = sourceClass.createAssociation(
+			true, AggregationKind.NONE_LITERAL, end1Name, end1Lower, end1Upper, targetClass, 
+			true, AggregationKind.NONE_LITERAL, end2Name, end2Lower, end2Upper
+		);		
+        if(a2==null) new Exception("Could not create the historical relationship: "+relationshipName);
+        a2.setName(relationshipName);       
+        a2.setIsDerived(false);        
+        ElementConverter.outln("UML:Association :: name="+a2.getName()+", visibility="+a2.getVisibility().getName()+", isAbstract="+a2.isAbstract()+", isDerived="+a2.isDerived());
+      
+       	org.eclipse.uml2.uml.Property p2 = a2.getMemberEnds().get(0);
+       	org.eclipse.uml2.uml.Property p1 = a2.getMemberEnds().get(1);
+        p1.setName(sourceEndName);
+        p2.setName(targetEndName);
+        
+        utransformer.getConverter().setMultiplicityFromString(p1, sourceMult);
+	    utransformer.getConverter().setMultiplicityFromString(p2, targetMult);
+	    
+        ElementConverter.outln("UML:Property :: "+"name="+p1.getName()+", isDerived="+p1.isDerived()+", lower="+p1.getLower()+", upper="+p1.getUpper()+        
+        ", isLeaf="+p1.isLeaf()+", isStatic="+p1.isStatic()+", isReadOnly="+p1.isReadOnly());        
+        
+        ElementConverter.outln("UML:Property :: "+"name="+p2.getName()+", isDerived="+p2.isDerived()+", lower="+p2.getLower()+", upper="+p2.getUpper()+        
+        ", isLeaf="+p2.isLeaf()+", isStatic="+p2.isStatic()+", isReadOnly="+p2.isReadOnly());        
 	}
 	
 	public static Resource convertToTemporalUML (RefOntoUML.Package refmodel, String umlPath, OntoUML2UMLOption opt, boolean simplifiedVersion)
