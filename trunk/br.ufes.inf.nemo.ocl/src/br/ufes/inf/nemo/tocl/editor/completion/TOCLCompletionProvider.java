@@ -32,23 +32,23 @@ public class TOCLCompletionProvider {
 		String description = new String();
 		ArrayList<TOCLTemplateCompletion> oclCompletionList = new ArrayList<TOCLTemplateCompletion>();
 						
-		description = "<b>context Class <br>temp : true</b><br><br>"+
+		description = "<b>context Class/World/Path <br>temp : true</b><br><br>"+
 		"Temporal Invariant.";
 		
 		TOCLTemplateCompletion c = new TOCLTemplateCompletion(provider, 
-			"temp","temp",
-			"context ${ClassName}\ntemp : ${true} ${cursor}\n",
+			"temporal constraint","temp",
+			"context ${Class}\ntemp : ${true} ${cursor}\n",
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-		description = "<b>context SourceClass::RelationshipName:TargetClass <br>" +
-		"temp : { sourceEndName: [SrcMult], targetEndName: [tgtMult] } </b><br><br>"+"Historical Relationship.";
+		description = "<b>context Source :: Relationship : Target <br>" +
+		"temp : { sourceEnd: [Mult], targetEnd: [Mult] } </b><br><br>"+"Historical Relationship.";
 		
 		c = new TOCLTemplateCompletion(provider, 
-			"hist","hist",
-			"context ${SourceClassName}::${RelationshipName}:${TargetClassName}\n" +
-			"temp : ${srcEndName}: [${srcMult}], ${tgtEndName}:[${tgtMult}] } ${cursor}\n",
+			"historical relationship","hist",
+			"context ${Source}::${Relationship}:${Target}\n" +
+			"temp : ${srcEnd}: [${0..*}], ${tgtEnd}:[${0..*}] } ${cursor}\n",
 			null, description);		
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
@@ -285,26 +285,6 @@ public class TOCLCompletionProvider {
 		provider.addCompletion(c);
 		oclCompletionList.add(c);
 		
-//		description = "Operation <b>World::isOrigin() : Boolean</b><br><br>"+
-//		"Verifies if the world self is the first world of the structure.";
-//		
-//		c = new TOCLTemplateCompletion(provider, 
-//			"isOrigin","isOrigin",
-//			"isOrigin()${cursor}",
-//			null, description);		
-//		provider.addCompletion(c);
-//		oclCompletionList.add(c);
-				
-//		description = "Operation <b>World::isTerminal() : Boolean</b><br><br>"+
-//		"Verifies if the world self is the last world of the structure.";
-//		
-//		c = new TOCLTemplateCompletion(provider, 
-//			"isTerminal","isTerminal",
-//			"isTerminal()${cursor}",
-//			null, description);		
-//		provider.addCompletion(c);
-//		oclCompletionList.add(c);
-				
 		return oclCompletionList;
 	}	
 }
