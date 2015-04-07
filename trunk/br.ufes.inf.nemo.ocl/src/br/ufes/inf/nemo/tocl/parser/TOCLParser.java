@@ -37,7 +37,8 @@ public class TOCLParser extends OCLParser{
     public ArrayList<String> oclCeasesToBeList = new ArrayList<String>();
     public ArrayList<String> oclBecomesList = new ArrayList<String>();
     public ArrayList<String> constraintStereotypeList = new ArrayList<String>();
-
+    public ArrayList<org.eclipse.uml2.uml.Association> historicalRelationshipsList = new ArrayList<org.eclipse.uml2.uml.Association>();
+    
     /**
      * Constructor. 
      * It uses a OntoUML2UML transformation behind the scenes to orchestrate the constraints parsing.
@@ -603,7 +604,13 @@ public class TOCLParser extends OCLParser{
     	
     	String tgtType = array4[0].trim();
     	String tgtMult = array4[1].trim().split("]")[0].trim();
-		   	
+		
+    	org.eclipse.uml2.uml.Association rel = OntoUML2UML.includeHistoricalRelationship(
+    		umlRoot, srcType, relName, tgtType, srcEndName, srcMult, tgtEndName, tgtMult
+    	);
+    	
+    	historicalRelationshipsList.add(rel);
+    	
 		//System.out.println("<"+sorceName+">");
 		//System.out.println("<"+relName+">");
 		//System.out.println("<"+targetName+">");
@@ -612,10 +619,16 @@ public class TOCLParser extends OCLParser{
 		//System.out.println("<"+srcMult+">");
 		//System.out.println("<"+tgtEndName+">");
 		//System.out.println("<"+tgtType+">");
-		//System.out.println("<"+tgtMult+">");    	
-    	
-    	OntoUML2UML.includeHistoricalRelationship(umlRoot, srcType, relName, tgtType, srcEndName, srcMult, tgtEndName, tgtMult);
+		//System.out.println("<"+tgtMult+">");
     }    
+    
+    public boolean isHistoricalRelationship(org.eclipse.uml2.uml.Property p)
+    {
+    	if(p.getAssociation()!=null){
+    		return historicalRelationshipsList.contains(p.getAssociation());
+    	}
+    	return false;
+    }
     
     /** Process keyword "temp" */
     public String processTempKeyword(String result) throws ParserException, ParseException

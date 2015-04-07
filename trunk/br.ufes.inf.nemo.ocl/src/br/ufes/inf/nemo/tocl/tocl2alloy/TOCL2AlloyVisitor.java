@@ -140,14 +140,20 @@ public class TOCL2AlloyVisitor extends OCL2AlloyVisitor {
     {    	
 		if(opt instanceof TOCL2AlloyOption && ((TOCL2AlloyOption)opt).getConstraintType(currentConstraint).equalsIgnoreCase("temporal"))
 		{
+			TOCLParser toclparser = (TOCLParser)oclparser;
 			StringBuffer result = new StringBuffer();
 	    	Property property = propCallExp.getReferredProperty();    	
 
-	    	RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getOntoUMLElement(property);
-	    	String nameProperty = refparser.getAlias(ontoProperty);    	
-	    	if (property.getAssociation()!=null) result.append(sourceResult + "." + nameProperty);    	
-	    	else if (property.getType().getName().compareToIgnoreCase("Boolean")==0) { result.append("("+sourceResult + " in World." + nameProperty+ ")");}    	
-	    	else { result.append(sourceResult + ".(World." + nameProperty+ ")"); }
+	    	if(toclparser.isHistoricalRelationship(property))
+	    	{	    	
+	    		RefOntoUML.Property ontoProperty = (RefOntoUML.Property)oclparser.getOntoUMLElement(property);
+	    		String nameProperty = refparser.getAlias(ontoProperty);    	
+	    		if (property.getAssociation()!=null) result.append(sourceResult + "." + nameProperty);    	
+	    		else if (property.getType().getName().compareToIgnoreCase("Boolean")==0) { result.append("("+sourceResult + " in World." + nameProperty+ ")");}    	
+	    		else { result.append(sourceResult + ".(World." + nameProperty+ ")"); }
+	    	}else{
+	    		result.append(sourceResult+"."+property.getName());
+	    	}
 	    	
 			return result.toString();
 		}else{

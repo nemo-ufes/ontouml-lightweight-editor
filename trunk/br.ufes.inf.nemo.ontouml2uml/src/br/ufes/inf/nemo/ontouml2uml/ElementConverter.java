@@ -509,12 +509,14 @@ public class ElementConverter {
         return d2;
      }
      
-     public void setMultiplicityFromString(org.eclipse.uml2.uml.Property property, String str) throws ParseException 
-     {	
-    	org.eclipse.uml2.uml.LiteralInteger lowerBound = ufactory.createLiteralInteger();
-    	org.eclipse.uml2.uml.LiteralUnlimitedNatural upperBound = ufactory.createLiteralUnlimitedNatural();    				
-    	Pattern pattern = Pattern.compile("\\d+|\\*|\\d+\\.\\.(\\d+|\\*)"); // 1..2, 1, N, *, 4..1, 1..1, 1..*, 0..*
-    	if (pattern.matcher(str).matches()) { 
+     public static int[] multiplicityFromString(String str) throws ParseException 
+     {
+    	int[] bounds = new int[2];
+    	bounds[0]=1;
+    	bounds[1]=1;
+		Pattern pattern = Pattern.compile("\\d+|\\*|\\d+\\.\\.(\\d+|\\*)"); // 1..2, 1, N, *, 4..1, 1..1, 1..*, 0..*
+    	if (pattern.matcher(str).matches()) 
+    	{ 
     		int lowerValue = 0, upperValue = 0;
     		if (!str.contains("..")) {
     			if(!str.contains("*")) // Multiplicities: 1, N 
@@ -545,15 +547,25 @@ public class ElementConverter {
    					lowerValue = Integer.valueOf(comps[0]);
    					upperValue = -1;
    				}
-   			}
-   			lowerBound.setValue(lowerValue);
-   			upperBound.setValue(upperValue);
-   		}else{
+   			}    		
+       		bounds[0] = lowerValue;
+       		bounds[1] = upperValue;       		
+    	}else{
    			throw new ParseException("Could not parse multiplicity string: '" + str + "'", 0);
-   		}
+   		}   	
+    	return bounds;
+     }
+     
+     public void setMultiplicityFromString(org.eclipse.uml2.uml.Property property, String str) throws ParseException 
+     {	
+    	org.eclipse.uml2.uml.LiteralInteger lowerBound = ufactory.createLiteralInteger();
+    	org.eclipse.uml2.uml.LiteralUnlimitedNatural upperBound = ufactory.createLiteralUnlimitedNatural();
+    	int[] result = multiplicityFromString(str);
+    	lowerBound.setValue(result[0]);
+   		upperBound.setValue(result[1]);    
    		if (property != null) {
    			property.setLowerValue(lowerBound);
    			property.setUpperValue(upperBound);
-   		}
+   		}   		
    	}
 }
