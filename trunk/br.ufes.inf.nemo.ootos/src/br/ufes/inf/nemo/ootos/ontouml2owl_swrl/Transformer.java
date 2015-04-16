@@ -975,8 +975,6 @@ public class Transformer {
 	}
 
 	private void processAssociation(Set<Association> lstAssociation, String stereotype) {
-		int match = 0;
-
 		OWLObjectProperty prop = null;
 		OWLObjectProperty invProp = null;
 
@@ -1073,8 +1071,6 @@ public class Transformer {
 
 			//Make the inverse property disjoint of the property
 			//			manager.applyChange(new AddAxiom(ontology, factory.getOWLDisjointObjectPropertiesAxiom(prop,invProp)));
-
-			match = 0;
 		}
 	}
 
@@ -1534,8 +1530,10 @@ public class Transformer {
 				} 
 				if(ax instanceof OWLSubClassOfAxiom){
 					OWLSubClassOfAxiom sax = (OWLSubClassOfAxiom)ax;
-					lstSubClassOfExpression.add(sax.getSuperClass());
-					manager.removeAxiom(ontology, ax);	
+					if(!sax.getObjectPropertiesInSignature().isEmpty()){
+						lstSubClassOfExpression.add(sax.getSuperClass());
+						manager.removeAxiom(ontology, ax);
+					}
 				}
 			}
 
@@ -1561,6 +1559,8 @@ public class Transformer {
 				}
 			}
 		}
+		
+		
 	}	
 
 	/**
