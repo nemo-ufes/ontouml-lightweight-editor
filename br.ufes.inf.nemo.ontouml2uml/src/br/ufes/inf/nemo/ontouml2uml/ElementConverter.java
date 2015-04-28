@@ -77,7 +77,7 @@ public class ElementConverter {
     	for(RefOntoUML.Element elem: umap.keySet()){
     		if(elem instanceof RefOntoUML.NamedElement){
     			RefOntoUML.NamedElement nElem = (RefOntoUML.NamedElement)elem;
-    			if(nElem.getName().compareToIgnoreCase(name)==0)return umap.get(nElem);
+    			if(nElem.getName().equals(name))return umap.get(nElem);
     		}
     	}
     	return null;
