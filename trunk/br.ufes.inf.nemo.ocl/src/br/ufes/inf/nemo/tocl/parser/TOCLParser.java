@@ -589,6 +589,10 @@ public class TOCLParser extends OCLParser{
     	String targetName = array2[1].trim();
     	checkInvalidType(targetName);
     	
+		System.out.println("<"+sorceName+">");
+		System.out.println("<"+relName+">");
+		System.out.println("<"+targetName+">");
+		
     	String[] declArray = declaration.trim().split(",");
     	String[] leftDecl = declArray[0].trim().split(":");
     	String[] rightDecl = declArray[1].trim().split(":");
@@ -604,23 +608,20 @@ public class TOCLParser extends OCLParser{
     	
     	String tgtType = array4[0].trim();
     	String tgtMult = array4[1].trim().split("]")[0].trim();
+	
+    	System.out.println("<"+srcEndName+">");
+		System.out.println("<"+srcType+">");
+		System.out.println("<"+srcMult+">");
+		System.out.println("<"+tgtEndName+">");
+		System.out.println("<"+tgtType+">");
+		System.out.println("<"+tgtMult+">");
 		
     	org.eclipse.uml2.uml.Association rel = OntoUML2UML.includeHistoricalRelationship(
     		umlRoot, srcType, relName, tgtType, srcEndName, srcMult, tgtEndName, tgtMult
     	);
     	
-    	historicalRelationshipsList.add(rel);
-    	
-		//System.out.println("<"+sorceName+">");
-		//System.out.println("<"+relName+">");
-		//System.out.println("<"+targetName+">");
-		//System.out.println("<"+srcEndName+">");
-		//System.out.println("<"+srcType+">");
-		//System.out.println("<"+srcMult+">");
-		//System.out.println("<"+tgtEndName+">");
-		//System.out.println("<"+tgtType+">");
-		//System.out.println("<"+tgtMult+">");
-    }    
+    	historicalRelationshipsList.add(rel);    	
+	}    
     
     public boolean isHistoricalRelationship(org.eclipse.uml2.uml.Property p)
     {
@@ -651,18 +652,19 @@ public class TOCLParser extends OCLParser{
     			
     			/** get the ocl expression as string */
     			String oclExpr = new String();
-        		String remainingExpr = new String();
-        		if(right.indexOf(":")!=-1) // has next constraint
-    			{    				
-    				if(right.indexOf("context")!=-1) {
+        		String remaining = new String();
+        		if(right.contains("inv") || right.contains("derive") || right.contains("temp")) // has next constraint
+    			{
+    				if(right.contains("context")) {
     					oclExpr = right.substring(0,right.indexOf("context"));
-    					remainingExpr = right.substring(right.indexOf("context"),right.length());
-    				}else{
+    					remaining = right.substring(right.indexOf("context"),right.length());
+    				}else{    					
     					oclExpr = right.substring(0,right.indexOf(":"));
-    					remainingExpr = right.substring(right.indexOf(":"),right.length());
-    				}    				
+    					remaining = right.substring(right.indexOf(":"),right.length());
+    				}
     			}else { //this is the last constraint...        				
-    				oclExpr = right.substring(0, right.length());
+    				oclExpr = right.substring(0, right.indexOf("endpackage"));
+    				remaining = right.substring(right.indexOf("endpackage"), right.length());
     			}            		
 
     			/** historical relationship */
@@ -672,7 +674,7 @@ public class TOCLParser extends OCLParser{
         			
         			processHistoricalRelationship(context, oclExpr);
         			
-        			result = left.replace(context,"")+remainingExpr;
+        			result = left.replace(context,"")+remaining;
         			
         			jump = jump - context.length() - keywordDeclaration.length() - oclExpr.length();        			
         		}
@@ -693,7 +695,7 @@ public class TOCLParser extends OCLParser{
     		            jump = jump + map.get(key);		            	        
     	        	}
     	        	
-            		result = left+keywordDeclaration+(oclExpr+remainingExpr);
+            		result = left+keywordDeclaration+(oclExpr+remaining);
         		}        		
     		}else if (keywordDeclaration.contains("inv") || keywordDeclaration.contains("derive")){
     			
