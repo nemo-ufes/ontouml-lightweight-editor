@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sml2" nsURI="http://www.example.org/sml2" nsPrefix="sml2">
+  <eAnnotations source="Toda função deve ser mapeada pra uma formal relation no modelo de contexto, porém com uma regra OCL que a defina"/>
+  <eAnnotations source="Para propósito de validação pode-se checar o datatype que a formalrelation retorna, se é do mesmo tipo do outro elemento sendo comparado, mas isso não influencia na criação da regra"/>
+  <eAnnotations source="Todo participante deve ter um parâmetro"/>
+  <eAnnotations source="Se atributo for um datatype, deve ser relacionado por uma função definida em OCL, otherwise não há como saber como abordar o valor do atributo"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SMLModel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//SituationType" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextModel" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Model"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="primitiveContextElements"
+        upperBound="-1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//PackageableElement"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SituationType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" upperBound="-1"
+        eType="#//SituationTypeParameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//SituationTypeElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SituationTypeElement" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Node" abstract="true" eSuperTypes="#//SituationTypeElement">
+    <eOperations name="sourceRelation" ordered="false" upperBound="-1" eType="#//ComparativeRelation">
+      <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
+        <details key="body" value="ComparativeRelation.allInstances()->select(r | r.source = self)"/>
+      </eAnnotations>
+      <eAnnotations source="Comments">
+        <details key="associations" value="Gets all comparative relations in which the element is source"/>
+      </eAnnotations>
+    </eOperations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExportableNode" abstract="true" eSuperTypes="#//Node">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeParameter" eType="#//SituationTypeParameter"
+        eOpposite="#//SituationTypeParameter/nodeReference"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EntityParticipant" eSuperTypes="#//Participant">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="isOfType" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Class"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RelatorParticipant" eSuperTypes="#//Participant">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="isOfType" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Relator"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="links" upperBound="-1"
+        eType="#//Link" eOpposite="#//Link/relator"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="#//SituationTypeElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="isOfType" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Mediation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entity" lowerBound="1"
+        eType="#//EntityParticipant"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="relator" lowerBound="1"
+        eType="#//RelatorParticipant" eOpposite="#//RelatorParticipant/links"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SituationTypeParameter">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeReference" lowerBound="1"
+        eType="#//ExportableNode" eOpposite="#//ExportableNode/nodeParameter"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AttributeReference" eSuperTypes="#//ExportableNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entity" lowerBound="1"
+        eType="#//Participant" eOpposite="#//Participant/reference"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Property"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ComparativeRelation" eSuperTypes="#//SituationTypeElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
+        eType="#//Node"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//Node"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="relation" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//FormalAssociation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="parameter" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isNegated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Literal" eSuperTypes="#//Node">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataType" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//DataType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Participant" abstract="true" eSuperTypes="#//ExportableNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reference" upperBound="-1"
+        eType="#//AttributeReference" eOpposite="#//AttributeReference/entity"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SituationParticipant" eSuperTypes="#//Participant">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="situationType" lowerBound="1"
+        eType="#//SituationType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" upperBound="-1"
+        eType="#//SituationParameterReference" eOpposite="#//SituationParameterReference/situation"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isPast" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SituationParameterReference" eSuperTypes="#//Node">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" lowerBound="1"
+        eType="#//SituationTypeParameter"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="situation" lowerBound="1"
+        eType="#//SituationParticipant" eOpposite="#//SituationParticipant/parameter"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExistsSituation" eSuperTypes="#//SituationParticipant">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isNegated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Function" eSuperTypes="#//ExportableNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" upperBound="-1"
+        eType="#//Parameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="function" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//FormalAssociation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" lowerBound="1" eType="#//Node"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameter" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//DataType"/>
+  </eClassifiers>
+</ecore:EPackage>
