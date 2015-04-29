@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <package
+            uri="http://www.example.org/sml2"
+            class="sml2.Sml2Package"
+            genModel="model/sml2.genmodel"/>
+   </extension>
+
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated sml2 -->
+      <package
+            uri="http://www.example.org/sml2"
+            class="sml2.Sml2Package"
+            genModel="model/sml2.genmodel"/>
+   </extension>
+
+</plugin>
