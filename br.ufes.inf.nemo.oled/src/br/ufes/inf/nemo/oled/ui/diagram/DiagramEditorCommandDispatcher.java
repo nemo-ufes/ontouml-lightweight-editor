@@ -289,6 +289,9 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("SHOW_GRID", new MethodCall(
 					getClass().getMethod("showGrid")));
+			
+			selectorMap.put("MODEL_COMPLETER", new MethodCall(
+					getClass().getMethod("activateModelCompleter")));
 
 			selectorMap.put("TOOLBOX", new MethodCall(
 					getClass().getMethod("showToolbox")));
@@ -390,14 +393,29 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("PATTERN_ROLE_PARTITION", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_ROLE_PARTITION));
 			
+			selectorMap.put("GENERIC_PATTERN_RELATOR", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.GENERIC_RELATOR));
+			
+			selectorMap.put("PATTERN_ROLEMIXIN_DEPENDENT", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.DEPENDENT_ROLEMIXIN));
+			
 			selectorMap.put("PATTERN_SUBSTANCE_SORTAL_PARTITION", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_SUBSTANCE_SORTAL_PARTITION));
 			
 			selectorMap.put("PATTERN_COMPLETER", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_COMPLETER));
 			
-			selectorMap.put("PATTERN_ROLEMIXIN_PATTERN", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_ROLEMIXIN_PATTERN));
+			selectorMap.put("PATTERN_ROLEMIXIN", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_ROLEMIXIN));
+			
+			selectorMap.put("CHARACTERIZATION_PATTERN", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.CHARACTERIZATION_PATTERN));
+			
+			selectorMap.put("RIGID_WEAK_SUPPLEMENTATION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.RIGID_WEAK_SUPPLEMENTATION));
+			
+			selectorMap.put("ANTIRIGID_WEAK_SUPPLEMENTATION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.ANTIRIGID_WEAK_SUPPLEMENTATION));
 			
 			selectorMap.put("PATTERN_RELATOR", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_RELATOR));
@@ -474,6 +492,14 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 		manager.getCurrentWrapper().getToolBar().update();
 	}
 
+	public void activateModelCompleter(){
+		if(manager.getCurrentDiagramEditor().getWrapper() != null){
+			manager.getCurrentDiagramEditor().getWrapper().getScrollPane().updateUI();
+		}
+		manager.setModelCompleter(getMenuManager().isSelected("MODEL_COMPLETER"));
+		manager.getFrame().getMainToolBar().setModelCompleter(getMenuManager().isSelected("MODEL_COMPLETER"));
+	}
+	
 	public void showToolbox() {
 		manager.getFrame().showToolBox();
 	}

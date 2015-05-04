@@ -5,14 +5,18 @@ import java.util.HashMap;
 import java.util.Set;
 
 import RefOntoUML.Association;
+import RefOntoUML.Category;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.Kind;
+import RefOntoUML.Mixin;
+import RefOntoUML.Mode;
 import RefOntoUML.Package;
 import RefOntoUML.Phase;
 import RefOntoUML.Quantity;
 import RefOntoUML.Relator;
 import RefOntoUML.Role;
+import RefOntoUML.RoleMixin;
 import RefOntoUML.SubKind;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
@@ -20,11 +24,16 @@ import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 
-public class GenericMultipleRelator extends AbstractPattern {
+public class CharacterizationPattern extends AbstractPattern {
 
+	private Classifier c = null;
+	public CharacterizationPattern(OntoUMLParser parser, double x, double y) {
+		super(parser, x, y, "/resource/Characterization.png", "Characterization Pattern");
+	}
 
-	public GenericMultipleRelator(OntoUMLParser parser, double x, double y) {
-		super(parser, x, y, "/resource/MultipleGenericRelator.PNG", "Multiple Generic Relator");
+	public CharacterizationPattern(OntoUMLParser parser, Classifier c, double x, double y) {
+		super(parser, x, y, "/resource/Characterization.png", "Characterization Pattern");
+		this.c = c;
 	}
 
 	@Override
@@ -59,16 +68,32 @@ public class GenericMultipleRelator extends AbstractPattern {
 		set = parser.getAllInstances(Relator.class);
 		if(!set.isEmpty())
 			hashTree.put("Relator", UtilAssistant.getStringRepresentationClass(set));
+		
+		set = parser.getAllInstances(Mixin.class);
+		if(!set.isEmpty())
+			hashTree.put("Mixin", UtilAssistant.getStringRepresentationClass(set));
+		
+		set = parser.getAllInstances(RoleMixin.class);
+		if(!set.isEmpty())
+			hashTree.put("RoleMixin", UtilAssistant.getStringRepresentationClass(set));
+		
+		set = parser.getAllInstances(Category.class);
+		if(!set.isEmpty())
+			hashTree.put("Category", UtilAssistant.getStringRepresentationClass(set));
+		
+		set = parser.getAllInstances(Mode.class);
+		if(!set.isEmpty())
+			hashTree.put("Mode", UtilAssistant.getStringRepresentationClass(set));
 
 		dym.addHashTree(hashTree);
 
-		dym.addTableLine("relator", "Relator", new String[] {"Relator"});
-		
-		dym.addTableLine("sortal", "Sotal 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
-		dym.addTableLine("sortal", "Sotal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+		if(c instanceof Mode){
+			dym.addTableRigidLine("mode", UtilAssistant.getStringRepresentationClass(c), new String[] {"Mode"});
+		}else{
+			dym.addTableLine("mode", "Mode", new String[] {"Mode"});
+		}
 
-		dym.setInitialItemCount(3);
-		dym.setAddLineButtonAction("sortal", "Sortal N", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+		dym.addTableLine("universal", "Universal", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role", "RoleMixin", "Mixin", "Category", "Relator"});
 
 		dm.open();		
 	}
@@ -79,24 +104,19 @@ public class GenericMultipleRelator extends AbstractPattern {
 		outcomeFixer = new OutcomeFixer(root);
 		fix = new Fix();
 
-		ArrayList<Object[]> relators = dym.getRowsOf("relator");
-		ArrayList<Object[]> sortals = dym.getRowsOf("sortal");
+		ArrayList<Object[]> modes = dym.getRowsOf("mode");
+		ArrayList<Object[]> universals = dym.getRowsOf("universal");
 
+		Classifier mode 	= getClassifier(modes.get(0), x, y);
+		Classifier universal= getClassifier(universals.get(0), x+verticalDistance, y);
 
-		Classifier sortal;
-		Classifier relator = getClassifier(relators.get(0), x, y);
+		Association characterization = null;
 
-		int i = 0;
-		for(Object[] row : sortals){
-			sortal = getClassifier(row, x+(i*verticalDistance)/3, y+horizontalDistance);
-			if(sortal != null){
-				if(relator != null){
-					Association mediation = (Association) outcomeFixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, sortal).getAdded().get(0);
-					fix.includeAdded(mediation);
-				}
-				i++;
-			}
+		if(mode != null && universal != null){
+			characterization = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.CHARACTERIZATION, "", mode, universal).getAdded().get(0);
+			fix.includeAdded(characterization);
 		}
+
 		return fix;
 	}
 

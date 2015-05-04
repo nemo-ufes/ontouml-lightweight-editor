@@ -75,7 +75,7 @@ public class RolePartition extends AbstractPattern{
 	}
 
 	@Override
-	public Fix getFix(){
+	public Fix getSpecificFix(){
 		getPartitionFix();
 		return fix;
 	}

@@ -26,6 +26,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import br.ufes.inf.nemo.pattern.util.UtilPattern;
+
 /*
  * TODO LIST
  * 	- Implement reuse of classes used in the current table
@@ -37,10 +39,15 @@ import org.eclipse.wb.swt.SWTResourceManager;
  */
 public class DynamicWindow extends Dialog {
 	private Composite container;	
+	private static boolean forcedClosed = true;
 	private String title = new String();
 	private HashMap<String,ArrayList<Object[]>> hashTable = null;
 	public HashMap<String, ArrayList<Object[]>> getHashTable(){
 		return hashTable;
+	}
+
+	public boolean isForcedCloed(){
+		return forcedClosed;
 	}
 
 	public DynamicWindow(Shell parentShell, String title, String imagePath) 
@@ -50,32 +57,39 @@ public class DynamicWindow extends Dialog {
 		currentImage = SWTResourceManager.getImage(DynamicWindow.class, imagePath);
 		setDefaultImage(new Image(Display.getDefault(),DynamicWindow.class.getResourceAsStream("/resources/icons/x16/sitemap.png")));		
 	}
-	
+
 	public static DynamicWindow createDialog(String title, String imagePath)
 	{			
 		Display display = Display.getDefault();	    	
-		Shell shell = display.getActiveShell();		
+		Shell shell = display.getActiveShell();	
+		if(shell == null){
+			shell = new Shell(display);
+		}
+
 		DynamicWindow resultDIalog = new DynamicWindow(shell,title,imagePath);
+
+		UtilPattern.centralizeShell(display, shell);
 		resultDIalog.create();
+
 		return resultDIalog;
 	}
 	
 	@Override
 	public void create() {
-		 super.create();	    	  
-		 setShellStyle(SWT.TITLE);
-		 bringToFront(getShell());
-		 getShell().setText(title);	      
+		super.create();	    	  
+		setShellStyle(SWT.TITLE);
+		bringToFront(getShell());
+		getShell().setText(title);	      
 	}
-	
+
 	public void bringToFront(final Shell shell) {
-	    shell.getDisplay().asyncExec(new Runnable() {
-	        public void run() {
-	            shell.forceActive();
-	        }
-	    });
+		shell.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				shell.forceActive();
+			}
+		});
 	}
-	
+
 	private Table table;
 	public Table getTable() {
 		return table;
@@ -88,7 +102,7 @@ public class DynamicWindow extends Dialog {
 	}
 
 	private Image currentImage;
-	
+
 	protected Button createButton(Composite arg0, int arg1, String arg2, boolean arg3) 
 	{
 		//Retrun null so that no default buttons like 'OK' and 'Cancel' will be created
@@ -104,7 +118,7 @@ public class DynamicWindow extends Dialog {
 	{
 		container = (Composite) super.createDialogArea(parent);	
 		container.setLayout(new FormLayout());
-				
+
 		Composite composite = new Composite(container, SWT.BORDER);
 		FormData fd_composite = new FormData();
 		fd_composite.top = new FormAttachment(0, 10);
@@ -112,12 +126,12 @@ public class DynamicWindow extends Dialog {
 		fd_composite.left = new FormAttachment(0, 494);
 		composite.setLayoutData(fd_composite);
 		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
-		
+
 
 		Label imgLabel = new Label(composite, SWT.HORIZONTAL | SWT.CENTER);
 		imgLabel.setAlignment(SWT.CENTER);
 		imgLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
-		
+
 		//Calculating the new Image size holding the aspect ratio
 		Double w = (401.0/currentImage.getBounds().width);
 		Double h = (220.0/currentImage.getBounds().height);
@@ -167,6 +181,7 @@ public class DynamicWindow extends Dialog {
 						}						
 					}
 				}
+				forcedClosed = false;
 				close();
 			}
 		});
@@ -225,7 +240,7 @@ public class DynamicWindow extends Dialog {
 			}
 		});
 		btnNewButton.setText("Show Image");
-		
+
 		Button btnHelp = new Button(container, SWT.FLAT | SWT.CENTER);
 		fd_btnAddNewLine.left = new FormAttachment(btnHelp, 48);
 		FormData fd_btnHelp = new FormData();
@@ -241,11 +256,11 @@ public class DynamicWindow extends Dialog {
 				h.open();
 			}
 		});
-		
+
 		return container;
 	}
 
-	
+
 	private int initialItemCount = 0;
 	public void setInitialItemCount(int initialValue) {
 		initialItemCount = initialValue;
@@ -265,7 +280,7 @@ public class DynamicWindow extends Dialog {
 		if(!dataFields.contains(field))
 			dataFields.add(field);
 	}
-	
+
 	private ArrayList<String> usedStereotypes = new ArrayList<>();
 	public void addUsedStereotypes(String[] stereotypes) {
 		for (String stereotype : stereotypes) {

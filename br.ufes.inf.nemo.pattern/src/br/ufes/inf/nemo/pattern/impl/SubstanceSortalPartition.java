@@ -18,6 +18,12 @@ public class SubstanceSortalPartition extends AbstractPattern{
 		super(parser, x, y, "/resource/SubstanceSortalPartition.png", "Substance Sortal Partition");
 	}
 
+	private Classifier c;
+	public SubstanceSortalPartition(OntoUMLParser parser, Classifier c,	double x, double y) {
+		super(parser, x, y, "/resource/SubstanceSortalPartition.png", "Substance Sortal Partition");
+		this.c = c;
+	}
+
 	@Override
 	public void runPattern() {
 		HashMap<String, String[]> hashTree = new HashMap<>();
@@ -34,15 +40,19 @@ public class SubstanceSortalPartition extends AbstractPattern{
 		set = parser.getAllInstances(Quantity.class);
 		if(!set.isEmpty())
 			hashTree.put("Quantity", UtilAssistant.getStringRepresentationClass(set));
-		
+
 		set = parser.getAllInstances(Category.class);
 		if(!set.isEmpty())
 			hashTree.put("Category", UtilAssistant.getStringRepresentationClass(set));
 
 		dym.addHashTree(hashTree);
 
-		dym.addTableLine("general", "General", new String[] {"Category"});
-		
+		if(c instanceof Category){
+			dym.addTableRigidLine("general", UtilAssistant.getStringRepresentationClass(c), new String[] {"Category"});
+		}else{
+			dym.addTableLine("general", "General", new String[] {"Category"});
+		}
+
 		dym.addTableLine("specific", "Specific 1", new String[] {"Kind","Collective", "Quantity"});
 		dym.addTableLine("specific", "Specific 2", new String[] {"Kind","Collective", "Quantity"});
 
@@ -54,7 +64,7 @@ public class SubstanceSortalPartition extends AbstractPattern{
 	}
 
 	@Override
-	public Fix getFix(){
+	public Fix getSpecificFix(){
 		getPartitionFix();
 		return fix;
 	}

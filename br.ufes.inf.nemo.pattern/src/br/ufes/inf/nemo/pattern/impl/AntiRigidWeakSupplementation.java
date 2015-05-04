@@ -4,25 +4,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import RefOntoUML.Association;
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.Generalization;
 import RefOntoUML.Kind;
-import RefOntoUML.Mixin;
+import RefOntoUML.Meronymic;
 import RefOntoUML.Package;
-import RefOntoUML.Phase;
 import RefOntoUML.Quantity;
-import RefOntoUML.Role;
 import RefOntoUML.SubKind;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 
-public class MixinPatternWithSubkind extends AbstractPattern{
-
-	public MixinPatternWithSubkind(OntoUMLParser parser, double x, double y) {
-		super(parser, x, y, "/resource/MixinPatternWithSubkind.png", "Mixin Pattern With Subkind");
+public class AntiRigidWeakSupplementation extends AbstractPattern {
+	public AntiRigidWeakSupplementation(OntoUMLParser parser, double x, double y) {
+		super(parser, x, y, "/resource/AntiRigidWeakSupplementation.png", "Anti-Rigid Weak Supplementation");
 	}
 
 	@Override
@@ -45,77 +44,68 @@ public class MixinPatternWithSubkind extends AbstractPattern{
 		set = parser.getAllInstances(SubKind.class);
 		if(!set.isEmpty())
 			hashTree.put("Subkind", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Phase.class);
-		if(!set.isEmpty())
-			hashTree.put("Phase", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Role.class);
+		
+		set = parser.getAllInstances(SubKind.class);
 		if(!set.isEmpty())
 			hashTree.put("Role", UtilAssistant.getStringRepresentationClass(set));
 
-		set = parser.getAllInstances(Mixin.class);
-		if(!set.isEmpty())
-			hashTree.put("Mixin", UtilAssistant.getStringRepresentationClass(set));
-
-
 		dym.addHashTree(hashTree);
 
-		dym.addTableLine("mixin", "Mixin", new String[] {"Mixin"});
+		dym.addTableLine("type", "Type", new String[] {"Kind","Collective", "Quantity", "Subkind"});
+		dym.addTableLine("complex", "Complex Type", new String[] {"Role"});
+		dym.addTableLine("atomic", "Atomic Type", new String[] {"Role"});
 
-		dym.addTableLine("sortal", "Sortal", new String[] {"Kind","Collective", "Quantity"});
-
-		dym.addTableLine("subkind", "Subkind", new String[] {"Subkind"});
-		dym.addTableLine("antirigidsortal", "Anti Rigid Sortal", new String[] {"Role","Phase"});
-
-		dm.open();
-
+		dm.open();		
 	}
 
 	@Override
-	public Fix getSpecificFix(){
+	public Fix getSpecificFix() {
 		Package root = parser.getModel();
 		outcomeFixer = new OutcomeFixer(root);
 		fix = new Fix();
 		Fix _fix = new Fix();
-
+		
 		ArrayList<Generalization> generalizationList = new ArrayList<>();
+		
+		ArrayList<Object[]> types = dym.getRowsOf("type");
+		ArrayList<Object[]> complexes = dym.getRowsOf("complex");
+		ArrayList<Object[]> atomics = dym.getRowsOf("atomic");
 
-		ArrayList<Object[]> mixins = dym.getRowsOf("mixin");
-		ArrayList<Object[]> sortals = dym.getRowsOf("sortal");
-		ArrayList<Object[]> subkinds = dym.getRowsOf("subkind");
-		ArrayList<Object[]> antirigids = dym.getRowsOf("antirigidsortal");
+		Classifier type 	= getClassifier(types.get(0), x, y);
+		Classifier complex 	= getClassifier(complexes.get(0), x-horizontalDistance/2, y+horizontalDistance*0.6);
+		Classifier atomic 	= getClassifier(atomics.get(0),x+(1*verticalDistance)/4, y+horizontalDistance*0.6);
 
-		Classifier mixin 	= getClassifier(mixins.get(0), x, y);
-		Classifier sortal 	= getClassifier(sortals.get(0), x-verticalDistance/2, y);
-		Classifier subkind 	= getClassifier(subkinds.get(0),x+(0*verticalDistance)/3, y+horizontalDistance);
-		Classifier antirigid 	= getClassifier(antirigids.get(0),x+(1*verticalDistance)/3, y+horizontalDistance);
-
-
-		if(mixin != null){
-			if(subkind != null){
-				_fix.addAll(outcomeFixer.createGeneralization(subkind, mixin));
+		Association componentOf = null;
+		
+		
+		if(type != null){
+			
+			if(complex != null){
+				_fix.addAll(outcomeFixer.createGeneralization(complex, type));
+				Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
+				generalizationList.add(generalization);		
+				fix.addAll(_fix);
+			}
+			if(atomic != null){
+				_fix = outcomeFixer.createGeneralization(atomic, type);
 				Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
 				generalizationList.add(generalization);
 				fix.addAll(_fix);
 			}
-
-			if(antirigid != null){
-				_fix.addAll(outcomeFixer.createGeneralization(antirigid, mixin));
-				Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
-				generalizationList.add(generalization);
-				fix.addAll(_fix);
-			}
-
-			if(subkind != null && antirigid != null){
+			if(generalizationList.size() == 2){
 				fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"+UtilAssistant.getCont()));
 			}
 		}
 
-		if(sortal != null){
-			if(subkind != null){
-				fix.addAll(outcomeFixer.createGeneralization(subkind,sortal));
-			}
+		if(complex != null && type != null){
+			componentOf = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.COMPONENTOF, "", complex, type).getAdded().get(0);
+			
+			((Meronymic)(componentOf)).setIsShareable(true);
+			
+			outcomeFixer.changePropertyMultiplicity(componentOf.getMemberEnd().get(0), "0..1");//complex
+			outcomeFixer.changePropertyMultiplicity(componentOf.getMemberEnd().get(1), "2..*");//type
+			
+			fix.includeAdded(componentOf);
 		}
 
 		return fix;

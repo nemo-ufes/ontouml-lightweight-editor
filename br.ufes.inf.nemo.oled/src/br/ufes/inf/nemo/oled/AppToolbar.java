@@ -124,6 +124,7 @@ public class AppToolbar implements ActionListener {
 		createButton("statistics");
 		
 		toolbar.addSeparator();
+		
 		JButton btnText = createButton("generatetext");
 		btnText.setToolTipText("" +
 			"<html>Glossary of Terms: Transform your ontology into a Textual Description in Portuguese-BR.<br><br>"+
@@ -160,6 +161,30 @@ public class AppToolbar implements ActionListener {
 			"TIP: You may customize which packages or elements do you want to consider <br>" +
 			"just deselecting/selecting them on the project browser.<br><br>" +
 			"</html>");	
+		
+		toolbar.addSeparator();
+		
+		btnModelCompleter = new JToggleButton("");
+		btnModelCompleter.setSelected(frame.getMainMenu().isSelected("MODEL_COMPLETER"));
+		btnModelCompleter.setToolTipText("Activating Model Completer: Evaluate your ontology regarding its completeness.");
+		btnModelCompleter.addActionListener(new ActionListener() {				
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		frame.getDiagramManager().setModelCompleter(btnModelCompleter.isSelected());
+        		frame.getMainMenu().setModelCompleterItemSelection(btnModelCompleter.isSelected());
+//        		frame.showBottomView();
+        	}
+        });
+		btnModelCompleter.setFocusable(false);
+		btnModelCompleter.setIcon(new ImageIcon(AppToolbar.class.getResource("/resources/icons/x16/wand.png")));
+		toolbar.add(btnModelCompleter);
+		
+//		JButton btnModelCompleter = createButton("modelcompleter");
+//		btnModelCompleter.setToolTipText("" +
+//			"<html>Activating Model Completer: Evaluate your ontology regarding its completeness.<br><br>"+
+//			"TIP: Your model will be evaluated for each new class created." +
+//			"</html>");	
+		
 		enableButton("UNDO", true);
 		enableButton("REDO", true);
 		//enableButton("CUT", false);
@@ -168,6 +193,11 @@ public class AppToolbar implements ActionListener {
 		
 		toolbar.setFloatable(false);
 		toolbar.setMargin(new Insets(5,5,5,5));
+	}
+	
+	private JToggleButton btnModelCompleter;
+	public void setModelCompleter(boolean bool) {
+		btnModelCompleter.setSelected(bool);;
 	}
 
 	/**

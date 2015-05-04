@@ -20,6 +20,12 @@ public class PhasePartition extends AbstractPattern{
 		super(parser, x, y, "/resource/PhasePartition.png", "Phase Partition");
 	}
 
+	private Classifier c;
+	public PhasePartition(OntoUMLParser parser, Classifier c, double x, double y) {
+		super(parser, x, y, "/resource/PhasePartition.png", "Phase Partition");
+		this.c = c;
+	}
+	
 	@Override
 	public void runPattern() {
 		HashMap<String, String[]> hashTree = new HashMap<>();
@@ -52,7 +58,12 @@ public class PhasePartition extends AbstractPattern{
 		dym.addHashTree(hashTree);
 		dym.addTableLine("general", "Sortal", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 		
-		dym.addTableLine("specific", "Specific 1", new String[] {"Phase"});
+		if(c instanceof Phase){
+			dym.addTableRigidLine("specific", UtilAssistant.getStringRepresentationClass(c), new String[] {"Phase"});
+		}else{
+			dym.addTableLine("specific", "Specific 1", new String[] {"Phase"});	
+		}
+		
 		dym.addTableLine("specific", "Specific 2", new String[] {"Phase"});
 		
 		dym.setInitialItemCount(3);
@@ -62,7 +73,7 @@ public class PhasePartition extends AbstractPattern{
 	}
 
 	@Override
-	public Fix getFix(){
+	public Fix getSpecificFix(){
 		getPartitionFix();
 		return fix;
 	}

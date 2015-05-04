@@ -62,7 +62,7 @@ public class PrincipleOfIdentity extends AbstractPattern{
 	}
 
 	@Override
-	public Fix getFix(){
+	public Fix getSpecificFix(){
 		try{
 			Package root = parser.getModel();
 			outcomeFixer = new OutcomeFixer(root);

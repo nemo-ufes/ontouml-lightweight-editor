@@ -22,10 +22,8 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.pattern.impl.AbstractPattern;
-import br.ufes.inf.nemo.pattern.ui.manager.ModelCompleterManager;
 import br.ufes.inf.nemo.pattern.util.UtilPattern;
 
 
@@ -41,49 +39,58 @@ public class ModelCompleter extends Dialog{
 	private ArrayList<Button> buttons = new ArrayList<>();
 
 	private static Shell shell;
-	public static ModelCompleter createDialog(OntoUMLParser parser, double x, double y)
-	{			
+	
+	private static ModelCompleter init(){
 		Display display = Display.getDefault();	    	
-
 		shell = display.getActiveShell();	
 		if(shell == null){
 			shell = new Shell(display);
 		}
-
+		
 		UtilPattern.centralizeShell(display, shell);
-
+		
 		ModelCompleter window = new ModelCompleter(shell);
-		window.create();
-
-		ModelCompleterManager mcm = new ModelCompleterManager(parser, window, x, y);
-		mcm.runAnalysis();
-
-		window.addTableListener();
-
+		
 		return window;
 	}
-
+	
+	public static ModelCompleter createDialog(boolean bool)	{			
+		ModelCompleter window = init();
+		window.showCompleteMessage(bool);
+		window.create();
+		
+		return window;
+	}
+	
+	public static ModelCompleter createDialog()	{			
+		ModelCompleter window = init();
+		window.create();
+		
+		return window;
+	}
 
 	@Override
 	public int open() {
 		//to show a friendly message
-		if(table.getItemCount() == 0){
-			MessageBox dialog = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK );
-			dialog.setText("Model Completer");
-			dialog.setMessage("There is nothing to do, your model appear to be complete.");
-			return dialog.open(); 
+		if(showCompleteMessage && table.getItemCount() == 0){
+			return showMessageBox();
 		}
 		return super.open();
 	}
 	
-	private void addTableListener(){
+	public int showMessageBox(){
+		MessageBox dialog = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK );
+		dialog.setText("Model Completer");
+		dialog.setMessage("There is nothing to do, your model appear to be complete.");
+		return dialog.open(); 
+	}
+	
+	public void addTableListener(){
 		TableListener paintListener = new TableListener(buttons);
 
 		table.addListener(SWT.MeasureItem, paintListener);
 		table.addListener(SWT.PaintItem, paintListener);
 		table.addListener(SWT.EraseItem, paintListener);
-
-		table.getColumn(2).pack();
 	}
 
 	@Override
@@ -105,6 +112,7 @@ public class ModelCompleter extends Dialog{
 	}
 
 	/**
+	 * 
 	 * Create contents of the window.
 	 *
 	 */
@@ -123,15 +131,15 @@ public class ModelCompleter extends Dialog{
 		addTableHeaders();
 
 		label = new Label(container, SWT.NONE);
-		label.setBounds(10, 10, 380, 14);
-		label.setBounds(10, 10, 345, 14);
-		label.setText("The model appears to be incomplete. The actions below must be performed.");
+		label.setBounds(10, 10, 420, 14);
+		label.setText("The model appears to be incomplete. The actions below must be applied.");
 
 		Button btnClose = new Button(container, SWT.NONE);
 		btnClose.setBounds(298, 278, 123, 28);
 		btnClose.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
+				wasClosed = true;
 				close();
 			}
 		});
@@ -155,10 +163,12 @@ public class ModelCompleter extends Dialog{
 
 		column = new TableColumn(table, SWT.CENTER);
 		column.setWidth(181);
-		column.setText("FOP");
+		column.setText("Structural Patterns");
 	}
 
 	private Fix fix = null;
+
+	private boolean showCompleteMessage = true;
 	public Fix getFix(){
 		return fix;
 	}
@@ -195,7 +205,7 @@ public class ModelCompleter extends Dialog{
 		editor.horizontalAlignment = SWT.CENTER;
 		editor.setEditor (btn, tableItem, 3);
 	}
-
+	
 	//Solution found: http://www.java2s.com/Tutorial/Java/0280__SWT/MultilineTablecell.htm
 	class TableListener implements Listener{
 		private ArrayList<Button> buttons;
@@ -233,5 +243,24 @@ public class ModelCompleter extends Dialog{
 			}	
 		}
 
+	}
+
+	public void showCompleteMessage(boolean showCompleteMessage) {
+		this.showCompleteMessage = showCompleteMessage;
+	}
+
+	public void redraw() {
+		table.removeAll();
+		table.setRedraw(true);
+	}
+	
+	public boolean isEmpty(){
+		return table.getItemCount() == 0;
+	}
+	
+	private boolean wasClosed = false;
+
+	public boolean wasClosed() {
+		return wasClosed;
 	}
 }
