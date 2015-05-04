@@ -130,19 +130,17 @@ public class AppMenu implements ActionListener {
 		JMenu toolMenu = createMenu("tool");
 		menubar.add(toolMenu);
 		
-		JMenuItem assistantItem = createCheckBoxMenuItem(toolMenu, "assistant");
-		toolMenu.setVisible(false);
+		modelCompleterItem = createCheckBoxMenuItem(toolMenu, "modelcompleter");
+		toolMenu.setVisible(true);
 		
 		//Victor comentar
-		assistantItem.setSelected(false);
-		assistantItem.setEnabled(true);
-		//assistantItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK + ActionEvent.SHIFT_MASK));		
+		modelCompleterItem.setSelected(false);
 		
 	}
 	
-	public boolean isAssistantChecked()
-	{
-		return itemMap.get("ASSISTANT").isSelected();
+	private JMenuItem modelCompleterItem;
+	public void setModelCompleterItemSelection(boolean bool){
+		itemMap.get("MODEL_COMPLETER").setSelected(bool);
 	}
 	
 	/**

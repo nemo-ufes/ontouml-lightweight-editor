@@ -122,8 +122,23 @@ public abstract class AbstractPattern {
 	}
 	
 	public abstract void runPattern();
-	public abstract Fix getFix();
-
+	
+	public Fix getFix(){
+		if(dm.isForcedCloed()){
+			return null;
+		}
+		
+		try{
+			Fix fix = getSpecificFix();
+			return fix;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	protected abstract Fix getSpecificFix();
+	
 	public boolean canGetFix() {
 		return dym.wasPerformed();
 	}

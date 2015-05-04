@@ -88,60 +88,55 @@ public class RelatorPattern extends AbstractPattern {
 	}
 
 	@Override
-	public Fix getFix() {
-		try{
-			Package root = parser.getModel();
-			outcomeFixer = new OutcomeFixer(root);
-			fix = new Fix();
+	public Fix getSpecificFix() {
+		Package root = parser.getModel();
+		outcomeFixer = new OutcomeFixer(root);
+		fix = new Fix();
 
-			ArrayList<Object[]> generals = dym.getRowsOf("general");
-			ArrayList<Object[]> specifics = dym.getRowsOf("specific");
-			ArrayList<Object[]> relators = dym.getRowsOf("relator");
+		ArrayList<Object[]> generals = dym.getRowsOf("general");
+		ArrayList<Object[]> specifics = dym.getRowsOf("specific");
+		ArrayList<Object[]> relators = dym.getRowsOf("relator");
 
-			Classifier general1 	= getClassifier(generals.get(0), x, y);
-			Classifier general2 	= getClassifier(generals.get(1), x+verticalDistance, y);
-			Classifier specific1 	= getClassifier(specifics.get(0),x, y+(horizontalDistance/2));
-			Classifier specific2 	= getClassifier(specifics.get(1),x+verticalDistance, y+(horizontalDistance/2));
-			Classifier relator 		= getClassifier(relators.get(0), x+(verticalDistance/2), y);
+		Classifier general1 	= getClassifier(generals.get(0), x, y);
+		Classifier general2 	= getClassifier(generals.get(1), x+verticalDistance, y);
+		Classifier specific1 	= getClassifier(specifics.get(0),x, y+(horizontalDistance/2));
+		Classifier specific2 	= getClassifier(specifics.get(1),x+verticalDistance, y+(horizontalDistance/2));
+		Classifier relator 		= getClassifier(relators.get(0), x+(verticalDistance/2), y);
 
-			Association leftMediation = null;
-			Association rightMediation = null;
-			Association material = null;
-			Association derivation = null;
+		Association leftMediation = null;
+		Association rightMediation = null;
+		Association material = null;
+		Association derivation = null;
 
-			if(general1 != null && specific1 != null){
-				fix.addAll(outcomeFixer.createGeneralization(specific1,general1));	
-			}
-
-			if(general2 != null && specific2 != null){
-				fix.addAll(outcomeFixer.createGeneralization(specific2,general2));	
-			}
-
-			if(specific1 != null && specific2 != null){
-				material = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.MATERIAL, "", specific1, specific2).getAdded().get(0);
-				fix.includeAdded(material);
-			}
-
-			if(relator != null){
-				if(specific1 != null){
-					leftMediation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, specific1).getAdded().get(0);
-					fix.includeAdded(leftMediation);
-				}
-
-				if(specific2 != null){
-					rightMediation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, specific2).getAdded().get(0);
-					fix.includeAdded(rightMediation);
-				}
-
-				if(material != null){
-					derivation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.DERIVATION, "", relator, material).getAdded().get(0);
-					fix.includeAdded(derivation);
-				}
-			}
-		}catch(Exception e){
-			e.printStackTrace();
+		if(general1 != null && specific1 != null){
+			fix.addAll(outcomeFixer.createGeneralization(specific1,general1));	
 		}
 
+		if(general2 != null && specific2 != null){
+			fix.addAll(outcomeFixer.createGeneralization(specific2,general2));	
+		}
+
+		if(specific1 != null && specific2 != null){
+			material = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.MATERIAL, "", specific1, specific2).getAdded().get(0);
+			fix.includeAdded(material);
+		}
+
+		if(relator != null){
+			if(specific1 != null){
+				leftMediation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, specific1).getAdded().get(0);
+				fix.includeAdded(leftMediation);
+			}
+
+			if(specific2 != null){
+				rightMediation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.MEDIATION, "", relator, specific2).getAdded().get(0);
+				fix.includeAdded(rightMediation);
+			}
+
+			if(material != null){
+				derivation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.DERIVATION, "", relator, material).getAdded().get(0);
+				fix.includeAdded(derivation);
+			}
+		}
 		return fix;
 	}
 

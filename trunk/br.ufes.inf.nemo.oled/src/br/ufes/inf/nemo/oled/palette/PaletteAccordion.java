@@ -194,7 +194,7 @@ public class PaletteAccordion extends JPanel{
 	
 	private void createOntoUMLPatternsPalette(DiagramEditorCommandDispatcher editorDispatcher) 
 	{
-		String pelleteName = "Patterns";
+		String pelleteName = "Structural Patterns";
 		ontopatternPalette = new Palette(this, pelleteName);
 		
 		ontopatternPalette.createElement("staticpalette.pattern", "completer");
@@ -207,6 +207,11 @@ public class PaletteAccordion extends JPanel{
 		ontopatternPalette.createElement("staticpalette.pattern", "substancesortalpartition");
 		ontopatternPalette.createElement("staticpalette.pattern", "rolemixinpattern");
 		ontopatternPalette.createElement("staticpalette.pattern", "relatorpattern");
+		ontopatternPalette.createElement("staticpalette.pattern", "dependentrolemixinpattern");
+		ontopatternPalette.createElement("staticpalette.pattern", "genericrelatorpattern");
+		ontopatternPalette.createElement("staticpalette.pattern", "characterizationpattern");
+		ontopatternPalette.createElement("staticpalette.pattern", "rigidweaksupplementation");
+		ontopatternPalette.createElement("staticpalette.pattern", "antirigidweaksupplementation");
 		
 		ontopatternPalette.addCommandListener(editorDispatcher);
 		

@@ -381,9 +381,12 @@ public abstract class AbstractConnection implements Connection,
 	 */
 	private Line2D getLastSegmentToNode2() {
 		Line2D lastSegment = new Line2D.Double();
-		lastSegment.setLine(points.get(points.size() - 2),
+		if(points.size() >= 2){
+			lastSegment.setLine(points.get(points.size() - 2),
 				points.get(points.size() - 1));
+		}
 		return lastSegment;
+		
 	}
 
 	/**

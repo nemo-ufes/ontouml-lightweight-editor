@@ -189,6 +189,8 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	private DiagramEditorCommandDispatcher editorDispatcher;
 	private DiagramElementFactoryImpl elementFactory;
 	private DrawingContext drawingContext;
+
+	private boolean isModelCompleter = false;
 	
 	private UmlProject currentProject;
 	private File projectFile;
@@ -198,7 +200,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	public String lastImportEcorePath = new String();
 	public String lastExportEcorePath = new String();
 	public String lastExportUMLPath = new String();
-
+	
 	/** Get Frame */
 	public AppFrame getFrame() { return frame; }
 	/** Get Factory */
@@ -1580,7 +1582,30 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				frame.getDiagramManager().updateOLEDFromModification(element, false);
 			}
 		}   
-	}	
+	}
+	
+	public void renameElement(RefOntoUML.Element element, String message){
+		if (element instanceof NamedElement) 
+		{
+			String value = new String();    						
+			value = (String)JOptionPane.showInputDialog(ProjectBrowser.frame,message,"Rename Element ",JOptionPane.INFORMATION_MESSAGE,null,null,((NamedElement)element).getName());
+			if(value!=null)
+			{
+				((NamedElement)element).setName(value);
+				ArrayList<DiagramEditor> editors = ProjectBrowser.frame.getDiagramManager().getDiagramEditors(element);
+				ArrayList<DiagramElement> dElemList = ModelHelper.getDiagramElements(element);
+				for(DiagramElement dElem: dElemList)
+				{
+					if (dElem instanceof ClassElement)
+					{
+						SetLabelTextCommand cmd = new SetLabelTextCommand((DiagramNotification)editors.get(0),((ClassElement)dElem).getMainLabel(),value,ProjectBrowser.frame.getDiagramManager().getCurrentProject());
+						cmd.run();
+					}
+				}
+				frame.getDiagramManager().updateOLEDFromModification(element, false);
+			}
+		}   
+	}
 	
 	/** Delete element from the model and every diagram in each it appears. */
 	public void deleteFromOLED(RefOntoUML.Element element, boolean showwarning)
@@ -3193,5 +3218,14 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		if(patternProject != null){		
 			DomainPatternTool.initializeDomainPatternPalette(frame.getToolManager().getPalleteAccordion(), patternProject, editorDispatcher, frame);
 		}
+	}
+	
+	public void setModelCompleter(boolean bool) {
+		isModelCompleter = bool;
+	}
+	
+	public void runModelCompleter(Classifier elem, double x, double y) {
+		if(isModelCompleter)	
+			PatternTool.runModelCompleter(this,elem, x, y);
 	}
 }

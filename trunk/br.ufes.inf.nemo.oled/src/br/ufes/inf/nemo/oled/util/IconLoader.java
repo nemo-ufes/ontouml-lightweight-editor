@@ -116,7 +116,8 @@ public final class IconLoader {
 		DIRECT,
 		PATTERN,
 		FIND,
-		STATISTICS
+		STATISTICS,
+		MODEL_COMPLETER
 	}
 
 	private Map<IconType, String> urlMap = new HashMap<IconType, String>();
@@ -172,6 +173,8 @@ public final class IconLoader {
 				
 		urlMap.put(IconType.ANTIPATTERN, "resources/icons/antipattern16.png");
 		urlMap.put(IconType.PART_WHOLE_VALIDATION, "resources/icons/x16/wall_break.png");
+		
+		urlMap.put(IconType.MODEL_COMPLETER, "resources/icons/x16/wand.png");
 		
 		urlMap.put(IconType.GENERATE_ALLOY, "resources/icons/x16/alloy/alloy.png");
 				
