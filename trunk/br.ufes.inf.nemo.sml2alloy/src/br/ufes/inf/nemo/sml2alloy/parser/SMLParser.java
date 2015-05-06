@@ -102,16 +102,43 @@ public class SMLParser
 		return total;
 	}
 	
-	public EObject getOntoUMLCounterpart(Participant part)
+	public EObject getElementType(EObject elem) throws UnsupportedElementException
 	{
-		if (part instanceof EntityParticipant)
-			return ((EntityParticipant) part).getIsOfType();
+		if (elem instanceof AttributeReference)
+			return ((AttributeReference) elem).getAttribute();
 		
-		else if (part instanceof RelatorParticipant)
-			return ((RelatorParticipant) part).getIsOfType();
+		else if (elem instanceof ComparativeRelation)
+			return ((ComparativeRelation) elem).getRelation();
+		
+		else if (elem instanceof EntityParticipant)
+			return ((EntityParticipant) elem).getIsOfType();
+		
+		else if (elem instanceof Function)
+			return ((Function) elem).getFunction();
+		
+		else if (elem instanceof Link)
+			return ((Link) elem).getIsOfType();
+		
+		else if (elem instanceof Literal)
+			return ((Literal) elem).getDataType();
+		
+		else if (elem instanceof Parameter)
+			return ((Parameter) elem).getParameter();
+		
+		else if (elem instanceof RelatorParticipant)
+			return ((RelatorParticipant) elem).getIsOfType();
+		
+		else if (elem instanceof SituationParameterReference)
+			return ((SituationParameterReference) elem).getParameter();
+		
+		else if (elem instanceof SituationParticipant)
+			return ((SituationParticipant) elem).getSituationType();
+		
+		else if (elem instanceof SMLModel)
+			return ((SMLModel) elem).getContextModel();
 		
 		else
-			return part;
+			throw new UnsupportedElementException(elem.toString());
 	}
 	
 	public String getElementName(EObject elem) throws UnsupportedElementException
@@ -187,7 +214,7 @@ public class SMLParser
 	
 	public String getParticipationAlias(SituationType sit, Participant part) throws UnsupportedElementException
 	{
-		String alias = "P_"+getAlias(sit)+"_"+getAlias(getOntoUMLCounterpart(part));
+		String alias = "P_"+getAlias(sit)+"_"+getAlias(getElementType(part));
 		
 		Map<String, EObject> map = participationsAlias.get(sit);
 		if (map == null)

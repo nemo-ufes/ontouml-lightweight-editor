@@ -6,22 +6,27 @@ import java.util.Collections;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import sml2.Participant;
+import sml2.SituationParticipant;
 import sml2.SituationType;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyModule;
 import br.ufes.inf.nemo.alloy.ArrowOperation;
 import br.ufes.inf.nemo.alloy.BinaryOperation;
 import br.ufes.inf.nemo.alloy.BinaryOperator;
+import br.ufes.inf.nemo.alloy.Block;
 import br.ufes.inf.nemo.alloy.CommandDeclaration;
+import br.ufes.inf.nemo.alloy.CompareOperator;
 import br.ufes.inf.nemo.alloy.Declaration;
 import br.ufes.inf.nemo.alloy.DisjointExpression;
 import br.ufes.inf.nemo.alloy.Expression;
+import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.FunctionDeclaration;
 import br.ufes.inf.nemo.alloy.ModuleImportation;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
 import br.ufes.inf.nemo.alloy.SignatureDeclaration;
 import br.ufes.inf.nemo.alloy.SignatureReference;
 import br.ufes.inf.nemo.alloy.UnaryOperation;
+import br.ufes.inf.nemo.alloy.UnaryOperator;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.alloy.api.AlloyAPI;
@@ -136,6 +141,8 @@ public class SML2AlloyTransformer
 	 */
 	protected void populatesWithAssociationEnds()
 	{
+		ArrayList<FunctionDeclaration> funList = new ArrayList<FunctionDeclaration>();
+		
 		for(SituationType sit : smlparser.getSituationTypes())
 		{
 			for(Participant part : smlparser.getInstances(sit, Participant.class))
@@ -144,23 +151,31 @@ public class SML2AlloyTransformer
 				{
 					String assocName = smlparser.getParticipationAlias(sit, part);
 					String sitName = smlparser.getAlias(sit);
-					String sitElemName = smlparser.getAlias(smlparser.getOntoUMLCounterpart(part));
+					String sitElemName = smlparser.getAlias(smlparser.getElementType(part));
 					String fun1Name = sitName.toLowerCase();
 					String fun2Name = smlparser.getAlias(part.getNodeParameter());
 					
-					ArrayList<FunctionDeclaration> funList = new ArrayList<FunctionDeclaration>();
-					// for single snapshot
-					funList.add(AlloyAPI.createFunctionDeclaration(factory, world, true, fun1Name, 
-							"World."+sitElemName, "World."+sitName, assocName, false));
-					funList.add(AlloyAPI.createFunctionDeclaration(factory, world, false, fun2Name, 
-							"World."+sitName, "World."+sitElemName, assocName, false));	
-					// for all worlds
-					funList.add(AlloyAPI.createTemporalFunctionDeclaration(factory, world, true, fun1Name, 
-							"World."+sitElemName, "World."+sitName, assocName, false));
-					funList.add(AlloyAPI.createTemporalFunctionDeclaration(factory, world, false, fun2Name, 
-							"World."+sitName, "World."+sitElemName, assocName, false));
-					
-					module.getParagraph().addAll(funList);
+					EStructuralFeature feat = part.eClass().getEStructuralFeature("isPast");
+					if (feat != null && part.eGet(feat).equals(true))
+					{
+						funList.add(AlloyAPI.createTransTemporalFunctionDeclaration(factory, world, true, fun1Name,
+								"World."+sitElemName, "World."+sitName, assocName));
+						funList.add(AlloyAPI.createTransTemporalFunctionDeclaration(factory, world, false, fun2Name,
+								"World."+sitName, "World."+sitElemName, assocName));
+					}
+					else
+					{
+						// for single snapshot
+						funList.add(AlloyAPI.createFunctionDeclaration(factory, world, true, fun1Name, 
+								"World."+sitElemName, "World."+sitName, assocName, false));
+						funList.add(AlloyAPI.createFunctionDeclaration(factory, world, false, fun2Name, 
+								"World."+sitName, "World."+sitElemName, assocName, false));	
+//						// for all worlds
+//						funList.add(AlloyAPI.createTemporalFunctionDeclaration(factory, world, true, fun1Name, 
+//								"World."+sitElemName, "World."+sitName, assocName, false));
+//						funList.add(AlloyAPI.createTemporalFunctionDeclaration(factory, world, false, fun2Name, 
+//								"World."+sitName, "World."+sitElemName, assocName, false));
+					}
 				}
 				catch (UnsupportedElementException e)
 				{
@@ -168,6 +183,7 @@ public class SML2AlloyTransformer
 				}
 			}
 		}
+		module.getParagraph().addAll(funList);
 	}
 	
 	/**
@@ -176,6 +192,7 @@ public class SML2AlloyTransformer
 	protected void populatesWithAssociations()
 	{
 		ArrayList<Declaration> associationsDeclaration = new ArrayList<Declaration>();
+		ArrayList<Declaration> transtempAssocDeclaration = new ArrayList<Declaration>();
 		
 		for(SituationType sit : smlparser.getSituationTypes())
 		{
@@ -188,18 +205,25 @@ public class SML2AlloyTransformer
 				
 				try
 				{
-					source.setVariable(smlparser.getAlias(sit));
-					target.setVariable(smlparser.getAlias(smlparser.getOntoUMLCounterpart(part)));
-					
-					ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
-					Declaration decl = AlloyAPI.createDeclaration(factory, smlparser.getParticipationAlias(sit, part), aOp);
-					if (decl!=null)
+					//Past participants are defined as transtemporal participations
+					EStructuralFeature feat = part.eClass().getEStructuralFeature("isPast");
+					if (feat != null && part.eGet(feat).equals(true))
 					{
-						EStructuralFeature feat = part.eClass().getEStructuralFeature("isPast");
-						if (feat != null && part.eGet(feat).equals(true))
-							 sigSituation.getRelation().add(decl);
-						
-						else associationsDeclaration.add(decl);
+						target.setVariable(part instanceof SituationParticipant ? sigSituation.getName() : ontoumltransformer.sigObject.getName());
+						Declaration decl = AlloyAPI.createSimpleDeclaration(factory, smlparser.getParticipationAlias(sit, part), target.getVariable());
+						if (decl != null)
+						{
+							transtempAssocDeclaration.add(decl);
+							addTransTemporalRestrictions(sit, part);
+						}
+					}
+					else
+					{
+						source.setVariable(smlparser.getAlias(sit));
+						target.setVariable(smlparser.getAlias(smlparser.getElementType(part)));
+						ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
+						Declaration decl = AlloyAPI.createDeclaration(factory, smlparser.getParticipationAlias(sit, part), aOp);
+						if (decl!=null) associationsDeclaration.add(decl);
 					}
 				}
 				catch (UnsupportedElementException e)
@@ -209,10 +233,50 @@ public class SML2AlloyTransformer
 			}
 		}
 		
-		// Sort associations declarations in the signature world
+		// Sort associations declarations in the signature world and signature situation
 		Collections.sort(associationsDeclaration, ontoumltransformer.new DeclarationComparator());
+		Collections.sort(transtempAssocDeclaration, ontoumltransformer.new DeclarationComparator());
 		
+		sigSituation.getRelation().addAll(transtempAssocDeclaration);
 		world.getRelation().addAll(associationsDeclaration);
+	}
+	
+	protected void addTransTemporalRestrictions(SituationType sit, Participant part) throws UnsupportedElementException
+	{
+		FactDeclaration situationFact = factory.createFactDeclaration();
+		situationFact.setName("historicalParticipation");
+		Block block = factory.createBlock();
+		situationFact.setBlock(block);
+		
+		//target
+		situationFact.getBlock().getExpression().add(AlloyAPI.createCompareOperation(factory, 
+				smlparser.getParticipationAlias(sit, part)+".univ", 
+				CompareOperator.SUBSET, "World."+smlparser.getAlias(smlparser.getElementType(part))));
+		//source
+		situationFact.getBlock().getExpression().add(AlloyAPI.createCompareOperation(factory, 
+				"univ."+smlparser.getParticipationAlias(sit, part), 
+				CompareOperator.SUBSET, "World."+smlparser.getAlias(sit)));
+		
+		UnaryOperation uOp;
+		VariableReference vr;
+		
+		uOp = factory.createUnaryOperation();		
+		uOp.setOperator(UnaryOperator.CARDINALITY);
+		vr = factory.createVariableReference();
+		vr.setVariable(smlparser.getParticipationAlias(sit, part)+".univ");
+		uOp.setExpression(vr);
+		situationFact.getBlock().getExpression().add(AlloyAPI.createCompareOperation(factory, 
+				uOp.toString(), CompareOperator.EQUAL, "1"));
+		
+		uOp = factory.createUnaryOperation();		
+		uOp.setOperator(UnaryOperator.CARDINALITY);
+		vr = factory.createVariableReference();
+		vr.setVariable("univ."+smlparser.getParticipationAlias(sit, part));
+		uOp.setExpression(vr);
+		situationFact.getBlock().getExpression().add(AlloyAPI.createCompareOperation(factory, 
+				uOp.toString(), CompareOperator.GREATER_EQUAL, "0"));
+		
+		module.getParagraph().add(situationFact);
 	}
 	
 	/**
@@ -223,7 +287,7 @@ public class SML2AlloyTransformer
 		// SituationClass
 		ArrayList<SituationType> topSituationClassList = new ArrayList<SituationType>();
 		topSituationClassList.addAll(smlparser.getSituationTypes());		
-		if(topSituationClassList.size() > 1)
+		if(topSituationClassList.size() > 2)
 		{
 			ArrayList<DisjointExpression> rulesList = createTopLevelSituationDisjointExpressions(factory, topSituationClassList);			
 			for (DisjointExpression disj : rulesList) 

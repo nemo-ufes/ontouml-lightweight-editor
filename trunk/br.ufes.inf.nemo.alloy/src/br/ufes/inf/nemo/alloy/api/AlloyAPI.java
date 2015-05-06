@@ -1,6 +1,10 @@
 package br.ufes.inf.nemo.alloy.api;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import br.ufes.inf.nemo.alloy.AlloyFactory;
 import br.ufes.inf.nemo.alloy.AlloyModule;
@@ -804,16 +808,19 @@ public class AlloyAPI {
 	}
 	
 	/**
-	 * Creates a specific Function Declaration in Alloy.
-	 * fun nameFunction [x: World.paramName,w: World] : set World.returnName {
-	 * 		x.(w.assocName)
+	 * Creates a Function Declaration in Alloy.
+	 * fun <functionName> [<paramList>] : set <returnName> {
+	 * 		<expr>
 	 * }
-	 *  or  
-	 * fun nameFunction [x: World.paramName,w: World] : set World.returnName {
-	 * 		(w.assocName).x
-	 * }
+	 * 
+	 * @param factory the alloy factory
+	 * @param functionName is the name of the function
+	 * @param paramList is a map where the keys are the variable names while the values are the variable types
+	 * @param returnName the return type
+	 * @param expr the expression
+	 * @return
 	 */
-	public static FunctionDeclaration createFunctionDeclaration (AlloyFactory factory, SignatureDeclaration world, boolean isSourceProperty, String functionName, String paramName, String returnName, String assocName, boolean materialIsTernary )
+	public static FunctionDeclaration createFunctionDeclaration (AlloyFactory factory, String functionName, List<Entry<String,String>> paramList, String returnName, Expression expr)
 	{
 		FunctionDeclaration fun = factory.createFunctionDeclaration();
 		fun.setName(functionName);
@@ -826,58 +833,49 @@ public class AlloyAPI {
 		vr.setVariable(returnName);				
 		uOp.setExpression(vr);
 		fun.setType(uOp);
-	
-		// x: paramName
-		Declaration decl = factory.createDeclaration();				
-		Variable var = factory.createVariable();
-		var.setName("x");
-		var.setDeclaration(decl);	
-		vr = factory.createVariableReference();
-		vr.setVariable(paramName);
-		decl.setExpression(vr);		
-		fun.getParameter().add(decl);
-	
-		// w: World
-		decl = createDeclaration(factory,world);	
-		fun.getParameter().add(decl);
 		
-		// if is Ternary Relation (like Materials) then is a binary operation ... else this is a predicate invocation
-		BinaryOperation bOp = factory.createBinaryOperation();		
-		PredicateInvocation pI = factory.createPredicateInvocation();
-		
-		// select13[w.assocName] (for ternary association)
-		if (materialIsTernary) { 
-			pI = factory.createPredicateInvocation();
-			pI.setPredicate("select13");
-			VariableReference vrf = factory.createVariableReference();
-			vrf.setVariable("w."+assocName);
-			pI.getParameter().add(vrf);			
-		}
-		// w.assocName (for binary ones)
-		else bOp = createBinaryOperation(factory,"w",BinaryOperator.JOIN,assocName);
-				
-		vr = factory.createVariableReference();
-		vr.setVariable("x");
-		
-		BinaryOperation bOp2 = factory.createBinaryOperation();				
-		if(!isSourceProperty)
+		for (Entry<String, String> entry : paramList)
 		{
-			// x.(w.assocName) or x.(select13[w.assocName])
-			if (!materialIsTernary) bOp2 = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN, "("+bOp.toString()+")");
-			else bOp2 = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN, "("+pI.toString()+")");
+			String paramVar = entry.getKey();
+			String paramName = entry.getValue();
+			
+			// paramVar: paramName
+			Declaration decl = factory.createDeclaration();				
+			Variable var = factory.createVariable();
+			var.setName(paramVar);
+			var.setDeclaration(decl);	
+			vr = factory.createVariableReference();
+			vr.setVariable(paramName);
+			decl.setExpression(vr);		
+			fun.getParameter().add(decl);
 		}
-		else
-		{
-			//  (w.assocName).x or (select13[w.assocName]).x
-			if (!materialIsTernary) bOp2 = createBinaryOperation(factory,"("+bOp.toString()+")",BinaryOperator.JOIN, vr.getVariable());
-			else bOp2 = createBinaryOperation(factory,"("+pI.toString()+")",BinaryOperator.JOIN, vr.getVariable());			
-		}	
 		
-		if(returnName.contains(world.getName())) returnName = returnName.replace("World.", "");
-						
-		fun.getBlock().getExpression().add(bOp2);
+		// set expression
+		fun.getBlock().getExpression().add(expr);
 		
 		return fun;
+	}
+	
+	/**
+	 * Creates a specific Function Declaration in Alloy.
+	 * fun nameFunction [x: World.paramName,w: World] : set World.returnName {
+	 * 		x.(w.assocName)
+	 * }
+	 *  or  
+	 * fun nameFunction [x: World.paramName,w: World] : set World.returnName {
+	 * 		(w.assocName).x
+	 * }
+	 */
+	public static FunctionDeclaration createFunctionDeclaration (AlloyFactory factory, SignatureDeclaration world, boolean isSourceProperty, String functionName, String paramName, String returnName, String assocName, boolean materialIsTernary )
+	{
+		String worldVar = "w", paramVar = "x";
+		List<Entry<String, String>> paramList = new ArrayList<Map.Entry<String,String>>();
+		paramList.add(new SimpleEntry<String, String>(paramVar, paramName));
+		paramList.add(new SimpleEntry<String, String>(worldVar, world.getName()));
+		
+		Expression expr = createOntoUMLFunctionExpression(factory, isSourceProperty, assocName, materialIsTernary, worldVar, paramVar);
+		
+		return createFunctionDeclaration(factory, functionName, paramList, returnName, expr);
 	}
 	
 	/**
@@ -892,65 +890,80 @@ public class AlloyAPI {
 	 */
 	public static FunctionDeclaration createTemporalFunctionDeclaration (AlloyFactory factory, SignatureDeclaration world, boolean isSourceProperty, String functionName, String paramName, String returnName, String assocName, boolean materialIsTernary )
 	{
-		FunctionDeclaration fun = factory.createFunctionDeclaration();
-		fun.setName(functionName);
-		fun.setBlock(factory.createBlock());
+		String paramVar = "x";
+		List<Entry<String, String>> paramList = new ArrayList<Map.Entry<String,String>>();
+		paramList.add(new SimpleEntry<String, String>(paramVar, paramName));
 		
-		// set returnName
-		UnaryOperation uOp = factory.createUnaryOperation();
-		uOp.setOperator(UnaryOperator.SET);		
-		VariableReference vr = factory.createVariableReference();
-		vr.setVariable(returnName);				
-		uOp.setExpression(vr);
-		fun.setType(uOp);
+		Expression expr = createOntoUMLFunctionExpression(factory, isSourceProperty, assocName, materialIsTernary, "World", paramVar);
+		
+		return createFunctionDeclaration(factory, functionName, paramList, returnName, expr);
+	}
 	
-		// x: paramName
-		Declaration decl = factory.createDeclaration();				
-		Variable var = factory.createVariable();
-		var.setName("x");
-		var.setDeclaration(decl);	
-		vr = factory.createVariableReference();
-		vr.setVariable(paramName);
-		decl.setExpression(vr);		
-		fun.getParameter().add(decl);
-					
+	/**
+	 * Creates a specific Function Declaration in Alloy.
+	 * fun nameFunction [x: World.paramName] : set World.returnName {
+	 * 		x.(assocName)
+	 * }
+	 *  or  
+	 * fun nameFunction [x: World.paramName] : set World.returnName {
+	 * 		(assocName).x
+	 * }
+	 */
+	public static FunctionDeclaration createTransTemporalFunctionDeclaration (AlloyFactory factory, SignatureDeclaration world, boolean isSourceProperty, String functionName, String paramName, String returnName, String assocName)
+	{
+		String paramVar = "x";
+		List<Entry<String, String>> paramList = new ArrayList<Map.Entry<String,String>>();
+		paramList.add(new SimpleEntry<String, String>(paramVar, paramName));
+		
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(paramVar);
+		
+		BinaryOperation bOp = factory.createBinaryOperation();				
+		if(!isSourceProperty)
+			// x.(assocName)
+			bOp = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN,assocName);
+		else
+			// (assocName).x
+			bOp = createBinaryOperation(factory,assocName,BinaryOperator.JOIN,vr.getVariable());
+		
+		return createFunctionDeclaration(factory, functionName, paramList, returnName, bOp);
+	}
+	
+	protected static Expression createOntoUMLFunctionExpression (AlloyFactory factory, boolean isSourceProperty, String assocName, boolean materialIsTernary, String worldRef, String paramVar )
+	{
 		// if is Ternary Relation (like Materials) then is a binary operation ... else this is a predicate invocation
 		BinaryOperation bOp = factory.createBinaryOperation();		
 		PredicateInvocation pI = factory.createPredicateInvocation();
 		
-		// select13[World.assocName] (for ternary association)
+		// select13[w.assocName] (for ternary association)
 		if (materialIsTernary) { 
 			pI = factory.createPredicateInvocation();
 			pI.setPredicate("select13");
 			VariableReference vrf = factory.createVariableReference();
-			vrf.setVariable("World."+assocName);
+			vrf.setVariable(worldRef+"."+assocName);
 			pI.getParameter().add(vrf);			
 		}
-		// World.assocName (for binary ones)
-		else bOp = createBinaryOperation(factory,"World",BinaryOperator.JOIN,assocName);
+		// w.assocName (for binary ones)
+		else bOp = createBinaryOperation(factory,worldRef,BinaryOperator.JOIN,assocName);
 				
-		vr = factory.createVariableReference();
-		vr.setVariable("x");
+		VariableReference vr = factory.createVariableReference();
+		vr.setVariable(paramVar);
 		
 		BinaryOperation bOp2 = factory.createBinaryOperation();				
 		if(!isSourceProperty)
 		{
-			// x.(World.assocName) or x.(select13[World.assocName])
+			// x.(w.assocName) or x.(select13[w.assocName])
 			if (!materialIsTernary) bOp2 = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN, "("+bOp.toString()+")");
 			else bOp2 = createBinaryOperation(factory,vr.getVariable(),BinaryOperator.JOIN, "("+pI.toString()+")");
 		}
 		else
 		{
-			//  (World.assocName).x or (select13[World.assocName]).x
+			//  (w.assocName).x or (select13[w.assocName]).x
 			if (!materialIsTernary) bOp2 = createBinaryOperation(factory,"("+bOp.toString()+")",BinaryOperator.JOIN, vr.getVariable());
 			else bOp2 = createBinaryOperation(factory,"("+pI.toString()+")",BinaryOperator.JOIN, vr.getVariable());			
-		}	
+		}
 		
-		if(returnName.contains("World")) returnName = returnName.replace("World.", "");
-						
-		fun.getBlock().getExpression().add(bOp2);
-		
-		return fun;
+		return bOp2;
 	}
 	
 	/**
