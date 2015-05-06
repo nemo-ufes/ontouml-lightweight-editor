@@ -7,9 +7,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import sml2.AttributeReference;
 import sml2.ComparativeRelation;
+import sml2.ExportableNode;
 import sml2.Function;
 import sml2.Link;
 import sml2.Literal;
@@ -18,6 +20,7 @@ import sml2.Participant;
 import sml2.SituationParameterReference;
 import sml2.SituationParticipant;
 import sml2.SituationType;
+import sml2.SituationTypeParameter;
 import br.ufes.inf.nemo.sml2alloy.exception.UnsupportedElementException;
 import br.ufes.inf.nemo.sml2alloy.exception.UnsupportedRelationException;
 import br.ufes.inf.nemo.sml2alloy.parser.SMLParser;
@@ -43,18 +46,30 @@ public class SMLRuleCreator
 		for (SituationType sit : smlparser.getSituationTypes())
 		{
 			String partNamesList = new String();
-			Iterator<Participant> partList = smlparser.getInstances(sit, Participant.class).iterator();
+			String tempPartNamesList = new String();
 			try
 			{
-				while (partList.hasNext())
+				String add = new String();
+				for (Participant part : smlparser.getInstances(sit, Participant.class))
 				{
-					Participant part = partList.next();
-					partNamesList += smlparser.getParticipationAlias(sit, part);
-					if (partList.hasNext())
-						partNamesList += "+";
+					EStructuralFeature feat = part.eClass().getEStructuralFeature("isPast");
+					if (feat != null && part.eGet(feat).equals(true))
+					{
+						if (!tempPartNamesList.isEmpty()) tempPartNamesList += "+";
+						tempPartNamesList += smlparser.getParticipationAlias(sit, part);
+					}
+					else
+					{
+						if (!partNamesList.isEmpty()) partNamesList += "+";
+						partNamesList += add+smlparser.getParticipationAlias(sit, part);
+					}
 				}
-				rules += "\n\tsituationCont["+smlparser.getAlias(sit)+", "+partNamesList+"]\n";
-				rules += "\tsituationUniq["+smlparser.getAlias(sit)+", "+partNamesList+"]\n";
+				rules += "\n\tsituationCont["+smlparser.getAlias(sit)+", "+partNamesList+
+						(!tempPartNamesList.isEmpty() ? ", "+tempPartNamesList : "")+"]\n";
+				rules += "\tsituationUniq["+smlparser.getAlias(sit)+", "+partNamesList+
+						(!tempPartNamesList.isEmpty() ? ", "+tempPartNamesList : "")+"]\n";
+				rules += "\tsituationImut["+smlparser.getAlias(sit)+", "+partNamesList+
+						(!tempPartNamesList.isEmpty() ? ", "+tempPartNamesList : "")+"]\n";
 			}
 			catch (UnsupportedElementException e)
 			{
@@ -105,7 +120,7 @@ public class SMLRuleCreator
 		j=1;
 		for (Participant p : smlparser.getInstances(sit, Participant.class))
 		{
-			String type = smlparser.getAlias(smlparser.getOntoUMLCounterpart(p));
+			String type = smlparser.getAlias(smlparser.getElementType(p));
 			String world;
 			
 			//TODO w1 é sempre o atual. Mudar se isPast virar uma propriedade de qualquer elemento
@@ -298,8 +313,7 @@ public class SMLRuleCreator
 	{
 		return handleNodeExpression(null, node);
 	}
-	//TODO RelaçÕes transtemporais não possuem parâmetro mundo
-	//TODO Na hora de quantificar um participante passado, ele deveria aparecer depois como some
+
 	protected String handleNodeExpression(EObject source, EObject node) throws UnsupportedElementException
 	{
 		if (node instanceof Literal)
@@ -338,7 +352,7 @@ public class SMLRuleCreator
 					if (sit_param.getParameter().getNodeReference().equals(((AttributeReference)node).getEntity()))
 						return elementToVar.get(source)+"."+handleNodeExpression(sit_param, ((AttributeReference)node).getAttribute());
 				}
-				System.err.println("Reference to element "+smlparser.getElementName(((AttributeReference)node).getEntity())+"not found");
+				System.err.println("Reference param to element "+smlparser.getElementName(((AttributeReference)node).getEntity())+"not found");
 			}
 			else if (node instanceof Participant)
 				return handleNodeExpression(source, ((Participant) node).getNodeParameter());
@@ -346,10 +360,17 @@ public class SMLRuleCreator
 			else if (source instanceof SituationParameterReference)
 			{
 				SituationParticipant sit_part = ((SituationParameterReference) source).getSituation();
-				return smlparser.getAlias(source)+"["+elementToWorld.get(sit_part)+"]"+
+				return smlparser.getAlias(source)+(sit_part.isIsPast() ? "" : "["+elementToWorld.get(sit_part)+"]")+
 					smlparser.getAlias(node)+"["+elementToWorld.get(sit_part)+"]";
 			}
 			
+			if (node instanceof SituationTypeParameter)
+			{
+				ExportableNode part = ((SituationTypeParameter) node).getNodeReference();
+				EStructuralFeature feat = part.eClass().getEStructuralFeature("isPast");
+				if (feat != null && part.eGet(feat).equals(true))
+					return elementToVar.get(source)+"."+smlparser.getAlias(node);
+			}
 			return elementToVar.get(source)+"."+smlparser.getAlias(node)+"["+elementToWorld.get(source)+"]";
 		}
 		
