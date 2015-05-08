@@ -282,7 +282,7 @@ public class TOCLParser extends OCLParser{
     }
     
     /** Process oclIsKindOf, oclIsTypeOf */
-    public String processTypeConformanceOperations (String textDoc, Pattern p)
+    public HashMap<String,Integer> processTypeConformanceOperations (String textDoc, Pattern p)
     {
 		Matcher m = p.matcher(textDoc);		
 		int qtdeLetters = (new String("oclIsKindOf")).length();	
@@ -326,12 +326,14 @@ public class TOCLParser extends OCLParser{
     		textDoc = left+right;    		
     		
     		charRemoved = charRemoved + 1 + worldVar.length();
-    	}    	
-    	return textDoc;
+    	}
+    	HashMap<String,Integer> map = new HashMap<String,Integer>();
+    	map.put(textDoc,charRemoved);
+    	return map;
     }
     
     /** Process oclAsType */
-    public String processOclAsTypeOperation (String textDoc, Pattern p)
+    public HashMap<String,Integer> processOclAsTypeOperation (String textDoc, Pattern p)
     {
 		Matcher m = p.matcher(textDoc);		
 		int qtdeLetters = (new String("oclAsType")).length();	
@@ -374,13 +376,15 @@ public class TOCLParser extends OCLParser{
     		
     		charRemoved = charRemoved + 1 + worldVar.length();
     	}    	
-    	return textDoc;
+    	HashMap<String,Integer> map = new HashMap<String,Integer>();
+    	map.put(textDoc,charRemoved);
+    	return map;
     }
     
     /** Process oclBecomes 
      * 
      * @throws ParserException */
-    public String processOclBecomesOperation (String textDoc, Pattern p) throws ParserException
+    public HashMap<String,Integer> processOclBecomesOperation (String textDoc, Pattern p) throws ParserException
     {
     	Matcher m = p.matcher(textDoc);		
 		int qtdeLetters = (new String("oclBecomes")).length();	
@@ -425,13 +429,15 @@ public class TOCLParser extends OCLParser{
     		
     		charRemoved = charRemoved + 1 + typeVar.length();
     	}    	
-    	return textDoc;
+    	HashMap<String,Integer> map = new HashMap<String,Integer>();
+    	map.put(textDoc,charRemoved);
+    	return map;
     }
     
     /** Process oclCeasesToBe 
      * 
      * @throws ParserException */
-    public String processOclCeasesToBeOperation (String textDoc, Pattern p) throws ParserException
+    public HashMap<String,Integer> processOclCeasesToBeOperation (String textDoc, Pattern p) throws ParserException
     {
     	Matcher m = p.matcher(textDoc);		
 		int qtdeLetters = (new String("oclCeasesToBe")).length();	
@@ -476,7 +482,9 @@ public class TOCLParser extends OCLParser{
     		
     		charRemoved = charRemoved + 1 + typeVar.length();
     	}    	
-    	return textDoc;
+    	HashMap<String,Integer> map = new HashMap<String,Integer>();
+    	map.put(textDoc,charRemoved);
+    	return map;
     }
     
     private int countMatches(String regex, String text)
@@ -500,21 +508,21 @@ public class TOCLParser extends OCLParser{
     }
     
     /** Check if a world parameter is missing */
-    public void checkInvalidOperations(String result) throws ParserException
+    public void checkInvalidOperations(String oclExpression) throws ParserException
     {
-    	int match = countMatches("oclIsKindOf\\((_')*\\s*\\w+\\s*'*\\)", result);
+    	int match = countMatches("oclIsKindOf\\((_')*\\s*\\w+\\s*'*\\)", oclExpression);
     	if(match>0) throw new ParserException("Cannot find operation (oclIsKindOf(T)). Missing world parameter. ");
     	
-    	match = countMatches("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*\\)", result);
+    	match = countMatches("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*\\)", oclExpression);
     	if(match>0) throw new ParserException("Cannot find operation (oclIsTypeOf(T)). Missing world parameter. ");    	
     	
-    	match = countMatches("oclAsType\\((_')*\\s*\\w+\\s*'*\\)", result);
+    	match = countMatches("oclAsType\\((_')*\\s*\\w+\\s*'*\\)", oclExpression);
     	if(match>0) throw new ParserException("Cannot find operation (oclAsType(T)). Missing world parameter. ");
     	
-    	match = countMatches("oclBecomes\\((_')*\\s*\\w+\\s*'*\\)", result);
+    	match = countMatches("oclBecomes\\((_')*\\s*\\w+\\s*'*\\)", oclExpression);
     	if(match>0) throw new ParserException("Cannot find operation (oclBecomes(T)). Missing world parameter. ");
     	
-    	match = countMatches("oclCeasesToBe\\((_')*\\s*\\w+\\s*'*\\)", result);
+    	match = countMatches("oclCeasesToBe\\((_')*\\s*\\w+\\s*'*\\)", oclExpression);
     	if(match>0) throw new ParserException("Cannot find operation (oclCeasesToBe(T)). Missing world parameter. ");
     }
     
@@ -632,7 +640,7 @@ public class TOCLParser extends OCLParser{
     }
     
     /** Process keyword "temp" */
-    public String processTempKeyword(String result) throws ParserException, ParseException
+    public String process(String result) throws ParserException, ParseException
     {
     	Pattern p = Pattern.compile("(temp|inv|derive)(\\s*\\w*\\s*):");
 		Matcher m = p.matcher(result);
@@ -645,62 +653,106 @@ public class TOCLParser extends OCLParser{
     		if(indexEnd+(jump) > result.length()) indexEnd = result.length();
     		
     		String left = result.substring(0,indexBegin+(jump));
-			String keywordDeclaration = result.substring(indexBegin+(jump),indexEnd+(jump));
+			String keyword = result.substring(indexBegin+(jump),indexEnd+(jump));
     		String right = result.substring(indexEnd+(jump), result.length());
     		
-    		if (keywordDeclaration.contains("temp")){
+    		if (keyword.contains("temp")){
     			
     			/** get the ocl expression as string */
-    			String oclExpr = new String();
+    			String oclExpression = new String();
         		String remaining = new String();
         		if(right.contains("inv") || right.contains("derive") || right.contains("temp") || right.contains("def")) // has next constraint
     			{
     				if(right.contains("context")) {
-    					oclExpr = right.substring(0,right.indexOf("context"));
+    					oclExpression = right.substring(0,right.indexOf("context"));
     					remaining = right.substring(right.indexOf("context"),right.length());
     				}else{    					
-    					oclExpr = right.substring(0,right.indexOf(":"));
+    					oclExpression = right.substring(0,right.indexOf(":"));
     					remaining = right.substring(right.indexOf(":"),right.length());
     				}
     			}else { //this is the last constraint...        				
-    				oclExpr = right.substring(0, right.indexOf("endpackage"));
+    				oclExpression = right.substring(0, right.indexOf("endpackage"));
     				remaining = right.substring(right.indexOf("endpackage"), right.length());
     			}            		
 
     			/** historical relationship */
-        		if(oclExpr.contains("{") || oclExpr.contains("}")) 
+        		if(oclExpression.contains("{") || oclExpression.contains("}")) 
         		{        			
-        			String context = left.substring(left.lastIndexOf("context"), left.length());
-        			
-        			processHistoricalRelationship(context, oclExpr);
-        			
-        			result = left.replace(context,"")+remaining;
-        			
-        			jump = jump - context.length() - keywordDeclaration.length() - oclExpr.length();        			
+        			String context = left.substring(left.lastIndexOf("context"), left.length());        			
+        			processHistoricalRelationship(context, oclExpression);        			
+        			result = left.replace(context,"")+remaining;        			
+        			jump = jump - context.length() - keyword.length() - oclExpression.length();        			
         		}
+        		
     			/** temporal OCL invariant */
         		else{
-
+        			checkInvalidOperations(oclExpression);
+        			
         			constraintStereotypeList.add("temp");
         			
         			/** process keyword declaration */
-            		keywordDeclaration = keywordDeclaration.replaceFirst("temp","inv");        		
+            		keyword = keyword.replaceFirst("temp","inv");        		
             		jump  = jump -1;
 
 					/** process temporal navigations */
-            		HashMap<String,Integer>map = processTemporalNavigations(oclExpr);
+            		HashMap<String,Integer>map = processTemporalNavigations(oclExpression);
     	        	for(String key: map.keySet())
     	        	{	        		
-    	        		oclExpr = key;
+    	        		oclExpression = key;
     		            jump = jump + map.get(key);		            	        
     	        	}
     	        	
-            		result = left+keywordDeclaration+(oclExpr+remaining);
+    	        	// remove world parameter and record it
+    	    		Pattern patern = Pattern.compile("oclIsKindOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
+    	    		map = processTypeConformanceOperations(oclExpression, patern);
+    	        	for(String key: map.keySet())
+    	        	{	        		
+    	        		oclExpression = key;
+    		            jump = jump - map.get(key);		            	        
+    	        	}
+    	        	
+    	    		// remove world parameter and record it
+    	    		patern = Pattern.compile("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
+    	    		map = processTypeConformanceOperations(oclExpression, patern);
+    	        	for(String key: map.keySet())
+    	        	{	        		
+    	        		oclExpression = key;
+    		            jump = jump - map.get(key);		            	        
+    	        	}
+    	        	
+    	    		// remove world parameter and record it
+    	    		patern = Pattern.compile("oclAsType\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
+    	    		map = processOclAsTypeOperation(oclExpression, patern);
+    	    		for(String key: map.keySet())
+    	        	{	        		
+    	        		oclExpression = key;
+    		            jump = jump - map.get(key);		            	        
+    	        	}
+    	        		
+    	    		// remove world parameter and record it
+    	    		patern = Pattern.compile("oclBecomes\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
+    	    		map = processOclBecomesOperation(oclExpression, patern);
+    	    		for(String key: map.keySet())
+    	        	{	        		
+    	        		oclExpression = key;
+    		            jump = jump - map.get(key);		            	        
+    	        	}
+    	        	    	    		
+    	    		// remove world parameter and record it
+    	    		patern = Pattern.compile("oclCeasesToBe\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
+    	    		map = processOclCeasesToBeOperation(oclExpression, patern);
+    	    		for(String key: map.keySet())
+    	        	{	        		
+    	        		oclExpression = key;
+    		            jump = jump - map.get(key);		            	        
+    	        	}
+    	        	    	    		
+            		result = left+keyword+(oclExpression+remaining);
         		}        		
-    		}else if (keywordDeclaration.contains("inv") || keywordDeclaration.contains("derive")){
+    		}else if (keyword.contains("inv") || keyword.contains("derive")){
     			
-    			if(keywordDeclaration.contains("inv")) constraintStereotypeList.add("inv");
-    			if(keywordDeclaration.contains("derive")) constraintStereotypeList.add("derive");
+    			if(keyword.contains("inv")) constraintStereotypeList.add("inv");
+    			if(keyword.contains("derive")) constraintStereotypeList.add("derive");
     			
     			if(right.indexOf(":")!=-1) // has next constraint
     			{    				
@@ -743,30 +795,10 @@ public class TOCLParser extends OCLParser{
 		result = processInLineComments(result);
 		result = processMultiLineComments(result);
 	    
-	    // record which constraints are temporal
-	    // and process temporal navigations
-	    result = processTempKeyword(result);
+		//process
+	    result = process(result);
+	    System.out.println(result);
 	    
-		// remove world parameter and record it
-		Pattern p = Pattern.compile("oclIsKindOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
-		result = processTypeConformanceOperations(result, p);
-		
-		// remove world parameter and record it
-		p = Pattern.compile("oclIsTypeOf\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
-		result = processTypeConformanceOperations(result, p);
-		
-		// remove world parameter and record it
-		p = Pattern.compile("oclAsType\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
-		result = processOclAsTypeOperation(result, p);
-				
-		// remove world parameter and record it
-		p = Pattern.compile("oclBecomes\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
-		result = processOclBecomesOperation(result, p);
-		
-		// remove world parameter and record it
-		p = Pattern.compile("oclCeasesToBe\\((_')*\\s*\\w+\\s*'*(,\\s*\\w+\\s*)*\\)");		
-		result = processOclCeasesToBeOperation(result, p);
-		
 		umlResource = OntoUML2UMLUtil.saveUML(umlPath,umlRoot);
 		
 		//System.out.println(result);
