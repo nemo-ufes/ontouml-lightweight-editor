@@ -266,7 +266,7 @@ public class StoryElementTimeline {
 	// --- added for each row												---
 	public void createWorld() {
 		World w = storyFactory.createWorld();
-		w.setLabel("World "+this.world_sequence.size());
+		w.setLabel("World"+this.world_sequence.size());
 	    addWorld(w);
 	}
 	public void addWorld(World w) {
@@ -340,6 +340,11 @@ public class StoryElementTimeline {
 					if("Node".equals(se.eClass().getName())){
 						System.out.println("Node "+ ((Node)se).getLabel());
 						addIndividual(tree,(Node)se,tree.getItemCount());
+						//parse through the states and add them
+						for(Node_state state : ((Node)se).getStates()){
+							//ADD STATE. Usar action de addState???
+							
+						}
 						
 					}
 					if("Link".equals(se.eClass().getName())){

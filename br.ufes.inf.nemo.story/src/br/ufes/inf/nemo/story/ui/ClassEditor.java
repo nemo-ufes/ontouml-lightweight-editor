@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.layout.GridLayout;
@@ -20,11 +22,13 @@ import org.eclipse.swt.widgets.TreeItem;
 
 
 
+
+
 import RefOntoUML.Classifier;
 import RefOntoUML.parser.OntoUMLParser;
 
 public abstract class ClassEditor extends Composite {
-	private HashMap<Classifier,CLabel> labelClass = new HashMap<Classifier,CLabel>();
+	private HashMap<URI,CLabel> labelClass = new HashMap<URI,CLabel>();
 	private final StoryElementTimeline storyElTl;
 	public ClassEditor(Composite parent, Set<Classifier> set, StoryElementTimeline stl, int style) {
 		super(parent, style);
@@ -43,7 +47,7 @@ public abstract class ClassEditor extends Composite {
 	    	l.setImage(storyElTl.getImgUnchecked());
 	    	l.setText(parser.getAlias(c));
 	    	l.setData(c);
-	    	labelClass.put(c,l);
+	    	labelClass.put(EcoreUtil.getURI(c),l);
 	    	l.addListener(SWT.MouseDown,new CheckboxClassListener(storyElTl));	    	
 	    }
 		
@@ -61,7 +65,12 @@ public abstract class ClassEditor extends Composite {
 		CounterHashMap counter = new CounterHashMap();
 		
 		for(TreeItem ti: s){
-			for(RefOntoUML.Classifier c : unpackElementYesClasses(ti)){				
+			for(RefOntoUML.Classifier c : unpackElementYesClasses(ti)){
+				//System.out.println(EcoreUtil.getURI(c));
+				if(c instanceof RefOntoUML.Category){
+					System.out.println((RefOntoUML.Category)c + "!!!!");
+				}
+				
 				if(this.getLabel(c) != null){					
 					this.setLabelYes(this.getLabel(c));
 					counter.increment(this.getLabel(c));
@@ -98,7 +107,7 @@ public abstract class ClassEditor extends Composite {
 	abstract protected EList<? extends RefOntoUML.Classifier> unpackElementNoClasses(TreeItem ti);
 	
 	protected CLabel getLabel(Classifier c){
-		return labelClass.get(c);
+		return labelClass.get(EcoreUtil.getURI(c));
 	}
 
 	protected void setLabelYes(CLabel label) {

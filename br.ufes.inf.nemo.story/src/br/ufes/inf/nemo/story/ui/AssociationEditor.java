@@ -34,8 +34,23 @@ public class AssociationEditor extends ClassEditor {
 	public void setSourceTarget(TreeItem[] selection) {
 		//called to update the Editor Screen w/ the source and target of the selection.
 		if(selection.length == 1){
-			sourceLabel.setText("Source : " + ((Link)selection[0].getData()).getSource().getLabel());
-			targetLabel.setText("Target : " + ((Link)selection[0].getData()).getTarget().getLabel());
+			Link l = (Link)selection[0].getData() ;
+			if ( l != null){
+				if( l.getSource() != null){
+					sourceLabel.setText("Source : " + ((Link)selection[0].getData()).getSource().getLabel());
+				}else{
+					sourceLabel.setText("Source : unspecified");
+				}
+				if ( l.getTarget() != null){
+					targetLabel.setText("Target : " + ((Link)selection[0].getData()).getTarget().getLabel());
+				}else{
+					
+				}
+				
+			}else{
+				sourceLabel.setText("Source : unspecified");
+				targetLabel.setText("Target: unspecified");
+			}
 			sourceLabel.pack();
 			targetLabel.pack();
 		}
