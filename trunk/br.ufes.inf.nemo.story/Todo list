@@ -37,3 +37,6 @@ imprimir junto com a história a helper funcion direct_rel_in_w que não usa mais 
 renomear os indivíduos e classes.
 
 Fazer hash entre EObjects e Strings para mapear os indivíduos com seus "nome-alloy"
+
+
+LoadStory não dá load nos states!!!
