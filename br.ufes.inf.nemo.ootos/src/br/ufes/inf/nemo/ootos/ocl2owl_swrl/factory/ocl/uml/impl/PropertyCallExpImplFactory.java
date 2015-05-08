@@ -236,7 +236,7 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		return retArgs;
 	}
 	
-	public ArrayList<SWRLDArgument> solvePropertyAssociation(OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber){
+	public ArrayList<SWRLDArgument> solvePropertyAssociation(String ctStereotype, OntoUMLParser refParser, String nameSpace, OWLOntologyManager manager, OWLDataFactory factory, OWLOntology ontology, Set<SWRLAtom> antecedent, Set<SWRLAtom> consequent, SWRLDArgument referredArgument, Boolean operatorNot, int repeatNumber){
 		String nameVarX = "";
 		String nameVarY = "";
 		
@@ -277,10 +277,15 @@ public class PropertyCallExpImplFactory extends NavigationCallExpImplFactory {
 		
 		ArrayList<SWRLDArgument> retArgs = new ArrayList<SWRLDArgument>();
 		
-		if(assocEndName.equals(assocEnd0Name)){
+		if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
+			retArgs.add(varX);
 			retArgs.add(varY);
 		}else{
-			retArgs.add(varX);
+			if(assocEndName.equals(assocEnd0Name)){
+				retArgs.add(varY);
+			}else{
+				retArgs.add(varX);
+			}
 		}
 		
 		return retArgs;

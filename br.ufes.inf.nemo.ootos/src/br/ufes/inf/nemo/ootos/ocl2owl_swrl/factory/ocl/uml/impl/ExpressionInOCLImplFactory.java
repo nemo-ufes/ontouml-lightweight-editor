@@ -114,7 +114,7 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 			}else if(org.eclipse.ocl.utilities.UMLReflection.DERIVATION.equals(ctStereotype)){
 				//in the derivations case, the context is always considered the unique atom on the consequent
 				this.elementFactory = new PropertyCallExpImplFactory(this.mappingProperties, m_NamedElementImpl, (Property) element);
-				ArrayList<SWRLDArgument> retArgsY = this.elementFactory.solvePropertyAssociation(refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, 1);
+				ArrayList<SWRLDArgument> retArgsY = this.elementFactory.solvePropertyAssociation(ctStereotype, refParser, nameSpace, manager, factory, ontology, antecedent, consequent, contextVar, operatorNot, 1);
 				
 				if(retArgsX.size() > 0 && retArgsY.size() > 0){
 					SWRLDArgument varX = retArgsX.get(retArgsX.size()-1);
