@@ -339,11 +339,10 @@ public class StoryElementTimeline {
 					
 					if("Node".equals(se.eClass().getName())){
 						System.out.println("Node "+ ((Node)se).getLabel());
-						addIndividual(tree,(Node)se,tree.getItemCount());
+						TreeItem nodeTreeItem = addIndividual(tree,(Node)se,tree.getItemCount());
 						//parse through the states and add them
 						for(Node_state state : ((Node)se).getStates()){
-							//ADD STATE. Usar action de addState???
-							
+							addState(nodeTreeItem,state,nodeTreeItem.getItemCount());
 						}
 						
 					}
@@ -401,9 +400,9 @@ public class StoryElementTimeline {
 	public TreeItem createNode(Tree parent, int index){
 		TreeItem item = new TreeItem(parent, SWT.CENTER, index);
 		Node n = storyFactory.createNode();
-		n.setLabel("Node "+parent.getItemCount());
+		n.setLabel("Node"+parent.getItemCount());
 		item.setData(n);
-		return addNewRowWorldButtons(item,"Node "+parent.getItemCount());
+		return addNewRowWorldButtons(item,"Node"+parent.getItemCount());
 	}
 	public TreeItem createStoryElement(TreeItem parent){
 		return createNode_state(parent, parent.getItemCount());
@@ -413,17 +412,17 @@ public class StoryElementTimeline {
 		Node_state n = storyFactory.createNode_state();
 		
 		((Node)parent.getData()).getStates().add(n);
-		n.setLabel("State "+ parent.getItemCount());
+		n.setLabel("State"+ parent.getItemCount());
 		item.setData(n);
-		return addNewRowWorldButtons(item,"State "+ parent.getItemCount());
+		return addNewRowWorldButtons(item,"State"+ parent.getItemCount());
 	}
 
 	public TreeItem createLink(Tree parent, int index) {
 		TreeItem item = new TreeItem(parent, SWT.CENTER, index);
 		Link n = storyFactory.createLink();
-		n.setLabel("Link "+parent.getItemCount());
+		n.setLabel("Link"+parent.getItemCount());
 		item.setData(n);
-		return addNewRowWorldButtons(item,"Link "+parent.getItemCount());
+		return addNewRowWorldButtons(item,"Link"+parent.getItemCount());
 	}
 	
 	public TreeItem addIndividual(Tree parent, Individual n, int index){
@@ -434,6 +433,18 @@ public class StoryElementTimeline {
 		noWorldButtons(item,n.getAbsent_from());
 		return item;
 	}
+	
+	public TreeItem addState(TreeItem parent, Node_state n, int index){
+		TreeItem item = new TreeItem(parent, SWT.CENTER, index);
+		item.setData(n);
+		((Node)parent.getData()).getStates().add(n);
+		addNewRowWorldButtons(item,n.getLabel()); //adds a row of buttons 
+		
+		yesWorldButtons(item,n.getClassified_in());
+		noWorldButtons(item,n.getNot_classified_in());
+		return item;
+	}
+	
 	public void deleteStoryElement(TreeItem i) {
 		
 		if(!i.isDisposed()){
