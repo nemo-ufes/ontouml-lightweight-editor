@@ -1,13 +1,13 @@
 package br.ufes.inf.nemo.pattern.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.Arrays;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.Generalization;
 import RefOntoUML.Kind;
+import RefOntoUML.Mixin;
 import RefOntoUML.Package;
 import RefOntoUML.Phase;
 import RefOntoUML.Quantity;
@@ -26,23 +26,9 @@ public class PrincipleOfIdentity extends AbstractPattern{
 	}
 
 	@Override
-	public void runPattern() {
-		HashMap<String, String[]> hashTree = new HashMap<>();
-		Set<? extends Classifier> set;
+	public void runPattern() { 
+		dym.addHashTree(fillouthashTree(Arrays.asList(new Class[]{Kind.class, Quantity.class, Collective.class, SubKind.class, Role.class, Phase.class})));
 
-		set = parser.getAllInstances(Kind.class);
-		if(!set.isEmpty())
-			hashTree.put("Kind", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Collective.class);
-		if(!set.isEmpty())
-			hashTree.put("Collective", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Quantity.class);
-		if(!set.isEmpty())
-			hashTree.put("Quantity", UtilAssistant.getStringRepresentationClass(set));
-		
-		dym.addHashTree(hashTree);
 		dym.addTableLine("general", "Sortal", new String[] {"Kind","Collective", "Quantity"});
 		
 		if(c instanceof SubKind){
@@ -58,6 +44,7 @@ public class PrincipleOfIdentity extends AbstractPattern{
 			dym.addTableRigidLine("specific", UtilAssistant.getStringRepresentationClass(c), new String[] {"Role"});
 		}
 		
+		reuseGeneralizationSet(Arrays.asList(new Class[]{Mixin.class}), Arrays.asList(new Class[]{Kind.class, Collective.class, Quantity.class, Role.class, Phase.class}));
 		dm.open();
 	}
 
@@ -93,7 +80,7 @@ public class PrincipleOfIdentity extends AbstractPattern{
 			}
 
 			if(general != null && specifics.size() == 2){//not_activate = false
-				fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"+UtilAssistant.getCont()));
+				fix.addAll(createGeneralizationSet(generalizationList, true, true, dym.getGeneralizationSetName()));
 			}
 		}catch(Exception e){
 			//Do nothing, totally safe ;-)

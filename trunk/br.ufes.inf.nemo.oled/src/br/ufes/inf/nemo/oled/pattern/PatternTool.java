@@ -9,18 +9,21 @@ import br.ufes.inf.nemo.oled.model.ElementType;
 import br.ufes.inf.nemo.pattern.dynamic.ui.ModelCompleter;
 import br.ufes.inf.nemo.pattern.impl.AbstractPattern;
 import br.ufes.inf.nemo.pattern.impl.AntiRigidWeakSupplementation;
+import br.ufes.inf.nemo.pattern.impl.CategoryPattern;
 import br.ufes.inf.nemo.pattern.impl.CharacterizationPattern;
+import br.ufes.inf.nemo.pattern.impl.CollectivePartition;
 import br.ufes.inf.nemo.pattern.impl.GenericMultipleRelator;
+import br.ufes.inf.nemo.pattern.impl.KindPartition;
 import br.ufes.inf.nemo.pattern.impl.MixinPattern;
 import br.ufes.inf.nemo.pattern.impl.MixinPatternWithSubkind;
 import br.ufes.inf.nemo.pattern.impl.PhasePartition;
+import br.ufes.inf.nemo.pattern.impl.QuantityPartition;
 import br.ufes.inf.nemo.pattern.impl.RelatorPattern;
 import br.ufes.inf.nemo.pattern.impl.RigidWeakSupplementation;
 import br.ufes.inf.nemo.pattern.impl.RoleMixinDependentPattern;
 import br.ufes.inf.nemo.pattern.impl.RoleMixinPattern;
 import br.ufes.inf.nemo.pattern.impl.RolePartition;
 import br.ufes.inf.nemo.pattern.impl.SubkindPartition;
-import br.ufes.inf.nemo.pattern.impl.SubstanceSortalPartition;
 import br.ufes.inf.nemo.pattern.ui.manager.ModelCompleterManager;
 
 /**
@@ -53,8 +56,17 @@ public class PatternTool {
 		case PATTERN_SUBKIND_PARTITION:
 			pm = new SubkindPartition(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
 			break;
-		case PATTERN_SUBSTANCE_SORTAL_PARTITION:
-			pm = new SubstanceSortalPartition(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
+		case KIND_PARTITION:
+			pm = new KindPartition(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
+			break;
+		case COLLECTIVE_PARTITION:
+			pm = new CollectivePartition(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
+			break;
+		case QUANTITY_PARTITION:
+			pm = new QuantityPartition(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
+			break;
+		case CATEGORY_PATTERN:
+			pm = new CategoryPattern(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
 			break;
 		case DEPENDENT_ROLEMIXIN:
 			pm = new RoleMixinDependentPattern(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
@@ -76,8 +88,11 @@ public class PatternTool {
 		Fix fix = null;
 		if(pm != null){
 			pm.runPattern();
-			if(pm.canGetFix())
+			if(pm.canGetFix()){
 				fix = pm.getFix();
+				diagramManager.updateOLED(fix);
+				_runModelCompleter(diagramManager, x, y,false);
+			}
 		}else{
 			if(elem == ElementType.PATTERN_COMPLETER)
 				_runModelCompleter(diagramManager, x, y);
@@ -144,13 +159,11 @@ public class PatternTool {
 			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
 				@Override
 				public void run() {
-					Fix fix = PatternTool.tryToRun(diagramManager, elementType, x, y);
-					diagramManager.updateOLED(fix);					
+					PatternTool.tryToRun(diagramManager, elementType, x, y);					
 				}
 			});
 		}else{
-			Fix fix = PatternTool.tryToRun(diagramManager, elementType, x, y);			
-			diagramManager.updateOLED(fix);						
+			PatternTool.tryToRun(diagramManager, elementType, x, y);						
 		}
 	}
 	

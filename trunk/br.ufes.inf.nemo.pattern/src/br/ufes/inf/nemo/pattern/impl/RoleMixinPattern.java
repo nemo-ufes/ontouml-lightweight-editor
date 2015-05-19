@@ -1,8 +1,7 @@
 package br.ufes.inf.nemo.pattern.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.Arrays;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
@@ -33,51 +32,21 @@ public class RoleMixinPattern extends AbstractPattern{
 
 	@Override
 	public void runPattern() {
-		HashMap<String, String[]> hashTree = new HashMap<>();
-		Set<? extends Classifier> set;
-
-		set = parser.getAllInstances(Kind.class);
-		if(!set.isEmpty())
-			hashTree.put("Kind", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Collective.class);
-		if(!set.isEmpty())
-			hashTree.put("Collective", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Quantity.class);
-		if(!set.isEmpty())
-			hashTree.put("Quantity", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(SubKind.class);
-		if(!set.isEmpty())
-			hashTree.put("Subkind", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Phase.class);
-		if(!set.isEmpty())
-			hashTree.put("Phase", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Role.class);
-		if(!set.isEmpty())
-			hashTree.put("Role", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(RoleMixin.class);
-		if(!set.isEmpty())
-			hashTree.put("RoleMixin", UtilAssistant.getStringRepresentationClass(set));
-
-		dym.addHashTree(hashTree);
-
-		dym.addTableLine("sortal", "Sortal 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
-		dym.addTableLine("sortal", "Sortal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
-
-		dym.addTableLine("role", "Role 1", new String[] {"Role"});
-		dym.addTableLine("role", "Role 2", new String[] {"Role"});
+		dym.addHashTree(fillouthashTree(Arrays.asList(new Class[]{Kind.class, Quantity.class, Collective.class, SubKind.class, RoleMixin.class, Role.class, Phase.class})));
 
 		if(c instanceof RoleMixin){
 			dym.addTableRigidLine("rolemixin", UtilAssistant.getStringRepresentationClass(c), new String[] {"RoleMixin"});	
 		}else{
 			dym.addTableLine("rolemixin", "RoleMixin", new String[] {"RoleMixin"});
 		}
+		
+		dym.addTableLine("sortal", "Sortal 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+		dym.addTableLine("role", "Role 1", new String[] {"Role"});
+		
+		dym.addTableLine("sortal", "Sortal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+		dym.addTableLine("role", "Role 2", new String[] {"Role"});
 
+		reuseGeneralizationSet(Arrays.asList(new Class[]{RoleMixin.class}), Arrays.asList(new Class[]{Kind.class, Quantity.class, Collective.class, SubKind.class, Role.class, Phase.class}));
 		dm.open();
 	}
 
@@ -123,7 +92,7 @@ public class RoleMixinPattern extends AbstractPattern{
 				fix.addAll(_fix);
 			}
 			if(generalizationList.size() == 2){
-				fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"+UtilAssistant.getCont()));
+				fix.addAll(createGeneralizationSet(generalizationList, true, true, dym.getGeneralizationSetName()));
 			}
 		}
 

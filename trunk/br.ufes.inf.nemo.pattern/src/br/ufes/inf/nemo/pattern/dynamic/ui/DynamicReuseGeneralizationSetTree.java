@@ -2,7 +2,7 @@ package br.ufes.inf.nemo.pattern.dynamic.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -21,19 +21,19 @@ import org.eclipse.wb.swt.SWTResourceManager;
 /**
  * @author Victor Amorim
  */
-public class DynamicTree {
+public class DynamicReuseGeneralizationSetTree {
 
 	protected Shell shell;
 
 	/**
 	 * Open the window.
-	 * @param hashTree 
-	 * @param classes 
-	 * @param possibleStereotypes 
+	 * @param hash 
 	 */
-	public void open(HashMap<String,String[]> hashTree, ArrayList<Text> classes, String[] possibleStereotypes) {
+	public void open(HashMap<String, ArrayList<String>> hash) {
+		stereotype = null;
+		GS = null;
 		Display display = Display.getDefault();
-		createContents(hashTree, classes, possibleStereotypes);
+		createContents(hash);
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
@@ -46,26 +46,26 @@ public class DynamicTree {
 	/**
 	 * Create contents of the window.
 	 */
-	private String className = null;
-	private String classStereotype = null;
+	private String stereotype = null;
+	private String GS = null;
 	private Text queryString;
 	private Tree tree;
 
-	public String getClassName() {
-		return className;
+	public String getStereotype() {
+		return stereotype;
 	}
 
-	public String getClassStereotype() {
-		return classStereotype;
+	public String getGS() {
+		return GS;
 	}
 
 	/**
-	 * @param hashTree 
-	 * @param possibleStereotypes2 
+	 * @param hash 
 	 * @wbp.parser.entryPoint
 	 */
-	protected void createContents(HashMap<String,String[]> hashTree, ArrayList<Text> classes, String[] possibleStereotypes) {
+	protected void createContents(HashMap<String, ArrayList<String>> hash) {
 		shell = new Shell(SWT.CLOSE & (~SWT.RESIZE) | SWT.APPLICATION_MODAL);
+
 		shell.addListener(SWT.Traverse, new Listener() {
 			public void handleEvent(Event event) {
 				switch (event.detail) {
@@ -78,46 +78,29 @@ public class DynamicTree {
 			}
 		});
 
-		shell.setSize(241, 341);
-		shell.setText("Reusing class");
-		shell.setImage(SWTResourceManager.getImage(DynamicTree.class,"/resources/icons/x16/magnifier.png"));
+		shell.setSize(248, 341);
+		shell.setText("Reusing Generalization Set");
+		shell.setImage(SWTResourceManager.getImage(DynamicReuseGeneralizationSetTree.class,"/resources/icons/x16/magnifier.png"));
 
 		shell.setLayout(null);
 
 		tree = new Tree(shell, SWT.BORDER | SWT.V_SCROLL);
-		tree.setBounds(6, 37, 225, 228);
+		tree.setBounds(6, 37, 232, 228);
 
 		TreeItem treeItem;
 		TreeItem subItem;
 
-		for(Map.Entry<String, String[]> entry : hashTree.entrySet()){
-			for(String possiblStereotype : possibleStereotypes){
-				if(entry.getKey().equalsIgnoreCase(possiblStereotype)){
-					treeItem = new TreeItem (tree, SWT.NONE);
-					treeItem.setText (entry.getKey());
-					treeItem.setData(null);
+		for(Entry<String, ArrayList<String>> entry : hash.entrySet()){
+			treeItem = new TreeItem (tree, SWT.NONE);
+			treeItem.setText (entry.getKey());
+			treeItem.setData(null);
 
-					for(String cls : entry.getValue()){
-						subItem = new TreeItem(treeItem, SWT.NONE);
-						subItem.setText(cls);
-						subItem.setData(entry.getKey());
-					}
-				}
+			for(String cls : entry.getValue()){
+				subItem = new TreeItem(treeItem, SWT.NONE);
+				subItem.setText(cls);
+				subItem.setData(entry.getKey());
 			}
 		}
-
-		//To reuse some class
-		//		if(classes != null && !classes.isEmpty()){
-		//			treeItem = new TreeItem (tree, SWT.NONE);
-		//			treeItem.setText ("Declared Classes");
-		//			treeItem.setData(null);
-		//
-		//			for(Text text: classes){
-		//				subItem = new TreeItem(treeItem, SWT.NONE);
-		//				subItem.setText("Reusing - "+text.getText());
-		//				treeItem.setData(1);
-		//			}
-		//		}
 
 		final Button btnAdd = new Button(shell, SWT.NONE);
 		btnAdd.addSelectionListener(new SelectionAdapter() {
@@ -147,7 +130,7 @@ public class DynamicTree {
 			}
 		});
 
-		btnSearch.setBounds(177, 8, 54, 25);
+		btnSearch.setBounds(177, 8, 61, 25);
 		btnSearch.setText("Search");
 
 		tree.addListener (SWT.Selection, new Listener () {
@@ -157,8 +140,8 @@ public class DynamicTree {
 				if(item.getData() != null){
 					btnAdd.setEnabled(true);
 
-					className = item.getText();
-					classStereotype = (String)item.getData();
+					GS = item.getText();
+					stereotype = (String)item.getData();
 				}else{
 					btnAdd.setEnabled(false);
 				}
@@ -168,5 +151,13 @@ public class DynamicTree {
 		if(tree.getItemCount() == 0){
 			btnAdd.setText("Close");
 		}
+		
+		//bringing to front
+		shell.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				shell.forceActive();
+			}
+		});
+		
 	}
 }

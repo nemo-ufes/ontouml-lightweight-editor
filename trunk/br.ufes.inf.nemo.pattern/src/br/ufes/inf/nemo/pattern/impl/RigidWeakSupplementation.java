@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.pattern.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -26,6 +27,7 @@ public class RigidWeakSupplementation extends AbstractPattern {
 
 	@Override
 	public void runPattern() {
+		dym.addHashTree(fillouthashTree(Arrays.asList(new Class[]{Kind.class, Quantity.class, Collective.class, SubKind.class})));
 		HashMap<String, String[]> hashTree = new HashMap<>();
 		Set<? extends Classifier> set;
 
@@ -50,6 +52,8 @@ public class RigidWeakSupplementation extends AbstractPattern {
 		dym.addTableLine("type", "Type", new String[] {"Kind","Collective", "Quantity", "Subkind"});
 		dym.addTableLine("complex", "Complex Type", new String[] {"Subkind"});
 		dym.addTableLine("atomic", "Atomic Type", new String[] {"Subkind"});
+
+		reuseGeneralizationSet(Arrays.asList(new Class[]{Kind.class, Quantity.class, Collective.class, SubKind.class}), Arrays.asList(new Class[]{SubKind.class}));
 
 		dm.open();		
 	}
@@ -89,7 +93,7 @@ public class RigidWeakSupplementation extends AbstractPattern {
 				fix.addAll(_fix);
 			}
 			if(generalizationList.size() == 2){
-				fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"+UtilAssistant.getCont()));
+				fix.addAll(createGeneralizationSet(generalizationList, true, true, dym.getGeneralizationSetName()));
 			}
 		}
 

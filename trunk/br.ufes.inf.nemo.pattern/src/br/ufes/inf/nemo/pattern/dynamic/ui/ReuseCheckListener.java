@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Text;
 
 public class ReuseCheckListener implements SelectionListener{
 	HashMap<String,String[]> hashTree;
-	DynamicTree treeView = new DynamicTree();
+	DynamicReuseClassTree treeView = new DynamicReuseClassTree();
 	Text text;
 	CCombo combo;
 	boolean comboEnabled = false;

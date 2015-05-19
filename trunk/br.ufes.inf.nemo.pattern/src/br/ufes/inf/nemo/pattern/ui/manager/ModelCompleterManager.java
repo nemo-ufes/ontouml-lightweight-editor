@@ -27,6 +27,7 @@ import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.pattern.dynamic.ui.ModelCompleter;
 import br.ufes.inf.nemo.pattern.impl.AbstractPattern;
+import br.ufes.inf.nemo.pattern.impl.CategoryPattern;
 import br.ufes.inf.nemo.pattern.impl.CharacterizationPattern;
 import br.ufes.inf.nemo.pattern.impl.MixinPattern;
 import br.ufes.inf.nemo.pattern.impl.PhasePartition;
@@ -35,7 +36,6 @@ import br.ufes.inf.nemo.pattern.impl.RelatorPattern;
 import br.ufes.inf.nemo.pattern.impl.RoleMixinDependentPattern;
 import br.ufes.inf.nemo.pattern.impl.RoleMixinPattern;
 import br.ufes.inf.nemo.pattern.impl.RolePartition;
-import br.ufes.inf.nemo.pattern.impl.SubstanceSortalPartition;
 
 public class ModelCompleterManager {
 
@@ -251,7 +251,7 @@ public class ModelCompleterManager {
 
 			boolean gambi = true;
 			for(Association association : associations){
-				if(association instanceof MaterialAssociation){
+				if(association instanceof MaterialAssociation || association instanceof Mediation){
 					gambi = false;
 					break;
 				}
@@ -335,7 +335,7 @@ public class ModelCompleterManager {
 		String apCategory = "Categories must specialize at least\ntwo Rigids.";
 
 		for (Classifier c : set) {
-			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apCategory, new SubstanceSortalPartition(parser, c, x, y)));
+			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apCategory, new CategoryPattern(parser, c, x, y)));
 		}
 	}
 

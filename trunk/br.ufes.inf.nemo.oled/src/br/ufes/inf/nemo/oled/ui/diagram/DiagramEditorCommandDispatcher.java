@@ -399,8 +399,17 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("PATTERN_ROLEMIXIN_DEPENDENT", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.DEPENDENT_ROLEMIXIN));
 			
-			selectorMap.put("PATTERN_SUBSTANCE_SORTAL_PARTITION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_SUBSTANCE_SORTAL_PARTITION));
+			selectorMap.put("PATTERN_KIND_PARTITION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.KIND_PARTITION));
+			
+			selectorMap.put("PATTERN_COLLECTIVE_PARTITION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.COLLECTIVE_PARTITION));
+			
+			selectorMap.put("PATTERN_QUANTITY_PARTITION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.QUANTITY_PARTITION));
+			
+			selectorMap.put("CATEGORY_PATTERN", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.CATEGORY_PATTERN));
 			
 			selectorMap.put("PATTERN_COMPLETER", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_COMPLETER));
