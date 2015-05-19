@@ -1,15 +1,12 @@
 package br.ufes.inf.nemo.pattern.impl;
 
-import java.util.HashMap;
-import java.util.Set;
+import java.util.Arrays;
 
-import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
 import RefOntoUML.Kind;
 import RefOntoUML.Quantity;
 import RefOntoUML.SubKind;
 import RefOntoUML.parser.OntoUMLParser;
-import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 
 public class SubkindPartition extends AbstractPattern{
@@ -20,26 +17,7 @@ public class SubkindPartition extends AbstractPattern{
 
 	@Override
 	public void runPattern(){
-		HashMap<String, String[]> hashTree = new HashMap<>();
-		Set<? extends Classifier> set;
-
-		set = parser.getAllInstances(Kind.class);
-		if(!set.isEmpty())
-			hashTree.put("Kind", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Collective.class);
-		if(!set.isEmpty())
-			hashTree.put("Collective", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Quantity.class);
-		if(!set.isEmpty())
-			hashTree.put("Quantity", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(SubKind.class);
-		if(!set.isEmpty())
-			hashTree.put("Subkind", UtilAssistant.getStringRepresentationClass(set));
-
-		dym.addHashTree(hashTree);
+		dym.addHashTree(fillouthashTree(Arrays.asList(new Class[]{Kind.class, Collective.class, Quantity.class, SubKind.class})));
 
 		dym.addTableLine("general", "General", new String[] {"Kind","Collective", "Quantity", "Subkind"});
 
@@ -50,6 +28,7 @@ public class SubkindPartition extends AbstractPattern{
 
 		dym.setAddLineButtonAction("specific", "Specific N", new String[] {"Subkind"});
 
+		isPartitionPattern(Arrays.asList(new Class[]{Kind.class, Collective.class, Quantity.class, SubKind.class}), Arrays.asList(new Class[]{SubKind.class}));
 		dm.open();
 	}
 

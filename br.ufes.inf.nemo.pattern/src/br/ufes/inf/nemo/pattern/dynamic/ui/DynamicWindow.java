@@ -9,6 +9,7 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -26,13 +27,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.pattern.util.UtilPattern;
-
-/*
- * TODO LIST
- * 	- Implement reuse of classes used in the current table
- * */
-
 
 /**
  * @author Victor Amorim
@@ -41,6 +37,8 @@ public class DynamicWindow extends Dialog {
 	private Composite container;	
 	private static boolean forcedClosed = true;
 	private String title = new String();
+	private String generalizationSetNaming = new String();
+
 	private HashMap<String,ArrayList<Object[]>> hashTable = null;
 	public HashMap<String, ArrayList<Object[]>> getHashTable(){
 		return hashTable;
@@ -50,9 +48,16 @@ public class DynamicWindow extends Dialog {
 		return forcedClosed;
 	}
 
+	//Case is not a partition pattern, turns invisible the composite
+	public void isPartitionPattern(boolean isPartitionPattern){
+		namingGSComposite.setVisible(isPartitionPattern);
+		if(isPartitionPattern)
+			txGSNaming.setText("partition"+UtilAssistant.getCont());
+	}
+
 	public DynamicWindow(Shell parentShell, String title, String imagePath) 
 	{
-		super(parentShell);		
+		super(parentShell);	
 		this.title=title;
 		currentImage = SWTResourceManager.getImage(DynamicWindow.class, imagePath);
 		setDefaultImage(new Image(Display.getDefault(),DynamicWindow.class.getResourceAsStream("/resources/icons/x16/sitemap.png")));		
@@ -67,13 +72,13 @@ public class DynamicWindow extends Dialog {
 		}
 
 		DynamicWindow resultDIalog = new DynamicWindow(shell,title,imagePath);
-
+		
 		UtilPattern.centralizeShell(display, shell);
 		resultDIalog.create();
 
 		return resultDIalog;
 	}
-	
+
 	@Override
 	public void create() {
 		super.create();	    	  
@@ -97,6 +102,8 @@ public class DynamicWindow extends Dialog {
 
 	private Button btnAddNewLine;
 	private Button btnRemoveLine;
+	private Button btnReuseGS;
+	
 	public Button getBtnAddNewLine() {
 		return btnAddNewLine;
 	}
@@ -105,27 +112,47 @@ public class DynamicWindow extends Dialog {
 
 	protected Button createButton(Composite arg0, int arg1, String arg2, boolean arg3) 
 	{
-		//Retrun null so that no default buttons like 'OK' and 'Cancel' will be created
+		//Return null, so that no default buttons like 'OK' and 'Cancel' will be created
 		return null;
 	}
 
+	public Text getTxGSNaming() {
+		return txGSNaming;
+	}
+	
 	/**
 	 * Create contents of the dialog.
 	 * @param parent
 	 */
+	private Composite namingGSComposite;
 	@Override
 	protected Control createDialogArea(Composite parent) 
 	{
 		container = (Composite) super.createDialogArea(parent);	
 		container.setLayout(new FormLayout());
 
+		namingGSComposite = new Composite(container, SWT.NONE);
+		namingGSComposite.setVisible(false);
+
+		FormData fd_namingGSComposite = new FormData();
+		fd_namingGSComposite.left = new FormAttachment(0, 10);
+		namingGSComposite.setLayoutData(fd_namingGSComposite);
+		Label lbGS = new Label(namingGSComposite, SWT.NONE);
+		lbGS.setLocation(0, 6);
+		lbGS.setSize(255, 14);
+		lbGS.setText("Give a name for this new Generalization Set: ");
+
+		txGSNaming = new Text(namingGSComposite, SWT.BORDER);
+		txGSNaming.setLocation(274, 3);
+		txGSNaming.setSize(127, 19);
+
 		Composite composite = new Composite(container, SWT.BORDER);
+		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
 		FormData fd_composite = new FormData();
 		fd_composite.top = new FormAttachment(0, 10);
 		fd_composite.right = new FormAttachment(0, 895);
 		fd_composite.left = new FormAttachment(0, 494);
 		composite.setLayoutData(fd_composite);
-		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 
 		Label imgLabel = new Label(composite, SWT.HORIZONTAL | SWT.CENTER);
@@ -146,6 +173,7 @@ public class DynamicWindow extends Dialog {
 		composite.pack();
 
 		this.table = new Table(container, SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		fd_namingGSComposite.right = new FormAttachment(table, 85, SWT.RIGHT);
 		FormData fd_table = new FormData();
 		fd_table.bottom = new FormAttachment(0, 230);
 		fd_table.right = new FormAttachment(0, 477);
@@ -156,6 +184,7 @@ public class DynamicWindow extends Dialog {
 		table.setLinesVisible(true);
 
 		Button btnPressMe = new Button (container, SWT.NONE);
+		fd_namingGSComposite.top = new FormAttachment(btnPressMe, 6);
 		FormData fd_btnPressMe = new FormData();
 		fd_btnPressMe.top = new FormAttachment(table, 6);
 		fd_btnPressMe.right = new FormAttachment(table, 0, SWT.RIGHT);
@@ -182,6 +211,7 @@ public class DynamicWindow extends Dialog {
 					}
 				}
 				forcedClosed = false;
+				generalizationSetNaming = txGSNaming.getText();
 				close();
 			}
 		});
@@ -242,6 +272,12 @@ public class DynamicWindow extends Dialog {
 		btnNewButton.setText("Show Image");
 
 		Button btnHelp = new Button(container, SWT.FLAT | SWT.CENTER);
+		fd_namingGSComposite.bottom = new FormAttachment(btnHelp, 46, SWT.BOTTOM);
+		
+		btnReuseGS = new Button(namingGSComposite, SWT.CHECK);
+		btnReuseGS.setBounds(419, 3, 123, 18);
+		btnReuseGS.setText("Pick from model?");
+
 		fd_btnAddNewLine.left = new FormAttachment(btnHelp, 48);
 		FormData fd_btnHelp = new FormData();
 		fd_btnHelp.left = new FormAttachment(0, 20);
@@ -260,7 +296,6 @@ public class DynamicWindow extends Dialog {
 		return container;
 	}
 
-
 	private int initialItemCount = 0;
 	public void setInitialItemCount(int initialValue) {
 		initialItemCount = initialValue;
@@ -271,8 +306,14 @@ public class DynamicWindow extends Dialog {
 	}
 
 	private HashMap<TableItem, ArrayList<TableEditor>> tableEditorHash = new HashMap<>();
-	public void addTableEditor(TableItem tableItem, ArrayList<TableEditor> editors){
-		tableEditorHash.put(tableItem, editors);
+	private ArrayList<ArrayList<TableEditor>> editors = new ArrayList<>();
+	public void addTableEditor(TableItem tableItem, ArrayList<TableEditor> eds){
+		tableEditorHash.put(tableItem, eds);
+		editors.add(eds);
+	}
+	
+	public ArrayList<ArrayList<TableEditor>> getEditors() {
+		return editors;
 	}
 
 	private ArrayList<String> dataFields = new ArrayList<>();
@@ -282,10 +323,23 @@ public class DynamicWindow extends Dialog {
 	}
 
 	private ArrayList<String> usedStereotypes = new ArrayList<>();
+	private Text txGSNaming;
 	public void addUsedStereotypes(String[] stereotypes) {
 		for (String stereotype : stereotypes) {
 			if(!usedStereotypes.contains(stereotype))
 				usedStereotypes.add(stereotype);
 		}
+	}
+
+	public String getGeneralizationSetName(){
+		return generalizationSetNaming;
+	}
+
+	public void addReuseGSListener(SelectionListener listener) {
+		btnReuseGS.addSelectionListener(listener);
+	}
+	
+	public Button getBtnReuseGS() {
+		return btnReuseGS;
 	}
 }

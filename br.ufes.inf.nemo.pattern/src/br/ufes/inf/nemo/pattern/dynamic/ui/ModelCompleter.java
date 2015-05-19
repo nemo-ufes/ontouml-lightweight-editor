@@ -54,6 +54,12 @@ public class ModelCompleter extends Dialog{
 		return window;
 	}
 	
+
+	@Override
+	protected boolean canHandleShellCloseEvent() {
+		return false;
+	}
+	
 	public static ModelCompleter createDialog(boolean bool)	{			
 		ModelCompleter window = init();
 		window.showCompleteMessage(bool);

@@ -1,8 +1,7 @@
 package br.ufes.inf.nemo.pattern.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.Arrays;
 
 import RefOntoUML.Classifier;
 import RefOntoUML.Collective;
@@ -33,35 +32,7 @@ public class MixinPattern extends AbstractPattern{
 
 	@Override
 	public void runPattern() {
-		HashMap<String, String[]> hashTree = new HashMap<>();
-		Set<? extends Classifier> set;
-
-		set = parser.getAllInstances(Kind.class);
-		if(!set.isEmpty())
-			hashTree.put("Kind", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Collective.class);
-		if(!set.isEmpty())
-			hashTree.put("Collective", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Quantity.class);
-		if(!set.isEmpty())
-			hashTree.put("Quantity", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Phase.class);
-		if(!set.isEmpty())
-			hashTree.put("Phase", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Role.class);
-		if(!set.isEmpty())
-			hashTree.put("Role", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Mixin.class);
-		if(!set.isEmpty())
-			hashTree.put("Mixin", UtilAssistant.getStringRepresentationClass(set));
-
-
-		dym.addHashTree(hashTree);
+		dym.addHashTree(fillouthashTree(Arrays.asList(new Class[]{Kind.class, Quantity.class, Collective.class, Mixin.class, Role.class, Phase.class})));
 
 		if(c instanceof Mixin){
 			dym.addTableRigidLine("mixin", UtilAssistant.getStringRepresentationClass(c), new String[] {"Mixin"});
@@ -73,8 +44,9 @@ public class MixinPattern extends AbstractPattern{
 
 		dym.addTableLine("antirigidsortal", "Anti Rigid Sortal", new String[] {"Role","Phase"});
 
+		reuseGeneralizationSet(Arrays.asList(new Class[]{Mixin.class}), Arrays.asList(new Class[]{Kind.class, Collective.class, Quantity.class, Role.class, Phase.class}));
+		
 		dm.open();
-
 	}
 
 	@Override
@@ -109,7 +81,7 @@ public class MixinPattern extends AbstractPattern{
 			}
 			if(sortal != null && antirigid != null){
 				fix.addAll(_fix);
-				fix.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, "partition"+UtilAssistant.getCont()));
+				fix.addAll(createGeneralizationSet(generalizationList, true, true, dym.getGeneralizationSetName()));
 			}
 		}
 

@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.pattern.ui.manager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -13,15 +14,19 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
+import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.pattern.dynamic.ui.ActiveCheckListener;
 import br.ufes.inf.nemo.pattern.dynamic.ui.AddLineButtonListener;
 import br.ufes.inf.nemo.pattern.dynamic.ui.DynamicWindow;
 import br.ufes.inf.nemo.pattern.dynamic.ui.ReuseCheckListener;
+import br.ufes.inf.nemo.pattern.dynamic.ui.PartitionGeneralizationSetCheckListener;
+import br.ufes.inf.nemo.pattern.dynamic.ui.ReuseGeneralizationSetCheckListener;
 
 public class DynamicManagerWindow {
 
 	private DynamicWindow window; 
 	private HashMap<String, String[]> hashTree;
+	private HashMap<String, ArrayList<String>> hashGS;
 
 	public DynamicManagerWindow(DynamicWindow dynwin) {
 		window = dynwin;
@@ -87,11 +92,6 @@ public class DynamicManagerWindow {
 
 		window.addTableEditor(tableItem, editors);
 		window.addUsedStereotypes(stereotypes);
-		/*
-		 * It had been used to possibility the reuse of some declared class at run time
-		 */
-		//Add
-		//		_classesNames.add(text);
 
 		//Add to reuse checkButton listener 
 		btnReuse.addSelectionListener(new ReuseCheckListener(hashTree, null, text, combo));
@@ -171,7 +171,7 @@ public class DynamicManagerWindow {
 
 	private void addTableHeaders() {
 		Table table = window.getTable();
-		
+
 		//Defining columns
 		TableColumn	column = new TableColumn(table, SWT.CENTER);
 		column.setWidth(90);
@@ -204,8 +204,45 @@ public class DynamicManagerWindow {
 		//If table isn't null something was created
 		return !(window.getHashTable() == null);
 	}
-	
+
 	public ArrayList<Object[]> getRowsOf(String field){
 		return  window.getHashTable().get(field);
+	}
+
+	public String getGeneralizationSetName(){
+		return window.getGeneralizationSetName();
+	}
+
+	public void addHashGS(HashMap<String, ArrayList<String>> hash) {
+		hashGS = hash;
+	}
+
+	public void reuseGeneralizationSetPattern(Set<GeneralizationSet> gs) {
+		window.isPartitionPattern(true);
+		if(hashGS.isEmpty()){
+			window.getBtnReuseGS().setVisible(false);
+		}else{
+			window.getBtnReuseGS().setVisible(true);
+			window.addReuseGSListener(new ReuseGeneralizationSetCheckListener(this,hashGS,window.getEditors(), window.getTxGSNaming(), gs));
+		}
+	}
+	
+	public void isPartitionPattern(Set<GeneralizationSet> gs) {
+		window.isPartitionPattern(true);
+		if(hashGS.isEmpty()){
+			window.getBtnReuseGS().setVisible(false);
+		}else{
+			window.getBtnReuseGS().setVisible(true);
+			window.addReuseGSListener(new PartitionGeneralizationSetCheckListener(this,hashGS,window.getEditors(), window.getTxGSNaming(), gs));
+		}
+	}
+	
+	private boolean GSReuse = false;
+	public void setGSReuse(boolean bool){
+		GSReuse = bool;
+	}
+	
+	public boolean isGSReuse() {
+		return GSReuse;
 	}
 }

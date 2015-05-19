@@ -1,8 +1,7 @@
 package br.ufes.inf.nemo.pattern.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.Arrays;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
@@ -34,47 +33,19 @@ public class RelatorPattern extends AbstractPattern {
 
 	@Override
 	public void runPattern() {
-		HashMap<String, String[]> hashTree = new HashMap<>();
-		Set<? extends Classifier> set;
-
-		set = parser.getAllInstances(Kind.class);
-		if(!set.isEmpty())
-			hashTree.put("Kind", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Collective.class);
-		if(!set.isEmpty())
-			hashTree.put("Collective", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Quantity.class);
-		if(!set.isEmpty())
-			hashTree.put("Quantity", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(SubKind.class);
-		if(!set.isEmpty())
-			hashTree.put("Subkind", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Phase.class);
-		if(!set.isEmpty())
-			hashTree.put("Phase", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Role.class);
-		if(!set.isEmpty())
-			hashTree.put("Role", UtilAssistant.getStringRepresentationClass(set));
-
-		set = parser.getAllInstances(Relator.class);
-		if(!set.isEmpty())
-			hashTree.put("Relator", UtilAssistant.getStringRepresentationClass(set));
-
-		dym.addHashTree(hashTree);
-
-		dym.addTableLine("general", "General 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
-		dym.addTableLine("general", "General 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+		dym.addHashTree(fillouthashTree(Arrays.asList(new Class[]{Kind.class, Quantity.class, Collective.class, SubKind.class, Relator.class, Role.class, Phase.class})));
 
 		if(c != null && c instanceof Role){
+			dym.addTableLine("general", "General 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 			dym.addTableRigidLine("specific", UtilAssistant.getStringRepresentationClass(c), new String[] {"Role"});
+			
+			dym.addTableLine("general", "General 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 			dym.addTableLine("specific", "Specific 2", new String[] {"Role"});
 		}else{
+			dym.addTableLine("general", "General 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 			dym.addTableLine("specific", "Specific 1", new String[] {"Role"});
+			
+			dym.addTableLine("general", "General 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 			dym.addTableLine("specific", "Specific 2", new String[] {"Role"});
 		}
 
