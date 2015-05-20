@@ -120,7 +120,6 @@ public abstract class AbstractPattern {
 
 		if(dym.isGSReuse()){
 			for(GeneralizationSet gs : generalizationSets){
-				System.out.println(parser.getStringRepresentation(gs)+" :    "+ gs.getName().equals(generalizationSetName)+" :  "+gs.getGeneralization().get(0).getGeneral().equals(generalizationList.get(0).getGeneral()));
 				if(gs.getName().equals(generalizationSetName) && gs.getGeneralization().get(0).getGeneral().equals(generalizationList.get(0).getGeneral())){
 					generalizationList.addAll(gs.getGeneralization());
 					f.addAll(outcomeFixer.deleteElement(gs));
