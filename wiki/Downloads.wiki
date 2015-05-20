@@ -6,17 +6,20 @@
 
 OLED is multi-plataform, so the available .jar will run on Windows, Mac OS and Linux .
 
-To run it, simply *double-click* on the jar file, or type *java -jar oled-1.0.05.jar* in a console (*Java 7 or superior* -- download Java [https://java.com/download here]).
+To run it, simply *double-click* on the jar file, or type *java -jar oled-1.0.07.jar* in a console (*Java 7 or superior* -- download Java [https://java.com/download here]).
 
 ----
 
 *Lastest Version:*
 
-[https://drive.google.com/uc?id=0B7WqSwi56QipM0RlcmtSWGMya2M&export=download oled-1.0.06.jar] ~49MB - Updated: Fev 02 2015
+[https://drive.google.com/open?id=0B7WqSwi56QipQlM0ZFp4cjJ3clU&authuser=0
+oled-1.0.07.jar] ~49MB - Updated: May 19 2015
 
 ----
 
 *Previous Versions:*
+
+[https://drive.google.com/uc?id=0B7WqSwi56QipM0RlcmtSWGMya2M&export=download oled-1.0.06.jar] ~49MB - Updated: Fev 02 2015
 
 [https://drive.google.com/uc?id=0B7WqSwi56QipSWE3Z2VHVmFsX0k&export=download oled-1.0.05.jar] ~49MB - Updated: Dec 19 2014
 
