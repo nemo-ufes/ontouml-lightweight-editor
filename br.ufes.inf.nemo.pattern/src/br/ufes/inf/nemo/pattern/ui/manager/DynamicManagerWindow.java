@@ -18,8 +18,8 @@ import RefOntoUML.GeneralizationSet;
 import br.ufes.inf.nemo.pattern.dynamic.ui.ActiveCheckListener;
 import br.ufes.inf.nemo.pattern.dynamic.ui.AddLineButtonListener;
 import br.ufes.inf.nemo.pattern.dynamic.ui.DynamicWindow;
-import br.ufes.inf.nemo.pattern.dynamic.ui.ReuseCheckListener;
 import br.ufes.inf.nemo.pattern.dynamic.ui.PartitionGeneralizationSetCheckListener;
+import br.ufes.inf.nemo.pattern.dynamic.ui.ReuseCheckListener;
 import br.ufes.inf.nemo.pattern.dynamic.ui.ReuseGeneralizationSetCheckListener;
 
 public class DynamicManagerWindow {

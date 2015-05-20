@@ -173,7 +173,7 @@ public class DynamicWindow extends Dialog {
 		composite.pack();
 
 		this.table = new Table(container, SWT.BORDER | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		fd_namingGSComposite.right = new FormAttachment(table, 85, SWT.RIGHT);
+		fd_namingGSComposite.right = new FormAttachment(table, 134, SWT.RIGHT);
 		FormData fd_table = new FormData();
 		fd_table.bottom = new FormAttachment(0, 230);
 		fd_table.right = new FormAttachment(0, 477);
@@ -226,9 +226,10 @@ public class DynamicWindow extends Dialog {
 		btnAddNewLine.setText("Add new line");
 
 		btnRemoveLine = new Button(container, SWT.NONE);
+		btnRemoveLine.setVisible(false);
 		fd_btnAddNewLine.right = new FormAttachment(btnRemoveLine, -6);
 		FormData fd_btnRemoveLine = new FormData();
-		fd_btnRemoveLine.right = new FormAttachment(btnPressMe, -24);
+		fd_btnRemoveLine.right = new FormAttachment(btnPressMe, -6);
 		fd_btnRemoveLine.left = new FormAttachment(0, 233);
 		fd_btnRemoveLine.top = new FormAttachment(table, 6);
 		btnRemoveLine.setLayoutData(fd_btnRemoveLine);
@@ -253,7 +254,6 @@ public class DynamicWindow extends Dialog {
 			}
 		});
 		btnRemoveLine.setText("Remove Line");
-		btnRemoveLine.setVisible(false);
 		Button btnNewButton = new Button(container, SWT.NONE);
 		fd_composite.bottom = new FormAttachment(btnNewButton, -6);
 		btnNewButton.setTouchEnabled(true);
@@ -272,13 +272,12 @@ public class DynamicWindow extends Dialog {
 		btnNewButton.setText("Show Image");
 
 		Button btnHelp = new Button(container, SWT.FLAT | SWT.CENTER);
+		fd_btnAddNewLine.left = new FormAttachment(btnHelp, 48);
 		fd_namingGSComposite.bottom = new FormAttachment(btnHelp, 46, SWT.BOTTOM);
 		
 		btnReuseGS = new Button(namingGSComposite, SWT.CHECK);
-		btnReuseGS.setBounds(419, 3, 123, 18);
-		btnReuseGS.setText("Pick from model?");
-
-		fd_btnAddNewLine.left = new FormAttachment(btnHelp, 48);
+		btnReuseGS.setBounds(419, 3, 150, 18);
+		btnReuseGS.setText("Pick up from model?");
 		FormData fd_btnHelp = new FormData();
 		fd_btnHelp.left = new FormAttachment(0, 20);
 		fd_btnHelp.top = new FormAttachment(0, 236);
