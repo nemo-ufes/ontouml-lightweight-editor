@@ -185,6 +185,11 @@ public class DiagramEditor extends BaseEditor implements ActionListener, MouseLi
 		scaling = Scaling.SCALING_100;
 	}
 	
+	public void setLineHandlerDeviation(int x, int y){
+		lineHandler.setSourceDeviation(x);
+		lineHandler.setTargetDeviation(x);
+	}
+	
 	public void setWrapper(DiagramEditorWrapper wrapper)
 	{
 		this.wrapper = wrapper;
