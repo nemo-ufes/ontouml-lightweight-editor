@@ -55,8 +55,26 @@ public class LineHandler implements EditorMode {
   private boolean isDragging;
   private RelationType relationType;
   private LineConnectMethod connectMethod;
+  private int sourceDeviation=0;
+  private int targetDeviation=0;
 
-  /**
+  public int getSourceDeviation() {
+	return sourceDeviation;
+}
+
+public void setSourceDeviation(int sourceDeviation) {
+	this.sourceDeviation = sourceDeviation;
+}
+
+public int getTargetDeviation() {
+	return targetDeviation;
+}
+
+public void setTargetDeviation(int targetDeviation) {
+	this.targetDeviation = targetDeviation;
+}
+
+/**
    * Constructor.
    * @param anEditor a DiagramEditor
    */
@@ -151,8 +169,8 @@ public class LineHandler implements EditorMode {
   {
 	  Point2D sourcePoint = new Point2D.Double();
 	  Point2D targetPoint = new Point2D.Double();	  
-	  if(source instanceof ClassElement) sourcePoint.setLocation(((ClassElement)source).getAbsCenterX(),((ClassElement)source).getAbsCenterY());
-	  if(target instanceof ClassElement) targetPoint.setLocation(((ClassElement)target).getAbsCenterX(),((ClassElement)target).getAbsCenterY());
+	  if(source instanceof ClassElement) sourcePoint.setLocation(((ClassElement)source).getAbsCenterX()+sourceDeviation,((ClassElement)source).getAbsCenterY()+sourceDeviation);
+	  if(target instanceof ClassElement) targetPoint.setLocation(((ClassElement)target).getAbsCenterX()+sourceDeviation,((ClassElement)target).getAbsCenterY()+sourceDeviation);
 	  if(source instanceof AssociationElement) sourcePoint.setLocation(((AssociationElement)source).getAbsCenterX(),((AssociationElement)source).getAbsCenterY());
 	  if(target instanceof AssociationElement) targetPoint.setLocation(((AssociationElement)target).getAbsCenterX(),((AssociationElement)target).getAbsCenterY());	  
 	  RelationType relationType = RelationType.valueOf(ModelHelper.getStereotype(relationship).toUpperCase());

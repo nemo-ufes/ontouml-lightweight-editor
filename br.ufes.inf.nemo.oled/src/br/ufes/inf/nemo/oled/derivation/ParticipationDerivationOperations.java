@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import RefOntoUML.Classifier;
+import RefOntoUML.Element;
 import RefOntoUML.Mixin;
 import RefOntoUML.MixinClass;
 import RefOntoUML.ObjectClass;
@@ -31,18 +32,24 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
+import br.ufes.inf.nemo.oled.draw.TreeConnection;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.ui.diagram.DiagramEditor;
+import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.Category;
 import br.ufes.inf.nemo.ontouml2text.descriptionSpace.descriptionCategories.RoleMixin;
-
 public class ParticipationDerivationOperations {
 
 	public void createDerivedType(DiagramEditor activeEditor,
 			UmlProject project, DiagramManager diagramManager) {
 	
+		if(activeEditor.getSelectedElements().size()==1){
+			singleParticipation(activeEditor,project,diagramManager);
+			return;
+		}
 		
 		Fix mainFix = new Fix();
 		
@@ -92,6 +99,45 @@ public class ParticipationDerivationOperations {
 		}
 	
 		
+		diagramManager.updateOLED(mainFix);
+	}
+
+	private void singleParticipation(DiagramEditor activeEditor,
+			UmlProject project, DiagramManager diagramManager) {
+		OutcomeFixer of = new OutcomeFixer(diagramManager.getCurrentProject().getModel());
+		Fix mainFix = new Fix();
+		ArrayList<Fix> fixs= new ArrayList<Fix>();
+		of = new OutcomeFixer(diagramManager.getCurrentProject().getModel());
+		
+		DerivedTypesOperations.setOf(of);
+		DerivedTypesOperations.setDman(diagramManager);
+		DerivedTypesOperations.setMainfix(mainFix);
+		
+		Classifier c = ((ClassElement) activeEditor.getSelectedElements().get(0)).getClassifier();
+		Classifier role = null;
+		Point2D.Double point = new Point2D.Double();
+		point.setLocation(((ClassElement)activeEditor.getSelectedElements().get(0)).getAbsoluteX1(), ((ClassElement)activeEditor.getSelectedElements().get(0)).getAbsoluteY1()+100);
+		Point2D.Double relator_point= new Point2D.Double();
+		relator_point.y=point.y;
+		relator_point.x=point.x+170;
+		JPanel panel= StereotypeAndNameSelection.namesParticipation();
+		Classifier relator=DerivedTypesOperations.includeElement(relator_point, ((JTextField) panel.getComponents()[0]).getText(), "Relator");
+		if((c instanceof SortalClass)){
+			role= DerivedTypesOperations.includeElement(point,((JTextField) panel.getComponents()[1]).getText(), "Role");
+		}else{
+			role= DerivedTypesOperations.includeElement(point, ((JTextField) panel.getComponents()[1]).getText(), "RoleMixin");
+		}
+		Fix role_fix =of.createGeneralization(role, ((ClassElement) activeEditor.getSelectedElements().get(0)).getClassifier());
+		Fix fix = of.createAssociationBetween(RelationStereotype.MEDIATION, "",
+				role, relator);
+		Fix fix2 = of.createAssociationBetween(RelationStereotype.MEDIATION, "",
+				relator, role);
+		
+		
+		mainFix.addAll(fix2);
+		mainFix.addAll(role_fix);
+		mainFix.addAll(fix);
+		AssociationElement ae= (AssociationElement) ModelHelper.getDiagramElementByEditor((Element) fix.getAdded().get(0), diagramManager.getCurrentDiagramEditor());
 		diagramManager.updateOLED(mainFix);
 	}
 
@@ -149,6 +195,5 @@ public class ParticipationDerivationOperations {
 		
 		return controls;
 	}
-	
-	
+
 }

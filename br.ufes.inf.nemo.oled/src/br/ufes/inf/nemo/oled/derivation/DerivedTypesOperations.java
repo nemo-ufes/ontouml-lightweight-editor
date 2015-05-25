@@ -28,7 +28,9 @@ import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -39,6 +41,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
 
 import RefOntoUML.AntiRigidMixinClass;
 import RefOntoUML.AntiRigidSortalClass;
@@ -70,6 +74,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 import br.ufes.inf.nemo.common.positioning.ClassPosition;
 import br.ufes.inf.nemo.derivedtypes.DerivedByUnion;
+import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.oled.draw.Connection;
 import br.ufes.inf.nemo.oled.draw.DiagramElement;
@@ -161,17 +166,19 @@ public class DerivedTypesOperations {
 		String specialCase = multipleElementsUnionDerivation(selected);
 		String specialCaseRelation = tryunionassociationderivation(selected, dm);
 		if (specialCase != null) {
-			
+
 			if (specialCase == "moment") {
-				stereotype = UtilAssistant.getStringRepresentationStereotype(((ClassElement)selected.get(0)).getClassifier());
+				stereotype = UtilAssistant
+						.getStringRepresentationStereotype(((ClassElement) selected
+								.get(0)).getClassifier());
 				name = DefineNameDerivedType();
 				if (name == null) {
 					return null;
 				}
-				mainfix = createDerivedTypeUnion(stereotype, mainfix,
-						selected, name, refontoList, project, dm);
+				mainfix = createDerivedTypeUnion(stereotype, mainfix, selected,
+						name, refontoList, project, dm);
 			}
-			
+
 			if (specialCaseRelation.equals("union_relation_derivation")) {
 				return null;
 			}
@@ -240,6 +247,7 @@ public class DerivedTypesOperations {
 					Object[] stereo;
 					ArrayList<String> stereotypes = new ArrayList<String>();
 					stereotypes.add("SubKind");
+					stereotypes.add("Kind");
 					stereotypes.add("Category");
 					stereo = stereotypes.toArray();
 					panel = selectStereotype(stereo);
@@ -349,10 +357,11 @@ public class DerivedTypesOperations {
 
 		String result = checkForMoments(selected);
 		if (result.equals("invalid")) {
-			StereotypeAndNameSelection.wrongSelection("Invalid Union!");
+			AppFrame appframe = new AppFrame();
+			appframe.showErrorMessageDialog("Inválid", "Inválid union!");
 			return null;
 		}
-		if(result.equals("allMoment")){
+		if (result.equals("allMoment")) {
 			return "moment";
 		}
 		String specialCase = "AllRigid";
@@ -428,15 +437,15 @@ public class DerivedTypesOperations {
 	private static String checkForMoments(List<DiagramElement> selected) {
 		String stereotype = "";
 		if (((ClassElement) selected.get(0)).getClassifier() instanceof MomentClass) {
-			
+
 			for (DiagramElement diagramElement : selected) {
 				// if among the selected elements exists moment and not moment
 				// it is impossible to have union
-				String next_stereotype= UtilAssistant
+				String next_stereotype = UtilAssistant
 						.getStringRepresentationStereotype(((ClassElement) diagramElement)
 								.getClassifier());
-				if (!stereotype.equals(next_stereotype) 
-						&& !stereotype.equals("")){
+				if (!stereotype.equals(next_stereotype)
+						&& !stereotype.equals("")) {
 					return "invalid";
 				}
 				stereotype = UtilAssistant
@@ -451,7 +460,7 @@ public class DerivedTypesOperations {
 				}
 			}
 		}
-		if(stereotype==null){
+		if (stereotype.equals("")) {
 			return "noMoment";
 		}
 		return "allMoment";
@@ -647,8 +656,7 @@ public class DerivedTypesOperations {
 			String name, String stereotype) {
 		Classifier newElement = (Classifier) of.createClass(of
 				.getClassStereotype(stereotype));
-		// Classifier newElement= (Classifier)
-		// of.createClassWithoutStereotype();
+
 		dman.getCurrentProject().getModel().getPackagedElement()
 				.add(newElement);
 		newElement.setName(name);
@@ -660,8 +668,7 @@ public class DerivedTypesOperations {
 			String name, String stereotype, OutcomeFixer of) {
 		Classifier newElement = (Classifier) of.createClass(of
 				.getClassStereotype(stereotype));
-		// Classifier newElement= (Classifier)
-		// of.createClassWithoutStereotype();
+
 		dman.getCurrentProject().getModel().getPackagedElement()
 				.add(newElement);
 		newElement.setName(name);
@@ -749,6 +756,8 @@ public class DerivedTypesOperations {
 		dm.updateOLED(mainfix);
 	}
 
+	
+	
 	@SuppressWarnings("unused")
 	public static Fix createIntersectionDerivation(DiagramEditor activeEditor,
 			UmlProject project, DiagramManager diagramManager) {
@@ -761,7 +770,9 @@ public class DerivedTypesOperations {
 		String specialCase = "";
 
 		if (!DerivedTypesOperations.verifyHierarquicalProblem(activeEditor)) {
-			StereotypeAndNameSelection.wrongSelection("Invalid Selection");
+
+			AppFrame appframe = new AppFrame();
+			appframe.showErrorMessageDialog("Inválid", "Inválid union!");
 			return null;
 		}
 
@@ -876,39 +887,15 @@ public class DerivedTypesOperations {
 			}
 		}
 
-		ce1 = (ClassElement) activeEditor.getSelectedElements().get(0);
-		ce2 = (ClassElement) activeEditor.getSelectedElements().get(1);
-
-		Collection<? extends Connection> c = ce1.getConnections();
-		Collection<? extends Connection> c2 = ce2.getConnections();
-		List<GeneralizationElement> gen_1 = new ArrayList<GeneralizationElement>();
-		List<GeneralizationElement> gen_2 = new ArrayList<GeneralizationElement>();
-
-		for (Connection connection : c) {
-			if (connection instanceof GeneralizationElement) {
-				gen_1 = new ArrayList<GeneralizationElement>();
-				gen_1.add((GeneralizationElement) connection);
-			}
+		IntersectionDerivationOperations intersectionOperations = new IntersectionDerivationOperations();
+		boolean valid=intersectionOperations.verifyExistentIntersection(activeEditor.getSelectedElements(), diagramManager);
+		if(valid){
+			AppFrame app = new AppFrame();
+			app.showErrorMessageDialog("Error", "These types already have a intersection!");
+			return null;
+		
 		}
-
-		for (Connection connection : c2) {
-			if (connection instanceof GeneralizationElement) {
-				gen_2 = new ArrayList<GeneralizationElement>();
-				gen_2.add((GeneralizationElement) connection);
-			}
-		}
-
-		for (GeneralizationElement generalizationElement : gen_1) {
-			for (GeneralizationElement generalizationElement2 : gen_2) {
-				if (generalizationElement.getSpecific() == generalizationElement2
-						.getSpecific()) {
-					wrongSelection("Intersection Invalid because these types already have an intersection either parcial or total");
-					return null;
-				}
-			}
-
-		}
-
+		
 		String name;
 		mainfix = new Fix();
 		of = new OutcomeFixer(project.getModel());

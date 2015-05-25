@@ -51,6 +51,33 @@ public class StereotypeAndNameSelection {
 		return controls;
 	}
 	
+	public static JPanel namesParticipation() {
+
+		JPanel p = new JPanel(new BorderLayout(5, 5));
+
+		JPanel labels = new JPanel(new GridLayout(0, 1, 2, 2));
+		labels.add(new JLabel("Name Relator", SwingConstants.RIGHT));
+		labels.add(new JLabel("Name Derived Type", SwingConstants.RIGHT));
+		p.add(labels, BorderLayout.WEST);
+
+		JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
+		JTextField name = new JTextField("");
+		controls.add(name);
+		JTextField name2 = new JTextField("");
+		controls.add(name2);
+		p.add(controls, BorderLayout.CENTER);
+		ArrayList<String> values = new ArrayList<String>();
+		values.add("OK");
+		int value = JOptionPane.showOptionDialog(null, p,
+				"Set Names", JOptionPane.OK_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, values.toArray(),
+				values.toArray()[0]);
+		if (value == -1 || value == 1) {
+			return null;
+		}
+		return controls;
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static JPanel selectStereotype(Object[] stereo, String message) {
 

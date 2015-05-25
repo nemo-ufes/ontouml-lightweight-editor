@@ -68,6 +68,7 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 	private JMenu colorMenu;
 	@SuppressWarnings("unused")
 	private JMenuItem specializationItem;
+	private JMenuItem participationItem;
 	private JMenuItem pastspecializationItem;
 	private JMenuItem exclusionItem;
 	private ClassStereotypeChangeMenu changeMenu;
@@ -99,8 +100,10 @@ public class SingleNodePopupMenu extends JPopupMenu implements ActionListener {
 		
 		JMenu deriveMenu = new JMenu("Derive by");
 		specializationItem = createMenuItem(deriveMenu, "derivedspecialization");	
-		specializationItem = createMenuItem(deriveMenu, "derivedpastspecialization");
-		specializationItem = createMenuItem(deriveMenu, "derivedexclusion");
+		pastspecializationItem = createMenuItem(deriveMenu, "derivedpastspecialization");
+		exclusionItem = createMenuItem(deriveMenu, "derivedexclusion");
+		participationItem = createMenuItem(deriveMenu, "derivedparticipation");
+		
 		add(deriveMenu);
 		
 		addSeparator();
