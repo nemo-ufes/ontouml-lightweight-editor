@@ -35,7 +35,8 @@ public enum Tag {
 			Tag.symmetric.toString().equals(ctStereotype) ||
 			Tag.reflexive.toString().equals(ctStereotype) ||
 			Tag.irreflexive.toString().equals(ctStereotype) ||
-			Tag.subrelationof.toString().equals(ctStereotype) )
+			Tag.subrelationof.toString().equals(ctStereotype)||
+			Tag.asymmetric.toString().equals(ctStereotype) )
 		{
 			return true;
 		}
