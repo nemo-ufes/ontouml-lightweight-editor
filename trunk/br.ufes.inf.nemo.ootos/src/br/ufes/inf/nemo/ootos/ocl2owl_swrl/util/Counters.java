@@ -139,7 +139,8 @@ public class Counters{
 			ret += "\t\t";
 			for (@SuppressWarnings("rawtypes") Class reason : counter.warningReasons) {
 				//ret += "\n\t\t";
-				ret += reason.getName().replace("br.ufes.inf.nemo.ocl2owl_swrl.exceptions.", "");
+				ret += reason.getSimpleName();
+				//ret += reason.getName().replace("br.ufes.inf.nemo.ocl2owl_swrl.exceptions.", "");
 				if(counter.warningReasons.indexOf(reason) < counter.warningReasons.size()-1){
 					ret += ", ";
 				}
@@ -148,7 +149,8 @@ public class Counters{
 			ret += "\t\t";
 			for (@SuppressWarnings("rawtypes") Class reason : counter.unsucessReasons) {
 				//ret += "\n\t\t";
-				ret += reason.getName().replace("br.ufes.inf.nemo.ocl2owl_swrl.exceptions.", "");
+				ret += reason.getSimpleName();
+				//ret += reason.getName().replace("br.ufes.inf.nemo.ocl2owl_swrl.exceptions.", "");
 				if(counter.unsucessReasons.indexOf(reason) < counter.unsucessReasons.size()-1){
 					ret += ", ";
 				}
