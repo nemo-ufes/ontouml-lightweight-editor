@@ -222,7 +222,6 @@ public class OCL2OWL_SWRL {
 			//parse the ocl constraints
 			oclParser.parseStandardOCL(strBlockOclConstraints);
 			
-			
 			int line = 0;
 			int blockIndex = oclRules.indexOf(strBlockOclConstraints);
 			int lastBreakLine = 0;
@@ -230,17 +229,7 @@ public class OCL2OWL_SWRL {
 				lastBreakLine = oclRules.indexOf("\n", lastBreakLine) + 1;
 				line++;
 			}
-			//parse the block of ocl rules
-			//OCLParser oclParser = null;
-			//try {
-				//oclParser = new OCLParser(strBlockOclConstraints, this.ontoParser, "temp.uml");
-			/*}catch (ParserException e) {
-				e.printStackTrace();
-				//return e.getMessage();
-			} catch (Exception e) {
-				e.printStackTrace();
-				//return e.getMessage();
-			}*/
+			
 			//treats all constraints of ocl parser
 			List<Constraint> constraints = oclParser.getConstraints();
 			for(Constraint ct: constraints)
@@ -252,8 +241,6 @@ public class OCL2OWL_SWRL {
 				//if the is tagged, the stereotype is setted as the tag
 				if(!tag.equals("") && org.eclipse.ocl.utilities.UMLReflection.INVARIANT.equals(stereotype)){
 					stereotype = tag;
-				}else{
-					//stereotype = oclParser.getUMLReflection().getStereotype(ct);
 				}
 				
 				//verify if the stereotype is unsupported
@@ -276,42 +263,24 @@ public class OCL2OWL_SWRL {
 					Set<SWRLAtom> consequent = new HashSet<SWRLAtom>();
 					
 					try {
+						exprFactory.setOclConstraintsBlock(strBlockOclConstraints);
 						//call the solve method
 						exprFactory.solve(stereotype, this.ontoParser, this.nameSpace, this.manager, this.factory, this.ontology, antecedent, consequent, null, false, 1, false);
 						//increment the successfully transformed rules
-						//successfullyTransformedRules++;
 						
 						this.logCounting.updateCounters(stereotype, Counters.ResultStatus.Success, null);
 					}catch (Exception e) {
 						//increment the error message and the unsuccessfully transformed rules
-						
 						Counters.ResultStatus resultStatus;
 						if(e instanceof UnsupportedByReasoner){
 							resultStatus = Counters.ResultStatus.Warning;
 						}else{
 							resultStatus = Counters.ResultStatus.Unsuccess;
 						}
-						//unsuccessfullyTransformedRules++;
+						
 						this.logCounting.updateCounters(stereotype, resultStatus, e);
 						
 						int ctId = constraints.indexOf(ct);
-						/*
-						if(e.getClass().equals(ConsequentVariableNonDeclaredOnAntecedent.class)){
-							
-							problematicRules += strBlockOclConstraints;
-							problematicRules += "\n";
-							problematicRules += ctId;
-							problematicRules += "\n";
-							problematicRules += "\n";
-							
-						}
-						*/
-						/*
-						SWRLRule rule = factory.getSWRLRule(antecedent,consequent);
-						manager.applyChange(new AddAxiom(ontology, rule));
-						*/
-						//unsuccessfullyTransformedRules += strBlockOclConstraints;
-						//unsuccessfullyTransformedRules += "\n\n";
 						
 						Pattern pError = Pattern.compile("derive:|inv:");
 				    	Matcher mError = pError.matcher(strBlockOclConstraints);
@@ -320,8 +289,7 @@ public class OCL2OWL_SWRL {
 				    	int ctFound = 0;
 				    	while (mError.find() && ctFound <= ctId){
 				    		ctIndex = mError.start();
-				    		ctFound++;
-				    		
+				    		ctFound++;				    		
 				    	}
 				    	
 				    	int lineError = 1;
