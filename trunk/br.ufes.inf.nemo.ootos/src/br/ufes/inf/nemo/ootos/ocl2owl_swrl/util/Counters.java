@@ -102,45 +102,25 @@ public class Counters{
 			}else{
 				ret += "\t\t";
 			}			
-			//ret += "Total: ";
 			ret += counter.totalCount;
-			//ret += "\n\t";
 			ret += "\t\t";
-			//ret += "Successfully transformed: ";
 			ret += counter.successCount;
 			percent = (int) (((double)(counter.successCount)/(double)(counter.totalCount))*100);
 			ret += " (" + percent + "%)";
-			/*
-			if(percent >= 90){
-				ret += " \\o/\\o\\/o/";
-			}else if(percent >= 80){
-				ret += "\\o/\\o\\";
-			}else if(percent >= 70){
-				ret += "\\o/";
-			}
-			*/
-			//ret += "\n\t";
+
 			ret += "\t\t";
 			ret += counter.warningCount;
 			percent = (int) (((double)(counter.warningCount)/(double)(counter.totalCount))*100);
 			ret += " (" + percent + "%)";
 			
 			ret += "\t\t";
-			//ret += "Unsuccessfully transformed: ";
 			ret += counter.unsuccessCount;
 			percent = (int) (((double)(counter.unsuccessCount)/(double)(counter.totalCount))*100);
 			ret += " (" + percent + "%)";
 			
-			/*
-			if(counter.unsucessReasons.size() > 0){
-				ret += "\n\tReasons:";
-			}
-			*/
 			ret += "\t\t";
 			for (@SuppressWarnings("rawtypes") Class reason : counter.warningReasons) {
-				//ret += "\n\t\t";
 				ret += reason.getSimpleName();
-				//ret += reason.getName().replace("br.ufes.inf.nemo.ocl2owl_swrl.exceptions.", "");
 				if(counter.warningReasons.indexOf(reason) < counter.warningReasons.size()-1){
 					ret += ", ";
 				}
@@ -148,9 +128,7 @@ public class Counters{
 			
 			ret += "\t\t";
 			for (@SuppressWarnings("rawtypes") Class reason : counter.unsucessReasons) {
-				//ret += "\n\t\t";
 				ret += reason.getSimpleName();
-				//ret += reason.getName().replace("br.ufes.inf.nemo.ocl2owl_swrl.exceptions.", "");
 				if(counter.unsucessReasons.indexOf(reason) < counter.unsucessReasons.size()-1){
 					ret += ", ";
 				}
@@ -160,40 +138,24 @@ public class Counters{
 		}
 		
 		
-		//ret += "\n\n";
 		ret += "\n\t\t";
-		//ret += "Total of rule(s): ";
 		ret += this.total;
-		//ret += "\n";
 		ret += "\t\t";
-		//ret += "Rule(s) successfully transformed: ";
 		ret += this.totalSuccess;
 		percent = (int) (((double)(this.totalSuccess)/(double)(this.total))*100);
 		ret += " (" + percent + "%) ";
-		/*
-		if(percent >= 90){
-			ret += " \\o/\\o\\/o/";
-		}else if(percent >= 80){
-			ret += "\\o/\\o\\";
-		}else if(percent >= 70){
-			ret += "\\o/";
-		}
-		*/
-		//ret += "\n";
+		
 		ret += "\t\t";
-		//ret += "Rule(s) unsuccessfully transformed: ";
 		ret += this.totalWarning;
 		percent = (int) (((double)(this.totalWarning)/(double)(this.total))*100);
 		ret += " (" + percent + "%) ";
 		
 		ret += "\t\t";
-		//ret += "Rule(s) unsuccessfully transformed: ";
 		ret += this.totalUnsuccess;
 		percent = (int) (((double)(this.totalUnsuccess)/(double)(this.total))*100);
 		ret += " (" + percent + "%) ";
 		ret += "\n";
 		
-
 		return ret;
 	}
 

@@ -1,6 +1,7 @@
 package br.ufes.inf.nemo.ootos.ocl2owl_swrl.factory.ocl.uml.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.ocl.expressions.Variable;
@@ -13,8 +14,11 @@ import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.internal.impl.NamedElementImpl;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLNamedObject;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -44,6 +48,12 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 	public OCLExpressionImplFactory bodyExpressionFactory;
 	public PropertyCallExpImplFactory elementFactory;
 	Element element;
+	
+	String oclConstraintsBlock = "";
+	
+	public void setOclConstraintsBlock(String oclConstraintsBlock) {
+		this.oclConstraintsBlock = oclConstraintsBlock;
+	}
 	
 	public void setElement(Element element) {
 		this.element = element;
@@ -129,11 +139,25 @@ public class ExpressionInOCLImplFactory extends OpaqueExpressionImplFactory {
 		if(antecedent.size()>0 && consequent.size()>0){
 			//this.solveTempVariables(ctStereotype, factory, antecedent, consequent);
 			
+			Set<OWLAnnotation> annotations = new HashSet<OWLAnnotation>();
+			OWLAnnotation commentAnno;
+			if(oclConstraintsBlock != null && !oclConstraintsBlock.isEmpty()){
+				commentAnno = factory.getOWLAnnotation( factory.getRDFSComment(),  factory.getOWLLiteral(this.oclConstraintsBlock, "pt"));
+				annotations.add(commentAnno);
+			}
+			commentAnno = factory.getOWLAnnotation( factory.getRDFSComment(),  factory.getOWLLiteral(this.bodyExpressionFactory.toString(), "pt"));
+			annotations.add(commentAnno);
+						
 			//create a rule with the incremented antecedents and consequents
-			SWRLRule rule = factory.getSWRLRule(antecedent,consequent);
+			SWRLRule rule;
+			if(annotations.isEmpty()){
+				rule = factory.getSWRLRule(antecedent,consequent);
+			}else{
+				rule = factory.getSWRLRule(antecedent, antecedent, annotations);
+			}
 			
 			//apply changes in the owl manager
-			manager.applyChange(new AddAxiom(ontology, rule));
+			manager.applyChange(new AddAxiom(ontology, rule));			
 		}else if(!Tag.isObjectPropertyTag(ctStereotype)){
 			//get the string of the rule
 			String strRule = Factory.getStrRule(this.m_NamedElementImpl);
