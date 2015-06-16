@@ -107,6 +107,7 @@ public class DerivedByUnion extends DerivedType{
 		
 		//linha 4 e 5		
 		value= new ArrayList<>();
+		value.add("Kind");
 		value.add("SubKind");
 		value.add("Category");
 		tableValues.put("SubKind"+"SubKind", value);
