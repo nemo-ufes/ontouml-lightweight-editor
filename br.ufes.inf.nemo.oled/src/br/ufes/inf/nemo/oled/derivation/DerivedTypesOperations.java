@@ -756,8 +756,6 @@ public class DerivedTypesOperations {
 		dm.updateOLED(mainfix);
 	}
 
-	
-	
 	@SuppressWarnings("unused")
 	public static Fix createIntersectionDerivation(DiagramEditor activeEditor,
 			UmlProject project, DiagramManager diagramManager) {
