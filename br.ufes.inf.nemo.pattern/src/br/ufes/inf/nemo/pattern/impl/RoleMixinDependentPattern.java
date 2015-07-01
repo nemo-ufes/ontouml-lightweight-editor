@@ -71,6 +71,9 @@ public class RoleMixinDependentPattern extends AbstractPattern{
 		ArrayList<Object[]> rolemixins = dym.getRowsOf("rolemixin");
 		ArrayList<Object[]> relators = dym.getRowsOf("relator");
 
+		if(sortals == null || roles == null || rolemixins == null || relators == null)
+			return null;
+		
 		Classifier sortal1 		= getClassifier(sortals.get(0), x-120, y-157);
 		Classifier sortal2 		= getClassifier(sortals.get(1), x-23, y-157);
 		Classifier sortal3 		= getClassifier(sortals.get(2), x+150, y-70);

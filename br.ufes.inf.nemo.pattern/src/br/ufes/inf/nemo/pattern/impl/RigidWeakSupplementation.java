@@ -70,6 +70,9 @@ public class RigidWeakSupplementation extends AbstractPattern {
 		ArrayList<Object[]> types = dym.getRowsOf("type");
 		ArrayList<Object[]> complexes = dym.getRowsOf("complex");
 		ArrayList<Object[]> atomics = dym.getRowsOf("atomic");
+		
+		if(types == null || complexes == null || atomics == null)
+			return null;
 
 		Classifier type 	= getClassifier(types.get(0), x, y);
 		Classifier complex 	= getClassifier(complexes.get(0), x-horizontalDistance/2, y+horizontalDistance*0.6);

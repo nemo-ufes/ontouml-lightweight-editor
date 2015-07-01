@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.oled.derivation;
 
-import java.awt.Component;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,17 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.query.statements.UPDATE;
-import org.eclipse.swt.internal.ole.win32.COMObject;
-
-import com.sun.xml.internal.ws.api.server.Container;
-
-import sun.reflect.generics.tree.BaseType;
 import RefOntoUML.Classifier;
 import RefOntoUML.Element;
 import RefOntoUML.Generalization;
-import RefOntoUML.PackageableElement;
 import RefOntoUML.SortalClass;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;

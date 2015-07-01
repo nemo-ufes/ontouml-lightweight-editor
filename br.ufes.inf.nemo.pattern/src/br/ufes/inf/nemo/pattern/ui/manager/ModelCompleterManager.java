@@ -29,10 +29,10 @@ import br.ufes.inf.nemo.pattern.dynamic.ui.ModelCompleter;
 import br.ufes.inf.nemo.pattern.impl.AbstractPattern;
 import br.ufes.inf.nemo.pattern.impl.CategoryPattern;
 import br.ufes.inf.nemo.pattern.impl.CharacterizationPattern;
+import br.ufes.inf.nemo.pattern.impl.GenericMultipleRelator;
 import br.ufes.inf.nemo.pattern.impl.MixinPattern;
 import br.ufes.inf.nemo.pattern.impl.PhasePartition;
 import br.ufes.inf.nemo.pattern.impl.PrincipleOfIdentity;
-import br.ufes.inf.nemo.pattern.impl.RelatorPattern;
 import br.ufes.inf.nemo.pattern.impl.RoleMixinDependentPattern;
 import br.ufes.inf.nemo.pattern.impl.RoleMixinPattern;
 import br.ufes.inf.nemo.pattern.impl.RolePartition;
@@ -308,7 +308,7 @@ public class ModelCompleterManager {
 		String apRolePartition = "Roles must have directly \nor indirectly relationed with some Relator class.";
 
 		for (Classifier c : set) {
-			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apRelatorPattern, new RelatorPattern(parser, c, x, y)));
+			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apRelatorPattern, new GenericMultipleRelator(parser, c, x, y)));
 			if(c instanceof Role){
 				tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apRolePartition, new RolePartition(parser, c, x, y)));	
 			}

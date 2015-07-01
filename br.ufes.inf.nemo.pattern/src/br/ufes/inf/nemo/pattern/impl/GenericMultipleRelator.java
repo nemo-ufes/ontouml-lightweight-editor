@@ -14,6 +14,7 @@ import RefOntoUML.Relator;
 import RefOntoUML.Role;
 import RefOntoUML.SubKind;
 import RefOntoUML.parser.OntoUMLParser;
+import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
@@ -25,11 +26,21 @@ public class GenericMultipleRelator extends AbstractPattern {
 		super(parser, x, y, "/resource/MultipleGenericRelator.PNG", "Multiple Generic Relator");
 	}
 
+	public GenericMultipleRelator(OntoUMLParser parser, Classifier c, double x,	double y) {
+		super(parser, x, y, "/resource/MultipleGenericRelator.PNG", "Multiple Generic Relator");
+		this.c = c;
+	}
+	private Classifier c = null;
+	
 	@Override
 	public void runPattern() {
 		dym.addHashTree(fillouthashTree(Arrays.asList(new Class[]{Kind.class, Quantity.class, Collective.class, SubKind.class, Role.class, Phase.class, Relator.class})));
 
-		dym.addTableLine("relator", "Relator", new String[] {"Relator"});
+		if(c != null){
+			dym.addTableRigidLine("relator", UtilAssistant.getStringRepresentationClass(c), new String[] {"Relator"});
+		}else{
+			dym.addTableLine("relator", "Relator", new String[] {"Relator"});
+		}
 		
 		dym.addTableLine("sortal", "Sortal 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 		dym.addTableLine("sortal", "Sortal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
@@ -49,6 +60,8 @@ public class GenericMultipleRelator extends AbstractPattern {
 		ArrayList<Object[]> relators = dym.getRowsOf("relator");
 		ArrayList<Object[]> sortals = dym.getRowsOf("sortal");
 
+		if(relators == null || sortals == null)
+			return null;
 
 		Classifier sortal;
 		Classifier relator = getClassifier(relators.get(0), x, y);

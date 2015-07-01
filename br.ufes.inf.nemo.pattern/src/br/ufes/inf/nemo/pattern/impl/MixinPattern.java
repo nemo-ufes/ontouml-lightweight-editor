@@ -61,6 +61,9 @@ public class MixinPattern extends AbstractPattern{
 		ArrayList<Object[]> mixins = dym.getRowsOf("mixin");
 		ArrayList<Object[]> sortals = dym.getRowsOf("sortal");
 		ArrayList<Object[]> antirigids = dym.getRowsOf("antirigidsortal");
+		
+		if(mixins == null || sortals == null || antirigids == null)
+			return null;
 
 		Classifier mixin 	= getClassifier(mixins.get(0), x, y);
 		Classifier sortal 	= getClassifier(sortals.get(0), x, y+horizontalDistance);

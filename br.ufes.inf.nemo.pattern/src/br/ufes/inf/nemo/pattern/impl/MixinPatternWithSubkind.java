@@ -50,6 +50,9 @@ public class MixinPatternWithSubkind extends AbstractPattern{
 		ArrayList<Object[]> sortals = dym.getRowsOf("sortal");
 		ArrayList<Object[]> subkinds = dym.getRowsOf("subkind");
 		ArrayList<Object[]> antirigids = dym.getRowsOf("antirigidsortal");
+		
+		if(mixins == null || sortals == null || subkinds == null || antirigids == null)
+			return null;
 
 		Classifier mixin 	= getClassifier(mixins.get(0), x, y);
 		Classifier sortal 	= getClassifier(sortals.get(0), x-verticalDistance/2, y);

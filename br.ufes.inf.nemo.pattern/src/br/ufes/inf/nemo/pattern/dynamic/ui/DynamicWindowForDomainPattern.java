@@ -85,10 +85,6 @@ public class DynamicWindowForDomainPattern extends Dialog {
 	}
 
 	private Image currentImage;
-	/**
-	 * Create contents of the window.
-	 * @wbp.parser.entryPoint
-	 */
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		container = (Composite) super.createDialogArea(parent);	

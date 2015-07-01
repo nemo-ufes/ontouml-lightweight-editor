@@ -77,7 +77,7 @@ public class DynamicManagerWindowForDomainPattern {
 		window.addTableEditor(tableItem, editors);
 		window.addUsedStereotypes(stereotypes);
 
-		btnReuse.addSelectionListener(new ReuseCheckListener(hashTree, null, text, combo));
+		btnReuse.addSelectionListener(new ReuseCheckListener(null,hashTree, null, text, combo));
 
 		return tableItem;
 	}

@@ -88,10 +88,14 @@ public abstract class AbstractPattern {
 			//Specifics
 			ArrayList<Generalization> generalizationList = new ArrayList<>();
 			ArrayList<Object[]> specifics = dym.getRowsOf("specific");
-			int i = 0;
+			
+			if(generals == null || specifics == null)
+				return null;
+			
+			int contSpecifics = 0;
 			Classifier specific;
 			for(Object[] row : specifics){
-				specific = getClassifier(row, x+(i*verticalDistance)/3, y+horizontalDistance);
+				specific = getClassifier(row, x+(contSpecifics*verticalDistance)/3, y+horizontalDistance);
 
 				if(specific != null){
 					if(general != null){
@@ -100,11 +104,11 @@ public abstract class AbstractPattern {
 						Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
 						generalizationList.add(generalization);
 					}
-					i++;
+					contSpecifics++;
 				}
 			}
 
-			if(general != null){//not_activate = false
+			if(general != null && contSpecifics != 0){//not_activate = false
 				fix.addAll(createGeneralizationSet(generalizationList, true, true, dym.getGeneralizationSetName()));
 			}
 		}catch(Exception e){
@@ -140,7 +144,7 @@ public abstract class AbstractPattern {
 	protected DynamicManagerWindow dym;
 	protected String title;
 
-	protected AbstractPattern(OntoUMLParser parser, double x, double y, String imagePath, final String title) {
+	protected AbstractPattern(OntoUMLParser parser, double x, double y, String imagePath, String title) {
 		this.parser = parser;
 		this.x = x;
 		this.y = y;
@@ -171,6 +175,13 @@ public abstract class AbstractPattern {
 
 	public boolean canGetFix() {
 		return dym.wasPerformed();
+	}
+	
+	public ArrayList<String> getActionsPerformed() {
+		ArrayList<String> actions = new ArrayList<String>();
+		actions.add("Applied "+title);
+		actions.addAll(dym.getStatus());
+		return actions;
 	}
 
 	public String getTitle() {

@@ -55,6 +55,7 @@ import org.semanticweb.owlapi.vocab.OWL2Datatype;
 import RefOntoUML.Association;
 import RefOntoUML.Characterization;
 import RefOntoUML.Class;
+import RefOntoUML.Classifier;
 import RefOntoUML.DataType;
 import RefOntoUML.Derivation;
 import RefOntoUML.FormalAssociation;
@@ -1083,13 +1084,27 @@ public class Transformer {
 			if(gen.getGeneral() instanceof DataType){
 				continue;
 			}
-			OWLClass father = getOwlClass(gen.getGeneral());
+			Classifier general = gen.getGeneral();
+			Classifier specific = gen.getGeneral();
+			
+			if((general instanceof RefOntoUML.Class) && (specific instanceof RefOntoUML.Class)){
+				OWLClass father = getOwlClass(general);
+				OWLClass son = 	getOwlClass(specific);
 
-			OWLClass son = 	getOwlClass(gen.getSpecific());
+				//Set subClassOf 
+				OWLAxiom axiom = factory.getOWLSubClassOfAxiom(son,father);	
+				manager.applyChange(new AddAxiom(ontology, axiom));	
+			}
+			
+			if((general instanceof RefOntoUML.Association) && (specific instanceof RefOntoUML.Association)){
+				OWLObjectProperty father = getObjectProperty((Association) general);
+				OWLObjectProperty son = 	getObjectProperty((Association) specific);
 
-			//Set subClassOf 
-			OWLAxiom axiom = factory.getOWLSubClassOfAxiom(son,father);	
-			manager.applyChange(new AddAxiom(ontology, axiom));	
+				//Set subObjectProperty 
+				OWLAxiom axiom = factory.getOWLSubObjectPropertyOfAxiom(son,father);	
+				manager.applyChange(new AddAxiom(ontology, axiom));	
+			}
+				
 		}
 	}
 

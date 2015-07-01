@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.pattern.dynamic.ui;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionEvent;
@@ -15,13 +17,15 @@ public class ActiveCheckListener implements SelectionListener{
 	TableItem tableItem;
 	Button reuse;
 	boolean comboEnabled = false;
+	ArrayList<String> status;
 
-	public ActiveCheckListener(TableItem tableItem, Text text, CCombo combo, Button reuse) {
+	public ActiveCheckListener(ArrayList<String> status, TableItem tableItem, Text text, CCombo combo, Button reuse) {
 		this.text = text;
 		this.combo = combo;
 		comboEnabled = combo.isEnabled();
 		this.tableItem = tableItem;
 		this.reuse = reuse;
+		this.status = status;
 	}
 
 	@Override
@@ -33,6 +37,7 @@ public class ActiveCheckListener implements SelectionListener{
 	public void widgetSelected(SelectionEvent evt) {
 		Button btn = (Button) evt.getSource();
 		if(btn.getSelection()){
+			status.add("Deactivated <"+combo.getItem(combo.getSelectionIndex())+"> "+text.getText());
 			reuse.setEnabled(false);
 			text.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 			text.setEnabled(false);

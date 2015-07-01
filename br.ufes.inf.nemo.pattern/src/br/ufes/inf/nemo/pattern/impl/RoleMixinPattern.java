@@ -45,6 +45,10 @@ public class RoleMixinPattern extends AbstractPattern{
 		
 		dym.addTableLine("sortal", "Sortal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 		dym.addTableLine("role", "Role 2", new String[] {"Role"});
+		
+		dym.setInitialItemCount(5);
+
+		dym.setAddLineButtonAction("role", "Role N", new String[] {"Role"});
 
 		reuseGeneralizationSet(Arrays.asList(new Class[]{RoleMixin.class}), Arrays.asList(new Class[]{Kind.class, Quantity.class, Collective.class, SubKind.class, Role.class, Phase.class}));
 		dm.open();
@@ -62,36 +66,34 @@ public class RoleMixinPattern extends AbstractPattern{
 		ArrayList<Object[]> roles = dym.getRowsOf("role");
 		ArrayList<Object[]> rolemixins = dym.getRowsOf("rolemixin");
 
-		Classifier sortal1 		= getClassifier(sortals.get(0), x-120, y-157);
-		Classifier sortal2 		= getClassifier(sortals.get(1), x-23, y-157);
-
-		Classifier role1 		= getClassifier(roles.get(0),x-120,y-70);
-		Classifier role2 		= getClassifier(roles.get(1),x-23,y-70);
+		if(sortals == null || roles == null || rolemixins == null)
+			return null;
+		
+		Classifier sortal1 		= getClassifier(sortals.get(0), x, y-157);
+		Classifier sortal2 		= getClassifier(sortals.get(1), x-97, y-157);
 
 		Classifier rolemixin 	= getClassifier(rolemixins.get(0),x-71, y+28);
-
-		if(sortal1 != null && role1 != null){
-			fix.addAll(outcomeFixer.createGeneralization(role1,sortal1));
-		}
-
-		if(sortal2 != null && role2 != null){
-			fix.addAll(outcomeFixer.createGeneralization(role2,sortal2));	
-		}
-
-		if(rolemixin != null){
-			if(role1 != null){
-				_fix.addAll(outcomeFixer.createGeneralization(role1, rolemixin));
+		
+		for(int i = 0; i < roles.size(); i++){
+			Classifier rolen = getClassifier(roles.get(i),x-(97*i),y-70);
+			if(rolemixin != null){
+				_fix.addAll(outcomeFixer.createGeneralization(rolen, rolemixin));
 				Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
 				generalizationList.add(generalization);		
 				fix.addAll(_fix);
 			}
-			if(role2 != null){
-				_fix = outcomeFixer.createGeneralization(role2, rolemixin);
-				Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
-				generalizationList.add(generalization);
-				fix.addAll(_fix);
+			
+			if(i == 0 && sortal1 != null && rolen != null){
+				fix.addAll(outcomeFixer.createGeneralization(rolen,sortal1));
 			}
-			if(generalizationList.size() == 2){
+			
+			if(i == 1 && sortal2 != null && rolen != null){
+				fix.addAll(outcomeFixer.createGeneralization(rolen,sortal2));
+			}
+		}
+		
+		if(rolemixin != null){
+			if(generalizationList.size() >= 2){
 				fix.addAll(createGeneralizationSet(generalizationList, true, true, dym.getGeneralizationSetName()));
 			}
 		}

@@ -32,7 +32,7 @@ public class Helper extends Dialog{
 	private String firstStereotype;
 	private ArrayList<String> stereotypes;
 	public static Helper createDialog(ArrayList<String> stereotypes) {
-		Display display = Display.getDefault();	    	
+		Display display = Display.getDefault();	
 		shell = display.getActiveShell();	
 		if(shell == null){
 			shell = new Shell(display);
@@ -76,7 +76,7 @@ public class Helper extends Dialog{
 		init();
 		
 		Button btnOpenSubstanceTree = new Button(composite, SWT.NONE);
-		btnOpenSubstanceTree.setBounds(11, 84, 169, 28);
+		btnOpenSubstanceTree.setBounds(7, 225, 182, 25);
 		btnOpenSubstanceTree.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -85,7 +85,7 @@ public class Helper extends Dialog{
 			}
 		});
 		btnOpenSubstanceTree.setBounds(7, 225, 166, 25);
-		btnOpenSubstanceTree.setText("Open OntoUML Hierarchy");
+		btnOpenSubstanceTree.setText("Open OntoUML Tree");
 		
 		list.setBounds(5, 4, 171, 215);
 		list.addListener(SWT.Selection, new Listener() {
@@ -146,12 +146,12 @@ public class Helper extends Dialog{
 		hash.put("Kind", new String[]{"Kind > Substance Sortal > Rigid Sortal > Sortal > Substantial","A <<Kind>> represents a substance sortal whose instances are functional complexes. Examples include instances of Natural Kinds (such as Person, Dog, Tree) and of artifacts (Chair, Car, Television)."+moreInformation});
 		hash.put("Phase", new String[]{"Phase > Anti Rigid Sortal > Sortal > Substantial","A <<Phase>> represents the phased-sortals phase, i.e. anti-rigid and relationally independent universals defined as part of a partition of a substance sortal. For instance, <Catterpillar, Butterfly> partitions the kind Lepdopterum."+moreInformation});
 		hash.put("Collective", new String[]{"Collective > Substance Sortal > Rigid Sortal > Sortal > Substantial","A <<Collective>> represents a substance sortal whose instances are collectives, i.e., they are collections of complexes that have a uniform structure. Examples include a deck of cards, a forest, a group of people, a pile of bricks. Collectives can typically relate to complexes via a constitution relation. For example, a pile of bricks that constitutes a wall, a group of people that constitutes a football team. In this case, the collectives typically have an extensional principle of identity, in contrast to the complexes they constitute. For instance, The Beatles was in a given world w constituted by the collective {John, Paul, George, Pete} and in another world w' constituted by the collective {John, Paul, George, Ringo}. The replacement of Pete Best by Ringo Star does not alter the identity of the band, but creates a numerically different group of people."+moreInformation});
-		hash.put("Quantity", new String[]{"Quantity > Substance Sortal > Rigid Sortal > Sortal > Substantial","A <<Quantity>>  represents a substance sortal whose instances are collectives, i.e., they are collections of complexes that have a uniform structure. Examples include a deck of cards, a forest, a group of people, a pile of bricks. Collectives can typically relate to complexes via a constitution relation. For example, a pile of bricks that constitutes a wall, a group of people that constitutes a football team. In this case, the collectives typically have an extensional principle of identity, in contrast to the complexes they constitute. For instance, The Beatles was in a given world w constituted by the collective {John, Paul, George, Pete} and in another world w' constituted by the collective {John, Paul, George, Ringo}. The replacement of Pete Best by Ringo Star does not alter the identity of the band, but creates a numerically different group of people."+moreInformation});
+		hash.put("Quantity", new String[]{"Quantity > Substance Sortal > Rigid Sortal > Sortal > Substantial","A  <<Quantity>> represents a substance sortal whose instances are quantities. Examples are those stuff universals that are typically referred in natural language by mass general terms (e.g., Gold, Water, Sand, Clay)."+moreInformation});
 		hash.put("Role", new String[]{"Role > Anti Rigid Sortal > Sortal > Substantial","A <<Role>> represents a phased-sortal role, i.e. anti-rigid and relationally dependent universal. For instance, the role student is played by an instance of the kind Person."+moreInformation});
 		hash.put("Category", new String[]{"Category > Rigid Mixin > Mixin > Substantial","A <<Category>> represents a rigid and relationally independent mixin, i.e., a dispersive universal that aggregates essential properties which are common to different substance sortals. For example, the category RationalEntity as a generalization of Person and IntelligentAgent."+moreInformation});
 		hash.put("RoleMixin", new String[]{"RoleMixin > AntiRigidMixin > NonRigidMixin > Mixin > Substantial","A <<RoleMixin>> represents an anti-rigid and externally dependent non- sortal, i.e., a dispersive universal that aggregates properties which are common to different roles. In includes formal roles such as whole and part, and initiatior and responder."+moreInformation});
-		hash.put("Mixin", new String[]{"Mixin > SemiRigidMixin > NonRigidMixin > Mixin > Substantial","A <<Mixin>> epresents properties which are essential to some of its instances and accidental to others (semi-rigidity). An example is the mixin Seatable, which represents a property that can be considered essential to the kinds Chair and Stool, but accidental to Crate, Paper Box or Rock."+moreInformation});
+		hash.put("Mixin", new String[]{"Mixin > SemiRigidMixin > NonRigidMixin > Mixin > Substantial","A <<Mixin>> represents properties which are essential to some of its instances and accidental to others (semi-rigidity). An example is the mixin Seatable, which represents a property that can be considered essential to the kinds Chair and Stool, but accidental to Crate, Paper Box or Rock."+moreInformation});
 		hash.put("Mode", new String[]{"Mode > Moment", "A <<Mode>> universal is an intrinsic moment universal. Every instance of mode universal is existentially dependent of exactly one entity. Examples include skills, thoughts, beliefs, intentions, symptoms, private goals."+moreInformation});
-		hash.put("Relator", new String[]{"Relator > Moment", "A <<Relator>> universal is an intrinsic moment universal. Every instance of mode universal is existentially dependent of exactly one entity. Examples include skills, thoughts, beliefs, intentions, symptoms, private goals."+moreInformation});
+		hash.put("Relator", new String[]{"Relator > Moment", "A <<Relator>> universal is a relational moment universal. Every instance of relator universal is existentially dependent of at least two distinct entities. Relators are the instantiation of relational properties such as marriages, kisses, handshakes, commitments, and purchases."+moreInformation});
 	}
 }

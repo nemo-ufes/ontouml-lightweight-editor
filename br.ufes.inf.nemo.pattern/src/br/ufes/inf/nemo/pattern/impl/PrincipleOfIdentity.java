@@ -29,10 +29,13 @@ public class PrincipleOfIdentity extends AbstractPattern{
 	public void runPattern() { 
 		dym.addHashTree(fillouthashTree(Arrays.asList(new Class[]{Kind.class, Quantity.class, Collective.class, SubKind.class, Role.class, Phase.class})));
 
+		dym.setInitialItemCount(3);
+		
 		dym.addTableLine("general", "Sortal", new String[] {"Kind","Collective", "Quantity"});
 		
 		if(c instanceof SubKind){
 			dym.addTableRigidLine("specific", UtilAssistant.getStringRepresentationClass(c), new String[] {"Subkind"});
+			dym.setAddLineButtonAction("specific", "Specific N", new String[] {"Subkind"});
 		}		
 
 		if(c instanceof Phase){
@@ -42,8 +45,9 @@ public class PrincipleOfIdentity extends AbstractPattern{
 
 		if(c instanceof Role){
 			dym.addTableRigidLine("specific", UtilAssistant.getStringRepresentationClass(c), new String[] {"Role"});
+			dym.setAddLineButtonAction("specific", "Specific N", new String[] {"Role"});
 		}
-		
+
 		reuseGeneralizationSet(Arrays.asList(new Class[]{Mixin.class}), Arrays.asList(new Class[]{Kind.class, Collective.class, Quantity.class, Role.class, Phase.class}));
 		dm.open();
 	}
@@ -63,6 +67,10 @@ public class PrincipleOfIdentity extends AbstractPattern{
 			//Specifics
 			ArrayList<Generalization> generalizationList = new ArrayList<>();
 			ArrayList<Object[]> specifics = dym.getRowsOf("specific");
+			
+			if(generals == null || specifics == null)
+				return null;
+			
 			int i = 0;
 			Classifier specific;
 			for(Object[] row : specifics){

@@ -58,6 +58,9 @@ public class CharacterizationPattern extends AbstractPattern {
 
 		ArrayList<Object[]> modes = dym.getRowsOf("mode");
 		ArrayList<Object[]> universals = dym.getRowsOf("universal");
+		
+		if(modes == null || universals == null)
+			return null;
 
 		Classifier mode 	= getClassifier(modes.get(0), x, y);
 		Classifier universal= getClassifier(universals.get(0), x+verticalDistance, y);

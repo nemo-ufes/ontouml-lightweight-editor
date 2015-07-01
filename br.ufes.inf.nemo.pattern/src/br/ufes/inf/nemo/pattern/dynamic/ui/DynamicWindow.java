@@ -65,14 +65,13 @@ public class DynamicWindow extends Dialog {
 
 	public static DynamicWindow createDialog(String title, String imagePath)
 	{			
-		Display display = Display.getDefault();	    	
+		Display display = Display.getCurrent();	  
 		Shell shell = display.getActiveShell();	
 		if(shell == null){
-			shell = new Shell(display);
+			shell = new Shell(display,SWT.ON_TOP);
 		}
 
 		DynamicWindow resultDIalog = new DynamicWindow(shell,title,imagePath);
-		
 		UtilPattern.centralizeShell(display, shell);
 		resultDIalog.create();
 
@@ -243,8 +242,8 @@ public class DynamicWindow extends Dialog {
 						te.getEditor().dispose();
 					}
 					table.remove(i);
-					if(currentImage != null)
-						currentImage.dispose();
+//					if(currentImage != null)
+//						currentImage.dispose();
 				}else{
 					MessageBox dialog = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK );
 					dialog.setText("Invalid action");

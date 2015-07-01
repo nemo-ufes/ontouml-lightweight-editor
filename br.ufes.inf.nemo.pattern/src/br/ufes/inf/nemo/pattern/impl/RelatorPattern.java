@@ -38,13 +38,13 @@ public class RelatorPattern extends AbstractPattern {
 		if(c != null && c instanceof Role){
 			dym.addTableLine("general", "General 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 			dym.addTableRigidLine("specific", UtilAssistant.getStringRepresentationClass(c), new String[] {"Role"});
-			
+
 			dym.addTableLine("general", "General 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 			dym.addTableLine("specific", "Specific 2", new String[] {"Role"});
 		}else{
 			dym.addTableLine("general", "General 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 			dym.addTableLine("specific", "Specific 1", new String[] {"Role"});
-			
+
 			dym.addTableLine("general", "General 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 			dym.addTableLine("specific", "Specific 2", new String[] {"Role"});
 		}
@@ -68,11 +68,24 @@ public class RelatorPattern extends AbstractPattern {
 		ArrayList<Object[]> specifics = dym.getRowsOf("specific");
 		ArrayList<Object[]> relators = dym.getRowsOf("relator");
 
-		Classifier general1 	= getClassifier(generals.get(0), x, y);
-		Classifier general2 	= getClassifier(generals.get(1), x+verticalDistance, y);
-		Classifier specific1 	= getClassifier(specifics.get(0),x, y+(horizontalDistance/2));
-		Classifier specific2 	= getClassifier(specifics.get(1),x+verticalDistance, y+(horizontalDistance/2));
-		Classifier relator 		= getClassifier(relators.get(0), x+(verticalDistance/2), y);
+		if(generals == null || specifics == null || relators == null)
+			return null;
+		
+		Classifier general1, general2, specific1, specific2, relator;
+
+		if(c != null){
+			general1 	= getClassifier(generals.get(0), x-(verticalDistance/2), y+70);
+			general2 	= getClassifier(generals.get(1), x+(verticalDistance/2), y+70);
+			specific1 	= getClassifier(specifics.get(0),x-(verticalDistance/2), y+(horizontalDistance/2)+70);
+			specific2 	= getClassifier(specifics.get(1),x+(verticalDistance/2), y+(horizontalDistance/2)+70);
+			relator 		= getClassifier(relators.get(0), x, y);
+		}else{
+			general1 	= getClassifier(generals.get(0), x-(verticalDistance/2), y);
+			general2 	= getClassifier(generals.get(1), x+(verticalDistance/2), y);
+			specific1 	= getClassifier(specifics.get(0),x-(verticalDistance/2), y+(horizontalDistance/2));
+			specific2 	= getClassifier(specifics.get(1),x+(verticalDistance/2), y+(horizontalDistance/2));
+			relator 		= getClassifier(relators.get(0), x, y);
+		}
 
 		Association leftMediation = null;
 		Association rightMediation = null;

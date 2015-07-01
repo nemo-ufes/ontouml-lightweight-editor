@@ -179,8 +179,10 @@ public class ModelCompleter extends Dialog{
 		return fix;
 	}
 
-
-
+	private ArrayList<String> performedActions = new ArrayList<>();
+	public ArrayList<String> getPerformedActions() {
+		return performedActions;
+	}
 	public void addLine(String name, String stereotype, String action, final AbstractPattern fop){
 		TableItem tableItem = new TableItem(table, SWT.NONE);
 
@@ -202,6 +204,8 @@ public class ModelCompleter extends Dialog{
 				close();
 				fop.runPattern();
 				fix = fop.getFix();
+				if(fix != null)
+					performedActions.addAll(fop.getActionsPerformed());
 			}
 		});
 		btn.pack ();

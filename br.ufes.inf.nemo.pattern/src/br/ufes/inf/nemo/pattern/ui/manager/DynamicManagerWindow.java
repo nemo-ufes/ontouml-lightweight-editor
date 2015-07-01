@@ -94,8 +94,8 @@ public class DynamicManagerWindow {
 		window.addUsedStereotypes(stereotypes);
 
 		//Add to reuse checkButton listener 
-		btnReuse.addSelectionListener(new ReuseCheckListener(hashTree, null, text, combo));
-		btnActive.addSelectionListener(new ActiveCheckListener(tableItem, text, combo,btnReuse));
+		btnReuse.addSelectionListener(new ReuseCheckListener(statusList,hashTree, null, text, combo));
+		btnActive.addSelectionListener(new ActiveCheckListener(statusList, tableItem, text, combo,btnReuse));
 
 		return tableItem;
 	}
@@ -206,6 +206,8 @@ public class DynamicManagerWindow {
 	}
 
 	public ArrayList<Object[]> getRowsOf(String field){
+		if(window.getHashTable() == null)
+			return null;
 		return  window.getHashTable().get(field);
 	}
 
@@ -244,5 +246,10 @@ public class DynamicManagerWindow {
 	
 	public boolean isGSReuse() {
 		return GSReuse;
+	}
+	
+	private ArrayList<String> statusList = new ArrayList<>();
+	public ArrayList<String> getStatus() {
+		return statusList;
 	}
 }

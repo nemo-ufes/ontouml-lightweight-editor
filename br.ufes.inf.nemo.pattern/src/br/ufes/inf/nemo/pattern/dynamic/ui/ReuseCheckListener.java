@@ -17,13 +17,15 @@ public class ReuseCheckListener implements SelectionListener{
 	CCombo combo;
 	boolean comboEnabled = false;
 	ArrayList<Text> classes;
+	ArrayList<String> status;
 	
-	public ReuseCheckListener(HashMap<String,String[]> hashTree, ArrayList<Text> classes, Text text, CCombo combo) {
+	public ReuseCheckListener(ArrayList<String> status, HashMap<String,String[]> hashTree, ArrayList<Text> classes, Text text, CCombo combo) {
 		this.hashTree = hashTree;
 		this.text = text;
 		this.combo = combo;
 		comboEnabled = combo.isEnabled();
 		this.classes = classes;
+		this.status = status;
 	}
 
 	@Override
@@ -37,6 +39,8 @@ public class ReuseCheckListener implements SelectionListener{
 		if(btn.getSelection()){
 			treeView.open(hashTree, classes, combo.getItems());
 			if(treeView.getClassName() != null){
+				if(status != null)
+					status.add("Reused class on pattern from <"+combo.getItem(combo.getSelectionIndex())+"> "+text.getText()+" to <"+treeView.getClassStereotype()+"> "+treeView.getClassName());
 				text.setText(treeView.getClassName());
 				text.setEnabled(false);
 				String[] items = Arrays.copyOf(combo.getItems(), combo.getItemCount()+1);
