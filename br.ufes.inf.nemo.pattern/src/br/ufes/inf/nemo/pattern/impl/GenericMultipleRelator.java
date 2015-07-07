@@ -31,19 +31,27 @@ public class GenericMultipleRelator extends AbstractPattern {
 		this.c = c;
 	}
 	private Classifier c = null;
-	
+
 	@Override
 	public void runPattern() {
 		dym.addHashTree(fillouthashTree(Arrays.asList(new Class[]{Kind.class, Quantity.class, Collective.class, SubKind.class, Role.class, Phase.class, Relator.class})));
 
 		if(c != null){
-			dym.addTableRigidLine("relator", UtilAssistant.getStringRepresentationClass(c), new String[] {"Relator"});
+			if(c instanceof Role){
+				dym.addTableLine("relator", "Relator", new String[] {"Relator"});
+				dym.addTableRigidLine("sortal", UtilAssistant.getStringRepresentationClass(c), new String[] {"Role"});
+				dym.addTableLine("sortal", "Sortal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+			}
+			if(c instanceof Relator){
+				dym.addTableRigidLine("relator", UtilAssistant.getStringRepresentationClass(c), new String[] {"Relator"});
+				dym.addTableLine("sortal", "Sortal 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+				dym.addTableLine("sortal", "Sortal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+			}
 		}else{
 			dym.addTableLine("relator", "Relator", new String[] {"Relator"});
+			dym.addTableLine("sortal", "Sortal 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+			dym.addTableLine("sortal", "Sortal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 		}
-		
-		dym.addTableLine("sortal", "Sortal 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
-		dym.addTableLine("sortal", "Sortal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 
 		dym.setInitialItemCount(3);
 		dym.setAddLineButtonAction("sortal", "Sortal N", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
