@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.AggregationKind;
 
@@ -206,16 +208,12 @@ public class OntoUML2UML {
 		org.eclipse.uml2.uml.Type sourceClass= (org.eclipse.uml2.uml.Type) utransformer.getConverter().GetElement(sourceType);
 		org.eclipse.uml2.uml.Type targetClass = (org.eclipse.uml2.uml.Type)utransformer.getConverter().GetElement(targetType);			
 		String end1Name = sourceEndName;
-		String end2Name = targetEndName;	    	
-		int end1Lower = 1;
-		int end2Lower = 1;
-		int end1Upper = 1;
-		int end2Upper = 1;	    	
-		if((end2Upper==-1) && (end2Lower==-1)) { end2Lower = 0;}
-		if((end1Upper==-1) && (end1Lower==-1)) { end1Lower = 0;}		
+		String end2Name = targetEndName;
+		int[] end1Mult = ElementConverter.multiplicityFromString(sourceMult);
+		int[] end2Mult = ElementConverter.multiplicityFromString(targetMult);
 		org.eclipse.uml2.uml.Association a2 = sourceClass.createAssociation(
-			true, AggregationKind.NONE_LITERAL, end1Name, end1Lower, end1Upper, targetClass, 
-			true, AggregationKind.NONE_LITERAL, end2Name, end2Lower, end2Upper
+			true, AggregationKind.NONE_LITERAL, end1Name, end1Mult[0], end1Mult[1], targetClass, 
+			true, AggregationKind.NONE_LITERAL, end2Name, end2Mult[0], end2Mult[1]
 		);		
         if(a2==null) new Exception("Could not create the historical relationship: "+relationshipName);
         a2.setName(relationshipName);       
@@ -236,6 +234,20 @@ public class OntoUML2UML {
         ElementConverter.outln("UML:Property :: "+"name="+p2.getName()+", isDerived="+p2.isDerived()+", lower="+p2.getLower()+", upper="+p2.getUpper()+        
         ", isLeaf="+p2.isLeaf()+", isStatic="+p2.isStatic()+", isReadOnly="+p2.isReadOnly());
         
+        /** Operation Source -> Target */			
+		EList<String> parameters = new BasicEList<String>();				
+		EList<org.eclipse.uml2.uml.Type> typeParameters = new BasicEList<org.eclipse.uml2.uml.Type>();		
+		org.eclipse.uml2.uml.Operation op = ((org.eclipse.uml2.uml.Class)sourceClass).createOwnedOperation(targetEndName, parameters, typeParameters, targetClass);
+		utransformer.getConverter().setMultiplicityFromString(op, targetMult);
+		ElementConverter.outln("UML:Operation :: "+"name="+op.getName()+", type="+op.getType().getName()+", lower="+op.getLower()+", upper="+op.getUpper()+"");
+		
+        /** Operation Target -> Source */			
+		parameters = new BasicEList<String>();				
+		typeParameters = new BasicEList<org.eclipse.uml2.uml.Type>();
+		op = ((org.eclipse.uml2.uml.Class)targetClass).createOwnedOperation(sourceEndName, parameters, typeParameters, sourceClass);
+		utransformer.getConverter().setMultiplicityFromString(op, sourceMult);
+		ElementConverter.outln("UML:Operation :: "+"name="+op.getName()+", type="+op.getType().getName()+", lower="+op.getLower()+", upper="+op.getUpper()+"");
+		
         return a2;
 	}
 	

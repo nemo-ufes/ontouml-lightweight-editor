@@ -568,4 +568,13 @@ public class ElementConverter {
    			property.setUpperValue(upperBound);
    		}   		
    	}
+     
+     public void setMultiplicityFromString(org.eclipse.uml2.uml.Operation op, String multiplicity) throws ParseException 
+     {	    	
+    	int[] result = multiplicityFromString(multiplicity);
+    	op.setLower(result[0]);
+   		op.setUpper(result[1]);
+   	}
+     
+     
 }
