@@ -2352,18 +2352,17 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	{
 		//classes and datatypes
 		for(Object obj: fix.getAdded()){			
-			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType) {	
-				
-				if (fix.getAddedPosition(obj).x <= 0){
-					fix.getAddedPosition(obj).x = -fix.getAddedPosition(obj).x;
-				}
-				
-				if (fix.getAddedPosition(obj).y <= 0){
-					fix.getAddedPosition(obj).y = -fix.getAddedPosition(obj).y;
-				}
-				
+			if (obj instanceof RefOntoUML.Class||obj instanceof RefOntoUML.DataType) {
 				if (fix.getAddedPosition(obj).x!=-1 && fix.getAddedPosition(obj).y!=-1) 
-				{						
+				{
+					if (fix.getAddedPosition(obj).x < 0){
+						fix.getAddedPosition(obj).x = -fix.getAddedPosition(obj).x;
+					}
+					
+					if (fix.getAddedPosition(obj).y < 0){
+						fix.getAddedPosition(obj).y = -fix.getAddedPosition(obj).y;
+					}
+					
 					AddNodeCommand cmd = new AddNodeCommand((DiagramNotification)getCurrentDiagramEditor(),getCurrentDiagramEditor().getDiagram(),(RefOntoUML.Element)obj,
 					fix.getAddedPosition(obj).x,fix.getAddedPosition(obj).y, getCurrentProject(),(RefOntoUML.Element)((EObject)obj).eContainer());		
 					cmd.run();
