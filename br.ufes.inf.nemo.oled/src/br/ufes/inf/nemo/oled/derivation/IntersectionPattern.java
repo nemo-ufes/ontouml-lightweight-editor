@@ -164,7 +164,7 @@ public class IntersectionPattern extends JDialog {
 		});
 		
 		
-		combo_base_1.setModel(new DefaultComboBoxModel(new String[] {"SubKind", "Kind", "Collective", "Quantity", "Role", "Phase", "Category", "Mixin", "RoleMixin"}));
+		combo_base_1.setModel(new DefaultComboBoxModel(new String[] {"SubKind", "Role", "Phase", "Category", "Mixin", "RoleMixin"}));
 		
 		
 		combo_base_2.addActionListener(new ActionListener() {

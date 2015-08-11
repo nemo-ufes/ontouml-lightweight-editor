@@ -57,9 +57,9 @@ public class ExclusionPattern extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField txtSupertype;
-	private JTextField txtBase;
 	private JTextField txtDerived;
+	private JTextField txtBase;
+	private JTextField txtSupertype;
 	@SuppressWarnings("rawtypes")
 	JComboBox cmb_base = new JComboBox();
 	boolean updated=true;
@@ -68,14 +68,14 @@ public class ExclusionPattern extends JDialog {
 	@SuppressWarnings("rawtypes")
 	Vector comboBoxItems2=new Vector();
 	@SuppressWarnings("rawtypes")
-	JComboBox cmb_derived = new JComboBox();
+	JComboBox cmb_super = new JComboBox();
 	private Point2D.Double location= new Point2D.Double();
 	JCheckBox chckbxNewCheckBox = new JCheckBox("generate OCL rule");
 	DiagramManager dman;
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	JComboBox cmb_super = new JComboBox(model);
+	JComboBox cmb_derived = new JComboBox(model);
 
 
 	public void setPosition(java.lang.Double x, java.lang.Double y){
@@ -121,33 +121,33 @@ public class ExclusionPattern extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		//contentPanel.setBackground(SystemColor.menu);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		getContentPane().add(contentPanel, BorderLayout.NORTH);
 
-		JLabel lblNewLabel = new JLabel("Supertype:");
-
-		txtSupertype = new JTextField();
-		txtSupertype.setText("Supertype");
-		txtSupertype.setColumns(10);
-
-		txtBase = new JTextField();
-		txtBase.setText("Base");
-		txtBase.setColumns(10);
+		JLabel lblNewLabel = new JLabel("Derived:");
 
 		txtDerived = new JTextField();
 		txtDerived.setText("Derived");
 		txtDerived.setColumns(10);
 
+		txtBase = new JTextField();
+		txtBase.setText("Base");
+		txtBase.setColumns(10);
+
+		txtSupertype = new JTextField();
+		txtSupertype.setText("Supertype");
+		txtSupertype.setColumns(10);
+
 		JLabel lblNewLabel_1 = new JLabel("From Type:");
 
-		JLabel lblNewLabel_2 = new JLabel("Exclusion Derived Type:");
-		cmb_super.addActionListener(new ActionListener() {
+		JLabel lblNewLabel_2 = new JLabel("Supertype:");
+		cmb_derived.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setCombo();
 			}
 		});
 
 
-		cmb_super.setModel(new DefaultComboBoxModel(new String[] {"Category", "Mixin"}));
+		cmb_derived.setModel(new DefaultComboBoxModel(new String[] {"SubKind"}));
 
 
 		cmb_base.addActionListener(new ActionListener() {
@@ -182,7 +182,7 @@ public class ExclusionPattern extends JDialog {
 
 			}
 		});
-		cmb_base.setModel(new DefaultComboBoxModel(new String[] {"Kind", "SubKind", "Role", "Phase", "Quantity", "Collection", "Mixin", "RoleMixin", "Category"}));
+		cmb_base.setModel(new DefaultComboBoxModel(new String[] {"SubKind", "Role", "Phase"}));
 
 		final JCheckBox chckbxNewCheckBox = new JCheckBox("Generate OCL Constraint");
 		chckbxNewCheckBox.setBackground(Color.WHITE);
@@ -190,7 +190,7 @@ public class ExclusionPattern extends JDialog {
 		
 		JLabel lblNewLabel_3 = new JLabel("");
 		lblNewLabel_3.setIcon(new ImageIcon(ExclusionPattern.class.getResource("/resources/figures/derivationbyexclusion.PNG")));
-		cmb_derived.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collection", "Quantity", "SubKind", "Category"}));
+		cmb_super.setModel(new DefaultComboBoxModel(new String[] {"Kind", "Collection", "Quantity", "SubKind", "Category"}));
 		
 		JLabel lblNewLabel_4 = new JLabel("");
 		lblNewLabel_4.setIcon(new ImageIcon(ExclusionPattern.class.getResource("/resources/figures/text_exclusion.png")));
@@ -216,14 +216,14 @@ public class ExclusionPattern extends JDialog {
 										.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
 										.addGroup(gl_contentPanel.createSequentialGroup()
 											.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-												.addComponent(txtSupertype, GroupLayout.PREFERRED_SIZE, 253, GroupLayout.PREFERRED_SIZE)
+												.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 253, GroupLayout.PREFERRED_SIZE)
 												.addComponent(txtBase, GroupLayout.PREFERRED_SIZE, 254, GroupLayout.PREFERRED_SIZE)
-												.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, 255, GroupLayout.PREFERRED_SIZE))
+												.addComponent(txtSupertype, GroupLayout.PREFERRED_SIZE, 255, GroupLayout.PREFERRED_SIZE))
 											.addGap(18)
 											.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-												.addComponent(cmb_derived, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
+												.addComponent(cmb_super, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
 												.addComponent(cmb_base, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-												.addComponent(cmb_super, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))))
+												.addComponent(cmb_derived, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))))
 								.addComponent(chckbxNewCheckBox, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap())
 		);
@@ -235,8 +235,8 @@ public class ExclusionPattern extends JDialog {
 					.addComponent(lblNewLabel_2)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cmb_derived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtSupertype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cmb_super, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblNewLabel_1)
 					.addGap(4)
@@ -247,8 +247,8 @@ public class ExclusionPattern extends JDialog {
 					.addComponent(lblNewLabel)
 					.addGap(5)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtSupertype, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cmb_super, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtDerived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cmb_derived, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
 					.addComponent(chckbxNewCheckBox)
 					.addGap(1)
@@ -266,23 +266,23 @@ public class ExclusionPattern extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						ArrayList<String> values = new ArrayList<String>();
-						if(cmb_super.getModel().getSelectedItem()!=null && cmb_base.getModel().getSelectedItem()!=null && cmb_derived.getModel().getSelectedItem()!=null){
+						if(cmb_derived.getModel().getSelectedItem()!=null && cmb_base.getModel().getSelectedItem()!=null && cmb_super.getModel().getSelectedItem()!=null){
 
 							//pai
-							values.add(cmb_super.getModel().getSelectedItem().toString());
+							values.add(cmb_derived.getModel().getSelectedItem().toString());
 							//filho
 							values.add(cmb_base.getModel().getSelectedItem().toString());
 							//filho
-							values.add(cmb_derived.getModel().getSelectedItem().toString());
+							values.add(cmb_super.getModel().getSelectedItem().toString());
 
-							values.add(txtSupertype.getText());
-							values.add(txtBase.getText());
 							values.add(txtDerived.getText());
+							values.add(txtBase.getText());
+							values.add(txtSupertype.getText());
 							if(chckbxNewCheckBox.isSelected()){
-								if(!(cmb_base.getModel().getSelectedItem().toString().equals("Role") && cmb_super.getModel().getSelectedItem().toString().equals("Kind")) )
+								if(!(cmb_base.getModel().getSelectedItem().toString().equals("Role") && cmb_derived.getModel().getSelectedItem().toString().equals("Kind")) )
 								{
-									if(!((txtSupertype.getText().equals("") || txtBase.getText().equals("") || txtDerived.getText().equals("")))){
-										String rule="\ncontext: _'"+txtSupertype.getText()+"'\n"+"inv: not oclIsTypeOf(_'"+txtBase.getText()+"') implies oclIsTypeOf(_'"+txtDerived.getText()+"')";
+									if(!((txtDerived.getText().equals("") || txtBase.getText().equals("") || txtSupertype.getText().equals("")))){
+										String rule="\ncontext: _'"+txtDerived.getText()+"'\n"+"inv: not oclIsTypeOf(_'"+txtBase.getText()+"') implies oclIsTypeOf(_'"+txtSupertype.getText()+"')";
 										dman.getFrame().getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(rule);
 										DerivedTypesOperations.exclusionPattern(dman,values,location);
 										dispose();

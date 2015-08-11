@@ -1,9 +1,11 @@
 package br.ufes.inf.nemo.ootos.ontouml2owl_swrl;
 
 
+import java.beans.Expression;
 import java.io.ByteArrayOutputStream;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -11,11 +13,15 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
+import org.coode.owlapi.rdfxml.parser.AnonymousNodeChecker;
 import org.eclipse.emf.common.util.EList;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AddAxiom;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationSubject;
+import org.semanticweb.owlapi.model.OWLAnnotationValue;
 import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -806,7 +812,7 @@ public class Transformer {
 //		if(ass.getName()==null || ass.getName() == "" || ass.getName() == " " || ass.getName().length() == 0){
 //			//String propName = stereotype+"."+this.getName(ass.getMemberEnd().get(0).getType())+"."+this.getName(ass.getMemberEnd().get(1).getType());
 //			return factory.getOWLObjectProperty(IRI.create(nameSpace+propName));
-//		}else{
+//		}else{+
 //			return factory.getOWLObjectProperty(IRI.create(nameSpace+ass.getName().replaceAll(" ", "_")));
 //		}
 	}
@@ -1078,45 +1084,52 @@ public class Transformer {
 	private void processGeneralizations() {
 		//First process all GeneralizationSet
 		processGeneralizationSet();
-
+		//HashSet<OWLClass> setSons= new HashSet<OWLClass>();
 		//Process Generalizations
 		for(Generalization gen : lstGen){
 			if(gen.getGeneral() instanceof DataType){
 				continue;
 			}
-			Classifier general = gen.getGeneral();
-			Classifier specific = gen.getGeneral();
-			
-			if((general instanceof RefOntoUML.Class) && (specific instanceof RefOntoUML.Class)){
-				OWLClass father = getOwlClass(general);
-				OWLClass son = 	getOwlClass(specific);
+			OWLClass father = getOwlClass(gen.getGeneral());
 
-				//Set subClassOf 
-				OWLAxiom axiom = factory.getOWLSubClassOfAxiom(son,father);	
-				manager.applyChange(new AddAxiom(ontology, axiom));	
+			OWLClass son = 	getOwlClass(gen.getSpecific());
+			
+			EList<Classifier> list =gen.getSpecific().getGeneral();
+			Set<OWLClassExpression> expression = new HashSet<OWLClassExpression>();
+			for (Classifier classifier : list) {
+				expression.add(getOwlClass(classifier));
 			}
 			
-			if((general instanceof RefOntoUML.Association) && (specific instanceof RefOntoUML.Association)){
-				OWLObjectProperty father = getObjectProperty((Association) general);
-				OWLObjectProperty son = 	getObjectProperty((Association) specific);
+			
+			if(list.size()>1){
 
-				//Set subObjectProperty 
-				OWLAxiom axiom = factory.getOWLSubObjectPropertyOfAxiom(son,father);	
-				manager.applyChange(new AddAxiom(ontology, axiom));	
+				OWLObjectIntersectionOf object= factory.getOWLObjectIntersectionOf(expression);
+				OWLEquivalentClassesAxiom equivalence = factory.getOWLEquivalentClassesAxiom(son, object);
+				manager.applyChange(new AddAxiom(ontology, equivalence));
+				//OWLEquivalentClassesAxiom axiom = factory.getOWLEquivalentClassesAxiom();
 			}
-				
+			//Set subClassOf 
+			OWLAxiom axiom = factory.getOWLSubClassOfAxiom(son,father);	
+			manager.applyChange(new AddAxiom(ontology, axiom));	
 		}
+		
+		
 	}
 
 	/**
 	 * Create all GeneralizationSets
 	 * */
 	private void processGeneralizationSet() {
+		OWLAnnotationProperty annotation_property = factory.getOWLAnnotationProperty(IRI.create(nameSpace+"GS"));
+		OWLDeclarationAxiom ax = factory.getOWLDeclarationAxiom(annotation_property);
+		manager.addAxiom(ontology, ax);
 		for(GeneralizationSet gen : lstGenSets){
 			if(gen.getGeneralization().get(0).getGeneral() instanceof DataType){
 				continue;
 			}
 			if(!gen.getGeneralization().isEmpty()){
+				String name=gen.getName();
+				createAnnotations(name,gen.getGeneralization());	
 				if((gen.isIsDisjoint() && gen.isIsCovering()) || gen.getGeneralization().get(0).getSpecific() instanceof Phase){
 					//{disjoint, complete} or is a Phase Partition
 					processGeneralizationDisjointCovering(gen.getGeneralization());
@@ -1133,23 +1146,35 @@ public class Transformer {
 			}
 		}
 	}
+	
+	private void createAnnotations(String name, EList<Generalization> genSet){
+		for(int i = 0; i < genSet.size(); i++){
+			OWLClass son = 	getOwlClass(genSet.get(i).getSpecific());
+			OWLAnnotationValue value=factory.getOWLLiteral(name);
+			OWLAnnotation owlAnnotation=factory.getOWLAnnotation(factory.getOWLAnnotationProperty(IRI.create(nameSpace+"GS")),value);
+			OWLAxiom ax=factory.getOWLAnnotationAssertionAxiom(son.getIRI(),owlAnnotation);
+			manager.applyChange(new AddAxiom(ontology,ax));
+		}
+	}
 
 	private void processGeneralizationDisjointCovering(EList<Generalization> genSet){
 		OWLClass father = getOwlClass(genSet.get(0).getGeneral());
-
+		
 		Set<OWLClass> lstCls = new HashSet<OWLClass>();
 
 		for(int i = 0; i < genSet.size(); i++){
-			OWLClass son = 	getOwlClass(genSet.get(i).getSpecific());				
-
+			OWLClass son = 	getOwlClass(genSet.get(i).getSpecific());	
+			
 			//Set subClassOf 
 			OWLAxiom axiom = factory.getOWLSubClassOfAxiom(son,father);	
 			manager.applyChange(new AddAxiom(ontology, axiom));	
-
 			//Used after to make the unionOf
 			lstCls.add(son);
 		}
 
+		OWLAxiom axiom1 =factory.getOWLDisjointUnionAxiom(father,lstCls);
+		manager.applyChange(new AddAxiom(ontology, axiom1));
+		
 		OWLAxiom axiom = factory.getOWLDisjointClassesAxiom(lstCls);		
 		manager.applyChange(new AddAxiom(ontology, axiom));
 
@@ -1482,6 +1507,7 @@ public class Transformer {
 	 * */
 	private void processClass() {
 		for(RefOntoUML.Class ontCls: lstOntClass){
+			
 			OWLClass owlCls = getOwlClass(ontCls);
 			OWLDeclarationAxiom declarationAxiom = factory.getOWLDeclarationAxiom(owlCls);
 			manager.addAxiom(ontology, declarationAxiom);
