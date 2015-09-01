@@ -1,22 +1,16 @@
 package br.ufes.inf.nemo.pattern.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import RefOntoUML.Category;
 import RefOntoUML.Classifier;
-import RefOntoUML.Collective;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
-import RefOntoUML.Kind;
 import RefOntoUML.Package;
-import RefOntoUML.Quantity;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
@@ -116,6 +110,49 @@ public abstract class AbstractPattern {
 		}
 		return fix;
 	}
+	
+	protected Fix getGeneralizationFix(){
+		try{
+			Package root = parser.getModel();
+			outcomeFixer = new OutcomeFixer(root);
+			fix = new Fix();
+			Fix _fix = null;
+
+			//General
+			ArrayList<Object[]> generals = dym.getRowsOf("general");
+			Classifier general = getClassifier(generals.get(0), x, y);
+
+			//Specifics
+			ArrayList<Generalization> generalizationList = new ArrayList<>();
+			ArrayList<Object[]> specifics = dym.getRowsOf("specific");
+			
+			if(generals == null || specifics == null)
+				return null;
+			
+			int contSpecifics = 0;
+			Classifier specific;
+			for(Object[] row : specifics){
+				specific = getClassifier(row, x+(contSpecifics*verticalDistance)/3, y+horizontalDistance);
+
+				if(specific != null){
+					if(general != null){
+						_fix = outcomeFixer.createGeneralization(specific, general);
+						fix.addAll(_fix);
+						Generalization generalization = (Generalization) _fix.getAdded().get(_fix.getAdded().size()-1);
+						generalizationList.add(generalization);
+					}
+					contSpecifics++;
+				}
+			}
+
+			if(general != null && contSpecifics != 0){//not_activate = false
+				fix.addAll(createGeneralizationSet(generalizationList, false, false, dym.getGeneralizationSetName()));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return fix;
+	}
 
 
 	protected Fix createGeneralizationSet(ArrayList<Generalization> generalizationList, boolean b, boolean c, String generalizationSetName) {
@@ -132,7 +169,7 @@ public abstract class AbstractPattern {
 			}
 		}
 
-		f.addAll(outcomeFixer.createGeneralizationSet(generalizationList, true, true, generalizationSetName));
+		f.addAll(outcomeFixer.createGeneralizationSet(generalizationList, b, c, generalizationSetName));
 
 		return f;
 	}

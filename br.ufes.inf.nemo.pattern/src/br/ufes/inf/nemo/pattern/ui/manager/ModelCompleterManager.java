@@ -22,20 +22,22 @@ import RefOntoUML.RigidMixinClass;
 import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
+import RefOntoUML.SortalClass;
 import RefOntoUML.SubKind;
+import RefOntoUML.SubstanceSortal;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.pattern.dynamic.ui.ModelCompleter;
 import br.ufes.inf.nemo.pattern.impl.AbstractPattern;
 import br.ufes.inf.nemo.pattern.impl.CategoryPattern;
-import br.ufes.inf.nemo.pattern.impl.CharacterizationPattern;
-import br.ufes.inf.nemo.pattern.impl.GenericMultipleRelator;
 import br.ufes.inf.nemo.pattern.impl.MixinPattern;
-import br.ufes.inf.nemo.pattern.impl.PhasePartition;
-import br.ufes.inf.nemo.pattern.impl.PrincipleOfIdentity;
-import br.ufes.inf.nemo.pattern.impl.RoleMixinDependentPattern;
-import br.ufes.inf.nemo.pattern.impl.RoleMixinPattern;
-import br.ufes.inf.nemo.pattern.impl.RolePartition;
+import br.ufes.inf.nemo.pattern.impl.other.FOP_MULTIPLE_GENERIC_RELATOR;
+import br.ufes.inf.nemo.pattern.impl.other.FOP_PRINCIPLE_OF_IDENTITY;
+import br.ufes.inf.nemo.pattern.impl.other.FOP_ROLEMIXIN_DEPENDENCE;
+import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_PHASE;
+import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_ROLE;
+import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_ROLEMIXIN;
+import br.ufes.inf.nemo.pattern.impl.relation.FOP_RELATION_CHARACTERIZATION;
 
 public class ModelCompleterManager {
 
@@ -225,10 +227,18 @@ public class ModelCompleterManager {
 	 **/
 	private void checkIndentityPrinciple(){
 		Set<Classifier> list = new HashSet<Classifier>();
-		Set<? extends Classifier> set = parser.getAllInstances(Classifier.class);
+		Set<? extends Classifier> set = parser.getAllInstances(SortalClass.class);
 		for (Classifier c : set) {
-			if(c instanceof Phase || c instanceof Role || c instanceof SubKind){
-				if(parser.getAllParents(c).isEmpty()){
+			boolean suppressed = false;
+			
+			if(!(c instanceof SubstanceSortal)){
+				for(Classifier st : parser.getAllParents(c)){
+					if(st instanceof RefOntoUML.SubstanceSortal){
+						suppressed = true;
+						break;
+					}
+				}
+				if(!suppressed){
 					list.add(c);
 				}
 			}
@@ -291,7 +301,7 @@ public class ModelCompleterManager {
 		String apPhasePartition = "Phases must be in a GeneralizationSet\nwith, at least, another Phase.";
 
 		for (Classifier c : set) {
-			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apPhasePartition, new PhasePartition(parser, c, x, y)));
+			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apPhasePartition, new FOP_PARTITION_PHASE(parser, c, x, y)));
 		}
 	}
 
@@ -299,18 +309,18 @@ public class ModelCompleterManager {
 		String apPrincipleIdentity = "The class must have directly \nor indirectly some Identity Principle.";
 
 		for (Classifier c : set) {
-			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apPrincipleIdentity, new PrincipleOfIdentity(parser, c, x, y)));
+			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apPrincipleIdentity, new FOP_PRINCIPLE_OF_IDENTITY(parser, c, x, y)));
 		}
 	}
 
 	private void addExternalDependenceLine(Set<? extends Classifier> set){
 		String apRelatorPattern = "Relators must have directly \nor indirectly relationed with some Relator class.";
-		String apRolePartition = "Roles must have directly \nor indirectly relationed with some Relator class.";
+		String apRolePartition = "Roles must have directly \nor indirectly a supertype that provides identity.";
 
 		for (Classifier c : set) {
-			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apRelatorPattern, new GenericMultipleRelator(parser, c, x, y)));
+			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apRelatorPattern, new FOP_MULTIPLE_GENERIC_RELATOR(parser, c, x, y)));
 			if(c instanceof Role){
-				tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apRolePartition, new RolePartition(parser, c, x, y)));	
+				tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apRolePartition, new FOP_PARTITION_ROLE(parser, c, x, y)));	
 			}
 		}
 	}
@@ -319,7 +329,7 @@ public class ModelCompleterManager {
 		String apRoleMixin = "RoleMixins must specialize at least\ntwo Anti-Rigids.";
 
 		for (Classifier c : set) {
-			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apRoleMixin, new RoleMixinPattern(parser, c, x, y)));
+			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apRoleMixin, new FOP_PARTITION_ROLEMIXIN(parser, c, x, y)));
 		}
 	}
 
@@ -327,7 +337,7 @@ public class ModelCompleterManager {
 		String apRoleMixinDependence = "RoleMixins must have directly \nor indirectly relationed with some Relator class.";
 
 		for (Classifier c : set) {
-			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apRoleMixinDependence, new RoleMixinDependentPattern(parser, c, x, y)));
+			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apRoleMixinDependence, new FOP_ROLEMIXIN_DEPENDENCE(parser, c, x, y)));
 		}
 	}
 
@@ -351,7 +361,7 @@ public class ModelCompleterManager {
 		String apMode = "Modes must characterizes ar least\none Universal.";
 
 		for (Classifier c : set) {
-			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apMode, new CharacterizationPattern(parser, c, x, y)));
+			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apMode, new FOP_RELATION_CHARACTERIZATION(parser, c, x, y)));
 		}
 	}
 
