@@ -198,23 +198,23 @@ public class PaletteAccordion extends JPanel{
 		ontopatternPalette = new Palette(this, pelleteName);
 		
 		ontopatternPalette.createElement("staticpalette.pattern", "completer");
-		ontopatternPalette.createElement("staticpalette.pattern", "mixinpattern");
-		ontopatternPalette.createElement("staticpalette.pattern", "mixinpatternwithsubkind");
-		ontopatternPalette.createElement("staticpalette.pattern", "phasepartition");
-		ontopatternPalette.createElement("staticpalette.pattern", "subkindpartition");
-		ontopatternPalette.createElement("staticpalette.pattern", "phasepartition");
-		ontopatternPalette.createElement("staticpalette.pattern", "rolepartition");
-		ontopatternPalette.createElement("staticpalette.pattern", "rolemixinpattern");
-		ontopatternPalette.createElement("staticpalette.pattern", "relatorpattern");
-		ontopatternPalette.createElement("staticpalette.pattern", "dependentrolemixinpattern");
-		ontopatternPalette.createElement("staticpalette.pattern", "genericrelatorpattern");
-		ontopatternPalette.createElement("staticpalette.pattern", "characterizationpattern");
-		ontopatternPalette.createElement("staticpalette.pattern", "rigidweaksupplementation");
-		ontopatternPalette.createElement("staticpalette.pattern", "antirigidweaksupplementation");
-		ontopatternPalette.createElement("staticpalette.pattern", "kindpartition");
-		ontopatternPalette.createElement("staticpalette.pattern", "quantitypartition");
-		ontopatternPalette.createElement("staticpalette.pattern", "collectivepartition");
-		ontopatternPalette.createElement("staticpalette.pattern", "categorypattern");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_principle_of_identity");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_multiple_generic_relator");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_general_relator");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_generic_relator");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_rolemixin_dependence");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_partition_role");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_partition_phase");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_partition_subkind");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_partition_category");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_partition_rolemixin");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_partition_mode");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_partition_relator");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_generalization_category");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_generalization_mixin");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_generalization_rolemixin");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_relation_formal");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_relation_characterization");
 		
 		ontopatternPalette.addCommandListener(editorDispatcher);
 		

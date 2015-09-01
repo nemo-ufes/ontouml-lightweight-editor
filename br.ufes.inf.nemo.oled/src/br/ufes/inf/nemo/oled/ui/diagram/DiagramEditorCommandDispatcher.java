@@ -361,73 +361,64 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("DERIVED_BY_PARTICIPATION", new MethodCall(
 					getClass().getMethod("derivedByParticipation")));
 
-			selectorMap.put("LANGUAGE_GENERALIZATION_SPECIALIZATION", new MethodCall(
-					getClass().getMethod("runPatternByMenu",ElementType.class),ElementType.GENERALIZATIONSPECIALIZATION));
-			
-			selectorMap.put("LANGUAGE_PARTITION_PATTERN", new MethodCall(
-					getClass().getMethod("runPatternByMenu",ElementType.class),ElementType.PARTITIONPATTERN));
-			
-			selectorMap.put("ADD_SUPERTYPE", new MethodCall(
-					getClass().getMethod("runPatternByMenu",ElementType.class),ElementType.ADDSUPERTYPE));
-			
-			selectorMap.put("ADD_SUBTYPE", new MethodCall(
-					getClass().getMethod("runPatternByMenu",ElementType.class),ElementType.ADDSUBTYPE));
-			
 			selectorMap.put("CREATE_GEN_SET", new MethodCall(
 					DiagramEditor.class.getMethod("addGeneralizationSet")));
 			selectorMap.put("DELETE_GEN_SET", new MethodCall(
 					DiagramEditor.class.getMethod("deleteGeneralizationSet")));
 
-			selectorMap.put("PATTERN_MIXIN_PATTERN", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_MIXIN_PATTERN));
-			
-			selectorMap.put("PATTERN_MIXIN_PATTERN_WITH_SUBKIND", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_MIXIN_PATTERN_WITH_SUBKIND));
-			
-			selectorMap.put("PATTERN_PHASE_PARTITION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_PHASE_PARTITION));
-
-			selectorMap.put("PATTERN_SUBKIND_PARTITION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_SUBKIND_PARTITION));
-			
-			selectorMap.put("PATTERN_ROLE_PARTITION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_ROLE_PARTITION));
-			
-			selectorMap.put("GENERIC_PATTERN_RELATOR", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.GENERIC_RELATOR));
-			
-			selectorMap.put("PATTERN_ROLEMIXIN_DEPENDENT", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.DEPENDENT_ROLEMIXIN));
-			
-			selectorMap.put("PATTERN_KIND_PARTITION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.KIND_PARTITION));
-			
-			selectorMap.put("PATTERN_COLLECTIVE_PARTITION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.COLLECTIVE_PARTITION));
-			
-			selectorMap.put("PATTERN_QUANTITY_PARTITION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.QUANTITY_PARTITION));
-			
-			selectorMap.put("CATEGORY_PATTERN", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.CATEGORY_PATTERN));
-			
 			selectorMap.put("PATTERN_COMPLETER", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_COMPLETER));
 			
-			selectorMap.put("PATTERN_ROLEMIXIN", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_ROLEMIXIN));
+			selectorMap.put("FOP_PRINCIPLE_OF_IDENTITY", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_PRINCIPLE_OF_IDENTITY));
 			
-			selectorMap.put("CHARACTERIZATION_PATTERN", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.CHARACTERIZATION_PATTERN));
+			selectorMap.put("FOP_MULTIPLE_GENERIC_RELATOR", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_MULTIPLE_GENERIC_RELATOR));
+
+			selectorMap.put("FOP_GENERIC_RELATOR", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_GENERIC_RELATOR));
 			
-			selectorMap.put("RIGID_WEAK_SUPPLEMENTATION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.RIGID_WEAK_SUPPLEMENTATION));
+			selectorMap.put("FOP_GENERAL_RELATOR", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_GENERAL_RELATOR));
 			
-			selectorMap.put("ANTIRIGID_WEAK_SUPPLEMENTATION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.ANTIRIGID_WEAK_SUPPLEMENTATION));
+			selectorMap.put("FOP_ROLEMIXIN_DEPENDENCE", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_ROLEMIXIN_DEPENDENCE));
 			
-			selectorMap.put("PATTERN_RELATOR", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.PATTERN_RELATOR));
+			selectorMap.put("FOP_PARTITION_ROLE", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_PARTITION_ROLE));
+			
+			selectorMap.put("FOP_PARTITION_PHASE", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_PARTITION_PHASE));
+			
+			selectorMap.put("FOP_PARTITION_SUBKIND", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_PARTITION_SUBKIND));
+			
+			selectorMap.put("FOP_PARTITION_CATEGORY", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_PARTITION_CATEGORY));
+			
+			selectorMap.put("FOP_PARTITION_ROLEMIXIN", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_PARTITION_ROLEMIXIN));
+			
+			selectorMap.put("FOP_PARTITION_MODE", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_PARTITION_MODE));
+			
+			selectorMap.put("FOP_PARTITION_RELATOR", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_PARTITION_RELATOR));
+			
+			selectorMap.put("FOP_GENERALIZATION_CATEGORY", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_GENERALIZATION_CATEGORY));
+			
+			selectorMap.put("FOP_GENERALIZATION_MIXIN", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_GENERALIZATION_MIXIN));
+			
+			selectorMap.put("FOP_GENERALIZATION_ROLEMIXIN", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_GENERALIZATION_ROLEMIXIN));
+			
+			selectorMap.put("FOP_RELATION_FORMAL", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_RELATION_FORMAL));
+			
+			selectorMap.put("FOP_RELATION_CHARACTERIZATION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_RELATION_CHARACTERIZATION));
 
 			selectorMap.put("DOMAIN_PATTERN", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.DOMAIN_PATTERN));
