@@ -6,7 +6,6 @@
  */
 package RefOntoUML;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Integer Interval Dimension</b></em>'.

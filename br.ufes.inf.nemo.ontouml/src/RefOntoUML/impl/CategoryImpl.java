@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.Category;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public class CategoryImpl extends RigidMixinClassImpl implements Category {
 	}
 
 } //CategoryImpl
+
+

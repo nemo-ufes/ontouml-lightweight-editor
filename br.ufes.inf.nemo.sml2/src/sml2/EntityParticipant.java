@@ -2,6 +2,7 @@
  */
 package sml2;
 
+import RefOntoUML.ObjectClass;
 
 /**
  * <!-- begin-user-doc -->
@@ -11,7 +12,7 @@ package sml2;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link sml2.EntityParticipant#getIsOfType <em>Is Of Type</em>}</li>
+ *   <li>{@link sml2.EntityParticipant#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -21,29 +22,29 @@ package sml2;
  */
 public interface EntityParticipant extends Participant {
 	/**
-	 * Returns the value of the '<em><b>Is Of Type</b></em>' reference.
+	 * Returns the value of the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Is Of Type</em>' reference isn't clear,
+	 * If the meaning of the '<em>Type</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Is Of Type</em>' reference.
-	 * @see #setIsOfType(RefOntoUML.Class)
-	 * @see sml2.Sml2Package#getEntityParticipant_IsOfType()
-	 * @model
+	 * @return the value of the '<em>Type</em>' reference.
+	 * @see #setType(ObjectClass)
+	 * @see sml2.Sml2Package#getEntityParticipant_Type()
+	 * @model required="true"
 	 * @generated
 	 */
-	RefOntoUML.Class getIsOfType();
+	ObjectClass getType();
 
 	/**
-	 * Sets the value of the '{@link sml2.EntityParticipant#getIsOfType <em>Is Of Type</em>}' reference.
+	 * Sets the value of the '{@link sml2.EntityParticipant#getType <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Is Of Type</em>' reference.
-	 * @see #getIsOfType()
+	 * @param value the new value of the '<em>Type</em>' reference.
+	 * @see #getType()
 	 * @generated
 	 */
-	void setIsOfType(RefOntoUML.Class value);
+	void setType(ObjectClass value);
 
 } // EntityParticipant

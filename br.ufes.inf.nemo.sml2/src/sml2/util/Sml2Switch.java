@@ -66,44 +66,73 @@ public class Sml2Switch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-			case Sml2Package.SML_MODEL: {
-				SMLModel smlModel = (SMLModel)theEObject;
-				T result = caseSMLModel(smlModel);
+			case Sml2Package.ALLEN_LINK: {
+				AllenLink allenLink = (AllenLink)theEObject;
+				T result = caseAllenLink(allenLink);
+				if (result == null) result = caseFormalRelation(allenLink);
+				if (result == null) result = caseSituationTypeAssociation(allenLink);
+				if (result == null) result = caseSituationTypeElement(allenLink);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.SITUATION_TYPE: {
-				SituationType situationType = (SituationType)theEObject;
-				T result = caseSituationType(situationType);
+			case Sml2Package.ATTRIBUTE_LINK: {
+				AttributeLink attributeLink = (AttributeLink)theEObject;
+				T result = caseAttributeLink(attributeLink);
+				if (result == null) result = caseSituationTypeAssociation(attributeLink);
+				if (result == null) result = caseSituationTypeElement(attributeLink);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.SITUATION_TYPE_BLOCK: {
-				SituationTypeBlock situationTypeBlock = (SituationTypeBlock)theEObject;
-				T result = caseSituationTypeBlock(situationTypeBlock);
-				if (result == null) result = caseNode(situationTypeBlock);
-				if (result == null) result = caseSituationTypeElement(situationTypeBlock);
+			case Sml2Package.ATTRIBUTE_REFERENCE: {
+				AttributeReference attributeReference = (AttributeReference)theEObject;
+				T result = caseAttributeReference(attributeReference);
+				if (result == null) result = caseReferableElement(attributeReference);
+				if (result == null) result = caseNode(attributeReference);
+				if (result == null) result = caseSituationTypeElement(attributeReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.SITUATION_TYPE_ELEMENT: {
-				SituationTypeElement situationTypeElement = (SituationTypeElement)theEObject;
-				T result = caseSituationTypeElement(situationTypeElement);
+			case Sml2Package.CLASS_LITERAL: {
+				ClassLiteral classLiteral = (ClassLiteral)theEObject;
+				T result = caseClassLiteral(classLiteral);
+				if (result == null) result = caseLiteral(classLiteral);
+				if (result == null) result = caseNode(classLiteral);
+				if (result == null) result = caseSituationTypeElement(classLiteral);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.NODE: {
-				Node node = (Node)theEObject;
-				T result = caseNode(node);
-				if (result == null) result = caseSituationTypeElement(node);
+			case Sml2Package.COMPARATIVE_RELATION: {
+				ComparativeRelation comparativeRelation = (ComparativeRelation)theEObject;
+				T result = caseComparativeRelation(comparativeRelation);
+				if (result == null) result = caseFormalRelation(comparativeRelation);
+				if (result == null) result = caseSituationTypeAssociation(comparativeRelation);
+				if (result == null) result = caseSituationTypeElement(comparativeRelation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.EXPORTABLE_NODE: {
-				ExportableNode exportableNode = (ExportableNode)theEObject;
-				T result = caseExportableNode(exportableNode);
-				if (result == null) result = caseNode(exportableNode);
-				if (result == null) result = caseSituationTypeElement(exportableNode);
+			case Sml2Package.CONTEXT_FORMAL_LINK: {
+				ContextFormalLink contextFormalLink = (ContextFormalLink)theEObject;
+				T result = caseContextFormalLink(contextFormalLink);
+				if (result == null) result = caseFormalRelation(contextFormalLink);
+				if (result == null) result = caseSituationTypeAssociation(contextFormalLink);
+				if (result == null) result = caseSituationTypeElement(contextFormalLink);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Sml2Package.DATA_TYPE_LITERAL: {
+				DataTypeLiteral dataTypeLiteral = (DataTypeLiteral)theEObject;
+				T result = caseDataTypeLiteral(dataTypeLiteral);
+				if (result == null) result = caseLiteral(dataTypeLiteral);
+				if (result == null) result = caseNode(dataTypeLiteral);
+				if (result == null) result = caseSituationTypeElement(dataTypeLiteral);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Sml2Package.FORMAL_RELATION: {
+				FormalRelation formalRelation = (FormalRelation)theEObject;
+				T result = caseFormalRelation(formalRelation);
+				if (result == null) result = caseSituationTypeAssociation(formalRelation);
+				if (result == null) result = caseSituationTypeElement(formalRelation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -111,48 +140,43 @@ public class Sml2Switch<T> extends Switch<T> {
 				EntityParticipant entityParticipant = (EntityParticipant)theEObject;
 				T result = caseEntityParticipant(entityParticipant);
 				if (result == null) result = caseParticipant(entityParticipant);
-				if (result == null) result = caseExportableNode(entityParticipant);
+				if (result == null) result = caseReferableElement(entityParticipant);
 				if (result == null) result = caseNode(entityParticipant);
 				if (result == null) result = caseSituationTypeElement(entityParticipant);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.RELATOR_PARTICIPANT: {
-				RelatorParticipant relatorParticipant = (RelatorParticipant)theEObject;
-				T result = caseRelatorParticipant(relatorParticipant);
-				if (result == null) result = caseParticipant(relatorParticipant);
-				if (result == null) result = caseExportableNode(relatorParticipant);
-				if (result == null) result = caseNode(relatorParticipant);
-				if (result == null) result = caseSituationTypeElement(relatorParticipant);
+			case Sml2Package.EQUALS_LINK: {
+				EqualsLink equalsLink = (EqualsLink)theEObject;
+				T result = caseEqualsLink(equalsLink);
+				if (result == null) result = caseComparativeRelation(equalsLink);
+				if (result == null) result = caseFormalRelation(equalsLink);
+				if (result == null) result = caseSituationTypeAssociation(equalsLink);
+				if (result == null) result = caseSituationTypeElement(equalsLink);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.LINK: {
-				Link link = (Link)theEObject;
-				T result = caseLink(link);
-				if (result == null) result = caseSituationTypeElement(link);
+			case Sml2Package.FUNCTION: {
+				Function function = (Function)theEObject;
+				T result = caseFunction(function);
+				if (result == null) result = caseReferableElement(function);
+				if (result == null) result = caseNode(function);
+				if (result == null) result = caseSituationTypeElement(function);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.SITUATION_TYPE_PARAMETER: {
-				SituationTypeParameter situationTypeParameter = (SituationTypeParameter)theEObject;
-				T result = caseSituationTypeParameter(situationTypeParameter);
+			case Sml2Package.FUNCTION_PARAMETER: {
+				FunctionParameter functionParameter = (FunctionParameter)theEObject;
+				T result = caseFunctionParameter(functionParameter);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.ATTRIBUTE_REFERENCE: {
-				AttributeReference attributeReference = (AttributeReference)theEObject;
-				T result = caseAttributeReference(attributeReference);
-				if (result == null) result = caseExportableNode(attributeReference);
-				if (result == null) result = caseNode(attributeReference);
-				if (result == null) result = caseSituationTypeElement(attributeReference);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case Sml2Package.COMPARATIVE_RELATION: {
-				ComparativeRelation comparativeRelation = (ComparativeRelation)theEObject;
-				T result = caseComparativeRelation(comparativeRelation);
-				if (result == null) result = caseSituationTypeElement(comparativeRelation);
+			case Sml2Package.INSTANTIATION_LINK: {
+				InstantiationLink instantiationLink = (InstantiationLink)theEObject;
+				T result = caseInstantiationLink(instantiationLink);
+				if (result == null) result = caseFormalRelation(instantiationLink);
+				if (result == null) result = caseSituationTypeAssociation(instantiationLink);
+				if (result == null) result = caseSituationTypeElement(instantiationLink);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -164,12 +188,76 @@ public class Sml2Switch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case Sml2Package.MEDIATION_LINK: {
+				MediationLink mediationLink = (MediationLink)theEObject;
+				T result = caseMediationLink(mediationLink);
+				if (result == null) result = caseSituationTypeAssociation(mediationLink);
+				if (result == null) result = caseSituationTypeElement(mediationLink);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Sml2Package.NODE: {
+				Node node = (Node)theEObject;
+				T result = caseNode(node);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Sml2Package.ORDERED_COMPARATIVE_LINK: {
+				OrderedComparativeLink orderedComparativeLink = (OrderedComparativeLink)theEObject;
+				T result = caseOrderedComparativeLink(orderedComparativeLink);
+				if (result == null) result = caseComparativeRelation(orderedComparativeLink);
+				if (result == null) result = caseFormalRelation(orderedComparativeLink);
+				if (result == null) result = caseSituationTypeAssociation(orderedComparativeLink);
+				if (result == null) result = caseSituationTypeElement(orderedComparativeLink);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case Sml2Package.PARTICIPANT: {
 				Participant participant = (Participant)theEObject;
 				T result = caseParticipant(participant);
-				if (result == null) result = caseExportableNode(participant);
+				if (result == null) result = caseReferableElement(participant);
 				if (result == null) result = caseNode(participant);
 				if (result == null) result = caseSituationTypeElement(participant);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Sml2Package.REFERABLE_ELEMENT: {
+				ReferableElement referableElement = (ReferableElement)theEObject;
+				T result = caseReferableElement(referableElement);
+				if (result == null) result = caseNode(referableElement);
+				if (result == null) result = caseSituationTypeElement(referableElement);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Sml2Package.REFERENCE_NODE: {
+				ReferenceNode referenceNode = (ReferenceNode)theEObject;
+				T result = caseReferenceNode(referenceNode);
+				if (result == null) result = caseNode(referenceNode);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Sml2Package.REFLECTED_PARTICIPANT: {
+				ReflectedParticipant reflectedParticipant = (ReflectedParticipant)theEObject;
+				T result = caseReflectedParticipant(reflectedParticipant);
+				if (result == null) result = caseNode(reflectedParticipant);
+				if (result == null) result = caseSituationTypeElement(reflectedParticipant);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Sml2Package.REFLECTED_REFERENCE: {
+				ReflectedReference reflectedReference = (ReflectedReference)theEObject;
+				T result = caseReflectedReference(reflectedReference);
+				if (result == null) result = caseNode(reflectedReference);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Sml2Package.RELATOR_PARTICIPANT: {
+				RelatorParticipant relatorParticipant = (RelatorParticipant)theEObject;
+				T result = caseRelatorParticipant(relatorParticipant);
+				if (result == null) result = caseParticipant(relatorParticipant);
+				if (result == null) result = caseReferableElement(relatorParticipant);
+				if (result == null) result = caseNode(relatorParticipant);
+				if (result == null) result = caseSituationTypeElement(relatorParticipant);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -177,43 +265,34 @@ public class Sml2Switch<T> extends Switch<T> {
 				SituationParticipant situationParticipant = (SituationParticipant)theEObject;
 				T result = caseSituationParticipant(situationParticipant);
 				if (result == null) result = caseParticipant(situationParticipant);
-				if (result == null) result = caseExportableNode(situationParticipant);
+				if (result == null) result = caseReferableElement(situationParticipant);
 				if (result == null) result = caseNode(situationParticipant);
 				if (result == null) result = caseSituationTypeElement(situationParticipant);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.SITUATION_PARAMETER_REFERENCE: {
-				SituationParameterReference situationParameterReference = (SituationParameterReference)theEObject;
-				T result = caseSituationParameterReference(situationParameterReference);
-				if (result == null) result = caseNode(situationParameterReference);
-				if (result == null) result = caseSituationTypeElement(situationParameterReference);
+			case Sml2Package.SITUATION_TYPE: {
+				SituationType situationType = (SituationType)theEObject;
+				T result = caseSituationType(situationType);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.EXISTS_SITUATION: {
-				ExistsSituation existsSituation = (ExistsSituation)theEObject;
-				T result = caseExistsSituation(existsSituation);
-				if (result == null) result = caseSituationParticipant(existsSituation);
-				if (result == null) result = caseParticipant(existsSituation);
-				if (result == null) result = caseExportableNode(existsSituation);
-				if (result == null) result = caseNode(existsSituation);
-				if (result == null) result = caseSituationTypeElement(existsSituation);
+			case Sml2Package.SITUATION_TYPE_ASSOCIATION: {
+				SituationTypeAssociation situationTypeAssociation = (SituationTypeAssociation)theEObject;
+				T result = caseSituationTypeAssociation(situationTypeAssociation);
+				if (result == null) result = caseSituationTypeElement(situationTypeAssociation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.FUNCTION: {
-				Function function = (Function)theEObject;
-				T result = caseFunction(function);
-				if (result == null) result = caseExportableNode(function);
-				if (result == null) result = caseNode(function);
-				if (result == null) result = caseSituationTypeElement(function);
+			case Sml2Package.SITUATION_TYPE_ELEMENT: {
+				SituationTypeElement situationTypeElement = (SituationTypeElement)theEObject;
+				T result = caseSituationTypeElement(situationTypeElement);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.PARAMETER: {
-				Parameter parameter = (Parameter)theEObject;
-				T result = caseParameter(parameter);
+			case Sml2Package.SML_MODEL: {
+				SMLModel smlModel = (SMLModel)theEObject;
+				T result = caseSMLModel(smlModel);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -222,152 +301,32 @@ public class Sml2Switch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>SML Model</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Allen Link</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>SML Model</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Allen Link</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseSMLModel(SMLModel object) {
+	public T caseAllenLink(AllenLink object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Situation Type</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Attribute Link</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Situation Type</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Attribute Link</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseSituationType(SituationType object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Situation Type Block</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Situation Type Block</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseSituationTypeBlock(SituationTypeBlock object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Situation Type Element</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Situation Type Element</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseSituationTypeElement(SituationTypeElement object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Node</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Node</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseNode(Node object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Exportable Node</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Exportable Node</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseExportableNode(ExportableNode object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Entity Participant</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Entity Participant</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseEntityParticipant(EntityParticipant object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Relator Participant</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Relator Participant</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseRelatorParticipant(RelatorParticipant object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Link</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Link</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseLink(Link object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Situation Type Parameter</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Situation Type Parameter</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseSituationTypeParameter(SituationTypeParameter object) {
+	public T caseAttributeLink(AttributeLink object) {
 		return null;
 	}
 
@@ -387,6 +346,21 @@ public class Sml2Switch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Class Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Class Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseClassLiteral(ClassLiteral object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Comparative Relation</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -402,77 +376,77 @@ public class Sml2Switch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Literal</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Context Formal Link</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Literal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Context Formal Link</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseLiteral(Literal object) {
+	public T caseContextFormalLink(ContextFormalLink object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Participant</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Data Type Literal</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Participant</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Data Type Literal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseParticipant(Participant object) {
+	public T caseDataTypeLiteral(DataTypeLiteral object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Situation Participant</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Formal Relation</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Situation Participant</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Formal Relation</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseSituationParticipant(SituationParticipant object) {
+	public T caseFormalRelation(FormalRelation object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Situation Parameter Reference</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Entity Participant</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Situation Parameter Reference</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Entity Participant</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseSituationParameterReference(SituationParameterReference object) {
+	public T caseEntityParticipant(EntityParticipant object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Exists Situation</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Equals Link</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Exists Situation</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Equals Link</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseExistsSituation(ExistsSituation object) {
+	public T caseEqualsLink(EqualsLink object) {
 		return null;
 	}
 
@@ -492,17 +466,257 @@ public class Sml2Switch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Parameter</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Function Parameter</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Parameter</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Function Parameter</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseParameter(Parameter object) {
+	public T caseFunctionParameter(FunctionParameter object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Instantiation Link</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Instantiation Link</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseInstantiationLink(InstantiationLink object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseLiteral(Literal object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Mediation Link</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Mediation Link</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMediationLink(MediationLink object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Node</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Node</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNode(Node object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Ordered Comparative Link</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Ordered Comparative Link</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseOrderedComparativeLink(OrderedComparativeLink object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Participant</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Participant</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseParticipant(Participant object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Referable Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Referable Element</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseReferableElement(ReferableElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Reference Node</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Reference Node</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseReferenceNode(ReferenceNode object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Reflected Participant</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Reflected Participant</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseReflectedParticipant(ReflectedParticipant object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Reflected Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Reflected Reference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseReflectedReference(ReflectedReference object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Relator Participant</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Relator Participant</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRelatorParticipant(RelatorParticipant object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Situation Participant</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Situation Participant</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSituationParticipant(SituationParticipant object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Situation Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Situation Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSituationType(SituationType object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Situation Type Association</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Situation Type Association</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSituationTypeAssociation(SituationTypeAssociation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Situation Type Element</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Situation Type Element</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSituationTypeElement(SituationTypeElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>SML Model</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>SML Model</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSMLModel(SMLModel object) {
 		return null;
 	}
 

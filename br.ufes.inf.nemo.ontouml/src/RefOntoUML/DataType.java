@@ -79,3 +79,5 @@ public interface DataType extends Classifier {
 	Property createOwnedAttribute(String name, Type type, int lower, int upper);
 
 } // DataType
+
+

@@ -10,27 +10,19 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.GeneralizationSet;
 import RefOntoUML.RefOntoUMLPackage;
-
 import RefOntoUML.util.RefOntoUMLValidator;
-
 import java.util.Collection;
 import java.util.Map;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
 import org.eclipse.emf.ecore.util.EObjectValidator;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -190,7 +182,7 @@ public class GeneralizationImpl extends DirectedRelationshipImpl implements Gene
 	 */
 	public Classifier getSpecific() {
 		if (eContainerFeatureID() != RefOntoUMLPackage.GENERALIZATION__SPECIFIC) return null;
-		return (Classifier)eContainer();
+		return (Classifier)eInternalContainer();
 	}
 
 	/**
@@ -229,7 +221,6 @@ public class GeneralizationImpl extends DirectedRelationshipImpl implements Gene
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean generalization_same_classifier(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -407,3 +398,5 @@ public class GeneralizationImpl extends DirectedRelationshipImpl implements Gene
 	}
 
 } //GeneralizationImpl
+
+

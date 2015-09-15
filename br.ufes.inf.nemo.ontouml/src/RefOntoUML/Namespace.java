@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
 
@@ -273,3 +272,5 @@ public interface Namespace extends NamedElement {
 	EList<PackageableElement> excludeCollisions(EList<PackageableElement> imps);
 
 } // Namespace
+
+

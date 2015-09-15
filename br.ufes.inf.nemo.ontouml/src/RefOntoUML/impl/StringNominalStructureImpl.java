@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.StringNominalStructure;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public class StringNominalStructureImpl extends NominalStructureImpl implements 
 	}
 
 } //StringNominalStructureImpl
+
+

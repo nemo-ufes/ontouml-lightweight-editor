@@ -2,25 +2,19 @@
  */
 package sml2.impl;
 
-import RefOntoUML.FormalAssociation;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import sml2.Function;
-import sml2.Parameter;
+import sml2.FunctionParameter;
 import sml2.Sml2Package;
 
 /**
@@ -30,33 +24,42 @@ import sml2.Sml2Package;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link sml2.impl.FunctionImpl#getParameter <em>Parameter</em>}</li>
- *   <li>{@link sml2.impl.FunctionImpl#getFunction <em>Function</em>}</li>
+ *   <li>{@link sml2.impl.FunctionImpl#getName <em>Name</em>}</li>
+ *   <li>{@link sml2.impl.FunctionImpl#getParameters <em>Parameters</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class FunctionImpl extends ExportableNodeImpl implements Function {
+public class FunctionImpl extends ReferableElementImpl implements Function {
 	/**
-	 * The cached value of the '{@link #getParameter() <em>Parameter</em>}' containment reference list.
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getParameter()
+	 * @see #getName()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<Parameter> parameter;
+	protected static final String NAME_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getFunction() <em>Function</em>}' reference.
+	 * The cached value of the '{@link #getParameters() <em>Parameters</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getFunction()
+	 * @see #getParameters()
 	 * @generated
 	 * @ordered
 	 */
-	protected FormalAssociation function;
+	protected EList<FunctionParameter> parameters;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -82,11 +85,8 @@ public class FunctionImpl extends ExportableNodeImpl implements Function {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<Parameter> getParameter() {
-		if (parameter == null) {
-			parameter = new EObjectContainmentEList<Parameter>(Parameter.class, this, Sml2Package.FUNCTION__PARAMETER);
-		}
-		return parameter;
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -94,37 +94,23 @@ public class FunctionImpl extends ExportableNodeImpl implements Function {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public FormalAssociation getFunction() {
-		if (function != null && function.eIsProxy()) {
-			InternalEObject oldFunction = (InternalEObject)function;
-			function = (FormalAssociation)eResolveProxy(oldFunction);
-			if (function != oldFunction) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.FUNCTION__FUNCTION, oldFunction, function));
-			}
-		}
-		return function;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public FormalAssociation basicGetFunction() {
-		return function;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setFunction(FormalAssociation newFunction) {
-		FormalAssociation oldFunction = function;
-		function = newFunction;
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.FUNCTION__FUNCTION, oldFunction, function));
+			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.FUNCTION__NAME, oldName, name));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<FunctionParameter> getParameters() {
+		if (parameters == null) {
+			parameters = new EObjectContainmentEList<FunctionParameter>(FunctionParameter.class, this, Sml2Package.FUNCTION__PARAMETERS);
+		}
+		return parameters;
 	}
 
 	/**
@@ -135,8 +121,8 @@ public class FunctionImpl extends ExportableNodeImpl implements Function {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case Sml2Package.FUNCTION__PARAMETER:
-				return ((InternalEList<?>)getParameter()).basicRemove(otherEnd, msgs);
+			case Sml2Package.FUNCTION__PARAMETERS:
+				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -149,11 +135,10 @@ public class FunctionImpl extends ExportableNodeImpl implements Function {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Sml2Package.FUNCTION__PARAMETER:
-				return getParameter();
-			case Sml2Package.FUNCTION__FUNCTION:
-				if (resolve) return getFunction();
-				return basicGetFunction();
+			case Sml2Package.FUNCTION__NAME:
+				return getName();
+			case Sml2Package.FUNCTION__PARAMETERS:
+				return getParameters();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -167,12 +152,12 @@ public class FunctionImpl extends ExportableNodeImpl implements Function {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case Sml2Package.FUNCTION__PARAMETER:
-				getParameter().clear();
-				getParameter().addAll((Collection<? extends Parameter>)newValue);
+			case Sml2Package.FUNCTION__NAME:
+				setName((String)newValue);
 				return;
-			case Sml2Package.FUNCTION__FUNCTION:
-				setFunction((FormalAssociation)newValue);
+			case Sml2Package.FUNCTION__PARAMETERS:
+				getParameters().clear();
+				getParameters().addAll((Collection<? extends FunctionParameter>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -186,11 +171,11 @@ public class FunctionImpl extends ExportableNodeImpl implements Function {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case Sml2Package.FUNCTION__PARAMETER:
-				getParameter().clear();
+			case Sml2Package.FUNCTION__NAME:
+				setName(NAME_EDEFAULT);
 				return;
-			case Sml2Package.FUNCTION__FUNCTION:
-				setFunction((FormalAssociation)null);
+			case Sml2Package.FUNCTION__PARAMETERS:
+				getParameters().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -204,12 +189,28 @@ public class FunctionImpl extends ExportableNodeImpl implements Function {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case Sml2Package.FUNCTION__PARAMETER:
-				return parameter != null && !parameter.isEmpty();
-			case Sml2Package.FUNCTION__FUNCTION:
-				return function != null;
+			case Sml2Package.FUNCTION__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case Sml2Package.FUNCTION__PARAMETERS:
+				return parameters != null && !parameters.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(')');
+		return result.toString();
 	}
 
 } //FunctionImpl

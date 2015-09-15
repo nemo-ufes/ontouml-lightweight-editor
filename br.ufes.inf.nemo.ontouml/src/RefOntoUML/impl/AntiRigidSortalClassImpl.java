@@ -9,17 +9,13 @@ package RefOntoUML.impl;
 import RefOntoUML.AntiRigidSortalClass;
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.RigidSortalClass;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -90,3 +86,5 @@ public abstract class AntiRigidSortalClassImpl extends SortalClassImpl implement
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //AntiRigidSortalClassImpl
+
+

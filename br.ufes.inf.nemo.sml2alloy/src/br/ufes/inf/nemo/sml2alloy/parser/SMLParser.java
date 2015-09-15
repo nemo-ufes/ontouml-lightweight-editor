@@ -8,25 +8,23 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
-import sml2.AttributeReference;
+import sml2.AllenRelation;
 import sml2.ComparativeRelation;
-import sml2.EntityParticipant;
-import sml2.ExportableNode;
 import sml2.Function;
-import sml2.Link;
+import sml2.FunctionParameter;
+import sml2.Instantiation;
 import sml2.Literal;
-import sml2.Parameter;
 import sml2.Participant;
-import sml2.RelatorParticipant;
+import sml2.PrimitiveComparativeRelation;
+import sml2.ReferenceNode;
+import sml2.ReflectedParticipant;
 import sml2.SMLModel;
-import sml2.SituationParameterReference;
 import sml2.SituationParticipant;
 import sml2.SituationType;
-import sml2.SituationTypeElement;
-import sml2.SituationTypeParameter;
-import sml2.Sml2Factory;
-import RefOntoUML.Classifier;
+import sml2.SituationTypedElement;
+import sml2.TemporalKind;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.sml2alloy.exception.UnsupportedElementException;
 
@@ -42,36 +40,7 @@ public class SMLParser
 	public SMLParser(SMLModel smlmodel, OntoUMLParser ontoumlparser)
 	{
 		this.smlmodel = smlmodel;
-		addMissingTypeParameters();
 		this.ontoumlparser = ontoumlparser;
-	}
-	
-	protected void addMissingTypeParameters()
-	{
-		Sml2Factory factory = Sml2Factory.eINSTANCE;
-		
-		for (SituationType sit : getSituationTypes())
-		{
-			for (ExportableNode expnode : getInstances(sit, ExportableNode.class))
-			{
-				if (expnode.getNodeParameter() == null)
-				{
-					try
-					{
-						SituationTypeParameter param = factory.createSituationTypeParameter();
-						param.setNodeReference(expnode);
-						expnode.setNodeParameter(param);
-						param.setName(getElementName(expnode));
-						sit.getParameter().add(param);
-					}
-					catch (UnsupportedElementException e)
-					{
-						System.err.println(e.getMessage());
-						e.printStackTrace();
-					}
-				}
-			}
-		}
 	}
 	
 	public List<SituationType> getSituationTypes()
@@ -90,94 +59,57 @@ public class SMLParser
 		return result;
 	}
 	
-	public int getTotalWorlds(SituationType sit)
-	{
-		int total = 1;
-		
-		for (SituationTypeElement sitelem : sit.getElements())
-		{
-			if (sitelem instanceof SituationParticipant && ((SituationParticipant)sitelem).isIsPast()) total++;
-		}
-		
-		return total;
-	}
-	
 	public EObject getElementType(EObject elem) throws UnsupportedElementException
 	{
-		if (elem instanceof AttributeReference)
-			return ((AttributeReference) elem).getAttribute();
-		
-		else if (elem instanceof ComparativeRelation)
-			return ((ComparativeRelation) elem).getRelation();
-		
-		else if (elem instanceof EntityParticipant)
-			return ((EntityParticipant) elem).getIsOfType();
-		
-		else if (elem instanceof Function)
-			return ((Function) elem).getFunction();
-		
-		else if (elem instanceof Link)
-			return ((Link) elem).getIsOfType();
+		if (elem instanceof SituationTypedElement)
+			return ((SituationTypedElement) elem).getType();
 		
 		else if (elem instanceof Literal)
-			return ((Literal) elem).getDataType();
-		
-		else if (elem instanceof Parameter)
-			return ((Parameter) elem).getParameter();
-		
-		else if (elem instanceof RelatorParticipant)
-			return ((RelatorParticipant) elem).getIsOfType();
-		
-		else if (elem instanceof SituationParameterReference)
-			return ((SituationParameterReference) elem).getParameter();
-		
-		else if (elem instanceof SituationParticipant)
-			return ((SituationParticipant) elem).getSituationType();
+			return ((Literal) elem).getType();
 		
 		else if (elem instanceof SMLModel)
 			return ((SMLModel) elem).getContextModel();
 		
+		//ReferenceNode, FunctionParameter, SituationType, ReflectedParticipant, Function
 		else
 			throw new UnsupportedElementException(elem.toString());
 	}
 	
 	public String getElementName(EObject elem) throws UnsupportedElementException
 	{
-		if (elem instanceof AttributeReference)
-			return ((AttributeReference) elem).getAttribute().getName();
-		
-		else if (elem instanceof ComparativeRelation)
-			return ((ComparativeRelation) elem).getRelation().getName();
-		
-		else if (elem instanceof EntityParticipant)
-			return ((EntityParticipant) elem).getIsOfType().getName();
+		if (elem instanceof Literal)
+			return ((Literal) elem).getType() instanceof RefOntoUML.Class ? 
+					ontoumlparser.getAlias(((Literal) elem).getType()) : ((Literal) elem).getValue();
+					
+		else if (elem instanceof SituationTypedElement)
+		{
+			EStructuralFeature feat = ((SituationTypedElement) elem).getType().eClass().getEStructuralFeature("name");
+			return (String) ((SituationTypedElement) elem).getType().eGet(feat);
+		}
 		
 		else if (elem instanceof Function)
-			return ((Function) elem).getFunction().getName();
+			return ((Function) elem).getName();
 		
-		else if (elem instanceof Link)
-			return ((Link) elem).getIsOfType().getName();
+		else if (elem instanceof FunctionParameter)
+			return ((FunctionParameter) elem).getLabel();
 		
-		else if (elem instanceof Literal)
-			return ((Literal) elem).getValue();
+		else if (elem instanceof PrimitiveComparativeRelation)
+			return ((PrimitiveComparativeRelation) elem).getType().getName();
 		
-		else if (elem instanceof Parameter)
-			return getElementName(((Parameter) elem).getValue());
+		else if (elem instanceof AllenRelation)
+			return ((AllenRelation) elem).getType().getName();
 		
-		else if (elem instanceof RelatorParticipant)
-			return ((RelatorParticipant) elem).getIsOfType().getName();
+		else if (elem instanceof Instantiation)
+			return "instanceOf";
+			
+		else if (elem instanceof ReferenceNode)
+			return ((ReferenceNode) elem).getLabel();
 		
-		else if (elem instanceof SituationParameterReference)
-			return ((SituationParameterReference) elem).getParameter().getName();
-		
-		else if (elem instanceof SituationParticipant)
-			return ((SituationParticipant) elem).getSituationType().getName();
+		else if (elem instanceof ReflectedParticipant)
+			return getElementName(((ReflectedParticipant) elem).getParticipant());
 		
 		else if (elem instanceof SituationType)
 			return ((SituationType) elem).getName();
-		
-		else if (elem instanceof SituationTypeParameter)
-			return ((SituationTypeParameter) elem).getName();
 		
 		else if (elem instanceof SMLModel)
 			return ((SMLModel) elem).getContextModel().getName();
@@ -189,25 +121,24 @@ public class SMLParser
 	public String getAlias(EObject elem) throws UnsupportedElementException
 	{
 		if (elem instanceof RefOntoUML.Element)
-			return ontoumlparser.getAlias(((RefOntoUML.Element) elem));
+			return ontoumlparser.getAlias((RefOntoUML.Element) elem);
 		
 		String alias = getElementName(elem).replace(" ", "");
 		
 		if (elem instanceof Literal)
-			if (((Literal) elem).getDataType().getName().equalsIgnoreCase("string") ||
-				((Literal) elem).getDataType().getName().equalsIgnoreCase("str"))
+			if (((Literal) elem).getType().getName().equalsIgnoreCase("string") ||
+				((Literal) elem).getType().getName().equalsIgnoreCase("str"))
 				return "\""+alias+"\"";
+			else if (((Literal) elem).getType() instanceof RefOntoUML.Class)
+				return ontoumlparser.getAlias(((Literal) elem).getType());
 			else
 				return alias;
-		
-		else if (elem instanceof SituationParticipant)
-			return handleAlias(aliases, alias, ((SituationParticipant) elem).getSituationType());
 			
-		else if (elem instanceof SituationParameterReference)
-			return handleAlias(aliases, alias.toLowerCase(), ((SituationParameterReference) elem).getParameter());
-		
-		else if (elem instanceof SituationTypeParameter)
+		else if (elem instanceof Participant)
 			return handleAlias(aliases, alias.toLowerCase(), elem);
+		
+		else if (elem instanceof ReflectedParticipant)
+			return handleAlias(aliases, alias.toLowerCase(), ((ReflectedParticipant) elem).getParticipant());
 		
 		return handleAlias(aliases, alias, elem);
 	}
@@ -243,41 +174,53 @@ public class SMLParser
 		return alias;
 	}
 	
-	public boolean isSameType(EObject t1, EObject t2)
+	public boolean isSameType(EObject eobj1, EObject eobj2) throws UnsupportedElementException
 	{
-		ArrayList<RefOntoUML.Classifier> typesList = new ArrayList<RefOntoUML.Classifier>();
-		if (t1 instanceof EntityParticipant && t2 instanceof EntityParticipant)
+		if (eobj1 instanceof Participant && eobj2 instanceof Participant)
 		{
-			typesList.add(((EntityParticipant)t1).getIsOfType());
-			typesList.add(((EntityParticipant)t2).getIsOfType());
-		}
-		else if (t1 instanceof RelatorParticipant && t2 instanceof RelatorParticipant)
-		{
-			typesList.add(((RelatorParticipant)t1).getIsOfType());
-			typesList.add(((RelatorParticipant)t2).getIsOfType());
-		}
-		else if (t1 instanceof SituationParticipant && t2 instanceof SituationParticipant)
-		{
-			return ((SituationParticipant)t1).getSituationType().equals(((SituationParticipant)t2).getSituationType());
-		}
-		else if (t1 instanceof RefOntoUML.Classifier && t2 instanceof RefOntoUML.Classifier)
-		{
-			typesList.add((Classifier) t1);
-			typesList.add((Classifier) t2);
+			Participant p1 = (Participant) eobj1;
+			Participant p2 = (Participant) eobj2;
+			for (ComparativeRelation comprel : getInstances(p1.getSituation(), PrimitiveComparativeRelation.class))
+			{
+				if (((comprel.getSource().equals(p1) && comprel.getTarget().equals(p2)) ||
+					(comprel.getSource().equals(p2) && comprel.getTarget().equals(p1)))
+					&& getElementName(comprel).equals("equals"))
+					return false;
+			}
+			
+			if (p1 instanceof SituationParticipant || p2 instanceof SituationParticipant)
+			{
+				return p1.getType().equals(p2.getType());
+			}
+			else
+			{
+				eobj1 = p1.getType();
+				eobj2 = p2.getType();
+			}
 		}
 		
-		ArrayList<RefOntoUML.GeneralizationSet> gensets = new ArrayList<RefOntoUML.GeneralizationSet>();
+		ArrayList<RefOntoUML.Classifier> typesList = new ArrayList<RefOntoUML.Classifier>();
+		typesList.add((RefOntoUML.Classifier) eobj1);
+		typesList.add((RefOntoUML.Classifier) eobj2);
 		try
 		{
-			if (ontoumlparser.getCommonSupertypes(typesList).size()==0)
+			if (eobj1.equals(eobj2))
+				return true;
+			else if (ontoumlparser.getCommonSupertypes(typesList).size()==0)
 				return false;
 						
-			else return ontoumlparser.allTypesOverlap(typesList, gensets);
+			else return ontoumlparser.allTypesOverlap(typesList, new ArrayList<RefOntoUML.GeneralizationSet>());
 		}
 		catch (Exception e)
 		{
 			System.err.println(e.getMessage());
 			return false;
 		}
+	}
+	
+	public boolean isTemporal(EObject p)
+	{
+		EStructuralFeature feat = p.eClass().getEStructuralFeature("temporality");
+		return feat != null && (p.eGet(feat).equals(TemporalKind.PAST) || p.eGet(feat).equals(TemporalKind.ANY));
 	}
 }

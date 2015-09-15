@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import sml2.SituationType;
 import sml2.SituationTypeElement;
-import sml2.SituationTypeParameter;
 import sml2.Sml2Package;
 
 /**
@@ -31,7 +30,6 @@ import sml2.Sml2Package;
  * The following features are implemented:
  * <ul>
  *   <li>{@link sml2.impl.SituationTypeImpl#getName <em>Name</em>}</li>
- *   <li>{@link sml2.impl.SituationTypeImpl#getParameter <em>Parameter</em>}</li>
  *   <li>{@link sml2.impl.SituationTypeImpl#getElements <em>Elements</em>}</li>
  * </ul>
  * </p>
@@ -58,16 +56,6 @@ public class SituationTypeImpl extends MinimalEObjectImpl.Container implements S
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getParameter() <em>Parameter</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getParameter()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<SituationTypeParameter> parameter;
 
 	/**
 	 * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
@@ -124,18 +112,6 @@ public class SituationTypeImpl extends MinimalEObjectImpl.Container implements S
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<SituationTypeParameter> getParameter() {
-		if (parameter == null) {
-			parameter = new EObjectContainmentEList<SituationTypeParameter>(SituationTypeParameter.class, this, Sml2Package.SITUATION_TYPE__PARAMETER);
-		}
-		return parameter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EList<SituationTypeElement> getElements() {
 		if (elements == null) {
 			elements = new EObjectContainmentEList<SituationTypeElement>(SituationTypeElement.class, this, Sml2Package.SITUATION_TYPE__ELEMENTS);
@@ -151,8 +127,6 @@ public class SituationTypeImpl extends MinimalEObjectImpl.Container implements S
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case Sml2Package.SITUATION_TYPE__PARAMETER:
-				return ((InternalEList<?>)getParameter()).basicRemove(otherEnd, msgs);
 			case Sml2Package.SITUATION_TYPE__ELEMENTS:
 				return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
 		}
@@ -169,8 +143,6 @@ public class SituationTypeImpl extends MinimalEObjectImpl.Container implements S
 		switch (featureID) {
 			case Sml2Package.SITUATION_TYPE__NAME:
 				return getName();
-			case Sml2Package.SITUATION_TYPE__PARAMETER:
-				return getParameter();
 			case Sml2Package.SITUATION_TYPE__ELEMENTS:
 				return getElements();
 		}
@@ -188,10 +160,6 @@ public class SituationTypeImpl extends MinimalEObjectImpl.Container implements S
 		switch (featureID) {
 			case Sml2Package.SITUATION_TYPE__NAME:
 				setName((String)newValue);
-				return;
-			case Sml2Package.SITUATION_TYPE__PARAMETER:
-				getParameter().clear();
-				getParameter().addAll((Collection<? extends SituationTypeParameter>)newValue);
 				return;
 			case Sml2Package.SITUATION_TYPE__ELEMENTS:
 				getElements().clear();
@@ -212,9 +180,6 @@ public class SituationTypeImpl extends MinimalEObjectImpl.Container implements S
 			case Sml2Package.SITUATION_TYPE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case Sml2Package.SITUATION_TYPE__PARAMETER:
-				getParameter().clear();
-				return;
 			case Sml2Package.SITUATION_TYPE__ELEMENTS:
 				getElements().clear();
 				return;
@@ -232,8 +197,6 @@ public class SituationTypeImpl extends MinimalEObjectImpl.Container implements S
 		switch (featureID) {
 			case Sml2Package.SITUATION_TYPE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case Sml2Package.SITUATION_TYPE__PARAMETER:
-				return parameter != null && !parameter.isEmpty();
 			case Sml2Package.SITUATION_TYPE__ELEMENTS:
 				return elements != null && !elements.isEmpty();
 		}

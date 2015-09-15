@@ -85,3 +85,5 @@ public interface MeasurementDomain extends MeasurementStructure {
 	boolean isScientific();
 
 } // MeasurementDomain
+
+

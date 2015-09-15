@@ -6,7 +6,6 @@
  */
 package RefOntoUML;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Reference Region</b></em>'.
@@ -27,7 +26,7 @@ package RefOntoUML;
  * @model abstract="true"
  * @generated
  */
-public interface ReferenceRegion extends LiteralSpecification {
+public interface ReferenceRegion extends ValueSpecification {
 	/**
 	 * Returns the value of the '<em><b>Structure</b></em>' container reference.
 	 * It is bidirectional and its opposite is '{@link RefOntoUML.ReferenceStructure#getOwnedRegions <em>Owned Regions</em>}'.

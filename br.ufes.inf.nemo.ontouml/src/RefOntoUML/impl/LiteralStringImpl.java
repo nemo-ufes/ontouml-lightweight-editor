@@ -8,11 +8,8 @@ package RefOntoUML.impl;
 
 import RefOntoUML.LiteralString;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -198,3 +195,5 @@ public class LiteralStringImpl extends LiteralSpecificationImpl implements Liter
 	}
 
 } //LiteralStringImpl
+
+

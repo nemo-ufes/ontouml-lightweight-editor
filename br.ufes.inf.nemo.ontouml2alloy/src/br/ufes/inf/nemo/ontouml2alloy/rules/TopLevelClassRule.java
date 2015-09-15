@@ -43,7 +43,7 @@ public class TopLevelClassRule {
                         Set<Classifier> descendants1 = ontoparser.getAllChildren(c1);
 
                         // creates a single List containing the topLevel classifier 'c1' 
-                        // and the top levels classifiers that have their descendants overlapping 
+                        // and the top levels classifiers that ?TODO DO NOT? have their descendants overlapping 
                         // with the descendants of the classifier 'c1'
                         
                         ArrayList<Classifier> singleList = new ArrayList<Classifier>();
@@ -60,7 +60,7 @@ public class TopLevelClassRule {
                                 }
                         }
                                                 
-                        listsHashMap.put(singleList,0);
+                        listsHashMap.put(singleList,0); //TODO Aqui é 0 mesmo ou seria uma variável?
                 }
                                 
                 // create a union (+) String expression for every singleList 
@@ -71,12 +71,10 @@ public class TopLevelClassRule {
                         if (listsHashMap.get(singleList)==0)
                         {
                                 // create a list of the elements starting at the second element
-                                int count = 0;
                                 ArrayList<String> exprList = new ArrayList<String>();
-                                for(Classifier c: singleList) 
+                                for(Classifier c: singleList.subList(1, singleList.size())) 
                                 {
-                                        if (count>=1) exprList.add(ontoparser.getAlias(c));                                     
-                                        count++;
+                                        exprList.add(ontoparser.getAlias(c));
                                 }
                                 
                                 ArrayList<String> paramList = new ArrayList<String>();

@@ -68,80 +68,116 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 	protected Sml2Switch<Adapter> modelSwitch =
 		new Sml2Switch<Adapter>() {
 			@Override
-			public Adapter caseSMLModel(SMLModel object) {
-				return createSMLModelAdapter();
+			public Adapter caseAllenLink(AllenLink object) {
+				return createAllenLinkAdapter();
 			}
 			@Override
-			public Adapter caseSituationType(SituationType object) {
-				return createSituationTypeAdapter();
-			}
-			@Override
-			public Adapter caseSituationTypeBlock(SituationTypeBlock object) {
-				return createSituationTypeBlockAdapter();
-			}
-			@Override
-			public Adapter caseSituationTypeElement(SituationTypeElement object) {
-				return createSituationTypeElementAdapter();
-			}
-			@Override
-			public Adapter caseNode(Node object) {
-				return createNodeAdapter();
-			}
-			@Override
-			public Adapter caseExportableNode(ExportableNode object) {
-				return createExportableNodeAdapter();
-			}
-			@Override
-			public Adapter caseEntityParticipant(EntityParticipant object) {
-				return createEntityParticipantAdapter();
-			}
-			@Override
-			public Adapter caseRelatorParticipant(RelatorParticipant object) {
-				return createRelatorParticipantAdapter();
-			}
-			@Override
-			public Adapter caseLink(Link object) {
-				return createLinkAdapter();
-			}
-			@Override
-			public Adapter caseSituationTypeParameter(SituationTypeParameter object) {
-				return createSituationTypeParameterAdapter();
+			public Adapter caseAttributeLink(AttributeLink object) {
+				return createAttributeLinkAdapter();
 			}
 			@Override
 			public Adapter caseAttributeReference(AttributeReference object) {
 				return createAttributeReferenceAdapter();
 			}
 			@Override
+			public Adapter caseClassLiteral(ClassLiteral object) {
+				return createClassLiteralAdapter();
+			}
+			@Override
 			public Adapter caseComparativeRelation(ComparativeRelation object) {
 				return createComparativeRelationAdapter();
 			}
 			@Override
-			public Adapter caseLiteral(Literal object) {
-				return createLiteralAdapter();
+			public Adapter caseContextFormalLink(ContextFormalLink object) {
+				return createContextFormalLinkAdapter();
 			}
 			@Override
-			public Adapter caseParticipant(Participant object) {
-				return createParticipantAdapter();
+			public Adapter caseDataTypeLiteral(DataTypeLiteral object) {
+				return createDataTypeLiteralAdapter();
 			}
 			@Override
-			public Adapter caseSituationParticipant(SituationParticipant object) {
-				return createSituationParticipantAdapter();
+			public Adapter caseFormalRelation(FormalRelation object) {
+				return createFormalRelationAdapter();
 			}
 			@Override
-			public Adapter caseSituationParameterReference(SituationParameterReference object) {
-				return createSituationParameterReferenceAdapter();
+			public Adapter caseEntityParticipant(EntityParticipant object) {
+				return createEntityParticipantAdapter();
 			}
 			@Override
-			public Adapter caseExistsSituation(ExistsSituation object) {
-				return createExistsSituationAdapter();
+			public Adapter caseEqualsLink(EqualsLink object) {
+				return createEqualsLinkAdapter();
 			}
 			@Override
 			public Adapter caseFunction(Function object) {
 				return createFunctionAdapter();
 			}
 			@Override
-			public Adapter caseParameter(Parameter object) {
-				return createParameterAdapter();
+			public Adapter caseFunctionParameter(FunctionParameter object) {
+				return createFunctionParameterAdapter();
+			}
+			@Override
+			public Adapter caseInstantiationLink(InstantiationLink object) {
+				return createInstantiationLinkAdapter();
+			}
+			@Override
+			public Adapter caseLiteral(Literal object) {
+				return createLiteralAdapter();
+			}
+			@Override
+			public Adapter caseMediationLink(MediationLink object) {
+				return createMediationLinkAdapter();
+			}
+			@Override
+			public Adapter caseNode(Node object) {
+				return createNodeAdapter();
+			}
+			@Override
+			public Adapter caseOrderedComparativeLink(OrderedComparativeLink object) {
+				return createOrderedComparativeLinkAdapter();
+			}
+			@Override
+			public Adapter caseParticipant(Participant object) {
+				return createParticipantAdapter();
+			}
+			@Override
+			public Adapter caseReferableElement(ReferableElement object) {
+				return createReferableElementAdapter();
+			}
+			@Override
+			public Adapter caseReferenceNode(ReferenceNode object) {
+				return createReferenceNodeAdapter();
+			}
+			@Override
+			public Adapter caseReflectedParticipant(ReflectedParticipant object) {
+				return createReflectedParticipantAdapter();
+			}
+			@Override
+			public Adapter caseReflectedReference(ReflectedReference object) {
+				return createReflectedReferenceAdapter();
+			}
+			@Override
+			public Adapter caseRelatorParticipant(RelatorParticipant object) {
+				return createRelatorParticipantAdapter();
+			}
+			@Override
+			public Adapter caseSituationParticipant(SituationParticipant object) {
+				return createSituationParticipantAdapter();
+			}
+			@Override
+			public Adapter caseSituationType(SituationType object) {
+				return createSituationTypeAdapter();
+			}
+			@Override
+			public Adapter caseSituationTypeAssociation(SituationTypeAssociation object) {
+				return createSituationTypeAssociationAdapter();
+			}
+			@Override
+			public Adapter caseSituationTypeElement(SituationTypeElement object) {
+				return createSituationTypeElementAdapter();
+			}
+			@Override
+			public Adapter caseSMLModel(SMLModel object) {
+				return createSMLModelAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -164,142 +200,30 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link sml2.SMLModel <em>SML Model</em>}'.
+	 * Creates a new adapter for an object of class '{@link sml2.AllenLink <em>Allen Link</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see sml2.SMLModel
+	 * @see sml2.AllenLink
 	 * @generated
 	 */
-	public Adapter createSMLModelAdapter() {
+	public Adapter createAllenLinkAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link sml2.SituationType <em>Situation Type</em>}'.
+	 * Creates a new adapter for an object of class '{@link sml2.AttributeLink <em>Attribute Link</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see sml2.SituationType
+	 * @see sml2.AttributeLink
 	 * @generated
 	 */
-	public Adapter createSituationTypeAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link sml2.SituationTypeBlock <em>Situation Type Block</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see sml2.SituationTypeBlock
-	 * @generated
-	 */
-	public Adapter createSituationTypeBlockAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link sml2.SituationTypeElement <em>Situation Type Element</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see sml2.SituationTypeElement
-	 * @generated
-	 */
-	public Adapter createSituationTypeElementAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link sml2.Node <em>Node</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see sml2.Node
-	 * @generated
-	 */
-	public Adapter createNodeAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link sml2.ExportableNode <em>Exportable Node</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see sml2.ExportableNode
-	 * @generated
-	 */
-	public Adapter createExportableNodeAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link sml2.EntityParticipant <em>Entity Participant</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see sml2.EntityParticipant
-	 * @generated
-	 */
-	public Adapter createEntityParticipantAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link sml2.RelatorParticipant <em>Relator Participant</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see sml2.RelatorParticipant
-	 * @generated
-	 */
-	public Adapter createRelatorParticipantAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link sml2.Link <em>Link</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see sml2.Link
-	 * @generated
-	 */
-	public Adapter createLinkAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link sml2.SituationTypeParameter <em>Situation Type Parameter</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see sml2.SituationTypeParameter
-	 * @generated
-	 */
-	public Adapter createSituationTypeParameterAdapter() {
+	public Adapter createAttributeLinkAdapter() {
 		return null;
 	}
 
@@ -318,6 +242,20 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link sml2.ClassLiteral <em>Class Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.ClassLiteral
+	 * @generated
+	 */
+	public Adapter createClassLiteralAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link sml2.ComparativeRelation <em>Comparative Relation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -332,72 +270,72 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link sml2.Literal <em>Literal</em>}'.
+	 * Creates a new adapter for an object of class '{@link sml2.ContextFormalLink <em>Context Formal Link</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see sml2.Literal
+	 * @see sml2.ContextFormalLink
 	 * @generated
 	 */
-	public Adapter createLiteralAdapter() {
+	public Adapter createContextFormalLinkAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link sml2.Participant <em>Participant</em>}'.
+	 * Creates a new adapter for an object of class '{@link sml2.DataTypeLiteral <em>Data Type Literal</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see sml2.Participant
+	 * @see sml2.DataTypeLiteral
 	 * @generated
 	 */
-	public Adapter createParticipantAdapter() {
+	public Adapter createDataTypeLiteralAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link sml2.SituationParticipant <em>Situation Participant</em>}'.
+	 * Creates a new adapter for an object of class '{@link sml2.FormalRelation <em>Formal Relation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see sml2.SituationParticipant
+	 * @see sml2.FormalRelation
 	 * @generated
 	 */
-	public Adapter createSituationParticipantAdapter() {
+	public Adapter createFormalRelationAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link sml2.SituationParameterReference <em>Situation Parameter Reference</em>}'.
+	 * Creates a new adapter for an object of class '{@link sml2.EntityParticipant <em>Entity Participant</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see sml2.SituationParameterReference
+	 * @see sml2.EntityParticipant
 	 * @generated
 	 */
-	public Adapter createSituationParameterReferenceAdapter() {
+	public Adapter createEntityParticipantAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link sml2.ExistsSituation <em>Exists Situation</em>}'.
+	 * Creates a new adapter for an object of class '{@link sml2.EqualsLink <em>Equals Link</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see sml2.ExistsSituation
+	 * @see sml2.EqualsLink
 	 * @generated
 	 */
-	public Adapter createExistsSituationAdapter() {
+	public Adapter createEqualsLinkAdapter() {
 		return null;
 	}
 
@@ -416,16 +354,240 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link sml2.Parameter <em>Parameter</em>}'.
+	 * Creates a new adapter for an object of class '{@link sml2.FunctionParameter <em>Function Parameter</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see sml2.Parameter
+	 * @see sml2.FunctionParameter
 	 * @generated
 	 */
-	public Adapter createParameterAdapter() {
+	public Adapter createFunctionParameterAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.InstantiationLink <em>Instantiation Link</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.InstantiationLink
+	 * @generated
+	 */
+	public Adapter createInstantiationLinkAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.Literal <em>Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.Literal
+	 * @generated
+	 */
+	public Adapter createLiteralAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.MediationLink <em>Mediation Link</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.MediationLink
+	 * @generated
+	 */
+	public Adapter createMediationLinkAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.Node <em>Node</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.Node
+	 * @generated
+	 */
+	public Adapter createNodeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.OrderedComparativeLink <em>Ordered Comparative Link</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.OrderedComparativeLink
+	 * @generated
+	 */
+	public Adapter createOrderedComparativeLinkAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.Participant <em>Participant</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.Participant
+	 * @generated
+	 */
+	public Adapter createParticipantAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.ReferableElement <em>Referable Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.ReferableElement
+	 * @generated
+	 */
+	public Adapter createReferableElementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.ReferenceNode <em>Reference Node</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.ReferenceNode
+	 * @generated
+	 */
+	public Adapter createReferenceNodeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.ReflectedParticipant <em>Reflected Participant</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.ReflectedParticipant
+	 * @generated
+	 */
+	public Adapter createReflectedParticipantAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.ReflectedReference <em>Reflected Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.ReflectedReference
+	 * @generated
+	 */
+	public Adapter createReflectedReferenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.RelatorParticipant <em>Relator Participant</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.RelatorParticipant
+	 * @generated
+	 */
+	public Adapter createRelatorParticipantAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.SituationParticipant <em>Situation Participant</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.SituationParticipant
+	 * @generated
+	 */
+	public Adapter createSituationParticipantAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.SituationType <em>Situation Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.SituationType
+	 * @generated
+	 */
+	public Adapter createSituationTypeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.SituationTypeAssociation <em>Situation Type Association</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.SituationTypeAssociation
+	 * @generated
+	 */
+	public Adapter createSituationTypeAssociationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.SituationTypeElement <em>Situation Type Element</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.SituationTypeElement
+	 * @generated
+	 */
+	public Adapter createSituationTypeElementAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.SMLModel <em>SML Model</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.SMLModel
+	 * @generated
+	 */
+	public Adapter createSMLModelAdapter() {
 		return null;
 	}
 

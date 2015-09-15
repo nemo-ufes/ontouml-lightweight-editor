@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
 
@@ -676,3 +675,5 @@ public interface Property extends StructuralFeature {
 	boolean isNavigable();
 
 } // Property
+
+

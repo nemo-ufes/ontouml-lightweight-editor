@@ -10,22 +10,16 @@ import RefOntoUML.AggregationKind;
 import RefOntoUML.Association;
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.Type;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.ecore.OCL.Helper;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -215,3 +209,5 @@ public abstract class TypeImpl extends PackageableElementImpl implements Type {
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //TypeImpl
+
+

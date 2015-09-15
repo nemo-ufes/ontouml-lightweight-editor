@@ -3,8 +3,6 @@ package br.ufes.inf.nemo.sml2alloy;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
-
 import sml2.Participant;
 import sml2.SituationParticipant;
 import sml2.SituationType;
@@ -23,15 +21,16 @@ import br.ufes.inf.nemo.alloy.FactDeclaration;
 import br.ufes.inf.nemo.alloy.FunctionDeclaration;
 import br.ufes.inf.nemo.alloy.ModuleImportation;
 import br.ufes.inf.nemo.alloy.PredicateInvocation;
+import br.ufes.inf.nemo.alloy.QuantificationExpression;
 import br.ufes.inf.nemo.alloy.SignatureDeclaration;
 import br.ufes.inf.nemo.alloy.SignatureReference;
 import br.ufes.inf.nemo.alloy.UnaryOperation;
-import br.ufes.inf.nemo.alloy.UnaryOperator;
 import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.alloy.VariableReference;
 import br.ufes.inf.nemo.alloy.api.AlloyAPI;
 import br.ufes.inf.nemo.ontouml2alloy.transformer.Transformer;
 import br.ufes.inf.nemo.sml2alloy.exception.UnsupportedElementException;
+import br.ufes.inf.nemo.sml2alloy.parser.CardinalityRule;
 import br.ufes.inf.nemo.sml2alloy.parser.SMLParser;
 
 public class SML2AlloyTransformer
@@ -85,8 +84,9 @@ public class SML2AlloyTransformer
 		
 		populatesWithSituations();
 		
-		populatesWithAssociations();
-		populatesWithAssociationEnds();
+		populatesWithParticipations();
+		populatesWithParticipationProperties();
+		populatesWithParticipationEnds();
 		
 		populatesWithCompleteness();
 		
@@ -112,7 +112,9 @@ public class SML2AlloyTransformer
 	}
 	
 	/** 
-	 * Populates With Situations 
+	 * Creates the situation declarations inside the World signature:
+	 * 
+	 * <sitName>: set exists:>Situation 
 	 */
 	protected void populatesWithSituations()
 	{
@@ -137,9 +139,27 @@ public class SML2AlloyTransformer
 	}
 	
 	/**
-	 * Populates With Association Ends for Participations
+	 * Creates function declarations that represents the association ends for participations, with the
+	 * purpose of navigating the model. Depending if the participations are transtemporal or not, the
+	 * declarations are different. They have the following structure, respectively:
+	 * 
+	 * fun <fun1Name> (x: World.<sitElemName>) World.<sitName> {
+	 * 		(<assocName>).x
+	 * }
+	 * fun <fun2Name> (x: World.<sitName>) World.<sitElemName> {
+	 * 		x.(<assocName>)
+	 * }
+	 * 
+	 * or
+	 * 
+	 * fun <fun1Name> (x: World.<sitElemName>, w: World) World.<sitName> {
+	 * 		(w.<assocName>).x
+	 * }
+	 * fun <fun2Name> (x: World.<sitName>, w: World) World.<sitElemName> {
+	 * 		x.(w.<assocName>)
+	 * }
 	 */
-	protected void populatesWithAssociationEnds()
+	protected void populatesWithParticipationEnds()
 	{
 		ArrayList<FunctionDeclaration> funList = new ArrayList<FunctionDeclaration>();
 		
@@ -153,10 +173,9 @@ public class SML2AlloyTransformer
 					String sitName = smlparser.getAlias(sit);
 					String sitElemName = smlparser.getAlias(smlparser.getElementType(part));
 					String fun1Name = sitName.toLowerCase();
-					String fun2Name = smlparser.getAlias(part.getNodeParameter());
+					String fun2Name = smlparser.getAlias(part);
 					
-					EStructuralFeature feat = part.eClass().getEStructuralFeature("isPast");
-					if (feat != null && part.eGet(feat).equals(true))
+					if (smlparser.isTemporal(part))
 					{
 						funList.add(AlloyAPI.createTransTemporalFunctionDeclaration(factory, world, true, fun1Name,
 								"World."+sitElemName, "World."+sitName, assocName));
@@ -187,50 +206,47 @@ public class SML2AlloyTransformer
 	}
 	
 	/**
-	 * Populates With Participations
+	 * Creates the participations declarations, depending on the temporality of the participant,
+	 * inside the World signature or the Situation signature, respectively, as follows:
+	 * 
+	 * <participationAlias>: set <sitName> lone/set -> one/some <partName>
+	 * 
+	 * or 
+	 * 
+	 * <participationAlias>: set <sitSignatureName>
 	 */
-	protected void populatesWithAssociations()
+	protected void populatesWithParticipations()
 	{
 		ArrayList<Declaration> associationsDeclaration = new ArrayList<Declaration>();
 		ArrayList<Declaration> transtempAssocDeclaration = new ArrayList<Declaration>();
 		
 		for(SituationType sit : smlparser.getSituationTypes())
 		{
+//			Map<EObject, List<Participant>> collectables = new HashMap<EObject, List<Participant>>();
 			for(Participant part : smlparser.getInstances(sit, Participant.class))
 			{
-				VariableReference source = factory.createVariableReference();
-				VariableReference target = factory.createVariableReference();
-				//TODO ou vai ser [0..1] ou [0..*], como saber?
-				int lowerSource=0, upperSource=-1, lowerTarget=1, upperTarget=1;
+//				if (part.isCollectable())
+//				{
+//					List<Participant> partList = collectables.get(part.getType());
+//					if (partList == null) partList = new ArrayList<Participant>();
+//					partList.add(part);
+//					collectables.put(part.getType(), partList);
+//					continue;
+//				}
 				
-				try
-				{
-					//Past participants are defined as transtemporal participations
-					EStructuralFeature feat = part.eClass().getEStructuralFeature("isPast");
-					if (feat != null && part.eGet(feat).equals(true))
-					{
-						target.setVariable(part instanceof SituationParticipant ? sigSituation.getName() : ontoumltransformer.sigObject.getName());
-						Declaration decl = AlloyAPI.createSimpleDeclaration(factory, smlparser.getParticipationAlias(sit, part), target.getVariable());
-						if (decl != null)
-						{
-							transtempAssocDeclaration.add(decl);
-							addTransTemporalRestrictions(sit, part);
-						}
-					}
-					else
-					{
-						source.setVariable(smlparser.getAlias(sit));
-						target.setVariable(smlparser.getAlias(smlparser.getElementType(part)));
-						ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
-						Declaration decl = AlloyAPI.createDeclaration(factory, smlparser.getParticipationAlias(sit, part), aOp);
-						if (decl!=null) associationsDeclaration.add(decl);
-					}
-				}
-				catch (UnsupportedElementException e)
-				{
-					System.err.println(e.getMessage());
-				}
+				createParticipationDeclaration(new Object[] {sit, part, (part.isShareable() ? -1 : 1), 
+						part.getLowerBound(), part.getUpperBound()},
+						associationsDeclaration, transtempAssocDeclaration);
 			}
+			
+//			for(Entry<EObject, List<Participant>> entry : collectables.entrySet())
+//			{
+//				Participant part = entry.getValue().get(0);
+//				int upperTarget = entry.getValue().size();
+//				
+//				createParticipationDeclaration(new Object[] {sit, part, (part.isShareable() ? -1 : 1), upperTarget},
+//						associationsDeclaration, transtempAssocDeclaration);
+//			}
 		}
 		
 		// Sort associations declarations in the signature world and signature situation
@@ -241,42 +257,155 @@ public class SML2AlloyTransformer
 		world.getRelation().addAll(associationsDeclaration);
 	}
 	
-	protected void addTransTemporalRestrictions(SituationType sit, Participant part) throws UnsupportedElementException
+	protected void createParticipationDeclaration(Object[] info, 
+			ArrayList<Declaration> associationsDeclaration, ArrayList<Declaration> transtempAssocDeclaration)
+	{
+		SituationType sit = (SituationType) info[0];
+		Participant part = (Participant) info[1];
+		int lowerSource = 0;
+		int upperSource = (int) info[2];
+		int lowerTarget = (int) info[3];
+		int upperTarget = (int) info[4];
+		
+		VariableReference source = factory.createVariableReference();
+		VariableReference target = factory.createVariableReference();
+		try
+		{
+			//Past participants are defined as transtemporal participations
+			if (smlparser.isTemporal(part))
+			{
+				target.setVariable(part instanceof SituationParticipant ? sigSituation.getName() : ontoumltransformer.sigObject.getName());
+				Declaration decl = AlloyAPI.createSimpleDeclaration(factory, smlparser.getParticipationAlias(sit, part), target.getVariable());
+				if (decl != null)
+				{
+					transtempAssocDeclaration.add(decl);
+					addTransTemporalRestrictions(info);
+				}
+			}
+			else
+			{
+				source.setVariable(smlparser.getAlias(sit));
+				target.setVariable(smlparser.getAlias(smlparser.getElementType(part)));
+				ArrowOperation aOp = AlloyAPI.createArrowOperation(factory, source.getVariable(), lowerSource, upperSource, target.getVariable(), lowerTarget, upperTarget);			
+				Declaration decl = AlloyAPI.createDeclaration(factory, smlparser.getParticipationAlias(sit, part), aOp);
+				if (decl!=null)
+				{
+					associationsDeclaration.add(decl);
+					addParticipationCardinalities(info);
+				}
+			}
+		}
+		catch (UnsupportedElementException e)
+		{
+			System.err.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Creates a fact declaration that ensures the immutability of the participation targets, if so, 
+	 * for every participation. The fact is as follows:
+	 * 
+	 * fact participationProperties {
+	 * 		immutable_target[<sitName>, <participationName>]
+	 * 		(...)
+	 * }
+	 */
+	protected void populatesWithParticipationProperties()
+	{
+		FactDeclaration participation_properties = factory.createFactDeclaration();
+		participation_properties.setName("participationProperties");
+		participation_properties.setBlock(factory.createBlock());
+		
+		for(SituationType sit : smlparser.getSituationTypes())
+		{
+			for(Participant part : smlparser.getInstances(sit, Participant.class))
+			{
+				if (!smlparser.isTemporal(part) && part.isImmutable())
+				{
+					try
+					{
+						PredicateInvocation pI = AlloyAPI.createImmutablePredicateInvocation(factory, "immutable_target", smlparser.getAlias(sit), smlparser.getParticipationAlias(sit, part));
+						participation_properties.getBlock().getExpression().add(pI);
+					}
+					catch (UnsupportedElementException e)
+					{
+						System.out.println(e.getMessage());
+					}	
+				}
+			}
+		}
+		
+		if (!participation_properties.getBlock().getExpression().isEmpty())
+			module.getParagraph().add(participation_properties);
+	}
+	
+	
+	/**
+	 * Creates a fact to specify the type and cardinality of the transtemporal participations, since it cannot
+	 * be defined properly in the declaration itself. These restrictions are as follows:
+	 * 
+	 * fact historicalParticipation {
+	 * 		univ.<participationAlias> in World.<sitName>
+	 * 		#univ.<participationAlias> CompareOperator 0/<upperSource>
+	 * 
+	 * 		<participationAlias>.univ in World.<partName>
+	 * 		#<participationAlias>.univ CompareOperation <lowerTarget>/<upperTarget>
+	 * }
+	 * @param info
+	 * @throws UnsupportedElementException
+	 */
+	protected void addTransTemporalRestrictions(Object[] info) throws UnsupportedElementException
 	{
 		FactDeclaration situationFact = factory.createFactDeclaration();
 		situationFact.setName("historicalParticipation");
 		Block block = factory.createBlock();
 		situationFact.setBlock(block);
 		
-		//target
-		situationFact.getBlock().getExpression().add(AlloyAPI.createCompareOperation(factory, 
-				smlparser.getParticipationAlias(sit, part)+".univ", 
-				CompareOperator.SUBSET, "World."+smlparser.getAlias(smlparser.getElementType(part))));
+		SituationType sit = (SituationType) info[0];
+		Participant part = (Participant) info[1];
+		
 		//source
 		situationFact.getBlock().getExpression().add(AlloyAPI.createCompareOperation(factory, 
-				"univ."+smlparser.getParticipationAlias(sit, part), 
+				smlparser.getParticipationAlias(sit, part)+".univ", 
 				CompareOperator.SUBSET, "World."+smlparser.getAlias(sit)));
-		
-		UnaryOperation uOp;
-		VariableReference vr;
-		
-		uOp = factory.createUnaryOperation();		
-		uOp.setOperator(UnaryOperator.CARDINALITY);
-		vr = factory.createVariableReference();
-		vr.setVariable(smlparser.getParticipationAlias(sit, part)+".univ");
-		uOp.setExpression(vr);
+		//target
 		situationFact.getBlock().getExpression().add(AlloyAPI.createCompareOperation(factory, 
-				uOp.toString(), CompareOperator.EQUAL, "1"));
+				"univ."+smlparser.getParticipationAlias(sit, part), 
+				CompareOperator.SUBSET, "World."+smlparser.getAlias(smlparser.getElementType(part))));
 		
-		uOp = factory.createUnaryOperation();		
-		uOp.setOperator(UnaryOperator.CARDINALITY);
-		vr = factory.createVariableReference();
-		vr.setVariable("univ."+smlparser.getParticipationAlias(sit, part));
-		uOp.setExpression(vr);
-		situationFact.getBlock().getExpression().add(AlloyAPI.createCompareOperation(factory, 
-				uOp.toString(), CompareOperator.GREATER_EQUAL, "0"));
+		ArrayList<QuantificationExpression> qeList = new ArrayList<QuantificationExpression>();
+		try
+		{
+			qeList.addAll(CardinalityRule.createTransTemporalQuantificationExpressions(factory, smlparser, sit, part));
+
+			for (QuantificationExpression qe: qeList) situationFact.getBlock().getExpression().add(qe);
+		}
+		catch (UnsupportedElementException e)
+		{
+			System.out.println(e.getMessage());
+		}
 		
 		module.getParagraph().add(situationFact);
+	}
+	
+	/**
+	 * Populates With Participation Cardinalities. 
+	 */
+	protected void addParticipationCardinalities(Object[] info)
+	{
+		SituationType sit = (SituationType) info[0];
+		Participant part = (Participant) info[1];
+		
+		ArrayList<QuantificationExpression> qeList;
+		try
+		{
+			qeList = CardinalityRule.createQuantificationExpressions(factory, smlparser, sit, part);
+			for (QuantificationExpression qe: qeList) world.getBlock().getExpression().add(qe);
+		}
+		catch (UnsupportedElementException e)
+		{
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	/**
@@ -299,42 +428,42 @@ public class SML2AlloyTransformer
 	
 	protected ArrayList<DisjointExpression> createTopLevelSituationDisjointExpressions (AlloyFactory factory, ArrayList<SituationType> toplevels)
     {
-            ArrayList<DisjointExpression> result = new ArrayList<DisjointExpression>();
-            
-            for (SituationType s1: toplevels)
-            {
-            	ArrayList<String> paramList = new ArrayList<String>();
-            	try
-            	{
-	                paramList.add(smlparser.getAlias(s1));
-	                
-	                ArrayList<String> exprList = new ArrayList<String>();
-	                for(SituationType s2: toplevels) 
-	                {
-	                	if (!s1.equals(s2))
-	                		exprList.add(smlparser.getAlias(s2));
-	                }
-	                
-	                if (exprList.size()>1)
-	                {
-	                    // create a union(+) operation for the exprList
-	                    BinaryOperation bo = AlloyAPI.createUnionExpression(factory, exprList);
-	                    paramList.add(bo.toString());
-	                } else if (exprList.size()==1)
-	                {
-	                    paramList.add(exprList.get(0));
-	                }
-            	}
-            	catch (UnsupportedElementException e)
-            	{
-            		System.err.println(e.getMessage());
-            	}
+        ArrayList<DisjointExpression> result = new ArrayList<DisjointExpression>();
+        
+        for (SituationType s1: toplevels)
+        {
+        	ArrayList<String> paramList = new ArrayList<String>();
+        	try
+        	{
+                paramList.add(smlparser.getAlias(s1));
                 
-                //add Top Level Disjoint Expression Rule to to the List
-                result.add( AlloyAPI.createDisjointExpression(factory,paramList) ); 
-            }
+                ArrayList<String> exprList = new ArrayList<String>();
+                for(SituationType s2: toplevels) 
+                {
+                	if (!s1.equals(s2))
+                		exprList.add(smlparser.getAlias(s2));
+                }
+                
+                if (exprList.size()>1)
+                {
+                    // create a union(+) operation for the exprList
+                    BinaryOperation bo = AlloyAPI.createUnionExpression(factory, exprList);
+                    paramList.add(bo.toString());
+                } else if (exprList.size()==1)
+                {
+                    paramList.add(exprList.get(0));
+                }
+        	}
+        	catch (UnsupportedElementException e)
+        	{
+        		System.err.println(e.getMessage());
+        	}
             
-            return result;
+            //add Top Level Disjoint Expression Rule to to the List
+            result.add( AlloyAPI.createDisjointExpression(factory,paramList) ); 
+        }
+        
+        return result;
     }
 	
 	/**
@@ -372,7 +501,7 @@ public class SML2AlloyTransformer
 	
 	protected void populatesWithRules()
 	{
-		rulecreator.createCommonRules();
+		rulecreator.createCommonRules(sigSituation, exists);
 		
 		for(SituationType sit : smlparser.getSituationTypes())
 		{

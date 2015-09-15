@@ -2,18 +2,22 @@
  */
 package sml2.impl;
 
-import RefOntoUML.Property;
-
+import java.lang.reflect.InvocationTargetException;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
+import org.eclipse.ocl.ParserException;
+import org.eclipse.ocl.Query;
+import org.eclipse.ocl.ecore.OCL;
+import org.eclipse.ocl.expressions.OCLExpression;
+import RefOntoUML.Property;
 import sml2.AttributeReference;
-import sml2.Participant;
+import sml2.Node;
 import sml2.Sml2Package;
 
 /**
@@ -23,33 +27,22 @@ import sml2.Sml2Package;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link sml2.impl.AttributeReferenceImpl#getEntity <em>Entity</em>}</li>
- *   <li>{@link sml2.impl.AttributeReferenceImpl#getAttribute <em>Attribute</em>}</li>
+ *   <li>{@link sml2.impl.AttributeReferenceImpl#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class AttributeReferenceImpl extends ExportableNodeImpl implements AttributeReference {
+public class AttributeReferenceImpl extends ReferableElementImpl implements AttributeReference {
 	/**
-	 * The cached value of the '{@link #getEntity() <em>Entity</em>}' reference.
+	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getEntity()
+	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected Participant entity;
-
-	/**
-	 * The cached value of the '{@link #getAttribute() <em>Attribute</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAttribute()
-	 * @generated
-	 * @ordered
-	 */
-	protected Property attribute;
+	protected Property type;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -75,16 +68,16 @@ public class AttributeReferenceImpl extends ExportableNodeImpl implements Attrib
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Participant getEntity() {
-		if (entity != null && entity.eIsProxy()) {
-			InternalEObject oldEntity = (InternalEObject)entity;
-			entity = (Participant)eResolveProxy(oldEntity);
-			if (entity != oldEntity) {
+	public Property getType() {
+		if (type != null && type.eIsProxy()) {
+			InternalEObject oldType = (InternalEObject)type;
+			type = (Property)eResolveProxy(oldType);
+			if (type != oldType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.ATTRIBUTE_REFERENCE__ENTITY, oldEntity, entity));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.ATTRIBUTE_REFERENCE__TYPE, oldType, type));
 			}
 		}
-		return entity;
+		return type;
 	}
 
 	/**
@@ -92,8 +85,8 @@ public class AttributeReferenceImpl extends ExportableNodeImpl implements Attrib
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Participant basicGetEntity() {
-		return entity;
+	public Property basicGetType() {
+		return type;
 	}
 
 	/**
@@ -101,71 +94,11 @@ public class AttributeReferenceImpl extends ExportableNodeImpl implements Attrib
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetEntity(Participant newEntity, NotificationChain msgs) {
-		Participant oldEntity = entity;
-		entity = newEntity;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Sml2Package.ATTRIBUTE_REFERENCE__ENTITY, oldEntity, newEntity);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setEntity(Participant newEntity) {
-		if (newEntity != entity) {
-			NotificationChain msgs = null;
-			if (entity != null)
-				msgs = ((InternalEObject)entity).eInverseRemove(this, Sml2Package.PARTICIPANT__REFERENCE, Participant.class, msgs);
-			if (newEntity != null)
-				msgs = ((InternalEObject)newEntity).eInverseAdd(this, Sml2Package.PARTICIPANT__REFERENCE, Participant.class, msgs);
-			msgs = basicSetEntity(newEntity, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.ATTRIBUTE_REFERENCE__ENTITY, newEntity, newEntity));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Property getAttribute() {
-		if (attribute != null && attribute.eIsProxy()) {
-			InternalEObject oldAttribute = (InternalEObject)attribute;
-			attribute = (Property)eResolveProxy(oldAttribute);
-			if (attribute != oldAttribute) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.ATTRIBUTE_REFERENCE__ATTRIBUTE, oldAttribute, attribute));
-			}
-		}
-		return attribute;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Property basicGetAttribute() {
-		return attribute;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setAttribute(Property newAttribute) {
-		Property oldAttribute = attribute;
-		attribute = newAttribute;
+	public void setType(Property newType) {
+		Property oldType = type;
+		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.ATTRIBUTE_REFERENCE__ATTRIBUTE, oldAttribute, attribute));
+			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.ATTRIBUTE_REFERENCE__TYPE, oldType, type));
 	}
 
 	/**
@@ -173,29 +106,25 @@ public class AttributeReferenceImpl extends ExportableNodeImpl implements Attrib
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Sml2Package.ATTRIBUTE_REFERENCE__ENTITY:
-				if (entity != null)
-					msgs = ((InternalEObject)entity).eInverseRemove(this, Sml2Package.PARTICIPANT__REFERENCE, Participant.class, msgs);
-				return basicSetEntity((Participant)otherEnd, msgs);
+	public Node getEntity() {
+		if (getEntityBodyOCL == null) {
+			EOperation eOperation = Sml2Package.Literals.ATTRIBUTE_REFERENCE.getEOperations().get(0);
+			OCL.Helper helper = OCL_ENV.createOCLHelper();
+			helper.setOperationContext(Sml2Package.Literals.ATTRIBUTE_REFERENCE, eOperation);
+			EAnnotation ocl = eOperation.getEAnnotation(OCL_ANNOTATION_SOURCE);
+			String body = ocl.getDetails().get("body");
+			
+			try {
+				getEntityBodyOCL = helper.createQuery(body);
+			} catch (ParserException e) {
+				throw new UnsupportedOperationException(e.getLocalizedMessage());
+			}
 		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Sml2Package.ATTRIBUTE_REFERENCE__ENTITY:
-				return basicSetEntity(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
+		
+		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(getEntityBodyOCL);
+	
+		return (Node) query.evaluate(this);
+	
 	}
 
 	/**
@@ -206,12 +135,9 @@ public class AttributeReferenceImpl extends ExportableNodeImpl implements Attrib
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Sml2Package.ATTRIBUTE_REFERENCE__ENTITY:
-				if (resolve) return getEntity();
-				return basicGetEntity();
-			case Sml2Package.ATTRIBUTE_REFERENCE__ATTRIBUTE:
-				if (resolve) return getAttribute();
-				return basicGetAttribute();
+			case Sml2Package.ATTRIBUTE_REFERENCE__TYPE:
+				if (resolve) return getType();
+				return basicGetType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -224,11 +150,8 @@ public class AttributeReferenceImpl extends ExportableNodeImpl implements Attrib
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case Sml2Package.ATTRIBUTE_REFERENCE__ENTITY:
-				setEntity((Participant)newValue);
-				return;
-			case Sml2Package.ATTRIBUTE_REFERENCE__ATTRIBUTE:
-				setAttribute((Property)newValue);
+			case Sml2Package.ATTRIBUTE_REFERENCE__TYPE:
+				setType((Property)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -242,11 +165,8 @@ public class AttributeReferenceImpl extends ExportableNodeImpl implements Attrib
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case Sml2Package.ATTRIBUTE_REFERENCE__ENTITY:
-				setEntity((Participant)null);
-				return;
-			case Sml2Package.ATTRIBUTE_REFERENCE__ATTRIBUTE:
-				setAttribute((Property)null);
+			case Sml2Package.ATTRIBUTE_REFERENCE__TYPE:
+				setType((Property)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -260,12 +180,36 @@ public class AttributeReferenceImpl extends ExportableNodeImpl implements Attrib
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case Sml2Package.ATTRIBUTE_REFERENCE__ENTITY:
-				return entity != null;
-			case Sml2Package.ATTRIBUTE_REFERENCE__ATTRIBUTE:
-				return attribute != null;
+			case Sml2Package.ATTRIBUTE_REFERENCE__TYPE:
+				return type != null;
 		}
 		return super.eIsSet(featureID);
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case Sml2Package.ATTRIBUTE_REFERENCE___GET_ENTITY:
+				return getEntity();
+		}
+		return super.eInvoke(operationID, arguments);
+	}
+
+	/**
+	 * The parsed OCL expression for the body of the '{@link #getEntity <em>Get Entity</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEntity
+	 * @generated
+	 */
+	private static OCLExpression<EClassifier> getEntityBodyOCL;
+	
+	private static final String OCL_ANNOTATION_SOURCE = "http://www.eclipse.org/ocl/examples/OCL";
+	
+	private static final OCL OCL_ENV = OCL.newInstance();
 } //AttributeReferenceImpl

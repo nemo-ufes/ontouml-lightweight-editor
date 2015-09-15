@@ -9,17 +9,11 @@ package RefOntoUML.impl;
 import RefOntoUML.Comment;
 import RefOntoUML.Element;
 import RefOntoUML.RefOntoUMLPackage;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
@@ -240,3 +234,5 @@ public class CommentImpl extends ElementImpl implements Comment {
 	}
 
 } //CommentImpl
+
+

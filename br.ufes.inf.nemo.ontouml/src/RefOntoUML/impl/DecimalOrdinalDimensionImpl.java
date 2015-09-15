@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.DecimalOrdinalDimension;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public class DecimalOrdinalDimensionImpl extends OrdinalDimensionImpl implements
 	}
 
 } //DecimalOrdinalDimensionImpl
+
+

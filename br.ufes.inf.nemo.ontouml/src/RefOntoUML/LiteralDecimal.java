@@ -66,3 +66,5 @@ public interface LiteralDecimal extends LiteralSpecification {
 	BigDecimal decimalValue();
 
 } // LiteralDecimal
+
+

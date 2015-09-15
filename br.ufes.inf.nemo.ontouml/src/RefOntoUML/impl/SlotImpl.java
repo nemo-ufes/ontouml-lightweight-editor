@@ -11,19 +11,13 @@ import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.Slot;
 import RefOntoUML.StructuralFeature;
 import RefOntoUML.ValueSpecification;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -140,7 +134,7 @@ public class SlotImpl extends ElementImpl implements Slot {
 	 */
 	public InstanceSpecification getOwningInstance() {
 		if (eContainerFeatureID() != RefOntoUMLPackage.SLOT__OWNING_INSTANCE) return null;
-		return (InstanceSpecification)eContainer();
+		return (InstanceSpecification)eInternalContainer();
 	}
 
 	/**
@@ -302,3 +296,5 @@ public class SlotImpl extends ElementImpl implements Slot {
 	}
 
 } //SlotImpl
+
+

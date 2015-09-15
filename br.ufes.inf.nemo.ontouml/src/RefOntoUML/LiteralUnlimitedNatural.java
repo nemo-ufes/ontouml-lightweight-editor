@@ -6,7 +6,6 @@
  */
 package RefOntoUML;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Literal Unlimited Natural</b></em>'.

@@ -57,6 +57,8 @@ import RefOntoUML.MaterialAssociation;
 import RefOntoUML.MeasurableQuality;
 import RefOntoUML.MeasurementDimension;
 import RefOntoUML.MeasurementDomain;
+import RefOntoUML.MeasurementEnumeration;
+import RefOntoUML.MeasurementLiteral;
 import RefOntoUML.MeasurementRegion;
 import RefOntoUML.MeasurementStructure;
 import RefOntoUML.Mediation;
@@ -77,8 +79,6 @@ import RefOntoUML.NonRigidMixinClass;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.OpaqueExpression;
 import RefOntoUML.OrdinalDimension;
-import RefOntoUML.OrdinalEnumeration;
-import RefOntoUML.OrdinalLiteral;
 import RefOntoUML.PackageImport;
 import RefOntoUML.PackageMerge;
 import RefOntoUML.PackageableElement;
@@ -117,26 +117,18 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
-
 import java.math.BigDecimal;
-
 import java.util.Map;
-
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
 import org.eclipse.emf.ecore.util.EObjectValidator;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.Constraint;
 import org.eclipse.ocl.ecore.OCL;
 
@@ -627,12 +619,21 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 */
 	private static Constraint dataType_DataTypeAttributeConstraint1InvOCL;
 	/**
-	 * The parsed OCL expression for the definition of the '<em>OrdinalEnumerationConstraint1</em>' invariant constraint.
+	 * The parsed OCL expression for the definition of the '<em>MeasurementEnumerationConstraint1</em>' invariant constraint.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private static Constraint ordinalEnumeration_OrdinalEnumerationConstraint1InvOCL;
+	private static Constraint measurementEnumeration_MeasurementEnumerationConstraint1InvOCL;
+
+	/**
+	 * The parsed OCL expression for the definition of the '<em>MeasurementEnumerationConstraint2</em>' invariant constraint.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private static Constraint measurementEnumeration_MeasurementEnumerationConstraint2InvOCL;
+
 	/**
 	 * The parsed OCL expression for the definition of the '<em>NominalStructureConstraint1</em>' invariant constraint.
 	 * <!-- begin-user-doc -->
@@ -1123,10 +1124,10 @@ public class RefOntoUMLValidator extends EObjectValidator {
 				return validateEnumeration((Enumeration)value, diagnostics, context);
 			case RefOntoUMLPackage.ENUMERATION_LITERAL:
 				return validateEnumerationLiteral((EnumerationLiteral)value, diagnostics, context);
-			case RefOntoUMLPackage.ORDINAL_ENUMERATION:
-				return validateOrdinalEnumeration((OrdinalEnumeration)value, diagnostics, context);
-			case RefOntoUMLPackage.ORDINAL_LITERAL:
-				return validateOrdinalLiteral((OrdinalLiteral)value, diagnostics, context);
+			case RefOntoUMLPackage.MEASUREMENT_ENUMERATION:
+				return validateMeasurementEnumeration((MeasurementEnumeration)value, diagnostics, context);
+			case RefOntoUMLPackage.MEASUREMENT_LITERAL:
+				return validateMeasurementLiteral((MeasurementLiteral)value, diagnostics, context);
 			case RefOntoUMLPackage.PRIMITIVE_TYPE:
 				return validatePrimitiveType((PrimitiveType)value, diagnostics, context);
 			case RefOntoUMLPackage.REFERENCE_STRUCTURE:
@@ -1296,9 +1297,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateComment(Comment comment, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(comment, diagnostics, context);
+		boolean result = validate_NoCircularContainment(comment, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(comment, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(comment, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(comment, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(comment, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(comment, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(comment, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(comment, diagnostics, context);
@@ -1314,9 +1317,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateElement(Element element, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(element, diagnostics, context);
+		boolean result = validate_NoCircularContainment(element, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(element, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(element, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(element, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(element, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(element, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(element, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(element, diagnostics, context);
@@ -1352,9 +1357,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validatePackage(RefOntoUML.Package package_, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(package_, diagnostics, context);
+		boolean result = validate_NoCircularContainment(package_, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(package_, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(package_, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(package_, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(package_, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(package_, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(package_, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(package_, diagnostics, context);
@@ -1385,9 +1392,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validatePackageableElement(PackageableElement packageableElement, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(packageableElement, diagnostics, context);
+		boolean result = validate_NoCircularContainment(packageableElement, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(packageableElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(packageableElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(packageableElement, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(packageableElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(packageableElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(packageableElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(packageableElement, diagnostics, context);
@@ -1406,9 +1415,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateNamedElement(NamedElement namedElement, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(namedElement, diagnostics, context);
+		boolean result = validate_NoCircularContainment(namedElement, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(namedElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(namedElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(namedElement, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(namedElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(namedElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(namedElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(namedElement, diagnostics, context);
@@ -1457,9 +1468,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateDependency(Dependency dependency, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(dependency, diagnostics, context);
+		boolean result = validate_NoCircularContainment(dependency, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(dependency, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(dependency, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(dependency, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(dependency, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(dependency, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(dependency, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(dependency, diagnostics, context);
@@ -1478,9 +1491,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateDirectedRelationship(DirectedRelationship directedRelationship, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(directedRelationship, diagnostics, context);
+		boolean result = validate_NoCircularContainment(directedRelationship, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(directedRelationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(directedRelationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(directedRelationship, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(directedRelationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(directedRelationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(directedRelationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(directedRelationship, diagnostics, context);
@@ -1496,9 +1511,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateRelationship(Relationship relationship, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(relationship, diagnostics, context);
+		boolean result = validate_NoCircularContainment(relationship, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(relationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(relationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(relationship, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(relationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(relationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(relationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(relationship, diagnostics, context);
@@ -1514,9 +1531,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateNamespace(Namespace namespace, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(namespace, diagnostics, context);
+		boolean result = validate_NoCircularContainment(namespace, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(namespace, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(namespace, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(namespace, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(namespace, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(namespace, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(namespace, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(namespace, diagnostics, context);
@@ -1546,9 +1565,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateElementImport(ElementImport elementImport, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(elementImport, diagnostics, context);
+		boolean result = validate_NoCircularContainment(elementImport, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(elementImport, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(elementImport, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(elementImport, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(elementImport, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(elementImport, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(elementImport, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(elementImport, diagnostics, context);
@@ -1586,9 +1607,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validatePackageImport(PackageImport packageImport, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(packageImport, diagnostics, context);
+		boolean result = validate_NoCircularContainment(packageImport, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(packageImport, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(packageImport, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(packageImport, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(packageImport, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(packageImport, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(packageImport, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(packageImport, diagnostics, context);
@@ -1615,9 +1638,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateConstraintx(Constraintx constraintx, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(constraintx, diagnostics, context);
+		boolean result = validate_NoCircularContainment(constraintx, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(constraintx, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(constraintx, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(constraintx, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(constraintx, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(constraintx, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(constraintx, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(constraintx, diagnostics, context);
@@ -1691,9 +1716,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateValueSpecification(ValueSpecification valueSpecification, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(valueSpecification, diagnostics, context);
+		boolean result = validate_NoCircularContainment(valueSpecification, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(valueSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(valueSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(valueSpecification, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(valueSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(valueSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(valueSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(valueSpecification, diagnostics, context);
@@ -1712,9 +1739,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateTypedElement(TypedElement typedElement, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(typedElement, diagnostics, context);
+		boolean result = validate_NoCircularContainment(typedElement, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(typedElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(typedElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(typedElement, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(typedElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(typedElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(typedElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(typedElement, diagnostics, context);
@@ -1733,9 +1762,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateType(Type type, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(type, diagnostics, context);
+		boolean result = validate_NoCircularContainment(type, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(type, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(type, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(type, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(type, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(type, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(type, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(type, diagnostics, context);
@@ -1754,9 +1785,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateAssociation(Association association, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(association, diagnostics, context);
+		boolean result = validate_NoCircularContainment(association, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(association, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(association, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(association, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(association, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(association, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(association, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(association, diagnostics, context);
@@ -1826,9 +1859,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateClassifier(Classifier classifier, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(classifier, diagnostics, context);
+		boolean result = validate_NoCircularContainment(classifier, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(classifier, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(classifier, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(classifier, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(classifier, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(classifier, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(classifier, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(classifier, diagnostics, context);
@@ -1894,9 +1929,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateRedefinableElement(RedefinableElement redefinableElement, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(redefinableElement, diagnostics, context);
+		boolean result = validate_NoCircularContainment(redefinableElement, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(redefinableElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(redefinableElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(redefinableElement, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(redefinableElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(redefinableElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(redefinableElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(redefinableElement, diagnostics, context);
@@ -1937,9 +1974,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateGeneralization(Generalization generalization, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(generalization, diagnostics, context);
+		boolean result = validate_NoCircularContainment(generalization, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(generalization, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(generalization, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(generalization, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(generalization, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(generalization, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(generalization, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(generalization, diagnostics, context);
@@ -2006,9 +2045,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateGeneralizationSet(GeneralizationSet generalizationSet, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(generalizationSet, diagnostics, context);
+		boolean result = validate_NoCircularContainment(generalizationSet, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(generalizationSet, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(generalizationSet, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(generalizationSet, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(generalizationSet, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(generalizationSet, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(generalizationSet, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(generalizationSet, diagnostics, context);
@@ -2049,9 +2090,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateFeature(Feature feature, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(feature, diagnostics, context);
+		boolean result = validate_NoCircularContainment(feature, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(feature, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(feature, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(feature, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(feature, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(feature, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(feature, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(feature, diagnostics, context);
@@ -2072,9 +2115,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateOpaqueExpression(OpaqueExpression opaqueExpression, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(opaqueExpression, diagnostics, context);
+		boolean result = validate_NoCircularContainment(opaqueExpression, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(opaqueExpression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(opaqueExpression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(opaqueExpression, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(opaqueExpression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(opaqueExpression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(opaqueExpression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(opaqueExpression, diagnostics, context);
@@ -2126,9 +2171,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMultiplicityElement(MultiplicityElement multiplicityElement, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(multiplicityElement, diagnostics, context);
+		boolean result = validate_NoCircularContainment(multiplicityElement, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(multiplicityElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(multiplicityElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(multiplicityElement, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(multiplicityElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(multiplicityElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(multiplicityElement, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(multiplicityElement, diagnostics, context);
@@ -2228,9 +2275,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateProperty(Property property, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(property, diagnostics, context);
+		boolean result = validate_NoCircularContainment(property, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(property, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(property, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(property, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(property, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(property, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(property, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(property, diagnostics, context);
@@ -2366,9 +2415,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateClass(RefOntoUML.Class class_, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(class_, diagnostics, context);
+		boolean result = validate_NoCircularContainment(class_, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(class_, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(class_, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(class_, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(class_, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(class_, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(class_, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(class_, diagnostics, context);
@@ -2445,9 +2496,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateModel(Model model, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(model, diagnostics, context);
+		boolean result = validate_NoCircularContainment(model, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(model, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(model, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(model, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(model, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(model, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(model, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(model, diagnostics, context);
@@ -2468,9 +2521,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateDataType(DataType dataType, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(dataType, diagnostics, context);
+		boolean result = validate_NoCircularContainment(dataType, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(dataType, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(dataType, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(dataType, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(dataType, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(dataType, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(dataType, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(dataType, diagnostics, context);
@@ -2536,9 +2591,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateStructuralFeature(StructuralFeature structuralFeature, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(structuralFeature, diagnostics, context);
+		boolean result = validate_NoCircularContainment(structuralFeature, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(structuralFeature, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(structuralFeature, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(structuralFeature, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(structuralFeature, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(structuralFeature, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(structuralFeature, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(structuralFeature, diagnostics, context);
@@ -2564,9 +2621,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateStringExpression(StringExpression stringExpression, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(stringExpression, diagnostics, context);
+		boolean result = validate_NoCircularContainment(stringExpression, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(stringExpression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(stringExpression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(stringExpression, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(stringExpression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(stringExpression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(stringExpression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(stringExpression, diagnostics, context);
@@ -2607,9 +2666,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateExpression(Expression expression, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(expression, diagnostics, context);
+		boolean result = validate_NoCircularContainment(expression, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(expression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(expression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(expression, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(expression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(expression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(expression, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(expression, diagnostics, context);
@@ -2628,9 +2689,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validatePackageMerge(PackageMerge packageMerge, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(packageMerge, diagnostics, context);
+		boolean result = validate_NoCircularContainment(packageMerge, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(packageMerge, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(packageMerge, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(packageMerge, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(packageMerge, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(packageMerge, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(packageMerge, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(packageMerge, diagnostics, context);
@@ -2646,9 +2709,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateInstanceSpecification(InstanceSpecification instanceSpecification, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(instanceSpecification, diagnostics, context);
+		boolean result = validate_NoCircularContainment(instanceSpecification, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(instanceSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(instanceSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(instanceSpecification, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(instanceSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(instanceSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(instanceSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(instanceSpecification, diagnostics, context);
@@ -2711,9 +2776,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateSlot(Slot slot, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(slot, diagnostics, context);
+		boolean result = validate_NoCircularContainment(slot, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(slot, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(slot, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(slot, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(slot, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(slot, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(slot, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(slot, diagnostics, context);
@@ -2729,9 +2796,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateLiteralSpecification(LiteralSpecification literalSpecification, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(literalSpecification, diagnostics, context);
+		boolean result = validate_NoCircularContainment(literalSpecification, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(literalSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(literalSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(literalSpecification, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(literalSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(literalSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(literalSpecification, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(literalSpecification, diagnostics, context);
@@ -2750,9 +2819,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateEnumeration(Enumeration enumeration, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(enumeration, diagnostics, context);
+		boolean result = validate_NoCircularContainment(enumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(enumeration, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(enumeration, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(enumeration, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(enumeration, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(enumeration, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(enumeration, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(enumeration, diagnostics, context);
@@ -2779,9 +2850,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateEnumerationLiteral(EnumerationLiteral enumerationLiteral, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(enumerationLiteral, diagnostics, context);
+		boolean result = validate_NoCircularContainment(enumerationLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(enumerationLiteral, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(enumerationLiteral, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(enumerationLiteral, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(enumerationLiteral, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(enumerationLiteral, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(enumerationLiteral, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(enumerationLiteral, diagnostics, context);
@@ -2803,65 +2876,106 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateOrdinalEnumeration(OrdinalEnumeration ordinalEnumeration, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryProxyResolves(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_UniqueID(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryKeyUnique(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateElement_not_own_self(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateElement_has_owner(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateNamedElement_has_no_qualified_name(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateNamedElement_has_qualified_name(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateNamedElement_visibility_needs_ownership(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateNamespace_members_distinguishable(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateRedefinableElement_redefinition_context_valid(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateRedefinableElement_redefinition_consistent(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateClassifier_no_cycles_in_generalization(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateClassifier_generalization_hierarchies(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateClassifier_specialize_type(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateClassifier_maps_to_generalization_set(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateDataType_DataTypeAttributeConstraint1(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateMeasurementDimension_MeasurementDimensionConstraint1(ordinalEnumeration, diagnostics, context);
-		if (result || diagnostics != null) result &= validateOrdinalEnumeration_OrdinalEnumerationConstraint1(ordinalEnumeration, diagnostics, context);
+	public boolean validateMeasurementEnumeration(MeasurementEnumeration measurementEnumeration, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		boolean result = validate_NoCircularContainment(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(measurementEnumeration, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryProxyResolves(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_UniqueID(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryKeyUnique(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateElement_not_own_self(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateElement_has_owner(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateNamedElement_has_no_qualified_name(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateNamedElement_has_qualified_name(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateNamedElement_visibility_needs_ownership(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateNamespace_members_distinguishable(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateRedefinableElement_redefinition_context_valid(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateRedefinableElement_redefinition_consistent(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateClassifier_no_cycles_in_generalization(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateClassifier_generalization_hierarchies(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateClassifier_specialize_type(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateClassifier_maps_to_generalization_set(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateDataType_DataTypeAttributeConstraint1(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateMeasurementEnumeration_MeasurementEnumerationConstraint1(measurementEnumeration, diagnostics, context);
+		if (result || diagnostics != null) result &= validateMeasurementEnumeration_MeasurementEnumerationConstraint2(measurementEnumeration, diagnostics, context);
 		return result;
 	}
 
 	/**
-	 * Validates the OrdinalEnumerationConstraint1 constraint of '<em>Ordinal Enumeration</em>'.
+	 * Validates the MeasurementEnumerationConstraint1 constraint of '<em>Measurement Enumeration</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateOrdinalEnumeration_OrdinalEnumerationConstraint1(OrdinalEnumeration ordinalEnumeration, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        if (ordinalEnumeration_OrdinalEnumerationConstraint1InvOCL == null) {
+	public boolean validateMeasurementEnumeration_MeasurementEnumerationConstraint1(MeasurementEnumeration measurementEnumeration, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        if (measurementEnumeration_MeasurementEnumerationConstraint1InvOCL == null) {
 			OCL.Helper helper = OCL_ENV.createOCLHelper();
-			helper.setContext(RefOntoUMLPackage.eINSTANCE.getOrdinalEnumeration());
+			helper.setContext(RefOntoUMLPackage.eINSTANCE.getMeasurementEnumeration());
 			
-			EAnnotation ocl = RefOntoUMLPackage.eINSTANCE.getOrdinalEnumeration().getEAnnotation(OCL_ANNOTATION_SOURCE);
-			String expr = ocl.getDetails().get("OrdinalEnumerationConstraint1");
+			EAnnotation ocl = RefOntoUMLPackage.eINSTANCE.getMeasurementEnumeration().getEAnnotation(OCL_ANNOTATION_SOURCE);
+			String expr = ocl.getDetails().get("MeasurementEnumerationConstraint1");
 			
 			try {
-				ordinalEnumeration_OrdinalEnumerationConstraint1InvOCL = helper.createInvariant(expr);
+				measurementEnumeration_MeasurementEnumerationConstraint1InvOCL = helper.createInvariant(expr);
 			}
 			catch (ParserException e) {
 				throw new UnsupportedOperationException(e.getLocalizedMessage());
 			}
 		}
 		
-		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(ordinalEnumeration_OrdinalEnumerationConstraint1InvOCL);
+		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(measurementEnumeration_MeasurementEnumerationConstraint1InvOCL);
 		
-		if (!query.check(ordinalEnumeration)) {
+		if (!query.check(measurementEnumeration)) {
 			if (diagnostics != null) {
 				diagnostics.add
 					(new BasicDiagnostic
 						(Diagnostic.ERROR,
 						 DIAGNOSTIC_SOURCE,
 						 0,
-						 EcorePlugin.INSTANCE.getString("_UI_GenericConstraint_diagnostic", new Object[] { "OrdinalEnumerationConstraint1", getObjectLabel(ordinalEnumeration, context) }),
-						 new Object[] { ordinalEnumeration }));
+						 EcorePlugin.INSTANCE.getString("_UI_GenericConstraint_diagnostic", new Object[] { "MeasurementEnumerationConstraint1", getObjectLabel(measurementEnumeration, context) }),
+						 new Object[] { measurementEnumeration }));
+			}
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Validates the MeasurementEnumerationConstraint2 constraint of '<em>Measurement Enumeration</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateMeasurementEnumeration_MeasurementEnumerationConstraint2(MeasurementEnumeration measurementEnumeration, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        if (measurementEnumeration_MeasurementEnumerationConstraint2InvOCL == null) {
+			OCL.Helper helper = OCL_ENV.createOCLHelper();
+			helper.setContext(RefOntoUMLPackage.eINSTANCE.getMeasurementEnumeration());
+			
+			EAnnotation ocl = RefOntoUMLPackage.eINSTANCE.getMeasurementEnumeration().getEAnnotation(OCL_ANNOTATION_SOURCE);
+			String expr = ocl.getDetails().get("MeasurementEnumerationConstraint2");
+			
+			try {
+				measurementEnumeration_MeasurementEnumerationConstraint2InvOCL = helper.createInvariant(expr);
+			}
+			catch (ParserException e) {
+				throw new UnsupportedOperationException(e.getLocalizedMessage());
+			}
+		}
+		
+		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(measurementEnumeration_MeasurementEnumerationConstraint2InvOCL);
+		
+		if (!query.check(measurementEnumeration)) {
+			if (diagnostics != null) {
+				diagnostics.add
+					(new BasicDiagnostic
+						(Diagnostic.ERROR,
+						 DIAGNOSTIC_SOURCE,
+						 0,
+						 EcorePlugin.INSTANCE.getString("_UI_GenericConstraint_diagnostic", new Object[] { "MeasurementEnumerationConstraint2", getObjectLabel(measurementEnumeration, context) }),
+						 new Object[] { measurementEnumeration }));
 			}
 			return false;
 		}
@@ -2873,23 +2987,25 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateOrdinalLiteral(OrdinalLiteral ordinalLiteral, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryProxyResolves(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_UniqueID(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryKeyUnique(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validateElement_not_own_self(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validateElement_has_owner(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validateNamedElement_has_no_qualified_name(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validateNamedElement_has_qualified_name(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validateNamedElement_visibility_needs_ownership(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validateInstanceSpecification_defining_feature(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validateInstanceSpecification_structural_feature(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validateInstanceSpecification_deployment_target(ordinalLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validateInstanceSpecification_deployment_artifact(ordinalLiteral, diagnostics, context);
+	public boolean validateMeasurementLiteral(MeasurementLiteral measurementLiteral, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		boolean result = validate_NoCircularContainment(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(measurementLiteral, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryProxyResolves(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_UniqueID(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryKeyUnique(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validateElement_not_own_self(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validateElement_has_owner(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validateNamedElement_has_no_qualified_name(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validateNamedElement_has_qualified_name(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validateNamedElement_visibility_needs_ownership(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validateInstanceSpecification_defining_feature(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validateInstanceSpecification_structural_feature(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validateInstanceSpecification_deployment_target(measurementLiteral, diagnostics, context);
+		if (result || diagnostics != null) result &= validateInstanceSpecification_deployment_artifact(measurementLiteral, diagnostics, context);
 		return result;
 	}
 
@@ -2899,9 +3015,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validatePrimitiveType(PrimitiveType primitiveType, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(primitiveType, diagnostics, context);
+		boolean result = validate_NoCircularContainment(primitiveType, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(primitiveType, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(primitiveType, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(primitiveType, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(primitiveType, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(primitiveType, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(primitiveType, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(primitiveType, diagnostics, context);
@@ -2928,9 +3046,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateReferenceStructure(ReferenceStructure referenceStructure, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(referenceStructure, diagnostics, context);
+		boolean result = validate_NoCircularContainment(referenceStructure, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(referenceStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(referenceStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(referenceStructure, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(referenceStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(referenceStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(referenceStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(referenceStructure, diagnostics, context);
@@ -2957,9 +3077,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateNominalStructure(NominalStructure nominalStructure, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(nominalStructure, diagnostics, context);
+		boolean result = validate_NoCircularContainment(nominalStructure, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(nominalStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(nominalStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(nominalStructure, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(nominalStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(nominalStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(nominalStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(nominalStructure, diagnostics, context);
@@ -3026,9 +3148,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateStringNominalStructure(StringNominalStructure stringNominalStructure, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(stringNominalStructure, diagnostics, context);
+		boolean result = validate_NoCircularContainment(stringNominalStructure, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(stringNominalStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(stringNominalStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(stringNominalStructure, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(stringNominalStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(stringNominalStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(stringNominalStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(stringNominalStructure, diagnostics, context);
@@ -3056,9 +3180,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMeasurementStructure(MeasurementStructure measurementStructure, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(measurementStructure, diagnostics, context);
+		boolean result = validate_NoCircularContainment(measurementStructure, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(measurementStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(measurementStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(measurementStructure, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(measurementStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(measurementStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(measurementStructure, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(measurementStructure, diagnostics, context);
@@ -3085,9 +3211,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMeasurementDimension(MeasurementDimension measurementDimension, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(measurementDimension, diagnostics, context);
+		boolean result = validate_NoCircularContainment(measurementDimension, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(measurementDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(measurementDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(measurementDimension, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(measurementDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(measurementDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(measurementDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(measurementDimension, diagnostics, context);
@@ -3154,9 +3282,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateOrdinalDimension(OrdinalDimension ordinalDimension, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(ordinalDimension, diagnostics, context);
+		boolean result = validate_NoCircularContainment(ordinalDimension, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(ordinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(ordinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(ordinalDimension, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(ordinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(ordinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(ordinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(ordinalDimension, diagnostics, context);
@@ -3184,9 +3314,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateIntegerOrdinalDimension(IntegerOrdinalDimension integerOrdinalDimension, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(integerOrdinalDimension, diagnostics, context);
+		boolean result = validate_NoCircularContainment(integerOrdinalDimension, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(integerOrdinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(integerOrdinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(integerOrdinalDimension, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(integerOrdinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(integerOrdinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(integerOrdinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(integerOrdinalDimension, diagnostics, context);
@@ -3214,9 +3346,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateDecimalOrdinalDimension(DecimalOrdinalDimension decimalOrdinalDimension, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(decimalOrdinalDimension, diagnostics, context);
+		boolean result = validate_NoCircularContainment(decimalOrdinalDimension, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(decimalOrdinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(decimalOrdinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(decimalOrdinalDimension, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(decimalOrdinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(decimalOrdinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(decimalOrdinalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(decimalOrdinalDimension, diagnostics, context);
@@ -3244,9 +3378,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateIntervalDimension(IntervalDimension intervalDimension, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(intervalDimension, diagnostics, context);
+		boolean result = validate_NoCircularContainment(intervalDimension, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(intervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(intervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(intervalDimension, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(intervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(intervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(intervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(intervalDimension, diagnostics, context);
@@ -3274,9 +3410,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateIntegerIntervalDimension(IntegerIntervalDimension integerIntervalDimension, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(integerIntervalDimension, diagnostics, context);
+		boolean result = validate_NoCircularContainment(integerIntervalDimension, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(integerIntervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(integerIntervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(integerIntervalDimension, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(integerIntervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(integerIntervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(integerIntervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(integerIntervalDimension, diagnostics, context);
@@ -3304,9 +3442,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateDecimalIntervalDimension(DecimalIntervalDimension decimalIntervalDimension, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(decimalIntervalDimension, diagnostics, context);
+		boolean result = validate_NoCircularContainment(decimalIntervalDimension, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(decimalIntervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(decimalIntervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(decimalIntervalDimension, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(decimalIntervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(decimalIntervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(decimalIntervalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(decimalIntervalDimension, diagnostics, context);
@@ -3334,9 +3474,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateRationalDimension(RationalDimension rationalDimension, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(rationalDimension, diagnostics, context);
+		boolean result = validate_NoCircularContainment(rationalDimension, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(rationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(rationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(rationalDimension, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(rationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(rationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(rationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(rationalDimension, diagnostics, context);
@@ -3364,9 +3506,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateIntegerRationalDimension(IntegerRationalDimension integerRationalDimension, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(integerRationalDimension, diagnostics, context);
+		boolean result = validate_NoCircularContainment(integerRationalDimension, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(integerRationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(integerRationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(integerRationalDimension, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(integerRationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(integerRationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(integerRationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(integerRationalDimension, diagnostics, context);
@@ -3394,9 +3538,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateDecimalRationalDimension(DecimalRationalDimension decimalRationalDimension, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(decimalRationalDimension, diagnostics, context);
+		boolean result = validate_NoCircularContainment(decimalRationalDimension, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(decimalRationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(decimalRationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(decimalRationalDimension, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(decimalRationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(decimalRationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(decimalRationalDimension, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(decimalRationalDimension, diagnostics, context);
@@ -3424,9 +3570,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMeasurementDomain(MeasurementDomain measurementDomain, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(measurementDomain, diagnostics, context);
+		boolean result = validate_NoCircularContainment(measurementDomain, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(measurementDomain, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(measurementDomain, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(measurementDomain, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(measurementDomain, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(measurementDomain, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(measurementDomain, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(measurementDomain, diagnostics, context);
@@ -3533,9 +3681,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateReferenceRegion(ReferenceRegion referenceRegion, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(referenceRegion, diagnostics, context);
+		boolean result = validate_NoCircularContainment(referenceRegion, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(referenceRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(referenceRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(referenceRegion, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(referenceRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(referenceRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(referenceRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(referenceRegion, diagnostics, context);
@@ -3554,9 +3704,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMeasurementRegion(MeasurementRegion measurementRegion, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(measurementRegion, diagnostics, context);
+		boolean result = validate_NoCircularContainment(measurementRegion, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(measurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(measurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(measurementRegion, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(measurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(measurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(measurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(measurementRegion, diagnostics, context);
@@ -3575,9 +3727,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateBasicMeasurementRegion(BasicMeasurementRegion basicMeasurementRegion, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(basicMeasurementRegion, diagnostics, context);
+		boolean result = validate_NoCircularContainment(basicMeasurementRegion, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(basicMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(basicMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(basicMeasurementRegion, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(basicMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(basicMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(basicMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(basicMeasurementRegion, diagnostics, context);
@@ -3596,9 +3750,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateDecimalMeasurementRegion(DecimalMeasurementRegion decimalMeasurementRegion, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(decimalMeasurementRegion, diagnostics, context);
+		boolean result = validate_NoCircularContainment(decimalMeasurementRegion, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(decimalMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(decimalMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(decimalMeasurementRegion, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(decimalMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(decimalMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(decimalMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(decimalMeasurementRegion, diagnostics, context);
@@ -3617,9 +3773,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateIntegerMeasurementRegion(IntegerMeasurementRegion integerMeasurementRegion, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(integerMeasurementRegion, diagnostics, context);
+		boolean result = validate_NoCircularContainment(integerMeasurementRegion, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(integerMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(integerMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(integerMeasurementRegion, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(integerMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(integerMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(integerMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(integerMeasurementRegion, diagnostics, context);
@@ -3638,9 +3796,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateComposedMeasurementRegion(ComposedMeasurementRegion composedMeasurementRegion, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(composedMeasurementRegion, diagnostics, context);
+		boolean result = validate_NoCircularContainment(composedMeasurementRegion, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(composedMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(composedMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(composedMeasurementRegion, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(composedMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(composedMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(composedMeasurementRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(composedMeasurementRegion, diagnostics, context);
@@ -3699,9 +3859,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateNominalRegion(NominalRegion nominalRegion, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(nominalRegion, diagnostics, context);
+		boolean result = validate_NoCircularContainment(nominalRegion, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(nominalRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(nominalRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(nominalRegion, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(nominalRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(nominalRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(nominalRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(nominalRegion, diagnostics, context);
@@ -3720,9 +3882,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateStringNominalRegion(StringNominalRegion stringNominalRegion, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(stringNominalRegion, diagnostics, context);
+		boolean result = validate_NoCircularContainment(stringNominalRegion, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(stringNominalRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(stringNominalRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(stringNominalRegion, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(stringNominalRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(stringNominalRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(stringNominalRegion, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(stringNominalRegion, diagnostics, context);
@@ -3741,9 +3905,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateLiteralInteger(LiteralInteger literalInteger, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(literalInteger, diagnostics, context);
+		boolean result = validate_NoCircularContainment(literalInteger, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(literalInteger, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(literalInteger, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(literalInteger, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(literalInteger, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(literalInteger, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(literalInteger, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(literalInteger, diagnostics, context);
@@ -3762,9 +3928,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateLiteralDecimal(LiteralDecimal literalDecimal, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(literalDecimal, diagnostics, context);
+		boolean result = validate_NoCircularContainment(literalDecimal, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(literalDecimal, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(literalDecimal, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(literalDecimal, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(literalDecimal, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(literalDecimal, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(literalDecimal, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(literalDecimal, diagnostics, context);
@@ -3783,9 +3951,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateLiteralString(LiteralString literalString, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(literalString, diagnostics, context);
+		boolean result = validate_NoCircularContainment(literalString, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(literalString, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(literalString, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(literalString, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(literalString, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(literalString, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(literalString, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(literalString, diagnostics, context);
@@ -3804,9 +3974,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateLiteralBoolean(LiteralBoolean literalBoolean, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(literalBoolean, diagnostics, context);
+		boolean result = validate_NoCircularContainment(literalBoolean, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(literalBoolean, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(literalBoolean, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(literalBoolean, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(literalBoolean, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(literalBoolean, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(literalBoolean, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(literalBoolean, diagnostics, context);
@@ -3825,9 +3997,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateLiteralNull(LiteralNull literalNull, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(literalNull, diagnostics, context);
+		boolean result = validate_NoCircularContainment(literalNull, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(literalNull, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(literalNull, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(literalNull, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(literalNull, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(literalNull, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(literalNull, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(literalNull, diagnostics, context);
@@ -3846,9 +4020,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateInstanceValue(InstanceValue instanceValue, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(instanceValue, diagnostics, context);
+		boolean result = validate_NoCircularContainment(instanceValue, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(instanceValue, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(instanceValue, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(instanceValue, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(instanceValue, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(instanceValue, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(instanceValue, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(instanceValue, diagnostics, context);
@@ -3867,9 +4043,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateLiteralUnlimitedNatural(LiteralUnlimitedNatural literalUnlimitedNatural, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(literalUnlimitedNatural, diagnostics, context);
+		boolean result = validate_NoCircularContainment(literalUnlimitedNatural, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(literalUnlimitedNatural, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(literalUnlimitedNatural, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(literalUnlimitedNatural, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(literalUnlimitedNatural, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(literalUnlimitedNatural, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(literalUnlimitedNatural, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(literalUnlimitedNatural, diagnostics, context);
@@ -3888,9 +4066,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateObjectClass(ObjectClass objectClass, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(objectClass, diagnostics, context);
+		boolean result = validate_NoCircularContainment(objectClass, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(objectClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(objectClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(objectClass, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(objectClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(objectClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(objectClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(objectClass, diagnostics, context);
@@ -3958,9 +4138,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMomentClass(MomentClass momentClass, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(momentClass, diagnostics, context);
+		boolean result = validate_NoCircularContainment(momentClass, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(momentClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(momentClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(momentClass, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(momentClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(momentClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(momentClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(momentClass, diagnostics, context);
@@ -3988,9 +4170,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateSortalClass(SortalClass sortalClass, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(sortalClass, diagnostics, context);
+		boolean result = validate_NoCircularContainment(sortalClass, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(sortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(sortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(sortalClass, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(sortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(sortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(sortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(sortalClass, diagnostics, context);
@@ -4059,9 +4243,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMixinClass(MixinClass mixinClass, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(mixinClass, diagnostics, context);
+		boolean result = validate_NoCircularContainment(mixinClass, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(mixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(mixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(mixinClass, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(mixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(mixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(mixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(mixinClass, diagnostics, context);
@@ -4170,9 +4356,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateRigidSortalClass(RigidSortalClass rigidSortalClass, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(rigidSortalClass, diagnostics, context);
+		boolean result = validate_NoCircularContainment(rigidSortalClass, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(rigidSortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(rigidSortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(rigidSortalClass, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(rigidSortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(rigidSortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(rigidSortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(rigidSortalClass, diagnostics, context);
@@ -4242,9 +4430,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateAntiRigidSortalClass(AntiRigidSortalClass antiRigidSortalClass, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(antiRigidSortalClass, diagnostics, context);
+		boolean result = validate_NoCircularContainment(antiRigidSortalClass, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(antiRigidSortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(antiRigidSortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(antiRigidSortalClass, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(antiRigidSortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(antiRigidSortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(antiRigidSortalClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(antiRigidSortalClass, diagnostics, context);
@@ -4274,9 +4464,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateSubstanceSortal(SubstanceSortal substanceSortal, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(substanceSortal, diagnostics, context);
+		boolean result = validate_NoCircularContainment(substanceSortal, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(substanceSortal, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(substanceSortal, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(substanceSortal, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(substanceSortal, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(substanceSortal, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(substanceSortal, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(substanceSortal, diagnostics, context);
@@ -4347,9 +4539,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateSubKind(SubKind subKind, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(subKind, diagnostics, context);
+		boolean result = validate_NoCircularContainment(subKind, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(subKind, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(subKind, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(subKind, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(subKind, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(subKind, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(subKind, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(subKind, diagnostics, context);
@@ -4380,9 +4574,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateKind(Kind kind, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(kind, diagnostics, context);
+		boolean result = validate_NoCircularContainment(kind, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(kind, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(kind, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(kind, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(kind, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(kind, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(kind, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(kind, diagnostics, context);
@@ -4414,9 +4610,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateQuantity(Quantity quantity, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(quantity, diagnostics, context);
+		boolean result = validate_NoCircularContainment(quantity, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(quantity, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(quantity, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(quantity, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(quantity, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(quantity, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(quantity, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(quantity, diagnostics, context);
@@ -4448,9 +4646,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateCollective(Collective collective, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(collective, diagnostics, context);
+		boolean result = validate_NoCircularContainment(collective, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(collective, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(collective, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(collective, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(collective, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(collective, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(collective, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(collective, diagnostics, context);
@@ -4522,9 +4722,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validatePhase(Phase phase, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(phase, diagnostics, context);
+		boolean result = validate_NoCircularContainment(phase, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(phase, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(phase, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(phase, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(phase, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(phase, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(phase, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(phase, diagnostics, context);
@@ -4594,9 +4796,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateRole(Role role, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(role, diagnostics, context);
+		boolean result = validate_NoCircularContainment(role, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(role, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(role, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(role, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(role, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(role, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(role, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(role, diagnostics, context);
@@ -4666,9 +4870,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateRigidMixinClass(RigidMixinClass rigidMixinClass, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(rigidMixinClass, diagnostics, context);
+		boolean result = validate_NoCircularContainment(rigidMixinClass, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(rigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(rigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(rigidMixinClass, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(rigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(rigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(rigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(rigidMixinClass, diagnostics, context);
@@ -4699,9 +4905,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateNonRigidMixinClass(NonRigidMixinClass nonRigidMixinClass, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(nonRigidMixinClass, diagnostics, context);
+		boolean result = validate_NoCircularContainment(nonRigidMixinClass, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(nonRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(nonRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(nonRigidMixinClass, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(nonRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(nonRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(nonRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(nonRigidMixinClass, diagnostics, context);
@@ -4732,9 +4940,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateCategory(Category category, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(category, diagnostics, context);
+		boolean result = validate_NoCircularContainment(category, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(category, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(category, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(category, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(category, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(category, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(category, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(category, diagnostics, context);
@@ -4805,9 +5015,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateAntiRigidMixinClass(AntiRigidMixinClass antiRigidMixinClass, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(antiRigidMixinClass, diagnostics, context);
+		boolean result = validate_NoCircularContainment(antiRigidMixinClass, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(antiRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(antiRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(antiRigidMixinClass, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(antiRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(antiRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(antiRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(antiRigidMixinClass, diagnostics, context);
@@ -4838,9 +5050,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateSemiRigidMixinClass(SemiRigidMixinClass semiRigidMixinClass, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(semiRigidMixinClass, diagnostics, context);
+		boolean result = validate_NoCircularContainment(semiRigidMixinClass, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(semiRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(semiRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(semiRigidMixinClass, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(semiRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(semiRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(semiRigidMixinClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(semiRigidMixinClass, diagnostics, context);
@@ -4871,9 +5085,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateRoleMixin(RoleMixin roleMixin, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(roleMixin, diagnostics, context);
+		boolean result = validate_NoCircularContainment(roleMixin, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(roleMixin, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(roleMixin, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(roleMixin, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(roleMixin, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(roleMixin, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(roleMixin, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(roleMixin, diagnostics, context);
@@ -4944,9 +5160,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMixin(Mixin mixin, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(mixin, diagnostics, context);
+		boolean result = validate_NoCircularContainment(mixin, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(mixin, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(mixin, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(mixin, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(mixin, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(mixin, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(mixin, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(mixin, diagnostics, context);
@@ -5017,9 +5235,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateIntrinsicMomentClass(IntrinsicMomentClass intrinsicMomentClass, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(intrinsicMomentClass, diagnostics, context);
+		boolean result = validate_NoCircularContainment(intrinsicMomentClass, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(intrinsicMomentClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(intrinsicMomentClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(intrinsicMomentClass, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(intrinsicMomentClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(intrinsicMomentClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(intrinsicMomentClass, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(intrinsicMomentClass, diagnostics, context);
@@ -5087,9 +5307,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMode(Mode mode, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(mode, diagnostics, context);
+		boolean result = validate_NoCircularContainment(mode, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(mode, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(mode, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(mode, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(mode, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(mode, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(mode, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(mode, diagnostics, context);
@@ -5118,9 +5340,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateQuality(Quality quality, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(quality, diagnostics, context);
+		boolean result = validate_NoCircularContainment(quality, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(quality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(quality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(quality, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(quality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(quality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(quality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(quality, diagnostics, context);
@@ -5189,9 +5413,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMeasurableQuality(MeasurableQuality measurableQuality, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(measurableQuality, diagnostics, context);
+		boolean result = validate_NoCircularContainment(measurableQuality, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(measurableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(measurableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(measurableQuality, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(measurableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(measurableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(measurableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(measurableQuality, diagnostics, context);
@@ -5261,9 +5487,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateNominalQuality(NominalQuality nominalQuality, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(nominalQuality, diagnostics, context);
+		boolean result = validate_NoCircularContainment(nominalQuality, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(nominalQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(nominalQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(nominalQuality, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(nominalQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(nominalQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(nominalQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(nominalQuality, diagnostics, context);
@@ -5333,9 +5561,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateNonPerceivableQuality(NonPerceivableQuality nonPerceivableQuality, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(nonPerceivableQuality, diagnostics, context);
+		boolean result = validate_NoCircularContainment(nonPerceivableQuality, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(nonPerceivableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(nonPerceivableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(nonPerceivableQuality, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(nonPerceivableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(nonPerceivableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(nonPerceivableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(nonPerceivableQuality, diagnostics, context);
@@ -5366,9 +5596,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validatePerceivableQuality(PerceivableQuality perceivableQuality, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(perceivableQuality, diagnostics, context);
+		boolean result = validate_NoCircularContainment(perceivableQuality, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(perceivableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(perceivableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(perceivableQuality, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(perceivableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(perceivableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(perceivableQuality, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(perceivableQuality, diagnostics, context);
@@ -5399,9 +5631,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateRelator(Relator relator, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(relator, diagnostics, context);
+		boolean result = validate_NoCircularContainment(relator, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(relator, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(relator, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(relator, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(relator, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(relator, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(relator, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(relator, diagnostics, context);
@@ -5509,9 +5743,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateDirectedBinaryAssociation(DirectedBinaryAssociation directedBinaryAssociation, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(directedBinaryAssociation, diagnostics, context);
+		boolean result = validate_NoCircularContainment(directedBinaryAssociation, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(directedBinaryAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(directedBinaryAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(directedBinaryAssociation, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(directedBinaryAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(directedBinaryAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(directedBinaryAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(directedBinaryAssociation, diagnostics, context);
@@ -5581,9 +5817,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMeronymic(Meronymic meronymic, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(meronymic, diagnostics, context);
+		boolean result = validate_NoCircularContainment(meronymic, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(meronymic, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(meronymic, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(meronymic, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(meronymic, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(meronymic, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(meronymic, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(meronymic, diagnostics, context);
@@ -5734,9 +5972,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validatesubQuantityOf(subQuantityOf subQuantityOf, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(subQuantityOf, diagnostics, context);
+		boolean result = validate_NoCircularContainment(subQuantityOf, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(subQuantityOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(subQuantityOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(subQuantityOf, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(subQuantityOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(subQuantityOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(subQuantityOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(subQuantityOf, diagnostics, context);
@@ -5970,9 +6210,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validatesubCollectionOf(subCollectionOf subCollectionOf, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(subCollectionOf, diagnostics, context);
+		boolean result = validate_NoCircularContainment(subCollectionOf, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(subCollectionOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(subCollectionOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(subCollectionOf, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(subCollectionOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(subCollectionOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(subCollectionOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(subCollectionOf, diagnostics, context);
@@ -6126,9 +6368,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validatememberOf(memberOf memberOf, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(memberOf, diagnostics, context);
+		boolean result = validate_NoCircularContainment(memberOf, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(memberOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(memberOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(memberOf, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(memberOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(memberOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(memberOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(memberOf, diagnostics, context);
@@ -6282,9 +6526,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validatecomponentOf(componentOf componentOf, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(componentOf, diagnostics, context);
+		boolean result = validate_NoCircularContainment(componentOf, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(componentOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(componentOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(componentOf, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(componentOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(componentOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(componentOf, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(componentOf, diagnostics, context);
@@ -6398,9 +6644,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateDependencyRelationship(DependencyRelationship dependencyRelationship, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(dependencyRelationship, diagnostics, context);
+		boolean result = validate_NoCircularContainment(dependencyRelationship, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(dependencyRelationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(dependencyRelationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(dependencyRelationship, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(dependencyRelationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(dependencyRelationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(dependencyRelationship, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(dependencyRelationship, diagnostics, context);
@@ -6511,9 +6759,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateCharacterization(Characterization characterization, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(characterization, diagnostics, context);
+		boolean result = validate_NoCircularContainment(characterization, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(characterization, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(characterization, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(characterization, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(characterization, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(characterization, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(characterization, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(characterization, diagnostics, context);
@@ -6626,9 +6876,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMediation(Mediation mediation, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(mediation, diagnostics, context);
+		boolean result = validate_NoCircularContainment(mediation, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(mediation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(mediation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(mediation, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(mediation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(mediation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(mediation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(mediation, diagnostics, context);
@@ -6741,9 +6993,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateDerivation(Derivation derivation, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(derivation, diagnostics, context);
+		boolean result = validate_NoCircularContainment(derivation, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(derivation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(derivation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(derivation, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(derivation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(derivation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(derivation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(derivation, diagnostics, context);
@@ -6896,9 +7150,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateStructuration(Structuration structuration, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(structuration, diagnostics, context);
+		boolean result = validate_NoCircularContainment(structuration, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(structuration, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(structuration, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(structuration, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(structuration, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(structuration, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(structuration, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(structuration, diagnostics, context);
@@ -7051,9 +7307,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateFormalAssociation(FormalAssociation formalAssociation, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(formalAssociation, diagnostics, context);
+		boolean result = validate_NoCircularContainment(formalAssociation, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(formalAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(formalAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(formalAssociation, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(formalAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(formalAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(formalAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(formalAssociation, diagnostics, context);
@@ -7083,9 +7341,11 @@ public class RefOntoUMLValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateMaterialAssociation(MaterialAssociation materialAssociation, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_EveryMultiplicityConforms(materialAssociation, diagnostics, context);
+		boolean result = validate_NoCircularContainment(materialAssociation, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(materialAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(materialAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(materialAssociation, diagnostics, context);
+//		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(materialAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryProxyResolves(materialAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_UniqueID(materialAssociation, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(materialAssociation, diagnostics, context);

@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.NonPerceivableQuality;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public class NonPerceivableQualityImpl extends MeasurableQualityImpl implements 
 	}
 
 } //NonPerceivableQualityImpl
+
+

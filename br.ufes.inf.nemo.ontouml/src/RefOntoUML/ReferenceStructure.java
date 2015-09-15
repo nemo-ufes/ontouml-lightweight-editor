@@ -44,3 +44,5 @@ public interface ReferenceStructure extends DataType {
 	EList<ReferenceRegion> getOwnedRegions();
 
 } // ReferenceStructure
+
+

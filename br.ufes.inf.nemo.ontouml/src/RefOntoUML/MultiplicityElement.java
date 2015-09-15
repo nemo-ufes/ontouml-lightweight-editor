@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 
 /**
@@ -340,3 +339,5 @@ public interface MultiplicityElement extends Element {
 	boolean is(int lowerbound, int upperbound);
 
 } // MultiplicityElement
+
+

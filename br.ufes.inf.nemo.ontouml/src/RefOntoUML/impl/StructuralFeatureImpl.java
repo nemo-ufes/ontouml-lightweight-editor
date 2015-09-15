@@ -12,38 +12,26 @@ import RefOntoUML.StructuralFeature;
 import RefOntoUML.Type;
 import RefOntoUML.TypedElement;
 import RefOntoUML.ValueSpecification;
-
 import RefOntoUML.util.RefOntoUMLValidator;
-
 import java.util.Map;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
 import org.eclipse.emf.ecore.util.EObjectValidator;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.ecore.OCL.Helper;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -466,7 +454,6 @@ public abstract class StructuralFeatureImpl extends FeatureImpl implements Struc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean lower_ge_0(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -492,7 +479,6 @@ public abstract class StructuralFeatureImpl extends FeatureImpl implements Struc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean upper_ge_lower(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -518,7 +504,6 @@ public abstract class StructuralFeatureImpl extends FeatureImpl implements Struc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean value_specification_no_side_effects(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -544,7 +529,6 @@ public abstract class StructuralFeatureImpl extends FeatureImpl implements Struc
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean value_specification_constant(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -931,3 +915,5 @@ public abstract class StructuralFeatureImpl extends FeatureImpl implements Struc
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //StructuralFeatureImpl
+
+

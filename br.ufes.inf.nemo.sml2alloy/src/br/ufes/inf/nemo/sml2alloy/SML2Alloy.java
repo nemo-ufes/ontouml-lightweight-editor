@@ -115,10 +115,20 @@ public class SML2Alloy
 		
 		SML2Alloy sml2alloy = new SML2Alloy(smlmodel, alloyPath);
 		
-		try {
-			System.out.println(sml2alloy.transform());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		try
+		{
+			util.printConstraints();
+//			Object[] result = util.verifySyntax(smlmodel);
+//			
+//			if ((boolean)result[0])
+//				System.out.println(sml2alloy.transform());
+//			
+//			else
+//				System.out.println(result[1]);
+		}
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 	}

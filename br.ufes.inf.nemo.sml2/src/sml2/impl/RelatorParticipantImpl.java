@@ -2,26 +2,14 @@
  */
 package sml2.impl;
 
-import RefOntoUML.Relator;
-
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
-import org.eclipse.emf.ecore.util.InternalEList;
-
-import sml2.Link;
 import sml2.RelatorParticipant;
 import sml2.Sml2Package;
+import RefOntoUML.Relator;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,8 +18,7 @@ import sml2.Sml2Package;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link sml2.impl.RelatorParticipantImpl#getIsOfType <em>Is Of Type</em>}</li>
- *   <li>{@link sml2.impl.RelatorParticipantImpl#getLinks <em>Links</em>}</li>
+ *   <li>{@link sml2.impl.RelatorParticipantImpl#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -39,25 +26,14 @@ import sml2.Sml2Package;
  */
 public class RelatorParticipantImpl extends ParticipantImpl implements RelatorParticipant {
 	/**
-	 * The cached value of the '{@link #getIsOfType() <em>Is Of Type</em>}' reference.
+	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getIsOfType()
+	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected Relator isOfType;
-
-	/**
-	 * The cached value of the '{@link #getLinks() <em>Links</em>}' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getLinks()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<Link> links;
-
+	protected Relator type;
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -82,16 +58,16 @@ public class RelatorParticipantImpl extends ParticipantImpl implements RelatorPa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Relator getIsOfType() {
-		if (isOfType != null && isOfType.eIsProxy()) {
-			InternalEObject oldIsOfType = (InternalEObject)isOfType;
-			isOfType = (Relator)eResolveProxy(oldIsOfType);
-			if (isOfType != oldIsOfType) {
+	public Relator getType() {
+		if (type != null && type.eIsProxy()) {
+			InternalEObject oldType = (InternalEObject)type;
+			type = (Relator)eResolveProxy(oldType);
+			if (type != oldType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.RELATOR_PARTICIPANT__IS_OF_TYPE, oldIsOfType, isOfType));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.RELATOR_PARTICIPANT__TYPE, oldType, type));
 			}
 		}
-		return isOfType;
+		return type;
 	}
 
 	/**
@@ -99,8 +75,8 @@ public class RelatorParticipantImpl extends ParticipantImpl implements RelatorPa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Relator basicGetIsOfType() {
-		return isOfType;
+	public Relator basicGetType() {
+		return type;
 	}
 
 	/**
@@ -108,52 +84,11 @@ public class RelatorParticipantImpl extends ParticipantImpl implements RelatorPa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setIsOfType(Relator newIsOfType) {
-		Relator oldIsOfType = isOfType;
-		isOfType = newIsOfType;
+	public void setType(Relator newType) {
+		Relator oldType = type;
+		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.RELATOR_PARTICIPANT__IS_OF_TYPE, oldIsOfType, isOfType));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<Link> getLinks() {
-		if (links == null) {
-			links = new EObjectWithInverseResolvingEList<Link>(Link.class, this, Sml2Package.RELATOR_PARTICIPANT__LINKS, Sml2Package.LINK__RELATOR);
-		}
-		return links;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Sml2Package.RELATOR_PARTICIPANT__LINKS:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getLinks()).basicAdd(otherEnd, msgs);
-		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Sml2Package.RELATOR_PARTICIPANT__LINKS:
-				return ((InternalEList<?>)getLinks()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
+			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.RELATOR_PARTICIPANT__TYPE, oldType, type));
 	}
 
 	/**
@@ -164,11 +99,9 @@ public class RelatorParticipantImpl extends ParticipantImpl implements RelatorPa
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Sml2Package.RELATOR_PARTICIPANT__IS_OF_TYPE:
-				if (resolve) return getIsOfType();
-				return basicGetIsOfType();
-			case Sml2Package.RELATOR_PARTICIPANT__LINKS:
-				return getLinks();
+			case Sml2Package.RELATOR_PARTICIPANT__TYPE:
+				if (resolve) return getType();
+				return basicGetType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -178,16 +111,11 @@ public class RelatorParticipantImpl extends ParticipantImpl implements RelatorPa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case Sml2Package.RELATOR_PARTICIPANT__IS_OF_TYPE:
-				setIsOfType((Relator)newValue);
-				return;
-			case Sml2Package.RELATOR_PARTICIPANT__LINKS:
-				getLinks().clear();
-				getLinks().addAll((Collection<? extends Link>)newValue);
+			case Sml2Package.RELATOR_PARTICIPANT__TYPE:
+				setType((Relator)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -201,11 +129,8 @@ public class RelatorParticipantImpl extends ParticipantImpl implements RelatorPa
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case Sml2Package.RELATOR_PARTICIPANT__IS_OF_TYPE:
-				setIsOfType((Relator)null);
-				return;
-			case Sml2Package.RELATOR_PARTICIPANT__LINKS:
-				getLinks().clear();
+			case Sml2Package.RELATOR_PARTICIPANT__TYPE:
+				setType((Relator)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -219,10 +144,8 @@ public class RelatorParticipantImpl extends ParticipantImpl implements RelatorPa
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case Sml2Package.RELATOR_PARTICIPANT__IS_OF_TYPE:
-				return isOfType != null;
-			case Sml2Package.RELATOR_PARTICIPANT__LINKS:
-				return links != null && !links.isEmpty();
+			case Sml2Package.RELATOR_PARTICIPANT__TYPE:
+				return type != null;
 		}
 		return super.eIsSet(featureID);
 	}

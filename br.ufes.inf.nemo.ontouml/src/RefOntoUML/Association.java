@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
 
@@ -207,3 +206,5 @@ public interface Association extends Classifier, Relationship {
 	EList<Type> getEndTypes();
 
 } // Association
+
+

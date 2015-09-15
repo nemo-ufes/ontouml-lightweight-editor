@@ -4,8 +4,6 @@ package sml2;
 
 import RefOntoUML.Relator;
 
-import org.eclipse.emf.common.util.EList;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Relator Participant</b></em>'.
@@ -14,8 +12,7 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link sml2.RelatorParticipant#getIsOfType <em>Is Of Type</em>}</li>
- *   <li>{@link sml2.RelatorParticipant#getLinks <em>Links</em>}</li>
+ *   <li>{@link sml2.RelatorParticipant#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -25,47 +22,29 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface RelatorParticipant extends Participant {
 	/**
-	 * Returns the value of the '<em><b>Is Of Type</b></em>' reference.
+	 * Returns the value of the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Is Of Type</em>' reference isn't clear,
+	 * If the meaning of the '<em>Type</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Is Of Type</em>' reference.
-	 * @see #setIsOfType(Relator)
-	 * @see sml2.Sml2Package#getRelatorParticipant_IsOfType()
-	 * @model
+	 * @return the value of the '<em>Type</em>' reference.
+	 * @see #setType(Relator)
+	 * @see sml2.Sml2Package#getRelatorParticipant_Type()
+	 * @model required="true"
 	 * @generated
 	 */
-	Relator getIsOfType();
+	Relator getType();
 
 	/**
-	 * Sets the value of the '{@link sml2.RelatorParticipant#getIsOfType <em>Is Of Type</em>}' reference.
+	 * Sets the value of the '{@link sml2.RelatorParticipant#getType <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Is Of Type</em>' reference.
-	 * @see #getIsOfType()
+	 * @param value the new value of the '<em>Type</em>' reference.
+	 * @see #getType()
 	 * @generated
 	 */
-	void setIsOfType(Relator value);
-
-	/**
-	 * Returns the value of the '<em><b>Links</b></em>' reference list.
-	 * The list contents are of type {@link sml2.Link}.
-	 * It is bidirectional and its opposite is '{@link sml2.Link#getRelator <em>Relator</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Links</em>' reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Links</em>' reference list.
-	 * @see sml2.Sml2Package#getRelatorParticipant_Links()
-	 * @see sml2.Link#getRelator
-	 * @model opposite="relator"
-	 * @generated
-	 */
-	EList<Link> getLinks();
+	void setType(Relator value);
 
 } // RelatorParticipant

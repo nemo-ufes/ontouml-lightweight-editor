@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="RefOntoUML"
-    nsURI="http://nemo.inf.ufes.br/ontouml/refontouml" nsPrefix="RefOntoUML">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="RefOntoUML" nsURI="http://nemo.inf.ufes.br/ontouml/refontouml"
+    nsPrefix="RefOntoUML">
   <eClassifiers xsi:type="ecore:EDataType" name="Integer" instanceClassName="int">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="An integer is a primitive type representing integer values."/>
@@ -195,8 +194,7 @@
         </eAnnotations>
       </eParameters>
     </eOperations>
-    <eOperations name="getStereotypeApplications" ordered="false" upperBound="-1"
-        eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject">
+    <eOperations name="getStereotypeApplications" ordered="false">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Retrieves the stereotype applications for this element."/>
       </eAnnotations>

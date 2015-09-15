@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
 
@@ -148,3 +147,5 @@ public interface Generalization extends DirectedRelationship {
 	boolean generalization_same_classifier(DiagnosticChain diagnostics, Map<Object, Object> context);
 
 } // Generalization
+
+

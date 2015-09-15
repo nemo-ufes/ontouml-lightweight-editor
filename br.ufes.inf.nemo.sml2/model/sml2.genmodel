@@ -1,85 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/br.ufes.inf.nemo.sml2/src" modelPluginID="br.ufes.inf.nemo.sml2"
-    modelName="Sml2" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
-    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.genmodel#//RefOntoUML"
+    templateDirectory="/br.ufes.inf.nemo.sml2/templates" dynamicTemplates="true" modelName="Sml2"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.genmodel#//RefOntoUML"
     operationReflection="true" importOrganizing="true">
   <foreignModel>sml2.ecore</foreignModel>
   <genPackages prefix="Sml2" disposableProviderFactory="true" ecorePackage="sml2.ecore#/">
-    <genClasses ecoreClass="sml2.ecore#//SMLModel">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//SMLModel/elements"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SMLModel/contextModel"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//SMLModel/primitiveContextElements"/>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sml2.ecore#//AllenKind">
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/before"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/after"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/meets"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/metBy"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/overlaps"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/overlappedBy"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/finishes"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/finishedBy"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/includes"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/during"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/starts"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/startedBy"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//AllenKind/coincides"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sml2.ecore#//ComparativeKind">
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//ComparativeKind/lessThan"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//ComparativeKind/lessThanEqual"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//ComparativeKind/greaterThan"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//ComparativeKind/greaterThanEqual"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="sml2.ecore#//TemporalKind">
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//TemporalKind/present"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//TemporalKind/past"/>
+      <genEnumLiterals ecoreEnumLiteral="sml2.ecore#//TemporalKind/any"/>
+    </genEnums>
+    <genClasses ecoreClass="sml2.ecore#//AllenLink">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//AllenLink/type"/>
+      <genOperations ecoreOperation="sml2.ecore#//AllenLink/getSource"/>
+      <genOperations ecoreOperation="sml2.ecore#//AllenLink/getTarget"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//AttributeLink">
+      <genOperations ecoreOperation="sml2.ecore#//AttributeLink/getEntity"/>
+      <genOperations ecoreOperation="sml2.ecore#//AttributeLink/getAttribute"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//AttributeReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//AttributeReference/type"/>
+      <genOperations ecoreOperation="sml2.ecore#//AttributeReference/getEntity"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//ClassLiteral">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ClassLiteral/type"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sml2.ecore#//ComparativeRelation"/>
+    <genClasses ecoreClass="sml2.ecore#//ContextFormalLink">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//ContextFormalLink/parameter"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ContextFormalLink/type"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//DataTypeLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//DataTypeLiteral/value"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//DataTypeLiteral/type"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sml2.ecore#//FormalRelation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//FormalRelation/negated"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//EntityParticipant">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//EntityParticipant/type"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//EqualsLink"/>
+    <genClasses ecoreClass="sml2.ecore#//Function">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//Function/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//Function/parameters"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//FunctionParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//FunctionParameter/label"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//FunctionParameter/parameter"/>
+      <genOperations ecoreOperation="sml2.ecore#//FunctionParameter/getFunction"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//InstantiationLink">
+      <genOperations ecoreOperation="sml2.ecore#//InstantiationLink/getSource"/>
+      <genOperations ecoreOperation="sml2.ecore#//InstantiationLink/getTarget"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sml2.ecore#//Literal"/>
+    <genClasses ecoreClass="sml2.ecore#//MediationLink">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//MediationLink/type"/>
+      <genOperations ecoreOperation="sml2.ecore#//MediationLink/getRelator"/>
+      <genOperations ecoreOperation="sml2.ecore#//MediationLink/getEntity"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sml2.ecore#//Node">
+      <genOperations ecoreOperation="sml2.ecore#//Node/sourceRelation"/>
+      <genOperations ecoreOperation="sml2.ecore#//Node/targetRelation"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//OrderedComparativeLink">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//OrderedComparativeLink/type"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sml2.ecore#//Participant">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//Participant/shareable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//Participant/immutable"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//Participant/min"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//Participant/reflection"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//Participant/max"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="sml2.ecore#//ReferableElement"/>
+    <genClasses ecoreClass="sml2.ecore#//ReferenceNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//ReferenceNode/label"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sml2.ecore#//ReferenceNode/situation"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ReferenceNode/reference"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//ReflectedParticipant">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ReflectedParticipant/participant"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//ReflectedParticipant/references"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//ReflectedReference">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sml2.ecore#//ReflectedReference/owningReflection"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ReflectedReference/reference"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//RelatorParticipant">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//RelatorParticipant/type"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//SituationParticipant">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//SituationParticipant/temporality"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationParticipant/references"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationParticipant/type"/>
     </genClasses>
     <genClasses ecoreClass="sml2.ecore#//SituationType">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//SituationType/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationType/parameter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationType/elements"/>
     </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//SituationTypeBlock">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationTypeBlock/elements"/>
+    <genClasses image="false" ecoreClass="sml2.ecore#//SituationTypeAssociation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationTypeAssociation/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationTypeAssociation/target"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="sml2.ecore#//SituationTypeElement"/>
-    <genClasses image="false" ecoreClass="sml2.ecore#//Node">
-      <genOperations ecoreOperation="sml2.ecore#//Node/sourceRelation"/>
+    <genClasses image="false" ecoreClass="sml2.ecore#//SituationTypeElement">
+      <genOperations ecoreOperation="sml2.ecore#//SituationTypeElement/getSituation"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="sml2.ecore#//ExportableNode">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ExportableNode/nodeParameter"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//EntityParticipant">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//EntityParticipant/isOfType"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//RelatorParticipant">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//RelatorParticipant/isOfType"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//RelatorParticipant/links"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//Link">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//Link/isOfType"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//Link/entity"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//Link/relator"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//SituationTypeParameter">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationTypeParameter/nodeReference"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//SituationTypeParameter/name"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//AttributeReference">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//AttributeReference/entity"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//AttributeReference/attribute"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//ComparativeRelation">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ComparativeRelation/source"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ComparativeRelation/target"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ComparativeRelation/relation"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//ComparativeRelation/parameter"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//ComparativeRelation/isNegated"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//Literal">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//Literal/value"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//Literal/dataType"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="sml2.ecore#//Participant">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//Participant/reference"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//SituationParticipant">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationParticipant/situationType"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationParticipant/parameter"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//SituationParticipant/isPast"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//SituationParameterReference">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationParameterReference/parameter"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SituationParameterReference/situation"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//ExistsSituation">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//ExistsSituation/isNegated"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//Function">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//Function/parameter"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//Function/function"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//Parameter">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//Parameter/value"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//Parameter/parameter"/>
+    <genClasses ecoreClass="sml2.ecore#//SMLModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//SMLModel/elements"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SMLModel/contextModel"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

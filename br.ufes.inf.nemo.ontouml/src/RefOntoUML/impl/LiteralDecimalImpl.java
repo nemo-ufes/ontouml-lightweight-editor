@@ -8,23 +8,16 @@ package RefOntoUML.impl;
 
 import RefOntoUML.LiteralDecimal;
 import RefOntoUML.RefOntoUMLPackage;
-
 import java.math.BigDecimal;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -214,3 +207,5 @@ public class LiteralDecimalImpl extends LiteralSpecificationImpl implements Lite
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //LiteralDecimalImpl
+
+

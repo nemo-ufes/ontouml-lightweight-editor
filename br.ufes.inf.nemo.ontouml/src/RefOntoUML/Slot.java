@@ -99,3 +99,5 @@ public interface Slot extends Element {
 	void setOwningInstance(InstanceSpecification value);
 
 } // Slot
+
+

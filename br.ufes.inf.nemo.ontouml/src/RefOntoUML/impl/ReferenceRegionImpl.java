@@ -9,15 +9,11 @@ package RefOntoUML.impl;
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.ReferenceRegion;
 import RefOntoUML.ReferenceStructure;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
@@ -33,7 +29,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  *
  * @generated
  */
-public abstract class ReferenceRegionImpl extends LiteralSpecificationImpl implements ReferenceRegion {
+public abstract class ReferenceRegionImpl extends ValueSpecificationImpl implements ReferenceRegion {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -60,7 +56,7 @@ public abstract class ReferenceRegionImpl extends LiteralSpecificationImpl imple
 	 */
 	public ReferenceStructure getStructure() {
 		if (eContainerFeatureID() != RefOntoUMLPackage.REFERENCE_REGION__STRUCTURE) return null;
-		return (ReferenceStructure)eContainer();
+		return (ReferenceStructure)eInternalContainer();
 	}
 
 	/**
@@ -197,3 +193,5 @@ public abstract class ReferenceRegionImpl extends LiteralSpecificationImpl imple
 	}
 
 } //ReferenceRegionImpl
+
+

@@ -44,3 +44,5 @@ public interface ComposedMeasurementRegion extends MeasurementRegion {
 	EList<BasicMeasurementRegion> getOwnedRegions();
 
 } // ComposedMeasurementRegion
+
+

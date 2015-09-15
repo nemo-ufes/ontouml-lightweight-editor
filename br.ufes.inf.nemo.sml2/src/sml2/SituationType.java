@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link sml2.SituationType#getName <em>Name</em>}</li>
- *   <li>{@link sml2.SituationType#getParameter <em>Parameter</em>}</li>
  *   <li>{@link sml2.SituationType#getElements <em>Elements</em>}</li>
  * </ul>
  * </p>
@@ -36,7 +35,7 @@ public interface SituationType extends EObject {
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see sml2.Sml2Package#getSituationType_Name()
-	 * @model
+	 * @model required="true"
 	 * @generated
 	 */
 	String getName();
@@ -50,22 +49,6 @@ public interface SituationType extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Parameter</b></em>' containment reference list.
-	 * The list contents are of type {@link sml2.SituationTypeParameter}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Parameter</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Parameter</em>' containment reference list.
-	 * @see sml2.Sml2Package#getSituationType_Parameter()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<SituationTypeParameter> getParameter();
 
 	/**
 	 * Returns the value of the '<em><b>Elements</b></em>' containment reference list.

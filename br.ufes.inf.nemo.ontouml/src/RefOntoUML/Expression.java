@@ -99,3 +99,5 @@ public interface Expression extends ValueSpecification {
 	EList<ValueSpecification> getOperand();
 
 } // Expression
+
+

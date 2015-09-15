@@ -104,3 +104,5 @@ public interface Type extends PackageableElement {
 	boolean conformsTo(Type other);
 
 } // Type
+
+

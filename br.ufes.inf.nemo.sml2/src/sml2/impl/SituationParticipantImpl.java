@@ -6,21 +6,18 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import sml2.SituationParameterReference;
+import sml2.ReferenceNode;
 import sml2.SituationParticipant;
 import sml2.SituationType;
 import sml2.Sml2Package;
+import sml2.TemporalKind;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,9 +26,9 @@ import sml2.Sml2Package;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link sml2.impl.SituationParticipantImpl#getSituationType <em>Situation Type</em>}</li>
- *   <li>{@link sml2.impl.SituationParticipantImpl#getParameter <em>Parameter</em>}</li>
- *   <li>{@link sml2.impl.SituationParticipantImpl#isIsPast <em>Is Past</em>}</li>
+ *   <li>{@link sml2.impl.SituationParticipantImpl#getTemporality <em>Temporality</em>}</li>
+ *   <li>{@link sml2.impl.SituationParticipantImpl#getReferences <em>References</em>}</li>
+ *   <li>{@link sml2.impl.SituationParticipantImpl#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -39,44 +36,44 @@ import sml2.Sml2Package;
  */
 public class SituationParticipantImpl extends ParticipantImpl implements SituationParticipant {
 	/**
-	 * The cached value of the '{@link #getSituationType() <em>Situation Type</em>}' reference.
+	 * The default value of the '{@link #getTemporality() <em>Temporality</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getSituationType()
+	 * @see #getTemporality()
 	 * @generated
 	 * @ordered
 	 */
-	protected SituationType situationType;
+	protected static final TemporalKind TEMPORALITY_EDEFAULT = TemporalKind.PRESENT;
 
 	/**
-	 * The cached value of the '{@link #getParameter() <em>Parameter</em>}' reference list.
+	 * The cached value of the '{@link #getTemporality() <em>Temporality</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getParameter()
+	 * @see #getTemporality()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<SituationParameterReference> parameter;
+	protected TemporalKind temporality = TEMPORALITY_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #isIsPast() <em>Is Past</em>}' attribute.
+	 * The cached value of the '{@link #getReferences() <em>References</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isIsPast()
+	 * @see #getReferences()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean IS_PAST_EDEFAULT = false;
+	protected EList<ReferenceNode> references;
 
 	/**
-	 * The cached value of the '{@link #isIsPast() <em>Is Past</em>}' attribute.
+	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isIsPast()
+	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean isPast = IS_PAST_EDEFAULT;
+	protected SituationType type;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -102,16 +99,49 @@ public class SituationParticipantImpl extends ParticipantImpl implements Situati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SituationType getSituationType() {
-		if (situationType != null && situationType.eIsProxy()) {
-			InternalEObject oldSituationType = (InternalEObject)situationType;
-			situationType = (SituationType)eResolveProxy(oldSituationType);
-			if (situationType != oldSituationType) {
+	public TemporalKind getTemporality() {
+		return temporality;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setTemporality(TemporalKind newTemporality) {
+		TemporalKind oldTemporality = temporality;
+		temporality = newTemporality == null ? TEMPORALITY_EDEFAULT : newTemporality;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.SITUATION_PARTICIPANT__TEMPORALITY, oldTemporality, temporality));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<ReferenceNode> getReferences() {
+		if (references == null) {
+			references = new EObjectContainmentWithInverseEList<ReferenceNode>(ReferenceNode.class, this, Sml2Package.SITUATION_PARTICIPANT__REFERENCES, Sml2Package.REFERENCE_NODE__SITUATION);
+		}
+		return references;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public SituationType getType() {
+		if (type != null && type.eIsProxy()) {
+			InternalEObject oldType = (InternalEObject)type;
+			type = (SituationType)eResolveProxy(oldType);
+			if (type != oldType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.SITUATION_PARTICIPANT__SITUATION_TYPE, oldSituationType, situationType));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.SITUATION_PARTICIPANT__TYPE, oldType, type));
 			}
 		}
-		return situationType;
+		return type;
 	}
 
 	/**
@@ -119,8 +149,8 @@ public class SituationParticipantImpl extends ParticipantImpl implements Situati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SituationType basicGetSituationType() {
-		return situationType;
+	public SituationType basicGetType() {
+		return type;
 	}
 
 	/**
@@ -128,44 +158,11 @@ public class SituationParticipantImpl extends ParticipantImpl implements Situati
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setSituationType(SituationType newSituationType) {
-		SituationType oldSituationType = situationType;
-		situationType = newSituationType;
+	public void setType(SituationType newType) {
+		SituationType oldType = type;
+		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.SITUATION_PARTICIPANT__SITUATION_TYPE, oldSituationType, situationType));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EList<SituationParameterReference> getParameter() {
-		if (parameter == null) {
-			parameter = new EObjectWithInverseResolvingEList<SituationParameterReference>(SituationParameterReference.class, this, Sml2Package.SITUATION_PARTICIPANT__PARAMETER, Sml2Package.SITUATION_PARAMETER_REFERENCE__SITUATION);
-		}
-		return parameter;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isIsPast() {
-		return isPast;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setIsPast(boolean newIsPast) {
-		boolean oldIsPast = isPast;
-		isPast = newIsPast;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.SITUATION_PARTICIPANT__IS_PAST, oldIsPast, isPast));
+			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.SITUATION_PARTICIPANT__TYPE, oldType, type));
 	}
 
 	/**
@@ -177,8 +174,8 @@ public class SituationParticipantImpl extends ParticipantImpl implements Situati
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case Sml2Package.SITUATION_PARTICIPANT__PARAMETER:
-				return ((InternalEList<InternalEObject>)(InternalEList<?>)getParameter()).basicAdd(otherEnd, msgs);
+			case Sml2Package.SITUATION_PARTICIPANT__REFERENCES:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getReferences()).basicAdd(otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
@@ -191,8 +188,8 @@ public class SituationParticipantImpl extends ParticipantImpl implements Situati
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case Sml2Package.SITUATION_PARTICIPANT__PARAMETER:
-				return ((InternalEList<?>)getParameter()).basicRemove(otherEnd, msgs);
+			case Sml2Package.SITUATION_PARTICIPANT__REFERENCES:
+				return ((InternalEList<?>)getReferences()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -205,13 +202,13 @@ public class SituationParticipantImpl extends ParticipantImpl implements Situati
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Sml2Package.SITUATION_PARTICIPANT__SITUATION_TYPE:
-				if (resolve) return getSituationType();
-				return basicGetSituationType();
-			case Sml2Package.SITUATION_PARTICIPANT__PARAMETER:
-				return getParameter();
-			case Sml2Package.SITUATION_PARTICIPANT__IS_PAST:
-				return isIsPast();
+			case Sml2Package.SITUATION_PARTICIPANT__TEMPORALITY:
+				return getTemporality();
+			case Sml2Package.SITUATION_PARTICIPANT__REFERENCES:
+				return getReferences();
+			case Sml2Package.SITUATION_PARTICIPANT__TYPE:
+				if (resolve) return getType();
+				return basicGetType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -225,15 +222,15 @@ public class SituationParticipantImpl extends ParticipantImpl implements Situati
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case Sml2Package.SITUATION_PARTICIPANT__SITUATION_TYPE:
-				setSituationType((SituationType)newValue);
+			case Sml2Package.SITUATION_PARTICIPANT__TEMPORALITY:
+				setTemporality((TemporalKind)newValue);
 				return;
-			case Sml2Package.SITUATION_PARTICIPANT__PARAMETER:
-				getParameter().clear();
-				getParameter().addAll((Collection<? extends SituationParameterReference>)newValue);
+			case Sml2Package.SITUATION_PARTICIPANT__REFERENCES:
+				getReferences().clear();
+				getReferences().addAll((Collection<? extends ReferenceNode>)newValue);
 				return;
-			case Sml2Package.SITUATION_PARTICIPANT__IS_PAST:
-				setIsPast((Boolean)newValue);
+			case Sml2Package.SITUATION_PARTICIPANT__TYPE:
+				setType((SituationType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -247,14 +244,14 @@ public class SituationParticipantImpl extends ParticipantImpl implements Situati
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case Sml2Package.SITUATION_PARTICIPANT__SITUATION_TYPE:
-				setSituationType((SituationType)null);
+			case Sml2Package.SITUATION_PARTICIPANT__TEMPORALITY:
+				setTemporality(TEMPORALITY_EDEFAULT);
 				return;
-			case Sml2Package.SITUATION_PARTICIPANT__PARAMETER:
-				getParameter().clear();
+			case Sml2Package.SITUATION_PARTICIPANT__REFERENCES:
+				getReferences().clear();
 				return;
-			case Sml2Package.SITUATION_PARTICIPANT__IS_PAST:
-				setIsPast(IS_PAST_EDEFAULT);
+			case Sml2Package.SITUATION_PARTICIPANT__TYPE:
+				setType((SituationType)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -268,12 +265,12 @@ public class SituationParticipantImpl extends ParticipantImpl implements Situati
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case Sml2Package.SITUATION_PARTICIPANT__SITUATION_TYPE:
-				return situationType != null;
-			case Sml2Package.SITUATION_PARTICIPANT__PARAMETER:
-				return parameter != null && !parameter.isEmpty();
-			case Sml2Package.SITUATION_PARTICIPANT__IS_PAST:
-				return isPast != IS_PAST_EDEFAULT;
+			case Sml2Package.SITUATION_PARTICIPANT__TEMPORALITY:
+				return temporality != TEMPORALITY_EDEFAULT;
+			case Sml2Package.SITUATION_PARTICIPANT__REFERENCES:
+				return references != null && !references.isEmpty();
+			case Sml2Package.SITUATION_PARTICIPANT__TYPE:
+				return type != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -288,8 +285,8 @@ public class SituationParticipantImpl extends ParticipantImpl implements Situati
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (isPast: ");
-		result.append(isPast);
+		result.append(" (temporality: ");
+		result.append(temporality);
 		result.append(')');
 		return result.toString();
 	}

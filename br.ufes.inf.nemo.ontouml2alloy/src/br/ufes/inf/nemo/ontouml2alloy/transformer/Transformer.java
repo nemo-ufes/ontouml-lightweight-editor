@@ -321,46 +321,24 @@ public class Transformer {
 	{
 		ArrayList<Declaration> attributesDeclaration = new ArrayList<Declaration>();
 		for(Property attr: ontoparser.getAttributes())		
-		{			
+		{
 			if (attr.getType().getName()!=null) 
 			{
+				String targetname;
 				if (attr.getType() instanceof PrimitiveType)
 				{
 					// AttributeName: set ClassOwner -> Int,
-					if (attr.getType().getName().compareToIgnoreCase("int")==0 || attr.getType().getName().compareToIgnoreCase("Integer")==0)
-					{
-						ArrowOperation aOp  = factory.createArrowOperation();
-						aOp = AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,"Int",attr.getLower(),attr.getUpper());
-						Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);	
-						if (decl!=null) attributesDeclaration.add(decl);					
-					}					
+					if (attr.getType().getName().compareToIgnoreCase("int")==0 || 
+							attr.getType().getName().compareToIgnoreCase("Integer")==0) { targetname = "Int"; }
 					
 					// AttributeName: set ClassOwner -> String_,
-					else if (attr.getType().getName().compareToIgnoreCase("String")==0)
-					{
-						ArrowOperation aOp  = factory.createArrowOperation();
-						aOp = AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,"String_",attr.getLower(),attr.getUpper());
-						Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);	
-						if (decl!=null) attributesDeclaration.add(decl);					
-					}
+					else if (attr.getType().getName().compareToIgnoreCase("String")==0) { targetname = "String_"; }
 					
 					// AttributeName: set ClassOwner -> Char,
-					else if (attr.getType().getName().compareToIgnoreCase("Char")==0)
-					{
-						ArrowOperation aOp  = factory.createArrowOperation();
-						aOp = AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,"Char",attr.getLower(),attr.getUpper());
-						Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);
-						if (decl!=null) attributesDeclaration.add(decl);					
-					}
+					else if (attr.getType().getName().compareToIgnoreCase("Char")==0) { targetname = "Char"; }
 					
 					// AttributeName: set ClassOwner -> Real,
-					else if (attr.getType().getName().compareToIgnoreCase("Real")==0)
-					{
-						ArrowOperation aOp  = factory.createArrowOperation();
-						aOp = AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,"Real",attr.getLower(),attr.getUpper());
-						Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);
-						if (decl!=null) attributesDeclaration.add(decl);					
-					}
+					else if (attr.getType().getName().compareToIgnoreCase("Real")==0) { targetname = "Real"; }
 					
 					else if (attr.getType().getName().compareToIgnoreCase("Boolean")==0)
 					{
@@ -376,21 +354,23 @@ public class Transformer {
 							Declaration decl = AlloyAPI.createDeclaration(factory,exists,ontoparser.getAlias(attr.eContainer()), sigProperty.getName());
 							if (decl!=null) attributesDeclaration.add(decl);
 						}
-					}
+						continue;
+						
+					} else { targetname = ontoparser.getAlias(attr.getType()); }
 					
-				}else{					
-					ArrowOperation aOp  = factory.createArrowOperation();
-					aOp = AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,ontoparser.getAlias(attr.getType()),attr.getLower(),attr.getUpper());
-					Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);
-					if (decl!=null) attributesDeclaration.add(decl);
-				}
+				} else { targetname = ontoparser.getAlias(attr.getType()); }
+				
+				ArrowOperation aOp  = 
+						AlloyAPI.createArrowOperation(factory,ontoparser.getAlias(attr.eContainer()),0,-1,targetname,attr.getLower(),attr.getUpper());
+				Declaration decl = AlloyAPI.createDeclaration(factory, ontoparser.getAlias(attr), aOp);	
+				if (decl!=null) attributesDeclaration.add(decl);	
 			}
 		}
 		// Sort classes declarations in the signature world
 		Collections.sort(attributesDeclaration, new DeclarationComparator());
 		
 		world.getRelation().addAll(attributesDeclaration);
-	}		
+	}	
 	
 	
 	/**

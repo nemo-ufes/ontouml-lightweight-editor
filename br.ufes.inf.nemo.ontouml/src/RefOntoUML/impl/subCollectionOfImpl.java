@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.subCollectionOf;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public class subCollectionOfImpl extends MeronymicImpl implements subCollectionO
 	}
 
 } //subCollectionOfImpl
+
+

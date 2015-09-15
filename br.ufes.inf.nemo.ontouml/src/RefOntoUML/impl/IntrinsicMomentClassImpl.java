@@ -10,17 +10,13 @@ import RefOntoUML.Characterization;
 import RefOntoUML.Classifier;
 import RefOntoUML.IntrinsicMomentClass;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -126,3 +122,5 @@ public abstract class IntrinsicMomentClassImpl extends MomentClassImpl implement
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //IntrinsicMomentClassImpl
+
+

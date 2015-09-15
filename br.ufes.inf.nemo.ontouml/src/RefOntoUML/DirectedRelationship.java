@@ -63,3 +63,5 @@ public interface DirectedRelationship extends Relationship {
 	EList<Element> getTarget();
 
 } // DirectedRelationship
+
+

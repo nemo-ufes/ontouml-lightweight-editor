@@ -47,3 +47,5 @@ public interface Enumeration extends DataType {
 	EList<EnumerationLiteral> getOwnedLiteral();
 
 } // Enumeration
+
+

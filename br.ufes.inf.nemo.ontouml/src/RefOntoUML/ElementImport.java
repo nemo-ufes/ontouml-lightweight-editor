@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 
 /**
@@ -212,3 +211,5 @@ public interface ElementImport extends DirectedRelationship {
 	String getName();
 
 } // ElementImport
+
+

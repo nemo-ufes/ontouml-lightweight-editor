@@ -10,17 +10,13 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.Structuration;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -196,3 +192,5 @@ public class StructurationImpl extends DependencyRelationshipImpl implements Str
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //StructurationImpl
+
+

@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
 
@@ -481,3 +480,5 @@ public interface Classifier extends Namespace, RedefinableElement, Type {
 	EList<GeneralizationSet> partitions();
 
 } // Classifier
+
+

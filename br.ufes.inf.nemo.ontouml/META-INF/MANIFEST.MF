@@ -11,4 +11,8 @@ Export-Package: RefOntoUML,
  RefOntoUML.impl,
  RefOntoUML.parser,
  RefOntoUML.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.ocl.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;visibility:=reexport
 Bundle-ActivationPolicy: lazy

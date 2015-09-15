@@ -46,3 +46,5 @@ public interface Relationship extends Element {
 	EList<Element> getRelatedElement();
 
 } // Relationship
+
+

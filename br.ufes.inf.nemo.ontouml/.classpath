@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-kepler-sr1/org.eclipse.ocl.common_1.1.0.v20130531-0544.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-kepler-sr1/org.eclipse.ocl.ecore_3.3.0.v20130520-1222.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-kepler-sr1/org.eclipse.osgi_3.9.1.v20130814-1242.jar"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

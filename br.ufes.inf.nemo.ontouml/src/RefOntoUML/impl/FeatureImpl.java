@@ -9,29 +9,19 @@ package RefOntoUML.impl;
 import RefOntoUML.Classifier;
 import RefOntoUML.Feature;
 import RefOntoUML.RefOntoUMLPackage;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EcoreEList;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.ecore.OCL.Helper;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -230,3 +220,5 @@ public abstract class FeatureImpl extends RedefinableElementImpl implements Feat
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //FeatureImpl
+
+

@@ -18,12 +18,5 @@
    </extension>
 
 
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated sml2 -->
-      <package
-            uri="http://www.example.org/sml2"
-            class="sml2.Sml2Package"
-            genModel="model/sml2.genmodel"/>
-   </extension>
-
+null
 </plugin>

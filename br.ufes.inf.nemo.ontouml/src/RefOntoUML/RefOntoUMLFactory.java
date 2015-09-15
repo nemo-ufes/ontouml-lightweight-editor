@@ -215,22 +215,22 @@ public interface RefOntoUMLFactory extends EFactory {
 	EnumerationLiteral createEnumerationLiteral();
 
 	/**
-	 * Returns a new object of class '<em>Ordinal Enumeration</em>'.
+	 * Returns a new object of class '<em>Measurement Enumeration</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Ordinal Enumeration</em>'.
+	 * @return a new object of class '<em>Measurement Enumeration</em>'.
 	 * @generated
 	 */
-	OrdinalEnumeration createOrdinalEnumeration();
+	MeasurementEnumeration createMeasurementEnumeration();
 
 	/**
-	 * Returns a new object of class '<em>Ordinal Literal</em>'.
+	 * Returns a new object of class '<em>Measurement Literal</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Ordinal Literal</em>'.
+	 * @return a new object of class '<em>Measurement Literal</em>'.
 	 * @generated
 	 */
-	OrdinalLiteral createOrdinalLiteral();
+	MeasurementLiteral createMeasurementLiteral();
 
 	/**
 	 * Returns a new object of class '<em>Primitive Type</em>'.

@@ -99,3 +99,5 @@ public interface Comment extends Element {
 	EList<Element> getAnnotatedElement();
 
 } // Comment
+
+

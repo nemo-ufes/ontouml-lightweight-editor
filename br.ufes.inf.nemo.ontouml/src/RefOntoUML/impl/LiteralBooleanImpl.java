@@ -8,11 +8,8 @@ package RefOntoUML.impl;
 
 import RefOntoUML.LiteralBoolean;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -164,3 +161,5 @@ public class LiteralBooleanImpl extends LiteralSpecificationImpl implements Lite
 	}
 
 } //LiteralBooleanImpl
+
+

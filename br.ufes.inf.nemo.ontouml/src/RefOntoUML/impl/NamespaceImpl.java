@@ -14,39 +14,28 @@ import RefOntoUML.PackageImport;
 import RefOntoUML.PackageableElement;
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.VisibilityKind;
-
 import RefOntoUML.util.RefOntoUMLValidator;
-
 import java.util.Collection;
 import java.util.Map;
-
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EObjectValidator;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.ecore.OCL.Helper;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -248,7 +237,6 @@ public abstract class NamespaceImpl extends NamedElementImpl implements Namespac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean members_distinguishable(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -530,3 +518,5 @@ public abstract class NamespaceImpl extends NamedElementImpl implements Namespac
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //NamespaceImpl
+
+

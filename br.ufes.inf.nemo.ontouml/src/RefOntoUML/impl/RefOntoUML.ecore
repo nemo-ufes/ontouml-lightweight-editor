@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="RefOntoUML"
-    nsURI="http://nemo.inf.ufes.br/ontouml/refontouml" nsPrefix="RefOntoUML">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="RefOntoUML" nsURI="http://nemo.inf.ufes.br/ontouml/refontouml"
+    nsPrefix="RefOntoUML">
   <eClassifiers xsi:type="ecore:EDataType" name="Integer" instanceClassName="int"/>
   <eClassifiers xsi:type="ecore:EDataType" name="Boolean" instanceClassName="boolean"/>
   <eClassifiers xsi:type="ecore:EDataType" name="String" instanceClassName="java.lang.String"/>
@@ -64,8 +63,7 @@
     <eOperations name="getApplicableStereotype" ordered="false">
       <eParameters name="qualifiedName" ordered="false" lowerBound="1" eType="#//String"/>
     </eOperations>
-    <eOperations name="getStereotypeApplications" ordered="false" upperBound="-1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eOperations name="getStereotypeApplications" ordered="false"/>
     <eOperations name="getRequiredStereotype" ordered="false">
       <eParameters name="qualifiedName" ordered="false" lowerBound="1" eType="#//String"/>
     </eOperations>
@@ -1492,30 +1490,45 @@
       <eAnnotations source="subsets" references="#//NamedElement/namespace"/>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OrdinalEnumeration" eSuperTypes="#//OrdinalDimension #//Enumeration">
+  <eClassifiers xsi:type="ecore:EClass" name="MeasurementEnumeration" eSuperTypes="#//Enumeration">
     <eAnnotations source="duplicates">
-      <contents xsi:type="ecore:EReference" name="ownedLiteral" upperBound="-1" eType="#//OrdinalLiteral"
-          containment="true" eOpposite="#//OrdinalLiteral/%duplicates%/enumeration">
+      <contents xsi:type="ecore:EReference" name="ownedLiteral" upperBound="-1" eType="#//MeasurementLiteral"
+          containment="true" eOpposite="#//MeasurementLiteral/%duplicates%/enumeration">
         <eAnnotations source="redefines" references="#//Enumeration/ownedLiteral"/>
       </contents>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="OrdinalEnumerationConstraint1"/>
+      <details key="constraints" value="MeasurementEnumerationConstraint1 MeasurementEnumerationConstraint2"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
-      <details key="OrdinalEnumerationConstraint1" value="ownedLiterals->size() > 1"/>
+      <details key="MeasurementEnumerationConstraint1" value="ownedLiteral->size() > 1"/>
+      <details key="MeasurementEnumerationConstraint2" value="if groundingStructure->isEmpty() then&#xD;&#xA;&#x9;false&#xD;&#xA;else&#xD;&#xA;&#x9;true&#xD;&#xA;endif"/>
     </eAnnotations>
     <eAnnotations source="Comments">
-      <details key="OrdinalEnumerationConstraint1" value="An OrdinalEnumeration should have two or more ordinal literals"/>
+      <details key="MeasurementEnumerationConstraint1" value="A Measurement Enumeration should have two or more ordinal literals"/>
+      <details key="MeasurementEnumerationConstraint2" value="A Measurement Enumeration needs to be grounded by a Measurement Structure"/>
     </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="groundingStructure" eType="#//MeasurementStructure"
+        containment="true" eOpposite="#//MeasurementStructure/groundedEnumeration"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OrdinalLiteral" eSuperTypes="#//EnumerationLiteral #//BasicMeasurementRegion">
+  <eClassifiers xsi:type="ecore:EClass" name="MeasurementLiteral" eSuperTypes="#//EnumerationLiteral">
     <eAnnotations source="duplicates">
-      <contents xsi:type="ecore:EReference" name="enumeration" eType="#//OrdinalEnumeration"
-          eOpposite="#//OrdinalEnumeration/%duplicates%/ownedLiteral">
+      <contents xsi:type="ecore:EReference" name="enumeration" eType="#//MeasurementEnumeration"
+          eOpposite="#//MeasurementEnumeration/%duplicates%/ownedLiteral">
         <eAnnotations source="redefines" references="#//NamedElement/namespace"/>
       </contents>
     </eAnnotations>
+    <eAnnotations source="Ecore">
+      <details key="constraints" value="MeasurementLiteralConstraint1"/>
+    </eAnnotations>
+    <eAnnotations source="OCL">
+      <details key="MeasurementLiteralConstraint1" value="if groundingRegion->isEmpty() then&#xD;&#xA;&#x9;false&#xD;&#xA;else&#xD;&#xA;&#x9;true&#xD;&#xA;endif"/>
+    </eAnnotations>
+    <eAnnotations source="Comments">
+      <details key="MeasurementLiteralConstraint1" value="A Measurement Literal needs to be grounded by a Measurement Region"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="groundingRegion" eType="#//MeasurementRegion"
+        containment="true" eOpposite="#//MeasurementRegion/groundedLiteral"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PrimitiveType" eSuperTypes="#//DataType"/>
   <eClassifiers xsi:type="ecore:EClass" name="ReferenceStructure" abstract="true"
@@ -1543,7 +1556,10 @@
     </eAnnotations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MeasurementStructure" abstract="true"
-      eSuperTypes="#//ReferenceStructure"/>
+      eSuperTypes="#//ReferenceStructure">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="groundedEnumeration" eType="#//MeasurementEnumeration"
+        eOpposite="#//MeasurementEnumeration/groundingStructure"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MeasurementDimension" abstract="true"
       eSuperTypes="#//MeasurementStructure">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
@@ -1699,11 +1715,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="compositionRule" ordered="false"
         eType="#//Expression" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ReferenceRegion" abstract="true" eSuperTypes="#//LiteralSpecification">
+  <eClassifiers xsi:type="ecore:EClass" name="ReferenceRegion" abstract="true" eSuperTypes="#//ValueSpecification">
     <eStructuralFeatures xsi:type="ecore:EReference" name="structure" ordered="false"
         eType="#//ReferenceStructure" eOpposite="#//ReferenceStructure/ownedRegions"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MeasurementRegion" abstract="true" eSuperTypes="#//ReferenceRegion"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MeasurementRegion" abstract="true" eSuperTypes="#//ReferenceRegion">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="groundedLiteral" eType="#//MeasurementLiteral"
+        eOpposite="#//MeasurementLiteral/groundingRegion"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="BasicMeasurementRegion" abstract="true"
       eSuperTypes="#//MeasurementRegion">
     <eAnnotations source="duplicates">

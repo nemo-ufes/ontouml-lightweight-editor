@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/br.ufes.inf.nemo.ontouml.refontouml/src"
-    modelPluginID="br.ufes.inf.nemo.ontouml.refontouml" templateDirectory="/br.ufes.inf.nemo.ontouml.refontouml/templates"
-    dynamicTemplates="true" modelName="RefOntoUML" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="6.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
-  <foreignModel>file:/A:/Desenvolvimento/Oracle%20Java/Workspace-Modeling/model/RefOntoUML.ecore</foreignModel>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/br.ufes.inf.nemo.ontouml/src" editDirectory="/br.ufes.inf.nemo.ontouml.edit/src"
+    editorDirectory="/br.ufes.inf.nemo.ontouml.editor/src" modelPluginID="br.ufes.inf.nemo.ontouml"
+    templateDirectory="/br.ufes.inf.nemo.ontouml/templates" dynamicTemplates="true"
+    modelName="RefOntoUML" importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0"
+    copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
+    importOrganizing="true">
+  <foreignModel>RefOntoUML.ecore</foreignModel>
   <modelPluginVariables>OCL_ECORE=org.eclipse.ocl.ecore</modelPluginVariables>
   <genPackages prefix="RefOntoUML" resource="XML" disposableProviderFactory="true"
       loadInitialization="true" literalsInterface="false" ecorePackage="RefOntoUML.ecore#/">
@@ -666,15 +667,21 @@
     <genClasses ecoreClass="RefOntoUML.ecore#//EnumerationLiteral">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//EnumerationLiteral/enumeration"/>
     </genClasses>
-    <genClasses ecoreClass="RefOntoUML.ecore#//OrdinalEnumeration"/>
-    <genClasses ecoreClass="RefOntoUML.ecore#//OrdinalLiteral"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//MeasurementEnumeration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MeasurementEnumeration/groundingStructure"/>
+    </genClasses>
+    <genClasses ecoreClass="RefOntoUML.ecore#//MeasurementLiteral">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MeasurementLiteral/groundingRegion"/>
+    </genClasses>
     <genClasses ecoreClass="RefOntoUML.ecore#//PrimitiveType"/>
     <genClasses image="false" ecoreClass="RefOntoUML.ecore#//ReferenceStructure">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RefOntoUML.ecore#//ReferenceStructure/ownedRegions"/>
     </genClasses>
     <genClasses ecoreClass="RefOntoUML.ecore#//NominalStructure"/>
     <genClasses ecoreClass="RefOntoUML.ecore#//StringNominalStructure"/>
-    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MeasurementStructure"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MeasurementStructure">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MeasurementStructure/groundedEnumeration"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MeasurementDimension">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MeasurementDimension/domain"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RefOntoUML.ecore#//MeasurementDimension/unitOfMeasure"/>
@@ -701,7 +708,9 @@
     <genClasses image="false" ecoreClass="RefOntoUML.ecore#//ReferenceRegion">
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//ReferenceRegion/structure"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MeasurementRegion"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MeasurementRegion">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference RefOntoUML.ecore#//MeasurementRegion/groundedLiteral"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="RefOntoUML.ecore#//BasicMeasurementRegion"/>
     <genClasses ecoreClass="RefOntoUML.ecore#//DecimalMeasurementRegion"/>
     <genClasses ecoreClass="RefOntoUML.ecore#//IntegerMeasurementRegion"/>
@@ -768,6 +777,10 @@
     </genClasses>
     <genClasses ecoreClass="RefOntoUML.ecore#//Mode"/>
     <genClasses ecoreClass="RefOntoUML.ecore#//Quality"/>
+    <genClasses image="false" ecoreClass="RefOntoUML.ecore#//MeasurableQuality"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//NominalQuality"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//NonPerceivableQuality"/>
+    <genClasses ecoreClass="RefOntoUML.ecore#//PerceivableQuality"/>
     <genClasses ecoreClass="RefOntoUML.ecore#//Relator">
       <genOperations ecoreOperation="RefOntoUML.ecore#//Relator/mediations"/>
       <genOperations ecoreOperation="RefOntoUML.ecore#//Relator/mediated"/>

@@ -1,0 +1,41 @@
+<%
+String derive = null;
+EStructuralFeature eFeature = genFeature.getEcoreFeature();
+EAnnotation ocl = eFeature.getEAnnotation(oclNsURI);
+if (ocl != null) derive = (String) ocl.getDetails().get("derive");
+if (derive == null) { %>
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+<% } else {
+	final String expr = genFeature.getSafeName() + "DeriveOCL";
+	if (genFeature.isListType()) { // we will need the feature to create the EcoreEList %>
+		<%=genModel.getImportedName("org.eclipse.emf.ecore.EStructuralFeature")%> eFeature = <%=genFeature.getQualifiedFeatureAccessor()%>;
+	<% } %>
+		if (<%=expr%> == null) { <% if (!genFeature.isListType()) { // declare locally for OCL initialization only %>
+			<%=genModel.getImportedName("org.eclipse.emf.ecore.EStructuralFeature")%> eFeature = (<%=genFeature.getQualifiedFeatureAccessor()%>);
+			<% } %>
+			<%=genModel.getImportedName("org.eclipse.ocl.ecore.OCL.Helper")%> helper = OCL_ENV.createOCLHelper();
+			helper.setAttributeContext(<%=genFeature.getGenClass().getQualifiedClassifierAccessor()%>, eFeature);
+			
+			<%=genModel.getImportedName("org.eclipse.emf.ecore.EAnnotation")%> ocl = eFeature.getEAnnotation(OCL_ANNOTATION_SOURCE);
+			String derive = (String) ocl.getDetails().get("derive");<%=genModel.getNonNLS()%>
+			
+			try {
+				<%=expr%> = helper.createQuery(derive);
+			} catch (<%=genModel.getImportedName("org.eclipse.ocl.ParserException")%> e) {
+				throw new UnsupportedOperationException(e.getLocalizedMessage());
+			}
+		}
+		
+		<%=genModel.getImportedName("org.eclipse.ocl.Query")%><<%=genModel.getImportedName("org.eclipse.emf.ecore.EClassifier")%>, ?, ?> query = OCL_ENV.createQuery(<%=expr%>);
+	<% if (genFeature.isListType()) { %>
+		@SuppressWarnings("unchecked")
+		<%=genModel.getImportedName("java.util.Collection")%><<%=genFeature.getListItemType()%>> result = (<%=genModel.getImportedName("java.util.Collection")%><<%=genFeature.getListItemType()%>>) query.evaluate(this);
+		return new <%=genModel.getImportedName("org.eclipse.emf.ecore.util.EcoreEList")%>.UnmodifiableEList<<%=genFeature.getListItemType()%>>(this, eFeature, result.size(), result.toArray());
+	<% } else if (genFeature.isPrimitiveType()) { %>
+		return ((<%=genFeature.getObjectType()%>) query.evaluate(this)).<%=genFeature.getPrimitiveValueFunction()%>();
+	<% } else { %>
+		return (<%=genFeature.getImportedType()%>) query.evaluate(this);
+	<% } %>
+<% } %>

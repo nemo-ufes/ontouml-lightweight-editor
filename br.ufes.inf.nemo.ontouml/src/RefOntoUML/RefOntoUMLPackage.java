@@ -5724,14 +5724,14 @@ public interface RefOntoUMLPackage extends EPackage {
 	int ENUMERATION_LITERAL_FEATURE_COUNT = INSTANCE_SPECIFICATION_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link RefOntoUML.impl.ReferenceStructureImpl <em>Reference Structure</em>}' class.
+	 * The meta object id for the '{@link RefOntoUML.impl.MeasurementEnumerationImpl <em>Measurement Enumeration</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see RefOntoUML.impl.ReferenceStructureImpl
-	 * @see RefOntoUML.impl.RefOntoUMLPackageImpl#getReferenceStructure()
+	 * @see RefOntoUML.impl.MeasurementEnumerationImpl
+	 * @see RefOntoUML.impl.RefOntoUMLPackageImpl#getMeasurementEnumeration()
 	 * @generated
 	 */
-	int REFERENCE_STRUCTURE = 39;
+	int MEASUREMENT_ENUMERATION = 36;
 
 	/**
 	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list.
@@ -5740,7 +5740,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__EANNOTATIONS = DATA_TYPE__EANNOTATIONS;
+	int MEASUREMENT_ENUMERATION__EANNOTATIONS = ENUMERATION__EANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -5749,7 +5749,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__OWNED_ELEMENT = DATA_TYPE__OWNED_ELEMENT;
+	int MEASUREMENT_ENUMERATION__OWNED_ELEMENT = ENUMERATION__OWNED_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Owner</b></em>' reference.
@@ -5758,7 +5758,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__OWNER = DATA_TYPE__OWNER;
+	int MEASUREMENT_ENUMERATION__OWNER = ENUMERATION__OWNER;
 
 	/**
 	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
@@ -5767,7 +5767,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__OWNED_COMMENT = DATA_TYPE__OWNED_COMMENT;
+	int MEASUREMENT_ENUMERATION__OWNED_COMMENT = ENUMERATION__OWNED_COMMENT;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5776,7 +5776,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__NAME = DATA_TYPE__NAME;
+	int MEASUREMENT_ENUMERATION__NAME = ENUMERATION__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
@@ -5785,7 +5785,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__VISIBILITY = DATA_TYPE__VISIBILITY;
+	int MEASUREMENT_ENUMERATION__VISIBILITY = ENUMERATION__VISIBILITY;
 
 	/**
 	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
@@ -5794,7 +5794,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__QUALIFIED_NAME = DATA_TYPE__QUALIFIED_NAME;
+	int MEASUREMENT_ENUMERATION__QUALIFIED_NAME = ENUMERATION__QUALIFIED_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
@@ -5803,7 +5803,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__CLIENT_DEPENDENCY = DATA_TYPE__CLIENT_DEPENDENCY;
+	int MEASUREMENT_ENUMERATION__CLIENT_DEPENDENCY = ENUMERATION__CLIENT_DEPENDENCY;
 
 	/**
 	 * The feature id for the '<em><b>Namespace</b></em>' reference.
@@ -5812,7 +5812,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__NAMESPACE = DATA_TYPE__NAMESPACE;
+	int MEASUREMENT_ENUMERATION__NAMESPACE = ENUMERATION__NAMESPACE;
 
 	/**
 	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
@@ -5821,7 +5821,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__NAME_EXPRESSION = DATA_TYPE__NAME_EXPRESSION;
+	int MEASUREMENT_ENUMERATION__NAME_EXPRESSION = ENUMERATION__NAME_EXPRESSION;
 
 	/**
 	 * The feature id for the '<em><b>Element Import</b></em>' containment reference list.
@@ -5830,7 +5830,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__ELEMENT_IMPORT = DATA_TYPE__ELEMENT_IMPORT;
+	int MEASUREMENT_ENUMERATION__ELEMENT_IMPORT = ENUMERATION__ELEMENT_IMPORT;
 
 	/**
 	 * The feature id for the '<em><b>Package Import</b></em>' containment reference list.
@@ -5839,7 +5839,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__PACKAGE_IMPORT = DATA_TYPE__PACKAGE_IMPORT;
+	int MEASUREMENT_ENUMERATION__PACKAGE_IMPORT = ENUMERATION__PACKAGE_IMPORT;
 
 	/**
 	 * The feature id for the '<em><b>Owned Rule</b></em>' containment reference list.
@@ -5848,7 +5848,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__OWNED_RULE = DATA_TYPE__OWNED_RULE;
+	int MEASUREMENT_ENUMERATION__OWNED_RULE = ENUMERATION__OWNED_RULE;
 
 	/**
 	 * The feature id for the '<em><b>Member</b></em>' reference list.
@@ -5857,7 +5857,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__MEMBER = DATA_TYPE__MEMBER;
+	int MEASUREMENT_ENUMERATION__MEMBER = ENUMERATION__MEMBER;
 
 	/**
 	 * The feature id for the '<em><b>Imported Member</b></em>' reference list.
@@ -5866,7 +5866,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__IMPORTED_MEMBER = DATA_TYPE__IMPORTED_MEMBER;
+	int MEASUREMENT_ENUMERATION__IMPORTED_MEMBER = ENUMERATION__IMPORTED_MEMBER;
 
 	/**
 	 * The feature id for the '<em><b>Owned Member</b></em>' reference list.
@@ -5875,7 +5875,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__OWNED_MEMBER = DATA_TYPE__OWNED_MEMBER;
+	int MEASUREMENT_ENUMERATION__OWNED_MEMBER = ENUMERATION__OWNED_MEMBER;
 
 	/**
 	 * The feature id for the '<em><b>Is Leaf</b></em>' attribute.
@@ -5884,7 +5884,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__IS_LEAF = DATA_TYPE__IS_LEAF;
+	int MEASUREMENT_ENUMERATION__IS_LEAF = ENUMERATION__IS_LEAF;
 
 	/**
 	 * The feature id for the '<em><b>Redefined Element</b></em>' reference list.
@@ -5893,7 +5893,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__REDEFINED_ELEMENT = DATA_TYPE__REDEFINED_ELEMENT;
+	int MEASUREMENT_ENUMERATION__REDEFINED_ELEMENT = ENUMERATION__REDEFINED_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Redefinition Context</b></em>' reference list.
@@ -5902,7 +5902,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__REDEFINITION_CONTEXT = DATA_TYPE__REDEFINITION_CONTEXT;
+	int MEASUREMENT_ENUMERATION__REDEFINITION_CONTEXT = ENUMERATION__REDEFINITION_CONTEXT;
 
 	/**
 	 * The feature id for the '<em><b>Package</b></em>' reference.
@@ -5911,7 +5911,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__PACKAGE = DATA_TYPE__PACKAGE;
+	int MEASUREMENT_ENUMERATION__PACKAGE = ENUMERATION__PACKAGE;
 
 	/**
 	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
@@ -5920,7 +5920,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__IS_ABSTRACT = DATA_TYPE__IS_ABSTRACT;
+	int MEASUREMENT_ENUMERATION__IS_ABSTRACT = ENUMERATION__IS_ABSTRACT;
 
 	/**
 	 * The feature id for the '<em><b>Generalization</b></em>' containment reference list.
@@ -5929,7 +5929,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__GENERALIZATION = DATA_TYPE__GENERALIZATION;
+	int MEASUREMENT_ENUMERATION__GENERALIZATION = ENUMERATION__GENERALIZATION;
 
 	/**
 	 * The feature id for the '<em><b>Powertype Extent</b></em>' reference list.
@@ -5938,7 +5938,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__POWERTYPE_EXTENT = DATA_TYPE__POWERTYPE_EXTENT;
+	int MEASUREMENT_ENUMERATION__POWERTYPE_EXTENT = ENUMERATION__POWERTYPE_EXTENT;
 
 	/**
 	 * The feature id for the '<em><b>Feature</b></em>' reference list.
@@ -5947,7 +5947,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__FEATURE = DATA_TYPE__FEATURE;
+	int MEASUREMENT_ENUMERATION__FEATURE = ENUMERATION__FEATURE;
 
 	/**
 	 * The feature id for the '<em><b>Inherited Member</b></em>' reference list.
@@ -5956,7 +5956,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__INHERITED_MEMBER = DATA_TYPE__INHERITED_MEMBER;
+	int MEASUREMENT_ENUMERATION__INHERITED_MEMBER = ENUMERATION__INHERITED_MEMBER;
 
 	/**
 	 * The feature id for the '<em><b>Redefined Classifier</b></em>' reference list.
@@ -5965,7 +5965,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__REDEFINED_CLASSIFIER = DATA_TYPE__REDEFINED_CLASSIFIER;
+	int MEASUREMENT_ENUMERATION__REDEFINED_CLASSIFIER = ENUMERATION__REDEFINED_CLASSIFIER;
 
 	/**
 	 * The feature id for the '<em><b>General</b></em>' reference list.
@@ -5974,7 +5974,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__GENERAL = DATA_TYPE__GENERAL;
+	int MEASUREMENT_ENUMERATION__GENERAL = ENUMERATION__GENERAL;
 
 	/**
 	 * The feature id for the '<em><b>Attribute</b></em>' reference list.
@@ -5983,7 +5983,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__ATTRIBUTE = DATA_TYPE__ATTRIBUTE;
+	int MEASUREMENT_ENUMERATION__ATTRIBUTE = ENUMERATION__ATTRIBUTE;
 
 	/**
 	 * The feature id for the '<em><b>Owned Attribute</b></em>' containment reference list.
@@ -5992,25 +5992,198 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__OWNED_ATTRIBUTE = DATA_TYPE__OWNED_ATTRIBUTE;
+	int MEASUREMENT_ENUMERATION__OWNED_ATTRIBUTE = ENUMERATION__OWNED_ATTRIBUTE;
 
 	/**
-	 * The feature id for the '<em><b>Owned Regions</b></em>' containment reference list.
+	 * The feature id for the '<em><b>Owned Literal</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE__OWNED_REGIONS = DATA_TYPE_FEATURE_COUNT + 0;
+	int MEASUREMENT_ENUMERATION__OWNED_LITERAL = ENUMERATION__OWNED_LITERAL;
 
 	/**
-	 * The number of structural features of the '<em>Reference Structure</em>' class.
+	 * The feature id for the '<em><b>Grounding Structure</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_STRUCTURE_FEATURE_COUNT = DATA_TYPE_FEATURE_COUNT + 1;
+	int MEASUREMENT_ENUMERATION__GROUNDING_STRUCTURE = ENUMERATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Measurement Enumeration</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_ENUMERATION_FEATURE_COUNT = ENUMERATION_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link RefOntoUML.impl.MeasurementLiteralImpl <em>Measurement Literal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see RefOntoUML.impl.MeasurementLiteralImpl
+	 * @see RefOntoUML.impl.RefOntoUMLPackageImpl#getMeasurementLiteral()
+	 * @generated
+	 */
+	int MEASUREMENT_LITERAL = 37;
+
+	/**
+	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__EANNOTATIONS = ENUMERATION_LITERAL__EANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__OWNED_ELEMENT = ENUMERATION_LITERAL__OWNED_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Owner</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__OWNER = ENUMERATION_LITERAL__OWNER;
+
+	/**
+	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__OWNED_COMMENT = ENUMERATION_LITERAL__OWNED_COMMENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__NAME = ENUMERATION_LITERAL__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__VISIBILITY = ENUMERATION_LITERAL__VISIBILITY;
+
+	/**
+	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__QUALIFIED_NAME = ENUMERATION_LITERAL__QUALIFIED_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__CLIENT_DEPENDENCY = ENUMERATION_LITERAL__CLIENT_DEPENDENCY;
+
+	/**
+	 * The feature id for the '<em><b>Namespace</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__NAMESPACE = ENUMERATION_LITERAL__NAMESPACE;
+
+	/**
+	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__NAME_EXPRESSION = ENUMERATION_LITERAL__NAME_EXPRESSION;
+
+	/**
+	 * The feature id for the '<em><b>Classifier</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__CLASSIFIER = ENUMERATION_LITERAL__CLASSIFIER;
+
+	/**
+	 * The feature id for the '<em><b>Slot</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__SLOT = ENUMERATION_LITERAL__SLOT;
+
+	/**
+	 * The feature id for the '<em><b>Specification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__SPECIFICATION = ENUMERATION_LITERAL__SPECIFICATION;
+
+	/**
+	 * The feature id for the '<em><b>Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__ENUMERATION = ENUMERATION_LITERAL__ENUMERATION;
+
+	/**
+	 * The feature id for the '<em><b>Grounding Region</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL__GROUNDING_REGION = ENUMERATION_LITERAL_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Measurement Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_LITERAL_FEATURE_COUNT = ENUMERATION_LITERAL_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link RefOntoUML.impl.ReferenceStructureImpl <em>Reference Structure</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see RefOntoUML.impl.ReferenceStructureImpl
+	 * @see RefOntoUML.impl.RefOntoUMLPackageImpl#getReferenceStructure()
+	 * @generated
+	 */
+	int REFERENCE_STRUCTURE = 39;
 
 	/**
 	 * The meta object id for the '{@link RefOntoUML.impl.MeasurementStructureImpl <em>Measurement Structure</em>}' class.
@@ -6023,285 +6196,6 @@ public interface RefOntoUMLPackage extends EPackage {
 	int MEASUREMENT_STRUCTURE = 42;
 
 	/**
-	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__EANNOTATIONS = REFERENCE_STRUCTURE__EANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__OWNED_ELEMENT = REFERENCE_STRUCTURE__OWNED_ELEMENT;
-
-	/**
-	 * The feature id for the '<em><b>Owner</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__OWNER = REFERENCE_STRUCTURE__OWNER;
-
-	/**
-	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__OWNED_COMMENT = REFERENCE_STRUCTURE__OWNED_COMMENT;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__NAME = REFERENCE_STRUCTURE__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__VISIBILITY = REFERENCE_STRUCTURE__VISIBILITY;
-
-	/**
-	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__QUALIFIED_NAME = REFERENCE_STRUCTURE__QUALIFIED_NAME;
-
-	/**
-	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__CLIENT_DEPENDENCY = REFERENCE_STRUCTURE__CLIENT_DEPENDENCY;
-
-	/**
-	 * The feature id for the '<em><b>Namespace</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__NAMESPACE = REFERENCE_STRUCTURE__NAMESPACE;
-
-	/**
-	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__NAME_EXPRESSION = REFERENCE_STRUCTURE__NAME_EXPRESSION;
-
-	/**
-	 * The feature id for the '<em><b>Element Import</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__ELEMENT_IMPORT = REFERENCE_STRUCTURE__ELEMENT_IMPORT;
-
-	/**
-	 * The feature id for the '<em><b>Package Import</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__PACKAGE_IMPORT = REFERENCE_STRUCTURE__PACKAGE_IMPORT;
-
-	/**
-	 * The feature id for the '<em><b>Owned Rule</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__OWNED_RULE = REFERENCE_STRUCTURE__OWNED_RULE;
-
-	/**
-	 * The feature id for the '<em><b>Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__MEMBER = REFERENCE_STRUCTURE__MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Imported Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__IMPORTED_MEMBER = REFERENCE_STRUCTURE__IMPORTED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Owned Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__OWNED_MEMBER = REFERENCE_STRUCTURE__OWNED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Is Leaf</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__IS_LEAF = REFERENCE_STRUCTURE__IS_LEAF;
-
-	/**
-	 * The feature id for the '<em><b>Redefined Element</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__REDEFINED_ELEMENT = REFERENCE_STRUCTURE__REDEFINED_ELEMENT;
-
-	/**
-	 * The feature id for the '<em><b>Redefinition Context</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__REDEFINITION_CONTEXT = REFERENCE_STRUCTURE__REDEFINITION_CONTEXT;
-
-	/**
-	 * The feature id for the '<em><b>Package</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__PACKAGE = REFERENCE_STRUCTURE__PACKAGE;
-
-	/**
-	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__IS_ABSTRACT = REFERENCE_STRUCTURE__IS_ABSTRACT;
-
-	/**
-	 * The feature id for the '<em><b>Generalization</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__GENERALIZATION = REFERENCE_STRUCTURE__GENERALIZATION;
-
-	/**
-	 * The feature id for the '<em><b>Powertype Extent</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__POWERTYPE_EXTENT = REFERENCE_STRUCTURE__POWERTYPE_EXTENT;
-
-	/**
-	 * The feature id for the '<em><b>Feature</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__FEATURE = REFERENCE_STRUCTURE__FEATURE;
-
-	/**
-	 * The feature id for the '<em><b>Inherited Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__INHERITED_MEMBER = REFERENCE_STRUCTURE__INHERITED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Redefined Classifier</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__REDEFINED_CLASSIFIER = REFERENCE_STRUCTURE__REDEFINED_CLASSIFIER;
-
-	/**
-	 * The feature id for the '<em><b>General</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__GENERAL = REFERENCE_STRUCTURE__GENERAL;
-
-	/**
-	 * The feature id for the '<em><b>Attribute</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__ATTRIBUTE = REFERENCE_STRUCTURE__ATTRIBUTE;
-
-	/**
-	 * The feature id for the '<em><b>Owned Attribute</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__OWNED_ATTRIBUTE = REFERENCE_STRUCTURE__OWNED_ATTRIBUTE;
-
-	/**
-	 * The feature id for the '<em><b>Owned Regions</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE__OWNED_REGIONS = REFERENCE_STRUCTURE__OWNED_REGIONS;
-
-	/**
-	 * The number of structural features of the '<em>Measurement Structure</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_STRUCTURE_FEATURE_COUNT = REFERENCE_STRUCTURE_FEATURE_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link RefOntoUML.impl.MeasurementDimensionImpl <em>Measurement Dimension</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6312,321 +6206,6 @@ public interface RefOntoUMLPackage extends EPackage {
 	int MEASUREMENT_DIMENSION = 43;
 
 	/**
-	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__EANNOTATIONS = MEASUREMENT_STRUCTURE__EANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__OWNED_ELEMENT = MEASUREMENT_STRUCTURE__OWNED_ELEMENT;
-
-	/**
-	 * The feature id for the '<em><b>Owner</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__OWNER = MEASUREMENT_STRUCTURE__OWNER;
-
-	/**
-	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__OWNED_COMMENT = MEASUREMENT_STRUCTURE__OWNED_COMMENT;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__NAME = MEASUREMENT_STRUCTURE__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__VISIBILITY = MEASUREMENT_STRUCTURE__VISIBILITY;
-
-	/**
-	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__QUALIFIED_NAME = MEASUREMENT_STRUCTURE__QUALIFIED_NAME;
-
-	/**
-	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__CLIENT_DEPENDENCY = MEASUREMENT_STRUCTURE__CLIENT_DEPENDENCY;
-
-	/**
-	 * The feature id for the '<em><b>Namespace</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__NAMESPACE = MEASUREMENT_STRUCTURE__NAMESPACE;
-
-	/**
-	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__NAME_EXPRESSION = MEASUREMENT_STRUCTURE__NAME_EXPRESSION;
-
-	/**
-	 * The feature id for the '<em><b>Element Import</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__ELEMENT_IMPORT = MEASUREMENT_STRUCTURE__ELEMENT_IMPORT;
-
-	/**
-	 * The feature id for the '<em><b>Package Import</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__PACKAGE_IMPORT = MEASUREMENT_STRUCTURE__PACKAGE_IMPORT;
-
-	/**
-	 * The feature id for the '<em><b>Owned Rule</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__OWNED_RULE = MEASUREMENT_STRUCTURE__OWNED_RULE;
-
-	/**
-	 * The feature id for the '<em><b>Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__MEMBER = MEASUREMENT_STRUCTURE__MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Imported Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__IMPORTED_MEMBER = MEASUREMENT_STRUCTURE__IMPORTED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Owned Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__OWNED_MEMBER = MEASUREMENT_STRUCTURE__OWNED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Is Leaf</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__IS_LEAF = MEASUREMENT_STRUCTURE__IS_LEAF;
-
-	/**
-	 * The feature id for the '<em><b>Redefined Element</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__REDEFINED_ELEMENT = MEASUREMENT_STRUCTURE__REDEFINED_ELEMENT;
-
-	/**
-	 * The feature id for the '<em><b>Redefinition Context</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__REDEFINITION_CONTEXT = MEASUREMENT_STRUCTURE__REDEFINITION_CONTEXT;
-
-	/**
-	 * The feature id for the '<em><b>Package</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__PACKAGE = MEASUREMENT_STRUCTURE__PACKAGE;
-
-	/**
-	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__IS_ABSTRACT = MEASUREMENT_STRUCTURE__IS_ABSTRACT;
-
-	/**
-	 * The feature id for the '<em><b>Generalization</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__GENERALIZATION = MEASUREMENT_STRUCTURE__GENERALIZATION;
-
-	/**
-	 * The feature id for the '<em><b>Powertype Extent</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__POWERTYPE_EXTENT = MEASUREMENT_STRUCTURE__POWERTYPE_EXTENT;
-
-	/**
-	 * The feature id for the '<em><b>Feature</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__FEATURE = MEASUREMENT_STRUCTURE__FEATURE;
-
-	/**
-	 * The feature id for the '<em><b>Inherited Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__INHERITED_MEMBER = MEASUREMENT_STRUCTURE__INHERITED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Redefined Classifier</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__REDEFINED_CLASSIFIER = MEASUREMENT_STRUCTURE__REDEFINED_CLASSIFIER;
-
-	/**
-	 * The feature id for the '<em><b>General</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__GENERAL = MEASUREMENT_STRUCTURE__GENERAL;
-
-	/**
-	 * The feature id for the '<em><b>Attribute</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__ATTRIBUTE = MEASUREMENT_STRUCTURE__ATTRIBUTE;
-
-	/**
-	 * The feature id for the '<em><b>Owned Attribute</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__OWNED_ATTRIBUTE = MEASUREMENT_STRUCTURE__OWNED_ATTRIBUTE;
-
-	/**
-	 * The feature id for the '<em><b>Owned Regions</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__OWNED_REGIONS = MEASUREMENT_STRUCTURE__OWNED_REGIONS;
-
-	/**
-	 * The feature id for the '<em><b>Domain</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__DOMAIN = MEASUREMENT_STRUCTURE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Unit Of Measure</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__UNIT_OF_MEASURE = MEASUREMENT_STRUCTURE_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Lower Bound</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__LOWER_BOUND = MEASUREMENT_STRUCTURE_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Upper Bound</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION__UPPER_BOUND = MEASUREMENT_STRUCTURE_FEATURE_COUNT + 3;
-
-	/**
-	 * The number of structural features of the '<em>Measurement Dimension</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MEASUREMENT_DIMENSION_FEATURE_COUNT = MEASUREMENT_STRUCTURE_FEATURE_COUNT + 4;
-
-	/**
 	 * The meta object id for the '{@link RefOntoUML.impl.OrdinalDimensionImpl <em>Ordinal Dimension</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6635,818 +6214,6 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 */
 	int ORDINAL_DIMENSION = 44;
-
-	/**
-	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__EANNOTATIONS = MEASUREMENT_DIMENSION__EANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__OWNED_ELEMENT = MEASUREMENT_DIMENSION__OWNED_ELEMENT;
-
-	/**
-	 * The feature id for the '<em><b>Owner</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__OWNER = MEASUREMENT_DIMENSION__OWNER;
-
-	/**
-	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__OWNED_COMMENT = MEASUREMENT_DIMENSION__OWNED_COMMENT;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__NAME = MEASUREMENT_DIMENSION__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__VISIBILITY = MEASUREMENT_DIMENSION__VISIBILITY;
-
-	/**
-	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__QUALIFIED_NAME = MEASUREMENT_DIMENSION__QUALIFIED_NAME;
-
-	/**
-	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__CLIENT_DEPENDENCY = MEASUREMENT_DIMENSION__CLIENT_DEPENDENCY;
-
-	/**
-	 * The feature id for the '<em><b>Namespace</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__NAMESPACE = MEASUREMENT_DIMENSION__NAMESPACE;
-
-	/**
-	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__NAME_EXPRESSION = MEASUREMENT_DIMENSION__NAME_EXPRESSION;
-
-	/**
-	 * The feature id for the '<em><b>Element Import</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__ELEMENT_IMPORT = MEASUREMENT_DIMENSION__ELEMENT_IMPORT;
-
-	/**
-	 * The feature id for the '<em><b>Package Import</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__PACKAGE_IMPORT = MEASUREMENT_DIMENSION__PACKAGE_IMPORT;
-
-	/**
-	 * The feature id for the '<em><b>Owned Rule</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__OWNED_RULE = MEASUREMENT_DIMENSION__OWNED_RULE;
-
-	/**
-	 * The feature id for the '<em><b>Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__MEMBER = MEASUREMENT_DIMENSION__MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Imported Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__IMPORTED_MEMBER = MEASUREMENT_DIMENSION__IMPORTED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Owned Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__OWNED_MEMBER = MEASUREMENT_DIMENSION__OWNED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Is Leaf</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__IS_LEAF = MEASUREMENT_DIMENSION__IS_LEAF;
-
-	/**
-	 * The feature id for the '<em><b>Redefined Element</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__REDEFINED_ELEMENT = MEASUREMENT_DIMENSION__REDEFINED_ELEMENT;
-
-	/**
-	 * The feature id for the '<em><b>Redefinition Context</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__REDEFINITION_CONTEXT = MEASUREMENT_DIMENSION__REDEFINITION_CONTEXT;
-
-	/**
-	 * The feature id for the '<em><b>Package</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__PACKAGE = MEASUREMENT_DIMENSION__PACKAGE;
-
-	/**
-	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__IS_ABSTRACT = MEASUREMENT_DIMENSION__IS_ABSTRACT;
-
-	/**
-	 * The feature id for the '<em><b>Generalization</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__GENERALIZATION = MEASUREMENT_DIMENSION__GENERALIZATION;
-
-	/**
-	 * The feature id for the '<em><b>Powertype Extent</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__POWERTYPE_EXTENT = MEASUREMENT_DIMENSION__POWERTYPE_EXTENT;
-
-	/**
-	 * The feature id for the '<em><b>Feature</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__FEATURE = MEASUREMENT_DIMENSION__FEATURE;
-
-	/**
-	 * The feature id for the '<em><b>Inherited Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__INHERITED_MEMBER = MEASUREMENT_DIMENSION__INHERITED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Redefined Classifier</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__REDEFINED_CLASSIFIER = MEASUREMENT_DIMENSION__REDEFINED_CLASSIFIER;
-
-	/**
-	 * The feature id for the '<em><b>General</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__GENERAL = MEASUREMENT_DIMENSION__GENERAL;
-
-	/**
-	 * The feature id for the '<em><b>Attribute</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__ATTRIBUTE = MEASUREMENT_DIMENSION__ATTRIBUTE;
-
-	/**
-	 * The feature id for the '<em><b>Owned Attribute</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__OWNED_ATTRIBUTE = MEASUREMENT_DIMENSION__OWNED_ATTRIBUTE;
-
-	/**
-	 * The feature id for the '<em><b>Owned Regions</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__OWNED_REGIONS = MEASUREMENT_DIMENSION__OWNED_REGIONS;
-
-	/**
-	 * The feature id for the '<em><b>Domain</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__DOMAIN = MEASUREMENT_DIMENSION__DOMAIN;
-
-	/**
-	 * The feature id for the '<em><b>Unit Of Measure</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__UNIT_OF_MEASURE = MEASUREMENT_DIMENSION__UNIT_OF_MEASURE;
-
-	/**
-	 * The feature id for the '<em><b>Lower Bound</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__LOWER_BOUND = MEASUREMENT_DIMENSION__LOWER_BOUND;
-
-	/**
-	 * The feature id for the '<em><b>Upper Bound</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION__UPPER_BOUND = MEASUREMENT_DIMENSION__UPPER_BOUND;
-
-	/**
-	 * The number of structural features of the '<em>Ordinal Dimension</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_DIMENSION_FEATURE_COUNT = MEASUREMENT_DIMENSION_FEATURE_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link RefOntoUML.impl.OrdinalEnumerationImpl <em>Ordinal Enumeration</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see RefOntoUML.impl.OrdinalEnumerationImpl
-	 * @see RefOntoUML.impl.RefOntoUMLPackageImpl#getOrdinalEnumeration()
-	 * @generated
-	 */
-	int ORDINAL_ENUMERATION = 36;
-
-	/**
-	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__EANNOTATIONS = ORDINAL_DIMENSION__EANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__OWNED_ELEMENT = ORDINAL_DIMENSION__OWNED_ELEMENT;
-
-	/**
-	 * The feature id for the '<em><b>Owner</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__OWNER = ORDINAL_DIMENSION__OWNER;
-
-	/**
-	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__OWNED_COMMENT = ORDINAL_DIMENSION__OWNED_COMMENT;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__NAME = ORDINAL_DIMENSION__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__VISIBILITY = ORDINAL_DIMENSION__VISIBILITY;
-
-	/**
-	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__QUALIFIED_NAME = ORDINAL_DIMENSION__QUALIFIED_NAME;
-
-	/**
-	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__CLIENT_DEPENDENCY = ORDINAL_DIMENSION__CLIENT_DEPENDENCY;
-
-	/**
-	 * The feature id for the '<em><b>Namespace</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__NAMESPACE = ORDINAL_DIMENSION__NAMESPACE;
-
-	/**
-	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__NAME_EXPRESSION = ORDINAL_DIMENSION__NAME_EXPRESSION;
-
-	/**
-	 * The feature id for the '<em><b>Element Import</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__ELEMENT_IMPORT = ORDINAL_DIMENSION__ELEMENT_IMPORT;
-
-	/**
-	 * The feature id for the '<em><b>Package Import</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__PACKAGE_IMPORT = ORDINAL_DIMENSION__PACKAGE_IMPORT;
-
-	/**
-	 * The feature id for the '<em><b>Owned Rule</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__OWNED_RULE = ORDINAL_DIMENSION__OWNED_RULE;
-
-	/**
-	 * The feature id for the '<em><b>Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__MEMBER = ORDINAL_DIMENSION__MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Imported Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__IMPORTED_MEMBER = ORDINAL_DIMENSION__IMPORTED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Owned Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__OWNED_MEMBER = ORDINAL_DIMENSION__OWNED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Is Leaf</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__IS_LEAF = ORDINAL_DIMENSION__IS_LEAF;
-
-	/**
-	 * The feature id for the '<em><b>Redefined Element</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__REDEFINED_ELEMENT = ORDINAL_DIMENSION__REDEFINED_ELEMENT;
-
-	/**
-	 * The feature id for the '<em><b>Redefinition Context</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__REDEFINITION_CONTEXT = ORDINAL_DIMENSION__REDEFINITION_CONTEXT;
-
-	/**
-	 * The feature id for the '<em><b>Package</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__PACKAGE = ORDINAL_DIMENSION__PACKAGE;
-
-	/**
-	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__IS_ABSTRACT = ORDINAL_DIMENSION__IS_ABSTRACT;
-
-	/**
-	 * The feature id for the '<em><b>Generalization</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__GENERALIZATION = ORDINAL_DIMENSION__GENERALIZATION;
-
-	/**
-	 * The feature id for the '<em><b>Powertype Extent</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__POWERTYPE_EXTENT = ORDINAL_DIMENSION__POWERTYPE_EXTENT;
-
-	/**
-	 * The feature id for the '<em><b>Feature</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__FEATURE = ORDINAL_DIMENSION__FEATURE;
-
-	/**
-	 * The feature id for the '<em><b>Inherited Member</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__INHERITED_MEMBER = ORDINAL_DIMENSION__INHERITED_MEMBER;
-
-	/**
-	 * The feature id for the '<em><b>Redefined Classifier</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__REDEFINED_CLASSIFIER = ORDINAL_DIMENSION__REDEFINED_CLASSIFIER;
-
-	/**
-	 * The feature id for the '<em><b>General</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__GENERAL = ORDINAL_DIMENSION__GENERAL;
-
-	/**
-	 * The feature id for the '<em><b>Attribute</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__ATTRIBUTE = ORDINAL_DIMENSION__ATTRIBUTE;
-
-	/**
-	 * The feature id for the '<em><b>Owned Attribute</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__OWNED_ATTRIBUTE = ORDINAL_DIMENSION__OWNED_ATTRIBUTE;
-
-	/**
-	 * The feature id for the '<em><b>Owned Regions</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__OWNED_REGIONS = ORDINAL_DIMENSION__OWNED_REGIONS;
-
-	/**
-	 * The feature id for the '<em><b>Domain</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__DOMAIN = ORDINAL_DIMENSION__DOMAIN;
-
-	/**
-	 * The feature id for the '<em><b>Unit Of Measure</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__UNIT_OF_MEASURE = ORDINAL_DIMENSION__UNIT_OF_MEASURE;
-
-	/**
-	 * The feature id for the '<em><b>Lower Bound</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__LOWER_BOUND = ORDINAL_DIMENSION__LOWER_BOUND;
-
-	/**
-	 * The feature id for the '<em><b>Upper Bound</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__UPPER_BOUND = ORDINAL_DIMENSION__UPPER_BOUND;
-
-	/**
-	 * The feature id for the '<em><b>Owned Literal</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION__OWNED_LITERAL = ORDINAL_DIMENSION_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of structural features of the '<em>Ordinal Enumeration</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_ENUMERATION_FEATURE_COUNT = ORDINAL_DIMENSION_FEATURE_COUNT + 1;
-
-	/**
-	 * The meta object id for the '{@link RefOntoUML.impl.OrdinalLiteralImpl <em>Ordinal Literal</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see RefOntoUML.impl.OrdinalLiteralImpl
-	 * @see RefOntoUML.impl.RefOntoUMLPackageImpl#getOrdinalLiteral()
-	 * @generated
-	 */
-	int ORDINAL_LITERAL = 37;
-
-	/**
-	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__EANNOTATIONS = ENUMERATION_LITERAL__EANNOTATIONS;
-
-	/**
-	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__OWNED_ELEMENT = ENUMERATION_LITERAL__OWNED_ELEMENT;
-
-	/**
-	 * The feature id for the '<em><b>Owner</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__OWNER = ENUMERATION_LITERAL__OWNER;
-
-	/**
-	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__OWNED_COMMENT = ENUMERATION_LITERAL__OWNED_COMMENT;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__NAME = ENUMERATION_LITERAL__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__VISIBILITY = ENUMERATION_LITERAL__VISIBILITY;
-
-	/**
-	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__QUALIFIED_NAME = ENUMERATION_LITERAL__QUALIFIED_NAME;
-
-	/**
-	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__CLIENT_DEPENDENCY = ENUMERATION_LITERAL__CLIENT_DEPENDENCY;
-
-	/**
-	 * The feature id for the '<em><b>Namespace</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__NAMESPACE = ENUMERATION_LITERAL__NAMESPACE;
-
-	/**
-	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__NAME_EXPRESSION = ENUMERATION_LITERAL__NAME_EXPRESSION;
-
-	/**
-	 * The feature id for the '<em><b>Classifier</b></em>' reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__CLASSIFIER = ENUMERATION_LITERAL__CLASSIFIER;
-
-	/**
-	 * The feature id for the '<em><b>Slot</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__SLOT = ENUMERATION_LITERAL__SLOT;
-
-	/**
-	 * The feature id for the '<em><b>Specification</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__SPECIFICATION = ENUMERATION_LITERAL__SPECIFICATION;
-
-	/**
-	 * The feature id for the '<em><b>Enumeration</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__ENUMERATION = ENUMERATION_LITERAL__ENUMERATION;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__TYPE = ENUMERATION_LITERAL_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Structure</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL__STRUCTURE = ENUMERATION_LITERAL_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>Ordinal Literal</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ORDINAL_LITERAL_FEATURE_COUNT = ENUMERATION_LITERAL_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link RefOntoUML.impl.PrimitiveTypeImpl <em>Primitive Type</em>}' class.
@@ -7727,6 +6494,285 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @ordered
 	 */
 	int PRIMITIVE_TYPE_FEATURE_COUNT = DATA_TYPE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__EANNOTATIONS = DATA_TYPE__EANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__OWNED_ELEMENT = DATA_TYPE__OWNED_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Owner</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__OWNER = DATA_TYPE__OWNER;
+
+	/**
+	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__OWNED_COMMENT = DATA_TYPE__OWNED_COMMENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__NAME = DATA_TYPE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__VISIBILITY = DATA_TYPE__VISIBILITY;
+
+	/**
+	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__QUALIFIED_NAME = DATA_TYPE__QUALIFIED_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__CLIENT_DEPENDENCY = DATA_TYPE__CLIENT_DEPENDENCY;
+
+	/**
+	 * The feature id for the '<em><b>Namespace</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__NAMESPACE = DATA_TYPE__NAMESPACE;
+
+	/**
+	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__NAME_EXPRESSION = DATA_TYPE__NAME_EXPRESSION;
+
+	/**
+	 * The feature id for the '<em><b>Element Import</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__ELEMENT_IMPORT = DATA_TYPE__ELEMENT_IMPORT;
+
+	/**
+	 * The feature id for the '<em><b>Package Import</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__PACKAGE_IMPORT = DATA_TYPE__PACKAGE_IMPORT;
+
+	/**
+	 * The feature id for the '<em><b>Owned Rule</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__OWNED_RULE = DATA_TYPE__OWNED_RULE;
+
+	/**
+	 * The feature id for the '<em><b>Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__MEMBER = DATA_TYPE__MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Imported Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__IMPORTED_MEMBER = DATA_TYPE__IMPORTED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Owned Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__OWNED_MEMBER = DATA_TYPE__OWNED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Is Leaf</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__IS_LEAF = DATA_TYPE__IS_LEAF;
+
+	/**
+	 * The feature id for the '<em><b>Redefined Element</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__REDEFINED_ELEMENT = DATA_TYPE__REDEFINED_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Redefinition Context</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__REDEFINITION_CONTEXT = DATA_TYPE__REDEFINITION_CONTEXT;
+
+	/**
+	 * The feature id for the '<em><b>Package</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__PACKAGE = DATA_TYPE__PACKAGE;
+
+	/**
+	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__IS_ABSTRACT = DATA_TYPE__IS_ABSTRACT;
+
+	/**
+	 * The feature id for the '<em><b>Generalization</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__GENERALIZATION = DATA_TYPE__GENERALIZATION;
+
+	/**
+	 * The feature id for the '<em><b>Powertype Extent</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__POWERTYPE_EXTENT = DATA_TYPE__POWERTYPE_EXTENT;
+
+	/**
+	 * The feature id for the '<em><b>Feature</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__FEATURE = DATA_TYPE__FEATURE;
+
+	/**
+	 * The feature id for the '<em><b>Inherited Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__INHERITED_MEMBER = DATA_TYPE__INHERITED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Redefined Classifier</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__REDEFINED_CLASSIFIER = DATA_TYPE__REDEFINED_CLASSIFIER;
+
+	/**
+	 * The feature id for the '<em><b>General</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__GENERAL = DATA_TYPE__GENERAL;
+
+	/**
+	 * The feature id for the '<em><b>Attribute</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__ATTRIBUTE = DATA_TYPE__ATTRIBUTE;
+
+	/**
+	 * The feature id for the '<em><b>Owned Attribute</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__OWNED_ATTRIBUTE = DATA_TYPE__OWNED_ATTRIBUTE;
+
+	/**
+	 * The feature id for the '<em><b>Owned Regions</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE__OWNED_REGIONS = DATA_TYPE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Reference Structure</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_STRUCTURE_FEATURE_COUNT = DATA_TYPE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link RefOntoUML.impl.NominalStructureImpl <em>Nominal Structure</em>}' class.
@@ -8307,6 +7353,942 @@ public interface RefOntoUMLPackage extends EPackage {
 	int STRING_NOMINAL_STRUCTURE_FEATURE_COUNT = NOMINAL_STRUCTURE_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__EANNOTATIONS = REFERENCE_STRUCTURE__EANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__OWNED_ELEMENT = REFERENCE_STRUCTURE__OWNED_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Owner</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__OWNER = REFERENCE_STRUCTURE__OWNER;
+
+	/**
+	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__OWNED_COMMENT = REFERENCE_STRUCTURE__OWNED_COMMENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__NAME = REFERENCE_STRUCTURE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__VISIBILITY = REFERENCE_STRUCTURE__VISIBILITY;
+
+	/**
+	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__QUALIFIED_NAME = REFERENCE_STRUCTURE__QUALIFIED_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__CLIENT_DEPENDENCY = REFERENCE_STRUCTURE__CLIENT_DEPENDENCY;
+
+	/**
+	 * The feature id for the '<em><b>Namespace</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__NAMESPACE = REFERENCE_STRUCTURE__NAMESPACE;
+
+	/**
+	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__NAME_EXPRESSION = REFERENCE_STRUCTURE__NAME_EXPRESSION;
+
+	/**
+	 * The feature id for the '<em><b>Element Import</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__ELEMENT_IMPORT = REFERENCE_STRUCTURE__ELEMENT_IMPORT;
+
+	/**
+	 * The feature id for the '<em><b>Package Import</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__PACKAGE_IMPORT = REFERENCE_STRUCTURE__PACKAGE_IMPORT;
+
+	/**
+	 * The feature id for the '<em><b>Owned Rule</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__OWNED_RULE = REFERENCE_STRUCTURE__OWNED_RULE;
+
+	/**
+	 * The feature id for the '<em><b>Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__MEMBER = REFERENCE_STRUCTURE__MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Imported Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__IMPORTED_MEMBER = REFERENCE_STRUCTURE__IMPORTED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Owned Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__OWNED_MEMBER = REFERENCE_STRUCTURE__OWNED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Is Leaf</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__IS_LEAF = REFERENCE_STRUCTURE__IS_LEAF;
+
+	/**
+	 * The feature id for the '<em><b>Redefined Element</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__REDEFINED_ELEMENT = REFERENCE_STRUCTURE__REDEFINED_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Redefinition Context</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__REDEFINITION_CONTEXT = REFERENCE_STRUCTURE__REDEFINITION_CONTEXT;
+
+	/**
+	 * The feature id for the '<em><b>Package</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__PACKAGE = REFERENCE_STRUCTURE__PACKAGE;
+
+	/**
+	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__IS_ABSTRACT = REFERENCE_STRUCTURE__IS_ABSTRACT;
+
+	/**
+	 * The feature id for the '<em><b>Generalization</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__GENERALIZATION = REFERENCE_STRUCTURE__GENERALIZATION;
+
+	/**
+	 * The feature id for the '<em><b>Powertype Extent</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__POWERTYPE_EXTENT = REFERENCE_STRUCTURE__POWERTYPE_EXTENT;
+
+	/**
+	 * The feature id for the '<em><b>Feature</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__FEATURE = REFERENCE_STRUCTURE__FEATURE;
+
+	/**
+	 * The feature id for the '<em><b>Inherited Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__INHERITED_MEMBER = REFERENCE_STRUCTURE__INHERITED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Redefined Classifier</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__REDEFINED_CLASSIFIER = REFERENCE_STRUCTURE__REDEFINED_CLASSIFIER;
+
+	/**
+	 * The feature id for the '<em><b>General</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__GENERAL = REFERENCE_STRUCTURE__GENERAL;
+
+	/**
+	 * The feature id for the '<em><b>Attribute</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__ATTRIBUTE = REFERENCE_STRUCTURE__ATTRIBUTE;
+
+	/**
+	 * The feature id for the '<em><b>Owned Attribute</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__OWNED_ATTRIBUTE = REFERENCE_STRUCTURE__OWNED_ATTRIBUTE;
+
+	/**
+	 * The feature id for the '<em><b>Owned Regions</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__OWNED_REGIONS = REFERENCE_STRUCTURE__OWNED_REGIONS;
+
+	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE__GROUNDED_ENUMERATION = REFERENCE_STRUCTURE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Measurement Structure</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_STRUCTURE_FEATURE_COUNT = REFERENCE_STRUCTURE_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__EANNOTATIONS = MEASUREMENT_STRUCTURE__EANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__OWNED_ELEMENT = MEASUREMENT_STRUCTURE__OWNED_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Owner</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__OWNER = MEASUREMENT_STRUCTURE__OWNER;
+
+	/**
+	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__OWNED_COMMENT = MEASUREMENT_STRUCTURE__OWNED_COMMENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__NAME = MEASUREMENT_STRUCTURE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__VISIBILITY = MEASUREMENT_STRUCTURE__VISIBILITY;
+
+	/**
+	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__QUALIFIED_NAME = MEASUREMENT_STRUCTURE__QUALIFIED_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__CLIENT_DEPENDENCY = MEASUREMENT_STRUCTURE__CLIENT_DEPENDENCY;
+
+	/**
+	 * The feature id for the '<em><b>Namespace</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__NAMESPACE = MEASUREMENT_STRUCTURE__NAMESPACE;
+
+	/**
+	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__NAME_EXPRESSION = MEASUREMENT_STRUCTURE__NAME_EXPRESSION;
+
+	/**
+	 * The feature id for the '<em><b>Element Import</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__ELEMENT_IMPORT = MEASUREMENT_STRUCTURE__ELEMENT_IMPORT;
+
+	/**
+	 * The feature id for the '<em><b>Package Import</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__PACKAGE_IMPORT = MEASUREMENT_STRUCTURE__PACKAGE_IMPORT;
+
+	/**
+	 * The feature id for the '<em><b>Owned Rule</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__OWNED_RULE = MEASUREMENT_STRUCTURE__OWNED_RULE;
+
+	/**
+	 * The feature id for the '<em><b>Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__MEMBER = MEASUREMENT_STRUCTURE__MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Imported Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__IMPORTED_MEMBER = MEASUREMENT_STRUCTURE__IMPORTED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Owned Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__OWNED_MEMBER = MEASUREMENT_STRUCTURE__OWNED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Is Leaf</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__IS_LEAF = MEASUREMENT_STRUCTURE__IS_LEAF;
+
+	/**
+	 * The feature id for the '<em><b>Redefined Element</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__REDEFINED_ELEMENT = MEASUREMENT_STRUCTURE__REDEFINED_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Redefinition Context</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__REDEFINITION_CONTEXT = MEASUREMENT_STRUCTURE__REDEFINITION_CONTEXT;
+
+	/**
+	 * The feature id for the '<em><b>Package</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__PACKAGE = MEASUREMENT_STRUCTURE__PACKAGE;
+
+	/**
+	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__IS_ABSTRACT = MEASUREMENT_STRUCTURE__IS_ABSTRACT;
+
+	/**
+	 * The feature id for the '<em><b>Generalization</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__GENERALIZATION = MEASUREMENT_STRUCTURE__GENERALIZATION;
+
+	/**
+	 * The feature id for the '<em><b>Powertype Extent</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__POWERTYPE_EXTENT = MEASUREMENT_STRUCTURE__POWERTYPE_EXTENT;
+
+	/**
+	 * The feature id for the '<em><b>Feature</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__FEATURE = MEASUREMENT_STRUCTURE__FEATURE;
+
+	/**
+	 * The feature id for the '<em><b>Inherited Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__INHERITED_MEMBER = MEASUREMENT_STRUCTURE__INHERITED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Redefined Classifier</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__REDEFINED_CLASSIFIER = MEASUREMENT_STRUCTURE__REDEFINED_CLASSIFIER;
+
+	/**
+	 * The feature id for the '<em><b>General</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__GENERAL = MEASUREMENT_STRUCTURE__GENERAL;
+
+	/**
+	 * The feature id for the '<em><b>Attribute</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__ATTRIBUTE = MEASUREMENT_STRUCTURE__ATTRIBUTE;
+
+	/**
+	 * The feature id for the '<em><b>Owned Attribute</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__OWNED_ATTRIBUTE = MEASUREMENT_STRUCTURE__OWNED_ATTRIBUTE;
+
+	/**
+	 * The feature id for the '<em><b>Owned Regions</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__OWNED_REGIONS = MEASUREMENT_STRUCTURE__OWNED_REGIONS;
+
+	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__GROUNDED_ENUMERATION = MEASUREMENT_STRUCTURE__GROUNDED_ENUMERATION;
+
+	/**
+	 * The feature id for the '<em><b>Domain</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__DOMAIN = MEASUREMENT_STRUCTURE_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Unit Of Measure</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__UNIT_OF_MEASURE = MEASUREMENT_STRUCTURE_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__LOWER_BOUND = MEASUREMENT_STRUCTURE_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION__UPPER_BOUND = MEASUREMENT_STRUCTURE_FEATURE_COUNT + 3;
+
+	/**
+	 * The number of structural features of the '<em>Measurement Dimension</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DIMENSION_FEATURE_COUNT = MEASUREMENT_STRUCTURE_FEATURE_COUNT + 4;
+
+	/**
+	 * The feature id for the '<em><b>EAnnotations</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__EANNOTATIONS = MEASUREMENT_DIMENSION__EANNOTATIONS;
+
+	/**
+	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__OWNED_ELEMENT = MEASUREMENT_DIMENSION__OWNED_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Owner</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__OWNER = MEASUREMENT_DIMENSION__OWNER;
+
+	/**
+	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__OWNED_COMMENT = MEASUREMENT_DIMENSION__OWNED_COMMENT;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__NAME = MEASUREMENT_DIMENSION__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__VISIBILITY = MEASUREMENT_DIMENSION__VISIBILITY;
+
+	/**
+	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__QUALIFIED_NAME = MEASUREMENT_DIMENSION__QUALIFIED_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__CLIENT_DEPENDENCY = MEASUREMENT_DIMENSION__CLIENT_DEPENDENCY;
+
+	/**
+	 * The feature id for the '<em><b>Namespace</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__NAMESPACE = MEASUREMENT_DIMENSION__NAMESPACE;
+
+	/**
+	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__NAME_EXPRESSION = MEASUREMENT_DIMENSION__NAME_EXPRESSION;
+
+	/**
+	 * The feature id for the '<em><b>Element Import</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__ELEMENT_IMPORT = MEASUREMENT_DIMENSION__ELEMENT_IMPORT;
+
+	/**
+	 * The feature id for the '<em><b>Package Import</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__PACKAGE_IMPORT = MEASUREMENT_DIMENSION__PACKAGE_IMPORT;
+
+	/**
+	 * The feature id for the '<em><b>Owned Rule</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__OWNED_RULE = MEASUREMENT_DIMENSION__OWNED_RULE;
+
+	/**
+	 * The feature id for the '<em><b>Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__MEMBER = MEASUREMENT_DIMENSION__MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Imported Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__IMPORTED_MEMBER = MEASUREMENT_DIMENSION__IMPORTED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Owned Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__OWNED_MEMBER = MEASUREMENT_DIMENSION__OWNED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Is Leaf</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__IS_LEAF = MEASUREMENT_DIMENSION__IS_LEAF;
+
+	/**
+	 * The feature id for the '<em><b>Redefined Element</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__REDEFINED_ELEMENT = MEASUREMENT_DIMENSION__REDEFINED_ELEMENT;
+
+	/**
+	 * The feature id for the '<em><b>Redefinition Context</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__REDEFINITION_CONTEXT = MEASUREMENT_DIMENSION__REDEFINITION_CONTEXT;
+
+	/**
+	 * The feature id for the '<em><b>Package</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__PACKAGE = MEASUREMENT_DIMENSION__PACKAGE;
+
+	/**
+	 * The feature id for the '<em><b>Is Abstract</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__IS_ABSTRACT = MEASUREMENT_DIMENSION__IS_ABSTRACT;
+
+	/**
+	 * The feature id for the '<em><b>Generalization</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__GENERALIZATION = MEASUREMENT_DIMENSION__GENERALIZATION;
+
+	/**
+	 * The feature id for the '<em><b>Powertype Extent</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__POWERTYPE_EXTENT = MEASUREMENT_DIMENSION__POWERTYPE_EXTENT;
+
+	/**
+	 * The feature id for the '<em><b>Feature</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__FEATURE = MEASUREMENT_DIMENSION__FEATURE;
+
+	/**
+	 * The feature id for the '<em><b>Inherited Member</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__INHERITED_MEMBER = MEASUREMENT_DIMENSION__INHERITED_MEMBER;
+
+	/**
+	 * The feature id for the '<em><b>Redefined Classifier</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__REDEFINED_CLASSIFIER = MEASUREMENT_DIMENSION__REDEFINED_CLASSIFIER;
+
+	/**
+	 * The feature id for the '<em><b>General</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__GENERAL = MEASUREMENT_DIMENSION__GENERAL;
+
+	/**
+	 * The feature id for the '<em><b>Attribute</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__ATTRIBUTE = MEASUREMENT_DIMENSION__ATTRIBUTE;
+
+	/**
+	 * The feature id for the '<em><b>Owned Attribute</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__OWNED_ATTRIBUTE = MEASUREMENT_DIMENSION__OWNED_ATTRIBUTE;
+
+	/**
+	 * The feature id for the '<em><b>Owned Regions</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__OWNED_REGIONS = MEASUREMENT_DIMENSION__OWNED_REGIONS;
+
+	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__GROUNDED_ENUMERATION = MEASUREMENT_DIMENSION__GROUNDED_ENUMERATION;
+
+	/**
+	 * The feature id for the '<em><b>Domain</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__DOMAIN = MEASUREMENT_DIMENSION__DOMAIN;
+
+	/**
+	 * The feature id for the '<em><b>Unit Of Measure</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__UNIT_OF_MEASURE = MEASUREMENT_DIMENSION__UNIT_OF_MEASURE;
+
+	/**
+	 * The feature id for the '<em><b>Lower Bound</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__LOWER_BOUND = MEASUREMENT_DIMENSION__LOWER_BOUND;
+
+	/**
+	 * The feature id for the '<em><b>Upper Bound</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION__UPPER_BOUND = MEASUREMENT_DIMENSION__UPPER_BOUND;
+
+	/**
+	 * The number of structural features of the '<em>Ordinal Dimension</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ORDINAL_DIMENSION_FEATURE_COUNT = MEASUREMENT_DIMENSION_FEATURE_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link RefOntoUML.impl.IntegerOrdinalDimensionImpl <em>Integer Ordinal Dimension</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -8585,6 +8567,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @ordered
 	 */
 	int INTEGER_ORDINAL_DIMENSION__OWNED_REGIONS = ORDINAL_DIMENSION__OWNED_REGIONS;
+
+	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INTEGER_ORDINAL_DIMENSION__GROUNDED_ENUMERATION = ORDINAL_DIMENSION__GROUNDED_ENUMERATION;
 
 	/**
 	 * The feature id for the '<em><b>Domain</b></em>' container reference.
@@ -8912,6 +8903,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	int DECIMAL_ORDINAL_DIMENSION__OWNED_REGIONS = ORDINAL_DIMENSION__OWNED_REGIONS;
 
 	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DECIMAL_ORDINAL_DIMENSION__GROUNDED_ENUMERATION = ORDINAL_DIMENSION__GROUNDED_ENUMERATION;
+
+	/**
 	 * The feature id for the '<em><b>Domain</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -9235,6 +9235,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @ordered
 	 */
 	int INTERVAL_DIMENSION__OWNED_REGIONS = MEASUREMENT_DIMENSION__OWNED_REGIONS;
+
+	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INTERVAL_DIMENSION__GROUNDED_ENUMERATION = MEASUREMENT_DIMENSION__GROUNDED_ENUMERATION;
 
 	/**
 	 * The feature id for the '<em><b>Domain</b></em>' container reference.
@@ -9562,6 +9571,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	int INTEGER_INTERVAL_DIMENSION__OWNED_REGIONS = INTERVAL_DIMENSION__OWNED_REGIONS;
 
 	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INTEGER_INTERVAL_DIMENSION__GROUNDED_ENUMERATION = INTERVAL_DIMENSION__GROUNDED_ENUMERATION;
+
+	/**
 	 * The feature id for the '<em><b>Domain</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -9885,6 +9903,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @ordered
 	 */
 	int DECIMAL_INTERVAL_DIMENSION__OWNED_REGIONS = INTERVAL_DIMENSION__OWNED_REGIONS;
+
+	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DECIMAL_INTERVAL_DIMENSION__GROUNDED_ENUMERATION = INTERVAL_DIMENSION__GROUNDED_ENUMERATION;
 
 	/**
 	 * The feature id for the '<em><b>Domain</b></em>' container reference.
@@ -10212,6 +10239,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	int RATIONAL_DIMENSION__OWNED_REGIONS = MEASUREMENT_DIMENSION__OWNED_REGIONS;
 
 	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RATIONAL_DIMENSION__GROUNDED_ENUMERATION = MEASUREMENT_DIMENSION__GROUNDED_ENUMERATION;
+
+	/**
 	 * The feature id for the '<em><b>Domain</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10535,6 +10571,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @ordered
 	 */
 	int INTEGER_RATIONAL_DIMENSION__OWNED_REGIONS = RATIONAL_DIMENSION__OWNED_REGIONS;
+
+	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INTEGER_RATIONAL_DIMENSION__GROUNDED_ENUMERATION = RATIONAL_DIMENSION__GROUNDED_ENUMERATION;
 
 	/**
 	 * The feature id for the '<em><b>Domain</b></em>' container reference.
@@ -10862,6 +10907,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	int DECIMAL_RATIONAL_DIMENSION__OWNED_REGIONS = RATIONAL_DIMENSION__OWNED_REGIONS;
 
 	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DECIMAL_RATIONAL_DIMENSION__GROUNDED_ENUMERATION = RATIONAL_DIMENSION__GROUNDED_ENUMERATION;
+
+	/**
 	 * The feature id for the '<em><b>Domain</b></em>' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -11187,6 +11241,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	int MEASUREMENT_DOMAIN__OWNED_REGIONS = MEASUREMENT_STRUCTURE__OWNED_REGIONS;
 
 	/**
+	 * The feature id for the '<em><b>Grounded Enumeration</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_DOMAIN__GROUNDED_ENUMERATION = MEASUREMENT_STRUCTURE__GROUNDED_ENUMERATION;
+
+	/**
 	 * The feature id for the '<em><b>Owned Dimensions</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -11230,7 +11293,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__EANNOTATIONS = LITERAL_SPECIFICATION__EANNOTATIONS;
+	int REFERENCE_REGION__EANNOTATIONS = VALUE_SPECIFICATION__EANNOTATIONS;
 
 	/**
 	 * The feature id for the '<em><b>Owned Element</b></em>' reference list.
@@ -11239,7 +11302,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__OWNED_ELEMENT = LITERAL_SPECIFICATION__OWNED_ELEMENT;
+	int REFERENCE_REGION__OWNED_ELEMENT = VALUE_SPECIFICATION__OWNED_ELEMENT;
 
 	/**
 	 * The feature id for the '<em><b>Owner</b></em>' reference.
@@ -11248,7 +11311,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__OWNER = LITERAL_SPECIFICATION__OWNER;
+	int REFERENCE_REGION__OWNER = VALUE_SPECIFICATION__OWNER;
 
 	/**
 	 * The feature id for the '<em><b>Owned Comment</b></em>' containment reference list.
@@ -11257,7 +11320,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__OWNED_COMMENT = LITERAL_SPECIFICATION__OWNED_COMMENT;
+	int REFERENCE_REGION__OWNED_COMMENT = VALUE_SPECIFICATION__OWNED_COMMENT;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -11266,7 +11329,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__NAME = LITERAL_SPECIFICATION__NAME;
+	int REFERENCE_REGION__NAME = VALUE_SPECIFICATION__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Visibility</b></em>' attribute.
@@ -11275,7 +11338,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__VISIBILITY = LITERAL_SPECIFICATION__VISIBILITY;
+	int REFERENCE_REGION__VISIBILITY = VALUE_SPECIFICATION__VISIBILITY;
 
 	/**
 	 * The feature id for the '<em><b>Qualified Name</b></em>' attribute.
@@ -11284,7 +11347,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__QUALIFIED_NAME = LITERAL_SPECIFICATION__QUALIFIED_NAME;
+	int REFERENCE_REGION__QUALIFIED_NAME = VALUE_SPECIFICATION__QUALIFIED_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
@@ -11293,7 +11356,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__CLIENT_DEPENDENCY = LITERAL_SPECIFICATION__CLIENT_DEPENDENCY;
+	int REFERENCE_REGION__CLIENT_DEPENDENCY = VALUE_SPECIFICATION__CLIENT_DEPENDENCY;
 
 	/**
 	 * The feature id for the '<em><b>Namespace</b></em>' reference.
@@ -11302,7 +11365,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__NAMESPACE = LITERAL_SPECIFICATION__NAMESPACE;
+	int REFERENCE_REGION__NAMESPACE = VALUE_SPECIFICATION__NAMESPACE;
 
 	/**
 	 * The feature id for the '<em><b>Name Expression</b></em>' containment reference.
@@ -11311,7 +11374,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__NAME_EXPRESSION = LITERAL_SPECIFICATION__NAME_EXPRESSION;
+	int REFERENCE_REGION__NAME_EXPRESSION = VALUE_SPECIFICATION__NAME_EXPRESSION;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -11320,7 +11383,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__TYPE = LITERAL_SPECIFICATION__TYPE;
+	int REFERENCE_REGION__TYPE = VALUE_SPECIFICATION__TYPE;
 
 	/**
 	 * The feature id for the '<em><b>Structure</b></em>' container reference.
@@ -11329,7 +11392,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION__STRUCTURE = LITERAL_SPECIFICATION_FEATURE_COUNT + 0;
+	int REFERENCE_REGION__STRUCTURE = VALUE_SPECIFICATION_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Reference Region</em>' class.
@@ -11338,7 +11401,7 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REFERENCE_REGION_FEATURE_COUNT = LITERAL_SPECIFICATION_FEATURE_COUNT + 1;
+	int REFERENCE_REGION_FEATURE_COUNT = VALUE_SPECIFICATION_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link RefOntoUML.impl.MeasurementRegionImpl <em>Measurement Region</em>}' class.
@@ -11459,13 +11522,22 @@ public interface RefOntoUMLPackage extends EPackage {
 	int MEASUREMENT_REGION__STRUCTURE = REFERENCE_REGION__STRUCTURE;
 
 	/**
+	 * The feature id for the '<em><b>Grounded Literal</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MEASUREMENT_REGION__GROUNDED_LITERAL = REFERENCE_REGION_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Measurement Region</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MEASUREMENT_REGION_FEATURE_COUNT = REFERENCE_REGION_FEATURE_COUNT + 0;
+	int MEASUREMENT_REGION_FEATURE_COUNT = REFERENCE_REGION_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link RefOntoUML.impl.BasicMeasurementRegionImpl <em>Basic Measurement Region</em>}' class.
@@ -11584,6 +11656,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @ordered
 	 */
 	int BASIC_MEASUREMENT_REGION__STRUCTURE = MEASUREMENT_REGION__STRUCTURE;
+
+	/**
+	 * The feature id for the '<em><b>Grounded Literal</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BASIC_MEASUREMENT_REGION__GROUNDED_LITERAL = MEASUREMENT_REGION__GROUNDED_LITERAL;
 
 	/**
 	 * The number of structural features of the '<em>Basic Measurement Region</em>' class.
@@ -11711,6 +11792,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @ordered
 	 */
 	int DECIMAL_MEASUREMENT_REGION__STRUCTURE = BASIC_MEASUREMENT_REGION__STRUCTURE;
+
+	/**
+	 * The feature id for the '<em><b>Grounded Literal</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DECIMAL_MEASUREMENT_REGION__GROUNDED_LITERAL = BASIC_MEASUREMENT_REGION__GROUNDED_LITERAL;
 
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -11849,6 +11939,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	int INTEGER_MEASUREMENT_REGION__STRUCTURE = BASIC_MEASUREMENT_REGION__STRUCTURE;
 
 	/**
+	 * The feature id for the '<em><b>Grounded Literal</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INTEGER_MEASUREMENT_REGION__GROUNDED_LITERAL = BASIC_MEASUREMENT_REGION__GROUNDED_LITERAL;
+
+	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -11983,6 +12082,15 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOSED_MEASUREMENT_REGION__STRUCTURE = MEASUREMENT_REGION__STRUCTURE;
+
+	/**
+	 * The feature id for the '<em><b>Grounded Literal</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOSED_MEASUREMENT_REGION__GROUNDED_LITERAL = MEASUREMENT_REGION__GROUNDED_LITERAL;
 
 	/**
 	 * The feature id for the '<em><b>Owned Regions</b></em>' containment reference list.
@@ -27806,24 +27914,46 @@ public interface RefOntoUMLPackage extends EPackage {
 	EReference getEnumerationLiteral_Enumeration();
 
 	/**
-	 * Returns the meta object for class '{@link RefOntoUML.OrdinalEnumeration <em>Ordinal Enumeration</em>}'.
+	 * Returns the meta object for class '{@link RefOntoUML.MeasurementEnumeration <em>Measurement Enumeration</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Ordinal Enumeration</em>'.
-	 * @see RefOntoUML.OrdinalEnumeration
+	 * @return the meta object for class '<em>Measurement Enumeration</em>'.
+	 * @see RefOntoUML.MeasurementEnumeration
 	 * @generated
 	 */
-	EClass getOrdinalEnumeration();
+	EClass getMeasurementEnumeration();
 
 	/**
-	 * Returns the meta object for class '{@link RefOntoUML.OrdinalLiteral <em>Ordinal Literal</em>}'.
+	 * Returns the meta object for the containment reference '{@link RefOntoUML.MeasurementEnumeration#getGroundingStructure <em>Grounding Structure</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Ordinal Literal</em>'.
-	 * @see RefOntoUML.OrdinalLiteral
+	 * @return the meta object for the containment reference '<em>Grounding Structure</em>'.
+	 * @see RefOntoUML.MeasurementEnumeration#getGroundingStructure()
+	 * @see #getMeasurementEnumeration()
 	 * @generated
 	 */
-	EClass getOrdinalLiteral();
+	EReference getMeasurementEnumeration_GroundingStructure();
+
+	/**
+	 * Returns the meta object for class '{@link RefOntoUML.MeasurementLiteral <em>Measurement Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Measurement Literal</em>'.
+	 * @see RefOntoUML.MeasurementLiteral
+	 * @generated
+	 */
+	EClass getMeasurementLiteral();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link RefOntoUML.MeasurementLiteral#getGroundingRegion <em>Grounding Region</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Grounding Region</em>'.
+	 * @see RefOntoUML.MeasurementLiteral#getGroundingRegion()
+	 * @see #getMeasurementLiteral()
+	 * @generated
+	 */
+	EReference getMeasurementLiteral_GroundingRegion();
 
 	/**
 	 * Returns the meta object for class '{@link RefOntoUML.PrimitiveType <em>Primitive Type</em>}'.
@@ -27885,6 +28015,17 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getMeasurementStructure();
+
+	/**
+	 * Returns the meta object for the container reference '{@link RefOntoUML.MeasurementStructure#getGroundedEnumeration <em>Grounded Enumeration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>Grounded Enumeration</em>'.
+	 * @see RefOntoUML.MeasurementStructure#getGroundedEnumeration()
+	 * @see #getMeasurementStructure()
+	 * @generated
+	 */
+	EReference getMeasurementStructure_GroundedEnumeration();
 
 	/**
 	 * Returns the meta object for class '{@link RefOntoUML.MeasurementDimension <em>Measurement Dimension</em>}'.
@@ -28092,6 +28233,17 @@ public interface RefOntoUMLPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getMeasurementRegion();
+
+	/**
+	 * Returns the meta object for the container reference '{@link RefOntoUML.MeasurementRegion#getGroundedLiteral <em>Grounded Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>Grounded Literal</em>'.
+	 * @see RefOntoUML.MeasurementRegion#getGroundedLiteral()
+	 * @see #getMeasurementRegion()
+	 * @generated
+	 */
+	EReference getMeasurementRegion_GroundedLiteral();
 
 	/**
 	 * Returns the meta object for class '{@link RefOntoUML.BasicMeasurementRegion <em>Basic Measurement Region</em>}'.

@@ -7,20 +7,23 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import sml2.AttributeReference;
 import sml2.ComparativeRelation;
-import sml2.ExportableNode;
 import sml2.Function;
+import sml2.FunctionParameter;
 import sml2.Link;
 import sml2.Literal;
-import sml2.Parameter;
+import sml2.Node;
 import sml2.Participant;
-import sml2.SituationParameterReference;
+import sml2.ReferenceNode;
+import sml2.ReferenciableElement;
+import sml2.ReflectedReference;
 import sml2.SituationParticipant;
 import sml2.SituationType;
-import sml2.SituationTypeParameter;
+import sml2.SituationTypeAssociation;
+import br.ufes.inf.nemo.alloy.SignatureDeclaration;
+import br.ufes.inf.nemo.alloy.Variable;
 import br.ufes.inf.nemo.sml2alloy.exception.UnsupportedElementException;
 import br.ufes.inf.nemo.sml2alloy.exception.UnsupportedRelationException;
 import br.ufes.inf.nemo.sml2alloy.parser.SMLParser;
@@ -39,7 +42,7 @@ public class SMLRuleCreator
 		this.smlparser = smlparser;
 	}
 	
-	public void createCommonRules()
+	public void createCommonRules(SignatureDeclaration sigSituation, Variable exists)
 	{
 		rules += "\nfact situationCommon {";
 		
@@ -47,13 +50,18 @@ public class SMLRuleCreator
 		{
 			String partNamesList = new String();
 			String tempPartNamesList = new String();
+			String mutabPartNamesList = new String();
 			try
 			{
 				String add = new String();
 				for (Participant part : smlparser.getInstances(sit, Participant.class))
 				{
-					EStructuralFeature feat = part.eClass().getEStructuralFeature("isPast");
-					if (feat != null && part.eGet(feat).equals(true))
+					if (!part.isImmutable())
+					{
+						if (!mutabPartNamesList.isEmpty()) mutabPartNamesList += "+";
+						mutabPartNamesList += smlparser.getParticipationAlias(sit, part);
+					}
+					else if (smlparser.isTemporal(part))
 					{
 						if (!tempPartNamesList.isEmpty()) tempPartNamesList += "+";
 						tempPartNamesList += smlparser.getParticipationAlias(sit, part);
@@ -64,12 +72,19 @@ public class SMLRuleCreator
 						partNamesList += add+smlparser.getParticipationAlias(sit, part);
 					}
 				}
-				rules += "\n\tsituationCont["+smlparser.getAlias(sit)+", "+partNamesList+
-						(!tempPartNamesList.isEmpty() ? ", "+tempPartNamesList : "")+"]\n";
+				
+				//TODO talvez criar um pred só, ao invés de um para cada número diferente de parâmetros
+				if (mutabPartNamesList.isEmpty())
+					rules += "\n\tsituationCont["+smlparser.getAlias(sit)+", "+partNamesList+
+							(!tempPartNamesList.isEmpty() ? ", "+tempPartNamesList : "")+"]\n";
+				else
+					rules += "\n\tsituationContMutable["+smlparser.getAlias(sit)+", "+
+							(!partNamesList.isEmpty() ? partNamesList+", " : "")+
+							mutabPartNamesList+"]\n";
+				
 				rules += "\tsituationUniq["+smlparser.getAlias(sit)+", "+partNamesList+
 						(!tempPartNamesList.isEmpty() ? ", "+tempPartNamesList : "")+"]\n";
-				rules += "\tsituationImut["+smlparser.getAlias(sit)+", "+partNamesList+
-						(!tempPartNamesList.isEmpty() ? ", "+tempPartNamesList : "")+"]\n";
+				rules += "\trigidity["+smlparser.getAlias(sit)+", "+sigSituation.getName()+", "+exists.getName()+"]\n";
 			}
 			catch (UnsupportedElementException e)
 			{
@@ -105,38 +120,47 @@ public class SMLRuleCreator
 	{
 		String rules_aux = new String();
 		
-		rules_aux += "\tall ";
+		rules_aux += "\tall w1";
 		
-		int i,j;
-		for (i=1; i <= smlparser.getTotalWorlds(sit); i++)
+		//Quantify worlds and participants
+		//"all w1,w2(...): World | all part1: w1.Participant1, part2:w2.Participant2 (...) | "
+		String partQuant = new String();
+		int i=2,j=1;
+		for (Participant part : smlparser.getInstances(sit, Participant.class))
 		{
-			if (i!=1) rules_aux += ",";
-			rules_aux += "w"+i;
-		}
-		
-		rules_aux += ": World | ";
-		
-		i=2;
-		j=1;
-		for (Participant p : smlparser.getInstances(sit, Participant.class))
-		{
-			String type = smlparser.getAlias(smlparser.getElementType(p));
+			String type = smlparser.getAlias(smlparser.getElementType(part));
 			String world;
 			
-			//TODO w1 é sempre o atual. Mudar se isPast virar uma propriedade de qualquer elemento
-			if (p instanceof SituationParticipant && ((SituationParticipant)p).isIsPast())
+			if (smlparser.isTemporal(part))
+			{
 				world = "w"+i++;
-			
+				rules_aux += ","+world;
+			}
 			else
 				world = "w1";
 			
-			rules_aux += "all part"+j+": "+world+"."+type+" | ";
-			elementToWorld.put(p, world);
-			elementToVar.put(p, "part"+j++);
+			if (!partQuant.isEmpty()) partQuant += ", ";
+			if (part.getReflection() != null)
+				partQuant += "disj part"+j+",part"+(j+1)+": "+world+"."+type;
+			else
+				partQuant += "part"+j+": "+world+"."+type;
+			
+			elementToWorld.put(part, world);
+			elementToVar.put(part, "part"+j++);
+			if (part.getReflection() != null)
+			{
+				elementToWorld.put(part.getReflection(), world);
+				elementToVar.put(part.getReflection(), "part"+j++);
+			}
 		}
+		
+		rules_aux += ": World | all "+partQuant+" | ";
 		
 		rules_aux += handleMainSituationRule(sit);
 		
+		//Writes the implies Situation existence part
+		//" => one s: w1.Situation | <situationConstraints>"
+		//TODO se mesmo tipo e duas ou mais relações, tem que fazer o esquema do OR
 		rules_aux += " => one s: w1."+smlparser.getAlias(sit)+" | ";
 		elementToWorld.put(sit, "w1");
 		elementToVar.put(sit, "s");
@@ -144,8 +168,10 @@ public class SMLRuleCreator
 		Iterator<Participant> parts = smlparser.getInstances(sit, Participant.class).iterator();
 		while (parts.hasNext())
 		{
-			Participant p = parts.next();
-			rules_aux += handleNodeExpression(sit, p.getNodeParameter())+" = "+handleNodeExpression(p);
+			Participant part = parts.next();
+			rules_aux += handleNodeExpression(part)+" in "+handleNodeExpression(sit, part);
+			if (part.getReflection() != null)
+				rules_aux += " and "+handleNodeExpression(part.getReflection())+" in "+handleNodeExpression(sit, part);
 			if (parts.hasNext())
 				rules_aux += " and ";
 		}
@@ -156,29 +182,29 @@ public class SMLRuleCreator
 	public String createNecessaryRule(SituationType sit) throws UnsupportedElementException
 	{
 		String rules_aux = new String();
+		String worldQuant = new String();
+		int i=2;
 		
 		rules_aux += "\tall w1: World | ";
 		rules_aux += "all s: w1."+smlparser.getAlias(sit)+" | ";
 		
-		for (Participant p : smlparser.getInstances(sit, Participant.class))
+		for (Participant part : smlparser.getInstances(sit, Participant.class))
 		{
-			rules_aux += "all "+elementToVar.get(p)+": "+handleNodeExpression(sit, p.getNodeParameter())+" | ";
-		}
-		
-		if (smlparser.getTotalWorlds(sit) > 1)
-		{
-			rules_aux += "some ";
-			int i;
-			for (i=2; i <= smlparser.getTotalWorlds(sit); i++)
-			{
-				if (i!=2) rules_aux += ",";
-				rules_aux += "w"+i;
-			}
+			if (part.getReflection() != null)
+				rules_aux += "all disj "+handleNodeExpression(part)+","+handleNodeExpression(part.getReflection());
+			else
+				rules_aux += "all "+handleNodeExpression(part);
+			rules_aux += ": "+handleNodeExpression(sit, part)+" | ";
 			
-			rules_aux += ": World | ";
+			if (smlparser.isTemporal(part))
+			{
+				if (!worldQuant.isEmpty()) worldQuant += ",";
+				worldQuant += "w"+i++;
+			}
 		}
 		
-		rules_aux += handleMainSituationRule(sit);
+		worldQuant = "some "+worldQuant+": World | ";
+		rules_aux += (i != 2 ? worldQuant : "")+handleMainSituationRule(sit);
 		
 		return rules_aux;
 	}
@@ -192,6 +218,7 @@ public class SMLRuleCreator
 	 * @param sit the situation type
 	 * @return the string that represents the constraint in alloy
 	 * @throws UnsupportedElementException 
+	 * @throws UnsupportedRelationException 
 	 */
 	protected String handleMainSituationRule(SituationType sit) throws UnsupportedElementException
 	{
@@ -212,29 +239,49 @@ public class SMLRuleCreator
 					mainrule += handleNodeExpression(p1)+" != "+handleNodeExpression(p2);
 				}
 			}
+//			if (p1 instanceof SituationParticipant && p1.getTime().equals(TemporalKind.IS_PAST))
+//			{
+				//Se não houver nenhuma relação de Allen, então ela mets com w1
+				//Se houver somente relação de Allen com situações passada então ela mets w1 se:
+				//	for before e ela for target
+				//	for after e ela for source
+				//	for mets e ela for target
+				//	for metby e ela for source
+				//	for overlaps e ela for target
+				//	for overlappedby e ela for source
+				//	for finishes ou finishedby e ela for source/target (escolher somente 1 para não criar duas regras equivalentes)
+				//	for includes e ela for source
+				//	for during e ela for target
+				//	for starts e ela for target
+				//	for startedby e ela for source
+				//	for coincides e ela for source/target (escolher somente 1 para não criar duas regras equivalentes)
+				//Se houver uma relação de Allen com ums situação presente então ok
+//			}
 		}
 		
-		//Propulates with comparative relations
+		//Populates with comparative relations
 		for (ComparativeRelation c_rel : smlparser.getInstances(sit, ComparativeRelation.class))
 		{
+			String c_relRule = new String();
 			try
 			{
-				if (!mainrule.isEmpty()) mainrule += " and ";
-				mainrule += handleComparativeRelation(c_rel);
+				if (!mainrule.isEmpty()) c_relRule = " and ";
+				c_relRule += handleComparativeRelation(c_rel);
 			}
-			catch (UnsupportedRelationException exc)
+			catch (UnsupportedRelationException e)
 			{
-				System.err.println(exc.getMessage());
+				c_relRule = " /* -Define relation manually- "+(!mainrule.isEmpty()?"and ":"")+e.getGeneratedCall()+"*/";
 			}
+			mainrule += c_relRule;
 		}
 		
 		//Links relator's mediations to situation's participations
 		for (Link l1 : smlparser.getInstances(sit, Link.class))
 		{
 			if (!mainrule.isEmpty()) mainrule += " and ";
-			for (RefOntoUML.Property p : l1.getIsOfType().getMemberEnd())
+			for (RefOntoUML.Property p : ((RefOntoUML.Mediation)l1.getType()).getMemberEnd())
 			{
-				if (smlparser.isSameType(p.getType(), l1.getEntity().getIsOfType()))
+				if (smlparser.isSameType(p.getType(), l1.getEntity().getType()))
 				{
 					mainrule += handleNodeExpression(l1.getRelator(), p)+" = "+
 							handleNodeExpression(l1.getEntity());
@@ -243,70 +290,88 @@ public class SMLRuleCreator
 			}
 		}
 		
+//		List<DisjunctionBlock> disjBlockList = new ArrayList<DisjunctionBlock>();
+//		disjBlockList.addAll(smlparser.getInstances(sit, DisjunctionBlock.class));
+//		while (disjBlockList.size()>1)
+//		{
+//			mainrule += "("+handleBlock(disjBlockList.get(0))+")";
+//			for (DisjunctionBlock disjBlock : disjBlockList.get(0).getDisjunctFrom())
+//			{
+//				mainrule += " or ("+handleBlock(disjBlock)+")";
+//				disjBlockList.remove(disjBlock);
+//			}
+//		}
+		
 		if (mainrule.isEmpty()) mainrule += "no none";
 		
 		return mainrule;
 	}
 	
-	//TODO Incluir parâmetros
-	//TODO e para relações que não são padrões? Tipo near, within the past...
 	protected String handleComparativeRelation(ComparativeRelation c_rel) throws UnsupportedRelationException, UnsupportedElementException
 	{
+		//TODO tratar parametros
 		String source = handleNodeExpression(c_rel.getSource());
 		String target = handleNodeExpression(c_rel.getTarget());
 		String sourceWorld = elementToWorld.get(c_rel.getSource());
 		String targetWorld = elementToWorld.get(c_rel.getTarget());
 		
+		String negated = "";
+		if (c_rel.isNegated()) negated = "not ";
+		
 		if (smlparser.getElementName(c_rel).equalsIgnoreCase("equals"))
-			return source+" = "+target;
+			return negated+source+" = "+target;
 		
-		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("less than"))
-			return source+" < "+target;
+		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("lessthan"))
+			return negated+source+" < "+target;
 		
-		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("greater than"))
-			return source+" > "+target;
+		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("greaterthan"))
+			return negated+source+" > "+target;
+		
+		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("instanceof"))
+			return negated+source+" in "+sourceWorld+"."+target;
 		
 		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("before"))
-			return "before["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
+			return negated+"before["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
 		
 		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("after"))
-			return "after["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
+			return negated+"after["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
 		
-		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("mets"))
-			return "mets["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
+		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("meets"))
+			return negated+"meets["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
 		
-		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("met by"))
-			return "metby["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
+		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("metby"))
+			return negated+"metby["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
 		
 		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("overlaps"))
-			return "overlaps["+sourceWorld+","+source+","+target+",exists]";
+			return negated+"overlaps["+sourceWorld+","+source+","+target+",exists]";
 		
-		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("overlapped by"))
-			return "overlappedby["+sourceWorld+","+source+","+target+",exists]";
+		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("overlappedby"))
+			return negated+"overlappedby["+sourceWorld+","+source+","+target+",exists]";
 		
 		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("finishes"))
-			return "finishes["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
+			return negated+"finishes["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
 		
-		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("finished by"))
-			return "finishedby["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
+		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("finishedby"))
+			return negated+"finishedby["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
 		
 		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("includes"))
-			return "includes["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
+			return negated+"includes["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
 		
 		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("during"))
-			return "during["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
+			return negated+"during["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
 		
 		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("starts"))
-			return "starts["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
+			return negated+"starts["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
 		
-		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("started by"))
-			return "startedby["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
+		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("startedby"))
+			return negated+"startedby["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
 		
 		else if (smlparser.getElementName(c_rel).equalsIgnoreCase("coincides"))
-			return "coincides["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
+			return negated+"coincides["+sourceWorld+","+targetWorld+","+source+","+target+",exists]";
 		
 		else
-			throw new UnsupportedRelationException(smlparser.getElementName(c_rel));
+			throw new UnsupportedRelationException(smlparser.getElementName(c_rel), 
+					negated+smlparser.getElementName(c_rel).replace(" ", "")+"["+source+","+target+"]");
 	}
 	
 	protected String handleNodeExpression(EObject node) throws UnsupportedElementException
@@ -322,102 +387,86 @@ public class SMLRuleCreator
 		else if (node instanceof Function)
 		{
 			String paramNamesList = new String();
-			Iterator<Parameter> paramList = ((Function) node).getParameter().iterator();
-			while (paramList.hasNext())
+			for (SituationTypeAssociation sitTypeAssoc : ((Function) node).sourceRelation())
 			{
-				Parameter param = paramList.next();
-				paramNamesList += handleNodeExpression(source, param.getValue());
-				if (paramList.hasNext()) paramNamesList += ",";
+				if (sitTypeAssoc instanceof FunctionParameter)
+				{
+					if (!paramNamesList.isEmpty()) paramNamesList += ",";
+					paramNamesList += handleNodeExpression(source, sitTypeAssoc.getTarget());
+				}
 			}
-			//TODO nome tem que ser mesmo da função, pode ser definido no modelo ontouml ou sml
+			System.err.println("ATTENTION: Relation/Function "+smlparser.getElementName(node)+
+					" is not supported and must be defined manually.");
 			return smlparser.getAlias(node)+"["+paramNamesList+"]";
 		}
 		
 		if (source == null)
 		{
 			if (node instanceof AttributeReference)
-				return handleNodeExpression(((AttributeReference) node).getEntity(), ((AttributeReference) node).getAttribute());
+			{
+				AttributeReference att = (AttributeReference) node;
+				Node attOwner = att.getEntity();
+				if (attOwner instanceof ReferenceNode)
+					return elementToVar.get(((ReferenceNode) attOwner).getSituation())+"."+handleNodeExpression(attOwner, att);
 				
-			else if (node instanceof SituationParameterReference)
-				return handleNodeExpression(((SituationParameterReference)node).getSituation(), ((SituationParameterReference) node).getParameter().getNodeReference());
+				else
+					return handleNodeExpression(attOwner, att);
+			}
+			
+			else if (node instanceof ReferenceNode)
+			{
+				ReferenceNode refNode = (ReferenceNode) node;
+				if (refNode.getReference() instanceof AttributeReference)
+					return elementToVar.get(refNode.getSituation())+"."+
+						handleNodeExpression(refNode, refNode.getReference());
+				
+				else
+					return handleNodeExpression(refNode.getSituation(), refNode.getReference());
+			}
+			
+			else if (node instanceof ReflectedReference)
+			{
+				ReferenceNode refNode = ((ReflectedReference) node).getReference();
+				if (refNode.getReference() instanceof AttributeReference)
+					return elementToVar.get(((ReflectedReference) node).getOwningReflection())+"."+
+						handleNodeExpression(refNode, refNode.getReference());
+				
+				else
+					return handleNodeExpression(((ReflectedReference) node).getOwningReflection(), refNode.getReference());
+			}
 		
 			return elementToVar.get(node);
 		}
 		else
 		{
-			if (node instanceof AttributeReference)
+			String leftOp;
+			String rightOp;
+			if (source instanceof ReferenceNode)
 			{
-				for (SituationParameterReference sit_param : ((SituationParticipant)source).getParameter())
-				{
-					if (sit_param.getParameter().getNodeReference().equals(((AttributeReference)node).getEntity()))
-						return elementToVar.get(source)+"."+handleNodeExpression(sit_param, ((AttributeReference)node).getAttribute());
-				}
-				System.err.println("Reference param to element "+smlparser.getElementName(((AttributeReference)node).getEntity())+"not found");
+				SituationParticipant sit_part = ((ReferenceNode) source).getSituation();
+				ReferenciableElement ref_elem = ((ReferenceNode) source).getReference();
+				leftOp = smlparser.getAlias(ref_elem)+(smlparser.isTemporal(ref_elem) ? "" : "["+elementToWorld.get(sit_part)+"]");
+				if (node instanceof AttributeReference &&
+						((RefOntoUML.Property)((AttributeReference)node).getType()).getAssociation() == null)
+					rightOp = "("+elementToWorld.get(sit_part)+"."+smlparser.getAlias(((AttributeReference)node).getType())+")";
+				else
+					rightOp = smlparser.getAlias(node)+"["+elementToWorld.get(sit_part)+"]";
 			}
-			else if (node instanceof Participant)
-				return handleNodeExpression(source, ((Participant) node).getNodeParameter());
+			else
+			{
+				leftOp = elementToVar.get(source);
+				if (node instanceof AttributeReference &&
+						((RefOntoUML.Property)((AttributeReference)node).getType()).getAssociation() == null)
+					rightOp = "("+elementToWorld.get(source)+"."+smlparser.getAlias(((AttributeReference)node).getType())+")";
+				
+				else if (smlparser.isTemporal((EObject) node))
+					rightOp = smlparser.getAlias(node);
+				
+				else
+					rightOp = smlparser.getAlias(node)+"["+elementToWorld.get(source)+"]";
+			}
 			
-			else if (source instanceof SituationParameterReference)
-			{
-				SituationParticipant sit_part = ((SituationParameterReference) source).getSituation();
-				return smlparser.getAlias(source)+(sit_part.isIsPast() ? "" : "["+elementToWorld.get(sit_part)+"]")+
-					smlparser.getAlias(node)+"["+elementToWorld.get(sit_part)+"]";
-			}
-			
-			if (node instanceof SituationTypeParameter)
-			{
-				ExportableNode part = ((SituationTypeParameter) node).getNodeReference();
-				EStructuralFeature feat = part.eClass().getEStructuralFeature("isPast");
-				if (feat != null && part.eGet(feat).equals(true))
-					return elementToVar.get(source)+"."+smlparser.getAlias(node);
-			}
-			return elementToVar.get(source)+"."+smlparser.getAlias(node)+"["+elementToWorld.get(source)+"]";
+			return leftOp+"."+rightOp;
 		}
-		
-//		else if (source == null)
-//		{
-//			if (node instanceof Function)
-//			{
-//				String paramNamesList = new String();
-//				Iterator<Parameter> paramList = ((Function) node).getParameter().iterator();
-//				while (paramList.hasNext())
-//				{
-//					Parameter param = paramList.next();
-//					paramNamesList += handleNodeExpression(param.getValue());
-//					if (paramList.hasNext()) paramNamesList += ",";
-//				}
-//				return smlparser.getAlias(((Function) node).getFunction())+"["+paramNamesList+"]";
-//			}
-//			
-//			else if (node instanceof SituationParameterReference)
-//			{
-//				ExportableNode node_ref = ((SituationParameterReference)node).getParameter().getNodeReference();
-//				source = ((SituationParameterReference)node).getSituation();
-//				if (node_ref instanceof AttributeReference)
-//					return elementToVar.get(source)+"."+
-//						smlparser.getAlias(((AttributeReference)node_ref).getEntity().getNodeParameter())+"["+elementToWorld.get(source)+"]"+"."+
-//						smlparser.getAlias(((AttributeReference)node_ref).getAttribute())+"["+elementToWorld.get(source)+"]";
-//				
-//				else if (node_ref instanceof Function)
-//				{
-//					String paramNamesList = new String();
-//					Iterator<Parameter> paramList = ((Function) node_ref).getParameter().iterator();
-//					while (paramList.hasNext())
-//					{
-//						Parameter param = paramList.next();
-//						paramNamesList += handleNodeExpression(source, param.getValue());
-//						if (paramList.hasNext()) paramNamesList += ",";
-//					}
-//					return smlparser.getAlias(((Function) node_ref).getFunction())+"["+paramNamesList+"]";
-//				}
-//			}
-//			
-//			else
-//				return elementToVar.get(node);
-//		}
-//		else if (node instanceof ExportableNode)
-//			node = ((ExportableNode)node).getNodeParameter();
-//		
-//		return elementToVar.get(source)+"."+smlparser.getAlias(node)+"["+elementToWorld.get(source)+"]";
 	}
 }

@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.SubKind;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public class SubKindImpl extends RigidSortalClassImpl implements SubKind {
 	}
 
 } //SubKindImpl
+
+

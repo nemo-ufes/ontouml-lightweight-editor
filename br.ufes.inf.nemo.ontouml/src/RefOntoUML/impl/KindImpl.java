@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.Kind;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public class KindImpl extends SubstanceSortalImpl implements Kind {
 	}
 
 } //KindImpl
+
+

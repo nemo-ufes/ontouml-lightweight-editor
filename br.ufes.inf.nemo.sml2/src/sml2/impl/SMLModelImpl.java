@@ -3,7 +3,6 @@
 package sml2.impl;
 
 import RefOntoUML.Model;
-import RefOntoUML.PackageableElement;
 
 import java.util.Collection;
 
@@ -34,7 +33,6 @@ import sml2.Sml2Package;
  * <ul>
  *   <li>{@link sml2.impl.SMLModelImpl#getElements <em>Elements</em>}</li>
  *   <li>{@link sml2.impl.SMLModelImpl#getContextModel <em>Context Model</em>}</li>
- *   <li>{@link sml2.impl.SMLModelImpl#getPrimitiveContextElements <em>Primitive Context Elements</em>}</li>
  * </ul>
  * </p>
  *
@@ -60,16 +58,6 @@ public class SMLModelImpl extends MinimalEObjectImpl.Container implements SMLMod
 	 * @ordered
 	 */
 	protected Model contextModel;
-
-	/**
-	 * The cached value of the '{@link #getPrimitiveContextElements() <em>Primitive Context Elements</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPrimitiveContextElements()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<PackageableElement> primitiveContextElements;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -145,25 +133,11 @@ public class SMLModelImpl extends MinimalEObjectImpl.Container implements SMLMod
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<PackageableElement> getPrimitiveContextElements() {
-		if (primitiveContextElements == null) {
-			primitiveContextElements = new EObjectContainmentEList<PackageableElement>(PackageableElement.class, this, Sml2Package.SML_MODEL__PRIMITIVE_CONTEXT_ELEMENTS);
-		}
-		return primitiveContextElements;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case Sml2Package.SML_MODEL__ELEMENTS:
 				return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
-			case Sml2Package.SML_MODEL__PRIMITIVE_CONTEXT_ELEMENTS:
-				return ((InternalEList<?>)getPrimitiveContextElements()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -181,8 +155,6 @@ public class SMLModelImpl extends MinimalEObjectImpl.Container implements SMLMod
 			case Sml2Package.SML_MODEL__CONTEXT_MODEL:
 				if (resolve) return getContextModel();
 				return basicGetContextModel();
-			case Sml2Package.SML_MODEL__PRIMITIVE_CONTEXT_ELEMENTS:
-				return getPrimitiveContextElements();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -203,10 +175,6 @@ public class SMLModelImpl extends MinimalEObjectImpl.Container implements SMLMod
 			case Sml2Package.SML_MODEL__CONTEXT_MODEL:
 				setContextModel((Model)newValue);
 				return;
-			case Sml2Package.SML_MODEL__PRIMITIVE_CONTEXT_ELEMENTS:
-				getPrimitiveContextElements().clear();
-				getPrimitiveContextElements().addAll((Collection<? extends PackageableElement>)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -225,9 +193,6 @@ public class SMLModelImpl extends MinimalEObjectImpl.Container implements SMLMod
 			case Sml2Package.SML_MODEL__CONTEXT_MODEL:
 				setContextModel((Model)null);
 				return;
-			case Sml2Package.SML_MODEL__PRIMITIVE_CONTEXT_ELEMENTS:
-				getPrimitiveContextElements().clear();
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -244,8 +209,6 @@ public class SMLModelImpl extends MinimalEObjectImpl.Container implements SMLMod
 				return elements != null && !elements.isEmpty();
 			case Sml2Package.SML_MODEL__CONTEXT_MODEL:
 				return contextModel != null;
-			case Sml2Package.SML_MODEL__PRIMITIVE_CONTEXT_ELEMENTS:
-				return primitiveContextElements != null && !primitiveContextElements.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

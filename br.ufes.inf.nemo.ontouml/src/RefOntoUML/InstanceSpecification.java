@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
 
@@ -149,3 +148,5 @@ public interface InstanceSpecification extends PackageableElement {
 	boolean deployment_artifact(DiagnosticChain diagnostics, Map<Object, Object> context);
 
 } // InstanceSpecification
+
+

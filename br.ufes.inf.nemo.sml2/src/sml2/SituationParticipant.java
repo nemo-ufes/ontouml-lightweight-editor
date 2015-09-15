@@ -12,9 +12,9 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link sml2.SituationParticipant#getSituationType <em>Situation Type</em>}</li>
- *   <li>{@link sml2.SituationParticipant#getParameter <em>Parameter</em>}</li>
- *   <li>{@link sml2.SituationParticipant#isIsPast <em>Is Past</em>}</li>
+ *   <li>{@link sml2.SituationParticipant#getTemporality <em>Temporality</em>}</li>
+ *   <li>{@link sml2.SituationParticipant#getReferences <em>References</em>}</li>
+ *   <li>{@link sml2.SituationParticipant#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
@@ -24,73 +24,76 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface SituationParticipant extends Participant {
 	/**
-	 * Returns the value of the '<em><b>Situation Type</b></em>' reference.
+	 * Returns the value of the '<em><b>Temporality</b></em>' attribute.
+	 * The literals are from the enumeration {@link sml2.TemporalKind}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Situation Type</em>' reference isn't clear,
+	 * If the meaning of the '<em>Temporality</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Situation Type</em>' reference.
-	 * @see #setSituationType(SituationType)
-	 * @see sml2.Sml2Package#getSituationParticipant_SituationType()
+	 * @return the value of the '<em>Temporality</em>' attribute.
+	 * @see sml2.TemporalKind
+	 * @see #setTemporality(TemporalKind)
+	 * @see sml2.Sml2Package#getSituationParticipant_Temporality()
 	 * @model required="true"
 	 * @generated
 	 */
-	SituationType getSituationType();
+	TemporalKind getTemporality();
 
 	/**
-	 * Sets the value of the '{@link sml2.SituationParticipant#getSituationType <em>Situation Type</em>}' reference.
+	 * Sets the value of the '{@link sml2.SituationParticipant#getTemporality <em>Temporality</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Situation Type</em>' reference.
-	 * @see #getSituationType()
+	 * @param value the new value of the '<em>Temporality</em>' attribute.
+	 * @see sml2.TemporalKind
+	 * @see #getTemporality()
 	 * @generated
 	 */
-	void setSituationType(SituationType value);
+	void setTemporality(TemporalKind value);
 
 	/**
-	 * Returns the value of the '<em><b>Parameter</b></em>' reference list.
-	 * The list contents are of type {@link sml2.SituationParameterReference}.
-	 * It is bidirectional and its opposite is '{@link sml2.SituationParameterReference#getSituation <em>Situation</em>}'.
+	 * Returns the value of the '<em><b>References</b></em>' containment reference list.
+	 * The list contents are of type {@link sml2.ReferenceNode}.
+	 * It is bidirectional and its opposite is '{@link sml2.ReferenceNode#getSituation <em>Situation</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Parameter</em>' reference list isn't clear,
+	 * If the meaning of the '<em>References</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Parameter</em>' reference list.
-	 * @see sml2.Sml2Package#getSituationParticipant_Parameter()
-	 * @see sml2.SituationParameterReference#getSituation
-	 * @model opposite="situation"
+	 * @return the value of the '<em>References</em>' containment reference list.
+	 * @see sml2.Sml2Package#getSituationParticipant_References()
+	 * @see sml2.ReferenceNode#getSituation
+	 * @model opposite="situation" containment="true"
 	 * @generated
 	 */
-	EList<SituationParameterReference> getParameter();
+	EList<ReferenceNode> getReferences();
 
 	/**
-	 * Returns the value of the '<em><b>Is Past</b></em>' attribute.
+	 * Returns the value of the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Is Past</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Type</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Is Past</em>' attribute.
-	 * @see #setIsPast(boolean)
-	 * @see sml2.Sml2Package#getSituationParticipant_IsPast()
-	 * @model
+	 * @return the value of the '<em>Type</em>' reference.
+	 * @see #setType(SituationType)
+	 * @see sml2.Sml2Package#getSituationParticipant_Type()
+	 * @model required="true"
 	 * @generated
 	 */
-	boolean isIsPast();
+	SituationType getType();
 
 	/**
-	 * Sets the value of the '{@link sml2.SituationParticipant#isIsPast <em>Is Past</em>}' attribute.
+	 * Sets the value of the '{@link sml2.SituationParticipant#getType <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Is Past</em>' attribute.
-	 * @see #isIsPast()
+	 * @param value the new value of the '<em>Type</em>' reference.
+	 * @see #getType()
 	 * @generated
 	 */
-	void setIsPast(boolean value);
+	void setType(SituationType value);
 
 } // SituationParticipant

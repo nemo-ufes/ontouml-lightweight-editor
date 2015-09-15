@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.LiteralNull;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public class LiteralNullImpl extends LiteralSpecificationImpl implements Literal
 	}
 
 } //LiteralNullImpl
+
+

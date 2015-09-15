@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
 
@@ -172,3 +171,5 @@ public interface Constraintx extends PackageableElement {
 	boolean not_applied_to_self(DiagnosticChain diagnostics, Map<Object, Object> context);
 
 } // Constraintx
+
+

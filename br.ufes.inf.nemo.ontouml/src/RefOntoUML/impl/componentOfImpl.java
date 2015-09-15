@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.componentOf;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public class componentOfImpl extends MeronymicImpl implements componentOf {
 	}
 
 } //componentOfImpl
+
+

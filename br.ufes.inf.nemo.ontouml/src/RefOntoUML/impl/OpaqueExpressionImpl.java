@@ -8,21 +8,15 @@ package RefOntoUML.impl;
 
 import RefOntoUML.OpaqueExpression;
 import RefOntoUML.RefOntoUMLPackage;
-
 import RefOntoUML.util.RefOntoUMLValidator;
-
 import java.util.Collection;
 import java.util.Map;
-
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
 import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectValidator;
@@ -147,7 +141,6 @@ public class OpaqueExpressionImpl extends ValueSpecificationImpl implements Opaq
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean language_body_size(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -173,7 +166,6 @@ public class OpaqueExpressionImpl extends ValueSpecificationImpl implements Opaq
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean only_return_result_parameters(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -199,7 +191,6 @@ public class OpaqueExpressionImpl extends ValueSpecificationImpl implements Opaq
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean one_return_result_parameter(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -365,3 +356,5 @@ public class OpaqueExpressionImpl extends ValueSpecificationImpl implements Opaq
 	}
 
 } //OpaqueExpressionImpl
+
+

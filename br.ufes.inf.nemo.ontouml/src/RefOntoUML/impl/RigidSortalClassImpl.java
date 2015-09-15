@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.RigidSortalClass;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public abstract class RigidSortalClassImpl extends SortalClassImpl implements Ri
 	}
 
 } //RigidSortalClassImpl
+
+

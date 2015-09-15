@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
 
@@ -108,3 +107,5 @@ public interface StringExpression extends Expression {
 	boolean subexpressions(DiagnosticChain diagnostics, Map<Object, Object> context);
 
 } // StringExpression
+
+

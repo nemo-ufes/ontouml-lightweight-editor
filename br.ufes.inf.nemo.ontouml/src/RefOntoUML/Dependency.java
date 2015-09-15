@@ -63,3 +63,5 @@ public interface Dependency extends PackageableElement, DirectedRelationship {
 	EList<NamedElement> getClient();
 
 } // Dependency
+
+

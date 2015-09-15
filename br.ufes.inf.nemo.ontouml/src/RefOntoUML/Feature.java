@@ -75,3 +75,5 @@ public interface Feature extends RedefinableElement {
 	EList<Classifier> getFeaturingClassifier();
 
 } // Feature
+
+

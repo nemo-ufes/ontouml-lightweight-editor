@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.DecimalRationalDimension;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public class DecimalRationalDimensionImpl extends RationalDimensionImpl implemen
 	}
 
 } //DecimalRationalDimensionImpl
+
+

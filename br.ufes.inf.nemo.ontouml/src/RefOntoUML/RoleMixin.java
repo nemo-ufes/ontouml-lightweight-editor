@@ -60,3 +60,5 @@ public interface RoleMixin extends AntiRigidMixinClass {
 	EList<RigidSortalClass> rigidSortals();
 
 } // RoleMixin
+
+

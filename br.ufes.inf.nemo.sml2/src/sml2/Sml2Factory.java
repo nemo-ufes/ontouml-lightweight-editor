@@ -22,67 +22,22 @@ public interface Sml2Factory extends EFactory {
 	Sml2Factory eINSTANCE = sml2.impl.Sml2FactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>SML Model</em>'.
+	 * Returns a new object of class '<em>Allen Link</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>SML Model</em>'.
+	 * @return a new object of class '<em>Allen Link</em>'.
 	 * @generated
 	 */
-	SMLModel createSMLModel();
+	AllenLink createAllenLink();
 
 	/**
-	 * Returns a new object of class '<em>Situation Type</em>'.
+	 * Returns a new object of class '<em>Attribute Link</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Situation Type</em>'.
+	 * @return a new object of class '<em>Attribute Link</em>'.
 	 * @generated
 	 */
-	SituationType createSituationType();
-
-	/**
-	 * Returns a new object of class '<em>Situation Type Block</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Situation Type Block</em>'.
-	 * @generated
-	 */
-	SituationTypeBlock createSituationTypeBlock();
-
-	/**
-	 * Returns a new object of class '<em>Entity Participant</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Entity Participant</em>'.
-	 * @generated
-	 */
-	EntityParticipant createEntityParticipant();
-
-	/**
-	 * Returns a new object of class '<em>Relator Participant</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Relator Participant</em>'.
-	 * @generated
-	 */
-	RelatorParticipant createRelatorParticipant();
-
-	/**
-	 * Returns a new object of class '<em>Link</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Link</em>'.
-	 * @generated
-	 */
-	Link createLink();
-
-	/**
-	 * Returns a new object of class '<em>Situation Type Parameter</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Situation Type Parameter</em>'.
-	 * @generated
-	 */
-	SituationTypeParameter createSituationTypeParameter();
+	AttributeLink createAttributeLink();
 
 	/**
 	 * Returns a new object of class '<em>Attribute Reference</em>'.
@@ -94,49 +49,49 @@ public interface Sml2Factory extends EFactory {
 	AttributeReference createAttributeReference();
 
 	/**
-	 * Returns a new object of class '<em>Comparative Relation</em>'.
+	 * Returns a new object of class '<em>Class Literal</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Comparative Relation</em>'.
+	 * @return a new object of class '<em>Class Literal</em>'.
 	 * @generated
 	 */
-	ComparativeRelation createComparativeRelation();
+	ClassLiteral createClassLiteral();
 
 	/**
-	 * Returns a new object of class '<em>Literal</em>'.
+	 * Returns a new object of class '<em>Context Formal Link</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Literal</em>'.
+	 * @return a new object of class '<em>Context Formal Link</em>'.
 	 * @generated
 	 */
-	Literal createLiteral();
+	ContextFormalLink createContextFormalLink();
 
 	/**
-	 * Returns a new object of class '<em>Situation Participant</em>'.
+	 * Returns a new object of class '<em>Data Type Literal</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Situation Participant</em>'.
+	 * @return a new object of class '<em>Data Type Literal</em>'.
 	 * @generated
 	 */
-	SituationParticipant createSituationParticipant();
+	DataTypeLiteral createDataTypeLiteral();
 
 	/**
-	 * Returns a new object of class '<em>Situation Parameter Reference</em>'.
+	 * Returns a new object of class '<em>Entity Participant</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Situation Parameter Reference</em>'.
+	 * @return a new object of class '<em>Entity Participant</em>'.
 	 * @generated
 	 */
-	SituationParameterReference createSituationParameterReference();
+	EntityParticipant createEntityParticipant();
 
 	/**
-	 * Returns a new object of class '<em>Exists Situation</em>'.
+	 * Returns a new object of class '<em>Equals Link</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Exists Situation</em>'.
+	 * @return a new object of class '<em>Equals Link</em>'.
 	 * @generated
 	 */
-	ExistsSituation createExistsSituation();
+	EqualsLink createEqualsLink();
 
 	/**
 	 * Returns a new object of class '<em>Function</em>'.
@@ -148,13 +103,103 @@ public interface Sml2Factory extends EFactory {
 	Function createFunction();
 
 	/**
-	 * Returns a new object of class '<em>Parameter</em>'.
+	 * Returns a new object of class '<em>Function Parameter</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Parameter</em>'.
+	 * @return a new object of class '<em>Function Parameter</em>'.
 	 * @generated
 	 */
-	Parameter createParameter();
+	FunctionParameter createFunctionParameter();
+
+	/**
+	 * Returns a new object of class '<em>Instantiation Link</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Instantiation Link</em>'.
+	 * @generated
+	 */
+	InstantiationLink createInstantiationLink();
+
+	/**
+	 * Returns a new object of class '<em>Mediation Link</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Mediation Link</em>'.
+	 * @generated
+	 */
+	MediationLink createMediationLink();
+
+	/**
+	 * Returns a new object of class '<em>Ordered Comparative Link</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Ordered Comparative Link</em>'.
+	 * @generated
+	 */
+	OrderedComparativeLink createOrderedComparativeLink();
+
+	/**
+	 * Returns a new object of class '<em>Reference Node</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Reference Node</em>'.
+	 * @generated
+	 */
+	ReferenceNode createReferenceNode();
+
+	/**
+	 * Returns a new object of class '<em>Reflected Participant</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Reflected Participant</em>'.
+	 * @generated
+	 */
+	ReflectedParticipant createReflectedParticipant();
+
+	/**
+	 * Returns a new object of class '<em>Reflected Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Reflected Reference</em>'.
+	 * @generated
+	 */
+	ReflectedReference createReflectedReference();
+
+	/**
+	 * Returns a new object of class '<em>Relator Participant</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Relator Participant</em>'.
+	 * @generated
+	 */
+	RelatorParticipant createRelatorParticipant();
+
+	/**
+	 * Returns a new object of class '<em>Situation Participant</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Situation Participant</em>'.
+	 * @generated
+	 */
+	SituationParticipant createSituationParticipant();
+
+	/**
+	 * Returns a new object of class '<em>Situation Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Situation Type</em>'.
+	 * @generated
+	 */
+	SituationType createSituationType();
+
+	/**
+	 * Returns a new object of class '<em>SML Model</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>SML Model</em>'.
+	 * @generated
+	 */
+	SMLModel createSMLModel();
 
 	/**
 	 * Returns the package supported by this factory.

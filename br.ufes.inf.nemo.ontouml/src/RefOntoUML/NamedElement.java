@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
 
@@ -366,3 +365,5 @@ public interface NamedElement extends Element {
 	EList<RefOntoUML.Package> allOwningPackages();
 
 } // NamedElement
+
+

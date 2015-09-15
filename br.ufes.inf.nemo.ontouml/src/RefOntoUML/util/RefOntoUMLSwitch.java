@@ -56,6 +56,8 @@ import RefOntoUML.MaterialAssociation;
 import RefOntoUML.MeasurableQuality;
 import RefOntoUML.MeasurementDimension;
 import RefOntoUML.MeasurementDomain;
+import RefOntoUML.MeasurementEnumeration;
+import RefOntoUML.MeasurementLiteral;
 import RefOntoUML.MeasurementRegion;
 import RefOntoUML.MeasurementStructure;
 import RefOntoUML.Mediation;
@@ -76,8 +78,6 @@ import RefOntoUML.NonRigidMixinClass;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.OpaqueExpression;
 import RefOntoUML.OrdinalDimension;
-import RefOntoUML.OrdinalEnumeration;
-import RefOntoUML.OrdinalLiteral;
 import RefOntoUML.PackageImport;
 import RefOntoUML.PackageMerge;
 import RefOntoUML.PackageableElement;
@@ -115,12 +115,10 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
-
-import java.util.List;
-
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.util.Switch;
 
 /**
  * <!-- begin-user-doc -->
@@ -135,7 +133,7 @@ import org.eclipse.emf.ecore.EObject;
  * @see RefOntoUML.RefOntoUMLPackage
  * @generated
  */
-public class RefOntoUMLSwitch<T> {
+public class RefOntoUMLSwitch<T> extends Switch<T> {
 	/**
 	 * The cached model package
 	 * <!-- begin-user-doc -->
@@ -157,14 +155,16 @@ public class RefOntoUMLSwitch<T> {
 	}
 
 	/**
-	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
+	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the first non-null result returned by a <code>caseXXX</code> call.
+	 * @parameter ePackage the package in question.
+	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
-	public T doSwitch(EObject theEObject) {
-		return doSwitch(theEObject.eClass(), theEObject);
+	@Override
+	protected boolean isSwitchFor(EPackage ePackage) {
+		return ePackage == modelPackage;
 	}
 
 	/**
@@ -174,26 +174,7 @@ public class RefOntoUMLSwitch<T> {
 	 * @return the first non-null result returned by a <code>caseXXX</code> call.
 	 * @generated
 	 */
-	protected T doSwitch(EClass theEClass, EObject theEObject) {
-		if (theEClass.eContainer() == modelPackage) {
-			return doSwitch(theEClass.getClassifierID(), theEObject);
-		}
-		else {
-			List<EClass> eSuperTypes = theEClass.getESuperTypes();
-			return
-				eSuperTypes.isEmpty() ?
-					defaultCase(theEObject) :
-					doSwitch(eSuperTypes.get(0), theEObject);
-		}
-	}
-
-	/**
-	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the first non-null result returned by a <code>caseXXX</code> call.
-	 * @generated
-	 */
+	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
 			case RefOntoUMLPackage.COMMENT: {
@@ -582,41 +563,31 @@ public class RefOntoUMLSwitch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case RefOntoUMLPackage.ORDINAL_ENUMERATION: {
-				OrdinalEnumeration ordinalEnumeration = (OrdinalEnumeration)theEObject;
-				T result = caseOrdinalEnumeration(ordinalEnumeration);
-				if (result == null) result = caseOrdinalDimension(ordinalEnumeration);
-				if (result == null) result = caseEnumeration(ordinalEnumeration);
-				if (result == null) result = caseMeasurementDimension(ordinalEnumeration);
-				if (result == null) result = caseMeasurementStructure(ordinalEnumeration);
-				if (result == null) result = caseReferenceStructure(ordinalEnumeration);
-				if (result == null) result = caseDataType(ordinalEnumeration);
-				if (result == null) result = caseClassifier(ordinalEnumeration);
-				if (result == null) result = caseNamespace(ordinalEnumeration);
-				if (result == null) result = caseRedefinableElement(ordinalEnumeration);
-				if (result == null) result = caseType(ordinalEnumeration);
-				if (result == null) result = casePackageableElement(ordinalEnumeration);
-				if (result == null) result = caseNamedElement(ordinalEnumeration);
-				if (result == null) result = caseElement(ordinalEnumeration);
-				if (result == null) result = caseEModelElement(ordinalEnumeration);
+			case RefOntoUMLPackage.MEASUREMENT_ENUMERATION: {
+				MeasurementEnumeration measurementEnumeration = (MeasurementEnumeration)theEObject;
+				T result = caseMeasurementEnumeration(measurementEnumeration);
+				if (result == null) result = caseEnumeration(measurementEnumeration);
+				if (result == null) result = caseDataType(measurementEnumeration);
+				if (result == null) result = caseClassifier(measurementEnumeration);
+				if (result == null) result = caseNamespace(measurementEnumeration);
+				if (result == null) result = caseRedefinableElement(measurementEnumeration);
+				if (result == null) result = caseType(measurementEnumeration);
+				if (result == null) result = casePackageableElement(measurementEnumeration);
+				if (result == null) result = caseNamedElement(measurementEnumeration);
+				if (result == null) result = caseElement(measurementEnumeration);
+				if (result == null) result = caseEModelElement(measurementEnumeration);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case RefOntoUMLPackage.ORDINAL_LITERAL: {
-				OrdinalLiteral ordinalLiteral = (OrdinalLiteral)theEObject;
-				T result = caseOrdinalLiteral(ordinalLiteral);
-				if (result == null) result = caseEnumerationLiteral(ordinalLiteral);
-				if (result == null) result = caseBasicMeasurementRegion(ordinalLiteral);
-				if (result == null) result = caseInstanceSpecification(ordinalLiteral);
-				if (result == null) result = caseMeasurementRegion(ordinalLiteral);
-				if (result == null) result = caseReferenceRegion(ordinalLiteral);
-				if (result == null) result = caseLiteralSpecification(ordinalLiteral);
-				if (result == null) result = caseElement(ordinalLiteral);
-				if (result == null) result = caseValueSpecification(ordinalLiteral);
-				if (result == null) result = casePackageableElement(ordinalLiteral);
-				if (result == null) result = caseEModelElement(ordinalLiteral);
-				if (result == null) result = caseTypedElement(ordinalLiteral);
-				if (result == null) result = caseNamedElement(ordinalLiteral);
+			case RefOntoUMLPackage.MEASUREMENT_LITERAL: {
+				MeasurementLiteral measurementLiteral = (MeasurementLiteral)theEObject;
+				T result = caseMeasurementLiteral(measurementLiteral);
+				if (result == null) result = caseEnumerationLiteral(measurementLiteral);
+				if (result == null) result = caseInstanceSpecification(measurementLiteral);
+				if (result == null) result = casePackageableElement(measurementLiteral);
+				if (result == null) result = caseNamedElement(measurementLiteral);
+				if (result == null) result = caseElement(measurementLiteral);
+				if (result == null) result = caseEModelElement(measurementLiteral);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -904,7 +875,6 @@ public class RefOntoUMLSwitch<T> {
 			case RefOntoUMLPackage.REFERENCE_REGION: {
 				ReferenceRegion referenceRegion = (ReferenceRegion)theEObject;
 				T result = caseReferenceRegion(referenceRegion);
-				if (result == null) result = caseLiteralSpecification(referenceRegion);
 				if (result == null) result = caseValueSpecification(referenceRegion);
 				if (result == null) result = casePackageableElement(referenceRegion);
 				if (result == null) result = caseTypedElement(referenceRegion);
@@ -918,7 +888,6 @@ public class RefOntoUMLSwitch<T> {
 				MeasurementRegion measurementRegion = (MeasurementRegion)theEObject;
 				T result = caseMeasurementRegion(measurementRegion);
 				if (result == null) result = caseReferenceRegion(measurementRegion);
-				if (result == null) result = caseLiteralSpecification(measurementRegion);
 				if (result == null) result = caseValueSpecification(measurementRegion);
 				if (result == null) result = casePackageableElement(measurementRegion);
 				if (result == null) result = caseTypedElement(measurementRegion);
@@ -933,7 +902,6 @@ public class RefOntoUMLSwitch<T> {
 				T result = caseBasicMeasurementRegion(basicMeasurementRegion);
 				if (result == null) result = caseMeasurementRegion(basicMeasurementRegion);
 				if (result == null) result = caseReferenceRegion(basicMeasurementRegion);
-				if (result == null) result = caseLiteralSpecification(basicMeasurementRegion);
 				if (result == null) result = caseValueSpecification(basicMeasurementRegion);
 				if (result == null) result = casePackageableElement(basicMeasurementRegion);
 				if (result == null) result = caseTypedElement(basicMeasurementRegion);
@@ -949,8 +917,8 @@ public class RefOntoUMLSwitch<T> {
 				if (result == null) result = caseBasicMeasurementRegion(decimalMeasurementRegion);
 				if (result == null) result = caseLiteralDecimal(decimalMeasurementRegion);
 				if (result == null) result = caseMeasurementRegion(decimalMeasurementRegion);
-				if (result == null) result = caseReferenceRegion(decimalMeasurementRegion);
 				if (result == null) result = caseLiteralSpecification(decimalMeasurementRegion);
+				if (result == null) result = caseReferenceRegion(decimalMeasurementRegion);
 				if (result == null) result = caseValueSpecification(decimalMeasurementRegion);
 				if (result == null) result = casePackageableElement(decimalMeasurementRegion);
 				if (result == null) result = caseTypedElement(decimalMeasurementRegion);
@@ -966,8 +934,8 @@ public class RefOntoUMLSwitch<T> {
 				if (result == null) result = caseBasicMeasurementRegion(integerMeasurementRegion);
 				if (result == null) result = caseLiteralInteger(integerMeasurementRegion);
 				if (result == null) result = caseMeasurementRegion(integerMeasurementRegion);
-				if (result == null) result = caseReferenceRegion(integerMeasurementRegion);
 				if (result == null) result = caseLiteralSpecification(integerMeasurementRegion);
+				if (result == null) result = caseReferenceRegion(integerMeasurementRegion);
 				if (result == null) result = caseValueSpecification(integerMeasurementRegion);
 				if (result == null) result = casePackageableElement(integerMeasurementRegion);
 				if (result == null) result = caseTypedElement(integerMeasurementRegion);
@@ -982,7 +950,6 @@ public class RefOntoUMLSwitch<T> {
 				T result = caseComposedMeasurementRegion(composedMeasurementRegion);
 				if (result == null) result = caseMeasurementRegion(composedMeasurementRegion);
 				if (result == null) result = caseReferenceRegion(composedMeasurementRegion);
-				if (result == null) result = caseLiteralSpecification(composedMeasurementRegion);
 				if (result == null) result = caseValueSpecification(composedMeasurementRegion);
 				if (result == null) result = casePackageableElement(composedMeasurementRegion);
 				if (result == null) result = caseTypedElement(composedMeasurementRegion);
@@ -996,7 +963,6 @@ public class RefOntoUMLSwitch<T> {
 				NominalRegion nominalRegion = (NominalRegion)theEObject;
 				T result = caseNominalRegion(nominalRegion);
 				if (result == null) result = caseReferenceRegion(nominalRegion);
-				if (result == null) result = caseLiteralSpecification(nominalRegion);
 				if (result == null) result = caseValueSpecification(nominalRegion);
 				if (result == null) result = casePackageableElement(nominalRegion);
 				if (result == null) result = caseTypedElement(nominalRegion);
@@ -2374,32 +2340,32 @@ public class RefOntoUMLSwitch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Ordinal Enumeration</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Measurement Enumeration</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Ordinal Enumeration</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Measurement Enumeration</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseOrdinalEnumeration(OrdinalEnumeration object) {
+	public T caseMeasurementEnumeration(MeasurementEnumeration object) {
 		return null;
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Ordinal Literal</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Measurement Literal</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Ordinal Literal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Measurement Literal</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseOrdinalLiteral(OrdinalLiteral object) {
+	public T caseMeasurementLiteral(MeasurementLiteral object) {
 		return null;
 	}
 
@@ -3509,6 +3475,7 @@ public class RefOntoUMLSwitch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
 	 * @generated
 	 */
+	@Override
 	public T defaultCase(EObject object) {
 		return null;
 	}

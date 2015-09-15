@@ -10,12 +10,9 @@ import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.Type;
 import RefOntoUML.TypedElement;
 import RefOntoUML.ValueSpecification;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -257,3 +254,5 @@ public abstract class ValueSpecificationImpl extends PackageableElementImpl impl
 	}
 
 } //ValueSpecificationImpl
+
+

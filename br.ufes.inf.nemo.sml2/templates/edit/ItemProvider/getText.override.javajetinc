@@ -1,0 +1,1 @@
+		return new <%=genModel.getImportedName("sml2.util.Sml2SubstitutionLabelProvider")%>().getObjectLabel((<%=genClass.getImportedInterfaceName()%>) object);

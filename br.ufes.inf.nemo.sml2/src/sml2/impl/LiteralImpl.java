@@ -2,16 +2,25 @@
  */
 package sml2.impl;
 
-import RefOntoUML.DataType;
+import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EOperation;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.ocl.ParserException;
+import org.eclipse.ocl.Query;
+
+import org.eclipse.ocl.ecore.OCL;
+
+import org.eclipse.ocl.expressions.OCLExpression;
 
 import sml2.Literal;
+import sml2.SituationType;
+import sml2.SituationTypeElement;
 import sml2.Sml2Package;
 
 /**
@@ -19,46 +28,11 @@ import sml2.Sml2Package;
  * An implementation of the model object '<em><b>Literal</b></em>'.
  * <!-- end-user-doc -->
  * <p>
- * The following features are implemented:
- * <ul>
- *   <li>{@link sml2.impl.LiteralImpl#getValue <em>Value</em>}</li>
- *   <li>{@link sml2.impl.LiteralImpl#getDataType <em>Data Type</em>}</li>
- * </ul>
  * </p>
  *
  * @generated
  */
-public class LiteralImpl extends NodeImpl implements Literal {
-	/**
-	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String VALUE_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected String value = VALUE_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getDataType() <em>Data Type</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDataType()
-	 * @generated
-	 * @ordered
-	 */
-	protected DataType dataType;
-
+public abstract class LiteralImpl extends NodeImpl implements Literal {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -83,58 +57,25 @@ public class LiteralImpl extends NodeImpl implements Literal {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getValue() {
-		return value;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setValue(String newValue) {
-		String oldValue = value;
-		value = newValue;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.LITERAL__VALUE, oldValue, value));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public DataType getDataType() {
-		if (dataType != null && dataType.eIsProxy()) {
-			InternalEObject oldDataType = (InternalEObject)dataType;
-			dataType = (DataType)eResolveProxy(oldDataType);
-			if (dataType != oldDataType) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.LITERAL__DATA_TYPE, oldDataType, dataType));
+	public SituationType getSituation() {
+		if (getSituationBodyOCL == null) {
+			EOperation eOperation = Sml2Package.Literals.SITUATION_TYPE_ELEMENT.getEOperations().get(0);
+			OCL.Helper helper = OCL_ENV.createOCLHelper();
+			helper.setOperationContext(Sml2Package.Literals.SITUATION_TYPE_ELEMENT, eOperation);
+			EAnnotation ocl = eOperation.getEAnnotation(OCL_ANNOTATION_SOURCE);
+			String body = ocl.getDetails().get("body");
+			
+			try {
+				getSituationBodyOCL = helper.createQuery(body);
+			} catch (ParserException e) {
+				throw new UnsupportedOperationException(e.getLocalizedMessage());
 			}
 		}
-		return dataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public DataType basicGetDataType() {
-		return dataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setDataType(DataType newDataType) {
-		DataType oldDataType = dataType;
-		dataType = newDataType;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.LITERAL__DATA_TYPE, oldDataType, dataType));
+		
+		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(getSituationBodyOCL);
+	
+		return (SituationType) query.evaluate(this);
+	
 	}
 
 	/**
@@ -143,15 +84,14 @@ public class LiteralImpl extends NodeImpl implements Literal {
 	 * @generated
 	 */
 	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case Sml2Package.LITERAL__VALUE:
-				return getValue();
-			case Sml2Package.LITERAL__DATA_TYPE:
-				if (resolve) return getDataType();
-				return basicGetDataType();
+	public int eDerivedOperationID(int baseOperationID, Class<?> baseClass) {
+		if (baseClass == SituationTypeElement.class) {
+			switch (baseOperationID) {
+				case Sml2Package.SITUATION_TYPE_ELEMENT___GET_SITUATION: return Sml2Package.LITERAL___GET_SITUATION;
+				default: return -1;
+			}
 		}
-		return super.eGet(featureID, resolve, coreType);
+		return super.eDerivedOperationID(baseOperationID, baseClass);
 	}
 
 	/**
@@ -160,66 +100,24 @@ public class LiteralImpl extends NodeImpl implements Literal {
 	 * @generated
 	 */
 	@Override
-	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case Sml2Package.LITERAL__VALUE:
-				setValue((String)newValue);
-				return;
-			case Sml2Package.LITERAL__DATA_TYPE:
-				setDataType((DataType)newValue);
-				return;
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case Sml2Package.LITERAL___GET_SITUATION:
+				return getSituation();
 		}
-		super.eSet(featureID, newValue);
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**
+	 * The parsed OCL expression for the body of the '{@link #getSituation <em>Get Situation</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @see #getSituation
 	 * @generated
 	 */
-	@Override
-	public void eUnset(int featureID) {
-		switch (featureID) {
-			case Sml2Package.LITERAL__VALUE:
-				setValue(VALUE_EDEFAULT);
-				return;
-			case Sml2Package.LITERAL__DATA_TYPE:
-				setDataType((DataType)null);
-				return;
-		}
-		super.eUnset(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case Sml2Package.LITERAL__VALUE:
-				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
-			case Sml2Package.LITERAL__DATA_TYPE:
-				return dataType != null;
-		}
-		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (value: ");
-		result.append(value);
-		result.append(')');
-		return result.toString();
-	}
-
+	private static OCLExpression<EClassifier> getSituationBodyOCL;
+	
+	private static final String OCL_ANNOTATION_SOURCE = "http://www.eclipse.org/ocl/examples/OCL";
+	
+	private static final OCL OCL_ENV = OCL.newInstance();
 } //LiteralImpl

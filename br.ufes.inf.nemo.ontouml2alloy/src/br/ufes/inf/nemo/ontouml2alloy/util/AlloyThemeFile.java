@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.ontouml2alloy.util;
 
-import java.io.File;
 import java.io.IOException;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
@@ -21,9 +20,9 @@ public class AlloyThemeFile {
 	 */
 	public static void generateAlloyThemeFile (String dirPath) throws IOException
 	{		
-		File themeFile = new File(dirPath + "standart_theme.thm");		
-		themeFile.deleteOnExit();		
-		FileUtil.copyStringToFile(standart_theme, dirPath + "standart_theme.thm");
+		//File themeFile = new File(dirPath + "standart_theme.thm");		
+		//themeFile.deleteOnExit();		
+		FileUtil.writeToFile(standart_theme, dirPath + "standart_theme.thm");
 	}
 	
 	

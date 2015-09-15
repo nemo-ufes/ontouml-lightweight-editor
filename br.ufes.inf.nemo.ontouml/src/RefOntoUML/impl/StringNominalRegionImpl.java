@@ -6,14 +6,12 @@
  */
 package RefOntoUML.impl;
 
+import RefOntoUML.LiteralSpecification;
 import RefOntoUML.LiteralString;
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.StringNominalRegion;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -189,6 +187,11 @@ public class StringNominalRegionImpl extends NominalRegionImpl implements String
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == LiteralSpecification.class) {
+			switch (derivedFeatureID) {
+				default: return -1;
+			}
+		}
 		if (baseClass == LiteralString.class) {
 			switch (derivedFeatureID) {
 				case RefOntoUMLPackage.STRING_NOMINAL_REGION__VALUE: return RefOntoUMLPackage.LITERAL_STRING__VALUE;
@@ -205,6 +208,11 @@ public class StringNominalRegionImpl extends NominalRegionImpl implements String
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == LiteralSpecification.class) {
+			switch (baseFeatureID) {
+				default: return -1;
+			}
+		}
 		if (baseClass == LiteralString.class) {
 			switch (baseFeatureID) {
 				case RefOntoUMLPackage.LITERAL_STRING__VALUE: return RefOntoUMLPackage.STRING_NOMINAL_REGION__VALUE;
@@ -231,3 +239,5 @@ public class StringNominalRegionImpl extends NominalRegionImpl implements String
 	}
 
 } //StringNominalRegionImpl
+
+

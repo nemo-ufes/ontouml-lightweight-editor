@@ -1,6 +1,5 @@
 package br.ufes.inf.nemo.ontouml2alloy.util;
 
-import java.io.File;
 import java.io.IOException;
 
 import br.ufes.inf.nemo.common.file.FileUtil;
@@ -21,12 +20,12 @@ public class AlloyLibraryFiles {
 	 */
 	public static void generateLibraryFiles (String dirPath) throws IOException
 	{
-		File lib1File = new File(dirPath + "world_structure.als");
-		File lib2File = new File(dirPath + "ontological_properties.als");			
-		lib1File.deleteOnExit();
-		lib2File.deleteOnExit();				
-		FileUtil.copyStringToFile(world_structure, dirPath + "world_structure.als");
-		FileUtil.copyStringToFile(ontological_properties, dirPath + "ontological_properties.als");
+		//File lib1File = new File(dirPath + "world_structure.als");
+		//File lib2File = new File(dirPath + "ontological_properties.als");			
+		//lib1File.deleteOnExit();
+		//lib2File.deleteOnExit();				
+		FileUtil.writeToFile(world_structure, dirPath + "world_structure.als");
+		FileUtil.writeToFile(ontological_properties, dirPath + "ontological_properties.als");
 	}
 	
 	/** Content of the ontological properties library. */

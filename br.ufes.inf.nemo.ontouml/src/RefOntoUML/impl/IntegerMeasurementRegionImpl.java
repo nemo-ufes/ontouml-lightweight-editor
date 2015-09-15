@@ -8,12 +8,10 @@ package RefOntoUML.impl;
 
 import RefOntoUML.IntegerMeasurementRegion;
 import RefOntoUML.LiteralInteger;
+import RefOntoUML.LiteralSpecification;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
@@ -155,6 +153,11 @@ public class IntegerMeasurementRegionImpl extends BasicMeasurementRegionImpl imp
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == LiteralSpecification.class) {
+			switch (derivedFeatureID) {
+				default: return -1;
+			}
+		}
 		if (baseClass == LiteralInteger.class) {
 			switch (derivedFeatureID) {
 				case RefOntoUMLPackage.INTEGER_MEASUREMENT_REGION__VALUE: return RefOntoUMLPackage.LITERAL_INTEGER__VALUE;
@@ -171,6 +174,11 @@ public class IntegerMeasurementRegionImpl extends BasicMeasurementRegionImpl imp
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == LiteralSpecification.class) {
+			switch (baseFeatureID) {
+				default: return -1;
+			}
+		}
 		if (baseClass == LiteralInteger.class) {
 			switch (baseFeatureID) {
 				case RefOntoUMLPackage.LITERAL_INTEGER__VALUE: return RefOntoUMLPackage.INTEGER_MEASUREMENT_REGION__VALUE;
@@ -197,3 +205,5 @@ public class IntegerMeasurementRegionImpl extends BasicMeasurementRegionImpl imp
 	}
 
 } //IntegerMeasurementRegionImpl
+
+

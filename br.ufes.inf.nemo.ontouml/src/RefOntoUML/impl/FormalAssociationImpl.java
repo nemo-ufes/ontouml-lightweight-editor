@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.FormalAssociation;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public class FormalAssociationImpl extends AssociationImpl implements FormalAsso
 	}
 
 } //FormalAssociationImpl
+
+

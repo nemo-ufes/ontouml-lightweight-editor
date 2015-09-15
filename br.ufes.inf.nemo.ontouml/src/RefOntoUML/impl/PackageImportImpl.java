@@ -10,25 +10,17 @@ import RefOntoUML.Namespace;
 import RefOntoUML.PackageImport;
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.VisibilityKind;
-
 import RefOntoUML.util.RefOntoUMLValidator;
-
 import java.util.Map;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
 import org.eclipse.emf.ecore.util.EObjectValidator;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
@@ -163,7 +155,7 @@ public class PackageImportImpl extends DirectedRelationshipImpl implements Packa
 	 */
 	public Namespace getImportingNamespace() {
 		if (eContainerFeatureID() != RefOntoUMLPackage.PACKAGE_IMPORT__IMPORTING_NAMESPACE) return null;
-		return (Namespace)eContainer();
+		return (Namespace)eInternalContainer();
 	}
 
 	/**
@@ -202,7 +194,6 @@ public class PackageImportImpl extends DirectedRelationshipImpl implements Packa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean public_or_private(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -363,3 +354,5 @@ public class PackageImportImpl extends DirectedRelationshipImpl implements Packa
 	}
 
 } //PackageImportImpl
+
+

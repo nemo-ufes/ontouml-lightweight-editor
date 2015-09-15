@@ -8,15 +8,11 @@ package RefOntoUML.impl;
 
 import RefOntoUML.PackageMerge;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 /**
@@ -108,7 +104,7 @@ public class PackageMergeImpl extends DirectedRelationshipImpl implements Packag
 	 */
 	public RefOntoUML.Package getReceivingPackage() {
 		if (eContainerFeatureID() != RefOntoUMLPackage.PACKAGE_MERGE__RECEIVING_PACKAGE) return null;
-		return (RefOntoUML.Package)eContainer();
+		return (RefOntoUML.Package)eInternalContainer();
 	}
 
 	/**
@@ -256,3 +252,5 @@ public class PackageMergeImpl extends DirectedRelationshipImpl implements Packag
 	}
 
 } //PackageMergeImpl
+
+

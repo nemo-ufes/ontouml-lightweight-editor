@@ -6,7 +6,6 @@
  */
 package RefOntoUML;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Non Rigid Mixin Class</b></em>'.

@@ -9,25 +9,17 @@ package RefOntoUML.impl;
 import RefOntoUML.Element;
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.Relationship;
-
 import java.util.Collection;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.util.EcoreEList;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.ecore.OCL.Helper;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -134,3 +126,5 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //RelationshipImpl
+
+

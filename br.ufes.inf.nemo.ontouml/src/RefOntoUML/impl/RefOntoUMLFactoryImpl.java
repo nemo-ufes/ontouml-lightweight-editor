@@ -43,6 +43,8 @@ import RefOntoUML.LiteralString;
 import RefOntoUML.LiteralUnlimitedNatural;
 import RefOntoUML.MaterialAssociation;
 import RefOntoUML.MeasurementDomain;
+import RefOntoUML.MeasurementEnumeration;
+import RefOntoUML.MeasurementLiteral;
 import RefOntoUML.Mediation;
 import RefOntoUML.Mixin;
 import RefOntoUML.Mode;
@@ -51,8 +53,6 @@ import RefOntoUML.NominalQuality;
 import RefOntoUML.NominalStructure;
 import RefOntoUML.NonPerceivableQuality;
 import RefOntoUML.OpaqueExpression;
-import RefOntoUML.OrdinalEnumeration;
-import RefOntoUML.OrdinalLiteral;
 import RefOntoUML.PackageImport;
 import RefOntoUML.PackageMerge;
 import RefOntoUML.PerceivableQuality;
@@ -76,16 +76,12 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
-
 import java.math.BigDecimal;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
@@ -103,7 +99,7 @@ public class RefOntoUMLFactoryImpl extends EFactoryImpl implements RefOntoUMLFac
 	 */
 	public static RefOntoUMLFactory init() {
 		try {
-			RefOntoUMLFactory theRefOntoUMLFactory = (RefOntoUMLFactory)EPackage.Registry.INSTANCE.getEFactory("http://nemo.inf.ufes.br/ontouml/refontouml"); 
+			RefOntoUMLFactory theRefOntoUMLFactory = (RefOntoUMLFactory)EPackage.Registry.INSTANCE.getEFactory(RefOntoUMLPackage.eNS_URI);
 			if (theRefOntoUMLFactory != null) {
 				return theRefOntoUMLFactory;
 			}
@@ -153,8 +149,8 @@ public class RefOntoUMLFactoryImpl extends EFactoryImpl implements RefOntoUMLFac
 			case RefOntoUMLPackage.SLOT: return createSlot();
 			case RefOntoUMLPackage.ENUMERATION: return createEnumeration();
 			case RefOntoUMLPackage.ENUMERATION_LITERAL: return createEnumerationLiteral();
-			case RefOntoUMLPackage.ORDINAL_ENUMERATION: return createOrdinalEnumeration();
-			case RefOntoUMLPackage.ORDINAL_LITERAL: return createOrdinalLiteral();
+			case RefOntoUMLPackage.MEASUREMENT_ENUMERATION: return createMeasurementEnumeration();
+			case RefOntoUMLPackage.MEASUREMENT_LITERAL: return createMeasurementLiteral();
 			case RefOntoUMLPackage.PRIMITIVE_TYPE: return createPrimitiveType();
 			case RefOntoUMLPackage.NOMINAL_STRUCTURE: return createNominalStructure();
 			case RefOntoUMLPackage.STRING_NOMINAL_STRUCTURE: return createStringNominalStructure();
@@ -474,9 +470,9 @@ public class RefOntoUMLFactoryImpl extends EFactoryImpl implements RefOntoUMLFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public OrdinalEnumeration createOrdinalEnumeration() {
-		OrdinalEnumerationImpl ordinalEnumeration = new OrdinalEnumerationImpl();
-		return ordinalEnumeration;
+	public MeasurementEnumeration createMeasurementEnumeration() {
+		MeasurementEnumerationImpl measurementEnumeration = new MeasurementEnumerationImpl();
+		return measurementEnumeration;
 	}
 
 	/**
@@ -484,9 +480,9 @@ public class RefOntoUMLFactoryImpl extends EFactoryImpl implements RefOntoUMLFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public OrdinalLiteral createOrdinalLiteral() {
-		OrdinalLiteralImpl ordinalLiteral = new OrdinalLiteralImpl();
-		return ordinalLiteral;
+	public MeasurementLiteral createMeasurementLiteral() {
+		MeasurementLiteralImpl measurementLiteral = new MeasurementLiteralImpl();
+		return measurementLiteral;
 	}
 
 	/**

@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.SemiRigidMixinClass;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public abstract class SemiRigidMixinClassImpl extends NonRigidMixinClassImpl imp
 	}
 
 } //SemiRigidMixinClassImpl
+
+

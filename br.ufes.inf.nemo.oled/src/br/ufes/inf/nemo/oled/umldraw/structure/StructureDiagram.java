@@ -1107,8 +1107,7 @@ public class StructureDiagram extends AbstractCompositeNode implements
 	}
 
 	@Override
-	public EList<EObject> getStereotypeApplications() {
-		return null;
+	public void getStereotypeApplications() {
 	}
 
 	@Override

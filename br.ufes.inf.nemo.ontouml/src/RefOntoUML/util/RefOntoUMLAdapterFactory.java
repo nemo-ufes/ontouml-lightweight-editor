@@ -56,6 +56,8 @@ import RefOntoUML.MaterialAssociation;
 import RefOntoUML.MeasurableQuality;
 import RefOntoUML.MeasurementDimension;
 import RefOntoUML.MeasurementDomain;
+import RefOntoUML.MeasurementEnumeration;
+import RefOntoUML.MeasurementLiteral;
 import RefOntoUML.MeasurementRegion;
 import RefOntoUML.MeasurementStructure;
 import RefOntoUML.Mediation;
@@ -76,8 +78,6 @@ import RefOntoUML.NonRigidMixinClass;
 import RefOntoUML.ObjectClass;
 import RefOntoUML.OpaqueExpression;
 import RefOntoUML.OrdinalDimension;
-import RefOntoUML.OrdinalEnumeration;
-import RefOntoUML.OrdinalLiteral;
 import RefOntoUML.PackageImport;
 import RefOntoUML.PackageMerge;
 import RefOntoUML.PackageableElement;
@@ -115,12 +115,9 @@ import RefOntoUML.componentOf;
 import RefOntoUML.memberOf;
 import RefOntoUML.subCollectionOf;
 import RefOntoUML.subQuantityOf;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 
@@ -325,12 +322,12 @@ public class RefOntoUMLAdapterFactory extends AdapterFactoryImpl {
 				return createEnumerationLiteralAdapter();
 			}
 			@Override
-			public Adapter caseOrdinalEnumeration(OrdinalEnumeration object) {
-				return createOrdinalEnumerationAdapter();
+			public Adapter caseMeasurementEnumeration(MeasurementEnumeration object) {
+				return createMeasurementEnumerationAdapter();
 			}
 			@Override
-			public Adapter caseOrdinalLiteral(OrdinalLiteral object) {
-				return createOrdinalLiteralAdapter();
+			public Adapter caseMeasurementLiteral(MeasurementLiteral object) {
+				return createMeasurementLiteralAdapter();
 			}
 			@Override
 			public Adapter casePrimitiveType(PrimitiveType object) {
@@ -1149,30 +1146,30 @@ public class RefOntoUMLAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link RefOntoUML.OrdinalEnumeration <em>Ordinal Enumeration</em>}'.
+	 * Creates a new adapter for an object of class '{@link RefOntoUML.MeasurementEnumeration <em>Measurement Enumeration</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see RefOntoUML.OrdinalEnumeration
+	 * @see RefOntoUML.MeasurementEnumeration
 	 * @generated
 	 */
-	public Adapter createOrdinalEnumerationAdapter() {
+	public Adapter createMeasurementEnumerationAdapter() {
 		return null;
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link RefOntoUML.OrdinalLiteral <em>Ordinal Literal</em>}'.
+	 * Creates a new adapter for an object of class '{@link RefOntoUML.MeasurementLiteral <em>Measurement Literal</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see RefOntoUML.OrdinalLiteral
+	 * @see RefOntoUML.MeasurementLiteral
 	 * @generated
 	 */
-	public Adapter createOrdinalLiteralAdapter() {
+	public Adapter createMeasurementLiteralAdapter() {
 		return null;
 	}
 

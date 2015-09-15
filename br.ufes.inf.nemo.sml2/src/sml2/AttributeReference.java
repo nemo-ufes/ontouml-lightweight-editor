@@ -12,68 +12,49 @@ import RefOntoUML.Property;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link sml2.AttributeReference#getEntity <em>Entity</em>}</li>
- *   <li>{@link sml2.AttributeReference#getAttribute <em>Attribute</em>}</li>
+ *   <li>{@link sml2.AttributeReference#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
  * @see sml2.Sml2Package#getAttributeReference()
- * @model
+ * @model annotation="Comments complexAttr_Function='An attribute that has a type that is not a PrimitiveType must be addressed by a Function'"
  * @generated
  */
-public interface AttributeReference extends ExportableNode {
+public interface AttributeReference extends ReferableElement {
 	/**
-	 * Returns the value of the '<em><b>Entity</b></em>' reference.
-	 * It is bidirectional and its opposite is '{@link sml2.Participant#getReference <em>Reference</em>}'.
+	 * Returns the value of the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Entity</em>' reference isn't clear,
+	 * If the meaning of the '<em>Type</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Entity</em>' reference.
-	 * @see #setEntity(Participant)
-	 * @see sml2.Sml2Package#getAttributeReference_Entity()
-	 * @see sml2.Participant#getReference
-	 * @model opposite="reference" required="true"
+	 * @return the value of the '<em>Type</em>' reference.
+	 * @see #setType(Property)
+	 * @see sml2.Sml2Package#getAttributeReference_Type()
+	 * @model required="true"
 	 * @generated
 	 */
-	Participant getEntity();
+	Property getType();
 
 	/**
-	 * Sets the value of the '{@link sml2.AttributeReference#getEntity <em>Entity</em>}' reference.
+	 * Sets the value of the '{@link sml2.AttributeReference#getType <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Entity</em>' reference.
-	 * @see #getEntity()
+	 * @param value the new value of the '<em>Type</em>' reference.
+	 * @see #getType()
 	 * @generated
 	 */
-	void setEntity(Participant value);
+	void setType(Property value);
 
 	/**
-	 * Returns the value of the '<em><b>Attribute</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Attribute</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Attribute</em>' reference.
-	 * @see #setAttribute(Property)
-	 * @see sml2.Sml2Package#getAttributeReference_Attribute()
-	 * @model
-	 * @generated
-	 */
-	Property getAttribute();
-
-	/**
-	 * Sets the value of the '{@link sml2.AttributeReference#getAttribute <em>Attribute</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Attribute</em>' reference.
-	 * @see #getAttribute()
+	 * @model kind="operation" required="true"
+	 *        annotation="http://www.eclipse.org/ocl/examples/OCL body='AttributeLink.allInstances()->select(x | x.getAttribute() = self)->asOrderedSet()->at(1).getEntity()'"
+	 *        annotation="Comments getEntity='Returns the Node that owns the AttributeReference. The Node can only be a Participant or a NodeReference, which in this case will be a reference also to a Participant.'"
 	 * @generated
 	 */
-	void setAttribute(Property value);
+	Node getEntity();
 
 } // AttributeReference

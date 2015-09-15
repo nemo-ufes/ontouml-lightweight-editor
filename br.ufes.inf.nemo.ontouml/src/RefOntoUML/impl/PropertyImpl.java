@@ -13,41 +13,29 @@ import RefOntoUML.Property;
 import RefOntoUML.RefOntoUMLPackage;
 import RefOntoUML.Type;
 import RefOntoUML.ValueSpecification;
-
 import RefOntoUML.util.RefOntoUMLValidator;
-
 import java.util.Collection;
 import java.util.Map;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.BasicDiagnostic;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EObjectValidator;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.ecore.OCL.Helper;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -241,7 +229,7 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 */
 	public RefOntoUML.Class getClass_() {
 		if (eContainerFeatureID() != RefOntoUMLPackage.PROPERTY__CLASS) return null;
-		return (RefOntoUML.Class)eContainer();
+		return (RefOntoUML.Class)eInternalContainer();
 	}
 
 	/**
@@ -251,7 +239,7 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 */
 	public DataType getDatatype() {
 		if (eContainerFeatureID() != RefOntoUMLPackage.PROPERTY__DATATYPE) return null;
-		return (DataType)eContainer();
+		return (DataType)eInternalContainer();
 	}
 
 	/**
@@ -452,7 +440,7 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 */
 	public Association getOwningAssociation() {
 		if (eContainerFeatureID() != RefOntoUMLPackage.PROPERTY__OWNING_ASSOCIATION) return null;
-		return (Association)eContainer();
+		return (Association)eInternalContainer();
 	}
 
 	/**
@@ -542,7 +530,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
 	 */
 	public Property basicGetOpposite() {
 		if (oppositeDeriveOCL == null) { 
@@ -563,8 +550,11 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 		
 		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(oppositeDeriveOCL);
 		Object result = query.evaluate(this);
-		if(result instanceof Property) return (Property) result;
-		else return null;
+		
+		if (result instanceof Property)
+			return (Property) result;
+		else
+			return null;
 	
 	}
 
@@ -656,7 +646,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean multiplicity_of_composite(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -682,7 +671,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean subsetting_context_conforms(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -708,7 +696,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean redefined_property_inherited(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -734,7 +721,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean subsetting_rules(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -760,7 +746,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean navigable_readonly(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -786,7 +771,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean derived_union_is_derived(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -812,7 +796,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean derived_union_is_read_only(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -838,7 +821,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean subsetted_property_names(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -864,7 +846,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean deployment_target(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -890,7 +871,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	public boolean binding_to_attribute(DiagnosticChain diagnostics, Map<Object, Object> context) {
 		// TODO: implement this method
 		// -> specify the condition that violates the invariant
@@ -1306,7 +1286,6 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	 * @see #getDefault
 	 * @generated
 	 */
-	@SuppressWarnings("unused")
 	private static OCLExpression<EClassifier> default_DeriveOCL;
 	
 	/**
@@ -1331,3 +1310,5 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //PropertyImpl
+
+

@@ -8,7 +8,6 @@ package RefOntoUML.impl;
 
 import RefOntoUML.NonRigidMixinClass;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.ecore.EClass;
 
 /**
@@ -41,3 +40,5 @@ public abstract class NonRigidMixinClassImpl extends MixinClassImpl implements N
 	}
 
 } //NonRigidMixinClassImpl
+
+

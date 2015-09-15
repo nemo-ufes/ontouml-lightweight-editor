@@ -7,7 +7,6 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 
 /**
@@ -129,3 +128,5 @@ public interface PackageImport extends DirectedRelationship {
 	boolean public_or_private(DiagnosticChain diagnostics, Map<Object, Object> context);
 
 } // PackageImport
+
+

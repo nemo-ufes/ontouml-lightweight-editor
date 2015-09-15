@@ -305,14 +305,14 @@ public class RefOntoUMLPackageImpl extends EPackageImpl implements RefOntoUMLPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass ordinalEnumerationEClass = null;
+	private EClass measurementEnumerationEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass ordinalLiteralEClass = null;
+	private EClass measurementLiteralEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -2338,11 +2338,11 @@ public class RefOntoUMLPackageImpl extends EPackageImpl implements RefOntoUMLPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getOrdinalEnumeration() {
-		if (ordinalEnumerationEClass == null) {
-			ordinalEnumerationEClass = (EClass)EPackage.Registry.INSTANCE.getEPackage(RefOntoUMLPackage.eNS_URI).getEClassifiers().get(43);
+	public EClass getMeasurementEnumeration() {
+		if (measurementEnumerationEClass == null) {
+			measurementEnumerationEClass = (EClass)EPackage.Registry.INSTANCE.getEPackage(RefOntoUMLPackage.eNS_URI).getEClassifiers().get(43);
 		}
-		return ordinalEnumerationEClass;
+		return measurementEnumerationEClass;
 	}
 
 	/**
@@ -2350,11 +2350,29 @@ public class RefOntoUMLPackageImpl extends EPackageImpl implements RefOntoUMLPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getOrdinalLiteral() {
-		if (ordinalLiteralEClass == null) {
-			ordinalLiteralEClass = (EClass)EPackage.Registry.INSTANCE.getEPackage(RefOntoUMLPackage.eNS_URI).getEClassifiers().get(44);
+	public EReference getMeasurementEnumeration_GroundingStructure() {
+        return (EReference)getMeasurementEnumeration().getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getMeasurementLiteral() {
+		if (measurementLiteralEClass == null) {
+			measurementLiteralEClass = (EClass)EPackage.Registry.INSTANCE.getEPackage(RefOntoUMLPackage.eNS_URI).getEClassifiers().get(44);
 		}
-		return ordinalLiteralEClass;
+		return measurementLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getMeasurementLiteral_GroundingRegion() {
+        return (EReference)getMeasurementLiteral().getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -2424,6 +2442,15 @@ public class RefOntoUMLPackageImpl extends EPackageImpl implements RefOntoUMLPac
 			measurementStructureEClass = (EClass)EPackage.Registry.INSTANCE.getEPackage(RefOntoUMLPackage.eNS_URI).getEClassifiers().get(49);
 		}
 		return measurementStructureEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getMeasurementStructure_GroundedEnumeration() {
+        return (EReference)getMeasurementStructure().getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -2643,6 +2670,15 @@ public class RefOntoUMLPackageImpl extends EPackageImpl implements RefOntoUMLPac
 			measurementRegionEClass = (EClass)EPackage.Registry.INSTANCE.getEPackage(RefOntoUMLPackage.eNS_URI).getEClassifiers().get(62);
 		}
 		return measurementRegionEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getMeasurementRegion_GroundedLiteral() {
+        return (EReference)getMeasurementRegion().getEStructuralFeatures().get(0);
 	}
 
 	/**

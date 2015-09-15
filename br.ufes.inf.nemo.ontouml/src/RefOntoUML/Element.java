@@ -7,14 +7,11 @@
 package RefOntoUML;
 
 import java.util.Map;
-
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EModelElement;
-import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -215,10 +212,10 @@ public interface Element extends EModelElement {
 	 * <!-- begin-model-doc -->
 	 * Retrieves the stereotype applications for this element.
 	 * <!-- end-model-doc -->
-	 * @model kind="operation" ordered="false"
+	 * @model kind="operation"
 	 * @generated
 	 */
-	EList<EObject> getStereotypeApplications();
+	void getStereotypeApplications();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -351,3 +348,5 @@ public interface Element extends EModelElement {
 	boolean mustBeOwned();
 
 } // Element
+
+

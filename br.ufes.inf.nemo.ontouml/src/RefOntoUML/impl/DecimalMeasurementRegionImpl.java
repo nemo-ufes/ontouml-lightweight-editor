@@ -8,24 +8,18 @@ package RefOntoUML.impl;
 
 import RefOntoUML.DecimalMeasurementRegion;
 import RefOntoUML.LiteralDecimal;
+import RefOntoUML.LiteralSpecification;
 import RefOntoUML.RefOntoUMLPackage;
-
 import java.math.BigDecimal;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -193,6 +187,11 @@ public class DecimalMeasurementRegionImpl extends BasicMeasurementRegionImpl imp
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
+		if (baseClass == LiteralSpecification.class) {
+			switch (derivedFeatureID) {
+				default: return -1;
+			}
+		}
 		if (baseClass == LiteralDecimal.class) {
 			switch (derivedFeatureID) {
 				case RefOntoUMLPackage.DECIMAL_MEASUREMENT_REGION__VALUE: return RefOntoUMLPackage.LITERAL_DECIMAL__VALUE;
@@ -209,6 +208,11 @@ public class DecimalMeasurementRegionImpl extends BasicMeasurementRegionImpl imp
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
+		if (baseClass == LiteralSpecification.class) {
+			switch (baseFeatureID) {
+				default: return -1;
+			}
+		}
 		if (baseClass == LiteralDecimal.class) {
 			switch (baseFeatureID) {
 				case RefOntoUMLPackage.LITERAL_DECIMAL__VALUE: return RefOntoUMLPackage.DECIMAL_MEASUREMENT_REGION__VALUE;
@@ -247,3 +251,5 @@ public class DecimalMeasurementRegionImpl extends BasicMeasurementRegionImpl imp
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //DecimalMeasurementRegionImpl
+
+

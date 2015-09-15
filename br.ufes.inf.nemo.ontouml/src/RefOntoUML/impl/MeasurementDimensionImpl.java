@@ -10,25 +10,18 @@ import RefOntoUML.BasicMeasurementRegion;
 import RefOntoUML.MeasurementDimension;
 import RefOntoUML.MeasurementDomain;
 import RefOntoUML.RefOntoUMLPackage;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.emf.ecore.util.EcoreUtil;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.expressions.OCLExpression;
 
 /**
@@ -114,7 +107,7 @@ public abstract class MeasurementDimensionImpl extends MeasurementStructureImpl 
 	 */
 	public MeasurementDomain getDomain() {
 		if (eContainerFeatureID() != RefOntoUMLPackage.MEASUREMENT_DIMENSION__DOMAIN) return null;
-		return (MeasurementDomain)eContainer();
+		return (MeasurementDomain)eInternalContainer();
 	}
 
 	/**
@@ -516,3 +509,5 @@ public abstract class MeasurementDimensionImpl extends MeasurementStructureImpl 
 	
 	private static final OCL OCL_ENV = OCL.newInstance();
 } //MeasurementDimensionImpl
+
+

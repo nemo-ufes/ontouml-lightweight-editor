@@ -3,7 +3,6 @@
 package sml2;
 
 import RefOntoUML.Model;
-import RefOntoUML.PackageableElement;
 
 import org.eclipse.emf.common.util.EList;
 
@@ -19,7 +18,6 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link sml2.SMLModel#getElements <em>Elements</em>}</li>
  *   <li>{@link sml2.SMLModel#getContextModel <em>Context Model</em>}</li>
- *   <li>{@link sml2.SMLModel#getPrimitiveContextElements <em>Primitive Context Elements</em>}</li>
  * </ul>
  * </p>
  *
@@ -69,21 +67,5 @@ public interface SMLModel extends EObject {
 	 * @generated
 	 */
 	void setContextModel(Model value);
-
-	/**
-	 * Returns the value of the '<em><b>Primitive Context Elements</b></em>' containment reference list.
-	 * The list contents are of type {@link RefOntoUML.PackageableElement}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Primitive Context Elements</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Primitive Context Elements</em>' containment reference list.
-	 * @see sml2.Sml2Package#getSMLModel_PrimitiveContextElements()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<PackageableElement> getPrimitiveContextElements();
 
 } // SMLModel

@@ -12,5 +12,5 @@ Export-Package: sml2,
  sml2.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- br.ufes.inf.nemo.ontouml;bundle-version="1.0.0"
+ br.ufes.inf.nemo.ontouml;bundle-version="1.0.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
