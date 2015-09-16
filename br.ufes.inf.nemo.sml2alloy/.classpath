@@ -2,13 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="C:/Users/Sobral/Development/eclipse_modeling(Kepler)/plugins/org.eclipse.emf.ecore_2.9.2.v20131212-0545.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sobral/Development/eclipse_modeling(Kepler)/plugins/org.eclipse.emf.common_2.9.2.v20131212-0545.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Sobral/Development/eclipse_modeling(Kepler)/plugins/org.eclipse.emf.ecore.xmi_2.9.1.v20131212-0545.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.sml2"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml2alloy"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.alloy"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.common"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-kepler-sr1/org.eclipse.emf.common_2.9.1.v20130827-0309.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-kepler-sr1/org.eclipse.emf.ecore_2.9.1.v20130827-0309.jar"/>
+	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-kepler-sr1/org.eclipse.emf.ecore.xmi_2.9.1.v20130827-0309.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

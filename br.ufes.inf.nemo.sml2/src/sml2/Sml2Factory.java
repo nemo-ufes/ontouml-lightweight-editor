@@ -49,13 +49,13 @@ public interface Sml2Factory extends EFactory {
 	AttributeReference createAttributeReference();
 
 	/**
-	 * Returns a new object of class '<em>Class Literal</em>'.
+	 * Returns a new object of class '<em>Characterization Link</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Class Literal</em>'.
+	 * @return a new object of class '<em>Characterization Link</em>'.
 	 * @generated
 	 */
-	ClassLiteral createClassLiteral();
+	CharacterizationLink createCharacterizationLink();
 
 	/**
 	 * Returns a new object of class '<em>Context Formal Link</em>'.
@@ -65,15 +65,6 @@ public interface Sml2Factory extends EFactory {
 	 * @generated
 	 */
 	ContextFormalLink createContextFormalLink();
-
-	/**
-	 * Returns a new object of class '<em>Data Type Literal</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Data Type Literal</em>'.
-	 * @generated
-	 */
-	DataTypeLiteral createDataTypeLiteral();
 
 	/**
 	 * Returns a new object of class '<em>Entity Participant</em>'.
@@ -130,6 +121,15 @@ public interface Sml2Factory extends EFactory {
 	MediationLink createMediationLink();
 
 	/**
+	 * Returns a new object of class '<em>Mode Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Mode Reference</em>'.
+	 * @generated
+	 */
+	ModeReference createModeReference();
+
+	/**
 	 * Returns a new object of class '<em>Ordered Comparative Link</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -137,6 +137,15 @@ public interface Sml2Factory extends EFactory {
 	 * @generated
 	 */
 	OrderedComparativeLink createOrderedComparativeLink();
+
+	/**
+	 * Returns a new object of class '<em>Quality Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Quality Literal</em>'.
+	 * @generated
+	 */
+	QualityLiteral createQualityLiteral();
 
 	/**
 	 * Returns a new object of class '<em>Reference Node</em>'.
@@ -148,24 +157,6 @@ public interface Sml2Factory extends EFactory {
 	ReferenceNode createReferenceNode();
 
 	/**
-	 * Returns a new object of class '<em>Reflected Participant</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Reflected Participant</em>'.
-	 * @generated
-	 */
-	ReflectedParticipant createReflectedParticipant();
-
-	/**
-	 * Returns a new object of class '<em>Reflected Reference</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Reflected Reference</em>'.
-	 * @generated
-	 */
-	ReflectedReference createReflectedReference();
-
-	/**
 	 * Returns a new object of class '<em>Relator Participant</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -173,6 +164,15 @@ public interface Sml2Factory extends EFactory {
 	 * @generated
 	 */
 	RelatorParticipant createRelatorParticipant();
+
+	/**
+	 * Returns a new object of class '<em>Self Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Self Reference</em>'.
+	 * @generated
+	 */
+	SelfReference createSelfReference();
 
 	/**
 	 * Returns a new object of class '<em>Situation Participant</em>'.
@@ -200,6 +200,15 @@ public interface Sml2Factory extends EFactory {
 	 * @generated
 	 */
 	SMLModel createSMLModel();
+
+	/**
+	 * Returns a new object of class '<em>Type Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Type Literal</em>'.
+	 * @generated
+	 */
+	TypeLiteral createTypeLiteral();
 
 	/**
 	 * Returns the package supported by this factory.

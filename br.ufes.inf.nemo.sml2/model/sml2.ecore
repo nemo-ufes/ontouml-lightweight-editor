@@ -48,11 +48,11 @@
       <details key="constraints" value="sourceIsParticipant_Reference2 targetIsAttribute"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
-      <details key="sourceIsParticipant_Reference2" value="self.source.oclIsKindOf(Participant) or (self.source.oclIsKindOf(ReferenceNode) and self.source.oclAsType(ReferenceNode).reference.oclIsKindOf(Participant))"/>
+      <details key="sourceIsParticipant_Reference2" value="self.source.oclIsKindOf(Participant) or &#xD;&#xA;self.source.oclIsKindOf(ModeReference) or&#xD;&#xA;(self.source.oclIsKindOf(ReferenceNode) and &#xD;&#xA;&#x9;(self.source.oclAsType(ReferenceNode).reference.oclIsKindOf(Participant) or&#xD;&#xA;&#x9;(self.source.oclAsType(ReferenceNode).reference.oclIsKindOf(ModeReference))"/>
       <details key="targetIsAttribute" value="self.target.oclIsKindOf(AttributeReference)"/>
     </eAnnotations>
     <eAnnotations source="Comments">
-      <details key="sourceIsParticipant_Reference2" value="The source of an AttributeLink must be a Participant or a ReferenceNode, which in this case must be a reference to a Participant"/>
+      <details key="sourceIsParticipant_Reference2" value="The source of an AttributeLink must be a Participant, a ModeReference or a ReferenceNode, which in this case must be a reference to a Participant or a ModeReference"/>
       <details key="targetIsAttribute" value="The target of an AttributeLink must be an Attribute"/>
     </eAnnotations>
     <eOperations name="getEntity" lowerBound="1" eType="#//Node">
@@ -67,21 +67,41 @@
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributeReference" eSuperTypes="#//ReferableElement">
-    <eAnnotations source="Comments">
-      <details key="complexAttr_Function" value="An attribute that has a type that is not a PrimitiveType must be addressed by a Function"/>
-    </eAnnotations>
     <eOperations name="getEntity" lowerBound="1" eType="#//Node">
       <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
         <details key="body" value="AttributeLink.allInstances()->select(x | x.getAttribute() = self)->asOrderedSet()->at(1).getEntity()"/>
       </eAnnotations>
       <eAnnotations source="Comments">
-        <details key="getEntity" value="Returns the Node that owns the AttributeReference. The Node can only be a Participant or a NodeReference, which in this case will be a reference also to a Participant."/>
+        <details key="getEntity" value="Returns the Node that owns the AttributeReference."/>
       </eAnnotations>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Property"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Quality"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ClassLiteral" eSuperTypes="#//Literal">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Class"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CharacterizationLink" eSuperTypes="#//SituationTypeAssociation">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="sourceIsMode targetIsEntity_Reference sameEndsAsType3"/>
+    </eAnnotations>
+    <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
+      <details key="sourceIsMode" value="self.source.oclIsKindOf(ModeReference)"/>
+      <details key="targetIsEntity_Reference" value="self.target.oclIsKindOf(EntityParticipant) or &#xD;&#xA;(self.target.oclIsKindOf(ReferenceNode) and &#xD;&#xA;&#x9;(self.target.oclAsType(ReferenceNode).reference.oclIsKindOf(EntityParticipant))"/>
+      <details key="sameEndsAsType3" value="self.type.oclAsType(RefOntoUML::Characterization).characterizing() = self.source.oclAsType(ModeReference).type and&#xD;&#xA;self.type.oclAsType(RefOntoUML::Characterization).characterized() = self.target.oclAsType(EntityParticipant).type"/>
+    </eAnnotations>
+    <eAnnotations source="Comments">
+      <details key="sourceIsMode" value="The source of a CharacterizationLink must be a ModeReference"/>
+      <details key="targetIsEntity_Reference" value="The target of a CharacterizationLink must be an EntityParticipant or a ReferenceNode, which in this case must be a reference to an EntityParticipant"/>
+      <details key="sameEndsAsType3" value="A CharacterizationLink must connect the same entities as its Characterization does"/>
+    </eAnnotations>
+    <eOperations name="getMode" lowerBound="1" eType="#//ModeReference">
+      <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
+        <details key="body" value="self.source"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getCharacterized" lowerBound="1" eType="#//EntityParticipant">
+      <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
+        <details key="body" value="self.target"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Characterization"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ComparativeRelation" abstract="true"
       eSuperTypes="#//FormalRelation"/>
@@ -93,14 +113,10 @@
       <details key="sameEndsAsType2" value="self.type.oclAsType(RefOntoUML::FormalAssociation).memberEnd->exists(x,y | x = self.source.type and y = self.target.type)"/>
     </eAnnotations>
     <eAnnotations source="Comments">
-      <details key="sameEndsAsType2" value="A FormalLink must connect the same entities as such its FormalAssociation type does"/>
+      <details key="sameEndsAsType2" value="A FormalLink must connect the same entities as its FormalAssociation does"/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="parameter" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//FormalAssociation"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DataTypeLiteral" eSuperTypes="#//Literal">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//DataType"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FormalRelation" abstract="true" eSuperTypes="#//SituationTypeAssociation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="negated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -139,26 +155,16 @@
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
       <details key="sourceIsParticipant_Reference" value="self.source.oclIsKindOf(EntityParticipant) or self.source.oclIsKindOf(RelatorParticipant) or (self.source.oclIsKindOf(ReferenceNode) and (self.source.oclAsType(ReferenceNode).reference.oclIsKindOf(EntityParticipant) or self.source.oclAsType(ReferenceNode).reference.oclIsKindOf(RelatorParticipant)))"/>
-      <details key="targetIsLiteral" value="self.target.oclIsKindOf(Literal) and self.target.oclAsType(Literal).type.oclIsKindOf(RefOntoUML::Class)"/>
+      <details key="targetIsLiteral" value="self.target.oclIsKindOf(TypeLiteral) and self.target.oclAsType(TypeLiteral).type.oclIsKindOf(RefOntoUML::Class)"/>
     </eAnnotations>
     <eAnnotations source="Comments">
       <details key="sourceIsParticipant_Reference" value="The source of an Instantiation must be an EntityParticipant, a RelatorParticipant or a ReferenceNode, which in this case must be a reference to an EntityParticipant or RelatorParticipant"/>
-      <details key="targetIsLiteral" value="The target of an Instantiation must be a Literal and its type must be a RefOntoUML::Class"/>
+      <details key="targetIsLiteral" value="The target of an Instantiation must be a TypeLiteral and its type must be a RefOntoUML::Class"/>
     </eAnnotations>
     <eOperations name="getSource" lowerBound="1" eType="#//Participant"/>
-    <eOperations name="getTarget" lowerBound="1" eType="#//ClassLiteral"/>
+    <eOperations name="getTarget" lowerBound="1" eType="#//TypeLiteral"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Literal" abstract="true" eSuperTypes="#//Node #//SituationTypeElement">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="typeIsClass_Datatype"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
-      <details key="typeIsClass_Datatype" value="self.type.oclIsKindOf(RefOntoUML::Class) or self.type.oclIsKindOf(RefOntoUML::DataType)"/>
-    </eAnnotations>
-    <eAnnotations source="Comments">
-      <details key="typeIsClass_Datatype" value="The type of a Literal must be a Class or a DataType"/>
-    </eAnnotations>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Literal" abstract="true" eSuperTypes="#//Node #//SituationTypeElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="MediationLink" eSuperTypes="#//SituationTypeAssociation">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
       <details key="constraints" value="sourceIsRelator targetIsEntity sameEndsAsType"/>
@@ -169,9 +175,9 @@
       <details key="sameEndsAsType" value="self.type.oclAsType(RefOntoUML::Mediation).relator() = self.source.oclAsType(RelatorParticipant).type and&#xD;&#xA;self.type.oclAsType(RefOntoUML::Mediation).mediated() = self.target.oclAsType(EntityParticipant).type"/>
     </eAnnotations>
     <eAnnotations source="Comments">
-      <details key="sourceIsRelator" value="The source of a Link must be a RelatorParticipant"/>
-      <details key="targetIsEntity" value="The target of a Link must be an EntityParticipant"/>
-      <details key="sameEndsAsType" value="A Link must connect the same entities as such its Mediation type does"/>
+      <details key="sourceIsRelator" value="The source of a MediationLink must be a RelatorParticipant"/>
+      <details key="targetIsEntity" value="The target of a MediationLink must be an EntityParticipant"/>
+      <details key="sameEndsAsType" value="A MediationLink must connect the same entities as its Mediation does"/>
     </eAnnotations>
     <eOperations name="getRelator" lowerBound="1" eType="#//RelatorParticipant">
       <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
@@ -184,6 +190,17 @@
       </eAnnotations>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Mediation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ModeReference" eSuperTypes="#//ReferableElement">
+    <eOperations name="getEntity" lowerBound="1" eType="#//EntityParticipant">
+      <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
+        <details key="body" value="CharacterizationLink.allInstances()->select(x | x.getMode() = self)->asOrderedSet()->at(1).getCharacterized()"/>
+      </eAnnotations>
+      <eAnnotations source="Comments">
+        <details key="getEntity" value="Returns the EntityParticipant that owns the ModeReference."/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Mode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Node" abstract="true">
     <eOperations name="sourceRelation" ordered="false" upperBound="-1" eType="#//SituationTypeAssociation">
@@ -208,26 +225,25 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Participant" abstract="true" eSuperTypes="#//ReferableElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="maxGreatherThanMin moreThanOneMustReflect"/>
+      <details key="constraints" value="maxGreatherThanMin"/>
     </eAnnotations>
     <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
       <details key="maxGreatherThanMin" value="if (self.upperBound &lt;> -1) then self.upperBound >= self.lowerBound else self.lowerBound &lt;> -1 endif"/>
-      <details key="moreThanOneMustReflect" value="if (self.lowerBound > 1 or self.upperBound > 1) then self.reflection->notEmpty() else true endif"/>
     </eAnnotations>
     <eAnnotations source="Comments">
       <details key="maxGreatherThanMin" value="The maximum instances number of a Participant must be greather than or equal the minimum"/>
-      <details key="moreThanOneMustReflect" value="A Participant that has a minimum greather than 1 or a maximum greather than 1 must be reflected, so that a constraint can be applied to the extra instances"/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shareable" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="immutable" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" defaultValueLiteral="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="min" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="1"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="reflection" eType="#//ReflectedParticipant"
-        eOpposite="#//ReflectedParticipant/participant"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="max" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="1"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="isImageOf" eType="#//Participant"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QualityLiteral" eSuperTypes="#//Literal">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//ReferenceStructure"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ReferableElement" abstract="true" eSuperTypes="#//Node #//SituationTypeElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="ReferenceNode" eSuperTypes="#//Node">
@@ -237,30 +253,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="reference" lowerBound="1"
         eType="#//ReferableElement"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ReflectedParticipant" eSuperTypes="#//Node #//SituationTypeElement">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
-      <details key="constraints" value="onlyMultipleReflected"/>
-    </eAnnotations>
-    <eAnnotations source="http://www.eclipse.org/ocl/examples/OCL">
-      <details key="onlyMultipleReflected" value="self.participant.lowerBound > 1 or self.participant.upperBound > 1"/>
-    </eAnnotations>
-    <eAnnotations source="Comments">
-      <details key="onlyMultipleReflected" value="Only Participants with minimum or maximum greather than 1 can be reflected"/>
-    </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="participant" lowerBound="1"
-        eType="#//Participant" eOpposite="#//Participant/reflection"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="references" upperBound="-1"
-        eType="#//ReflectedReference" containment="true" eOpposite="#//ReflectedReference/owningReflection"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ReflectedReference" eSuperTypes="#//Node">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="owningReflection" lowerBound="1"
-        eType="#//ReflectedParticipant" eOpposite="#//ReflectedParticipant/references"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="reference" lowerBound="1"
-        eType="#//ReferenceNode"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RelatorParticipant" eSuperTypes="#//Participant">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Relator"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SelfReference" eSuperTypes="#//SituationParticipant"/>
   <eClassifiers xsi:type="ecore:EClass" name="SituationParticipant" eSuperTypes="#//Participant">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporality" lowerBound="1"
         eType="#//TemporalKind"/>
@@ -294,5 +290,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//SituationType" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextModel" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Model"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypeLiteral" eSuperTypes="#//Literal">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass ../../br.ufes.inf.nemo.ontouml/model/RefOntoUML.ecore#//Class"/>
   </eClassifiers>
 </ecore:EPackage>

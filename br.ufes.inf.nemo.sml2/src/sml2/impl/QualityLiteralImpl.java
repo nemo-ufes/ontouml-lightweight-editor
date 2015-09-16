@@ -2,33 +2,29 @@
  */
 package sml2.impl;
 
-import RefOntoUML.DataType;
-
+import RefOntoUML.ReferenceStructure;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import sml2.DataTypeLiteral;
+import sml2.QualityLiteral;
 import sml2.Sml2Package;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Data Type Literal</b></em>'.
+ * An implementation of the model object '<em><b>Quality Literal</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link sml2.impl.DataTypeLiteralImpl#getValue <em>Value</em>}</li>
- *   <li>{@link sml2.impl.DataTypeLiteralImpl#getType <em>Type</em>}</li>
+ *   <li>{@link sml2.impl.QualityLiteralImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link sml2.impl.QualityLiteralImpl#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral {
+public class QualityLiteralImpl extends LiteralImpl implements QualityLiteral {
 	/**
 	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -57,14 +53,14 @@ public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral 
 	 * @generated
 	 * @ordered
 	 */
-	protected DataType type;
+	protected ReferenceStructure type;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected DataTypeLiteralImpl() {
+	protected QualityLiteralImpl() {
 		super();
 	}
 
@@ -75,7 +71,7 @@ public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral 
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return Sml2Package.Literals.DATA_TYPE_LITERAL;
+		return Sml2Package.Literals.QUALITY_LITERAL;
 	}
 
 	/**
@@ -96,7 +92,7 @@ public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral 
 		String oldValue = value;
 		value = newValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.DATA_TYPE_LITERAL__VALUE, oldValue, value));
+			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.QUALITY_LITERAL__VALUE, oldValue, value));
 	}
 
 	/**
@@ -104,13 +100,13 @@ public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DataType getType() {
+	public ReferenceStructure getType() {
 		if (type != null && type.eIsProxy()) {
 			InternalEObject oldType = (InternalEObject)type;
-			type = (DataType)eResolveProxy(oldType);
+			type = (ReferenceStructure)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.DATA_TYPE_LITERAL__TYPE, oldType, type));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.QUALITY_LITERAL__TYPE, oldType, type));
 			}
 		}
 		return type;
@@ -121,7 +117,7 @@ public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public DataType basicGetType() {
+	public ReferenceStructure basicGetType() {
 		return type;
 	}
 
@@ -130,11 +126,11 @@ public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(DataType newType) {
-		DataType oldType = type;
+	public void setType(ReferenceStructure newType) {
+		ReferenceStructure oldType = type;
 		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.DATA_TYPE_LITERAL__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.QUALITY_LITERAL__TYPE, oldType, type));
 	}
 
 	/**
@@ -145,9 +141,9 @@ public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral 
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Sml2Package.DATA_TYPE_LITERAL__VALUE:
+			case Sml2Package.QUALITY_LITERAL__VALUE:
 				return getValue();
-			case Sml2Package.DATA_TYPE_LITERAL__TYPE:
+			case Sml2Package.QUALITY_LITERAL__TYPE:
 				if (resolve) return getType();
 				return basicGetType();
 		}
@@ -162,11 +158,11 @@ public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral 
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case Sml2Package.DATA_TYPE_LITERAL__VALUE:
+			case Sml2Package.QUALITY_LITERAL__VALUE:
 				setValue((String)newValue);
 				return;
-			case Sml2Package.DATA_TYPE_LITERAL__TYPE:
-				setType((DataType)newValue);
+			case Sml2Package.QUALITY_LITERAL__TYPE:
+				setType((ReferenceStructure)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -180,11 +176,11 @@ public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral 
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case Sml2Package.DATA_TYPE_LITERAL__VALUE:
+			case Sml2Package.QUALITY_LITERAL__VALUE:
 				setValue(VALUE_EDEFAULT);
 				return;
-			case Sml2Package.DATA_TYPE_LITERAL__TYPE:
-				setType((DataType)null);
+			case Sml2Package.QUALITY_LITERAL__TYPE:
+				setType((ReferenceStructure)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -198,9 +194,9 @@ public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral 
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case Sml2Package.DATA_TYPE_LITERAL__VALUE:
+			case Sml2Package.QUALITY_LITERAL__VALUE:
 				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
-			case Sml2Package.DATA_TYPE_LITERAL__TYPE:
+			case Sml2Package.QUALITY_LITERAL__TYPE:
 				return type != null;
 		}
 		return super.eIsSet(featureID);
@@ -222,4 +218,4 @@ public class DataTypeLiteralImpl extends LiteralImpl implements DataTypeLiteral 
 		return result.toString();
 	}
 
-} //DataTypeLiteralImpl
+} //QualityLiteralImpl

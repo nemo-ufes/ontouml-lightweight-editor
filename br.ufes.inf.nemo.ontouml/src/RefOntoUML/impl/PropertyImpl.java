@@ -530,6 +530,7 @@ public class PropertyImpl extends StructuralFeatureImpl implements Property {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated NOT
 	 */
 	public Property basicGetOpposite() {
 		if (oppositeDeriveOCL == null) { 

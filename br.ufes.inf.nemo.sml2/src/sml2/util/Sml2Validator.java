@@ -92,6 +92,30 @@ public class Sml2Validator extends EObjectValidator {
 	private static Constraint attributeLink_targetIsAttributeInvOCL;
 
 	/**
+	 * The parsed OCL expression for the definition of the '<em>sourceIsMode</em>' invariant constraint.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private static Constraint characterizationLink_sourceIsModeInvOCL;
+
+	/**
+	 * The parsed OCL expression for the definition of the '<em>targetIsEntity_Reference</em>' invariant constraint.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private static Constraint characterizationLink_targetIsEntity_ReferenceInvOCL;
+
+	/**
+	 * The parsed OCL expression for the definition of the '<em>sameEndsAsType3</em>' invariant constraint.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private static Constraint characterizationLink_sameEndsAsType3InvOCL;
+
+	/**
 	 * The parsed OCL expression for the definition of the '<em>sameEndsAsType2</em>' invariant constraint.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -122,14 +146,6 @@ public class Sml2Validator extends EObjectValidator {
 	 * @generated
 	 */
 	private static Constraint instantiationLink_targetIsLiteralInvOCL;
-
-	/**
-	 * The parsed OCL expression for the definition of the '<em>typeIsClass_Datatype</em>' invariant constraint.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private static Constraint literal_typeIsClass_DatatypeInvOCL;
 
 	/**
 	 * The parsed OCL expression for the definition of the '<em>sourceIsRelator</em>' invariant constraint.
@@ -163,25 +179,10 @@ public class Sml2Validator extends EObjectValidator {
 	 */
 	private static Constraint participant_maxGreatherThanMinInvOCL;
 
-	/**
-	 * The parsed OCL expression for the definition of the '<em>moreThanOneMustReflect</em>' invariant constraint.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private static Constraint participant_moreThanOneMustReflectInvOCL;
-
-	/**
-	 * The parsed OCL expression for the definition of the '<em>onlyMultipleReflected</em>' invariant constraint.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private static Constraint reflectedParticipant_onlyMultipleReflectedInvOCL;
-
 	private static final String OCL_ANNOTATION_SOURCE = "http://www.eclipse.org/ocl/examples/OCL";
-	
+
 	private static final OCL OCL_ENV = OCL.newInstance();
+
 	/**
 	 * Creates an instance of the switch.
 	 * <!-- begin-user-doc -->
@@ -218,14 +219,12 @@ public class Sml2Validator extends EObjectValidator {
 				return validateAttributeLink((AttributeLink)value, diagnostics, context);
 			case Sml2Package.ATTRIBUTE_REFERENCE:
 				return validateAttributeReference((AttributeReference)value, diagnostics, context);
-			case Sml2Package.CLASS_LITERAL:
-				return validateClassLiteral((ClassLiteral)value, diagnostics, context);
+			case Sml2Package.CHARACTERIZATION_LINK:
+				return validateCharacterizationLink((CharacterizationLink)value, diagnostics, context);
 			case Sml2Package.COMPARATIVE_RELATION:
 				return validateComparativeRelation((ComparativeRelation)value, diagnostics, context);
 			case Sml2Package.CONTEXT_FORMAL_LINK:
 				return validateContextFormalLink((ContextFormalLink)value, diagnostics, context);
-			case Sml2Package.DATA_TYPE_LITERAL:
-				return validateDataTypeLiteral((DataTypeLiteral)value, diagnostics, context);
 			case Sml2Package.FORMAL_RELATION:
 				return validateFormalRelation((FormalRelation)value, diagnostics, context);
 			case Sml2Package.ENTITY_PARTICIPANT:
@@ -242,22 +241,24 @@ public class Sml2Validator extends EObjectValidator {
 				return validateLiteral((Literal)value, diagnostics, context);
 			case Sml2Package.MEDIATION_LINK:
 				return validateMediationLink((MediationLink)value, diagnostics, context);
+			case Sml2Package.MODE_REFERENCE:
+				return validateModeReference((ModeReference)value, diagnostics, context);
 			case Sml2Package.NODE:
 				return validateNode((Node)value, diagnostics, context);
 			case Sml2Package.ORDERED_COMPARATIVE_LINK:
 				return validateOrderedComparativeLink((OrderedComparativeLink)value, diagnostics, context);
 			case Sml2Package.PARTICIPANT:
 				return validateParticipant((Participant)value, diagnostics, context);
+			case Sml2Package.QUALITY_LITERAL:
+				return validateQualityLiteral((QualityLiteral)value, diagnostics, context);
 			case Sml2Package.REFERABLE_ELEMENT:
 				return validateReferableElement((ReferableElement)value, diagnostics, context);
 			case Sml2Package.REFERENCE_NODE:
 				return validateReferenceNode((ReferenceNode)value, diagnostics, context);
-			case Sml2Package.REFLECTED_PARTICIPANT:
-				return validateReflectedParticipant((ReflectedParticipant)value, diagnostics, context);
-			case Sml2Package.REFLECTED_REFERENCE:
-				return validateReflectedReference((ReflectedReference)value, diagnostics, context);
 			case Sml2Package.RELATOR_PARTICIPANT:
 				return validateRelatorParticipant((RelatorParticipant)value, diagnostics, context);
+			case Sml2Package.SELF_REFERENCE:
+				return validateSelfReference((SelfReference)value, diagnostics, context);
 			case Sml2Package.SITUATION_PARTICIPANT:
 				return validateSituationParticipant((SituationParticipant)value, diagnostics, context);
 			case Sml2Package.SITUATION_TYPE:
@@ -268,6 +269,8 @@ public class Sml2Validator extends EObjectValidator {
 				return validateSituationTypeElement((SituationTypeElement)value, diagnostics, context);
 			case Sml2Package.SML_MODEL:
 				return validateSMLModel((SMLModel)value, diagnostics, context);
+			case Sml2Package.TYPE_LITERAL:
+				return validateTypeLiteral((TypeLiteral)value, diagnostics, context);
 			case Sml2Package.ALLEN_KIND:
 				return validateAllenKind((AllenKind)value, diagnostics, context);
 			case Sml2Package.COMPARATIVE_KIND:
@@ -489,18 +492,137 @@ public class Sml2Validator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateClassLiteral(ClassLiteral classLiteral, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_NoCircularContainment(classLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(classLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(classLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(classLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(classLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryProxyResolves(classLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_UniqueID(classLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryKeyUnique(classLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(classLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validateLiteral_typeIsClass_Datatype(classLiteral, diagnostics, context);
+	public boolean validateCharacterizationLink(CharacterizationLink characterizationLink, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		boolean result = validate_NoCircularContainment(characterizationLink, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(characterizationLink, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(characterizationLink, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(characterizationLink, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(characterizationLink, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryProxyResolves(characterizationLink, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_UniqueID(characterizationLink, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryKeyUnique(characterizationLink, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(characterizationLink, diagnostics, context);
+		if (result || diagnostics != null) result &= validateCharacterizationLink_sourceIsMode(characterizationLink, diagnostics, context);
+		if (result || diagnostics != null) result &= validateCharacterizationLink_targetIsEntity_Reference(characterizationLink, diagnostics, context);
+		if (result || diagnostics != null) result &= validateCharacterizationLink_sameEndsAsType3(characterizationLink, diagnostics, context);
 		return result;
+	}
+
+	/**
+	 * Validates the sourceIsMode constraint of '<em>Characterization Link</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateCharacterizationLink_sourceIsMode(CharacterizationLink characterizationLink, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        if (characterizationLink_sourceIsModeInvOCL == null) {
+			OCL.Helper helper = OCL_ENV.createOCLHelper();
+			helper.setContext(Sml2Package.Literals.CHARACTERIZATION_LINK);
+			
+			EAnnotation ocl = Sml2Package.Literals.CHARACTERIZATION_LINK.getEAnnotation(OCL_ANNOTATION_SOURCE);
+			String expr = ocl.getDetails().get("sourceIsMode");
+			
+			try {
+				characterizationLink_sourceIsModeInvOCL = helper.createInvariant(expr);
+			}
+			catch (ParserException e) {
+				throw new UnsupportedOperationException(e.getLocalizedMessage());
+			}
+		}
+		
+		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(characterizationLink_sourceIsModeInvOCL);
+		
+		if (!query.check(characterizationLink)) {
+			if (diagnostics != null) {
+				diagnostics.add
+					(new BasicDiagnostic
+						(Diagnostic.ERROR,
+						 DIAGNOSTIC_SOURCE,
+						 0,
+						 Sml2Util.getVerificationMessage(Sml2Package.Literals.CHARACTERIZATION_LINK, new Object[] { "sourceIsMode", getObjectLabel(characterizationLink, context) }),
+						 new Object[] { characterizationLink }));
+			}
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Validates the targetIsEntity_Reference constraint of '<em>Characterization Link</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateCharacterizationLink_targetIsEntity_Reference(CharacterizationLink characterizationLink, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        if (characterizationLink_targetIsEntity_ReferenceInvOCL == null) {
+			OCL.Helper helper = OCL_ENV.createOCLHelper();
+			helper.setContext(Sml2Package.Literals.CHARACTERIZATION_LINK);
+			
+			EAnnotation ocl = Sml2Package.Literals.CHARACTERIZATION_LINK.getEAnnotation(OCL_ANNOTATION_SOURCE);
+			String expr = ocl.getDetails().get("targetIsEntity_Reference");
+			
+			try {
+				characterizationLink_targetIsEntity_ReferenceInvOCL = helper.createInvariant(expr);
+			}
+			catch (ParserException e) {
+				throw new UnsupportedOperationException(e.getLocalizedMessage());
+			}
+		}
+		
+		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(characterizationLink_targetIsEntity_ReferenceInvOCL);
+		
+		if (!query.check(characterizationLink)) {
+			if (diagnostics != null) {
+				diagnostics.add
+					(new BasicDiagnostic
+						(Diagnostic.ERROR,
+						 DIAGNOSTIC_SOURCE,
+						 0,
+						 Sml2Util.getVerificationMessage(Sml2Package.Literals.CHARACTERIZATION_LINK, new Object[] { "targetIsEntity_Reference", getObjectLabel(characterizationLink, context) }),
+						 new Object[] { characterizationLink }));
+			}
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Validates the sameEndsAsType3 constraint of '<em>Characterization Link</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateCharacterizationLink_sameEndsAsType3(CharacterizationLink characterizationLink, DiagnosticChain diagnostics, Map<Object, Object> context) {
+        if (characterizationLink_sameEndsAsType3InvOCL == null) {
+			OCL.Helper helper = OCL_ENV.createOCLHelper();
+			helper.setContext(Sml2Package.Literals.CHARACTERIZATION_LINK);
+			
+			EAnnotation ocl = Sml2Package.Literals.CHARACTERIZATION_LINK.getEAnnotation(OCL_ANNOTATION_SOURCE);
+			String expr = ocl.getDetails().get("sameEndsAsType3");
+			
+			try {
+				characterizationLink_sameEndsAsType3InvOCL = helper.createInvariant(expr);
+			}
+			catch (ParserException e) {
+				throw new UnsupportedOperationException(e.getLocalizedMessage());
+			}
+		}
+		
+		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(characterizationLink_sameEndsAsType3InvOCL);
+		
+		if (!query.check(characterizationLink)) {
+			if (diagnostics != null) {
+				diagnostics.add
+					(new BasicDiagnostic
+						(Diagnostic.ERROR,
+						 DIAGNOSTIC_SOURCE,
+						 0,
+						 Sml2Util.getVerificationMessage(Sml2Package.Literals.CHARACTERIZATION_LINK, new Object[] { "sameEndsAsType3", getObjectLabel(characterizationLink, context) }),
+						 new Object[] { characterizationLink }));
+			}
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -575,25 +697,6 @@ public class Sml2Validator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateDataTypeLiteral(DataTypeLiteral dataTypeLiteral, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_NoCircularContainment(dataTypeLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(dataTypeLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(dataTypeLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(dataTypeLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(dataTypeLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryProxyResolves(dataTypeLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_UniqueID(dataTypeLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryKeyUnique(dataTypeLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(dataTypeLiteral, diagnostics, context);
-		if (result || diagnostics != null) result &= validateLiteral_typeIsClass_Datatype(dataTypeLiteral, diagnostics, context);
-		return result;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public boolean validateFormalRelation(FormalRelation formalRelation, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(formalRelation, diagnostics, context);
 	}
@@ -614,7 +717,6 @@ public class Sml2Validator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(entityParticipant, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(entityParticipant, diagnostics, context);
 		if (result || diagnostics != null) result &= validateParticipant_maxGreatherThanMin(entityParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validateParticipant_moreThanOneMustReflect(entityParticipant, diagnostics, context);
 		return result;
 	}
 
@@ -798,56 +900,7 @@ public class Sml2Validator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateLiteral(Literal literal, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_NoCircularContainment(literal, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(literal, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(literal, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(literal, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(literal, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryProxyResolves(literal, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_UniqueID(literal, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryKeyUnique(literal, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(literal, diagnostics, context);
-		if (result || diagnostics != null) result &= validateLiteral_typeIsClass_Datatype(literal, diagnostics, context);
-		return result;
-	}
-
-	/**
-	 * Validates the typeIsClass_Datatype constraint of '<em>Literal</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean validateLiteral_typeIsClass_Datatype(Literal literal, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        if (literal_typeIsClass_DatatypeInvOCL == null) {
-			OCL.Helper helper = OCL_ENV.createOCLHelper();
-			helper.setContext(Sml2Package.Literals.LITERAL);
-			
-			EAnnotation ocl = Sml2Package.Literals.LITERAL.getEAnnotation(OCL_ANNOTATION_SOURCE);
-			String expr = ocl.getDetails().get("typeIsClass_Datatype");
-			
-			try {
-				literal_typeIsClass_DatatypeInvOCL = helper.createInvariant(expr);
-			}
-			catch (ParserException e) {
-				throw new UnsupportedOperationException(e.getLocalizedMessage());
-			}
-		}
-		
-		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(literal_typeIsClass_DatatypeInvOCL);
-		
-		if (!query.check(literal)) {
-			if (diagnostics != null) {
-				diagnostics.add
-					(new BasicDiagnostic
-						(Diagnostic.ERROR,
-						 DIAGNOSTIC_SOURCE,
-						 0,
-						 Sml2Util.getVerificationMessage(Sml2Package.Literals.LITERAL, new Object[] { "typeIsClass_Datatype", getObjectLabel(literal, context) }),
-						 new Object[] { literal }));
-			}
-			return false;
-		}
-		return true;
+		return validate_EveryDefaultConstraint(literal, diagnostics, context);
 	}
 
 	/**
@@ -993,6 +1046,15 @@ public class Sml2Validator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean validateModeReference(ModeReference modeReference, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(modeReference, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean validateNode(Node node, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(node, diagnostics, context);
 	}
@@ -1022,7 +1084,6 @@ public class Sml2Validator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(participant, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(participant, diagnostics, context);
 		if (result || diagnostics != null) result &= validateParticipant_maxGreatherThanMin(participant, diagnostics, context);
-		if (result || diagnostics != null) result &= validateParticipant_moreThanOneMustReflect(participant, diagnostics, context);
 		return result;
 	}
 
@@ -1066,42 +1127,12 @@ public class Sml2Validator extends EObjectValidator {
 	}
 
 	/**
-	 * Validates the moreThanOneMustReflect constraint of '<em>Participant</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateParticipant_moreThanOneMustReflect(Participant participant, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        if (participant_moreThanOneMustReflectInvOCL == null) {
-			OCL.Helper helper = OCL_ENV.createOCLHelper();
-			helper.setContext(Sml2Package.Literals.PARTICIPANT);
-			
-			EAnnotation ocl = Sml2Package.Literals.PARTICIPANT.getEAnnotation(OCL_ANNOTATION_SOURCE);
-			String expr = ocl.getDetails().get("moreThanOneMustReflect");
-			
-			try {
-				participant_moreThanOneMustReflectInvOCL = helper.createInvariant(expr);
-			}
-			catch (ParserException e) {
-				throw new UnsupportedOperationException(e.getLocalizedMessage());
-			}
-		}
-		
-		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(participant_moreThanOneMustReflectInvOCL);
-		
-		if (!query.check(participant)) {
-			if (diagnostics != null) {
-				diagnostics.add
-					(new BasicDiagnostic
-						(Diagnostic.ERROR,
-						 DIAGNOSTIC_SOURCE,
-						 0,
-						 Sml2Util.getVerificationMessage(Sml2Package.Literals.PARTICIPANT, new Object[] { "moreThanOneMustReflect", getObjectLabel(participant, context) }),
-						 new Object[] { participant }));
-			}
-			return false;
-		}
-		return true;
+	public boolean validateQualityLiteral(QualityLiteral qualityLiteral, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(qualityLiteral, diagnostics, context);
 	}
 
 	/**
@@ -1127,73 +1158,6 @@ public class Sml2Validator extends EObjectValidator {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean validateReflectedParticipant(ReflectedParticipant reflectedParticipant, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		boolean result = validate_NoCircularContainment(reflectedParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(reflectedParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(reflectedParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(reflectedParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(reflectedParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryProxyResolves(reflectedParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_UniqueID(reflectedParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryKeyUnique(reflectedParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(reflectedParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validateReflectedParticipant_onlyMultipleReflected(reflectedParticipant, diagnostics, context);
-		return result;
-	}
-
-	/**
-	 * Validates the onlyMultipleReflected constraint of '<em>Reflected Participant</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean validateReflectedParticipant_onlyMultipleReflected(ReflectedParticipant reflectedParticipant, DiagnosticChain diagnostics, Map<Object, Object> context) {
-        if (reflectedParticipant_onlyMultipleReflectedInvOCL == null) {
-			OCL.Helper helper = OCL_ENV.createOCLHelper();
-			helper.setContext(Sml2Package.Literals.REFLECTED_PARTICIPANT);
-			
-			EAnnotation ocl = Sml2Package.Literals.REFLECTED_PARTICIPANT.getEAnnotation(OCL_ANNOTATION_SOURCE);
-			String expr = ocl.getDetails().get("onlyMultipleReflected");
-			
-			try {
-				reflectedParticipant_onlyMultipleReflectedInvOCL = helper.createInvariant(expr);
-			}
-			catch (ParserException e) {
-				throw new UnsupportedOperationException(e.getLocalizedMessage());
-			}
-		}
-		
-		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(reflectedParticipant_onlyMultipleReflectedInvOCL);
-		
-		if (!query.check(reflectedParticipant)) {
-			if (diagnostics != null) {
-				diagnostics.add
-					(new BasicDiagnostic
-						(Diagnostic.ERROR,
-						 DIAGNOSTIC_SOURCE,
-						 0,
-						 Sml2Util.getVerificationMessage(Sml2Package.Literals.REFLECTED_PARTICIPANT, new Object[] { "onlyMultipleReflected", getObjectLabel(reflectedParticipant, context) }),
-						 new Object[] { reflectedParticipant }));
-			}
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean validateReflectedReference(ReflectedReference reflectedReference, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		return validate_EveryDefaultConstraint(reflectedReference, diagnostics, context);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public boolean validateRelatorParticipant(RelatorParticipant relatorParticipant, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		boolean result = validate_NoCircularContainment(relatorParticipant, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(relatorParticipant, diagnostics, context);
@@ -1205,7 +1169,25 @@ public class Sml2Validator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(relatorParticipant, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(relatorParticipant, diagnostics, context);
 		if (result || diagnostics != null) result &= validateParticipant_maxGreatherThanMin(relatorParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validateParticipant_moreThanOneMustReflect(relatorParticipant, diagnostics, context);
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateSelfReference(SelfReference selfReference, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		boolean result = validate_NoCircularContainment(selfReference, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMultiplicityConforms(selfReference, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(selfReference, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(selfReference, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(selfReference, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryProxyResolves(selfReference, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_UniqueID(selfReference, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryKeyUnique(selfReference, diagnostics, context);
+		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(selfReference, diagnostics, context);
+		if (result || diagnostics != null) result &= validateParticipant_maxGreatherThanMin(selfReference, diagnostics, context);
 		return result;
 	}
 
@@ -1225,7 +1207,6 @@ public class Sml2Validator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(situationParticipant, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(situationParticipant, diagnostics, context);
 		if (result || diagnostics != null) result &= validateParticipant_maxGreatherThanMin(situationParticipant, diagnostics, context);
-		if (result || diagnostics != null) result &= validateParticipant_moreThanOneMustReflect(situationParticipant, diagnostics, context);
 		return result;
 	}
 
@@ -1263,6 +1244,15 @@ public class Sml2Validator extends EObjectValidator {
 	 */
 	public boolean validateSMLModel(SMLModel smlModel, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(smlModel, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateTypeLiteral(TypeLiteral typeLiteral, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(typeLiteral, diagnostics, context);
 	}
 
 	/**

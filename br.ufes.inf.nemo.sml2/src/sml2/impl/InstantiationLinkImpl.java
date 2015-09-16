@@ -5,10 +5,10 @@ package sml2.impl;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import sml2.ClassLiteral;
 import sml2.InstantiationLink;
 import sml2.Participant;
 import sml2.Sml2Package;
+import sml2.TypeLiteral;
 
 /**
  * <!-- begin-user-doc -->
@@ -55,7 +55,7 @@ public class InstantiationLinkImpl extends FormalRelationImpl implements Instant
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClassLiteral getTarget() {
+	public TypeLiteral getTarget() {
 		// TODO: implement this method
 		// Ensure that you remove @generated or mark it @generated NOT
 		throw new UnsupportedOperationException();

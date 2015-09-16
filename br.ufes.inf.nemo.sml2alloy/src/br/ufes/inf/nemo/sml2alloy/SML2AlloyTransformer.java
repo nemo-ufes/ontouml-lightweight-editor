@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import sml2.Participant;
+import sml2.SelfReference;
 import sml2.SituationParticipant;
 import sml2.SituationType;
 import br.ufes.inf.nemo.alloy.AlloyFactory;
@@ -167,6 +168,8 @@ public class SML2AlloyTransformer
 		{
 			for(Participant part : smlparser.getInstances(sit, Participant.class))
 			{
+				if (part.getIsImageOf() != null || part instanceof SelfReference) continue;
+				
 				try
 				{
 					String assocName = smlparser.getParticipationAlias(sit, part);
@@ -222,31 +225,13 @@ public class SML2AlloyTransformer
 		
 		for(SituationType sit : smlparser.getSituationTypes())
 		{
-//			Map<EObject, List<Participant>> collectables = new HashMap<EObject, List<Participant>>();
 			for(Participant part : smlparser.getInstances(sit, Participant.class))
 			{
-//				if (part.isCollectable())
-//				{
-//					List<Participant> partList = collectables.get(part.getType());
-//					if (partList == null) partList = new ArrayList<Participant>();
-//					partList.add(part);
-//					collectables.put(part.getType(), partList);
-//					continue;
-//				}
+				if (part.getIsImageOf() != null || part instanceof SelfReference) continue;
 				
-				createParticipationDeclaration(new Object[] {sit, part, (part.isShareable() ? -1 : 1), 
-						part.getLowerBound(), part.getUpperBound()},
+				createParticipationDeclaration(new Object[] {sit, part, part.getMin(), part.getMax()},
 						associationsDeclaration, transtempAssocDeclaration);
 			}
-			
-//			for(Entry<EObject, List<Participant>> entry : collectables.entrySet())
-//			{
-//				Participant part = entry.getValue().get(0);
-//				int upperTarget = entry.getValue().size();
-//				
-//				createParticipationDeclaration(new Object[] {sit, part, (part.isShareable() ? -1 : 1), upperTarget},
-//						associationsDeclaration, transtempAssocDeclaration);
-//			}
 		}
 		
 		// Sort associations declarations in the signature world and signature situation
@@ -263,9 +248,9 @@ public class SML2AlloyTransformer
 		SituationType sit = (SituationType) info[0];
 		Participant part = (Participant) info[1];
 		int lowerSource = 0;
-		int upperSource = (int) info[2];
-		int lowerTarget = (int) info[3];
-		int upperTarget = (int) info[4];
+		int upperSource = -1;
+		int lowerTarget = (int) info[2];
+		int upperTarget = (int) info[3];
 		
 		VariableReference source = factory.createVariableReference();
 		VariableReference target = factory.createVariableReference();
@@ -320,6 +305,8 @@ public class SML2AlloyTransformer
 		{
 			for(Participant part : smlparser.getInstances(sit, Participant.class))
 			{
+				if (part.getIsImageOf() != null || part instanceof SelfReference) continue;
+				
 				if (!smlparser.isTemporal(part) && part.isImmutable())
 				{
 					try

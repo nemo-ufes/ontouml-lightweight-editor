@@ -117,14 +117,14 @@ public class SML2Alloy
 		
 		try
 		{
-			util.printConstraints();
-//			Object[] result = util.verifySyntax(smlmodel);
-//			
-//			if ((boolean)result[0])
-//				System.out.println(sml2alloy.transform());
-//			
-//			else
-//				System.out.println(result[1]);
+//			util.printConstraints();
+			Object[] result = util.verifySyntax(smlmodel);
+			
+			if ((boolean)result[0])
+				System.out.println(sml2alloy.transform());
+			
+			else
+				System.out.println(result[1]);
 		}
 		catch (Exception e)
 		{

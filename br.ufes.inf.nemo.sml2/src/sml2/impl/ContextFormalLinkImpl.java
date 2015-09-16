@@ -3,14 +3,10 @@
 package sml2.impl;
 
 import RefOntoUML.FormalAssociation;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import sml2.ContextFormalLink;
 import sml2.Sml2Package;
 

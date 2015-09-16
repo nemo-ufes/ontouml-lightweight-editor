@@ -12,13 +12,13 @@ import sml2.AttributeReference;
 import sml2.ComparativeRelation;
 import sml2.Function;
 import sml2.FunctionParameter;
-import sml2.Link;
 import sml2.Literal;
+import sml2.MediationLink;
+import sml2.ModeReference;
 import sml2.Node;
 import sml2.Participant;
+import sml2.ReferableElement;
 import sml2.ReferenceNode;
-import sml2.ReferenciableElement;
-import sml2.ReflectedReference;
 import sml2.SituationParticipant;
 import sml2.SituationType;
 import sml2.SituationTypeAssociation;
@@ -140,18 +140,13 @@ public class SMLRuleCreator
 				world = "w1";
 			
 			if (!partQuant.isEmpty()) partQuant += ", ";
-			if (part.getReflection() != null)
-				partQuant += "disj part"+j+",part"+(j+1)+": "+world+"."+type;
-			else
-				partQuant += "part"+j+": "+world+"."+type;
+//			if (part.getIsImageOf() != null)
+//				partQuant += "disj part"+j+",part"+(j+1)+": "+world+"."+type;
+//			else
+			partQuant += "part"+j+": "+world+"."+type;
 			
 			elementToWorld.put(part, world);
 			elementToVar.put(part, "part"+j++);
-			if (part.getReflection() != null)
-			{
-				elementToWorld.put(part.getReflection(), world);
-				elementToVar.put(part.getReflection(), "part"+j++);
-			}
 		}
 		
 		rules_aux += ": World | all "+partQuant+" | ";
@@ -170,8 +165,8 @@ public class SMLRuleCreator
 		{
 			Participant part = parts.next();
 			rules_aux += handleNodeExpression(part)+" in "+handleNodeExpression(sit, part);
-			if (part.getReflection() != null)
-				rules_aux += " and "+handleNodeExpression(part.getReflection())+" in "+handleNodeExpression(sit, part);
+//			if (part.getReflection() != null)
+//				rules_aux += " and "+handleNodeExpression(part.getReflection())+" in "+handleNodeExpression(sit, part);
 			if (parts.hasNext())
 				rules_aux += " and ";
 		}
@@ -190,10 +185,10 @@ public class SMLRuleCreator
 		
 		for (Participant part : smlparser.getInstances(sit, Participant.class))
 		{
-			if (part.getReflection() != null)
-				rules_aux += "all disj "+handleNodeExpression(part)+","+handleNodeExpression(part.getReflection());
-			else
-				rules_aux += "all "+handleNodeExpression(part);
+//			if (part.getReflection() != null)
+//				rules_aux += "all disj "+handleNodeExpression(part)+","+handleNodeExpression(part.getReflection());
+//			else
+			rules_aux += "all "+handleNodeExpression(part);
 			rules_aux += ": "+handleNodeExpression(sit, part)+" | ";
 			
 			if (smlparser.isTemporal(part))
@@ -276,31 +271,19 @@ public class SMLRuleCreator
 		}
 		
 		//Links relator's mediations to situation's participations
-		for (Link l1 : smlparser.getInstances(sit, Link.class))
+		for (MediationLink medlink : smlparser.getInstances(sit, MediationLink.class))
 		{
 			if (!mainrule.isEmpty()) mainrule += " and ";
-			for (RefOntoUML.Property p : ((RefOntoUML.Mediation)l1.getType()).getMemberEnd())
+			for (RefOntoUML.Property p : medlink.getType().getMemberEnd())
 			{
-				if (smlparser.isSameType(p.getType(), l1.getEntity().getType()))
+				if (smlparser.isSameType(p.getType(), medlink.getEntity().getType()))
 				{
-					mainrule += handleNodeExpression(l1.getRelator(), p)+" = "+
-							handleNodeExpression(l1.getEntity());
+					mainrule += handleNodeExpression(medlink.getRelator(), p)+" = "+
+							handleNodeExpression(medlink.getEntity());
 					break;
 				}
 			}
 		}
-		
-//		List<DisjunctionBlock> disjBlockList = new ArrayList<DisjunctionBlock>();
-//		disjBlockList.addAll(smlparser.getInstances(sit, DisjunctionBlock.class));
-//		while (disjBlockList.size()>1)
-//		{
-//			mainrule += "("+handleBlock(disjBlockList.get(0))+")";
-//			for (DisjunctionBlock disjBlock : disjBlockList.get(0).getDisjunctFrom())
-//			{
-//				mainrule += " or ("+handleBlock(disjBlock)+")";
-//				disjBlockList.remove(disjBlock);
-//			}
-//		}
 		
 		if (mainrule.isEmpty()) mainrule += "no none";
 		
@@ -413,26 +396,26 @@ public class SMLRuleCreator
 					return handleNodeExpression(attOwner, att);
 			}
 			
+			else if (node instanceof ModeReference)
+			{
+				ModeReference mode = (ModeReference) node;
+				Node modeOwner = mode.getEntity();
+				if (modeOwner instanceof ReferenceNode)
+					return elementToVar.get(((ReferenceNode) modeOwner).getSituation())+"."+handleNodeExpression(modeOwner, mode);
+				
+				else
+					return handleNodeExpression(modeOwner, mode);
+			}
+			
 			else if (node instanceof ReferenceNode)
 			{
 				ReferenceNode refNode = (ReferenceNode) node;
-				if (refNode.getReference() instanceof AttributeReference)
+				if (refNode.getReference() instanceof AttributeReference || refNode.getReference() instanceof ModeReference)
 					return elementToVar.get(refNode.getSituation())+"."+
 						handleNodeExpression(refNode, refNode.getReference());
 				
 				else
 					return handleNodeExpression(refNode.getSituation(), refNode.getReference());
-			}
-			
-			else if (node instanceof ReflectedReference)
-			{
-				ReferenceNode refNode = ((ReflectedReference) node).getReference();
-				if (refNode.getReference() instanceof AttributeReference)
-					return elementToVar.get(((ReflectedReference) node).getOwningReflection())+"."+
-						handleNodeExpression(refNode, refNode.getReference());
-				
-				else
-					return handleNodeExpression(((ReflectedReference) node).getOwningReflection(), refNode.getReference());
 			}
 		
 			return elementToVar.get(node);
@@ -444,7 +427,7 @@ public class SMLRuleCreator
 			if (source instanceof ReferenceNode)
 			{
 				SituationParticipant sit_part = ((ReferenceNode) source).getSituation();
-				ReferenciableElement ref_elem = ((ReferenceNode) source).getReference();
+				ReferableElement ref_elem = ((ReferenceNode) source).getReference();
 				leftOp = smlparser.getAlias(ref_elem)+(smlparser.isTemporal(ref_elem) ? "" : "["+elementToWorld.get(sit_part)+"]");
 				if (node instanceof AttributeReference &&
 						((RefOntoUML.Property)((AttributeReference)node).getType()).getAssociation() == null)

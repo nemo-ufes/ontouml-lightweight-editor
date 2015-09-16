@@ -80,8 +80,8 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 				return createAttributeReferenceAdapter();
 			}
 			@Override
-			public Adapter caseClassLiteral(ClassLiteral object) {
-				return createClassLiteralAdapter();
+			public Adapter caseCharacterizationLink(CharacterizationLink object) {
+				return createCharacterizationLinkAdapter();
 			}
 			@Override
 			public Adapter caseComparativeRelation(ComparativeRelation object) {
@@ -90,10 +90,6 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseContextFormalLink(ContextFormalLink object) {
 				return createContextFormalLinkAdapter();
-			}
-			@Override
-			public Adapter caseDataTypeLiteral(DataTypeLiteral object) {
-				return createDataTypeLiteralAdapter();
 			}
 			@Override
 			public Adapter caseFormalRelation(FormalRelation object) {
@@ -128,6 +124,10 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 				return createMediationLinkAdapter();
 			}
 			@Override
+			public Adapter caseModeReference(ModeReference object) {
+				return createModeReferenceAdapter();
+			}
+			@Override
 			public Adapter caseNode(Node object) {
 				return createNodeAdapter();
 			}
@@ -140,6 +140,10 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 				return createParticipantAdapter();
 			}
 			@Override
+			public Adapter caseQualityLiteral(QualityLiteral object) {
+				return createQualityLiteralAdapter();
+			}
+			@Override
 			public Adapter caseReferableElement(ReferableElement object) {
 				return createReferableElementAdapter();
 			}
@@ -148,16 +152,12 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 				return createReferenceNodeAdapter();
 			}
 			@Override
-			public Adapter caseReflectedParticipant(ReflectedParticipant object) {
-				return createReflectedParticipantAdapter();
-			}
-			@Override
-			public Adapter caseReflectedReference(ReflectedReference object) {
-				return createReflectedReferenceAdapter();
-			}
-			@Override
 			public Adapter caseRelatorParticipant(RelatorParticipant object) {
 				return createRelatorParticipantAdapter();
+			}
+			@Override
+			public Adapter caseSelfReference(SelfReference object) {
+				return createSelfReferenceAdapter();
 			}
 			@Override
 			public Adapter caseSituationParticipant(SituationParticipant object) {
@@ -178,6 +178,10 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseSMLModel(SMLModel object) {
 				return createSMLModelAdapter();
+			}
+			@Override
+			public Adapter caseTypeLiteral(TypeLiteral object) {
+				return createTypeLiteralAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -242,16 +246,16 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link sml2.ClassLiteral <em>Class Literal</em>}'.
+	 * Creates a new adapter for an object of class '{@link sml2.CharacterizationLink <em>Characterization Link</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see sml2.ClassLiteral
+	 * @see sml2.CharacterizationLink
 	 * @generated
 	 */
-	public Adapter createClassLiteralAdapter() {
+	public Adapter createCharacterizationLinkAdapter() {
 		return null;
 	}
 
@@ -280,20 +284,6 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createContextFormalLinkAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link sml2.DataTypeLiteral <em>Data Type Literal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see sml2.DataTypeLiteral
-	 * @generated
-	 */
-	public Adapter createDataTypeLiteralAdapter() {
 		return null;
 	}
 
@@ -410,6 +400,20 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link sml2.ModeReference <em>Mode Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.ModeReference
+	 * @generated
+	 */
+	public Adapter createModeReferenceAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link sml2.Node <em>Node</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -452,6 +456,20 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link sml2.QualityLiteral <em>Quality Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.QualityLiteral
+	 * @generated
+	 */
+	public Adapter createQualityLiteralAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link sml2.ReferableElement <em>Referable Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -480,34 +498,6 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link sml2.ReflectedParticipant <em>Reflected Participant</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see sml2.ReflectedParticipant
-	 * @generated
-	 */
-	public Adapter createReflectedParticipantAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link sml2.ReflectedReference <em>Reflected Reference</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see sml2.ReflectedReference
-	 * @generated
-	 */
-	public Adapter createReflectedReferenceAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link sml2.RelatorParticipant <em>Relator Participant</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -518,6 +508,20 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createRelatorParticipantAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.SelfReference <em>Self Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.SelfReference
+	 * @generated
+	 */
+	public Adapter createSelfReferenceAdapter() {
 		return null;
 	}
 
@@ -588,6 +592,20 @@ public class Sml2AdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createSMLModelAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link sml2.TypeLiteral <em>Type Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see sml2.TypeLiteral
+	 * @generated
+	 */
+	public Adapter createTypeLiteralAdapter() {
 		return null;
 	}
 

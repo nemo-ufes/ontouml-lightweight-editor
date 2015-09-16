@@ -11,9 +11,6 @@ package sml2;
  *
  * @see sml2.Sml2Package#getLiteral()
  * @model abstract="true"
- *        annotation="http://www.eclipse.org/emf/2002/Ecore constraints='typeIsClass_Datatype'"
- *        annotation="http://www.eclipse.org/ocl/examples/OCL typeIsClass_Datatype='self.type.oclIsKindOf(RefOntoUML::Class) or self.type.oclIsKindOf(RefOntoUML::DataType)'"
- *        annotation="Comments typeIsClass_Datatype='The type of a Literal must be a Class or a DataType'"
  * @generated
  */
 public interface Literal extends Node, SituationTypeElement {

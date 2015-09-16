@@ -2,6 +2,7 @@
  */
 package sml2.impl;
 
+import RefOntoUML.Mode;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
@@ -15,25 +16,24 @@ import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
 import org.eclipse.ocl.ecore.OCL;
 import org.eclipse.ocl.expressions.OCLExpression;
-import RefOntoUML.Quality;
-import sml2.AttributeReference;
-import sml2.Node;
+import sml2.EntityParticipant;
+import sml2.ModeReference;
 import sml2.Sml2Package;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Attribute Reference</b></em>'.
+ * An implementation of the model object '<em><b>Mode Reference</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link sml2.impl.AttributeReferenceImpl#getType <em>Type</em>}</li>
+ *   <li>{@link sml2.impl.ModeReferenceImpl#getType <em>Type</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class AttributeReferenceImpl extends ReferableElementImpl implements AttributeReference {
+public class ModeReferenceImpl extends ReferableElementImpl implements ModeReference {
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -42,14 +42,14 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	 * @generated
 	 * @ordered
 	 */
-	protected Quality type;
+	protected Mode type;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected AttributeReferenceImpl() {
+	protected ModeReferenceImpl() {
 		super();
 	}
 
@@ -60,7 +60,7 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return Sml2Package.Literals.ATTRIBUTE_REFERENCE;
+		return Sml2Package.Literals.MODE_REFERENCE;
 	}
 
 	/**
@@ -68,13 +68,13 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Quality getType() {
+	public Mode getType() {
 		if (type != null && type.eIsProxy()) {
 			InternalEObject oldType = (InternalEObject)type;
-			type = (Quality)eResolveProxy(oldType);
+			type = (Mode)eResolveProxy(oldType);
 			if (type != oldType) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.ATTRIBUTE_REFERENCE__TYPE, oldType, type));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.MODE_REFERENCE__TYPE, oldType, type));
 			}
 		}
 		return type;
@@ -85,7 +85,7 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Quality basicGetType() {
+	public Mode basicGetType() {
 		return type;
 	}
 
@@ -94,11 +94,11 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(Quality newType) {
-		Quality oldType = type;
+	public void setType(Mode newType) {
+		Mode oldType = type;
 		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.ATTRIBUTE_REFERENCE__TYPE, oldType, type));
+			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.MODE_REFERENCE__TYPE, oldType, type));
 	}
 
 	/**
@@ -106,11 +106,11 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Node getEntity() {
+	public EntityParticipant getEntity() {
 		if (getEntityBodyOCL == null) {
-			EOperation eOperation = Sml2Package.Literals.ATTRIBUTE_REFERENCE.getEOperations().get(0);
+			EOperation eOperation = Sml2Package.Literals.MODE_REFERENCE.getEOperations().get(0);
 			OCL.Helper helper = OCL_ENV.createOCLHelper();
-			helper.setOperationContext(Sml2Package.Literals.ATTRIBUTE_REFERENCE, eOperation);
+			helper.setOperationContext(Sml2Package.Literals.MODE_REFERENCE, eOperation);
 			EAnnotation ocl = eOperation.getEAnnotation(OCL_ANNOTATION_SOURCE);
 			String body = ocl.getDetails().get("body");
 			
@@ -123,7 +123,7 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 		
 		Query<EClassifier, ?, ?> query = OCL_ENV.createQuery(getEntityBodyOCL);
 	
-		return (Node) query.evaluate(this);
+		return (EntityParticipant) query.evaluate(this);
 	
 	}
 
@@ -135,7 +135,7 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Sml2Package.ATTRIBUTE_REFERENCE__TYPE:
+			case Sml2Package.MODE_REFERENCE__TYPE:
 				if (resolve) return getType();
 				return basicGetType();
 		}
@@ -150,8 +150,8 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case Sml2Package.ATTRIBUTE_REFERENCE__TYPE:
-				setType((Quality)newValue);
+			case Sml2Package.MODE_REFERENCE__TYPE:
+				setType((Mode)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -165,8 +165,8 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case Sml2Package.ATTRIBUTE_REFERENCE__TYPE:
-				setType((Quality)null);
+			case Sml2Package.MODE_REFERENCE__TYPE:
+				setType((Mode)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -180,7 +180,7 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case Sml2Package.ATTRIBUTE_REFERENCE__TYPE:
+			case Sml2Package.MODE_REFERENCE__TYPE:
 				return type != null;
 		}
 		return super.eIsSet(featureID);
@@ -194,7 +194,7 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	@Override
 	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
 		switch (operationID) {
-			case Sml2Package.ATTRIBUTE_REFERENCE___GET_ENTITY:
+			case Sml2Package.MODE_REFERENCE___GET_ENTITY:
 				return getEntity();
 		}
 		return super.eInvoke(operationID, arguments);
@@ -208,8 +208,7 @@ public class AttributeReferenceImpl extends ReferableElementImpl implements Attr
 	 * @generated
 	 */
 	private static OCLExpression<EClassifier> getEntityBodyOCL;
-
 	private static final String OCL_ANNOTATION_SOURCE = "http://www.eclipse.org/ocl/examples/OCL";
-	
 	private static final OCL OCL_ENV = OCL.newInstance();
-} //AttributeReferenceImpl
+
+} //ModeReferenceImpl

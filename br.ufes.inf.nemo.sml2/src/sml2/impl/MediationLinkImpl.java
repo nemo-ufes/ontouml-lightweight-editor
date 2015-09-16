@@ -3,28 +3,19 @@
 package sml2.impl;
 
 import RefOntoUML.Mediation;
-
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.expressions.OCLExpression;
-
 import sml2.EntityParticipant;
 import sml2.MediationLink;
 import sml2.RelatorParticipant;
@@ -246,7 +237,7 @@ public class MediationLinkImpl extends SituationTypeAssociationImpl implements M
 	 * @generated
 	 */
 	private static OCLExpression<EClassifier> getRelatorBodyOCL;
-	
+
 	/**
 	 * The parsed OCL expression for the body of the '{@link #getEntity <em>Get Entity</em>}' operation.
 	 * <!-- begin-user-doc -->
@@ -255,7 +246,7 @@ public class MediationLinkImpl extends SituationTypeAssociationImpl implements M
 	 * @generated
 	 */
 	private static OCLExpression<EClassifier> getEntityBodyOCL;
-	
+
 	private static final String OCL_ANNOTATION_SOURCE = "http://www.eclipse.org/ocl/examples/OCL";
 	
 	private static final OCL OCL_ENV = OCL.newInstance();

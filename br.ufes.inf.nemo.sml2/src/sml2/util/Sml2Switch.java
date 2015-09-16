@@ -92,12 +92,11 @@ public class Sml2Switch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.CLASS_LITERAL: {
-				ClassLiteral classLiteral = (ClassLiteral)theEObject;
-				T result = caseClassLiteral(classLiteral);
-				if (result == null) result = caseLiteral(classLiteral);
-				if (result == null) result = caseNode(classLiteral);
-				if (result == null) result = caseSituationTypeElement(classLiteral);
+			case Sml2Package.CHARACTERIZATION_LINK: {
+				CharacterizationLink characterizationLink = (CharacterizationLink)theEObject;
+				T result = caseCharacterizationLink(characterizationLink);
+				if (result == null) result = caseSituationTypeAssociation(characterizationLink);
+				if (result == null) result = caseSituationTypeElement(characterizationLink);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -116,15 +115,6 @@ public class Sml2Switch<T> extends Switch<T> {
 				if (result == null) result = caseFormalRelation(contextFormalLink);
 				if (result == null) result = caseSituationTypeAssociation(contextFormalLink);
 				if (result == null) result = caseSituationTypeElement(contextFormalLink);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case Sml2Package.DATA_TYPE_LITERAL: {
-				DataTypeLiteral dataTypeLiteral = (DataTypeLiteral)theEObject;
-				T result = caseDataTypeLiteral(dataTypeLiteral);
-				if (result == null) result = caseLiteral(dataTypeLiteral);
-				if (result == null) result = caseNode(dataTypeLiteral);
-				if (result == null) result = caseSituationTypeElement(dataTypeLiteral);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -196,6 +186,15 @@ public class Sml2Switch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case Sml2Package.MODE_REFERENCE: {
+				ModeReference modeReference = (ModeReference)theEObject;
+				T result = caseModeReference(modeReference);
+				if (result == null) result = caseReferableElement(modeReference);
+				if (result == null) result = caseNode(modeReference);
+				if (result == null) result = caseSituationTypeElement(modeReference);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case Sml2Package.NODE: {
 				Node node = (Node)theEObject;
 				T result = caseNode(node);
@@ -221,6 +220,15 @@ public class Sml2Switch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case Sml2Package.QUALITY_LITERAL: {
+				QualityLiteral qualityLiteral = (QualityLiteral)theEObject;
+				T result = caseQualityLiteral(qualityLiteral);
+				if (result == null) result = caseLiteral(qualityLiteral);
+				if (result == null) result = caseNode(qualityLiteral);
+				if (result == null) result = caseSituationTypeElement(qualityLiteral);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case Sml2Package.REFERABLE_ELEMENT: {
 				ReferableElement referableElement = (ReferableElement)theEObject;
 				T result = caseReferableElement(referableElement);
@@ -236,21 +244,6 @@ public class Sml2Switch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case Sml2Package.REFLECTED_PARTICIPANT: {
-				ReflectedParticipant reflectedParticipant = (ReflectedParticipant)theEObject;
-				T result = caseReflectedParticipant(reflectedParticipant);
-				if (result == null) result = caseNode(reflectedParticipant);
-				if (result == null) result = caseSituationTypeElement(reflectedParticipant);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case Sml2Package.REFLECTED_REFERENCE: {
-				ReflectedReference reflectedReference = (ReflectedReference)theEObject;
-				T result = caseReflectedReference(reflectedReference);
-				if (result == null) result = caseNode(reflectedReference);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case Sml2Package.RELATOR_PARTICIPANT: {
 				RelatorParticipant relatorParticipant = (RelatorParticipant)theEObject;
 				T result = caseRelatorParticipant(relatorParticipant);
@@ -258,6 +251,17 @@ public class Sml2Switch<T> extends Switch<T> {
 				if (result == null) result = caseReferableElement(relatorParticipant);
 				if (result == null) result = caseNode(relatorParticipant);
 				if (result == null) result = caseSituationTypeElement(relatorParticipant);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Sml2Package.SELF_REFERENCE: {
+				SelfReference selfReference = (SelfReference)theEObject;
+				T result = caseSelfReference(selfReference);
+				if (result == null) result = caseSituationParticipant(selfReference);
+				if (result == null) result = caseParticipant(selfReference);
+				if (result == null) result = caseReferableElement(selfReference);
+				if (result == null) result = caseNode(selfReference);
+				if (result == null) result = caseSituationTypeElement(selfReference);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -293,6 +297,15 @@ public class Sml2Switch<T> extends Switch<T> {
 			case Sml2Package.SML_MODEL: {
 				SMLModel smlModel = (SMLModel)theEObject;
 				T result = caseSMLModel(smlModel);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case Sml2Package.TYPE_LITERAL: {
+				TypeLiteral typeLiteral = (TypeLiteral)theEObject;
+				T result = caseTypeLiteral(typeLiteral);
+				if (result == null) result = caseLiteral(typeLiteral);
+				if (result == null) result = caseNode(typeLiteral);
+				if (result == null) result = caseSituationTypeElement(typeLiteral);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -346,17 +359,17 @@ public class Sml2Switch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Class Literal</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>Characterization Link</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Class Literal</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>Characterization Link</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseClassLiteral(ClassLiteral object) {
+	public T caseCharacterizationLink(CharacterizationLink object) {
 		return null;
 	}
 
@@ -387,21 +400,6 @@ public class Sml2Switch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseContextFormalLink(ContextFormalLink object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Data Type Literal</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Data Type Literal</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseDataTypeLiteral(DataTypeLiteral object) {
 		return null;
 	}
 
@@ -526,6 +524,21 @@ public class Sml2Switch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Mode Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Mode Reference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseModeReference(ModeReference object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Node</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -571,6 +584,21 @@ public class Sml2Switch<T> extends Switch<T> {
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Quality Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Quality Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseQualityLiteral(QualityLiteral object) {
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Referable Element</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -601,36 +629,6 @@ public class Sml2Switch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Reflected Participant</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Reflected Participant</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseReflectedParticipant(ReflectedParticipant object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Reflected Reference</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Reflected Reference</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseReflectedReference(ReflectedReference object) {
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Relator Participant</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -642,6 +640,21 @@ public class Sml2Switch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseRelatorParticipant(RelatorParticipant object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Self Reference</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Self Reference</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSelfReference(SelfReference object) {
 		return null;
 	}
 
@@ -717,6 +730,21 @@ public class Sml2Switch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseSMLModel(SMLModel object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Type Literal</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Type Literal</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTypeLiteral(TypeLiteral object) {
 		return null;
 	}
 

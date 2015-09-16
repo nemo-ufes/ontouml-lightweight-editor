@@ -26,8 +26,8 @@ public class CardinalityRule {
 		
 		//int lowerSource = 0;
 		//int upperSource = part.isShareable() ? -1 : 1;
-		int lowerTarget = part.getLowerBound();
-		int upperTarget = part.getUpperBound();
+		int lowerTarget = part.getMin();
+		int upperTarget = part.getMax();
 		BinaryOperation univBinJoin = factory.createBinaryOperation();
 		
 		if (lowerTarget > 1) 
@@ -54,9 +54,9 @@ public class CardinalityRule {
 		ArrayList<QuantificationExpression> qeList = new ArrayList<QuantificationExpression>();
 		
 		//int lowerSource = 0;
-		int upperSource = part.isShareable() ? -1 : 1;
-		int lowerTarget = part.getLowerBound();
-		int upperTarget = part.getUpperBound();
+		int upperSource = -1;
+		int lowerTarget = part.getMin();
+		int upperTarget = part.getMax();
 		BinaryOperation univBinJoin = factory.createBinaryOperation();
 		
 		if (upperSource >= 1 && upperSource != -1)

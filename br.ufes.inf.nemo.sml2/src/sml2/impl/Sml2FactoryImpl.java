@@ -60,23 +60,24 @@ public class Sml2FactoryImpl extends EFactoryImpl implements Sml2Factory {
 			case Sml2Package.ALLEN_LINK: return createAllenLink();
 			case Sml2Package.ATTRIBUTE_LINK: return createAttributeLink();
 			case Sml2Package.ATTRIBUTE_REFERENCE: return createAttributeReference();
-			case Sml2Package.CLASS_LITERAL: return createClassLiteral();
+			case Sml2Package.CHARACTERIZATION_LINK: return createCharacterizationLink();
 			case Sml2Package.CONTEXT_FORMAL_LINK: return createContextFormalLink();
-			case Sml2Package.DATA_TYPE_LITERAL: return createDataTypeLiteral();
 			case Sml2Package.ENTITY_PARTICIPANT: return createEntityParticipant();
 			case Sml2Package.EQUALS_LINK: return createEqualsLink();
 			case Sml2Package.FUNCTION: return createFunction();
 			case Sml2Package.FUNCTION_PARAMETER: return createFunctionParameter();
 			case Sml2Package.INSTANTIATION_LINK: return createInstantiationLink();
 			case Sml2Package.MEDIATION_LINK: return createMediationLink();
+			case Sml2Package.MODE_REFERENCE: return createModeReference();
 			case Sml2Package.ORDERED_COMPARATIVE_LINK: return createOrderedComparativeLink();
+			case Sml2Package.QUALITY_LITERAL: return createQualityLiteral();
 			case Sml2Package.REFERENCE_NODE: return createReferenceNode();
-			case Sml2Package.REFLECTED_PARTICIPANT: return createReflectedParticipant();
-			case Sml2Package.REFLECTED_REFERENCE: return createReflectedReference();
 			case Sml2Package.RELATOR_PARTICIPANT: return createRelatorParticipant();
+			case Sml2Package.SELF_REFERENCE: return createSelfReference();
 			case Sml2Package.SITUATION_PARTICIPANT: return createSituationParticipant();
 			case Sml2Package.SITUATION_TYPE: return createSituationType();
 			case Sml2Package.SML_MODEL: return createSMLModel();
+			case Sml2Package.TYPE_LITERAL: return createTypeLiteral();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -155,9 +156,9 @@ public class Sml2FactoryImpl extends EFactoryImpl implements Sml2Factory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ClassLiteral createClassLiteral() {
-		ClassLiteralImpl classLiteral = new ClassLiteralImpl();
-		return classLiteral;
+	public CharacterizationLink createCharacterizationLink() {
+		CharacterizationLinkImpl characterizationLink = new CharacterizationLinkImpl();
+		return characterizationLink;
 	}
 
 	/**
@@ -168,16 +169,6 @@ public class Sml2FactoryImpl extends EFactoryImpl implements Sml2Factory {
 	public ContextFormalLink createContextFormalLink() {
 		ContextFormalLinkImpl contextFormalLink = new ContextFormalLinkImpl();
 		return contextFormalLink;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public DataTypeLiteral createDataTypeLiteral() {
-		DataTypeLiteralImpl dataTypeLiteral = new DataTypeLiteralImpl();
-		return dataTypeLiteral;
 	}
 
 	/**
@@ -245,9 +236,29 @@ public class Sml2FactoryImpl extends EFactoryImpl implements Sml2Factory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public ModeReference createModeReference() {
+		ModeReferenceImpl modeReference = new ModeReferenceImpl();
+		return modeReference;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public OrderedComparativeLink createOrderedComparativeLink() {
 		OrderedComparativeLinkImpl orderedComparativeLink = new OrderedComparativeLinkImpl();
 		return orderedComparativeLink;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public QualityLiteral createQualityLiteral() {
+		QualityLiteralImpl qualityLiteral = new QualityLiteralImpl();
+		return qualityLiteral;
 	}
 
 	/**
@@ -265,29 +276,19 @@ public class Sml2FactoryImpl extends EFactoryImpl implements Sml2Factory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ReflectedParticipant createReflectedParticipant() {
-		ReflectedParticipantImpl reflectedParticipant = new ReflectedParticipantImpl();
-		return reflectedParticipant;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ReflectedReference createReflectedReference() {
-		ReflectedReferenceImpl reflectedReference = new ReflectedReferenceImpl();
-		return reflectedReference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public RelatorParticipant createRelatorParticipant() {
 		RelatorParticipantImpl relatorParticipant = new RelatorParticipantImpl();
 		return relatorParticipant;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public SelfReference createSelfReference() {
+		SelfReferenceImpl selfReference = new SelfReferenceImpl();
+		return selfReference;
 	}
 
 	/**
@@ -318,6 +319,16 @@ public class Sml2FactoryImpl extends EFactoryImpl implements Sml2Factory {
 	public SMLModel createSMLModel() {
 		SMLModelImpl smlModel = new SMLModelImpl();
 		return smlModel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public TypeLiteral createTypeLiteral() {
+		TypeLiteralImpl typeLiteral = new TypeLiteralImpl();
+		return typeLiteral;
 	}
 
 	/**

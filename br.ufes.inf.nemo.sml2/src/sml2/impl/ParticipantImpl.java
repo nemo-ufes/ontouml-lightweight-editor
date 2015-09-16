@@ -3,13 +3,10 @@
 package sml2.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import sml2.Participant;
-import sml2.ReflectedParticipant;
 import sml2.Sml2Package;
 
 /**
@@ -19,37 +16,16 @@ import sml2.Sml2Package;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link sml2.impl.ParticipantImpl#isShareable <em>Shareable</em>}</li>
  *   <li>{@link sml2.impl.ParticipantImpl#isImmutable <em>Immutable</em>}</li>
  *   <li>{@link sml2.impl.ParticipantImpl#getMin <em>Min</em>}</li>
- *   <li>{@link sml2.impl.ParticipantImpl#getReflection <em>Reflection</em>}</li>
  *   <li>{@link sml2.impl.ParticipantImpl#getMax <em>Max</em>}</li>
+ *   <li>{@link sml2.impl.ParticipantImpl#getIsImageOf <em>Is Image Of</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public abstract class ParticipantImpl extends ReferableElementImpl implements Participant {
-	/**
-	 * The default value of the '{@link #isShareable() <em>Shareable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isShareable()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean SHAREABLE_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isShareable() <em>Shareable</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isShareable()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean shareable = SHAREABLE_EDEFAULT;
-
 	/**
 	 * The default value of the '{@link #isImmutable() <em>Immutable</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -91,16 +67,6 @@ public abstract class ParticipantImpl extends ReferableElementImpl implements Pa
 	protected int min = MIN_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getReflection() <em>Reflection</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReflection()
-	 * @generated
-	 * @ordered
-	 */
-	protected ReflectedParticipant reflection;
-
-	/**
 	 * The default value of the '{@link #getMax() <em>Max</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -121,6 +87,16 @@ public abstract class ParticipantImpl extends ReferableElementImpl implements Pa
 	protected int max = MAX_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getIsImageOf() <em>Is Image Of</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIsImageOf()
+	 * @generated
+	 * @ordered
+	 */
+	protected Participant isImageOf;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -137,27 +113,6 @@ public abstract class ParticipantImpl extends ReferableElementImpl implements Pa
 	@Override
 	protected EClass eStaticClass() {
 		return Sml2Package.Literals.PARTICIPANT;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isShareable() {
-		return shareable;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setShareable(boolean newShareable) {
-		boolean oldShareable = shareable;
-		shareable = newShareable;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.PARTICIPANT__SHAREABLE, oldShareable, shareable));
 	}
 
 	/**
@@ -207,66 +162,6 @@ public abstract class ParticipantImpl extends ReferableElementImpl implements Pa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ReflectedParticipant getReflection() {
-		if (reflection != null && reflection.eIsProxy()) {
-			InternalEObject oldReflection = (InternalEObject)reflection;
-			reflection = (ReflectedParticipant)eResolveProxy(oldReflection);
-			if (reflection != oldReflection) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.PARTICIPANT__REFLECTION, oldReflection, reflection));
-			}
-		}
-		return reflection;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ReflectedParticipant basicGetReflection() {
-		return reflection;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetReflection(ReflectedParticipant newReflection, NotificationChain msgs) {
-		ReflectedParticipant oldReflection = reflection;
-		reflection = newReflection;
-		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Sml2Package.PARTICIPANT__REFLECTION, oldReflection, newReflection);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
-		}
-		return msgs;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setReflection(ReflectedParticipant newReflection) {
-		if (newReflection != reflection) {
-			NotificationChain msgs = null;
-			if (reflection != null)
-				msgs = ((InternalEObject)reflection).eInverseRemove(this, Sml2Package.REFLECTED_PARTICIPANT__PARTICIPANT, ReflectedParticipant.class, msgs);
-			if (newReflection != null)
-				msgs = ((InternalEObject)newReflection).eInverseAdd(this, Sml2Package.REFLECTED_PARTICIPANT__PARTICIPANT, ReflectedParticipant.class, msgs);
-			msgs = basicSetReflection(newReflection, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.PARTICIPANT__REFLECTION, newReflection, newReflection));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public int getMax() {
 		return max;
 	}
@@ -288,15 +183,16 @@ public abstract class ParticipantImpl extends ReferableElementImpl implements Pa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Sml2Package.PARTICIPANT__REFLECTION:
-				if (reflection != null)
-					msgs = ((InternalEObject)reflection).eInverseRemove(this, Sml2Package.REFLECTED_PARTICIPANT__PARTICIPANT, ReflectedParticipant.class, msgs);
-				return basicSetReflection((ReflectedParticipant)otherEnd, msgs);
+	public Participant getIsImageOf() {
+		if (isImageOf != null && isImageOf.eIsProxy()) {
+			InternalEObject oldIsImageOf = (InternalEObject)isImageOf;
+			isImageOf = (Participant)eResolveProxy(oldIsImageOf);
+			if (isImageOf != oldIsImageOf) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, Sml2Package.PARTICIPANT__IS_IMAGE_OF, oldIsImageOf, isImageOf));
+			}
 		}
-		return super.eInverseAdd(otherEnd, featureID, msgs);
+		return isImageOf;
 	}
 
 	/**
@@ -304,13 +200,20 @@ public abstract class ParticipantImpl extends ReferableElementImpl implements Pa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-		switch (featureID) {
-			case Sml2Package.PARTICIPANT__REFLECTION:
-				return basicSetReflection(null, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
+	public Participant basicGetIsImageOf() {
+		return isImageOf;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsImageOf(Participant newIsImageOf) {
+		Participant oldIsImageOf = isImageOf;
+		isImageOf = newIsImageOf;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Sml2Package.PARTICIPANT__IS_IMAGE_OF, oldIsImageOf, isImageOf));
 	}
 
 	/**
@@ -321,17 +224,15 @@ public abstract class ParticipantImpl extends ReferableElementImpl implements Pa
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case Sml2Package.PARTICIPANT__SHAREABLE:
-				return isShareable();
 			case Sml2Package.PARTICIPANT__IMMUTABLE:
 				return isImmutable();
 			case Sml2Package.PARTICIPANT__MIN:
 				return getMin();
-			case Sml2Package.PARTICIPANT__REFLECTION:
-				if (resolve) return getReflection();
-				return basicGetReflection();
 			case Sml2Package.PARTICIPANT__MAX:
 				return getMax();
+			case Sml2Package.PARTICIPANT__IS_IMAGE_OF:
+				if (resolve) return getIsImageOf();
+				return basicGetIsImageOf();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -344,20 +245,17 @@ public abstract class ParticipantImpl extends ReferableElementImpl implements Pa
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case Sml2Package.PARTICIPANT__SHAREABLE:
-				setShareable((Boolean)newValue);
-				return;
 			case Sml2Package.PARTICIPANT__IMMUTABLE:
 				setImmutable((Boolean)newValue);
 				return;
 			case Sml2Package.PARTICIPANT__MIN:
 				setMin((Integer)newValue);
 				return;
-			case Sml2Package.PARTICIPANT__REFLECTION:
-				setReflection((ReflectedParticipant)newValue);
-				return;
 			case Sml2Package.PARTICIPANT__MAX:
 				setMax((Integer)newValue);
+				return;
+			case Sml2Package.PARTICIPANT__IS_IMAGE_OF:
+				setIsImageOf((Participant)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -371,20 +269,17 @@ public abstract class ParticipantImpl extends ReferableElementImpl implements Pa
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case Sml2Package.PARTICIPANT__SHAREABLE:
-				setShareable(SHAREABLE_EDEFAULT);
-				return;
 			case Sml2Package.PARTICIPANT__IMMUTABLE:
 				setImmutable(IMMUTABLE_EDEFAULT);
 				return;
 			case Sml2Package.PARTICIPANT__MIN:
 				setMin(MIN_EDEFAULT);
 				return;
-			case Sml2Package.PARTICIPANT__REFLECTION:
-				setReflection((ReflectedParticipant)null);
-				return;
 			case Sml2Package.PARTICIPANT__MAX:
 				setMax(MAX_EDEFAULT);
+				return;
+			case Sml2Package.PARTICIPANT__IS_IMAGE_OF:
+				setIsImageOf((Participant)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -398,16 +293,14 @@ public abstract class ParticipantImpl extends ReferableElementImpl implements Pa
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case Sml2Package.PARTICIPANT__SHAREABLE:
-				return shareable != SHAREABLE_EDEFAULT;
 			case Sml2Package.PARTICIPANT__IMMUTABLE:
 				return immutable != IMMUTABLE_EDEFAULT;
 			case Sml2Package.PARTICIPANT__MIN:
 				return min != MIN_EDEFAULT;
-			case Sml2Package.PARTICIPANT__REFLECTION:
-				return reflection != null;
 			case Sml2Package.PARTICIPANT__MAX:
 				return max != MAX_EDEFAULT;
+			case Sml2Package.PARTICIPANT__IS_IMAGE_OF:
+				return isImageOf != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -422,9 +315,7 @@ public abstract class ParticipantImpl extends ReferableElementImpl implements Pa
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (shareable: ");
-		result.append(shareable);
-		result.append(", immutable: ");
+		result.append(" (immutable: ");
 		result.append(immutable);
 		result.append(", min: ");
 		result.append(min);

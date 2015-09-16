@@ -3,15 +3,10 @@
 package sml2.impl;
 
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import sml2.AllenKind;
 import sml2.AllenLink;
 import sml2.SituationParticipant;

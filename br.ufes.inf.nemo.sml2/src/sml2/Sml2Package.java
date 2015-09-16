@@ -158,7 +158,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getFormalRelation()
 	 * @generated
 	 */
-	int FORMAL_RELATION = 7;
+	int FORMAL_RELATION = 6;
 
 	/**
 	 * The feature id for the '<em><b>Source</b></em>' reference.
@@ -432,7 +432,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getReferableElement()
 	 * @generated
 	 */
-	int REFERABLE_ELEMENT = 18;
+	int REFERABLE_ELEMENT = 19;
 
 	/**
 	 * The number of structural features of the '<em>Referable Element</em>' class.
@@ -553,69 +553,32 @@ public interface Sml2Package extends EPackage {
 	int ATTRIBUTE_REFERENCE_OPERATION_COUNT = REFERABLE_ELEMENT_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link sml2.impl.LiteralImpl <em>Literal</em>}' class.
+	 * The meta object id for the '{@link sml2.impl.CharacterizationLinkImpl <em>Characterization Link</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see sml2.impl.LiteralImpl
-	 * @see sml2.impl.Sml2PackageImpl#getLiteral()
+	 * @see sml2.impl.CharacterizationLinkImpl
+	 * @see sml2.impl.Sml2PackageImpl#getCharacterizationLink()
 	 * @generated
 	 */
-	int LITERAL = 13;
+	int CHARACTERIZATION_LINK = 3;
 
 	/**
-	 * The number of structural features of the '<em>Literal</em>' class.
+	 * The feature id for the '<em><b>Source</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LITERAL_FEATURE_COUNT = NODE_FEATURE_COUNT + 0;
+	int CHARACTERIZATION_LINK__SOURCE = SITUATION_TYPE_ASSOCIATION__SOURCE;
 
 	/**
-	 * The operation id for the '<em>Source Relation</em>' operation.
+	 * The feature id for the '<em><b>Target</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int LITERAL___SOURCE_RELATION = NODE___SOURCE_RELATION;
-
-	/**
-	 * The operation id for the '<em>Target Relation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LITERAL___TARGET_RELATION = NODE___TARGET_RELATION;
-
-	/**
-	 * The operation id for the '<em>Get Situation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LITERAL___GET_SITUATION = NODE_OPERATION_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Literal</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int LITERAL_OPERATION_COUNT = NODE_OPERATION_COUNT + 1;
-
-	/**
-	 * The meta object id for the '{@link sml2.impl.ClassLiteralImpl <em>Class Literal</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see sml2.impl.ClassLiteralImpl
-	 * @see sml2.impl.Sml2PackageImpl#getClassLiteral()
-	 * @generated
-	 */
-	int CLASS_LITERAL = 3;
+	int CHARACTERIZATION_LINK__TARGET = SITUATION_TYPE_ASSOCIATION__TARGET;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -624,34 +587,16 @@ public interface Sml2Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CLASS_LITERAL__TYPE = LITERAL_FEATURE_COUNT + 0;
+	int CHARACTERIZATION_LINK__TYPE = SITUATION_TYPE_ASSOCIATION_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Class Literal</em>' class.
+	 * The number of structural features of the '<em>Characterization Link</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CLASS_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
-
-	/**
-	 * The operation id for the '<em>Source Relation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CLASS_LITERAL___SOURCE_RELATION = LITERAL___SOURCE_RELATION;
-
-	/**
-	 * The operation id for the '<em>Target Relation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CLASS_LITERAL___TARGET_RELATION = LITERAL___TARGET_RELATION;
+	int CHARACTERIZATION_LINK_FEATURE_COUNT = SITUATION_TYPE_ASSOCIATION_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Get Situation</em>' operation.
@@ -660,16 +605,34 @@ public interface Sml2Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CLASS_LITERAL___GET_SITUATION = LITERAL___GET_SITUATION;
+	int CHARACTERIZATION_LINK___GET_SITUATION = SITUATION_TYPE_ASSOCIATION___GET_SITUATION;
 
 	/**
-	 * The number of operations of the '<em>Class Literal</em>' class.
+	 * The operation id for the '<em>Get Mode</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CLASS_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
+	int CHARACTERIZATION_LINK___GET_MODE = SITUATION_TYPE_ASSOCIATION_OPERATION_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Get Characterized</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CHARACTERIZATION_LINK___GET_CHARACTERIZED = SITUATION_TYPE_ASSOCIATION_OPERATION_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Characterization Link</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CHARACTERIZATION_LINK_OPERATION_COUNT = SITUATION_TYPE_ASSOCIATION_OPERATION_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link sml2.impl.ComparativeRelationImpl <em>Comparative Relation</em>}' class.
@@ -818,79 +781,6 @@ public interface Sml2Package extends EPackage {
 	int CONTEXT_FORMAL_LINK_OPERATION_COUNT = FORMAL_RELATION_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link sml2.impl.DataTypeLiteralImpl <em>Data Type Literal</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see sml2.impl.DataTypeLiteralImpl
-	 * @see sml2.impl.Sml2PackageImpl#getDataTypeLiteral()
-	 * @generated
-	 */
-	int DATA_TYPE_LITERAL = 6;
-
-	/**
-	 * The feature id for the '<em><b>Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_TYPE_LITERAL__VALUE = LITERAL_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_TYPE_LITERAL__TYPE = LITERAL_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>Data Type Literal</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_TYPE_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 2;
-
-	/**
-	 * The operation id for the '<em>Source Relation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_TYPE_LITERAL___SOURCE_RELATION = LITERAL___SOURCE_RELATION;
-
-	/**
-	 * The operation id for the '<em>Target Relation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_TYPE_LITERAL___TARGET_RELATION = LITERAL___TARGET_RELATION;
-
-	/**
-	 * The operation id for the '<em>Get Situation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_TYPE_LITERAL___GET_SITUATION = LITERAL___GET_SITUATION;
-
-	/**
-	 * The number of operations of the '<em>Data Type Literal</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int DATA_TYPE_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link sml2.impl.ParticipantImpl <em>Participant</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -901,22 +791,13 @@ public interface Sml2Package extends EPackage {
 	int PARTICIPANT = 17;
 
 	/**
-	 * The feature id for the '<em><b>Shareable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARTICIPANT__SHAREABLE = REFERABLE_ELEMENT_FEATURE_COUNT + 0;
-
-	/**
 	 * The feature id for the '<em><b>Immutable</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PARTICIPANT__IMMUTABLE = REFERABLE_ELEMENT_FEATURE_COUNT + 1;
+	int PARTICIPANT__IMMUTABLE = REFERABLE_ELEMENT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Min</b></em>' attribute.
@@ -925,16 +806,7 @@ public interface Sml2Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTICIPANT__MIN = REFERABLE_ELEMENT_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Reflection</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PARTICIPANT__REFLECTION = REFERABLE_ELEMENT_FEATURE_COUNT + 3;
+	int PARTICIPANT__MIN = REFERABLE_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Max</b></em>' attribute.
@@ -943,7 +815,16 @@ public interface Sml2Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTICIPANT__MAX = REFERABLE_ELEMENT_FEATURE_COUNT + 4;
+	int PARTICIPANT__MAX = REFERABLE_ELEMENT_FEATURE_COUNT + 2;
+
+	/**
+	 * The feature id for the '<em><b>Is Image Of</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PARTICIPANT__IS_IMAGE_OF = REFERABLE_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Participant</em>' class.
@@ -952,7 +833,7 @@ public interface Sml2Package extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PARTICIPANT_FEATURE_COUNT = REFERABLE_ELEMENT_FEATURE_COUNT + 5;
+	int PARTICIPANT_FEATURE_COUNT = REFERABLE_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The operation id for the '<em>Source Relation</em>' operation.
@@ -998,16 +879,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getEntityParticipant()
 	 * @generated
 	 */
-	int ENTITY_PARTICIPANT = 8;
-
-	/**
-	 * The feature id for the '<em><b>Shareable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ENTITY_PARTICIPANT__SHAREABLE = PARTICIPANT__SHAREABLE;
+	int ENTITY_PARTICIPANT = 7;
 
 	/**
 	 * The feature id for the '<em><b>Immutable</b></em>' attribute.
@@ -1028,15 +900,6 @@ public interface Sml2Package extends EPackage {
 	int ENTITY_PARTICIPANT__MIN = PARTICIPANT__MIN;
 
 	/**
-	 * The feature id for the '<em><b>Reflection</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ENTITY_PARTICIPANT__REFLECTION = PARTICIPANT__REFLECTION;
-
-	/**
 	 * The feature id for the '<em><b>Max</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1044,6 +907,15 @@ public interface Sml2Package extends EPackage {
 	 * @ordered
 	 */
 	int ENTITY_PARTICIPANT__MAX = PARTICIPANT__MAX;
+
+	/**
+	 * The feature id for the '<em><b>Is Image Of</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENTITY_PARTICIPANT__IS_IMAGE_OF = PARTICIPANT__IS_IMAGE_OF;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -1107,7 +979,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getEqualsLink()
 	 * @generated
 	 */
-	int EQUALS_LINK = 9;
+	int EQUALS_LINK = 8;
 
 	/**
 	 * The feature id for the '<em><b>Source</b></em>' reference.
@@ -1171,7 +1043,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getFunction()
 	 * @generated
 	 */
-	int FUNCTION = 10;
+	int FUNCTION = 9;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1244,7 +1116,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getFunctionParameter()
 	 * @generated
 	 */
-	int FUNCTION_PARAMETER = 11;
+	int FUNCTION_PARAMETER = 10;
 
 	/**
 	 * The feature id for the '<em><b>Label</b></em>' attribute.
@@ -1299,7 +1171,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getInstantiationLink()
 	 * @generated
 	 */
-	int INSTANTIATION_LINK = 12;
+	int INSTANTIATION_LINK = 11;
 
 	/**
 	 * The feature id for the '<em><b>Source</b></em>' reference.
@@ -1374,6 +1246,61 @@ public interface Sml2Package extends EPackage {
 	int INSTANTIATION_LINK_OPERATION_COUNT = FORMAL_RELATION_OPERATION_COUNT + 2;
 
 	/**
+	 * The meta object id for the '{@link sml2.impl.LiteralImpl <em>Literal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see sml2.impl.LiteralImpl
+	 * @see sml2.impl.Sml2PackageImpl#getLiteral()
+	 * @generated
+	 */
+	int LITERAL = 12;
+
+	/**
+	 * The number of structural features of the '<em>Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LITERAL_FEATURE_COUNT = NODE_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Source Relation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LITERAL___SOURCE_RELATION = NODE___SOURCE_RELATION;
+
+	/**
+	 * The operation id for the '<em>Target Relation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LITERAL___TARGET_RELATION = NODE___TARGET_RELATION;
+
+	/**
+	 * The operation id for the '<em>Get Situation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LITERAL___GET_SITUATION = NODE_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int LITERAL_OPERATION_COUNT = NODE_OPERATION_COUNT + 1;
+
+	/**
 	 * The meta object id for the '{@link sml2.impl.MediationLinkImpl <em>Mediation Link</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1381,7 +1308,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getMediationLink()
 	 * @generated
 	 */
-	int MEDIATION_LINK = 14;
+	int MEDIATION_LINK = 13;
 
 	/**
 	 * The feature id for the '<em><b>Source</b></em>' reference.
@@ -1454,6 +1381,79 @@ public interface Sml2Package extends EPackage {
 	 * @ordered
 	 */
 	int MEDIATION_LINK_OPERATION_COUNT = SITUATION_TYPE_ASSOCIATION_OPERATION_COUNT + 2;
+
+	/**
+	 * The meta object id for the '{@link sml2.impl.ModeReferenceImpl <em>Mode Reference</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see sml2.impl.ModeReferenceImpl
+	 * @see sml2.impl.Sml2PackageImpl#getModeReference()
+	 * @generated
+	 */
+	int MODE_REFERENCE = 14;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODE_REFERENCE__TYPE = REFERABLE_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Mode Reference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODE_REFERENCE_FEATURE_COUNT = REFERABLE_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Source Relation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODE_REFERENCE___SOURCE_RELATION = REFERABLE_ELEMENT___SOURCE_RELATION;
+
+	/**
+	 * The operation id for the '<em>Target Relation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODE_REFERENCE___TARGET_RELATION = REFERABLE_ELEMENT___TARGET_RELATION;
+
+	/**
+	 * The operation id for the '<em>Get Situation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODE_REFERENCE___GET_SITUATION = REFERABLE_ELEMENT___GET_SITUATION;
+
+	/**
+	 * The operation id for the '<em>Get Entity</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODE_REFERENCE___GET_ENTITY = REFERABLE_ELEMENT_OPERATION_COUNT + 0;
+
+	/**
+	 * The number of operations of the '<em>Mode Reference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MODE_REFERENCE_OPERATION_COUNT = REFERABLE_ELEMENT_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link sml2.impl.OrderedComparativeLinkImpl <em>Ordered Comparative Link</em>}' class.
@@ -1529,6 +1529,79 @@ public interface Sml2Package extends EPackage {
 	int ORDERED_COMPARATIVE_LINK_OPERATION_COUNT = COMPARATIVE_RELATION_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link sml2.impl.QualityLiteralImpl <em>Quality Literal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see sml2.impl.QualityLiteralImpl
+	 * @see sml2.impl.Sml2PackageImpl#getQualityLiteral()
+	 * @generated
+	 */
+	int QUALITY_LITERAL = 18;
+
+	/**
+	 * The feature id for the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUALITY_LITERAL__VALUE = LITERAL_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUALITY_LITERAL__TYPE = LITERAL_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Quality Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUALITY_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 2;
+
+	/**
+	 * The operation id for the '<em>Source Relation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUALITY_LITERAL___SOURCE_RELATION = LITERAL___SOURCE_RELATION;
+
+	/**
+	 * The operation id for the '<em>Target Relation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUALITY_LITERAL___TARGET_RELATION = LITERAL___TARGET_RELATION;
+
+	/**
+	 * The operation id for the '<em>Get Situation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUALITY_LITERAL___GET_SITUATION = LITERAL___GET_SITUATION;
+
+	/**
+	 * The number of operations of the '<em>Quality Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUALITY_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link sml2.impl.ReferenceNodeImpl <em>Reference Node</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1536,7 +1609,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getReferenceNode()
 	 * @generated
 	 */
-	int REFERENCE_NODE = 19;
+	int REFERENCE_NODE = 20;
 
 	/**
 	 * The feature id for the '<em><b>Label</b></em>' attribute.
@@ -1602,143 +1675,6 @@ public interface Sml2Package extends EPackage {
 	int REFERENCE_NODE_OPERATION_COUNT = NODE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link sml2.impl.ReflectedParticipantImpl <em>Reflected Participant</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see sml2.impl.ReflectedParticipantImpl
-	 * @see sml2.impl.Sml2PackageImpl#getReflectedParticipant()
-	 * @generated
-	 */
-	int REFLECTED_PARTICIPANT = 20;
-
-	/**
-	 * The feature id for the '<em><b>Participant</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_PARTICIPANT__PARTICIPANT = NODE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>References</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_PARTICIPANT__REFERENCES = NODE_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>Reflected Participant</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_PARTICIPANT_FEATURE_COUNT = NODE_FEATURE_COUNT + 2;
-
-	/**
-	 * The operation id for the '<em>Source Relation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_PARTICIPANT___SOURCE_RELATION = NODE___SOURCE_RELATION;
-
-	/**
-	 * The operation id for the '<em>Target Relation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_PARTICIPANT___TARGET_RELATION = NODE___TARGET_RELATION;
-
-	/**
-	 * The operation id for the '<em>Get Situation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_PARTICIPANT___GET_SITUATION = NODE_OPERATION_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Reflected Participant</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_PARTICIPANT_OPERATION_COUNT = NODE_OPERATION_COUNT + 1;
-
-	/**
-	 * The meta object id for the '{@link sml2.impl.ReflectedReferenceImpl <em>Reflected Reference</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see sml2.impl.ReflectedReferenceImpl
-	 * @see sml2.impl.Sml2PackageImpl#getReflectedReference()
-	 * @generated
-	 */
-	int REFLECTED_REFERENCE = 21;
-
-	/**
-	 * The feature id for the '<em><b>Owning Reflection</b></em>' container reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_REFERENCE__OWNING_REFLECTION = NODE_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Reference</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_REFERENCE__REFERENCE = NODE_FEATURE_COUNT + 1;
-
-	/**
-	 * The number of structural features of the '<em>Reflected Reference</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_REFERENCE_FEATURE_COUNT = NODE_FEATURE_COUNT + 2;
-
-	/**
-	 * The operation id for the '<em>Source Relation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_REFERENCE___SOURCE_RELATION = NODE___SOURCE_RELATION;
-
-	/**
-	 * The operation id for the '<em>Target Relation</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_REFERENCE___TARGET_RELATION = NODE___TARGET_RELATION;
-
-	/**
-	 * The number of operations of the '<em>Reflected Reference</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REFLECTED_REFERENCE_OPERATION_COUNT = NODE_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link sml2.impl.RelatorParticipantImpl <em>Relator Participant</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1746,16 +1682,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getRelatorParticipant()
 	 * @generated
 	 */
-	int RELATOR_PARTICIPANT = 22;
-
-	/**
-	 * The feature id for the '<em><b>Shareable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int RELATOR_PARTICIPANT__SHAREABLE = PARTICIPANT__SHAREABLE;
+	int RELATOR_PARTICIPANT = 21;
 
 	/**
 	 * The feature id for the '<em><b>Immutable</b></em>' attribute.
@@ -1776,15 +1703,6 @@ public interface Sml2Package extends EPackage {
 	int RELATOR_PARTICIPANT__MIN = PARTICIPANT__MIN;
 
 	/**
-	 * The feature id for the '<em><b>Reflection</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int RELATOR_PARTICIPANT__REFLECTION = PARTICIPANT__REFLECTION;
-
-	/**
 	 * The feature id for the '<em><b>Max</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1792,6 +1710,15 @@ public interface Sml2Package extends EPackage {
 	 * @ordered
 	 */
 	int RELATOR_PARTICIPANT__MAX = PARTICIPANT__MAX;
+
+	/**
+	 * The feature id for the '<em><b>Is Image Of</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RELATOR_PARTICIPANT__IS_IMAGE_OF = PARTICIPANT__IS_IMAGE_OF;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -1848,6 +1775,16 @@ public interface Sml2Package extends EPackage {
 	int RELATOR_PARTICIPANT_OPERATION_COUNT = PARTICIPANT_OPERATION_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link sml2.impl.SelfReferenceImpl <em>Self Reference</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see sml2.impl.SelfReferenceImpl
+	 * @see sml2.impl.Sml2PackageImpl#getSelfReference()
+	 * @generated
+	 */
+	int SELF_REFERENCE = 22;
+
+	/**
 	 * The meta object id for the '{@link sml2.impl.SituationParticipantImpl <em>Situation Participant</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1856,15 +1793,6 @@ public interface Sml2Package extends EPackage {
 	 * @generated
 	 */
 	int SITUATION_PARTICIPANT = 23;
-
-	/**
-	 * The feature id for the '<em><b>Shareable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SITUATION_PARTICIPANT__SHAREABLE = PARTICIPANT__SHAREABLE;
 
 	/**
 	 * The feature id for the '<em><b>Immutable</b></em>' attribute.
@@ -1885,15 +1813,6 @@ public interface Sml2Package extends EPackage {
 	int SITUATION_PARTICIPANT__MIN = PARTICIPANT__MIN;
 
 	/**
-	 * The feature id for the '<em><b>Reflection</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SITUATION_PARTICIPANT__REFLECTION = PARTICIPANT__REFLECTION;
-
-	/**
 	 * The feature id for the '<em><b>Max</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1901,6 +1820,15 @@ public interface Sml2Package extends EPackage {
 	 * @ordered
 	 */
 	int SITUATION_PARTICIPANT__MAX = PARTICIPANT__MAX;
+
+	/**
+	 * The feature id for the '<em><b>Is Image Of</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SITUATION_PARTICIPANT__IS_IMAGE_OF = PARTICIPANT__IS_IMAGE_OF;
 
 	/**
 	 * The feature id for the '<em><b>Temporality</b></em>' attribute.
@@ -1973,6 +1901,114 @@ public interface Sml2Package extends EPackage {
 	 * @ordered
 	 */
 	int SITUATION_PARTICIPANT_OPERATION_COUNT = PARTICIPANT_OPERATION_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Immutable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE__IMMUTABLE = SITUATION_PARTICIPANT__IMMUTABLE;
+
+	/**
+	 * The feature id for the '<em><b>Min</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE__MIN = SITUATION_PARTICIPANT__MIN;
+
+	/**
+	 * The feature id for the '<em><b>Max</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE__MAX = SITUATION_PARTICIPANT__MAX;
+
+	/**
+	 * The feature id for the '<em><b>Is Image Of</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE__IS_IMAGE_OF = SITUATION_PARTICIPANT__IS_IMAGE_OF;
+
+	/**
+	 * The feature id for the '<em><b>Temporality</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE__TEMPORALITY = SITUATION_PARTICIPANT__TEMPORALITY;
+
+	/**
+	 * The feature id for the '<em><b>References</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE__REFERENCES = SITUATION_PARTICIPANT__REFERENCES;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE__TYPE = SITUATION_PARTICIPANT__TYPE;
+
+	/**
+	 * The number of structural features of the '<em>Self Reference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE_FEATURE_COUNT = SITUATION_PARTICIPANT_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Source Relation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE___SOURCE_RELATION = SITUATION_PARTICIPANT___SOURCE_RELATION;
+
+	/**
+	 * The operation id for the '<em>Target Relation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE___TARGET_RELATION = SITUATION_PARTICIPANT___TARGET_RELATION;
+
+	/**
+	 * The operation id for the '<em>Get Situation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE___GET_SITUATION = SITUATION_PARTICIPANT___GET_SITUATION;
+
+	/**
+	 * The number of operations of the '<em>Self Reference</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SELF_REFERENCE_OPERATION_COUNT = SITUATION_PARTICIPANT_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link sml2.impl.SituationTypeImpl <em>Situation Type</em>}' class.
@@ -2067,6 +2103,70 @@ public interface Sml2Package extends EPackage {
 	int SML_MODEL_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link sml2.impl.TypeLiteralImpl <em>Type Literal</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see sml2.impl.TypeLiteralImpl
+	 * @see sml2.impl.Sml2PackageImpl#getTypeLiteral()
+	 * @generated
+	 */
+	int TYPE_LITERAL = 28;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_LITERAL__TYPE = LITERAL_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Type Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_LITERAL_FEATURE_COUNT = LITERAL_FEATURE_COUNT + 1;
+
+	/**
+	 * The operation id for the '<em>Source Relation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_LITERAL___SOURCE_RELATION = LITERAL___SOURCE_RELATION;
+
+	/**
+	 * The operation id for the '<em>Target Relation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_LITERAL___TARGET_RELATION = LITERAL___TARGET_RELATION;
+
+	/**
+	 * The operation id for the '<em>Get Situation</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_LITERAL___GET_SITUATION = LITERAL___GET_SITUATION;
+
+	/**
+	 * The number of operations of the '<em>Type Literal</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_LITERAL_OPERATION_COUNT = LITERAL_OPERATION_COUNT + 0;
+
+	/**
 	 * The meta object id for the '{@link sml2.AllenKind <em>Allen Kind</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2074,7 +2174,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getAllenKind()
 	 * @generated
 	 */
-	int ALLEN_KIND = 28;
+	int ALLEN_KIND = 29;
 
 	/**
 	 * The meta object id for the '{@link sml2.ComparativeKind <em>Comparative Kind</em>}' enum.
@@ -2084,7 +2184,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getComparativeKind()
 	 * @generated
 	 */
-	int COMPARATIVE_KIND = 29;
+	int COMPARATIVE_KIND = 30;
 
 	/**
 	 * The meta object id for the '{@link sml2.TemporalKind <em>Temporal Kind</em>}' enum.
@@ -2094,7 +2194,7 @@ public interface Sml2Package extends EPackage {
 	 * @see sml2.impl.Sml2PackageImpl#getTemporalKind()
 	 * @generated
 	 */
-	int TEMPORAL_KIND = 30;
+	int TEMPORAL_KIND = 31;
 
 
 	/**
@@ -2200,25 +2300,45 @@ public interface Sml2Package extends EPackage {
 	EOperation getAttributeReference__GetEntity();
 
 	/**
-	 * Returns the meta object for class '{@link sml2.ClassLiteral <em>Class Literal</em>}'.
+	 * Returns the meta object for class '{@link sml2.CharacterizationLink <em>Characterization Link</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Class Literal</em>'.
-	 * @see sml2.ClassLiteral
+	 * @return the meta object for class '<em>Characterization Link</em>'.
+	 * @see sml2.CharacterizationLink
 	 * @generated
 	 */
-	EClass getClassLiteral();
+	EClass getCharacterizationLink();
 
 	/**
-	 * Returns the meta object for the reference '{@link sml2.ClassLiteral#getType <em>Type</em>}'.
+	 * Returns the meta object for the reference '{@link sml2.CharacterizationLink#getType <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Type</em>'.
-	 * @see sml2.ClassLiteral#getType()
-	 * @see #getClassLiteral()
+	 * @see sml2.CharacterizationLink#getType()
+	 * @see #getCharacterizationLink()
 	 * @generated
 	 */
-	EReference getClassLiteral_Type();
+	EReference getCharacterizationLink_Type();
+
+	/**
+	 * Returns the meta object for the '{@link sml2.CharacterizationLink#getMode() <em>Get Mode</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Mode</em>' operation.
+	 * @see sml2.CharacterizationLink#getMode()
+	 * @generated
+	 */
+	EOperation getCharacterizationLink__GetMode();
+
+	/**
+	 * Returns the meta object for the '{@link sml2.CharacterizationLink#getCharacterized() <em>Get Characterized</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Characterized</em>' operation.
+	 * @see sml2.CharacterizationLink#getCharacterized()
+	 * @generated
+	 */
+	EOperation getCharacterizationLink__GetCharacterized();
 
 	/**
 	 * Returns the meta object for class '{@link sml2.ComparativeRelation <em>Comparative Relation</em>}'.
@@ -2261,38 +2381,6 @@ public interface Sml2Package extends EPackage {
 	 * @generated
 	 */
 	EReference getContextFormalLink_Type();
-
-	/**
-	 * Returns the meta object for class '{@link sml2.DataTypeLiteral <em>Data Type Literal</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Data Type Literal</em>'.
-	 * @see sml2.DataTypeLiteral
-	 * @generated
-	 */
-	EClass getDataTypeLiteral();
-
-	/**
-	 * Returns the meta object for the attribute '{@link sml2.DataTypeLiteral#getValue <em>Value</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Value</em>'.
-	 * @see sml2.DataTypeLiteral#getValue()
-	 * @see #getDataTypeLiteral()
-	 * @generated
-	 */
-	EAttribute getDataTypeLiteral_Value();
-
-	/**
-	 * Returns the meta object for the reference '{@link sml2.DataTypeLiteral#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Type</em>'.
-	 * @see sml2.DataTypeLiteral#getType()
-	 * @see #getDataTypeLiteral()
-	 * @generated
-	 */
-	EReference getDataTypeLiteral_Type();
 
 	/**
 	 * Returns the meta object for class '{@link sml2.FormalRelation <em>Formal Relation</em>}'.
@@ -2502,6 +2590,37 @@ public interface Sml2Package extends EPackage {
 	EOperation getMediationLink__GetEntity();
 
 	/**
+	 * Returns the meta object for class '{@link sml2.ModeReference <em>Mode Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Mode Reference</em>'.
+	 * @see sml2.ModeReference
+	 * @generated
+	 */
+	EClass getModeReference();
+
+	/**
+	 * Returns the meta object for the reference '{@link sml2.ModeReference#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Type</em>'.
+	 * @see sml2.ModeReference#getType()
+	 * @see #getModeReference()
+	 * @generated
+	 */
+	EReference getModeReference_Type();
+
+	/**
+	 * Returns the meta object for the '{@link sml2.ModeReference#getEntity() <em>Get Entity</em>}' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the '<em>Get Entity</em>' operation.
+	 * @see sml2.ModeReference#getEntity()
+	 * @generated
+	 */
+	EOperation getModeReference__GetEntity();
+
+	/**
 	 * Returns the meta object for class '{@link sml2.Node <em>Node</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2563,17 +2682,6 @@ public interface Sml2Package extends EPackage {
 	EClass getParticipant();
 
 	/**
-	 * Returns the meta object for the attribute '{@link sml2.Participant#isShareable <em>Shareable</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Shareable</em>'.
-	 * @see sml2.Participant#isShareable()
-	 * @see #getParticipant()
-	 * @generated
-	 */
-	EAttribute getParticipant_Shareable();
-
-	/**
 	 * Returns the meta object for the attribute '{@link sml2.Participant#isImmutable <em>Immutable</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2596,17 +2704,6 @@ public interface Sml2Package extends EPackage {
 	EAttribute getParticipant_Min();
 
 	/**
-	 * Returns the meta object for the reference '{@link sml2.Participant#getReflection <em>Reflection</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Reflection</em>'.
-	 * @see sml2.Participant#getReflection()
-	 * @see #getParticipant()
-	 * @generated
-	 */
-	EReference getParticipant_Reflection();
-
-	/**
 	 * Returns the meta object for the attribute '{@link sml2.Participant#getMax <em>Max</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2616,6 +2713,49 @@ public interface Sml2Package extends EPackage {
 	 * @generated
 	 */
 	EAttribute getParticipant_Max();
+
+	/**
+	 * Returns the meta object for the reference '{@link sml2.Participant#getIsImageOf <em>Is Image Of</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Is Image Of</em>'.
+	 * @see sml2.Participant#getIsImageOf()
+	 * @see #getParticipant()
+	 * @generated
+	 */
+	EReference getParticipant_IsImageOf();
+
+	/**
+	 * Returns the meta object for class '{@link sml2.QualityLiteral <em>Quality Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Quality Literal</em>'.
+	 * @see sml2.QualityLiteral
+	 * @generated
+	 */
+	EClass getQualityLiteral();
+
+	/**
+	 * Returns the meta object for the attribute '{@link sml2.QualityLiteral#getValue <em>Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Value</em>'.
+	 * @see sml2.QualityLiteral#getValue()
+	 * @see #getQualityLiteral()
+	 * @generated
+	 */
+	EAttribute getQualityLiteral_Value();
+
+	/**
+	 * Returns the meta object for the reference '{@link sml2.QualityLiteral#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Type</em>'.
+	 * @see sml2.QualityLiteral#getType()
+	 * @see #getQualityLiteral()
+	 * @generated
+	 */
+	EReference getQualityLiteral_Type();
 
 	/**
 	 * Returns the meta object for class '{@link sml2.ReferableElement <em>Referable Element</em>}'.
@@ -2671,70 +2811,6 @@ public interface Sml2Package extends EPackage {
 	EReference getReferenceNode_Reference();
 
 	/**
-	 * Returns the meta object for class '{@link sml2.ReflectedParticipant <em>Reflected Participant</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Reflected Participant</em>'.
-	 * @see sml2.ReflectedParticipant
-	 * @generated
-	 */
-	EClass getReflectedParticipant();
-
-	/**
-	 * Returns the meta object for the reference '{@link sml2.ReflectedParticipant#getParticipant <em>Participant</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Participant</em>'.
-	 * @see sml2.ReflectedParticipant#getParticipant()
-	 * @see #getReflectedParticipant()
-	 * @generated
-	 */
-	EReference getReflectedParticipant_Participant();
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link sml2.ReflectedParticipant#getReferences <em>References</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>References</em>'.
-	 * @see sml2.ReflectedParticipant#getReferences()
-	 * @see #getReflectedParticipant()
-	 * @generated
-	 */
-	EReference getReflectedParticipant_References();
-
-	/**
-	 * Returns the meta object for class '{@link sml2.ReflectedReference <em>Reflected Reference</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Reflected Reference</em>'.
-	 * @see sml2.ReflectedReference
-	 * @generated
-	 */
-	EClass getReflectedReference();
-
-	/**
-	 * Returns the meta object for the container reference '{@link sml2.ReflectedReference#getOwningReflection <em>Owning Reflection</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the container reference '<em>Owning Reflection</em>'.
-	 * @see sml2.ReflectedReference#getOwningReflection()
-	 * @see #getReflectedReference()
-	 * @generated
-	 */
-	EReference getReflectedReference_OwningReflection();
-
-	/**
-	 * Returns the meta object for the reference '{@link sml2.ReflectedReference#getReference <em>Reference</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Reference</em>'.
-	 * @see sml2.ReflectedReference#getReference()
-	 * @see #getReflectedReference()
-	 * @generated
-	 */
-	EReference getReflectedReference_Reference();
-
-	/**
 	 * Returns the meta object for class '{@link sml2.RelatorParticipant <em>Relator Participant</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2754,6 +2830,16 @@ public interface Sml2Package extends EPackage {
 	 * @generated
 	 */
 	EReference getRelatorParticipant_Type();
+
+	/**
+	 * Returns the meta object for class '{@link sml2.SelfReference <em>Self Reference</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Self Reference</em>'.
+	 * @see sml2.SelfReference
+	 * @generated
+	 */
+	EClass getSelfReference();
 
 	/**
 	 * Returns the meta object for class '{@link sml2.SituationParticipant <em>Situation Participant</em>}'.
@@ -2915,6 +3001,27 @@ public interface Sml2Package extends EPackage {
 	EReference getSMLModel_ContextModel();
 
 	/**
+	 * Returns the meta object for class '{@link sml2.TypeLiteral <em>Type Literal</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Type Literal</em>'.
+	 * @see sml2.TypeLiteral
+	 * @generated
+	 */
+	EClass getTypeLiteral();
+
+	/**
+	 * Returns the meta object for the reference '{@link sml2.TypeLiteral#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Type</em>'.
+	 * @see sml2.TypeLiteral#getType()
+	 * @see #getTypeLiteral()
+	 * @generated
+	 */
+	EReference getTypeLiteral_Type();
+
+	/**
 	 * Returns the meta object for enum '{@link sml2.AllenKind <em>Allen Kind</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3054,14 +3161,14 @@ public interface Sml2Package extends EPackage {
 		EOperation ATTRIBUTE_REFERENCE___GET_ENTITY = eINSTANCE.getAttributeReference__GetEntity();
 
 		/**
-		 * The meta object literal for the '{@link sml2.impl.ClassLiteralImpl <em>Class Literal</em>}' class.
+		 * The meta object literal for the '{@link sml2.impl.CharacterizationLinkImpl <em>Characterization Link</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see sml2.impl.ClassLiteralImpl
-		 * @see sml2.impl.Sml2PackageImpl#getClassLiteral()
+		 * @see sml2.impl.CharacterizationLinkImpl
+		 * @see sml2.impl.Sml2PackageImpl#getCharacterizationLink()
 		 * @generated
 		 */
-		EClass CLASS_LITERAL = eINSTANCE.getClassLiteral();
+		EClass CHARACTERIZATION_LINK = eINSTANCE.getCharacterizationLink();
 
 		/**
 		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
@@ -3069,7 +3176,23 @@ public interface Sml2Package extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference CLASS_LITERAL__TYPE = eINSTANCE.getClassLiteral_Type();
+		EReference CHARACTERIZATION_LINK__TYPE = eINSTANCE.getCharacterizationLink_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Mode</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CHARACTERIZATION_LINK___GET_MODE = eINSTANCE.getCharacterizationLink__GetMode();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Characterized</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation CHARACTERIZATION_LINK___GET_CHARACTERIZED = eINSTANCE.getCharacterizationLink__GetCharacterized();
 
 		/**
 		 * The meta object literal for the '{@link sml2.impl.ComparativeRelationImpl <em>Comparative Relation</em>}' class.
@@ -3106,32 +3229,6 @@ public interface Sml2Package extends EPackage {
 		 * @generated
 		 */
 		EReference CONTEXT_FORMAL_LINK__TYPE = eINSTANCE.getContextFormalLink_Type();
-
-		/**
-		 * The meta object literal for the '{@link sml2.impl.DataTypeLiteralImpl <em>Data Type Literal</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see sml2.impl.DataTypeLiteralImpl
-		 * @see sml2.impl.Sml2PackageImpl#getDataTypeLiteral()
-		 * @generated
-		 */
-		EClass DATA_TYPE_LITERAL = eINSTANCE.getDataTypeLiteral();
-
-		/**
-		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute DATA_TYPE_LITERAL__VALUE = eINSTANCE.getDataTypeLiteral_Value();
-
-		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference DATA_TYPE_LITERAL__TYPE = eINSTANCE.getDataTypeLiteral_Type();
 
 		/**
 		 * The meta object literal for the '{@link sml2.impl.FormalRelationImpl <em>Formal Relation</em>}' class.
@@ -3310,6 +3407,32 @@ public interface Sml2Package extends EPackage {
 		EOperation MEDIATION_LINK___GET_ENTITY = eINSTANCE.getMediationLink__GetEntity();
 
 		/**
+		 * The meta object literal for the '{@link sml2.impl.ModeReferenceImpl <em>Mode Reference</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see sml2.impl.ModeReferenceImpl
+		 * @see sml2.impl.Sml2PackageImpl#getModeReference()
+		 * @generated
+		 */
+		EClass MODE_REFERENCE = eINSTANCE.getModeReference();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference MODE_REFERENCE__TYPE = eINSTANCE.getModeReference_Type();
+
+		/**
+		 * The meta object literal for the '<em><b>Get Entity</b></em>' operation.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EOperation MODE_REFERENCE___GET_ENTITY = eINSTANCE.getModeReference__GetEntity();
+
+		/**
 		 * The meta object literal for the '{@link sml2.impl.NodeImpl <em>Node</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3364,14 +3487,6 @@ public interface Sml2Package extends EPackage {
 		EClass PARTICIPANT = eINSTANCE.getParticipant();
 
 		/**
-		 * The meta object literal for the '<em><b>Shareable</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PARTICIPANT__SHAREABLE = eINSTANCE.getParticipant_Shareable();
-
-		/**
 		 * The meta object literal for the '<em><b>Immutable</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3388,20 +3503,46 @@ public interface Sml2Package extends EPackage {
 		EAttribute PARTICIPANT__MIN = eINSTANCE.getParticipant_Min();
 
 		/**
-		 * The meta object literal for the '<em><b>Reflection</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PARTICIPANT__REFLECTION = eINSTANCE.getParticipant_Reflection();
-
-		/**
 		 * The meta object literal for the '<em><b>Max</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute PARTICIPANT__MAX = eINSTANCE.getParticipant_Max();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Image Of</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference PARTICIPANT__IS_IMAGE_OF = eINSTANCE.getParticipant_IsImageOf();
+
+		/**
+		 * The meta object literal for the '{@link sml2.impl.QualityLiteralImpl <em>Quality Literal</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see sml2.impl.QualityLiteralImpl
+		 * @see sml2.impl.Sml2PackageImpl#getQualityLiteral()
+		 * @generated
+		 */
+		EClass QUALITY_LITERAL = eINSTANCE.getQualityLiteral();
+
+		/**
+		 * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute QUALITY_LITERAL__VALUE = eINSTANCE.getQualityLiteral_Value();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference QUALITY_LITERAL__TYPE = eINSTANCE.getQualityLiteral_Type();
 
 		/**
 		 * The meta object literal for the '{@link sml2.impl.ReferableElementImpl <em>Referable Element</em>}' class.
@@ -3448,58 +3589,6 @@ public interface Sml2Package extends EPackage {
 		EReference REFERENCE_NODE__REFERENCE = eINSTANCE.getReferenceNode_Reference();
 
 		/**
-		 * The meta object literal for the '{@link sml2.impl.ReflectedParticipantImpl <em>Reflected Participant</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see sml2.impl.ReflectedParticipantImpl
-		 * @see sml2.impl.Sml2PackageImpl#getReflectedParticipant()
-		 * @generated
-		 */
-		EClass REFLECTED_PARTICIPANT = eINSTANCE.getReflectedParticipant();
-
-		/**
-		 * The meta object literal for the '<em><b>Participant</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference REFLECTED_PARTICIPANT__PARTICIPANT = eINSTANCE.getReflectedParticipant_Participant();
-
-		/**
-		 * The meta object literal for the '<em><b>References</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference REFLECTED_PARTICIPANT__REFERENCES = eINSTANCE.getReflectedParticipant_References();
-
-		/**
-		 * The meta object literal for the '{@link sml2.impl.ReflectedReferenceImpl <em>Reflected Reference</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see sml2.impl.ReflectedReferenceImpl
-		 * @see sml2.impl.Sml2PackageImpl#getReflectedReference()
-		 * @generated
-		 */
-		EClass REFLECTED_REFERENCE = eINSTANCE.getReflectedReference();
-
-		/**
-		 * The meta object literal for the '<em><b>Owning Reflection</b></em>' container reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference REFLECTED_REFERENCE__OWNING_REFLECTION = eINSTANCE.getReflectedReference_OwningReflection();
-
-		/**
-		 * The meta object literal for the '<em><b>Reference</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference REFLECTED_REFERENCE__REFERENCE = eINSTANCE.getReflectedReference_Reference();
-
-		/**
 		 * The meta object literal for the '{@link sml2.impl.RelatorParticipantImpl <em>Relator Participant</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3516,6 +3605,16 @@ public interface Sml2Package extends EPackage {
 		 * @generated
 		 */
 		EReference RELATOR_PARTICIPANT__TYPE = eINSTANCE.getRelatorParticipant_Type();
+
+		/**
+		 * The meta object literal for the '{@link sml2.impl.SelfReferenceImpl <em>Self Reference</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see sml2.impl.SelfReferenceImpl
+		 * @see sml2.impl.Sml2PackageImpl#getSelfReference()
+		 * @generated
+		 */
+		EClass SELF_REFERENCE = eINSTANCE.getSelfReference();
 
 		/**
 		 * The meta object literal for the '{@link sml2.impl.SituationParticipantImpl <em>Situation Participant</em>}' class.
@@ -3646,6 +3745,24 @@ public interface Sml2Package extends EPackage {
 		 * @generated
 		 */
 		EReference SML_MODEL__CONTEXT_MODEL = eINSTANCE.getSMLModel_ContextModel();
+
+		/**
+		 * The meta object literal for the '{@link sml2.impl.TypeLiteralImpl <em>Type Literal</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see sml2.impl.TypeLiteralImpl
+		 * @see sml2.impl.Sml2PackageImpl#getTypeLiteral()
+		 * @generated
+		 */
+		EClass TYPE_LITERAL = eINSTANCE.getTypeLiteral();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TYPE_LITERAL__TYPE = eINSTANCE.getTypeLiteral_Type();
 
 		/**
 		 * The meta object literal for the '{@link sml2.AllenKind <em>Allen Kind</em>}' enum.

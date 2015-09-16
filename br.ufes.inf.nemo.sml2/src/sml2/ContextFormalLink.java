@@ -20,7 +20,7 @@ import RefOntoUML.FormalAssociation;
  * @see sml2.Sml2Package#getContextFormalLink()
  * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='sameEndsAsType2'"
  *        annotation="http://www.eclipse.org/ocl/examples/OCL sameEndsAsType2='self.type.oclAsType(RefOntoUML::FormalAssociation).memberEnd->exists(x,y | x = self.source.type and y = self.target.type)'"
- *        annotation="Comments sameEndsAsType2='A FormalLink must connect the same entities as such its FormalAssociation type does'"
+ *        annotation="Comments sameEndsAsType2='A FormalLink must connect the same entities as its FormalAssociation does'"
  * @generated
  */
 public interface ContextFormalLink extends FormalRelation {

@@ -19,7 +19,7 @@ import RefOntoUML.Mediation;
  * @see sml2.Sml2Package#getMediationLink()
  * @model annotation="http://www.eclipse.org/emf/2002/Ecore constraints='sourceIsRelator targetIsEntity sameEndsAsType'"
  *        annotation="http://www.eclipse.org/ocl/examples/OCL sourceIsRelator='self.source.oclIsKindOf(RelatorParticipant)' targetIsEntity='self.target.oclIsKindOf(EntityParticipant)' sameEndsAsType='self.type.oclAsType(RefOntoUML::Mediation).relator() = self.source.oclAsType(RelatorParticipant).type and\r\nself.type.oclAsType(RefOntoUML::Mediation).mediated() = self.target.oclAsType(EntityParticipant).type'"
- *        annotation="Comments sourceIsRelator='The source of a Link must be a RelatorParticipant' targetIsEntity='The target of a Link must be an EntityParticipant' sameEndsAsType='A Link must connect the same entities as such its Mediation type does'"
+ *        annotation="Comments sourceIsRelator='The source of a MediationLink must be a RelatorParticipant' targetIsEntity='The target of a MediationLink must be an EntityParticipant' sameEndsAsType='A MediationLink must connect the same entities as its Mediation does'"
  * @generated
  */
 public interface MediationLink extends SituationTypeAssociation {

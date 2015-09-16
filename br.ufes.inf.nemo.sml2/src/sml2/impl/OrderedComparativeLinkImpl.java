@@ -3,11 +3,8 @@
 package sml2.impl;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import sml2.ComparativeKind;
 import sml2.OrderedComparativeLink;
 import sml2.Sml2Package;

@@ -3,7 +3,6 @@
 package sml2.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
 import sml2.EqualsLink;
 import sml2.Sml2Package;
 

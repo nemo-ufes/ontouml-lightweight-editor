@@ -46,17 +46,10 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//AttributeReference/type"/>
       <genOperations ecoreOperation="sml2.ecore#//AttributeReference/getEntity"/>
     </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//ClassLiteral">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ClassLiteral/type"/>
-    </genClasses>
     <genClasses image="false" ecoreClass="sml2.ecore#//ComparativeRelation"/>
     <genClasses ecoreClass="sml2.ecore#//ContextFormalLink">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//ContextFormalLink/parameter"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ContextFormalLink/type"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//DataTypeLiteral">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//DataTypeLiteral/value"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//DataTypeLiteral/type"/>
     </genClasses>
     <genClasses image="false" ecoreClass="sml2.ecore#//FormalRelation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//FormalRelation/negated"/>
@@ -84,6 +77,9 @@
       <genOperations ecoreOperation="sml2.ecore#//MediationLink/getRelator"/>
       <genOperations ecoreOperation="sml2.ecore#//MediationLink/getEntity"/>
     </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//ModeReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ModeReference/type"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="sml2.ecore#//Node">
       <genOperations ecoreOperation="sml2.ecore#//Node/sourceRelation"/>
       <genOperations ecoreOperation="sml2.ecore#//Node/targetRelation"/>
@@ -92,11 +88,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//OrderedComparativeLink/type"/>
     </genClasses>
     <genClasses image="false" ecoreClass="sml2.ecore#//Participant">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//Participant/shareable"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//Participant/immutable"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//Participant/min"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//Participant/reflection"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//Participant/max"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//Participant/isImageOf"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//QualityLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//QualityLiteral/value"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//QualityLiteral/type"/>
     </genClasses>
     <genClasses image="false" ecoreClass="sml2.ecore#//ReferableElement"/>
     <genClasses ecoreClass="sml2.ecore#//ReferenceNode">
@@ -104,16 +103,11 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sml2.ecore#//ReferenceNode/situation"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ReferenceNode/reference"/>
     </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//ReflectedParticipant">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ReflectedParticipant/participant"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//ReflectedParticipant/references"/>
-    </genClasses>
-    <genClasses ecoreClass="sml2.ecore#//ReflectedReference">
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference sml2.ecore#//ReflectedReference/owningReflection"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//ReflectedReference/reference"/>
-    </genClasses>
     <genClasses ecoreClass="sml2.ecore#//RelatorParticipant">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//RelatorParticipant/type"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//SelfReference">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SelfReference/situation"/>
     </genClasses>
     <genClasses ecoreClass="sml2.ecore#//SituationParticipant">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sml2.ecore#//SituationParticipant/temporality"/>
@@ -134,6 +128,9 @@
     <genClasses ecoreClass="sml2.ecore#//SMLModel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference sml2.ecore#//SMLModel/elements"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//SMLModel/contextModel"/>
+    </genClasses>
+    <genClasses ecoreClass="sml2.ecore#//TypeLiteral">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sml2.ecore#//TypeLiteral/type"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

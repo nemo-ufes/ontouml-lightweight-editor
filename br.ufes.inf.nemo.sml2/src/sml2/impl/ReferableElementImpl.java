@@ -3,21 +3,15 @@
 package sml2.impl;
 
 import java.lang.reflect.InvocationTargetException;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EOperation;
-
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.Query;
-
 import org.eclipse.ocl.ecore.OCL;
-
 import org.eclipse.ocl.expressions.OCLExpression;
-
 import sml2.ReferableElement;
 import sml2.SituationType;
 import sml2.SituationTypeElement;
@@ -116,7 +110,7 @@ public abstract class ReferableElementImpl extends NodeImpl implements Referable
 	 * @generated
 	 */
 	private static OCLExpression<EClassifier> getSituationBodyOCL;
-	
+
 	private static final String OCL_ANNOTATION_SOURCE = "http://www.eclipse.org/ocl/examples/OCL";
 	
 	private static final OCL OCL_ENV = OCL.newInstance();

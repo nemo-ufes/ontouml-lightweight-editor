@@ -15,11 +15,10 @@ import sml2.AllenKind;
 import sml2.AllenLink;
 import sml2.AttributeLink;
 import sml2.AttributeReference;
-import sml2.ClassLiteral;
+import sml2.CharacterizationLink;
 import sml2.ComparativeKind;
 import sml2.ComparativeRelation;
 import sml2.ContextFormalLink;
-import sml2.DataTypeLiteral;
 import sml2.EntityParticipant;
 import sml2.EqualsLink;
 import sml2.FormalRelation;
@@ -28,15 +27,16 @@ import sml2.FunctionParameter;
 import sml2.InstantiationLink;
 import sml2.Literal;
 import sml2.MediationLink;
+import sml2.ModeReference;
 import sml2.Node;
 import sml2.OrderedComparativeLink;
 import sml2.Participant;
+import sml2.QualityLiteral;
 import sml2.ReferableElement;
 import sml2.ReferenceNode;
-import sml2.ReflectedParticipant;
-import sml2.ReflectedReference;
 import sml2.RelatorParticipant;
 import sml2.SMLModel;
+import sml2.SelfReference;
 import sml2.SituationParticipant;
 import sml2.SituationType;
 import sml2.SituationTypeAssociation;
@@ -44,6 +44,7 @@ import sml2.SituationTypeElement;
 import sml2.Sml2Factory;
 import sml2.Sml2Package;
 import sml2.TemporalKind;
+import sml2.TypeLiteral;
 import sml2.util.Sml2Validator;
 
 /**
@@ -79,7 +80,7 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass classLiteralEClass = null;
+	private EClass characterizationLinkEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -94,13 +95,6 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * @generated
 	 */
 	private EClass contextFormalLinkEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass dataTypeLiteralEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -163,6 +157,13 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass modeReferenceEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass nodeEClass = null;
 
 	/**
@@ -184,6 +185,13 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	private EClass qualityLiteralEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	private EClass referableElementEClass = null;
 
 	/**
@@ -198,21 +206,14 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass reflectedParticipantEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass reflectedReferenceEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	private EClass relatorParticipantEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass selfReferenceEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -248,6 +249,13 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * @generated
 	 */
 	private EClass smlModelEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass typeLiteralEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -438,8 +446,8 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getClassLiteral() {
-		return classLiteralEClass;
+	public EClass getCharacterizationLink() {
+		return characterizationLinkEClass;
 	}
 
 	/**
@@ -447,8 +455,26 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getClassLiteral_Type() {
-		return (EReference)classLiteralEClass.getEStructuralFeatures().get(0);
+	public EReference getCharacterizationLink_Type() {
+		return (EReference)characterizationLinkEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCharacterizationLink__GetMode() {
+		return characterizationLinkEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCharacterizationLink__GetCharacterized() {
+		return characterizationLinkEClass.getEOperations().get(1);
 	}
 
 	/**
@@ -485,33 +511,6 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 */
 	public EReference getContextFormalLink_Type() {
 		return (EReference)contextFormalLinkEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getDataTypeLiteral() {
-		return dataTypeLiteralEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getDataTypeLiteral_Value() {
-		return (EAttribute)dataTypeLiteralEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getDataTypeLiteral_Type() {
-		return (EReference)dataTypeLiteralEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -699,6 +698,33 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getModeReference() {
+		return modeReferenceEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getModeReference_Type() {
+		return (EReference)modeReferenceEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getModeReference__GetEntity() {
+		return modeReferenceEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getNode() {
 		return nodeEClass;
 	}
@@ -753,7 +779,7 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getParticipant_Shareable() {
+	public EAttribute getParticipant_Immutable() {
 		return (EAttribute)participantEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -762,7 +788,7 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getParticipant_Immutable() {
+	public EAttribute getParticipant_Min() {
 		return (EAttribute)participantEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -771,7 +797,7 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getParticipant_Min() {
+	public EAttribute getParticipant_Max() {
 		return (EAttribute)participantEClass.getEStructuralFeatures().get(2);
 	}
 
@@ -780,7 +806,7 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getParticipant_Reflection() {
+	public EReference getParticipant_IsImageOf() {
 		return (EReference)participantEClass.getEStructuralFeatures().get(3);
 	}
 
@@ -789,8 +815,26 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getParticipant_Max() {
-		return (EAttribute)participantEClass.getEStructuralFeatures().get(4);
+	public EClass getQualityLiteral() {
+		return qualityLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getQualityLiteral_Value() {
+		return (EAttribute)qualityLiteralEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getQualityLiteral_Type() {
+		return (EReference)qualityLiteralEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -843,60 +887,6 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getReflectedParticipant() {
-		return reflectedParticipantEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getReflectedParticipant_Participant() {
-		return (EReference)reflectedParticipantEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getReflectedParticipant_References() {
-		return (EReference)reflectedParticipantEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getReflectedReference() {
-		return reflectedReferenceEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getReflectedReference_OwningReflection() {
-		return (EReference)reflectedReferenceEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getReflectedReference_Reference() {
-		return (EReference)reflectedReferenceEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getRelatorParticipant() {
 		return relatorParticipantEClass;
 	}
@@ -908,6 +898,15 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 */
 	public EReference getRelatorParticipant_Type() {
 		return (EReference)relatorParticipantEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getSelfReference() {
+		return selfReferenceEClass;
 	}
 
 	/**
@@ -1050,6 +1049,24 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getTypeLiteral() {
+		return typeLiteralEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTypeLiteral_Type() {
+		return (EReference)typeLiteralEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EEnum getAllenKind() {
 		return allenKindEEnum;
 	}
@@ -1113,18 +1130,16 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		createEReference(attributeReferenceEClass, ATTRIBUTE_REFERENCE__TYPE);
 		createEOperation(attributeReferenceEClass, ATTRIBUTE_REFERENCE___GET_ENTITY);
 
-		classLiteralEClass = createEClass(CLASS_LITERAL);
-		createEReference(classLiteralEClass, CLASS_LITERAL__TYPE);
+		characterizationLinkEClass = createEClass(CHARACTERIZATION_LINK);
+		createEReference(characterizationLinkEClass, CHARACTERIZATION_LINK__TYPE);
+		createEOperation(characterizationLinkEClass, CHARACTERIZATION_LINK___GET_MODE);
+		createEOperation(characterizationLinkEClass, CHARACTERIZATION_LINK___GET_CHARACTERIZED);
 
 		comparativeRelationEClass = createEClass(COMPARATIVE_RELATION);
 
 		contextFormalLinkEClass = createEClass(CONTEXT_FORMAL_LINK);
 		createEAttribute(contextFormalLinkEClass, CONTEXT_FORMAL_LINK__PARAMETER);
 		createEReference(contextFormalLinkEClass, CONTEXT_FORMAL_LINK__TYPE);
-
-		dataTypeLiteralEClass = createEClass(DATA_TYPE_LITERAL);
-		createEAttribute(dataTypeLiteralEClass, DATA_TYPE_LITERAL__VALUE);
-		createEReference(dataTypeLiteralEClass, DATA_TYPE_LITERAL__TYPE);
 
 		formalRelationEClass = createEClass(FORMAL_RELATION);
 		createEAttribute(formalRelationEClass, FORMAL_RELATION__NEGATED);
@@ -1154,6 +1169,10 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		createEOperation(mediationLinkEClass, MEDIATION_LINK___GET_RELATOR);
 		createEOperation(mediationLinkEClass, MEDIATION_LINK___GET_ENTITY);
 
+		modeReferenceEClass = createEClass(MODE_REFERENCE);
+		createEReference(modeReferenceEClass, MODE_REFERENCE__TYPE);
+		createEOperation(modeReferenceEClass, MODE_REFERENCE___GET_ENTITY);
+
 		nodeEClass = createEClass(NODE);
 		createEOperation(nodeEClass, NODE___SOURCE_RELATION);
 		createEOperation(nodeEClass, NODE___TARGET_RELATION);
@@ -1162,11 +1181,14 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		createEAttribute(orderedComparativeLinkEClass, ORDERED_COMPARATIVE_LINK__TYPE);
 
 		participantEClass = createEClass(PARTICIPANT);
-		createEAttribute(participantEClass, PARTICIPANT__SHAREABLE);
 		createEAttribute(participantEClass, PARTICIPANT__IMMUTABLE);
 		createEAttribute(participantEClass, PARTICIPANT__MIN);
-		createEReference(participantEClass, PARTICIPANT__REFLECTION);
 		createEAttribute(participantEClass, PARTICIPANT__MAX);
+		createEReference(participantEClass, PARTICIPANT__IS_IMAGE_OF);
+
+		qualityLiteralEClass = createEClass(QUALITY_LITERAL);
+		createEAttribute(qualityLiteralEClass, QUALITY_LITERAL__VALUE);
+		createEReference(qualityLiteralEClass, QUALITY_LITERAL__TYPE);
 
 		referableElementEClass = createEClass(REFERABLE_ELEMENT);
 
@@ -1175,16 +1197,10 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		createEReference(referenceNodeEClass, REFERENCE_NODE__SITUATION);
 		createEReference(referenceNodeEClass, REFERENCE_NODE__REFERENCE);
 
-		reflectedParticipantEClass = createEClass(REFLECTED_PARTICIPANT);
-		createEReference(reflectedParticipantEClass, REFLECTED_PARTICIPANT__PARTICIPANT);
-		createEReference(reflectedParticipantEClass, REFLECTED_PARTICIPANT__REFERENCES);
-
-		reflectedReferenceEClass = createEClass(REFLECTED_REFERENCE);
-		createEReference(reflectedReferenceEClass, REFLECTED_REFERENCE__OWNING_REFLECTION);
-		createEReference(reflectedReferenceEClass, REFLECTED_REFERENCE__REFERENCE);
-
 		relatorParticipantEClass = createEClass(RELATOR_PARTICIPANT);
 		createEReference(relatorParticipantEClass, RELATOR_PARTICIPANT__TYPE);
+
+		selfReferenceEClass = createEClass(SELF_REFERENCE);
 
 		situationParticipantEClass = createEClass(SITUATION_PARTICIPANT);
 		createEAttribute(situationParticipantEClass, SITUATION_PARTICIPANT__TEMPORALITY);
@@ -1205,6 +1221,9 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		smlModelEClass = createEClass(SML_MODEL);
 		createEReference(smlModelEClass, SML_MODEL__ELEMENTS);
 		createEReference(smlModelEClass, SML_MODEL__CONTEXT_MODEL);
+
+		typeLiteralEClass = createEClass(TYPE_LITERAL);
+		createEReference(typeLiteralEClass, TYPE_LITERAL__TYPE);
 
 		// Create enums
 		allenKindEEnum = createEEnum(ALLEN_KIND);
@@ -1246,10 +1265,9 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		allenLinkEClass.getESuperTypes().add(this.getFormalRelation());
 		attributeLinkEClass.getESuperTypes().add(this.getSituationTypeAssociation());
 		attributeReferenceEClass.getESuperTypes().add(this.getReferableElement());
-		classLiteralEClass.getESuperTypes().add(this.getLiteral());
+		characterizationLinkEClass.getESuperTypes().add(this.getSituationTypeAssociation());
 		comparativeRelationEClass.getESuperTypes().add(this.getFormalRelation());
 		contextFormalLinkEClass.getESuperTypes().add(this.getFormalRelation());
-		dataTypeLiteralEClass.getESuperTypes().add(this.getLiteral());
 		formalRelationEClass.getESuperTypes().add(this.getSituationTypeAssociation());
 		entityParticipantEClass.getESuperTypes().add(this.getParticipant());
 		equalsLinkEClass.getESuperTypes().add(this.getComparativeRelation());
@@ -1258,17 +1276,18 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		literalEClass.getESuperTypes().add(this.getNode());
 		literalEClass.getESuperTypes().add(this.getSituationTypeElement());
 		mediationLinkEClass.getESuperTypes().add(this.getSituationTypeAssociation());
+		modeReferenceEClass.getESuperTypes().add(this.getReferableElement());
 		orderedComparativeLinkEClass.getESuperTypes().add(this.getComparativeRelation());
 		participantEClass.getESuperTypes().add(this.getReferableElement());
+		qualityLiteralEClass.getESuperTypes().add(this.getLiteral());
 		referableElementEClass.getESuperTypes().add(this.getNode());
 		referableElementEClass.getESuperTypes().add(this.getSituationTypeElement());
 		referenceNodeEClass.getESuperTypes().add(this.getNode());
-		reflectedParticipantEClass.getESuperTypes().add(this.getNode());
-		reflectedParticipantEClass.getESuperTypes().add(this.getSituationTypeElement());
-		reflectedReferenceEClass.getESuperTypes().add(this.getNode());
 		relatorParticipantEClass.getESuperTypes().add(this.getParticipant());
+		selfReferenceEClass.getESuperTypes().add(this.getSituationParticipant());
 		situationParticipantEClass.getESuperTypes().add(this.getParticipant());
 		situationTypeAssociationEClass.getESuperTypes().add(this.getSituationTypeElement());
+		typeLiteralEClass.getESuperTypes().add(this.getLiteral());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(allenLinkEClass, AllenLink.class, "AllenLink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1285,22 +1304,22 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		initEOperation(getAttributeLink__GetAttribute(), this.getAttributeReference(), "getAttribute", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(attributeReferenceEClass, AttributeReference.class, "AttributeReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getAttributeReference_Type(), theRefOntoUMLPackage.getProperty(), null, "type", null, 1, 1, AttributeReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAttributeReference_Type(), theRefOntoUMLPackage.getQuality(), null, "type", null, 1, 1, AttributeReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getAttributeReference__GetEntity(), this.getNode(), "getEntity", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(classLiteralEClass, ClassLiteral.class, "ClassLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getClassLiteral_Type(), theRefOntoUMLPackage.getClass_(), null, "type", null, 1, 1, ClassLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(characterizationLinkEClass, CharacterizationLink.class, "CharacterizationLink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getCharacterizationLink_Type(), theRefOntoUMLPackage.getCharacterization(), null, "type", null, 1, 1, CharacterizationLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getCharacterizationLink__GetMode(), this.getModeReference(), "getMode", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getCharacterizationLink__GetCharacterized(), this.getEntityParticipant(), "getCharacterized", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(comparativeRelationEClass, ComparativeRelation.class, "ComparativeRelation", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(contextFormalLinkEClass, ContextFormalLink.class, "ContextFormalLink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getContextFormalLink_Parameter(), ecorePackage.getEString(), "parameter", null, 0, 1, ContextFormalLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getContextFormalLink_Type(), theRefOntoUMLPackage.getFormalAssociation(), null, "type", null, 1, 1, ContextFormalLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(dataTypeLiteralEClass, DataTypeLiteral.class, "DataTypeLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getDataTypeLiteral_Value(), ecorePackage.getEString(), "value", null, 0, 1, DataTypeLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDataTypeLiteral_Type(), theRefOntoUMLPackage.getDataType(), null, "type", null, 1, 1, DataTypeLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(formalRelationEClass, FormalRelation.class, "FormalRelation", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getFormalRelation_Negated(), ecorePackage.getEBoolean(), "negated", null, 0, 1, FormalRelation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1324,7 +1343,7 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 
 		initEOperation(getInstantiationLink__GetSource(), this.getParticipant(), "getSource", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEOperation(getInstantiationLink__GetTarget(), this.getClassLiteral(), "getTarget", 1, 1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getInstantiationLink__GetTarget(), this.getTypeLiteral(), "getTarget", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(literalEClass, Literal.class, "Literal", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1334,6 +1353,11 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		initEOperation(getMediationLink__GetRelator(), this.getRelatorParticipant(), "getRelator", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getMediationLink__GetEntity(), this.getEntityParticipant(), "getEntity", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEClass(modeReferenceEClass, ModeReference.class, "ModeReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getModeReference_Type(), theRefOntoUMLPackage.getMode(), null, "type", null, 1, 1, ModeReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEOperation(getModeReference__GetEntity(), this.getEntityParticipant(), "getEntity", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(nodeEClass, Node.class, "Node", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1345,11 +1369,14 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		initEAttribute(getOrderedComparativeLink_Type(), this.getComparativeKind(), "type", null, 1, 1, OrderedComparativeLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(participantEClass, Participant.class, "Participant", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getParticipant_Shareable(), ecorePackage.getEBoolean(), "shareable", "false", 1, 1, Participant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getParticipant_Immutable(), ecorePackage.getEBoolean(), "immutable", "true", 1, 1, Participant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getParticipant_Min(), ecorePackage.getEInt(), "min", "1", 1, 1, Participant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getParticipant_Reflection(), this.getReflectedParticipant(), this.getReflectedParticipant_Participant(), "reflection", null, 0, 1, Participant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getParticipant_Max(), ecorePackage.getEInt(), "max", "1", 1, 1, Participant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getParticipant_IsImageOf(), this.getParticipant(), null, "isImageOf", null, 0, 1, Participant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(qualityLiteralEClass, QualityLiteral.class, "QualityLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getQualityLiteral_Value(), ecorePackage.getEString(), "value", null, 0, 1, QualityLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getQualityLiteral_Type(), theRefOntoUMLPackage.getReferenceStructure(), null, "type", null, 1, 1, QualityLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(referableElementEClass, ReferableElement.class, "ReferableElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1358,16 +1385,10 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		initEReference(getReferenceNode_Situation(), this.getSituationParticipant(), this.getSituationParticipant_References(), "situation", null, 1, 1, ReferenceNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getReferenceNode_Reference(), this.getReferableElement(), null, "reference", null, 1, 1, ReferenceNode.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(reflectedParticipantEClass, ReflectedParticipant.class, "ReflectedParticipant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getReflectedParticipant_Participant(), this.getParticipant(), this.getParticipant_Reflection(), "participant", null, 1, 1, ReflectedParticipant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getReflectedParticipant_References(), this.getReflectedReference(), this.getReflectedReference_OwningReflection(), "references", null, 0, -1, ReflectedParticipant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(reflectedReferenceEClass, ReflectedReference.class, "ReflectedReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getReflectedReference_OwningReflection(), this.getReflectedParticipant(), this.getReflectedParticipant_References(), "owningReflection", null, 1, 1, ReflectedReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getReflectedReference_Reference(), this.getReferenceNode(), null, "reference", null, 1, 1, ReflectedReference.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
 		initEClass(relatorParticipantEClass, RelatorParticipant.class, "RelatorParticipant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getRelatorParticipant_Type(), theRefOntoUMLPackage.getRelator(), null, "type", null, 1, 1, RelatorParticipant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(selfReferenceEClass, SelfReference.class, "SelfReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(situationParticipantEClass, SituationParticipant.class, "SituationParticipant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getSituationParticipant_Temporality(), this.getTemporalKind(), "temporality", null, 1, 1, SituationParticipant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1389,6 +1410,9 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		initEClass(smlModelEClass, SMLModel.class, "SMLModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getSMLModel_Elements(), this.getSituationType(), null, "elements", null, 0, -1, SMLModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getSMLModel_ContextModel(), theRefOntoUMLPackage.getModel(), null, "contextModel", null, 0, 1, SMLModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(typeLiteralEClass, TypeLiteral.class, "TypeLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getTypeLiteral_Type(), theRefOntoUMLPackage.getClass_(), null, "type", null, 1, 1, TypeLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(allenKindEEnum, AllenKind.class, "AllenKind");
@@ -1448,7 +1472,7 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		  (attributeLinkEClass, 
 		   source, 
 		   new String[] {
-			 "sourceIsParticipant_Reference2", "self.source.oclIsKindOf(Participant) or (self.source.oclIsKindOf(ReferenceNode) and self.source.oclAsType(ReferenceNode).reference.oclIsKindOf(Participant))",
+			 "sourceIsParticipant_Reference2", "self.source.oclIsKindOf(Participant) or \r\nself.source.oclIsKindOf(ModeReference) or\r\n(self.source.oclIsKindOf(ReferenceNode) and \r\n\t(self.source.oclAsType(ReferenceNode).reference.oclIsKindOf(Participant) or\r\n\t(self.source.oclAsType(ReferenceNode).reference.oclIsKindOf(ModeReference))",
 			 "targetIsAttribute", "self.target.oclIsKindOf(AttributeReference)"
 		   });	
 		addAnnotation
@@ -1468,6 +1492,26 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		   source, 
 		   new String[] {
 			 "body", "AttributeLink.allInstances()->select(x | x.getAttribute() = self)->asOrderedSet()->at(1).getEntity()"
+		   });	
+		addAnnotation
+		  (characterizationLinkEClass, 
+		   source, 
+		   new String[] {
+			 "sourceIsMode", "self.source.oclIsKindOf(ModeReference)",
+			 "targetIsEntity_Reference", "self.target.oclIsKindOf(EntityParticipant) or \r\n(self.target.oclIsKindOf(ReferenceNode) and \r\n\t(self.target.oclAsType(ReferenceNode).reference.oclIsKindOf(EntityParticipant))",
+			 "sameEndsAsType3", "self.type.oclAsType(RefOntoUML::Characterization).characterizing() = self.source.oclAsType(ModeReference).type and\r\nself.type.oclAsType(RefOntoUML::Characterization).characterized() = self.target.oclAsType(EntityParticipant).type"
+		   });	
+		addAnnotation
+		  (getCharacterizationLink__GetMode(), 
+		   source, 
+		   new String[] {
+			 "body", "self.source"
+		   });	
+		addAnnotation
+		  (getCharacterizationLink__GetCharacterized(), 
+		   source, 
+		   new String[] {
+			 "body", "self.target"
 		   });	
 		addAnnotation
 		  (contextFormalLinkEClass, 
@@ -1492,13 +1536,7 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		   source, 
 		   new String[] {
 			 "sourceIsParticipant_Reference", "self.source.oclIsKindOf(EntityParticipant) or self.source.oclIsKindOf(RelatorParticipant) or (self.source.oclIsKindOf(ReferenceNode) and (self.source.oclAsType(ReferenceNode).reference.oclIsKindOf(EntityParticipant) or self.source.oclAsType(ReferenceNode).reference.oclIsKindOf(RelatorParticipant)))",
-			 "targetIsLiteral", "self.target.oclIsKindOf(Literal) and self.target.oclAsType(Literal).type.oclIsKindOf(RefOntoUML::Class)"
-		   });	
-		addAnnotation
-		  (literalEClass, 
-		   source, 
-		   new String[] {
-			 "typeIsClass_Datatype", "self.type.oclIsKindOf(RefOntoUML::Class) or self.type.oclIsKindOf(RefOntoUML::DataType)"
+			 "targetIsLiteral", "self.target.oclIsKindOf(TypeLiteral) and self.target.oclAsType(TypeLiteral).type.oclIsKindOf(RefOntoUML::Class)"
 		   });	
 		addAnnotation
 		  (mediationLinkEClass, 
@@ -1521,6 +1559,12 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 			 "body", "self.target"
 		   });	
 		addAnnotation
+		  (getModeReference__GetEntity(), 
+		   source, 
+		   new String[] {
+			 "body", "CharacterizationLink.allInstances()->select(x | x.getMode() = self)->asOrderedSet()->at(1).getCharacterized()"
+		   });	
+		addAnnotation
 		  (getNode__SourceRelation(), 
 		   source, 
 		   new String[] {
@@ -1536,14 +1580,7 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		  (participantEClass, 
 		   source, 
 		   new String[] {
-			 "maxGreatherThanMin", "if (self.upperBound <> -1) then self.upperBound >= self.lowerBound else self.lowerBound <> -1 endif",
-			 "moreThanOneMustReflect", "if (self.lowerBound > 1 or self.upperBound > 1) then self.reflection->notEmpty() else true endif"
-		   });	
-		addAnnotation
-		  (reflectedParticipantEClass, 
-		   source, 
-		   new String[] {
-			 "onlyMultipleReflected", "self.participant.lowerBound > 1 or self.participant.upperBound > 1"
+			 "maxGreatherThanMin", "if (self.upperBound <> -1) then self.upperBound >= self.lowerBound else self.lowerBound <> -1 endif"
 		   });	
 		addAnnotation
 		  (getSituationTypeElement__GetSituation(), 
@@ -1574,6 +1611,12 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 			 "constraints", "sourceIsParticipant_Reference2 targetIsAttribute"
 		   });	
 		addAnnotation
+		  (characterizationLinkEClass, 
+		   source, 
+		   new String[] {
+			 "constraints", "sourceIsMode targetIsEntity_Reference sameEndsAsType3"
+		   });	
+		addAnnotation
 		  (contextFormalLinkEClass, 
 		   source, 
 		   new String[] {
@@ -1592,12 +1635,6 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 			 "constraints", "sourceIsParticipant_Reference targetIsLiteral"
 		   });	
 		addAnnotation
-		  (literalEClass, 
-		   source, 
-		   new String[] {
-			 "constraints", "typeIsClass_Datatype"
-		   });	
-		addAnnotation
 		  (mediationLinkEClass, 
 		   source, 
 		   new String[] {
@@ -1607,13 +1644,7 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		  (participantEClass, 
 		   source, 
 		   new String[] {
-			 "constraints", "maxGreatherThanMin moreThanOneMustReflect"
-		   });	
-		addAnnotation
-		  (reflectedParticipantEClass, 
-		   source, 
-		   new String[] {
-			 "constraints", "onlyMultipleReflected"
+			 "constraints", "maxGreatherThanMin"
 		   });
 	}
 
@@ -1636,26 +1667,28 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		  (attributeLinkEClass, 
 		   source, 
 		   new String[] {
-			 "sourceIsParticipant_Reference2", "The source of an AttributeLink must be a Participant or a ReferenceNode, which in this case must be a reference to a Participant",
+			 "sourceIsParticipant_Reference2", "The source of an AttributeLink must be a Participant, a ModeReference or a ReferenceNode, which in this case must be a reference to a Participant or a ModeReference",
 			 "targetIsAttribute", "The target of an AttributeLink must be an Attribute"
-		   });	
-		addAnnotation
-		  (attributeReferenceEClass, 
-		   source, 
-		   new String[] {
-			 "complexAttr_Function", "An attribute that has a type that is not a PrimitiveType must be addressed by a Function"
 		   });	
 		addAnnotation
 		  (getAttributeReference__GetEntity(), 
 		   source, 
 		   new String[] {
-			 "getEntity", "Returns the Node that owns the AttributeReference. The Node can only be a Participant or a NodeReference, which in this case will be a reference also to a Participant."
+			 "getEntity", "Returns the Node that owns the AttributeReference."
+		   });	
+		addAnnotation
+		  (characterizationLinkEClass, 
+		   source, 
+		   new String[] {
+			 "sourceIsMode", "The source of a CharacterizationLink must be a ModeReference",
+			 "targetIsEntity_Reference", "The target of a CharacterizationLink must be an EntityParticipant or a ReferenceNode, which in this case must be a reference to an EntityParticipant",
+			 "sameEndsAsType3", "A CharacterizationLink must connect the same entities as its Characterization does"
 		   });	
 		addAnnotation
 		  (contextFormalLinkEClass, 
 		   source, 
 		   new String[] {
-			 "sameEndsAsType2", "A FormalLink must connect the same entities as such its FormalAssociation type does"
+			 "sameEndsAsType2", "A FormalLink must connect the same entities as its FormalAssociation does"
 		   });	
 		addAnnotation
 		  (functionParameterEClass, 
@@ -1668,21 +1701,21 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		   source, 
 		   new String[] {
 			 "sourceIsParticipant_Reference", "The source of an Instantiation must be an EntityParticipant, a RelatorParticipant or a ReferenceNode, which in this case must be a reference to an EntityParticipant or RelatorParticipant",
-			 "targetIsLiteral", "The target of an Instantiation must be a Literal and its type must be a RefOntoUML::Class"
-		   });	
-		addAnnotation
-		  (literalEClass, 
-		   source, 
-		   new String[] {
-			 "typeIsClass_Datatype", "The type of a Literal must be a Class or a DataType"
+			 "targetIsLiteral", "The target of an Instantiation must be a TypeLiteral and its type must be a RefOntoUML::Class"
 		   });	
 		addAnnotation
 		  (mediationLinkEClass, 
 		   source, 
 		   new String[] {
-			 "sourceIsRelator", "The source of a Link must be a RelatorParticipant",
-			 "targetIsEntity", "The target of a Link must be an EntityParticipant",
-			 "sameEndsAsType", "A Link must connect the same entities as such its Mediation type does"
+			 "sourceIsRelator", "The source of a MediationLink must be a RelatorParticipant",
+			 "targetIsEntity", "The target of a MediationLink must be an EntityParticipant",
+			 "sameEndsAsType", "A MediationLink must connect the same entities as its Mediation does"
+		   });	
+		addAnnotation
+		  (getModeReference__GetEntity(), 
+		   source, 
+		   new String[] {
+			 "getEntity", "Returns the EntityParticipant that owns the ModeReference."
 		   });	
 		addAnnotation
 		  (getNode__SourceRelation(), 
@@ -1700,14 +1733,7 @@ public class Sml2PackageImpl extends EPackageImpl implements Sml2Package {
 		  (participantEClass, 
 		   source, 
 		   new String[] {
-			 "maxGreatherThanMin", "The maximum instances number of a Participant must be greather than or equal the minimum",
-			 "moreThanOneMustReflect", "A Participant that has a minimum greather than 1 or a maximum greather than 1 must be reflected, so that a constraint can be applied to the extra instances"
-		   });	
-		addAnnotation
-		  (reflectedParticipantEClass, 
-		   source, 
-		   new String[] {
-			 "onlyMultipleReflected", "Only Participants with minimum or maximum greather than 1 can be reflected"
+			 "maxGreatherThanMin", "The maximum instances number of a Participant must be greather than or equal the minimum"
 		   });	
 		addAnnotation
 		  (getSituationTypeElement__GetSituation(), 
