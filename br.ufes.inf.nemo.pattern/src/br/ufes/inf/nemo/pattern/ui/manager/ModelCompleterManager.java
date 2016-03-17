@@ -23,14 +23,13 @@ import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SortalClass;
-import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.pattern.dynamic.ui.ModelCompleter;
 import br.ufes.inf.nemo.pattern.impl.AbstractPattern;
-import br.ufes.inf.nemo.pattern.impl.CategoryPattern;
-import br.ufes.inf.nemo.pattern.impl.MixinPattern;
+import br.ufes.inf.nemo.pattern.impl.generalization.FOP_GENERALIZATION_CATEGORY;
+import br.ufes.inf.nemo.pattern.impl.generalization.FOP_GENERALIZATION_MIXIN;
 import br.ufes.inf.nemo.pattern.impl.other.FOP_MULTIPLE_GENERIC_RELATOR;
 import br.ufes.inf.nemo.pattern.impl.other.FOP_PRINCIPLE_OF_IDENTITY;
 import br.ufes.inf.nemo.pattern.impl.other.FOP_ROLEMIXIN_DEPENDENCE;
@@ -345,7 +344,7 @@ public class ModelCompleterManager {
 		String apCategory = "Categories must specialize at least\ntwo Rigids.";
 
 		for (Classifier c : set) {
-			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apCategory, new CategoryPattern(parser, c, x, y)));
+			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apCategory, new FOP_GENERALIZATION_CATEGORY(parser, c, x, y)));
 		}
 	}
 
@@ -353,7 +352,7 @@ public class ModelCompleterManager {
 		String apMixin = "Mixins must specialize at least\none Rigid and one Anti-Rigid.";
 
 		for (Classifier c : set) {
-			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apMixin, new MixinPattern(parser, c, x, y)));
+			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apMixin, new FOP_GENERALIZATION_MIXIN(parser, c, x, y)));
 		}
 	}
 

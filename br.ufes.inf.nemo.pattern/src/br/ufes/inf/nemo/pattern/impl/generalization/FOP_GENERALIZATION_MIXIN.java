@@ -32,13 +32,13 @@ public class FOP_GENERALIZATION_MIXIN extends AbstractPattern{
 	public void runPattern() {
 		dym.addHashTree(fillouthashTree(Arrays.asList(new Class[]{Kind.class, Collective.class, Quantity.class, SubKind.class, Phase.class, Role.class, Category.class, RoleMixin.class, Mixin.class})));
 
-		dym.addTableLine("general", "General", new String[] {"Mixin"});
-
 		if(c != null){
-			dym.addTableRigidLine("specific", UtilAssistant.getStringRepresentationClass(c), new String[] {"Mixin"});
+			dym.addTableRigidLine("general", UtilAssistant.getStringRepresentationClass(c), new String[] {"Mixin"});
 		}else{
-			dym.addTableLine("specific", "Specific 1", new String[] {"Kind", "Collective", "Quantity", "Subkind", "Phase", "Role", "Category", "RoleMixin", "Mixin"});
+			dym.addTableLine("general", "General", new String[] {"Mixin"});
 		}
+		
+		dym.addTableLine("specific", "Specific 1", new String[] {"Kind", "Collective", "Quantity", "Subkind", "Phase", "Role", "Category", "RoleMixin", "Mixin"});
 		dym.addTableLine("specific", "Specific 2", new String[] {"Kind", "Collective", "Quantity", "Subkind", "Phase", "Role", "Category", "RoleMixin", "Mixin"});
 
 		dym.setInitialItemCount(3);

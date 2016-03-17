@@ -41,21 +41,21 @@ public class FOP_MULTIPLE_GENERIC_RELATOR extends AbstractPattern {
 			if(c instanceof Role){
 				dym.addTableLine("relator", "Relator", new String[] {"Relator"});
 				dym.addTableRigidLine("sortal", UtilAssistant.getStringRepresentationClass(c), new String[] {"Role"});
-				dym.addTableLine("sortal", "Sortal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+				dym.addTableLine("sortal", "Mediated 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 			}
 			if(c instanceof Relator){
 				dym.addTableRigidLine("relator", UtilAssistant.getStringRepresentationClass(c), new String[] {"Relator"});
-				dym.addTableLine("sortal", "Sortal 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
-				dym.addTableLine("sortal", "Sortal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+				dym.addTableLine("sortal", "Mediated 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+				dym.addTableLine("sortal", "Mediated 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 			}
 		}else{
 			dym.addTableLine("relator", "Relator", new String[] {"Relator"});
-			dym.addTableLine("sortal", "Sortal 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
-			dym.addTableLine("sortal", "Sortal 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+			dym.addTableLine("sortal", "Mediated 1", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+			dym.addTableLine("sortal", "Mediated 2", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 		}
 
 		dym.setInitialItemCount(3);
-		dym.setAddLineButtonAction("sortal", "Sortal N", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
+		dym.setAddLineButtonAction("sortal", "Mediated N", new String[] {"Kind","Collective", "Quantity", "Subkind", "Phase", "Role"});
 
 		dm.open();		
 	}
