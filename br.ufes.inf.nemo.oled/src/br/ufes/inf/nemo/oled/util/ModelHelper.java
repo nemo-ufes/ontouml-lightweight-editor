@@ -486,6 +486,51 @@ public class ModelHelper {
 		return cloned;
 	}	  
 	
+	
+	public static Relationship clone(Association ass) {
+		Relationship cloned = (Relationship) factory.create(ass.eClass());
+
+		Association association = (Association) ass;
+		Association associationCloned = (Association) cloned;
+		
+		associationCloned.setName(association.getName());
+		associationCloned.setIsAbstract(association.isIsAbstract());
+		associationCloned.setVisibility(association.getVisibility());
+		associationCloned.setIsDerived(association.isIsDerived());
+		
+		if(cloned instanceof MeronymicImpl)
+		{
+			Meronymic meronymic = (Meronymic) ass; 
+			Meronymic meronymicCloned = (Meronymic) cloned;
+			
+			meronymicCloned.setIsShareable(meronymic.isIsShareable());
+			meronymicCloned.setIsEssential(meronymic.isIsEssential());
+			meronymicCloned.setIsInseparable(meronymic.isIsInseparable());
+			meronymicCloned.setIsImmutableWhole(meronymic.isIsImmutableWhole());
+			meronymicCloned.setIsImmutablePart(meronymic.isIsImmutablePart());				
+		}
+		
+		RefOntoUML.Property p1Cloned = clone(association.getMemberEnd().get(0));
+		RefOntoUML.Property p2Cloned = clone(association.getMemberEnd().get(1));
+		
+		associationCloned.getMemberEnd().add(p1Cloned);
+		associationCloned.getMemberEnd().add(p2Cloned);
+		associationCloned.getOwnedEnd().add(p1Cloned);
+		associationCloned.getOwnedEnd().add(p2Cloned);			
+		if(association instanceof DirectedBinaryAssociationImpl || association instanceof FormalAssociationImpl || association instanceof MaterialAssociationImpl)
+		{
+			associationCloned.getNavigableOwnedEnd().add(p1Cloned);
+			associationCloned.getNavigableOwnedEnd().add(p2Cloned);	    			
+			//If the association is Mediation or Characterization, set target readonly to help in validation
+			if(association instanceof MediationImpl || association instanceof CharacterizationImpl || association instanceof DerivationImpl) p2Cloned.setIsReadOnly(true);
+		} else {
+			if(p1Cloned.getType() instanceof DataTypeImpl) associationCloned.getNavigableOwnedEnd().add(p1Cloned);	    		
+			if(p2Cloned.getType() instanceof DataTypeImpl) associationCloned.getNavigableOwnedEnd().add(p2Cloned);
+		}	
+	
+		return cloned;
+	}
+	
 	public static Property clone(RefOntoUML.Property property)
 	{
 		RefOntoUML.Property cloned = (RefOntoUML.Property)factory.create(property.eClass());

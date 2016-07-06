@@ -31,10 +31,14 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLParserPoolImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
+import org.w3c.dom.Document;
 
 import br.ufes.inf.nemo.oled.Main;
 import br.ufes.inf.nemo.oled.model.OCLDocument;
@@ -73,21 +77,22 @@ public final class ProjectReader extends FileHandler {
 	 */
 	@SuppressWarnings("unused")
 	public ArrayList<Object> readProject(File file) throws IOException, ClassNotFoundException {
-		
+
 		// first element is UmlProject, the second the OCL String content.
 		ArrayList<Object> list = new ArrayList<Object>();
-		
+
 		boolean modelLoaded = false, projectLoaded = false, constraintLoaded = false;
 		ArrayList<OCLDocument> constraintContent = new ArrayList<OCLDocument>();
 		ZipFile inFile = new ZipFile(file);	
-		
+
 		//Read the model and the project file 
 		Resource resource = ModelHelper.createResource();
 		UmlProject project = null;
+		InputStream libararyXML = null;
 		
 		@SuppressWarnings("unchecked")
 		Enumeration<ZipEntry> entries = (Enumeration<ZipEntry>) inFile.entries();
-		   
+
 		ZipEntry entry;
 		while(entries.hasMoreElements()) {
 			entry = entries.nextElement();			
@@ -95,13 +100,13 @@ public final class ProjectReader extends FileHandler {
 			{
 				Main.printOutLine("Loading model XMI information from OLED file...");
 				InputStream in = inFile.getInputStream(entry);
-				
+
 				/**Load options that significantly improved the performance of loading EMF Model instances (by Tiago)*/
 				Map<Object,Object> loadOptions = ((XMLResourceImpl)resource).getDefaultLoadOptions();
 				loadOptions.put(XMLResource.OPTION_USE_PARSER_POOL, new XMLParserPoolImpl());
 				loadOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
 				resource.load(in,loadOptions);
-				
+
 				//resource.load(in, Collections.EMPTY_MAP);
 
 				in.close();
@@ -120,32 +125,89 @@ public final class ProjectReader extends FileHandler {
 			{
 				Main.printOutLine("Loading constraints information from OLED file...");
 				InputStream is = inFile.getInputStream(entry);
-								
+
 				byte[] b = new byte[is.available()];
 				is.read(b);
 				OCLDocument oclDoc = new OCLDocument();
 				oclDoc.setName(entry.getName().replace(".ocl",""));
 				oclDoc.addContent(new String(b));
 				constraintContent.add(oclDoc);
-					
+
 				is.close();
 				constraintLoaded = true;
+			} if (entry.getName().contains("xml")){
+				try {
+					libararyXML = inFile.getInputStream(entry);
+					Main.printOutLine("Loading Pattern Library Description (XML) ...");
+				} catch (Exception e) {
+					Main.printOutLine("ERROR when loading Pattern Library Description (XML) ...");
+					e.printStackTrace();
+				}
 			}
 		}
-		
+
 		inFile.close();
-		
+
 		if(!projectLoaded || !modelLoaded)
 			throw new IOException("Failed to load OLED Project!");
-		
+
 		project.setResource(resource);
-		
+
 		list.add(project);
 		list.addAll(constraintContent);
-		
+		if(libararyXML != null)
+			list.add(libararyXML);
+
 		return list;
 	}
 
+	
+	/**
+	 * Reads a UmlProject object from a file.
+	 * 
+	 * @param file
+	 *            the file
+	 * @return the UmlProject object
+	 * @throws IOException
+	 *             if I/O error occurred
+	 * @throws ClassNotFoundException 
+	 */
+	public Document readXMLFromProject(File file) throws IOException, ClassNotFoundException {
+		ZipFile inFile = new ZipFile(file);	
+		InputStream libararyXML = null;
+		
+		@SuppressWarnings("unchecked")
+		Enumeration<ZipEntry> entries = (Enumeration<ZipEntry>) inFile.entries();
+
+		ZipEntry entry;
+		while(entries.hasMoreElements()) {
+			entry = entries.nextElement();			
+			if (entry.getName().contains(".xml")){
+				try {
+					libararyXML = inFile.getInputStream(entry);
+					Main.printOutLine("Loading Pattern Library Description (XML) ...");
+				} catch (Exception e) {
+					Main.printOutLine("ERROR when loading Pattern Library Description (XML) ...");
+					e.printStackTrace();
+				}
+			}
+		}
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder;
+		try {
+			dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(libararyXML);
+			return doc;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			inFile.close();
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */

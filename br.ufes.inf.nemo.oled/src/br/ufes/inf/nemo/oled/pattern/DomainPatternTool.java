@@ -4,6 +4,9 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
+
+import org.w3c.dom.Document;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
@@ -12,6 +15,7 @@ import RefOntoUML.GeneralizationSet;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
+import br.ufes.inf.nemo.common.resource.TypeName;
 import br.ufes.inf.nemo.oled.AppCommandListener;
 import br.ufes.inf.nemo.oled.AppFrame;
 import br.ufes.inf.nemo.oled.DiagramManager;
@@ -27,7 +31,10 @@ import br.ufes.inf.nemo.oled.umldraw.structure.AssociationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.ClassElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.GeneralizationElement;
 import br.ufes.inf.nemo.oled.umldraw.structure.StructureDiagram;
+import br.ufes.inf.nemo.oled.util.ModelHelper;
+import br.ufes.inf.nemo.pattern.dynamic.ui.DROPDescription;
 import br.ufes.inf.nemo.pattern.dynamic.ui.DynamicWindowForDomainPattern;
+import br.ufes.inf.nemo.pattern.ui.manager.DomainPatternXMLManager;
 import br.ufes.inf.nemo.pattern.ui.manager.DynamicManagerWindowForDomainPattern;
 
 public class DomainPatternTool {
@@ -36,11 +43,13 @@ public class DomainPatternTool {
 	private static Palette domainPallete;
 	private static AppFrame frame;
 	private static OntoUMLParser parser;
+	private static Document libraryXML;
 	
-	public static void initializeDomainPatternPalette(PaletteAccordion palleteAccordion, UmlProject patternProject, DiagramEditorCommandDispatcher editorDispatcher, AppFrame appFrame) {
+	public static void initializeDomainPatternPalette(PaletteAccordion palleteAccordion, UmlProject patternProject, Document libraryXML, DiagramEditorCommandDispatcher editorDispatcher, AppFrame appFrame) {
 		//Creating Palettes
 		HashMap<PaletteElement, StructureDiagram> hashDomainPalette = new HashMap<>();
 		domainPallete = palleteAccordion.createDomainPalette(patternProject, hashDomainPalette,editorDispatcher);
+		DomainPatternTool.libraryXML = libraryXML;
 		
 		frame = appFrame;
 		parser = frame.getBrowserManager().getProjectBrowser().getParser();
@@ -92,7 +101,7 @@ public class DomainPatternTool {
 			if(de instanceof AssociationElement){
 				Association a = ((AssociationElement) de).getAssociation();
 				parser.getModel().getPackagedElement().add(a);
-				fix.includeAdded(a);
+				fix.includeAdded(ModelHelper.clone(a));
 			}else if(de instanceof GeneralizationElement){
 				Generalization g = ((GeneralizationElement) de).getGeneralization();
 				fix.includeAdded(g);
@@ -109,7 +118,13 @@ public class DomainPatternTool {
 
 	public static Fix run(double x, double y) {
 		BufferedImage buffImage = PngExporter.getPNGImage(currentDiagram);
-		DynamicWindowForDomainPattern dynwin = DynamicWindowForDomainPattern.createDialog(buffImage, "Domain Pattern: "+currentDiagram.toString());
+		
+		String diagramDescription = DomainPatternXMLManager.getDiagramDescription(libraryXML, currentDiagram.toString());
+		ArrayList<String> cqs = DomainPatternXMLManager.getDiagramCompetenceQuestion(libraryXML, currentDiagram.toString());
+		ArrayList<String> ocls = DomainPatternXMLManager.getDiagramRules(libraryXML, currentDiagram.toString());
+		DROPDescription dd = DROPDescription.createDialog(diagramDescription, cqs, ocls);
+		
+		DynamicWindowForDomainPattern dynwin = DynamicWindowForDomainPattern.createDialog(buffImage, "Domain Pattern: "+currentDiagram.toString(),dd );
 		DynamicManagerWindowForDomainPattern dfdp = new DynamicManagerWindowForDomainPattern(dynwin);
 
 		//Adding 
@@ -125,6 +140,7 @@ public class DomainPatternTool {
 		Fix fix = null;
 		if(hash != null){
 			fix = DomainPatternTool.getFix(currentDiagram, parser, dynwin.getHashTable(),new Point((int)x,(int)y));
+			fix.setAddedRules(ocls);
 		}
 		
 		return fix;

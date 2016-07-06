@@ -117,7 +117,9 @@ public class ProjectBrowser extends JPanel{
 	
 	public OntoUMLParser getParser() { return refparser; }
 	public void setParser(OntoUMLParser refparser) { this.refparser = refparser; }
-	public ArrayList<OCLDocument> getOCLDocuments(){ return oclDocList; }
+	public ArrayList<OCLDocument> getOCLDocuments(){ 
+		return oclDocList; 
+		}
 	public UmlProject getProject(){ return project; }	
 	public ProjectTree getTree() { return tree; }
 	

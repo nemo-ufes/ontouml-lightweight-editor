@@ -34,24 +34,27 @@ import br.ufes.inf.nemo.pattern.util.UtilPattern;
 public class DynamicWindowForDomainPattern extends Dialog {
 	private Composite container;
 	private String title;	
+	private DROPDescription dd;
+	
 	private HashMap<String,ArrayList<Object[]>> hashTable = null;
 	public HashMap<String, ArrayList<Object[]>> getHashTable(){
 		return hashTable;
 	}
 	
-	public DynamicWindowForDomainPattern(BufferedImage image, Shell parentShell, String title) 
+	public DynamicWindowForDomainPattern(BufferedImage image, Shell parentShell, String title,  DROPDescription dd) 
 	{
 		super(parentShell);		
 		this.title=title;
+		this.dd = dd;
 		currentImage = new Image(Display.getDefault(),UtilPattern.convertToSWT(image));
 		setDefaultImage(new Image(Display.getDefault(),DynamicWindow.class.getResourceAsStream("/resources/icons/x16/sitemap.png")));		
 	}
 	
-	public static DynamicWindowForDomainPattern createDialog(BufferedImage image, String title)
+	public static DynamicWindowForDomainPattern createDialog(BufferedImage image, String title, DROPDescription dd)
 	{			
 		Display display = Display.getDefault();	    	
 		Shell shell = display.getActiveShell();		
-		DynamicWindowForDomainPattern resultDIalog = new DynamicWindowForDomainPattern(image,shell,title);
+		DynamicWindowForDomainPattern resultDIalog = new DynamicWindowForDomainPattern(image,shell,title, dd);
 		resultDIalog.create();
 		return resultDIalog;
 	}
@@ -181,6 +184,19 @@ public class DynamicWindowForDomainPattern extends Dialog {
 		fd_btnHelp.left = new FormAttachment(0, 10);
 		btnHelp.setLayoutData(fd_btnHelp);
 		btnHelp.setImage(SWTResourceManager.getImage(DynamicWindowForDomainPattern.class,"/resources/icons/x16/help.png"));
+		
+		Button btnDropInfo = new Button(container, SWT.NONE);
+		btnDropInfo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				dd.open();
+			}
+		});
+		FormData fd_btnDropInfo = new FormData();
+		fd_btnDropInfo.top = new FormAttachment(table, 6);
+		fd_btnDropInfo.left = new FormAttachment(btnHelp, 5);
+		btnDropInfo.setLayoutData(fd_btnDropInfo);
+		btnDropInfo.setText("DROP Info");
 
 		btnHelp.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -211,6 +227,4 @@ public class DynamicWindowForDomainPattern extends Dialog {
 				usedStereotypes.add(stereotype);
 		}
 	}
-	
-	
 }

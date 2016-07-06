@@ -63,6 +63,7 @@ import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.jface.window.Window;
 import org.eclipse.ocl.ParserException;
 import org.eclipse.ocl.SemanticException;
+import org.w3c.dom.Document;
 
 import RefOntoUML.Association;
 import RefOntoUML.Classifier;
@@ -1074,7 +1075,9 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		currentProject = (UmlProject) listFiles.get(0);
 		ProjectBrowser pb = frame.getBrowserManager().getProjectBrowser();
 		for(int i=1; i<listFiles.size();i++)
-		{																
+		{						
+			if(listFiles.get(i) instanceof OCLDocument)
+				continue;
 			OCLDocument oclDoc = (OCLDocument)listFiles.get(i);										
 			pb.getOCLDocuments().add(oclDoc);					
 		}
@@ -2508,7 +2511,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 			deleteFromOLED((RefOntoUML.Element)obj,false);				
 		}
 		for(String str: fix.getAddedRules()){
-			frame.getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(str);		
+			if(frame.getBrowserManager().getProjectBrowser().getOCLDocuments().isEmpty()){
+				frame.getDiagramManager().newOCLDocument(false);
+			}
+			frame.getBrowserManager().getProjectBrowser().getOCLDocuments().get(0).addContent(str);
 		}		
 		return ;
 	}
@@ -3206,6 +3212,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 				Main.printOutLine("Opening OLED project...");				
 				File file = fileChooser.getSelectedFile();
+				importPatternFile = file;
 				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
 				patternProject = (UmlProject) listFiles.get(0);
 			} catch (Exception ex) {
@@ -3220,11 +3227,18 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 		return patternProject;
 	}
 	
+	public File importPatternFile = null;
 	public void importPattern(){
 		//opening .oledpattern
 		UmlProject patternProject = importPatternProjectFile();
+		Document libraryXML = null;
+		try {
+			libraryXML = ProjectReader.getInstance().readXMLFromProject(importPatternFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if(patternProject != null){		
-			DomainPatternTool.initializeDomainPatternPalette(frame.getToolManager().getPalleteAccordion(), patternProject, editorDispatcher, frame);
+			DomainPatternTool.initializeDomainPatternPalette(frame.getToolManager().getPalleteAccordion(), patternProject, libraryXML, editorDispatcher, frame);
 		}
 	}
 	
