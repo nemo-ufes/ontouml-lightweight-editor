@@ -214,7 +214,7 @@ public class DynamicWindow extends Dialog {
 				close();
 			}
 		});
-		btnPressMe.setText("Create classes");
+		btnPressMe.setText("Create concepts");
 		btnPressMe.pack ();
 
 		btnAddNewLine = new Button(container, SWT.NONE);
@@ -222,7 +222,7 @@ public class DynamicWindow extends Dialog {
 		FormData fd_btnAddNewLine = new FormData();
 		fd_btnAddNewLine.top = new FormAttachment(table, 6);
 		btnAddNewLine.setLayoutData(fd_btnAddNewLine);
-		btnAddNewLine.setText("Add new line");
+		btnAddNewLine.setText("Add new concept");
 
 		btnRemoveLine = new Button(container, SWT.NONE);
 		btnRemoveLine.setVisible(false);
@@ -252,7 +252,7 @@ public class DynamicWindow extends Dialog {
 				}
 			}
 		});
-		btnRemoveLine.setText("Remove Line");
+		btnRemoveLine.setText("Remove concept");
 		Button btnNewButton = new Button(container, SWT.NONE);
 		fd_composite.bottom = new FormAttachment(btnNewButton, -6);
 		btnNewButton.setTouchEnabled(true);

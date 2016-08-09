@@ -76,7 +76,7 @@ public class DROPDescription extends Dialog{
 		});
 		btnNewButton.setText("Close");
 		
-		descr = new Text(composite, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.MULTI);
+		descr = new Text(composite, SWT.BORDER | SWT.READ_ONLY | SWT.V_SCROLL | SWT.MULTI | SWT.WRAP);
 		descr.setEditable(false);
 		descr.setBounds(10, 27, 572, 85);
 		descr.setText(description);
@@ -85,7 +85,7 @@ public class DROPDescription extends Dialog{
 		lblDescription.setBounds(10, 6, 141, 15);
 		lblDescription.setText("Description:");
 		
-		List listCQs = new List(composite, SWT.BORDER);
+		List listCQs = new List(composite, SWT.BORDER | SWT.WRAP);
 		listCQs.setBounds(10, 149, 572, 94);
 		
 		for(String cq : cqs){
@@ -100,7 +100,7 @@ public class DROPDescription extends Dialog{
 		lblNewLabel.setBounds(10, 249, 319, 15);
 		lblNewLabel.setText("Object Constraint Language (OCL):");
 		
-		List listOCLs = new List(composite, SWT.BORDER);
+		List listOCLs = new List(composite, SWT.BORDER | SWT.WRAP);
 		listOCLs.setBounds(10, 273, 572, 68);
 		
 		for(String ocl : ocls){
