@@ -1,0 +1,238 @@
+import 'RunningExample.uml'
+
+ package _'Model'
+
+--=====================================
+--World Structure
+--======================================
+
+context World
+inv no_cycle: self->asSet()->closure(next)->excludes(self)
+
+context Path
+inv no_parallel_structure: Path.allInstances()->forAll(p | self.world->intersection(p.world)->notEmpty())
+
+context Path
+inv one_terminal_world: self.world->one(w | w.next->isEmpty())
+
+context Path
+inv one_initial_world: self.world->one(w | w.previous.oclIsUndefined())
+
+context Path
+inv no_two_paths_with_same_end: Path.allInstances()->forAll(p | p<>self implies
+p.world->select(w |w.next->isEmpty()) <> 
+self.world->select(w |w.next->isEmpty()))
+
+context Path
+inv worlds_of_a_path_derived: 
+let t: Set(World) = self.world->select(w| w.next->isEmpty())
+in (self.world-t) = t->closure(previous)
+
+context Path
+inv every_end_in_one_path: 
+let ts: Set(World) = World.allInstances()->select(w |w.next->isEmpty())
+in ts->forAll(t | Path.allInstances()->one(p | p.world->includes(t)))
+
+--=====================================
+--Temporal Operations
+--======================================
+
+context World::next():Set(World) body: self.next
+
+context World::previous():World body: self.previous
+
+context World::paths():Set(Path) body: self.path
+
+context Path::worlds():Set(World) body: self.world
+
+context World::allIndividuals():Set(Individual) body: self.individual
+
+context World::hasNext():Boolean body: not self.next->isEmpty()
+
+context World::hasPrevious():Boolean body: not self.previous.oclIsUndefined()
+
+context Individual::existsIn(w: World):Boolean body: w.individual->includes(self)
+
+context World::allNext():Set(World) body: self->asSet()->closure(next)->asSet()
+
+context World::allNext(w: World):Set(World)
+body: if self.allNext()->includes(w) then w.allPrevious() - self.allPrevious() -
+self->asSet() else Set{} endif
+
+context World::allNext(p: Path):Set(World)
+body: self->asSet()->closure(next)->asSet()->select(w | w.paths()->includes(p))
+
+context World::allPrevious():Set(World) 
+body: self->asSet()->closure(previous)->asSet()
+
+context World::allPrevious(w: World):Set(World) 
+body: if self.allPrevious()->includes(w) then self.allPrevious() - w.allPrevious() - w->asSet()
+else Set{} endif
+
+--=====================================
+--Multiplicity: Relationships
+--======================================
+
+context World
+inv mediation1_from_marriage_to_husband: 
+    self.individual->select(i | i.oclIsKindOf(_'Marriage'))->forAll(m | 
+    let list : Set(_'Husband') = m._'mediation1'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+context World
+inv mediation1_from_husband_to_marriage: 
+    self.individual->select(i | i.oclIsKindOf(_'Husband'))->forAll(m | 
+    let list : Set(_'Marriage') = m._'mediation1'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+context World
+inv mediation2_from_marriage_to_wife: 
+    self.individual->select(i | i.oclIsKindOf(_'Marriage'))->forAll(m | 
+    let list : Set(_'Wife') = m._'mediation2'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+context World
+inv mediation2_from_wife_to_marriage: 
+    self.individual->select(i | i.oclIsKindOf(_'Wife'))->forAll(m | 
+    let list : Set(_'Marriage') = m._'mediation2'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+context World
+inv ismarriedwith_from_husband_to_wife: 
+    self.individual->select(i | i.oclIsKindOf(_'Husband'))->forAll(m | 
+    let list : Set(_'Wife') = m._'ismarriedwith'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+context World
+inv ismarriedwith_from_wife_to_husband: 
+    self.individual->select(i | i.oclIsKindOf(_'Wife'))->forAll(m | 
+    let list : Set(_'Husband') = m._'ismarriedwith'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+--=====================================
+--Multiplicity: Attributes
+--======================================
+
+context World
+inv attribute0_from_person_to_integer: 
+    self.individual->select(i | i.oclIsKindOf(_'Person'))->forAll(m | 
+    let list : Set(_'Integer') = m._'attribute0'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+--=====================================
+--Existence Cycles: Relationships
+--======================================
+
+context _'Mediation1'
+inv target_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Husband'))->includes(self._'husband')
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Marriage'))->includes(self._'marriage')
+
+context _'Mediation2'
+inv target_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Wife'))->includes(self._'wife')
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Marriage'))->includes(self._'marriage')
+
+context _'ismarriedwith'
+inv target_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Wife'))->includes(self._'wife')
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Husband'))->includes(self._'husband')
+
+--=====================================
+--Existence Cycles: Attributes
+--======================================
+
+context attribute0
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Person'))->includes(self._'person')
+
+--=====================================
+--Immutability (ReadOnly): Relationships
+--======================================
+
+context World
+inv immutable_husband: 
+    self.individual->select(i | i.oclIsKindOf(_'Marriage'))->forAll(m |
+      self->asSet()->closure(next)->asSet()->forAll(n |
+         m.oclAsType(_'Marriage')._'mediation1'->select(r | r.world = n)._'husband' = 
+         m.oclAsType(_'Marriage')._'mediation1'->select(r | r.world = self)._'husband'
+      )
+    )
+
+context World
+inv immutable_wife: 
+    self.individual->select(i | i.oclIsKindOf(_'Marriage'))->forAll(m |
+      self->asSet()->closure(next)->asSet()->forAll(n |
+         m.oclAsType(_'Marriage')._'mediation2'->select(r | r.world = n)._'wife' = 
+         m.oclAsType(_'Marriage')._'mediation2'->select(r | r.world = self)._'wife'
+      )
+    )
+
+--=====================================
+--Set Collection Type: Relationships 
+--======================================
+
+context World
+inv no_duplicted_mediation1_between_marriage_and_husband: 
+    not self._'mediation1'->exists(m1, m2 |
+    m1 <> m2 and m1._'marriage' = m2._'marriage' and m1._'husband' = m2._'husband')
+
+context World
+inv no_duplicted_mediation2_between_marriage_and_wife: 
+    not self._'mediation2'->exists(m1, m2 |
+    m1 <> m2 and m1._'marriage' = m2._'marriage' and m1._'wife' = m2._'wife')
+
+--=====================================
+--Navigations: Relationships
+--======================================
+
+context _'Marriage'::_'husband'(w: World) : Set(_'Husband')
+body: self._'mediation1'->select(m | m.world = w)->collect(_'husband')->asSet()
+
+context _'Marriage'::_'husband'() : Set(_'Husband') 
+body: self._'mediation1'->collect(_'husband')->asSet()
+
+context _'Husband'::_'marriage'(w: World) : Set(_'Marriage') 
+body: self._'mediation1'->select(m | m.world = w)->collect(_'marriage')->asSet()
+
+context _'Husband'::_'marriage'() : Set(_'Marriage') 
+body: self._'mediation1'->collect(_'marriage')->asSet()
+
+context _'Marriage'::_'wife'(w: World) : Set(_'Wife')
+body: self._'mediation2'->select(m | m.world = w)->collect(_'wife')->asSet()
+
+context _'Marriage'::_'wife'() : Set(_'Wife') 
+body: self._'mediation2'->collect(_'wife')->asSet()
+
+context _'Wife'::_'marriage'(w: World) : Set(_'Marriage') 
+body: self._'mediation2'->select(m | m.world = w)->collect(_'marriage')->asSet()
+
+context _'Wife'::_'marriage'() : Set(_'Marriage') 
+body: self._'mediation2'->collect(_'marriage')->asSet()
+
+context _'Husband'::_'wife'(w: World) : Set(_'Wife')
+body: self._'ismarriedwith'->select(m | m.world = w)->collect(_'wife')->asSet()
+
+context _'Husband'::_'wife'() : Set(_'Wife') 
+body: self._'ismarriedwith'->collect(_'wife')->asSet()
+
+context _'Wife'::_'husband'(w: World) : Set(_'Husband') 
+body: self._'ismarriedwith'->select(m | m.world = w)->collect(_'husband')->asSet()
+
+context _'Wife'::_'husband'() : Set(_'Husband') 
+body: self._'ismarriedwith'->collect(_'husband')->asSet()
+
+--=====================================
+--Navigations: Attributes
+--======================================
+
+context _'Person'::_'age'(w: World) : Set(_'Integer') 
+body: self._'attribute0'->select(m | m.world = w)->collect(_'age')->asSet()
+
+context _'Person'::_'age'() : Set(_'Integer') 
+body: self._'attribute0'->collect(_'age')->asSet()
+
+endpackage

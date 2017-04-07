@@ -1,0 +1,171 @@
+import 'EnumTest.uml'
+
+ package _'EA_Model'
+
+--=====================================
+--World Structure
+--======================================
+
+context World
+inv no_cycle: self->asSet()->closure(next)->excludes(self)
+
+context Path
+inv no_parallel_structure: Path.allInstances()->forAll(p | self.world->intersection(p.world)->notEmpty())
+
+context Path
+inv one_terminal_world: self.world->one(w | w.next->isEmpty())
+
+context Path
+inv one_initial_world: self.world->one(w | w.previous.oclIsUndefined())
+
+context Path
+inv no_two_paths_with_same_end: Path.allInstances()->forAll(p | p<>self implies
+p.world->select(w |w.next->isEmpty()) <> 
+self.world->select(w |w.next->isEmpty()))
+
+context Path
+inv worlds_of_a_path_derived: 
+let t: Set(World) = self.world->select(w| w.next->isEmpty())
+in (self.world-t) = t->closure(previous)
+
+context Path
+inv every_end_in_one_path: 
+let ts: Set(World) = World.allInstances()->select(w |w.next->isEmpty())
+in ts->forAll(t | Path.allInstances()->one(p | p.world->includes(t)))
+
+--=====================================
+--Temporal Operations
+--======================================
+
+context World::next():Set(World) body: self.next
+
+context World::previous():World body: self.previous
+
+context World::paths():Set(Path) body: self.path
+
+context Path::worlds():Set(World) body: self.world
+
+context World::allIndividuals():Set(Individual) body: self.individual
+
+context World::hasNext():Boolean body: not self.next->isEmpty()
+
+context World::hasPrevious():Boolean body: not self.previous.oclIsUndefined()
+
+context Individual::existsIn(w: World):Boolean body: w.individual->includes(self)
+
+context World::allNext():Set(World) body: self->asSet()->closure(next)->asSet()
+
+context World::allNext(w: World):Set(World)
+body: if self.allNext()->includes(w) then w.allPrevious() - self.allPrevious() -
+self->asSet() else Set{} endif
+
+context World::allNext(p: Path):Set(World)
+body: self->asSet()->closure(next)->asSet()->select(w | w.paths()->includes(p))
+
+context World::allPrevious():Set(World) 
+body: self->asSet()->closure(previous)->asSet()
+
+context World::allPrevious(w: World):Set(World) 
+body: if self.allPrevious()->includes(w) then self.allPrevious() - w.allPrevious() - w->asSet()
+else Set{} endif
+
+--=====================================
+--Multiplicity: Relationships
+--======================================
+
+context World
+inv ownership_from_owner_to_fleet: 
+    self.individual->select(i | i.oclIsKindOf(_'Person'))->forAll(m | 
+    let list : Set(_'Vehicle') = m._'ownership'->select(r | r.world = self)
+    in list->size() >= 0)
+
+context World
+inv ownership_from_fleet_to_owner: 
+    self.individual->select(i | i.oclIsKindOf(_'Vehicle'))->forAll(m | 
+    let list : Set(_'Person') = m._'ownership'->select(r | r.world = self)
+    in list->size() >= 1)
+
+--=====================================
+--Multiplicity: Attributes
+--======================================
+
+context World
+inv attribute0_from_car_to_colour: 
+    self.individual->select(i | i.oclIsKindOf(_'Car'))->forAll(m | 
+    let list : Set(_'Colour') = m._'attribute0'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+context World
+inv attribute1_from_person_to_integer: 
+    self.individual->select(i | i.oclIsKindOf(_'Person'))->forAll(m | 
+    let list : Set(_'Integer') = m._'attribute1'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+--=====================================
+--Existence Cycles: Relationships
+--======================================
+
+context _'ownership'
+inv target_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Vehicle'))->includes(self._'fleet')
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Person'))->includes(self._'owner')
+
+--=====================================
+--Existence Cycles: Attributes
+--======================================
+
+context attribute0
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Car'))->includes(self._'car')
+
+context attribute1
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Person'))->includes(self._'person')
+
+--=====================================
+--Immutability (ReadOnly): Relationships
+--======================================
+
+--=====================================
+--Set Collection Type: Relationships 
+--======================================
+
+context World
+inv no_duplicted_ownership_between_owner_and_fleet: 
+    not self._'ownership'->exists(m1, m2 |
+    m1 <> m2 and m1._'owner' = m2._'owner' and m1._'fleet' = m2._'fleet')
+
+--=====================================
+--Navigations: Relationships
+--======================================
+
+context _'Person'::_'fleet'(w: World) : Set(_'Vehicle')
+body: self._'ownership'->select(m | m.world = w)->collect(_'fleet')->asSet()
+
+context _'Person'::_'fleet'() : Set(_'Vehicle') 
+body: self._'ownership'->collect(_'fleet')->asSet()
+
+context _'Vehicle'::_'owner'(w: World) : Set(_'Person') 
+body: self._'ownership'->select(m | m.world = w)->collect(_'owner')->asSet()
+
+context _'Vehicle'::_'owner'() : Set(_'Person') 
+body: self._'ownership'->collect(_'owner')->asSet()
+
+--=====================================
+--Navigations: Attributes
+--======================================
+
+context _'Car'::_'colour'(w: World) : Set(_'Colour') 
+body: self._'attribute0'->select(m | m.world = w)->collect(_'colour')->asSet()
+
+context _'Car'::_'colour'() : Set(_'Colour') 
+body: self._'attribute0'->collect(_'colour')->asSet()
+
+context _'Person'::_'age'(w: World) : Set(_'Integer') 
+body: self._'attribute1'->select(m | m.world = w)->collect(_'age')->asSet()
+
+context _'Person'::_'age'() : Set(_'Integer') 
+body: self._'attribute1'->collect(_'age')->asSet()
+
+endpackage

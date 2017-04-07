@@ -116,6 +116,7 @@ import br.ufes.inf.nemo.oled.model.UmlDiagram;
 import br.ufes.inf.nemo.oled.model.UmlProject;
 import br.ufes.inf.nemo.oled.pattern.DomainPatternTool;
 import br.ufes.inf.nemo.oled.pattern.PatternTool;
+import br.ufes.inf.nemo.oled.pattern.SOPLPatternTool;
 import br.ufes.inf.nemo.oled.problems.ErrorElement;
 import br.ufes.inf.nemo.oled.problems.ErrorPane;
 import br.ufes.inf.nemo.oled.problems.ErrorVerificator;
@@ -3082,6 +3083,10 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 
 	public void runPattern(final ElementType elementType, final double x, final double y) {
 		PatternTool.runPattern(this, elementType, x, y);
+	}
+	
+	public void runSOPLPattern(final ElementType elementType, final double x, final double y) {
+		//SOPLPatternTool.runPattern(this, elementType, x, y);
 	}
 
 	public void runDomainPattern(final double x, final double y) {

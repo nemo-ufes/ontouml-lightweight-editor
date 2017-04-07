@@ -1,0 +1,282 @@
+import 'Project.uml'
+
+ package _'project'
+
+--=====================================
+--World Structure
+--======================================
+
+context World
+inv no_cycle: self->asSet()->closure(next)->excludes(self)
+
+context Path
+inv no_parallel_structure: Path.allInstances()->forAll(p | self.world->intersection(p.world)->notEmpty())
+
+context Path
+inv one_terminal_world: self.world->one(w | w.next->isEmpty())
+
+context Path
+inv one_initial_world: self.world->one(w | w.previous.oclIsUndefined())
+
+context Path
+inv no_two_paths_with_same_end: Path.allInstances()->forAll(p | p<>self implies
+p.world->select(w |w.next->isEmpty()) <> 
+self.world->select(w |w.next->isEmpty()))
+
+context Path
+inv worlds_of_a_path_derived: 
+let t: Set(World) = self.world->select(w| w.next->isEmpty())
+in (self.world-t) = t->closure(previous)
+
+context Path
+inv every_end_in_one_path: 
+let ts: Set(World) = World.allInstances()->select(w |w.next->isEmpty())
+in ts->forAll(t | Path.allInstances()->one(p | p.world->includes(t)))
+
+--=====================================
+--Temporal Operations
+--======================================
+
+context World::next():Set(World) body: self.next
+
+context World::previous():World body: self.previous
+
+context World::paths():Set(Path) body: self.path
+
+context Path::worlds():Set(World) body: self.world
+
+context World::allIndividuals():Set(Individual) body: self.individual
+
+context World::hasNext():Boolean body: not self.next->isEmpty()
+
+context World::hasPrevious():Boolean body: not self.previous.oclIsUndefined()
+
+context Individual::existsIn(w: World):Boolean body: w.individual->includes(self)
+
+context World::allNext():Set(World) body: self->asSet()->closure(next)->asSet()
+
+context World::allNext(w: World):Set(World)
+body: if self.allNext()->includes(w) then w.allPrevious() - self.allPrevious() -
+self->asSet() else Set{} endif
+
+context World::allNext(p: Path):Set(World)
+body: self->asSet()->closure(next)->asSet()->select(w | w.paths()->includes(p))
+
+context World::allPrevious():Set(World) 
+body: self->asSet()->closure(previous)->asSet()
+
+context World::allPrevious(w: World):Set(World) 
+body: if self.allPrevious()->includes(w) then self.allPrevious() - w.allPrevious() - w->asSet()
+else Set{} endif
+
+--=====================================
+--Multiplicity: Relationships
+--======================================
+
+context World
+inv study_from_students_to_universities: 
+    self.individual->select(i | i.oclIsKindOf(_'Student'))->forAll(m | 
+    let list : Set(_'University') = m._'study'->select(r | r.world = self)
+    in list->size() >= 1)
+
+context World
+inv study_from_universities_to_students: 
+    self.individual->select(i | i.oclIsKindOf(_'University'))->forAll(m | 
+    let list : Set(_'Student') = m._'study'->select(r | r.world = self)
+    in list->size() >= 1)
+
+context World
+inv unv_from_enrollments_to_university: 
+    self.individual->select(i | i.oclIsKindOf(_'Enrollment'))->forAll(m | 
+    let list : Set(_'University') = m._'unv'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+context World
+inv unv_from_university_to_enrollments: 
+    self.individual->select(i | i.oclIsKindOf(_'University'))->forAll(m | 
+    let list : Set(_'Enrollment') = m._'unv'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= -1)
+
+context World
+inv std_from_enrollments_to_student: 
+    self.individual->select(i | i.oclIsKindOf(_'Enrollment'))->forAll(m | 
+    let list : Set(_'Student') = m._'std'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+context World
+inv std_from_student_to_enrollments: 
+    self.individual->select(i | i.oclIsKindOf(_'Student'))->forAll(m | 
+    let list : Set(_'Enrollment') = m._'std'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= -1)
+
+context World
+inv datatype_from_enrollments_to_id: 
+    self.individual->select(i | i.oclIsKindOf(_'Enrollment'))->forAll(m | 
+    let list : Set(_'Integer') = m._'datatype'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+context World
+inv datatype_from_id_to_enrollments: 
+    self.individual->select(i | i.oclIsKindOf(_'Integer'))->forAll(m | 
+    let list : Set(_'Enrollment') = m._'datatype'->select(r | r.world = self)
+    in list->size() >= 0 and list->size() <= -1)
+
+--=====================================
+--Multiplicity: Attributes
+--======================================
+
+context World
+inv attribute0_from_person_to_integer: 
+    self.individual->select(i | i.oclIsKindOf(_'Person'))->forAll(m | 
+    let list : Set(_'Integer') = m._'attribute0'->select(r | r.world = self)
+    in list->size() >= 1 and list->size() <= 1)
+
+--=====================================
+--Existence Cycles: Relationships
+--======================================
+
+context _'study'
+inv target_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'University'))->includes(self._'universities')
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Student'))->includes(self._'students')
+
+context _'unv'
+inv target_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'University'))->includes(self._'university')
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Enrollment'))->includes(self._'enrollments')
+
+context _'std'
+inv target_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Student'))->includes(self._'student')
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Enrollment'))->includes(self._'enrollments')
+
+context _'datatype'
+inv target_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Integer'))->includes(self._'id')
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Enrollment'))->includes(self._'enrollments')
+
+--=====================================
+--Existence Cycles: Attributes
+--======================================
+
+context attribute0
+inv source_cycle: 
+	   self.world.individual->select(i | i.oclIsKindOf(_'Person'))->includes(self._'person')
+
+--=====================================
+--Immutability (ReadOnly): Relationships
+--======================================
+
+context World
+inv immutable_university: 
+    self.individual->select(i | i.oclIsKindOf(_'Enrollment'))->forAll(m |
+      self->asSet()->closure(next)->asSet()->forAll(n |
+         m.oclAsType(_'Enrollment')._'unv'->select(r | r.world = n)._'university' = 
+         m.oclAsType(_'Enrollment')._'unv'->select(r | r.world = self)._'university'
+      )
+    )
+
+context World
+inv immutable_student: 
+    self.individual->select(i | i.oclIsKindOf(_'Enrollment'))->forAll(m |
+      self->asSet()->closure(next)->asSet()->forAll(n |
+         m.oclAsType(_'Enrollment')._'std'->select(r | r.world = n)._'student' = 
+         m.oclAsType(_'Enrollment')._'std'->select(r | r.world = self)._'student'
+      )
+    )
+
+context World
+inv immutable_id: 
+    self.individual->select(i | i.oclIsKindOf(_'Enrollment'))->forAll(m |
+      self->asSet()->closure(next)->asSet()->forAll(n |
+         m.oclAsType(_'Enrollment')._'datatype'->select(r | r.world = n)._'id' = 
+         m.oclAsType(_'Enrollment')._'datatype'->select(r | r.world = self)._'id'
+      )
+    )
+
+--=====================================
+--Set Collection Type: Relationships 
+--======================================
+
+context World
+inv no_duplicted_unv_between_enrollments_and_university: 
+    not self._'unv'->exists(m1, m2 |
+    m1 <> m2 and m1._'enrollments' = m2._'enrollments' and m1._'university' = m2._'university')
+
+context World
+inv no_duplicted_std_between_enrollments_and_student: 
+    not self._'std'->exists(m1, m2 |
+    m1 <> m2 and m1._'enrollments' = m2._'enrollments' and m1._'student' = m2._'student')
+
+context World
+inv no_duplicted_datatype_between_enrollments_and_id: 
+    not self._'datatype'->exists(m1, m2 |
+    m1 <> m2 and m1._'enrollments' = m2._'enrollments' and m1._'id' = m2._'id')
+
+--=====================================
+--Navigations: Relationships
+--======================================
+
+context _'Student'::_'universities'(w: World) : Set(_'University')
+body: self._'study'->select(m | m.world = w)->collect(_'universities')->asSet()
+
+context _'Student'::_'universities'() : Set(_'University') 
+body: self._'study'->collect(_'universities')->asSet()
+
+context _'University'::_'students'(w: World) : Set(_'Student') 
+body: self._'study'->select(m | m.world = w)->collect(_'students')->asSet()
+
+context _'University'::_'students'() : Set(_'Student') 
+body: self._'study'->collect(_'students')->asSet()
+
+context _'Enrollment'::_'university'(w: World) : Set(_'University')
+body: self._'unv'->select(m | m.world = w)->collect(_'university')->asSet()
+
+context _'Enrollment'::_'university'() : Set(_'University') 
+body: self._'unv'->collect(_'university')->asSet()
+
+context _'University'::_'enrollments'(w: World) : Set(_'Enrollment') 
+body: self._'unv'->select(m | m.world = w)->collect(_'enrollments')->asSet()
+
+context _'University'::_'enrollments'() : Set(_'Enrollment') 
+body: self._'unv'->collect(_'enrollments')->asSet()
+
+context _'Enrollment'::_'student'(w: World) : Set(_'Student')
+body: self._'std'->select(m | m.world = w)->collect(_'student')->asSet()
+
+context _'Enrollment'::_'student'() : Set(_'Student') 
+body: self._'std'->collect(_'student')->asSet()
+
+context _'Student'::_'enrollments'(w: World) : Set(_'Enrollment') 
+body: self._'std'->select(m | m.world = w)->collect(_'enrollments')->asSet()
+
+context _'Student'::_'enrollments'() : Set(_'Enrollment') 
+body: self._'std'->collect(_'enrollments')->asSet()
+
+context _'Enrollment'::_'id'(w: World) : Set(_'Integer')
+body: self._'datatype'->select(m | m.world = w)->collect(_'id')->asSet()
+
+context _'Enrollment'::_'id'() : Set(_'Integer') 
+body: self._'datatype'->collect(_'id')->asSet()
+
+context _'Integer'::_'enrollments'(w: World) : Set(_'Enrollment') 
+body: self._'datatype'->select(m | m.world = w)->collect(_'enrollments')->asSet()
+
+context _'Integer'::_'enrollments'() : Set(_'Enrollment') 
+body: self._'datatype'->collect(_'enrollments')->asSet()
+
+--=====================================
+--Navigations: Attributes
+--======================================
+
+context _'Person'::_'age'(w: World) : Set(_'Integer') 
+body: self._'attribute0'->select(m | m.world = w)->collect(_'age')->asSet()
+
+context _'Person'::_'age'() : Set(_'Integer') 
+body: self._'attribute0'->collect(_'age')->asSet()
+
+endpackage
