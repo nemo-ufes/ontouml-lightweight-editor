@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ASCII"?>
+<RefOntoUML:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:RefOntoUML="http://nemo.inf.ufes.br/ontouml/refontouml" name="project" visibility="public">
+  <packagedElement xsi:type="RefOntoUML:Kind" name="Person" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Kind" name="Organization" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:Phase" name="Child" visibility="public">
+    <generalization general="//@packagedElement.0" generalizationSet="//@packagedElement.13"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" name="Teenager" visibility="public">
+    <generalization general="//@packagedElement.0" generalizationSet="//@packagedElement.13"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Phase" name="Adult" visibility="public">
+    <generalization general="//@packagedElement.0" generalizationSet="//@packagedElement.13"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" name="Student" visibility="public">
+    <generalization general="//@packagedElement.0"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Role" name="University" visibility="public">
+    <generalization general="//@packagedElement.1"/>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Relator" name="Enrollment" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:DataType" name="Integer" visibility="public"/>
+  <packagedElement xsi:type="RefOntoUML:MaterialAssociation" name="study" visibility="public" memberEnd="//@packagedElement.9/@ownedEnd.0 //@packagedElement.9/@ownedEnd.1" isDerived="true">
+    <ownedEnd name="students" visibility="public" type="//@packagedElement.5" association="//@packagedElement.9">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+    <ownedEnd name="universities" visibility="public" type="//@packagedElement.6" association="//@packagedElement.9">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Derivation" name="drv" visibility="public" memberEnd="//@packagedElement.10/@ownedEnd.0 //@packagedElement.10/@ownedEnd.1">
+    <ownedEnd name="" visibility="public" type="//@packagedElement.9" association="//@packagedElement.10">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+    <ownedEnd name="" visibility="public" type="//@packagedElement.7" isReadOnly="true" association="//@packagedElement.10">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" name="unv" visibility="public" memberEnd="//@packagedElement.11/@ownedEnd.0 //@packagedElement.11/@ownedEnd.1">
+    <ownedEnd name="enrollments" visibility="public" type="//@packagedElement.7" association="//@packagedElement.11">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+    <ownedEnd name="university" visibility="public" type="//@packagedElement.6" isReadOnly="true" association="//@packagedElement.11">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:Mediation" name="std" visibility="public" memberEnd="//@packagedElement.12/@ownedEnd.0 //@packagedElement.12/@ownedEnd.1">
+    <ownedEnd name="enrollments" visibility="public" type="//@packagedElement.7" association="//@packagedElement.12">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+    <ownedEnd name="student" visibility="public" type="//@packagedElement.5" isReadOnly="true" association="//@packagedElement.12">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="RefOntoUML:GeneralizationSet" name="" visibility="public" isCovering="true" isDisjoint="true" generalization="//@packagedElement.2/@generalization.0 //@packagedElement.3/@generalization.0 //@packagedElement.4/@generalization.0"/>
+  <packagedElement xsi:type="RefOntoUML:Association" name="datatype" visibility="public" memberEnd="//@packagedElement.14/@ownedEnd.0 //@packagedElement.14/@ownedEnd.1">
+    <ownedEnd name="enrollments" visibility="public" type="//@packagedElement.7" association="//@packagedElement.14">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="-1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger"/>
+    </ownedEnd>
+    <ownedEnd name="id" visibility="public" type="//@packagedElement.8" isReadOnly="true" association="//@packagedElement.14">
+      <upperValue xsi:type="RefOntoUML:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="RefOntoUML:LiteralInteger" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+</RefOntoUML:Model>

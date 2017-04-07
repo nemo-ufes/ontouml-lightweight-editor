@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:OntoUML="http:///schemas/OntoUML/_lgHN0K-7Ed-lIbreSrjqbg/0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xsi:schemaLocation="http:///schemas/OntoUML/_lgHN0K-7Ed-lIbreSrjqbg/0 platform:/plugin/br.ufes.inf.nemo.ontouml.rcfrontend/model/OntoUML.uml#_lgHN0q-7Ed-lIbreSrjqbg">
+  <uml:Package xmi:id="_oJOQ0Nt7Ed-F56n4XIITxA" name="EC">
+    <elementImport xmi:id="_oJ-ewNt7Ed-F56n4XIITxA">
+      <importedElement xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+    </elementImport>
+    <elementImport xmi:id="_oJ-ewdt7Ed-F56n4XIITxA">
+      <importedElement xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </elementImport>
+    <elementImport xmi:id="_oJ-ewtt7Ed-F56n4XIITxA">
+      <importedElement xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#UnlimitedNatural"/>
+    </elementImport>
+    <elementImport xmi:id="_oJ-ew9t7Ed-F56n4XIITxA">
+      <importedElement xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </elementImport>
+    <packagedElement xmi:type="uml:Class" xmi:id="_q51XQNt7Ed-F56n4XIITxA" name="Person"/>
+    <profileApplication xmi:id="_tu0nYNt7Ed-F56n4XIITxA">
+      <eAnnotations xmi:id="_tu3qsNt7Ed-F56n4XIITxA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="platform:/plugin/br.ufes.inf.nemo.ontouml.rcfrontend/model/OntoUML.uml#_lgHN0q-7Ed-lIbreSrjqbg"/>
+      </eAnnotations>
+      <appliedProfile href="platform:/plugin/br.ufes.inf.nemo.ontouml.rcfrontend/model/OntoUML.uml#_SxKx8JGTEd6qquyZmkXAPA"/>
+    </profileApplication>
+  </uml:Package>
+  <OntoUML:Kind xmi:id="_wRIMENt7Ed-F56n4XIITxA" base_Class="_q51XQNt7Ed-F56n4XIITxA"/>
+</xmi:XMI>

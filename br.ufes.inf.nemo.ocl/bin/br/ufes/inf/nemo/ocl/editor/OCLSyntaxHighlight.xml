@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<TokenMakerDefinition>
+  <general>
+    <package>br.ufes.inf.nemo.ocl</package>
+    <className>OCLSyntaxHighlight</className>
+    <extendedClass>AbstractJFlexTokenMaker</extendedClass>
+    <classComment/>
+    <ignoreCase>false</ignoreCase>
+    <booleanLiterals>true</booleanLiterals>
+  </general>
+  <comments>
+    <lineComments enabled="true" start="--"/>
+    <multiLineComments enabled="true" end="*/" start="/*"/>
+    <docComments enabled="false" end="" start=""/>
+  </comments>
+  <keywords>
+    <keyword>and</keyword>
+    <keyword>body</keyword>
+    <keyword>context</keyword>
+    <keyword>def</keyword>
+    <keyword>derive</keyword>
+    <keyword>else</keyword>
+    <keyword>endif</keyword>
+    <keyword>endpackage</keyword>
+    <keyword>false</keyword>
+    <keyword>if</keyword>
+    <keyword>implies</keyword>
+    <keyword>in</keyword>
+    <keyword>init</keyword>
+    <keyword>inv</keyword>
+    <keyword>invalid</keyword>
+    <keyword>let</keyword>
+    <keyword>not</keyword>
+    <keyword>null</keyword>
+    <keyword>or</keyword>
+    <keyword>package</keyword>
+    <keyword>post</keyword>
+    <keyword>pre</keyword>
+    <keyword>self</keyword>
+    <keyword>static</keyword>
+    <keyword>then</keyword>
+    <keyword>true</keyword>
+    <keyword>xor</keyword>
+  </keywords>
+  <keywords2/>
+  <dataTypes>
+    <dataType>Bag</dataType>
+    <dataType>Boolean</dataType>
+    <dataType>Collection</dataType>
+    <dataType>Integer</dataType>
+    <dataType>OclAny</dataType>
+    <dataType>OclInvalid</dataType>
+    <dataType>OclMessage</dataType>
+    <dataType>OclVoid</dataType>
+    <dataType>OrderedSet</dataType>
+    <dataType>Real</dataType>
+    <dataType>Sequence</dataType>
+    <dataType>Set</dataType>
+    <dataType>String</dataType>
+    <dataType>Tuple</dataType>
+    <dataType>UnlimitedNatural</dataType>
+  </dataTypes>
+  <functions/>
+  <numbers>
+    <hexLiteral>0x{HexDigit}+</hexLiteral>
+    <intLiteral>{Digit}+</intLiteral>
+    <floatLiteral>({Digit}+)("."{Digit}+)?(e[+-]?{Digit}+)? | ({Digit}+)?("."{Digit}+)(e[+-]?{Digit}+)?</floatLiteral>
+  </numbers>
+  <stringLiterals enabled="true" multiLine="false"/>
+  <charLiterals enabled="true" multiLine="false"/>
+  <backtickLiterals enabled="false"/>
+  <operators/>
+</TokenMakerDefinition>

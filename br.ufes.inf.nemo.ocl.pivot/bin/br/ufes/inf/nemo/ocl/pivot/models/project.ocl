@@ -1,0 +1,31 @@
+
+-- # Write your constraints below... Press Ctrl+Space too see the options.
+
+package project
+
+-- integrity rule in OCL (1)
+context University
+inv one_enrollment_per_student :
+    self.enrollments->collect(x | x.student)->asSet()
+    ->forAll(s: Student | s.enrollments->intersection(self.enrollments)->size()=1)
+
+-- integrity rule in OCL (2)
+context University
+inv enrollments_has_unique_id: 
+    self.enrollments->isUnique(x: Enrollment | x.id)
+
+-- invariant simulation in OCL
+context Student
+inv adult_three_enrolllment :
+    Adult.allInstances()->notEmpty() and 
+    Child.allInstances()->isEmpty() and
+    Teenager.allInstances()->isEmpty() and
+   (self.oclIsKindOf(Adult) implies self.universities->size() = 3)
+
+-- invariant assertion in OCL
+context University
+inv no_child_university :
+    self.students->forAll( x:Student | not x.oclIsKindOf(Child) )
+
+endpackage
+

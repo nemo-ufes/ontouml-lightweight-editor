@@ -1,0 +1,56 @@
+-- # Write your constraints below... Press Ctrl+Space too see the options.
+
+import 'conception.uml'
+
+context World
+
+-- fatherOf definition: The father of a person y is the person x who played  the role of Male-Procreator in the Conception in which y 
+-- played the role of Offspring 
+temp transtemporal_fact: Person.allInstances(self)->forAll(ps | ps.children[self] = 
+         self.previous()->collect(pw | Offspring.allInstances(pw)->select(f | f.conception[pw].male[pw].oclAsType(Person)->asSet()->intersection(ps->asSet())->size()=0 )).oclAsType(Person)->asSet()
+      )
+
+--Forbid Reincarnation: if a person cease to exist then he/she does not exists in all worlds after that point
+temp forbid_reicarnation: self.hasPrevious() implies Person.allInstances(self.directPrevious())->forAll(ps | 
+     not ps.existsIn(self) implies self.next()->forAll(nw | not ps.existsIn(nw)))
+
+-- Forbids Destruction (Permanent): a person is never destroyed, that is, cease to exist
+temp forbid_destruction: Person.allInstances(self)->forAll(ps | self.next()->forAll(nw | ps.existsIn(nw)))
+
+-- (Eternal): a person always exists
+temp eternal: Person.allInstances(self)->forAll(ps | 
+     (self.hasNext() implies self.next()->forAll(nw | ps.existsIn(nw))) and
+     (self.hasPrevious() implies self.previous()->forAll(pw | ps.existsIn(pw))))
+
+-- Offspring Once: a person can only play the role of Offspring once in a lifetime (ignoring context)
+temp offspring_once: Offspring.allInstances()->forAll(o | World.allInstances()->select(w | w.hasPrevious())->select(wd | o.existsIn(wd) and
+     not o.existsIn(wd.directPrevious()))->size()<=1)
+     
+-- Offspring at Creation: a person is always created as Offspring
+temp offspring_at_creation: self.hasPrevious() implies Person.allInstances(self)->forAll(p |
+     not p.existsIn(self.directPrevious()) implies p.oclIsKindOf(_'Offspring', self))
+     
+-- Eventually Dead: a Person eventually becomes a Deceased person [IgnoringContext]
+temp eventually_dead: Person.allInstances()->forAll(p | World.allInstances()->exists(w | 
+     p.existsIn(w) and Deceased.allInstances(w).oclAsType(Person)->includes(p)))
+              
+-- Once Dead Always Dead: if a person becomes Deceased then he/she remains deceased throughout his/her existence
+temp once_dead_always_dead: Person.allInstances(self)->forAll(p |  p.oclIsKindOf(Deceased, self) 
+     implies self.next()->forAll(nw | p.existsIn(nw) implies p.oclIsKindOf(_'Deceased', nw)))
+     
+-- Alive at Creation: a person is always created as a Living person
+temp alive_at_creation: self.hasPrevious() implies Person.allInstances(self)->forAll(p |
+     not p.existsIn(self.directPrevious()) implies p.oclIsKindOf(Alive, self))
+     
+-- Child at Creation: a person is always created as a Child
+temp child_at_creation: self.hasPrevious() implies  Person.allInstances(self)->forAll(p | 
+     not p.existsIn(self.directPrevious()) implies p.oclIsKindOf(Child, self))
+     
+-- No Phase Skipping while alive: ordering the phase-partition {Child, Teenager, Adult}
+temp child_before_teenager_adult: Child.allInstances(self)->forAll(p | self.previous()->forAll(wp | 
+     p.existsIn(wp) implies not p.oclIsKindOf(Teenager, wp) and not  p.oclIsKindOf(Adult, wp)))
+     
+temp teenager_before_adult: Teenager.allInstances(self)->forAll(p | 
+     self.previous()->forAll(wp | p.existsIn(wp) implies not p.oclIsKindOf(Adult, wp)))
+
+

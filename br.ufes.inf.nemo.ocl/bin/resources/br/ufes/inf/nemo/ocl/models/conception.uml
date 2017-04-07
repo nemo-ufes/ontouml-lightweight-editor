@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Package xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_1Xn08KuAEeO83P3hKA18Dg" name="Model">
+  <packagedElement xmi:type="uml:Class" xmi:id="_1Xn08auAEeO83P3hKA18Dg" name="Person">
+    <ownedAttribute xmi:id="_1Xn08quAEeO83P3hKA18Dg" name="parent" visibility="public" type="_1Xn08auAEeO83P3hKA18Dg" association="_1XocIauAEeO83P3hKA18Dg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Xn086uAEeO83P3hKA18Dg" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Xn09KuAEeO83P3hKA18Dg" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_1Xn09auAEeO83P3hKA18Dg" name="children" visibility="public" type="_1Xn08auAEeO83P3hKA18Dg" association="_1XocIauAEeO83P3hKA18Dg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Xn09quAEeO83P3hKA18Dg" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Xn096uAEeO83P3hKA18Dg"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_1YfXpauAEeO83P3hKA18Dg" name="existsIn">
+      <ownedParameter xmi:id="_1YfXpquAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1YfXp6uAEeO83P3hKA18Dg" type="_1YeJgKuAEeO83P3hKA18Dg" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1Yf-sauAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1Yf-squAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yf-s6uAEeO83P3hKA18Dg" type="_1Xn08auAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Yf-tauAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Yf-tKuAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YjCB6uAEeO83P3hKA18Dg" name="parent">
+      <ownedParameter xmi:id="_1YjCCKuAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1YjCCauAEeO83P3hKA18Dg" type="_1Xn08auAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YjCCquAEeO83P3hKA18Dg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YjCC6uAEeO83P3hKA18Dg" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YjpEKuAEeO83P3hKA18Dg" name="children">
+      <ownedParameter xmi:id="_1YjpEauAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1YjpEquAEeO83P3hKA18Dg" type="_1Xn08auAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YjpE6uAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YjpFKuAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1Xn0-KuAEeO83P3hKA18Dg" name="Man">
+    <generalization xmi:id="_1Xn0-auAEeO83P3hKA18Dg" general="_1Xn08auAEeO83P3hKA18Dg" generalizationSet="_1XocIquAEeO83P3hKA18Dg"/>
+    <ownedOperation xmi:id="_1Yf-tquAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1Yf-t6uAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yf-uKuAEeO83P3hKA18Dg" type="_1Xn0-KuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Yf-uquAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Yf-uauAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1Xn0-quAEeO83P3hKA18Dg" name="Woman">
+    <generalization xmi:id="_1Xn0-6uAEeO83P3hKA18Dg" general="_1Xn08auAEeO83P3hKA18Dg" generalizationSet="_1XocIquAEeO83P3hKA18Dg"/>
+    <ownedOperation xmi:id="_1YglwKuAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1YglwauAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1YglwquAEeO83P3hKA18Dg" type="_1Xn0-quAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YglxKuAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Yglw6uAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1Xn0_KuAEeO83P3hKA18Dg" name="Male Procreator">
+    <generalization xmi:id="_1Xn0_auAEeO83P3hKA18Dg" general="_1Xn0-KuAEeO83P3hKA18Dg"/>
+    <ownedAttribute xmi:id="_1Xn0_quAEeO83P3hKA18Dg" name="conception" visibility="public" type="_1XocFKuAEeO83P3hKA18Dg" association="_1XocIKuAEeO83P3hKA18Dg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Xn0_6uAEeO83P3hKA18Dg" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Xn1AKuAEeO83P3hKA18Dg" value="1"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_1YglxauAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1YglxquAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yglx6uAEeO83P3hKA18Dg" type="_1Xn0_KuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YglyauAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YglyKuAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YjpFauAEeO83P3hKA18Dg" name="conception">
+      <ownedParameter xmi:id="_1YjpFquAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1YjpF6uAEeO83P3hKA18Dg" type="_1XocFKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YjpGKuAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YjpGauAEeO83P3hKA18Dg" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1XocAKuAEeO83P3hKA18Dg" name="Female Procreator">
+    <generalization xmi:id="_1XocAauAEeO83P3hKA18Dg" general="_1Xn0-quAEeO83P3hKA18Dg"/>
+    <ownedAttribute xmi:id="_1XocAquAEeO83P3hKA18Dg" name="conception" visibility="public" type="_1XocFKuAEeO83P3hKA18Dg" association="_1XocH6uAEeO83P3hKA18Dg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1XocA6uAEeO83P3hKA18Dg" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1XocBKuAEeO83P3hKA18Dg" value="1"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_1YglyquAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1YhM0KuAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1YhM0auAEeO83P3hKA18Dg" type="_1XocAKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YhM06uAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YhM0quAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YjpGquAEeO83P3hKA18Dg" name="conception">
+      <ownedParameter xmi:id="_1YkQIKuAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1YkQIauAEeO83P3hKA18Dg" type="_1XocFKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YkQIquAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YkQI6uAEeO83P3hKA18Dg" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1XocBauAEeO83P3hKA18Dg" name="Offspring">
+    <generalization xmi:id="_1XocBquAEeO83P3hKA18Dg" general="_1XocCquAEeO83P3hKA18Dg"/>
+    <ownedAttribute xmi:id="_1XocB6uAEeO83P3hKA18Dg" name="conception" visibility="public" type="_1XocFKuAEeO83P3hKA18Dg" association="_1XocHquAEeO83P3hKA18Dg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1XocCKuAEeO83P3hKA18Dg" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1XocCauAEeO83P3hKA18Dg" value="1"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_1YhM1KuAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1YhM1auAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1YhM1quAEeO83P3hKA18Dg" type="_1XocBauAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YhM2KuAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YhM16uAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YkQJKuAEeO83P3hKA18Dg" name="conception">
+      <ownedParameter xmi:id="_1YkQJauAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1YkQJquAEeO83P3hKA18Dg" type="_1XocFKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YkQJ6uAEeO83P3hKA18Dg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YkQKKuAEeO83P3hKA18Dg" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1XocCquAEeO83P3hKA18Dg" name="Alive">
+    <generalization xmi:id="_1XocC6uAEeO83P3hKA18Dg" general="_1Xn08auAEeO83P3hKA18Dg" generalizationSet="_1XocI6uAEeO83P3hKA18Dg"/>
+    <ownedOperation xmi:id="_1YhM2auAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1Yhz4KuAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yhz4auAEeO83P3hKA18Dg" type="_1XocCquAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Yhz46uAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Yhz4quAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1XocDKuAEeO83P3hKA18Dg" name="Deceased">
+    <generalization xmi:id="_1XocDauAEeO83P3hKA18Dg" general="_1Xn08auAEeO83P3hKA18Dg" generalizationSet="_1XocI6uAEeO83P3hKA18Dg"/>
+    <ownedOperation xmi:id="_1Yhz5KuAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1Yhz5auAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yhz5quAEeO83P3hKA18Dg" type="_1XocDKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Yhz6KuAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Yhz56uAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1XocDquAEeO83P3hKA18Dg" name="Child">
+    <generalization xmi:id="_1XocD6uAEeO83P3hKA18Dg" general="_1Xn08auAEeO83P3hKA18Dg" generalizationSet="_1XocJKuAEeO83P3hKA18Dg"/>
+    <ownedOperation xmi:id="_1Yhz6auAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1Yhz6quAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yia8KuAEeO83P3hKA18Dg" type="_1XocDquAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Yia8quAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Yia8auAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1XocEKuAEeO83P3hKA18Dg" name="Teenager">
+    <generalization xmi:id="_1XocEauAEeO83P3hKA18Dg" general="_1Xn08auAEeO83P3hKA18Dg" generalizationSet="_1XocJKuAEeO83P3hKA18Dg"/>
+    <ownedOperation xmi:id="_1Yia86uAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1Yia9KuAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yia9auAEeO83P3hKA18Dg" type="_1XocEKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Yia96uAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Yia9quAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1XocEquAEeO83P3hKA18Dg" name="Adult">
+    <generalization xmi:id="_1XocE6uAEeO83P3hKA18Dg" general="_1Xn08auAEeO83P3hKA18Dg" generalizationSet="_1XocJKuAEeO83P3hKA18Dg"/>
+    <ownedOperation xmi:id="_1Yia-KuAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1Yia-auAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yia-quAEeO83P3hKA18Dg" type="_1XocEquAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YjCAauAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YjCAKuAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1XocFKuAEeO83P3hKA18Dg" name="Conception">
+    <ownedAttribute xmi:id="_1XocFauAEeO83P3hKA18Dg" name="offspring" visibility="public" type="_1XocBauAEeO83P3hKA18Dg" isReadOnly="true" association="_1XocHquAEeO83P3hKA18Dg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1XocFquAEeO83P3hKA18Dg" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1XocF6uAEeO83P3hKA18Dg" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_1XocGKuAEeO83P3hKA18Dg" name="female" visibility="public" type="_1XocAKuAEeO83P3hKA18Dg" isReadOnly="true" association="_1XocH6uAEeO83P3hKA18Dg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1XocGauAEeO83P3hKA18Dg" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1XocGquAEeO83P3hKA18Dg" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_1XocG6uAEeO83P3hKA18Dg" name="male" visibility="public" type="_1Xn0_KuAEeO83P3hKA18Dg" isReadOnly="true" association="_1XocIKuAEeO83P3hKA18Dg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1XocHKuAEeO83P3hKA18Dg" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1XocHauAEeO83P3hKA18Dg" value="1"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_1YfXqKuAEeO83P3hKA18Dg" name="existsIn">
+      <ownedParameter xmi:id="_1YfXqauAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yf-sKuAEeO83P3hKA18Dg" type="_1YeJgKuAEeO83P3hKA18Dg" direction="return"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YjCAquAEeO83P3hKA18Dg" name="allInstances" isStatic="true">
+      <ownedParameter xmi:id="_1YjCA6uAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1YjCBKuAEeO83P3hKA18Dg" type="_1XocFKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YjCBquAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YjCBauAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YkQKauAEeO83P3hKA18Dg" name="offspring">
+      <ownedParameter xmi:id="_1YkQKquAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yk3MKuAEeO83P3hKA18Dg" type="_1XocBauAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Yk3MauAEeO83P3hKA18Dg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Yk3MquAEeO83P3hKA18Dg" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1Yk3M6uAEeO83P3hKA18Dg" name="female">
+      <ownedParameter xmi:id="_1Yk3NKuAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yk3NauAEeO83P3hKA18Dg" type="_1XocAKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Yk3NquAEeO83P3hKA18Dg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1Yk3N6uAEeO83P3hKA18Dg" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1Yk3OKuAEeO83P3hKA18Dg" name="male">
+      <ownedParameter xmi:id="_1Yk3OauAEeO83P3hKA18Dg" name="w" type="_1YQuIKuAEeO83P3hKA18Dg"/>
+      <ownedParameter xmi:id="_1Yk3OquAEeO83P3hKA18Dg" type="_1Xn0_KuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YleQKuAEeO83P3hKA18Dg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YleQauAEeO83P3hKA18Dg" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_1XocHquAEeO83P3hKA18Dg" name="Mediation1" memberEnd="_1XocB6uAEeO83P3hKA18Dg _1XocFauAEeO83P3hKA18Dg"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_1XocH6uAEeO83P3hKA18Dg" name="Mediation2" memberEnd="_1XocAquAEeO83P3hKA18Dg _1XocGKuAEeO83P3hKA18Dg"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_1XocIKuAEeO83P3hKA18Dg" name="Mediation3" memberEnd="_1Xn0_quAEeO83P3hKA18Dg _1XocG6uAEeO83P3hKA18Dg"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_1XocIauAEeO83P3hKA18Dg" name="isParentOf" memberEnd="_1Xn08quAEeO83P3hKA18Dg _1Xn09auAEeO83P3hKA18Dg"/>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_1XocIquAEeO83P3hKA18Dg" name="gender" isCovering="true" isDisjoint="true" generalization="_1Xn0-auAEeO83P3hKA18Dg _1Xn0-6uAEeO83P3hKA18Dg"/>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_1XocI6uAEeO83P3hKA18Dg" name="alive" isCovering="true" isDisjoint="true" generalization="_1XocDauAEeO83P3hKA18Dg _1XocC6uAEeO83P3hKA18Dg"/>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_1XocJKuAEeO83P3hKA18Dg" name="phase" isCovering="true" isDisjoint="true" generalization="_1XocE6uAEeO83P3hKA18Dg _1XocD6uAEeO83P3hKA18Dg _1XocEauAEeO83P3hKA18Dg"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1YQuIKuAEeO83P3hKA18Dg" name="World">
+    <ownedAttribute xmi:id="_1YRVN6uAEeO83P3hKA18Dg" name="previous" type="_1YQuIKuAEeO83P3hKA18Dg" association="_1YRVNquAEeO83P3hKA18Dg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YR8QauAEeO83P3hKA18Dg" value="1"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YR8QKuAEeO83P3hKA18Dg"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_1YR8QquAEeO83P3hKA18Dg" name="next" type="_1YQuIKuAEeO83P3hKA18Dg" association="_1YRVNquAEeO83P3hKA18Dg">
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YR8RKuAEeO83P3hKA18Dg" value="*"/>
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YR8Q6uAEeO83P3hKA18Dg"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_1YXb0KuAEeO83P3hKA18Dg" name="previous">
+      <ownedParameter xmi:id="_1YbGMKuAEeO83P3hKA18Dg" type="_1YQuIKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YbtQauAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YbtQKuAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YbtQquAEeO83P3hKA18Dg" name="directPrevious">
+      <ownedParameter xmi:id="_1YbtQ6uAEeO83P3hKA18Dg" type="_1YQuIKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YbtRauAEeO83P3hKA18Dg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YbtRKuAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YbtRquAEeO83P3hKA18Dg" name="next">
+      <ownedParameter xmi:id="_1YcUUKuAEeO83P3hKA18Dg" type="_1YQuIKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YcUUquAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YcUUauAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YcUU6uAEeO83P3hKA18Dg" name="directNext">
+      <ownedParameter xmi:id="_1YcUVKuAEeO83P3hKA18Dg" type="_1YQuIKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YcUVquAEeO83P3hKA18Dg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YcUVauAEeO83P3hKA18Dg"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YewkKuAEeO83P3hKA18Dg" name="hasPrevious">
+      <ownedParameter xmi:id="_1YewkauAEeO83P3hKA18Dg" type="_1YeJgKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Yewk6uAEeO83P3hKA18Dg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YewkquAEeO83P3hKA18Dg" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YewlKuAEeO83P3hKA18Dg" name="hasNext">
+      <ownedParameter xmi:id="_1YewlauAEeO83P3hKA18Dg" type="_1YeJgKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1Yewl6uAEeO83P3hKA18Dg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YewlquAEeO83P3hKA18Dg" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YewmKuAEeO83P3hKA18Dg" name="isTerminal">
+      <ownedParameter xmi:id="_1YewmauAEeO83P3hKA18Dg" type="_1YeJgKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YfXoKuAEeO83P3hKA18Dg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YewmquAEeO83P3hKA18Dg" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_1YfXoauAEeO83P3hKA18Dg" name="isOrigin">
+      <ownedParameter xmi:id="_1YfXoquAEeO83P3hKA18Dg" type="_1YeJgKuAEeO83P3hKA18Dg" direction="return">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1YfXpKuAEeO83P3hKA18Dg" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1YfXo6uAEeO83P3hKA18Dg" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1YQuIauAEeO83P3hKA18Dg" name="Current World">
+    <generalization xmi:id="_1YRVMauAEeO83P3hKA18Dg" general="_1YQuIKuAEeO83P3hKA18Dg" generalizationSet="_1YRVNauAEeO83P3hKA18Dg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1YQuIquAEeO83P3hKA18Dg" name="Past World">
+    <generalization xmi:id="_1YRVMquAEeO83P3hKA18Dg" general="_1YQuIKuAEeO83P3hKA18Dg" generalizationSet="_1YRVNauAEeO83P3hKA18Dg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1YQuI6uAEeO83P3hKA18Dg" name="Counterfactual World">
+    <generalization xmi:id="_1YRVNKuAEeO83P3hKA18Dg" general="_1YQuIKuAEeO83P3hKA18Dg" generalizationSet="_1YRVNauAEeO83P3hKA18Dg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_1YRVMKuAEeO83P3hKA18Dg" name="FutureWorld">
+    <generalization xmi:id="_1YRVM6uAEeO83P3hKA18Dg" general="_1YQuIKuAEeO83P3hKA18Dg" generalizationSet="_1YRVNauAEeO83P3hKA18Dg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:GeneralizationSet" xmi:id="_1YRVNauAEeO83P3hKA18Dg" isCovering="true" isDisjoint="true" generalization="_1YRVMauAEeO83P3hKA18Dg _1YRVMquAEeO83P3hKA18Dg _1YRVM6uAEeO83P3hKA18Dg _1YRVNKuAEeO83P3hKA18Dg"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_1YRVNquAEeO83P3hKA18Dg" memberEnd="_1YRVN6uAEeO83P3hKA18Dg _1YR8QquAEeO83P3hKA18Dg"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_1YeJgKuAEeO83P3hKA18Dg" name="Boolean"/>
+</uml:Package>

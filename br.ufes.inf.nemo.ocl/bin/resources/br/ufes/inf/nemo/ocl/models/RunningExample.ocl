@@ -1,0 +1,69 @@
+--Child
+context Person
+temp initial_transition: World.allInstances()->forAll(w | 
+    self.oclIsCreated(w) implies self.oclIsKindOf(Child, w))
+
+-- Elder
+context Elder
+temp final: World.allInstances()->forAll(w | 
+     self.oclBecomes(Elder, w) implies w.allNext()->forAll(n | 
+     self.existsIn(n) implies self.oclIsKindOf(Elder,n)))
+
+-- Child -> Teenager
+context Child
+temp transition: World.allInstances()->forAll(w | self.oclBecomes(Child, w)
+     implies w.allNext()->forAll(n | self.existsIn(n) implies
+     self.oclIsKindOf(Child, n) or self.oclIsKindOf(Teenager, n)))
+     
+--Teenager -> Adult
+context Teenager
+temp transition: World.allInstances()->forAll(w | self.oclBecomes(Teenager, w)
+     implies w.allNext()->forAll(n | self.existsIn(n) implies
+     self.oclIsKindOf(Teenager, n) or self.oclIsTypeOf(Adult, n)))
+
+-- Adult -> Elder
+context Adult
+temp transition: World.allInstances()->forAll(w | self.oclBecomes(Adult, w)
+     implies w.allNext()->forAll(n | self.existsIn(n) implies
+     self.oclIsKindOf(Adult, n) or self.oclIsKindOf(Elder, n)))
+
+-- Historical "descendantOf"
+context Person::descendantOf : Person
+temp: { children: Person[0..*], parents: Person[0..2] }
+
+-- Transient Person
+context Person
+temp transient: World.allInstances()->exists(w | self.oclIsCreated(w) and
+     w.allNext()->exists(n | not self.existsIn(n)))
+
+-- Transient Marriage
+context Marriage
+temp transient: World.allInstances()->exists(w | self.oclIsCreated(w) and
+     w.allNext()->exists(n | not self.existsIn(n)))
+     
+-- Continuous Marriage
+context Marriage
+temp continuous: World.allInstances()->forAll(w | self.oclIsDeleted(w) implies 
+	w.allNext()->forAll(n | not self.existsIn(n)))
+
+-- Continuous Person
+context Person
+temp continuous: World.allInstances()->forAll(w | self.oclIsDeleted(w) implies 
+	w.allNext()->forAll(n | not self.existsIn(n)))
+
+-- Ex-Wife Past Derivation
+context ExWife
+temp past_spec: World.allInstances()->forAll(w | self.oclIsKindOf(ExWife, w)
+     implies w.allPrevious()->exists(p | self.oclIsKindOf(Wife, p) and not
+     self.oclAsType(Wife, p).marriage(p).existsIn(w)))  
+
+-- Ex-Husband Past Derivation
+context ExHusband
+temp past_spec: World.allInstances()->forAll(w | self.oclIsKindOf(ExHusband, w)
+     implies w.allPrevious()->exists(p | self.oclIsKindOf(Husband, p) and not
+     self.oclAsType(Husband, p).marriage(p).existsIn(w)))  
+
+-- Historical Dependence Fact: Acyclic Ancestors
+context Person
+temp: self->asSet()->closure(parents)->excludes(self)
+
