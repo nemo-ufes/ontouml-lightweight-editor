@@ -85,6 +85,8 @@ public class PaletteAccordion extends JPanel{
 	private Palette derivedPalette;
 
 	private Palette elementsPalette;
+	
+	private Palette soplPalette;
 
 	private JScrollPane openContentScroll;
 		
@@ -122,7 +124,8 @@ public class PaletteAccordion extends JPanel{
 	{
 		createStaticClassesPalette(editorDispatcher);		
 		createOntoUMLPatternsPalette(editorDispatcher);
-		createPatternsPalette(editorDispatcher);		
+		createPatternsPalette(editorDispatcher);	
+		createsoplPalette(editorDispatcher);
 		render();
 	}
 	
@@ -376,6 +379,25 @@ public class PaletteAccordion extends JPanel{
 
 		if(openPalette == null)
 			openPalette = "Miscellaneous";
+	}
+	
+	private void createsoplPalette(DiagramEditorCommandDispatcher editorDispatcher){
+		
+		String pelleteName = "SOPL";
+		soplPalette = new Palette(this, pelleteName);
+		
+		soplPalette.createElement("staticpalette.sopl", "soffering");	
+		soplPalette.createElement("staticpalette.sopl", "sodescription");	
+		
+		soplPalette.addCommandListener(editorDispatcher);
+		
+		paletteMap.put(pelleteName, soplPalette);
+		
+		if(openPalette == null)
+			openPalette = pelleteName;	
+
+		soplPalette.sort();
+
 	}
 	
 	@SuppressWarnings("unused")
