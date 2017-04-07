@@ -40,25 +40,25 @@ public class SOPLPatternTool {
 	}
 	
 	public void tryToRun(DiagramManager diagramManager, ElementType elem,double x,double y){
-		//AbstractPattern pm = null;
-		SOPLPattern pm = null;	
-		//DiagramManager dm = null;
-		//setDm(diagramManager);
-		
-		switch (elem) {	
-		
-		case SODESCRIPTION:
-			pm = new SODescription(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
-			break;
-		default:
-			break;
-			
-		}
+//		//AbstractPattern pm = null;
+//		SOPLPattern pm = null;	
+//		//DiagramManager dm = null;
+//		//setDm(diagramManager);
+//		
+//		switch (elem) {	
+//		
+//		case SODESCRIPTION:
+//			pm = new SODescription(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
+//			break;
+//		default:
+//			break;
+//			
+//		}
 		
 		//Fix fix = null;
-		if(pm != null){
-			//pm.runPattern();
-		}
+//		if(pm != null){
+//			//pm.runPattern();
+//		}
 
 	}	
 //	
