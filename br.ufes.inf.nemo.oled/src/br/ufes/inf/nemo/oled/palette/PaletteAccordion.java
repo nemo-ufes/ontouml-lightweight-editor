@@ -191,6 +191,11 @@ public class PaletteAccordion extends JPanel{
 		return paletteMap.get("Patterns");
 	}
 	
+	public Palette getSOPLPalette()
+	{
+		return paletteMap.get("SOPL");
+	}
+	
 	public Map<String, Palette> getPaletteMap() {
 		return paletteMap;
 	}

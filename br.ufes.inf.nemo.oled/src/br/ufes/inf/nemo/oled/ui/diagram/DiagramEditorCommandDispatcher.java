@@ -422,6 +422,13 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 
 			selectorMap.put("DOMAIN_PATTERN", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.DOMAIN_PATTERN));
+			
+			//Adicionado por Paulo H. Araujo da Silva //SOPL Pattern
+			selectorMap.put("SOFFERING", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.SOFFERING));
+			
+			selectorMap.put("SODESCRIPTION", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.SODESCRIPTION));
 
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
