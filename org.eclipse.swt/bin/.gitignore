@@ -1,3 +1,7 @@
+/libswt-atk-gtk-4332-x64.so
+/libswt-atk-gtk-4332-x86.so
+/libswt-awt-cocoa-4332-x64.jnilib
+/libswt-awt-cocoa-4332-x86.jnilib
 /libswt-awt-gtk-4332-x64.so
 /libswt-awt-gtk-4332-x86.so
 /libswt-cairo-gtk-4332-x64.so
@@ -35,10 +39,3 @@
 /swt-linux-x64.jar
 /swt-linux-x86.jar
 /swt-mac-x64.jar
-/swt-mac-x86.jar
-/swt-webkit-win32-4332-x86.dll
-/swt-wgl-win32-4332-x64.dll
-/swt-wgl-win32-4332-x86.dll
-/swt-win-x64.jar
-/swt-win-x86.jar
-/swt-win32-4332-x64.dll
