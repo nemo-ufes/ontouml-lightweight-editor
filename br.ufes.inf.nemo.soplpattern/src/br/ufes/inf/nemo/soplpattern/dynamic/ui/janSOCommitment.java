@@ -21,11 +21,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
 import javax.swing.JRadioButton;
 
-public class janSOffering {
+public class janSOCommitment {
 
 	private JFrame frame;
 	private JTextField txtServiceProvider;
-	private JTextField txtTargetCC;
 	private ImageIcon icon;
 	
 	
@@ -46,7 +45,7 @@ public class janSOffering {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					janSOffering window = new janSOffering();
+					janSOCommitment window = new janSOCommitment();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +57,7 @@ public class janSOffering {
 	/**
 	 * Create the application.
 	 */
-	public janSOffering() {
+	public janSOCommitment() {
 		initialize();
 	}
 
@@ -88,7 +87,7 @@ public class janSOffering {
 		frame.getContentPane().add(button_1);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOffering", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOCommitment", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_2.setBounds(10, 11, 383, 396);
 		frame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
@@ -102,60 +101,19 @@ public class janSOffering {
 		panel_2.add(label_1);
 		
 		txtServiceProvider = new JTextField();
-		txtServiceProvider.setText("Service Provider");
 		txtServiceProvider.setBounds(205, 257, 166, 20);
 		panel_2.add(txtServiceProvider);
 		txtServiceProvider.setColumns(10);
-		
-		txtTargetCC = new JTextField();
-		txtTargetCC.setText("Target Customer Community");
-		txtTargetCC.setColumns(10);
-		txtTargetCC.setBounds(205, 288, 166, 20);
-		panel_2.add(txtTargetCC);
 				
 		JPanel panelImg = new JPanel();
 		panelImg.setBackground(Color.LIGHT_GRAY);
 		panelImg.setBounds(10, 27, 361, 194);
 		panel_2.add(panelImg);
 		
-		JLabel lblNewLabel = new JLabel("Service Offering");
-		lblNewLabel.setBounds(20, 257, 78, 14);
+		JLabel lblNewLabel = new JLabel("Service Offering Commitment");
+		lblNewLabel.setBounds(20, 257, 140, 14);
 		panel_2.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Target Customer Community");
-		lblNewLabel_1.setBounds(20, 295, 151, 14);
-		panel_2.add(lblNewLabel_1);
-		
 		icon = new ImageIcon(getClass().getResource("resource/SOFFERING.png"));
-		
-		JButton button_7 = new JButton("Create Concepts");
-		button_7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				
-			}
-		});
-		button_7.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		button_7.setBackground(Color.WHITE);
-		button_7.setBounds(405, 159, 139, 32);
-		frame.getContentPane().add(button_7);
-		
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "Paths", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(399, 11, 145, 100);
-		frame.getContentPane().add(panel);
-		panel.setLayout(null);
-		
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("SOCommitments");
-		rdbtnNewRadioButton_1.setBounds(6, 17, 103, 23);
-		panel.add(rdbtnNewRadioButton_1);
-		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("SOClaims");
-		rdbtnNewRadioButton.setBounds(6, 43, 69, 23);
-		panel.add(rdbtnNewRadioButton);
-		
-		JRadioButton rdbtnSodescription = new JRadioButton("SODescription");
-		rdbtnSodescription.setBounds(6, 69, 109, 23);
-		panel.add(rdbtnSodescription);
 	}
 }
