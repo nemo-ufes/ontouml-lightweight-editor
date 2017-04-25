@@ -21,7 +21,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
 import javax.swing.JRadioButton;
 
-public class janSOClaim {
+public class JanSOClaim {
 
 	private JFrame frame;
 	private JTextField txtServiceProvider;
@@ -45,7 +45,7 @@ public class janSOClaim {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					janSOClaim window = new janSOClaim();
+					JanSOClaim window = new JanSOClaim();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,7 +57,7 @@ public class janSOClaim {
 	/**
 	 * Create the application.
 	 */
-	public janSOClaim() {
+	public JanSOClaim() {
 		initialize();
 	}
 

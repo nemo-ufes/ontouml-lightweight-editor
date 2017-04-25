@@ -21,7 +21,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
 import javax.swing.JRadioButton;
 
-public class janSOffering {
+public class JanSOffering {
 
 	private JFrame frame;
 	private JTextField txtServiceProvider;
@@ -46,7 +46,7 @@ public class janSOffering {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					janSOffering window = new janSOffering();
+					JanSOffering window = new JanSOffering();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,7 +58,7 @@ public class janSOffering {
 	/**
 	 * Create the application.
 	 */
-	public janSOffering() {
+	public JanSOffering() {
 		initialize();
 	}
 
@@ -126,7 +126,7 @@ public class janSOffering {
 		lblNewLabel_1.setBounds(20, 295, 151, 14);
 		panel_2.add(lblNewLabel_1);
 		
-		icon = new ImageIcon(getClass().getResource("resource/SOFFERING.png"));
+		//icon = new ImageIcon(getClass().getResource("resource/SOFFERING.png"));
 		
 		JButton button_7 = new JButton("Create Concepts");
 		button_7.addActionListener(new ActionListener() {

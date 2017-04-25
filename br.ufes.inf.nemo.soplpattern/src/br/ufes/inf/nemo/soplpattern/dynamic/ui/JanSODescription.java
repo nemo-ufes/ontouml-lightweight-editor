@@ -21,7 +21,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
 import javax.swing.JRadioButton;
 
-public class janSOCommitment {
+public class JanSODescription {
 
 	private JFrame frame;
 	private JTextField txtServiceProvider;
@@ -45,7 +45,7 @@ public class janSOCommitment {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					janSOCommitment window = new janSOCommitment();
+					JanSODescription window = new JanSODescription();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,7 +57,7 @@ public class janSOCommitment {
 	/**
 	 * Create the application.
 	 */
-	public janSOCommitment() {
+	public JanSODescription() {
 		initialize();
 	}
 
@@ -87,7 +87,7 @@ public class janSOCommitment {
 		frame.getContentPane().add(button_1);
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOCommitment", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SODescription", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_2.setBounds(10, 11, 383, 396);
 		frame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
@@ -110,7 +110,7 @@ public class janSOCommitment {
 		panelImg.setBounds(10, 27, 361, 194);
 		panel_2.add(panelImg);
 		
-		JLabel lblNewLabel = new JLabel("Service Offering Commitment");
+		JLabel lblNewLabel = new JLabel("Service Offering Description");
 		lblNewLabel.setBounds(20, 257, 140, 14);
 		panel_2.add(lblNewLabel);
 		

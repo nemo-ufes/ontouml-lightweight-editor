@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class JanProviderSubgroup {
+public class JanProviderCustomerSubgroup {
 
 	private JFrame frame;
 	private JTextField textField;
@@ -65,7 +65,7 @@ public class JanProviderSubgroup {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					JanProviderSubgroup window = new JanProviderSubgroup();
+					JanProviderCustomerSubgroup window = new JanProviderCustomerSubgroup();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -77,7 +77,7 @@ public class JanProviderSubgroup {
 	/**
 	 * Create the application.
 	 */
-	public JanProviderSubgroup() {
+	public JanProviderCustomerSubgroup() {
 		initialize();
 	}
 
@@ -164,7 +164,8 @@ public class JanProviderSubgroup {
 				
 				//Botao Next - Conferir Dados e chamar Janela SOffering !
 				
-				
+				JanSOffering janSOffering = new JanSOffering();
+				janSOffering.main(null);
 				
 			}
 		});
