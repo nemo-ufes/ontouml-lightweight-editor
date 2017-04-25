@@ -16,6 +16,7 @@ import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.soplpattern.dynamic.ui.JanProviderSubgroup;
 //import br.ufes.inf.nemo.pattern.dynamic.ui.DynamicWindow;
 //import br.ufes.inf.nemo.pattern.ui.manager.DynamicManagerWindow;
 //import br.ufes.inf.nemo.patternsopl.dynamic.ui.EP1;
@@ -35,7 +36,7 @@ public abstract class SOPLPattern {
 	protected double x;
 	protected double y;
 	protected String title;
-//	protected janPrincipal janela;
+	protected JanProviderSubgroup janPCsubgroup;
 //	protected DiagramManager dm = null;
 	//protected janSOffering janSOffering = null;
 
@@ -63,8 +64,8 @@ public abstract class SOPLPattern {
 		
 		//Instanciar a Janela Principal SOPL aqui !
 		
-//		janSOffering = new janSOffering();
-//		janSOffering.inicializar();
+		JanProviderSubgroup janPCsubgroup= new JanProviderSubgroup();
+		janPCsubgroup.main(null);
 		
 	}
 

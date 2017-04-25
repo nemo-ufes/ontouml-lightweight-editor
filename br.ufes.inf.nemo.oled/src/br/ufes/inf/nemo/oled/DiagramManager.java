@@ -3082,13 +3082,12 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 	}
 
 	public void runPattern(final ElementType elementType, final double x, final double y) {
-		System.out.println("CHEGOUUUUUUUUUU PATTERN");
 		PatternTool.runPattern(this, elementType, x, y);		
 	}
 	
 	public void runSOPLPattern(final ElementType elementType, final double x, final double y) {
-		//SOPLPatternTool.runPattern(this, elementType, x, y);
-		System.out.println("CHEGOUUUUUUUUUU SOPL");
+		System.out.println("CHEGOU SOPL PATTERN !!!!!!!!!!!!!!");
+		SOPLPatternTool.runPattern(this, elementType, x, y);		
 	}
 
 	public void runDomainPattern(final double x, final double y) {

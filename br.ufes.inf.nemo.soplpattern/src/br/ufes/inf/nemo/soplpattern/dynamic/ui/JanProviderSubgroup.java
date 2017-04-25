@@ -12,8 +12,10 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class janProviderSubgroup {
+public class JanProviderSubgroup {
 
 	private JFrame frame;
 	private JTextField textField;
@@ -63,7 +65,7 @@ public class janProviderSubgroup {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					janProviderSubgroup window = new janProviderSubgroup();
+					JanProviderSubgroup window = new JanProviderSubgroup();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -75,7 +77,7 @@ public class janProviderSubgroup {
 	/**
 	 * Create the application.
 	 */
-	public janProviderSubgroup() {
+	public JanProviderSubgroup() {
 		initialize();
 	}
 
@@ -157,6 +159,15 @@ public class janProviderSubgroup {
 		panelPatternCustomer.add(radioButton_6);
 		
 		JButton btnNext = new JButton("Next");
+		btnNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				//Botao Next - Conferir Dados e chamar Janela SOffering !
+				
+				
+				
+			}
+		});
 		btnNext.setBounds(527, 510, 89, 32);
 		frame.getContentPane().add(btnNext);
 		

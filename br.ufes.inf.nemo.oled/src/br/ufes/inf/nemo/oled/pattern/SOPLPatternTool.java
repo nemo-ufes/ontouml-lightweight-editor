@@ -26,6 +26,8 @@ import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_SUBKIND;
 import br.ufes.inf.nemo.pattern.impl.relation.FOP_RELATION_CHARACTERIZATION;
 import br.ufes.inf.nemo.pattern.impl.relation.FOP_RELATION_FORMAL;
 import br.ufes.inf.nemo.pattern.ui.manager.ModelCompleterManager;
+import br.ufes.inf.nemo.soplpattern.impl.SOPLPattern;
+import br.ufes.inf.nemo.soplpattern.impl.sOfferingGroup.SODescription;
 
 /**
  * @author Paulo H. Araujo da Silva
@@ -39,28 +41,44 @@ public class SOPLPatternTool {
 	
 	}
 	
-	public void tryToRun(DiagramManager diagramManager, ElementType elem,double x,double y){
-//		//AbstractPattern pm = null;
-//		SOPLPattern pm = null;	
-//		//DiagramManager dm = null;
-//		//setDm(diagramManager);
-//		
-//		switch (elem) {	
-//		
-//		case SODESCRIPTION:
-//			pm = new SODescription(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
-//			break;
-//		default:
-//			break;
-//			
-//		}
+	public static Fix tryToRun(DiagramManager diagramManager, ElementType elem,double x,double y){
 		
-		//Fix fix = null;
-//		if(pm != null){
-//			//pm.runPattern();
-//		}
+		//AbstractPattern pm = null;
+		SOPLPattern pm = null;	
+		DiagramManager dm = null;
+	//	setDm(diagramManager);
+		
+		switch (elem) {	
+		
+		case SODESCRIPTION:
+			pm = new SODescription(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
+			break;
+		default:
+			break;
+			
+		}
+		
+		Fix fix = null;
+		if(pm != null){
+			pm.runPattern();
+		}
+		
+		return fix;
 
 	}	
+	
+	public static void runPattern(final DiagramManager diagramManager,final ElementType elementType, final double x, final double y) {
+		if(Main.onMac()){
+			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
+				@Override
+				public void run() {
+					SOPLPatternTool.tryToRun(diagramManager, elementType, x, y);					
+				}
+			});
+		}else{
+			SOPLPatternTool.tryToRun(diagramManager, elementType, x, y);						
+		}
+	}
 //	
 //	public void returnFix(){
 //		

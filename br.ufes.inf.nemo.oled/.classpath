@@ -68,5 +68,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ontouml"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt-win-x64/swt.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.ootos"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.soplpattern"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
