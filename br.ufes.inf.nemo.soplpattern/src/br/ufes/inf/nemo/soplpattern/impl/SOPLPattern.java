@@ -16,6 +16,7 @@ import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
+import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.soplpattern.dynamic.ui.JanProviderCustomerSubgroup;
 //import br.ufes.inf.nemo.pattern.dynamic.ui.DynamicWindow;
 //import br.ufes.inf.nemo.pattern.ui.manager.DynamicManagerWindow;
@@ -37,6 +38,7 @@ public abstract class SOPLPattern {
 	protected double y;
 	protected String title;
 	protected JanProviderCustomerSubgroup janPCsubgroup;
+	protected DiagramManager diagramManager;
 //	protected DiagramManager dm = null;
 	//protected janSOffering janSOffering = null;
 
@@ -53,8 +55,6 @@ public abstract class SOPLPattern {
 		return classifier;
 	}
 
-
-
 	protected SOPLPattern(OntoUMLParser parser, double x, double y, String imagePath, String title) {
 		this.parser = parser;
 		this.x = x;
@@ -64,12 +64,15 @@ public abstract class SOPLPattern {
 		
 		//Instanciar a Janela Principal SOPL aqui !
 		
-		JanProviderCustomerSubgroup janPCsubgroup= new JanProviderCustomerSubgroup();
-		janPCsubgroup.main(null);
-		
+//		JanProviderCustomerSubgroup janPCsubgroup= new JanProviderCustomerSubgroup();		
+//		janPCsubgroup.main(null);
+//		janPCsubgroup.setJansoplPattern(this);			
+	
 	}
+	
+	public abstract void criarTabela(String[][] tabela);
 
-	public abstract void runPattern( );	
+	public abstract void runPattern(DiagramManager diagramManager);	
 
 	public Fix getFix(){
 		try{
@@ -81,6 +84,7 @@ public abstract class SOPLPattern {
 		}
 	}
 
-	protected abstract Fix getSpecificFix();
+	//public abstract Fix getSpecificFix();
+	public abstract Fix getSpecificFix();
 
 }

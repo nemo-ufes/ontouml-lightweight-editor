@@ -12,5 +12,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/eclipse-kepler-sr1/org.eclipse.jface_3.9.1.v20130725-1141.jar"/>
 	<classpathentry kind="lib" path="/br.ufes.inf.nemo.common/lib/swt-win-x64/swt.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/br.ufes.inf.nemo.oled"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

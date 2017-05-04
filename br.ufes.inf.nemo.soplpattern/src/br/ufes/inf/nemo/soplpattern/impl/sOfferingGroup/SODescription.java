@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.soplpattern.impl.sOfferingGroup;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -15,6 +17,8 @@ import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
+import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.soplpattern.dynamic.ui.JanProviderCustomerSubgroup;
 import br.ufes.inf.nemo.soplpattern.impl.SOPLPattern;
 
 public class SODescription extends SOPLPattern{
@@ -22,10 +26,7 @@ public class SODescription extends SOPLPattern{
 	
 	private Classifier c = null;
 	private String elements[][] = new String[4][2];
-	//private SOPLPatternTool janSOPLPatternTool;	
-	
-	//private EP1 janela;
-	
+			
 	public SODescription(OntoUMLParser parser, double x, double y) {		
 		super(parser, x, y, "/resource/SOFFERING.png", "SOFFERING");
 	}
@@ -36,21 +37,15 @@ public class SODescription extends SOPLPattern{
 	}	
 	
 	
-	public void runPattern() {
+	public void runPattern(DiagramManager diagramManager) {
 						
-		
+		//Instanciar a Janela Principal SOPL aqui !
+		this.diagramManager = diagramManager;
+		JanProviderCustomerSubgroup janPCsubgroup = new JanProviderCustomerSubgroup(this);						
 	}
 	
-	public void criar(String[][] tabela){
-		this.elements = tabela;		
-		
-		for(int l =0;l < 4;l++){
-			for(int c=0; c < 2;c++){
-				System.out.println(elements[l][c]);
-			}
-		}	
-		//janSOPLPatternTool.returnFix();		
-		
+	public void criarTabela(String[][] tabela){
+		this.elements = tabela;				
 	}
 	
 	public Fix getSpecificFix() {			
@@ -70,10 +65,15 @@ public class SODescription extends SOPLPattern{
 //		}		
 			
 				
-		Classifier roleA = this.createClassifier(this.elements[0][1], "RoleMixin", x, y);
-		Classifier collectiveA = this.createClassifier(this.elements[1][1], "Collective", x+(verticalDistance/3), y);
-		Classifier relatorA = this.createClassifier(this.elements[2][1], "Relator", x+(verticalDistance/2), y);		
-		Classifier roleB = this.createClassifier(this.elements[3][1], "RoleMixin", x+(verticalDistance/3), y+70);
+//		Classifier roleA = this.createClassifier(this.elements[0][1], "RoleMixin", x, y);
+//		Classifier collectiveA = this.createClassifier(this.elements[1][1], "Collective", x+(verticalDistance/3), y);
+//		Classifier relatorA = this.createClassifier(this.elements[2][1], "Relator", x+(verticalDistance/2), y);		
+//		Classifier roleB = this.createClassifier(this.elements[3][1], "RoleMixin", x+(verticalDistance/3), y+70);
+		
+		Classifier roleA = this.createClassifier("Service Provider ", "RoleMixin", x, y);
+		Classifier collectiveA = this.createClassifier(elements[1][1].toString() , "Collective", x+(verticalDistance/3), y);
+		Classifier relatorA = this.createClassifier(elements[2][1].toString() , "Relator", x+(verticalDistance/2), y);		
+		Classifier roleB = this.createClassifier("Target Customer" , "RoleMixin", x+(verticalDistance/3), y+70);
 
 		Association formal = null;		
 		
@@ -91,8 +91,8 @@ public class SODescription extends SOPLPattern{
 			fix.includeAdded(formal);
 		}
 		
-		//dm.updateOLED(fix); //Ja que esta dando erro fazendo isso dentro de SOPLPatterTool, vamos forçar por aqui....
+		diagramManager.updateOLED(fix);
 		return fix;
 	}
-
+	
 }

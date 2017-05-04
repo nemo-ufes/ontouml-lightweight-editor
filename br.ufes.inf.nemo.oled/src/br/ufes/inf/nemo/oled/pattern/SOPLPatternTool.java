@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.oled.pattern;
 
+import java.util.concurrent.TimeUnit;
+
 import RefOntoUML.Classifier;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.oled.DiagramManager;
@@ -34,19 +36,18 @@ import br.ufes.inf.nemo.soplpattern.impl.sOfferingGroup.SODescription;
  */
 public class SOPLPatternTool {
 	
-//	private SOPLPattern pm = null;	
-//	private DiagramManager dm = null;	
+	protected static SOPLPattern pm = null;	
+	protected static DiagramManager dm = null;	
 	
 	public SOPLPatternTool(){
 	
 	}
 	
 	public static Fix tryToRun(DiagramManager diagramManager, ElementType elem,double x,double y){
-		
-		//AbstractPattern pm = null;
-		SOPLPattern pm = null;	
-		DiagramManager dm = null;
-	//	setDm(diagramManager);
+				
+		//SOPLPattern pm = null;	
+		//DiagramManager dm = null;		
+				
 		
 		switch (elem) {	
 		
@@ -57,37 +58,38 @@ public class SOPLPatternTool {
 			break;
 			
 		}
-		
+	
+		pm.runPattern(diagramManager); 
 		Fix fix = null;
-		if(pm != null){
-			pm.runPattern();
-		}
+//		fix = pm.getFix();
+//		diagramManager.updateOLED(fix);		
 		
 		return fix;
 
 	}	
 	
-	public static void runPattern(final DiagramManager diagramManager,final ElementType elementType, final double x, final double y) {
+	public static void runPattern(final DiagramManager diagramManager,final ElementType elementType, final double x, final double y)  {
 		if(Main.onMac()){
 			com.apple.concurrent.Dispatch.getInstance().getNonBlockingMainQueueExecutor().execute( new Runnable(){        	
 				@Override
 				public void run() {
-					SOPLPatternTool.tryToRun(diagramManager, elementType, x, y);					
+				
+					SOPLPatternTool.tryToRun(diagramManager, elementType, x, y);
+								
 				}
 			});
 		}else{
 			SOPLPatternTool.tryToRun(diagramManager, elementType, x, y);						
 		}
 	}
-//	
-//	public void returnFix(){
-//		
-//		Fix fix = null;
-//		fix = pm.getFix();
-//		dm.updateOLED(fix);
-//		
-//		//return fix;
-//	 }
+	
+	public static void updateOLED(Fix fix){
+		
+		//Fix fix = null;		
+		dm.updateOLED(fix);
+		
+		//return fix;
+	 }
 	
 //	public SOPLPattern getPm() {
 //		return pm;
@@ -96,14 +98,13 @@ public class SOPLPatternTool {
 //	public void setPm(SOPLPattern pm) {
 //		this.pm = pm;
 //	}
-//
-//	public DiagramManager getDm() {
-//		return dm;
-//	}
-//
-//	public void setDm(DiagramManager dm) {
-//		this.dm = dm;
-//	}
 
+	public DiagramManager getDm() {
+		return dm;
+	}
+
+	public static void setDm(DiagramManager diagramManager) {
+		dm = diagramManager;
+	}
 	
 	}

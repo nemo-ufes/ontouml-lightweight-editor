@@ -6,9 +6,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.border.TitledBorder;
+
+import br.ufes.inf.nemo.soplpattern.impl.SOPLPattern;
+import br.ufes.inf.nemo.soplpattern.impl.sOfferingGroup.SODescription;
+
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 import java.awt.Color;
+
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -57,29 +63,18 @@ public class JanProviderCustomerSubgroup {
 	private JTextField textField_36;
 	private JTextField textField_37;
 	private JTextField textField_38;
-
+	private SOPLPattern soplPattern;
+	//private static JanProviderCustomerSubgroup window;
+	private JanSOffering proxJan = null;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JanProviderCustomerSubgroup window = new JanProviderCustomerSubgroup();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the application.
-	 */
-	public JanProviderCustomerSubgroup() {
+	public JanProviderCustomerSubgroup(final SOPLPattern pm){	
 		initialize();
-	}
+		frame.setVisible(true);
+		soplPattern = pm;	
+	}	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -95,34 +90,34 @@ public class JanProviderCustomerSubgroup {
 		panelPatternProvider.setBounds(10, 11, 291, 146);
 		frame.getContentPane().add(panelPatternProvider);
 		panelPatternProvider.setLayout(null);
+				
+		JRadioButton rdbtnP_Provider = new JRadioButton("P-Provider");
+		rdbtnP_Provider.setBounds(6, 22, 109, 23);
+		panelPatternProvider.add(rdbtnP_Provider);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("P-Provider");
-		rdbtnNewRadioButton.setBounds(6, 22, 109, 23);
-		panelPatternProvider.add(rdbtnNewRadioButton);
+		JRadioButton rdbtnO_Provider = new JRadioButton("O-Provider");
+		rdbtnO_Provider.setBounds(6, 48, 109, 23);
+		panelPatternProvider.add(rdbtnO_Provider);
 		
-		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("O-Provider");
-		rdbtnNewRadioButton_1.setBounds(6, 48, 109, 23);
-		panelPatternProvider.add(rdbtnNewRadioButton_1);
+		JRadioButton rdbtnOU_Provider = new JRadioButton("OU-Provider");
+		rdbtnOU_Provider.setBounds(6, 72, 109, 23);
+		panelPatternProvider.add(rdbtnOU_Provider);
 		
-		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("OU-Provider");
-		rdbtnNewRadioButton_2.setBounds(6, 72, 109, 23);
-		panelPatternProvider.add(rdbtnNewRadioButton_2);
+		JRadioButton rdbtnO_OU_Provider = new JRadioButton("O-OU-Provider");
+		rdbtnO_OU_Provider.setBounds(131, 22, 109, 23);
+		panelPatternProvider.add(rdbtnO_OU_Provider);
 		
-		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("O-OU-Provider");
-		rdbtnNewRadioButton_3.setBounds(131, 22, 109, 23);
-		panelPatternProvider.add(rdbtnNewRadioButton_3);
+		JRadioButton rdbtnP_O_Provider = new JRadioButton("P-O-Provider");
+		rdbtnP_O_Provider.setBounds(131, 48, 109, 23);
+		panelPatternProvider.add(rdbtnP_O_Provider);
 		
-		JRadioButton rdbtnNewRadioButton_4 = new JRadioButton("P-O-Provider");
-		rdbtnNewRadioButton_4.setBounds(131, 48, 109, 23);
-		panelPatternProvider.add(rdbtnNewRadioButton_4);
+		JRadioButton rdbtnP_OU_Provider = new JRadioButton("P-OU-Provider");
+		rdbtnP_OU_Provider.setBounds(131, 72, 109, 23);
+		panelPatternProvider.add(rdbtnP_OU_Provider);
 		
-		JRadioButton rdbtnNewRadioButton_5 = new JRadioButton("P-OU-Provider");
-		rdbtnNewRadioButton_5.setBounds(131, 72, 109, 23);
-		panelPatternProvider.add(rdbtnNewRadioButton_5);
-		
-		JRadioButton rdbtnNewRadioButton_6 = new JRadioButton("P-O-OU-Provider");
-		rdbtnNewRadioButton_6.setBounds(6, 98, 109, 23);
-		panelPatternProvider.add(rdbtnNewRadioButton_6);
+		JRadioButton rdbtnP_O_OU_Provider = new JRadioButton("P-O-OU-Provider");
+		rdbtnP_O_OU_Provider.setBounds(6, 98, 109, 23);
+		panelPatternProvider.add(rdbtnP_O_OU_Provider);
 		
 		JPanel panelPatternCustomer = new JPanel();
 		panelPatternCustomer.setLayout(null);
@@ -130,42 +125,56 @@ public class JanProviderCustomerSubgroup {
 		panelPatternCustomer.setBounds(325, 11, 291, 146);
 		frame.getContentPane().add(panelPatternCustomer);
 		
-		JRadioButton radioButton = new JRadioButton("P-TCustomer");
-		radioButton.setBounds(6, 22, 109, 23);
-		panelPatternCustomer.add(radioButton);
+		JRadioButton rdbtnP_TCustomer = new JRadioButton("P-TCustomer");
+		rdbtnP_TCustomer.setBounds(6, 22, 109, 23);
+		panelPatternCustomer.add(rdbtnP_TCustomer);
 		
-		JRadioButton radioButton_1 = new JRadioButton("O-TCustomer");
-		radioButton_1.setBounds(6, 48, 109, 23);
-		panelPatternCustomer.add(radioButton_1);
+		JRadioButton rdbtnO_TCustomer = new JRadioButton("O-TCustomer");
+		rdbtnO_TCustomer.setBounds(6, 48, 109, 23);
+		panelPatternCustomer.add(rdbtnO_TCustomer);
 		
-		JRadioButton radioButton_2 = new JRadioButton("OU-TCustomer");
-		radioButton_2.setBounds(6, 72, 109, 23);
-		panelPatternCustomer.add(radioButton_2);
+		JRadioButton rdbtnOU_TCustomer = new JRadioButton("OU-TCustomer");
+		rdbtnOU_TCustomer.setBounds(6, 72, 109, 23);
+		panelPatternCustomer.add(rdbtnOU_TCustomer);
 		
-		JRadioButton radioButton_3 = new JRadioButton("O-OU-TCustomer");
-		radioButton_3.setBounds(131, 22, 109, 23);
-		panelPatternCustomer.add(radioButton_3);
+		JRadioButton rdbtnO_OU_TCustomer = new JRadioButton("O-OU-TCustomer");
+		rdbtnO_OU_TCustomer.setBounds(131, 22, 109, 23);
+		panelPatternCustomer.add(rdbtnO_OU_TCustomer);
 		
-		JRadioButton radioButton_4 = new JRadioButton("P-O-TCustomer");
-		radioButton_4.setBounds(131, 48, 109, 23);
-		panelPatternCustomer.add(radioButton_4);
+		JRadioButton rdbtnP_O_TCustomer = new JRadioButton("P-O-TCustomer");
+		rdbtnP_O_TCustomer.setBounds(131, 48, 109, 23);
+		panelPatternCustomer.add(rdbtnP_O_TCustomer);
 		
-		JRadioButton radioButton_5 = new JRadioButton("P-OU-TCustomer");
-		radioButton_5.setBounds(131, 72, 109, 23);
-		panelPatternCustomer.add(radioButton_5);
+		JRadioButton rdbtnP_OU_TCustomer = new JRadioButton("P-OU-TCustomer");
+		rdbtnP_OU_TCustomer.setBounds(131, 72, 109, 23);
+		panelPatternCustomer.add(rdbtnP_OU_TCustomer);
 		
-		JRadioButton radioButton_6 = new JRadioButton("P-O-OU-TCustomer");
-		radioButton_6.setBounds(6, 98, 125, 23);
-		panelPatternCustomer.add(radioButton_6);
+		JRadioButton rdbtnP_O_OU_TCustomer = new JRadioButton("P-O-OU-TCustomer");
+		rdbtnP_O_OU_TCustomer.setBounds(6, 98, 125, 23);
+		panelPatternCustomer.add(rdbtnP_O_OU_TCustomer);
+		
+		//Group the radio buttons Provider.
+		ButtonGroup rdProviderGroup = new ButtonGroup();
+		rdProviderGroup.add(rdbtnP_Provider); rdProviderGroup.add(rdbtnP_OU_Provider);
+		rdProviderGroup.add(rdbtnO_Provider); rdProviderGroup.add(rdbtnP_O_OU_Provider);
+		rdProviderGroup.add(rdbtnOU_Provider); 
+		rdProviderGroup.add(rdbtnO_OU_Provider); 
+		rdProviderGroup.add(rdbtnP_O_Provider); 
+		
+		//Group the radio buttons Target Customer.
+		ButtonGroup rdCustomerGroup = new ButtonGroup();
+		rdCustomerGroup.add(rdbtnP_TCustomer); rdCustomerGroup.add(rdbtnP_O_TCustomer);
+		rdCustomerGroup.add(rdbtnO_TCustomer); rdCustomerGroup.add(rdbtnP_OU_TCustomer);
+		rdCustomerGroup.add(rdbtnOU_TCustomer); rdCustomerGroup.add(rdbtnP_O_OU_TCustomer);
+		rdCustomerGroup.add(rdbtnO_OU_TCustomer);		
 		
 		JButton btnNext = new JButton("Next");
 		btnNext.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				//Botao Next - Conferir Dados e chamar Janela SOffering !
-				
-				JanSOffering janSOffering = new JanSOffering();
-				janSOffering.main(null);
+			public void actionPerformed(ActionEvent arg0) {				
+				frame.setVisible(false);
+				if(proxJan == null)
+					proxJan = new JanSOffering(soplPattern, JanProviderCustomerSubgroup.this);	
+				proxJan.setVisible(true);
 				
 			}
 		});
@@ -182,35 +191,41 @@ public class JanProviderCustomerSubgroup {
 		imgPatternCustomer.setBounds(325, 168, 291, 146);
 		frame.getContentPane().add(imgPatternCustomer);
 		
-		JPanel panelP_Provider = new JPanel();
-		panelP_Provider.setBorder(new TitledBorder(null, "P-Provider", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelP_Provider.setBounds(10, 325, 291, 184);
-		//frame.getContentPane().add(panelP_Provider);
-		panelP_Provider.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("Person");
-		lblNewLabel.setBounds(10, 24, 46, 14);
-		panelP_Provider.add(lblNewLabel);
-		
-		textField = new JTextField();
-		textField.setBounds(97, 59, 184, 20);
-		panelP_Provider.add(textField);
-		textField.setColumns(10);
-		
-		JLabel lblNewLabel_1 = new JLabel("Service Provider");
-		lblNewLabel_1.setBounds(10, 62, 86, 14);
-		panelP_Provider.add(lblNewLabel_1);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(97, 21, 184, 20);
-		panelP_Provider.add(textField_1);
+		final JPanel panelP_Provider = new JPanel();
+		rdbtnP_Provider.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {				
+				panelP_Provider.setBorder(new TitledBorder(null, "P-Provider", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				panelP_Provider.setBounds(10, 325, 291, 184);
+				frame.getContentPane().add(panelP_Provider);
+				
+				panelP_Provider.setLayout(null);
+				
+				JLabel lblNewLabel = new JLabel("Person");
+				lblNewLabel.setBounds(10, 24, 46, 14);
+				panelP_Provider.add(lblNewLabel);
+				
+				textField = new JTextField();
+				textField.setBounds(97, 59, 184, 20);
+				panelP_Provider.add(textField);
+				textField.setColumns(10);
+				
+				JLabel lblNewLabel_1 = new JLabel("Service Provider");
+				lblNewLabel_1.setBounds(10, 62, 86, 14);
+				panelP_Provider.add(lblNewLabel_1);
+				
+				textField_1 = new JTextField();
+				textField_1.setColumns(10);
+				textField_1.setBounds(97, 21, 184, 20);
+				panelP_Provider.add(textField_1);		
+			}	
+		});	
 		
 		JPanel panelP_TCustomer = new JPanel();
 		panelP_TCustomer.setLayout(null);
 		panelP_TCustomer.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "P-TCustomer", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelP_TCustomer.setBounds(325, 325, 291, 184);
-		//frame.getContentPane().add(panelP_TCustomer);
+		frame.getContentPane().add(panelP_TCustomer);
 		
 		JLabel label = new JLabel("Person");
 		label.setBounds(10, 24, 76, 14);
@@ -234,7 +249,7 @@ public class JanProviderCustomerSubgroup {
 		panelP_O_OU_Provider.setLayout(null);
 		panelP_O_OU_Provider.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "P-O-OU-Provider", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelP_O_OU_Provider.setBounds(10, 325, 291, 184);
-		frame.getContentPane().add(panelP_O_OU_Provider);
+		//frame.getContentPane().add(panelP_O_OU_Provider);
 		
 		JLabel label_15 = new JLabel("Person Provider");
 		label_15.setBounds(10, 24, 76, 14);
@@ -276,7 +291,7 @@ public class JanProviderCustomerSubgroup {
 		panelP_O_OU_TCustomer.setLayout(null);
 		panelP_O_OU_TCustomer.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "P-O-OU-TCustomer", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelP_O_OU_TCustomer.setBounds(325, 325, 291, 184);
-		frame.getContentPane().add(panelP_O_OU_TCustomer);
+		//frame.getContentPane().add(panelP_O_OU_TCustomer);
 		
 		JLabel label_33 = new JLabel("Person Target Customer");
 		label_33.setBounds(10, 24, 117, 14);
@@ -616,5 +631,83 @@ public class JanProviderCustomerSubgroup {
 		textField_5.setColumns(10);
 		textField_5.setBounds(97, 21, 184, 20);
 		panelO_Provider.add(textField_5);
+		
+		//Register a listener for the radio buttons
+		
+
+		
+		rdbtnO_Provider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		rdbtnOU_Provider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		rdbtnO_OU_Provider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		rdbtnP_O_Provider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		rdbtnP_OU_Provider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		rdbtnP_O_OU_Provider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		
+				
+		//Register a listener for the radio buttons Target Customer
+		rdbtnP_TCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		rdbtnO_TCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		rdbtnOU_TCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		rdbtnO_OU_TCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		rdbtnP_O_TCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		rdbtnP_OU_TCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});
+		rdbtnP_O_OU_TCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+								
+			}
+		});		
+
+	}
+	
+	public void setVisible(boolean b){
+		frame.setVisible(b);
 	}
 }
