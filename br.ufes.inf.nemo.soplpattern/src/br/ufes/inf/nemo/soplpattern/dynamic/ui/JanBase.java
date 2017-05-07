@@ -84,6 +84,18 @@ public class JanBase {
 	private static JPanel panelO_OU_Provider;
 	private static JPanel panelOU_Provider;
 	private static JPanel panelO_Provider;
+	
+	//PANEL SOFFERING
+	private static JPanel panelSOffering;
+	private static JPanel panelSODescription;
+	private static JPanel panelSOCommitment;
+	private static JPanel panelSOClaim;
+	private JTextField txtServiceOffering;
+	private JTextField txtTargetCC;
+	private JTextField txtServiceOfferingDescription;
+	private JTextField txtServiceProvider;
+	private JTextField txtServiceOfferingCommitment;
+	private JTextField txtServiceOfferingClaim;
 
 
 	/**
@@ -110,7 +122,7 @@ public class JanBase {
 				trocaPainelPrincipal(1);
 			}
 		});
-		btnNext.setBounds(689, 533, 89, 37);
+		btnNext.setBounds(678, 522, 89, 37);
 		frame.getContentPane().add(btnNext);
 		
 		JButton btnBack = new JButton("Back");
@@ -119,7 +131,7 @@ public class JanBase {
 				trocaPainelPrincipal(-1);
 			}
 		});
-		btnBack.setBounds(576, 533, 89, 37);
+		btnBack.setBounds(579, 522, 89, 37);
 		frame.getContentPane().add(btnBack);
 		
 		JPanel panelSteps = new JPanel();
@@ -135,7 +147,8 @@ public class JanBase {
 		panelPCSubgroup = new JPanel();
 		panelPCSubgroup.setBounds(157, 11, 621, 511);
 		frame.getContentPane().add(panelPCSubgroup);
-		panelPCSubgroup.setLayout(null);
+		panelPCSubgroup.setLayout(null);		
+		//panelPCSubgroup.setVisible(false);
 		
 		panelPatternProvider = new JPanel();
 		panelPatternProvider.setBorder(new TitledBorder(null, "Provider", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -772,6 +785,160 @@ public class JanBase {
 				trocaPainel(panelP_O_OU_TCustomer);				
 			}
 		});		
+				
+		
+		//TUDO REFERENTE AO PAINEL SOFFFERING
+		
+		panelSOffering = new JPanel();
+		panelSOffering.setBounds(157, 11, 621, 511);
+		frame.getContentPane().add(panelSOffering);
+		panelSOffering.setLayout(null);
+		panelSOffering.setVisible(false);
+		
+		JPanel panelSOfferingInterno = new JPanel();
+		panelSOfferingInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOffering", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSOfferingInterno.setBounds(10, 11, 601, 489);
+		panelSOffering.add(panelSOfferingInterno);
+		panelSOfferingInterno.setLayout(null);
+		
+		JLabel label = new JLabel("Class");
+		label.setBounds(143, 327, 68, 14);
+		panelSOfferingInterno.add(label);
+		
+		JLabel label_1 = new JLabel("Name");
+		label_1.setBounds(328, 327, 68, 14);
+		panelSOfferingInterno.add(label_1);
+		
+		txtServiceOffering = new JTextField();
+		txtServiceOffering.setBounds(328, 352, 166, 20);
+		panelSOfferingInterno.add(txtServiceOffering);
+		txtServiceOffering.setColumns(10);
+		
+		txtTargetCC = new JTextField();
+		txtTargetCC.setColumns(10);
+		txtTargetCC.setBounds(328, 383, 166, 20);
+		panelSOfferingInterno.add(txtTargetCC);
+				
+		JPanel panelImg = new JPanel();
+		panelImg.setBackground(Color.LIGHT_GRAY);
+		panelImg.setBounds(10, 27, 581, 275);
+		panelSOfferingInterno.add(panelImg);
+		
+		JLabel lblServiceOffering = new JLabel("Service Offering");
+		lblServiceOffering.setBounds(143, 352, 78, 14);
+		panelSOfferingInterno.add(lblServiceOffering);
+		
+		JLabel lblTargetCC = new JLabel("Target Customer Community");
+		lblTargetCC.setBounds(143, 390, 151, 14);
+		panelSOfferingInterno.add(lblTargetCC);
+		
+		//SODescription		
+		panelSODescription = new JPanel();
+		panelSODescription.setBounds(157, 11, 621, 511);
+		frame.getContentPane().add(panelSODescription);
+		panelSODescription.setLayout(null);
+		panelSODescription.setVisible(false);
+		
+		JPanel panelSODescriptionInterno = new JPanel();
+		panelSODescriptionInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SODescription", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSODescriptionInterno.setBounds(10, 11, 601, 489);
+		panelSODescription.add(panelSODescriptionInterno);
+		panelSODescriptionInterno.setLayout(null);
+		
+		JLabel lblClass_SODescription = new JLabel("Class");
+		lblClass_SODescription.setBounds(143, 327, 68, 14);
+		panelSODescriptionInterno.add(lblClass_SODescription);
+		
+		JLabel lblName_SODescription = new JLabel("Name");
+		lblName_SODescription.setBounds(328, 327, 68, 14);
+		panelSODescriptionInterno.add(lblName_SODescription);
+		
+		JLabel lblServiceOfferingDescription = new JLabel("Service Offering Description");
+		lblServiceOfferingDescription.setBounds(143, 352, 139, 14);
+		panelSODescriptionInterno.add(lblServiceOfferingDescription);
+		
+		txtServiceOfferingDescription = new JTextField();
+		txtServiceOfferingDescription.setBounds(328, 352, 166, 20);
+		panelSODescriptionInterno.add(txtServiceOfferingDescription);
+		txtServiceOfferingDescription.setColumns(10);
+			
+		JPanel panelImg_SODescription = new JPanel();
+		panelImg_SODescription.setBackground(Color.LIGHT_GRAY);
+		panelImg_SODescription.setBounds(10, 27, 581, 275);
+		panelSODescriptionInterno.add(panelImg_SODescription);	
+		
+		//SOCommitment
+		
+		panelSOCommitment = new JPanel();
+		panelSOCommitment.setBounds(157, 11, 621, 511);
+		frame.getContentPane().add(panelSOCommitment);
+		panelSOCommitment.setLayout(null);	
+		panelSOCommitment.setVisible(false);
+		
+		JPanel panelSOCommitmentInterno = new JPanel();
+		panelSOCommitmentInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOCommitment", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSOCommitmentInterno.setBounds(10, 11, 601, 489);
+		panelSOCommitment.add(panelSOCommitmentInterno);
+		panelSOCommitmentInterno.setLayout(null);
+		
+		JLabel lblClass_SOCommitment = new JLabel("Class");
+		lblClass_SOCommitment.setBounds(143, 327, 68, 14);
+		panelSOCommitmentInterno.add(lblClass_SOCommitment);
+		
+		JLabel lblName_SOCommitment = new JLabel("Name");
+		lblName_SOCommitment.setBounds(328, 327, 68, 14);
+		panelSOCommitmentInterno.add(lblName_SOCommitment);
+		
+		JLabel lblServiceOfferingCommitment = new JLabel("Service Offering Commitment");
+		lblServiceOfferingCommitment.setBounds(143, 352, 151, 14);
+		panelSOCommitmentInterno.add(lblServiceOfferingCommitment);
+		
+		txtServiceOfferingCommitment = new JTextField();
+		txtServiceOfferingCommitment.setBounds(328, 352, 166, 20);
+		panelSOCommitmentInterno.add(txtServiceOfferingCommitment);
+		txtServiceOfferingCommitment.setColumns(10);
+			
+		JPanel panelImg_SOCommitment = new JPanel();
+		panelImg_SOCommitment.setBackground(Color.LIGHT_GRAY);
+		panelImg_SOCommitment.setBounds(10, 27, 581, 275);
+		panelSOCommitmentInterno.add(panelImg_SOCommitment);	
+		
+		//SOClaim
+		
+		panelSOClaim = new JPanel();
+		panelSOClaim.setBounds(157, 11, 621, 511);
+		frame.getContentPane().add(panelSOClaim);
+		panelSOClaim.setLayout(null);	
+		panelSOClaim.setVisible(false);
+		
+		JPanel panelSOClaimInterno = new JPanel();
+		panelSOClaimInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOClaim", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSOClaimInterno.setBounds(10, 11, 601, 489);
+		panelSOClaim.add(panelSOClaimInterno);
+		panelSOClaimInterno.setLayout(null);
+		
+		JLabel lblClass_SOClaim = new JLabel("Class");
+		lblClass_SOClaim.setBounds(143, 327, 68, 14);
+		panelSOClaimInterno.add(lblClass_SOClaim);
+		
+		JLabel lblName_SOClaim = new JLabel("Name");
+		lblName_SOClaim.setBounds(328, 327, 68, 14);
+		panelSOClaimInterno.add(lblName_SOClaim);
+		
+		JLabel lblServiceOfferingClaim = new JLabel("Service Offering Claim");
+		lblServiceOfferingClaim.setBounds(143, 352, 151, 14);
+		panelSOClaimInterno.add(lblServiceOfferingClaim);
+		
+		txtServiceOfferingClaim = new JTextField();
+		txtServiceOfferingClaim.setBounds(328, 352, 166, 20);
+		panelSOClaimInterno.add(txtServiceOfferingClaim);
+		txtServiceOfferingClaim.setColumns(10);
+			
+		JPanel panelImg_SOClaimm = new JPanel();
+		panelImg_SOClaimm.setBackground(Color.LIGHT_GRAY);
+		panelImg_SOClaimm.setBounds(10, 27, 581, 275);
+		panelSOClaimInterno.add(panelImg_SOClaimm);	
+
 		
 	}
 	
@@ -803,16 +970,33 @@ public class JanBase {
 		panelP_TCustomer.setVisible(false);
 	}	
 	
+	public void desabilitaPaineisPrincipais(){
+		panelPCSubgroup.setVisible(false);
+		panelSOffering.setVisible(false);
+		panelSODescription.setVisible(false);
+		panelSOCommitment.setVisible(false);
+		panelSOClaim.setVisible(false);
+	}
+	
 	public void trocaPainelPrincipal(int n){
 		painelSelecionado += n;
 		
 		//Escolhe qual painel sera exibido !
+		desabilitaPaineisPrincipais();
 		
-		if(painelSelecionado == 0){
+		if(painelSelecionado == 0){			
 			panelPCSubgroup.setVisible(true);
 		}
-		else if(painelSelecionado == 1){
-			
+		else if(painelSelecionado == 1){			
+			panelSOffering.setVisible(true);
+		}
+		else if(painelSelecionado == 2){			
+			panelSODescription.setVisible(true);
+		}
+		else if(painelSelecionado == 3){			
+			panelSOCommitment.setVisible(true);
+		}else if(painelSelecionado == 4){			
+			panelSOClaim.setVisible(true);
 		}
 	}
 }
