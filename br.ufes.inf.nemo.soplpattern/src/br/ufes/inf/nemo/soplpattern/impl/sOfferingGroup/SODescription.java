@@ -18,6 +18,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 import br.ufes.inf.nemo.oled.DiagramManager;
+import br.ufes.inf.nemo.soplpattern.dynamic.ui.JanBase;
 import br.ufes.inf.nemo.soplpattern.dynamic.ui.JanProviderCustomerSubgroup;
 import br.ufes.inf.nemo.soplpattern.impl.SOPLPattern;
 
@@ -41,7 +42,8 @@ public class SODescription extends SOPLPattern{
 						
 		//Instanciar a Janela Principal SOPL aqui !
 		this.diagramManager = diagramManager;
-		JanProviderCustomerSubgroup janPCsubgroup = new JanProviderCustomerSubgroup(this);						
+		//JanProviderCustomerSubgroup janPCsubgroup = new JanProviderCustomerSubgroup(this);
+		JanBase janBase = new JanBase(this);
 	}
 	
 	public void criarTabela(String[][] tabela){
@@ -53,25 +55,11 @@ public class SODescription extends SOPLPattern{
 		Package root = parser.getModel();
 		outcomeFixer = new OutcomeFixer(root);
 		fix = new Fix();
-					
-//		Classifier roleA = this.createClassifier("Service Offering Description", "Role", x, y);
-//		Classifier relatorA = this.createClassifier("Service Offering", "Role", x, y);
-		
-//		Association formal = null;		
-		
-//		if(roleA != null && relatorA != null){
-//			formal = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleA, relatorA).getAdded().get(0);
-//			fix.includeAdded(formal);
-//		}		
-			
-				
-//		Classifier roleA = this.createClassifier(this.elements[0][1], "RoleMixin", x, y);
-//		Classifier collectiveA = this.createClassifier(this.elements[1][1], "Collective", x+(verticalDistance/3), y);
-//		Classifier relatorA = this.createClassifier(this.elements[2][1], "Relator", x+(verticalDistance/2), y);		
-//		Classifier roleB = this.createClassifier(this.elements[3][1], "RoleMixin", x+(verticalDistance/3), y+70);
-		
+
+		Classifier collectiveB  = this.createClassifier("Person", "kind", x, y);
 		Classifier roleA = this.createClassifier("Service Provider ", "RoleMixin", x, y);
-		Classifier collectiveA = this.createClassifier(elements[1][1].toString() , "Collective", x+(verticalDistance/3), y);
+		//Classifier collectiveA = this.createClassifier(elements[1][1].toString() , "Collective", x+(verticalDistance/3), y);
+		Classifier collectiveA = this.createClassifier("Person", "kind", x+(verticalDistance/3), y);
 		Classifier relatorA = this.createClassifier(elements[2][1].toString() , "Relator", x+(verticalDistance/2), y);		
 		Classifier roleB = this.createClassifier("Target Customer" , "RoleMixin", x+(verticalDistance/3), y+70);
 
@@ -80,6 +68,10 @@ public class SODescription extends SOPLPattern{
 		if(collectiveA != null && roleB != null){
 			fix.addAll(outcomeFixer.createGeneralization(roleB, collectiveA));	
 		}
+		
+		if(collectiveB != null && roleA != null){
+			fix.addAll(outcomeFixer.createGeneralization(roleA, collectiveB));	
+		}
 
 		if(roleA != null && relatorA != null){
 			formal = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleA, relatorA).getAdded().get(0);
@@ -87,7 +79,7 @@ public class SODescription extends SOPLPattern{
 		}
 		
 		if(relatorA != null && collectiveA != null){
-			formal = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorA, collectiveA).getAdded().get(0);
+			formal = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorA, roleB).getAdded().get(0);
 			fix.includeAdded(formal);
 		}
 		

@@ -23,44 +23,17 @@ import javax.swing.JRadioButton;
 
 public class JanSOClaim {
 
-	private JFrame frame;
+	private static JFrame frame;
 	private JTextField txtServiceProvider;
 	private ImageIcon icon;
+	private JanSOCommitment janSOCommitment;
 	
-	
-//	public void inicializar(final SODescription janDescription) {	
-//		this.janAnterior = janDescription;		
-//		this.main(null);
-//	}
-	
-	public void inicializar() {	
-		//this.janAnterior = janDescription;		
-		this.main(null);
-	}
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JanSOClaim window = new JanSOClaim();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public JanSOClaim() {
+	public JanSOClaim(JanSOCommitment jan){
 		initialize();
+		frame.setVisible(true);
+		janSOCommitment = jan;
+		
 	}
-
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -76,10 +49,16 @@ public class JanSOClaim {
 		btnNewButton.setBounds(405, 317, 139, 32);
 		frame.getContentPane().add(btnNewButton);
 		
-		JButton button = new JButton("Go Back");
-		button.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		button.setBounds(405, 274, 139, 32);
-		frame.getContentPane().add(button);
+		JButton btnGoBack = new JButton("Go Back");
+		btnGoBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				janSOCommitment.setVisible(true);
+				frame.setVisible(false);
+			}
+		});
+		btnGoBack.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnGoBack.setBounds(405, 274, 139, 32);
+		frame.getContentPane().add(btnGoBack);
 		
 		JButton button_1 = new JButton("Cancel");
 		button_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -114,6 +93,10 @@ public class JanSOClaim {
 		lblNewLabel.setBounds(20, 257, 140, 14);
 		panel_2.add(lblNewLabel);
 		
-		icon = new ImageIcon(getClass().getResource("resource/SOFFERING.png"));
+		//icon = new ImageIcon(getClass().getResource("resource/SOFFERING.png"));
+	}
+	
+	public static void setVisible(boolean b){
+		frame.setVisible(b);
 	}
 }

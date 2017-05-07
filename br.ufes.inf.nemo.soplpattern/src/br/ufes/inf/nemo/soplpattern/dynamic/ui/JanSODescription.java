@@ -23,43 +23,18 @@ import javax.swing.JRadioButton;
 
 public class JanSODescription {
 
-	private JFrame frame;
+	private static JFrame frame;
 	private JTextField txtServiceProvider;
 	private ImageIcon icon;
+	private JanSOffering janAnterior;
+	private JanSOCommitment janSOCommitment;
 	
-	
-//	public void inicializar(final SODescription janDescription) {	
-//		this.janAnterior = janDescription;		
-//		this.main(null);
-//	}
-	
-	public void inicializar() {	
-		//this.janAnterior = janDescription;		
-		this.main(null);
-	}
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JanSODescription window = new JanSODescription();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public JanSODescription() {
+	public JanSODescription(JanSOffering jan){
 		initialize();
+		frame.setVisible(true);
+		janAnterior = jan;
 	}
+
 
 	/**
 	 * Initialize the contents of the frame.
@@ -70,21 +45,35 @@ public class JanSODescription {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton btnNewButton = new JButton("Continue ->");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btnNewButton.setBackground(Color.WHITE);
-		btnNewButton.setBounds(405, 317, 139, 32);
-		frame.getContentPane().add(btnNewButton);
+		JButton btnContinue = new JButton("Continue ->");
+		btnContinue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(janSOCommitment == null)
+					janSOCommitment = new JanSOCommitment(JanSODescription.this);
+				janSOCommitment.setVisible(true);
+				frame.setVisible(false);
+			}
+		});
+		btnContinue.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnContinue.setBackground(Color.WHITE);
+		btnContinue.setBounds(405, 317, 139, 32);
+		frame.getContentPane().add(btnContinue);
 		
-		JButton button = new JButton("Go Back");
-		button.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		button.setBounds(405, 274, 139, 32);
-		frame.getContentPane().add(button);
+		JButton btnGoBack = new JButton("Go Back");
+		btnGoBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				janAnterior.setVisible(true);
+				frame.setVisible(false);
+			}
+		});
+		btnGoBack.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnGoBack.setBounds(405, 274, 139, 32);
+		frame.getContentPane().add(btnGoBack);
 		
-		JButton button_1 = new JButton("Cancel");
-		button_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		button_1.setBounds(405, 375, 139, 32);
-		frame.getContentPane().add(button_1);
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnCancel.setBounds(405, 375, 139, 32);
+		frame.getContentPane().add(btnCancel);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SODescription", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -114,6 +103,10 @@ public class JanSODescription {
 		lblNewLabel.setBounds(20, 257, 140, 14);
 		panel_2.add(lblNewLabel);
 		
-		icon = new ImageIcon(getClass().getResource("resource/SOFFERING.png"));
+		//icon = new ImageIcon(getClass().getResource("resource/SOFFERING.png"));
+	}
+	
+	public static void setVisible(boolean b){
+		frame.setVisible(b);
 	}
 }

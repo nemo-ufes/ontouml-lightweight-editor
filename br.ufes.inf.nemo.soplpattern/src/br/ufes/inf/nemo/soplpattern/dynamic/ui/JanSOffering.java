@@ -32,7 +32,7 @@ public class JanSOffering {
 	private ImageIcon icon;
 	private SOPLPattern soplPattern;
 	private JanProviderCustomerSubgroup janAnterior;
-	//private static JanSOffering window;
+	private JanSODescription janSODescription;
 		
 	/**
 	 * Launch the application.
@@ -54,11 +54,19 @@ public class JanSOffering {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton btnNewButton = new JButton("Continue ->");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btnNewButton.setBackground(Color.WHITE);
-		btnNewButton.setBounds(405, 317, 139, 32);
-		frame.getContentPane().add(btnNewButton);
+		JButton btnContinue = new JButton("Continue ->");
+		btnContinue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(janSODescription == null)
+					janSODescription = new JanSODescription(JanSOffering.this);
+				janSODescription.setVisible(true);
+				frame.setVisible(false);
+			}
+		});
+		btnContinue.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnContinue.setBackground(Color.WHITE);
+		btnContinue.setBounds(405, 317, 139, 32);
+		frame.getContentPane().add(btnContinue);
 		
 		JButton btnGoBack = new JButton("Go Back");
 		btnGoBack.addActionListener(new ActionListener() {
@@ -71,10 +79,10 @@ public class JanSOffering {
 		btnGoBack.setBounds(405, 274, 139, 32);
 		frame.getContentPane().add(btnGoBack);
 		
-		JButton button_1 = new JButton("Cancel");
-		button_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		button_1.setBounds(405, 375, 139, 32);
-		frame.getContentPane().add(button_1);
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnCancel.setBounds(405, 375, 139, 32);
+		frame.getContentPane().add(btnCancel);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOffering", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -142,16 +150,16 @@ public class JanSOffering {
 		panel.setLayout(null);
 		
 		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("SOCommitments");
-		rdbtnNewRadioButton_1.setBounds(6, 17, 103, 23);
+		rdbtnNewRadioButton_1.setBounds(6, 43, 103, 23);
 		panel.add(rdbtnNewRadioButton_1);
 		
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("SOClaims");
-		rdbtnNewRadioButton.setBounds(6, 43, 69, 23);
-		panel.add(rdbtnNewRadioButton);
-		
 		JRadioButton rdbtnSodescription = new JRadioButton("SODescription");
-		rdbtnSodescription.setBounds(6, 69, 109, 23);
+		rdbtnSodescription.setBounds(6, 17, 109, 23);
 		panel.add(rdbtnSodescription);
+		
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("SOClaims");
+		rdbtnNewRadioButton.setBounds(6, 69, 69, 23);
+		panel.add(rdbtnNewRadioButton);
 	}
 	
 	public static void setVisible(boolean b){
