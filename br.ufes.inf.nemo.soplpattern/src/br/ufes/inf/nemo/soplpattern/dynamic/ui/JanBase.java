@@ -15,6 +15,7 @@ import br.ufes.inf.nemo.soplpattern.impl.SOPLPattern;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -23,41 +24,42 @@ import java.awt.event.ActionListener;
 public class JanBase {
 
 	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTextField textField_14;
-	private JTextField textField_15;
-	private JTextField textField_16;
-	private JTextField textField_17;
-	private JTextField textField_18;
-	private JTextField textField_19;
-	private JTextField textField_20;
-	private JTextField textField_21;
-	private JTextField textField_22;
-	private JTextField textField_23;
-	private JTextField textField_24;
-	private JTextField textField_25;
-	private JTextField textField_26;
-	private JTextField textField_27;
-	private JTextField textField_28;
-	private JTextField textField_29;
-	private JTextField textField_30;
-	private JTextField textField_31;
-	private JTextField textField_32;
-	private JTextField textField_33;
-	private JTextField textField_34;
+	private int painelSelecionado = 0; //Utilizado no botao Next . Sempre que passamos para outro painel(Next) ou voltamos(Go Back) essa variavel incrementa ou decrementa
+	private JTextField txtServiceProvider_P_Provider;
+	private JTextField txtPerson_P_Provider;
+	private JTextField txtTargetCustomer_P_TCustomer;
+	private JTextField txtPerson_P_TCustomer;
+	private JTextField txtServiceProvider_O_Provider;
+	private JTextField txtOrganization_O_Provider;
+	private JTextField txtServiceProvider_OU_Provider;
+	private JTextField txtOrgUnit_OU_Provider;
+	private JTextField txtServiceProvider_O_OU_Provider;
+	private JTextField txtOrgUnitProvider_O_OU_Provider;
+	private JTextField txtOrganizationProvider_O_OU_Provider;
+	private JTextField txtServiceProvider_P_O_Provider;
+	private JTextField txtPersonProvider_P_O_Provider;
+	private JTextField txtOrganizationProvider_P_O_Provider;
+	private JTextField txtServiceProvider_P_OU_Provider;
+	private JTextField txtPersonProvider_P_OU_Provider;
+	private JTextField txtOrgUnitProvider_P_OU_Provider;
+	private JTextField txtServiceProvider_P_O_OU_Provider;
+	private JTextField txtPersonProvider_P_O_OU_Provider;
+	private JTextField txtOrgUnitProvider_P_O_OU_Provider;
+	private JTextField txtOrgProvider_P_O_OU_Provider;
+	private JTextField txtTargetCustomer_O_TCustomer;
+	private JTextField txtOrganization_O_TCustomer;
+	private JTextField txtTargetCustomer_OU_TCustomer;
+	private JTextField txtOrgUnit_OU_TCustomer;
+	private JTextField txtTargetCustomer_O_OU_TCustomer;
+	private JTextField txtOrgUnitTC_O_OU_TCustomer;
+	private JTextField txtOrgTC_O_OU_TCustomer;
+	private JTextField txtTargetCustomer_P_O_TCustomer;
+	private JTextField txtPersonTC_P_O_TCustomer;
+	private JTextField txtOrgTC_P_O_TCustomer;
+	private JTextField txtTargetCustomerTC_P_OU_TCustomer;
+	private JTextField txtPersonTC_P_OU_TCustomer;
+	private JTextField txtOrgUnitTC_P_OU_TCustomer;
+	private JTextField txtOrgProvider_P_OU_TCustomer;
 	private JTextField textField_35;
 	private JTextField textField_36;
 	private JTextField textField_37;
@@ -102,13 +104,23 @@ public class JanBase {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton btnContinue = new JButton("Continue");
-		btnContinue.setBounds(689, 533, 89, 37);
-		frame.getContentPane().add(btnContinue);
+		JButton btnNext = new JButton("Next");
+		btnNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				trocaPainelPrincipal(1);
+			}
+		});
+		btnNext.setBounds(689, 533, 89, 37);
+		frame.getContentPane().add(btnNext);
 		
-		JButton button = new JButton("Go Back");
-		button.setBounds(576, 533, 89, 37);
-		frame.getContentPane().add(button);
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				trocaPainelPrincipal(-1);
+			}
+		});
+		btnBack.setBounds(576, 533, 89, 37);
+		frame.getContentPane().add(btnBack);
 		
 		JPanel panelSteps = new JPanel();
 		panelSteps.setBorder(new TitledBorder(null, "Steps", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -193,6 +205,21 @@ public class JanBase {
 		rdbtnP_O_OU_TCustomer.setBounds(6, 98, 125, 23);
 		panelPatternCustomer.add(rdbtnP_O_OU_TCustomer);
 		
+		//Group the radio buttons Provider.
+		ButtonGroup rdProviderGroup = new ButtonGroup();
+		rdProviderGroup.add(rdbtnP_Provider); rdProviderGroup.add(rdbtnP_OU_Provider);
+		rdProviderGroup.add(rdbtnO_Provider); rdProviderGroup.add(rdbtnP_O_OU_Provider);
+		rdProviderGroup.add(rdbtnOU_Provider); 
+		rdProviderGroup.add(rdbtnO_OU_Provider); 
+		rdProviderGroup.add(rdbtnP_O_Provider); 
+		
+		//Group the radio buttons Target Customer.
+		ButtonGroup rdCustomerGroup = new ButtonGroup();
+		rdCustomerGroup.add(rdbtnP_TCustomer); rdCustomerGroup.add(rdbtnP_O_TCustomer);
+		rdCustomerGroup.add(rdbtnO_TCustomer); rdCustomerGroup.add(rdbtnP_OU_TCustomer);
+		rdCustomerGroup.add(rdbtnOU_TCustomer); rdCustomerGroup.add(rdbtnP_O_OU_TCustomer);
+		rdCustomerGroup.add(rdbtnO_OU_TCustomer);		
+		
 		imgPatternProvider = new JPanel();
 		imgPatternProvider.setBackground(Color.GRAY);
 		imgPatternProvider.setBounds(10, 168, 291, 146);
@@ -212,23 +239,23 @@ public class JanBase {
 		panelP_Provider.setLayout(null);
 		panelP_Provider.setVisible(false);
 		
-		JLabel lblNewLabel = new JLabel("Person");
-		lblNewLabel.setBounds(10, 24, 46, 14);
-		panelP_Provider.add(lblNewLabel);
+		JLabel lblPerson_P_Provider = new JLabel("Person");
+		lblPerson_P_Provider.setBounds(10, 24, 46, 14);
+		panelP_Provider.add(lblPerson_P_Provider);
 		
-		textField = new JTextField();
-		textField.setBounds(97, 59, 184, 20);
-		panelP_Provider.add(textField);
-		textField.setColumns(10);
+		txtServiceProvider_P_Provider = new JTextField();
+		txtServiceProvider_P_Provider.setBounds(97, 59, 184, 20);
+		panelP_Provider.add(txtServiceProvider_P_Provider);
+		txtServiceProvider_P_Provider.setColumns(10);
 		
-		JLabel lblNewLabel_1 = new JLabel("Service Provider");
-		lblNewLabel_1.setBounds(10, 62, 86, 14);
-		panelP_Provider.add(lblNewLabel_1);
+		JLabel lblServiceProvider_P_Provider = new JLabel("Service Provider");
+		lblServiceProvider_P_Provider.setBounds(10, 62, 86, 14);
+		panelP_Provider.add(lblServiceProvider_P_Provider);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(97, 21, 184, 20);
-		panelP_Provider.add(textField_1);	
+		txtPerson_P_Provider = new JTextField();
+		txtPerson_P_Provider.setColumns(10);
+		txtPerson_P_Provider.setBounds(97, 21, 184, 20);
+		panelP_Provider.add(txtPerson_P_Provider);	
 				
 		panelP_TCustomer = new JPanel();
 		panelP_TCustomer.setLayout(null);
@@ -237,23 +264,23 @@ public class JanBase {
 		panelPCSubgroup.add(panelP_TCustomer);
 		panelP_TCustomer.setVisible(false);
 		
-		JLabel label = new JLabel("Person");
-		label.setBounds(10, 24, 76, 14);
-		panelP_TCustomer.add(label);
+		JLabel lblPerson_P_TCustomer = new JLabel("Person");
+		lblPerson_P_TCustomer.setBounds(10, 24, 76, 14);
+		panelP_TCustomer.add(lblPerson_P_TCustomer);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(97, 59, 184, 20);
-		panelP_TCustomer.add(textField_2);
+		txtTargetCustomer_P_TCustomer = new JTextField();
+		txtTargetCustomer_P_TCustomer.setColumns(10);
+		txtTargetCustomer_P_TCustomer.setBounds(97, 59, 184, 20);
+		panelP_TCustomer.add(txtTargetCustomer_P_TCustomer);
 		
-		JLabel label_1 = new JLabel("Target Customer");
-		label_1.setBounds(10, 62, 86, 14);
-		panelP_TCustomer.add(label_1);
+		JLabel lblTargetCustomer_P_TCustomer = new JLabel("Target Customer");
+		lblTargetCustomer_P_TCustomer.setBounds(10, 62, 86, 14);
+		panelP_TCustomer.add(lblTargetCustomer_P_TCustomer);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(97, 21, 184, 20);
-		panelP_TCustomer.add(textField_3);
+		txtPerson_P_TCustomer = new JTextField();
+		txtPerson_P_TCustomer.setColumns(10);
+		txtPerson_P_TCustomer.setBounds(97, 21, 184, 20);
+		panelP_TCustomer.add(txtPerson_P_TCustomer);
 				
 		panelP_O_OU_Provider = new JPanel();
 		panelP_O_OU_Provider.setLayout(null);
@@ -262,41 +289,41 @@ public class JanBase {
 		panelPCSubgroup.add(panelP_O_OU_Provider);
 		panelP_O_OU_Provider.setVisible(false);
 		
-		JLabel label_15 = new JLabel("Person Provider");
-		label_15.setBounds(10, 24, 76, 14);
-		panelP_O_OU_Provider.add(label_15);
+		JLabel lblPersonProvider_P_O_OU_Provider = new JLabel("Person Provider");
+		lblPersonProvider_P_O_OU_Provider.setBounds(10, 24, 76, 14);
+		panelP_O_OU_Provider.add(lblPersonProvider_P_O_OU_Provider);
 		
-		textField_17 = new JTextField();
-		textField_17.setColumns(10);
-		textField_17.setBounds(137, 59, 144, 20);
-		panelP_O_OU_Provider.add(textField_17);
+		txtServiceProvider_P_O_OU_Provider = new JTextField();
+		txtServiceProvider_P_O_OU_Provider.setColumns(10);
+		txtServiceProvider_P_O_OU_Provider.setBounds(137, 59, 144, 20);
+		panelP_O_OU_Provider.add(txtServiceProvider_P_O_OU_Provider);
 		
-		JLabel label_16 = new JLabel("Service Provider");
-		label_16.setBounds(10, 62, 86, 14);
-		panelP_O_OU_Provider.add(label_16);
+		JLabel lblServiceProvider_P_O_OU_Provider = new JLabel("Service Provider");
+		lblServiceProvider_P_O_OU_Provider.setBounds(10, 62, 86, 14);
+		panelP_O_OU_Provider.add(lblServiceProvider_P_O_OU_Provider);
 		
-		textField_18 = new JTextField();
-		textField_18.setColumns(10);
-		textField_18.setBounds(137, 21, 144, 20);
-		panelP_O_OU_Provider.add(textField_18);
+		txtPersonProvider_P_O_OU_Provider = new JTextField();
+		txtPersonProvider_P_O_OU_Provider.setColumns(10);
+		txtPersonProvider_P_O_OU_Provider.setBounds(137, 21, 144, 20);
+		panelP_O_OU_Provider.add(txtPersonProvider_P_O_OU_Provider);
 		
-		JLabel label_17 = new JLabel("Organization Unit Provider");
-		label_17.setBounds(10, 93, 126, 14);
-		panelP_O_OU_Provider.add(label_17);
+		JLabel lblOrgUnitProvider_P_O_OU_Provider = new JLabel("Organization Unit Provider");
+		lblOrgUnitProvider_P_O_OU_Provider.setBounds(10, 93, 126, 14);
+		panelP_O_OU_Provider.add(lblOrgUnitProvider_P_O_OU_Provider);
 		
-		textField_19 = new JTextField();
-		textField_19.setColumns(10);
-		textField_19.setBounds(137, 90, 144, 20);
-		panelP_O_OU_Provider.add(textField_19);
+		txtOrgUnitProvider_P_O_OU_Provider = new JTextField();
+		txtOrgUnitProvider_P_O_OU_Provider.setColumns(10);
+		txtOrgUnitProvider_P_O_OU_Provider.setBounds(137, 90, 144, 20);
+		panelP_O_OU_Provider.add(txtOrgUnitProvider_P_O_OU_Provider);
 		
-		JLabel label_18 = new JLabel("Organization Provider");
-		label_18.setBounds(10, 129, 113, 14);
-		panelP_O_OU_Provider.add(label_18);
+		JLabel lblOrgProvider_P_O_OU_Provider = new JLabel("Organization Provider");
+		lblOrgProvider_P_O_OU_Provider.setBounds(10, 129, 113, 14);
+		panelP_O_OU_Provider.add(lblOrgProvider_P_O_OU_Provider);
 		
-		textField_20 = new JTextField();
-		textField_20.setColumns(10);
-		textField_20.setBounds(137, 126, 144, 20);
-		panelP_O_OU_Provider.add(textField_20);
+		txtOrgProvider_P_O_OU_Provider = new JTextField();
+		txtOrgProvider_P_O_OU_Provider.setColumns(10);
+		txtOrgProvider_P_O_OU_Provider.setBounds(137, 126, 144, 20);
+		panelP_O_OU_Provider.add(txtOrgProvider_P_O_OU_Provider);
 		
 		panelP_O_OU_TCustomer = new JPanel();
 		panelP_O_OU_TCustomer.setLayout(null);
@@ -305,36 +332,36 @@ public class JanBase {
 		panelPCSubgroup.add(panelP_O_OU_TCustomer);
 		panelP_O_OU_TCustomer.setVisible(false);
 		
-		JLabel label_33 = new JLabel("Person Target Customer");
-		label_33.setBounds(10, 24, 117, 14);
-		panelP_O_OU_TCustomer.add(label_33);
+		JLabel lblPersonTC_P_0_OU_TCustomer = new JLabel("Person Target Customer");
+		lblPersonTC_P_0_OU_TCustomer.setBounds(10, 24, 117, 14);
+		panelP_O_OU_TCustomer.add(lblPersonTC_P_0_OU_TCustomer);
 		
 		textField_35 = new JTextField();
 		textField_35.setColumns(10);
 		textField_35.setBounds(178, 59, 103, 20);
 		panelP_O_OU_TCustomer.add(textField_35);
 		
-		JLabel label_34 = new JLabel("Target Customer");
-		label_34.setBounds(10, 62, 86, 14);
-		panelP_O_OU_TCustomer.add(label_34);
+		JLabel lblTargetCustomer_P_0_OU_TCustomer = new JLabel("Target Customer");
+		lblPersonTC_P_0_OU_TCustomer.setBounds(10, 62, 86, 14);
+		panelP_O_OU_TCustomer.add(lblPersonTC_P_0_OU_TCustomer);
 		
 		textField_36 = new JTextField();
 		textField_36.setColumns(10);
 		textField_36.setBounds(178, 21, 103, 20);
 		panelP_O_OU_TCustomer.add(textField_36);
 		
-		JLabel label_35 = new JLabel("Organization Unit Target Customer");
-		label_35.setBounds(10, 93, 167, 14);
-		panelP_O_OU_TCustomer.add(label_35);
+		JLabel lblOrgUnitTC_P_0_OU_TCustomer = new JLabel("Organization Unit Target Customer");
+		lblOrgUnitTC_P_0_OU_TCustomer.setBounds(10, 93, 167, 14);
+		panelP_O_OU_TCustomer.add(lblOrgUnitTC_P_0_OU_TCustomer);
 		
 		textField_37 = new JTextField();
 		textField_37.setColumns(10);
 		textField_37.setBounds(178, 90, 103, 20);
 		panelP_O_OU_TCustomer.add(textField_37);
 		
-		JLabel label_36 = new JLabel("Organization Target Customer");
-		label_36.setBounds(10, 129, 145, 14);
-		panelP_O_OU_TCustomer.add(label_36);
+		JLabel lblOrgTC_P_0_OU_TCustomer = new JLabel("Organization Target Customer");
+		lblOrgTC_P_0_OU_TCustomer.setBounds(10, 129, 145, 14);
+		panelP_O_OU_TCustomer.add(lblOrgTC_P_0_OU_TCustomer);
 		
 		textField_38 = new JTextField();
 		textField_38.setColumns(10);
@@ -348,41 +375,41 @@ public class JanBase {
 		panelPCSubgroup.add(panelP_OU_TCustomer);
 		panelP_OU_TCustomer.setVisible(false);
 		
-		JLabel label_29 = new JLabel("Person Target Customer");
-		label_29.setBounds(10, 24, 117, 14);
-		panelP_OU_TCustomer.add(label_29);
+		JLabel lblPersonTC_P_OU_TCustomer = new JLabel("Person Target Customer");
+		lblPersonTC_P_OU_TCustomer.setBounds(10, 24, 117, 14);
+		panelP_OU_TCustomer.add(lblPersonTC_P_OU_TCustomer);
 		
-		textField_31 = new JTextField();
-		textField_31.setColumns(10);
-		textField_31.setBounds(178, 59, 103, 20);
-		panelP_OU_TCustomer.add(textField_31);
+		txtTargetCustomerTC_P_OU_TCustomer = new JTextField();
+		txtTargetCustomerTC_P_OU_TCustomer.setColumns(10);
+		txtTargetCustomerTC_P_OU_TCustomer.setBounds(178, 59, 103, 20);
+		panelP_OU_TCustomer.add(txtTargetCustomerTC_P_OU_TCustomer);
 		
-		JLabel label_30 = new JLabel("Target Customer");
-		label_30.setBounds(10, 62, 86, 14);
-		panelP_OU_TCustomer.add(label_30);
+		JLabel lblTargetCustomer_P_OU_TCustomer = new JLabel("Target Customer");
+		lblTargetCustomer_P_OU_TCustomer.setBounds(10, 62, 86, 14);
+		panelP_OU_TCustomer.add(lblTargetCustomer_P_OU_TCustomer);
 		
-		textField_32 = new JTextField();
-		textField_32.setColumns(10);
-		textField_32.setBounds(178, 21, 103, 20);
-		panelP_OU_TCustomer.add(textField_32);
+		txtPersonTC_P_OU_TCustomer = new JTextField();
+		txtPersonTC_P_OU_TCustomer.setColumns(10);
+		txtPersonTC_P_OU_TCustomer.setBounds(178, 21, 103, 20);
+		panelP_OU_TCustomer.add(txtPersonTC_P_OU_TCustomer);
 		
-		JLabel label_31 = new JLabel("Organization Unit Target Customer");
-		label_31.setBounds(10, 93, 172, 14);
-		panelP_OU_TCustomer.add(label_31);
+		JLabel lblOrgUnitTC_P_OU_TCustomer = new JLabel("Organization Unit Target Customer");
+		lblOrgUnitTC_P_OU_TCustomer.setBounds(10, 93, 172, 14);
+		panelP_OU_TCustomer.add(lblOrgUnitTC_P_OU_TCustomer);
 		
-		textField_33 = new JTextField();
-		textField_33.setColumns(10);
-		textField_33.setBounds(178, 90, 103, 20);
-		panelP_OU_TCustomer.add(textField_33);
+		txtOrgUnitTC_P_OU_TCustomer = new JTextField();
+		txtOrgUnitTC_P_OU_TCustomer.setColumns(10);
+		txtOrgUnitTC_P_OU_TCustomer.setBounds(178, 90, 103, 20);
+		panelP_OU_TCustomer.add(txtOrgUnitTC_P_OU_TCustomer);
 		
-		JLabel label_32 = new JLabel("Organization Provider");
-		label_32.setBounds(10, 129, 113, 14);
-		panelP_OU_TCustomer.add(label_32);
+		JLabel lblOrgProvider_P_OU_TCustomer = new JLabel("Organization Provider");
+		lblOrgProvider_P_OU_TCustomer.setBounds(10, 129, 113, 14);
+		panelP_OU_TCustomer.add(lblOrgProvider_P_OU_TCustomer);
 		
-		textField_34 = new JTextField();
-		textField_34.setColumns(10);
-		textField_34.setBounds(178, 126, 103, 20);
-		panelP_OU_TCustomer.add(textField_34);
+		txtOrgProvider_P_OU_TCustomer = new JTextField();
+		txtOrgProvider_P_OU_TCustomer.setColumns(10);
+		txtOrgProvider_P_OU_TCustomer.setBounds(178, 126, 103, 20);
+		panelP_OU_TCustomer.add(txtOrgProvider_P_OU_TCustomer);
 		
 		panelP_O_TCustomer = new JPanel();
 		panelP_O_TCustomer.setLayout(null);
@@ -391,32 +418,32 @@ public class JanBase {
 		panelPCSubgroup.add(panelP_O_TCustomer);
 		panelP_O_TCustomer.setVisible(false);
 		
-		JLabel label_26 = new JLabel("Person Target Customer");
-		label_26.setBounds(10, 24, 117, 14);
-		panelP_O_TCustomer.add(label_26);
+		JLabel lblPersonTC_P_O_TCustomer = new JLabel("Person Target Customer");
+		lblPersonTC_P_O_TCustomer.setBounds(10, 24, 117, 14);
+		panelP_O_TCustomer.add(lblPersonTC_P_O_TCustomer);
 		
-		textField_28 = new JTextField();
-		textField_28.setColumns(10);
-		textField_28.setBounds(157, 59, 124, 20);
-		panelP_O_TCustomer.add(textField_28);
+		txtTargetCustomer_P_O_TCustomer = new JTextField();
+		txtTargetCustomer_P_O_TCustomer.setColumns(10);
+		txtTargetCustomer_P_O_TCustomer.setBounds(157, 59, 124, 20);
+		panelP_O_TCustomer.add(txtTargetCustomer_P_O_TCustomer);
 		
-		JLabel label_27 = new JLabel("Target Customer");
-		label_27.setBounds(10, 62, 86, 14);
-		panelP_O_TCustomer.add(label_27);
+		JLabel lblTargetCustomer_P_O_TCustomer = new JLabel("Target Customer");
+		lblTargetCustomer_P_O_TCustomer.setBounds(10, 62, 86, 14);
+		panelP_O_TCustomer.add(lblTargetCustomer_P_O_TCustomer);
 		
-		textField_29 = new JTextField();
-		textField_29.setColumns(10);
-		textField_29.setBounds(157, 21, 124, 20);
-		panelP_O_TCustomer.add(textField_29);
+		txtPersonTC_P_O_TCustomer = new JTextField();
+		txtPersonTC_P_O_TCustomer.setColumns(10);
+		txtPersonTC_P_O_TCustomer.setBounds(157, 21, 124, 20);
+		panelP_O_TCustomer.add(txtPersonTC_P_O_TCustomer);
 		
-		JLabel label_28 = new JLabel("Organization Target Customer");
-		label_28.setBounds(10, 93, 154, 14);
-		panelP_O_TCustomer.add(label_28);
+		JLabel lblOrgTC_P_O_TCustomer = new JLabel("Organization Target Customer");
+		lblOrgTC_P_O_TCustomer.setBounds(10, 93, 154, 14);
+		panelP_O_TCustomer.add(lblOrgTC_P_O_TCustomer);
 		
-		textField_30 = new JTextField();
-		textField_30.setColumns(10);
-		textField_30.setBounds(157, 90, 124, 20);
-		panelP_O_TCustomer.add(textField_30);
+		txtOrgTC_P_O_TCustomer = new JTextField();
+		txtOrgTC_P_O_TCustomer.setColumns(10);
+		txtOrgTC_P_O_TCustomer.setBounds(157, 90, 124, 20);
+		panelP_O_TCustomer.add(txtOrgTC_P_O_TCustomer);
 		
 		panelO_OU_TCustomer = new JPanel();
 		panelO_OU_TCustomer.setLayout(null);
@@ -425,32 +452,32 @@ public class JanBase {
 		panelPCSubgroup.add(panelO_OU_TCustomer);
 		panelO_OU_TCustomer.setVisible(false);
 		
-		JLabel label_23 = new JLabel("Organizational Unit Target Customer");
-		label_23.setBounds(61, 21, 197, 14);
-		panelO_OU_TCustomer.add(label_23);
+		JLabel lblOrgUnitTC_O_OU_TCustomer = new JLabel("Organizational Unit Target Customer");
+		lblOrgUnitTC_O_OU_TCustomer.setBounds(61, 21, 197, 14);
+		panelO_OU_TCustomer.add(lblOrgUnitTC_O_OU_TCustomer);
 		
-		textField_25 = new JTextField();
-		textField_25.setColumns(10);
-		textField_25.setBounds(61, 83, 170, 20);
-		panelO_OU_TCustomer.add(textField_25);
+		txtTargetCustomer_O_OU_TCustomer = new JTextField();
+		txtTargetCustomer_O_OU_TCustomer.setColumns(10);
+		txtTargetCustomer_O_OU_TCustomer.setBounds(61, 83, 170, 20);
+		panelO_OU_TCustomer.add(txtTargetCustomer_O_OU_TCustomer);
 		
-		JLabel label_24 = new JLabel("Target Customer");
-		label_24.setBounds(104, 69, 86, 14);
-		panelO_OU_TCustomer.add(label_24);
+		JLabel lblTargetCustomer_O_OU_TCustomer = new JLabel("Target Customer");
+		lblTargetCustomer_O_OU_TCustomer.setBounds(104, 69, 86, 14);
+		panelO_OU_TCustomer.add(lblTargetCustomer_O_OU_TCustomer);
 		
-		textField_26 = new JTextField();
-		textField_26.setColumns(10);
-		textField_26.setBounds(61, 38, 170, 20);
-		panelO_OU_TCustomer.add(textField_26);
+		txtOrgUnitTC_O_OU_TCustomer = new JTextField();
+		txtOrgUnitTC_O_OU_TCustomer.setColumns(10);
+		txtOrgUnitTC_O_OU_TCustomer.setBounds(61, 38, 170, 20);
+		panelO_OU_TCustomer.add(txtOrgUnitTC_O_OU_TCustomer);
 		
-		JLabel label_25 = new JLabel("Organization Target Customer");
-		label_25.setBounds(75, 123, 156, 14);
-		panelO_OU_TCustomer.add(label_25);
+		JLabel lblOrgTC_O_OU_TCustomer = new JLabel("Organization Target Customer");
+		lblOrgTC_O_OU_TCustomer.setBounds(75, 123, 156, 14);
+		panelO_OU_TCustomer.add(lblOrgTC_O_OU_TCustomer);
 		
-		textField_27 = new JTextField();
-		textField_27.setColumns(10);
-		textField_27.setBounds(61, 142, 170, 20);
-		panelO_OU_TCustomer.add(textField_27);
+		txtOrgTC_O_OU_TCustomer = new JTextField();
+		txtOrgTC_O_OU_TCustomer.setColumns(10);
+		txtOrgTC_O_OU_TCustomer.setBounds(61, 142, 170, 20);
+		panelO_OU_TCustomer.add(txtOrgTC_O_OU_TCustomer);
 		
 		panelOU_TCustomer = new JPanel();
 		panelOU_TCustomer.setLayout(null);
@@ -459,23 +486,23 @@ public class JanBase {
 		panelPCSubgroup.add(panelOU_TCustomer);
 		panelOU_TCustomer.setVisible(false);
 		
-		JLabel label_21 = new JLabel("Organizational Unit");
-		label_21.setBounds(10, 24, 117, 14);
-		panelOU_TCustomer.add(label_21);
+		JLabel lblOrgUnit_OU_TCustomer = new JLabel("Organizational Unit");
+		lblOrgUnit_OU_TCustomer.setBounds(10, 24, 117, 14);
+		panelOU_TCustomer.add(lblOrgUnit_OU_TCustomer);
 		
-		textField_23 = new JTextField();
-		textField_23.setColumns(10);
-		textField_23.setBounds(119, 59, 162, 20);
-		panelOU_TCustomer.add(textField_23);
+		txtTargetCustomer_OU_TCustomer = new JTextField();
+		txtTargetCustomer_OU_TCustomer.setColumns(10);
+		txtTargetCustomer_OU_TCustomer.setBounds(119, 59, 162, 20);
+		panelOU_TCustomer.add(txtTargetCustomer_OU_TCustomer);
 		
-		JLabel label_22 = new JLabel("Target Customer");
-		label_22.setBounds(10, 62, 86, 14);
-		panelOU_TCustomer.add(label_22);
+		JLabel lblTargetCustomer_OU_TCustomer = new JLabel("Target Customer");
+		lblTargetCustomer_OU_TCustomer.setBounds(10, 62, 86, 14);
+		panelOU_TCustomer.add(lblTargetCustomer_OU_TCustomer);
 		
-		textField_24 = new JTextField();
-		textField_24.setColumns(10);
-		textField_24.setBounds(119, 21, 162, 20);
-		panelOU_TCustomer.add(textField_24);
+		txtOrgUnit_OU_TCustomer = new JTextField();
+		txtOrgUnit_OU_TCustomer.setColumns(10);
+		txtOrgUnit_OU_TCustomer.setBounds(119, 21, 162, 20);
+		panelOU_TCustomer.add(txtOrgUnit_OU_TCustomer);
 		
 		panelO_TCustomer = new JPanel();
 		panelO_TCustomer.setLayout(null);
@@ -484,23 +511,23 @@ public class JanBase {
 		panelPCSubgroup.add(panelO_TCustomer);
 		panelO_TCustomer.setVisible(false);
 		
-		JLabel label_19 = new JLabel("Organization");
-		label_19.setBounds(10, 24, 76, 14);
-		panelO_TCustomer.add(label_19);
+		JLabel lblOrganization_O_TCustomer = new JLabel("Organization");
+		lblOrganization_O_TCustomer.setBounds(10, 24, 76, 14);
+		panelO_TCustomer.add(lblOrganization_O_TCustomer);
 		
-		textField_21 = new JTextField();
-		textField_21.setColumns(10);
-		textField_21.setBounds(137, 59, 144, 20);
-		panelO_TCustomer.add(textField_21);
+		txtTargetCustomer_O_TCustomer = new JTextField();
+		txtTargetCustomer_O_TCustomer.setColumns(10);
+		txtTargetCustomer_O_TCustomer.setBounds(137, 59, 144, 20);
+		panelO_TCustomer.add(txtTargetCustomer_O_TCustomer);
 		
-		JLabel label_20 = new JLabel("Target Customer");
-		label_20.setBounds(10, 62, 86, 14);
-		panelO_TCustomer.add(label_20);
+		JLabel lblTargetCustomer_O_TCustomer = new JLabel("Target Customer");
+		lblTargetCustomer_O_TCustomer.setBounds(10, 62, 86, 14);
+		panelO_TCustomer.add(lblTargetCustomer_O_TCustomer);
 		
-		textField_22 = new JTextField();
-		textField_22.setColumns(10);
-		textField_22.setBounds(137, 21, 144, 20);
-		panelO_TCustomer.add(textField_22);
+		txtOrganization_O_TCustomer = new JTextField();
+		txtOrganization_O_TCustomer.setColumns(10);
+		txtOrganization_O_TCustomer.setBounds(137, 21, 144, 20);
+		panelO_TCustomer.add(txtOrganization_O_TCustomer);
 		
 		panelP_OU_Provider = new JPanel();
 		panelP_OU_Provider.setLayout(null);
@@ -509,32 +536,32 @@ public class JanBase {
 		panelPCSubgroup.add(panelP_OU_Provider);
 		panelP_OU_Provider.setVisible(false);
 		
-		JLabel label_12 = new JLabel("Person Provider");
-		label_12.setBounds(10, 24, 76, 14);
-		panelP_OU_Provider.add(label_12);
+		JLabel lblPersonProvider_P_OU_Provider = new JLabel("Person Provider");
+		lblPersonProvider_P_OU_Provider.setBounds(10, 24, 76, 14);
+		panelP_OU_Provider.add(lblPersonProvider_P_OU_Provider);
 		
-		textField_14 = new JTextField();
-		textField_14.setColumns(10);
-		textField_14.setBounds(143, 59, 138, 20);
-		panelP_OU_Provider.add(textField_14);
+		txtServiceProvider_P_OU_Provider = new JTextField();
+		txtServiceProvider_P_OU_Provider.setColumns(10);
+		txtServiceProvider_P_OU_Provider.setBounds(143, 59, 138, 20);
+		panelP_OU_Provider.add(txtServiceProvider_P_OU_Provider);
 		
-		JLabel label_13 = new JLabel("Service Provider");
-		label_13.setBounds(10, 62, 86, 14);
-		panelP_OU_Provider.add(label_13);
+		JLabel lblServiceProvider_P_OU_Provider = new JLabel("Service Provider");
+		lblServiceProvider_P_OU_Provider.setBounds(10, 62, 86, 14);
+		panelP_OU_Provider.add(lblServiceProvider_P_OU_Provider);
 		
-		textField_15 = new JTextField();
-		textField_15.setColumns(10);
-		textField_15.setBounds(143, 21, 138, 20);
-		panelP_OU_Provider.add(textField_15);
+		txtPersonProvider_P_OU_Provider = new JTextField();
+		txtPersonProvider_P_OU_Provider.setColumns(10);
+		txtPersonProvider_P_OU_Provider.setBounds(143, 21, 138, 20);
+		panelP_OU_Provider.add(txtPersonProvider_P_OU_Provider);
 		
-		JLabel label_14 = new JLabel("Organization Unit Provider");
-		label_14.setBounds(10, 93, 126, 14);
-		panelP_OU_Provider.add(label_14);
+		JLabel lblOrgUnitProvider_P_OU_Provider = new JLabel("Organization Unit Provider");
+		lblOrgUnitProvider_P_OU_Provider.setBounds(10, 93, 126, 14);
+		panelP_OU_Provider.add(lblOrgUnitProvider_P_OU_Provider);
 		
-		textField_16 = new JTextField();
-		textField_16.setColumns(10);
-		textField_16.setBounds(143, 90, 138, 20);
-		panelP_OU_Provider.add(textField_16);
+		txtOrgUnitProvider_P_OU_Provider = new JTextField();
+		txtOrgUnitProvider_P_OU_Provider.setColumns(10);
+		txtOrgUnitProvider_P_OU_Provider.setBounds(143, 90, 138, 20);
+		panelP_OU_Provider.add(txtOrgUnitProvider_P_OU_Provider);
 		
 		panelP_O_Provider = new JPanel();
 		panelP_O_Provider.setLayout(null);
@@ -543,32 +570,32 @@ public class JanBase {
 		panelPCSubgroup.add(panelP_O_Provider);
 		panelP_O_Provider.setVisible(false);
 		
-		JLabel label_9 = new JLabel("Person Provider");
-		label_9.setBounds(10, 24, 76, 14);
-		panelP_O_Provider.add(label_9);
+		JLabel lblPersonProvider_P_O_Provider = new JLabel("Person Provider");
+		lblPersonProvider_P_O_Provider.setBounds(10, 24, 76, 14);
+		panelP_O_Provider.add(lblPersonProvider_P_O_Provider);
 		
-		textField_11 = new JTextField();
-		textField_11.setColumns(10);
-		textField_11.setBounds(117, 59, 164, 20);
-		panelP_O_Provider.add(textField_11);
+		txtServiceProvider_P_O_Provider = new JTextField();
+		txtServiceProvider_P_O_Provider.setColumns(10);
+		txtServiceProvider_P_O_Provider.setBounds(117, 59, 164, 20);
+		panelP_O_Provider.add(txtServiceProvider_P_O_Provider);
 		
-		JLabel label_10 = new JLabel("Service Provider");
-		label_10.setBounds(10, 62, 86, 14);
-		panelP_O_Provider.add(label_10);
+		JLabel lblServiceProvider_P_O_Provider = new JLabel("Service Provider");
+		lblServiceProvider_P_O_Provider.setBounds(10, 62, 86, 14);
+		panelP_O_Provider.add(lblServiceProvider_P_O_Provider);
 		
-		textField_12 = new JTextField();
-		textField_12.setColumns(10);
-		textField_12.setBounds(117, 21, 164, 20);
-		panelP_O_Provider.add(textField_12);
+		txtPersonProvider_P_O_Provider = new JTextField();
+		txtPersonProvider_P_O_Provider.setColumns(10);
+		txtPersonProvider_P_O_Provider.setBounds(117, 21, 164, 20);
+		panelP_O_Provider.add(txtPersonProvider_P_O_Provider);
 		
-		textField_13 = new JTextField();
-		textField_13.setColumns(10);
-		textField_13.setBounds(117, 90, 164, 20);
-		panelP_O_Provider.add(textField_13);
+		txtOrganizationProvider_P_O_Provider = new JTextField();
+		txtOrganizationProvider_P_O_Provider.setColumns(10);
+		txtOrganizationProvider_P_O_Provider.setBounds(117, 90, 164, 20);
+		panelP_O_Provider.add(txtOrganizationProvider_P_O_Provider);
 		
-		JLabel label_11 = new JLabel("Organization Provider");
-		label_11.setBounds(10, 93, 109, 14);
-		panelP_O_Provider.add(label_11);
+		JLabel lblOrganizationProvider_P_O_Provider = new JLabel("Organization Provider");
+		lblOrganizationProvider_P_O_Provider.setBounds(10, 93, 109, 14);
+		panelP_O_Provider.add(lblOrganizationProvider_P_O_Provider);
 		
 		panelO_OU_Provider = new JPanel();
 		panelO_OU_Provider.setLayout(null);
@@ -577,32 +604,32 @@ public class JanBase {
 		panelPCSubgroup.add(panelO_OU_Provider);
 		panelO_OU_Provider.setVisible(false);
 		
-		JLabel label_6 = new JLabel("Organization Unit Provider");
-		label_6.setBounds(10, 24, 126, 14);
-		panelO_OU_Provider.add(label_6);
+		JLabel lblOrgUnitProvider_O_OU_Provider = new JLabel("Organization Unit Provider");
+		lblOrgUnitProvider_O_OU_Provider.setBounds(10, 24, 126, 14);
+		panelO_OU_Provider.add(lblOrgUnitProvider_O_OU_Provider);
 		
-		textField_8 = new JTextField();
-		textField_8.setColumns(10);
-		textField_8.setBounds(146, 59, 135, 20);
-		panelO_OU_Provider.add(textField_8);
+		txtServiceProvider_O_OU_Provider = new JTextField();
+		txtServiceProvider_O_OU_Provider.setColumns(10);
+		txtServiceProvider_O_OU_Provider.setBounds(146, 59, 135, 20);
+		panelO_OU_Provider.add(txtServiceProvider_O_OU_Provider);
 		
-		JLabel label_7 = new JLabel("Service Provider");
-		label_7.setBounds(10, 62, 86, 14);
-		panelO_OU_Provider.add(label_7);
+		JLabel lblServiceProvider_O_OU_Provider = new JLabel("Service Provider");
+		lblServiceProvider_O_OU_Provider.setBounds(10, 62, 86, 14);
+		panelO_OU_Provider.add(lblServiceProvider_O_OU_Provider);
 		
-		textField_9 = new JTextField();
-		textField_9.setColumns(10);
-		textField_9.setBounds(146, 21, 135, 20);
-		panelO_OU_Provider.add(textField_9);
+		txtOrgUnitProvider_O_OU_Provider = new JTextField();
+		txtOrgUnitProvider_O_OU_Provider.setColumns(10);
+		txtOrgUnitProvider_O_OU_Provider.setBounds(146, 21, 135, 20);
+		panelO_OU_Provider.add(txtOrgUnitProvider_O_OU_Provider);
 		
-		JLabel label_8 = new JLabel("Organization Provider");
-		label_8.setBounds(10, 93, 111, 14);
-		panelO_OU_Provider.add(label_8);
+		JLabel lblOrganizationProvider_O_OU_Provider = new JLabel("Organization Provider");
+		lblOrganizationProvider_O_OU_Provider.setBounds(10, 93, 111, 14);
+		panelO_OU_Provider.add(lblOrganizationProvider_O_OU_Provider);
 		
-		textField_10 = new JTextField();
-		textField_10.setColumns(10);
-		textField_10.setBounds(146, 90, 135, 20);
-		panelO_OU_Provider.add(textField_10);
+		txtOrganizationProvider_O_OU_Provider = new JTextField();
+		txtOrganizationProvider_O_OU_Provider.setColumns(10);
+		txtOrganizationProvider_O_OU_Provider.setBounds(146, 90, 135, 20);
+		panelO_OU_Provider.add(txtOrganizationProvider_O_OU_Provider);
 		
 		panelOU_Provider = new JPanel();
 		panelOU_Provider.setLayout(null);
@@ -611,23 +638,23 @@ public class JanBase {
 		panelPCSubgroup.add(panelOU_Provider);
 		panelOU_Provider.setVisible(false);
 		
-		JLabel label_4 = new JLabel("Organization Unit");
-		label_4.setBounds(10, 24, 107, 14);
-		panelOU_Provider.add(label_4);
+		JLabel lblOrgUnit_OU_Provider = new JLabel("Organization Unit");
+		lblOrgUnit_OU_Provider.setBounds(10, 24, 107, 14);
+		panelOU_Provider.add(lblOrgUnit_OU_Provider);
 		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(102, 59, 179, 20);
-		panelOU_Provider.add(textField_6);
+		txtServiceProvider_OU_Provider = new JTextField();
+		txtServiceProvider_OU_Provider.setColumns(10);
+		txtServiceProvider_OU_Provider.setBounds(102, 59, 179, 20);
+		panelOU_Provider.add(txtServiceProvider_OU_Provider);
 		
-		JLabel label_5 = new JLabel("Service Provider");
-		label_5.setBounds(10, 62, 86, 14);
-		panelOU_Provider.add(label_5);
+		JLabel lblServiceProvider_OU_Provider = new JLabel("Service Provider");
+		lblServiceProvider_OU_Provider.setBounds(10, 62, 86, 14);
+		panelOU_Provider.add(lblServiceProvider_OU_Provider);
 		
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(102, 21, 179, 20);
-		panelOU_Provider.add(textField_7);
+		txtOrgUnit_OU_Provider = new JTextField();
+		txtOrgUnit_OU_Provider.setColumns(10);
+		txtOrgUnit_OU_Provider.setBounds(102, 21, 179, 20);
+		panelOU_Provider.add(txtOrgUnit_OU_Provider);
 		
 		panelO_Provider = new JPanel();
 		panelO_Provider.setLayout(null);
@@ -636,23 +663,23 @@ public class JanBase {
 		panelPCSubgroup.add(panelO_Provider);
 		panelO_Provider.setVisible(false);
 		
-		JLabel label_2 = new JLabel("Organization");
-		label_2.setBounds(10, 24, 76, 14);
-		panelO_Provider.add(label_2);
+		JLabel lblOrganization_O_Provider = new JLabel("Organization");
+		lblOrganization_O_Provider.setBounds(10, 24, 76, 14);
+		panelO_Provider.add(lblOrganization_O_Provider);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(97, 59, 184, 20);
-		panelO_Provider.add(textField_4);
+		txtServiceProvider_O_Provider = new JTextField();
+		txtServiceProvider_O_Provider.setColumns(10);
+		txtServiceProvider_O_Provider.setBounds(97, 59, 184, 20);
+		panelO_Provider.add(txtServiceProvider_O_Provider);
 		
-		JLabel label_3 = new JLabel("Service Provider");
-		label_3.setBounds(10, 62, 86, 14);
-		panelO_Provider.add(label_3);
+		JLabel lblServiceProvider_O_Provider = new JLabel("Service Provider");
+		lblServiceProvider_O_Provider.setBounds(10, 62, 86, 14);
+		panelO_Provider.add(lblServiceProvider_O_Provider);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(97, 21, 184, 20);
-		panelO_Provider.add(textField_5);
+		txtOrganization_O_Provider = new JTextField();
+		txtOrganization_O_Provider.setColumns(10);
+		txtOrganization_O_Provider.setBounds(97, 21, 184, 20);
+		panelO_Provider.add(txtOrganization_O_Provider);
 		
 		//Register a listener for the radio buttons		
 		
@@ -774,5 +801,18 @@ public class JanBase {
 		panelOU_TCustomer.setVisible(false);
 		panelO_TCustomer.setVisible(false);
 		panelP_TCustomer.setVisible(false);
+	}	
+	
+	public void trocaPainelPrincipal(int n){
+		painelSelecionado += n;
+		
+		//Escolhe qual painel sera exibido !
+		
+		if(painelSelecionado == 0){
+			panelPCSubgroup.setVisible(true);
+		}
+		else if(painelSelecionado == 1){
+			
+		}
 	}
 }
