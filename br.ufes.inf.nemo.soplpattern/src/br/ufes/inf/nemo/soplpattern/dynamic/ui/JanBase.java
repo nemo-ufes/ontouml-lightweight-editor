@@ -16,6 +16,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -96,6 +97,10 @@ public class JanBase {
 	private JTextField txtServiceProvider;
 	private JTextField txtServiceOfferingCommitment;
 	private JTextField txtServiceOfferingClaim;
+	
+	//Imagens
+	private ImageIcon iconSOffering;
+	private JLabel imagemSOffering;
 
 
 	/**
@@ -822,7 +827,18 @@ public class JanBase {
 		JPanel panelImg = new JPanel();
 		panelImg.setBackground(Color.LIGHT_GRAY);
 		panelImg.setBounds(10, 27, 581, 275);
+		//dentro do construtor
+		iconSOffering = new  ImageIcon(getClass().getResource("/resource/SOffering.PNG"));
+
+		//dentro do painel
+		imagemSOffering = new JLabel(iconSOffering);
+		imagemSOffering.setBounds(300, 30, 70, 96);
+		imagemSOffering.setSize(70, 96);
+		imagemSOffering.setVisible(true);
+		panelImg.add(imagemSOffering);
 		panelSOfferingInterno.add(panelImg);
+		
+
 		
 		JLabel lblServiceOffering = new JLabel("Service Offering");
 		lblServiceOffering.setBounds(143, 352, 78, 14);
@@ -989,6 +1005,8 @@ public class JanBase {
 		}
 		else if(painelSelecionado == 1){			
 			panelSOffering.setVisible(true);
+		
+
 		}
 		else if(painelSelecionado == 2){			
 			panelSODescription.setVisible(true);
