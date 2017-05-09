@@ -19,7 +19,6 @@ import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.common.ontoumlfixer.RelationStereotype;
 import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.soplpattern.dynamic.ui.JanBase;
-import br.ufes.inf.nemo.soplpattern.dynamic.ui.JanProviderCustomerSubgroup;
 import br.ufes.inf.nemo.soplpattern.impl.SOPLPattern;
 
 public class SODescription extends SOPLPattern{
@@ -43,7 +42,7 @@ public class SODescription extends SOPLPattern{
 		//Instanciar a Janela Principal SOPL aqui !
 		this.diagramManager = diagramManager;
 		//JanProviderCustomerSubgroup janPCsubgroup = new JanProviderCustomerSubgroup(this);
-		JanBase janBase = new JanBase(this);
+		janBase = new JanBase(this);
 	}
 	
 	public void criarTabela(String[][] tabela){

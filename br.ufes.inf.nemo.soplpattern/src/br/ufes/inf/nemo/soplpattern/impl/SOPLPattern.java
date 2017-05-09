@@ -17,11 +17,7 @@ import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
 import br.ufes.inf.nemo.common.ontoumlfixer.Fix;
 import br.ufes.inf.nemo.common.ontoumlfixer.OutcomeFixer;
 import br.ufes.inf.nemo.oled.DiagramManager;
-import br.ufes.inf.nemo.soplpattern.dynamic.ui.JanProviderCustomerSubgroup;
-//import br.ufes.inf.nemo.pattern.dynamic.ui.DynamicWindow;
-//import br.ufes.inf.nemo.pattern.ui.manager.DynamicManagerWindow;
-//import br.ufes.inf.nemo.patternsopl.dynamic.ui.EP1;
-//import br.ufes.inf.nemo.patternsopl.dynamic.ui.janSOffering;
+import br.ufes.inf.nemo.soplpattern.dynamic.ui.JanBase;
 
 
 public abstract class SOPLPattern {
@@ -36,9 +32,9 @@ public abstract class SOPLPattern {
 	protected OntoUMLParser parser;
 	protected double x;
 	protected double y;
-	protected String title;
-	protected JanProviderCustomerSubgroup janPCsubgroup;
+	protected String title;	
 	protected DiagramManager diagramManager;
+	protected JanBase janBase;
 //	protected DiagramManager dm = null;
 	//protected janSOffering janSOffering = null;
 
