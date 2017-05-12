@@ -70,17 +70,17 @@ public abstract class SOPLPattern {
 
 	public abstract void runPattern(DiagramManager diagramManager);	
 
-	public Fix getFix(){
-		try{
-			Fix fix = getSpecificFix();
-			return fix;
-		}catch(Exception e){
-			e.printStackTrace();
-			return null;
-		}
-	}
+//	public Fix getFix(){
+//		try{
+//			Fix fix = getSpecificFix();
+//			return fix;
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
 
 	//public abstract Fix getSpecificFix();
-	public abstract Fix getSpecificFix();
+	public abstract Fix getSpecificFix(int patternProviderSelected, int patternCustomerSelected); // 1 a 7 define o pattern selecionado na interface (P-Provider, P-TCustomer, ....)
 
 }

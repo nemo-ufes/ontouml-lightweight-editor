@@ -26,6 +26,8 @@ public class SODescription extends SOPLPattern{
 	
 	private Classifier c = null;
 	private String elements[][] = new String[4][2];
+	private String rdProviderSubgroupSelected;
+	private String rdCustomerSubgroupSelected;
 			
 	public SODescription(OntoUMLParser parser, double x, double y) {		
 		super(parser, x, y, "/resource/SOFFERING.png", "SOFFERING");
@@ -40,8 +42,7 @@ public class SODescription extends SOPLPattern{
 	public void runPattern(DiagramManager diagramManager) {
 						
 		//Instanciar a Janela Principal SOPL aqui !
-		this.diagramManager = diagramManager;
-		//JanProviderCustomerSubgroup janPCsubgroup = new JanProviderCustomerSubgroup(this);
+		this.diagramManager = diagramManager;	
 		janBase = new JanBase(this);
 	}
 	
@@ -49,41 +50,199 @@ public class SODescription extends SOPLPattern{
 		this.elements = tabela;				
 	}
 	
-	public Fix getSpecificFix() {			
+	public Fix getSpecificFix(int patternProviderSelected, int patternCustomerSelected) {			
+				
+		//VAMOS RESOLVER O PROBLEMA TODOO NESSE METODO - SE FOR CRIAR UM PRA CADA PARTE VAI FICAR MT GRANDE
 		
 		Package root = parser.getModel();
 		outcomeFixer = new OutcomeFixer(root);
 		fix = new Fix();
-
-		Classifier collectiveB  = this.createClassifier("Person", "kind", x, y);
-		Classifier roleA = this.createClassifier("Service Provider ", "RoleMixin", x, y);
-		//Classifier collectiveA = this.createClassifier(elements[1][1].toString() , "Collective", x+(verticalDistance/3), y);
-		Classifier collectiveA = this.createClassifier("Person", "kind", x+(verticalDistance/3), y);
-		Classifier relatorA = this.createClassifier(elements[2][1].toString() , "Relator", x+(verticalDistance/2), y);		
-		Classifier roleB = this.createClassifier("Target Customer" , "RoleMixin", x+(verticalDistance/3), y+70);
-
-		Association formal = null;		
 		
-		if(collectiveA != null && roleB != null){
-			fix.addAll(outcomeFixer.createGeneralization(roleB, collectiveA));	
+		Association formal = null;
+		Classifier collectiveA = null;
+		Classifier roleServiceProvider = null;
+		Classifier roleOrgTC = null;
+		Classifier roleOrgUnitProvider = null;
+		Classifier roleOrgUnitTC = null;
+		Classifier roleOrganizationProvider = null;
+		Classifier collectiveB = null;
+		Classifier roleTargetCustomer = null;
+		Classifier relatorOffering = null; //Nome da Offering
+		
+		//Chamar um metodo que pega todos os elementos da interface
+		
+		// 1 STEP - VERIFICAR E CRIAR DENTRO DO FIX OS ELEMENTOS DO PATTERN PROVIDER E CUSTOMER SUBGROUP SELECIONADOS
+		
+		if(patternProviderSelected == 1){ //Pattern P-Provider
+			//Create Person
+			String person = janBase.getTxtPerson_P_Provider().getText();			
+			collectiveA  = this.createClassifier(person, "kind", x, y);
+			
+			//Create Service Provider
+			String serviceProvider = janBase.getTxtServiceProvider_P_Provider().getText();
+			roleServiceProvider = this.createClassifier(serviceProvider, "RoleMixin", x, y);	
+		}else if(patternProviderSelected == 2){// Pattern O-Provider
+			//Create Organization
+			String organization = janBase.getTxtOrganization_O_Provider().getText();			
+			collectiveA  = this.createClassifier(organization, "kind", x, y);
+			
+			//Create Service Provider
+			String serviceProvider = janBase.getTxtServiceProvider_O_Provider().getText();
+			roleServiceProvider = this.createClassifier(serviceProvider, "RoleMixin", x, y);	
+		}else if(patternProviderSelected == 3){// Pattern OU-Provider
+			//Create Organization Unit
+			String orgUnit = janBase.getTxtOrgUnit_OU_Provider().getText();			
+			collectiveA  = this.createClassifier(orgUnit, "kind", x, y);
+			
+			//Create Service Provider
+			String serviceProvider = janBase.getTxtServiceProvider_OU_Provider().getText();
+			roleServiceProvider = this.createClassifier(serviceProvider, "RoleMixin", x, y);
+		}else if(patternProviderSelected == 4){// Pattern P-O-OU-Provider
+			
+		}else if(patternProviderSelected == 5){// Pattern O-OU-Provider
+			//Create Organization Unit Provider
+			String orgUnitProvider = janBase.getTxtOrgUnitProvider_O_OU_Provider().getText();			
+			roleOrgUnitProvider  = this.createClassifier(orgUnitProvider, "role", x, y);
+			
+			//Create Service Provider
+			String serviceProvider = janBase.getTxtServiceProvider_O_OU_Provider().getText();
+			roleServiceProvider = this.createClassifier(serviceProvider, "RoleMixin", x, y);
+			
+			//Create Organization Provider
+			String organizationProvider = janBase.getTxtOrganizationProvider_O_OU_Provider().getText();
+			roleOrganizationProvider = this.createClassifier(organizationProvider, "role", x, y);
+			
+		}else if(patternProviderSelected == 6){// Pattern P-O-Provider
+			
+		}else if(patternProviderSelected == 7){// Pattern P-OU-Provider
+			
 		}
 		
-		if(collectiveB != null && roleA != null){
-			fix.addAll(outcomeFixer.createGeneralization(roleA, collectiveB));	
+		if(patternCustomerSelected == 1){ //Pattern P-TCustomer
+			//Create Person
+			String person = janBase.getTxtPerson_P_TCustomer().getText();			
+			collectiveB  = this.createClassifier(person, "kind",x+(verticalDistance/3), y);
+			
+			//Create Target Customer
+			String targetCustomer = janBase.getTxtTargetCustomer_P_TCustomer().getText();
+			roleTargetCustomer = this.createClassifier(targetCustomer, "RoleMixin", x+(verticalDistance/3), y+70);
+		}else if(patternCustomerSelected == 2){// Pattern O-TCustomer
+			//Create Organization
+			String organization = janBase.getTxtOrganization_O_TCustomer().getText();			
+			collectiveB  = this.createClassifier(organization, "kind",x+(verticalDistance/3), y);
+			
+			//Create Target Customer
+			String targetCustomer = janBase.getTxtTargetCustomer_O_TCustomer().getText();
+			roleTargetCustomer = this.createClassifier(targetCustomer, "RoleMixin", x+(verticalDistance/3), y+70);
+		}else if(patternCustomerSelected == 3){// Pattern OU-TCustomer
+			//Create Organization Unit
+			String orgUnit = janBase.getTxtOrgUnit_OU_TCustomer().getText();			
+			collectiveB  = this.createClassifier(orgUnit, "kind",x+(verticalDistance/3), y);
+			
+			//Create Target Customer
+			String targetCustomer = janBase.getTxtTargetCustomer_OU_TCustomer().getText();
+			roleTargetCustomer = this.createClassifier(targetCustomer, "RoleMixin", x+(verticalDistance/3), y+70);
+			
+		}else if(patternCustomerSelected == 4){// Pattern P-O-OU-TCustomer
+		
+		}else if(patternCustomerSelected == 5){// Pattern O-OU-TCustomer
+			//Create Organization Unit Target Customer
+			String orgUnitTC = janBase.getTxtOrgUnitTC_O_OU_TCustomer().getText();			
+			roleOrgUnitTC  = this.createClassifier(orgUnitTC, "role", x, y);
+			
+			//Create Target Customer
+			String targetCustomer = janBase.getTxtTargetCustomer_O_OU_TCustomer().getText();
+			roleTargetCustomer = this.createClassifier(targetCustomer, "RoleMixin", x, y);
+			
+			//Create Organization Target Customer
+			String organizationTC = janBase.getTxtOrgTC_O_OU_TCustomer().getText();
+			roleOrgTC = this.createClassifier(organizationTC, "role", x, y);
+		}else if(patternCustomerSelected == 6){// Pattern P-O-TCustomer
+			
+		}else if(patternCustomerSelected == 7){// Pattern P-OU-TCustomer
+			
 		}
+		
+		// STEP 2 - CRIAR A OFFERING 
+		String offering = janBase.getTxtServiceOffering().getText();
+		
+		relatorOffering = this.createClassifier(offering , "Relator",  x+(verticalDistance/2), y);
+		
+		// STEP 3  - CREATE GENERALIZATIONS AND ASSOCIATIONS
+		
+		if(patternProviderSelected == 1){ //Pattern P-Provider
+			
+			if(collectiveA != null && roleServiceProvider != null){
+				fix.addAll(outcomeFixer.createGeneralization(roleServiceProvider, collectiveA));	
+			}
+		
+		}else if(patternProviderSelected == 2){// Pattern O-Provider
+			if(collectiveA != null && roleServiceProvider != null){
+				fix.addAll(outcomeFixer.createGeneralization(roleServiceProvider, collectiveA));	
+			}
+		}else if(patternProviderSelected == 3){// Pattern OU-Provider
+			if(collectiveA != null && roleServiceProvider != null){
+				fix.addAll(outcomeFixer.createGeneralization(roleServiceProvider, collectiveA));	
+			}
+		}else if(patternProviderSelected == 4){// Pattern P-O-OU-Provider
+			
+		}else if(patternProviderSelected == 5){// Pattern O-OU-Provider
+			if(roleServiceProvider != null && roleOrgUnitProvider != null){
+				fix.addAll(outcomeFixer.createGeneralization(roleOrgUnitProvider, roleServiceProvider));	
+			}
+			if(roleServiceProvider != null && roleOrganizationProvider != null){
+				fix.addAll(outcomeFixer.createGeneralization(roleOrganizationProvider, roleServiceProvider));	
+			}
+		}else if(patternProviderSelected == 6){// Pattern P-O-Provider
+			
+		}else if(patternProviderSelected == 7){// Pattern P-OU-Provider
+			
+		}
+		
+		if(patternCustomerSelected == 1){ //Pattern P-TCustomer
+			if(collectiveB != null && roleTargetCustomer != null){
+				fix.addAll(outcomeFixer.createGeneralization(roleTargetCustomer, collectiveB));	
+			}
+		}else if(patternCustomerSelected == 2){// Pattern O-TCustomer
+			if(collectiveB != null && roleTargetCustomer != null){
+				fix.addAll(outcomeFixer.createGeneralization(roleTargetCustomer, collectiveB));	
+			}
+		}else if(patternCustomerSelected == 3){// Pattern OU-TCustomer
+			if(collectiveB != null && roleTargetCustomer != null){
+				fix.addAll(outcomeFixer.createGeneralization(roleTargetCustomer, collectiveB));	
+			}
+		}else if(patternCustomerSelected == 4){// Pattern P-O-OU-TCustomer
+			 
+		}else if(patternCustomerSelected == 5){// Pattern O-OU-TCustomer
+//			if(roleTargetCustomer != null && roleOrgUnitTC != null){
+//				fix.addAll(outcomeFixer.createGeneralization(roleOrgUnitTC, roleTargetCustomer));	
+//			}
+//			if(roleTargetCustomer != null && roleOrgTC != null){
+//				fix.addAll(outcomeFixer.createGeneralization(roleOrgTC, roleTargetCustomer));	
+//			}
+		}else if(patternCustomerSelected == 6){// Pattern P-O-TCustomer
+			
+		}else if(patternCustomerSelected == 7){// Pattern P-OU-TCustomer
+			
+		}
+						
+		formal = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleServiceProvider, relatorOffering).getAdded().get(0);
+		fix.includeAdded(formal);	
 
-		if(roleA != null && relatorA != null){
-			formal = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleA, relatorA).getAdded().get(0);
-			fix.includeAdded(formal);
-		}
+		formal = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorOffering, roleTargetCustomer).getAdded().get(0);
+		fix.includeAdded(formal);
+				
 		
-		if(relatorA != null && collectiveA != null){
-			formal = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorA, roleB).getAdded().get(0);
-			fix.includeAdded(formal);
-		}
+		// STEP 4 (OPCIONAL) - CRIAR A SODESCRIPTION
+		
+		// STEP 5 (OPCIONAL) - CRIAR A SOCOMMITMENT
+		
+		// STEP 6 (OPCIONAL) - CRIAR A SOCLAIM
+		
 		
 		diagramManager.updateOLED(fix);
 		return fix;
+		
 	}
 	
 }
