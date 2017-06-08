@@ -13,6 +13,7 @@ import br.ufes.inf.nemo.pattern.impl.generalization.FOP_GENERALIZATION_MIXIN;
 import br.ufes.inf.nemo.pattern.impl.generalization.FOP_GENERALIZATION_ROLEMIXIN;
 import br.ufes.inf.nemo.pattern.impl.other.FOP_GENERAL_RELATOR;
 import br.ufes.inf.nemo.pattern.impl.other.FOP_GENERIC_RELATOR;
+import br.ufes.inf.nemo.pattern.impl.other.FOP_MODE;
 import br.ufes.inf.nemo.pattern.impl.other.FOP_MULTIPLE_GENERIC_RELATOR;
 import br.ufes.inf.nemo.pattern.impl.other.FOP_PRINCIPLE_OF_IDENTITY;
 import br.ufes.inf.nemo.pattern.impl.other.FOP_ROLEMIXIN_DEPENDENCE;
@@ -24,6 +25,7 @@ import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_ROLE;
 import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_ROLEMIXIN;
 import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_SUBKIND;
 import br.ufes.inf.nemo.pattern.impl.relation.FOP_RELATION_CHARACTERIZATION;
+import br.ufes.inf.nemo.pattern.impl.relation.FOP_RELATION_COLLECTIVE_MEMBEROF;
 import br.ufes.inf.nemo.pattern.impl.relation.FOP_RELATION_FORMAL;
 import br.ufes.inf.nemo.pattern.ui.manager.ModelCompleterManager;
 
@@ -87,7 +89,12 @@ public class PatternTool {
 		case FOP_RELATION_FORMAL:
 			pm = new FOP_RELATION_FORMAL(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
 			break;
-			
+		case FOP_COLLECTIVE_MEMBEROF:
+			pm = new FOP_RELATION_COLLECTIVE_MEMBEROF(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
+			break;
+		case FOP_MODE:
+			pm = new FOP_MODE(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
+			break;
 		}
 
 		Fix fix = null;

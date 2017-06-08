@@ -201,6 +201,8 @@ public class PaletteAccordion extends JPanel{
 		ontopatternPalette.createElement("staticpalette.pattern", "fop_principle_of_identity");
 		ontopatternPalette.createElement("staticpalette.pattern", "fop_multiple_generic_relator");
 		ontopatternPalette.createElement("staticpalette.pattern", "fop_general_relator");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_collective_memberof");
+		ontopatternPalette.createElement("staticpalette.pattern", "fop_mode");
 		ontopatternPalette.createElement("staticpalette.pattern", "fop_generic_relator");
 		ontopatternPalette.createElement("staticpalette.pattern", "fop_rolemixin_dependence");
 		ontopatternPalette.createElement("staticpalette.pattern", "fop_partition_role");
