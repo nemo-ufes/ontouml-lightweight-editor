@@ -24,11 +24,11 @@ public class FOP_MULTIPLE_GENERIC_RELATOR extends AbstractPattern {
 
 
 	public FOP_MULTIPLE_GENERIC_RELATOR(OntoUMLParser parser, double x, double y) {
-		super(parser, x, y, "/resource/Multiple_Generic_Relator_FOP.PNG", "Multiple Generic Relator");
+		super(parser, x, y, "/resource/Multiple_Generic_Relator_FOP.png", "Multiple Generic Relator");
 	}
 
 	public FOP_MULTIPLE_GENERIC_RELATOR(OntoUMLParser parser, Classifier c, double x,	double y) {
-		super(parser, x, y, "/resource/Multiple_Generic_Relator_FOP.PNG", "Multiple Generic Relator");
+		super(parser, x, y, "/resource/Multiple_Generic_Relator_FOP.png", "Multiple Generic Relator");
 		this.c = c;
 	}
 	private Classifier c = null;
