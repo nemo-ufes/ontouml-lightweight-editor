@@ -42,6 +42,7 @@ public class JanBase {
 	private JTextField txtPersonProvider_P_O_Provider;
 	private JTextField txtOrganizationProvider_P_O_Provider;
 	private JTextField txtServiceProvider_P_OU_Provider;
+	
 	public JFrame getFrame() {
 		return frame;
 	}
