@@ -524,8 +524,8 @@ public class JanBase {
 		
 		//Group the radio buttons Hired Provider.
 		rdHiredProviderGroup = new ButtonGroup();
-		rdHiredProviderGroup.add(rdbtnP_HProvider); rdProviderGroup.add(rdbtnP_OU_HProvider);
-		rdHiredProviderGroup.add(rdbtnO_HProvider); rdProviderGroup.add(rdbtnP_O_OU_HProvider);
+		rdHiredProviderGroup.add(rdbtnP_HProvider); rdHiredProviderGroup.add(rdbtnP_OU_HProvider);
+		rdHiredProviderGroup.add(rdbtnO_HProvider); rdHiredProviderGroup.add(rdbtnP_O_OU_HProvider);
 		rdHiredProviderGroup.add(rdbtnOU_HProvider); 
 		rdHiredProviderGroup.add(rdbtnO_OU_HProvider); 
 		rdHiredProviderGroup.add(rdbtnP_O_HProvider); 
@@ -539,9 +539,9 @@ public class JanBase {
 		
 		//Group the radio buttons Target Customer.
 		rdServiceCustomerGroup = new ButtonGroup();
-		rdServiceCustomerGroup.add(rdbtnP_Customer); rdCustomerGroup.add(rdbtnP_O_Customer);
-		rdServiceCustomerGroup.add(rdbtnO_Customer); rdCustomerGroup.add(rdbtnP_OU_Customer);
-		rdServiceCustomerGroup.add(rdbtnOU_Customer); rdCustomerGroup.add(rdbtnP_O_OU_Customer);
+		rdServiceCustomerGroup.add(rdbtnP_Customer); rdServiceCustomerGroup.add(rdbtnP_O_Customer);
+		rdServiceCustomerGroup.add(rdbtnO_Customer); rdServiceCustomerGroup.add(rdbtnP_OU_Customer);
+		rdServiceCustomerGroup.add(rdbtnOU_Customer); rdServiceCustomerGroup.add(rdbtnP_O_OU_Customer);
 		rdServiceCustomerGroup.add(rdbtnO_OU_Customer);	
 		
 		imgPatternProvider = new JPanel();
