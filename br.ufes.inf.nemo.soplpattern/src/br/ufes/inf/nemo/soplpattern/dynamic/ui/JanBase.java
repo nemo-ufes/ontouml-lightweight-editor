@@ -69,6 +69,48 @@ public class JanBase {
 	private JTextField txtOrgTC_P_O_OU_TCustomer;
 	private SOPLPattern soplPattern;
 	
+	private JTextField txtServiceProvider_P_HProvider;
+	private JTextField txtPerson_P_HProvider;
+	private JTextField txtTargetCustomer_P_Customer;
+	private JTextField txtPerson_P_Customer;
+	private JTextField txtServiceProvider_P_O_OU_HProvider;
+	private JTextField txtPersonProvider_P_O_OU_HProvider;
+	private JTextField txtOrgProvider_P_O_OU_HProvider;
+	private JTextField txtPersonTC_P_O_OU_Customer;
+	private JTextField txtTargetCustomer_P_O_OU_Customer;
+	private JTextField txtOrgUnitTC_P_O_OU_Customer;
+	private JTextField txtOrgTC_P_O_OU_Customer;
+	private JTextField txtTargetCustomerTC_P_OU_Customer;
+	private JTextField txtPersonTC_P_OU_Customer;
+	private JTextField txtOrgUnitTC_P_OU_Customer;
+	private JTextField txtOrgProvider_P_OU_Customer;
+	private JTextField txtTargetCustomer_P_O_Customer;
+	private JTextField txtPersonTC_P_O_Customer;
+	private JTextField txtOrgTC_P_O_Customer;
+	private JTextField txtTargetCustomer_O_OU_Customer;
+	private JTextField txtOrgUnitTC_O_OU_Customer;
+	private JTextField txtOrgTC_O_OU_Customer;
+	private JTextField txtTargetCustomer_OU_Customer;
+	private JTextField txtOrgUnit_OU_Customer;
+	private JTextField txtTargetCustomer_O_Customer;
+	private JTextField txtOrgUnitProvider_P_O_OU_HProvider;
+	
+	private JTextField txtOrganization_O_Customer;
+	private JTextField txtServiceProvider_P_OU_HProvider;
+	private JTextField txtPersonProvider_P_OU_HProvider;
+	private JTextField txtOrgUnitProvider_P_OU_HProvider;
+	private JTextField txtServiceProvider_P_O_HProvider;
+	private JTextField txtPersonProvider_P_O_HProvider;
+	private JTextField txtOrganizationProvider_P_O_HProvider;
+	private JTextField txtServiceProvider_O_OU_HProvider;
+	private JTextField txtOrgUnitProvider_O_OU_HProvider;
+	private JTextField txtOrganizationProvider_O_OU_HProvider;
+	private JTextField txtServiceProvider_OU_HProvider;
+	private JTextField txtOrgUnit_OU_HProvider;
+	private JTextField txtServiceProvider_O_HProvider;
+	private JTextField txtOrganization_O_HProvider;
+
+	
 	//PANEL PROVIDER AND TARGET CUSTOMER (VARIANT PATTERNS)	
 	private static JPanel imgPatternProvider;
 	private static JPanel imgPatternCustomer;
@@ -1208,7 +1250,7 @@ public class JanBase {
 		txtServiceProvider_P_OU_HProvider.setBounds(143, 59, 138, 20);
 		panelP_OU_HProvider.add(txtServiceProvider_P_OU_HProvider);
 		
-		JLabel lblServiceProvider_P_OU_Provider = new JLabel("Hired Service Provider");
+		JLabel lblServiceProvider_P_OU_hProvider = new JLabel("Hired Service Provider");
 		lblServiceProvider_P_OU_Provider.setBounds(10, 62, 86, 14);
 		panelP_OU_Provider.add(lblServiceProvider_P_OU_Provider);
 		
@@ -1541,7 +1583,7 @@ public class JanBase {
 				trocaPainel(panelO_HProvider);			
 			}
 		});
-		rdbtnOU_Hrovider.addActionListener(new ActionListener() {
+		rdbtnOU_HProvider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {			
 				desabilitaPaineisHiredProvider();
 				trocaPainel(panelOU_HProvider);				
