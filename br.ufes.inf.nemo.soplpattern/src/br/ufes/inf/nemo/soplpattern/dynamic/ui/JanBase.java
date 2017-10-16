@@ -439,7 +439,7 @@ public class JanBase {
 		panelPatternServiceCustomer = new JPanel();
 		panelPatternServiceCustomer.setLayout(null);
 		panelPatternServiceCustomer.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Service Customer", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelPatternCustomer.setBounds(325,11, 286, 152);
+		panelPatternServiceCustomer.setBounds(325,11, 286, 152);
 		panelHiredP_ServiceC_Subgroup.add(panelPatternServiceCustomer);
 		
 		rdbtnP_TCustomer = new JRadioButton("P-TCustomer");
