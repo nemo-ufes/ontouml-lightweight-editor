@@ -305,7 +305,7 @@ public class JanBase {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 804, 609);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JButton btnNext = new JButton("Next");
