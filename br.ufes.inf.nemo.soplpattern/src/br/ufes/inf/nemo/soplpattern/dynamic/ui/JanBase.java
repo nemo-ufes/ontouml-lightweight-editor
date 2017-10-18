@@ -1892,7 +1892,7 @@ public class JanBase {
 				frame.dispose();
 			}
 		});
-		btnCreateConcepts.setBounds(167, 522, 113, 37);
+		btnCreateConcepts.setBounds(167, 522, 150, 37);
 		frame.getContentPane().add(btnCreateConcepts);
 
 		
