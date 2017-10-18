@@ -546,7 +546,7 @@ public class JanBase {
 		
 		imgPatternProvider = new JPanel();
 		imgPatternProvider.setBackground(Color.GRAY);
-		imgPatternProvider.setBounds(10, 168, 291, 146);
+		imgPatternProvider.setBounds(10, 168, 291, 146);	
 		panelPCSubgroup.add(imgPatternProvider);
 		
 		imgPatternHiredProvider = new JPanel();
@@ -1701,20 +1701,7 @@ public class JanBase {
 				desabilitaPaineisServiceCustomer();
 				trocaPainel(panelP_O_OU_Customer);				
 			}
-		});		
-				
-		//-----------------------------------PAREI AKI NA CONFERENCIA---------------------------------------------------//
-		//-----------------------------------PAREI AKI NA CONFERENCIA---------------------------------------------------//
-
-		//-----------------------------------PAREI AKI NA CONFERENCIA---------------------------------------------------//
-
-		//-----------------------------------PAREI AKI NA CONFERENCIA---------------------------------------------------//
-		//-----------------------------------PAREI AKI NA CONFERENCIA---------------------------------------------------//
-
-		//-----------------------------------PAREI AKI NA CONFERENCIA---------------------------------------------------//
-
-		//-----------------------------------PAREI AKI NA CONFERENCIA---------------------------------------------------//
-
+		});					
 		
 		//TUDO REFERENTE AO PAINEL SOFFFERING
 		
@@ -1927,7 +1914,7 @@ public class JanBase {
 			icon_P_Provider = new  ImageIcon(JanBase.class.getResource("/resource/P-Provider.PNG"));
 			imagem_P_Provider = new JLabel(icon_P_Provider);
 			imagem_P_Provider.setBounds(10, 27, 581, 275);
-			imagem_P_Provider.setSize(70, 96); // 70 96
+			imagem_P_Provider.setSize(70, 96); // 70 96		
 			imagem_P_Provider.setVisible(true);
 			imgPatternProvider.add(imagem_P_Provider);
 		}else if(panel.getName().equals("panelO_Provider")){
@@ -2091,7 +2078,7 @@ public class JanBase {
 		}else if(panel.getName().equals("panelO_Customer")){
 			icon_O_Customer= new  ImageIcon(JanBase.class.getResource("/resource/O-Customer.PNG"));
 			imagem_O_Customer = new JLabel(icon_O_Customer);
-			imagem_O_Customer.setBounds(10, 27, 581, 275);
+			imagem_O_Customer.setBounds(10, 168, 291, 146);
 			imagem_O_Customer.setSize(70, 96); // 70 96
 			imagem_O_Customer.setVisible(true);
 			imgPatternServiceCustomer.add(imagem_O_Customer);
