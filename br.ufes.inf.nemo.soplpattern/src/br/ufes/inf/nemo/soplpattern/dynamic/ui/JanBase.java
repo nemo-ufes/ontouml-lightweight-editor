@@ -1880,7 +1880,7 @@ public class JanBase {
 		panelImg_SOClaimm.add(imagemSOClaim);
 		panelSOClaimInterno.add(panelImg_SOClaimm);	
 		
-		JButton btnCreateConcepts = new JButton("Create Concepts");
+		JButton btnCreateConcepts = new JButton("Create S-OPL Diagram");
 		btnCreateConcepts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				
