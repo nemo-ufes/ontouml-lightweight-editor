@@ -57,6 +57,8 @@ public class SODescription extends SOPLPattern{
 		Association providerOffering = null;
 		Association TCCOffering = null; // Target Customer Community Offering
 		memberOf targetCmemberofTCC = null; //Target Customer member of Target Customer Community
+		Association descriptionOffering = null;
+		Association claimOffering = null;
 		
 		Classifier collectiveA = null;
 		Classifier roleServiceProvider = null;
@@ -72,6 +74,7 @@ public class SODescription extends SOPLPattern{
 		
 		Classifier collectiveTCC = null; // Collective Target Customer Community
 		Classifier categorySODescription = null; // Service Offering Description
+		Classifier soClaim = null; //SOClaim
 		
 		//Chamar um metodo que pega todos os elementos da interface
 		
@@ -224,12 +227,31 @@ public class SODescription extends SOPLPattern{
 //			fix.addAll(outcomeFixer.createGeneralization(roleOrgTC, roleTargetCustomer));	
 		}
 		
-		// STEP 2 - CRIAR A OFFERING 
-		String offering = janBase.getTxtServiceOffering().getText();		
+		// STEP 2 - CRIAR OFFERING, DESCRIPTION, CLAIM E COMMITMENT
+		String offering = janBase.getTxtServiceOffering().getText(); //Offering		
 		relatorOffering = this.createClassifier(offering , "Relator",  200, 300);		
 		
-		String targetCustCom = janBase.getTxtTargetCC().getText();
-		collectiveTCC = this.createClassifier(targetCustCom, "Collective", 400, 300);
+		String targetCustCom = janBase.getTxtTargetCC().getText(); // Target Customer Community
+		if(!targetCustCom.equals("")) {
+			collectiveTCC = this.createClassifier(targetCustCom, "Collective", 400, 300);
+			
+			targetCmemberofTCC = (memberOf) outcomeFixer.createAssociationBetween(RelationStereotype.MEMBEROF, "", collectiveTCC, roleTargetCustomer).getAdded().get(0);
+			fix.includeAdded(targetCmemberofTCC);
+		}
+		String soDescription = janBase.getTxtServiceOfferingDescription().getText(); //SODescription
+		if(!soDescription.equals("")) {			
+			categorySODescription = this.createClassifier(soDescription, "Category", 200, 500);
+			
+			descriptionOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", categorySODescription, relatorOffering).getAdded().get(0);
+			fix.includeAdded(descriptionOffering);	
+		}
+		String claim = janBase.getTxtServiceOfferingClaim().getText();
+		if(!claim.equals("")) {
+			soClaim = this.createClassifier(claim, "Mode", 100, 500);
+			
+			claimOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", soClaim, relatorOffering).getAdded().get(0);
+			fix.includeAdded(claimOffering);	
+		}						
 		
 				
 		// STEP 3  - CREATE GENERALIZATIONS AND ASSOCIATIONS
@@ -238,17 +260,8 @@ public class SODescription extends SOPLPattern{
 		fix.includeAdded(providerOffering);	
 
 		TCCOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorOffering, collectiveTCC).getAdded().get(0);
-		fix.includeAdded(TCCOffering);
-		
-		targetCmemberofTCC = (memberOf) outcomeFixer.createAssociationBetween(RelationStereotype.MEMBEROF, "", collectiveTCC, roleTargetCustomer).getAdded().get(0);
-		fix.includeAdded(targetCmemberofTCC);
-		
-		// STEP 4 (OPCIONAL) - CRIAR A SODESCRIPTION
-		
-		// STEP 5 (OPCIONAL) - CRIAR A SOCOMMITMENT
-		
-		// STEP 6 (OPCIONAL) - CRIAR A SOCLAIM
-		
+		fix.includeAdded(TCCOffering);	
+			
 		
 		diagramManager.updateOLED(fix);
 		return fix;
