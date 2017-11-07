@@ -66,7 +66,7 @@ public abstract class SOPLPattern {
 	
 	}
 	
-	public abstract void criarTabela(String[][] tabela);
+//	public abstract void criarTabela(String[][] tabela);
 
 	public abstract void runPattern(DiagramManager diagramManager);	
 

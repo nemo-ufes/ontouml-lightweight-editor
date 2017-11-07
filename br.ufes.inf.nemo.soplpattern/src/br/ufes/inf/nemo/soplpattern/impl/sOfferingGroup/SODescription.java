@@ -2,6 +2,7 @@ package br.ufes.inf.nemo.soplpattern.impl.sOfferingGroup;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import RefOntoUML.Classifier;
 import RefOntoUML.Generalization;
 import RefOntoUML.Package;
 import RefOntoUML.Relator;
+import RefOntoUML.memberOf;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
 import br.ufes.inf.nemo.common.ontoumlfixer.ClassStereotype;
@@ -26,9 +28,6 @@ public class SODescription extends SOPLPattern{
 	
 	
 	private Classifier c = null;
-	private String elements[][] = new String[4][2];
-	private String rdProviderSubgroupSelected;
-	private String rdCustomerSubgroupSelected;
 			
 	public SODescription(OntoUMLParser parser, double x, double y) {		
 		super(parser, x, y, "/resource/SOFFERING.png", "SOFFERING");
@@ -47,10 +46,6 @@ public class SODescription extends SOPLPattern{
 		janBase = new JanBase(this);
 	}
 	
-	public void criarTabela(String[][] tabela){
-		this.elements = tabela;				
-	}
-	
 	public Fix getSpecificFix(int patternProviderSelected, int patternCustomerSelected) {			
 				
 		//VAMOS RESOLVER O PROBLEMA TODOO NESSE METODO - SE FOR CRIAR UM PRA CADA PARTE VAI FICAR MT GRANDE
@@ -60,7 +55,9 @@ public class SODescription extends SOPLPattern{
 		fix = new Fix();
 		
 		Association providerOffering = null;
-		Association customerOffering = null;
+		Association TCCOffering = null; // Target Customer Community Offering
+		memberOf targetCmemberofTCC = null; //Target Customer member of Target Customer Community
+		
 		Classifier collectiveA = null;
 		Classifier roleServiceProvider = null;
 		Classifier roleOrgTC = null;
@@ -73,6 +70,9 @@ public class SODescription extends SOPLPattern{
 		Classifier roleTargetCustomer = null;
 		Classifier relatorOffering = null; //Nome da Offering
 		
+		Classifier collectiveTCC = null; // Collective Target Customer Community
+		Classifier categorySODescription = null; // Service Offering Description
+		
 		//Chamar um metodo que pega todos os elementos da interface
 		
 		// 1 STEP - VERIFICAR E CRIAR DENTRO DO FIX OS ELEMENTOS DO PATTERN PROVIDER E CUSTOMER SUBGROUP SELECIONADOS
@@ -80,11 +80,11 @@ public class SODescription extends SOPLPattern{
 		if(patternProviderSelected == 1){ //Pattern P-Provider
 			//Create Person
 			String person = janBase.getTxtPerson_P_Provider().getText();			
-			collectiveA  = this.createClassifier(person, "kind", 200, 150);
+			collectiveA  = this.createClassifier(person, "kind", 0, 150);
 			
 			//Create Service Provider
 			String serviceProvider = janBase.getTxtServiceProvider_P_Provider().getText();
-			roleServiceProvider = this.createClassifier(serviceProvider, "RoleMixin", 200, 300);	
+			roleServiceProvider = this.createClassifier(serviceProvider, "RoleMixin", 0, 300);	
 			
 			fix.addAll(outcomeFixer.createGeneralization(roleServiceProvider, collectiveA));
 		}else if(patternProviderSelected == 2){// Pattern O-Provider
@@ -147,11 +147,11 @@ public class SODescription extends SOPLPattern{
 		if(patternCustomerSelected == 1){ //Pattern P-TCustomer
 			//Create Person
 			String person = janBase.getTxtPerson_P_TCustomer().getText();			
-			collectiveB  = this.createClassifier(person, "kind",600, 150);
+			collectiveB  = this.createClassifier(person, "kind",600, 500);
 			
 			//Create Target Customer
 			String targetCustomer = janBase.getTxtTargetCustomer_P_TCustomer().getText();
-			roleTargetCustomer = this.createClassifier(targetCustomer, "RoleMixin", 600, 300);
+			roleTargetCustomer = this.createClassifier(targetCustomer, "RoleMixin", 400, 500);
 			
 			fix.addAll(outcomeFixer.createGeneralization(roleTargetCustomer, collectiveB));
 		}else if(patternCustomerSelected == 2){// Pattern O-TCustomer
@@ -225,18 +225,23 @@ public class SODescription extends SOPLPattern{
 		}
 		
 		// STEP 2 - CRIAR A OFFERING 
-		String offering = janBase.getTxtServiceOffering().getText();
+		String offering = janBase.getTxtServiceOffering().getText();		
+		relatorOffering = this.createClassifier(offering , "Relator",  200, 300);		
 		
-		relatorOffering = this.createClassifier(offering , "Relator",  400, 300);
+		String targetCustCom = janBase.getTxtTargetCC().getText();
+		collectiveTCC = this.createClassifier(targetCustCom, "Collective", 400, 300);
 		
+				
+		// STEP 3  - CREATE GENERALIZATIONS AND ASSOCIATIONS
+
 		providerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleServiceProvider, relatorOffering).getAdded().get(0);
 		fix.includeAdded(providerOffering);	
 
-		customerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorOffering, roleTargetCustomer).getAdded().get(0);
-		fix.includeAdded(customerOffering);
+		TCCOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorOffering, collectiveTCC).getAdded().get(0);
+		fix.includeAdded(TCCOffering);
 		
-		// STEP 3  - CREATE GENERALIZATIONS AND ASSOCIATIONS
-
+		targetCmemberofTCC = (memberOf) outcomeFixer.createAssociationBetween(RelationStereotype.MEMBEROF, "", collectiveTCC, roleTargetCustomer).getAdded().get(0);
+		fix.includeAdded(targetCmemberofTCC);
 		
 		// STEP 4 (OPCIONAL) - CRIAR A SODESCRIPTION
 		
