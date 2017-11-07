@@ -59,6 +59,7 @@ public class SODescription extends SOPLPattern{
 		memberOf targetCmemberofTCC = null; //Target Customer member of Target Customer Community
 		Association descriptionOffering = null;
 		Association claimOffering = null;
+		Association commitmentOffering = null;
 		
 		Classifier collectiveA = null;
 		Classifier roleServiceProvider = null;
@@ -75,6 +76,7 @@ public class SODescription extends SOPLPattern{
 		Classifier collectiveTCC = null; // Collective Target Customer Community
 		Classifier categorySODescription = null; // Service Offering Description
 		Classifier soClaim = null; //SOClaim
+		Classifier soCommitment = null;
 		
 		//Chamar um metodo que pega todos os elementos da interface
 		
@@ -251,7 +253,14 @@ public class SODescription extends SOPLPattern{
 			
 			claimOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", soClaim, relatorOffering).getAdded().get(0);
 			fix.includeAdded(claimOffering);	
-		}						
+		}	
+		String commitment = janBase.getTxtServiceOfferingCommitment().getText();
+		if(!commitment.equals("")) {
+			soCommitment = this.createClassifier(claim, "Mode", 300, 500);
+			
+			commitmentOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", soCommitment, relatorOffering).getAdded().get(0);
+			fix.includeAdded(commitmentOffering);	
+		}
 		
 				
 		// STEP 3  - CREATE GENERALIZATIONS AND ASSOCIATIONS
