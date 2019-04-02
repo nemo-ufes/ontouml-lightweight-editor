@@ -374,6 +374,12 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			
 			selectorMap.put("FOP_MULTIPLE_GENERIC_RELATOR", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_MULTIPLE_GENERIC_RELATOR));
+			
+			selectorMap.put("FOP_RELATION_COLLECTIVE_MEMBEROF", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_COLLECTIVE_MEMBEROF));
+			
+			selectorMap.put("FOP_MODE", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_MODE));
 
 			selectorMap.put("FOP_GENERIC_RELATOR", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.FOP_GENERIC_RELATOR));

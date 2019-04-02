@@ -23,6 +23,7 @@ import RefOntoUML.RigidSortalClass;
 import RefOntoUML.Role;
 import RefOntoUML.RoleMixin;
 import RefOntoUML.SortalClass;
+import RefOntoUML.SubKind;
 import RefOntoUML.SubstanceSortal;
 import RefOntoUML.parser.OntoUMLParser;
 import br.ufes.inf.nemo.assistant.util.UtilAssistant;
@@ -36,6 +37,7 @@ import br.ufes.inf.nemo.pattern.impl.other.FOP_ROLEMIXIN_DEPENDENCE;
 import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_PHASE;
 import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_ROLE;
 import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_ROLEMIXIN;
+import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_SUBKIND;
 import br.ufes.inf.nemo.pattern.impl.relation.FOP_RELATION_CHARACTERIZATION;
 
 public class ModelCompleterManager {
@@ -57,12 +59,13 @@ public class ModelCompleterManager {
 		tableLines = new ArrayList<TableLine>(); 
 
 		checkIndentityPrinciple();
+		checkSubkindPartition();
 		checkRoleAndRelatorCompleteness();
 		checkPhasePartition();
 		checkRoleMixinDependence();
 		checkCategoryCompleteness();
 		checkMixinCompleteness();
-		checkCharacterizationCompleteness();
+		//checkCharacterizationCompleteness();
 
 		Collections.sort(tableLines, new Comparator<TableLine>() {
 			@Override
@@ -84,14 +87,14 @@ public class ModelCompleterManager {
 
 		for(Classifier c: modes){
 			ArrayList<Association> ass = new ArrayList<>();
-			
+
 			//search for direct characterization associations
 			for(Association a : parser.getDirectAssociations(c)){
 				if(a instanceof Characterization){
 					ass.add(a);
 				}
 			}
-					
+
 			//check for indirect characterization associations
 			for(Classifier s:parser.getChildren(c)){
 				if(s instanceof Mode){
@@ -165,28 +168,59 @@ public class ModelCompleterManager {
 				if(parser.getSpecializations(c).size() < 2){
 					listRM.add(c);
 				}
+			}
+			//Checking RoleMixin dependences
+			ArrayList<Association> rmAssociations = parser.getDirectAssociations(c);
+			rmAssociations.addAll(parser.getIndirectAssociations(c));
+			boolean isRMDependent = true;
 
-				//Checking RoleMixin dependences
-				ArrayList<Association> rmAssociations = parser.getDirectAssociations(c);
-				rmAssociations.addAll(parser.getIndirectAssociations(c));
-				boolean isRMDependent = true;
-
-				for(Association ass : rmAssociations){
-					if(ass instanceof Mediation){
-						//RM suppress its roles dependences
-						isRMDependent = false;
-						break;
-					}
+			for(Association ass : rmAssociations){
+				if(ass instanceof Mediation){
+					//RM suppress its roles dependences
+					isRMDependent = false;
+					break;
 				}
+			}
 
-				if(isRMDependent){
-					listRMDependence.add(c);
-				}
+			if(isRMDependent){
+				listRMDependence.add(c);
 			}
 		}
 
 		addRoleMixinLine(listRM);
 		addRoleMixinDependenceLine(listRMDependence);
+	}
+
+	private void checkSubkindPartition(){
+		Set<Classifier> list = new HashSet<Classifier>();
+		Set<? extends Classifier> subkinds = parser.getAllInstances(SubKind.class);
+
+		for (Classifier c : subkinds) {
+			if(parser.getGeneralizations(c).isEmpty()){
+				list.add(c);
+				continue;
+			}
+			nextClassifier:
+				for(Generalization gen : parser.getGeneralizations(c)){
+					if(parser.getGeneralizationSet(gen).isEmpty()){
+						list.add(c);
+						continue;
+					}
+					for(GeneralizationSet gent : parser.getGeneralizationSet(gen)){
+						for(Generalization g : gent.getGeneralization()){
+							if(!g.equals(gen)){
+								if(g.getSpecific() instanceof SubKind){
+									break nextClassifier;
+								}else{
+									list.add(c);
+								}
+							}
+						}
+					}	
+				}
+		}
+
+		addSubkindPartitionLine(list);
 	}
 
 	private void checkPhasePartition(){
@@ -229,7 +263,7 @@ public class ModelCompleterManager {
 		Set<? extends Classifier> set = parser.getAllInstances(SortalClass.class);
 		for (Classifier c : set) {
 			boolean suppressed = false;
-			
+
 			if(!(c instanceof SubstanceSortal)){
 				for(Classifier st : parser.getAllParents(c)){
 					if(st instanceof RefOntoUML.SubstanceSortal){
@@ -303,6 +337,15 @@ public class ModelCompleterManager {
 			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apPhasePartition, new FOP_PARTITION_PHASE(parser, c, x, y)));
 		}
 	}
+
+	private void addSubkindPartitionLine(Set<? extends Classifier> set){
+		String apSubkindPartition = "Subkinds could be presented in a GeneralizationSet\nwith, at least, another Subkind.";
+
+		for (Classifier c : set) {
+			tableLines.add(new TableLine(UtilAssistant.getStringRepresentationClass(c),UtilAssistant.getStringRepresentationStereotype(c),apSubkindPartition, new FOP_PARTITION_SUBKIND(parser, c, x, y)));
+		}
+	}
+
 
 	private void addPrincipleIdentityLine(Set<? extends Classifier> set){
 		String apPrincipleIdentity = "The class must have directly \nor indirectly some Identity Principle.";

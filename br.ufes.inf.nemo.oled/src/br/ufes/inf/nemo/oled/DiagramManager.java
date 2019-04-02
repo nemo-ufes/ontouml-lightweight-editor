@@ -1004,7 +1004,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				lastOpenPath = file.getAbsolutePath();
 				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
 				currentProject = (UmlProject) listFiles.get(0);
-				if(currentProject.getVersion()==null || currentProject.getVersion().trim().isEmpty() || (currentProject.getVersionAsInt()<=934))
+				if(currentProject.getVersion()==null || currentProject.getVersion().trim().isEmpty())
 				{
 					String msg = "This project was originally edited with an older version of OLED (prior to 1.X), hence some changes are required.\nPress \"OK\" to update this file automatically to this new version.\nNotice that saving this file however will make it no longer works in any version of OLED prior to 1.X.";
 					String oldversion = new String();					
@@ -1044,7 +1044,7 @@ public class DiagramManager extends JTabbedPane implements SelectionListener, Ed
 				setProjectFile(file);
 				ArrayList<Object> listFiles = ProjectReader.getInstance().readProject(file);
 				currentProject = (UmlProject) listFiles.get(0);				
-				if(currentProject.getVersion()==null || currentProject.getVersion().trim().isEmpty() || (currentProject.getVersionAsInt()<=934))
+				if(currentProject.getVersion()==null || currentProject.getVersion().trim().isEmpty())
 				{
 					String msg = "This project was originally edited with an older version of OLED (prior to 1.X), hence some changes are required.\nPress \"OK\" to update this file automatically to this new version.\nNotice that saving this file however will make it no longer works in any version of OLED prior to 1.X.";					
 					String oldversion = new String();
