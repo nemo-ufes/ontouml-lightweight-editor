@@ -212,10 +212,7 @@ public class CreationHandler implements EditorMode {
 			}else if(elementType == ElementType.DOMAIN_PATTERN){
 				//Victor and Fabiano Domain Patterns
 				editor.getDiagramManager().runDomainPattern(tmpPos.getX(),tmpPos.getY());
-			}else if(elementType == ElementType.SOFFERING){
-				//Paulo H. Araujo da Silva SOPL Pattern
-				editor.getDiagramManager().runSOPLPattern(elementType, tmpPos.getX(),tmpPos.getY() );
-			}else if(elementType == ElementType.SODESCRIPTION){
+			}else if( (elementType == ElementType.SOFFERING) || (elementType == ElementType.SAGREEMENT) ){
 				//Paulo H. Araujo da Silva SOPL Pattern
 				editor.getDiagramManager().runSOPLPattern(elementType, tmpPos.getX(),tmpPos.getY() );
 			}

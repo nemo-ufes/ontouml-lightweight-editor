@@ -28,8 +28,8 @@ import br.ufes.inf.nemo.pattern.impl.partition.FOP_PARTITION_SUBKIND;
 import br.ufes.inf.nemo.pattern.impl.relation.FOP_RELATION_CHARACTERIZATION;
 import br.ufes.inf.nemo.pattern.impl.relation.FOP_RELATION_FORMAL;
 import br.ufes.inf.nemo.pattern.ui.manager.ModelCompleterManager;
+import br.ufes.inf.nemo.soplpattern.impl.EntryPoint;
 import br.ufes.inf.nemo.soplpattern.impl.SOPLPattern;
-import br.ufes.inf.nemo.soplpattern.impl.sOfferingGroup.SODescription;
 
 /**
  * @author Paulo H. Araujo da Silva
@@ -51,8 +51,13 @@ public class SOPLPatternTool {
 		
 		switch (elem) {	
 		
-		case SODESCRIPTION:
-			pm = new SODescription(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y);
+		case SOFFERING:
+			System.out.println("SOFFERING");
+			pm = new EntryPoint(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y, 1);
+			break;
+		case SAGREEMENT:
+			System.out.println("SAGREEMENT");
+			pm = new EntryPoint(ProjectBrowser.frame.getProjectBrowser().getParser(), x, y, 2);
 			break;
 		default:
 			break;
