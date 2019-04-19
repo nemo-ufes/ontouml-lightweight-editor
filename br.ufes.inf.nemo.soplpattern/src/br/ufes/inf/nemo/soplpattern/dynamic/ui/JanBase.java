@@ -158,7 +158,7 @@ public class JanBase {
 	private static JPanel panelSOffering;
 	private static JPanel panelSODescription;
 	private static JPanel panelSOCommitment;
-	private static JPanel panelSOClaim;
+	private static JPanel panelSNegAgree;
 	private JTextField txtServiceOffering;
 	private JTextField txtTargetCC;
 	private JTextField txtServiceOfferingDescription;
@@ -287,8 +287,8 @@ public class JanBase {
 	private JLabel imagemSODescription;
 	private ImageIcon iconSOCommitment;
 	private JLabel imagemSOCommitment;
-	private ImageIcon iconSOClaim;
-	private JLabel imagemSOClaim;
+	private ImageIcon iconSNegAgree;
+	private JLabel imagemSNegAgree;
 
 	public int entrypoint = 1; //Por padrao o entrypoint é a SOffering
 
@@ -1862,47 +1862,47 @@ public class JanBase {
 		panelImg_SOCommitment.add(imagemSOCommitment);
 		panelSOCommitmentInterno.add(panelImg_SOCommitment);	
 		
-		//SOClaim
+		//SNegAgree
 		
-		panelSOClaim = new JPanel();
-		panelSOClaim.setBounds(157, 11, 621, 511);
-		frame.getContentPane().add(panelSOClaim);
-		panelSOClaim.setLayout(null);	
-		panelSOClaim.setVisible(false);
+		panelSNegAgree = new JPanel();
+		panelSNegAgree.setBounds(157, 11, 621, 511);
+		frame.getContentPane().add(panelSNegAgree);
+		panelSNegAgree.setLayout(null);	
+		panelSNegAgree.setVisible(false);
 		
-		JPanel panelSOClaimInterno = new JPanel();
-		panelSOClaimInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOClaim", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelSOClaimInterno.setBounds(10, 11, 601, 489);
-		panelSOClaim.add(panelSOClaimInterno);
-		panelSOClaimInterno.setLayout(null);
+		JPanel panelSNegAgreeInterno = new JPanel();
+		panelSNegAgreeInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SNegAgree", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSNegAgreeInterno.setBounds(10, 11, 601, 489);
+		panelSNegAgree.add(panelSNegAgreeInterno);
+		panelSNegAgreeInterno.setLayout(null);
 		
-		JLabel lblClass_SOClaim = new JLabel("Class");
-		lblClass_SOClaim.setBounds(143, 327, 68, 14);
-		panelSOClaimInterno.add(lblClass_SOClaim);
+		JLabel lblClass_SNegAgree = new JLabel("Class");
+		lblClass_SNegAgree.setBounds(143, 327, 68, 14);
+		panelSNegAgreeInterno.add(lblClass_SNegAgree);
 		
-		JLabel lblName_SOClaim = new JLabel("Name");
-		lblName_SOClaim.setBounds(328, 327, 68, 14);
-		panelSOClaimInterno.add(lblName_SOClaim);
+		JLabel lblName_SNegAgree = new JLabel("Name");
+		lblName_SNegAgree.setBounds(328, 327, 68, 14);
+		panelSNegAgreeInterno.add(lblName_SNegAgree);
 		
 		JLabel lblServiceOfferingClaim = new JLabel("Service Offering Claim");
 		lblServiceOfferingClaim.setBounds(143, 352, 151, 14);
-		panelSOClaimInterno.add(lblServiceOfferingClaim);
+		panelSNegAgreeInterno.add(lblServiceOfferingClaim);
 		
 		txtServiceOfferingClaim = new JTextField();
 		txtServiceOfferingClaim.setBounds(328, 352, 166, 20);
-		panelSOClaimInterno.add(txtServiceOfferingClaim);
+		panelSNegAgreeInterno.add(txtServiceOfferingClaim);
 		txtServiceOfferingClaim.setColumns(10);
 			
-		JPanel panelImg_SOClaimm = new JPanel();
-		panelImg_SOClaimm.setBackground(Color.LIGHT_GRAY);
-		panelImg_SOClaimm.setBounds(10, 27, 581, 275);
-		iconSOClaim = new  ImageIcon(getClass().getResource("/resource/SOClaim.PNG"));
-		imagemSOClaim = new JLabel(iconSOClaim);
-		imagemSOClaim.setBounds(10, 27, 581, 275);
-		imagemSOClaim.setSize(70, 96); // 70 96
-		imagemSOClaim.setVisible(true);
-		panelImg_SOClaimm.add(imagemSOClaim);
-		panelSOClaimInterno.add(panelImg_SOClaimm);	
+		JPanel panelImg_SNegAgreem = new JPanel();
+		panelImg_SNegAgreem.setBackground(Color.LIGHT_GRAY);
+		panelImg_SNegAgreem.setBounds(10, 27, 581, 275);
+		iconSNegAgree = new  ImageIcon(getClass().getResource("/resource/SNegAgree.PNG"));
+		imagemSNegAgree = new JLabel(iconSNegAgree);
+		imagemSNegAgree.setBounds(10, 27, 581, 275);
+		imagemSNegAgree.setSize(70, 96); // 70 96
+		imagemSNegAgree.setVisible(true);
+		panelImg_SNegAgreem.add(imagemSNegAgree);
+		panelSNegAgreeInterno.add(panelImg_SNegAgreem);	
 		
 		JButton btnCreateConcepts = new JButton("Create S-OPL Diagram");
 		btnCreateConcepts.addActionListener(new ActionListener() {
@@ -2185,7 +2185,7 @@ public class JanBase {
 		panelSOffering.setVisible(false);
 		panelSODescription.setVisible(false);
 		panelSOCommitment.setVisible(false);
-		panelSOClaim.setVisible(false);
+		panelSNegAgree.setVisible(false);
 	}
 	
 	/**
@@ -2200,7 +2200,7 @@ public class JanBase {
 		if(painelSelecionado == 1){	panelPCSubgroup.setVisible(true);}
 		if(painelSelecionado == 2){ panelSODescription.setVisible(true);}
 		if(painelSelecionado == 3){	panelSOCommitment.setVisible(true);}
-		if(painelSelecionado == 4){	panelSOClaim.setVisible(true);} //Mudar para SNegAgree
+		if(painelSelecionado == 4){	panelSNegAgree.setVisible(true);} //Mudar para SNegAgree
 		/*
 		 * if(painelSelecionado == 5){ panelSOfferAgree.setVisible(true);}
 		 * if(painelSelecionado == 6){ panelSNegotiation.setVisible(true);}
@@ -2667,11 +2667,11 @@ public class JanBase {
 	public static void setPanelSOCommitment(JPanel panelSOCommitment) {
 		JanBase.panelSOCommitment = panelSOCommitment;
 	}
-	public static JPanel getPanelSOClaim() {
-		return panelSOClaim;
+	public static JPanel getpanelSNegAgree() {
+		return panelSNegAgree;
 	}
-	public static void setPanelSOClaim(JPanel panelSOClaim) {
-		JanBase.panelSOClaim = panelSOClaim;
+	public static void setpanelSNegAgree(JPanel panelSNegAgree) {
+		JanBase.panelSNegAgree = panelSNegAgree;
 	}
 	public JTextField getTxtServiceOffering() {
 		return txtServiceOffering;
@@ -3009,16 +3009,16 @@ public class JanBase {
 	public void setImagemSOCommitment(JLabel imagemSOCommitment) {
 		this.imagemSOCommitment = imagemSOCommitment;
 	}
-	public ImageIcon getIconSOClaim() {
-		return iconSOClaim;
+	public ImageIcon getIconSNegAgree() {
+		return iconSNegAgree;
 	}
-	public void setIconSOClaim(ImageIcon iconSOClaim) {
-		this.iconSOClaim = iconSOClaim;
+	public void setIconSNegAgree(ImageIcon iconSNegAgree) {
+		this.iconSNegAgree = iconSNegAgree;
 	}
-	public JLabel getImagemSOClaim() {
-		return imagemSOClaim;
+	public JLabel getImagemSNegAgree() {
+		return imagemSNegAgree;
 	}
-	public void setImagemSOClaim(JLabel imagemSOClaim) {
-		this.imagemSOClaim = imagemSOClaim;
+	public void setImagemSNegAgree(JLabel imagemSNegAgree) {
+		this.imagemSNegAgree = imagemSNegAgree;
 	}
 }
