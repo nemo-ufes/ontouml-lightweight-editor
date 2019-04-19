@@ -303,6 +303,8 @@ public class JanBase {
 	
 	public void EntryPoint(int entrypoint)
 	{
+		desabilitaPaineisPrincipais();
+		trocaPainelPrincipal(0); //Comeca do Panel 0 - SOffering
 		if(entrypoint == 2) { // 2 = SAgreement
 			desabilitaPaineisPrincipais();
 			trocaPainelPrincipal(5);
