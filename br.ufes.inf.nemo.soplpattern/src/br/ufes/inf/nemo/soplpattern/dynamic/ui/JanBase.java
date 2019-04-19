@@ -2181,11 +2181,11 @@ public class JanBase {
 		//Escolhe qual painel sera exibido !
 		desabilitaPaineisPrincipais();
 		
-		if(painelSelecionado == 0){			
-			panelPCSubgroup.setVisible(true);
+		if(painelSelecionado == 0){		
+			panelSOffering.setVisible(true);
 		}
 		else if(painelSelecionado == 1){			
-			panelSOffering.setVisible(true);
+			panelPCSubgroup.setVisible(true);
 		}
 		else if(painelSelecionado == 2){			
 			panelSODescription.setVisible(true);
