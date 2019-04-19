@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import br.ufes.inf.nemo.soplpattern.impl.EntryPoint;
 import br.ufes.inf.nemo.soplpattern.impl.SOPLPattern;
 
 import java.awt.BorderLayout;
@@ -293,11 +294,21 @@ public class JanBase {
 	/**
 	 * Create the application.
 	 */
-	public JanBase(final SOPLPattern pattern) {
+	public JanBase(final SOPLPattern pattern, int entrypoint) {
 		initialize();
 		frame.setVisible(true);
 		soplPattern = pattern;	
+		EntryPoint(entrypoint);
 	}
+	
+	public void EntryPoint(int entrypoint)
+	{
+		if(entrypoint == 2) { // 2 = SAgreement
+			desabilitaPaineisPrincipais();
+			trocaPainelPrincipal(5);
+		}
+	}
+	
 
 	/**
 	 * Initialize the contents of the frame.

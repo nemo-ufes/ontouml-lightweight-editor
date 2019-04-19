@@ -1,4 +1,4 @@
-package br.ufes.inf.nemo.soplpattern.impl.sOfferingGroup;
+package br.ufes.inf.nemo.soplpattern.impl;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -24,16 +24,22 @@ import br.ufes.inf.nemo.oled.DiagramManager;
 import br.ufes.inf.nemo.soplpattern.dynamic.ui.JanBase;
 import br.ufes.inf.nemo.soplpattern.impl.SOPLPattern;
 
-public class SODescription extends SOPLPattern{
+public class EntryPoint extends SOPLPattern{
 	
 	
 	private Classifier c = null;
+	private int entryPoint = 0;  // 1 = SOffering and 2 = SAgreement 
 			
-	public SODescription(OntoUMLParser parser, double x, double y) {		
+	public EntryPoint(OntoUMLParser parser, double x, double y) {		
 		super(parser, x, y, "/resource/SOFFERING.png", "SOFFERING");
 	}
+	
+	public EntryPoint(OntoUMLParser parser, double x, double y, int entrypoint) {		
+		super(parser, x, y, "/resource/SOFFERING.png", "SOFFERING");
+		this.entryPoint = entrypoint;
+	}
 
-	public SODescription(OntoUMLParser parser, Classifier c, double x, double y) {		
+	public EntryPoint(OntoUMLParser parser, Classifier c, double x, double y) {		
 		super(parser, x, y, "/resource/SOFFERING.png", "SOFFERING");
 		this.c = c;
 	}	
@@ -43,7 +49,7 @@ public class SODescription extends SOPLPattern{
 						
 		//Instanciar a Janela Principal SOPL aqui !
 		this.diagramManager = diagramManager;	
-		janBase = new JanBase(this);
+		janBase = new JanBase(this, entryPoint);
 	}
 	
 	public Fix getSpecificFix(int patternProviderSelected, int patternCustomerSelected) {			

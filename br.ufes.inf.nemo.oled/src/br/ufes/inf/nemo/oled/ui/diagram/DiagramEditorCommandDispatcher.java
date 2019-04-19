@@ -433,8 +433,8 @@ public class DiagramEditorCommandDispatcher implements AppCommandListener {
 			selectorMap.put("SOFFERING", new MethodCall(
 					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.SOFFERING));
 			
-			selectorMap.put("SODESCRIPTION", new MethodCall(
-					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.SODESCRIPTION));
+			selectorMap.put("SAGREEMENT", new MethodCall(
+					DiagramEditor.class.getMethod("setPatternMode",ElementType.class),ElementType.SAGREEMENT));
 
 		} catch (NoSuchMethodException ex) {
 			ex.printStackTrace();
