@@ -309,6 +309,12 @@ public class JanBase {
 	private JTextField SADescription_txt;
 	private ImageIcon iconSADescription;
 	private JLabel imagemSADescription;
+	
+	//SCCommitments
+	private static JPanel panelSCCommitments;
+	private JTextField SCCommitments_txt;
+	private ImageIcon iconSCCommitments;
+	private JLabel imagemSCCommitments;
 
 	/**
 	 * Create the application.
@@ -548,6 +554,48 @@ public class JanBase {
 		imagemSADescription.setVisible(true);
 		SADescription_panelImg.add(imagemSADescription);
 		panelSADescriptionInterno.add(SADescription_panelImg);
+		
+//**********************************************************************************************************************************
+		//SCCommitments
+		panelSCCommitments = new JPanel();
+		panelSCCommitments.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelSCCommitments);
+		panelSCCommitments.setLayout(null);
+		panelSCCommitments.setVisible(false);
+		
+		JPanel panelSCCommitmentsInterno = new JPanel();
+		panelSCCommitmentsInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SCCommitments", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSCCommitmentsInterno.setBounds(10, 11, 601, 489);
+		panelSCCommitments.add(panelSCCommitmentsInterno);
+		panelSCCommitmentsInterno.setLayout(null);
+		
+		JLabel SCCommitments_Label_Class = new JLabel("Class");
+		SCCommitments_Label_Class.setBounds(143, 327, 68, 14);
+		panelSCCommitmentsInterno.add(SCCommitments_Label_Class);
+		
+		JLabel SCCommitments_Label_Name = new JLabel("Name");
+		SCCommitments_Label_Name.setBounds(328, 327, 68, 14);
+		panelSCCommitmentsInterno.add(SCCommitments_Label_Name);
+		
+		SCCommitments_txt = new JTextField();
+		SCCommitments_txt.setBounds(328, 352, 166, 20);
+		panelSCCommitmentsInterno.add(SCCommitments_txt);
+		SCCommitments_txt.setColumns(10);
+		
+		JLabel SCCommitments_label = new JLabel("SCCommitments");
+		SCCommitments_label.setBounds(143, 352, 78, 14);
+		panelSCCommitmentsInterno.add(SCCommitments_label);
+				
+		JPanel SCCommitments_panelImg = new JPanel();
+		SCCommitments_panelImg.setBackground(Color.LIGHT_GRAY);
+		SCCommitments_panelImg.setBounds(10, 27, 581, 275);
+		iconSCCommitments = new  ImageIcon(getClass().getResource("/resource/SCCommitments.PNG"));
+		imagemSCCommitments = new JLabel(iconSCCommitments);
+		imagemSCCommitments.setBounds(10, 27, 581, 275);
+		imagemSCCommitments.setSize(70, 96); // 70 96
+		imagemSCCommitments.setVisible(true);
+		SCCommitments_panelImg.add(imagemSCCommitments);
+		panelSCCommitmentsInterno.add(SCCommitments_panelImg);
 
 //**********************************************************************************************************************************
 		//SODescription	
@@ -2327,13 +2375,14 @@ public class JanBase {
 		panelSOCommitment.setVisible(false);
 		panelSADescription.setVisible(false);
 		panelSAgreement.setVisible(false);
+		panelSCCommitments.setVisible(false);
 		/*
 		 * panelSOfferAgree.setVisible(false); panelSNegotiation.setVisible(false);
-		 * panelSCCommitments.setVisible(true); panelHPCommitments.setVisible(true);
-		 * panelSDelivery.setVisible(true); panelHPActions.setVisible(true);
-		 * panelHPActionMotivation.setVisible(true); panelSCActions.setVisible(true);
-		 * panelSCActionMotivation.setVisible(true); panelInterations.setVisible(true);
-		 * panelInteractionMotivation.setVisible(true);
+		 *  panelHPCommitments.setVisible(false);
+		 * panelSDelivery.setVisible(false); panelHPActions.setVisible(false);
+		 * panelHPActionMotivation.setVisible(false); panelSCActions.setVisible(false);
+		 * panelSCActionMotivation.setVisible(false); panelInterations.setVisible(false);
+		 * panelInteractionMotivation.setVisible(false);
 		 */
 		panelSNegAgree.setVisible(false);
 	}
@@ -2371,13 +2420,12 @@ public class JanBase {
 		painelSelecionado += n;
 		//Escolhe qual painel sera exibido !
 		desabilitaPaineisPrincipais();
-		System.out.println("Entrou no trocaPainelPrincipalSAgreement");
-		if(painelSelecionado == 0){System.out.println("1"); panelSAgreement.setVisible(true);}
-		if(painelSelecionado == 1){System.out.println("2"); panelHiredP_ServiceC_Subgroup.setVisible(true);}
-		if(painelSelecionado == 2){System.out.println("3"); panelSADescription.setVisible(true);}
+		
+		if(painelSelecionado == 0){panelSAgreement.setVisible(true);}
+		if(painelSelecionado == 1){panelHiredP_ServiceC_Subgroup.setVisible(true);}
+		if(painelSelecionado == 2){panelSADescription.setVisible(true);}
+		if(painelSelecionado == 3){panelSCCommitments.setVisible(true);}
 		/*
-		 * 
-		 * if(painelSelecionado == 3){panelSCCommitments.setVisible(true);}
 		 * if(painelSelecionado == 4){panelHPCommitments.setVisible(true);}
 		 * if(painelSelecionado == 5){panelSDelivery.setVisible(true);}
 		 * if(painelSelecionado == 6){panelHPActions.setVisible(true);}
