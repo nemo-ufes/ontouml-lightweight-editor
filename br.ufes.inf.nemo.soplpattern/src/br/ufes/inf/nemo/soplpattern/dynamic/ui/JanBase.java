@@ -315,6 +315,12 @@ public class JanBase {
 	private JTextField SCCommitments_txt;
 	private ImageIcon iconSCCommitments;
 	private JLabel imagemSCCommitments;
+	
+	//HPCommitments
+	private static JPanel panelHPCommitments;
+	private JTextField HPCommitments_txt;
+	private ImageIcon iconHPCommitments;
+	private JLabel imagemHPCommitments;
 
 	/**
 	 * Create the application.
@@ -596,6 +602,48 @@ public class JanBase {
 		imagemSCCommitments.setVisible(true);
 		SCCommitments_panelImg.add(imagemSCCommitments);
 		panelSCCommitmentsInterno.add(SCCommitments_panelImg);
+		
+//**********************************************************************************************************************************
+		//HPCommitments
+		panelHPCommitments = new JPanel();
+		panelHPCommitments.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelHPCommitments);
+		panelHPCommitments.setLayout(null);
+		panelHPCommitments.setVisible(false);
+		
+		JPanel panelHPCommitmentsInterno = new JPanel();
+		panelHPCommitmentsInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "HPCommitments", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelHPCommitmentsInterno.setBounds(10, 11, 601, 489);
+		panelHPCommitments.add(panelHPCommitmentsInterno);
+		panelHPCommitmentsInterno.setLayout(null);
+		
+		JLabel HPCommitments_Label_Class = new JLabel("Class");
+		HPCommitments_Label_Class.setBounds(143, 327, 68, 14);
+		panelHPCommitmentsInterno.add(HPCommitments_Label_Class);
+		
+		JLabel HPCommitments_Label_Name = new JLabel("Name");
+		HPCommitments_Label_Name.setBounds(328, 327, 68, 14);
+		panelHPCommitmentsInterno.add(HPCommitments_Label_Name);
+		
+		HPCommitments_txt = new JTextField();
+		HPCommitments_txt.setBounds(328, 352, 166, 20);
+		panelHPCommitmentsInterno.add(HPCommitments_txt);
+		HPCommitments_txt.setColumns(10);
+		
+		JLabel HPCommitments_label = new JLabel("HPCommitments");
+		HPCommitments_label.setBounds(143, 352, 78, 14);
+		panelHPCommitmentsInterno.add(HPCommitments_label);
+				
+		JPanel HPCommitments_panelImg = new JPanel();
+		HPCommitments_panelImg.setBackground(Color.LIGHT_GRAY);
+		HPCommitments_panelImg.setBounds(10, 27, 581, 275);
+		iconHPCommitments = new  ImageIcon(getClass().getResource("/resource/HPCommitments.PNG"));
+		imagemHPCommitments = new JLabel(iconHPCommitments);
+		imagemHPCommitments.setBounds(10, 27, 581, 275);
+		imagemHPCommitments.setSize(70, 96); // 70 96
+		imagemHPCommitments.setVisible(true);
+		HPCommitments_panelImg.add(imagemHPCommitments);
+		panelHPCommitmentsInterno.add(HPCommitments_panelImg);
 
 //**********************************************************************************************************************************
 		//SODescription	
@@ -2376,9 +2424,10 @@ public class JanBase {
 		panelSADescription.setVisible(false);
 		panelSAgreement.setVisible(false);
 		panelSCCommitments.setVisible(false);
+		panelHPCommitments.setVisible(false);
 		/*
 		 * panelSOfferAgree.setVisible(false); panelSNegotiation.setVisible(false);
-		 *  panelHPCommitments.setVisible(false);
+		 *  
 		 * panelSDelivery.setVisible(false); panelHPActions.setVisible(false);
 		 * panelHPActionMotivation.setVisible(false); panelSCActions.setVisible(false);
 		 * panelSCActionMotivation.setVisible(false); panelInterations.setVisible(false);
@@ -2425,8 +2474,9 @@ public class JanBase {
 		if(painelSelecionado == 1){panelHiredP_ServiceC_Subgroup.setVisible(true);}
 		if(painelSelecionado == 2){panelSADescription.setVisible(true);}
 		if(painelSelecionado == 3){panelSCCommitments.setVisible(true);}
+		if(painelSelecionado == 4){panelHPCommitments.setVisible(true);}
 		/*
-		 * if(painelSelecionado == 4){panelHPCommitments.setVisible(true);}
+		 * 
 		 * if(painelSelecionado == 5){panelSDelivery.setVisible(true);}
 		 * if(painelSelecionado == 6){panelHPActions.setVisible(true);}
 		 * if(painelSelecionado == 7){panelHPActionMotivation.setVisible(true);}
