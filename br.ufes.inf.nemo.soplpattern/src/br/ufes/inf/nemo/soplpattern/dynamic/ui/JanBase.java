@@ -23,6 +23,8 @@ import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class JanBase {
 
@@ -356,10 +358,222 @@ public class JanBase {
 		frame.getContentPane().add(panelSteps);
 		panelSteps.setLayout(null);
 		
-		JLabel lblNewLabel_2 = new JLabel("SOffering");
-		lblNewLabel_2.setBounds(38, 31, 46, 14);
-		panelSteps.add(lblNewLabel_2);
+		JLabel panelSteps_labelSOffering = new JLabel("SOffering");
+		panelSteps_labelSOffering.setHorizontalAlignment(SwingConstants.CENTER);
+		panelSteps_labelSOffering.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		panelSteps_labelSOffering.setBounds(10, 27, 119, 14);
+		panelSteps.add(panelSteps_labelSOffering);
 		
+		JLabel panelSteps_labelSelectProviderCustomer = new JLabel("Variant Pattern");
+		panelSteps_labelSelectProviderCustomer.setHorizontalAlignment(SwingConstants.CENTER);
+		panelSteps_labelSelectProviderCustomer.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		panelSteps_labelSelectProviderCustomer.setBounds(10, 52, 119, 14);
+		panelSteps.add(panelSteps_labelSelectProviderCustomer);
+		
+		JLabel panelSteps_labelSODescription = new JLabel("SODescription");
+		panelSteps_labelSODescription.setHorizontalAlignment(SwingConstants.CENTER);
+		panelSteps_labelSODescription.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 12));
+		panelSteps_labelSODescription.setBounds(10, 77, 119, 14);
+		panelSteps.add(panelSteps_labelSODescription);
+		
+		
+//**********************************************************************************************************************************
+		//SOffering
+		panelSOffering = new JPanel();
+		panelSOffering.setBounds(157, 11, 621, 511);
+		frame.getContentPane().add(panelSOffering);
+		panelSOffering.setLayout(null);
+		panelSOffering.setVisible(false);
+		
+		JPanel panelSOfferingInterno = new JPanel();
+		panelSOfferingInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOffering", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSOfferingInterno.setBounds(10, 11, 601, 489);
+		panelSOffering.add(panelSOfferingInterno);
+		panelSOfferingInterno.setLayout(null);
+		
+		JLabel label = new JLabel("Class");
+		label.setBounds(143, 327, 68, 14);
+		panelSOfferingInterno.add(label);
+		
+		JLabel label_1 = new JLabel("Name");
+		label_1.setBounds(328, 327, 68, 14);
+		panelSOfferingInterno.add(label_1);
+		
+		txtServiceOffering = new JTextField();
+		txtServiceOffering.setBounds(328, 352, 166, 20);
+		panelSOfferingInterno.add(txtServiceOffering);
+		txtServiceOffering.setColumns(10);
+		
+		txtTargetCC = new JTextField();
+		txtTargetCC.setColumns(10);
+		txtTargetCC.setBounds(328, 383, 166, 20);
+		panelSOfferingInterno.add(txtTargetCC);
+				
+		JPanel panelImg = new JPanel();
+		panelImg.setBackground(Color.LIGHT_GRAY);
+		panelImg.setBounds(10, 27, 581, 275);
+		iconSOffering = new  ImageIcon(getClass().getResource("/resource/SOffering.PNG"));
+		imagemSOffering = new JLabel(iconSOffering);
+		imagemSOffering.setBounds(10, 27, 581, 275);
+		imagemSOffering.setSize(70, 96); // 70 96
+		imagemSOffering.setVisible(true);
+		panelImg.add(imagemSOffering);
+		panelSOfferingInterno.add(panelImg);		
+
+		
+		JLabel lblServiceOffering = new JLabel("Service Offering");
+		lblServiceOffering.setBounds(143, 352, 78, 14);
+		panelSOfferingInterno.add(lblServiceOffering);
+		
+		JLabel lblTargetCC = new JLabel("Target Customer Community");
+		lblTargetCC.setBounds(143, 390, 151, 14);
+		panelSOfferingInterno.add(lblTargetCC);
+		
+//**********************************************************************************************************************************
+		//SODescription	
+		panelSODescription = new JPanel();
+		panelSODescription.setBounds(157, 11, 621, 511);
+		frame.getContentPane().add(panelSODescription);
+		panelSODescription.setLayout(null);
+		panelSODescription.setVisible(false);
+		
+		JPanel panelSODescriptionInterno = new JPanel();
+		panelSODescriptionInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SODescription", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSODescriptionInterno.setBounds(10, 11, 601, 489);
+		panelSODescription.add(panelSODescriptionInterno);
+		panelSODescriptionInterno.setLayout(null);
+		
+		JLabel lblClass_SODescription = new JLabel("Class");
+		lblClass_SODescription.setBounds(143, 327, 68, 14);
+		panelSODescriptionInterno.add(lblClass_SODescription);
+		
+		JLabel lblName_SODescription = new JLabel("Name");
+		lblName_SODescription.setBounds(328, 327, 68, 14);
+		panelSODescriptionInterno.add(lblName_SODescription);
+		
+		JLabel lblServiceOfferingDescription = new JLabel("Service Offering Description");
+		lblServiceOfferingDescription.setBounds(143, 352, 139, 14);
+		panelSODescriptionInterno.add(lblServiceOfferingDescription);
+		
+		txtServiceOfferingDescription = new JTextField();
+		txtServiceOfferingDescription.setBounds(328, 352, 166, 20);
+		panelSODescriptionInterno.add(txtServiceOfferingDescription);
+		txtServiceOfferingDescription.setColumns(10);
+			
+		JPanel panelImg_SODescription = new JPanel();
+		panelImg_SODescription.setBackground(Color.LIGHT_GRAY);
+		panelImg_SODescription.setBounds(10, 27, 581, 275);
+		iconSODescription = new  ImageIcon(getClass().getResource("/resource/SODescription.PNG"));
+		imagemSODescription = new JLabel(iconSODescription);
+		imagemSODescription.setBounds(10, 27, 581, 275);
+		imagemSODescription.setSize(70, 96); // 70 96
+		imagemSODescription.setVisible(true);
+		panelImg_SODescription.add(imagemSODescription);
+		panelSODescriptionInterno.add(panelImg_SODescription);	
+		
+//**********************************************************************************************************************************
+		//SOCommitments
+		
+		panelSOCommitment = new JPanel();
+		panelSOCommitment.setBounds(157, 11, 621, 511);
+		frame.getContentPane().add(panelSOCommitment);
+		panelSOCommitment.setLayout(null);	
+		panelSOCommitment.setVisible(false);
+		
+		JPanel panelSOCommitmentInterno = new JPanel();
+		panelSOCommitmentInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOCommitment", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSOCommitmentInterno.setBounds(10, 11, 601, 489);
+		panelSOCommitment.add(panelSOCommitmentInterno);
+		panelSOCommitmentInterno.setLayout(null);
+		
+		JLabel lblClass_SOCommitment = new JLabel("Class");
+		lblClass_SOCommitment.setBounds(143, 327, 68, 14);
+		panelSOCommitmentInterno.add(lblClass_SOCommitment);
+		
+		JLabel lblName_SOCommitment = new JLabel("Name");
+		lblName_SOCommitment.setBounds(328, 327, 68, 14);
+		panelSOCommitmentInterno.add(lblName_SOCommitment);
+		
+		JLabel lblServiceOfferingCommitment = new JLabel("Service Offering Commitment");
+		lblServiceOfferingCommitment.setBounds(143, 352, 151, 14);
+		panelSOCommitmentInterno.add(lblServiceOfferingCommitment);
+		
+		txtServiceOfferingCommitment = new JTextField();
+		txtServiceOfferingCommitment.setBounds(328, 352, 166, 20);
+		panelSOCommitmentInterno.add(txtServiceOfferingCommitment);
+		txtServiceOfferingCommitment.setColumns(10);
+			
+		JPanel panelImg_SOCommitment = new JPanel();
+		panelImg_SOCommitment.setBackground(Color.LIGHT_GRAY);
+		panelImg_SOCommitment.setBounds(10, 27, 581, 275);
+		iconSOCommitment = new  ImageIcon(getClass().getResource("/resource/SOCommitment.PNG"));
+		imagemSOCommitment = new JLabel(iconSOCommitment);
+		imagemSOCommitment.setBounds(10, 27, 581, 275);
+		imagemSOCommitment.setSize(70, 96); // 70 96
+		imagemSOCommitment.setVisible(true);
+		panelImg_SOCommitment.add(imagemSOCommitment);
+		panelSOCommitmentInterno.add(panelImg_SOCommitment);	
+		
+//**********************************************************************************************************************************
+		//SNegAgree
+		
+		panelSNegAgree = new JPanel();
+		panelSNegAgree.setBounds(157, 11, 621, 511);
+		frame.getContentPane().add(panelSNegAgree);
+		panelSNegAgree.setLayout(null);	
+		panelSNegAgree.setVisible(false);
+		
+		JPanel panelSNegAgreeInterno = new JPanel();
+		panelSNegAgreeInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SNegAgree", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSNegAgreeInterno.setBounds(10, 11, 601, 489);
+		panelSNegAgree.add(panelSNegAgreeInterno);
+		panelSNegAgreeInterno.setLayout(null);
+		
+		JLabel lblClass_SNegAgree = new JLabel("Class");
+		lblClass_SNegAgree.setBounds(143, 327, 68, 14);
+		panelSNegAgreeInterno.add(lblClass_SNegAgree);
+		
+		JLabel lblName_SNegAgree = new JLabel("Name");
+		lblName_SNegAgree.setBounds(328, 327, 68, 14);
+		panelSNegAgreeInterno.add(lblName_SNegAgree);
+		
+		JLabel lblServiceOfferingClaim = new JLabel("Service Offering Claim");
+		lblServiceOfferingClaim.setBounds(143, 352, 151, 14);
+		panelSNegAgreeInterno.add(lblServiceOfferingClaim);
+		
+		txtServiceOfferingClaim = new JTextField();
+		txtServiceOfferingClaim.setBounds(328, 352, 166, 20);
+		panelSNegAgreeInterno.add(txtServiceOfferingClaim);
+		txtServiceOfferingClaim.setColumns(10);
+			
+		JPanel panelImg_SNegAgreem = new JPanel();
+		panelImg_SNegAgreem.setBackground(Color.LIGHT_GRAY);
+		panelImg_SNegAgreem.setBounds(10, 27, 581, 275);
+		iconSNegAgree = new  ImageIcon(getClass().getResource("/resource/SNegAgree.PNG"));
+		imagemSNegAgree = new JLabel(iconSNegAgree);
+		imagemSNegAgree.setBounds(10, 27, 581, 275);
+		imagemSNegAgree.setSize(70, 96); // 70 96
+		imagemSNegAgree.setVisible(true);
+		panelImg_SNegAgreem.add(imagemSNegAgree);
+		panelSNegAgreeInterno.add(panelImg_SNegAgreem);	
+		
+		JButton btnCreateConcepts = new JButton("Create S-OPL Diagram");
+		btnCreateConcepts.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				
+				//Verifica os radios selecionados
+				int rdProviderSubgroupSelected = JanBase.getRadioProviderSubgroupSelected();
+				int rdCustomerSubgroupSelected = JanBase.getRadioCustomerSubgroupSelected();
+										
+				soplPattern.getSpecificFix(rdProviderSubgroupSelected, rdCustomerSubgroupSelected);	
+				frame.dispose();
+			}
+		});
+		btnCreateConcepts.setBounds(167, 522, 150, 37);
+		frame.getContentPane().add(btnCreateConcepts);
+		
+//**********************************************************************************************************************************
+		//Panel Provider and Customer Subgroup
 		panelPCSubgroup = new JPanel();
 		panelPCSubgroup.setBounds(157, 11, 621, 511);
 		frame.getContentPane().add(panelPCSubgroup);
@@ -1725,201 +1939,7 @@ public class JanBase {
 				desabilitaPaineisServiceCustomer();
 				trocaPainel(panelP_O_OU_Customer);				
 			}
-		});					
-		
-		//TUDO REFERENTE AO PAINEL SOFFFERING
-		
-		panelSOffering = new JPanel();
-		panelSOffering.setBounds(157, 11, 621, 511);
-		frame.getContentPane().add(panelSOffering);
-		panelSOffering.setLayout(null);
-		panelSOffering.setVisible(false);
-		
-		JPanel panelSOfferingInterno = new JPanel();
-		panelSOfferingInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOffering", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelSOfferingInterno.setBounds(10, 11, 601, 489);
-		panelSOffering.add(panelSOfferingInterno);
-		panelSOfferingInterno.setLayout(null);
-		
-		JLabel label = new JLabel("Class");
-		label.setBounds(143, 327, 68, 14);
-		panelSOfferingInterno.add(label);
-		
-		JLabel label_1 = new JLabel("Name");
-		label_1.setBounds(328, 327, 68, 14);
-		panelSOfferingInterno.add(label_1);
-		
-		txtServiceOffering = new JTextField();
-		txtServiceOffering.setBounds(328, 352, 166, 20);
-		panelSOfferingInterno.add(txtServiceOffering);
-		txtServiceOffering.setColumns(10);
-		
-		txtTargetCC = new JTextField();
-		txtTargetCC.setColumns(10);
-		txtTargetCC.setBounds(328, 383, 166, 20);
-		panelSOfferingInterno.add(txtTargetCC);
-				
-		JPanel panelImg = new JPanel();
-		panelImg.setBackground(Color.LIGHT_GRAY);
-		panelImg.setBounds(10, 27, 581, 275);
-		iconSOffering = new  ImageIcon(getClass().getResource("/resource/SOffering.PNG"));
-		imagemSOffering = new JLabel(iconSOffering);
-		imagemSOffering.setBounds(10, 27, 581, 275);
-		imagemSOffering.setSize(70, 96); // 70 96
-		imagemSOffering.setVisible(true);
-		panelImg.add(imagemSOffering);
-		panelSOfferingInterno.add(panelImg);		
-
-		
-		JLabel lblServiceOffering = new JLabel("Service Offering");
-		lblServiceOffering.setBounds(143, 352, 78, 14);
-		panelSOfferingInterno.add(lblServiceOffering);
-		
-		JLabel lblTargetCC = new JLabel("Target Customer Community");
-		lblTargetCC.setBounds(143, 390, 151, 14);
-		panelSOfferingInterno.add(lblTargetCC);
-		
-		//SODescription		
-		panelSODescription = new JPanel();
-		panelSODescription.setBounds(157, 11, 621, 511);
-		frame.getContentPane().add(panelSODescription);
-		panelSODescription.setLayout(null);
-		panelSODescription.setVisible(false);
-		
-		JPanel panelSODescriptionInterno = new JPanel();
-		panelSODescriptionInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SODescription", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelSODescriptionInterno.setBounds(10, 11, 601, 489);
-		panelSODescription.add(panelSODescriptionInterno);
-		panelSODescriptionInterno.setLayout(null);
-		
-		JLabel lblClass_SODescription = new JLabel("Class");
-		lblClass_SODescription.setBounds(143, 327, 68, 14);
-		panelSODescriptionInterno.add(lblClass_SODescription);
-		
-		JLabel lblName_SODescription = new JLabel("Name");
-		lblName_SODescription.setBounds(328, 327, 68, 14);
-		panelSODescriptionInterno.add(lblName_SODescription);
-		
-		JLabel lblServiceOfferingDescription = new JLabel("Service Offering Description");
-		lblServiceOfferingDescription.setBounds(143, 352, 139, 14);
-		panelSODescriptionInterno.add(lblServiceOfferingDescription);
-		
-		txtServiceOfferingDescription = new JTextField();
-		txtServiceOfferingDescription.setBounds(328, 352, 166, 20);
-		panelSODescriptionInterno.add(txtServiceOfferingDescription);
-		txtServiceOfferingDescription.setColumns(10);
-			
-		JPanel panelImg_SODescription = new JPanel();
-		panelImg_SODescription.setBackground(Color.LIGHT_GRAY);
-		panelImg_SODescription.setBounds(10, 27, 581, 275);
-		iconSODescription = new  ImageIcon(getClass().getResource("/resource/SODescription.PNG"));
-		imagemSODescription = new JLabel(iconSODescription);
-		imagemSODescription.setBounds(10, 27, 581, 275);
-		imagemSODescription.setSize(70, 96); // 70 96
-		imagemSODescription.setVisible(true);
-		panelImg_SODescription.add(imagemSODescription);
-		panelSODescriptionInterno.add(panelImg_SODescription);	
-		
-		//SOCommitment
-		
-		panelSOCommitment = new JPanel();
-		panelSOCommitment.setBounds(157, 11, 621, 511);
-		frame.getContentPane().add(panelSOCommitment);
-		panelSOCommitment.setLayout(null);	
-		panelSOCommitment.setVisible(false);
-		
-		JPanel panelSOCommitmentInterno = new JPanel();
-		panelSOCommitmentInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOCommitment", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelSOCommitmentInterno.setBounds(10, 11, 601, 489);
-		panelSOCommitment.add(panelSOCommitmentInterno);
-		panelSOCommitmentInterno.setLayout(null);
-		
-		JLabel lblClass_SOCommitment = new JLabel("Class");
-		lblClass_SOCommitment.setBounds(143, 327, 68, 14);
-		panelSOCommitmentInterno.add(lblClass_SOCommitment);
-		
-		JLabel lblName_SOCommitment = new JLabel("Name");
-		lblName_SOCommitment.setBounds(328, 327, 68, 14);
-		panelSOCommitmentInterno.add(lblName_SOCommitment);
-		
-		JLabel lblServiceOfferingCommitment = new JLabel("Service Offering Commitment");
-		lblServiceOfferingCommitment.setBounds(143, 352, 151, 14);
-		panelSOCommitmentInterno.add(lblServiceOfferingCommitment);
-		
-		txtServiceOfferingCommitment = new JTextField();
-		txtServiceOfferingCommitment.setBounds(328, 352, 166, 20);
-		panelSOCommitmentInterno.add(txtServiceOfferingCommitment);
-		txtServiceOfferingCommitment.setColumns(10);
-			
-		JPanel panelImg_SOCommitment = new JPanel();
-		panelImg_SOCommitment.setBackground(Color.LIGHT_GRAY);
-		panelImg_SOCommitment.setBounds(10, 27, 581, 275);
-		iconSOCommitment = new  ImageIcon(getClass().getResource("/resource/SOCommitment.PNG"));
-		imagemSOCommitment = new JLabel(iconSOCommitment);
-		imagemSOCommitment.setBounds(10, 27, 581, 275);
-		imagemSOCommitment.setSize(70, 96); // 70 96
-		imagemSOCommitment.setVisible(true);
-		panelImg_SOCommitment.add(imagemSOCommitment);
-		panelSOCommitmentInterno.add(panelImg_SOCommitment);	
-		
-		//SNegAgree
-		
-		panelSNegAgree = new JPanel();
-		panelSNegAgree.setBounds(157, 11, 621, 511);
-		frame.getContentPane().add(panelSNegAgree);
-		panelSNegAgree.setLayout(null);	
-		panelSNegAgree.setVisible(false);
-		
-		JPanel panelSNegAgreeInterno = new JPanel();
-		panelSNegAgreeInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SNegAgree", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelSNegAgreeInterno.setBounds(10, 11, 601, 489);
-		panelSNegAgree.add(panelSNegAgreeInterno);
-		panelSNegAgreeInterno.setLayout(null);
-		
-		JLabel lblClass_SNegAgree = new JLabel("Class");
-		lblClass_SNegAgree.setBounds(143, 327, 68, 14);
-		panelSNegAgreeInterno.add(lblClass_SNegAgree);
-		
-		JLabel lblName_SNegAgree = new JLabel("Name");
-		lblName_SNegAgree.setBounds(328, 327, 68, 14);
-		panelSNegAgreeInterno.add(lblName_SNegAgree);
-		
-		JLabel lblServiceOfferingClaim = new JLabel("Service Offering Claim");
-		lblServiceOfferingClaim.setBounds(143, 352, 151, 14);
-		panelSNegAgreeInterno.add(lblServiceOfferingClaim);
-		
-		txtServiceOfferingClaim = new JTextField();
-		txtServiceOfferingClaim.setBounds(328, 352, 166, 20);
-		panelSNegAgreeInterno.add(txtServiceOfferingClaim);
-		txtServiceOfferingClaim.setColumns(10);
-			
-		JPanel panelImg_SNegAgreem = new JPanel();
-		panelImg_SNegAgreem.setBackground(Color.LIGHT_GRAY);
-		panelImg_SNegAgreem.setBounds(10, 27, 581, 275);
-		iconSNegAgree = new  ImageIcon(getClass().getResource("/resource/SNegAgree.PNG"));
-		imagemSNegAgree = new JLabel(iconSNegAgree);
-		imagemSNegAgree.setBounds(10, 27, 581, 275);
-		imagemSNegAgree.setSize(70, 96); // 70 96
-		imagemSNegAgree.setVisible(true);
-		panelImg_SNegAgreem.add(imagemSNegAgree);
-		panelSNegAgreeInterno.add(panelImg_SNegAgreem);	
-		
-		JButton btnCreateConcepts = new JButton("Create S-OPL Diagram");
-		btnCreateConcepts.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {	
-				
-				//Verifica os radios selecionados
-				int rdProviderSubgroupSelected = JanBase.getRadioProviderSubgroupSelected();
-				int rdCustomerSubgroupSelected = JanBase.getRadioCustomerSubgroupSelected();
-										
-				soplPattern.getSpecificFix(rdProviderSubgroupSelected, rdCustomerSubgroupSelected);	
-				frame.dispose();
-			}
-		});
-		btnCreateConcepts.setBounds(167, 522, 150, 37);
-		frame.getContentPane().add(btnCreateConcepts);
-
-		
+		});						
 	}
 	
 	public void setVisible(boolean b){
