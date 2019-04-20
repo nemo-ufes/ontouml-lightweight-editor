@@ -297,6 +297,12 @@ public class JanBase {
 	private JLabel lblSocommitments;
 	private JLabel lblSnegagreesofferagreesnegotiation;
 	private JLabel lblSadescription;
+	
+	//SAgreement
+	private JPanel panelSAgreement;
+	private JTextField SAgreement_txt;
+	private ImageIcon iconSAgreement;
+	private JLabel imagemSAgreement;
 
 	/**
 	 * Create the application.
@@ -453,6 +459,48 @@ public class JanBase {
 		lblTargetCC.setBounds(143, 390, 151, 14);
 		panelSOfferingInterno.add(lblTargetCC);
 		
+//**********************************************************************************************************************************
+		//SAgreement
+		panelSAgreement = new JPanel();
+		panelSAgreement.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelSAgreement);
+		panelSAgreement.setLayout(null);
+		panelSAgreement.setVisible(false);
+		
+		JPanel panelSAgreementInterno = new JPanel();
+		panelSAgreementInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SAgreement", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSAgreementInterno.setBounds(10, 11, 601, 489);
+		panelSAgreement.add(panelSAgreementInterno);
+		panelSAgreementInterno.setLayout(null);
+		
+		JLabel SAgreement_Label_Class = new JLabel("Class");
+		SAgreement_Label_Class.setBounds(143, 327, 68, 14);
+		panelSAgreementInterno.add(SAgreement_Label_Class);
+		
+		JLabel SAgreement_Label_Name = new JLabel("Name");
+		SAgreement_Label_Name.setBounds(328, 327, 68, 14);
+		panelSAgreementInterno.add(SAgreement_Label_Name);
+		
+		SAgreement_txt = new JTextField();
+		SAgreement_txt.setBounds(328, 352, 166, 20);
+		panelSAgreementInterno.add(SAgreement_txt);
+		SAgreement_txt.setColumns(10);
+		
+		JLabel SAgreement_label = new JLabel("SAgreement");
+		SAgreement_label.setBounds(143, 352, 78, 14);
+		panelSAgreementInterno.add(SAgreement_label);
+				
+		JPanel SAgreement_panelImg = new JPanel();
+		SAgreement_panelImg.setBackground(Color.LIGHT_GRAY);
+		SAgreement_panelImg.setBounds(10, 27, 581, 275);
+		iconSAgreement = new  ImageIcon(getClass().getResource("/resource/SAgreement.PNG"));
+		imagemSAgreement = new JLabel(iconSAgreement);
+		imagemSAgreement.setBounds(10, 27, 581, 275);
+		imagemSAgreement.setSize(70, 96); // 70 96
+		imagemSAgreement.setVisible(true);
+		SAgreement_panelImg.add(imagemSAgreement);
+		panelSAgreementInterno.add(SAgreement_panelImg);		
+
 //**********************************************************************************************************************************
 		//SODescription	
 		panelSODescription = new JPanel();
@@ -2266,7 +2314,7 @@ public class JanBase {
 		//Escolhe qual painel sera exibido !
 		desabilitaPaineisPrincipais();
 		
-		/* if(painelSelecionado == 0){panelSAgreement.setVisible(true);} */
+		if(painelSelecionado == 0){panelSAgreement.setVisible(true);}
 		if(painelSelecionado == 1){panelHiredP_ServiceC_Subgroup.setVisible(true);}
 		/*
 		 * if(painelSelecionado == 2){panelSADescription.setVisible(true);}
