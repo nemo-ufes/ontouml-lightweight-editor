@@ -321,6 +321,12 @@ public class JanBase {
 	private JTextField HPCommitments_txt;
 	private ImageIcon iconHPCommitments;
 	private JLabel imagemHPCommitments;
+	
+	//SDelivery
+	private static JPanel panelSDelivery;
+	private JTextField SDelivery_txt;
+	private ImageIcon iconSDelivery;
+	private JLabel imagemSDelivery;
 
 	/**
 	 * Create the application.
@@ -644,6 +650,48 @@ public class JanBase {
 		imagemHPCommitments.setVisible(true);
 		HPCommitments_panelImg.add(imagemHPCommitments);
 		panelHPCommitmentsInterno.add(HPCommitments_panelImg);
+		
+//**********************************************************************************************************************************
+		//SDelivery
+		panelSDelivery = new JPanel();
+		panelSDelivery.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelSDelivery);
+		panelSDelivery.setLayout(null);
+		panelSDelivery.setVisible(false);
+		
+		JPanel panelSDeliveryInterno = new JPanel();
+		panelSDeliveryInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SDelivery", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSDeliveryInterno.setBounds(10, 11, 601, 489);
+		panelSDelivery.add(panelSDeliveryInterno);
+		panelSDeliveryInterno.setLayout(null);
+		
+		JLabel SDelivery_Label_Class = new JLabel("Class");
+		SDelivery_Label_Class.setBounds(143, 327, 68, 14);
+		panelSDeliveryInterno.add(SDelivery_Label_Class);
+		
+		JLabel SDelivery_Label_Name = new JLabel("Name");
+		SDelivery_Label_Name.setBounds(328, 327, 68, 14);
+		panelSDeliveryInterno.add(SDelivery_Label_Name);
+		
+		SDelivery_txt = new JTextField();
+		SDelivery_txt.setBounds(328, 352, 166, 20);
+		panelSDeliveryInterno.add(SDelivery_txt);
+		SDelivery_txt.setColumns(10);
+		
+		JLabel SDelivery_label = new JLabel("SDelivery");
+		SDelivery_label.setBounds(143, 352, 78, 14);
+		panelSDeliveryInterno.add(SDelivery_label);
+				
+		JPanel SDelivery_panelImg = new JPanel();
+		SDelivery_panelImg.setBackground(Color.LIGHT_GRAY);
+		SDelivery_panelImg.setBounds(10, 27, 581, 275);
+		iconSDelivery = new  ImageIcon(getClass().getResource("/resource/SDelivery.PNG"));
+		imagemSDelivery = new JLabel(iconSDelivery);
+		imagemSDelivery.setBounds(10, 27, 581, 275);
+		imagemSDelivery.setSize(70, 96); // 70 96
+		imagemSDelivery.setVisible(true);
+		SDelivery_panelImg.add(imagemSDelivery);
+		panelSDeliveryInterno.add(SDelivery_panelImg);
 
 //**********************************************************************************************************************************
 		//SODescription	
@@ -2425,10 +2473,11 @@ public class JanBase {
 		panelSAgreement.setVisible(false);
 		panelSCCommitments.setVisible(false);
 		panelHPCommitments.setVisible(false);
+		panelSDelivery.setVisible(false);
 		/*
 		 * panelSOfferAgree.setVisible(false); panelSNegotiation.setVisible(false);
 		 *  
-		 * panelSDelivery.setVisible(false); panelHPActions.setVisible(false);
+		 *  panelHPActions.setVisible(false);
 		 * panelHPActionMotivation.setVisible(false); panelSCActions.setVisible(false);
 		 * panelSCActionMotivation.setVisible(false); panelInterations.setVisible(false);
 		 * panelInteractionMotivation.setVisible(false);
@@ -2475,9 +2524,8 @@ public class JanBase {
 		if(painelSelecionado == 2){panelSADescription.setVisible(true);}
 		if(painelSelecionado == 3){panelSCCommitments.setVisible(true);}
 		if(painelSelecionado == 4){panelHPCommitments.setVisible(true);}
+		if(painelSelecionado == 5){panelSDelivery.setVisible(true);}
 		/*
-		 * 
-		 * if(painelSelecionado == 5){panelSDelivery.setVisible(true);}
 		 * if(painelSelecionado == 6){panelHPActions.setVisible(true);}
 		 * if(painelSelecionado == 7){panelHPActionMotivation.setVisible(true);}
 		 * if(painelSelecionado == 8){panelSCActions.setVisible(true);}
