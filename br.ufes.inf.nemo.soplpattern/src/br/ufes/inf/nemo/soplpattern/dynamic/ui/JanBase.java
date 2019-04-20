@@ -327,6 +327,12 @@ public class JanBase {
 	private JTextField SDelivery_txt;
 	private ImageIcon iconSDelivery;
 	private JLabel imagemSDelivery;
+	
+	//HPActions
+	private static JPanel panelHPActions;
+	private JTextField HPActions_txt;
+	private ImageIcon iconHPActions;
+	private JLabel imagemHPActions;
 
 	/**
 	 * Create the application.
@@ -692,6 +698,48 @@ public class JanBase {
 		imagemSDelivery.setVisible(true);
 		SDelivery_panelImg.add(imagemSDelivery);
 		panelSDeliveryInterno.add(SDelivery_panelImg);
+		
+//**********************************************************************************************************************************
+		//HPActions
+		panelHPActions = new JPanel();
+		panelHPActions.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelHPActions);
+		panelHPActions.setLayout(null);
+		panelHPActions.setVisible(false);
+		
+		JPanel panelHPActionsInterno = new JPanel();
+		panelHPActionsInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "HPActions", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelHPActionsInterno.setBounds(10, 11, 601, 489);
+		panelHPActions.add(panelHPActionsInterno);
+		panelHPActionsInterno.setLayout(null);
+		
+		JLabel HPActions_Label_Class = new JLabel("Class");
+		HPActions_Label_Class.setBounds(143, 327, 68, 14);
+		panelHPActionsInterno.add(HPActions_Label_Class);
+		
+		JLabel HPActions_Label_Name = new JLabel("Name");
+		HPActions_Label_Name.setBounds(328, 327, 68, 14);
+		panelHPActionsInterno.add(HPActions_Label_Name);
+		
+		HPActions_txt = new JTextField();
+		HPActions_txt.setBounds(328, 352, 166, 20);
+		panelHPActionsInterno.add(HPActions_txt);
+		HPActions_txt.setColumns(10);
+		
+		JLabel HPActions_label = new JLabel("HPActions");
+		HPActions_label.setBounds(143, 352, 78, 14);
+		panelHPActionsInterno.add(HPActions_label);
+				
+		JPanel HPActions_panelImg = new JPanel();
+		HPActions_panelImg.setBackground(Color.LIGHT_GRAY);
+		HPActions_panelImg.setBounds(10, 27, 581, 275);
+		iconHPActions = new  ImageIcon(getClass().getResource("/resource/HPActions.PNG"));
+		imagemHPActions = new JLabel(iconHPActions);
+		imagemHPActions.setBounds(10, 27, 581, 275);
+		imagemHPActions.setSize(70, 96); // 70 96
+		imagemHPActions.setVisible(true);
+		HPActions_panelImg.add(imagemHPActions);
+		panelHPActionsInterno.add(HPActions_panelImg);
 
 //**********************************************************************************************************************************
 		//SODescription	
@@ -2474,10 +2522,11 @@ public class JanBase {
 		panelSCCommitments.setVisible(false);
 		panelHPCommitments.setVisible(false);
 		panelSDelivery.setVisible(false);
+		panelHPActions.setVisible(false);
 		/*
 		 * panelSOfferAgree.setVisible(false); panelSNegotiation.setVisible(false);
 		 *  
-		 *  panelHPActions.setVisible(false);
+		 *  
 		 * panelHPActionMotivation.setVisible(false); panelSCActions.setVisible(false);
 		 * panelSCActionMotivation.setVisible(false); panelInterations.setVisible(false);
 		 * panelInteractionMotivation.setVisible(false);
@@ -2525,8 +2574,9 @@ public class JanBase {
 		if(painelSelecionado == 3){panelSCCommitments.setVisible(true);}
 		if(painelSelecionado == 4){panelHPCommitments.setVisible(true);}
 		if(painelSelecionado == 5){panelSDelivery.setVisible(true);}
+		if(painelSelecionado == 6){panelHPActions.setVisible(true);}
 		/*
-		 * if(painelSelecionado == 6){panelHPActions.setVisible(true);}
+		 * 
 		 * if(painelSelecionado == 7){panelHPActionMotivation.setVisible(true);}
 		 * if(painelSelecionado == 8){panelSCActions.setVisible(true);}
 		 * if(painelSelecionado == 9){panelSCActionMotivation.setVisible(true);}
