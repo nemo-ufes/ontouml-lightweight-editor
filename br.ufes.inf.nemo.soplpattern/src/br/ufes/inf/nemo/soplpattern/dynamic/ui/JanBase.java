@@ -303,6 +303,12 @@ public class JanBase {
 	private JTextField SAgreement_txt;
 	private ImageIcon iconSAgreement;
 	private JLabel imagemSAgreement;
+	
+	//SDescription
+	private JPanel panelSADescription;
+	private JTextField SADescription_txt;
+	private ImageIcon iconSADescription;
+	private JLabel imagemSADescription;
 
 	/**
 	 * Create the application.
@@ -499,7 +505,49 @@ public class JanBase {
 		imagemSAgreement.setSize(70, 96); // 70 96
 		imagemSAgreement.setVisible(true);
 		SAgreement_panelImg.add(imagemSAgreement);
-		panelSAgreementInterno.add(SAgreement_panelImg);		
+		panelSAgreementInterno.add(SAgreement_panelImg);
+		
+//**********************************************************************************************************************************
+		//SADescription
+		panelSADescription = new JPanel();
+		panelSADescription.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelSADescription);
+		panelSADescription.setLayout(null);
+		panelSADescription.setVisible(false);
+		
+		JPanel panelSADescriptionInterno = new JPanel();
+		panelSADescriptionInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SADescription", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSADescriptionInterno.setBounds(10, 11, 601, 489);
+		panelSADescription.add(panelSADescriptionInterno);
+		panelSADescriptionInterno.setLayout(null);
+		
+		JLabel SADescription_Label_Class = new JLabel("Class");
+		SADescription_Label_Class.setBounds(143, 327, 68, 14);
+		panelSADescriptionInterno.add(SADescription_Label_Class);
+		
+		JLabel SADescription_Label_Name = new JLabel("Name");
+		SADescription_Label_Name.setBounds(328, 327, 68, 14);
+		panelSADescriptionInterno.add(SADescription_Label_Name);
+		
+		SADescription_txt = new JTextField();
+		SADescription_txt.setBounds(328, 352, 166, 20);
+		panelSADescriptionInterno.add(SADescription_txt);
+		SADescription_txt.setColumns(10);
+		
+		JLabel SADescription_label = new JLabel("SADescription");
+		SADescription_label.setBounds(143, 352, 78, 14);
+		panelSADescriptionInterno.add(SADescription_label);
+				
+		JPanel SADescription_panelImg = new JPanel();
+		SADescription_panelImg.setBackground(Color.LIGHT_GRAY);
+		SADescription_panelImg.setBounds(10, 27, 581, 275);
+		iconSADescription = new  ImageIcon(getClass().getResource("/resource/SADescription.PNG"));
+		imagemSADescription = new JLabel(iconSADescription);
+		imagemSADescription.setBounds(10, 27, 581, 275);
+		imagemSADescription.setSize(70, 96); // 70 96
+		imagemSADescription.setVisible(true);
+		SADescription_panelImg.add(imagemSADescription);
+		panelSADescriptionInterno.add(SADescription_panelImg);
 
 //**********************************************************************************************************************************
 		//SODescription	
@@ -2292,7 +2340,7 @@ public class JanBase {
 		if(painelSelecionado == 1){	panelPCSubgroup.setVisible(true);}
 		if(painelSelecionado == 2){ panelSODescription.setVisible(true);}
 		if(painelSelecionado == 3){	panelSOCommitment.setVisible(true);}
-		if(painelSelecionado == 4){	panelSNegAgree.setVisible(true);} //Mudar para SNegAgree
+		if(painelSelecionado == 4){	panelSNegAgree.setVisible(true);}
 		/*
 		 * if(painelSelecionado == 5){ panelSOfferAgree.setVisible(true);}
 		 * if(painelSelecionado == 6){ panelSNegotiation.setVisible(true);}
@@ -2316,8 +2364,9 @@ public class JanBase {
 		
 		if(painelSelecionado == 0){panelSAgreement.setVisible(true);}
 		if(painelSelecionado == 1){panelHiredP_ServiceC_Subgroup.setVisible(true);}
+		if(painelSelecionado == 2){panelSADescription.setVisible(true);}
 		/*
-		 * if(painelSelecionado == 2){panelSADescription.setVisible(true);}
+		 * 
 		 * if(painelSelecionado == 3){panelSCCommitments.setVisible(true);}
 		 * if(painelSelecionado == 4){panelHPCommitments.setVisible(true);}
 		 * if(painelSelecionado == 5){panelSDelivery.setVisible(true);}
