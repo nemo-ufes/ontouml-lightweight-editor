@@ -333,6 +333,12 @@ public class JanBase {
 	private JTextField HPActions_txt;
 	private ImageIcon iconHPActions;
 	private JLabel imagemHPActions;
+	
+	//HPActionMotivations
+	private static JPanel panelHPActionMotivations;
+	private JTextField HPActionMotivations_txt;
+	private ImageIcon iconHPActionMotivations;
+	private JLabel imagemHPActionMotivations;
 
 	/**
 	 * Create the application.
@@ -740,6 +746,49 @@ public class JanBase {
 		imagemHPActions.setVisible(true);
 		HPActions_panelImg.add(imagemHPActions);
 		panelHPActionsInterno.add(HPActions_panelImg);
+		
+		
+//**********************************************************************************************************************************
+		//HPActionMotivations
+		panelHPActionMotivations = new JPanel();
+		panelHPActionMotivations.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelHPActionMotivations);
+		panelHPActionMotivations.setLayout(null);
+		panelHPActionMotivations.setVisible(false);
+		
+		JPanel panelHPActionMotivationsInterno = new JPanel();
+		panelHPActionMotivationsInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "HPActionMotivations", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelHPActionMotivationsInterno.setBounds(10, 11, 601, 489);
+		panelHPActionMotivations.add(panelHPActionMotivationsInterno);
+		panelHPActionMotivationsInterno.setLayout(null);
+		
+		JLabel HPActionMotivations_Label_Class = new JLabel("Class");
+		HPActionMotivations_Label_Class.setBounds(143, 327, 68, 14);
+		panelHPActionMotivationsInterno.add(HPActionMotivations_Label_Class);
+		
+		JLabel HPActionMotivations_Label_Name = new JLabel("Name");
+		HPActionMotivations_Label_Name.setBounds(328, 327, 68, 14);
+		panelHPActionMotivationsInterno.add(HPActionMotivations_Label_Name);
+		
+		HPActionMotivations_txt = new JTextField();
+		HPActionMotivations_txt.setBounds(328, 352, 166, 20);
+		panelHPActionMotivationsInterno.add(HPActionMotivations_txt);
+		HPActionMotivations_txt.setColumns(10);
+		
+		JLabel HPActionMotivations_label = new JLabel("HPActionMotivations");
+		HPActionMotivations_label.setBounds(143, 352, 78, 14);
+		panelHPActionMotivationsInterno.add(HPActionMotivations_label);
+				
+		JPanel HPActionMotivations_panelImg = new JPanel();
+		HPActionMotivations_panelImg.setBackground(Color.LIGHT_GRAY);
+		HPActionMotivations_panelImg.setBounds(10, 27, 581, 275);
+		iconHPActionMotivations = new  ImageIcon(getClass().getResource("/resource/HPActionMotivations.PNG"));
+		imagemHPActionMotivations = new JLabel(iconHPActionMotivations);
+		imagemHPActionMotivations.setBounds(10, 27, 581, 275);
+		imagemHPActionMotivations.setSize(70, 96); // 70 96
+		imagemHPActionMotivations.setVisible(true);
+		HPActionMotivations_panelImg.add(imagemHPActionMotivations);
+		panelHPActionMotivationsInterno.add(HPActionMotivations_panelImg);
 
 //**********************************************************************************************************************************
 		//SODescription	
@@ -2523,11 +2572,12 @@ public class JanBase {
 		panelHPCommitments.setVisible(false);
 		panelSDelivery.setVisible(false);
 		panelHPActions.setVisible(false);
+		panelHPActionMotivations.setVisible(false);
 		/*
 		 * panelSOfferAgree.setVisible(false); panelSNegotiation.setVisible(false);
 		 *  
 		 *  
-		 * panelHPActionMotivation.setVisible(false); panelSCActions.setVisible(false);
+		 *  panelSCActions.setVisible(false);
 		 * panelSCActionMotivation.setVisible(false); panelInterations.setVisible(false);
 		 * panelInteractionMotivation.setVisible(false);
 		 */
@@ -2575,9 +2625,10 @@ public class JanBase {
 		if(painelSelecionado == 4){panelHPCommitments.setVisible(true);}
 		if(painelSelecionado == 5){panelSDelivery.setVisible(true);}
 		if(painelSelecionado == 6){panelHPActions.setVisible(true);}
+		if(painelSelecionado == 7){panelHPActionMotivations.setVisible(true);}
 		/*
 		 * 
-		 * if(painelSelecionado == 7){panelHPActionMotivation.setVisible(true);}
+		 * 
 		 * if(painelSelecionado == 8){panelSCActions.setVisible(true);}
 		 * if(painelSelecionado == 9){panelSCActionMotivation.setVisible(true);}
 		 * if(painelSelecionado == 10){panelInterations.setVisible(true);}
