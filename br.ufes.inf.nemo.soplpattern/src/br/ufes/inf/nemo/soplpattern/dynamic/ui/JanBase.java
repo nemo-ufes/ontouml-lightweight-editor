@@ -334,11 +334,35 @@ public class JanBase {
 	private ImageIcon iconHPActions;
 	private JLabel imagemHPActions;
 	
-	//HPActionMotivations
-	private static JPanel panelHPActionMotivations;
-	private JTextField HPActionMotivations_txt;
-	private ImageIcon iconHPActionMotivations;
-	private JLabel imagemHPActionMotivations;
+	//HPActionMotivation
+	private static JPanel panelHPActionMotivation;
+	private JTextField HPActionMotivation_txt;
+	private ImageIcon iconHPActionMotivation;
+	private JLabel imagemHPActionMotivation;
+	
+	//SCActions
+	private static JPanel panelSCActions;
+	private JTextField SCActions_txt;
+	private ImageIcon iconSCActions;
+	private JLabel imagemSCActions;
+	
+	//SCActionMotivation
+	private static JPanel panelSCActionMotivation;
+	private JTextField SCActionMotivation_txt;
+	private ImageIcon iconSCActionMotivation;
+	private JLabel imagemSCActionMotivation;
+	
+	//Interactions
+	private static JPanel panelInteractions;
+	private JTextField Interactions_txt;
+	private ImageIcon iconInteractions;
+	private JLabel imagemInteractions;
+	
+	//InteractionMotivation
+	private static JPanel panelInteractionMotivation;
+	private JTextField InteractionMotivation_txt;
+	private ImageIcon iconInteractionMotivation;
+	private JLabel imagemInteractionMotivation;
 
 	/**
 	 * Create the application.
@@ -750,45 +774,214 @@ public class JanBase {
 		
 //**********************************************************************************************************************************
 		//HPActionMotivations
-		panelHPActionMotivations = new JPanel();
-		panelHPActionMotivations.setBounds(200, 11, 621, 511);
-		frame.getContentPane().add(panelHPActionMotivations);
-		panelHPActionMotivations.setLayout(null);
-		panelHPActionMotivations.setVisible(false);
+		panelHPActionMotivation = new JPanel();
+		panelHPActionMotivation.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelHPActionMotivation);
+		panelHPActionMotivation.setLayout(null);
+		panelHPActionMotivation.setVisible(false);
 		
-		JPanel panelHPActionMotivationsInterno = new JPanel();
-		panelHPActionMotivationsInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "HPActionMotivations", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelHPActionMotivationsInterno.setBounds(10, 11, 601, 489);
-		panelHPActionMotivations.add(panelHPActionMotivationsInterno);
-		panelHPActionMotivationsInterno.setLayout(null);
+		JPanel panelHPActionMotivationInterno = new JPanel();
+		panelHPActionMotivationInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "HPActionMotivation", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelHPActionMotivationInterno.setBounds(10, 11, 601, 489);
+		panelHPActionMotivation.add(panelHPActionMotivationInterno);
+		panelHPActionMotivationInterno.setLayout(null);
 		
-		JLabel HPActionMotivations_Label_Class = new JLabel("Class");
-		HPActionMotivations_Label_Class.setBounds(143, 327, 68, 14);
-		panelHPActionMotivationsInterno.add(HPActionMotivations_Label_Class);
+		JLabel HPActionMotivation_Label_Class = new JLabel("Class");
+		HPActionMotivation_Label_Class.setBounds(143, 327, 68, 14);
+		panelHPActionMotivationInterno.add(HPActionMotivation_Label_Class);
 		
-		JLabel HPActionMotivations_Label_Name = new JLabel("Name");
-		HPActionMotivations_Label_Name.setBounds(328, 327, 68, 14);
-		panelHPActionMotivationsInterno.add(HPActionMotivations_Label_Name);
+		JLabel HPActionMotivation_Label_Name = new JLabel("Name");
+		HPActionMotivation_Label_Name.setBounds(328, 327, 68, 14);
+		panelHPActionMotivationInterno.add(HPActionMotivation_Label_Name);
 		
-		HPActionMotivations_txt = new JTextField();
-		HPActionMotivations_txt.setBounds(328, 352, 166, 20);
-		panelHPActionMotivationsInterno.add(HPActionMotivations_txt);
-		HPActionMotivations_txt.setColumns(10);
+		HPActionMotivation_txt = new JTextField();
+		HPActionMotivation_txt.setBounds(328, 352, 166, 20);
+		panelHPActionMotivationInterno.add(HPActionMotivation_txt);
+		HPActionMotivation_txt.setColumns(10);
 		
-		JLabel HPActionMotivations_label = new JLabel("HPActionMotivations");
-		HPActionMotivations_label.setBounds(143, 352, 78, 14);
-		panelHPActionMotivationsInterno.add(HPActionMotivations_label);
+		JLabel HPActionMotivation_label = new JLabel("HPActionMotivation");
+		HPActionMotivation_label.setBounds(143, 352, 78, 14);
+		panelHPActionMotivationInterno.add(HPActionMotivation_label);
 				
-		JPanel HPActionMotivations_panelImg = new JPanel();
-		HPActionMotivations_panelImg.setBackground(Color.LIGHT_GRAY);
-		HPActionMotivations_panelImg.setBounds(10, 27, 581, 275);
-		iconHPActionMotivations = new  ImageIcon(getClass().getResource("/resource/HPActionMotivations.PNG"));
-		imagemHPActionMotivations = new JLabel(iconHPActionMotivations);
-		imagemHPActionMotivations.setBounds(10, 27, 581, 275);
-		imagemHPActionMotivations.setSize(70, 96); // 70 96
-		imagemHPActionMotivations.setVisible(true);
-		HPActionMotivations_panelImg.add(imagemHPActionMotivations);
-		panelHPActionMotivationsInterno.add(HPActionMotivations_panelImg);
+		JPanel HPActionMotivation_panelImg = new JPanel();
+		HPActionMotivation_panelImg.setBackground(Color.LIGHT_GRAY);
+		HPActionMotivation_panelImg.setBounds(10, 27, 581, 275);
+		iconHPActionMotivation = new  ImageIcon(getClass().getResource("/resource/HPActionMotivation.PNG"));
+		imagemHPActionMotivation = new JLabel(iconHPActionMotivation);
+		imagemHPActionMotivation.setBounds(10, 27, 581, 275);
+		imagemHPActionMotivation.setSize(70, 96); // 70 96
+		imagemHPActionMotivation.setVisible(true);
+		HPActionMotivation_panelImg.add(imagemHPActionMotivation);
+		panelHPActionMotivationInterno.add(HPActionMotivation_panelImg);
+		
+//**********************************************************************************************************************************
+		//SCActions
+		panelSCActions = new JPanel();
+		panelSCActions.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelSCActions);
+		panelSCActions.setLayout(null);
+		panelSCActions.setVisible(false);
+		
+		JPanel panelSCActionsInterno = new JPanel();
+		panelSCActionsInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SCActions", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSCActionsInterno.setBounds(10, 11, 601, 489);
+		panelSCActions.add(panelSCActionsInterno);
+		panelSCActionsInterno.setLayout(null);
+		
+		JLabel SCActions_Label_Class = new JLabel("Class");
+		SCActions_Label_Class.setBounds(143, 327, 68, 14);
+		panelSCActionsInterno.add(SCActions_Label_Class);
+		
+		JLabel SCActions_Label_Name = new JLabel("Name");
+		SCActions_Label_Name.setBounds(328, 327, 68, 14);
+		panelSCActionsInterno.add(SCActions_Label_Name);
+		
+		SCActions_txt = new JTextField();
+		SCActions_txt.setBounds(328, 352, 166, 20);
+		panelSCActionsInterno.add(SCActions_txt);
+		SCActions_txt.setColumns(10);
+		
+		JLabel SCActions_label = new JLabel("SCActions");
+		SCActions_label.setBounds(143, 352, 78, 14);
+		panelSCActionsInterno.add(SCActions_label);
+				
+		JPanel SCActions_panelImg = new JPanel();
+		SCActions_panelImg.setBackground(Color.LIGHT_GRAY);
+		SCActions_panelImg.setBounds(10, 27, 581, 275);
+		iconSCActions = new  ImageIcon(getClass().getResource("/resource/SCActions.PNG"));
+		imagemSCActions = new JLabel(iconSCActions);
+		imagemSCActions.setBounds(10, 27, 581, 275);
+		imagemSCActions.setSize(70, 96); // 70 96
+		imagemSCActions.setVisible(true);
+		SCActions_panelImg.add(imagemSCActions);
+		panelSCActionsInterno.add(SCActions_panelImg);
+		
+//**********************************************************************************************************************************
+		//SCActionMotivation
+		panelSCActionMotivation = new JPanel();
+		panelSCActionMotivation.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelSCActionMotivation);
+		panelSCActionMotivation.setLayout(null);
+		panelSCActionMotivation.setVisible(false);
+		
+		JPanel panelSCActionMotivationInterno = new JPanel();
+		panelSCActionMotivationInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SCActionMotivation", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSCActionMotivationInterno.setBounds(10, 11, 601, 489);
+		panelSCActionMotivation.add(panelSCActionMotivationInterno);
+		panelSCActionMotivationInterno.setLayout(null);
+		
+		JLabel SCActionMotivation_Label_Class = new JLabel("Class");
+		SCActionMotivation_Label_Class.setBounds(143, 327, 68, 14);
+		panelSCActionMotivationInterno.add(SCActionMotivation_Label_Class);
+		
+		JLabel SCActionMotivation_Label_Name = new JLabel("Name");
+		SCActionMotivation_Label_Name.setBounds(328, 327, 68, 14);
+		panelSCActionMotivationInterno.add(SCActionMotivation_Label_Name);
+		
+		SCActionMotivation_txt = new JTextField();
+		SCActionMotivation_txt.setBounds(328, 352, 166, 20);
+		panelSCActionMotivationInterno.add(SCActionMotivation_txt);
+		SCActionMotivation_txt.setColumns(10);
+		
+		JLabel SCActionMotivation_label = new JLabel("SCActionMotivation");
+		SCActionMotivation_label.setBounds(143, 352, 78, 14);
+		panelSCActionMotivationInterno.add(SCActionMotivation_label);
+				
+		JPanel SCActionMotivation_panelImg = new JPanel();
+		SCActionMotivation_panelImg.setBackground(Color.LIGHT_GRAY);
+		SCActionMotivation_panelImg.setBounds(10, 27, 581, 275);
+		iconSCActionMotivation = new  ImageIcon(getClass().getResource("/resource/SCActionMotivation.PNG"));
+		imagemSCActionMotivation = new JLabel(iconSCActionMotivation);
+		imagemSCActionMotivation.setBounds(10, 27, 581, 275);
+		imagemSCActionMotivation.setSize(70, 96); // 70 96
+		imagemSCActionMotivation.setVisible(true);
+		SCActionMotivation_panelImg.add(imagemSCActionMotivation);
+		panelSCActionMotivationInterno.add(SCActionMotivation_panelImg);
+		
+		
+//**********************************************************************************************************************************
+		//Interactions
+		panelInteractions = new JPanel();
+		panelInteractions.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelInteractions);
+		panelInteractions.setLayout(null);
+		panelInteractions.setVisible(false);
+		
+		JPanel panelInteractionsInterno = new JPanel();
+		panelInteractionsInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Interactions", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelInteractionsInterno.setBounds(10, 11, 601, 489);
+		panelInteractions.add(panelInteractionsInterno);
+		panelInteractionsInterno.setLayout(null);
+		
+		JLabel Interactions_Label_Class = new JLabel("Class");
+		Interactions_Label_Class.setBounds(143, 327, 68, 14);
+		panelInteractionsInterno.add(Interactions_Label_Class);
+		
+		JLabel Interactions_Label_Name = new JLabel("Name");
+		Interactions_Label_Name.setBounds(328, 327, 68, 14);
+		panelInteractionsInterno.add(Interactions_Label_Name);
+		
+		Interactions_txt = new JTextField();
+		Interactions_txt.setBounds(328, 352, 166, 20);
+		panelInteractionsInterno.add(Interactions_txt);
+		Interactions_txt.setColumns(10);
+		
+		JLabel Interactions_label = new JLabel("Interactions");
+		Interactions_label.setBounds(143, 352, 78, 14);
+		panelInteractionsInterno.add(Interactions_label);
+				
+		JPanel Interactions_panelImg = new JPanel();
+		Interactions_panelImg.setBackground(Color.LIGHT_GRAY);
+		Interactions_panelImg.setBounds(10, 27, 581, 275);
+		iconInteractions = new  ImageIcon(getClass().getResource("/resource/Interactions.PNG"));
+		imagemInteractions = new JLabel(iconInteractions);
+		imagemInteractions.setBounds(10, 27, 581, 275);
+		imagemInteractions.setSize(70, 96); // 70 96
+		imagemInteractions.setVisible(true);
+		Interactions_panelImg.add(imagemInteractions);
+		panelInteractionsInterno.add(Interactions_panelImg);
+		
+//**********************************************************************************************************************************
+		//InteractionMotivation
+		panelInteractionMotivation = new JPanel();
+		panelInteractionMotivation.setBounds(200, 11, 621, 511);
+		frame.getContentPane().add(panelInteractionMotivation);
+		panelInteractionMotivation.setLayout(null);
+		panelInteractionMotivation.setVisible(false);
+		
+		JPanel panelInteractionMotivationInterno = new JPanel();
+		panelInteractionMotivationInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Interactions", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelInteractionMotivationInterno.setBounds(10, 11, 601, 489);
+		panelInteractionMotivation.add(panelInteractionMotivationInterno);
+		panelInteractionMotivationInterno.setLayout(null);
+		
+		JLabel InteractionMotivation_Label_Class = new JLabel("Class");
+		InteractionMotivation_Label_Class.setBounds(143, 327, 68, 14);
+		panelInteractionMotivationInterno.add(InteractionMotivation_Label_Class);
+		
+		JLabel InteractionMotivation_Label_Name = new JLabel("Name");
+		InteractionMotivation_Label_Name.setBounds(328, 327, 68, 14);
+		panelInteractionMotivationInterno.add(InteractionMotivation_Label_Name);
+		
+		InteractionMotivation_txt = new JTextField();
+		InteractionMotivation_txt.setBounds(328, 352, 166, 20);
+		panelInteractionMotivationInterno.add(InteractionMotivation_txt);
+		InteractionMotivation_txt.setColumns(10);
+		
+		JLabel InteractionMotivation_label = new JLabel("Interaction Motivation");
+		InteractionMotivation_label.setBounds(143, 352, 78, 14);
+		panelInteractionMotivationInterno.add(InteractionMotivation_label);
+				
+		JPanel InteractionMotivation_panelImg = new JPanel();
+		InteractionMotivation_panelImg.setBackground(Color.LIGHT_GRAY);
+		InteractionMotivation_panelImg.setBounds(10, 27, 581, 275);
+		iconInteractionMotivation = new  ImageIcon(getClass().getResource("/resource/InteractionMotivation.PNG"));
+		imagemInteractionMotivation = new JLabel(iconInteractionMotivation);
+		imagemInteractionMotivation.setBounds(10, 27, 581, 275);
+		imagemInteractionMotivation.setSize(70, 96); // 70 96
+		imagemInteractionMotivation.setVisible(true);
+		InteractionMotivation_panelImg.add(imagemInteractionMotivation);
+		panelInteractionMotivationInterno.add(InteractionMotivation_panelImg);
 
 //**********************************************************************************************************************************
 		//SODescription	
@@ -2572,14 +2765,13 @@ public class JanBase {
 		panelHPCommitments.setVisible(false);
 		panelSDelivery.setVisible(false);
 		panelHPActions.setVisible(false);
-		panelHPActionMotivations.setVisible(false);
+		panelHPActionMotivation.setVisible(false);
+		panelSCActions.setVisible(false);
+		panelSCActionMotivation.setVisible(false);
+		panelInteractions.setVisible(false);
+		panelInteractionMotivation.setVisible(false);
 		/*
 		 * panelSOfferAgree.setVisible(false); panelSNegotiation.setVisible(false);
-		 *  
-		 *  
-		 *  panelSCActions.setVisible(false);
-		 * panelSCActionMotivation.setVisible(false); panelInterations.setVisible(false);
-		 * panelInteractionMotivation.setVisible(false);
 		 */
 		panelSNegAgree.setVisible(false);
 	}
@@ -2625,14 +2817,18 @@ public class JanBase {
 		if(painelSelecionado == 4){panelHPCommitments.setVisible(true);}
 		if(painelSelecionado == 5){panelSDelivery.setVisible(true);}
 		if(painelSelecionado == 6){panelHPActions.setVisible(true);}
-		if(painelSelecionado == 7){panelHPActionMotivations.setVisible(true);}
+		if(painelSelecionado == 7){panelHPActionMotivation.setVisible(true);}
+		if(painelSelecionado == 8){panelSCActions.setVisible(true);}
+		if(painelSelecionado == 9){panelSCActionMotivation.setVisible(true);}
+		if(painelSelecionado == 10){panelInteractions.setVisible(true);}
+		 if(painelSelecionado == 11){panelInteractionMotivation.setVisible(true);}
 		/*
 		 * 
 		 * 
-		 * if(painelSelecionado == 8){panelSCActions.setVisible(true);}
-		 * if(painelSelecionado == 9){panelSCActionMotivation.setVisible(true);}
-		 * if(painelSelecionado == 10){panelInterations.setVisible(true);}
-		 * if(painelSelecionado == 11){panelInteractionMotivation.setVisible(true);}
+		 * 
+		 * 
+		 * 
+		 *
 		 */
 	}	
 		
