@@ -294,9 +294,6 @@ public class JanBase {
 	private JLabel imagemSNegAgree;
 
 	public int entrypoint = 1; //Por padrao o entrypoint é a SOffering
-	private JLabel lblSocommitments;
-	private JLabel lblSnegagreesofferagreesnegotiation;
-	private JLabel lblSadescription;
 	
 	//SAgreement
 	private static JPanel panelSAgreement;
@@ -391,7 +388,8 @@ public class JanBase {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 804, 609);
+		//frame.setBounds(100, 100, 804, 609);
+		frame.setBounds(100, 100, 1200, 609);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -406,7 +404,7 @@ public class JanBase {
 				
 			}
 		});
-		btnNext.setBounds(678, 522, 89, 37);
+		btnNext.setBounds(1063, 522, 89, 37);
 		frame.getContentPane().add(btnNext);
 		
 		JButton btnBack = new JButton("Back");
@@ -419,58 +417,29 @@ public class JanBase {
 				}
 			}
 		});
-		btnBack.setBounds(579, 522, 89, 37);
+		btnBack.setBounds(964, 522, 89, 37);
 		frame.getContentPane().add(btnBack);
 		
 		JPanel panelSteps = new JPanel();
 		panelSteps.setBorder(new TitledBorder(null, "Steps", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelSteps.setBounds(10, 11, 180, 511);
+		panelSteps.setBounds(10, 22, 524, 489);
 		frame.getContentPane().add(panelSteps);
 		panelSteps.setLayout(null);
 		
-		JLabel panelSteps_labelSOffering = new JLabel("SOffering");
-		panelSteps_labelSOffering.setForeground(Color.BLACK);
-		panelSteps_labelSOffering.setBackground(Color.BLACK);
-		panelSteps_labelSOffering.setHorizontalAlignment(SwingConstants.LEFT);
-		panelSteps_labelSOffering.setFont(new Font("Verdana", Font.BOLD, 12));
-		panelSteps_labelSOffering.setBounds(33, 27, 91, 14);
-		panelSteps.add(panelSteps_labelSOffering);
+		JPanel panelImgSteps = new JPanel();
+		panelImgSteps.setBounds(10, 28, 500, 450);
+		panelSteps.add(panelImgSteps);
 		
-		JLabel panelSteps_labelSelectProviderCustomer = new JLabel("Variant Pattern");
-		panelSteps_labelSelectProviderCustomer.setHorizontalAlignment(SwingConstants.CENTER);
-		panelSteps_labelSelectProviderCustomer.setFont(new Font("Verdana", Font.BOLD, 12));
-		panelSteps_labelSelectProviderCustomer.setBounds(10, 52, 119, 14);
-		panelSteps.add(panelSteps_labelSelectProviderCustomer);
-		
-		JLabel panelSteps_labelSODescription = new JLabel("SODescription");
-		panelSteps_labelSODescription.setHorizontalAlignment(SwingConstants.CENTER);
-		panelSteps_labelSODescription.setFont(new Font("Verdana", Font.BOLD, 12));
-		panelSteps_labelSODescription.setBounds(5, 72, 119, 14);
-		panelSteps.add(panelSteps_labelSODescription);
-		
-		lblSocommitments = new JLabel("SOCommitments");
-		lblSocommitments.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSocommitments.setFont(new Font("Verdana", Font.BOLD, 12));
-		lblSocommitments.setBounds(10, 97, 119, 14);
-		panelSteps.add(lblSocommitments);
-		
-		lblSnegagreesofferagreesnegotiation = new JLabel("SNegAgree/SOfferAgree/SNegotiation");
-		lblSnegagreesofferagreesnegotiation.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSnegagreesofferagreesnegotiation.setFont(new Font("Verdana", Font.BOLD, 12));
-		lblSnegagreesofferagreesnegotiation.setBounds(10, 122, 160, 14);
-		panelSteps.add(lblSnegagreesofferagreesnegotiation);
-		
-		lblSadescription = new JLabel("SADescription");
-		lblSadescription.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSadescription.setFont(new Font("Verdana", Font.BOLD, 12));
-		lblSadescription.setBounds(10, 152, 119, 14);
-		panelSteps.add(lblSadescription);
+		JLabel imagemSteps = new JLabel("");
+		imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SOffering_Steps_1.png")));
+		imagemSteps.setHorizontalAlignment(SwingConstants.CENTER);
+		panelImgSteps.add(imagemSteps);
 		
 		
 //**********************************************************************************************************************************
 		//SOffering
 		panelSOffering = new JPanel();
-		panelSOffering.setBounds(200, 11, 621, 511);
+		panelSOffering.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelSOffering);
 		panelSOffering.setLayout(null);
 		panelSOffering.setVisible(false);
@@ -522,7 +491,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//SAgreement
 		panelSAgreement = new JPanel();
-		panelSAgreement.setBounds(200, 11, 621, 511);
+		panelSAgreement.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelSAgreement);
 		panelSAgreement.setLayout(null);
 		panelSAgreement.setVisible(false);
@@ -564,7 +533,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//SADescription
 		panelSADescription = new JPanel();
-		panelSADescription.setBounds(200, 11, 621, 511);
+		panelSADescription.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelSADescription);
 		panelSADescription.setLayout(null);
 		panelSADescription.setVisible(false);
@@ -606,7 +575,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//SCCommitments
 		panelSCCommitments = new JPanel();
-		panelSCCommitments.setBounds(200, 11, 621, 511);
+		panelSCCommitments.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelSCCommitments);
 		panelSCCommitments.setLayout(null);
 		panelSCCommitments.setVisible(false);
@@ -648,7 +617,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//HPCommitments
 		panelHPCommitments = new JPanel();
-		panelHPCommitments.setBounds(200, 11, 621, 511);
+		panelHPCommitments.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelHPCommitments);
 		panelHPCommitments.setLayout(null);
 		panelHPCommitments.setVisible(false);
@@ -690,7 +659,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//SDelivery
 		panelSDelivery = new JPanel();
-		panelSDelivery.setBounds(200, 11, 621, 511);
+		panelSDelivery.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelSDelivery);
 		panelSDelivery.setLayout(null);
 		panelSDelivery.setVisible(false);
@@ -732,7 +701,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//HPActions
 		panelHPActions = new JPanel();
-		panelHPActions.setBounds(200, 11, 621, 511);
+		panelHPActions.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelHPActions);
 		panelHPActions.setLayout(null);
 		panelHPActions.setVisible(false);
@@ -775,7 +744,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//HPActionMotivations
 		panelHPActionMotivation = new JPanel();
-		panelHPActionMotivation.setBounds(200, 11, 621, 511);
+		panelHPActionMotivation.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelHPActionMotivation);
 		panelHPActionMotivation.setLayout(null);
 		panelHPActionMotivation.setVisible(false);
@@ -817,7 +786,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//SCActions
 		panelSCActions = new JPanel();
-		panelSCActions.setBounds(200, 11, 621, 511);
+		panelSCActions.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelSCActions);
 		panelSCActions.setLayout(null);
 		panelSCActions.setVisible(false);
@@ -859,7 +828,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//SCActionMotivation
 		panelSCActionMotivation = new JPanel();
-		panelSCActionMotivation.setBounds(200, 11, 621, 511);
+		panelSCActionMotivation.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelSCActionMotivation);
 		panelSCActionMotivation.setLayout(null);
 		panelSCActionMotivation.setVisible(false);
@@ -902,7 +871,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//Interactions
 		panelInteractions = new JPanel();
-		panelInteractions.setBounds(200, 11, 621, 511);
+		panelInteractions.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelInteractions);
 		panelInteractions.setLayout(null);
 		panelInteractions.setVisible(false);
@@ -944,7 +913,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//InteractionMotivation
 		panelInteractionMotivation = new JPanel();
-		panelInteractionMotivation.setBounds(200, 11, 621, 511);
+		panelInteractionMotivation.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelInteractionMotivation);
 		panelInteractionMotivation.setLayout(null);
 		panelInteractionMotivation.setVisible(false);
@@ -986,7 +955,7 @@ public class JanBase {
 //**********************************************************************************************************************************
 		//SODescription	
 		panelSODescription = new JPanel();
-		panelSODescription.setBounds(200, 11, 621, 511);
+		panelSODescription.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelSODescription);
 		panelSODescription.setLayout(null);
 		panelSODescription.setVisible(false);
@@ -1029,7 +998,7 @@ public class JanBase {
 		//SOCommitments
 		
 		panelSOCommitment = new JPanel();
-		panelSOCommitment.setBounds(200, 11, 621, 511);
+		panelSOCommitment.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelSOCommitment);
 		panelSOCommitment.setLayout(null);	
 		panelSOCommitment.setVisible(false);
@@ -1072,7 +1041,7 @@ public class JanBase {
 		//SNegAgree
 		
 		panelSNegAgree = new JPanel();
-		panelSNegAgree.setBounds(200, 11, 621, 511);
+		panelSNegAgree.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelSNegAgree);
 		panelSNegAgree.setLayout(null);	
 		panelSNegAgree.setVisible(false);
@@ -1123,18 +1092,18 @@ public class JanBase {
 				frame.dispose();
 			}
 		});
-		btnCreateConcepts.setBounds(167, 522, 150, 37);
+		btnCreateConcepts.setBounds(560, 522, 150, 37);
 		frame.getContentPane().add(btnCreateConcepts);
 		
 //**********************************************************************************************************************************
 		//Panel Provider and Customer Subgroup
 		panelPCSubgroup = new JPanel();
-		panelPCSubgroup.setBounds(200, 11, 621, 511);
+		panelPCSubgroup.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelPCSubgroup);
 		panelPCSubgroup.setLayout(null);	
 		
 		panelHiredP_ServiceC_Subgroup = new JPanel();
-		panelHiredP_ServiceC_Subgroup.setBounds(200, 11, 621, 511);
+		panelHiredP_ServiceC_Subgroup.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelHiredP_ServiceC_Subgroup);
 		panelHiredP_ServiceC_Subgroup.setLayout(null);	
 		
@@ -3779,18 +3748,6 @@ public class JanBase {
 		return entrypoint;
 	}
 
-	public JLabel getLblSocommitments() {
-		return lblSocommitments;
-	}
-
-	public JLabel getLblSnegagreesofferagreesnegotiation() {
-		return lblSnegagreesofferagreesnegotiation;
-	}
-
-	public JLabel getLblSadescription() {
-		return lblSadescription;
-	}
-
 	public static JPanel getPanelSAgreement() {
 		return panelSAgreement;
 	}
@@ -3822,6 +3779,4 @@ public class JanBase {
 	public JLabel getImagemSADescription() {
 		return imagemSADescription;
 	}
-	
-	
 }
