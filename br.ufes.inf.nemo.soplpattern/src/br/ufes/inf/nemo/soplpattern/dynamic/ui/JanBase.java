@@ -118,6 +118,7 @@ public class JanBase {
 	//PANEL PROVIDER AND TARGET CUSTOMER (VARIANT PATTERNS)	
 	private static JPanel imgPatternProvider;
 	private static JPanel imgPatternCustomer;
+	private static JPanel imgPattern = new JPanel();
 	private static JPanel panelPCSubgroup;
 	private static JPanel panelP_TCustomer;
 	private static JPanel panelP_Provider;
@@ -211,6 +212,7 @@ public class JanBase {
 	ButtonGroup rdProviderGroup;
 	ButtonGroup rdServiceCustomerGroup;
 	ButtonGroup rdHiredProviderGroup;
+	ButtonGroup rdSNegAgreeSOfferAgreeSNegotiationGroup;
 	
 	//Imagens
 	
@@ -370,6 +372,22 @@ public class JanBase {
 	private JTextField textServiceAgreement_1;
 	private JTextField textHiredServiceProvider_1;
 	private JTextField txtServiceCustomer_1;
+	
+	
+	
+	JLabel imagemSteps = new JLabel("");
+	JPanel panelSNegotiationFields = new JPanel();
+	JPanel panelSNegAgreeFields = new JPanel();
+	JPanel panelSOfferAgreeFields = new JPanel();
+	
+	private static ImageIcon icon_SNegAgree_Fields;
+	private static ImageIcon icon_SOfferAgree_Fields;
+	private static ImageIcon icon_SNegotiation_Fields;
+	
+	private static JLabel imagem_SNegAgree_Fields;
+	private static JLabel imagem_SOfferAgree_Fields;
+	private static JLabel imagem_SNegotiation_Fields;
+	
 
 	/**
 	 * Create the application.
@@ -440,7 +458,7 @@ public class JanBase {
 		panelImgSteps.setBounds(10, 28, 500, 450);
 		panelSteps.add(panelImgSteps);
 		
-		JLabel imagemSteps = new JLabel("");
+		
 		imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SOffering_Steps_1.png")));
 		imagemSteps.setHorizontalAlignment(SwingConstants.CENTER);
 		panelImgSteps.add(imagemSteps);
@@ -484,14 +502,13 @@ public class JanBase {
 		rdbtnSnegotiation.setBounds(429, 20, 109, 23);
 		panel_options.add(rdbtnSnegotiation);
 		
-		JPanel imgPattern = new JPanel();
 		imgPattern.setBounds(119, 171, 416, 224);
 		panelSNegAgree_SOfferAgree_SNegotiation.add(imgPattern);
 		
-		JPanel panelSOfferAgreeFields = new JPanel();
 		panelSOfferAgreeFields.setBounds(20, 406, 591, 94);
 		panelSNegAgree_SOfferAgree_SNegotiation.add(panelSOfferAgreeFields);
 		panelSOfferAgreeFields.setLayout(null);
+		panelSOfferAgreeFields.setName("panelSOfferAgreeFields");
 		panelSOfferAgreeFields.setVisible(false);
 		
 		JLabel lblServiceAgreement_1 = new JLabel("Service Agreement");
@@ -521,10 +538,10 @@ public class JanBase {
 		panelSOfferAgreeFields.add(txtServiceCustomer_1);
 		txtServiceCustomer_1.setColumns(10);
 		
-		JPanel panelSNegotiationFields = new JPanel();
 		panelSNegotiationFields.setBounds(20, 406, 591, 94);
 		panelSNegAgree_SOfferAgree_SNegotiation.add(panelSNegotiationFields);
 		panelSNegotiationFields.setLayout(null);
+		panelSNegotiationFields.setName("panelSNegotiationFields");
 		panelSNegotiationFields.setVisible(false);
 		
 		JLabel lblServiceNegotiation_1 = new JLabel("Service Negotiation");
@@ -536,10 +553,10 @@ public class JanBase {
 		panelSNegotiationFields.add(textServiceNegotiation_1);
 		textServiceNegotiation_1.setColumns(10);
 		
-		JPanel panelSNegAgreeFields = new JPanel();
 		panelSNegAgreeFields.setBounds(20, 406, 591, 94);
 		panelSNegAgree_SOfferAgree_SNegotiation.add(panelSNegAgreeFields);
 		panelSNegAgreeFields.setLayout(null);
+		panelSNegAgreeFields.setName("panelSNegAgreeFields");
 		panelSNegAgreeFields.setVisible(false);
 		
 		JLabel lblServiceNegotiation = new JLabel("Service Negotiation");
@@ -1239,7 +1256,28 @@ public class JanBase {
 				desabilitaPaineisServiceCustomer();
 				trocaPainel(panelP_O_OU_Customer);				
 			}
-		});						
+		});			
+		
+		
+		//Register a listener for the radio buttons SNegAgree Fields, SOfferAgree Fields and SNegotiation Fields
+		rdbtnSnegagree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				desabilitaPaineisSNegAgreeSOfferAgreeSNegotiation();
+				trocaPainel(panelSNegAgreeFields);			
+			}
+		});
+		rdbtnSofferagree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				desabilitaPaineisSNegAgreeSOfferAgreeSNegotiation();
+				trocaPainel(panelSOfferAgreeFields);			
+			}
+		});
+		rdbtnSnegotiation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				desabilitaPaineisSNegAgreeSOfferAgreeSNegotiation();
+				trocaPainel(panelSNegotiationFields);			
+			}
+		});
 		
 		
 //**********************************************************************************************************************************
@@ -2027,6 +2065,12 @@ public class JanBase {
 		rdServiceCustomerGroup.add(rdbtnP_O_OU_Customer);
 		rdServiceCustomerGroup.add(rdbtnO_OU_Customer);	
 		
+		//Group the radio buttons SNegAgreeSOfferSNegotiation.
+		rdSNegAgreeSOfferAgreeSNegotiationGroup = new ButtonGroup();
+		rdSNegAgreeSOfferAgreeSNegotiationGroup.add(rdbtnSnegagree); 
+		rdSNegAgreeSOfferAgreeSNegotiationGroup.add(rdbtnSnegotiation); 
+		rdSNegAgreeSOfferAgreeSNegotiationGroup.add(rdbtnSofferagree); 
+		
 		imgPatternProvider = new JPanel();
 		imgPatternProvider.setBackground(Color.GRAY);
 		imgPatternProvider.setBounds(10, 168, 291, 146);	
@@ -2626,6 +2670,7 @@ public class JanBase {
 		imgPatternProvider.removeAll();
 		imgPatternServiceCustomer.removeAll();
 		imgPatternHiredProvider.removeAll();
+		imgPattern.removeAll();
 				
 		if(panel.getName().equals("panelP_Provider")){
 			icon_P_Provider = new  ImageIcon(JanBase.class.getResource("/resource/P-Provider.PNG"));
@@ -2829,6 +2874,33 @@ public class JanBase {
 			imgPatternHiredProvider.add(imagem_OU_HProvider);
 		}
 		
+		//SNegAgree SOfferAgree and SNegotiation
+		
+		if(panel.getName().equals("panelSOfferAgreeFields")){
+			icon_SOfferAgree_Fields= new  ImageIcon(JanBase.class.getResource("/resource/SNegAgree.PNG"));
+			imagem_SOfferAgree_Fields = new JLabel(icon_SOfferAgree_Fields);
+			imagem_SOfferAgree_Fields.setBounds(10, 27, 581, 275);
+			imagem_SOfferAgree_Fields.setSize(70, 96); // 70 96
+			imagem_SOfferAgree_Fields.setVisible(true);
+			imgPattern.add(imagem_SOfferAgree_Fields);
+		}
+		if(panel.getName().equals("panelSNegAgreeFields")){
+			icon_SNegAgree_Fields= new  ImageIcon(JanBase.class.getResource("/resource/SNegAgree.PNG"));
+			imagem_SNegAgree_Fields = new JLabel(icon_SNegAgree_Fields);
+			imagem_SNegAgree_Fields.setBounds(10, 27, 581, 275);
+			imagem_SNegAgree_Fields.setSize(70, 96); // 70 96
+			imagem_SNegAgree_Fields.setVisible(true);
+			imgPattern.add(imagem_SNegAgree_Fields);
+		}
+		if(panel.getName().equals("panelSNegotiationFields")){
+			icon_SNegotiation_Fields= new  ImageIcon(JanBase.class.getResource("/resource/SNegAgree.PNG"));
+			imagem_SNegotiation_Fields = new JLabel(icon_SNegotiation_Fields);
+			imagem_SNegotiation_Fields.setBounds(10, 27, 581, 275);
+			imagem_SNegotiation_Fields.setSize(70, 96); // 70 96
+			imagem_SNegotiation_Fields.setVisible(true);
+			imgPattern.add(imagem_SNegotiation_Fields);
+		}
+		
 	}
 	
 	public void desabilitaPaineisProvider(){
@@ -2870,6 +2942,13 @@ public class JanBase {
 		panelO_Customer.setVisible(false);
 		panelP_Customer.setVisible(false);
 	}	
+	public void desabilitaPaineisSNegAgreeSOfferAgreeSNegotiation(){
+		panelSOfferAgreeFields.setVisible(false);
+		panelSNegotiationFields.setVisible(false);
+		panelSNegAgreeFields.setVisible(false);
+	}	
+	
+	
 	
 	
 	public void desabilitaPaineisPrincipais(){
@@ -2889,11 +2968,7 @@ public class JanBase {
 		panelSCActionMotivation.setVisible(false);
 		panelInteractions.setVisible(false);
 		panelInteractionMotivation.setVisible(false);
-		//panelSNegAgree_SOfferAgree_SNegotiation.setVisible(false);
-		/*
-		 * panelSOfferAgree.setVisible(false); panelSNegotiation.setVisible(false);
-		 */
-		//panelSNegAgree.setVisible(false);
+		panelSNegAgree_SOfferAgree_SNegotiation.setVisible(false);
 	}
 	
 	/**
@@ -2904,26 +2979,67 @@ public class JanBase {
 		//Escolhe qual painel sera exibido !
 		desabilitaPaineisPrincipais();
 		
-		if(painelSelecionado == 0){	panelSOffering.setVisible(true);}
-		if(painelSelecionado == 1){	panelPCSubgroup.setVisible(true);}
-		if(painelSelecionado == 2){ panelSODescription.setVisible(true);}
-		if(painelSelecionado == 3){	panelSOCommitment.setVisible(true);}
-		//if(painelSelecionado == 4){	panelSNegAgree_SOfferAgree_SNegotiation.setVisible(true);}
-		//if(painelSelecionado == 4){	panelSNegAgree.setVisible(true);} 
-		/*
-		 * if(painelSelecionado == 5){ panelSOfferAgree.setVisible(true);}
-		 * if(painelSelecionado == 6){ panelSNegotiation.setVisible(true);}
-		 * if(painelSelecionado == 7){ panelSADescription.setVisible(true);}
-		 * if(painelSelecionado == 8){ panelSCCommitments.setVisible(true);}
-		 * if(painelSelecionado == 9){ panelHPCommitments.setVisible(true);}
-		 * if(painelSelecionado == 10){panelSDelivery.setVisible(true);}
-		 * if(painelSelecionado == 11){panelHPActions.setVisible(true);}
-		 * if(painelSelecionado == 12){panelHPActionMotivation.setVisible(true);}
-		 * if(painelSelecionado == 13){panelSCActions.setVisible(true);}
-		 * if(painelSelecionado == 14){panelSCActionMotivation.setVisible(true);}
-		 * if(painelSelecionado == 15){panelInterations.setVisible(true);}
-		 * if(painelSelecionado == 16){panelInteractionMotivation.setVisible(true);}
-		 */
+		if(painelSelecionado == 0){	
+			panelSOffering.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SOffering_Steps_1.png")));
+		}
+		if(painelSelecionado == 1){
+			panelPCSubgroup.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SOffering_Steps_2.png")));
+		}
+		if(painelSelecionado == 2){
+			panelSODescription.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SOffering_Steps_3.png")));
+		}
+		if(painelSelecionado == 3){	
+			panelSOCommitment.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SOffering_Steps_4.png")));
+		}
+		if(painelSelecionado == 4){	
+			panelSNegAgree_SOfferAgree_SNegotiation.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_3.png")));
+		}
+		if(painelSelecionado == 5){
+			panelSADescription.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_4.png")));
+		}
+		if(painelSelecionado == 6){ 
+			panelSCCommitments.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_5.png")));
+		}
+		if(painelSelecionado == 7){ 
+			panelHPCommitments.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_6.png")));
+		}
+		if(painelSelecionado == 8){
+			panelSDelivery.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_1.png")));
+		}
+		if(painelSelecionado == 9){
+			panelHPActions.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_2.png")));
+	    }
+		if(painelSelecionado == 10){
+			panelHPActionMotivation.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_3.png")));
+		}
+		if(painelSelecionado == 11){
+			panelSCActions.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_4.png")));
+		}
+		if(painelSelecionado == 12){
+			panelSCActionMotivation.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_5.png")));
+		}
+		if(painelSelecionado == 13){
+			panelInteractions.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_6.png")));
+		}
+		if(painelSelecionado == 14){
+			panelInteractionMotivation.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_7.png")));
+		}
+		 
 	}	
 	
 	public void trocaPainelPrincipalSAgreement(int n){ //Esse metodo controla todo o fluxo partindo do Entry Point SAgreement
@@ -2931,26 +3047,54 @@ public class JanBase {
 		//Escolhe qual painel sera exibido !
 		desabilitaPaineisPrincipais();
 		
-		if(painelSelecionado == 0){panelSAgreement.setVisible(true);}
-		if(painelSelecionado == 1){panelHiredP_ServiceC_Subgroup.setVisible(true);}
-		if(painelSelecionado == 2){panelSADescription.setVisible(true);}
-		if(painelSelecionado == 3){panelSCCommitments.setVisible(true);}
-		if(painelSelecionado == 4){panelHPCommitments.setVisible(true);}
-		if(painelSelecionado == 5){panelSDelivery.setVisible(true);}
-		if(painelSelecionado == 6){panelHPActions.setVisible(true);}
-		if(painelSelecionado == 7){panelHPActionMotivation.setVisible(true);}
-		if(painelSelecionado == 8){panelSCActions.setVisible(true);}
-		if(painelSelecionado == 9){panelSCActionMotivation.setVisible(true);}
-		if(painelSelecionado == 10){panelInteractions.setVisible(true);}
-		 if(painelSelecionado == 11){panelInteractionMotivation.setVisible(true);}
-		/*
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 *
-		 */
+		if(painelSelecionado == 0){
+			panelSAgreement.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_1.png")));
+		}
+		if(painelSelecionado == 1){
+			panelHiredP_ServiceC_Subgroup.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_2.png")));
+		}
+		if(painelSelecionado == 2){
+			panelSADescription.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_4.png")));
+		}
+		if(painelSelecionado == 3){
+			panelSCCommitments.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_5.png")));
+		}
+		if(painelSelecionado == 4){
+			panelHPCommitments.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_6.png")));
+		}
+		if(painelSelecionado == 5){
+			panelSDelivery.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_1.png")));
+		}
+		if(painelSelecionado == 6){
+			panelHPActions.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_2.png")));
+		}
+		if(painelSelecionado == 7){
+			panelHPActionMotivation.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_3.png")));
+		}
+		if(painelSelecionado == 8){
+			panelSCActions.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_4.png")));
+		}
+		if(painelSelecionado == 9){
+			panelSCActionMotivation.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_5.png")));
+		}
+		if(painelSelecionado == 10){
+			panelInteractions.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_6.png")));
+		}
+		if(painelSelecionado == 11){
+			panelInteractionMotivation.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_7.png")));
+		}
 	}	
 		
 	public static int getRadioProviderSubgroupSelected(){
