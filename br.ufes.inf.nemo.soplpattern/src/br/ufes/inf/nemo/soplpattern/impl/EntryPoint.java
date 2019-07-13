@@ -25,8 +25,7 @@ import br.ufes.inf.nemo.soplpattern.dynamic.ui.JanBase;
 import br.ufes.inf.nemo.soplpattern.impl.SOPLPattern;
 
 public class EntryPoint extends SOPLPattern{
-	
-	
+
 	private Classifier c = null;
 	private int entryPoint = 0;  // 1 = SOffering and 2 = SAgreement 
 			
@@ -46,15 +45,11 @@ public class EntryPoint extends SOPLPattern{
 	
 	
 	public void runPattern(DiagramManager diagramManager) {
-						
-		//Instanciar a Janela Principal SOPL aqui !
 		this.diagramManager = diagramManager;	
 		janBase = new JanBase(this, entryPoint);
 	}
 	
-	public Fix getSpecificFix(int patternProviderSelected, int patternCustomerSelected) {			
-				
-		//VAMOS RESOLVER O PROBLEMA TODOO NESSE METODO - SE FOR CRIAR UM PRA CADA PARTE VAI FICAR MT GRANDE
+	public Fix getSpecificFix(int patternProviderSelected, int patternCustomerSelected, boolean yes_no) {			
 		
 		Package root = parser.getModel();
 		outcomeFixer = new OutcomeFixer(root);
@@ -64,7 +59,6 @@ public class EntryPoint extends SOPLPattern{
 		Association TCCOffering = null; // Target Customer Community Offering
 		memberOf targetCmemberofTCC = null; //Target Customer member of Target Customer Community
 		Association descriptionOffering = null;
-		Association claimOffering = null;
 		Association commitmentOffering = null;
 		
 		Classifier collectiveA = null;
@@ -81,8 +75,7 @@ public class EntryPoint extends SOPLPattern{
 		
 		Classifier collectiveTCC = null; // Collective Target Customer Community
 		Classifier categorySODescription = null; // Service Offering Description
-		Classifier soClaim = null; //SOClaim
-		Classifier soCommitment = null;
+		Classifier categorySOCommitment = null; // Service Offering Commitment
 		
 		//Chamar um metodo que pega todos os elementos da interface
 		
@@ -219,23 +212,9 @@ public class EntryPoint extends SOPLPattern{
 			fix.addAll(outcomeFixer.createGeneralization(rolePersonTC, roleTargetCustomer));				
 			fix.addAll(outcomeFixer.createGeneralization(roleOrgTC, roleTargetCustomer));	
 		}else if(patternCustomerSelected == 7){// Pattern P-OU-TCustomer
-//			//Create Person Target Customer
-//			String personTC = janBase.getTxtPersonTC_P_OU_TCustomer().getText();			
-//			rolePersonTC  = this.createClassifier(personTC, "role", x, y);
-//			
-//			//Create Target Customer
-//			String targetCustomer = janBase.getTxtTarg;
-//			roleTargetCustomer = this.createClassifier(targetCustomer, "RoleMixin", x, y);
-//			
-//			//Create Organization Target Customer
-//			String organizationUnitTC = janBase.getTxtOrgTC_P_O_TCustomer().getText();
-//			roleOrgTC = this.createClassifier(organizationUnitTC, "role", x, y);
-//			
-//			fix.addAll(outcomeFixer.createGeneralization(rolePersonTC, roleTargetCustomer));				
-//			fix.addAll(outcomeFixer.createGeneralization(roleOrgTC, roleTargetCustomer));	
 		}
 		
-		// STEP 2 - CRIAR OFFERING, DESCRIPTION, CLAIM E COMMITMENT
+		// STEP 2 - CRIAR OFFERING, DESCRIPTION E COMMITMENT
 		String offering = janBase.getTxtServiceOffering().getText(); //Offering		
 		relatorOffering = this.createClassifier(offering , "Relator",  200, 300);		
 		
@@ -252,22 +231,19 @@ public class EntryPoint extends SOPLPattern{
 			
 			descriptionOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", categorySODescription, relatorOffering).getAdded().get(0);
 			fix.includeAdded(descriptionOffering);	
-		}
-		String claim = janBase.getTxtServiceOfferingClaim().getText();
-		if(!claim.equals("")) {
-			soClaim = this.createClassifier(claim, "Mode", 100, 500);
-			
-			claimOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", soClaim, relatorOffering).getAdded().get(0);
-			fix.includeAdded(claimOffering);	
 		}	
-		String commitment = janBase.getTxtServiceOfferingCommitment().getText();
-		if(!commitment.equals("")) {
-			soCommitment = this.createClassifier(claim, "Mode", 300, 500);
-			
-			commitmentOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", soCommitment, relatorOffering).getAdded().get(0);
-			fix.includeAdded(commitmentOffering);	
-		}
 		
+		String soCommitment = janBase.getTxtServiceOfferingCommitment().getText();
+		if(!soCommitment.equals("")) {			
+			categorySOCommitment = this.createClassifier(soCommitment, "Category", 100, 500);
+			
+			commitmentOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", categorySOCommitment, relatorOffering).getAdded().get(0);
+			fix.includeAdded(commitmentOffering);	
+		}	
+		
+		if(yes_no) {
+			//Verificar qual dos 3 SNegAgree, SOfferAgre, ... esta selecionado e pegar os campos deles
+		}
 				
 		// STEP 3  - CREATE GENERALIZATIONS AND ASSOCIATIONS
 
@@ -277,7 +253,6 @@ public class EntryPoint extends SOPLPattern{
 		TCCOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorOffering, collectiveTCC).getAdded().get(0);
 		fix.includeAdded(TCCOffering);	
 			
-		
 		diagramManager.updateOLED(fix);
 		return fix;
 		

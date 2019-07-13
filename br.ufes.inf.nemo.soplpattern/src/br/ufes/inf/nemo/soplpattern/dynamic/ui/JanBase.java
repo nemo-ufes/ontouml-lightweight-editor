@@ -213,6 +213,8 @@ public class JanBase {
 	ButtonGroup rdServiceCustomerGroup;
 	ButtonGroup rdHiredProviderGroup;
 	ButtonGroup rdSNegAgreeSOfferAgreeSNegotiationGroup;
+	ButtonGroup rdYesNoGroup;
+	
 	
 	//Imagens
 	
@@ -400,6 +402,1382 @@ public class JanBase {
 		EntryPoint(entry);
 	}
 	
+	public static JPanel getImgPattern() {
+		return imgPattern;
+	}
+
+	public static void setImgPattern(JPanel imgPattern) {
+		JanBase.imgPattern = imgPattern;
+	}
+
+	public ButtonGroup getRdSNegAgreeSOfferAgreeSNegotiationGroup() {
+		return rdSNegAgreeSOfferAgreeSNegotiationGroup;
+	}
+
+	public void setRdSNegAgreeSOfferAgreeSNegotiationGroup(ButtonGroup rdSNegAgreeSOfferAgreeSNegotiationGroup) {
+		this.rdSNegAgreeSOfferAgreeSNegotiationGroup = rdSNegAgreeSOfferAgreeSNegotiationGroup;
+	}
+
+	public static JPanel getPanelSCCommitments() {
+		return panelSCCommitments;
+	}
+
+	public static void setPanelSCCommitments(JPanel panelSCCommitments) {
+		JanBase.panelSCCommitments = panelSCCommitments;
+	}
+
+	public JTextField getSCCommitments_txt() {
+		return SCCommitments_txt;
+	}
+
+	public void setSCCommitments_txt(JTextField sCCommitments_txt) {
+		SCCommitments_txt = sCCommitments_txt;
+	}
+
+	public ImageIcon getIconSCCommitments() {
+		return iconSCCommitments;
+	}
+
+	public void setIconSCCommitments(ImageIcon iconSCCommitments) {
+		this.iconSCCommitments = iconSCCommitments;
+	}
+
+	public JLabel getImagemSCCommitments() {
+		return imagemSCCommitments;
+	}
+
+	public void setImagemSCCommitments(JLabel imagemSCCommitments) {
+		this.imagemSCCommitments = imagemSCCommitments;
+	}
+
+	public static JPanel getPanelHPCommitments() {
+		return panelHPCommitments;
+	}
+
+	public static void setPanelHPCommitments(JPanel panelHPCommitments) {
+		JanBase.panelHPCommitments = panelHPCommitments;
+	}
+
+	public JTextField getHPCommitments_txt() {
+		return HPCommitments_txt;
+	}
+
+	public void setHPCommitments_txt(JTextField hPCommitments_txt) {
+		HPCommitments_txt = hPCommitments_txt;
+	}
+
+	public ImageIcon getIconHPCommitments() {
+		return iconHPCommitments;
+	}
+
+	public void setIconHPCommitments(ImageIcon iconHPCommitments) {
+		this.iconHPCommitments = iconHPCommitments;
+	}
+
+	public JLabel getImagemHPCommitments() {
+		return imagemHPCommitments;
+	}
+
+	public void setImagemHPCommitments(JLabel imagemHPCommitments) {
+		this.imagemHPCommitments = imagemHPCommitments;
+	}
+
+	public static JPanel getPanelSDelivery() {
+		return panelSDelivery;
+	}
+
+	public static void setPanelSDelivery(JPanel panelSDelivery) {
+		JanBase.panelSDelivery = panelSDelivery;
+	}
+
+	public JTextField getSDelivery_txt() {
+		return SDelivery_txt;
+	}
+
+	public void setSDelivery_txt(JTextField sDelivery_txt) {
+		SDelivery_txt = sDelivery_txt;
+	}
+
+	public ImageIcon getIconSDelivery() {
+		return iconSDelivery;
+	}
+
+	public void setIconSDelivery(ImageIcon iconSDelivery) {
+		this.iconSDelivery = iconSDelivery;
+	}
+
+	public JLabel getImagemSDelivery() {
+		return imagemSDelivery;
+	}
+
+	public void setImagemSDelivery(JLabel imagemSDelivery) {
+		this.imagemSDelivery = imagemSDelivery;
+	}
+
+	public static JPanel getPanelHPActions() {
+		return panelHPActions;
+	}
+
+	public static void setPanelHPActions(JPanel panelHPActions) {
+		JanBase.panelHPActions = panelHPActions;
+	}
+
+	public JTextField getHPActions_txt() {
+		return HPActions_txt;
+	}
+
+	public void setHPActions_txt(JTextField hPActions_txt) {
+		HPActions_txt = hPActions_txt;
+	}
+
+	public ImageIcon getIconHPActions() {
+		return iconHPActions;
+	}
+
+	public void setIconHPActions(ImageIcon iconHPActions) {
+		this.iconHPActions = iconHPActions;
+	}
+
+	public JLabel getImagemHPActions() {
+		return imagemHPActions;
+	}
+
+	public void setImagemHPActions(JLabel imagemHPActions) {
+		this.imagemHPActions = imagemHPActions;
+	}
+
+	public static JPanel getPanelHPActionMotivation() {
+		return panelHPActionMotivation;
+	}
+
+	public static void setPanelHPActionMotivation(JPanel panelHPActionMotivation) {
+		JanBase.panelHPActionMotivation = panelHPActionMotivation;
+	}
+
+	public JTextField getHPActionMotivation_txt() {
+		return HPActionMotivation_txt;
+	}
+
+	public void setHPActionMotivation_txt(JTextField hPActionMotivation_txt) {
+		HPActionMotivation_txt = hPActionMotivation_txt;
+	}
+
+	public ImageIcon getIconHPActionMotivation() {
+		return iconHPActionMotivation;
+	}
+
+	public void setIconHPActionMotivation(ImageIcon iconHPActionMotivation) {
+		this.iconHPActionMotivation = iconHPActionMotivation;
+	}
+
+	public JLabel getImagemHPActionMotivation() {
+		return imagemHPActionMotivation;
+	}
+
+	public void setImagemHPActionMotivation(JLabel imagemHPActionMotivation) {
+		this.imagemHPActionMotivation = imagemHPActionMotivation;
+	}
+
+	public static JPanel getPanelSCActions() {
+		return panelSCActions;
+	}
+
+	public static void setPanelSCActions(JPanel panelSCActions) {
+		JanBase.panelSCActions = panelSCActions;
+	}
+
+	public JTextField getSCActions_txt() {
+		return SCActions_txt;
+	}
+
+	public void setSCActions_txt(JTextField sCActions_txt) {
+		SCActions_txt = sCActions_txt;
+	}
+
+	public ImageIcon getIconSCActions() {
+		return iconSCActions;
+	}
+
+	public void setIconSCActions(ImageIcon iconSCActions) {
+		this.iconSCActions = iconSCActions;
+	}
+
+	public JLabel getImagemSCActions() {
+		return imagemSCActions;
+	}
+
+	public void setImagemSCActions(JLabel imagemSCActions) {
+		this.imagemSCActions = imagemSCActions;
+	}
+
+	public static JPanel getPanelSCActionMotivation() {
+		return panelSCActionMotivation;
+	}
+
+	public static void setPanelSCActionMotivation(JPanel panelSCActionMotivation) {
+		JanBase.panelSCActionMotivation = panelSCActionMotivation;
+	}
+
+	public JTextField getSCActionMotivation_txt() {
+		return SCActionMotivation_txt;
+	}
+
+	public void setSCActionMotivation_txt(JTextField sCActionMotivation_txt) {
+		SCActionMotivation_txt = sCActionMotivation_txt;
+	}
+
+	public ImageIcon getIconSCActionMotivation() {
+		return iconSCActionMotivation;
+	}
+
+	public void setIconSCActionMotivation(ImageIcon iconSCActionMotivation) {
+		this.iconSCActionMotivation = iconSCActionMotivation;
+	}
+
+	public JLabel getImagemSCActionMotivation() {
+		return imagemSCActionMotivation;
+	}
+
+	public void setImagemSCActionMotivation(JLabel imagemSCActionMotivation) {
+		this.imagemSCActionMotivation = imagemSCActionMotivation;
+	}
+
+	public static JPanel getPanelInteractions() {
+		return panelInteractions;
+	}
+
+	public static void setPanelInteractions(JPanel panelInteractions) {
+		JanBase.panelInteractions = panelInteractions;
+	}
+
+	public JTextField getInteractions_txt() {
+		return Interactions_txt;
+	}
+
+	public void setInteractions_txt(JTextField interactions_txt) {
+		Interactions_txt = interactions_txt;
+	}
+
+	public ImageIcon getIconInteractions() {
+		return iconInteractions;
+	}
+
+	public void setIconInteractions(ImageIcon iconInteractions) {
+		this.iconInteractions = iconInteractions;
+	}
+
+	public JLabel getImagemInteractions() {
+		return imagemInteractions;
+	}
+
+	public void setImagemInteractions(JLabel imagemInteractions) {
+		this.imagemInteractions = imagemInteractions;
+	}
+
+	public static JPanel getPanelInteractionMotivation() {
+		return panelInteractionMotivation;
+	}
+
+	public static void setPanelInteractionMotivation(JPanel panelInteractionMotivation) {
+		JanBase.panelInteractionMotivation = panelInteractionMotivation;
+	}
+
+	public JTextField getInteractionMotivation_txt() {
+		return InteractionMotivation_txt;
+	}
+
+	public void setInteractionMotivation_txt(JTextField interactionMotivation_txt) {
+		InteractionMotivation_txt = interactionMotivation_txt;
+	}
+
+	public ImageIcon getIconInteractionMotivation() {
+		return iconInteractionMotivation;
+	}
+
+	public void setIconInteractionMotivation(ImageIcon iconInteractionMotivation) {
+		this.iconInteractionMotivation = iconInteractionMotivation;
+	}
+
+	public JLabel getImagemInteractionMotivation() {
+		return imagemInteractionMotivation;
+	}
+
+	public void setImagemInteractionMotivation(JLabel imagemInteractionMotivation) {
+		this.imagemInteractionMotivation = imagemInteractionMotivation;
+	}
+
+	public JPanel getPanelSNegAgree_SOfferAgree_SNegotiation() {
+		return panelSNegAgree_SOfferAgree_SNegotiation;
+	}
+
+	public void setPanelSNegAgree_SOfferAgree_SNegotiation(JPanel panelSNegAgree_SOfferAgree_SNegotiation) {
+		this.panelSNegAgree_SOfferAgree_SNegotiation = panelSNegAgree_SOfferAgree_SNegotiation;
+	}
+
+	public JPanel getPanel_yes_no() {
+		return panel_yes_no;
+	}
+
+	public void setPanel_yes_no(JPanel panel_yes_no) {
+		this.panel_yes_no = panel_yes_no;
+	}
+
+	public JTextField getTxtServiceNegotiation() {
+		return txtServiceNegotiation;
+	}
+
+	public void setTxtServiceNegotiation(JTextField txtServiceNegotiation) {
+		this.txtServiceNegotiation = txtServiceNegotiation;
+	}
+
+	public JTextField getTxtServiceAgreement() {
+		return txtServiceAgreement;
+	}
+
+	public void setTxtServiceAgreement(JTextField txtServiceAgreement) {
+		this.txtServiceAgreement = txtServiceAgreement;
+	}
+
+	public JTextField getTextField() {
+		return textField;
+	}
+
+	public void setTextField(JTextField textField) {
+		this.textField = textField;
+	}
+
+	public JTextField getTextField_1() {
+		return textField_1;
+	}
+
+	public void setTextField_1(JTextField textField_1) {
+		this.textField_1 = textField_1;
+	}
+
+	public JTextField getTextServiceNegotiation_1() {
+		return textServiceNegotiation_1;
+	}
+
+	public void setTextServiceNegotiation_1(JTextField textServiceNegotiation_1) {
+		this.textServiceNegotiation_1 = textServiceNegotiation_1;
+	}
+
+	public JTextField getTextServiceAgreement_1() {
+		return textServiceAgreement_1;
+	}
+
+	public void setTextServiceAgreement_1(JTextField textServiceAgreement_1) {
+		this.textServiceAgreement_1 = textServiceAgreement_1;
+	}
+
+	public JTextField getTextHiredServiceProvider_1() {
+		return textHiredServiceProvider_1;
+	}
+
+	public void setTextHiredServiceProvider_1(JTextField textHiredServiceProvider_1) {
+		this.textHiredServiceProvider_1 = textHiredServiceProvider_1;
+	}
+
+	public JTextField getTxtServiceCustomer_1() {
+		return txtServiceCustomer_1;
+	}
+
+	public void setTxtServiceCustomer_1(JTextField txtServiceCustomer_1) {
+		this.txtServiceCustomer_1 = txtServiceCustomer_1;
+	}
+
+	public JLabel getImagemSteps() {
+		return imagemSteps;
+	}
+
+	public void setImagemSteps(JLabel imagemSteps) {
+		this.imagemSteps = imagemSteps;
+	}
+
+	public JPanel getPanelSNegotiationFields() {
+		return panelSNegotiationFields;
+	}
+
+	public void setPanelSNegotiationFields(JPanel panelSNegotiationFields) {
+		this.panelSNegotiationFields = panelSNegotiationFields;
+	}
+
+	public JPanel getPanelSNegAgreeFields() {
+		return panelSNegAgreeFields;
+	}
+
+	public void setPanelSNegAgreeFields(JPanel panelSNegAgreeFields) {
+		this.panelSNegAgreeFields = panelSNegAgreeFields;
+	}
+
+	public JPanel getPanelSOfferAgreeFields() {
+		return panelSOfferAgreeFields;
+	}
+
+	public void setPanelSOfferAgreeFields(JPanel panelSOfferAgreeFields) {
+		this.panelSOfferAgreeFields = panelSOfferAgreeFields;
+	}
+
+	public static ImageIcon getIcon_SNegAgree_Fields() {
+		return icon_SNegAgree_Fields;
+	}
+
+	public static void setIcon_SNegAgree_Fields(ImageIcon icon_SNegAgree_Fields) {
+		JanBase.icon_SNegAgree_Fields = icon_SNegAgree_Fields;
+	}
+
+	public static ImageIcon getIcon_SOfferAgree_Fields() {
+		return icon_SOfferAgree_Fields;
+	}
+
+	public static void setIcon_SOfferAgree_Fields(ImageIcon icon_SOfferAgree_Fields) {
+		JanBase.icon_SOfferAgree_Fields = icon_SOfferAgree_Fields;
+	}
+
+	public static ImageIcon getIcon_SNegotiation_Fields() {
+		return icon_SNegotiation_Fields;
+	}
+
+	public static void setIcon_SNegotiation_Fields(ImageIcon icon_SNegotiation_Fields) {
+		JanBase.icon_SNegotiation_Fields = icon_SNegotiation_Fields;
+	}
+
+	public static JLabel getImagem_SNegAgree_Fields() {
+		return imagem_SNegAgree_Fields;
+	}
+
+	public static void setImagem_SNegAgree_Fields(JLabel imagem_SNegAgree_Fields) {
+		JanBase.imagem_SNegAgree_Fields = imagem_SNegAgree_Fields;
+	}
+
+	public static JLabel getImagem_SOfferAgree_Fields() {
+		return imagem_SOfferAgree_Fields;
+	}
+
+	public static void setImagem_SOfferAgree_Fields(JLabel imagem_SOfferAgree_Fields) {
+		JanBase.imagem_SOfferAgree_Fields = imagem_SOfferAgree_Fields;
+	}
+
+	public static JLabel getImagem_SNegotiation_Fields() {
+		return imagem_SNegotiation_Fields;
+	}
+
+	public static void setImagem_SNegotiation_Fields(JLabel imagem_SNegotiation_Fields) {
+		JanBase.imagem_SNegotiation_Fields = imagem_SNegotiation_Fields;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public void setPainelSelecionado(int painelSelecionado) {
+		this.painelSelecionado = painelSelecionado;
+	}
+
+	public void setTxtServiceProvider_P_Provider(JTextField txtServiceProvider_P_Provider) {
+		this.txtServiceProvider_P_Provider = txtServiceProvider_P_Provider;
+	}
+
+	public void setTxtPerson_P_Provider(JTextField txtPerson_P_Provider) {
+		this.txtPerson_P_Provider = txtPerson_P_Provider;
+	}
+
+	public void setTxtTargetCustomer_P_TCustomer(JTextField txtTargetCustomer_P_TCustomer) {
+		this.txtTargetCustomer_P_TCustomer = txtTargetCustomer_P_TCustomer;
+	}
+
+	public void setTxtPerson_P_TCustomer(JTextField txtPerson_P_TCustomer) {
+		this.txtPerson_P_TCustomer = txtPerson_P_TCustomer;
+	}
+
+	public void setTxtServiceProvider_O_Provider(JTextField txtServiceProvider_O_Provider) {
+		this.txtServiceProvider_O_Provider = txtServiceProvider_O_Provider;
+	}
+
+	public void setTxtOrganization_O_Provider(JTextField txtOrganization_O_Provider) {
+		this.txtOrganization_O_Provider = txtOrganization_O_Provider;
+	}
+
+	public void setTxtServiceProvider_OU_Provider(JTextField txtServiceProvider_OU_Provider) {
+		this.txtServiceProvider_OU_Provider = txtServiceProvider_OU_Provider;
+	}
+
+	public void setTxtOrgUnit_OU_Provider(JTextField txtOrgUnit_OU_Provider) {
+		this.txtOrgUnit_OU_Provider = txtOrgUnit_OU_Provider;
+	}
+
+	public void setTxtServiceProvider_O_OU_Provider(JTextField txtServiceProvider_O_OU_Provider) {
+		this.txtServiceProvider_O_OU_Provider = txtServiceProvider_O_OU_Provider;
+	}
+
+	public void setTxtOrgUnitProvider_O_OU_Provider(JTextField txtOrgUnitProvider_O_OU_Provider) {
+		this.txtOrgUnitProvider_O_OU_Provider = txtOrgUnitProvider_O_OU_Provider;
+	}
+
+	public void setTxtOrganizationProvider_O_OU_Provider(JTextField txtOrganizationProvider_O_OU_Provider) {
+		this.txtOrganizationProvider_O_OU_Provider = txtOrganizationProvider_O_OU_Provider;
+	}
+
+	public void setTxtServiceProvider_P_O_Provider(JTextField txtServiceProvider_P_O_Provider) {
+		this.txtServiceProvider_P_O_Provider = txtServiceProvider_P_O_Provider;
+	}
+
+	public void setTxtPersonProvider_P_O_Provider(JTextField txtPersonProvider_P_O_Provider) {
+		this.txtPersonProvider_P_O_Provider = txtPersonProvider_P_O_Provider;
+	}
+
+	public void setTxtOrganizationProvider_P_O_Provider(JTextField txtOrganizationProvider_P_O_Provider) {
+		this.txtOrganizationProvider_P_O_Provider = txtOrganizationProvider_P_O_Provider;
+	}
+
+	public void setTxtServiceProvider_P_OU_Provider(JTextField txtServiceProvider_P_OU_Provider) {
+		this.txtServiceProvider_P_OU_Provider = txtServiceProvider_P_OU_Provider;
+	}
+
+	public void setTxtPersonProvider_P_OU_Provider(JTextField txtPersonProvider_P_OU_Provider) {
+		this.txtPersonProvider_P_OU_Provider = txtPersonProvider_P_OU_Provider;
+	}
+
+	public void setTxtOrgUnitProvider_P_OU_Provider(JTextField txtOrgUnitProvider_P_OU_Provider) {
+		this.txtOrgUnitProvider_P_OU_Provider = txtOrgUnitProvider_P_OU_Provider;
+	}
+
+	public void setTxtServiceProvider_P_O_OU_Provider(JTextField txtServiceProvider_P_O_OU_Provider) {
+		this.txtServiceProvider_P_O_OU_Provider = txtServiceProvider_P_O_OU_Provider;
+	}
+
+	public void setTxtPersonProvider_P_O_OU_Provider(JTextField txtPersonProvider_P_O_OU_Provider) {
+		this.txtPersonProvider_P_O_OU_Provider = txtPersonProvider_P_O_OU_Provider;
+	}
+
+	public void setTxtOrgUnitProvider_P_O_OU_Provider(JTextField txtOrgUnitProvider_P_O_OU_Provider) {
+		this.txtOrgUnitProvider_P_O_OU_Provider = txtOrgUnitProvider_P_O_OU_Provider;
+	}
+
+	public void setTxtOrgProvider_P_O_OU_Provider(JTextField txtOrgProvider_P_O_OU_Provider) {
+		this.txtOrgProvider_P_O_OU_Provider = txtOrgProvider_P_O_OU_Provider;
+	}
+
+	public void setTxtTargetCustomer_O_TCustomer(JTextField txtTargetCustomer_O_TCustomer) {
+		this.txtTargetCustomer_O_TCustomer = txtTargetCustomer_O_TCustomer;
+	}
+
+	public void setTxtOrganization_O_TCustomer(JTextField txtOrganization_O_TCustomer) {
+		this.txtOrganization_O_TCustomer = txtOrganization_O_TCustomer;
+	}
+
+	public void setTxtTargetCustomer_OU_TCustomer(JTextField txtTargetCustomer_OU_TCustomer) {
+		this.txtTargetCustomer_OU_TCustomer = txtTargetCustomer_OU_TCustomer;
+	}
+
+	public void setTxtOrgUnit_OU_TCustomer(JTextField txtOrgUnit_OU_TCustomer) {
+		this.txtOrgUnit_OU_TCustomer = txtOrgUnit_OU_TCustomer;
+	}
+
+	public void setTxtTargetCustomer_O_OU_TCustomer(JTextField txtTargetCustomer_O_OU_TCustomer) {
+		this.txtTargetCustomer_O_OU_TCustomer = txtTargetCustomer_O_OU_TCustomer;
+	}
+
+	public void setTxtOrgUnitTC_O_OU_TCustomer(JTextField txtOrgUnitTC_O_OU_TCustomer) {
+		this.txtOrgUnitTC_O_OU_TCustomer = txtOrgUnitTC_O_OU_TCustomer;
+	}
+
+	public void setTxtOrgTC_O_OU_TCustomer(JTextField txtOrgTC_O_OU_TCustomer) {
+		this.txtOrgTC_O_OU_TCustomer = txtOrgTC_O_OU_TCustomer;
+	}
+
+	public void setTxtTargetCustomer_P_O_TCustomer(JTextField txtTargetCustomer_P_O_TCustomer) {
+		this.txtTargetCustomer_P_O_TCustomer = txtTargetCustomer_P_O_TCustomer;
+	}
+
+	public void setTxtPersonTC_P_O_TCustomer(JTextField txtPersonTC_P_O_TCustomer) {
+		this.txtPersonTC_P_O_TCustomer = txtPersonTC_P_O_TCustomer;
+	}
+
+	public void setTxtOrgTC_P_O_TCustomer(JTextField txtOrgTC_P_O_TCustomer) {
+		this.txtOrgTC_P_O_TCustomer = txtOrgTC_P_O_TCustomer;
+	}
+
+	public void setTxtTargetCustomerTC_P_OU_TCustomer(JTextField txtTargetCustomerTC_P_OU_TCustomer) {
+		this.txtTargetCustomerTC_P_OU_TCustomer = txtTargetCustomerTC_P_OU_TCustomer;
+	}
+
+	public void setTxtPersonTC_P_OU_TCustomer(JTextField txtPersonTC_P_OU_TCustomer) {
+		this.txtPersonTC_P_OU_TCustomer = txtPersonTC_P_OU_TCustomer;
+	}
+
+	public void setTxtOrgUnitTC_P_OU_TCustomer(JTextField txtOrgUnitTC_P_OU_TCustomer) {
+		this.txtOrgUnitTC_P_OU_TCustomer = txtOrgUnitTC_P_OU_TCustomer;
+	}
+
+	public void setTxtOrgProvider_P_OU_TCustomer(JTextField txtOrgProvider_P_OU_TCustomer) {
+		this.txtOrgProvider_P_OU_TCustomer = txtOrgProvider_P_OU_TCustomer;
+	}
+
+	public void setTxtPersonTC_P_O_OU_TCustomer(JTextField txtPersonTC_P_O_OU_TCustomer) {
+		this.txtPersonTC_P_O_OU_TCustomer = txtPersonTC_P_O_OU_TCustomer;
+	}
+
+	public void setTxtTargetCustomer_P_O_OU_TCustomer(JTextField txtTargetCustomer_P_O_OU_TCustomer) {
+		this.txtTargetCustomer_P_O_OU_TCustomer = txtTargetCustomer_P_O_OU_TCustomer;
+	}
+
+	public void setTxtOrgUnitTC_P_O_OU_TCustomer(JTextField txtOrgUnitTC_P_O_OU_TCustomer) {
+		this.txtOrgUnitTC_P_O_OU_TCustomer = txtOrgUnitTC_P_O_OU_TCustomer;
+	}
+
+	public void setTxtOrgTC_P_O_OU_TCustomer(JTextField txtOrgTC_P_O_OU_TCustomer) {
+		this.txtOrgTC_P_O_OU_TCustomer = txtOrgTC_P_O_OU_TCustomer;
+	}
+
+	public void setSoplPattern(SOPLPattern soplPattern) {
+		this.soplPattern = soplPattern;
+	}
+
+	public void setTxtServiceProvider_P_HProvider(JTextField txtServiceProvider_P_HProvider) {
+		this.txtServiceProvider_P_HProvider = txtServiceProvider_P_HProvider;
+	}
+
+	public void setTxtPerson_P_HProvider(JTextField txtPerson_P_HProvider) {
+		this.txtPerson_P_HProvider = txtPerson_P_HProvider;
+	}
+
+	public void setTxtTargetCustomer_P_Customer(JTextField txtTargetCustomer_P_Customer) {
+		this.txtTargetCustomer_P_Customer = txtTargetCustomer_P_Customer;
+	}
+
+	public void setTxtPerson_P_Customer(JTextField txtPerson_P_Customer) {
+		this.txtPerson_P_Customer = txtPerson_P_Customer;
+	}
+
+	public void setTxtServiceProvider_P_O_OU_HProvider(JTextField txtServiceProvider_P_O_OU_HProvider) {
+		this.txtServiceProvider_P_O_OU_HProvider = txtServiceProvider_P_O_OU_HProvider;
+	}
+
+	public void setTxtPersonProvider_P_O_OU_HProvider(JTextField txtPersonProvider_P_O_OU_HProvider) {
+		this.txtPersonProvider_P_O_OU_HProvider = txtPersonProvider_P_O_OU_HProvider;
+	}
+
+	public void setTxtOrgProvider_P_O_OU_HProvider(JTextField txtOrgProvider_P_O_OU_HProvider) {
+		this.txtOrgProvider_P_O_OU_HProvider = txtOrgProvider_P_O_OU_HProvider;
+	}
+
+	public void setTxtPersonTC_P_O_OU_Customer(JTextField txtPersonTC_P_O_OU_Customer) {
+		this.txtPersonTC_P_O_OU_Customer = txtPersonTC_P_O_OU_Customer;
+	}
+
+	public void setTxtTargetCustomer_P_O_OU_Customer(JTextField txtTargetCustomer_P_O_OU_Customer) {
+		this.txtTargetCustomer_P_O_OU_Customer = txtTargetCustomer_P_O_OU_Customer;
+	}
+
+	public void setTxtOrgUnitTC_P_O_OU_Customer(JTextField txtOrgUnitTC_P_O_OU_Customer) {
+		this.txtOrgUnitTC_P_O_OU_Customer = txtOrgUnitTC_P_O_OU_Customer;
+	}
+
+	public void setTxtOrgTC_P_O_OU_Customer(JTextField txtOrgTC_P_O_OU_Customer) {
+		this.txtOrgTC_P_O_OU_Customer = txtOrgTC_P_O_OU_Customer;
+	}
+
+	public void setTxtTargetCustomerTC_P_OU_Customer(JTextField txtTargetCustomerTC_P_OU_Customer) {
+		this.txtTargetCustomerTC_P_OU_Customer = txtTargetCustomerTC_P_OU_Customer;
+	}
+
+	public void setTxtPersonTC_P_OU_Customer(JTextField txtPersonTC_P_OU_Customer) {
+		this.txtPersonTC_P_OU_Customer = txtPersonTC_P_OU_Customer;
+	}
+
+	public void setTxtOrgUnitTC_P_OU_Customer(JTextField txtOrgUnitTC_P_OU_Customer) {
+		this.txtOrgUnitTC_P_OU_Customer = txtOrgUnitTC_P_OU_Customer;
+	}
+
+	public void setTxtOrgProvider_P_OU_Customer(JTextField txtOrgProvider_P_OU_Customer) {
+		this.txtOrgProvider_P_OU_Customer = txtOrgProvider_P_OU_Customer;
+	}
+
+	public void setTxtTargetCustomer_P_O_Customer(JTextField txtTargetCustomer_P_O_Customer) {
+		this.txtTargetCustomer_P_O_Customer = txtTargetCustomer_P_O_Customer;
+	}
+
+	public void setTxtPersonTC_P_O_Customer(JTextField txtPersonTC_P_O_Customer) {
+		this.txtPersonTC_P_O_Customer = txtPersonTC_P_O_Customer;
+	}
+
+	public void setTxtOrgTC_P_O_Customer(JTextField txtOrgTC_P_O_Customer) {
+		this.txtOrgTC_P_O_Customer = txtOrgTC_P_O_Customer;
+	}
+
+	public void setTxtTargetCustomer_O_OU_Customer(JTextField txtTargetCustomer_O_OU_Customer) {
+		this.txtTargetCustomer_O_OU_Customer = txtTargetCustomer_O_OU_Customer;
+	}
+
+	public void setTxtOrgUnitTC_O_OU_Customer(JTextField txtOrgUnitTC_O_OU_Customer) {
+		this.txtOrgUnitTC_O_OU_Customer = txtOrgUnitTC_O_OU_Customer;
+	}
+
+	public void setTxtOrgTC_O_OU_Customer(JTextField txtOrgTC_O_OU_Customer) {
+		this.txtOrgTC_O_OU_Customer = txtOrgTC_O_OU_Customer;
+	}
+
+	public void setTxtTargetCustomer_OU_Customer(JTextField txtTargetCustomer_OU_Customer) {
+		this.txtTargetCustomer_OU_Customer = txtTargetCustomer_OU_Customer;
+	}
+
+	public void setTxtOrgUnit_OU_Customer(JTextField txtOrgUnit_OU_Customer) {
+		this.txtOrgUnit_OU_Customer = txtOrgUnit_OU_Customer;
+	}
+
+	public void setTxtTargetCustomer_O_Customer(JTextField txtTargetCustomer_O_Customer) {
+		this.txtTargetCustomer_O_Customer = txtTargetCustomer_O_Customer;
+	}
+
+	public void setTxtOrgUnitProvider_P_O_OU_HProvider(JTextField txtOrgUnitProvider_P_O_OU_HProvider) {
+		this.txtOrgUnitProvider_P_O_OU_HProvider = txtOrgUnitProvider_P_O_OU_HProvider;
+	}
+
+	public void setTxtOrganization_O_Customer(JTextField txtOrganization_O_Customer) {
+		this.txtOrganization_O_Customer = txtOrganization_O_Customer;
+	}
+
+	public void setTxtServiceProvider_P_OU_HProvider(JTextField txtServiceProvider_P_OU_HProvider) {
+		this.txtServiceProvider_P_OU_HProvider = txtServiceProvider_P_OU_HProvider;
+	}
+
+	public void setTxtPersonProvider_P_OU_HProvider(JTextField txtPersonProvider_P_OU_HProvider) {
+		this.txtPersonProvider_P_OU_HProvider = txtPersonProvider_P_OU_HProvider;
+	}
+
+	public void setTxtOrgUnitProvider_P_OU_HProvider(JTextField txtOrgUnitProvider_P_OU_HProvider) {
+		this.txtOrgUnitProvider_P_OU_HProvider = txtOrgUnitProvider_P_OU_HProvider;
+	}
+
+	public void setTxtServiceProvider_P_O_HProvider(JTextField txtServiceProvider_P_O_HProvider) {
+		this.txtServiceProvider_P_O_HProvider = txtServiceProvider_P_O_HProvider;
+	}
+
+	public void setTxtPersonProvider_P_O_HProvider(JTextField txtPersonProvider_P_O_HProvider) {
+		this.txtPersonProvider_P_O_HProvider = txtPersonProvider_P_O_HProvider;
+	}
+
+	public void setTxtOrganizationProvider_P_O_HProvider(JTextField txtOrganizationProvider_P_O_HProvider) {
+		this.txtOrganizationProvider_P_O_HProvider = txtOrganizationProvider_P_O_HProvider;
+	}
+
+	public void setTxtServiceProvider_O_OU_HProvider(JTextField txtServiceProvider_O_OU_HProvider) {
+		this.txtServiceProvider_O_OU_HProvider = txtServiceProvider_O_OU_HProvider;
+	}
+
+	public void setTxtOrgUnitProvider_O_OU_HProvider(JTextField txtOrgUnitProvider_O_OU_HProvider) {
+		this.txtOrgUnitProvider_O_OU_HProvider = txtOrgUnitProvider_O_OU_HProvider;
+	}
+
+	public void setTxtOrganizationProvider_O_OU_HProvider(JTextField txtOrganizationProvider_O_OU_HProvider) {
+		this.txtOrganizationProvider_O_OU_HProvider = txtOrganizationProvider_O_OU_HProvider;
+	}
+
+	public void setTxtServiceProvider_OU_HProvider(JTextField txtServiceProvider_OU_HProvider) {
+		this.txtServiceProvider_OU_HProvider = txtServiceProvider_OU_HProvider;
+	}
+
+	public void setTxtOrgUnit_OU_HProvider(JTextField txtOrgUnit_OU_HProvider) {
+		this.txtOrgUnit_OU_HProvider = txtOrgUnit_OU_HProvider;
+	}
+
+	public void setTxtServiceProvider_O_HProvider(JTextField txtServiceProvider_O_HProvider) {
+		this.txtServiceProvider_O_HProvider = txtServiceProvider_O_HProvider;
+	}
+
+	public void setTxtOrganization_O_HProvider(JTextField txtOrganization_O_HProvider) {
+		this.txtOrganization_O_HProvider = txtOrganization_O_HProvider;
+	}
+
+	public static void setImgPatternProvider(JPanel imgPatternProvider) {
+		JanBase.imgPatternProvider = imgPatternProvider;
+	}
+
+	public static void setImgPatternCustomer(JPanel imgPatternCustomer) {
+		JanBase.imgPatternCustomer = imgPatternCustomer;
+	}
+
+	public static void setPanelPCSubgroup(JPanel panelPCSubgroup) {
+		JanBase.panelPCSubgroup = panelPCSubgroup;
+	}
+
+	public static void setPanelP_TCustomer(JPanel panelP_TCustomer) {
+		JanBase.panelP_TCustomer = panelP_TCustomer;
+	}
+
+	public static void setPanelP_Provider(JPanel panelP_Provider) {
+		JanBase.panelP_Provider = panelP_Provider;
+	}
+
+	public static void setPanelPatternProvider(JPanel panelPatternProvider) {
+		JanBase.panelPatternProvider = panelPatternProvider;
+	}
+
+	public static void setPanelPatternCustomer(JPanel panelPatternCustomer) {
+		JanBase.panelPatternCustomer = panelPatternCustomer;
+	}
+
+	public static void setPanelP_O_OU_Provider(JPanel panelP_O_OU_Provider) {
+		JanBase.panelP_O_OU_Provider = panelP_O_OU_Provider;
+	}
+
+	public static void setPanelP_O_OU_TCustomer(JPanel panelP_O_OU_TCustomer) {
+		JanBase.panelP_O_OU_TCustomer = panelP_O_OU_TCustomer;
+	}
+
+	public static void setPanelP_OU_TCustomer(JPanel panelP_OU_TCustomer) {
+		JanBase.panelP_OU_TCustomer = panelP_OU_TCustomer;
+	}
+
+	public static void setPanelP_O_TCustomer(JPanel panelP_O_TCustomer) {
+		JanBase.panelP_O_TCustomer = panelP_O_TCustomer;
+	}
+
+	public static void setPanelO_OU_TCustomer(JPanel panelO_OU_TCustomer) {
+		JanBase.panelO_OU_TCustomer = panelO_OU_TCustomer;
+	}
+
+	public static void setPanelOU_TCustomer(JPanel panelOU_TCustomer) {
+		JanBase.panelOU_TCustomer = panelOU_TCustomer;
+	}
+
+	public static void setPanelO_TCustomer(JPanel panelO_TCustomer) {
+		JanBase.panelO_TCustomer = panelO_TCustomer;
+	}
+
+	public static void setPanelP_OU_Provider(JPanel panelP_OU_Provider) {
+		JanBase.panelP_OU_Provider = panelP_OU_Provider;
+	}
+
+	public static void setPanelP_O_Provider(JPanel panelP_O_Provider) {
+		JanBase.panelP_O_Provider = panelP_O_Provider;
+	}
+
+	public static void setPanelO_OU_Provider(JPanel panelO_OU_Provider) {
+		JanBase.panelO_OU_Provider = panelO_OU_Provider;
+	}
+
+	public static void setPanelOU_Provider(JPanel panelOU_Provider) {
+		JanBase.panelOU_Provider = panelOU_Provider;
+	}
+
+	public static void setPanelO_Provider(JPanel panelO_Provider) {
+		JanBase.panelO_Provider = panelO_Provider;
+	}
+
+	public static void setImgPatternHiredProvider(JPanel imgPatternHiredProvider) {
+		JanBase.imgPatternHiredProvider = imgPatternHiredProvider;
+	}
+
+	public static void setImgPatternServiceCustomer(JPanel imgPatternServiceCustomer) {
+		JanBase.imgPatternServiceCustomer = imgPatternServiceCustomer;
+	}
+
+	public static void setPanelHiredP_ServiceC_Subgroup(JPanel panelHiredP_ServiceC_Subgroup) {
+		JanBase.panelHiredP_ServiceC_Subgroup = panelHiredP_ServiceC_Subgroup;
+	}
+
+	public static void setPanelP_HProvider(JPanel panelP_HProvider) {
+		JanBase.panelP_HProvider = panelP_HProvider;
+	}
+
+	public static void setPanelO_OU_HProvider(JPanel panelO_OU_HProvider) {
+		JanBase.panelO_OU_HProvider = panelO_OU_HProvider;
+	}
+
+	public static void setPanelPatternHiredProvider(JPanel panelPatternHiredProvider) {
+		JanBase.panelPatternHiredProvider = panelPatternHiredProvider;
+	}
+
+	public static void setPanelPatternServiceCustomer(JPanel panelPatternServiceCustomer) {
+		JanBase.panelPatternServiceCustomer = panelPatternServiceCustomer;
+	}
+
+	public static void setPanelO_HProvider(JPanel panelO_HProvider) {
+		JanBase.panelO_HProvider = panelO_HProvider;
+	}
+
+	public static void setPanelP_O_HProvider(JPanel panelP_O_HProvider) {
+		JanBase.panelP_O_HProvider = panelP_O_HProvider;
+	}
+
+	public static void setPanelOU_HProvider(JPanel panelOU_HProvider) {
+		JanBase.panelOU_HProvider = panelOU_HProvider;
+	}
+
+	public static void setPanelP_OU_HProvider(JPanel panelP_OU_HProvider) {
+		JanBase.panelP_OU_HProvider = panelP_OU_HProvider;
+	}
+
+	public static void setPanelP_O_OU_HProvider(JPanel panelP_O_OU_HProvider) {
+		JanBase.panelP_O_OU_HProvider = panelP_O_OU_HProvider;
+	}
+
+	public static void setPanelP_Customer(JPanel panelP_Customer) {
+		JanBase.panelP_Customer = panelP_Customer;
+	}
+
+	public static void setPanelO_OU_Customer(JPanel panelO_OU_Customer) {
+		JanBase.panelO_OU_Customer = panelO_OU_Customer;
+	}
+
+	public static void setPanelO_Customer(JPanel panelO_Customer) {
+		JanBase.panelO_Customer = panelO_Customer;
+	}
+
+	public static void setPanelP_O_Customer(JPanel panelP_O_Customer) {
+		JanBase.panelP_O_Customer = panelP_O_Customer;
+	}
+
+	public static void setPanelOU_Customer(JPanel panelOU_Customer) {
+		JanBase.panelOU_Customer = panelOU_Customer;
+	}
+
+	public static void setPanelP_OU_Customer(JPanel panelP_OU_Customer) {
+		JanBase.panelP_OU_Customer = panelP_OU_Customer;
+	}
+
+	public static void setPanelP_O_OU_Customer(JPanel panelP_O_OU_Customer) {
+		JanBase.panelP_O_OU_Customer = panelP_O_OU_Customer;
+	}
+
+	public static void setPanelSOffering(JPanel panelSOffering) {
+		JanBase.panelSOffering = panelSOffering;
+	}
+
+	public static void setPanelSODescription(JPanel panelSODescription) {
+		JanBase.panelSODescription = panelSODescription;
+	}
+
+	public static void setPanelSOCommitment(JPanel panelSOCommitment) {
+		JanBase.panelSOCommitment = panelSOCommitment;
+	}
+
+	public static void setPanelSNegAgree(JPanel panelSNegAgree) {
+		JanBase.panelSNegAgree = panelSNegAgree;
+	}
+
+	public static void setRdbtnP_Provider(JRadioButton rdbtnP_Provider) {
+		JanBase.rdbtnP_Provider = rdbtnP_Provider;
+	}
+
+	public static void setRdbtnP_OU_Provider(JRadioButton rdbtnP_OU_Provider) {
+		JanBase.rdbtnP_OU_Provider = rdbtnP_OU_Provider;
+	}
+
+	public static void setRdbtnO_Provider(JRadioButton rdbtnO_Provider) {
+		JanBase.rdbtnO_Provider = rdbtnO_Provider;
+	}
+
+	public static void setRdbtnP_O_OU_Provider(JRadioButton rdbtnP_O_OU_Provider) {
+		JanBase.rdbtnP_O_OU_Provider = rdbtnP_O_OU_Provider;
+	}
+
+	public static void setRdbtnOU_Provider(JRadioButton rdbtnOU_Provider) {
+		JanBase.rdbtnOU_Provider = rdbtnOU_Provider;
+	}
+
+	public static void setRdbtnO_OU_Provider(JRadioButton rdbtnO_OU_Provider) {
+		JanBase.rdbtnO_OU_Provider = rdbtnO_OU_Provider;
+	}
+
+	public static void setRdbtnP_O_Provider(JRadioButton rdbtnP_O_Provider) {
+		JanBase.rdbtnP_O_Provider = rdbtnP_O_Provider;
+	}
+
+	public static void setRdbtnP_TCustomer(JRadioButton rdbtnP_TCustomer) {
+		JanBase.rdbtnP_TCustomer = rdbtnP_TCustomer;
+	}
+
+	public static void setRdbtnP_O_TCustomer(JRadioButton rdbtnP_O_TCustomer) {
+		JanBase.rdbtnP_O_TCustomer = rdbtnP_O_TCustomer;
+	}
+
+	public static void setRdbtnO_TCustomer(JRadioButton rdbtnO_TCustomer) {
+		JanBase.rdbtnO_TCustomer = rdbtnO_TCustomer;
+	}
+
+	public static void setRdbtnP_OU_TCustomer(JRadioButton rdbtnP_OU_TCustomer) {
+		JanBase.rdbtnP_OU_TCustomer = rdbtnP_OU_TCustomer;
+	}
+
+	public static void setRdbtnOU_TCustomer(JRadioButton rdbtnOU_TCustomer) {
+		JanBase.rdbtnOU_TCustomer = rdbtnOU_TCustomer;
+	}
+
+	public static void setRdbtnP_O_OU_TCustomer(JRadioButton rdbtnP_O_OU_TCustomer) {
+		JanBase.rdbtnP_O_OU_TCustomer = rdbtnP_O_OU_TCustomer;
+	}
+
+	public static void setRdbtnO_OU_TCustomer(JRadioButton rdbtnO_OU_TCustomer) {
+		JanBase.rdbtnO_OU_TCustomer = rdbtnO_OU_TCustomer;
+	}
+
+	public static void setRdbtnP_HProvider(JRadioButton rdbtnP_HProvider) {
+		JanBase.rdbtnP_HProvider = rdbtnP_HProvider;
+	}
+
+	public static void setRdbtnO_OU_HProvider(JRadioButton rdbtnO_OU_HProvider) {
+		JanBase.rdbtnO_OU_HProvider = rdbtnO_OU_HProvider;
+	}
+
+	public static void setRdbtnO_HProvider(JRadioButton rdbtnO_HProvider) {
+		JanBase.rdbtnO_HProvider = rdbtnO_HProvider;
+	}
+
+	public static void setRdbtnP_O_HProvider(JRadioButton rdbtnP_O_HProvider) {
+		JanBase.rdbtnP_O_HProvider = rdbtnP_O_HProvider;
+	}
+
+	public static void setRdbtnOU_HProvider(JRadioButton rdbtnOU_HProvider) {
+		JanBase.rdbtnOU_HProvider = rdbtnOU_HProvider;
+	}
+
+	public static void setRdbtnP_OU_HProvider(JRadioButton rdbtnP_OU_HProvider) {
+		JanBase.rdbtnP_OU_HProvider = rdbtnP_OU_HProvider;
+	}
+
+	public static void setRdbtnP_O_OU_HProvider(JRadioButton rdbtnP_O_OU_HProvider) {
+		JanBase.rdbtnP_O_OU_HProvider = rdbtnP_O_OU_HProvider;
+	}
+
+	public static void setRdbtnP_Customer(JRadioButton rdbtnP_Customer) {
+		JanBase.rdbtnP_Customer = rdbtnP_Customer;
+	}
+
+	public static void setRdbtnO_OU_Customer(JRadioButton rdbtnO_OU_Customer) {
+		JanBase.rdbtnO_OU_Customer = rdbtnO_OU_Customer;
+	}
+
+	public static void setRdbtnO_Customer(JRadioButton rdbtnO_Customer) {
+		JanBase.rdbtnO_Customer = rdbtnO_Customer;
+	}
+
+	public static void setRdbtnP_O_Customer(JRadioButton rdbtnP_O_Customer) {
+		JanBase.rdbtnP_O_Customer = rdbtnP_O_Customer;
+	}
+
+	public static void setRdbtnOU_Customer(JRadioButton rdbtnOU_Customer) {
+		JanBase.rdbtnOU_Customer = rdbtnOU_Customer;
+	}
+
+	public static void setRdbtnP_OU_Customer(JRadioButton rdbtnP_OU_Customer) {
+		JanBase.rdbtnP_OU_Customer = rdbtnP_OU_Customer;
+	}
+
+	public static void setRdbtnP_O_OU_Customer(JRadioButton rdbtnP_O_OU_Customer) {
+		JanBase.rdbtnP_O_OU_Customer = rdbtnP_O_OU_Customer;
+	}
+
+	public void setRdCustomerGroup(ButtonGroup rdCustomerGroup) {
+		this.rdCustomerGroup = rdCustomerGroup;
+	}
+
+	public void setRdProviderGroup(ButtonGroup rdProviderGroup) {
+		this.rdProviderGroup = rdProviderGroup;
+	}
+
+	public void setRdServiceCustomerGroup(ButtonGroup rdServiceCustomerGroup) {
+		this.rdServiceCustomerGroup = rdServiceCustomerGroup;
+	}
+
+	public void setRdHiredProviderGroup(ButtonGroup rdHiredProviderGroup) {
+		this.rdHiredProviderGroup = rdHiredProviderGroup;
+	}
+
+	public static void setIcon_P_Provider(ImageIcon icon_P_Provider) {
+		JanBase.icon_P_Provider = icon_P_Provider;
+	}
+
+	public static void setImagem_P_Provider(JLabel imagem_P_Provider) {
+		JanBase.imagem_P_Provider = imagem_P_Provider;
+	}
+
+	public static void setIcon_O_Provider(ImageIcon icon_O_Provider) {
+		JanBase.icon_O_Provider = icon_O_Provider;
+	}
+
+	public static void setImagem_O_Provider(JLabel imagem_O_Provider) {
+		JanBase.imagem_O_Provider = imagem_O_Provider;
+	}
+
+	public static void setIcon_OU_Provider(ImageIcon icon_OU_Provider) {
+		JanBase.icon_OU_Provider = icon_OU_Provider;
+	}
+
+	public static void setImagem_OU_Provider(JLabel imagem_OU_Provider) {
+		JanBase.imagem_OU_Provider = imagem_OU_Provider;
+	}
+
+	public static void setIcon_P_O_OU_Provider(ImageIcon icon_P_O_OU_Provider) {
+		JanBase.icon_P_O_OU_Provider = icon_P_O_OU_Provider;
+	}
+
+	public static void setImagem_P_O_OU_Provider(JLabel imagem_P_O_OU_Provider) {
+		JanBase.imagem_P_O_OU_Provider = imagem_P_O_OU_Provider;
+	}
+
+	public static void setIcon_O_OU_Provider(ImageIcon icon_O_OU_Provider) {
+		JanBase.icon_O_OU_Provider = icon_O_OU_Provider;
+	}
+
+	public static void setImagem_O_OU_Provider(JLabel imagem_O_OU_Provider) {
+		JanBase.imagem_O_OU_Provider = imagem_O_OU_Provider;
+	}
+
+	public static void setIcon_P_O_Provider(ImageIcon icon_P_O_Provider) {
+		JanBase.icon_P_O_Provider = icon_P_O_Provider;
+	}
+
+	public static void setImagem_P_O_Provider(JLabel imagem_P_O_Provider) {
+		JanBase.imagem_P_O_Provider = imagem_P_O_Provider;
+	}
+
+	public static void setIcon_P_OU_Provider(ImageIcon icon_P_OU_Provider) {
+		JanBase.icon_P_OU_Provider = icon_P_OU_Provider;
+	}
+
+	public static void setImagem_P_OU_Provider(JLabel imagem_P_OU_Provider) {
+		JanBase.imagem_P_OU_Provider = imagem_P_OU_Provider;
+	}
+
+	public static void setIcon_P_TCustomer(ImageIcon icon_P_TCustomer) {
+		JanBase.icon_P_TCustomer = icon_P_TCustomer;
+	}
+
+	public static void setImagem_P_TCustomer(JLabel imagem_P_TCustomer) {
+		JanBase.imagem_P_TCustomer = imagem_P_TCustomer;
+	}
+
+	public static void setIcon_O_TCustomer(ImageIcon icon_O_TCustomer) {
+		JanBase.icon_O_TCustomer = icon_O_TCustomer;
+	}
+
+	public static void setImagem_O_TCustomer(JLabel imagem_O_TCustomer) {
+		JanBase.imagem_O_TCustomer = imagem_O_TCustomer;
+	}
+
+	public static void setIcon_OU_TCustomer(ImageIcon icon_OU_TCustomer) {
+		JanBase.icon_OU_TCustomer = icon_OU_TCustomer;
+	}
+
+	public static void setImagem_OU_TCustomer(JLabel imagem_OU_TCustomer) {
+		JanBase.imagem_OU_TCustomer = imagem_OU_TCustomer;
+	}
+
+	public static void setIcon_P_O_OU_TCustomer(ImageIcon icon_P_O_OU_TCustomer) {
+		JanBase.icon_P_O_OU_TCustomer = icon_P_O_OU_TCustomer;
+	}
+
+	public static void setImagem_P_O_OU_TCustomer(JLabel imagem_P_O_OU_TCustomer) {
+		JanBase.imagem_P_O_OU_TCustomer = imagem_P_O_OU_TCustomer;
+	}
+
+	public static void setIcon_O_OU_TCustomer(ImageIcon icon_O_OU_TCustomer) {
+		JanBase.icon_O_OU_TCustomer = icon_O_OU_TCustomer;
+	}
+
+	public static void setImagem_O_OU_TCustomer(JLabel imagem_O_OU_TCustomer) {
+		JanBase.imagem_O_OU_TCustomer = imagem_O_OU_TCustomer;
+	}
+
+	public static void setIcon_P_O_TCustomer(ImageIcon icon_P_O_TCustomer) {
+		JanBase.icon_P_O_TCustomer = icon_P_O_TCustomer;
+	}
+
+	public static void setImagem_P_O_TCustomer(JLabel imagem_P_O_TCustomer) {
+		JanBase.imagem_P_O_TCustomer = imagem_P_O_TCustomer;
+	}
+
+	public static void setIcon_P_OU_TCustomer(ImageIcon icon_P_OU_TCustomer) {
+		JanBase.icon_P_OU_TCustomer = icon_P_OU_TCustomer;
+	}
+
+	public static void setImagem_P_OU_TCustomer(JLabel imagem_P_OU_TCustomer) {
+		JanBase.imagem_P_OU_TCustomer = imagem_P_OU_TCustomer;
+	}
+
+	public static void setIcon_P_HProvider(ImageIcon icon_P_HProvider) {
+		JanBase.icon_P_HProvider = icon_P_HProvider;
+	}
+
+	public static void setImagem_P_HProvider(JLabel imagem_P_HProvider) {
+		JanBase.imagem_P_HProvider = imagem_P_HProvider;
+	}
+
+	public static void setIcon_O_HProvider(ImageIcon icon_O_HProvider) {
+		JanBase.icon_O_HProvider = icon_O_HProvider;
+	}
+
+	public static void setImagem_O_HProvider(JLabel imagem_O_HProvider) {
+		JanBase.imagem_O_HProvider = imagem_O_HProvider;
+	}
+
+	public static void setIcon_OU_HProvider(ImageIcon icon_OU_HProvider) {
+		JanBase.icon_OU_HProvider = icon_OU_HProvider;
+	}
+
+	public static void setImagem_OU_HProvider(JLabel imagem_OU_HProvider) {
+		JanBase.imagem_OU_HProvider = imagem_OU_HProvider;
+	}
+
+	public static void setIcon_P_O_OU_HProvider(ImageIcon icon_P_O_OU_HProvider) {
+		JanBase.icon_P_O_OU_HProvider = icon_P_O_OU_HProvider;
+	}
+
+	public static void setImagem_P_O_OU_HProvider(JLabel imagem_P_O_OU_HProvider) {
+		JanBase.imagem_P_O_OU_HProvider = imagem_P_O_OU_HProvider;
+	}
+
+	public static void setIcon_O_OU_HProvider(ImageIcon icon_O_OU_HProvider) {
+		JanBase.icon_O_OU_HProvider = icon_O_OU_HProvider;
+	}
+
+	public static void setImagem_O_OU_HProvider(JLabel imagem_O_OU_HProvider) {
+		JanBase.imagem_O_OU_HProvider = imagem_O_OU_HProvider;
+	}
+
+	public static void setIcon_P_O_HProvider(ImageIcon icon_P_O_HProvider) {
+		JanBase.icon_P_O_HProvider = icon_P_O_HProvider;
+	}
+
+	public static void setImagem_P_O_HProvider(JLabel imagem_P_O_HProvider) {
+		JanBase.imagem_P_O_HProvider = imagem_P_O_HProvider;
+	}
+
+	public static void setIcon_P_OU_HProvider(ImageIcon icon_P_OU_HProvider) {
+		JanBase.icon_P_OU_HProvider = icon_P_OU_HProvider;
+	}
+
+	public static void setImagem_P_OU_HProvider(JLabel imagem_P_OU_HProvider) {
+		JanBase.imagem_P_OU_HProvider = imagem_P_OU_HProvider;
+	}
+
+	public static void setIcon_P_Customer(ImageIcon icon_P_Customer) {
+		JanBase.icon_P_Customer = icon_P_Customer;
+	}
+
+	public static void setImagem_P_Customer(JLabel imagem_P_Customer) {
+		JanBase.imagem_P_Customer = imagem_P_Customer;
+	}
+
+	public static void setIcon_O_Customer(ImageIcon icon_O_Customer) {
+		JanBase.icon_O_Customer = icon_O_Customer;
+	}
+
+	public static void setImagem_O_Customer(JLabel imagem_O_Customer) {
+		JanBase.imagem_O_Customer = imagem_O_Customer;
+	}
+
+	public static void setIcon_OU_Customer(ImageIcon icon_OU_Customer) {
+		JanBase.icon_OU_Customer = icon_OU_Customer;
+	}
+
+	public static void setImagem_OU_Customer(JLabel imagem_OU_Customer) {
+		JanBase.imagem_OU_Customer = imagem_OU_Customer;
+	}
+
+	public static void setIcon_P_O_OU_Customer(ImageIcon icon_P_O_OU_Customer) {
+		JanBase.icon_P_O_OU_Customer = icon_P_O_OU_Customer;
+	}
+
+	public static void setImagem_P_O_OU_Customer(JLabel imagem_P_O_OU_Customer) {
+		JanBase.imagem_P_O_OU_Customer = imagem_P_O_OU_Customer;
+	}
+
+	public static void setIcon_O_OU_Customer(ImageIcon icon_O_OU_Customer) {
+		JanBase.icon_O_OU_Customer = icon_O_OU_Customer;
+	}
+
+	public static void setImagem_O_OU_Customer(JLabel imagem_O_OU_Customer) {
+		JanBase.imagem_O_OU_Customer = imagem_O_OU_Customer;
+	}
+
+	public static void setIcon_P_O_Customer(ImageIcon icon_P_O_Customer) {
+		JanBase.icon_P_O_Customer = icon_P_O_Customer;
+	}
+
+	public static void setImagem_P_O_Customer(JLabel imagem_P_O_Customer) {
+		JanBase.imagem_P_O_Customer = imagem_P_O_Customer;
+	}
+
+	public static void setIcon_P_OU_Customer(ImageIcon icon_P_OU_Customer) {
+		JanBase.icon_P_OU_Customer = icon_P_OU_Customer;
+	}
+
+	public static void setImagem_P_OU_Customer(JLabel imagem_P_OU_Customer) {
+		JanBase.imagem_P_OU_Customer = imagem_P_OU_Customer;
+	}
+
+	public void setIconSOffering(ImageIcon iconSOffering) {
+		this.iconSOffering = iconSOffering;
+	}
+
+	public void setImagemSOffering(JLabel imagemSOffering) {
+		this.imagemSOffering = imagemSOffering;
+	}
+
+	public void setIconSODescription(ImageIcon iconSODescription) {
+		this.iconSODescription = iconSODescription;
+	}
+
+	public void setImagemSODescription(JLabel imagemSODescription) {
+		this.imagemSODescription = imagemSODescription;
+	}
+
+	public void setIconSOCommitment(ImageIcon iconSOCommitment) {
+		this.iconSOCommitment = iconSOCommitment;
+	}
+
+	public void setImagemSOCommitment(JLabel imagemSOCommitment) {
+		this.imagemSOCommitment = imagemSOCommitment;
+	}
+
+	public void setIconSNegAgree(ImageIcon iconSNegAgree) {
+		this.iconSNegAgree = iconSNegAgree;
+	}
+
+	public void setImagemSNegAgree(JLabel imagemSNegAgree) {
+		this.imagemSNegAgree = imagemSNegAgree;
+	}
+
+	public void setEntrypoint(int entrypoint) {
+		this.entrypoint = entrypoint;
+	}
+
+	public static void setPanelSAgreement(JPanel panelSAgreement) {
+		JanBase.panelSAgreement = panelSAgreement;
+	}
+
+	public void setSAgreement_txt(JTextField sAgreement_txt) {
+		SAgreement_txt = sAgreement_txt;
+	}
+
+	public void setIconSAgreement(ImageIcon iconSAgreement) {
+		this.iconSAgreement = iconSAgreement;
+	}
+
+	public void setImagemSAgreement(JLabel imagemSAgreement) {
+		this.imagemSAgreement = imagemSAgreement;
+	}
+
+	public static void setPanelSADescription(JPanel panelSADescription) {
+		JanBase.panelSADescription = panelSADescription;
+	}
+
+	public void setSADescription_txt(JTextField sADescription_txt) {
+		SADescription_txt = sADescription_txt;
+	}
+
+	public void setIconSADescription(ImageIcon iconSADescription) {
+		this.iconSADescription = iconSADescription;
+	}
+
+	public void setImagemSADescription(JLabel imagemSADescription) {
+		this.imagemSADescription = imagemSADescription;
+	}
+
 	public void EntryPoint(int entrypoint)
 	{
 		desabilitaPaineisPrincipais();
@@ -473,7 +1851,7 @@ public class JanBase {
 		panelSNegAgree_SOfferAgree_SNegotiation.add(panel_yes_no);
 		panel_yes_no.setLayout(null);
 		
-		JRadioButton rdbtnYes = new JRadioButton("Yes");
+		final JRadioButton rdbtnYes = new JRadioButton("Yes");
 		rdbtnYes.setBounds(244, 32, 43, 23);
 		panel_yes_no.add(rdbtnYes);
 		
@@ -1931,8 +3309,12 @@ public class JanBase {
 				//Verifica os radios selecionados
 				int rdProviderSubgroupSelected = JanBase.getRadioProviderSubgroupSelected();
 				int rdCustomerSubgroupSelected = JanBase.getRadioCustomerSubgroupSelected();
+				boolean yes_no = false;
+				if(rdbtnYes.isSelected()) {
+					yes_no = true;
+				}
 										
-				soplPattern.getSpecificFix(rdProviderSubgroupSelected, rdCustomerSubgroupSelected);	
+				soplPattern.getSpecificFix(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no);	
 				frame.dispose();
 			}
 		});
@@ -2036,6 +3418,11 @@ public class JanBase {
 		rdProviderGroup.add(rdbtnOU_Provider); 
 		rdProviderGroup.add(rdbtnO_OU_Provider); 
 		rdProviderGroup.add(rdbtnP_O_Provider);
+		
+		//Group the radio buttons Provider.
+		rdYesNoGroup = new ButtonGroup();
+		rdYesNoGroup.add(rdbtnYes);
+		rdYesNoGroup.add(rdbtnNo);
 		
 		//Group the radio buttons Hired Provider.
 		rdHiredProviderGroup = new ButtonGroup();
