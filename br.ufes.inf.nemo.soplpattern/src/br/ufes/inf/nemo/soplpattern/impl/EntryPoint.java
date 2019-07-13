@@ -64,6 +64,11 @@ public class EntryPoint extends SOPLPattern{
 		Association HiredProviderServiceAgreement = null;
 		Association ServiceCustomerServiceAgreement = null;
 		
+		Association serviceNegotiationOffering = null;
+		
+		Association providerNegotiation = null;
+		Association targetCustomerNegotiation = null;
+		
 		Classifier collectiveA = null;
 		Classifier roleServiceProvider = null;
 		Classifier roleOrgTC = null;
@@ -76,6 +81,7 @@ public class EntryPoint extends SOPLPattern{
 		Classifier roleTargetCustomer = null;
 		Classifier relatorOffering = null; //Nome da Offering
 		Classifier relatorAgreement = null; //Nome do Agreement
+		Classifier relatorNegotiation = null; //Nome da Negotiation
 		
 		Classifier roleServiceCustomer = null;
 		Classifier roleHiredServiceProvider = null;
@@ -241,9 +247,7 @@ public class EntryPoint extends SOPLPattern{
 			fix.includeAdded(commitmentOffering);	
 		}	
 		
-		//Association Target Customer with Offering
-		targetCustomerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleTargetCustomer, relatorOffering).getAdded().get(0);
-		fix.includeAdded(targetCustomerOffering);	
+	
 		
 		if(yes_no) { // O Usuario deseja modelar 1 dos 3 padroes : SNegAgree ou SOfferAgree ou SNegotiation
 			if (pattern_yes_no_selecionado == 1) { //O Usuario escolheu o pattern SNegAgree
@@ -272,13 +276,30 @@ public class EntryPoint extends SOPLPattern{
 				
 			}else if (pattern_yes_no_selecionado == 3) { //O Usuario escolheu o pattern SNegotiation
 				
+				String negotiation = janBase.getTextServiceNegotiation_1().getText();
+				relatorNegotiation= this.createClassifier(negotiation , "Relator",  200, 300);	
+				
+				serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorNegotiation, relatorOffering).getAdded().get(0);
+				fix.includeAdded(serviceNegotiationOffering);	
+				
 			}
 		}
 				
-		// STEP 3  - CREATE GENERALIZATIONS AND ASSOCIATIONS
- 
-		providerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleServiceProvider, relatorOffering).getAdded().get(0);
-		fix.includeAdded(providerOffering);	
+		// Association between Service Provider, Target Customer and Service Offering/Service Negotiation
+		if( (yes_no) && (pattern_yes_no_selecionado != 2) ) { //Quando há uma NEGOTIATION, o service customer e target Customer sao ligados a ela e nao a offering
+			providerNegotiation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleServiceProvider, relatorNegotiation).getAdded().get(0);
+			fix.includeAdded(providerNegotiation);	
+			
+			targetCustomerNegotiation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleTargetCustomer, relatorNegotiation).getAdded().get(0);
+			fix.includeAdded(targetCustomerNegotiation);
+		} else {
+			providerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleServiceProvider, relatorOffering).getAdded().get(0);
+			fix.includeAdded(providerOffering);	
+			
+			targetCustomerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleTargetCustomer, relatorOffering).getAdded().get(0);
+			fix.includeAdded(targetCustomerOffering);
+		}
+
 			
 		diagramManager.updateOLED(fix);
 		return fix; 
