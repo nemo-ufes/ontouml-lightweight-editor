@@ -56,10 +56,9 @@ public class EntryPoint extends SOPLPattern{
 		fix = new Fix();
 		
 		Association providerOffering = null;
-		Association TCCOffering = null; // Target Customer Community Offering
-		memberOf targetCmemberofTCC = null; //Target Customer member of Target Customer Community
 		Association descriptionOffering = null;
 		Association commitmentOffering = null;
+		Association targetCustomerOffering = null;
 		
 		Classifier collectiveA = null;
 		Classifier roleServiceProvider = null;
@@ -218,13 +217,6 @@ public class EntryPoint extends SOPLPattern{
 		String offering = janBase.getTxtServiceOffering().getText(); //Offering		
 		relatorOffering = this.createClassifier(offering , "Relator",  200, 300);		
 		
-		String targetCustCom = janBase.getTxtTargetCC().getText(); // Target Customer Community
-		if(!targetCustCom.equals("")) {
-			collectiveTCC = this.createClassifier(targetCustCom, "Collective", 400, 300);
-			
-			targetCmemberofTCC = (memberOf) outcomeFixer.createAssociationBetween(RelationStereotype.MEMBEROF, "", collectiveTCC, roleTargetCustomer).getAdded().get(0);
-			fix.includeAdded(targetCmemberofTCC);
-		}
 		String soDescription = janBase.getTxtServiceOfferingDescription().getText(); //SODescription
 		if(!soDescription.equals("")) {			
 			categorySODescription = this.createClassifier(soDescription, "Category", 200, 500);
@@ -241,6 +233,10 @@ public class EntryPoint extends SOPLPattern{
 			fix.includeAdded(commitmentOffering);	
 		}	
 		
+		//Association Target Customer with Offering
+		targetCustomerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleTargetCustomer, relatorOffering).getAdded().get(0);
+		fix.includeAdded(targetCustomerOffering);	
+		
 		if(yes_no) {
 			//Verificar qual dos 3 SNegAgree, SOfferAgre, ... esta selecionado e pegar os campos deles
 		}
@@ -249,9 +245,6 @@ public class EntryPoint extends SOPLPattern{
 
 		providerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleServiceProvider, relatorOffering).getAdded().get(0);
 		fix.includeAdded(providerOffering);	
-
-		TCCOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorOffering, collectiveTCC).getAdded().get(0);
-		fix.includeAdded(TCCOffering);	
 			
 		diagramManager.updateOLED(fix);
 		return fix;

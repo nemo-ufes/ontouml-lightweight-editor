@@ -164,7 +164,6 @@ public class JanBase {
 	private static JPanel panelSOCommitment;
 	private static JPanel panelSNegAgree;
 	private JTextField txtServiceOffering;
-	private JTextField txtTargetCC;
 	private JTextField txtServiceOfferingDescription;
 	private JTextField txtServiceProvider;
 	private JTextField txtServiceOfferingCommitment;
@@ -1841,6 +1840,49 @@ public class JanBase {
 		imagemSteps.setHorizontalAlignment(SwingConstants.CENTER);
 		panelImgSteps.add(imagemSteps);
 		
+		
+//**********************************************************************************************************************************
+		//SOffering
+		panelSOffering = new JPanel();
+		panelSOffering.setBounds(550, 11, 621, 511);
+		frame.getContentPane().add(panelSOffering);
+		panelSOffering.setLayout(null);
+		panelSOffering.setVisible(false);
+		
+		JPanel panelSOfferingInterno = new JPanel();
+		panelSOfferingInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOffering", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSOfferingInterno.setBounds(10, 11, 601, 489);
+		panelSOffering.add(panelSOfferingInterno);
+		panelSOfferingInterno.setLayout(null);
+		
+		JLabel label = new JLabel("Class");
+		label.setBounds(143, 327, 68, 14);
+		panelSOfferingInterno.add(label);
+		
+		JLabel label_1 = new JLabel("Name");
+		label_1.setBounds(328, 327, 68, 14);
+		panelSOfferingInterno.add(label_1);
+		
+		txtServiceOffering = new JTextField();
+		txtServiceOffering.setBounds(328, 352, 166, 20);
+		panelSOfferingInterno.add(txtServiceOffering);
+		txtServiceOffering.setColumns(10);
+		
+		JPanel panelImg = new JPanel();
+		panelImg.setBackground(Color.LIGHT_GRAY);
+		panelImg.setBounds(10, 27, 581, 275);
+		imagemSOffering = new JLabel(iconSOffering);
+		imagemSOffering.setBounds(10, 27, 581, 275);
+		imagemSOffering.setSize(70, 96); // 70 96
+		imagemSOffering.setVisible(true);
+		panelImg.add(imagemSOffering);
+		panelSOfferingInterno.add(panelImg);		
+		
+				
+				JLabel lblServiceOffering = new JLabel("Service Offering");
+				lblServiceOffering.setBounds(143, 352, 78, 14);
+				panelSOfferingInterno.add(lblServiceOffering);
+		
 		panelSNegAgree_SOfferAgree_SNegotiation = new JPanel();
 		panelSNegAgree_SOfferAgree_SNegotiation.setBounds(550, 11, 621, 511);
 		frame.getContentPane().add(panelSNegAgree_SOfferAgree_SNegotiation);
@@ -2656,59 +2698,7 @@ public class JanBase {
 				trocaPainel(panelSNegotiationFields);			
 			}
 		});
-		
-		
-//**********************************************************************************************************************************
-		//SOffering
-		panelSOffering = new JPanel();
-		panelSOffering.setBounds(550, 11, 621, 511);
-		frame.getContentPane().add(panelSOffering);
-		panelSOffering.setLayout(null);
-		panelSOffering.setVisible(false);
-		
-		JPanel panelSOfferingInterno = new JPanel();
-		panelSOfferingInterno.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "SOffering", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelSOfferingInterno.setBounds(10, 11, 601, 489);
-		panelSOffering.add(panelSOfferingInterno);
-		panelSOfferingInterno.setLayout(null);
-		
-		JLabel label = new JLabel("Class");
-		label.setBounds(143, 327, 68, 14);
-		panelSOfferingInterno.add(label);
-		
-		JLabel label_1 = new JLabel("Name");
-		label_1.setBounds(328, 327, 68, 14);
-		panelSOfferingInterno.add(label_1);
-		
-		txtServiceOffering = new JTextField();
-		txtServiceOffering.setBounds(328, 352, 166, 20);
-		panelSOfferingInterno.add(txtServiceOffering);
-		txtServiceOffering.setColumns(10);
-		
-		txtTargetCC = new JTextField();
-		txtTargetCC.setColumns(10);
-		txtTargetCC.setBounds(328, 383, 166, 20);
-		panelSOfferingInterno.add(txtTargetCC);
-				
-		JPanel panelImg = new JPanel();
-		panelImg.setBackground(Color.LIGHT_GRAY);
-		panelImg.setBounds(10, 27, 581, 275);
 		iconSOffering = new  ImageIcon(getClass().getResource("/resource/SOffering.PNG"));
-		imagemSOffering = new JLabel(iconSOffering);
-		imagemSOffering.setBounds(10, 27, 581, 275);
-		imagemSOffering.setSize(70, 96); // 70 96
-		imagemSOffering.setVisible(true);
-		panelImg.add(imagemSOffering);
-		panelSOfferingInterno.add(panelImg);		
-
-		
-		JLabel lblServiceOffering = new JLabel("Service Offering");
-		lblServiceOffering.setBounds(143, 352, 78, 14);
-		panelSOfferingInterno.add(lblServiceOffering);
-		
-		JLabel lblTargetCC = new JLabel("Target Customer Community");
-		lblTargetCC.setBounds(143, 390, 151, 14);
-		panelSOfferingInterno.add(lblTargetCC);
 		
 //**********************************************************************************************************************************
 		//SAgreement
@@ -5023,9 +5013,6 @@ public class JanBase {
 		return txtServiceOffering;
 	}
 
-	public JTextField getTxtTargetCC() {
-		return txtTargetCC;
-	}
 
 	public JTextField getTxtServiceOfferingDescription() {
 		return txtServiceOfferingDescription;
