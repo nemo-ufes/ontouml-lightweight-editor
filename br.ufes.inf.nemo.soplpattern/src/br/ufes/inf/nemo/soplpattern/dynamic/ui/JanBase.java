@@ -1911,15 +1911,15 @@ public class JanBase {
 		panelSNegAgree_SOfferAgree_SNegotiation.add(panel_options);
 		panel_options.setLayout(null);
 		
-		JRadioButton rdbtnSnegagree = new JRadioButton("SNegAgree");
+		final JRadioButton rdbtnSnegagree = new JRadioButton("SNegAgree");
 		rdbtnSnegagree.setBounds(95, 20, 79, 23);
 		panel_options.add(rdbtnSnegagree);
 		
-		JRadioButton rdbtnSofferagree = new JRadioButton("SOfferAgree");
+		final JRadioButton rdbtnSofferagree = new JRadioButton("SOfferAgree");
 		rdbtnSofferagree.setBounds(251, 20, 109, 23);
 		panel_options.add(rdbtnSofferagree);
 		
-		JRadioButton rdbtnSnegotiation = new JRadioButton("SNegotiation");
+		final JRadioButton rdbtnSnegotiation = new JRadioButton("SNegotiation");
 		rdbtnSnegotiation.setBounds(429, 20, 109, 23);
 		panel_options.add(rdbtnSnegotiation);
 		
@@ -3304,8 +3304,20 @@ public class JanBase {
 				if(rdbtnYes.isSelected()) {
 					yes_no = true;
 				}
+				
+				//Verifica qual dos 3 padroes opcionais foi selecionado.
+				int pattern_yes_no_selecionado = 0;
+				if(rdbtnSnegagree.isSelected()) {
+					pattern_yes_no_selecionado = 1;
+				}
+				if(rdbtnSofferagree.isSelected()) {
+					pattern_yes_no_selecionado = 2;
+				}
+				if(rdbtnSnegotiation.isSelected()) {
+					pattern_yes_no_selecionado = 3;
+				}
 										
-				soplPattern.getSpecificFix(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no);	
+				soplPattern.getSpecificFix(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no, pattern_yes_no_selecionado);	
 				frame.dispose();
 			}
 		});

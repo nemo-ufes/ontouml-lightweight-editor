@@ -81,6 +81,5 @@ public abstract class SOPLPattern {
 //	}
 
 	//public abstract Fix getSpecificFix();
-	public abstract Fix getSpecificFix(int patternProviderSelected, int patternCustomerSelected, boolean yes_no); // 1 a 7 define o pattern selecionado na interface (P-Provider, P-TCustomer, ....)
-
+	public abstract Fix getSpecificFix(int patternProviderSelected, int patternCustomerSelected, boolean yes_no, int pattern_yes_no_selecionado); 
 }

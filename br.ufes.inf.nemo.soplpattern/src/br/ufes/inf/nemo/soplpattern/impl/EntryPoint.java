@@ -49,7 +49,7 @@ public class EntryPoint extends SOPLPattern{
 		janBase = new JanBase(this, entryPoint);
 	}
 	
-	public Fix getSpecificFix(int patternProviderSelected, int patternCustomerSelected, boolean yes_no) {			
+	public Fix getSpecificFix(int patternProviderSelected, int patternCustomerSelected, boolean yes_no, int pattern_yes_no_selecionado) {			
 		
 		Package root = parser.getModel();
 		outcomeFixer = new OutcomeFixer(root);
@@ -59,6 +59,10 @@ public class EntryPoint extends SOPLPattern{
 		Association descriptionOffering = null;
 		Association commitmentOffering = null;
 		Association targetCustomerOffering = null;
+		
+		Association serviceAgreementOffering = null;
+		Association HiredProviderServiceAgreement = null;
+		Association ServiceCustomerServiceAgreement = null;
 		
 		Classifier collectiveA = null;
 		Classifier roleServiceProvider = null;
@@ -71,6 +75,10 @@ public class EntryPoint extends SOPLPattern{
 		Classifier collectiveB = null;
 		Classifier roleTargetCustomer = null;
 		Classifier relatorOffering = null; //Nome da Offering
+		Classifier relatorAgreement = null; //Nome do Agreement
+		
+		Classifier roleServiceCustomer = null;
+		Classifier roleHiredServiceProvider = null;
 		
 		Classifier collectiveTCC = null; // Collective Target Customer Community
 		Classifier categorySODescription = null; // Service Offering Description
@@ -237,8 +245,34 @@ public class EntryPoint extends SOPLPattern{
 		targetCustomerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleTargetCustomer, relatorOffering).getAdded().get(0);
 		fix.includeAdded(targetCustomerOffering);	
 		
-		if(yes_no) {
-			//Verificar qual dos 3 SNegAgree, SOfferAgre, ... esta selecionado e pegar os campos deles
+		if(yes_no) { // O Usuario deseja modelar 1 dos 3 padroes : SNegAgree ou SOfferAgree ou SNegotiation
+			if (pattern_yes_no_selecionado == 1) { //O Usuario escolheu o pattern SNegAgree
+				
+			}else if (pattern_yes_no_selecionado == 2) { //O Usuario escolheu o pattern SOfferAgree
+				
+				String agreement = janBase.getTextServiceAgreement_1().getText();
+				relatorAgreement= this.createClassifier(agreement , "Relator",  200, 300);	
+				
+				roleServiceCustomer = this.createClassifier("Service Customer", "RoleMixin", 600, 300);		
+				roleHiredServiceProvider = this.createClassifier("Hired Service Provider", "RoleMixin", 600, 300);	
+				
+				fix.addAll(outcomeFixer.createGeneralization(roleServiceCustomer, roleTargetCustomer));
+				fix.addAll(outcomeFixer.createGeneralization(roleHiredServiceProvider, roleServiceProvider));
+				
+				
+				serviceAgreementOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorAgreement, relatorOffering).getAdded().get(0);
+				fix.includeAdded(serviceAgreementOffering);	
+				
+				HiredProviderServiceAgreement = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleHiredServiceProvider, relatorAgreement).getAdded().get(0);
+				fix.includeAdded(HiredProviderServiceAgreement);	
+				
+				ServiceCustomerServiceAgreement = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleServiceCustomer, relatorAgreement).getAdded().get(0);
+				fix.includeAdded(ServiceCustomerServiceAgreement);	
+				
+				
+			}else if (pattern_yes_no_selecionado == 3) { //O Usuario escolheu o pattern SNegotiation
+				
+			}
 		}
 				
 		// STEP 3  - CREATE GENERALIZATIONS AND ASSOCIATIONS
@@ -247,7 +281,7 @@ public class EntryPoint extends SOPLPattern{
 		fix.includeAdded(providerOffering);	
 			
 		diagramManager.updateOLED(fix);
-		return fix;
+		return fix; 
 		
 	}
 	
