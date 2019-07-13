@@ -1871,6 +1871,7 @@ public class JanBase {
 		JPanel panelImg = new JPanel();
 		panelImg.setBackground(Color.LIGHT_GRAY);
 		panelImg.setBounds(10, 27, 581, 275);
+		iconSOffering = new  ImageIcon(getClass().getResource("/resource/SOffering.PNG"));
 		imagemSOffering = new JLabel(iconSOffering);
 		imagemSOffering.setBounds(10, 27, 581, 275);
 		imagemSOffering.setSize(70, 96); // 70 96
@@ -1878,10 +1879,10 @@ public class JanBase {
 		panelImg.add(imagemSOffering);
 		panelSOfferingInterno.add(panelImg);		
 		
-				
-				JLabel lblServiceOffering = new JLabel("Service Offering");
-				lblServiceOffering.setBounds(143, 352, 78, 14);
-				panelSOfferingInterno.add(lblServiceOffering);
+		
+		JLabel lblServiceOffering = new JLabel("Service Offering");
+		lblServiceOffering.setBounds(143, 352, 78, 14);
+		panelSOfferingInterno.add(lblServiceOffering);
 		
 		panelSNegAgree_SOfferAgree_SNegotiation = new JPanel();
 		panelSNegAgree_SOfferAgree_SNegotiation.setBounds(550, 11, 621, 511);
@@ -2698,7 +2699,7 @@ public class JanBase {
 				trocaPainel(panelSNegotiationFields);			
 			}
 		});
-		iconSOffering = new  ImageIcon(getClass().getResource("/resource/SOffering.PNG"));
+		
 		
 //**********************************************************************************************************************************
 		//SAgreement

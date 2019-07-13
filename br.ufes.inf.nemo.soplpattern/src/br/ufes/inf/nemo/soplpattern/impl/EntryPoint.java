@@ -242,7 +242,7 @@ public class EntryPoint extends SOPLPattern{
 		}
 				
 		// STEP 3  - CREATE GENERALIZATIONS AND ASSOCIATIONS
-
+ 
 		providerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleServiceProvider, relatorOffering).getAdded().get(0);
 		fix.includeAdded(providerOffering);	
 			
