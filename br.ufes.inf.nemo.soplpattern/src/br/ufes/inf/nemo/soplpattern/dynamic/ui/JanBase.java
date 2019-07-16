@@ -3316,8 +3316,14 @@ public class JanBase {
 				if(rdbtnSnegotiation.isSelected()) {
 					pattern_yes_no_selecionado = 3;
 				}
-										
-				soplPattern.getSpecificFix(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no, pattern_yes_no_selecionado);	
+									
+				if(entrypoint == 1) {
+					soplPattern.getSpecificFixSOffering(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no, pattern_yes_no_selecionado);	
+
+				}else if(entrypoint == 2) {
+					soplPattern.getSpecificFixSAgreement(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no, pattern_yes_no_selecionado);	
+
+				}
 				frame.dispose();
 			}
 		});

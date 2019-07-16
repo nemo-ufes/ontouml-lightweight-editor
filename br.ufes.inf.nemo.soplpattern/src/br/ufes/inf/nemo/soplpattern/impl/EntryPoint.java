@@ -49,7 +49,7 @@ public class EntryPoint extends SOPLPattern{
 		janBase = new JanBase(this, entryPoint);
 	}
 	
-	public Fix getSpecificFix(int patternProviderSelected, int patternCustomerSelected, boolean yes_no, int pattern_yes_no_selecionado) {			
+	public Fix getSpecificFixSOffering(int patternProviderSelected, int patternCustomerSelected, boolean yes_no, int pattern_yes_no_selecionado) {			
 		
 		Package root = parser.getModel();
 		outcomeFixer = new OutcomeFixer(root);
@@ -305,5 +305,14 @@ public class EntryPoint extends SOPLPattern{
 		return fix; 
 		
 	}
-	
+
+	public Fix getSpecificFixSAgreement(int patternProviderSelected, int patternCustomerSelected, boolean yes_no, int pattern_yes_no_selecionado) {			
+		
+		Package root = parser.getModel();
+		outcomeFixer = new OutcomeFixer(root);
+		fix = new Fix();
+		
+		diagramManager.updateOLED(fix);
+		return fix;
+	}
 }
