@@ -264,8 +264,8 @@ public class EntryPoint extends SOPLPattern{
 				fix.addAll(outcomeFixer.createGeneralization(roleHiredServiceProvider, roleServiceProvider));
 				
 				
-				serviceAgreementOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorAgreement, relatorOffering).getAdded().get(0);
-				fix.includeAdded(serviceAgreementOffering);	
+				//serviceAgreementOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorAgreement, relatorOffering).getAdded().get(0);
+				//fix.includeAdded(serviceAgreementOffering);	
 				
 				HiredProviderServiceAgreement = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleHiredServiceProvider, relatorAgreement).getAdded().get(0);
 				fix.includeAdded(HiredProviderServiceAgreement);	
@@ -279,8 +279,8 @@ public class EntryPoint extends SOPLPattern{
 				String negotiation = janBase.getTextServiceNegotiation_1().getText();
 				relatorNegotiation= this.createClassifier(negotiation , "Relator",  200, 300);	
 				
-				serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorNegotiation, relatorOffering).getAdded().get(0);
-				fix.includeAdded(serviceNegotiationOffering);	
+				//serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorNegotiation, relatorOffering).getAdded().get(0);
+				//fix.includeAdded(serviceNegotiationOffering);	
 				
 			}
 		}
