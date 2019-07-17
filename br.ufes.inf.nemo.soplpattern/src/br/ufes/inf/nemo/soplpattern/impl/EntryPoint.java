@@ -287,7 +287,7 @@ public class EntryPoint extends SOPLPattern{
 				
 		// Association between Service Provider, Target Customer and Service Offering/Service Negotiation
 		if( (yes_no) && (pattern_yes_no_selecionado != 2) ) { //Quando há uma NEGOTIATION, o service customer e target Customer sao ligados a ela e nao a offering
-			providerNegotiation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleServiceProvider, relatorNegotiation).getAdded().get(0);
+			providerNegotiation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "participates in", roleServiceProvider, relatorNegotiation).getAdded().get(0);
 			fix.includeAdded(providerNegotiation);	
 			
 			targetCustomerNegotiation = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleTargetCustomer, relatorNegotiation).getAdded().get(0);
