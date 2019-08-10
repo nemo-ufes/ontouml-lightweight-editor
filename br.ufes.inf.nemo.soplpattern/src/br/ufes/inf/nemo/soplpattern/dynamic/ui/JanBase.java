@@ -764,6 +764,10 @@ public class JanBase {
 	public JTextField getTextServiceAgreement_1() {
 		return textServiceAgreement_1;
 	}
+	
+	public JTextField getTextServiceAgreement() {
+		return txtServiceAgreement;
+	}
 
 	public void setTextServiceAgreement_1(JTextField textServiceAgreement_1) {
 		this.textServiceAgreement_1 = textServiceAgreement_1;
@@ -1946,6 +1950,7 @@ public class JanBase {
 		panelSOfferAgreeFields.add(lblHiredServiceProvider_1);
 		
 		textHiredServiceProvider_1 = new JTextField();
+		textHiredServiceProvider_1.setEditable(false);
 		textHiredServiceProvider_1.setBounds(236, 33, 278, 20);
 		panelSOfferAgreeFields.add(textHiredServiceProvider_1);
 		textHiredServiceProvider_1.setColumns(10);
@@ -1955,6 +1960,7 @@ public class JanBase {
 		panelSOfferAgreeFields.add(lblServiceCustomer_1);
 		
 		txtServiceCustomer_1 = new JTextField();
+		txtServiceCustomer_1.setEditable(false);
 		txtServiceCustomer_1.setBounds(236, 58, 278, 20);
 		panelSOfferAgreeFields.add(txtServiceCustomer_1);
 		txtServiceCustomer_1.setColumns(10);
@@ -2007,11 +2013,13 @@ public class JanBase {
 		panelSNegAgreeFields.add(lblServiceCustomer);
 		
 		textField = new JTextField();
+		textField.setEditable(false);
 		textField.setBounds(125, 50, 157, 20);
 		panelSNegAgreeFields.add(textField);
 		textField.setColumns(10);
 		
 		textField_1 = new JTextField();
+		textField_1.setEditable(false);
 		textField_1.setBounds(412, 50, 157, 20);
 		panelSNegAgreeFields.add(textField_1);
 		textField_1.setColumns(10);

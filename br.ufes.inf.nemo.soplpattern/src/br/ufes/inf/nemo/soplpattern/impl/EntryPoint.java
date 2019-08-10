@@ -252,18 +252,54 @@ public class EntryPoint extends SOPLPattern{
 		if(yes_no) { // O Usuario deseja modelar 1 dos 3 padroes : SNegAgree ou SOfferAgree ou SNegotiation
 			if (pattern_yes_no_selecionado == 1) { //O Usuario escolheu o pattern SNegAgree
 				
-			}else if (pattern_yes_no_selecionado == 2) { //O Usuario escolheu o pattern SOfferAgree
-				
-				String agreement = janBase.getTextServiceAgreement_1().getText();
+				String agreement = janBase.getTextServiceAgreement().getText();
 				relatorAgreement= this.createClassifier(agreement , "Relator",  200, 300);	
 				
+				String negotiation = janBase.getTxtServiceNegotiation().getText();
+				relatorNegotiation= this.createClassifier(negotiation , "Relator",  200, 300);	
+				
+				// A ASSOCIACAO ENTRE NEGOTIATION E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
+				//serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorOffering, relatorNegotiation).getAdded().get(0);
+				//fix.includeAdded(serviceNegotiationOffering);	
+				
+				// A ASSOCIACAO ENTRE AGREEMENT E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
+				//serviceAgreementOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorAgreement, relatorOffering).getAdded().get(0);
+				//fix.includeAdded(serviceAgreementOffering);	
+				
+				// ESSES CARAS ESTAO FIXOS PQ ELES SAO OS MESMOS QUE FORAM DEFINIDOS NA OFFERING.
+				// O TARGET CUSTOMER PASSOU A SER HIRED SERVICE CUSTOMER
+				// O SERVICE PROVIDER PASSOU A SER HIRED SERVICE PROVIDER
+				// OBS: EU NAO POSSO PERMITIR QUE O USUARIO DIGITE UM NOME PARA HIRED SERVICE PROVIDER E SERVICE CUSTOMER, POIS 
+				// EU NAO TERIA GARANTIA QUE OS DOIS SAO A MESMA PESSOA, E ELES PRECISAM SER A MESMA PESSOA.
 				roleServiceCustomer = this.createClassifier("Service Customer", "RoleMixin", 600, 300);		
 				roleHiredServiceProvider = this.createClassifier("Hired Service Provider", "RoleMixin", 600, 300);	
 				
 				fix.addAll(outcomeFixer.createGeneralization(roleServiceCustomer, roleTargetCustomer));
 				fix.addAll(outcomeFixer.createGeneralization(roleHiredServiceProvider, roleServiceProvider));
 				
+				HiredProviderServiceAgreement = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleHiredServiceProvider, relatorAgreement).getAdded().get(0);
+				fix.includeAdded(HiredProviderServiceAgreement);	
 				
+				ServiceCustomerServiceAgreement = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleServiceCustomer, relatorAgreement).getAdded().get(0);
+				fix.includeAdded(ServiceCustomerServiceAgreement);	
+				
+			}else if (pattern_yes_no_selecionado == 2) { //O Usuario escolheu o pattern SOfferAgree
+				
+				String agreement = janBase.getTextServiceAgreement_1().getText();
+				relatorAgreement= this.createClassifier(agreement , "Relator",  200, 300);	
+				
+				// ESSES CARAS ESTAO FIXOS PQ ELES SAO OS MESMOS QUE FORAM DEFINIDOS NA OFFERING.
+				// O TARGET CUSTOMER PASSOU A SER HIRED SERVICE CUSTOMER
+				// O SERVICE PROVIDER PASSOU A SER HIRED SERVICE PROVIDER
+				// OBS: EU NAO POSSO PERMITIR QUE O USUARIO DIGITE UM NOME PARA HIRED SERVICE PROVIDER E SERVICE CUSTOMER, POIS 
+				// EU NAO TERIA GARANTIA QUE OS DOIS SAO A MESMA PESSOA, E ELES PRECISAM SER A MESMA PESSOA.
+				roleServiceCustomer = this.createClassifier("Service Customer", "RoleMixin", 600, 300);		
+				roleHiredServiceProvider = this.createClassifier("Hired Service Provider", "RoleMixin", 600, 300);	
+				
+				fix.addAll(outcomeFixer.createGeneralization(roleServiceCustomer, roleTargetCustomer));
+				fix.addAll(outcomeFixer.createGeneralization(roleHiredServiceProvider, roleServiceProvider));
+				
+				// A ASSOCIACAO ENTRE AGREEMENT E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
 				//serviceAgreementOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorAgreement, relatorOffering).getAdded().get(0);
 				//fix.includeAdded(serviceAgreementOffering);	
 				
@@ -279,7 +315,8 @@ public class EntryPoint extends SOPLPattern{
 				String negotiation = janBase.getTextServiceNegotiation_1().getText();
 				relatorNegotiation= this.createClassifier(negotiation , "Relator",  200, 300);	
 				
-				//serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorNegotiation, relatorOffering).getAdded().get(0);
+				// A ASSOCIACAO ENTRE NEGOTIATION E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
+				//serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorOffering, relatorNegotiation).getAdded().get(0);
 				//fix.includeAdded(serviceNegotiationOffering);	
 				
 			}
@@ -299,6 +336,8 @@ public class EntryPoint extends SOPLPattern{
 			targetCustomerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleTargetCustomer, relatorOffering).getAdded().get(0);
 			fix.includeAdded(targetCustomerOffering);
 		}
+		
+		
 
 			
 		diagramManager.updateOLED(fix);
