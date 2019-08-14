@@ -1295,6 +1295,27 @@ public class OutcomeFixer{
 		if(stereo == RelationStereotype.DERIVATION) tgtProperty.setIsReadOnly(true);
 		return fix;
 	}
+	
+	/** Create an association between the types  . */
+	public Fix createAssociationBetweenUsingMultiplicity(RelationStereotype stereo, String relName, Type source, Type target, int m1, int m2, int m3, int m4 ) 
+	{
+		Fix fix = new Fix();
+		// create assoc
+		EObject rel = createRelationship(stereo);
+		((NamedElement) rel).setName(relName);
+		fix.includeAdded(rel);
+		// same container
+		copyContainer(source, rel);
+		fix.includeModified(source.eContainer());
+		// creating and adding assoc ends...
+		Property srcProperty = createProperty((Classifier) source, m1, m2, source.getName().trim().toLowerCase());
+		Property tgtProperty = createProperty((Classifier) target, m3, m4, target.getName().trim().toLowerCase());
+		setEnds((Association) rel, srcProperty, tgtProperty);
+		if(stereo == RelationStereotype.MEDIATION) tgtProperty.setIsReadOnly(true);
+		if(stereo == RelationStereotype.CHARACTERIZATION) tgtProperty.setIsReadOnly(true);
+		if(stereo == RelationStereotype.DERIVATION) tgtProperty.setIsReadOnly(true);
+		return fix;
+	}
 
 	/** Create new mediated types in the relator from a mapping containing the name and stereotype of the new mediated type. */
 	public Fix createNewMediatedTypes(Relator relator, HashMap<String,String> nameAndStereotypeMap) 
