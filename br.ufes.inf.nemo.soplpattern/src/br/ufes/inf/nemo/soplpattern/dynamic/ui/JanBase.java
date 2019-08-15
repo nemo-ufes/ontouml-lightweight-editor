@@ -205,6 +205,11 @@ public class JanBase {
 	private static JRadioButton rdbtnP_OU_Customer;
 	private static JRadioButton rdbtnP_O_OU_Customer;
 	
+	JRadioButton rdbtnSnegotiation;
+	JRadioButton rdbtnSnegagree;
+	JRadioButton rdbtnSofferagree;
+	JRadioButton rdbtnYes;
+	
 	//Button Groups
 	
 	ButtonGroup rdCustomerGroup;
@@ -1898,7 +1903,7 @@ public class JanBase {
 		panelSNegAgree_SOfferAgree_SNegotiation.add(panel_yes_no);
 		panel_yes_no.setLayout(null);
 		
-		final JRadioButton rdbtnYes = new JRadioButton("Yes");
+		rdbtnYes = new JRadioButton("Yes");
 		rdbtnYes.setBounds(244, 32, 43, 23);
 		panel_yes_no.add(rdbtnYes);
 		
@@ -1915,15 +1920,15 @@ public class JanBase {
 		panelSNegAgree_SOfferAgree_SNegotiation.add(panel_options);
 		panel_options.setLayout(null);
 		
-		final JRadioButton rdbtnSnegagree = new JRadioButton("SNegAgree");
+		rdbtnSnegagree = new JRadioButton("SNegAgree");
 		rdbtnSnegagree.setBounds(95, 20, 79, 23);
 		panel_options.add(rdbtnSnegagree);
 		
-		final JRadioButton rdbtnSofferagree = new JRadioButton("SOfferAgree");
+		rdbtnSofferagree = new JRadioButton("SOfferAgree");
 		rdbtnSofferagree.setBounds(251, 20, 109, 23);
 		panel_options.add(rdbtnSofferagree);
 		
-		final JRadioButton rdbtnSnegotiation = new JRadioButton("SNegotiation");
+		rdbtnSnegotiation = new JRadioButton("SNegotiation");
 		rdbtnSnegotiation.setBounds(429, 20, 109, 23);
 		panel_options.add(rdbtnSnegotiation);
 		
@@ -3302,6 +3307,7 @@ public class JanBase {
 		panelSNegAgreeInterno.add(panelImg_SNegAgreem);	
 		
 		JButton btnCreateConcepts = new JButton("Create S-OPL Diagram");
+		btnCreateConcepts.setEnabled(false);
 		btnCreateConcepts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				
@@ -4404,8 +4410,12 @@ public class JanBase {
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_3.png")));
 		}
 		if(painelSelecionado == 5){
-			panelSADescription.setVisible(true);
-			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_4.png")));
+			if(rdbtnSnegotiation.isSelected()) { //Se o usuario selecionou o patter SNegotiation, entao a modelagem acaba aqui
+				createDiagram();
+			}else {
+				panelSADescription.setVisible(true);
+				imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_4.png")));
+			}
 		}
 		if(painelSelecionado == 6){ 
 			panelSCCommitments.setVisible(true);
@@ -4442,6 +4452,9 @@ public class JanBase {
 		if(painelSelecionado == 14){
 			panelInteractionMotivation.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_7.png")));
+		}
+		if(painelSelecionado == 15) {
+			createDiagram();
 		}
 		 
 	}	
@@ -5475,5 +5488,36 @@ public class JanBase {
 
 	public JLabel getImagemSADescription() {
 		return imagemSADescription;
+	}
+	
+	public void createDiagram() {
+		//Verifica os radios selecionados
+		int rdProviderSubgroupSelected = JanBase.getRadioProviderSubgroupSelected();
+		int rdCustomerSubgroupSelected = JanBase.getRadioCustomerSubgroupSelected();
+		boolean yes_no = false;
+		if(rdbtnYes.isSelected()) {
+			yes_no = true;
+		}
+		
+		//Verifica qual dos 3 padroes opcionais foi selecionado.
+		int pattern_yes_no_selecionado = 0;
+		if(rdbtnSnegagree.isSelected()) {
+			pattern_yes_no_selecionado = 1;
+		}
+		if(rdbtnSofferagree.isSelected()) {
+			pattern_yes_no_selecionado = 2;
+		}
+		if(rdbtnSnegotiation.isSelected()) {
+			pattern_yes_no_selecionado = 3;
+		}
+							
+		if(entrypoint == 1) {
+			soplPattern.getSpecificFixSOffering(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no, pattern_yes_no_selecionado);	
+
+		}else if(entrypoint == 2) {
+			soplPattern.getSpecificFixSAgreement(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no, pattern_yes_no_selecionado);	
+
+		}
+		frame.dispose();
 	}
 }

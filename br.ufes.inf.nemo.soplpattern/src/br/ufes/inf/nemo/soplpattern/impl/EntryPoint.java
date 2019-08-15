@@ -64,6 +64,8 @@ public class EntryPoint extends SOPLPattern{
 		Association serviceAgreementOffering = null;
 		Association HiredProviderServiceAgreement = null;
 		Association ServiceCustomerServiceAgreement = null;
+		Association SAdescriptionAgreement = null;
+		
 		
 		Association serviceNegotiationOffering = null;
 		
@@ -90,6 +92,9 @@ public class EntryPoint extends SOPLPattern{
 //		Classifier collectiveTCC = null; // Collective Target Customer Community
 		Classifier categorySODescription = null; // Service Offering Description
 		Classifier categorySOCommitment = null; // Service Offering Commitment
+		Classifier categorySADescription = null;
+		Classifier categorySCCAgreement = null;
+		Association SCCAgreement = null;
 		
 		//Chamar um metodo que pega todos os elementos da interface
 		
@@ -312,14 +317,11 @@ public class EntryPoint extends SOPLPattern{
 				
 				
 			}else if (pattern_yes_no_selecionado == 3) { //O Usuario escolheu o pattern SNegotiation
-				
 				String negotiation = janBase.getTextServiceNegotiation_1().getText();
 				relatorNegotiation= this.createClassifier(negotiation , "Relator",  800, 800);	
-				
-				// A ASSOCIACAO ENTRE NEGOTIATION E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
+	
 				serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "regards to", relatorOffering, relatorNegotiation, 1, 1, 1, -1).getAdded().get(0);
 				fix.includeAdded(serviceNegotiationOffering);	
-				
 			}
 		}
 				
@@ -330,13 +332,45 @@ public class EntryPoint extends SOPLPattern{
 			
 			targetCustomerNegotiation = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "participates in", roleTargetCustomer, relatorNegotiation, 1,1,0,-1).getAdded().get(0);
 			fix.includeAdded(targetCustomerNegotiation);
-		} else {
-//			providerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleServiceProvider, relatorOffering).getAdded().get(0);
-//			fix.includeAdded(providerOffering);	
-//			
-//			targetCustomerOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", roleTargetCustomer, relatorOffering).getAdded().get(0);
-//			fix.includeAdded(targetCustomerOffering);
 		}
+		
+		if(pattern_yes_no_selecionado == 3) {//No caso da Negotiation, o usuario finaliza a modelagem por aqui !
+			diagramManager.updateOLED(fix);
+			return fix; 
+		}
+		
+		//Create SADescription
+		String saDescription = janBase.getSADescription_txt().getText();
+		if(!saDescription.equals("")) {			
+			categorySADescription = this.createClassifier(saDescription, "Category", 300, 600);
+			
+			SAdescriptionAgreement = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", categorySADescription, relatorAgreement, 0,-1,1,-1).getAdded().get(0);
+			fix.includeAdded(SAdescriptionAgreement);	
+		}	
+		
+		//Create SCCommitments
+		String SCCommitments = janBase.getSCCommitments_txt().getText(); 
+		if(!SCCommitments.equals("")) {			
+			categorySCCAgreement = this.createClassifier(SCCommitments, "Category", 350, 650);
+			
+			SCCAgreement = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", categorySCCAgreement, relatorAgreement, 0,-1,1,-1).getAdded().get(0);
+			fix.includeAdded(SCCAgreement);	
+		}	
+		//Create HPCommitments
+		
+		//Create SDelivery
+		
+		//Create HPActions
+		
+		//Create HPActionMotivation
+		
+		//Create SCActions
+		
+		//Create SCActionMotivation
+		
+        //Create Interations
+		
+		//Create InteractionMotivation
 		
 		
 
