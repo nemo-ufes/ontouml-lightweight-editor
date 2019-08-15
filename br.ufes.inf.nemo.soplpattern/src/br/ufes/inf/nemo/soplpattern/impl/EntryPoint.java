@@ -56,10 +56,10 @@ public class EntryPoint extends SOPLPattern{
 		outcomeFixer = new OutcomeFixer(root);
 		fix = new Fix();
 		
-		Association providerOffering = null;
+//		Association providerOffering = null;
 		Association descriptionOffering = null;
 		Association commitmentOffering = null;
-		Association targetCustomerOffering = null;
+//		Association targetCustomerOffering = null;
 		
 		Association serviceAgreementOffering = null;
 		Association HiredProviderServiceAgreement = null;
@@ -87,7 +87,7 @@ public class EntryPoint extends SOPLPattern{
 		Classifier roleServiceCustomer = null;
 		Classifier roleHiredServiceProvider = null;
 		
-		Classifier collectiveTCC = null; // Collective Target Customer Community
+//		Classifier collectiveTCC = null; // Collective Target Customer Community
 		Classifier categorySODescription = null; // Service Offering Description
 		Classifier categorySOCommitment = null; // Service Offering Commitment
 		
@@ -254,18 +254,18 @@ public class EntryPoint extends SOPLPattern{
 			if (pattern_yes_no_selecionado == 1) { //O Usuario escolheu o pattern SNegAgree
 				
 				String agreement = janBase.getTextServiceAgreement().getText();
-				relatorAgreement= this.createClassifier(agreement , "Relator",  200, 300);	
+				relatorAgreement= this.createClassifier(agreement , "Relator",  600, 600);	
 				
 				String negotiation = janBase.getTxtServiceNegotiation().getText();
-				relatorNegotiation= this.createClassifier(negotiation , "Relator",  200, 300);	
+				relatorNegotiation= this.createClassifier(negotiation , "Relator",  700, 700);	
 				
 				// A ASSOCIACAO ENTRE NEGOTIATION E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
-				//serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorOffering, relatorNegotiation).getAdded().get(0);
-				//fix.includeAdded(serviceNegotiationOffering);	
+				serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", relatorOffering, relatorNegotiation, 1,1,0,-1).getAdded().get(0);
+				fix.includeAdded(serviceNegotiationOffering);	
 				
 				// A ASSOCIACAO ENTRE AGREEMENT E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
-				//serviceAgreementOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "", relatorAgreement, relatorOffering).getAdded().get(0);
-				//fix.includeAdded(serviceAgreementOffering);	
+				serviceAgreementOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", relatorOffering, relatorAgreement,1,1,0,-1).getAdded().get(0);
+				fix.includeAdded(serviceAgreementOffering);	
 				
 				// ESSES CARAS ESTAO FIXOS PQ ELES SAO OS MESMOS QUE FORAM DEFINIDOS NA OFFERING.
 				// O TARGET CUSTOMER PASSOU A SER HIRED SERVICE CUSTOMER
@@ -287,7 +287,7 @@ public class EntryPoint extends SOPLPattern{
 			}else if (pattern_yes_no_selecionado == 2) { //O Usuario escolheu o pattern SOfferAgree
 				
 				String agreement = janBase.getTextServiceAgreement_1().getText();
-				relatorAgreement= this.createClassifier(agreement , "Relator",  200, 300);	
+				relatorAgreement= this.createClassifier(agreement , "Relator",  790, 790);	
 				
 				// ESSES CARAS ESTAO FIXOS PQ ELES SAO OS MESMOS QUE FORAM DEFINIDOS NA OFFERING.
 				// O TARGET CUSTOMER PASSOU A SER HIRED SERVICE CUSTOMER
@@ -301,8 +301,8 @@ public class EntryPoint extends SOPLPattern{
 				fix.addAll(outcomeFixer.createGeneralization(roleHiredServiceProvider, roleServiceProvider));
 				
 				// A ASSOCIACAO ENTRE AGREEMENT E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
-				//serviceAgreementOffering = (Association)outcomeFixer.createAssociationBetween(RelationStereotype.ASSOCIATION, "conforms to", relatorAgreement, relatorOffering).getAdded().get(0);
-				//fix.includeAdded(serviceAgreementOffering);	
+				serviceAgreementOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "conforms to", relatorAgreement, relatorOffering, 0, -1, 1, 1).getAdded().get(0);
+				fix.includeAdded(serviceAgreementOffering);	
 				
 				HiredProviderServiceAgreement = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "is bound to", roleHiredServiceProvider, relatorAgreement,1,1,1,-1).getAdded().get(0);
 				fix.includeAdded(HiredProviderServiceAgreement);	
@@ -314,11 +314,11 @@ public class EntryPoint extends SOPLPattern{
 			}else if (pattern_yes_no_selecionado == 3) { //O Usuario escolheu o pattern SNegotiation
 				
 				String negotiation = janBase.getTextServiceNegotiation_1().getText();
-				relatorNegotiation= this.createClassifier(negotiation , "Relator",  200, 300);	
+				relatorNegotiation= this.createClassifier(negotiation , "Relator",  800, 800);	
 				
 				// A ASSOCIACAO ENTRE NEGOTIATION E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
-				//serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "regards to", relatorOffering, relatorNegotiation, 1, 1, 1, -1).getAdded().get(0);
-				//fix.includeAdded(serviceNegotiationOffering);	
+				serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "regards to", relatorOffering, relatorNegotiation, 1, 1, 1, -1).getAdded().get(0);
+				fix.includeAdded(serviceNegotiationOffering);	
 				
 			}
 		}
