@@ -74,7 +74,8 @@ public class EntryPoint extends SOPLPattern{
 		Classifier categorySODescription = null; // Service Offering Description
 		Classifier categorySOCommitment = null; // Service Offering Commitment
 		Classifier categorySADescription = null;
-		Classifier modeSCCAgreement = null;
+		Classifier modeServiceCustomerCommit = null;
+		Classifier modeHPCommitments = null;
 
 		if(patternProviderSelected == 1){ //Pattern P-Provider
 			//Create Person
@@ -222,9 +223,9 @@ public class EntryPoint extends SOPLPattern{
 		
 		String soCommitment = janBase.getTxtServiceOfferingCommitment().getText();
 		if(!soCommitment.equals("")) {			
-			categorySOCommitment = this.createClassifier(soCommitment, "Category", 100, 500);
+			categorySOCommitment = this.createClassifier(soCommitment, "Mode", 100, 500);
 			
-			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", categorySOCommitment, relatorOffering,0,-1,1,1).getAdded().get(0);
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.COMPONENTOF, "", relatorOffering, categorySOCommitment,1,1,1,-1).getAdded().get(0);
 			fix.includeAdded(association);	
 		}	
 		if(yes_no) { // O Usuario deseja modelar 1 dos 3 padroes : SNegAgree ou SOfferAgree ou SNegotiation
@@ -317,21 +318,33 @@ public class EntryPoint extends SOPLPattern{
 		//Create SCCommitments
 		String SCCommitments = janBase.getSCCommitments_txt().getText(); 
 		if(!SCCommitments.equals("")) {			
-			modeSCCAgreement = this.createClassifier(SCCommitments, "Mode", 350, 650);
+			modeServiceCustomerCommit = this.createClassifier(SCCommitments, "Mode", 350, 650);
 			
-			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", modeSCCAgreement, relatorAgreement, 0,-1,1,1).getAdded().get(0);
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.COMPONENTOF, "", relatorAgreement, modeServiceCustomerCommit, 1,1,0,-1).getAdded().get(0);
 			fix.includeAdded(association);	
 			
-			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", modeSCCAgreement, roleHiredServiceProvider, 0,-1,1,-1).getAdded().get(0);
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", modeServiceCustomerCommit, roleHiredServiceProvider, 0,-1,1,-1).getAdded().get(0);
 			fix.includeAdded(association);
 			
-			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", modeSCCAgreement, roleServiceCustomer, 0,-1,1,1).getAdded().get(0);
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", modeServiceCustomerCommit, roleServiceCustomer, 0,-1,1,1).getAdded().get(0);
 			fix.includeAdded(association);
 		}	
 		//Create HPCommitments
-		 
+		String HPCommitments = janBase.getHPCommitments_txt().getText(); 
+		if(!HPCommitments.equals("")) {			
+			modeHPCommitments = this.createClassifier(HPCommitments, "Mode", 420, 650);
+			
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.COMPONENTOF, "", relatorAgreement, modeHPCommitments, 1,1,1,-1).getAdded().get(0);
+			fix.includeAdded(association);	
+			
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "inheres in", modeHPCommitments, roleHiredServiceProvider, 1,-1,1,1).getAdded().get(0);
+			fix.includeAdded(association);
+			
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "externally dependent on", modeHPCommitments, roleServiceCustomer, 1,-1,1,-1).getAdded().get(0);
+			fix.includeAdded(association);
+		}	
 		//Create SDelivery
-		
+
 		//Create HPActions
 		
 		//Create HPActionMotivation
