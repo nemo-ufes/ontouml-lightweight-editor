@@ -43,8 +43,6 @@ public class EntryPoint extends SOPLPattern{
 		super(parser, x, y, "/resource/SOFFERING.png", "SOFFERING");
 		this.c = c;
 	}	
-	
-	
 	public void runPattern(DiagramManager diagramManager) {
 		this.diagramManager = diagramManager;	
 		janBase = new JanBase(this, entryPoint);
@@ -55,22 +53,8 @@ public class EntryPoint extends SOPLPattern{
 		Package root = parser.getModel();
 		outcomeFixer = new OutcomeFixer(root);
 		fix = new Fix();
-		
-//		Association providerOffering = null;
-		Association descriptionOffering = null;
-		Association commitmentOffering = null;
-//		Association targetCustomerOffering = null;
-		
-		Association serviceAgreementOffering = null;
-		Association HiredProviderServiceAgreement = null;
-		Association ServiceCustomerServiceAgreement = null;
-		Association SAdescriptionAgreement = null;
-		
-		
-		Association serviceNegotiationOffering = null;
-		
-		Association providerNegotiation = null;
-		Association targetCustomerNegotiation = null;
+	
+		Association association = null;
 		
 		Classifier collectiveA = null;
 		Classifier roleServiceProvider = null;
@@ -85,21 +69,13 @@ public class EntryPoint extends SOPLPattern{
 		Classifier relatorOffering = null; //Nome da Offering
 		Classifier relatorAgreement = null; //Nome do Agreement
 		Classifier relatorNegotiation = null; //Nome da Negotiation
-		
 		Classifier roleServiceCustomer = null;
 		Classifier roleHiredServiceProvider = null;
-		
-//		Classifier collectiveTCC = null; // Collective Target Customer Community
 		Classifier categorySODescription = null; // Service Offering Description
 		Classifier categorySOCommitment = null; // Service Offering Commitment
 		Classifier categorySADescription = null;
-		Classifier categorySCCAgreement = null;
-		Association SCCAgreement = null;
-		
-		//Chamar um metodo que pega todos os elementos da interface
-		
-		// 1 STEP - VERIFICAR E CRIAR DENTRO DO FIX OS ELEMENTOS DO PATTERN PROVIDER E CUSTOMER SUBGROUP SELECIONADOS
-		
+		Classifier modeSCCAgreement = null;
+
 		if(patternProviderSelected == 1){ //Pattern P-Provider
 			//Create Person
 			String person = janBase.getTxtPerson_P_Provider().getText();			
@@ -233,7 +209,6 @@ public class EntryPoint extends SOPLPattern{
 		}else if(patternCustomerSelected == 7){// Pattern P-OU-TCustomer
 		}
 		
-		// STEP 2 - CRIAR OFFERING, DESCRIPTION E COMMITMENT
 		String offering = janBase.getTxtServiceOffering().getText(); //Offering		
 		relatorOffering = this.createClassifier(offering , "Relator",  200, 300);		
 		
@@ -241,20 +216,17 @@ public class EntryPoint extends SOPLPattern{
 		if(!soDescription.equals("")) {			
 			categorySODescription = this.createClassifier(soDescription, "Category", 200, 500);
 			
-			descriptionOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", categorySODescription, relatorOffering, 0,-1,1,1).getAdded().get(0);
-			fix.includeAdded(descriptionOffering);	
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", categorySODescription, relatorOffering, 0,-1,1,1).getAdded().get(0);
+			fix.includeAdded(association);	
 		}	
 		
 		String soCommitment = janBase.getTxtServiceOfferingCommitment().getText();
 		if(!soCommitment.equals("")) {			
 			categorySOCommitment = this.createClassifier(soCommitment, "Category", 100, 500);
 			
-			commitmentOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", categorySOCommitment, relatorOffering,0,-1,1,1).getAdded().get(0);
-			fix.includeAdded(commitmentOffering);	
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", categorySOCommitment, relatorOffering,0,-1,1,1).getAdded().get(0);
+			fix.includeAdded(association);	
 		}	
-		
-	
-		
 		if(yes_no) { // O Usuario deseja modelar 1 dos 3 padroes : SNegAgree ou SOfferAgree ou SNegotiation
 			if (pattern_yes_no_selecionado == 1) { //O Usuario escolheu o pattern SNegAgree
 				
@@ -264,13 +236,10 @@ public class EntryPoint extends SOPLPattern{
 				String negotiation = janBase.getTxtServiceNegotiation().getText();
 				relatorNegotiation= this.createClassifier(negotiation , "Relator",  700, 700);	
 				
-				// A ASSOCIACAO ENTRE NEGOTIATION E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
-				serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", relatorOffering, relatorNegotiation, 1,1,0,-1).getAdded().get(0);
-				fix.includeAdded(serviceNegotiationOffering);	
-				
-				// A ASSOCIACAO ENTRE AGREEMENT E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
-				serviceAgreementOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", relatorOffering, relatorAgreement,1,1,0,-1).getAdded().get(0);
-				fix.includeAdded(serviceAgreementOffering);	
+				association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", relatorOffering, relatorNegotiation, 1,1,0,-1).getAdded().get(0);
+				fix.includeAdded(association);	
+				association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", relatorOffering, relatorAgreement,1,1,0,-1).getAdded().get(0);
+				fix.includeAdded(association);	
 				
 				// ESSES CARAS ESTAO FIXOS PQ ELES SAO OS MESMOS QUE FORAM DEFINIDOS NA OFFERING.
 				// O TARGET CUSTOMER PASSOU A SER HIRED SERVICE CUSTOMER
@@ -283,11 +252,11 @@ public class EntryPoint extends SOPLPattern{
 				fix.addAll(outcomeFixer.createGeneralization(roleServiceCustomer, roleTargetCustomer));
 				fix.addAll(outcomeFixer.createGeneralization(roleHiredServiceProvider, roleServiceProvider));
 				
-				HiredProviderServiceAgreement = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "is bound to", roleHiredServiceProvider, relatorAgreement,1,1,1,-1).getAdded().get(0);
-				fix.includeAdded(HiredProviderServiceAgreement);	
+				association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "is bound to", roleHiredServiceProvider, relatorAgreement,1,1,1,-1).getAdded().get(0);
+				fix.includeAdded(association);	
 				
-				ServiceCustomerServiceAgreement = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "is bound to", roleServiceCustomer, relatorAgreement, 1,-1, 1,-1).getAdded().get(0);
-				fix.includeAdded(ServiceCustomerServiceAgreement);	
+				association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "is bound to", roleServiceCustomer, relatorAgreement, 1,-1, 1,-1).getAdded().get(0);
+				fix.includeAdded(association);	
 				
 			}else if (pattern_yes_no_selecionado == 2) { //O Usuario escolheu o pattern SOfferAgree
 				
@@ -304,34 +273,31 @@ public class EntryPoint extends SOPLPattern{
 				
 				fix.addAll(outcomeFixer.createGeneralization(roleServiceCustomer, roleTargetCustomer));
 				fix.addAll(outcomeFixer.createGeneralization(roleHiredServiceProvider, roleServiceProvider));
+			
+				association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "conforms to", relatorAgreement, relatorOffering, 0, -1, 1, 1).getAdded().get(0);
+				fix.includeAdded(association);	
 				
-				// A ASSOCIACAO ENTRE AGREEMENT E OFFERING ESTA COM PROBLEMAS, PRECISO ARRUMAR ISSO LOGO !!
-				serviceAgreementOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "conforms to", relatorAgreement, relatorOffering, 0, -1, 1, 1).getAdded().get(0);
-				fix.includeAdded(serviceAgreementOffering);	
+				association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "is bound to", roleHiredServiceProvider, relatorAgreement,1,1,1,-1).getAdded().get(0);
+				fix.includeAdded(association);	
 				
-				HiredProviderServiceAgreement = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "is bound to", roleHiredServiceProvider, relatorAgreement,1,1,1,-1).getAdded().get(0);
-				fix.includeAdded(HiredProviderServiceAgreement);	
-				
-				ServiceCustomerServiceAgreement = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "is bound to", roleServiceCustomer, relatorAgreement, 1,-1, 1,-1).getAdded().get(0);
-				fix.includeAdded(ServiceCustomerServiceAgreement);	
-				
-				
+				association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "is bound to", roleServiceCustomer, relatorAgreement, 1,-1, 1,-1).getAdded().get(0);
+				fix.includeAdded(association);	
 			}else if (pattern_yes_no_selecionado == 3) { //O Usuario escolheu o pattern SNegotiation
 				String negotiation = janBase.getTextServiceNegotiation_1().getText();
 				relatorNegotiation= this.createClassifier(negotiation , "Relator",  800, 800);	
 	
-				serviceNegotiationOffering = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "regards to", relatorOffering, relatorNegotiation, 1, 1, 1, -1).getAdded().get(0);
-				fix.includeAdded(serviceNegotiationOffering);	
+				association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "regards to", relatorOffering, relatorNegotiation, 1, 1, 1, -1).getAdded().get(0);
+				fix.includeAdded(association);	
 			}
 		}
 				
 		// Association between Service Provider, Target Customer and Service Offering/Service Negotiation
 		if( (yes_no) && (pattern_yes_no_selecionado != 2) ) { //Quando há uma NEGOTIATION, o service customer e target Customer sao ligados a ela e nao a offering
-			providerNegotiation = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "participates in", roleServiceProvider, relatorNegotiation, 1, 1, 0, -1).getAdded().get(0);
-			fix.includeAdded(providerNegotiation);	
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "participates in", roleServiceProvider, relatorNegotiation, 1, 1, 0, -1).getAdded().get(0);
+			fix.includeAdded(association);	
 			
-			targetCustomerNegotiation = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "participates in", roleTargetCustomer, relatorNegotiation, 1,1,0,-1).getAdded().get(0);
-			fix.includeAdded(targetCustomerNegotiation);
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "participates in", roleTargetCustomer, relatorNegotiation, 1,1,0,-1).getAdded().get(0);
+			fix.includeAdded(association);
 		}
 		
 		if(pattern_yes_no_selecionado == 3) {//No caso da Negotiation, o usuario finaliza a modelagem por aqui !
@@ -344,17 +310,23 @@ public class EntryPoint extends SOPLPattern{
 		if(!saDescription.equals("")) {			
 			categorySADescription = this.createClassifier(saDescription, "Category", 300, 600);
 			
-			SAdescriptionAgreement = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", categorySADescription, relatorAgreement, 0,-1,1,-1).getAdded().get(0);
-			fix.includeAdded(SAdescriptionAgreement);	
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", categorySADescription, relatorAgreement, 0,-1,1,-1).getAdded().get(0);
+			fix.includeAdded(association);	
 		}	
 		
 		//Create SCCommitments
 		String SCCommitments = janBase.getSCCommitments_txt().getText(); 
 		if(!SCCommitments.equals("")) {			
-			categorySCCAgreement = this.createClassifier(SCCommitments, "Category", 350, 650);
+			modeSCCAgreement = this.createClassifier(SCCommitments, "Mode", 350, 650);
 			
-			SCCAgreement = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", categorySCCAgreement, relatorAgreement, 0,-1,1,-1).getAdded().get(0);
-			fix.includeAdded(SCCAgreement);	
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", modeSCCAgreement, relatorAgreement, 0,-1,1,1).getAdded().get(0);
+			fix.includeAdded(association);	
+			
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", modeSCCAgreement, roleHiredServiceProvider, 0,-1,1,-1).getAdded().get(0);
+			fix.includeAdded(association);
+			
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "", modeSCCAgreement, roleServiceCustomer, 0,-1,1,1).getAdded().get(0);
+			fix.includeAdded(association);
 		}	
 		//Create HPCommitments
 		 
