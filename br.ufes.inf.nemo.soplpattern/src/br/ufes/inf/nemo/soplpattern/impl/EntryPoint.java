@@ -357,7 +357,7 @@ public class EntryPoint extends SOPLPattern{
 			fix.includeAdded(SCCAgreement);	
 		}	
 		//Create HPCommitments
-		
+		 
 		//Create SDelivery
 		
 		//Create HPActions
