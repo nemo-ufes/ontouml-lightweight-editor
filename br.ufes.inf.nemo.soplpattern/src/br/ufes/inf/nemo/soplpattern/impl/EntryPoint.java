@@ -76,6 +76,12 @@ public class EntryPoint extends SOPLPattern{
 		Classifier categorySADescription = null;
 		Classifier modeServiceCustomerCommit = null;
 		Classifier modeHPCommitments = null;
+		Classifier eventSDelivery = null;
+		Classifier eventHPAction = null;
+		Classifier eventHPActionMotivation = null;
+		Classifier eventSCAction = null;
+		Classifier eventSCActionMotivation = null;
+		Classifier eventHPCI= null;
 
 		if(patternProviderSelected == 1){ //Pattern P-Provider
 			//Create Person
@@ -344,21 +350,61 @@ public class EntryPoint extends SOPLPattern{
 			fix.includeAdded(association);
 		}	
 		//Create SDelivery
-
+		String delivery = janBase.getSDelivery_txt().getText();		
+		eventSDelivery = this.createClassifier(delivery , "Role",  715, 715);
+		
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "aims to fulfill", eventSDelivery, relatorAgreement, 0,-1,1,1).getAdded().get(0);
+		fix.includeAdded(association);
+		
 		//Create HPActions
+		String HPAction = janBase.getHPActions_txt().getText();		
+		eventHPAction = this.createClassifier(HPAction , "Role",  425, 425);
+		
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "performed by", eventHPAction, roleHiredServiceProvider, 0,-1,1,1).getAdded().get(0);
+		fix.includeAdded(association);
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.COMPONENTOF, "", eventSDelivery, eventHPAction, 1,1,0,-1).getAdded().get(0);
+		fix.includeAdded(association);	
 		
 		//Create HPActionMotivation
+		String HPActionMotivation = janBase.getHPActionMotivation_txt().getText();		
+		eventHPActionMotivation = this.createClassifier(HPActionMotivation , "Role",  545, 545);
+		
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "performed by", eventHPActionMotivation, roleHiredServiceProvider, 0,-1,1,1).getAdded().get(0);
+		fix.includeAdded(association);
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "motivated by", eventHPActionMotivation, modeHPCommitments, 0,-1,1,-1).getAdded().get(0);
+		fix.includeAdded(association);
 		
 		//Create SCActions
+		String SCAction = janBase.getSCActions_txt().getText();		
+		eventSCAction = this.createClassifier(SCAction , "Role",  235, 235);
+		
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "performed by", eventSCAction, roleHiredServiceProvider, 0,-1,1,1).getAdded().get(0);
+		fix.includeAdded(association);
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.COMPONENTOF, "", eventSDelivery, eventSCAction, 1,1,0,-1).getAdded().get(0);
+		fix.includeAdded(association);	
 		
 		//Create SCActionMotivation
+		String SCActionMotivation = janBase.getSCActionMotivation_txt().getText();		
+		eventSCActionMotivation = this.createClassifier(SCActionMotivation , "Role",  355, 255);
+		
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "performed by", eventSCActionMotivation, roleServiceCustomer, 0,-1,1,1).getAdded().get(0);
+		fix.includeAdded(association);
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "motivated by", eventSCActionMotivation, modeServiceCustomerCommit, 0,-1,1,-1).getAdded().get(0);
+		fix.includeAdded(association);
 		
         //Create Interations
+		String HPCI = janBase.getSCActions_txt().getText();		
+		eventHPCI = this.createClassifier(HPCI , "Role",  255, 265);
+		
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "participates in", eventHPCI, roleHiredServiceProvider, 0,-1,1,1).getAdded().get(0);
+		fix.includeAdded(association);
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "participates in", eventHPCI, roleServiceCustomer, 0,-1,1,-1).getAdded().get(0);
+		fix.includeAdded(association);
+		association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.COMPONENTOF, "", eventSDelivery, eventHPCI, 1,1,0,-1).getAdded().get(0);
+		fix.includeAdded(association);
 		
 		//Create InteractionMotivation
 		
-		
-
 			
 		diagramManager.updateOLED(fix);
 		return fix; 
