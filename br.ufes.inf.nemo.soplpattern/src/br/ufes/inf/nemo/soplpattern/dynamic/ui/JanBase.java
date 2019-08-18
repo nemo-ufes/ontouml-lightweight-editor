@@ -1914,7 +1914,7 @@ public class JanBase {
 		rdbtnNo.setBounds(301, 32, 39, 23);
 		panel_yes_no.add(rdbtnNo);
 		
-		JLabel lblVocDesejaModelar = new JLabel("Voc\u00EA Deseja Modelar Alguns Desses Padr\u00F5es ?");
+		JLabel lblVocDesejaModelar = new JLabel("Do you want to model any of the patterns below ?");
 		lblVocDesejaModelar.setBounds(181, 11, 274, 14);
 		panel_yes_no.add(lblVocDesejaModelar);
 		
@@ -2720,6 +2720,28 @@ public class JanBase {
 				trocaPainel(panelSNegotiationFields);		
 				btnNext.setEnabled(false);
 				btnCreateConcepts.setEnabled(true);
+			}
+		});
+		
+		rdbtnNo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				desabilitaPaineisSNegAgreeSOfferAgreeSNegotiation();
+				imgPattern.setVisible(false);
+				rdbtnSnegotiation.setEnabled(false);
+				rdbtnSofferagree.setEnabled(false);
+				rdbtnSnegagree.setEnabled(false);
+				btnNext.setEnabled(false);
+				btnCreateConcepts.setEnabled(true);
+			}
+		});
+		
+		rdbtnYes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {	
+				rdSNegAgreeSOfferAgreeSNegotiationGroup.clearSelection();
+				rdbtnSnegotiation.setEnabled(true);
+				rdbtnSofferagree.setEnabled(true);
+				rdbtnSnegagree.setEnabled(true);
+				btnCreateConcepts.setEnabled(false);
 			}
 		});
 		
@@ -4296,6 +4318,7 @@ public class JanBase {
 		//SNegAgree SOfferAgree and SNegotiation
 		
 		if(panel.getName().equals("panelSOfferAgreeFields")){
+			imgPattern.setVisible(true);
 			icon_SOfferAgree_Fields= new  ImageIcon(JanBase.class.getResource("/resource/SNegAgree.PNG"));
 			imagem_SOfferAgree_Fields = new JLabel(icon_SOfferAgree_Fields);
 			imagem_SOfferAgree_Fields.setBounds(10, 27, 581, 275);
@@ -4304,6 +4327,7 @@ public class JanBase {
 			imgPattern.add(imagem_SOfferAgree_Fields);
 		}
 		if(panel.getName().equals("panelSNegAgreeFields")){
+			imgPattern.setVisible(true);
 			icon_SNegAgree_Fields= new  ImageIcon(JanBase.class.getResource("/resource/SNegAgree.PNG"));
 			imagem_SNegAgree_Fields = new JLabel(icon_SNegAgree_Fields);
 			imagem_SNegAgree_Fields.setBounds(10, 27, 581, 275);
@@ -4312,6 +4336,7 @@ public class JanBase {
 			imgPattern.add(imagem_SNegAgree_Fields);
 		}
 		if(panel.getName().equals("panelSNegotiationFields")){
+			imgPattern.setVisible(true);
 			icon_SNegotiation_Fields= new  ImageIcon(JanBase.class.getResource("/resource/SNegAgree.PNG"));
 			imagem_SNegotiation_Fields = new JLabel(icon_SNegotiation_Fields);
 			imagem_SNegotiation_Fields.setBounds(10, 27, 581, 275);
@@ -4416,10 +4441,12 @@ public class JanBase {
 		if(painelSelecionado == 3){	
 			panelSOCommitment.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SOffering_Steps_4.png")));
+			btnNext.setEnabled(true);
 		}
 		if(painelSelecionado == 4){	
 			panelSNegAgree_SOfferAgree_SNegotiation.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_3.png")));
+			btnNext.setEnabled(false);
 		}
 		if(painelSelecionado == 5){
 			panelSADescription.setVisible(true);
@@ -4493,6 +4520,7 @@ public class JanBase {
 		if(painelSelecionado == 3){
 			panelSCCommitments.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_5.png")));
+			btnCreateConcepts.setEnabled(false);
 		}
 		if(painelSelecionado == 4){
 			panelHPCommitments.setVisible(true);
