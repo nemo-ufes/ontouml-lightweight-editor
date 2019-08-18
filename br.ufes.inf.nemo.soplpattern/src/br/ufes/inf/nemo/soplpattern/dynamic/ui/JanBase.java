@@ -394,6 +394,9 @@ public class JanBase {
 	private static JLabel imagem_SOfferAgree_Fields;
 	private static JLabel imagem_SNegotiation_Fields;
 	
+	JButton btnBack;
+	JButton btnNext;
+	JButton btnCreateConcepts;
 
 	/**
 	 * Create the application.
@@ -1807,7 +1810,7 @@ public class JanBase {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton btnNext = new JButton("Next");
+		btnNext = new JButton("Next");
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(entrypoint == 1) {
@@ -1821,7 +1824,7 @@ public class JanBase {
 		btnNext.setBounds(1063, 522, 89, 37);
 		frame.getContentPane().add(btnNext);
 		
-		JButton btnBack = new JButton("Back");
+		btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(entrypoint == 1) {
@@ -2697,19 +2700,26 @@ public class JanBase {
 		rdbtnSnegagree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				desabilitaPaineisSNegAgreeSOfferAgreeSNegotiation();
-				trocaPainel(panelSNegAgreeFields);			
+				trocaPainel(panelSNegAgreeFields);	
+				btnNext.setEnabled(true);
+				btnCreateConcepts.setEnabled(false);
 			}
 		});
 		rdbtnSofferagree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				desabilitaPaineisSNegAgreeSOfferAgreeSNegotiation();
-				trocaPainel(panelSOfferAgreeFields);			
+				trocaPainel(panelSOfferAgreeFields);		
+				btnNext.setEnabled(true);
+				btnCreateConcepts.setEnabled(false);
 			}
+			
 		});
 		rdbtnSnegotiation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				desabilitaPaineisSNegAgreeSOfferAgreeSNegotiation();
-				trocaPainel(panelSNegotiationFields);			
+				trocaPainel(panelSNegotiationFields);		
+				btnNext.setEnabled(false);
+				btnCreateConcepts.setEnabled(true);
 			}
 		});
 		
@@ -3306,8 +3316,7 @@ public class JanBase {
 		panelImg_SNegAgreem.add(imagemSNegAgree);
 		panelSNegAgreeInterno.add(panelImg_SNegAgreem);	
 		
-		JButton btnCreateConcepts = new JButton("Create S-OPL Diagram");
-		btnCreateConcepts.setEnabled(false);
+		btnCreateConcepts = new JButton("Create S-OPL Diagram");
 		btnCreateConcepts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {	
 				
@@ -4392,10 +4401,13 @@ public class JanBase {
 		if(painelSelecionado == 0){	
 			panelSOffering.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SOffering_Steps_1.png")));
+			btnBack.setEnabled(false);
+			btnCreateConcepts.setEnabled(false);
 		}
 		if(painelSelecionado == 1){
 			panelPCSubgroup.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SOffering_Steps_2.png")));
+			btnBack.setEnabled(true);
 		}
 		if(painelSelecionado == 2){
 			panelSODescription.setVisible(true);
@@ -4410,24 +4422,23 @@ public class JanBase {
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_3.png")));
 		}
 		if(painelSelecionado == 5){
-			if(rdbtnSnegotiation.isSelected()) { //Se o usuario selecionou o patter SNegotiation, entao a modelagem acaba aqui
-				createDiagram();
-			}else {
-				panelSADescription.setVisible(true);
-				imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_4.png")));
-			}
+			panelSADescription.setVisible(true);
+			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_4.png")));
 		}
 		if(painelSelecionado == 6){ 
 			panelSCCommitments.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_5.png")));
+			btnCreateConcepts.setEnabled(false);
 		}
 		if(painelSelecionado == 7){ 
 			panelHPCommitments.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_6.png")));
+			btnCreateConcepts.setEnabled(true);
 		}
 		if(painelSelecionado == 8){
 			panelSDelivery.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_1.png")));
+			btnCreateConcepts.setEnabled(false);
 		}
 		if(painelSelecionado == 9){
 			panelHPActions.setVisible(true);
@@ -4448,15 +4459,15 @@ public class JanBase {
 		if(painelSelecionado == 13){
 			panelInteractions.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_6.png")));
+			btnNext.setEnabled(true);
+			btnCreateConcepts.setEnabled(false);
 		}
 		if(painelSelecionado == 14){
 			panelInteractionMotivation.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_7.png")));
+			btnNext.setEnabled(false);
+			btnCreateConcepts.setEnabled(true);
 		}
-		if(painelSelecionado == 15) {
-			createDiagram();
-		}
-		 
 	}	
 	
 	public void trocaPainelPrincipalSAgreement(int n){ //Esse metodo controla todo o fluxo partindo do Entry Point SAgreement
@@ -4467,10 +4478,13 @@ public class JanBase {
 		if(painelSelecionado == 0){
 			panelSAgreement.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_1.png")));
+			btnBack.setEnabled(false);
+			btnCreateConcepts.setEnabled(false);
 		}
 		if(painelSelecionado == 1){
 			panelHiredP_ServiceC_Subgroup.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_2.png")));
+			btnBack.setEnabled(true);
 		}
 		if(painelSelecionado == 2){
 			panelSADescription.setVisible(true);
@@ -4483,10 +4497,12 @@ public class JanBase {
 		if(painelSelecionado == 4){
 			panelHPCommitments.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_6.png")));
+			btnCreateConcepts.setEnabled(true);
 		}
 		if(painelSelecionado == 5){
 			panelSDelivery.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_1.png")));
+			btnCreateConcepts.setEnabled(false);
 		}
 		if(painelSelecionado == 6){
 			panelHPActions.setVisible(true);
@@ -4507,10 +4523,14 @@ public class JanBase {
 		if(painelSelecionado == 10){
 			panelInteractions.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_6.png")));
+			btnCreateConcepts.setEnabled(false);
+			btnNext.setEnabled(true);
 		}
 		if(painelSelecionado == 11){
 			panelInteractionMotivation.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SDelivery_Steps_7.png")));
+			btnCreateConcepts.setEnabled(true);
+			btnNext.setEnabled(false);
 		}
 	}	
 		
