@@ -4319,7 +4319,7 @@ public class JanBase {
 		
 		if(panel.getName().equals("panelSOfferAgreeFields")){
 			imgPattern.setVisible(true);
-			icon_SOfferAgree_Fields= new  ImageIcon(JanBase.class.getResource("/resource/SNegAgree.PNG"));
+			icon_SOfferAgree_Fields= new  ImageIcon(JanBase.class.getResource("/resource/SOfferAgree.PNG"));
 			imagem_SOfferAgree_Fields = new JLabel(icon_SOfferAgree_Fields);
 			imagem_SOfferAgree_Fields.setBounds(10, 27, 581, 275);
 			imagem_SOfferAgree_Fields.setSize(70, 96); // 70 96
@@ -4337,7 +4337,7 @@ public class JanBase {
 		}
 		if(panel.getName().equals("panelSNegotiationFields")){
 			imgPattern.setVisible(true);
-			icon_SNegotiation_Fields= new  ImageIcon(JanBase.class.getResource("/resource/SNegAgree.PNG"));
+			icon_SNegotiation_Fields= new  ImageIcon(JanBase.class.getResource("/resource/SNegotiation.PNG"));
 			imagem_SNegotiation_Fields = new JLabel(icon_SNegotiation_Fields);
 			imagem_SNegotiation_Fields.setBounds(10, 27, 581, 275);
 			imagem_SNegotiation_Fields.setSize(70, 96); // 70 96
