@@ -4447,6 +4447,13 @@ public class JanBase {
 			panelSNegAgree_SOfferAgree_SNegotiation.setVisible(true);
 			imagemSteps.setIcon(new ImageIcon(JanBase.class.getResource("/resource/SAgreement_Steps_3.png")));
 			btnNext.setEnabled(false);
+			
+			//Pega o Provider/Hired Provider e o Target Customer/Customer, depois insere no JtextField correspondente para o
+			//usuario saber que o Hired Service Provider eh o cara que ele definiu na tela anterior como Provider.
+			
+			//Preciso criar um metodo que verifica qual subgroup foi selecionado, depois pega o provider e customer e seta no
+			//JtextField correto.
+			qualSubgroupFoiSelecionado();
 		}
 		if(painelSelecionado == 5){
 			panelSADescription.setVisible(true);
@@ -4561,6 +4568,60 @@ public class JanBase {
 			btnNext.setEnabled(false);
 		}
 	}	
+	public void qualSubgroupFoiSelecionado() {
+		
+		int providerSelected = getRadioProviderSubgroupSelected();
+		int customerSelected = getRadioCustomerSubgroupSelected();
+
+		if(providerSelected == 1) { //rdbtnP_Provider
+			System.out.println(this.txtServiceProvider_P_Provider.getText());
+			this.textHiredServiceProvider_1.setText(this.txtServiceProvider_P_Provider.getText());
+			this.textField.setText(this.txtServiceProvider_P_Provider.getText());
+		}else if(providerSelected == 2) { //rdbtnO_Provider
+			this.textHiredServiceProvider_1.setText(this.txtServiceProvider_O_Provider.getText());
+			this.textField.setText(this.txtServiceProvider_O_Provider.getText());
+		}else if(providerSelected == 3) { //rdbtnOU_Provider
+			this.textHiredServiceProvider_1.setText(this.txtServiceProvider_OU_Provider.getText());
+			this.textField.setText(this.txtServiceProvider_OU_Provider.getText());
+		}else if(providerSelected == 4) { //rdbtnP_O_OU_Provider
+			this.textHiredServiceProvider_1.setText(this.txtServiceProvider_P_O_OU_Provider.getText());
+			this.textField.setText(this.txtServiceProvider_P_O_OU_Provider.getText());
+		}else if(providerSelected == 5) { //rdbtnO_OU_Provider
+			this.textHiredServiceProvider_1.setText(this.txtServiceProvider_O_OU_Provider.getText());
+			this.textField.setText(this.txtServiceProvider_O_OU_Provider.getText());
+		}else if(providerSelected == 6) { //rdbtnP_O_Provider
+			this.textHiredServiceProvider_1.setText(this.txtServiceProvider_P_O_Provider.getText());
+			this.textField.setText(this.txtServiceProvider_P_O_Provider.getText());
+		}else if(providerSelected == 7) { //rdbtnP_OU_Provider
+			this.textHiredServiceProvider_1.setText(this.txtServiceProvider_P_OU_Provider.getText());
+			this.textField.setText(this.txtServiceProvider_P_OU_Provider.getText());
+		}
+		
+		
+		if(customerSelected == 1) { //rdbtnP_TCustomer
+			this.txtServiceCustomer_1.setText(this.txtTargetCustomer_P_TCustomer.getText());
+			this.textField_1.setText(this.txtTargetCustomer_P_TCustomer.getText());
+		}else if(customerSelected == 2) { //rdbtnO_TCustomer
+			this.txtServiceCustomer_1.setText(this.txtTargetCustomer_O_TCustomer.getText());
+			this.textField_1.setText(this.txtTargetCustomer_O_TCustomer.getText());
+		}else if(customerSelected == 3) { //rdbtnOU_TCustomer
+			this.txtServiceCustomer_1.setText(this.txtTargetCustomer_OU_TCustomer.getText());
+			this.textField_1.setText(this.txtTargetCustomer_OU_TCustomer.getText());
+		}else if(customerSelected == 4) { //rdbtnP_O_OU_TCustomer
+			this.txtServiceCustomer_1.setText(this.txtTargetCustomer_P_O_OU_TCustomer.getText());
+			this.textField_1.setText(this.txtTargetCustomer_P_O_OU_TCustomer.getText());
+		}else if(customerSelected == 5) { //rdbtnO_OU_TCustomer
+			this.txtServiceCustomer_1.setText(this.txtTargetCustomer_O_OU_TCustomer.getText());
+			this.textField_1.setText(this.txtTargetCustomer_O_OU_TCustomer.getText());
+		}else if(customerSelected == 6) { //rdbtnP_O_TCustomer
+			this.txtServiceCustomer_1.setText(this.txtTargetCustomer_P_O_TCustomer.getText());
+			this.textField_1.setText(this.txtTargetCustomer_P_O_TCustomer.getText());
+		}else if(customerSelected == 7) { //rdbtnP_OU_TCustomer
+			this.txtServiceCustomer_1.setText(this.txtTargetCustomerTC_P_OU_TCustomer.getText());
+			this.textField_1.setText(this.txtTargetCustomerTC_P_OU_TCustomer.getText());
+		}	
+		
+	}
 		
 	public static int getRadioProviderSubgroupSelected(){
 		if(rdbtnP_Provider.isSelected()){return 1;}
