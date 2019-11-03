@@ -738,7 +738,11 @@ public class JanBase {
 	}
 
 	public JTextField getTxtServiceAgreement() {
-		return txtServiceAgreement;
+		return this.txtServiceAgreement;
+	}
+	
+	public JTextField getSAgreement_txtt() {
+		return this.SAgreement_txt;
 	}
 
 	public void setTxtServiceAgreement(JTextField txtServiceAgreement) {
