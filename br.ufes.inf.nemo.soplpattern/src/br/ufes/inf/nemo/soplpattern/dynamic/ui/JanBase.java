@@ -3345,6 +3345,8 @@ public class JanBase {
 				//Verifica os radios selecionados
 				int rdProviderSubgroupSelected = JanBase.getRadioProviderSubgroupSelected();
 				int rdCustomerSubgroupSelected = JanBase.getRadioCustomerSubgroupSelected();
+				int rdHiredProviderSubgroupSelected = JanBase.getRadioHiredProviderSubgroupSelected();
+				int rdServiceCustomerSubgroupSelected = JanBase.getRadioServiceCustomerSubgroupSelected();
 				boolean yes_no = false;
 				if(rdbtnYes.isSelected()) {
 					yes_no = true;
@@ -3366,7 +3368,7 @@ public class JanBase {
 					soplPattern.getSpecificFixSOffering(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no, pattern_yes_no_selecionado);	
 
 				}else if(entrypoint == 2) {
-					soplPattern.getSpecificFixSAgreement(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no, pattern_yes_no_selecionado);	
+					soplPattern.getSpecificFixSAgreement(rdHiredProviderSubgroupSelected, rdServiceCustomerSubgroupSelected);	
 
 				}
 				frame.dispose();
@@ -5599,34 +5601,36 @@ public class JanBase {
 		return imagemSADescription;
 	}
 	
-	public void createDiagram() {
-		//Verifica os radios selecionados
-		int rdProviderSubgroupSelected = JanBase.getRadioProviderSubgroupSelected();
-		int rdCustomerSubgroupSelected = JanBase.getRadioCustomerSubgroupSelected();
-		boolean yes_no = false;
-		if(rdbtnYes.isSelected()) {
-			yes_no = true;
-		}
-		
-		//Verifica qual dos 3 padroes opcionais foi selecionado.
-		int pattern_yes_no_selecionado = 0;
-		if(rdbtnSnegagree.isSelected()) {
-			pattern_yes_no_selecionado = 1;
-		}
-		if(rdbtnSofferagree.isSelected()) {
-			pattern_yes_no_selecionado = 2;
-		}
-		if(rdbtnSnegotiation.isSelected()) {
-			pattern_yes_no_selecionado = 3;
-		}
-							
-		if(entrypoint == 1) {
-			soplPattern.getSpecificFixSOffering(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no, pattern_yes_no_selecionado);	
-
-		}else if(entrypoint == 2) {
-			soplPattern.getSpecificFixSAgreement(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no, pattern_yes_no_selecionado);	
-
-		}
-		frame.dispose();
-	}
+//	public void createDiagram() {
+//		//Verifica os radios selecionados
+//		int rdProviderSubgroupSelected = JanBase.getRadioProviderSubgroupSelected();
+//		int rdCustomerSubgroupSelected = JanBase.getRadioCustomerSubgroupSelected();
+//		int rdHiredProviderSubgroupSelected = JanBase.getRadioHiredProviderSubgroupSelected();
+//		int rdServiceCustomerSubgroupSelected = JanBase.getRadioServiceCustomerSubgroupSelected();
+//		boolean yes_no = false;
+//		if(rdbtnYes.isSelected()) {
+//			yes_no = true;
+//		}
+//		
+//		//Verifica qual dos 3 padroes opcionais foi selecionado.
+//		int pattern_yes_no_selecionado = 0;
+//		if(rdbtnSnegagree.isSelected()) {
+//			pattern_yes_no_selecionado = 1;
+//		}
+//		if(rdbtnSofferagree.isSelected()) {
+//			pattern_yes_no_selecionado = 2;
+//		}
+//		if(rdbtnSnegotiation.isSelected()) {
+//			pattern_yes_no_selecionado = 3;
+//		}
+//							
+//		if(entrypoint == 1) {
+//			soplPattern.getSpecificFixSOffering(rdProviderSubgroupSelected, rdCustomerSubgroupSelected, yes_no, pattern_yes_no_selecionado);	
+//
+//		}else if(entrypoint == 2) {
+//			soplPattern.getSpecificFixSAgreement(rdHiredProviderSubgroupSelected, rdServiceCustomerSubgroupSelected);	
+//
+//		}
+//		frame.dispose();
+//	}
 }

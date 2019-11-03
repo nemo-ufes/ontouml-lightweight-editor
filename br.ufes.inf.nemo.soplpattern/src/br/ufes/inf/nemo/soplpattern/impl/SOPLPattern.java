@@ -82,5 +82,5 @@ public abstract class SOPLPattern {
 
 	//public abstract Fix getSpecificFix();
 	public abstract Fix getSpecificFixSOffering(int patternProviderSelected, int patternCustomerSelected, boolean yes_no, int pattern_yes_no_selecionado);
-	public abstract Fix getSpecificFixSAgreement(int patternProviderSelected, int patternCustomerSelected, boolean yes_no, int pattern_yes_no_selecionado); 
+	public abstract Fix getSpecificFixSAgreement(int patternProviderSelected, int patternCustomerSelected); 
 }
