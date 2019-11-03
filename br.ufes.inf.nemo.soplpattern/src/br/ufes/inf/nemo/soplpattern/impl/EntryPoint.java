@@ -307,7 +307,15 @@ public class EntryPoint extends SOPLPattern{
 			fix.includeAdded(association);
 		}
 		
-		if(pattern_yes_no_selecionado == 3) {//No caso da Negotiation, o usuario finaliza a modelagem por aqui !
+		if( (pattern_yes_no_selecionado == 3) || (!yes_no) ) {//No caso da Negotiation, o usuario finaliza a modelagem por aqui !
+			
+			// Create relation between provider, target customer and offering
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "is bound to", roleServiceProvider, relatorOffering,1,1,1,-1).getAdded().get(0);
+			fix.includeAdded(association);	
+			
+			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "is bound to", roleTargetCustomer, relatorOffering, 1,-1, 1,-1).getAdded().get(0);
+			fix.includeAdded(association);	
+			
 			diagramManager.updateOLED(fix);
 			return fix; 
 		}
@@ -349,6 +357,13 @@ public class EntryPoint extends SOPLPattern{
 			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "externally dependent on", modeHPCommitments, roleServiceCustomer, 1,-1,1,-1).getAdded().get(0);
 			fix.includeAdded(association);
 		}	
+		
+		//Check where button Create Diagram was pressed	
+		if( janBase.getPainelSelecionado() == 7) { // button Create Diagram was pressed on HPCommitments Panel...
+			diagramManager.updateOLED(fix);
+			return fix;
+		}	
+		
 		//Create SDelivery
 		String delivery = janBase.getSDelivery_txt().getText();		
 		eventSDelivery = this.createClassifier(delivery , "Role",  520, 100	);
@@ -416,27 +431,12 @@ public class EntryPoint extends SOPLPattern{
 		Package root = parser.getModel();
 		outcomeFixer = new OutcomeFixer(root);
 		fix = new Fix();
-		
-		
 		Association association = null;
-		
 		Classifier collectiveA = null;
-		Classifier roleServiceProvider = null;
-		Classifier roleOrgTC = null;
-		Classifier roleOrgUnitProvider = null;
-		Classifier roleOrgUnitTC = null;
-		Classifier rolePersonProvider = null;
-		Classifier rolePersonTC = null;
-		Classifier roleOrganizationProvider = null;
 		Classifier collectiveB = null;
-		Classifier roleTargetCustomer = null;
-		Classifier relatorOffering = null; //Nome da Offering
 		Classifier relatorAgreement = null; //Nome do Agreement
-		Classifier relatorNegotiation = null; //Nome da Negotiation
 		Classifier roleServiceCustomer = null;
 		Classifier roleHiredServiceProvider = null;
-		Classifier categorySODescription = null; // Service Offering Description
-		Classifier categorySOCommitment = null; // Service Offering Commitment
 		Classifier categorySADescription = null;
 		Classifier modeServiceCustomerCommit = null;
 		Classifier modeHPCommitments = null;
@@ -446,7 +446,7 @@ public class EntryPoint extends SOPLPattern{
 		Classifier eventSCAction = null;
 		Classifier eventSCActionMotivation = null;
 		Classifier eventHPCI= null;
-		System.out.println(patternHiredProviderSelected);
+		
 		if(patternHiredProviderSelected == 1){ //Pattern P-HProvider
 			//Create Person	
 			String person = janBase.getTxtPerson_P_HProvider().getText(); 
@@ -460,8 +460,6 @@ public class EntryPoint extends SOPLPattern{
 		}
 		
 		
-		
-		System.out.println(patternServiceCustomerSelected);
 		if(patternServiceCustomerSelected == 1){ //Pattern P-Customer
 			//Create Person
 			String person = janBase.getTxtPerson_P_Customer().getText();			
@@ -521,6 +519,13 @@ public class EntryPoint extends SOPLPattern{
 			association = (Association)outcomeFixer.createAssociationBetweenUsingMultiplicity(RelationStereotype.ASSOCIATION, "externally dependent on", modeHPCommitments, roleServiceCustomer, 1,-1,1,-1).getAdded().get(0);
 			fix.includeAdded(association);
 		}	
+		
+		//Check where button Create Diagram was pressed	
+		if( janBase.getPainelSelecionado() == 4) { // button Create Diagram was pressed on HPCommitments Panel...
+			diagramManager.updateOLED(fix);
+			return fix;
+		}
+		
 		//Create SDelivery
 		String delivery = janBase.getSDelivery_txt().getText();		
 		eventSDelivery = this.createClassifier(delivery , "Role",  520, 100	);
